@@ -1,192 +1,315 @@
-Return-Path: <stable+bounces-116804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C56FA3A1FE
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 17:02:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5801DA3A251
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 17:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9DEE3A41C4
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:01:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75D5B1602D2
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C289F243376;
-	Tue, 18 Feb 2025 16:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E8B26A1A5;
+	Tue, 18 Feb 2025 16:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LgJYm3Ym"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="QLCh3O+x"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A817A5BE
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 16:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB5326E171
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 16:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739894504; cv=none; b=FBsi33/2CoFZUKMnJKpR7AGIgGE3idNvdlq4tomgAnq59mEW3F55dtpRkBdHwWNYTM3ZxgYN6zKlbVqQa1ZRa7t7EP1+cHygrMq0wMku0C5O62naYSI6FstPOTQwwJTo3wKKj1C8+BedsqkKmnPw6FhdLbt7TfrzVMtGxW4Vnz0=
+	t=1739895183; cv=none; b=WoIO61woQB5fCBHyl6xnP9EKHWhR1/vrmN/gTh202G7WNiUKbA0UlvLwRXBTUEQOcETw+zKAqwirEuiRYuMPZl8cuUEALAHEmSrPvn/RATOSa0sKyDawBYHk3OrBrU+nIuS5UtDRdJzUTcZWv8WWAYfMa/FvvEJUfdgJwsHjaWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739894504; c=relaxed/simple;
-	bh=oCVv1bIDLK1VDNcQIKTCywwdQIO9OM3mn9CHt4SbKPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HwI7ndfqRMTQS+r5R9WBjF1xPIAPzz0z6psbyH0Tecemn+5U0/Nuy7fg2dh/kQdh3wi0ywrFGPyFVlPXbP5bktvQJr1AB4OKGg53m6AGmJZu81H9Tcgl4EkEAnCH2OlZy7izaZuogpFHbMiZ+PGO0l49Pqoez3ryPnV1Gzfdl8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LgJYm3Ym; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739894501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VGLdSoyLAWE8Cjx6pSyApZY2a0Ne8XagCPC6aOvMXMg=;
-	b=LgJYm3Ym/jHN06/jISqyZwjxhM6x4v+wWLIA/MreeTbYxc/fxF+QTm5hKH4rFKaZHsnu3z
-	VQAT0tHvPRdm2kCYoYSoOBWSo+hnjDflLbTkJXA4EuRLLa197ZmfnacHFzPvb1U9ksXcZ4
-	vDD9h0apesSXpij//mKGzsUHcXR4hpY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-BJwg7LMaPsO2dnn-hiqYaA-1; Tue, 18 Feb 2025 11:01:39 -0500
-X-MC-Unique: BJwg7LMaPsO2dnn-hiqYaA-1
-X-Mimecast-MFC-AGG-ID: BJwg7LMaPsO2dnn-hiqYaA_1739894498
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-438e180821aso31244345e9.1
-        for <stable@vger.kernel.org>; Tue, 18 Feb 2025 08:01:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739894498; x=1740499298;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VGLdSoyLAWE8Cjx6pSyApZY2a0Ne8XagCPC6aOvMXMg=;
-        b=wl5r3Kqosg0oajvQ4jQOs7ruaua48NAo8qxEFO53iTBj3OS7+apMToBfzsQflQUIzj
-         rw3IEvjcoe7sQTrovqEb6WtvoygpB99WJQTJyRbg+Wryujw7ZIJEohd2MpzOWGCCTEWJ
-         n++IG3nEtdcV52k3ljrvE2i5lBDN+gSLbeQ4MP3PSFG2l06OirFN+8rkJZmk5YwuHsk+
-         d7G4EmkJayC2W550OBH7ay4oWt4o926jCbLf1nhNxTM3OzAhCX2s+4v9cvqoGiRKm96i
-         lTFSbx/+KKQLZ/g5m0j5YehXAxzNa3sKxwidobe9AuDrx25R4345s50kIBqR4vd0RduI
-         W7Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCWjJGtVbJHtVd3rWB/sEZjn0lU0gTTj3qh1lwVb5UC3j2Nrm5MjSWFYfVwMMMgbOGmWyMfiafs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIoTOK7IloHFiJ9KIYymU+TxfMfhv8sSd37SiCChnP0CJDvjP6
-	cMbSMOpkVOeeEzyy0Ab8b+KCFPFTNhF5Ys7VWYYxJcGNmv3hTyuk2+uIV2FPhZCR4uXtxKr7UuF
-	hCYI3DFc3JbQJS8kkIb3ZldQaZe+IW7RvO22ju+WZdYbpieFoLQ9m6g==
-X-Gm-Gg: ASbGncuAJT38IbdMg0KIFWXU8nVXxw83IfrGTZ+WEj/jmm52Vkf6hgyk6O0TozHVx2K
-	rmpB7r5GRJ5hXEJF9JX+ivC/h581a/tgpeI1ImwQC8aKF9TkK5GkYFgVYmOvgjthESNoU8wRDj9
-	07T/ZEPLwTE4Y1nAnFuW0j+P4AsxV/8KEb6/qtuGI0BnpCq8RO7Ep0fe4ZozzH4/g1qwA7939/8
-	cHKil4H17d8O2aoMy7UhEMeXGVepjkTZvD7Alyy9+TT9sUYAnX+1PDQyF2nuIEggcLmA8EhEn8F
-	B3kOsfaas7pSeHsfDkPnCrGanI2tr9pXciKyGM6tB/e9ExrmmnDz3w==
-X-Received: by 2002:a05:600c:4750:b0:439:9828:c425 with SMTP id 5b1f17b1804b1-4399828c633mr15497875e9.7.1739894497864;
-        Tue, 18 Feb 2025 08:01:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF1bR3ZvNKuqGUd+uzd0tQMuTD2XWrKyBbOEYQkEGLim6HWazF/iSib7juZXyqkT85bQxC/QA==
-X-Received: by 2002:a05:600c:4750:b0:439:9828:c425 with SMTP id 5b1f17b1804b1-4399828c633mr15496465e9.7.1739894496875;
-        Tue, 18 Feb 2025 08:01:36 -0800 (PST)
-Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259f8602sm15771631f8f.94.2025.02.18.08.01.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 08:01:36 -0800 (PST)
-Date: Tue, 18 Feb 2025 17:01:31 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Luigi Leonardi <leonardi@redhat.com>, stable@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
-Subject: Re: [PATCH 0/2] vsock: fix use-after free and null-ptr-deref
-Message-ID: <ah4qm66q5q7we7ykhl3uywgrexi7izdxrmfyn2zm3jhswitebt@cz2ipkdgr6yf>
-References: <20250214-linux-rolling-stable-v1-0-d39dc6251d2f@redhat.com>
- <f7lr3ftzo66sl6phlcygh4xx4spga4b6je37fhawjrsjtexzne@xhhwaqrjznlp>
- <cf0ef7bc-4da9-492a-bc43-0c3e83c48d02@rbox.co>
- <ez2wnwdos73pxbbxanbs5pe2nawvgablvjvrpqldcpbuwy7jz4@y6vnlty435un>
- <a6c77d41-4203-4aa7-8d4c-ed513bb6929d@rbox.co>
+	s=arc-20240116; t=1739895183; c=relaxed/simple;
+	bh=MZsC6p+DuQoF77t9MqtPjEbSK4PQZAOdC5fy5dbfOkA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LOqTv8wngtYcgWvlxvLh3aIXz2i1zovom62ZQo85oHtef4WRA4pLksWvfUI9UfOP4pKM5mIMRJTMqLhZy5MzNBaUP/E343t6inppGJPo7CrY7MOsQi/6qYZa+KDfRRhrCIF/UPcrWeBD09m4A6NpYuLR/nk6Dwdw06u359zVB1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=QLCh3O+x; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1739895066;
+	bh=LDizJ8HCZMIjULEjvKp8wi7TWoxWAJJVvcwTivSDvOE=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=QLCh3O+xPVQVQ+uq2mREu2KUlYXNtSnECGkb4AUKewygp2kB6rkWLZUpMYE3dQ7rJ
+	 vdeL8VgSnhQXn0B0mMN/owBS0EiRWxdbIiwVt/I+eHXbgN8FD8ao8pseafvo3b76T6
+	 iF/daqhj3B/o2jZB6Ra7glJCqU3JK4P/QqE3RmOo=
+X-QQ-mid: bizesmtp87t1739895050t57nnqcy
+X-QQ-Originating-IP: yFvZe/hju1XyxUtbNHS1ZDXIT3O2xTI9sVVraHS9ogI=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 19 Feb 2025 00:10:48 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16400572080925857428
+From: Wentao Guan <guanwentao@uniontech.com>
+To: stable@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.12.y] Revert "net: skb: introduce and use a single page frag cache"
+Date: Wed, 19 Feb 2025 00:10:36 +0800
+Message-Id: <20250218161035.25064-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <2025021859-renewal-onto-1877@gregkh>
+References: <2025021859-renewal-onto-1877@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <a6c77d41-4203-4aa7-8d4c-ed513bb6929d@rbox.co>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-0
+X-QQ-XMAILINFO: NSQm2ODd9qLZCILRfoIVyGQNR++x4BkSY0wWL3cfurKxWqQzpV3BKZSh
+	mH+33TJaJH7n09Vj6eRt1p7VRGNm+jGLB0g8bout4/cAjBGzZfKI2+ZIe3hTutfuUpayfKI
+	S/dW0usKvzm+CYBvrIv9AXVaevw/OcAI5A8teZZB8b1hYuOugPZPZleElEy/Sc65kGJH0EP
+	hFlOt2xKXF/mL3u4P7wqFaMSJD6NQZ9G2XLytZzKdM7tUdSylOmAjRV32SewyXk0E5UibtF
+	a5mQfzwvId5JOfMsh8W25o+CjVSyxWt1//N8pU00ZVXDK4QUXQxyYXEc3/hBO07YxFJUoEu
+	5bhgRhtpdiSt6szsZp/HBxt8o3uKKRe8uldL54tdZ+TjBmrnvDQ87Gexe7dvyd19TO/70ML
+	x71fHxlp3mJnkh9vxh217Erjuk4e1KE8vaRoGGAonMuv4kHhpLkg/2BJ+jDw4ffdKiZ4sGJ
+	CgxwODzH/IzKYeYlcvJfed5fEqcxJwZ02mjyzhRwSPtyHwieEP+23y59vcT4c6W8nNX9LAL
+	WHyrLD+GMTnlg4u1HFltELISu/HhofSHPZsumSBmwL223t55QrnIW2tQotNKv1XdGP8lEY/
+	fi90WfKDNAPp4VYD1moiiG1q/s0qRMr6S28+E1W1NSjP7QiEgneMYFT0hBfFdlZyYqUEH9V
+	cVBrHXKqch5l/CAp55N7HZppWFFsT2B560CO4DCKyWYWnQZJJ5sjB+cy9WqNWq4aJsZrF49
+	IA5Y7b+aMzYfgbrKd/BPfKKpue7/uaUm40T99xmPAk+pzRtKIuZzHLbCZVVZGeHaFZpIz5n
+	9Ut+6MUmY1/ehsn2NKSDHIrFrxIQmS2uZWrlbZBSbI0ISccsZovZOFL9t3z5Vb7cFFDo8W6
+	DR3Fq5NmC+oDc5AXkWp6YCmqL6RvS/LNrIQcX+kc/9xqoLikvFU++b6N+dv1CBrSZh3yz8m
+	ZBq0/pa1qMMJXxjDOvZWvyXCG6HkIlVKhhzB/zxXtkevp9Q==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On Tue, Feb 18, 2025 at 03:05:15PM +0100, Michal Luczaj wrote:
->On 2/18/25 09:35, Stefano Garzarella wrote:
->> On Mon, Feb 17, 2025 at 08:45:57PM +0100, Michal Luczaj wrote:
->>> On 2/17/25 12:18, Luigi Leonardi wrote:
->>>> On Fri, Feb 14, 2025 at 06:53:54PM +0100, Luigi Leonardi wrote:
->>>>> Hi all,
->>>>>
->>>>> This series contains two patches that are already available upstream:
->>>>>
->>>>> - The first commit fixes a use-after-free[1], but introduced a
->>>>> null-ptr-deref[2].
->>>>> - The second commit fixes it. [3]
->>>>>
->>>>> I suggested waiting for both of them to be merged upstream and then
->>>>> applying them togheter to stable[4].
->>>>>
->>>>> It should be applied to:
->>>>> - 6.13.y
->>>>> - 6.12.y
->>>>> - 6.6.y
->>>>>
->>>>> I will send another series for
->>>>> - 6.1.y
->>>>> - 5.15.y
->>>>> - 5.10.y
->>>>>
->>>>> because of conflicts.
->>>>>
->>>>> [1]https://lore.kernel.org/all/20250128-vsock-transport-vs-autobind-v3-0-1cf57065b770@rbox.co/
->>>>> [2]https://lore.kernel.org/all/67a09300.050a0220.d7c5a.008b.GAE@google.com/
->>>>> [3]https://lore.kernel.org/all/20250210-vsock-linger-nullderef-v3-0-ef6244d02b54@rbox.co/
->>>>> [4]https://lore.kernel.org/all/2025020644-unwitting-scary-3c0d@gregkh/
->>>>>
->>>>> Thanks,
->>>>> Luigi
->>>>>
->>>>> ---
->>>>> Michal Luczaj (2):
->>>>>      vsock: Keep the binding until socket destruction
->>>>>      vsock: Orphan socket after transport release
->>>>>
->>>>> net/vmw_vsock/af_vsock.c | 12 +++++++++++-
->>>>> 1 file changed, 11 insertions(+), 1 deletion(-)
->>>>> ---
->>>>> base-commit: a1856aaa2ca74c88751f7d255dfa0c8c50fcc1ca
->>>>> change-id: 20250214-linux-rolling-stable-d73f0bed815d
->>>>>
->>>>> Best regards,
->>>>> -- Luigi Leonardi <leonardi@redhat.com>
->>>>>
->>>>
->>>> Looks like I forgot to add my SoB to the commits, my bad.
->>>>
->>>> For all the other stable trees (6.1, 5.15 and 5.10), there are some
->>>> conflicts due to some indentation changes introduced by 135ffc7 ("bpf,
->>>> vsock: Invoke proto::close on close()"). Should I backport this commit
->>>> too?  There is no real dependency on the commit in the Fixes tag
->>>> ("vsock: support sockmap"). IMHO, this would help future backports,
->>>> because of indentation conficts! Otherwise I can simply fix the patches.
->>>> WDYT?
->>>
->>> Just a note: since sockmap does not support AF_VSOCK in those kernels <=
->>> 6.1, backporting 135ffc7 would introduce a (no-op) callback function
->>> vsock_close(), which would then be (unnecessarily) called on every
->>> vsock_release().
->>>
->>
->> But this is the same behavior we have now upstream (without considering
->> sockmap), right?
->
->Oh, right, that's true.
->
->> Do you see any potential problems?
->
->No, nothing I can think of.
->
->Note however that the comment above vsock_close() ("Dummy callback required
->by sockmap. See unconditional call of saved_close() in sock_map_close().")
->becomes somewhat misleading :)
->
+From: Paolo Abeni <pabeni@redhat.com>
 
-Yeah, we can mention in the commit description of the backport that we 
-backport it just to reduce conflicts but sockmap features are not 
-backported. I'd touch as less as possibile in the patch, otherwise IMHO 
-is better to just fix the conflicts in the 2 patches.
+commit 011b0335903832facca86cd8ed05d7d8d94c9c76 upstream.
 
-Thanks,
-Stefano
+This reverts commit dbae2b062824 ("net: skb: introduce and use a single
+page frag cache"). The intended goal of such change was to counter a
+performance regression introduced by commit 3226b158e67c ("net: avoid
+32 x truesize under-estimation for tiny skbs").
+
+Unfortunately, the blamed commit introduces another regression for the
+virtio_net driver. Such a driver calls napi_alloc_skb() with a tiny
+size, so that the whole head frag could fit a 512-byte block.
+
+The single page frag cache uses a 1K fragment for such allocation, and
+the additional overhead, under small UDP packets flood, makes the page
+allocator a bottleneck.
+
+Thanks to commit bf9f1baa279f ("net: add dedicated kmem_cache for
+typical/small skb->head"), this revert does not re-introduce the
+original regression. Actually, in the relevant test on top of this
+revert, I measure a small but noticeable positive delta, just above
+noise level.
+
+The revert itself required some additional mangling due to the
+introduction of the SKB_HEAD_ALIGN() helper and local lock infra in the
+affected code.
+
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: dbae2b062824 ("net: skb: introduce and use a single page frag cache")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/e649212fde9f0fdee23909ca0d14158d32bb7425.1738877290.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ include/linux/netdevice.h |   1 -
+ net/core/dev.c            |  17 +++++++
+ net/core/skbuff.c         | 103 ++------------------------------------
+ 3 files changed, 22 insertions(+), 99 deletions(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 02d3bafebbe77..277f9c413fcfc 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3897,7 +3897,6 @@ void netif_receive_skb_list(struct list_head *head);
+ gro_result_t napi_gro_receive(struct napi_struct *napi, struct sk_buff *skb);
+ void napi_gro_flush(struct napi_struct *napi, bool flush_old);
+ struct sk_buff *napi_get_frags(struct napi_struct *napi);
+-void napi_get_frags_check(struct napi_struct *napi);
+ gro_result_t napi_gro_frags(struct napi_struct *napi);
+ 
+ static inline void napi_free_frags(struct napi_struct *napi)
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 2e0fe38d0e877..bb64809f01b33 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6669,6 +6669,23 @@ void netif_queue_set_napi(struct net_device *dev, unsigned int queue_index,
+ }
+ EXPORT_SYMBOL(netif_queue_set_napi);
+ 
++/* Double check that napi_get_frags() allocates skbs with
++ * skb->head being backed by slab, not a page fragment.
++ * This is to make sure bug fixed in 3226b158e67c
++ * ("net: avoid 32 x truesize under-estimation for tiny skbs")
++ * does not accidentally come back.
++ */
++static void napi_get_frags_check(struct napi_struct *napi)
++{
++	struct sk_buff *skb;
++
++	local_bh_disable();
++	skb = napi_get_frags(napi);
++	WARN_ON_ONCE(skb && skb->head_frag);
++	napi_free_frags(napi);
++	local_bh_enable();
++}
++
+ void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
+ 			   int (*poll)(struct napi_struct *, int), int weight)
+ {
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 74149dc4ee318..b5ad21ee52a96 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -220,67 +220,9 @@ static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
+ #define NAPI_SKB_CACHE_BULK	16
+ #define NAPI_SKB_CACHE_HALF	(NAPI_SKB_CACHE_SIZE / 2)
+ 
+-#if PAGE_SIZE == SZ_4K
+-
+-#define NAPI_HAS_SMALL_PAGE_FRAG	1
+-#define NAPI_SMALL_PAGE_PFMEMALLOC(nc)	((nc).pfmemalloc)
+-
+-/* specialized page frag allocator using a single order 0 page
+- * and slicing it into 1K sized fragment. Constrained to systems
+- * with a very limited amount of 1K fragments fitting a single
+- * page - to avoid excessive truesize underestimation
+- */
+-
+-struct page_frag_1k {
+-	void *va;
+-	u16 offset;
+-	bool pfmemalloc;
+-};
+-
+-static void *page_frag_alloc_1k(struct page_frag_1k *nc, gfp_t gfp)
+-{
+-	struct page *page;
+-	int offset;
+-
+-	offset = nc->offset - SZ_1K;
+-	if (likely(offset >= 0))
+-		goto use_frag;
+-
+-	page = alloc_pages_node(NUMA_NO_NODE, gfp, 0);
+-	if (!page)
+-		return NULL;
+-
+-	nc->va = page_address(page);
+-	nc->pfmemalloc = page_is_pfmemalloc(page);
+-	offset = PAGE_SIZE - SZ_1K;
+-	page_ref_add(page, offset / SZ_1K);
+-
+-use_frag:
+-	nc->offset = offset;
+-	return nc->va + offset;
+-}
+-#else
+-
+-/* the small page is actually unused in this build; add dummy helpers
+- * to please the compiler and avoid later preprocessor's conditionals
+- */
+-#define NAPI_HAS_SMALL_PAGE_FRAG	0
+-#define NAPI_SMALL_PAGE_PFMEMALLOC(nc)	false
+-
+-struct page_frag_1k {
+-};
+-
+-static void *page_frag_alloc_1k(struct page_frag_1k *nc, gfp_t gfp_mask)
+-{
+-	return NULL;
+-}
+-
+-#endif
+-
+ struct napi_alloc_cache {
+ 	local_lock_t bh_lock;
+ 	struct page_frag_cache page;
+-	struct page_frag_1k page_small;
+ 	unsigned int skb_count;
+ 	void *skb_cache[NAPI_SKB_CACHE_SIZE];
+ };
+@@ -290,23 +232,6 @@ static DEFINE_PER_CPU(struct napi_alloc_cache, napi_alloc_cache) = {
+ 	.bh_lock = INIT_LOCAL_LOCK(bh_lock),
+ };
+ 
+-/* Double check that napi_get_frags() allocates skbs with
+- * skb->head being backed by slab, not a page fragment.
+- * This is to make sure bug fixed in 3226b158e67c
+- * ("net: avoid 32 x truesize under-estimation for tiny skbs")
+- * does not accidentally come back.
+- */
+-void napi_get_frags_check(struct napi_struct *napi)
+-{
+-	struct sk_buff *skb;
+-
+-	local_bh_disable();
+-	skb = napi_get_frags(napi);
+-	WARN_ON_ONCE(!NAPI_HAS_SMALL_PAGE_FRAG && skb && skb->head_frag);
+-	napi_free_frags(napi);
+-	local_bh_enable();
+-}
+-
+ void *__napi_alloc_frag_align(unsigned int fragsz, unsigned int align_mask)
+ {
+ 	struct napi_alloc_cache *nc = this_cpu_ptr(&napi_alloc_cache);
+@@ -813,10 +738,8 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
+ 
+ 	/* If requested length is either too small or too big,
+ 	 * we use kmalloc() for skb->head allocation.
+-	 * When the small frag allocator is available, prefer it over kmalloc
+-	 * for small fragments
+ 	 */
+-	if ((!NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) ||
++	if (len <= SKB_WITH_OVERHEAD(1024) ||
+ 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
+ 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
+ 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX | SKB_ALLOC_NAPI,
+@@ -826,32 +749,16 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
+ 		goto skb_success;
+ 	}
+ 
++	len = SKB_HEAD_ALIGN(len);
++
+ 	if (sk_memalloc_socks())
+ 		gfp_mask |= __GFP_MEMALLOC;
+ 
+ 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
+ 	nc = this_cpu_ptr(&napi_alloc_cache);
+-	if (NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) {
+-		/* we are artificially inflating the allocation size, but
+-		 * that is not as bad as it may look like, as:
+-		 * - 'len' less than GRO_MAX_HEAD makes little sense
+-		 * - On most systems, larger 'len' values lead to fragment
+-		 *   size above 512 bytes
+-		 * - kmalloc would use the kmalloc-1k slab for such values
+-		 * - Builds with smaller GRO_MAX_HEAD will very likely do
+-		 *   little networking, as that implies no WiFi and no
+-		 *   tunnels support, and 32 bits arches.
+-		 */
+-		len = SZ_1K;
+ 
+-		data = page_frag_alloc_1k(&nc->page_small, gfp_mask);
+-		pfmemalloc = NAPI_SMALL_PAGE_PFMEMALLOC(nc->page_small);
+-	} else {
+-		len = SKB_HEAD_ALIGN(len);
+-
+-		data = page_frag_alloc(&nc->page, len, gfp_mask);
+-		pfmemalloc = nc->page.pfmemalloc;
+-	}
++	data = page_frag_alloc(&nc->page, len, gfp_mask);
++	pfmemalloc = nc->page.pfmemalloc;
+ 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
+ 
+ 	if (unlikely(!data))
+-- 
+2.20.1
 
 
