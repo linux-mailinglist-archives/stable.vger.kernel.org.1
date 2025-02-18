@@ -1,153 +1,96 @@
-Return-Path: <stable+bounces-116686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F181A396DE
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 10:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DB4A396B5
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 10:16:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36E0C3A8FF3
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 09:10:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0C7D3B7DA4
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 09:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D571E22DF95;
-	Tue, 18 Feb 2025 09:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1709822D4E5;
+	Tue, 18 Feb 2025 09:03:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F3C7E1;
-	Tue, 18 Feb 2025 09:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C743231CB0
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 09:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739869714; cv=none; b=p/i4OAbp+WcqgSxEZNpdtzHu3wzNfLdylmlm4H5lGovHHN4nlmXV4Ct7fnO3tt3sK+Pkzt14BX0eRD9gVbwlNvbbkhp8vkDkjUopir2K8jWgcXABDHherdya8oDC6+qD/yXtNiKgjI2mNltwZSatxyRfdh/35tCclMVxy/PvtWA=
+	t=1739869435; cv=none; b=hYY7jQbcmqQWSGGQJu7e7hk/XhE7uh0ufZQWe58gSV8ceZUwXNvf8gfD7kEPBmrTxC3IfQR6p6wf7ivC/+kmsWlIAPzh8nqXhM7OUArdbeV9DN1ERF5fkXlXsuZH9eUxKFPJyOGDOlyCAkoluap+HTLWYVBNUgMsjn8r+4foM6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739869714; c=relaxed/simple;
-	bh=dlIRbXNG/mhbn9FYZEriTMHgLPOctd1yhUg4bqvJgwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jsKrrxZAG2Eiuh3NMGgOED+mC6YURTdsHQr9j1Q4YWXSqg8yWGLEDS2QYmzjR4sgcQXDgTr0tjOHjhJbIG7W3+7LBYdNe7op6O6zXljd3Gzsdgp5NnTRGUY0fktdpColWmE8jq9jLBiwTgh3CEid6BvzAOlFsx/15YAD0Py9QJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id CFD6B2800B4BB;
-	Tue, 18 Feb 2025 09:59:25 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id C8BC76FD5F3; Tue, 18 Feb 2025 09:59:25 +0100 (CET)
-Date: Tue, 18 Feb 2025 09:59:25 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Joel Mathew Thomas <proxy0@tutamail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI/bwctrl: Disable PCIe BW controller during reset
-Message-ID: <Z7RL7ZXZ_vDUbncw@wunner.de>
-References: <20250217165258.3811-1-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1739869435; c=relaxed/simple;
+	bh=Rb/oEzPquB0AN3zNExVOUPkHhu2SKGcn8YilK2l8ikA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ufo4KsEQVsNodcYG7B6bL369Kt+8TFEaMcPCa/WVVgFQ9u0S78FWQtQlY0riZySqsqBaUOQhJOoC7j85q3LlRdhh9RXuzv3OREIkUuvU/8vqjYkePNKtjuRM8tcDUQv6jToNuELZJQyaK0N+Ha9zGo94MK0kELY8zvCmGBgDNrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tkJVw-0005iJ-9J; Tue, 18 Feb 2025 10:03:36 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tkJVv-001YXQ-2k;
+	Tue, 18 Feb 2025 10:03:35 +0100
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tkJVv-0002g6-2W;
+	Tue, 18 Feb 2025 10:03:35 +0100
+Message-ID: <15bbca6567ff640fdcfbe1a9525989887a94732c.camel@pengutronix.de>
+Subject: Re: [PATCH v2] media: verisilicon: Fix AV1 decoder clock frequency
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Nicolas Dufresne <nicolas.dufresne@collabora.com>, Benjamin Gaignard
+ <benjamin.gaignard@collabora.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>,  Heiko Stuebner <heiko@sntech.de>, Hans Verkuil
+ <hverkuil@xs4all.nl>
+Cc: linux-rockchip@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, kernel@collabora.com,  stable@vger.kernel.org
+Date: Tue, 18 Feb 2025 10:03:35 +0100
+In-Reply-To: <20250217-b4-hantro-av1-clock-rate-v2-1-e179fad52641@collabora.com>
+References: 
+	<20250217-b4-hantro-av1-clock-rate-v2-1-e179fad52641@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250217165258.3811-1-ilpo.jarvinen@linux.intel.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Mon, Feb 17, 2025 at 06:52:58PM +0200, Ilpo Järvinen wrote:
-> PCIe BW controller enables BW notifications for Downstream Ports by
-> setting Link Bandwidth Management Interrupt Enable (LBMIE) and Link
-> Autonomous Bandwidth Interrupt Enable (LABIE) (PCIe Spec. r6.2 sec.
-> 7.5.3.7).
-> 
-> It was discovered that performing a reset can lead to the device
-> underneath the Downstream Port becoming unavailable if BW notifications
-> are left enabled throughout the reset sequence (at least LBMIE was
-> found to cause an issue).
+On Mo, 2025-02-17 at 16:46 -0500, Nicolas Dufresne wrote:
+> The desired clock frequency was correctly set to 400MHz in the device tre=
+e
+> but was lowered by the driver to 300MHz breaking 4K 60Hz content playback=
+.
+> Fix the issue by removing the driver call to clk_set_rate(), which reduce
+> the amount of board specific code.
+>=20
+> Fixes: 003afda97c65 ("media: verisilicon: Enable AV1 decoder on rk3588")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-What kind of reset?  FLR?  SBR?  This needs to be specified in the
-commit message so that the reader isn't forced to sift through a
-bugzilla with dozens of comments and attachments.
+I was going to ask whether there might be any device trees without the
+assigned-clock-rates around that this patch could break, but the DT
+node was introduced with 400 MHz clock setting in the initial commit
+dd6dc0c4c126 ("arm64: dts: rockchip: Add AV1 decoder node to rk3588s").
 
-The commit message should also mention the type of affected device
-(Nvidia GPU AD107M [GeForce RTX 4050 Max-Q / Mobile]).  The Root Port
-above is an AMD one, that may be relevant as well.
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-
-> While the PCIe Specifications do not indicate BW notifications could not
-> be kept enabled during resets, the PCIe Link state during an
-> intentional reset is not of large interest. Thus, disable BW controller
-> for the bridge while reset is performed and re-enable it after the
-> reset has completed to workaround the problems some devices encounter
-> if BW notifications are left on throughout the reset sequence.
-
-This approach won't work if the reset is performed without software
-intervention.  E.g. if a DPC event occurs, the device likewise undergoes
-a reset but there is no prior system software involvement.  Software only
-becomes involved *after* the reset has occurred.
-
-I think it needs to be tested if that same issue occurs with DPC.
-It's easy to simulate DPC by setting the Software Trigger bit:
-
-setpci -s 00:01.1 ECAP_DPC+6.w=40:40
-
-If the issue does occur with DPC then this fix isn't sufficient.
-
-
-> Keep a counter for the disable/enable because MFD will execute
-> pci_dev_save_and_disable() and pci_dev_restore() back to back for
-> sibling devices:
-> 
-> [   50.139010] vfio-pci 0000:01:00.0: resetting
-> [   50.139053] vfio-pci 0000:01:00.1: resetting
-> [   50.141126] pcieport 0000:00:01.1: PME: Spurious native interrupt!
-> [   50.141133] pcieport 0000:00:01.1: PME: Spurious native interrupt!
-> [   50.441466] vfio-pci 0000:01:00.0: reset done
-> [   50.501534] vfio-pci 0000:01:00.1: reset done
-
-So why are you citing the PME messages here?  Are they relevant?
-Do they not occur when the bandwidth controller is disabled?
-If they do not, they may provide a clue what's going on.
-But that's not clear from the commit message.
-
-
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5166,6 +5167,9 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
->  	 */
->  	pci_set_power_state(dev, PCI_D0);
->  
-> +	if (bridge)
-> +		pcie_bwnotif_disable(bridge);
-> +
->  	pci_save_state(dev);
-
-Instead of putting this in the PCI core, amend pcie_portdrv_err_handler
-with ->reset_prepare and ->reset_done callbacks which call down to all
-the port service drivers, then amend bwctrl.c to disable/enable
-interrupts in these callbacks.
-
-
-> +	port->link_bwctrl->disable_count--;
-> +	if (!port->link_bwctrl->disable_count) {
-> +		__pcie_bwnotif_enable(port);
-> +		pci_dbg(port, "BW notifications enabled\n");
-> +	}
-> +	WARN_ON_ONCE(port->link_bwctrl->disable_count < 0);
-
-So why do you need to count this?  IIUC you get two consecutive
-disable and two consecutive enable events.
-
-If the interrupts are already disabled, just do nothing.
-Same for enablement.  Any reason this simpler approach
-doesn't work?
-
-Thanks,
-
-Lukas
+regards
+Philipp
 
