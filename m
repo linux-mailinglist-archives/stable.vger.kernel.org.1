@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-116892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD37CA3A99B
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:44:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B7B5A3A97D
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ECEE188DD5A
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:42:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C2227A3B61
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C672165E8;
-	Tue, 18 Feb 2025 20:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3D721773D;
+	Tue, 18 Feb 2025 20:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+epzF/D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0CNZ6Sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41402163A4;
-	Tue, 18 Feb 2025 20:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFF2217715;
+	Tue, 18 Feb 2025 20:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910482; cv=none; b=fsaC/gzmwxcz0Vty1l1EB5pcgRNaEn/xFZdBE4xICDPueFAm0KEJv8UcxT34dRYISL7SO1HlA5AAggaDdIFph8KHoBzSONdZZEKKixsU/Wz9mOKGE7rdHD1+QZ7oAkJkYbBipkM8Q3IdbOUzhst4UvREtY2FhaHNGStWNayN36E=
+	t=1739910483; cv=none; b=DSQUdZ59BZ0RJk67SXfn6q2F5FDxYJDO3qUTISeOBULkoecej+HGBvtZtB6SX+2x807ENPTmRPzZjJayCgPlRjFtfuWD6cpKVfcJgsmG5wlNsg5N0KIjqn1XyO5O5l8Xy926uvcboAQi4NiOIUlm7C4lAEtFYTs41o11H14KGhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910482; c=relaxed/simple;
-	bh=45LlskNhzKOCHXWXhZDbvjn4nQM12liiy+SLC7mMM+k=;
+	s=arc-20240116; t=1739910483; c=relaxed/simple;
+	bh=siZtmyeohjy0M7dh3zAFN17XoLrbmqH/HvLVr/ye33U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IZi1dupkcgUHXmYceyXuBypBPmu/lQHGZu0/VeHciKAfRulvNNBLkHC6rAgEmIvXfpSZjH1c6CLL2rEhXAWDyiRtQvJzmpWp155qEq9bvQ64bjugQiwWuRufvF5+oVBqFU5Rqib8LEc9YFUXJqdCHQ0u1POM3Ckj+rEgJXDaEWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+epzF/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05792C4CEE9;
-	Tue, 18 Feb 2025 20:28:00 +0000 (UTC)
+	 MIME-Version; b=bxDqwF5QEjg6n/ddSN7U93wLKWJ2XxU8A6caJLCK9myWB3MF6fr7+oidbu1ilmEuo0GtM6z1UhFahjmIBvRuwCx7Fc96zNNP70HGAyTYonLAGrLaH4NajQWIud+RFqbix85LJzyiXMjB/6kbH219MnqavtWXWXyJt199KeIW1wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0CNZ6Sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5981BC4CEE9;
+	Tue, 18 Feb 2025 20:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910481;
-	bh=45LlskNhzKOCHXWXhZDbvjn4nQM12liiy+SLC7mMM+k=;
+	s=k20201202; t=1739910483;
+	bh=siZtmyeohjy0M7dh3zAFN17XoLrbmqH/HvLVr/ye33U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+epzF/DD4WPXwbR8hx9khGGUrHBXaz1Cxgb5LkNspV7FcyuQViB++gOqlG2goSRU
-	 Dg6rs4Fn8Zc1t0oyCafZxkyH42dy0U9UtL2meeA22L+40NjPdHZxim0f5HIX9PrU3y
-	 FsNeMAA1llhuhLQyNdCTtdWwWTk6n8B8jK57HFqoxDJasgXqcqf4AU4rqflAMiAv/s
-	 cJybotDM9ofVDqQh6cZXOcaq4H1uTlKykm1oQAKsh2eFo6IQpEI7/wSXgpFjcEoS9S
-	 D/EAY+LP8onGcY27Vg9PEL4lQbYZiFY0CjW0Tex6QbYJqQo0k+5tnX/G2Xje4Yh4XN
-	 lN/ETfCvcEyxQ==
+	b=H0CNZ6SfG8jnSY0wtFUFM8xLS2L48s8/hgSCZkfArQZU4n1Cq/l+yWc68u2o7J2oF
+	 Brypw+K9X+nzn/ha/PxHr9VfKFlE50CUwVOANY1JqNZ3INTjhaw3hVT+MO1OtQZ4O2
+	 2tHR6CmgvB6QhZzpUlbnPbyi3/hQWo5rZDfC0A/kkce9htwLXcQ7LI/FjSpzJSdpex
+	 LkHlYZveqP69CNJteZYJBvgliynBpoVF0MMzk4PIdzmiieigYCUDL8g7MBNWcxcEG0
+	 F48XS5j30uu86D/w2hJEk/cB3kSEDqoLBjJku9dF0xiQ7OfPxMvS0XPg68eQtIBPvf
+	 J5wCm6tJDtnpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Klaus Kusche <klaus.kusche@computerix.info>,
+Cc: Jann Horn <jannh@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 08/17] objtool: Ignore dangling jump table entries
-Date: Tue, 18 Feb 2025 15:27:32 -0500
-Message-Id: <20250218202743.3593296-8-sashal@kernel.org>
+	mingo@redhat.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org
+Subject: [PATCH AUTOSEL 6.6 09/17] sched: Clarify wake_up_q()'s write to task->wake_q.next
+Date: Tue, 18 Feb 2025 15:27:33 -0500
+Message-Id: <20250218202743.3593296-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202743.3593296-1-sashal@kernel.org>
 References: <20250218202743.3593296-1-sashal@kernel.org>
@@ -67,50 +67,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.78
 Content-Transfer-Encoding: 8bit
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 3724062ca2b1364f02cf44dbea1a552227844ad1 ]
+[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
 
-Clang sometimes leaves dangling unused jump table entries which point to
-the end of the function.  Ignore them.
+Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
+which a concurrent __wake_q_add() can immediately overwrite
+task->wake_q.next again.
 
-Closes: https://lore.kernel.org/20250113235835.vqgvb7cdspksy5dn@jpoimboe
-Reported-by: Klaus Kusche <klaus.kusche@computerix.info>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/ee25c0b7e80113e950bd1d4c208b671d35774ff4.1736891751.git.jpoimboe@kernel.org
+Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/sched/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 1b242c3c2d451..6e59e7f578ffe 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2028,6 +2028,14 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
- 		    reloc_addend(reloc) == pfunc->offset)
- 			break;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c686d826a91cf..e29746cd11afe 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1019,9 +1019,10 @@ void wake_up_q(struct wake_q_head *head)
+ 		struct task_struct *task;
  
-+		/*
-+		 * Clang sometimes leaves dangling unused jump table entries
-+		 * which point to the end of the function.  Ignore them.
-+		 */
-+		if (reloc->sym->sec == pfunc->sec &&
-+		    reloc_addend(reloc) == pfunc->offset + pfunc->len)
-+			goto next;
-+
- 		dest_insn = find_insn(file, reloc->sym->sec, reloc_addend(reloc));
- 		if (!dest_insn)
- 			break;
-@@ -2045,6 +2053,7 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
- 		alt->insn = dest_insn;
- 		alt->next = insn->alts;
- 		insn->alts = alt;
-+next:
- 		prev_offset = reloc_offset(reloc);
- 	}
+ 		task = container_of(node, struct task_struct, wake_q);
+-		/* Task can safely be re-inserted now: */
+ 		node = node->next;
+-		task->wake_q.next = NULL;
++		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
++		WRITE_ONCE(task->wake_q.next, NULL);
++		/* Task can safely be re-inserted now. */
  
+ 		/*
+ 		 * wake_up_process() executes a full barrier, which pairs with
 -- 
 2.39.5
 
