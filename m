@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-116917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE41DA3A9FB
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:52:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B47A3A9D4
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BA143A3DD5
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:47:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14B01769DF
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5148D1DF72E;
-	Tue, 18 Feb 2025 20:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D561D280A2B;
+	Tue, 18 Feb 2025 20:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqEEFCD5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U716OKs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFAE27FE80;
-	Tue, 18 Feb 2025 20:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A96280A23;
+	Tue, 18 Feb 2025 20:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910536; cv=none; b=RnQurTEBrnZDsCkFI5u8jabhAqhFxYhn3pmCB1yLaAWNFUlT1lxaSuauy+OMDlYfZ8lFWPM1yu+d8VyXTQskvhKfnFxVuooOgrQzSH8iL0aDMENoUZ/gtX1Tab6U/YFEgo/HVormeekEJCOeycUqYIJix8GF7nkiIh1OvrI5ULc=
+	t=1739910537; cv=none; b=WjQBGkQdK4Svd/wMYApLvI10AbpjY+hOKU9hvXJ2TQaZ68VmyLLCyyzaNNJiEz7UR4fhecFgd5bIaL1q226aPG0nw8b1f0SuuKEROt4iljcFUbb8P+GybL/ztu54sQdLXPi0ZnUH2Xs7CamthMTrpBVFDxr+WhqChBpyjLj8q+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910536; c=relaxed/simple;
-	bh=a87rZdPEARenF3+fqrfFtBkmAqq/vfWtNdwo4OzzrAc=;
+	s=arc-20240116; t=1739910537; c=relaxed/simple;
+	bh=eCFe3biFrcui9zB6tpRuPT6XU4Sxp6BBITULgziPVUg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FAIrhJ5NtHA6h7hmFuPgc7iAmRZMbPl+P637vnSa49T2NiKxSkohAd4rwbBVn+QN2MZK45a1qQ8JGzoVJ+admgyjP2VAOUD24LiD2oof3E4gjvVDDpxF7CO1GmFH/t9aZ6wAPPcKBzjK3Mcbsll8/qUVuUc61xbY4SUB19+gWPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqEEFCD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090C8C4CEE4;
-	Tue, 18 Feb 2025 20:28:54 +0000 (UTC)
+	 MIME-Version; b=VpyrbmKW7UjZXDEL8UalS8p19JUqaZzsVpbTKPjManE7LMmcVCZ5WEKQJ/Vr9lldN2d3EYwOFTSEUe42Nti/d9kpb7/bpYkDF7zoCg19qQQ+f0WwOBIErm78LodiQJsEMULuCZlO+XIBMXfEPLf7YJJ86bYtLzETS2IwxLjNAis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U716OKs9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64174C4CEF5;
+	Tue, 18 Feb 2025 20:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910535;
-	bh=a87rZdPEARenF3+fqrfFtBkmAqq/vfWtNdwo4OzzrAc=;
+	s=k20201202; t=1739910537;
+	bh=eCFe3biFrcui9zB6tpRuPT6XU4Sxp6BBITULgziPVUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqEEFCD56OKIZ+kKbimQG/TcHO47Tv/48eg5yYMHgMh1IeBUr9l5jd8XTs3miKMSA
-	 ioYS3Y5zsDTaIA2CnRvuvRJJp1j4JpgPC8ZNpu2En2BhZImo/O0CFQ4/7rBkXylZ/J
-	 dj4qf9jkMWo1YSj9vQz7Ay0XBszvQZz2z6lbMNULcJRmreVFTx9S4dNRlY0uqupRNT
-	 kpUCfQ9HFi63AGUtRzlho8k+qs+9cWoFa8Z9HwT3PtmlptkVuG6ijtkO/NpbqMvOcu
-	 PSzafrkBpa/UPE9gmhQkxdpqHQ5t4VAqjY0MOfqURz5vliXKo+LitLSj5uMsBqdTCh
-	 iuttpS/ClyxzQ==
+	b=U716OKs9l3Mazonm30HNeB016p8s6SxsOl5jMEA84JXgUb9IrXfXaggJhFJjrN/+i
+	 ru2G3IPuNbZ6H1HDGxtoP+vbmWgFz7JOcbCbbzcgAK7VyA9QMWQp4843y6wEM462Uv
+	 qb+0HzZPztNYpWbb5/5c9ZIb0h7LP2wAyDWjjx2i34igg6a7Nq401m+DiOMVEQkCiI
+	 2QPiW51uPrLxMLdq/++4kR9cSvPU6tb1sxbUAtaxlXcA4EzkkYgkBTOEM0zTJO6RWC
+	 IXmCI1rbrCvLMhCtbcFsG2/H06/d+Ag6taU3p2gx9QsQ21232oS8vjnVq5el5FlV4c
+	 AFBEe6o+QAx/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 5.15 3/6] sched: Clarify wake_up_q()'s write to task->wake_q.next
-Date: Tue, 18 Feb 2025 15:28:44 -0500
-Message-Id: <20250218202848.3593863-3-sashal@kernel.org>
+	hca@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 4/6] s390/cio: Fix CHPID "configure" attribute caching
+Date: Tue, 18 Feb 2025 15:28:45 -0500
+Message-Id: <20250218202848.3593863-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202848.3593863-1-sashal@kernel.org>
 References: <20250218202848.3593863-1-sashal@kernel.org>
@@ -67,39 +69,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.178
 Content-Transfer-Encoding: 8bit
 
-From: Jann Horn <jannh@google.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
+[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
 
-Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
-which a concurrent __wake_q_add() can immediately overwrite
-task->wake_q.next again.
+In some environments, the SCLP firmware interface used to query a
+CHPID's configured state is not supported. On these environments,
+rapidly reading the corresponding sysfs attribute produces inconsistent
+results:
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  3
+
+This occurs for example when Linux is run as a KVM guest. The
+inconsistency is a result of CIO using cached results for generating
+the value of the "configure" attribute while failing to handle the
+situation where no data was returned by SCLP.
+
+Fix this by not updating the cache-expiration timestamp when SCLP
+returns no data. With the fix applied, the system response is
+consistent:
+
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Tested-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/s390/cio/chp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index ed92b75f7e024..fcdf8aaaa37cb 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -939,9 +939,10 @@ void wake_up_q(struct wake_q_head *head)
- 		struct task_struct *task;
+diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
+index 1097e76982a5d..6b0f1b8bf2790 100644
+--- a/drivers/s390/cio/chp.c
++++ b/drivers/s390/cio/chp.c
+@@ -661,7 +661,8 @@ static int info_update(void)
+ 	if (time_after(jiffies, chp_info_expires)) {
+ 		/* Data is too old, update. */
+ 		rc = sclp_chp_read_info(&chp_info);
+-		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
++		if (!rc)
++			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
+ 	}
+ 	mutex_unlock(&info_lock);
  
- 		task = container_of(node, struct task_struct, wake_q);
--		/* Task can safely be re-inserted now: */
- 		node = node->next;
--		task->wake_q.next = NULL;
-+		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
-+		WRITE_ONCE(task->wake_q.next, NULL);
-+		/* Task can safely be re-inserted now. */
- 
- 		/*
- 		 * wake_up_process() executes a full barrier, which pairs with
 -- 
 2.39.5
 
