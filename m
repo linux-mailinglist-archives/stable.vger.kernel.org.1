@@ -1,136 +1,161 @@
-Return-Path: <stable+bounces-116676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7EEA39442
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 09:00:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF581A394B6
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 09:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB070188B5C5
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 08:00:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAEDA3A74A8
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 08:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38112080C5;
-	Tue, 18 Feb 2025 08:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DBC22B586;
+	Tue, 18 Feb 2025 08:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Il8DsjEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ud21u46c"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E92066C1;
-	Tue, 18 Feb 2025 07:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25DE1F416F;
+	Tue, 18 Feb 2025 08:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739865601; cv=none; b=iCoIC1QSamjsV6BLoWpcZTGRxqrnqRtPuSPQRfyB7WPeM2wWjiFqBk7ONzLq8qDYYylPzRW6bHysS+YeEzSvnfo770HI1xHnOslIF57WhNgipxFTYiBJ4TJpxdxKfBZSXD/TPF0shhecAl7/0Eu73srp+HJ8T0cLniBW2dtWgxs=
+	t=1739866379; cv=none; b=h/I21xCxUU6+yP5W6MsTZxjTIhYal2uWH2ZZiSu62cGrx+4vATuyaeSgKe1/+AJLvwXJGc8NB7/hbvjHz43pMqPyX9IR4mPkc9YBX/wB/KFYWMl1Z+Io2fkm4Cmkk4PWABMjQydnZQqNT6GKwaMRQZ/X8BiE2fbSjNcRjd6guIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739865601; c=relaxed/simple;
-	bh=ziEzK7wRUsoPk34tXG4PKX0kfZMyG09T1TuFOZsMGH8=;
+	s=arc-20240116; t=1739866379; c=relaxed/simple;
+	bh=ggao69BJ7QulySpMPhPRL+SP6DF/SDa/yCwuhnHl3Pw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pTJSiNOJNkR/EYZaVn6qto2a4fck2ZNFv4RdWMlTjtfm8+JSwwNYM9CsBHYM/A3kkm0tJbZk76P1tTs8VdV3pW0B/88Op4Frpn2qMDZ6+zAkyrRWIP0POsv1pCP1bczpSTh46JY4hiQE7IgI61eh9v1+v77wlbZoBQc4c4ejIEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Il8DsjEP; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739865600; x=1771401600;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ziEzK7wRUsoPk34tXG4PKX0kfZMyG09T1TuFOZsMGH8=;
-  b=Il8DsjEPYt8gsPOdIAdONGzNkYRwugGkyXiYyVfUpRQdSY8vuF4fAlC2
-   lW34dlDaC169qW646ZxZXME7hK1FNXJP2wFWtDM5xPmil9+GERQM9ylUh
-   fHq1TawIPHqS4tTlzUC2DYDK+InYAUjhrc0rbA/t+cHcMAiT20ggUkJtF
-   /hKJdhGxx7don89No1qKBzJc7Oawv4rTj37aleK8432ctKqF6VskmWVLf
-   kU/SkLPcwos2lIfrFg1eReSBQQLw2LTJ40Nitf68fE71UgvIL/jDe1ZcR
-   CDArJCMT0G5zkyc/QViocClFOlylukjvRvs1Z3eDzW/wQbzqrhU0968v1
-   w==;
-X-CSE-ConnectionGUID: Kep8qXXcS+KckG0knDufkw==
-X-CSE-MsgGUID: FRseRXI1QY6uqmVjGOl5mw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="57954571"
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
-   d="scan'208";a="57954571"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 23:59:59 -0800
-X-CSE-ConnectionGUID: wQGNfdpkTraGbuexWoXZ6w==
-X-CSE-MsgGUID: In4y45QdQsCSaspdTULcUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
-   d="scan'208";a="119419175"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 23:59:55 -0800
-Date: Tue, 18 Feb 2025 08:56:16 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-Cc: Haoxiang Li <haoxiang_li2024@163.com>, kuba@kernel.org,
-	louis.peens@corigine.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	qmo@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
-	oss-drivers@corigine.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
-Message-ID: <Z7Q9ILUfC90Vd490@mev-dev.igk.intel.com>
-References: <20250218011744.2397726-1-haoxiang_li2024@163.com>
- <CAH-L+nP5w7hRbONxPNG7NJtJzb-A0JOEMSq1hKNepM9GpFkt-g@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MXl129S5BrSTIOEfkg9+2dRgzV8nkGwgNDB9+ZTHN5oWJeiEuZANmhohThVjkyjeuK3lHUSJhYShdmlOFE9xKtTP8QjD2Lu4f9dY5NaIRlgLT1cWtAtBByVNDJW5xgttFVJ+XYqC1ZF2pObBUWYmSbAcl8wGMoPbmFoF92FDLno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ud21u46c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113FEC4CEE2;
+	Tue, 18 Feb 2025 08:12:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739866378;
+	bh=ggao69BJ7QulySpMPhPRL+SP6DF/SDa/yCwuhnHl3Pw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ud21u46cASGdrYlztaouPzqmiVMRLEiV37W8TR59mCNU79exmuUc3hKWeYY0X6lTu
+	 GaaU/2RZwLf2HXf5G5dqNdTe1diCUp+BMpesSkXH75kkKpVh1bW1buWge0LjdmuIs+
+	 i4NVOyMZ5QjDKz/TY6mTOa7ZxDgBPgoxOYZwGbxc=
+Date: Tue, 18 Feb 2025 09:12:55 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Lorenz Brun <lorenz@monogon.tech>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, linux-xfs@vger.kernel.org
+Subject: Re: [REGRESSION] xfs kernel panic
+Message-ID: <2025021837-payment-ritalin-909d@gregkh>
+References: <CAJMi0nTHX0inFxme=xnJf23c8=w0bAf7LfiT=YNpmU-zVnUR+Q@mail.gmail.com>
+ <CAJMi0nTbyi6VGTmmZ43wYWwJWur0XPtuswZ_5UaXB+S6Z=Mo6A@mail.gmail.com>
+ <20250217172957.GB21808@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH-L+nP5w7hRbONxPNG7NJtJzb-A0JOEMSq1hKNepM9GpFkt-g@mail.gmail.com>
+In-Reply-To: <20250217172957.GB21808@frogsfrogsfrogs>
 
-On Tue, Feb 18, 2025 at 08:14:49AM +0530, Kalesh Anakkur Purayil wrote:
-> On Tue, Feb 18, 2025 at 6:49 AM Haoxiang Li <haoxiang_li2024@163.com> wrote:
-> >
-> > Add check for the return value of nfp_app_ctrl_msg_alloc() in
-> > nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
-> >
-> > Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> > ---
-> > Changes in v2:
-> > - remove the bracket for one single-statement. Thanks, Guru!
-> > ---
-> >  drivers/net/ethernet/netronome/nfp/bpf/cmsg.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
-> > index 2ec62c8d86e1..b02d5fbb8c8c 100644
-> > --- a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
-> > +++ b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
-> > @@ -20,6 +20,8 @@ nfp_bpf_cmsg_alloc(struct nfp_app_bpf *bpf, unsigned int size)
-> >         struct sk_buff *skb;
-> >
-> >         skb = nfp_app_ctrl_msg_alloc(bpf->app, size, GFP_KERNEL);
-> > +       if (!skp)
-> > +               return NULL;
-> It looks like you did not compile this change.
+On Mon, Feb 17, 2025 at 09:29:57AM -0800, Darrick J. Wong wrote:
+> On Mon, Feb 17, 2025 at 05:27:33PM +0100, Lorenz Brun wrote:
+> > Am Mo., 17. Feb. 2025 um 16:00 Uhr schrieb Lorenz Brun <lorenz@monogon.tech>:
+> > >
+> > > Hi everyone,
+> > >
+> > > Linux 6.12.14 (released today) contains a regression for XFS, causing
+> > > a kernel panic after just a few seconds of working with a
+> > > freshly-created (xfsprogs 6.9) XFS filesystem. I have not yet bisected
+> > > this because I wanted to get this report out ASAP but I'm going to do
+> > > that now. There are multiple associated stack traces, but all of them
+> > > have xfs_buf_offset as the faulting function.
+> > >
+> > > Example backtrace:
+> > > [   31.745932] BUG: kernel NULL pointer dereference, address: 0000000000000098
+> > > [   31.746590] #PF: supervisor read access in kernel mode
+> > > [   31.747072] #PF: error_code(0x0000) - not-present page
+> > > [   31.747537] PGD 5bee067 P4D 5bee067 PUD 5bef067 PMD 0
+> > > [   31.748016] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+> > > [   31.748459] CPU: 0 UID: 0 PID: 116 Comm: xfsaild/vda4 Not tainted
+> > > 6.12.14-metropolis #1 9b2470be3d7713b818a3236e4a2804dd9cbef735
+> > > [   31.749490] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
+> > > BIOS 0.0.0 02/06/2015
+> > > [   31.750340] RIP: 0010:xfs_buf_offset+0x9/0x50
+> > > [   31.750823] Code: 08 5b e9 8a 2c c4 00 66 2e 0f 1f 84 00 00 00 00
+> > > 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f
+> > > 44 00 00 <48> 8b 87 98 00 00 00 48 85 c0 75 2e 48 8b 87 00 01 00 00 48
+> > > 89 f2
+> > > [   31.752775] RSP: 0018:ffffbf50c07abdb8 EFLAGS: 00010246
+> > > [   31.753343] RAX: 0000000000000002 RBX: ffff9c0985817d58 RCX: 0000000000000016
+> > > [   31.754103] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> > > [   31.754734] RBP: 0000000000000000 R08: ffff9c09fb704000 R09: 00000000e0be9fc4
+> > > [   31.755396] R10: 0000000000000000 R11: ffff9c0985827df8 R12: ffff9c09fb57ff58
+> > > [   31.756078] R13: ffff9c0985817eb0 R14: ffff9c09fb704000 R15: ffff9c0985817f00
+> > > [   31.756764] FS:  0000000000000000(0000) GS:ffff9c09fc000000(0000)
+> > > knlGS:0000000000000000
+> > > [   31.757529] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > [   31.758041] CR2: 0000000000000098 CR3: 0000000005b70000 CR4: 0000000000350ef0
+> > > [   31.758696] Call Trace:
+> > > [   31.758940]  <TASK>
+> > > [   31.759172]  ? __die+0x56/0x97
+> > > [   31.759473]  ? page_fault_oops+0x15c/0x2d0
+> > > [   31.759853]  ? exc_page_fault+0x4c5/0x790
+> > > [   31.760237]  ? asm_exc_page_fault+0x26/0x30
+> > > [   31.760637]  ? xfs_buf_offset+0x9/0x50
+> > > [   31.761002]  ? srso_return_thunk+0x5/0x5f
+> > > [   31.761409]  xfs_qm_dqflush+0xd0/0x350
+> > > [   31.761799]  xfs_qm_dquot_logitem_push+0xe9/0x140
+> > > [   31.762253]  xfsaild+0x347/0xa10
+> > > [   31.762567]  ? srso_return_thunk+0x5/0x5f
+> > > [   31.762952]  ? srso_return_thunk+0x5/0x5f
+> > > [   31.763325]  ? __pfx_xfsaild+0x10/0x10
+> > > [   31.763665]  kthread+0xd2/0x100
+> > > [   31.763985]  ? __pfx_kthread+0x10/0x10
+> > > [   31.764342]  ret_from_fork+0x34/0x50
+> > > [   31.764675]  ? __pfx_kthread+0x10/0x10
+> > > [   31.765029]  ret_from_fork_asm+0x1a/0x30
+> > > [   31.765408]  </TASK>
+> > > [   31.765618] Modules linked in: kvm_amd
+> > > [   31.765978] CR2: 0000000000000098
+> > > [   31.766297] ---[ end trace 0000000000000000 ]---
+> > > [   32.371004] RIP: 0010:xfs_buf_offset+0x9/0x50
+> > > [   32.371453] Code: 08 5b e9 8a 2c c4 00 66 2e 0f 1f 84 00 00 00 00
+> > > 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f
+> > > 44 00 00 <48> 8b 87 98 00 00 00 48 85 c0 75 2e 48 8b 87 00 01 00 00 48
+> > > 89 f2
+> > > [   32.373133] RSP: 0018:ffffbf50c07abdb8 EFLAGS: 00010246
+> > > [   32.373611] RAX: 0000000000000002 RBX: ffff9c0985817d58 RCX: 0000000000000016
+> > > [   32.374275] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> > > [   32.374921] RBP: 0000000000000000 R08: ffff9c09fb704000 R09: 00000000e0be9fc4
+> > > [   32.375720] R10: 0000000000000000 R11: ffff9c0985827df8 R12: ffff9c09fb57ff58
+> > > [   32.376376] R13: ffff9c0985817eb0 R14: ffff9c09fb704000 R15: ffff9c0985817f00
+> > > [   32.377027] FS:  0000000000000000(0000) GS:ffff9c09fc000000(0000)
+> > > knlGS:0000000000000000
+> > > [   32.377761] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > [   32.378292] CR2: 0000000000000098 CR3: 0000000005b70000 CR4: 0000000000350ef0
+> > > [   32.378940] Kernel panic - not syncing: Fatal exception
+> > > [   32.379492] Kernel Offset: 0x2a600000 from 0xffffffff81000000
+> > > (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+> > >
+> > > #regzbot introduced: v6.12.13..v6.12.14
+> > >
+> > > Regards,
+> > > Lorenz
+> > 
+> > Hi everyone,
+> > 
+> > I root-caused this to 5808d420 ("xfs: attach dquot buffer to dquot log
+> > item buffer"), but needs reverting of the 3 follow-up commits
+> > (d331fc15, ee6984a2 and 84307caf) as well as they depend on the broken
+> > one. With that 6.12.14 passes our test suite again. Reproduction
+> > should be rather easy by just creating a fresh filesystem, mounting
+> > with "prjquota" and performing I/O.
 > 
-> Also, next time you push a new version, please modify the subject as:
-> "[PATCH net v3] xxxx"
+> Known bug, will patch soon.
 
-Yeah, you need to send v3 (skp -> skb). Fix looks fine, other call to
-nfp_app_ctrl_msg_alloc() is checking returned value as here.
+Great, thanks, I'll go push out a new 6.12 release with this fix in it
+now.
 
-Feel free to add my RB tag in v3.
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
-> >         skb_put(skb, size);
-> >
-> >         return skb;
-> > --
-> > 2.25.1
-> >
-> >
-> 
-> 
-> -- 
-> Regards,
-> Kalesh AP
-
-
+greg k-h
 
