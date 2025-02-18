@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-116926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B74A3A9F6
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:52:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F72A3AA17
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF28F7A5FA8
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:48:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9DC3B64FD
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85441DF97F;
-	Tue, 18 Feb 2025 20:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C81F286284;
+	Tue, 18 Feb 2025 20:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFheAs2v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cka1kJs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616F8284B9A;
-	Tue, 18 Feb 2025 20:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC27223472A;
+	Tue, 18 Feb 2025 20:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910561; cv=none; b=hN060/GbN9WGeJ68PnnJLUGAiA2JGUyeLYwJ7elhArxjnvgb0uP8aTNXJaZI+B2+jNnNVlhtVhtq6eOXOz0uB9Jq4+S3pbCe974+6Hr49EspPHbcflMcl9/hL+3AMVqaXOoofPIFohyRWyY6r2HupdycM8ilEztXUixWdokuRvc=
+	t=1739910563; cv=none; b=jBU6uvkl29ikNwRYW7YL/ozxBZ1BfiZzQXRxbRLmKz5I5RwQ1BjKU0NsEDrjyWXHzt7ZOG1IJdM2oGdkcJsXEZgoyUXQFe7FZWQ0g+DBxF93cl8TKYivuCoB2Zr0/GiTXzBWaBFGvwOUH3HujPti0Ezl61z7/AK/I+Zu7ibeV3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910561; c=relaxed/simple;
-	bh=wkQVhxqwS06nehDZIJ56Gfgj705sfgZktdk3h9XaAYc=;
+	s=arc-20240116; t=1739910563; c=relaxed/simple;
+	bh=dmPRugDYWLomWeFIK7sg+U6WYeBFqFFsqpCpSW2sVdk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uJ7poe0dhafwwQ76pOBGhVDVOiHvf64v3L90ewDuWQAbfhz15sG8DYRj+xULg9cT6QNBHqD9/CsinyeGIUUWo2mGYWN7T7OjS4p+IdB9ldS+iQdjraU5HXjMhuFKOqhrf5Pb8Bxfy3qV4/q3gUeL1vqihwRHkZgjGKS/4G2PNEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFheAs2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFB7C4CEE8;
-	Tue, 18 Feb 2025 20:29:19 +0000 (UTC)
+	 MIME-Version; b=SgMEBbyw3NHJViRlde+/oD6x8lqRJ1nrmeaa0axCszuF50ORJ2SbQVNWln3B/kBEZcf/ACrnfE/GUJuxSQe4o7AiYYinos4GrmBgkjoU1xignvrM42z3BJMSjcgBE01hWkIvqUvXJTihWbFj2z+5lEU8x+jeM361Tj2JDP6znrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cka1kJs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668A8C4CEE4;
+	Tue, 18 Feb 2025 20:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910560;
-	bh=wkQVhxqwS06nehDZIJ56Gfgj705sfgZktdk3h9XaAYc=;
+	s=k20201202; t=1739910562;
+	bh=dmPRugDYWLomWeFIK7sg+U6WYeBFqFFsqpCpSW2sVdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFheAs2vgZWSht8bX4hCui1KGpP6tt/C1yuYg+PaPDeZrseOBOXBBsHnDpb2pzeMX
-	 NdTlbyuwtJg41WANb/lVz7toRn+ylwdpaqsF0Z5EbyOWuEUeM64/PDif9wxN6Fz+lK
-	 ctBm7+wFLQjnsBJ/fWV7g7HCVGy/m4WvTkWk5GaojIlk8oo1906wU6HUqVXfUMTxHn
-	 1H7TUs8V252NZfMmPusPuNbbh8nzLfpuVby+YChJMuR6JAM7D+1BOJyX7FTxq0F/Ix
-	 ANoVQjgS7g9MY9dXzmPK/CJ8LdBa1eIGnsBNCWPqC51Xdz8b/sp81wC4pENGilpf31
-	 Q34rFd+6J5yeg==
+	b=Cka1kJs1BZblNpbZwt1sK9VkMWY7N86Cm7yshD7KEnsB4KAdirb+2IdZYbcJSLln0
+	 JOIxXvklBaOQ8LagwKoYhjjc8CZNiI5ETpCEI5bmhPfET8pcYJ2YSIjOTY5l/EgrJN
+	 y15vf0iNkGSftlLpIgw8L6sPz7Vuio73L2gpIJre3vixZjALE0uabtSce21/kShHpn
+	 6S7+InCjOv+tS46kier2GdyWZDt06PosPWz46lmNViXjC9f1d3a6KwR+r3DT3jh6dy
+	 IAyD19BawKzRW68czJ8iO2q6jnH6nYjkZFGBEFiDtKDFrCTfquCmiIvYus2UBo9vvY
+	 2HjIHv2I3oC6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/3] HID: ignore non-functional sensor in HP 5MP Camera
-Date: Tue, 18 Feb 2025 15:29:12 -0500
-Message-Id: <20250218202914.3594039-2-sashal@kernel.org>
+	hca@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 3/3] s390/cio: Fix CHPID "configure" attribute caching
+Date: Tue, 18 Feb 2025 15:29:13 -0500
+Message-Id: <20250218202914.3594039-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202914.3594039-1-sashal@kernel.org>
 References: <20250218202914.3594039-1-sashal@kernel.org>
@@ -68,53 +69,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.290
 Content-Transfer-Encoding: 8bit
 
-From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
+[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
 
-The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
-is not actually implemented. Attempting to access this non-functional
-sensor via iio_info causes system hangs as runtime PM tries to wake up
-an unresponsive sensor.
+In some environments, the SCLP firmware interface used to query a
+CHPID's configured state is not supported. On these environments,
+rapidly reading the corresponding sysfs attribute produces inconsistent
+results:
 
-  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
-  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  3
 
-Add this device to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
+This occurs for example when Linux is run as a KVM guest. The
+inconsistency is a result of CIO using cached results for generating
+the value of the "configure" attribute while failing to handle the
+situation where no data was returned by SCLP.
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fix this by not updating the cache-expiration timestamp when SCLP
+returns no data. With the fix applied, the system response is
+consistent:
+
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Tested-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/s390/cio/chp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index bc0115548a579..d5369577b4755 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1005,6 +1005,7 @@
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
-+#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
- 
- #define I2C_VENDOR_ID_RAYDIUM		0x2386
- #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 99009fda7b80a..9b375ca53946e 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -876,6 +876,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
- 	{ }
- };
+diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
+index 1fd982b4d64bd..18b2fc50463ba 100644
+--- a/drivers/s390/cio/chp.c
++++ b/drivers/s390/cio/chp.c
+@@ -646,7 +646,8 @@ static int info_update(void)
+ 	if (time_after(jiffies, chp_info_expires)) {
+ 		/* Data is too old, update. */
+ 		rc = sclp_chp_read_info(&chp_info);
+-		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
++		if (!rc)
++			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
+ 	}
+ 	mutex_unlock(&info_lock);
  
 -- 
 2.39.5
