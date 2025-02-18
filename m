@@ -1,141 +1,139 @@
-Return-Path: <stable+bounces-116764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF62BA39C85
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 13:51:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05062A39D06
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36F93A4B9C
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 357721885455
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 13:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDE625A643;
-	Tue, 18 Feb 2025 12:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DC0269D12;
+	Tue, 18 Feb 2025 13:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WkDV+ZL8"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="UFmOU2AJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D95725A35C
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 12:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC532690DD;
+	Tue, 18 Feb 2025 13:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739883090; cv=none; b=pQvshYSjuyU1dc6+EPfXqp+LSOVUy7C9EWTn4iadUUfBqCoMUSWXPqXpZ2kb1KQX21Zu1daHpdY2OiKANpJ2hnav9ipFiMLNy/A/i4fJW4M4/L1C1ddUKl5z00epjE1FhYNKE8Ick9pt1CZu23Pj0ahvX/Ih7gMVIcfv4+VteL8=
+	t=1739884015; cv=none; b=dZmeS+eNVxDGdo9HOG1jsJm+oMtuI5IRCESK/ZpVKcIgOFdv6WGZKa4uVUiaTQ0c/smc1t5Omq9upoD2eFfzZaEnDr3eTlYJOOYg+ALD8TRVBsJtGt1EtJKqVZ5mxuR2jXBdatNAZwmr9fHCHC3FjKr+xT9Ko0/Pfb+AX2QDy9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739883090; c=relaxed/simple;
-	bh=KN9nYO6fgdscblKlIndc2pPGgYUD0x9OR5V1rPZ24mI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Z64A7RA6Uf/CdIQ6+LUotpZc2pPL/lAalcqCnVPKXz3i/XR4eZLv/SQbOqxHmhoOo+xZxMwqo3uPHW1GRX74qE5pTFV7EZJxbb0aafJPeAH5bTh2VUxIUSZu0HZKf8sK9/MnZJztjQsbPmpxzKEIiMw7K3hC0qvDVpbbjN9eXik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WkDV+ZL8; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739883088; x=1771419088;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=KN9nYO6fgdscblKlIndc2pPGgYUD0x9OR5V1rPZ24mI=;
-  b=WkDV+ZL8MkImhAB58GPd0BpY41sgfVKhe1AXDpVkziftLedpN/uDVxqx
-   4+fJRuyr7YH28Vb4wmlQlgWVN3oj7qXB2pDnctnMUJzPhRAUHhGUOKsER
-   6bE20HGLgKyR5swz/hhjRBpdjK1PnQyKiOikxWYkUNfMGi1aMFjyUaW0Q
-   p0bv/9xDo4PMh98tGacF+Utu5f739MKvRy38O4nSOdu4KhFg06m/EjtV8
-   BaadOHkzjDniqN92u8lr3wOPAlaoAQeO2h9k41lSEVo3Om1pZFtJMxQg4
-   B1Yix0yBxpFM74adhaH7cYElf/9/F73efAuTYgqwz1EqlcOUPfihoHevY
-   Q==;
-X-CSE-ConnectionGUID: SbqWgwuATlClRv0cFj3SQA==
-X-CSE-MsgGUID: OaEdA6chRkqk226HTMnl1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="39810488"
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
-   d="scan'208";a="39810488"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 04:51:27 -0800
-X-CSE-ConnectionGUID: x/fCLpXARZ2mNnUcJxCPTA==
-X-CSE-MsgGUID: 8uQ057pBR3qaAuICPEi9Ng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
-   d="scan'208";a="114901675"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.43])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 04:51:25 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Imre Deak <imre.deak@intel.com>, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] drm/i915/dp: Fix error handling during 128b/132b
- link training
-In-Reply-To: <20250217223828.1166093-2-imre.deak@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250217223828.1166093-1-imre.deak@intel.com>
- <20250217223828.1166093-2-imre.deak@intel.com>
-Date: Tue, 18 Feb 2025 14:51:21 +0200
-Message-ID: <875xl7o1py.fsf@intel.com>
+	s=arc-20240116; t=1739884015; c=relaxed/simple;
+	bh=3RdfPZ+mVGcziAKFck3VokvkXlNM4g/j1Eywe5SORbw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B1cdFXPuASvANMpFmL7xo16hkJgbwdilEtBvhggeZYLKOys8Iq/gq/HNduEWIIXYudKgS36NpcM8M7A8Ii6I7PNnM4Jb88Y6e1eG8Qzcg++Y4TIPH6VMxTgSg3ZPYojpDd/j+XQwd2H5uUtISp+7hQqBD+EPrtC92HCW+PKkLH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=UFmOU2AJ; arc=none smtp.client-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=PjVps/mbL29xZmKfD5xoWxmNLay5V9tgBzGtJ2OKIkM=;
+	b=UFmOU2AJs0pnz9fhcg4UtLj5zdpnEgMCDNnW5z7A/7nKvIXAp7gY3jlvIF01NC
+	pKTYYT/FjYW5Wiuz29BOeM19S7TsYOhoAoqKuYJ2trqiVNHuqYFPDo0DOwK3ajE+
+	QBbgnfN1dOA1hC5YKl6OziGLPtQLNFA5mgRphBSn+g25k=
+Received: from [172.19.20.199] (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3n4TverRnbKJTBA--.2790S2;
+	Tue, 18 Feb 2025 20:19:59 +0800 (CST)
+Message-ID: <17ad5bf5-545c-4418-8d08-459ce6ef54cb@126.com>
+Date: Tue, 18 Feb 2025 20:19:58 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] mm/hugetlb: wait for hugetlb folios to be freed
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
+ osalvador@suse.de, liuzixing@hygon.cn
+References: <1739878828-9960-1-git-send-email-yangge1116@126.com>
+ <f5c31616-41e8-464b-84ec-8aa0cedfa556@redhat.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <f5c31616-41e8-464b-84ec-8aa0cedfa556@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3n4TverRnbKJTBA--.2790S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWFy5tw4DuFWkXw1kJw4UCFg_yoW5XFyrpF
+	WUKr13GFWDJrZakrn2qw4vkw10krWDZFWxKr4Sq3y3uFnxJ3s7KFyav3Z0gay8Cr1SkrW8
+	trWvqrsruFyUZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjYL9UUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifhT3G2e0c8dX-gAAsI
 
-On Tue, 18 Feb 2025, Imre Deak <imre.deak@intel.com> wrote:
-> At the end of a 128b/132b link training sequence, the HW expects the
-> transcoder training pattern to be set to TPS2 and from that to normal
-> mode (disabling the training pattern). Transitioning from TPS1 directly
-> to normal mode leaves the transcoder in a stuck state, resulting in
-> page-flip timeouts later in the modeset sequence.
->
-> Atm, in case of a failure during link training, the transcoder may be
-> still set to output the TPS1 pattern. Later the transcoder is then set
-> from TPS1 directly to normal mode in intel_dp_stop_link_train(), leading
-> to modeset failures later as described above. Fix this by setting the
-> training patter to TPS2, if the link training failed at any point.
->
-> Cc: stable@vger.kernel.org # v5.18+
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
 
-No bspec link for this?
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+在 2025/2/18 19:45, David Hildenbrand 写道:
+> On 18.02.25 12:40, yangge1116@126.com wrote:
+>> From: Ge Yang <yangge1116@126.com>
+>>
+>> Since the introduction of commit c77c0a8ac4c52 ("mm/hugetlb: defer 
+>> freeing
+>> of huge pages if in non-task context"), which supports deferring the
+>> freeing of hugetlb pages, the allocation of contiguous memory through
+>> cma_alloc() may fail probabilistically.
+>>
+>> In the CMA allocation process, if it is found that the CMA area is 
+>> occupied
+>> by in-use hugetlb folios, these in-use hugetlb folios need to be migrated
+>> to another location. When there are no available hugetlb folios in the
+>> free hugetlb pool during the migration of in-use hugetlb folios, new 
+>> folios
+>> are allocated from the buddy system. A temporary state is set on the 
+>> newly
+>> allocated folio. Upon completion of the hugetlb folio migration, the
+>> temporary state is transferred from the new folios to the old folios.
+>> Normally, when the old folios with the temporary state are freed, it is
+>> directly released back to the buddy system. However, due to the deferred
+>> freeing of hugetlb pages, the PageBuddy() check fails, ultimately leading
+>> to the failure of cma_alloc().
+>>
+>> Here is a simplified call trace illustrating the process:
+>> cma_alloc()
+>>      ->__alloc_contig_migrate_range() // Migrate in-use hugetlb folios
+>>          ->unmap_and_move_huge_page()
+>>              ->folio_putback_hugetlb() // Free old folios
+>>      ->test_pages_isolated()
+>>          ->__test_page_isolated_in_pageblock()
+>>               ->PageBuddy(page) // Check if the page is in buddy
+>>
+>> To resolve this issue, we have implemented a function named
+>> wait_for_freed_hugetlb_folios(). This function ensures that the hugetlb
+>> folios are properly released back to the buddy system after their 
+>> migration
+>> is completed. By invoking wait_for_freed_hugetlb_folios() before calling
+>> PageBuddy(), we ensure that PageBuddy() will succeed.
+>>
+>> Fixes: c77c0a8ac4c52 ("mm/hugetlb: defer freeing of huge pages if in 
+>> non-task context")
+>> Signed-off-by: Ge Yang <yangge1116@126.com>
+>> Cc: <stable@vger.kernel.org>
+> 
+> 
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+>> +void wait_for_freed_hugetlb_folios(void)
+>> +{
+>> +    flush_work(&free_hpage_work);
+> 
+> BTW, I was wondering if we could optimize out some calls here by sensing 
+> if there is actually work.
+> 
+for_each_hstate(h) {
+	if (hugetlb_vmemmap_optimizable(h)) {
+		flush_work(&free_hpage_work);
+		break;
+	}
+}
+Is this adjustment okay?
+> In most cases, we'll never ever have to actually wait here, especially 
+> on systems without any configured hugetlb pages etc ...
+> 
+> It's rather a corner case that we have to wait here on most systems.
+> 
 
-> ---
->  .../gpu/drm/i915/display/intel_dp_link_training.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> index 3cc06c916017d..11953b03bb6aa 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-> @@ -1563,7 +1563,7 @@ intel_dp_128b132b_link_train(struct intel_dp *intel_dp,
->  
->  	if (wait_for(intel_dp_128b132b_intra_hop(intel_dp, crtc_state) == 0, 500)) {
->  		lt_err(intel_dp, DP_PHY_DPRX, "128b/132b intra-hop not clear\n");
-> -		return false;
-> +		goto out;
->  	}
->  
->  	if (intel_dp_128b132b_lane_eq(intel_dp, crtc_state) &&
-> @@ -1575,6 +1575,19 @@ intel_dp_128b132b_link_train(struct intel_dp *intel_dp,
->  	       passed ? "passed" : "failed",
->  	       crtc_state->port_clock, crtc_state->lane_count);
->  
-> +out:
-> +	/*
-> +	 * Ensure that the training pattern does get set to TPS2 even in case
-> +	 * of a failure, as is the case at the end of a passing link training
-> +	 * and what is expected by the transcoder. Leaving TPS1 set (and
-> +	 * disabling the link train mode in DP_TP_CTL later from TPS1 directly)
-> +	 * would result in a stuck transcoder HW state and flip-done timeouts
-> +	 * later in the modeset sequence.
-> +	 */
-> +	if (!passed)
-> +		intel_dp_program_link_training_pattern(intel_dp, crtc_state,
-> +						       DP_PHY_DPRX, DP_TRAINING_PATTERN_2);
-> +
->  	return passed;
->  }
-
--- 
-Jani Nikula, Intel
 
