@@ -1,113 +1,153 @@
-Return-Path: <stable+bounces-116659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97678A39290
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 06:24:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E6EA3930B
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 06:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B34BF3B4281
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 05:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06EB117249A
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 05:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2E91B042A;
-	Tue, 18 Feb 2025 05:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A601B0439;
+	Tue, 18 Feb 2025 05:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Cc5/0kro"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CDO97Bn+"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EC11AF0C0;
-	Tue, 18 Feb 2025 05:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E641A8404;
+	Tue, 18 Feb 2025 05:48:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739856204; cv=none; b=cJp7xOspFhGxL3kRUW1CEAyrBGHXjS9O4qstoSzVgEJ9Dt9iLpzao002VsuEgvomwkpvotAHkjHAcjFtbJjOXWjvUhq2aaJzScy492n9r6b9/NXg7BPl30n+pFeR6hGc77k4svw//7YTpz+fKMuIW8VOm1EfaYCv9B+8FW5Nviw=
+	t=1739857730; cv=none; b=bb4qMICyQ5wYm2Liq7X+RO6MmX697WYJgF1HY+JkN4uCYxlqqRKwk7yEJ9W0szZ6J1vqeg9aBEiTtIN3YwJDmVGYKMjNVy0V9h1ddiPoXY7oM7MsRkUv5hZYCxz7EKCKSGXCCd2tkXoFZ4VueQOiN0nP8p14ZGwRBz9PxvaV56o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739856204; c=relaxed/simple;
-	bh=77tZbCXU0gOTWWDTG0Q2sa76sq1j0rrk/C0uaK6xB5w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rLfRXfXY+eXPqTBhHT2RRUo8HcDLkN1s+Pnigw0MGK2CENOPzVwgvZ71AiMPj7q+RpQLrEnwJPgdJamG+Ara9D62VLi+twBRfPxBw07oJ2mligF1SYuayfD5vnPNn+B+Fcth5N2GKC6weMiGEr/RcSzp2mVO6tVR11dAxvFt4ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Cc5/0kro; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51I5N5Q1647929
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 17 Feb 2025 23:23:05 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1739856185;
-	bh=5/r3Cd3a5F8RDl+gpGHajtVIDh7k0BuAfKXauxlaFPE=;
-	h=From:To:CC:Subject:Date;
-	b=Cc5/0krozeeWVCsdf1M4B+5WhdBjTJbBb5QQErFBuYQ7t9e0NLAKdPLAnAxUqFtsn
-	 ftrUba56WmO2YUpjDnT1M/DNaiGbgCEi3vsWVZvtK6KbivB/fFQ+p7k1oIp0wW5zNq
-	 w9ajz8QEF44/DO+UH4Woe/vWolZQwUkGC14LVf0g=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51I5N5Cg079664;
-	Mon, 17 Feb 2025 23:23:05 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 17
- Feb 2025 23:23:04 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 17 Feb 2025 23:23:04 -0600
-Received: from ubuntu.myguest.virtualbox.org (ltpw09g681.dhcp.ti.com [172.24.29.106])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51I5N0Zb109957;
-	Mon, 17 Feb 2025 23:23:01 -0600
-From: Keerthy <j-keerthy@ti.com>
-To: <robh+dt@kernel.org>, <nm@ti.com>, <vigneshr@ti.com>,
-        <conor+dt@kernel.org>, <kristo@kernel.org>, <krzk+dt@kernel.org>
-CC: <j-keerthy@ti.com>, <u-kumar1@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v2] arm64: dts: ti: k3-j784s4-j742s2-main-common: Correct the GICD size
-Date: Tue, 18 Feb 2025 10:52:48 +0530
-Message-ID: <20250218052248.4734-1-j-keerthy@ti.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1739857730; c=relaxed/simple;
+	bh=EhfoyfiV3/TQJjfLSsDlj14YQBGN85M2TkPc7w3M1ms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vC7Ip+ABM9+panIcFtCO4F8mM05JVGbS8j8GEFol/Txp1E0oS8jiuInKVMKyqxJWKYptpQq1byxhKIqS0cOD7P0sDruYUhaA162hg6DSOEuyt0G2nnkCtF7f7hp0T3voaeMJRm1gJt36fWS8iBCNzyZE7NgJL3EVYzY7is+s/SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CDO97Bn+; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739857728; x=1771393728;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EhfoyfiV3/TQJjfLSsDlj14YQBGN85M2TkPc7w3M1ms=;
+  b=CDO97Bn+ERJ/ZxhD8/CV5IDtIOhRzocdshPnQZkdC4DOKDnFl3u7I9uN
+   KeGQ0Ji6yeGPEPmKaVQER0IHTb4tZMV+ijsoyotZCpoICbPQXiA6eF+Ep
+   8U8HkHMjZ2Msa9RIuyWuIa2N1eSi9BhrvqzGoqwdaHNSEvDUkVdy8Dfut
+   hErCTxCSh502Uc8igbjWuIfWMrahlrSOCYi6wcz1LvbJCKQgJyapGiM/X
+   wFN+9yqPaPS96y0+L7576PLKXPD5wz6EGAzcrFlq+2/g2z2Pd0wxIWV++
+   s5qkWmz28yg/08p4F+ZtaIfcG1nNIdAOADJ6L5MqKVHDVpPdBug41BXtV
+   g==;
+X-CSE-ConnectionGUID: z5tyUbxuRdqy1/UQrS8Shw==
+X-CSE-MsgGUID: 8zdWfL/jRb6Wfcj13c+hHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="65896414"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
+   d="scan'208";a="65896414"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 21:48:47 -0800
+X-CSE-ConnectionGUID: OP7CRnalRXSD+cNsV3OJ6Q==
+X-CSE-MsgGUID: hUD85pdNRkms9PlrASST4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
+   d="scan'208";a="119392439"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 21:48:43 -0800
+Date: Tue, 18 Feb 2025 06:45:02 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"Y.B. Lu" <yangbo.lu@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_buffs()
+Message-ID: <Z7QeXnBE0iBNFQYL@mev-dev.igk.intel.com>
+References: <20250217093906.506214-1-wei.fang@nxp.com>
+ <20250217093906.506214-2-wei.fang@nxp.com>
+ <Z7M1hQIYZGWAZsOT@mev-dev.igk.intel.com>
+ <PAXPR04MB8510AA1D5B596B4382873A9F88FA2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB8510AA1D5B596B4382873A9F88FA2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-Currently we get the warning:
+On Tue, Feb 18, 2025 at 02:11:12AM +0000, Wei Fang wrote:
+> > > Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet
+> > drivers")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > ---
+> > >  drivers/net/ethernet/freescale/enetc/enetc.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > index 6a6fc819dfde..f7bc2fc33a76 100644
+> > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > @@ -372,13 +372,13 @@ static int enetc_map_tx_buffs(struct enetc_bdr
+> > *tx_ring, struct sk_buff *skb)
+> > >  dma_err:
+> > >  	dev_err(tx_ring->dev, "DMA map error");
+> > >
+> > > -	do {
+> > > +	while (count--) {
+> > >  		tx_swbd = &tx_ring->tx_swbd[i];
+> > >  		enetc_free_tx_frame(tx_ring, tx_swbd);
+> > >  		if (i == 0)
+> > >  			i = tx_ring->bd_count;
+> > >  		i--;
+> > > -	} while (count--);
+> > > +	};
+> > 
+> > In enetc_lso_hw_offload() this is fixed by --count instead of changing
+> > to while and count--, maybe follow this scheme, or event better call
+> > helper function to fix in one place.
+> 
+> The situation is slightly different in enetc_map_tx_buffs(), the count
+> may be 0 when the error occurs. But in enetc_lso_hw_offload(), the
+> count will not be 0 when the error occurs.
 
-"GICv3: [Firmware Bug]: GICR region 0x0000000001900000 has
-overlapping address"
+Right, didn't see that, sorry.
 
-As per TRM GICD is 64 KB. Fix it by correcting the size of GICD.
+> 
+> > 
+> > The same problem is probably in enetc_map_tx_tso_buffs().
+> > 
+> 
+> I think there is no such problem in enetc_map_tx_tso_buffs(),
+> because the index 'i' has been increased before the error occurs,
+> but the count is not increased, so the actual 'count' is count + 1.
+>
 
-Fixes: 9cc161a4509c ("arm64: dts: ti: Refactor J784s4 SoC files to a common file")
-Signed-off-by: Keerthy <j-keerthy@ti.com>
-Cc: stable@vger.kernel.org
----
+But you can reach the error code jumping to label "err_chained_bd" where
+both i and count is increased. Isn't it a problem?
 
-Changes in V2:
+BTW, not increasing i and count in one place looks like unnecessary
+complication ;) .
 
-	* Added the fixes tag
-	* Cc: stable
-
- arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-index 83bbf94b58d1..3b72fca158ad 100644
---- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-@@ -193,7 +193,7 @@
- 		ranges;
- 		#interrupt-cells = <3>;
- 		interrupt-controller;
--		reg = <0x00 0x01800000 0x00 0x200000>, /* GICD */
-+		reg = <0x00 0x01800000 0x00 0x10000>, /* GICD */
- 		      <0x00 0x01900000 0x00 0x100000>, /* GICR */
- 		      <0x00 0x6f000000 0x00 0x2000>,   /* GICC */
- 		      <0x00 0x6f010000 0x00 0x1000>,   /* GICH */
--- 
-2.17.1
-
+Thanks,
+Michal
 
