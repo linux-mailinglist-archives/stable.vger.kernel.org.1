@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-116774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8290EA39E1C
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:59:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E900A39E2D
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32BC97A20A8
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 13:58:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91969188F601
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E646523770D;
-	Tue, 18 Feb 2025 13:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FB112CD96;
+	Tue, 18 Feb 2025 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1bLcywU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDjAjgf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A498C171A7
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 13:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427F6241C90
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739887170; cv=none; b=U1GNHXfem70S2L1XfzwtktvMFQJoFS3ODzx0IxgvBWdXaBveRVVYs0UfefOHoqjooLlLam6YS9NAqWntXzVh1LDE7oMocxScsBZldFXlfAQAAq3PBjiYxBTrddKFpWgz+JA2e6cMqxXUgHiJjaiLB1rH3p2FqA/AYphXBGIMtaY=
+	t=1739887333; cv=none; b=BrfNlRqqknXYlq0b+6r0AkJNUI8Y0BwIDHLNuHdryAwh1y8RBNW1deFzX5Rv8cWNGZ6/j1goF9z5ykKi1c0td/gqlyI9CkFCuT59PquTy4wTXmne5QBNQZvmA3QBnM4d+CHtqxpUm1SuTKi/Lx88GNDnNTa3var5LVy0KwfqtZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739887170; c=relaxed/simple;
-	bh=CGABQBuZS2T4SP/nCaDzaeMpnT7n3hPKw926ZQcYmbc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sRLq5U18hn25M+UFsi0dwXpHB9qzovso62ljfqdQb1m9eLiEK6gHucXDlKFord8bvthByTTzEsf14dagjL3T3KRprci1Md5paNILJWQe37cAUygdX+telJqnd8I6JQ94I/JQcSSyqhGWHZr1/o3f7q+Q9A+aVr04YQQSIevy2Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1bLcywU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE605C4CEE2;
-	Tue, 18 Feb 2025 13:59:29 +0000 (UTC)
+	s=arc-20240116; t=1739887333; c=relaxed/simple;
+	bh=78UtrGyIt1/L+UYHIEJGp2G/7ja10og+LzFCl/Cy1L0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZQdhDmver2B1ZVNQNTcLo4zp4VrYEuSTATsw2cJU4KlOgbZmSc54fSw7sQTNwmowK2SHyOBY8OaonLmMKXz0QMyMog73zArnoMyEkQPp+3PMTnKjRrZGmT/I0iEdEhg01e+jHvkrcWjKBF+NkoyRJq9yCFJajrCn7HelQHmzWIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDjAjgf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59048C4CEE6;
+	Tue, 18 Feb 2025 14:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739887170;
-	bh=CGABQBuZS2T4SP/nCaDzaeMpnT7n3hPKw926ZQcYmbc=;
+	s=korg; t=1739887332;
+	bh=78UtrGyIt1/L+UYHIEJGp2G/7ja10og+LzFCl/Cy1L0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=w1bLcywUjhu7QNiffKNnmUMHL0JJIkTD/oen5efCjm24i3etYR/Nl5fIbrCGiwN7Y
-	 u/Eoon5Kbpe7pwxY0uXqtuC3jtSOmKfbLsrfsaFkflE6e0OQm5lg3Necm0nPgamzBu
-	 w/SDNzopFzDmGbRCdIQI1KgryQAipo3mmygBY2oo=
-Subject: FAILED: patch "[PATCH] drm/tidss: Fix race condition while handling interrupt" failed to apply to 5.10-stable tree
-To: devarsht@ti.com,aradhya.bhatia@linux.dev,jcormier@criticallink.com,tomi.valkeinen@ideasonboard.com
+	b=tDjAjgf2F4sKpQhAr7nWJ7BbqoSxqbNuvZbsPQKFusQh4V4CwdS3GxphwcsdQjNgS
+	 wIH+NXmeAic/q60Q7QwdmNiN/6W6RcCkggg4jXw1+Fjkc5fCShPntbrGXU8tlmLRWe
+	 R5guFhXkyMOiM+dfMRWuIPNBY/jiJWAF1d+eDTMM=
+Subject: FAILED: patch "[PATCH] drm/msm/gem: prevent integer overflow in" failed to apply to 6.6-stable tree
+To: dan.carpenter@linaro.org,robdclark@chromium.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Feb 2025 14:59:16 +0100
-Message-ID: <2025021816-stonework-task-247b@gregkh>
+Date: Tue, 18 Feb 2025 15:02:09 +0100
+Message-ID: <2025021809-sixtyfold-showroom-5f4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a9a73f2661e6f625d306c9b0ef082e4593f45a21
+git cherry-pick -x 3a47f4b439beb98e955d501c609dfd12b7836d61
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021816-stonework-task-247b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021809-sixtyfold-showroom-5f4e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,58 +77,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a9a73f2661e6f625d306c9b0ef082e4593f45a21 Mon Sep 17 00:00:00 2001
-From: Devarsh Thakkar <devarsht@ti.com>
-Date: Mon, 21 Oct 2024 17:07:50 +0300
-Subject: [PATCH] drm/tidss: Fix race condition while handling interrupt
- registers
+From 3a47f4b439beb98e955d501c609dfd12b7836d61 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@linaro.org>
+Date: Fri, 15 Nov 2024 17:50:08 +0300
+Subject: [PATCH] drm/msm/gem: prevent integer overflow in
+ msm_ioctl_gem_submit()
 
-The driver has a spinlock for protecting the irq_masks field and irq
-enable registers. However, the driver misses protecting the irq status
-registers which can lead to races.
+The "submit->cmd[i].size" and "submit->cmd[i].offset" variables are u32
+values that come from the user via the submit_lookup_cmds() function.
+This addition could lead to an integer wrapping bug so use size_add()
+to prevent that.
 
-Take the spinlock when accessing irqstatus too.
-
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Fixes: 198725337ef1 ("drm/msm: fix cmdstream size check")
 Cc: stable@vger.kernel.org
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-[Tomi: updated the desc]
-Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-6-82ddaec94e4a@ideasonboard.com
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/624696/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 515f82e8a0a5..07f5c26cfa26 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2767,8 +2767,12 @@ static void dispc_init_errata(struct dispc_device *dispc)
-  */
- static void dispc_softreset_k2g(struct dispc_device *dispc)
- {
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&dispc->tidss->wait_lock, flags);
- 	dispc_set_irqenable(dispc, 0);
- 	dispc_read_and_clear_irqstatus(dispc);
-+	spin_unlock_irqrestore(&dispc->tidss->wait_lock, flags);
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index fba78193127d..f775638d239a 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -787,8 +787,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 			goto out;
  
- 	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
- 		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
-diff --git a/drivers/gpu/drm/tidss/tidss_irq.c b/drivers/gpu/drm/tidss/tidss_irq.c
-index 3cc4024ec7ff..8af4682ba56b 100644
---- a/drivers/gpu/drm/tidss/tidss_irq.c
-+++ b/drivers/gpu/drm/tidss/tidss_irq.c
-@@ -60,7 +60,9 @@ static irqreturn_t tidss_irq_handler(int irq, void *arg)
- 	unsigned int id;
- 	dispc_irq_t irqstatus;
- 
-+	spin_lock(&tidss->wait_lock);
- 	irqstatus = dispc_read_and_clear_irqstatus(tidss->dispc);
-+	spin_unlock(&tidss->wait_lock);
- 
- 	for (id = 0; id < tidss->num_crtcs; id++) {
- 		struct drm_crtc *crtc = tidss->crtcs[id];
+ 		if (!submit->cmd[i].size ||
+-			((submit->cmd[i].size + submit->cmd[i].offset) >
+-				obj->size / 4)) {
++		    (size_add(submit->cmd[i].size, submit->cmd[i].offset) > obj->size / 4)) {
+ 			SUBMIT_ERROR(submit, "invalid cmdstream size: %u\n", submit->cmd[i].size * 4);
+ 			ret = -EINVAL;
+ 			goto out;
 
 
