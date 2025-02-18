@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-116643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24E9A390F9
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 03:52:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8876A39145
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 04:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F4643B223F
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 02:52:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C3237A3203
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 03:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C561474B8;
-	Tue, 18 Feb 2025 02:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DA717B50A;
+	Tue, 18 Feb 2025 03:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V27KFIIx"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IKbx/RJI"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7304313BC35;
-	Tue, 18 Feb 2025 02:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E406518E1F;
+	Tue, 18 Feb 2025 03:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739847153; cv=none; b=hbA3J2YWNPzfbGjuwspD/spo1Rv7qzCLGFI8i3VfHxuxny8+m97eTgn9InxDrXDOJbWfwSBOKTfliOpFKsJEDsKtbvk8tqI+4lfCK0SAb5aAu7/OUJk5KWgeys40n7P8XW8FLjiWq++xmaj55Wd2a50o5UWuJF7Q2LgJuhpgS9g=
+	t=1739849051; cv=none; b=gQx1WoyVW0VgUf58NrTDz0ZfPJ4g/jF/MuqLsA1inKodOtzyVp2fjZPZZYj0P8hvxN6QrP3WJzCfydCal59IStfh3ExyvzdzLwYl6ZEO865+YsCW/dru3nNeYKqgBpsIRtXiZuRy3D45ImHqxoLDMtPluKB49na7VH9RExs/CoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739847153; c=relaxed/simple;
-	bh=PWHofPdlpUwGUnc4/kTVRwpJM2awBxl5+OMElxXC2qk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sOlxB6CfLo/573LwbOvlvivbpI8frmPNIJofGszs8NbNy3xbVJ76hEFrMkL906RxVHcxrI65JCAWQtnw/w375ngV16yusggygnA/3rqEg8NoqeKJoB391+KqDI9KFbcwRe3IlKCo58kbrVfwbKHPvtSkvFKectCpTtFMbJLkaXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V27KFIIx; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1739849051; c=relaxed/simple;
+	bh=YJwQ56MevDZ9ZYQuremXiyKEvKkBRGC/R9BJu26M0XA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ESAyEPAnZDTusW7Nei/a7auGgDguZfF3SNSw7+E5rsnvGwjrtQTSKCN4uDxfXir0MLKcsQ2uPmUs+9zwCsoLcqxgPuy2xQdwmoH1lXSJMd4rD9dwM8MjxMBMIeTs+cyCKeX8RRmnpybl45Xnz2EdQ9ZEI0INN9tyLu7Qs1//rgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IKbx/RJI; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=HMfjP
-	3H+w2jYqpSYoxGCZQMFuo04FYmpgP9iP4Vdo6s=; b=V27KFIIxsfhw6UP4wxIHH
-	NactfnX++wuOeINRRakHEuCPZRf0CGhv4g9tkp9BMWf74s/BBXipzw3nSIEwtmwU
-	0bp5FJgvTX5OtglSIrpUmKJM/CrheIPfAKTANKv4siJhXycC3zwShdqNJ/yk9d4v
-	7dKFlspMwDK6KnOWWtjOO0=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=KZodN
+	t1cshXHiodAWx+wxQbRKgFIgZ9m7uvCtiXcJJE=; b=IKbx/RJIr1lOZEmhCFPJ+
+	DH9xFT5fnjrR9j8hXz207W03amCloB5BGfwKjYVffNRJZnf5F1raTuSPJU8N+8QZ
+	EvHM5ULfRqZAkkDHGr+ez1LKv2VNlhL8LQh+4kbzcXyU8m+gZCWoWM7NzlfIXhjz
+	is31BLssGgpO4yOioSMySo=
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDn85zi9bNnu4TUMw--.38146S4;
-	Tue, 18 Feb 2025 10:52:19 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCHm36q+LNn2wt_MQ--.33774S4;
+	Tue, 18 Feb 2025 11:04:12 +0800 (CST)
 From: Haoxiang Li <haoxiang_li2024@163.com>
-To: hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com,
-	svens@linux.ibm.com,
+To: kuba@kernel.org,
+	louis.peens@corigine.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
 	haoxiang_li2024@163.com,
-	schwidefsky@de.ibm.com
-Cc: linux-s390@vger.kernel.org,
+	qmo@kernel.org,
+	daniel@iogearbox.net
+Cc: bpf@vger.kernel.org,
+	oss-drivers@corigine.com,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] s390/sclp: Add check for get_zeroed_page()
-Date: Tue, 18 Feb 2025 10:52:16 +0800
-Message-Id: <20250218025216.2421548-1-haoxiang_li2024@163.com>
+Subject: [PATCH net v3] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
+Date: Tue, 18 Feb 2025 11:04:09 +0800
+Message-Id: <20250218030409.2425798-1-haoxiang_li2024@163.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,69 +63,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn85zi9bNnu4TUMw--.38146S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr1UJF1fCr47Cr1rJw1UKFg_yoW8CF17pF
-	s8Gr4Ykan8Ja9xAFy3J3ZrCayrWw48KrWUtayxAwnxXF13GrWIya47ta4rZFW5Kr18Jay3
-	JFWjyF13GF4DW37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqRz3bmez7+a-ggAAsM
+X-CM-TRANSID:_____wCHm36q+LNn2wt_MQ--.33774S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFy3tr48Zw43Gry7Kw17Wrg_yoWDZFgEkF
+	129Fnak3yrKr1Ykr4jgw4avr9Iywn0qryruF9xKrZa9ry3Cr18Xr95ur95ZF9rWF4xAa9r
+	X3s7try7Aa42qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNCJmUUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0gP3bmez8hDUbwAAsF
 
-Add check for the return value of get_zeroed_page() in
-sclp_console_init() to prevent null pointer dereference.
-Furthermore, to solve the memory leak caused by the loop
-allocation, add a free helper to do the free job.
+Add check for the return value of nfp_app_ctrl_msg_alloc() in
+nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
 
-Fixes: 4c8f4794b61e ("[S390] sclp console: convert from bootmem to slab")
+Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
 Cc: stable@vger.kernel.org
 Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
+Changes in v3:
+- modify a spell error. Thanks, Kalesh!
 Changes in v2:
-- Add a free helper to solve the memory leak caused by loop allocation.
-- Thanks Heiko! I realized that v1 patch overlooked a potential memory leak.
-After consideration, I choose to do the full exercise. I noticed a similar
-handling in [1], following that handling I submit this v2 patch. Thanks again!
-
-Reference link:
-[1]https://github.com/torvalds/linux/blob/master/drivers/s390/char/sclp_vt220.c#L699
+- remove the bracket for one single-statement. Thanks, Guru!
 ---
- drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/ethernet/netronome/nfp/bpf/cmsg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
-index e5d947c763ea..c87b0c204718 100644
---- a/drivers/s390/char/sclp_con.c
-+++ b/drivers/s390/char/sclp_con.c
-@@ -263,6 +263,19 @@ static struct console sclp_console =
- 	.index = 0 /* ttyS0 */
- };
+diff --git a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+index 2ec62c8d86e1..59486fe2ad18 100644
+--- a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
++++ b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+@@ -20,6 +20,8 @@ nfp_bpf_cmsg_alloc(struct nfp_app_bpf *bpf, unsigned int size)
+ 	struct sk_buff *skb;
  
-+/*
-+ *  Release allocated pages.
-+ */
-+static void __init __sclp_console_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_con_pages) {
-+		list_del(page);
-+		free_page((unsigned long) page);
-+	}
-+}
-+
- /*
-  * called by console_init() in drivers/char/tty_io.c at boot-time.
-  */
-@@ -282,6 +295,10 @@ sclp_console_init(void)
- 	/* Allocate pages for output buffering */
- 	for (i = 0; i < sclp_console_pages; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+		if (!page) {
-+			__sclp_console_free_pages();
-+			return -ENOMEM;
-+		}
- 		list_add_tail(page, &sclp_con_pages);
- 	}
- 	sclp_conbuf = NULL;
+ 	skb = nfp_app_ctrl_msg_alloc(bpf->app, size, GFP_KERNEL);
++	if (!skb)
++		return NULL;
+ 	skb_put(skb, size);
+ 
+ 	return skb;
 -- 
 2.25.1
 
