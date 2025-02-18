@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-116647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0BEA39143
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 04:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3A6A3914F
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 04:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D30DE7A27C7
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 03:19:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 076F07A32B3
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 03:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B1D165EFC;
-	Tue, 18 Feb 2025 03:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7B81EA6F;
+	Tue, 18 Feb 2025 03:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ILgXXLwL"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bJ5DVxLi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E0818E1F;
-	Tue, 18 Feb 2025 03:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9CB19F115;
+	Tue, 18 Feb 2025 03:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739848821; cv=none; b=LKwzNwjIV5PCy1tLMRGzF9M8UhRPy2NyBaLapNW3jN3APXLLOp89lBiNxtbXJaOy9P709pKT4qZ61tkCj4TxlFQHlD4zqI3wqasJINdHl5fljI+qStEc4/f3fHR8P/WmREf4nXBSyVHTWk1GMp5Or+uIg3BK2X+axYdAfg+JbpA=
+	t=1739849405; cv=none; b=UccUtBfeaVQAoKgvIh20PysrzRs/bRTNKoVoZwg9GLolS4PRZpmRSHQOb5e2HY3TPZUb1uJO2hJAghnZpy5qKEaP3kywUTI66oYzcU7OooACOZEgpQXGiiXMD+4AwlchGFnq8/WB97dfOfp/akSQEAGywi/br6JhaI45dk+VkSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739848821; c=relaxed/simple;
-	bh=KF4DQ2/NJ1H2cmVnfFvuQ3ovoGDiXjXoL2PMgJ90MTU=;
-	h=Date:To:From:Subject:Message-Id; b=ZLCvBfujp41QRnJME2JoejYso0O2hVLy3oILzhe/KcfFIFMKcUqhdXX0Zn0IYRfGqspKZhrlTYwL86szvnbG977SwLLOr3Kzt2WlqbnJxVTP8DdID/MkKbgTuTnJY8DXtDotea+ID7sz7FOwvxEB/o9ENUGDWQUhEoJ4ToXe8JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ILgXXLwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B56C4CED1;
-	Tue, 18 Feb 2025 03:20:20 +0000 (UTC)
+	s=arc-20240116; t=1739849405; c=relaxed/simple;
+	bh=weL8xmE4l3Bx/MdvXdm65Gox2/U0dEiS50cMaIv8G0s=;
+	h=Date:To:From:Subject:Message-Id; b=rx/mq2vmBnBYrG8ywPTk3D7RE0hGo01r+o6DcRNcguUR0QCbrz7VWKDQaCIdl/vA+60qsCiPjusOsz7xyEUuDc5/BG7IRJNTY9/hnNxrs4LYjWV/IqcweXjuUTLYNV7S6JPyAsa/4ZLg024+Dn8D/Vc4ieDYuX4iDrPa/9cZbXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bJ5DVxLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5382EC4CEE6;
+	Tue, 18 Feb 2025 03:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1739848820;
-	bh=KF4DQ2/NJ1H2cmVnfFvuQ3ovoGDiXjXoL2PMgJ90MTU=;
+	s=korg; t=1739849404;
+	bh=weL8xmE4l3Bx/MdvXdm65Gox2/U0dEiS50cMaIv8G0s=;
 	h=Date:To:From:Subject:From;
-	b=ILgXXLwLQ0NyW+6xEACxW9d3KsIqb/e2ScuKQI1JO+zDPhcNAHHVsnlt5VrqI187M
-	 Daq5NMVM9cuZkzbuZb+l83oWJJlrn6KWwHHOnGf2HyaH4BT7s7LMnzdnsFjLfRSgO6
-	 shtdhVrTKxlpxi6fcX35qvtKEuAEAEHt+vqiB5/A=
-Date: Mon, 17 Feb 2025 19:20:20 -0800
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,stable@vger.kernel.org,sammy@sammy.net,kevin.brodsky@arm.com,geert@linux-m68k.org,dave.hansen@linux.intel.com,haoxiang_li2024@163.com,akpm@linux-foundation.org
+	b=bJ5DVxLihPsPtxHQVXeawe9SEDgpKl6rAtu8vKq6PZma53S1gFvcByyJ7V5MsjElc
+	 oCogfXBHiBKDGVpQYkeNp2n+JPN/ZJAitb1Ldsz0cOsha2L48WQK3URlHpsh7TQHdg
+	 /CQvGufqqhGraGv6567dtb10PEdTPYD5aFu1saCc=
+Date: Mon, 17 Feb 2025 19:30:03 -0800
+To: mm-commits@vger.kernel.org,yazen.ghannam@amd.com,tony.luck@intel.com,tianruidong@linux.alibaba.com,tglx@linutronix.de,stable@vger.kernel.org,peterz@infradead.org,nao.horiguchi@gmail.com,mingo@redhat.com,linmiaohe@huawei.com,jpoimboe@kernel.org,Jonathan.Cameron@huawei.com,jarkko@kernel.org,jane.chu@oracle.com,hpa@zytor.com,dave.hansen@linux.intel.com,bp@alien8.de,baolin.wang@linux.alibaba.com,xueshuai@linux.alibaba.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + m68k-sun3-add-check-for-__pgd_alloc.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250218032020.B5B56C4CED1@smtp.kernel.org>
+Subject: + x86-mce-add-ex_type_efault_reg-as-in-kernel-recovery-context-to-fix-copy-from-user-operations-regression.patch added to mm-unstable branch
+Message-Id: <20250218033004.5382EC4CEE6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: m68k: sun3: add check for __pgd_alloc()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     m68k-sun3-add-check-for-__pgd_alloc.patch
+     Subject: x86/mce: add EX_TYPE_EFAULT_REG as in-kernel recovery context to fix copy-from-user operations regression
+has been added to the -mm mm-unstable branch.  Its filename is
+     x86-mce-add-ex_type_efault_reg-as-in-kernel-recovery-context-to-fix-copy-from-user-operations-regression.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/m68k-sun3-add-check-for-__pgd_alloc.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-mce-add-ex_type_efault_reg-as-in-kernel-recovery-context-to-fix-copy-from-user-operations-regression.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
+This patch will later appear in the mm-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -73,47 +73,113 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Haoxiang Li <haoxiang_li2024@163.com>
-Subject: m68k: sun3: add check for __pgd_alloc()
-Date: Tue, 18 Feb 2025 00:00:17 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: x86/mce: add EX_TYPE_EFAULT_REG as in-kernel recovery context to fix copy-from-user operations regression
+Date: Mon, 17 Feb 2025 14:33:33 +0800
 
-Add check for the return value of __pgd_alloc() in pgd_alloc() to prevent
-null pointer dereference.
+Commit 4c132d1d844a ("x86/futex: Remove .fixup usage") introduced a new
+extable fixup type, EX_TYPE_EFAULT_REG, and later patches updated the
+extable fixup type for copy-from-user operations, changing it from
+EX_TYPE_UACCESS to EX_TYPE_EFAULT_REG.
 
-Link: https://lkml.kernel.org/r/20250217160017.2375536-1-haoxiang_li2024@163.com
-Fixes: a9b3c355c2e6 ("asm-generic: pgalloc: provide generic __pgd_{alloc,free}")
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Sam Creasey <sammy@sammy.net>
+Specifically, commit 99641e094d6c ("x86/uaccess: Remove .fixup usage")
+altered the extable fixup type for the get_user family, while commit
+4c132d1d844a ("x86/futex: Remove .fixup usage") addressed the futex
+operations.  This change inadvertently caused a regression where the error
+context for some copy-from-user operations no longer functions as an
+in-kernel recovery context, leading to kernel panics with the message:
+"Machine check: Data load in unrecoverable area of kernel."
+
+To fix the regression, add EX_TYPE_EFAULT_REG as a in-kernel recovery
+context for copy-from-user operations.
+
+Link: https://lkml.kernel.org/r/20250217063335.22257-4-xueshuai@linux.alibaba.com
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Fixes: 4c132d1d844a ("x86/futex: Remove .fixup usage")
 Cc: <stable@vger.kernel.org>
+Cc: Acked-by:Thomas Gleixner <tglx@linutronix.de>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: linmiaohe <linmiaohe@huawei.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/m68k/include/asm/sun3_pgalloc.h |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/mce/severity.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
---- a/arch/m68k/include/asm/sun3_pgalloc.h~m68k-sun3-add-check-for-__pgd_alloc
-+++ a/arch/m68k/include/asm/sun3_pgalloc.h
-@@ -44,8 +44,10 @@ static inline pgd_t * pgd_alloc(struct m
- 	pgd_t *new_pgd;
+--- a/arch/x86/kernel/cpu/mce/severity.c~x86-mce-add-ex_type_efault_reg-as-in-kernel-recovery-context-to-fix-copy-from-user-operations-regression
++++ a/arch/x86/kernel/cpu/mce/severity.c
+@@ -16,6 +16,7 @@
+ #include <asm/traps.h>
+ #include <asm/insn.h>
+ #include <asm/insn-eval.h>
++#include <linux/extable.h>
  
- 	new_pgd = __pgd_alloc(mm, 0);
--	memcpy(new_pgd, swapper_pg_dir, PAGE_SIZE);
--	memset(new_pgd, 0, (PAGE_OFFSET >> PGDIR_SHIFT));
-+	if (likely(new_pgd != NULL)) {
-+		memcpy(new_pgd, swapper_pg_dir, PAGE_SIZE);
-+		memset(new_pgd, 0, (PAGE_OFFSET >> PGDIR_SHIFT));
-+	}
- 	return new_pgd;
- }
+ #include "internal.h"
  
+@@ -285,7 +286,8 @@ static bool is_copy_from_user(struct pt_
+  */
+ static noinstr int error_context(struct mce *m, struct pt_regs *regs)
+ {
+-	int fixup_type;
++	const struct exception_table_entry *e;
++	int fixup_type, imm;
+ 	bool copy_user;
+ 
+ 	if ((m->cs & 3) == 3)
+@@ -294,9 +296,14 @@ static noinstr int error_context(struct
+ 	if (!mc_recoverable(m->mcgstatus))
+ 		return IN_KERNEL;
+ 
++	e = search_exception_tables(m->ip);
++	if (!e)
++		return IN_KERNEL;
++
+ 	/* Allow instrumentation around external facilities usage. */
+ 	instrumentation_begin();
+-	fixup_type = ex_get_fixup_type(m->ip);
++	fixup_type = FIELD_GET(EX_DATA_TYPE_MASK, e->data);
++	imm  = FIELD_GET(EX_DATA_IMM_MASK,  e->data);
+ 	copy_user  = is_copy_from_user(regs);
+ 	instrumentation_end();
+ 
+@@ -304,9 +311,13 @@ static noinstr int error_context(struct
+ 	case EX_TYPE_UACCESS:
+ 		if (!copy_user)
+ 			return IN_KERNEL;
+-		m->kflags |= MCE_IN_KERNEL_COPYIN;
+-		fallthrough;
+-
++		m->kflags |= MCE_IN_KERNEL_COPYIN | MCE_IN_KERNEL_RECOV;
++		return IN_KERNEL_RECOV;
++	case EX_TYPE_IMM_REG:
++		if (!copy_user || imm != -EFAULT)
++			return IN_KERNEL;
++		m->kflags |= MCE_IN_KERNEL_COPYIN | MCE_IN_KERNEL_RECOV;
++		return IN_KERNEL_RECOV;
+ 	case EX_TYPE_FAULT_MCE_SAFE:
+ 	case EX_TYPE_DEFAULT_MCE_SAFE:
+ 		m->kflags |= MCE_IN_KERNEL_RECOV;
 _
 
-Patches currently in -mm which might be from haoxiang_li2024@163.com are
+Patches currently in -mm which might be from xueshuai@linux.alibaba.com are
 
-m68k-sun3-add-check-for-__pgd_alloc.patch
+x86-mce-collect-error-message-for-severities-below-mce_panic_severity.patch
+x86-mce-dump-error-msg-from-severities.patch
+x86-mce-add-ex_type_efault_reg-as-in-kernel-recovery-context-to-fix-copy-from-user-operations-regression.patch
+mm-hwpoison-fix-incorrect-not-recovered-report-for-recovered-clean-pages.patch
+mm-memory-failure-move-return-value-documentation-to-function-declaration.patch
 
 
