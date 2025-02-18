@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-116728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9B1A39AEE
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:30:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA13A39AFF
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8D273A6691
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50F01895880
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D8523ED6A;
-	Tue, 18 Feb 2025 11:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E99C23FC68;
+	Tue, 18 Feb 2025 11:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGDQaRRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLtYZW/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9454A23DE85
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 11:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A323C8A9
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 11:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739878232; cv=none; b=Bt8UFLN5R/pE8/za0QvebnvMVLpv7eeEuXIhEtrI6tnDz0F3ds0zzpL1r+fAt/bOhgDre9uRsMOxYz4T+3bSvFM9CtGOkinSi0JkvpOhWiMHvleo6OMf2I4CdN15esOErpTcvoPk9ZibPQHz4e9VpJb2tsjR2oZ/mjeZznkp/7k=
+	t=1739878266; cv=none; b=RdLdQZpkHo6ZthXM8/9ZxBM3eW5WAOkYC0K+gJjAgJYriSp0jaopkL+gWO2VV6PKcfG7oRnajguG78szD0GxIwaQx4TQDMBWhZUMVLQjXEk5dP8ipOeJB79d1hl/vz70WTZaidH4ttToRDchPaPiatLidPi7WgxZGUHKYxU+qt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739878232; c=relaxed/simple;
-	bh=3blbHfZuwiJ8NeXJjWnHUR8reNj+knaeNZEtil1dybs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HT4kHYCeR/lUcTDhPUmW8wdlouqjCVdsJdOZf1H7aTmOC4b8BgQU8l5wVMAjIS03IYpMFSuAuodKcwOTFVynCofnJ8pv213XHzQfCgNODCQNkWey78o/cSwn2FZygb5dAk6MJz9HzDzO3T6TfCwLO6U4k+AYKXMMDPEGVfuS+do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGDQaRRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CF2C4CEE6;
-	Tue, 18 Feb 2025 11:30:31 +0000 (UTC)
+	s=arc-20240116; t=1739878266; c=relaxed/simple;
+	bh=QqcDH2YXF7BPSREvAYOLQWyTZRV6b1It6/fSntgKvnY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EdPL6Gu/RML27PlZAGdTW9evIf6fF4RcwY+5qHcBlF7aBgvOxi5yXamxxoaPrU0TfiXpDLH7bIYoiNySJ0ank2jqu7nXbkLBKTk9J2Xf33j41nn4Xip56pBAZu0AmSgDEwe/r1dzmeN23Sh+0GJyI1Ag36ZkuharPtQcLPBRAx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLtYZW/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A7DC4CEE2;
+	Tue, 18 Feb 2025 11:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739878232;
-	bh=3blbHfZuwiJ8NeXJjWnHUR8reNj+knaeNZEtil1dybs=;
+	s=korg; t=1739878265;
+	bh=QqcDH2YXF7BPSREvAYOLQWyTZRV6b1It6/fSntgKvnY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tGDQaRRUWcqPfSAyxFAJwoPyJAwjiprBuY83E44fvIQyxv+DFAj/eHa0iGkA7EzC4
-	 y/wLnHCqt+vXZGZPg+dUyuzd6yuYHKBSEeGZpVEEOI4yp2IGXCZCeQF9pgAU6sYG1W
-	 EKLQpLrjxmucMS/JSWyvhGhCjKDPKXEUOP5ngexM=
-Subject: FAILED: patch "[PATCH] tracing: Have the error of __tracing_resize_ring_buffer()" failed to apply to 6.12-stable tree
-To: rostedt@goodmis.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,vdonnefort@google.com
+	b=lLtYZW/IwKWItmv9Wq8kc48MZx5ym527PW7O25tK3rmZ1spTeDnkrHO1rNwqdDHFm
+	 yvtVVsHu0QAEf0Y4qXH4CekIwx3bo57loTy/QQUyhDjD01xg6hmxHmC8HemqMTyDoU
+	 N28zBMkzzR2wX0+KeB1ar5fzTvmmhUs/9DNTVN3k=
+Subject: FAILED: patch "[PATCH] usb: dwc3: Fix timeout issue during controller enter/exit" failed to apply to 5.15-stable tree
+To: selvarasu.g@samsung.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Feb 2025 12:30:21 +0100
-Message-ID: <2025021821-bullseye-travel-f568@gregkh>
+Date: Tue, 18 Feb 2025 12:31:02 +0100
+Message-ID: <2025021802-sharply-case-0286@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 60b8f711143de7cd9c0f55be0fe7eb94b19eb5c7
+git cherry-pick -x d3a8c28426fc1fb3252753a9f1db0d691ffc21b0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021821-bullseye-travel-f568@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021802-sharply-case-0286@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,53 +77,92 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 60b8f711143de7cd9c0f55be0fe7eb94b19eb5c7 Mon Sep 17 00:00:00 2001
-From: Steven Rostedt <rostedt@goodmis.org>
-Date: Thu, 13 Feb 2025 13:41:32 -0500
-Subject: [PATCH] tracing: Have the error of __tracing_resize_ring_buffer()
- passed to user
+From d3a8c28426fc1fb3252753a9f1db0d691ffc21b0 Mon Sep 17 00:00:00 2001
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Date: Sat, 1 Feb 2025 22:09:02 +0530
+Subject: [PATCH] usb: dwc3: Fix timeout issue during controller enter/exit
+ from halt state
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Currently if __tracing_resize_ring_buffer() returns an error, the
-tracing_resize_ringbuffer() returns -ENOMEM. But it may not be a memory
-issue that caused the function to fail. If the ring buffer is memory
-mapped, then the resizing of the ring buffer will be disabled. But if the
-user tries to resize the buffer, it will get an -ENOMEM returned, which is
-confusing because there is plenty of memory. The actual error returned was
--EBUSY, which would make much more sense to the user.
+There is a frequent timeout during controller enter/exit from halt state
+after toggling the run_stop bit by SW. This timeout occurs when
+performing frequent role switches between host and device, causing
+device enumeration issues due to the timeout. This issue was not present
+when USB2 suspend PHY was disabled by passing the SNPS quirks
+(snps,dis_u2_susphy_quirk and snps,dis_enblslpm_quirk) from the DTS.
+However, there is a requirement to enable USB2 suspend PHY by setting of
+GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY bits when controller starts
+in gadget or host mode results in the timeout issue.
 
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Link: https://lore.kernel.org/20250213134132.7e4505d7@gandalf.local.home
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+This commit addresses this timeout issue by ensuring that the bits
+GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
+the dwc3_gadget_run_stop sequence and restoring them after the
+dwc3_gadget_run_stop sequence is completed.
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 1496a5ac33ae..25ff37aab00f 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5977,8 +5977,6 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- ssize_t tracing_resize_ring_buffer(struct trace_array *tr,
- 				  unsigned long size, int cpu_id)
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250201163903.459-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index d27af65eb08a..ddd6b2ce5710 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2629,10 +2629,38 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
  {
--	int ret;
--
- 	guard(mutex)(&trace_types_lock);
+ 	u32			reg;
+ 	u32			timeout = 2000;
++	u32			saved_config = 0;
  
- 	if (cpu_id != RING_BUFFER_ALL_CPUS) {
-@@ -5987,11 +5985,7 @@ ssize_t tracing_resize_ring_buffer(struct trace_array *tr,
- 			return -EINVAL;
- 	}
+ 	if (pm_runtime_suspended(dwc->dev))
+ 		return 0;
  
--	ret = __tracing_resize_ring_buffer(tr, size, cpu_id);
--	if (ret < 0)
--		ret = -ENOMEM;
--
--	return ret;
-+	return __tracing_resize_ring_buffer(tr, size, cpu_id);
- }
++	/*
++	 * When operating in USB 2.0 speeds (HS/FS), ensure that
++	 * GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
++	 * or stopping the controller. This resolves timeout issues that occur
++	 * during frequent role switches between host and device modes.
++	 *
++	 * Save and clear these settings, then restore them after completing the
++	 * controller start or stop sequence.
++	 *
++	 * This solution was discovered through experimentation as it is not
++	 * mentioned in the dwc3 programming guide. It has been tested on an
++	 * Exynos platforms.
++	 */
++	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++	if (reg & DWC3_GUSB2PHYCFG_SUSPHY) {
++		saved_config |= DWC3_GUSB2PHYCFG_SUSPHY;
++		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
++	}
++
++	if (reg & DWC3_GUSB2PHYCFG_ENBLSLPM) {
++		saved_config |= DWC3_GUSB2PHYCFG_ENBLSLPM;
++		reg &= ~DWC3_GUSB2PHYCFG_ENBLSLPM;
++	}
++
++	if (saved_config)
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	if (is_on) {
+ 		if (DWC3_VER_IS_WITHIN(DWC3, ANY, 187A)) {
+@@ -2660,6 +2688,12 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on)
+ 		reg &= DWC3_DSTS_DEVCTRLHLT;
+ 	} while (--timeout && !(!is_on ^ !reg));
  
- static void update_last_data(struct trace_array *tr)
++	if (saved_config) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++		reg |= saved_config;
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++	}
++
+ 	if (!timeout)
+ 		return -ETIMEDOUT;
+ 
 
 
