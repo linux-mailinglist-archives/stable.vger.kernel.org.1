@@ -1,65 +1,50 @@
-Return-Path: <stable+bounces-116791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C40A3A081
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:53:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188F0A3A079
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5AE18858A1
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:52:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A57EB7A291A
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E314226A0D2;
-	Tue, 18 Feb 2025 14:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31E426A0D2;
+	Tue, 18 Feb 2025 14:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="boDinKh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDo2F8eN"
 X-Original-To: stable@vger.kernel.org
-Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45A42309B5
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B9A2309B5
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739890347; cv=none; b=Kf2bN6Cyw04ehny78hD5vphdYMmdwllDpv2Ea3V/pVIqKdLloaaoQP4tc0MLrvc84qEeY+kYz+Ia2EDPK3x6aYmSHZVRNYXGMZlZ6yw2Y4GxxWZ41W/B47SMJ6JZ0IJ0AL6wN+ZL5mDf2/p3yYWLHZwhf4jAoMu/g5m3qAeJc5Q=
+	t=1739890352; cv=none; b=sFJ6j7UedH2HXXTqj7skkF8Yiw8wUFYmVKEzfh0BmiKtBvBSKVXdGZURc2dipUr0yG6Jg10wJuH2RuaC1M5mts94VzdZ9PWeTZ4m9amkt55yf9lM+yotPkjTjQJRAsk0NJ9XY0sZN80fVhxbAyPDnu0OHhHwD2Jt3LtOpZHCmDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739890347; c=relaxed/simple;
-	bh=FZQWA/gGEwQYoEGNiZzRWrrcasP7gsY8xFL3PurhpKQ=;
+	s=arc-20240116; t=1739890352; c=relaxed/simple;
+	bh=O4JM2RTl3GhRfmA/F9MrWZ+AVrc+uu3kFC0l28qw7Ls=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mLxWw2xiX4tpw4mbBCMnfiBuIFh+fVy0cN6oL4jO6Xftte879WZBMSovqQFfdMxEfMeUMhVlh004m9fc6vvwtvaZhbBtPKjgJvc0q+TEIQCghbIwyRsMRGZGEm4ZpmOMR8HCPBHvMuLo/Y720dVIc46M3F6L0HkcLnzIl7mKABU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=boDinKh2; arc=none smtp.client-ip=139.162.151.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=unseen.parts; s=sig; h=In-Reply-To:Content-Type:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ojbC6X2YhxheyrF+iAwYoEiD4RvXVnsYcc5mqDdEdCA=; b=boDinKh2ZHb1AQHuroniVwQsak
-	D5EkLWU7m9IxNW6YBqG2X7UuOEoISAKGFCIp6NURRnIstuBxhSSbnNfjzxB4QjjUoBR1LfC2tAptb
-	GqJdrLkmzW/OCZW7Bg5nmrPncece8eLv13bwqn2PmjOTErnt1CeyTzYjwBTYj4azgoy/IwZrbjsAg
-	xtT+B3N/4FrCUMdJsii1vcGWjjm7bYWCGGpH/KI0obzXISEv7ghimAZzakQigb9VY5HDIgS4h9pkY
-	HoXYMbB9ObfwOItfdpME0OEF2RLy3p0zHcXAg2n48aOjqZsgIHVS5myBjfr/8LLAVFENJ4tgUipyg
-	RR3CqddQ==;
-Received: from minute.unseen.parts ([139.162.151.61]:60122 helo=minute)
-	by minute.unseen.parts with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <ink@unseen.parts>)
-	id 1tkOxS-0005Cu-1R;
-	Tue, 18 Feb 2025 15:52:22 +0100
-Date: Tue, 18 Feb 2025 15:52:20 +0100
-From: Ivan Kokshaysky <ink@unseen.parts>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linmag7@gmail.com, macro@orcam.me.uk, mattst88@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH][v6.6.x] alpha: replace hardcoded stack offsets with
- autogenerated ones
-Message-ID: <Z7SepJjMmO-MucUO@minute>
-References: <2025021844-cruelness-freedom-e051@gregkh>
- <Z7SN1kaT-1tuYyvL@minute>
- <2025021849-zoning-bath-bc43@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=R5na2uMhmvjWTttAQft5oSe85Y03oUwvYXmHiQpdpdxqoPMyn4pdjRY9gKON7OJz1mN4LebRjZf8GvjfLp65fcCOtjfR8zLWZhoRmW7aDfst/M0MVXXvbdllD4BucwL5CEd+WWCMgMj4iaqfmXe6RGOhr7bNxZhUY+/s7ghT7S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDo2F8eN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D36C4CEE2;
+	Tue, 18 Feb 2025 14:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739890352;
+	bh=O4JM2RTl3GhRfmA/F9MrWZ+AVrc+uu3kFC0l28qw7Ls=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eDo2F8eNAOQUmi3FXX1O3bL1wr9+YrrmhK96Pb1FQ05gzA7JdxOnUSmY7QzaP7wXL
+	 QpMeIJnU2UP37sGrAC7G7e8sCJF/OOUFEpbNWqLlcYtRFu/6pfC96lnf2ykgWJUpH4
+	 0WxoEJ+kSB1LSZNSG8EBagBQZLjhAlj/WIkCKnDg=
+Date: Tue, 18 Feb 2025 15:52:29 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Brian Norris <briannorris@chromium.org>
+Cc: stable@vger.kernel.org
+Subject: Re: Request to apply 6d3e0d8cc632 to stable kernels
+Message-ID: <2025021822-stung-sitcom-f0c6@gregkh>
+References: <Z6P-BnP_nZRz_H00@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,50 +53,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025021849-zoning-bath-bc43@gregkh>
+In-Reply-To: <Z6P-BnP_nZRz_H00@google.com>
 
-[backported commit 77b823fa619f97d16409]
+On Wed, Feb 05, 2025 at 04:10:46PM -0800, Brian Norris wrote:
+> Hi,
+> 
+> May I request this be ported to stable kernels?
+> 
+>   6d3e0d8cc632 ("kdb: Do not assume write() callback available")
+> 
+> It landed in v6.6, and I've tested the trivial cherry-pick to v6.1.y.
+> AFAICT, it makes sense and applies cleanly to at least v5.15.y and
+> v5.10.y (and possibly more), although I didn't test those.
+> 
+> It's a bit of an older (but trivial) fix, and I assume not many folks
+> actually test out KDB/KGDB that often, but I wasted my time
+> re-discovering it.
 
-This allows the assembly in entry.S to automatically keep in sync with
-changes in the stack layout (struct pt_regs and struct switch_stack).
+Now queued up,t hanks
 
-Cc: stable@vger.kernel.org # v6.6.x
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
----
- arch/alpha/kernel/asm-offsets.c | 4 ++++
- arch/alpha/kernel/entry.S       | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
-index 4cfeae42c79a..e9dad60b147f 100644
---- a/arch/alpha/kernel/asm-offsets.c
-+++ b/arch/alpha/kernel/asm-offsets.c
-@@ -34,7 +34,9 @@ void foo(void)
-         DEFINE(CRED_EGID, offsetof(struct cred, egid));
-         BLANK();
- 
-+	DEFINE(SP_OFF, offsetof(struct pt_regs, ps));
- 	DEFINE(SIZEOF_PT_REGS, sizeof(struct pt_regs));
-+	DEFINE(SWITCH_STACK_SIZE, sizeof(struct switch_stack));
- 	DEFINE(PT_PTRACED, PT_PTRACED);
- 	DEFINE(CLONE_VM, CLONE_VM);
- 	DEFINE(CLONE_UNTRACED, CLONE_UNTRACED);
-diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
-index dd26062d75b3..6fb38365539d 100644
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -15,10 +15,6 @@
- 	.set noat
- 	.cfi_sections	.debug_frame
- 
--/* Stack offsets.  */
--#define SP_OFF			184
--#define SWITCH_STACK_SIZE	64
--
- .macro	CFI_START_OSF_FRAME	func
- 	.align	4
- 	.globl	\func
--- 
-2.47.2
-
+greg k-h
 
