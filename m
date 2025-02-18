@@ -1,152 +1,227 @@
-Return-Path: <stable+bounces-116802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F882A3A14B
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:33:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8140AA3A1EF
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 17:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11C916FE13
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:32:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B796618956EA
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B40926A1B0;
-	Tue, 18 Feb 2025 15:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DF126E166;
+	Tue, 18 Feb 2025 16:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TuTzUoIA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jPAEgRRb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825A92309B5;
-	Tue, 18 Feb 2025 15:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA7926B2CA
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 15:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739892758; cv=none; b=RCyS1M6hmUf17yoxPr/7LgH3BSKnoqwwBL8h+htx4XQdUrKGZOLa4PexfQvBtXMctH/Me1tI+t7g3hbogARshhsMrRMG0pq7sugCq0j3X64ahMhg4vIBMsCi9tVdTljmUNmlTAazBA07ZAqYWiYzb4Lao4EvT292NvZohYm8iSg=
+	t=1739894401; cv=none; b=uFwQKjIb99F04XFfxuqtDNVw9WpIJMDko+q9YCDYLRJGAfjqYw3gjSbnzz+IkAZAzEhFlZ2rQvs/wyXZFgg0qvnozFL38YFX+3vpE5r54mIw98uL2dNHt8oz0a3Z9LQWLLRIIlbH09BB4w73ZHseSDjy8710JZ8eZ+7Rb0dmLdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739892758; c=relaxed/simple;
-	bh=cebdUepuNmHAOy5Y0aQZ25FQI35Aq8QteNsvMkN1rw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SbLgIVO6+j90obPBJ3mKuy0nCfEcKFjHJFm6Zts4eNDl1ykeTE7/rMdn8RoKbUx5eanFVaqqj75gngaqztVJpSZjDFokT5LsphdK/kwdLbu8iLbP1z28LAYTMdVV7jnN1fnI5M11YVx0M3gYh2ns89Rop82IsBYSsGXIesWm8lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TuTzUoIA; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51I7YZHO012419;
-	Tue, 18 Feb 2025 15:32:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ezITce
-	tY82oZmI8ZqAp0N40R8I0MQ2cOiJxYTTekkRM=; b=TuTzUoIAuQVLjvEm3IgfnT
-	qd/Gy9xAVVP/1Z9P7MxynVRI0uE5GCdSaDbGUY53kAMMl/+q6Z1/4/1KOj6yaWAQ
-	1sXZZ/PLvwfaRW69M4cXopSjPBx2pOoJ5nQxQmCFVp4+DIY0epOSXsh7WEermrrW
-	qp57YJJ8kBV+xpwqKFSrzkUCNlyP050anCX3IJRvGFkok34IgHCDaJj1T/PUwyY1
-	uMo2n56VUqFTzT3kAAQ/4wndrdqygIk3uD7dPcMz/Ll8T2L1dyr33H5hC2CG4hPI
-	EwDS/GX+xzVf39LQTNtkSignul0m8fKdH7zZrHsjJSixyWM8t2KNUhkaaR+Nudfg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vnwpj9x5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 15:32:32 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51IDQaJF001641;
-	Tue, 18 Feb 2025 15:32:31 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u5myv02a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 15:32:31 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51IFWSNC41157068
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2025 15:32:28 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBC632004E;
-	Tue, 18 Feb 2025 15:32:27 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB4CB20049;
-	Tue, 18 Feb 2025 15:32:27 +0000 (GMT)
-Received: from [9.152.224.153] (unknown [9.152.224.153])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Feb 2025 15:32:27 +0000 (GMT)
-Message-ID: <febb6754-f2a3-411c-a201-c403960856d0@linux.ibm.com>
-Date: Tue, 18 Feb 2025 16:32:27 +0100
+	s=arc-20240116; t=1739894401; c=relaxed/simple;
+	bh=Mvl7ic5dPpSRE8noQA3vk5gO41+lpdjD2i1WOU8u4S8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T/yGGw7rocB0fNfBJift2rVqZzdzZubITHLqimg6Ul8kAagHogGmkUmaFhL/wIJ97kXPj0TBrrjuXVDKBv+xHg0b6HNqsT0OA6mfgbzoKZy13hjTRNz1MUXPumVmkcKVj+DOjNFfl6Kp2NjpHn1JfJeUz5nYBSUTgy7ac41MF9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jPAEgRRb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739894399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zdK+/rE3JwumocpP/mzS1PNgFFKgHQR3OqAuIDrsFUQ=;
+	b=jPAEgRRbHc5OnDjOTILtv9HbdpsZ638R7zjDN4anMrQZoU9BwbewxP86YHjDTJctrLK/Ne
+	LvhwjiImhQWne+ev/4TmIBUTiZ1tfypG8IXwWg4mbShJ+avMW35ZeBBDVkxxvH9ckTT9PH
+	WWQC/PVJGLu7MLUtyzXA6LAYDCrs0EY=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-61-F9mN0DpxPtWJasQKs7Vlsg-1; Tue, 18 Feb 2025 10:59:57 -0500
+X-MC-Unique: F9mN0DpxPtWJasQKs7Vlsg-1
+X-Mimecast-MFC-AGG-ID: F9mN0DpxPtWJasQKs7Vlsg_1739894396
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5428d385b93so4506048e87.3
+        for <stable@vger.kernel.org>; Tue, 18 Feb 2025 07:59:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739894394; x=1740499194;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zdK+/rE3JwumocpP/mzS1PNgFFKgHQR3OqAuIDrsFUQ=;
+        b=kpT/5jMGEwwKn3md2H4nrJfxg17H3g313ZMi9v5moSvjGct9hX/+LcsxGFTW5S/Xrf
+         9tGj4tO5Xy1GvHxLb6FsNbC5iFS5p3dv3h2vguGw4TGTNqzDkYAflHBZzFUAaqjg5PQs
+         92T5tn2MOAj+7K0bIrUUKFKzG8BTInwLs8/FccUE0X6UhY3C/BgesIh2c/YgsosSKqht
+         0bZ+keNdZW9kxWcXkVovbCdBrRX6F2xH7xVlMgYJgPMqTRiZLKx7VSOzvzre59bwSPnz
+         uReZbUjcugTo5JizkVvcYxExysuTMbZxKzbS5pkRtBqp19dajwg8Om6ZItfp7eWHqzMs
+         oHVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2lolauO2YHB68xl83u8HUSnhvlcXqwl3voCZkj38dB7wVe+08Ojcyj8tcmhG3FxgQf/MWcuA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/cbJynuQ1IJZThr8zI3+6eUwCNHzdFnF3dpG7NHTZ9u0Zzodk
+	gScQt9qRqsIuXcS4g15Ayv9oLpp5rytNuMa6AjnmyHt+FB+OaQdkS7VdAcDsYkVVoQObd38G7Az
+	om2gmBJLELdA8APn9iyf89Cshpr+Dl7MVv9Oa3l4Zc0wifCM/WKZ9PvEOvIY3/tvOOV4vHVgb8X
+	RpkavJ4s5J2P3YaQtwe6zts96bveT7f3n89T7UF10=
+X-Gm-Gg: ASbGncuXgC7Cd0Rh2ONMgvh/hzYl5EqnIMLiY8MZeHzCzPmd6X5QQxlV1Iwq9+THhYt
+	C9kZDRcBY4uypYYl29jIU6ocM38iuepPxtAQ7YsAShN+0eMto1kvh1Ugr3J7qQWZRwS9c9FzRXR
+	Qji3v3kAd6EI2WzNLuk+gm
+X-Received: by 2002:a05:6512:3b0b:b0:542:29b6:9c26 with SMTP id 2adb3069b0e04-5452fe95c7emr4606393e87.47.1739894394404;
+        Tue, 18 Feb 2025 07:59:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEBb0yq+4f6s5Sjr2aV/KNL83K+YN+sQCk29CCpaTPWAPEY56fYN18mEC7HDlcDPxujSbCLAzTElagpq1FzCDA=
+X-Received: by 2002:a05:6512:3b0b:b0:542:29b6:9c26 with SMTP id
+ 2adb3069b0e04-5452fe95c7emr4606375e87.47.1739894393947; Tue, 18 Feb 2025
+ 07:59:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "s390/qeth: move netif_napi_add_tx() and napi_enable() from
- under BH" has been added to the 6.13-stable tree
-To: Greg KH <greg@kroah.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-        Thorsten Winkler <twinkler@linux.ibm.com>,
-        Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>
-References: <20250218123639.3271098-1-sashal@kernel.org>
- <b01c840b-55fb-455d-88fa-69848d2dcebf@linux.ibm.com>
- <2025021828-pond-matador-38d9@gregkh>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <2025021828-pond-matador-38d9@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: a7dFZDyYc7MjvgatGB4ZbE9hMXUW8xKz
-X-Proofpoint-ORIG-GUID: a7dFZDyYc7MjvgatGB4ZbE9hMXUW8xKz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_07,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 mlxlogscore=999 impostorscore=0 lowpriorityscore=0
- malwarescore=0 phishscore=0 mlxscore=0 adultscore=0 suspectscore=0
- bulkscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502180114
+References: <CAH6h+hfg4RcwuNUDspMrEt+5Gk5hBhE-pfLTF29M9qJLiYtoAQ@mail.gmail.com>
+In-Reply-To: <CAH6h+hfg4RcwuNUDspMrEt+5Gk5hBhE-pfLTF29M9qJLiYtoAQ@mail.gmail.com>
+From: Alexander Aring <aahringo@redhat.com>
+Date: Tue, 18 Feb 2025 10:59:42 -0500
+X-Gm-Features: AWEUYZm-SDkJSuPB0C5J5-VjqoPv0BqzgQ2Z1uuB38lA4PNrFVJTDn8z1jFhx3Y
+Message-ID: <CAK-6q+j9QcZmJuJ+5igge8-Y2_1-JPuA6dvqkzJ5Lt+9=P=ndQ@mail.gmail.com>
+Subject: Re: Linux 5.4.x DLM Regression
+To: Marc Smith <msmith626@gmail.com>
+Cc: jakobkoschel@gmail.com, stable@vger.kernel.org, teigland@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
+On Mon, Feb 17, 2025 at 2:24=E2=80=AFPM Marc Smith <msmith626@gmail.com> wr=
+ote:
+>
+> Hi,
+>
+> I noticed there appears to be a regression in DLM (fs/dlm/) when
+> moving from Linux 5.4.229 to 5.4.288; I get a kernel panic when using
+> dlm_ls_lockx() (DLM user) with a timeout >0, and the panic occurs when
+> the timeout is reached (eg, attempting to take a lock on a resource
+> that is already locked); the host where the timeout occurs is the one
+> that panics:
+> ...
+> [  187.976007]
+>                DLM:  Assertion failed on line 1239 of file fs/dlm/lock.c
+>                DLM:  assertion:  "!lkb->lkb_status"
+>                DLM:  time =3D 4294853632
+> [  187.976009] lkb: nodeid 2 id 1 remid 2 exflags 40000 flags 800001
+> sts 1 rq 5 gr -1 wait_type 4 wait_nodeid 2 seq 0
+> [  187.976009]
+> [  187.976010] Kernel panic - not syncing: DLM:  Record message above
+> and reboot.
+> [  187.976099] CPU: 9 PID: 7409 Comm: dlm_scand Kdump: loaded Tainted:
+> P           OE     5.4.288-esos.prod #1
+> [  187.976195] Hardware name: Quantum H2012/H12SSW-NT, BIOS
+> T20201009143356 10/09/2020
+> [  187.976282] Call Trace:
+> [  187.976356]  dump_stack+0x50/0x63
+> [  187.976429]  panic+0x10c/0x2e3
+> [  187.976501]  kill_lkb+0x51/0x52
+> [  187.976570]  kref_put+0x16/0x2f
+> [  187.976638]  __put_lkb+0x2f/0x95
+> [  187.976707]  dlm_scan_timeout+0x18b/0x19c
+> [  187.976779]  ? dlm_uevent+0x19/0x19
+> [  187.976848]  dlm_scand+0x94/0xd1
+> [  187.976920]  kthread+0xe4/0xe9
+> [  187.976988]  ? kthread_flush_worker+0x70/0x70
+> [  187.977062]  ret_from_fork+0x35/0x40
+> ...
+>
+> I examined the commits for fs/dlm/ between 5.4.229 and 5.4.288 and
+> this is the offender:
+> dlm: replace usage of found with dedicated list iterator variable
+> [ Upstream commit dc1acd5c94699389a9ed023e94dd860c846ea1f6 ]
+>
+> Specifically, the change highlighted below in this hunk for
+> dlm_scan_timeout() in fs/dlm/lock.c:
+> @@ -1867,27 +1867,28 @@ void dlm_scan_timeout(struct dlm_ls *ls)
+>                 do_cancel =3D 0;
+>                 do_warn =3D 0;
+>                 mutex_lock(&ls->ls_timeout_mutex);
+> -               list_for_each_entry(lkb, &ls->ls_timeout, lkb_time_list) =
+{
+> +               list_for_each_entry(iter, &ls->ls_timeout, lkb_time_list)=
+ {
+>
+>                         wait_us =3D ktime_to_us(ktime_sub(ktime_get(),
+> -                                                       lkb->lkb_timestam=
+p));
+> +                                                       iter->lkb_timesta=
+mp));
+>
+> -                       if ((lkb->lkb_exflags & DLM_LKF_TIMEOUT) &&
+> -                           wait_us >=3D (lkb->lkb_timeout_cs * 10000))
+> +                       if ((iter->lkb_exflags & DLM_LKF_TIMEOUT) &&
+> +                           wait_us >=3D (iter->lkb_timeout_cs * 10000))
+>                                 do_cancel =3D 1;
+>
+> -                       if ((lkb->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
+> +                       if ((iter->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
+>                             wait_us >=3D dlm_config.ci_timewarn_cs * 1000=
+0)
+>                                 do_warn =3D 1;
+>
+>                         if (!do_cancel && !do_warn)
+>                                 continue;
+> -                       hold_lkb(lkb);
+> +                       hold_lkb(iter);
+> +                       lkb =3D iter;
+>                         break;
+>                 }
+>                 mutex_unlock(&ls->ls_timeout_mutex);
+>
+> -               if (!do_cancel && !do_warn)
+> +               if (!lkb)
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>                         break;
+>
+>                 r =3D lkb->lkb_resource;
+>
+> Reverting this single line change resolves the kernel panic:
+> $ diff -Naur fs/dlm/lock.c{.orig,}
+> --- fs/dlm/lock.c.orig  2024-12-19 12:05:05.000000000 -0500
+> +++ fs/dlm/lock.c       2025-02-16 21:21:42.544181390 -0500
+> @@ -1888,7 +1888,7 @@
+>                 }
+>                 mutex_unlock(&ls->ls_timeout_mutex);
+>
+> -               if (!lkb)
+> +               if (!do_cancel && !do_warn)
+>                         break;
+>
+>                 r =3D lkb->lkb_resource;
+>
+> It appears this same "dlm: replace usage of found with dedicated list
+> iterator variable" commit was pulled into other stable branches as
+> well, and I don't see any fix in the latest 5.4.x patch release
+> (5.4.290).
+>
 
-On 18.02.25 16:19, Greg KH wrote:
-> On Tue, Feb 18, 2025 at 04:08:25PM +0100, Alexandra Winter wrote:
->>
->>
->> On 18.02.25 13:36, Sasha Levin wrote:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>     s390/qeth: move netif_napi_add_tx() and napi_enable() from under BH
->>>
->>> to the 6.13-stable tree which can be found at:
->>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>
->>> The filename of the patch is:
->>>      s390-qeth-move-netif_napi_add_tx-and-napi_enable-fro.patch
->>> and it can be found in the queue-6.13 subdirectory.
->>>
->>> If you, or anyone else, feels it should not be added to the stable tree,
->>> please let <stable@vger.kernel.org> know about it.
->>>
->>
->> Hello Sasha,
->> this is a fix for a regression that was introduced with v6.14-rc1.
->> So I do not think it needs to go into 6.13 stable tree.
->> But it does not hurt either.
-> 
-> It fixes a commit that is already in the 6.13 stable queue:
-> 
->>>     Fixes: 1b23cdbd2bbc ("net: protect netdev->napi_list with netdev_lock()")
-> 
-> So for that reason, this commit should be applied, right?
-> 
-> thanks,
-> 
-> greg k-h
+This works, or just init the lkb back to NULL there:
 
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 1899bb266e2e..7e02e5b55965 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -1893,6 +1893,7 @@ void dlm_scan_timeout(struct dlm_ls *ls)
+                if (dlm_locking_stopped(ls))
+                        break;
 
-In that case: Yes, of course.
++               lkb =3D NULL;
+                do_cancel =3D 0;
+                do_warn =3D 0;
+                mutex_lock(&ls->ls_timeout_mutex);
 
-Sorry. I didn't expect Jakub's netdev->lock series to have gone into stable.
-I should have checked.
+Can you provide more details about the use case of timeout? Are you
+using DLM in user space or kernel?
+
+- Alex
+
 
