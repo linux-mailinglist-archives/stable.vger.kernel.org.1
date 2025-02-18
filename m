@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-116896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1043DA3A9A0
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:45:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33E5A3A98F
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720E618986C4
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:43:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 266687A59F5
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1007D219A9A;
-	Tue, 18 Feb 2025 20:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E84621B1AC;
+	Tue, 18 Feb 2025 20:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6yUPulv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wvx9Vb9+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03DC219A68;
-	Tue, 18 Feb 2025 20:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD15521A440;
+	Tue, 18 Feb 2025 20:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910487; cv=none; b=WUQO2tvb0+Eb4JqsWk0K/dKOH7k/KP73Tbd/XyfDF1oNYA2agCvlz0bzbDSGSuNr2TocTb9FVN7VEmEpYyqY7L3xD//irVe31PlQ7GfJxZMw2iB5OauFeh4RTj7rU5mE1cSK03gOI6GzSQlif9TkZfDp5hH5m6Q+Br4YKKq/2yk=
+	t=1739910490; cv=none; b=olVguXS8wF+7ErNYkim/ev3ULsgk3N2zuqlLeG+L31l1jmBwYay+GW9NAF9/uaFWoreC1BnroJnr4XMUROd4H+p6cLlbUtdsqgILuJLNHW140GkHyHFtH2a1o4L51vSdc7361RCLcz9NEVCcNt+huP4H1axW46RjFmpHKt+ta2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910487; c=relaxed/simple;
-	bh=vLGBBLNBJAfS7lENU56qjJ2IG9aknMIMjqvsAu9hhlM=;
+	s=arc-20240116; t=1739910490; c=relaxed/simple;
+	bh=QKrdvXReXi8KQD3WFcEkWnbwGaQsE1tvpjORmQTi0NE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iA26nvGiCAINUWSNBp+/lbAy/iQRwWOEGH974cIbGZYzQie1LjgnlCb3RwdlATNqlEMOZMVr1oUfJiop2DYxdmVgEnb6ja+OxDDaaXYO88zUfkUINjknupum5HK+TkxczCvBQYmZYLaWrTyHOHbNt7f9DAQr6kKH7D0gRZxH1j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6yUPulv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AE3C4CEE2;
-	Tue, 18 Feb 2025 20:28:06 +0000 (UTC)
+	 MIME-Version; b=SVVsVmnOG/vxSw/TC+90nIu45zN6KmKH2h75Zjo/UOOEq4T+gH6jYq2B/MgEg9PW1nDimn6JObsopf7er/brCAJpw7xcorGWtCEViGkqqCQbxMfPDsLXQUT1AzyDs93MlcogrwgNbpXyA//aaMBvD8qIGRN3/oR9Nya4nm8oVR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wvx9Vb9+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E952C4CEE2;
+	Tue, 18 Feb 2025 20:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910487;
-	bh=vLGBBLNBJAfS7lENU56qjJ2IG9aknMIMjqvsAu9hhlM=;
+	s=k20201202; t=1739910489;
+	bh=QKrdvXReXi8KQD3WFcEkWnbwGaQsE1tvpjORmQTi0NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6yUPulve087M1jBkiMgWCipZh23SVfSx2G7zghp/JYbjrCnbLVzbnFz7VFLj32hB
-	 +3K+AYm3G3Fwx5A0p6xZOfd7tavWM8KDfgIBN6CGHRsQl55Zdrpqo9WifAjgy0V1QZ
-	 9o48RikrvyuMu239qaKsrx/wRsRYJU6wse97E/a/HM9jL50hafOcO3G9QstsirSRdD
-	 H2CTEFKL9MOadcvFqoYHqiIx/6PTJDQsgKkTja3kmgxYy1flhYqYpOccc5+NjtfAKn
-	 O4GxarmA7qBnyrGvyCqB/KP4VuwhkiV2OP52QLJHsCdtntUsuQbmc6l+1+stHWBzxO
-	 1T73AsxYSpahg==
+	b=Wvx9Vb9+hYppCkX3T/2bkzuAFohQQHBZfi3smJ3Xcv2wuXQe1PcQF/8FBAeRgUHd3
+	 NLhIwxDYqq2uAD6VHg5g7IFSglQ/cSlylPHXMuYVdNDIDR71qhnZnDcGpyFpBNH9fh
+	 SkCZfVSB1re9Uvap3WQ3yjiGS8oFqGcF8a3+/8Lv56Om7Gs6+BUEoKL5+91OA9GGau
+	 deKy2pJAlriF+t22d2CmQHs6MzgSngJC6sPZOGYYF93sPw7o4LxcpZuFIZEA+6ss1J
+	 JsfyfxMtVmzMLWKTMH2Zqin6XjGh26kFTcdcUElEao9IDyyOc8QWhzv6+rUF2cP4Jz
+	 HA3wA/EbPb+OA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hca@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 12/17] s390/cio: Fix CHPID "configure" attribute caching
-Date: Tue, 18 Feb 2025 15:27:36 -0500
-Message-Id: <20250218202743.3593296-12-sashal@kernel.org>
+	amit.kachhap@gmail.com,
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 13/17] thermal/cpufreq_cooling: Remove structure member documentation
+Date: Tue, 18 Feb 2025 15:27:37 -0500
+Message-Id: <20250218202743.3593296-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202743.3593296-1-sashal@kernel.org>
 References: <20250218202743.3593296-1-sashal@kernel.org>
@@ -69,58 +69,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.78
 Content-Transfer-Encoding: 8bit
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
+[ Upstream commit a6768c4f92e152265590371975d44c071a5279c7 ]
 
-In some environments, the SCLP firmware interface used to query a
-CHPID's configured state is not supported. On these environments,
-rapidly reading the corresponding sysfs attribute produces inconsistent
-results:
+The structure member documentation refers to a member which does not
+exist any more. Remove it.
 
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-  $ cat /sys/devices/css0/chp0.00/configure
-  3
-
-This occurs for example when Linux is run as a KVM guest. The
-inconsistency is a result of CIO using cached results for generating
-the value of the "configure" attribute while failing to handle the
-situation where no data was returned by SCLP.
-
-Fix this by not updating the cache-expiration timestamp when SCLP
-returns no data. With the fix applied, the system response is
-consistent:
-
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Tested-by: Eric Farman <farman@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/all/202501220046.h3PMBCti-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501220046.h3PMBCti-lkp@intel.com/
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20250211084712.2746705-1-daniel.lezcano@linaro.org
+[ rjw: Minor changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/chp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/thermal/cpufreq_cooling.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
-index 5440f285f3494..7e00c061538db 100644
---- a/drivers/s390/cio/chp.c
-+++ b/drivers/s390/cio/chp.c
-@@ -661,7 +661,8 @@ static int info_update(void)
- 	if (time_after(jiffies, chp_info_expires)) {
- 		/* Data is too old, update. */
- 		rc = sclp_chp_read_info(&chp_info);
--		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
-+		if (!rc)
-+			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
- 	}
- 	mutex_unlock(&info_lock);
- 
+diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
+index e2cc7bd308620..874b4838d2c92 100644
+--- a/drivers/thermal/cpufreq_cooling.c
++++ b/drivers/thermal/cpufreq_cooling.c
+@@ -57,8 +57,6 @@ struct time_in_idle {
+  * @max_level: maximum cooling level. One less than total number of valid
+  *	cpufreq frequencies.
+  * @em: Reference on the Energy Model of the device
+- * @cdev: thermal_cooling_device pointer to keep track of the
+- *	registered cooling device.
+  * @policy: cpufreq policy.
+  * @cooling_ops: cpufreq callbacks to thermal cooling device ops
+  * @idle_time: idle time stats
 -- 
 2.39.5
 
