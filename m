@@ -1,220 +1,172 @@
-Return-Path: <stable+bounces-116760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDE3A39C3C
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 13:33:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35918A39C53
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 13:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88AF43A2EF0
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C12C6176D56
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8630C243944;
-	Tue, 18 Feb 2025 12:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7DC246351;
+	Tue, 18 Feb 2025 12:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nqLtlBiN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlz+SVnX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82541243368;
-	Tue, 18 Feb 2025 12:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807B9243368
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 12:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739881890; cv=none; b=Y7jvrW1zqdytr4WS7E+IUBCfv4PGddN9AQZEwWGSUx5C95nA6ph39dIgOzDuqcPYM9oO5NtFLlKoUOxAk9XDtrZBdGf6kaR/DIqvQiKWZVRMgKWH3ZBfDEUfwJXKNTPrFSNv+rF91ZodguGSl6OVOurH9o3bVp0yiavZYtkfIPY=
+	t=1739881985; cv=none; b=pbLLDt9gbSkoFmgN/0qBF3TJZhB79ttwaW7bFi7p2WQIX4ev4cwAujvXxG9A+MGPV3oO2LMQL4bXANHDL01OaAQkLJkQr+AfHCXGzqSJNLxAq2MDAjGdyW0tMTfPXA+3TyyckHukXgEKCMxBm/PuHQuBPK+0w/kPCrDYZ6cSJYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739881890; c=relaxed/simple;
-	bh=UA8BgaNnyRCw9xFtLSS5bxjRr4IV+xOTkb3Z8/jS98Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dS/cGZdsVkx3uRrXPZjBbHJe3IzJUBey4XF5Efvxu71rep5ych+xfb4zgU2JN4XcQ+p6JCG4ANuBXWvS7rKkOgVdCJE+ncL/PtHDntTiZPnsau0tZ27ju2cbxGG8Gkpcwb+2IE0sVf3AHlPOKIXR+k4+zeraa1Eg+/3LaC9WFS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nqLtlBiN; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43989226283so11678665e9.1;
-        Tue, 18 Feb 2025 04:31:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739881887; x=1740486687; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i1EiuFrOZAAO8BlNap0r2h1PwkpkjTMEHOOdrLbjwQw=;
-        b=nqLtlBiNlAZBA06X0j0ZUBxPm/33ztcOa/kmENREwj2B91m1puNYm0WuU1zNocPu6E
-         ykY/vRPL3jyXBcVQrw3Q/hb8hpCRmSL3zCvzTDp31g9nNCW49WAo0k5kEoX4lXLP1N2P
-         +bTp31AS6O9ZMBypDk/YA6AbAq716L3q5mi/w8jqs5cIj0Gm0yF98p7drkzq9hc1kpax
-         kqmlp3Bqv1IvaUd8SR2tBK9Uwav/aVyHByWEYAM9OQFCkMkuzRnvrAGrzUdiIa6Yvwo3
-         A+i6eXiQExWXYd7ck7s7IhemzBLtOwQwcZKYsb3w8WXqbO6tQhX+Hl01oVs4jMcWXqsS
-         HiMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739881887; x=1740486687;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i1EiuFrOZAAO8BlNap0r2h1PwkpkjTMEHOOdrLbjwQw=;
-        b=T17a7z7AIIOfFsgOX3PU0BdRDemZPXZ5GXkjz2rDez0CsJeZONrDv/pV2glFvbSvTD
-         RpxmjT5kZOjL133ngWtu3Zt3YFC9T9T5+xeK4JbLw60fgAdCiUE3Z5JlJXqcf2y7wg7P
-         UMPWKNAp16pd/ZbkmuthPMSR0bDTZt/79Cj6+so6LsnwMzwQcZvNpGM5QjLHsH9QaqMm
-         nYAMCzCzbv4hUlnjHev39s8vhNWA5goMLzhQJ0BUntmxINWjfR7gopsLX6ulqaUub5qx
-         4aGDR2kH225SQXhe4+scAsKRasjOXAlJ/jVLNMZvXCbImBM4u55G4YbJdJeNg05NKl7T
-         MdnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAMixuZ322ZoffopR1dNet+tUmuveA5sYPdRTtH8gehb9bf7b1UVr4wN52Uq80aGb33cKlB46Gy5z45NM=@vger.kernel.org, AJvYcCWycFTc7gMXWQssQNXYnvUj78ug93A9ZqZjx6fPTdV/nSWONy8T2FVShVJB7qof/tuS2wNrpwz8@vger.kernel.org, AJvYcCXEJjnFjAVmzJzFHg7AWDZiNnayxd6jeq8GomAs7EHKST0B+gR+RwzqFBqNe3jeU1Qj0PI6C82f/tv8uw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxILDrO1yNHSIlArjYohlAT2FygvvMDP5vjI9P9jP+fUdtlhiJq
-	eNl5zmJdjVpnS+v7nSyEfXKvJ+a2GEjC3Q7xUEvepK9w+brO/FrX
-X-Gm-Gg: ASbGnct+CGT2WQF1V/oIAsrQX0VN2TotQkf4ClHKOHfcdj1Xp4E9cNy9vS4+lnL+eUA
-	Me6I7rukQqnGZkmdz39feeT4RH256Mafrc+O+q79rQ8SjECSaylG2UlXyrPbcLzdNl/8nqkgN92
-	CyXyUDDjt6TYgd7j7het9wCN0CyNBzeqD0Z5xIymLDdKejUgffpSArfi1NOt85ykC4fsUOWenCh
-	S7123oZffNjxsv934OckbRbd10lLyDTNpty6vOSuKHSaJdivW+eubAjKuCSNO8kaCn5ktaIRi5X
-	jtfjnLeAJUcDqb8aWQ==
-X-Google-Smtp-Source: AGHT+IHKpJVuCvnYRsmz4RpDTMOseTWydDN8ScsZSlwC/tzSRIKYd5jXEevc0CQS+qOpeSRpTQ0pbg==
-X-Received: by 2002:a05:600c:474f:b0:439:9828:c450 with SMTP id 5b1f17b1804b1-4399828c663mr7030715e9.15.1739881886433;
-        Tue, 18 Feb 2025 04:31:26 -0800 (PST)
-Received: from [10.176.235.56] ([137.201.254.41])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43984dd042fsm56277745e9.12.2025.02.18.04.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 04:31:25 -0800 (PST)
-Message-ID: <8be8c9c45d627e40e4ce3dc87c1ac83f32717e2b.camel@gmail.com>
-Subject: Re: [PATCH v2] ufs: core: bsg: Fix memory crash in case arpmb
- command failed
-From: Bean Huo <huobean@gmail.com>
-To: Arthur Simchaev <arthur.simchaev@sandisk.com>, martin.petersen@oracle.com
-Cc: avri.altman@sandisk.com, Avi.Shchislowski@sandisk.com,
- beanhuo@micron.com,  linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, bvanassche@acm.org,  stable@vger.kernel.org
-Date: Tue, 18 Feb 2025 13:31:23 +0100
-In-Reply-To: <20250218111527.246506-1-arthur.simchaev@sandisk.com>
-References: <20250218111527.246506-1-arthur.simchaev@sandisk.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1739881985; c=relaxed/simple;
+	bh=25wZXQG8Fwrma92IiXlCh4gCOtxHNjWRR/4zZ/gQ99A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iZeagj4cn62unyjzEEeGFf16/17DpHc3v6D8ZcgJ/aXOzJS8177wrnsa2NAw0hzcqj6zeXvAG+CxmAaZl9PE2pKeK4h7AcXt1BZO0NJz1sOFiLDUPeRSHMHEIEHLXr2R0UNZIZl2gh4VVJQ7Tu/anojSPPET1zd2mnUqNMZHCqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlz+SVnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB000C4CEE2;
+	Tue, 18 Feb 2025 12:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739881985;
+	bh=25wZXQG8Fwrma92IiXlCh4gCOtxHNjWRR/4zZ/gQ99A=;
+	h=Subject:To:Cc:From:Date:From;
+	b=rlz+SVnXHE0VLv04kVHi1I9op5WteRHsOFEIR6zNbxcQnKv5bgaxPR3kgal1R7XEg
+	 tTgszTcEuNf44DxtC3CPm81lQxyq4yhI50e06hJlt+sQIGuQdWjU9vAAOwQbmdXRPe
+	 LEz/cSqe2seWLJN8buDs9vGIC2ELABBjTOZAc9II=
+Subject: FAILED: patch "[PATCH] sched_ext: Fix migration disabled handling in targeted" failed to apply to 6.12-stable tree
+To: tj@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 18 Feb 2025 13:33:02 +0100
+Message-ID: <2025021801-myself-cane-67bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-On Tue, 2025-02-18 at 13:15 +0200, Arthur Simchaev wrote:
-> In case the device doesn't support arpmb, the kernel get memory crash
-> due to copy user data in bsg_transport_sg_io_fn level. So in case
-> ufs_bsg_exec_advanced_rpmb_req returned error, do not set the job's
-> reply_len.
->=20
-> Memory crash backtrace:
-> 3,1290,531166405,-;ufshcd 0000:00:12.5: ARPMB OP failed: error code -
-> 22
->=20
-> 4,1308,531166555,-;Call Trace:
->=20
-> 4,1309,531166559,-; <TASK>
->=20
-> 4,1310,531166565,-; ? show_regs+0x6d/0x80
->=20
-> 4,1311,531166575,-; ? die+0x37/0xa0
->=20
-> 4,1312,531166583,-; ? do_trap+0xd4/0xf0
->=20
-> 4,1313,531166593,-; ? do_error_trap+0x71/0xb0
->=20
-> 4,1314,531166601,-; ? usercopy_abort+0x6c/0x80
->=20
-> 4,1315,531166610,-; ? exc_invalid_op+0x52/0x80
->=20
-> 4,1316,531166622,-; ? usercopy_abort+0x6c/0x80
->=20
-> 4,1317,531166630,-; ? asm_exc_invalid_op+0x1b/0x20
->=20
-> 4,1318,531166643,-; ? usercopy_abort+0x6c/0x80
->=20
-> 4,1319,531166652,-; __check_heap_object+0xe3/0x120
->=20
-> 4,1320,531166661,-; check_heap_object+0x185/0x1d0
->=20
-> 4,1321,531166670,-; __check_object_size.part.0+0x72/0x150
->=20
-> 4,1322,531166679,-; __check_object_size+0x23/0x30
->=20
-> 4,1323,531166688,-; bsg_transport_sg_io_fn+0x314/0x3b0
->=20
-> Fixes: 6ff265fc5ef6 ("scsi: ufs: core: bsg: Add advanced RPMB support
-> in ufs_bsg")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arthur Simchaev <arthur.simchaev@sandisk.com>
->=20
-> ---
-> Changes in v2:
-> =C2=A0 - Add Fixes tag
-> =C2=A0 - Elaborate commit log
->=20
-> Signed-off-by: Arthur Simchaev <arthur.simchaev@sandisk.com>
-> ---
-> =C2=A0drivers/ufs/core/ufs_bsg.c | 6 ++++--
-> =C2=A01 file changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
-> index 8d4ad0a3f2cf..a8ed9bc6e4f1 100644
-> --- a/drivers/ufs/core/ufs_bsg.c
-> +++ b/drivers/ufs/core/ufs_bsg.c
-> @@ -194,10 +194,12 @@ static int ufs_bsg_request(struct bsg_job *job)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ufshcd_rpm_put_sync(hba);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(buff);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bsg_reply->result =3D ret=
-;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0job->reply_len =3D !rpmb ? siz=
-eof(struct ufs_bsg_reply) :
-> sizeof(struct ufs_rpmb_reply);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* complete the job here =
-only if no error */
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret =3D=3D 0)
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret =3D=3D 0) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0job->reply_len =3D !rpmb ? sizeof(struct ufs_bsg_reply)
-> :
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 sizeof(struct
-> ufs_rpmb_reply);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0bsg_job_done(job, ret, bsg_reply-
-> >reply_payload_rcv_len);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
-> =C2=A0}
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-Arthur,
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-thanks for your update.=20
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I tried to repoduce the issue as your steps, I didn't get this issue,
-The kernel will only print this as expected:=20
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 32966821574cd2917bd60f2554f435fe527f4702
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021801-myself-cane-67bf@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Err: ARPMB OP failed 0 :-22
+Possible dependencies:
 
 
 
-I don't think your patch can fix your issue, becase if ufs_bsg returns=C2=
-=A0
+thanks,
 
--EINVAL(-22).  then,=20
+greg k-h
 
+------------------ original commit in Linus's tree ------------------
 
-bsg_reply->result =3D ret(-22);
+From 32966821574cd2917bd60f2554f435fe527f4702 Mon Sep 17 00:00:00 2001
+From: Tejun Heo <tj@kernel.org>
+Date: Fri, 7 Feb 2025 10:59:06 -1000
+Subject: [PATCH] sched_ext: Fix migration disabled handling in targeted
+ dispatches
 
-after that,  then in bsg_transport_sg_io_fn:
+A dispatch operation that can target a specific local DSQ -
+scx_bpf_dsq_move_to_local() or scx_bpf_dsq_move() - checks whether the task
+can be migrated to the target CPU using task_can_run_on_remote_rq(). If the
+task can't be migrated to the targeted CPU, it is bounced through a global
+DSQ.
 
-if (job->result < 0) {
-	job->reply_len =3D sizeof(u32);  //overwrite the length.
+task_can_run_on_remote_rq() assumes that the task is on a CPU that's
+different from the targeted CPU but the callers doesn't uphold the
+assumption and may call the function when the task is already on the target
+CPU. When such task has migration disabled, task_can_run_on_remote_rq() ends
+up returning %false incorrectly unnecessarily bouncing the task to a global
+DSQ.
 
+Fix it by updating the callers to only call task_can_run_on_remote_rq() when
+the task is on a different CPU than the target CPU. As this is a bit subtle,
+for clarity and documentation:
 
+- Make task_can_run_on_remote_rq() trigger SCHED_WARN_ON() if the task is on
+  the same CPU as the target CPU.
 
-Could you please provide more information how you can get this issue?
-My understanding is that it is not because this job->reply_len, it is
-your buffer initiated by your application?
+- is_migration_disabled() test in task_can_run_on_remote_rq() cannot trigger
+  if the task is on a different CPU than the target CPU as the preceding
+  task_allowed_on_cpu() test should fail beforehand. Convert the test into
+  SCHED_WARN_ON().
 
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
+Fixes: 0366017e0973 ("sched_ext: Use task_can_run_on_remote_rq() test in dispatch_to_local_dsq()")
+Cc: stable@vger.kernel.org # v6.12+
 
-Kind regards,
-Bean
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index efdbf4d85a21..e01144340d67 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2333,12 +2333,16 @@ static void move_remote_task_to_local_dsq(struct task_struct *p, u64 enq_flags,
+  *
+  * - The BPF scheduler is bypassed while the rq is offline and we can always say
+  *   no to the BPF scheduler initiated migrations while offline.
++ *
++ * The caller must ensure that @p and @rq are on different CPUs.
+  */
+ static bool task_can_run_on_remote_rq(struct task_struct *p, struct rq *rq,
+ 				      bool trigger_error)
+ {
+ 	int cpu = cpu_of(rq);
+ 
++	SCHED_WARN_ON(task_cpu(p) == cpu);
++
+ 	/*
+ 	 * We don't require the BPF scheduler to avoid dispatching to offline
+ 	 * CPUs mostly for convenience but also because CPUs can go offline
+@@ -2352,8 +2356,11 @@ static bool task_can_run_on_remote_rq(struct task_struct *p, struct rq *rq,
+ 		return false;
+ 	}
+ 
+-	if (unlikely(is_migration_disabled(p)))
+-		return false;
++	/*
++	 * If @p has migration disabled, @p->cpus_ptr only contains its current
++	 * CPU and the above task_allowed_on_cpu() test should have failed.
++	 */
++	SCHED_WARN_ON(is_migration_disabled(p));
+ 
+ 	if (!scx_rq_online(rq))
+ 		return false;
+@@ -2457,7 +2464,8 @@ static struct rq *move_task_between_dsqs(struct task_struct *p, u64 enq_flags,
+ 
+ 	if (dst_dsq->id == SCX_DSQ_LOCAL) {
+ 		dst_rq = container_of(dst_dsq, struct rq, scx.local_dsq);
+-		if (!task_can_run_on_remote_rq(p, dst_rq, true)) {
++		if (src_rq != dst_rq &&
++		    unlikely(!task_can_run_on_remote_rq(p, dst_rq, true))) {
+ 			dst_dsq = find_global_dsq(p);
+ 			dst_rq = src_rq;
+ 		}
+@@ -2611,7 +2619,8 @@ static void dispatch_to_local_dsq(struct rq *rq, struct scx_dispatch_q *dst_dsq,
+ 	}
+ 
+ #ifdef CONFIG_SMP
+-	if (unlikely(!task_can_run_on_remote_rq(p, dst_rq, true))) {
++	if (src_rq != dst_rq &&
++	    unlikely(!task_can_run_on_remote_rq(p, dst_rq, true))) {
+ 		dispatch_enqueue(find_global_dsq(p), p,
+ 				 enq_flags | SCX_ENQ_CLEAR_OPSS);
+ 		return;
 
 
