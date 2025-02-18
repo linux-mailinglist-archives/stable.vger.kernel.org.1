@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-116721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8630AA39ACB
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6636FA39ACD
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F64A3A527E
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BA03A4999
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C44623F29A;
-	Tue, 18 Feb 2025 11:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549AF234973;
+	Tue, 18 Feb 2025 11:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ame300C/"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ozy/sZyU"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E3623F297
-	for <Stable@vger.kernel.org>; Tue, 18 Feb 2025 11:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146A82343BE
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 11:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739878091; cv=none; b=ePdq8cvs6OKuBASf+i79Q+tYECKoZMO106kxQ2R+Cv2C+kMSp4txU5TqbgpZxkIu9HeCc2mJl+xaV9ZUE4SWjf+rNdIjkH0Wtc7Y7WvG4csvgIbBNqs0d6EJe244mNBoSS4SxjjQVc7amFwBRw1Ir+ZOcPfCfiA2vtfgGqtRtko=
+	t=1739878101; cv=none; b=Uwv3ravfAR+rRrZox9z8TNl4nWRGNDALMF9iIru1c4K/h6dD/yNh+dAjKF1VbT99gwabGwmjTOM++e8x10MB1BOTDZH+7WJpGn6JCj97NONaGaES+Eu++KngGgLFfJrlKhksuN7uH/4gA+IQnbDxgTWO95BJedR8ymZzUg9VzqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739878091; c=relaxed/simple;
-	bh=ihuV/uxOAe2LhyUDSIEbBJNw10i67MUUbPVfBCkiCIs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=f5Xr7p1u3vZrJOk822SSIccYJTrlRf9zZsQp5k55xKGwHbNHWa9yhycfHg3vS3hwCQibYakTNQVya3dKeG8LWAXUtu2raD+fYUVciPMx6uIdndyDmjCz7OxzxlmVZAQHlLiTqTzhAcKihJACT8wM8WyUG5b+BOqrR0WM5zdB3wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ame300C/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64069C4CEE2;
-	Tue, 18 Feb 2025 11:28:09 +0000 (UTC)
+	s=arc-20240116; t=1739878101; c=relaxed/simple;
+	bh=ym+TeM0qQyMjMhQ2LDoSd09SYzvp7ZMlz8s48riT6Fw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a7loIjNb6cGOikHpuLbQ/3NpuKdjJfbGntcXgAL0ZsFIp0e6deO9heNkPUT2BM9winVuGQmf1wSJJIGw+2YLZ/iqk9YbOVDu1dASWmu/Rur8VdEgVvkbV+afeS2l5FBae+Tor3N+u2pw05L5kenNBgq/iXgfEBiBARQIu2F/ni0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ozy/sZyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390AFC4CEE7;
+	Tue, 18 Feb 2025 11:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739878089;
-	bh=ihuV/uxOAe2LhyUDSIEbBJNw10i67MUUbPVfBCkiCIs=;
+	s=korg; t=1739878100;
+	bh=ym+TeM0qQyMjMhQ2LDoSd09SYzvp7ZMlz8s48riT6Fw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ame300C/5oZywzEnH30sbbn2VwnX/HblQHD/GHuasqQk7seJ0m1SKGrTOTtFc/Mb2
-	 pNGsEl+b8ie9aCiPwVNndUi2STl10Uqx+xMx9a8IetcwQmPIPd/YdJiLlLNRaYTs6T
-	 DwQCo/9r5PHh2rO/SgqJXKQKsDv7i2zoynRNPQvw=
-Subject: FAILED: patch "[PATCH] x86/sev: Fix broken SNP support with KVM module built-in" failed to apply to 6.12-stable tree
-To: ashish.kalra@amd.com,Stable@vger.kernel.org,jroedel@suse.de,pbonzini@redhat.com,seanjc@google.com,vasant.hegde@amd.com
+	b=Ozy/sZyUy3NyrY3MnyZQVqq+o29RT0LIjbCGO8JSJyQ4NVSP7sTyc1bWCRqe6rEoK
+	 qiilXcvoECiP3M+020YWVNPKz6aLKJmcdISEeJwSajVmfF84jH6FYsdxxt4aiod3S2
+	 R3iAWSwcw2BxSCd6iPUJgqnmmm3qiMytv79bAad4=
+Subject: FAILED: patch "[PATCH] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF" failed to apply to 6.6-stable tree
+To: kan.liang@linux.intel.com,peterz@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Feb 2025 12:27:58 +0100
-Message-ID: <2025021858-default-pledge-8039@gregkh>
+Date: Tue, 18 Feb 2025 12:28:17 +0100
+Message-ID: <2025021817-pull-grievance-de31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 409f45387c937145adeeeebc6d6032c2ec232b35
+git cherry-pick -x 47a973fd75639fe80d59f9e1860113bb2a0b112b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021858-default-pledge-8039@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021817-pull-grievance-de31@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,291 +77,103 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 409f45387c937145adeeeebc6d6032c2ec232b35 Mon Sep 17 00:00:00 2001
-From: Ashish Kalra <ashish.kalra@amd.com>
-Date: Mon, 10 Feb 2025 22:54:18 +0000
-Subject: [PATCH] x86/sev: Fix broken SNP support with KVM module built-in
+From 47a973fd75639fe80d59f9e1860113bb2a0b112b Mon Sep 17 00:00:00 2001
+From: Kan Liang <kan.liang@linux.intel.com>
+Date: Wed, 29 Jan 2025 07:48:19 -0800
+Subject: [PATCH] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
 
-Fix issues with enabling SNP host support and effectively SNP support
-which is broken with respect to the KVM module being built-in.
+The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
+To tell the availability of the sub-leaf 1 (enumerate the counter mask),
+perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
 
-SNP host support is enabled in snp_rmptable_init() which is invoked as
-device_initcall(). SNP check on IOMMU is done during IOMMU PCI init
-(IOMMU_PCI_INIT stage). And for that reason snp_rmptable_init() is
-currently invoked via device_initcall() and cannot be invoked via
-subsys_initcall() as core IOMMU subsystem gets initialized via
-subsys_initcall().
+The error is not user-visible on bare metal. Because the sub-leaf 0 and
+the sub-leaf 1 are always available. However, it may bring issues in a
+virtualization environment when a VMM only enumerates the sub-leaf 0.
 
-Now, if kvm_amd module is built-in, it gets initialized before SNP host
-support is enabled in snp_rmptable_init() :
+Introduce the cpuid35_e?x to replace the macros, which makes the
+implementation style consistent.
 
-[   10.131811] kvm_amd: TSC scaling supported
-[   10.136384] kvm_amd: Nested Virtualization enabled
-[   10.141734] kvm_amd: Nested Paging enabled
-[   10.146304] kvm_amd: LBR virtualization supported
-[   10.151557] kvm_amd: SEV enabled (ASIDs 100 - 509)
-[   10.156905] kvm_amd: SEV-ES enabled (ASIDs 1 - 99)
-[   10.162256] kvm_amd: SEV-SNP enabled (ASIDs 1 - 99)
-[   10.171508] kvm_amd: Virtual VMLOAD VMSAVE supported
-[   10.177052] kvm_amd: Virtual GIF supported
-...
-...
-[   10.201648] kvm_amd: in svm_enable_virtualization_cpu
+Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250129154820.3755948-3-kan.liang@linux.intel.com
 
-And then svm_x86_ops->enable_virtualization_cpu()
-(svm_enable_virtualization_cpu) programs MSR_VM_HSAVE_PA as following:
-wrmsrl(MSR_VM_HSAVE_PA, sd->save_area_pa);
-
-So VM_HSAVE_PA is non-zero before SNP support is enabled on all CPUs.
-
-snp_rmptable_init() gets invoked after svm_enable_virtualization_cpu()
-as following :
-...
-[   11.256138] kvm_amd: in svm_enable_virtualization_cpu
-...
-[   11.264918] SEV-SNP: in snp_rmptable_init
-
-This triggers a #GP exception in snp_rmptable_init() when snp_enable()
-is invoked to set SNP_EN in SYSCFG MSR:
-
-[   11.294289] unchecked MSR access error: WRMSR to 0xc0010010 (tried to write 0x0000000003fc0000) at rIP: 0xffffffffaf5d5c28 (native_write_msr+0x8/0x30)
-...
-[   11.294404] Call Trace:
-[   11.294482]  <IRQ>
-[   11.294513]  ? show_stack_regs+0x26/0x30
-[   11.294522]  ? ex_handler_msr+0x10f/0x180
-[   11.294529]  ? search_extable+0x2b/0x40
-[   11.294538]  ? fixup_exception+0x2dd/0x340
-[   11.294542]  ? exc_general_protection+0x14f/0x440
-[   11.294550]  ? asm_exc_general_protection+0x2b/0x30
-[   11.294557]  ? __pfx_snp_enable+0x10/0x10
-[   11.294567]  ? native_write_msr+0x8/0x30
-[   11.294570]  ? __snp_enable+0x5d/0x70
-[   11.294575]  snp_enable+0x19/0x20
-[   11.294578]  __flush_smp_call_function_queue+0x9c/0x3a0
-[   11.294586]  generic_smp_call_function_single_interrupt+0x17/0x20
-[   11.294589]  __sysvec_call_function+0x20/0x90
-[   11.294596]  sysvec_call_function+0x80/0xb0
-[   11.294601]  </IRQ>
-[   11.294603]  <TASK>
-[   11.294605]  asm_sysvec_call_function+0x1f/0x30
-...
-[   11.294631]  arch_cpu_idle+0xd/0x20
-[   11.294633]  default_idle_call+0x34/0xd0
-[   11.294636]  do_idle+0x1f1/0x230
-[   11.294643]  ? complete+0x71/0x80
-[   11.294649]  cpu_startup_entry+0x30/0x40
-[   11.294652]  start_secondary+0x12d/0x160
-[   11.294655]  common_startup_64+0x13e/0x141
-[   11.294662]  </TASK>
-
-This #GP exception is getting triggered due to the following errata for
-AMD family 19h Models 10h-1Fh Processors:
-
-Processor may generate spurious #GP(0) Exception on WRMSR instruction:
-Description:
-The Processor will generate a spurious #GP(0) Exception on a WRMSR
-instruction if the following conditions are all met:
-- the target of the WRMSR is a SYSCFG register.
-- the write changes the value of SYSCFG.SNPEn from 0 to 1.
-- One of the threads that share the physical core has a non-zero
-value in the VM_HSAVE_PA MSR.
-
-The document being referred to above:
-https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/revision-guides/57095-PUB_1_01.pdf
-
-To summarize, with kvm_amd module being built-in, KVM/SVM initialization
-happens before host SNP is enabled and this SVM initialization
-sets VM_HSAVE_PA to non-zero, which then triggers a #GP when
-SYSCFG.SNPEn is being set and this will subsequently cause
-SNP_INIT(_EX) to fail with INVALID_CONFIG error as SYSCFG[SnpEn] is not
-set on all CPUs.
-
-Essentially SNP host enabling code should be invoked before KVM
-initialization, which is currently not the case when KVM is built-in.
-
-Add fix to call snp_rmptable_init() early from iommu_snp_enable()
-directly and not invoked via device_initcall() which enables SNP host
-support before KVM initialization with kvm_amd module built-in.
-
-Add additional handling for `iommu=off` or `amd_iommu=off` options.
-
-Note that IOMMUs need to be enabled for SNP initialization, therefore,
-if host SNP support is enabled but late IOMMU initialization fails
-then that will cause PSP driver's SNP_INIT to fail as IOMMU SNP sanity
-checks in SNP firmware will fail with invalid configuration error as
-below:
-
-[    9.723114] ccp 0000:23:00.1: sev enabled
-[    9.727602] ccp 0000:23:00.1: psp enabled
-[    9.732527] ccp 0000:a2:00.1: enabling device (0000 -> 0002)
-[    9.739098] ccp 0000:a2:00.1: no command queues available
-[    9.745167] ccp 0000:a2:00.1: psp enabled
-[    9.805337] ccp 0000:23:00.1: SEV-SNP: failed to INIT rc -5, error 0x3
-[    9.866426] ccp 0000:23:00.1: SEV API:1.53 build:5
-
-Fixes: c3b86e61b756 ("x86/cpufeatures: Enable/unmask SEV-SNP CPU feature")
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Acked-by: Joerg Roedel <jroedel@suse.de>
-Message-ID: <138b520fb83964782303b43ade4369cd181fdd9c.1739226950.git.ashish.kalra@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 5d9685f92e5c..1581246491b5 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -531,6 +531,7 @@ static inline void __init snp_secure_tsc_init(void) { }
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 966f7832497d..f3d5b718f93f 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4905,20 +4905,22 @@ static inline bool intel_pmu_broken_perf_cap(void)
  
- #ifdef CONFIG_KVM_AMD_SEV
- bool snp_probe_rmptable_info(void);
-+int snp_rmptable_init(void);
- int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level);
- void snp_dump_hva_rmpentry(unsigned long address);
- int psmash(u64 pfn);
-@@ -541,6 +542,7 @@ void kdump_sev_callback(void);
- void snp_fixup_e820_tables(void);
- #else
- static inline bool snp_probe_rmptable_info(void) { return false; }
-+static inline int snp_rmptable_init(void) { return -ENOSYS; }
- static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return -ENODEV; }
- static inline void snp_dump_hva_rmpentry(unsigned long address) {}
- static inline int psmash(u64 pfn) { return -ENODEV; }
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index 1dcc027ec77e..42e74a5a7d78 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -505,19 +505,19 @@ static bool __init setup_rmptable(void)
-  * described in the SNP_INIT_EX firmware command description in the SNP
-  * firmware ABI spec.
+ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+ {
+-	unsigned int sub_bitmaps, eax, ebx, ecx, edx;
++	unsigned int cntr, fixed_cntr, ecx, edx;
++	union cpuid35_eax eax;
++	union cpuid35_ebx ebx;
+ 
+-	cpuid(ARCH_PERFMON_EXT_LEAF, &sub_bitmaps, &ebx, &ecx, &edx);
++	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
+ 
+-	if (ebx & ARCH_PERFMON_EXT_UMASK2)
++	if (ebx.split.umask2)
+ 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_UMASK2;
+-	if (ebx & ARCH_PERFMON_EXT_EQ)
++	if (ebx.split.eq)
+ 		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
+ 
+-	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
++	if (eax.split.cntr_subleaf) {
+ 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
+-			    &eax, &ebx, &ecx, &edx);
+-		pmu->cntr_mask64 = eax;
+-		pmu->fixed_cntr_mask64 = ebx;
++			    &cntr, &fixed_cntr, &ecx, &edx);
++		pmu->cntr_mask64 = cntr;
++		pmu->fixed_cntr_mask64 = fixed_cntr;
+ 	}
+ 
+ 	if (!intel_pmu_broken_perf_cap()) {
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 1ac79f361645..0ba8d20f2d1d 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -188,11 +188,33 @@ union cpuid10_edx {
+  * detection/enumeration details:
   */
--static int __init snp_rmptable_init(void)
-+int __init snp_rmptable_init(void)
- {
- 	unsigned int i;
- 	u64 val;
+ #define ARCH_PERFMON_EXT_LEAF			0x00000023
+-#define ARCH_PERFMON_EXT_UMASK2			0x1
+-#define ARCH_PERFMON_EXT_EQ			0x2
+-#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
+ #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
  
--	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
--		return 0;
-+	if (WARN_ON_ONCE(!cc_platform_has(CC_ATTR_HOST_SEV_SNP)))
-+		return -ENOSYS;
- 
--	if (!amd_iommu_snp_en)
--		goto nosnp;
-+	if (WARN_ON_ONCE(!amd_iommu_snp_en))
-+		return -ENOSYS;
- 
- 	if (!setup_rmptable())
--		goto nosnp;
-+		return -ENOSYS;
- 
- 	/*
- 	 * Check if SEV-SNP is already enabled, this can happen in case of
-@@ -530,7 +530,7 @@ static int __init snp_rmptable_init(void)
- 	/* Zero out the RMP bookkeeping area */
- 	if (!clear_rmptable_bookkeeping()) {
- 		free_rmp_segment_table();
--		goto nosnp;
-+		return -ENOSYS;
- 	}
- 
- 	/* Zero out the RMP entries */
-@@ -562,17 +562,8 @@ static int __init snp_rmptable_init(void)
- 	crash_kexec_post_notifiers = true;
- 
- 	return 0;
--
--nosnp:
--	cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
--	return -ENOSYS;
- }
- 
--/*
-- * This must be called after the IOMMU has been initialized.
-- */
--device_initcall(snp_rmptable_init);
--
- static void set_rmp_segment_info(unsigned int segment_shift)
- {
- 	rmp_segment_shift = segment_shift;
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index c5cd92edada0..2fecfed75e54 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3194,7 +3194,7 @@ static bool __init detect_ivrs(void)
- 	return true;
- }
- 
--static void iommu_snp_enable(void)
-+static __init void iommu_snp_enable(void)
- {
- #ifdef CONFIG_KVM_AMD_SEV
- 	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-@@ -3219,6 +3219,14 @@ static void iommu_snp_enable(void)
- 		goto disable_snp;
- 	}
- 
-+	/*
-+	 * Enable host SNP support once SNP support is checked on IOMMU.
-+	 */
-+	if (snp_rmptable_init()) {
-+		pr_warn("SNP: RMP initialization failed, SNP cannot be supported.\n");
-+		goto disable_snp;
-+	}
++union cpuid35_eax {
++	struct {
++		unsigned int	leaf0:1;
++		/* Counters Sub-Leaf */
++		unsigned int    cntr_subleaf:1;
++		/* Auto Counter Reload Sub-Leaf */
++		unsigned int    acr_subleaf:1;
++		/* Events Sub-Leaf */
++		unsigned int    events_subleaf:1;
++		unsigned int	reserved:28;
++	} split;
++	unsigned int            full;
++};
 +
- 	pr_info("IOMMU SNP support enabled.\n");
- 	return;
- 
-@@ -3318,6 +3326,19 @@ static int __init iommu_go_to_state(enum iommu_init_state state)
- 		ret = state_next();
- 	}
- 
-+	/*
-+	 * SNP platform initilazation requires IOMMUs to be fully configured.
-+	 * If the SNP support on IOMMUs has NOT been checked, simply mark SNP
-+	 * as unsupported. If the SNP support on IOMMUs has been checked and
-+	 * host SNP support enabled but RMP enforcement has not been enabled
-+	 * in IOMMUs, then the system is in a half-baked state, but can limp
-+	 * along as all memory should be Hypervisor-Owned in the RMP. WARN,
-+	 * but leave SNP as "supported" to avoid confusing the kernel.
-+	 */
-+	if (ret && cc_platform_has(CC_ATTR_HOST_SEV_SNP) &&
-+	    !WARN_ON_ONCE(amd_iommu_snp_en))
-+		cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
++union cpuid35_ebx {
++	struct {
++		/* UnitMask2 Supported */
++		unsigned int    umask2:1;
++		/* EQ-bit Supported */
++		unsigned int    eq:1;
++		unsigned int	reserved:30;
++	} split;
++	unsigned int            full;
++};
 +
- 	return ret;
- }
- 
-@@ -3426,18 +3447,23 @@ void __init amd_iommu_detect(void)
- 	int ret;
- 
- 	if (no_iommu || (iommu_detected && !gart_iommu_aperture))
--		return;
-+		goto disable_snp;
- 
- 	if (!amd_iommu_sme_check())
--		return;
-+		goto disable_snp;
- 
- 	ret = iommu_go_to_state(IOMMU_IVRS_DETECTED);
- 	if (ret)
--		return;
-+		goto disable_snp;
- 
- 	amd_iommu_detected = true;
- 	iommu_detected = 1;
- 	x86_init.iommu.iommu_init = amd_iommu_init;
-+	return;
-+
-+disable_snp:
-+	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-+		cc_platform_clear(CC_ATTR_HOST_SEV_SNP);
- }
- 
- /****************************************************************************
+ /*
+  * Intel Architectural LBR CPUID detection/enumeration details:
+  */
 
 
