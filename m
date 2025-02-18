@@ -1,164 +1,113 @@
-Return-Path: <stable+bounces-116658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E34FA391F9
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 05:03:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97678A39290
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 06:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE81C1895A35
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 04:03:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B34BF3B4281
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 05:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1F41ACECB;
-	Tue, 18 Feb 2025 04:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2E91B042A;
+	Tue, 18 Feb 2025 05:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="L6LfZ1mT"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Cc5/0kro"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245CC19F104;
-	Tue, 18 Feb 2025 04:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EC11AF0C0;
+	Tue, 18 Feb 2025 05:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739851259; cv=none; b=H6jIyZRChYCTzINDnQICkcHwAkk/6sygdqNL1jRpsSAGAjl5zkrJD4uYIN8eDXdd7ae0F0cS+pEpMU7b6i/3sAdwA0RbHH4XBqDVp72q7DmWyjZm5wOMazJ8ZofCt+NAs47lmgjyKl89szA4X4A/276WOLGno4WXtKfxSDZiUO8=
+	t=1739856204; cv=none; b=cJp7xOspFhGxL3kRUW1CEAyrBGHXjS9O4qstoSzVgEJ9Dt9iLpzao002VsuEgvomwkpvotAHkjHAcjFtbJjOXWjvUhq2aaJzScy492n9r6b9/NXg7BPl30n+pFeR6hGc77k4svw//7YTpz+fKMuIW8VOm1EfaYCv9B+8FW5Nviw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739851259; c=relaxed/simple;
-	bh=ZU183XEyphSbCiHBcDUtFHGQY9Je9687LZvTUtxG5/4=;
-	h=Date:To:From:Subject:Message-Id; b=W98QJFT0fEtUWmm8v0dRbQh3Ej5qs3aLH3YqBFcvrgWDc2zPfy+0+Qmw8p8T7lFvMKq3ygmrna4qpyTJfVySQc7+cuz+Gti+5MNGSCAoDReDcaMx01R39YYh9quHy5z7SuwDwkuq96XekCgoSSW5OVj2AkdlJ8iON+JhTz5lBtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L6LfZ1mT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96763C4CEE6;
-	Tue, 18 Feb 2025 04:00:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1739851258;
-	bh=ZU183XEyphSbCiHBcDUtFHGQY9Je9687LZvTUtxG5/4=;
-	h=Date:To:From:Subject:From;
-	b=L6LfZ1mTArjfXrPN5Ug+KqtvBGK2kUH3fPBgjPK7Oys6anVG9gwwzJauleLQLAMI9
-	 0DCuuhbq3m+mBs0Yl84c1zcuvxT8+iwIU05QMjyEM6ca9VOG38LsA4Il9bkhV025pi
-	 sxZuJnhc9OLn8MghNZHKqTC/2UDBvDS1cEubzPzw=
-Date: Mon, 17 Feb 2025 20:00:58 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,mhocko@suse.com,linmiaohe@huawei.com,david@redhat.com,mawupeng1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + hwpoison-memory_hotplug-lock-folio-before-unmap-hwpoisoned-folio.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250218040058.96763C4CEE6@smtp.kernel.org>
+	s=arc-20240116; t=1739856204; c=relaxed/simple;
+	bh=77tZbCXU0gOTWWDTG0Q2sa76sq1j0rrk/C0uaK6xB5w=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rLfRXfXY+eXPqTBhHT2RRUo8HcDLkN1s+Pnigw0MGK2CENOPzVwgvZ71AiMPj7q+RpQLrEnwJPgdJamG+Ara9D62VLi+twBRfPxBw07oJ2mligF1SYuayfD5vnPNn+B+Fcth5N2GKC6weMiGEr/RcSzp2mVO6tVR11dAxvFt4ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Cc5/0kro; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51I5N5Q1647929
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 17 Feb 2025 23:23:05 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739856185;
+	bh=5/r3Cd3a5F8RDl+gpGHajtVIDh7k0BuAfKXauxlaFPE=;
+	h=From:To:CC:Subject:Date;
+	b=Cc5/0krozeeWVCsdf1M4B+5WhdBjTJbBb5QQErFBuYQ7t9e0NLAKdPLAnAxUqFtsn
+	 ftrUba56WmO2YUpjDnT1M/DNaiGbgCEi3vsWVZvtK6KbivB/fFQ+p7k1oIp0wW5zNq
+	 w9ajz8QEF44/DO+UH4Woe/vWolZQwUkGC14LVf0g=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51I5N5Cg079664;
+	Mon, 17 Feb 2025 23:23:05 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 17
+ Feb 2025 23:23:04 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 17 Feb 2025 23:23:04 -0600
+Received: from ubuntu.myguest.virtualbox.org (ltpw09g681.dhcp.ti.com [172.24.29.106])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51I5N0Zb109957;
+	Mon, 17 Feb 2025 23:23:01 -0600
+From: Keerthy <j-keerthy@ti.com>
+To: <robh+dt@kernel.org>, <nm@ti.com>, <vigneshr@ti.com>,
+        <conor+dt@kernel.org>, <kristo@kernel.org>, <krzk+dt@kernel.org>
+CC: <j-keerthy@ti.com>, <u-kumar1@ti.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v2] arm64: dts: ti: k3-j784s4-j742s2-main-common: Correct the GICD size
+Date: Tue, 18 Feb 2025 10:52:48 +0530
+Message-ID: <20250218052248.4734-1-j-keerthy@ti.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+Currently we get the warning:
 
-The patch titled
-     Subject: hwpoison, memory_hotplug: lock folio before unmap hwpoisoned folio
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     hwpoison-memory_hotplug-lock-folio-before-unmap-hwpoisoned-folio.patch
+"GICv3: [Firmware Bug]: GICR region 0x0000000001900000 has
+overlapping address"
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hwpoison-memory_hotplug-lock-folio-before-unmap-hwpoisoned-folio.patch
+As per TRM GICD is 64 KB. Fix it by correcting the size of GICD.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ma Wupeng <mawupeng1@huawei.com>
-Subject: hwpoison, memory_hotplug: lock folio before unmap hwpoisoned folio
-Date: Mon, 17 Feb 2025 09:43:29 +0800
-
-Commit b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to
-be offlined) add page poison checks in do_migrate_range in order to make
-offline hwpoisoned page possible by introducing isolate_lru_page and
-try_to_unmap for hwpoisoned page.  However folio lock must be held before
-calling try_to_unmap.  Add it to fix this problem.
-
-Warning will be produced if folio is not locked during unmap:
-
-  ------------[ cut here ]------------
-  kernel BUG at ./include/linux/swapops.h:400!
-  Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-  Modules linked in:
-  CPU: 4 UID: 0 PID: 411 Comm: bash Tainted: G        W          6.13.0-rc1-00016-g3c434c7ee82a-dirty #41
-  Tainted: [W]=WARN
-  Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-  pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : try_to_unmap_one+0xb08/0xd3c
-  lr : try_to_unmap_one+0x3dc/0xd3c
-  Call trace:
-   try_to_unmap_one+0xb08/0xd3c (P)
-   try_to_unmap_one+0x3dc/0xd3c (L)
-   rmap_walk_anon+0xdc/0x1f8
-   rmap_walk+0x3c/0x58
-   try_to_unmap+0x88/0x90
-   unmap_poisoned_folio+0x30/0xa8
-   do_migrate_range+0x4a0/0x568
-   offline_pages+0x5a4/0x670
-   memory_block_action+0x17c/0x374
-   memory_subsys_offline+0x3c/0x78
-   device_offline+0xa4/0xd0
-   state_store+0x8c/0xf0
-   dev_attr_store+0x18/0x2c
-   sysfs_kf_write+0x44/0x54
-   kernfs_fop_write_iter+0x118/0x1a8
-   vfs_write+0x3a8/0x4bc
-   ksys_write+0x6c/0xf8
-   __arm64_sys_write+0x1c/0x28
-   invoke_syscall+0x44/0x100
-   el0_svc_common.constprop.0+0x40/0xe0
-   do_el0_svc+0x1c/0x28
-   el0_svc+0x30/0xd0
-   el0t_64_sync_handler+0xc8/0xcc
-   el0t_64_sync+0x198/0x19c
-  Code: f9407be0 b5fff320 d4210000 17ffff97 (d4210000)
-  ---[ end trace 0000000000000000 ]---
-
-Link: https://lkml.kernel.org/r/20250217014329.3610326-4-mawupeng1@huawei.com
-Fixes: b15c87263a69 ("hwpoison, memory_hotplug: allow hwpoisoned pages to be offlined")
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9cc161a4509c ("arm64: dts: ti: Refactor J784s4 SoC files to a common file")
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Cc: stable@vger.kernel.org
 ---
 
- mm/memory_hotplug.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in V2:
 
---- a/mm/memory_hotplug.c~hwpoison-memory_hotplug-lock-folio-before-unmap-hwpoisoned-folio
-+++ a/mm/memory_hotplug.c
-@@ -1832,8 +1832,11 @@ static void do_migrate_range(unsigned lo
- 		    (folio_test_large(folio) && folio_test_has_hwpoisoned(folio))) {
- 			if (WARN_ON(folio_test_lru(folio)))
- 				folio_isolate_lru(folio);
--			if (folio_mapped(folio))
-+			if (folio_mapped(folio)) {
-+				folio_lock(folio);
- 				unmap_poisoned_folio(folio, pfn, false);
-+				folio_unlock(folio);
-+			}
- 
- 			goto put_folio;
- 		}
-_
+	* Added the fixes tag
+	* Cc: stable
 
-Patches currently in -mm which might be from mawupeng1@huawei.com are
+ arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-mm-memory-failure-update-ttu-flag-inside-unmap_poisoned_folio.patch
-mm-memory-hotplug-check-folio-ref-count-first-in-do_migrate_range.patch
-hwpoison-memory_hotplug-lock-folio-before-unmap-hwpoisoned-folio.patch
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+index 83bbf94b58d1..3b72fca158ad 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+@@ -193,7 +193,7 @@
+ 		ranges;
+ 		#interrupt-cells = <3>;
+ 		interrupt-controller;
+-		reg = <0x00 0x01800000 0x00 0x200000>, /* GICD */
++		reg = <0x00 0x01800000 0x00 0x10000>, /* GICD */
+ 		      <0x00 0x01900000 0x00 0x100000>, /* GICR */
+ 		      <0x00 0x6f000000 0x00 0x2000>,   /* GICC */
+ 		      <0x00 0x6f010000 0x00 0x1000>,   /* GICH */
+-- 
+2.17.1
 
 
