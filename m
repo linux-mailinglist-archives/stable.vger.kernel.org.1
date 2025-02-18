@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-116817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F85A3A7A1
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:32:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C5BA3A79D
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91DD189061A
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 19:32:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16627188FF8B
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 19:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE5D271294;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8BF27128A;
 	Tue, 18 Feb 2025 19:31:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832DE270EDE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FEF270ECE;
 	Tue, 18 Feb 2025 19:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739907064; cv=none; b=isbJVp0r9byJD2LIMwRnxd6gaJsGDpUCoXCgJ5URROMCrgfvJ+geVHneXUJDubh4ODTAIuaJzJR0cq+w/QLh6cPazwX2i3o+cdgdKHhjlByhaG0NYeY9Jb+nU9R6UyFkLV4fHCw1YcVW7+Eu5pM3CBocFYRy5oXFzZLvYe1EbNU=
+	t=1739907064; cv=none; b=EYp0aJf69g5kUcPRY8MjC3416AoMLOf7mRJp/x7YuN78nbK9h9/1wtrRBwdGMD5MUzLPk5BD7hXUbLG66kRepicRpkZ6+37sf0qZ9V8tyVc+ivRXuUBreweryado6IVAW12MBUhmjIUc9c76WW13D35C06/2hP63/mtqALCFhjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739907064; c=relaxed/simple;
-	bh=M7fCrUMkcJFL3ZqgFUjk+rKtBC8bW07j+zFJYfrD5jo=;
+	bh=IczSO0h8tCSdWpAMkGFhoB9zUssOEz97ahdprfA2go8=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=rzDd//8qFG7K4X0NTmADo28HLV3IbsxlLiXmAantCiTDKgqbwL4VdMAK9Ea1aIh0W3fiixo0zoV+k35vQ59DCwAyYacvKDO2xusF2y+EYm2PZ8/YJETZkXhkJUmAY88GYxOWWbjOR35OfS5c0BnYh6frmUTrycYjyxk9uCC0SFU=
+	 Content-Type; b=Ao5HUM1c8Ak/Elk8lcEFyQNttqsM6CVwQhxol+ZZ1yvHgn1M6TB3HQl8LfVxFfdg4aqSc7LB7LSPwAbfmyh/YmwGYEkrmbYcqrT8H1JNSA74Z/2JsFoXtErEwkEFjQ1ZmpooiEHeK6+XvE0uwqKNYGlOejcrLfytYkUJ4s9+emw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FCDC4CEEE;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB39C4CEE2;
 	Tue, 18 Feb 2025 19:31:04 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1tkTJW-00000004A0N-3Dpy;
+	id 1tkTJW-00000004A0w-3vZO;
 	Tue, 18 Feb 2025 14:31:26 -0500
-Message-ID: <20250218193126.619197190@goodmis.org>
+Message-ID: <20250218193126.785837383@goodmis.org>
 User-Agent: quilt/0.68
-Date: Tue, 18 Feb 2025 14:30:36 -0500
+Date: Tue, 18 Feb 2025 14:30:37 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org
@@ -48,7 +48,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Vasily Gorbik <gor@linux.ibm.com>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
  stable@vger.kernel.org
-Subject: [PATCH 3/5] fprobe: Fix accounting of when to unregister from function graph
+Subject: [PATCH 4/5] fprobe: Always unregister fgraph function from ops
 References: <20250218193033.338823920@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,71 +60,65 @@ Content-Type: text/plain; charset=UTF-8
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-When adding a new fprobe, it will update the function hash to the
-functions the fprobe is attached to and register with function graph to
-have it call the registered functions. The fprobe_graph_active variable
-keeps track of the number of fprobes that are using function graph.
+When the last fprobe is removed, it calls unregister_ftrace_graph() to
+remove the graph_ops from function graph. The issue is when it does so, it
+calls return before removing the function from its graph ops via
+ftrace_set_filter_ips(). This leaves the last function lingering in the
+fprobe's fgraph ops and if a probe is added it also enables that last
+function (even though the callback will just drop it, it does add unneeded
+overhead to make that call).
 
-If two fprobes attach to the same function, it increments the
-fprobe_graph_active for each of them. But when they are removed, the first
-fprobe to be removed will see that the function it is attached to is also
-used by another fprobe and it will not remove that function from
-function_graph. The logic will skip decrementing the fprobe_graph_active
-variable.
+  # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kernel_clone (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
 
-This causes the fprobe_graph_active variable to not go to zero when all
-fprobes are removed, and in doing so it does not unregister from
-function graph. As the fgraph ops hash will now be empty, and an empty
-filter hash means all functions are enabled, this triggers function graph
-to add a callback to the fprobe infrastructure for every function!
+  # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kernel_clone (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+schedule_timeout (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
 
- # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
- # echo "f:myevent2 kernel_clone%return" >> /sys/kernel/tracing/dynamic_events
- # cat /sys/kernel/tracing/enabled_functions
-kernel_clone (1)           	tramp: 0xffffffffc0024000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+  # > /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
 
- # > /sys/kernel/tracing/dynamic_events
- # cat /sys/kernel/tracing/enabled_functions
-trace_initcall_start_cb (1)             tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-run_init_process (1)            tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-try_to_run_init_process (1)             tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-x86_pmu_show_pmu_cap (1)                tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-cleanup_rapl_pmus (1)                   tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-uncore_free_pcibus_map (1)              tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-uncore_types_exit (1)                   tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-uncore_pci_exit.part.0 (1)              tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-kvm_shutdown (1)                tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-vmx_dump_msrs (1)               tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-[..]
+  # echo "f:myevent3 kmem_cache_free" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kmem_cache_free (1)           	tramp: 0xffffffffc0219000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+schedule_timeout (1)           	tramp: 0xffffffffc0219000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
 
- # cat /sys/kernel/tracing/enabled_functions | wc -l
-54702
-
-If a fprobe is being removed and all its functions are also traced by
-other fprobes, still decrement the fprobe_graph_active counter.
+The above enabled a fprobe on kernel_clone, and then on schedule_timeout.
+The content of the enabled_functions shows the functions that have a
+callback attached to them. The fprobe attached to those functions
+properly. Then the fprobes were cleared, and enabled_functions was empty
+after that. But after adding a fprobe on kmem_cache_free, the
+enabled_functions shows that the schedule_timeout was attached again. This
+is because it was still left in the fprobe ops that is used to tell
+function graph what functions it wants callbacks from.
 
 Cc: stable@vger.kernel.org
 Fixes: 4346ba1604093 ("fprobe: Rewrite fprobe on function-graph tracer")
-Closes: https://lore.kernel.org/all/20250217114918.10397-A-hca@linux.ibm.com/
-Reported-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/fprobe.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/fprobe.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 2560b312ad57..90241091ca61 100644
+index 90241091ca61..886090845b1a 100644
 --- a/kernel/trace/fprobe.c
 +++ b/kernel/trace/fprobe.c
-@@ -681,6 +681,8 @@ int unregister_fprobe(struct fprobe *fp)
+@@ -403,11 +403,9 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
+ 	lockdep_assert_held(&fprobe_mutex);
  
- 	if (count)
- 		fprobe_graph_remove_ips(addrs, count);
-+	else
-+		fprobe_graph_active--;
+ 	fprobe_graph_active--;
+-	if (!fprobe_graph_active) {
+-		/* Q: should we unregister it ? */
++	/* Q: should we unregister it ? */
++	if (!fprobe_graph_active)
+ 		unregister_ftrace_graph(&fprobe_graph_ops);
+-		return;
+-	}
  
- 	kfree_rcu(hlist_array, rcu);
- 	fp->hlist_array = NULL;
+ 	ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
+ }
 -- 
 2.47.2
 
