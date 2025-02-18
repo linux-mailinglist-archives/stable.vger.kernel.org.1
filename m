@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-116864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72568A3A949
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:38:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6DAA3A960
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 882371777FB
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:34:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59BB33AB6F4
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7381FCFD2;
-	Tue, 18 Feb 2025 20:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8502F1FDE0E;
+	Tue, 18 Feb 2025 20:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2DL5A7x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lEnyFUQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C111DC9B4;
-	Tue, 18 Feb 2025 20:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C21E1FDA85;
+	Tue, 18 Feb 2025 20:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910407; cv=none; b=XQYyzrEMw3RYZ3Vmkz9b1Rfmc+tMxAkGFgVqqgRN0qBUDhzzyDJrmXP3bwKknhpSDxdxbRdm2pJSyCit/GloydTIElN237v55LhRKFFjiukvfkQ+u9/emtZCLamf+ZG7Hd3x9L8fcC2vDLSjZCHHqKuZCNO3ObDUSjDMooxOJ/I=
+	t=1739910409; cv=none; b=uBaCQSbJ474gD86MlgxkQvkUTiVp5ju46uGrEvOh7BIH+WxzCiSfWQdnyalA+LmsXcK3GbPlz1KMy85zewmgGwiguEeuLi9HhiiLSNesrqPaeUFsIFuVs7cEhFLax9aG7rYrSnex+FZYqsSvroBOwaRyBITRWMTDZJUPpqxS5r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910407; c=relaxed/simple;
-	bh=QOeIS+1kV6nxGMmc6k7+FoWF4A/cERpD/XrVh86DxGY=;
+	s=arc-20240116; t=1739910409; c=relaxed/simple;
+	bh=OishFRVt1TzOKpDATJz9wcVUGZvqBcFcoFGVrn4aBXc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gm8tyCuOa80Ywj9xHmiNXSsQZrEQD1/NH3BL1k9Wn37rkboRO+evI70MQVCXmtO4MCVoLwjVeKnQplOMaksneqCm74HFBkNIwdDsKBj1KFWWSlyVYdGAsKCHHKwYXo/jlTRu1Mk5MFVKBk4YPjQ8wQOzdB5kcJlvnGYmer9R2Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2DL5A7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3E7C4CEE2;
-	Tue, 18 Feb 2025 20:26:46 +0000 (UTC)
+	 MIME-Version; b=jQTAUTdbBI3u/tmqk979lduPooRQdi3y1id9531My8NGQdYhchzI+li/+4J7jfV7zXfu+/g5LXyTAlKBnd0Za0IqBFLdO4F0EbxscIWsqYzJWNDsRHci3cVPCqR7Ux7uor7pgMErOUwrAXNejqcDOSwGMbYvcozmgAlclhOcjIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lEnyFUQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E2CC4CEED;
+	Tue, 18 Feb 2025 20:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910407;
-	bh=QOeIS+1kV6nxGMmc6k7+FoWF4A/cERpD/XrVh86DxGY=;
+	s=k20201202; t=1739910409;
+	bh=OishFRVt1TzOKpDATJz9wcVUGZvqBcFcoFGVrn4aBXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2DL5A7x3audT5beokFaIvjqEC9WDvbiTY4+omAJ04p80NFNecO4R5Vboo/zzJJAz
-	 Mx98ZCTonDcDYC55WD3EOkUKRr2b/xgFV6ZLhFMazLoB2Knv81Ci2AT44U2Uq37y8I
-	 koFBSkyo2Bf32GWEPRpqsVgqvGa7IEbgIjUEJp+D2oIc3barx32pGrJTGdyjr/uFi8
-	 4LceyNiVhKPcJvYS2EWTbq1QSZxF5/+Ays6h0JsBa2XBq5ihWmBaY9o3u702SNwgUX
-	 ybG4XeZ1y6W5lJLHajbJAlf/t7fCaF5I4UjXk3HVDcyLpUV87AlH0Ai8eKU9i3V1gM
-	 GQGtsQE1yuAPg==
+	b=lEnyFUQQW2uOmUWhga6mXa6OKvTTCnTE87yP4eDh9dFZOehcG5Iss4fU8LhBRmHop
+	 +Pb8HvtidsKIa5L8OvU9owQZZoQlMqiP8Ua77xLTLpxv9TIyJFAOn8aafJnVkPF91c
+	 gNtN7jDbGJa56re5vldcj0E0NASgpyFwfw/UdXGHXqnaMcF6dvOe0FlxL541IU8+pZ
+	 cnRdcgT1fbQIiJ0XTMFxeXd+PFLnYXIbXy6bZB9AM/coDCgdjafCSdWCmIq1NCfSPX
+	 Z87KJzBR99rn0a7vAKIkxLJf6/arPhNprlp/QZxls/0X++Bl4CdBpFk62nL4AMsheM
+	 fU38FerLF0EIw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Henrie <alexhenrie24@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 11/31] HID: apple: fix up the F6 key on the Omoton KB066 keyboard
-Date: Tue, 18 Feb 2025 15:25:57 -0500
-Message-Id: <20250218202619.3592630-11-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 12/31] btrfs: fix two misuses of folio_shift()
+Date: Tue, 18 Feb 2025 15:25:58 -0500
+Message-Id: <20250218202619.3592630-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202619.3592630-1-sashal@kernel.org>
 References: <20250218202619.3592630-1-sashal@kernel.org>
@@ -67,51 +68,68 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.15
 Content-Transfer-Encoding: 8bit
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-[ Upstream commit 819083cb6eedcc8495cbf84845877bcc741b93b3 ]
+[ Upstream commit 01af106a076352182b2916b143fc50272600bd81 ]
 
-The Omoton KB066 is an Apple A1255 keyboard clone (HID product code
-05ac:022c). On both keyboards, the F6 key becomes Num Lock when the Fn
-key is held. But unlike its Apple exemplar, when the Omoton's F6 key is
-pressed without Fn, it sends the usage code 0xC0301 from the reserved
-section of the consumer page instead of the standard F6 usage code
-0x7003F from the keyboard page. The nonstandard code is translated to
-KEY_UNKNOWN and becomes useless on Linux. The Omoton KB066 is a pretty
-popular keyboard, judging from its 29,058 reviews on Amazon at time of
-writing, so let's account for its quirk to make it more usable.
+It is meaningless to shift a byte count by folio_shift().  The folio index
+is in units of PAGE_SIZE, not folio_size().  We can use folio_contains()
+to make this work for arbitrary-order folios, so remove the assertion
+that the folios are of order 0.
 
-By the way, it would be nice if we could automatically set fnmode to 0
-for Omoton keyboards because they handle the Fn key internally and the
-kernel's Fn key handling creates undesirable side effects such as making
-F1 and F2 always Brightness Up and Brightness Down in fnmode=1 (the
-default) or always F1 and F2 in fnmode=2. Unfortunately I don't think
-there's a way to identify Bluetooth keyboards more specifically than the
-HID product code which is obviously inaccurate. Users of Omoton
-keyboards will just have to set fnmode to 0 manually to get full Fn key
-functionality.
-
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/extent_io.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 3c3f67d0bfcfe..49812a76b7edd 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -546,6 +546,9 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
- 		}
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 42c9899d9241c..aa13a3bca715c 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -526,8 +526,6 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ 		u64 end;
+ 		u32 len;
+ 
+-		/* For now only order 0 folios are supported for data. */
+-		ASSERT(folio_order(folio) == 0);
+ 		btrfs_debug(fs_info,
+ 			"%s: bi_sector=%llu, err=%d, mirror=%u",
+ 			__func__, bio->bi_iter.bi_sector, bio->bi_status,
+@@ -555,7 +553,6 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ 
+ 		if (likely(uptodate)) {
+ 			loff_t i_size = i_size_read(inode);
+-			pgoff_t end_index = i_size >> folio_shift(folio);
+ 
+ 			/*
+ 			 * Zero out the remaining part if this range straddles
+@@ -564,9 +561,11 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ 			 * Here we should only zero the range inside the folio,
+ 			 * not touch anything else.
+ 			 *
+-			 * NOTE: i_size is exclusive while end is inclusive.
++			 * NOTE: i_size is exclusive while end is inclusive and
++			 * folio_contains() takes PAGE_SIZE units.
+ 			 */
+-			if (folio_index(folio) == end_index && i_size <= end) {
++			if (folio_contains(folio, i_size >> PAGE_SHIFT) &&
++			    i_size <= end) {
+ 				u32 zero_start = max(offset_in_folio(folio, i_size),
+ 						     offset_in_folio(folio, start));
+ 				u32 zero_len = offset_in_folio(folio, end) + 1 -
+@@ -963,7 +962,7 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+ 		return ret;
  	}
  
-+	if (usage->hid == 0xc0301) /* Omoton KB066 quirk */
-+		code = KEY_F6;
-+
- 	if (usage->code != code) {
- 		input_event_with_scancode(input, usage->type, code, usage->hid, value);
+-	if (folio->index == last_byte >> folio_shift(folio)) {
++	if (folio_contains(folio, last_byte >> PAGE_SHIFT)) {
+ 		size_t zero_offset = offset_in_folio(folio, last_byte);
  
+ 		if (zero_offset) {
 -- 
 2.39.5
 
