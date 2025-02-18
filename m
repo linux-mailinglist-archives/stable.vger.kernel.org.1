@@ -1,52 +1,65 @@
-Return-Path: <stable+bounces-116789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C59EA3A068
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:50:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F031EA3A085
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EFE6189902D
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:47:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8691676F9
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999FC2500CD;
-	Tue, 18 Feb 2025 14:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539EB269B09;
+	Tue, 18 Feb 2025 14:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wesm2oPX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="JY78NWfB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9D01DB361
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD7226A0D2
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739890063; cv=none; b=NQxNBtT9Brue4t8y8JrImrQP0zglcx9LVdr7IFBhunxg7sjL6199NecCZIUMvlQh6UOjWbG0kWiQtsXC+qaRC2fnabizPKBdfHaekrxuapY8GIvTQD0hHPlYVWNWoMQnNfCiG4MaPp2QUpok0Hk+9omyTyNhuNAGxNRi/DeDvxc=
+	t=1739890220; cv=none; b=eG4ZkQhMygJVgsAqNGmWF7xFukYrNsPeN0qo04XjAHLQCxxXyfKanE2alg10XS9omXRrXIhlxOyhOD3JNaCq0LUjOOX6KvRF/SSNx3Zf8ZXkRQFOKfkFeiaXYm43U0pdfsbHIUjA8OnFZhhdN4xMq+A9JRUvs7jpVcYU9y/I/ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739890063; c=relaxed/simple;
-	bh=AsPr1uKwJ5HOhkOl5Q0MbisHJUV4QXCilBUJS/IqwLU=;
+	s=arc-20240116; t=1739890220; c=relaxed/simple;
+	bh=+PAmDWSI9ufCPRdH7T68uFQIOv2VA6XTS2FhcAYGa6Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AZ+kzYnFJW1JQqjgb/BnhmB+HeNMOVHOKvL8muIp5ZSv9UnE6Da9OiLk3VmSSKU7B5csauveXon6ZZwKigU+ItF/AHrZUHr3/B1Al33KsNx+4DBcw8lzxHflO7dxlXboycV+ELaXsOQMQP+5fcdC8MyYmXM63ReUbzpI+4p7jCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wesm2oPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EA7C4CEE2;
-	Tue, 18 Feb 2025 14:47:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739890063;
-	bh=AsPr1uKwJ5HOhkOl5Q0MbisHJUV4QXCilBUJS/IqwLU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wesm2oPXq6R4DEqaBHgsK4J121KxLdO/hte63bXG5jH6Z8CwEA+rlVbAdT1uI93JP
-	 XnxMiFzzJPhHOVIsNWiIylSX+CN1SQguQAXqjsW/PN76Ng+/KVxvdAs9qtSRl0Eor0
-	 3fq7Ofbgs/B7PUsEnXPZJp3LRAwP8+BzPH+iFr04=
-Date: Tue, 18 Feb 2025 15:47:40 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: lanbincn@qq.com
-Cc: stable@vger.kernel.org, Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [PATCH 5.15.y] nfsd: release svc_expkey/svc_export with rcu_work
-Message-ID: <2025021848-mouth-destruct-c700@gregkh>
-References: <tencent_4D4DC3879124B5B5140E1D0C64031B6D5706@qq.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfCLkxgO/uH/e4F4LGqH64M6LHBci3jZmbN8ZVOx+wOiuqUE618q5dEkhfxO9sgFllWKHUycZSUBfuK6SlFJIPrcQKeAMnxdB3nut6w/mHRZ0Hhr1JkLgwCNaPK8iA7bq9ZbKbr2Q6+GGoA65vnp0xeqefE+gvGKL8GJsZBM+xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=JY78NWfB; arc=none smtp.client-ip=139.162.151.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=unseen.parts; s=sig; h=In-Reply-To:Content-Type:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=oslRDW8z/9DaCSedAoMo+mhZULEdq2vfnqERramfXSk=; b=JY78NWfBRA1+0MvBDZEs73yDuD
+	exshaUY5ZcZtXv44xBt3I2UQTHR3codgQZpMuZcrqE6v1C7LeMDm46QtN4phocDElVR9f47tacer4
+	5rPHZDK/VDmjFyyh/9xS/jnw2w/cGTfC20BkHcEw+r+Np0cdcq8xMG3qXggcqFujQpOy6KNuNa8DV
+	EzJq1z7DSBDY1AxGKFeg04Vw+k8ext+oW17bui0BKbNtw1iJBheefRS3ox7tVik2+1DMML7MN0uSA
+	KK+OgPiPFEtokY+sZt13BTZKuy9ZmDI5Cxh4u8CE3h50cZ6JIrG+s1CS3RpPqxrCICbWET7l+79wA
+	d07tkLQA==;
+Received: from minute.unseen.parts ([139.162.151.61]:41386 helo=minute)
+	by minute.unseen.parts with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <ink@unseen.parts>)
+	id 1tkOvK-0005Cb-1v;
+	Tue, 18 Feb 2025 15:50:10 +0100
+Date: Tue, 18 Feb 2025 15:50:08 +0100
+From: Ivan Kokshaysky <ink@unseen.parts>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linmag7@gmail.com, macro@orcam.me.uk, mattst88@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH][v4.19-v6.1] alpha: replace hardcoded stack offsets with
+ autogenerated
+Message-ID: <Z7SeIF7hWZ_fIfLl@minute>
+References: <2025021844-cruelness-freedom-e051@gregkh>
+ <Z7SN1kaT-1tuYyvL@minute>
+ <2025021849-zoning-bath-bc43@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,20 +68,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_4D4DC3879124B5B5140E1D0C64031B6D5706@qq.com>
+In-Reply-To: <2025021849-zoning-bath-bc43@gregkh>
 
-On Thu, Feb 13, 2025 at 07:46:56PM +0800, lanbincn@qq.com wrote:
-> From: Yang Erkun <yangerkun@huawei.com>
-> 
-> commit f8c989a0c89a75d30f899a7cabdc14d72522bb8d upstream.
+[backported commit 77b823fa619f97d16409]
 
-Why do you want a commit that was reverted because it was wrong to be
-backported to a stable kernel tree?
+This allows the assembly in entry.S to automatically keep in sync with
+changes in the stack layout (struct pt_regs and struct switch_stack).
 
-Please fix your workflow to properly test and figure this thing out
-ahead of time so that it doesn't waste our reviews.
+Cc: stable@vger.kernel.org # v4.19.x-v6.1.x
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+---
+ arch/alpha/kernel/asm-offsets.c | 4 ++++
+ arch/alpha/kernel/entry.S       | 4 ----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-thanks,
+diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
+index 4cfeae42c79a..e9dad60b147f 100644
+--- a/arch/alpha/kernel/asm-offsets.c
++++ b/arch/alpha/kernel/asm-offsets.c
+@@ -32,7 +32,9 @@ void foo(void)
+         DEFINE(CRED_EGID, offsetof(struct cred, egid));
+         BLANK();
+ 
++	DEFINE(SP_OFF, offsetof(struct pt_regs, ps));
+ 	DEFINE(SIZEOF_PT_REGS, sizeof(struct pt_regs));
++	DEFINE(SWITCH_STACK_SIZE, sizeof(struct switch_stack));
+ 	DEFINE(PT_PTRACED, PT_PTRACED);
+ 	DEFINE(CLONE_VM, CLONE_VM);
+ 	DEFINE(CLONE_UNTRACED, CLONE_UNTRACED);
+diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
+index dd26062d75b3..6fb38365539d 100644
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -15,10 +15,6 @@
+ 	.set noat
+ 	.cfi_sections	.debug_frame
+ 
+-/* Stack offsets.  */
+-#define SP_OFF			184
+-#define SWITCH_STACK_SIZE	320
+-
+ .macro	CFI_START_OSF_FRAME	func
+ 	.align	4
+ 	.globl	\func
+-- 
+2.47.2
 
-greg k-h
 
