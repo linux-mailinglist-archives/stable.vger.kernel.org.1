@@ -1,93 +1,136 @@
-Return-Path: <stable+bounces-116675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C69CA3941B
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 08:49:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7EEA39442
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 09:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57E8F7A2B10
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 07:48:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB070188B5C5
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 08:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A1A1F2B90;
-	Tue, 18 Feb 2025 07:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38112080C5;
+	Tue, 18 Feb 2025 08:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+b2CziQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Il8DsjEP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3581EEA2A
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 07:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E92066C1;
+	Tue, 18 Feb 2025 07:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739864965; cv=none; b=YiRDGEQMkeM3HeZprRT5lyV8Du6klyNgfQUAja7tqaa196HO0ByiHmtZLh1Sy5RLWdM+Q9Ut7e24dzj/1bhTNsid9urdNK3onO14vURkHuOTYJvELVMlhg9B11IlcKjaAbh9v/92k/nQKtXnocnnFv+fb+iCAP+shE2oXxVm6LQ=
+	t=1739865601; cv=none; b=iCoIC1QSamjsV6BLoWpcZTGRxqrnqRtPuSPQRfyB7WPeM2wWjiFqBk7ONzLq8qDYYylPzRW6bHysS+YeEzSvnfo770HI1xHnOslIF57WhNgipxFTYiBJ4TJpxdxKfBZSXD/TPF0shhecAl7/0Eu73srp+HJ8T0cLniBW2dtWgxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739864965; c=relaxed/simple;
-	bh=GkKM+DBOVd6orqINq/RQKJoYmvqEfIBoyz/KfGtJob0=;
+	s=arc-20240116; t=1739865601; c=relaxed/simple;
+	bh=ziEzK7wRUsoPk34tXG4PKX0kfZMyG09T1TuFOZsMGH8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8bN4ApFd2KTcXQwWEOyF1Ptz0PeXv03sgJIp8mivtsw02zLCgdkLNlxoGQ5N3DDRaEsA3D7fpSj+Zxcv+hgm+WlPi2ZXhAAG8m4DKPnknr4Ur6USZPoIINhLGDsl5cwgx2v42h3FuJo9WpfxAjYk8nDIi5YpTOCUnVx0+KB8nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+b2CziQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9646FC4CEE2;
-	Tue, 18 Feb 2025 07:49:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739864965;
-	bh=GkKM+DBOVd6orqINq/RQKJoYmvqEfIBoyz/KfGtJob0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O+b2CziQI7QBIXRcVlCnvy5ky1X8c21WGDfIkounmiyZyG/vLjdrK0+gdRVNq/qe+
-	 aMTnIo081BdrszrIrscjueQ6ioi7qyOCmD1sk7Tn6gb66SYCLf2FCeG/I9IkubTS1G
-	 nj6l3H/rdy4ijnFbwxXKv4llKeMtCxJupXiKUVx8=
-Date: Tue, 18 Feb 2025 08:49:22 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: jaywang-amazon <wanjay@amazon.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] x86/i8253: Disable PIT timer 0 when not in use
-Message-ID: <2025021817-jockstrap-urging-d01f@gregkh>
-References: <20250217202434.11659-1-wanjay@amazon.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=pTJSiNOJNkR/EYZaVn6qto2a4fck2ZNFv4RdWMlTjtfm8+JSwwNYM9CsBHYM/A3kkm0tJbZk76P1tTs8VdV3pW0B/88Op4Frpn2qMDZ6+zAkyrRWIP0POsv1pCP1bczpSTh46JY4hiQE7IgI61eh9v1+v77wlbZoBQc4c4ejIEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Il8DsjEP; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739865600; x=1771401600;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ziEzK7wRUsoPk34tXG4PKX0kfZMyG09T1TuFOZsMGH8=;
+  b=Il8DsjEPYt8gsPOdIAdONGzNkYRwugGkyXiYyVfUpRQdSY8vuF4fAlC2
+   lW34dlDaC169qW646ZxZXME7hK1FNXJP2wFWtDM5xPmil9+GERQM9ylUh
+   fHq1TawIPHqS4tTlzUC2DYDK+InYAUjhrc0rbA/t+cHcMAiT20ggUkJtF
+   /hKJdhGxx7don89No1qKBzJc7Oawv4rTj37aleK8432ctKqF6VskmWVLf
+   kU/SkLPcwos2lIfrFg1eReSBQQLw2LTJ40Nitf68fE71UgvIL/jDe1ZcR
+   CDArJCMT0G5zkyc/QViocClFOlylukjvRvs1Z3eDzW/wQbzqrhU0968v1
+   w==;
+X-CSE-ConnectionGUID: Kep8qXXcS+KckG0knDufkw==
+X-CSE-MsgGUID: FRseRXI1QY6uqmVjGOl5mw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="57954571"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
+   d="scan'208";a="57954571"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 23:59:59 -0800
+X-CSE-ConnectionGUID: wQGNfdpkTraGbuexWoXZ6w==
+X-CSE-MsgGUID: In4y45QdQsCSaspdTULcUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
+   d="scan'208";a="119419175"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 23:59:55 -0800
+Date: Tue, 18 Feb 2025 08:56:16 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, kuba@kernel.org,
+	louis.peens@corigine.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	qmo@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
+	oss-drivers@corigine.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
+Message-ID: <Z7Q9ILUfC90Vd490@mev-dev.igk.intel.com>
+References: <20250218011744.2397726-1-haoxiang_li2024@163.com>
+ <CAH-L+nP5w7hRbONxPNG7NJtJzb-A0JOEMSq1hKNepM9GpFkt-g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250217202434.11659-1-wanjay@amazon.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH-L+nP5w7hRbONxPNG7NJtJzb-A0JOEMSq1hKNepM9GpFkt-g@mail.gmail.com>
 
-On Mon, Feb 17, 2025 at 08:24:34PM +0000, jaywang-amazon wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On Tue, Feb 18, 2025 at 08:14:49AM +0530, Kalesh Anakkur Purayil wrote:
+> On Tue, Feb 18, 2025 at 6:49 AM Haoxiang Li <haoxiang_li2024@163.com> wrote:
+> >
+> > Add check for the return value of nfp_app_ctrl_msg_alloc() in
+> > nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
+> >
+> > Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> > ---
+> > Changes in v2:
+> > - remove the bracket for one single-statement. Thanks, Guru!
+> > ---
+> >  drivers/net/ethernet/netronome/nfp/bpf/cmsg.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+> > index 2ec62c8d86e1..b02d5fbb8c8c 100644
+> > --- a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+> > +++ b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+> > @@ -20,6 +20,8 @@ nfp_bpf_cmsg_alloc(struct nfp_app_bpf *bpf, unsigned int size)
+> >         struct sk_buff *skb;
+> >
+> >         skb = nfp_app_ctrl_msg_alloc(bpf->app, size, GFP_KERNEL);
+> > +       if (!skp)
+> > +               return NULL;
+> It looks like you did not compile this change.
 > 
-> [upstream commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c360]
-> 
-> Leaving the PIT interrupt running can cause noticeable steal time for
-> virtual guests. The VMM generally has a timer which toggles the IRQ input
-> to the PIC and I/O APIC, which takes CPU time away from the guest. Even
-> on real hardware, running the counter may use power needlessly (albeit
-> not much).
-> 
-> Make sure it's turned off if it isn't going to be used.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Tested-by: Michael Kelley <mhkelley@outlook.com>
-> Link: https://lore.kernel.org/all/20240802135555.564941-1-dwmw2@infradead.org
-> 
-> (cherry picked from commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60)
-> 
-> Cc: stable@vger.kernel.org # v5.15
-> 
-> Signed-off-by: jaywang-amazon <wanjay@amazon.com>
+> Also, next time you push a new version, please modify the subject as:
+> "[PATCH net v3] xxxx"
 
-Why all the blank space here?
+Yeah, you need to send v3 (skp -> skb). Fix looks fine, other call to
+nfp_app_ctrl_msg_alloc() is checking returned value as here.
 
-And why not cc: all of the people who did this patch on it?
+Feel free to add my RB tag in v3.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-Also your name needs to be fixed up.
+> >         skb_put(skb, size);
+> >
+> >         return skb;
+> > --
+> > 2.25.1
+> >
+> >
+> 
+> 
+> -- 
+> Regards,
+> Kalesh AP
 
-Please work with your coworkers on getting this all right so we don't
-have to do this type of basic reviewing for you.  All of your recent
-backprots suffer from this and can not be taken, sorry.
 
-greg k-h
 
