@@ -1,98 +1,146 @@
-Return-Path: <stable+bounces-116695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FE4A39805
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C4BA3981C
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:06:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0394018905EC
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 10:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FA021881E0D
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 10:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E98235340;
-	Tue, 18 Feb 2025 10:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771E522B8CA;
+	Tue, 18 Feb 2025 10:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gDiw9n9w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kEAI+5HQ"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1289F145B25;
-	Tue, 18 Feb 2025 10:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DAF22B8B9
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 10:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739872946; cv=none; b=UTH16CQVh6GPBxPs1MtX8EgbYy2+VRh+hV1V/JErReelC5KiVv1xp/7eqFY7U0Fv1Cr5TD6pGE9h89amVA/i8dFuXzyqTwDyjROmN2YfwWE3adTVD85Nm1e7lxAZBq2rxiDTkJBDHjZgFkkScqAkASC9Fpkv83hGlcWKEPyndmo=
+	t=1739873042; cv=none; b=I3ea3Y6Fu8f+LYo0c47D6oxDfqi3r/0n+8BEmmHPODt0K+3xAoltwd/WWvGV7VKKI5XZMea0+B+eLznvKmCgeSk+/8jm+CPAxSOpNx4+Y98tgKB0uXF4iyYMBLbaEmXu+XksOycOBvry0wcDKg+mH+QEqCzbdM+Sdwa2IvTo0Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739872946; c=relaxed/simple;
-	bh=bfhjun/v6GFqKm1VtRNA5xQh70UXRMMenJZlmNZM/Jw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i+t4UJ1T/nV+VggKbSD2M4+HR95kc988ZdtD2YMtl699NMwscEWGaXZtMLGa9jw9rjdlwuAOuGfasJlM/9Nphipw2y3NVL2U26bY1n+HIH5soQTxZr8Oh2FMmpoKzWF9lU1EHnzDtJZjjWTDCKyzR4+XxjlYUhRPrEqFM9uYxSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gDiw9n9w; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=2Mc8P
-	u/rsOzC1vIK6g9KcWVd9sEQmmUj0kVoTaT0yOg=; b=gDiw9n9wC46awWYx9WiP4
-	XUkHGcbeGsNyVhje00WKmsQc7wnxjzJzB1tkOGuuM3ndbOZYJm0ATZr5F3RmGqOO
-	S+HGplw6fWGVyD+Kk39PRabKlFOIdhjcJVkT9mpOQUsRnlJHhKpIM+UaIBBswZkQ
-	P8XNd6Kfffsg4MIYUYbF2Y=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wC3SPmaWrRnJxflMQ--.26424S4;
-	Tue, 18 Feb 2025 18:02:04 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: leon@kernel.org,
-	jgg@ziepe.ca,
-	sd@queasysnail.net,
-	phaddad@nvidia.com
-Cc: linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mlx5: Add check for get_macsec_device()
-Date: Tue, 18 Feb 2025 18:02:00 +0800
-Message-Id: <20250218100200.2535141-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1739873042; c=relaxed/simple;
+	bh=pbjfnE9HZCkMOLVmjETIUig4+GqCqmpYo/9Mb0qYsbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oVpJvyh3paJ6x1u1Q77ayfwCPhfWkb6vnsoz3MG58GXZafrbrtdLBrDWys85+/PzXLnQzkCsxKkuFJRoTKN05iExtDslzbMez2wREUPdSu3XF7o3A3K1+LzM/5LGsQ2v3+2e8J/unT5ZE3waA3cGrcfjE9SRF6UaroiXcdsCwVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kEAI+5HQ; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739873041; x=1771409041;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pbjfnE9HZCkMOLVmjETIUig4+GqCqmpYo/9Mb0qYsbA=;
+  b=kEAI+5HQpoBbKRwj26jGWiVVthUGo8ZDjq1lziQlywOGijWUT9hKRHPu
+   pmFaS+Wq1wQWG9c4GqJxz7zpglU7ste6cg2libxZ8Gw+GUQ4NADGpV7gK
+   A7VvGXHzplwjLt4hrrHWp0Gj2NFndy6TVCHzYMOCGvGsUm43FSz9Hq9sK
+   yvQjkW0CD75KF2P5QkkkfCbrbnvleKWi8P6rK2Iwfwy5yx9aFvvTYdWvB
+   KylCQQScng6lwA/6R5iMssSfFlUeTLc5itFV+76joBJmmmrFpAuTkTbjv
+   8e+o2U1HTaCcrlEedqhMF/cTSjR6rzDmpc/Bpd9ie1PrPcW88XKma4nmE
+   w==;
+X-CSE-ConnectionGUID: KgS6RItMRZyO0jRPTKjfEg==
+X-CSE-MsgGUID: Mdpz1LoWQ5WR902Gw02/ZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="43392539"
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
+   d="scan'208";a="43392539"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 02:04:00 -0800
+X-CSE-ConnectionGUID: lVCtNglrTji1fTt9b5jeTA==
+X-CSE-MsgGUID: MYQ9djApRZGgCYSc+/APpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,295,1732608000"; 
+   d="scan'208";a="145201549"
+Received: from jlawryno.igk.intel.com ([10.91.220.59])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 02:03:56 -0800
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	intel-xe@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH] drm/xe: Fix exporting xe buffers multiple times
+Date: Tue, 18 Feb 2025 11:03:53 +0100
+Message-ID: <20250218100353.2137964-1-jacek.lawrynowicz@linux.intel.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3SPmaWrRnJxflMQ--.26424S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtw4UuryfGry8ArWkCry3Arb_yoWkCrgEgF
-	48Zr97ZwnYkFsYkF1a9r1fWryFkw4qgw12qFZrtF97Z347XF1DXrW0qFsagr4UXry3ury5
-	Gw13Cw1rJry3GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRN9a9UUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqBf3bme0WpEBEwAAss
 
-Add check for the return value of get_macsec_device() in
-mlx5r_del_gid_macsec_operations() to prevent null pointer
-dereference.
+From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
 
-Fixes: 58dbd6428a68 ("RDMA/mlx5: Handles RoCE MACsec steering rules addition and deletion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+The `struct ttm_resource->placement` contains TTM_PL_FLAG_* flags, but
+it was incorrectly tested for XE_PL_* flags.
+This caused xe_dma_buf_pin() to always fail when invoked for
+the second time. Fix this by checking the `mem_type` field instead.
+
+Fixes: 7764222d54b7 ("drm/xe: Disallow pinning dma-bufs in VRAM")
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: intel-xe@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 ---
- drivers/infiniband/hw/mlx5/macsec.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/xe/xe_bo.h      | 2 --
+ drivers/gpu/drm/xe/xe_dma_buf.c | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/macsec.c b/drivers/infiniband/hw/mlx5/macsec.c
-index 3c56eb5eddf3..623b0a58f721 100644
---- a/drivers/infiniband/hw/mlx5/macsec.c
-+++ b/drivers/infiniband/hw/mlx5/macsec.c
-@@ -354,6 +354,11 @@ void mlx5r_del_gid_macsec_operations(const struct ib_gid_attr *attr)
- 		}
+diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
+index d9386ab031404..43bf6f140d40d 100644
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -341,7 +341,6 @@ static inline unsigned int xe_sg_segment_size(struct device *dev)
+ 	return round_down(max / 2, PAGE_SIZE);
+ }
+ 
+-#if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+ /**
+  * xe_bo_is_mem_type - Whether the bo currently resides in the given
+  * TTM memory type
+@@ -356,4 +355,3 @@ static inline bool xe_bo_is_mem_type(struct xe_bo *bo, u32 mem_type)
+ 	return bo->ttm.resource->mem_type == mem_type;
+ }
+ #endif
+-#endif
+diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+index c5b95470fa324..f67803e15a0e6 100644
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -58,7 +58,7 @@ static int xe_dma_buf_pin(struct dma_buf_attachment *attach)
+ 	 * 1) Avoid pinning in a placement not accessible to some importers.
+ 	 * 2) Pinning in VRAM requires PIN accounting which is a to-do.
+ 	 */
+-	if (xe_bo_is_pinned(bo) && bo->ttm.resource->placement != XE_PL_TT) {
++	if (xe_bo_is_pinned(bo) && !xe_bo_is_mem_type(bo, XE_PL_TT)) {
+ 		drm_dbg(&xe->drm, "Can't migrate pinned bo for dma-buf pin.\n");
+ 		return -EINVAL;
  	}
- 	macsec_device = get_macsec_device(ndev, &dev->macsec.macsec_devices_list);
-+	if (!macsec_device) {
-+		dev_put(ndev);
-+		mutex_unlock(&dev->macsec.lock);
-+		return;
-+	}
- 	mlx5_macsec_del_roce_rule(attr->index, dev->mdev->macsec_fs,
- 				  &macsec_device->tx_rules_list, &macsec_device->rx_rules_list);
- 	mlx5_macsec_del_roce_gid(macsec_device, attr->index);
 -- 
-2.25.1
+2.45.1
 
 
