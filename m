@@ -1,181 +1,123 @@
-Return-Path: <stable+bounces-116739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F86A39B3A
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:43:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0614EA39B4B
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 12:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42A537A1CEC
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:42:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77AF53B4507
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 11:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4255123ED47;
-	Tue, 18 Feb 2025 11:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8992323FC42;
+	Tue, 18 Feb 2025 11:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Ouss9I8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wp1ArZuj"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABAC23C8DC;
-	Tue, 18 Feb 2025 11:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495E723F276
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 11:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739878971; cv=none; b=GPeRzhouFloOldRcSsaj0nuVkzGh7eL3/LWrU0KLCV1mxG23feUdO7FbnTleAdIqxtLYDGP50MVcBRjE2+xOrmvjHYH7GaE/jdrI4OkVCRLTt6W02xrXeIWl59+aWO0bnS496hiwVt4+krLhy72IxixfD+P436Ray+1pbtNGN5s=
+	t=1739879083; cv=none; b=Y5w2Kp8KbD5oUdGpJTljMWDKig9uzcGgBjaMqr63Eqy5azEFjCBr2WGEYVq6xv4GIYY46DTLlHiv7hX23Mm/AcFrxePCu5VqweZhHgh1a4Ma2P5cA43teFBOFv6go9CYKrZD5jeaBtTUgzcPJ8MHDj+QYgyTcuM6J2+PMGvuF+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739878971; c=relaxed/simple;
-	bh=bBNT4QlzZXKhd7EQ9JV5YlXy79pcFJ/hqJ3SE6SkiKg=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=oI0YShNL59Ooq1Al9Bv36eTembA3skm1sD3uH6FHIpGuZrPfWEeYaPA3KuVVUu6uX3gryBsMf88c6Ji4hz9+Gvz5+/gLh0tkfQRk2BSd+PB7Yck5AqCJ0+m7En9mOdaeqzLCMApsFZa2Nh7aA8D/9qiJso7Y+4/UADVG2FfDRx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Ouss9I8F; arc=none smtp.client-ip=117.135.210.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=KkHPLPhS/lcvXv2PGW
-	47P5xHPzK/OHNmih6dbHFhbrA=; b=Ouss9I8Fc4R4KkbIlN1YgVgbUZ9QDDLzp7
-	LBabT84KOv4vz0grUvIk/SJUAIjYP2QFgcip731TZfNOB/sxSN9aTFCAC+8YmvoN
-	B3FJePlnfcoha1dN0QXxr5We+uUP1LmEoS1n4wGwzEX5hZjawI5P4wOmzXDg++x7
-	tPvWiIre4=
-Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDnD9StcbRn5BnwAw--.45758S2;
-	Tue, 18 Feb 2025 19:40:30 +0800 (CST)
-From: yangge1116@126.com
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	21cnbao@gmail.com,
-	david@redhat.com,
-	baolin.wang@linux.alibaba.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	liuzixing@hygon.cn,
-	Ge Yang <yangge1116@126.com>
-Subject: [PATCH V3] mm/hugetlb: wait for hugetlb folios to be freed
-Date: Tue, 18 Feb 2025 19:40:28 +0800
-Message-Id: <1739878828-9960-1-git-send-email-yangge1116@126.com>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID:_____wDnD9StcbRn5BnwAw--.45758S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXryrZr43Gw13Cw48Cw45KFg_yoWrur4rpF
-	yUKr13GayDJr9akrn7AwsYyr12y3ykZFWjkrWIqw45ZFnxJas7KFy2vwn0v3y8Ar93CFWx
-	ZrWqqrWDuF1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR0JmUUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifgP3G2e0TMW1YgABsd
+	s=arc-20240116; t=1739879083; c=relaxed/simple;
+	bh=1j3Tdh2Tjt15llQ9C/861cCDVr0/i7MTNrlmGkAZ7mU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o35HjhGhc2ZNN1AWRjUDZhPfYnri1atCKnzK2e33SDOOl7d6vsKtuTBREpoB/rEgcjb3SWZZ8u0+x6Jo8LNhijA9ma6c7I/4BBPvHTQMET98immESub8wb0sxyH399VzX70K86Ijt7PKZt5CxRYM+hY+jwYceOmcOlMfChfYzVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wp1ArZuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A00C4CEE2;
+	Tue, 18 Feb 2025 11:44:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739879082;
+	bh=1j3Tdh2Tjt15llQ9C/861cCDVr0/i7MTNrlmGkAZ7mU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Wp1ArZujEvVePuIMdRJBzXMEAvXDKIApnph6XstbOYDgJevy7cuXnn5dwWYI+v6Cg
+	 AUavYM3DBSw8r3gVfcdGTxpB76VhXmOyv2/Mz1G+bwI8DQAA72XkV49XeUxFwQmG2u
+	 yEd7S04rB+fqVRSpT6z7DnaRSzv0SqbFgiJFEWPU=
+Subject: FAILED: patch "[PATCH] usb: gadget: core: flush gadget workqueue after device" failed to apply to 6.6-stable tree
+To: royluo@google.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org,stern@rowland.harvard.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 18 Feb 2025 12:44:39 +0100
+Message-ID: <2025021839-vacancy-doormat-6a57@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-From: Ge Yang <yangge1116@126.com>
 
-Since the introduction of commit c77c0a8ac4c52 ("mm/hugetlb: defer freeing
-of huge pages if in non-task context"), which supports deferring the
-freeing of hugetlb pages, the allocation of contiguous memory through
-cma_alloc() may fail probabilistically.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-In the CMA allocation process, if it is found that the CMA area is occupied
-by in-use hugetlb folios, these in-use hugetlb folios need to be migrated
-to another location. When there are no available hugetlb folios in the
-free hugetlb pool during the migration of in-use hugetlb folios, new folios
-are allocated from the buddy system. A temporary state is set on the newly
-allocated folio. Upon completion of the hugetlb folio migration, the
-temporary state is transferred from the new folios to the old folios.
-Normally, when the old folios with the temporary state are freed, it is
-directly released back to the buddy system. However, due to the deferred
-freeing of hugetlb pages, the PageBuddy() check fails, ultimately leading
-to the failure of cma_alloc().
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Here is a simplified call trace illustrating the process:
-cma_alloc()
-    ->__alloc_contig_migrate_range() // Migrate in-use hugetlb folios
-        ->unmap_and_move_huge_page()
-            ->folio_putback_hugetlb() // Free old folios
-    ->test_pages_isolated()
-        ->__test_page_isolated_in_pageblock()
-             ->PageBuddy(page) // Check if the page is in buddy
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 399a45e5237ca14037120b1b895bd38a3b4492ea
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021839-vacancy-doormat-6a57@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-To resolve this issue, we have implemented a function named
-wait_for_freed_hugetlb_folios(). This function ensures that the hugetlb
-folios are properly released back to the buddy system after their migration
-is completed. By invoking wait_for_freed_hugetlb_folios() before calling
-PageBuddy(), we ensure that PageBuddy() will succeed.
+Possible dependencies:
 
-Fixes: c77c0a8ac4c52 ("mm/hugetlb: defer freeing of huge pages if in non-task context")
-Signed-off-by: Ge Yang <yangge1116@126.com>
-Cc: <stable@vger.kernel.org>
----
 
-V3:
-- adjust code and message suggested by Muchun and David
 
-V2:
-- flush all folios at once suggested by David
+thanks,
 
- include/linux/hugetlb.h |  5 +++++
- mm/hugetlb.c            |  5 +++++
- mm/page_isolation.c     | 10 ++++++++++
- 3 files changed, 20 insertions(+)
+greg k-h
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 6c6546b..0c54b3a 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -697,6 +697,7 @@ bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
+------------------ original commit in Linus's tree ------------------
+
+From 399a45e5237ca14037120b1b895bd38a3b4492ea Mon Sep 17 00:00:00 2001
+From: Roy Luo <royluo@google.com>
+Date: Tue, 4 Feb 2025 23:36:42 +0000
+Subject: [PATCH] usb: gadget: core: flush gadget workqueue after device
+ removal
+
+device_del() can lead to new work being scheduled in gadget->work
+workqueue. This is observed, for example, with the dwc3 driver with the
+following call stack:
+  device_del()
+    gadget_unbind_driver()
+      usb_gadget_disconnect_locked()
+        dwc3_gadget_pullup()
+	  dwc3_gadget_soft_disconnect()
+	    usb_gadget_set_state()
+	      schedule_work(&gadget->work)
+
+Move flush_work() after device_del() to ensure the workqueue is cleaned
+up.
+
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Roy Luo <royluo@google.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250204233642.666991-1-royluo@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index a6f46364be65..4b3d5075621a 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1543,8 +1543,8 @@ void usb_del_gadget(struct usb_gadget *gadget)
  
- int isolate_or_dissolve_huge_page(struct page *page, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
-+void wait_for_freed_hugetlb_folios(void);
- struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 				unsigned long addr, bool cow_from_owner);
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
-@@ -1092,6 +1093,10 @@ static inline int replace_free_hugepage_folios(unsigned long start_pfn,
- 	return 0;
- }
- 
-+static inline void wait_for_freed_hugetlb_folios(void)
-+{
-+}
-+
- static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 					   unsigned long addr,
- 					   bool cow_from_owner)
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 30bc34d..b4630b3 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2955,6 +2955,11 @@ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
- 	return ret;
- }
- 
-+void wait_for_freed_hugetlb_folios(void)
-+{
-+	flush_work(&free_hpage_work);
-+}
-+
- typedef enum {
- 	/*
- 	 * For either 0/1: we checked the per-vma resv map, and one resv
-diff --git a/mm/page_isolation.c b/mm/page_isolation.c
-index 8ed53ee0..b2fc526 100644
---- a/mm/page_isolation.c
-+++ b/mm/page_isolation.c
-@@ -615,6 +615,16 @@ int test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn,
- 	int ret;
- 
- 	/*
-+	 * Due to the deferred freeing of hugetlb folios, the hugepage folios may
-+	 * not immediately release to the buddy system. This can cause PageBuddy()
-+	 * to fail in __test_page_isolated_in_pageblock(). To ensure that the
-+	 * hugetlb folios are properly released back to the buddy system, we
-+	 * invoke the wait_for_freed_hugetlb_folios() function to wait for the
-+	 * release to complete.
-+	 */
-+	wait_for_freed_hugetlb_folios();
-+
-+	/*
- 	 * Note: pageblock_nr_pages != MAX_PAGE_ORDER. Then, chunks of free
- 	 * pages are not aligned to pageblock_nr_pages.
- 	 * Then we just check migratetype first.
--- 
-2.7.4
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+-	flush_work(&gadget->work);
+ 	device_del(&gadget->dev);
++	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+ 	device_unregister(&udc->dev);
 
 
