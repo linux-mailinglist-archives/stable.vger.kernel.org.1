@@ -1,74 +1,101 @@
-Return-Path: <stable+bounces-116784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD6DA39E51
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500A2A39E61
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2C9169CC9
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FA1C166B4C
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A705269AEB;
-	Tue, 18 Feb 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6336726A0CB;
+	Tue, 18 Feb 2025 14:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XNlZveZW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72842269822;
-	Tue, 18 Feb 2025 14:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845EB236A61;
+	Tue, 18 Feb 2025 14:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739887780; cv=none; b=btELK6kRXBT08u50N8Zb4NGIBpCd+QLpmYWM6IDmaAyncCrEdXy1nh2L6t9AXm8s423wrBhhaf59j9vXKubAEEnuj+WYKAZYNY4eOQHIzVPBWgASoKOx8h0RHbHgm6vRPX9tKqOZRjf1BTAvfH7y2Alj5FpJNwbfxZT2pk1plbE=
+	t=1739887871; cv=none; b=nEcZMFCiaxxWU/KqoDb19yVoH6jZiElECdT5fa+tdxyNxpJR/O+YdF4NkT9xsug7+aoFPLBqfq0Cg6D5IVJxVuGVhaTt5II2OMif8skBvmD5DXFpobRqAE1o/K5ociqOfK9/e8iXSaUmN8oSsK/eTZQnpqN/AA6o466F2SdlNYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739887780; c=relaxed/simple;
-	bh=LDe4YY/D/KG814sUzaFt57nrvQqaY4+cHfBTOTZhp4M=;
+	s=arc-20240116; t=1739887871; c=relaxed/simple;
+	bh=IyEIsvt+pI2wMUJfTHLp0yBGr5opZXBcgPUG4CjMqZg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CCK5CbnYyzXpPSE/lREwqwFvqMdpd7SaruZYQrI02LNEJTohZxIEwkqgnjH2LI+PGczaQwkRZIfprY8aZTdaKUgB9i5YXldBdfJW9el8e8ufP1g8waPrkmjEyNHH+a7tCwGFb3DG/wNhVpRMnf0xli5ynx/pT0iW95tP4eQ+rJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-abb8045c3f3so355634266b.2;
-        Tue, 18 Feb 2025 06:09:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739887777; x=1740492577;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MOqpNPfprzC/VuOUsgbWKiDS4uVsWF0Gzq7YLXne2M0=;
-        b=VDIH9ZSbm2c+20VAqaGeXZItmHBPdLypTZQQvvz1B52IwAi+/BbHTjmcmUuwec4KOm
-         GnOr47vW+jFnAGiFDHmJlwrJCxgSDZ3GWC1RYRXB+4mGJcGpOheGFYuH/IDi6zyZfw3b
-         XwW6I8RSneh8fH93nbys07fE5ntUuH6Wv6ngOeLiW38PhP8rPhuCvWxiJlsEGZnM0j+1
-         sRpuSuM4pUv9tPmQ4moyTw5FEtGODDAtk1aO0SvHFKrBl5IQ+CSMR8NcbOMmo8Vxfoxf
-         d33Ri2LsdDtipYZewwUTPyZK1gHdnd/PZjjOgHb8c3D0r0xdwHVXVR1y+rNaEApIQMYX
-         0njA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkPWp3IgTa7adRPqHV1DYhnVyDqaGggXCy1dpPjVJaCRKrNpWdjHGf93tdeR6bKj45WoQBxtqw@vger.kernel.org, AJvYcCWcLOfOwqyjJTuaE/ohYvcAgD//BCR9nTlnzc1Egf6xQdR6KXzuQDLAuPh9ZNltsHy/zz1p3X61b5CwByY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy47dufIgoNkXJgyTKaqqHuH5w0uy/rGO0puPUz3WoVwP4AWs6M
-	kNmgoa+bw9TtVT/ObS+E832sTRW/9j4YQEJ19PwalywvW/IZFQL8
-X-Gm-Gg: ASbGncuSmq8+wjLXbcwNsFAG5gkSEQ0CzTYhqBlSpIWXW072GEG6yGNhOc48Ww8I8HS
-	yRFHTLeznGIqgdT2GZAUyRnohFgupdzLWwkQqh4eJwR7ZjcOUehz8EFMdutPfg8F1fSRRdyuxHQ
-	uC3VzQMvFG8HdodJql51PMhKmK9DkGwcjA+oNu5MJNNoF+lchV5vClhjyJf7IprfHYJWwdnkmcY
-	sg1ns5YqBeA7/cM9bHNJaaBKyWJllqKAVUaAzzgPajGSFQaLVFjeqA3ofaO4sJvDbIt5fABnLxd
-	I3EhVu4=
-X-Google-Smtp-Source: AGHT+IF5nwrMpEy7s0eR61eGJJWsqTPMythWKfZZ2UKJQmRW6VNlsUYbb7Fb2C34VdjEApYgHubpIQ==
-X-Received: by 2002:a17:907:70d:b0:aba:5e4b:b0b6 with SMTP id a640c23a62f3a-abb70e53b7dmr1229698566b.54.1739887776310;
-        Tue, 18 Feb 2025 06:09:36 -0800 (PST)
-Received: from gmail.com ([2a03:2880:30ff:71::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abba4fc0c29sm295532566b.157.2025.02.18.06.09.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 06:09:35 -0800 (PST)
-Date: Tue, 18 Feb 2025 06:09:33 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Ido Schimmel <idosch@idosch.org>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev,
+	 Content-Type:Content-Disposition:In-Reply-To; b=AAo6Mgm+gylGMVpr58qkkuZpnuXVqggElzMGr+T10IARCV70MNfsc6FaFp/0H9Aepg1yig0vWg+PhRdEu9O+/iRy1PBwLJttgUJ1TtkiOEb9JIguoDVq2oMLte9vJwBebZ3RO0HRmd5UsWex8dllCKTM5stCE9kiQitenLonJX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XNlZveZW; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51I7XE6j009948;
+	Tue, 18 Feb 2025 14:10:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=x9KAvFKzoCjfbssZ2GysCMFj7HXNV5
+	bEADEv9sZWwHY=; b=XNlZveZW32fHmU0ddBApqaOqtFZDf8IR5z1DqsQMtRfphg
+	K0jhbKsEILXQlkcPwIpAf+unobXxVF3cj2sTKBs9s/B/HemVTZFF+putk7q6bqc5
+	o5lsLhZGssUvXwE3a6UJi5vawuJvEPE32taooF1BG5F1QwYASgOmt8UT7MktwcIT
+	wsYqI21auwNMpwsx2oLhQovtRSaDTOYaAyxPBNmFuvy3U6BtRKybPIfZw0yheq9/
+	BkmX9VFCKPz6TE0IcJ2rjptMpaJFjvoDHePTYkinN8PKfSwmuVAzVfGt6f0RCk2p
+	Ar2DReYsVvuBPU+vOwUTCYDvOn/16XkDsjW18ALw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vnwphur2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Feb 2025 14:10:51 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51IE2GbP014750;
+	Tue, 18 Feb 2025 14:10:50 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vnwphuqt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Feb 2025 14:10:50 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51ID5E57008155;
+	Tue, 18 Feb 2025 14:10:50 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u58tkqbr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Feb 2025 14:10:49 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51IEAkZ719792266
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Feb 2025 14:10:46 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A2A72004B;
+	Tue, 18 Feb 2025 14:10:46 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 411CE20043;
+	Tue, 18 Feb 2025 14:10:43 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.124.223.231])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 18 Feb 2025 14:10:43 +0000 (GMT)
+Date: Tue, 18 Feb 2025 19:40:38 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM
+ guests
+Message-ID: <20250218193759.261b658a-40-amachhiw@linux.ibm.com>
+Mail-Followup-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] iommu/vt-d: Fix suspicious RCU usage
-Message-ID: <20250218-meaty-clever-buffalo-9ba688@leitao>
-References: <20250218022422.2315082-1-baolu.lu@linux.intel.com>
- <Z7RdnR2onJ2AZIJl@shredder>
+References: <20250129094033.2265211-1-amachhiw@linux.ibm.com>
+ <8734gdqky4.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,65 +104,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z7RdnR2onJ2AZIJl@shredder>
+In-Reply-To: <8734gdqky4.fsf@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5FtYUAbJXnLQacYSRs_w_gQgikmOfhs4
+X-Proofpoint-ORIG-GUID: RGFuLxK2PqGqaA5i6nsKd9j9s8CwlIjw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-18_06,2025-02-18_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound score=100 priorityscore=1501
+ spamscore=100 mlxlogscore=-999 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 mlxscore=100 adultscore=0 suspectscore=0
+ bulkscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502180106
 
-On Tue, Feb 18, 2025 at 12:14:53PM +0200, Ido Schimmel wrote:
-> + Breno who also encountered this issue
+Hi Ritesh,
 
-Thanks. Please add the following if you feel appropriate.
+Thanks for reviewing the patch. My response is inline:
 
-Reported-by: Breno Leitao <leitao@debian.org>
-
-> On Tue, Feb 18, 2025 at 10:24:21AM +0800, Lu Baolu wrote:
-> > Commit <d74169ceb0d2> ("iommu/vt-d: Allocate DMAR fault interrupts
-> > locally") moved the call to enable_drhd_fault_handling() to a code
-> > path that does not hold any lock while traversing the drhd list. Fix
-> > it by ensuring the dmar_global_lock lock is held when traversing the
-> > drhd list.
-> > 
-> > Without this fix, the following warning is triggered:
-> >  =============================
-> >  WARNING: suspicious RCU usage
-> >  6.14.0-rc3 #55 Not tainted
-> >  -----------------------------
-> >  drivers/iommu/intel/dmar.c:2046 RCU-list traversed in non-reader section!!
-> >                other info that might help us debug this:
-> >                rcu_scheduler_active = 1, debug_locks = 1
-> >  2 locks held by cpuhp/1/23:
-> >  #0: ffffffff84a67c50 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x87/0x2c0
-> >  #1: ffffffff84a6a380 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x87/0x2c0
-> >  stack backtrace:
-> >  CPU: 1 UID: 0 PID: 23 Comm: cpuhp/1 Not tainted 6.14.0-rc3 #55
-> >  Call Trace:
-> >   <TASK>
-> >   dump_stack_lvl+0xb7/0xd0
-> >   lockdep_rcu_suspicious+0x159/0x1f0
-> >   ? __pfx_enable_drhd_fault_handling+0x10/0x10
-> >   enable_drhd_fault_handling+0x151/0x180
-> >   cpuhp_invoke_callback+0x1df/0x990
-> >   cpuhp_thread_fun+0x1ea/0x2c0
-> >   smpboot_thread_fn+0x1f5/0x2e0
-> >   ? __pfx_smpboot_thread_fn+0x10/0x10
-> >   kthread+0x12a/0x2d0
-> >   ? __pfx_kthread+0x10/0x10
-> >   ret_from_fork+0x4a/0x60
-> >   ? __pfx_kthread+0x10/0x10
-> >   ret_from_fork_asm+0x1a/0x30
-> >   </TASK>
-> > 
-> > Simply holding the lock in enable_drhd_fault_handling() will trigger a
-> > lock order splat. Avoid holding the dmar_global_lock when calling
-> > iommu_device_register(), which starts the device probe process.
-> > 
-> > Fixes: d74169ceb0d2 ("iommu/vt-d: Allocate DMAR fault interrupts locally")
-> > Reported-by: Ido Schimmel <idosch@idosch.org>
-> > Closes: https://lore.kernel.org/linux-iommu/Zx9OwdLIc_VoQ0-a@shredder.mtl.com/
+On 2025/02/17 09:30 AM, Ritesh Harjani (IBM) wrote:
+> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+> 
+> > Currently on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
+> > available for KVM Guests running on PowerNV and not for the KVM guests
+> > running on pSeries hypervisors. This prevents a pSeries L2 guest from
+> > leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
+> > H_STUFF_TCE hcalls that results in slow startup times for large memory
+> > guests.
+> >
+> > Fix this by enabling the CAP_SPAPR_TCE_VFIO on the pSeries hosts as well
+> > for the nested PAPR guests. With the patch, booting an L2 guest with
+> > 128G memory results in an average improvement of 11% in the startup
+> > times.
+> >
+> > Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
 > > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > ---
+> > Changes since v1:
+> >     * Addressed review comments from Ritesh
+> >     * v1: https://lore.kernel.org/all/20250109132053.158436-1-amachhiw@linux.ibm.com/
 > 
-> Thanks for the fix. I tested it and the warning is gone.
+> Thanks Amit for v2. However we still didn't answer one important
+> question regarding the context / background of this patch asked here [2]
 > 
-> Tested-by: Ido Schimmel <idosch@nvidia.com>
+> [2]: https://lore.kernel.org/linuxppc-dev/87r059vpmi.fsf@gmail.com/
+> 
+> <copy paste from v1>
+>     IIUC it was said here [1] that this capability is not available on
+>     pSeries, hence it got removed. Could you please give a background on
+>     why this can be enabled now for pSeries? Was there any additional
+>     support added for this? 
+>     [1]:
+>     https://lore.kernel.org/linuxppc-dev/20181214052910.23639-2-sjitindarsingh@gmail.com/
+> 
+>     ... Ohh thinking back a little, are you saying that after the patch...
+>     f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
+>     ...we can bring back this capability for kvm guest running on pseries
+>     as well. Because all underlying issues in using VFIO on pseries were
+>     fixed. Is this understanding correct? 
+> 
 
-Tested-by: Breno Leitao <leitao@debian.org>
+Yes, your understanding is correct.
+
+> 
+> Please also update the commit message with the required context of why we can
+> enable this capability now while it was explicitely marked as disabled
+> earlier in [1].
+> 
+
+Sure, I'll update the patch description and send a v3 soon.
+
+> But looks good otherwise. With that addressed in the commit message,
+> please feel free to add - 
+> 
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> 
+
+Thanks!
+
+~ Amit
+
+> -ritesh
+> 
+> >
+> >  arch/powerpc/kvm/powerpc.c | 5 +----
+> >  1 file changed, 1 insertion(+), 4 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> > index ce1d91eed231..a7138eb18d59 100644
+> > --- a/arch/powerpc/kvm/powerpc.c
+> > +++ b/arch/powerpc/kvm/powerpc.c
+> > @@ -543,26 +543,23 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> >  		r = !hv_enabled;
+> >  		break;
+> >  #ifdef CONFIG_KVM_MPIC
+> >  	case KVM_CAP_IRQ_MPIC:
+> >  		r = 1;
+> >  		break;
+> >  #endif
+> >
+> >  #ifdef CONFIG_PPC_BOOK3S_64
+> >  	case KVM_CAP_SPAPR_TCE:
+> > +		fallthrough;
+> >  	case KVM_CAP_SPAPR_TCE_64:
+> > -		r = 1;
+> > -		break;
+> >  	case KVM_CAP_SPAPR_TCE_VFIO:
+> > -		r = !!cpu_has_feature(CPU_FTR_HVMODE);
+> > -		break;
+> >  	case KVM_CAP_PPC_RTAS:
+> >  	case KVM_CAP_PPC_FIXUP_HCALL:
+> >  	case KVM_CAP_PPC_ENABLE_HCALL:
+> >  #ifdef CONFIG_KVM_XICS
+> >  	case KVM_CAP_IRQ_XICS:
+> >  #endif
+> >  	case KVM_CAP_PPC_GET_CPU_CHAR:
+> >  		r = 1;
+> >  		break;
+> >  #ifdef CONFIG_KVM_XIVE
+> >
+> > base-commit: 6d61a53dd6f55405ebcaea6ee38d1ab5a8856c2c
+> > -- 
+> > 2.48.1
 
