@@ -1,227 +1,192 @@
-Return-Path: <stable+bounces-116803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8140AA3A1EF
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 17:00:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C56FA3A1FE
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 17:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B796618956EA
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:00:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9DEE3A41C4
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 16:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DF126E166;
-	Tue, 18 Feb 2025 16:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C289F243376;
+	Tue, 18 Feb 2025 16:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jPAEgRRb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LgJYm3Ym"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA7926B2CA
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 15:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A817A5BE
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 16:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739894401; cv=none; b=uFwQKjIb99F04XFfxuqtDNVw9WpIJMDko+q9YCDYLRJGAfjqYw3gjSbnzz+IkAZAzEhFlZ2rQvs/wyXZFgg0qvnozFL38YFX+3vpE5r54mIw98uL2dNHt8oz0a3Z9LQWLLRIIlbH09BB4w73ZHseSDjy8710JZ8eZ+7Rb0dmLdo=
+	t=1739894504; cv=none; b=FBsi33/2CoFZUKMnJKpR7AGIgGE3idNvdlq4tomgAnq59mEW3F55dtpRkBdHwWNYTM3ZxgYN6zKlbVqQa1ZRa7t7EP1+cHygrMq0wMku0C5O62naYSI6FstPOTQwwJTo3wKKj1C8+BedsqkKmnPw6FhdLbt7TfrzVMtGxW4Vnz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739894401; c=relaxed/simple;
-	bh=Mvl7ic5dPpSRE8noQA3vk5gO41+lpdjD2i1WOU8u4S8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T/yGGw7rocB0fNfBJift2rVqZzdzZubITHLqimg6Ul8kAagHogGmkUmaFhL/wIJ97kXPj0TBrrjuXVDKBv+xHg0b6HNqsT0OA6mfgbzoKZy13hjTRNz1MUXPumVmkcKVj+DOjNFfl6Kp2NjpHn1JfJeUz5nYBSUTgy7ac41MF9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jPAEgRRb; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1739894504; c=relaxed/simple;
+	bh=oCVv1bIDLK1VDNcQIKTCywwdQIO9OM3mn9CHt4SbKPI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HwI7ndfqRMTQS+r5R9WBjF1xPIAPzz0z6psbyH0Tecemn+5U0/Nuy7fg2dh/kQdh3wi0ywrFGPyFVlPXbP5bktvQJr1AB4OKGg53m6AGmJZu81H9Tcgl4EkEAnCH2OlZy7izaZuogpFHbMiZ+PGO0l49Pqoez3ryPnV1Gzfdl8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LgJYm3Ym; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739894399;
+	s=mimecast20190719; t=1739894501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zdK+/rE3JwumocpP/mzS1PNgFFKgHQR3OqAuIDrsFUQ=;
-	b=jPAEgRRbHc5OnDjOTILtv9HbdpsZ638R7zjDN4anMrQZoU9BwbewxP86YHjDTJctrLK/Ne
-	LvhwjiImhQWne+ev/4TmIBUTiZ1tfypG8IXwWg4mbShJ+avMW35ZeBBDVkxxvH9ckTT9PH
-	WWQC/PVJGLu7MLUtyzXA6LAYDCrs0EY=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VGLdSoyLAWE8Cjx6pSyApZY2a0Ne8XagCPC6aOvMXMg=;
+	b=LgJYm3Ym/jHN06/jISqyZwjxhM6x4v+wWLIA/MreeTbYxc/fxF+QTm5hKH4rFKaZHsnu3z
+	VQAT0tHvPRdm2kCYoYSoOBWSo+hnjDflLbTkJXA4EuRLLa197ZmfnacHFzPvb1U9ksXcZ4
+	vDD9h0apesSXpij//mKGzsUHcXR4hpY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-F9mN0DpxPtWJasQKs7Vlsg-1; Tue, 18 Feb 2025 10:59:57 -0500
-X-MC-Unique: F9mN0DpxPtWJasQKs7Vlsg-1
-X-Mimecast-MFC-AGG-ID: F9mN0DpxPtWJasQKs7Vlsg_1739894396
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5428d385b93so4506048e87.3
-        for <stable@vger.kernel.org>; Tue, 18 Feb 2025 07:59:57 -0800 (PST)
+ us-mta-527-BJwg7LMaPsO2dnn-hiqYaA-1; Tue, 18 Feb 2025 11:01:39 -0500
+X-MC-Unique: BJwg7LMaPsO2dnn-hiqYaA-1
+X-Mimecast-MFC-AGG-ID: BJwg7LMaPsO2dnn-hiqYaA_1739894498
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-438e180821aso31244345e9.1
+        for <stable@vger.kernel.org>; Tue, 18 Feb 2025 08:01:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739894394; x=1740499194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zdK+/rE3JwumocpP/mzS1PNgFFKgHQR3OqAuIDrsFUQ=;
-        b=kpT/5jMGEwwKn3md2H4nrJfxg17H3g313ZMi9v5moSvjGct9hX/+LcsxGFTW5S/Xrf
-         9tGj4tO5Xy1GvHxLb6FsNbC5iFS5p3dv3h2vguGw4TGTNqzDkYAflHBZzFUAaqjg5PQs
-         92T5tn2MOAj+7K0bIrUUKFKzG8BTInwLs8/FccUE0X6UhY3C/BgesIh2c/YgsosSKqht
-         0bZ+keNdZW9kxWcXkVovbCdBrRX6F2xH7xVlMgYJgPMqTRiZLKx7VSOzvzre59bwSPnz
-         uReZbUjcugTo5JizkVvcYxExysuTMbZxKzbS5pkRtBqp19dajwg8Om6ZItfp7eWHqzMs
-         oHVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2lolauO2YHB68xl83u8HUSnhvlcXqwl3voCZkj38dB7wVe+08Ojcyj8tcmhG3FxgQf/MWcuA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/cbJynuQ1IJZThr8zI3+6eUwCNHzdFnF3dpG7NHTZ9u0Zzodk
-	gScQt9qRqsIuXcS4g15Ayv9oLpp5rytNuMa6AjnmyHt+FB+OaQdkS7VdAcDsYkVVoQObd38G7Az
-	om2gmBJLELdA8APn9iyf89Cshpr+Dl7MVv9Oa3l4Zc0wifCM/WKZ9PvEOvIY3/tvOOV4vHVgb8X
-	RpkavJ4s5J2P3YaQtwe6zts96bveT7f3n89T7UF10=
-X-Gm-Gg: ASbGncuXgC7Cd0Rh2ONMgvh/hzYl5EqnIMLiY8MZeHzCzPmd6X5QQxlV1Iwq9+THhYt
-	C9kZDRcBY4uypYYl29jIU6ocM38iuepPxtAQ7YsAShN+0eMto1kvh1Ugr3J7qQWZRwS9c9FzRXR
-	Qji3v3kAd6EI2WzNLuk+gm
-X-Received: by 2002:a05:6512:3b0b:b0:542:29b6:9c26 with SMTP id 2adb3069b0e04-5452fe95c7emr4606393e87.47.1739894394404;
-        Tue, 18 Feb 2025 07:59:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBb0yq+4f6s5Sjr2aV/KNL83K+YN+sQCk29CCpaTPWAPEY56fYN18mEC7HDlcDPxujSbCLAzTElagpq1FzCDA=
-X-Received: by 2002:a05:6512:3b0b:b0:542:29b6:9c26 with SMTP id
- 2adb3069b0e04-5452fe95c7emr4606375e87.47.1739894393947; Tue, 18 Feb 2025
- 07:59:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739894498; x=1740499298;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VGLdSoyLAWE8Cjx6pSyApZY2a0Ne8XagCPC6aOvMXMg=;
+        b=wl5r3Kqosg0oajvQ4jQOs7ruaua48NAo8qxEFO53iTBj3OS7+apMToBfzsQflQUIzj
+         rw3IEvjcoe7sQTrovqEb6WtvoygpB99WJQTJyRbg+Wryujw7ZIJEohd2MpzOWGCCTEWJ
+         n++IG3nEtdcV52k3ljrvE2i5lBDN+gSLbeQ4MP3PSFG2l06OirFN+8rkJZmk5YwuHsk+
+         d7G4EmkJayC2W550OBH7ay4oWt4o926jCbLf1nhNxTM3OzAhCX2s+4v9cvqoGiRKm96i
+         lTFSbx/+KKQLZ/g5m0j5YehXAxzNa3sKxwidobe9AuDrx25R4345s50kIBqR4vd0RduI
+         W7Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWjJGtVbJHtVd3rWB/sEZjn0lU0gTTj3qh1lwVb5UC3j2Nrm5MjSWFYfVwMMMgbOGmWyMfiafs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIoTOK7IloHFiJ9KIYymU+TxfMfhv8sSd37SiCChnP0CJDvjP6
+	cMbSMOpkVOeeEzyy0Ab8b+KCFPFTNhF5Ys7VWYYxJcGNmv3hTyuk2+uIV2FPhZCR4uXtxKr7UuF
+	hCYI3DFc3JbQJS8kkIb3ZldQaZe+IW7RvO22ju+WZdYbpieFoLQ9m6g==
+X-Gm-Gg: ASbGncuAJT38IbdMg0KIFWXU8nVXxw83IfrGTZ+WEj/jmm52Vkf6hgyk6O0TozHVx2K
+	rmpB7r5GRJ5hXEJF9JX+ivC/h581a/tgpeI1ImwQC8aKF9TkK5GkYFgVYmOvgjthESNoU8wRDj9
+	07T/ZEPLwTE4Y1nAnFuW0j+P4AsxV/8KEb6/qtuGI0BnpCq8RO7Ep0fe4ZozzH4/g1qwA7939/8
+	cHKil4H17d8O2aoMy7UhEMeXGVepjkTZvD7Alyy9+TT9sUYAnX+1PDQyF2nuIEggcLmA8EhEn8F
+	B3kOsfaas7pSeHsfDkPnCrGanI2tr9pXciKyGM6tB/e9ExrmmnDz3w==
+X-Received: by 2002:a05:600c:4750:b0:439:9828:c425 with SMTP id 5b1f17b1804b1-4399828c633mr15497875e9.7.1739894497864;
+        Tue, 18 Feb 2025 08:01:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF1bR3ZvNKuqGUd+uzd0tQMuTD2XWrKyBbOEYQkEGLim6HWazF/iSib7juZXyqkT85bQxC/QA==
+X-Received: by 2002:a05:600c:4750:b0:439:9828:c425 with SMTP id 5b1f17b1804b1-4399828c633mr15496465e9.7.1739894496875;
+        Tue, 18 Feb 2025 08:01:36 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259f8602sm15771631f8f.94.2025.02.18.08.01.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 08:01:36 -0800 (PST)
+Date: Tue, 18 Feb 2025 17:01:31 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Luigi Leonardi <leonardi@redhat.com>, stable@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
+Subject: Re: [PATCH 0/2] vsock: fix use-after free and null-ptr-deref
+Message-ID: <ah4qm66q5q7we7ykhl3uywgrexi7izdxrmfyn2zm3jhswitebt@cz2ipkdgr6yf>
+References: <20250214-linux-rolling-stable-v1-0-d39dc6251d2f@redhat.com>
+ <f7lr3ftzo66sl6phlcygh4xx4spga4b6je37fhawjrsjtexzne@xhhwaqrjznlp>
+ <cf0ef7bc-4da9-492a-bc43-0c3e83c48d02@rbox.co>
+ <ez2wnwdos73pxbbxanbs5pe2nawvgablvjvrpqldcpbuwy7jz4@y6vnlty435un>
+ <a6c77d41-4203-4aa7-8d4c-ed513bb6929d@rbox.co>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAH6h+hfg4RcwuNUDspMrEt+5Gk5hBhE-pfLTF29M9qJLiYtoAQ@mail.gmail.com>
-In-Reply-To: <CAH6h+hfg4RcwuNUDspMrEt+5Gk5hBhE-pfLTF29M9qJLiYtoAQ@mail.gmail.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Tue, 18 Feb 2025 10:59:42 -0500
-X-Gm-Features: AWEUYZm-SDkJSuPB0C5J5-VjqoPv0BqzgQ2Z1uuB38lA4PNrFVJTDn8z1jFhx3Y
-Message-ID: <CAK-6q+j9QcZmJuJ+5igge8-Y2_1-JPuA6dvqkzJ5Lt+9=P=ndQ@mail.gmail.com>
-Subject: Re: Linux 5.4.x DLM Regression
-To: Marc Smith <msmith626@gmail.com>
-Cc: jakobkoschel@gmail.com, stable@vger.kernel.org, teigland@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a6c77d41-4203-4aa7-8d4c-ed513bb6929d@rbox.co>
 
-Hi,
-
-On Mon, Feb 17, 2025 at 2:24=E2=80=AFPM Marc Smith <msmith626@gmail.com> wr=
-ote:
+On Tue, Feb 18, 2025 at 03:05:15PM +0100, Michal Luczaj wrote:
+>On 2/18/25 09:35, Stefano Garzarella wrote:
+>> On Mon, Feb 17, 2025 at 08:45:57PM +0100, Michal Luczaj wrote:
+>>> On 2/17/25 12:18, Luigi Leonardi wrote:
+>>>> On Fri, Feb 14, 2025 at 06:53:54PM +0100, Luigi Leonardi wrote:
+>>>>> Hi all,
+>>>>>
+>>>>> This series contains two patches that are already available upstream:
+>>>>>
+>>>>> - The first commit fixes a use-after-free[1], but introduced a
+>>>>> null-ptr-deref[2].
+>>>>> - The second commit fixes it. [3]
+>>>>>
+>>>>> I suggested waiting for both of them to be merged upstream and then
+>>>>> applying them togheter to stable[4].
+>>>>>
+>>>>> It should be applied to:
+>>>>> - 6.13.y
+>>>>> - 6.12.y
+>>>>> - 6.6.y
+>>>>>
+>>>>> I will send another series for
+>>>>> - 6.1.y
+>>>>> - 5.15.y
+>>>>> - 5.10.y
+>>>>>
+>>>>> because of conflicts.
+>>>>>
+>>>>> [1]https://lore.kernel.org/all/20250128-vsock-transport-vs-autobind-v3-0-1cf57065b770@rbox.co/
+>>>>> [2]https://lore.kernel.org/all/67a09300.050a0220.d7c5a.008b.GAE@google.com/
+>>>>> [3]https://lore.kernel.org/all/20250210-vsock-linger-nullderef-v3-0-ef6244d02b54@rbox.co/
+>>>>> [4]https://lore.kernel.org/all/2025020644-unwitting-scary-3c0d@gregkh/
+>>>>>
+>>>>> Thanks,
+>>>>> Luigi
+>>>>>
+>>>>> ---
+>>>>> Michal Luczaj (2):
+>>>>>      vsock: Keep the binding until socket destruction
+>>>>>      vsock: Orphan socket after transport release
+>>>>>
+>>>>> net/vmw_vsock/af_vsock.c | 12 +++++++++++-
+>>>>> 1 file changed, 11 insertions(+), 1 deletion(-)
+>>>>> ---
+>>>>> base-commit: a1856aaa2ca74c88751f7d255dfa0c8c50fcc1ca
+>>>>> change-id: 20250214-linux-rolling-stable-d73f0bed815d
+>>>>>
+>>>>> Best regards,
+>>>>> -- Luigi Leonardi <leonardi@redhat.com>
+>>>>>
+>>>>
+>>>> Looks like I forgot to add my SoB to the commits, my bad.
+>>>>
+>>>> For all the other stable trees (6.1, 5.15 and 5.10), there are some
+>>>> conflicts due to some indentation changes introduced by 135ffc7 ("bpf,
+>>>> vsock: Invoke proto::close on close()"). Should I backport this commit
+>>>> too?  There is no real dependency on the commit in the Fixes tag
+>>>> ("vsock: support sockmap"). IMHO, this would help future backports,
+>>>> because of indentation conficts! Otherwise I can simply fix the patches.
+>>>> WDYT?
+>>>
+>>> Just a note: since sockmap does not support AF_VSOCK in those kernels <=
+>>> 6.1, backporting 135ffc7 would introduce a (no-op) callback function
+>>> vsock_close(), which would then be (unnecessarily) called on every
+>>> vsock_release().
+>>>
+>>
+>> But this is the same behavior we have now upstream (without considering
+>> sockmap), right?
 >
-> Hi,
+>Oh, right, that's true.
 >
-> I noticed there appears to be a regression in DLM (fs/dlm/) when
-> moving from Linux 5.4.229 to 5.4.288; I get a kernel panic when using
-> dlm_ls_lockx() (DLM user) with a timeout >0, and the panic occurs when
-> the timeout is reached (eg, attempting to take a lock on a resource
-> that is already locked); the host where the timeout occurs is the one
-> that panics:
-> ...
-> [  187.976007]
->                DLM:  Assertion failed on line 1239 of file fs/dlm/lock.c
->                DLM:  assertion:  "!lkb->lkb_status"
->                DLM:  time =3D 4294853632
-> [  187.976009] lkb: nodeid 2 id 1 remid 2 exflags 40000 flags 800001
-> sts 1 rq 5 gr -1 wait_type 4 wait_nodeid 2 seq 0
-> [  187.976009]
-> [  187.976010] Kernel panic - not syncing: DLM:  Record message above
-> and reboot.
-> [  187.976099] CPU: 9 PID: 7409 Comm: dlm_scand Kdump: loaded Tainted:
-> P           OE     5.4.288-esos.prod #1
-> [  187.976195] Hardware name: Quantum H2012/H12SSW-NT, BIOS
-> T20201009143356 10/09/2020
-> [  187.976282] Call Trace:
-> [  187.976356]  dump_stack+0x50/0x63
-> [  187.976429]  panic+0x10c/0x2e3
-> [  187.976501]  kill_lkb+0x51/0x52
-> [  187.976570]  kref_put+0x16/0x2f
-> [  187.976638]  __put_lkb+0x2f/0x95
-> [  187.976707]  dlm_scan_timeout+0x18b/0x19c
-> [  187.976779]  ? dlm_uevent+0x19/0x19
-> [  187.976848]  dlm_scand+0x94/0xd1
-> [  187.976920]  kthread+0xe4/0xe9
-> [  187.976988]  ? kthread_flush_worker+0x70/0x70
-> [  187.977062]  ret_from_fork+0x35/0x40
-> ...
+>> Do you see any potential problems?
 >
-> I examined the commits for fs/dlm/ between 5.4.229 and 5.4.288 and
-> this is the offender:
-> dlm: replace usage of found with dedicated list iterator variable
-> [ Upstream commit dc1acd5c94699389a9ed023e94dd860c846ea1f6 ]
+>No, nothing I can think of.
 >
-> Specifically, the change highlighted below in this hunk for
-> dlm_scan_timeout() in fs/dlm/lock.c:
-> @@ -1867,27 +1867,28 @@ void dlm_scan_timeout(struct dlm_ls *ls)
->                 do_cancel =3D 0;
->                 do_warn =3D 0;
->                 mutex_lock(&ls->ls_timeout_mutex);
-> -               list_for_each_entry(lkb, &ls->ls_timeout, lkb_time_list) =
-{
-> +               list_for_each_entry(iter, &ls->ls_timeout, lkb_time_list)=
- {
->
->                         wait_us =3D ktime_to_us(ktime_sub(ktime_get(),
-> -                                                       lkb->lkb_timestam=
-p));
-> +                                                       iter->lkb_timesta=
-mp));
->
-> -                       if ((lkb->lkb_exflags & DLM_LKF_TIMEOUT) &&
-> -                           wait_us >=3D (lkb->lkb_timeout_cs * 10000))
-> +                       if ((iter->lkb_exflags & DLM_LKF_TIMEOUT) &&
-> +                           wait_us >=3D (iter->lkb_timeout_cs * 10000))
->                                 do_cancel =3D 1;
->
-> -                       if ((lkb->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
-> +                       if ((iter->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
->                             wait_us >=3D dlm_config.ci_timewarn_cs * 1000=
-0)
->                                 do_warn =3D 1;
->
->                         if (!do_cancel && !do_warn)
->                                 continue;
-> -                       hold_lkb(lkb);
-> +                       hold_lkb(iter);
-> +                       lkb =3D iter;
->                         break;
->                 }
->                 mutex_unlock(&ls->ls_timeout_mutex);
->
-> -               if (!do_cancel && !do_warn)
-> +               if (!lkb)
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->                         break;
->
->                 r =3D lkb->lkb_resource;
->
-> Reverting this single line change resolves the kernel panic:
-> $ diff -Naur fs/dlm/lock.c{.orig,}
-> --- fs/dlm/lock.c.orig  2024-12-19 12:05:05.000000000 -0500
-> +++ fs/dlm/lock.c       2025-02-16 21:21:42.544181390 -0500
-> @@ -1888,7 +1888,7 @@
->                 }
->                 mutex_unlock(&ls->ls_timeout_mutex);
->
-> -               if (!lkb)
-> +               if (!do_cancel && !do_warn)
->                         break;
->
->                 r =3D lkb->lkb_resource;
->
-> It appears this same "dlm: replace usage of found with dedicated list
-> iterator variable" commit was pulled into other stable branches as
-> well, and I don't see any fix in the latest 5.4.x patch release
-> (5.4.290).
+>Note however that the comment above vsock_close() ("Dummy callback required
+>by sockmap. See unconditional call of saved_close() in sock_map_close().")
+>becomes somewhat misleading :)
 >
 
-This works, or just init the lkb back to NULL there:
+Yeah, we can mention in the commit description of the backport that we 
+backport it just to reduce conflicts but sockmap features are not 
+backported. I'd touch as less as possibile in the patch, otherwise IMHO 
+is better to just fix the conflicts in the 2 patches.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 1899bb266e2e..7e02e5b55965 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1893,6 +1893,7 @@ void dlm_scan_timeout(struct dlm_ls *ls)
-                if (dlm_locking_stopped(ls))
-                        break;
-
-+               lkb =3D NULL;
-                do_cancel =3D 0;
-                do_warn =3D 0;
-                mutex_lock(&ls->ls_timeout_mutex);
-
-Can you provide more details about the use case of timeout? Are you
-using DLM in user space or kernel?
-
-- Alex
+Thanks,
+Stefano
 
 
