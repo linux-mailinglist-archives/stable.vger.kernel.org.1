@@ -1,91 +1,134 @@
-Return-Path: <stable+bounces-116786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BED3A39E76
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:16:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F424A39E1D
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 15:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6A7C172B64
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 14:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE58B166133
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 13:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374EE26A0BE;
-	Tue, 18 Feb 2025 14:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647442417F5;
+	Tue, 18 Feb 2025 13:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="SWIvw2eh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/YdnDLx"
 X-Original-To: stable@vger.kernel.org
-Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F2266F19
-	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 14:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15819171A7
+	for <stable@vger.kernel.org>; Tue, 18 Feb 2025 13:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739888119; cv=none; b=O84r6RFQO42W20n74oojnbURzJTLIw2z/cbBh581ald42+zwvN6CBKgIunyLFbsU3jJyYohY7/1pvJvUw19Xf3x2V2XN9FA+28vTqgod6pbX577wpEtK1W2fRxI0twt0TbZlzaKN7vp+uLXQoyiBYPXDONik3MRcG63w6Y4cc/4=
+	t=1739887159; cv=none; b=BYNu7M+40lEU5ZiQB9irnEcf1W4JMvARC6Y74ILysV237rkg00KVB82ZxFkEymu5kUJu+KF8LL5DIgYicHpCF40PaimrDOYMFQjYabBFO7XWZeU1KZfRKuV0iu5VsjxHelgUS3MPDMC3n0kM608pGx87MCE78KBrSKL90hwmTeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739888119; c=relaxed/simple;
-	bh=GDKT822rN6XmFSdk9pc7uLHWMJcbcfaj0xL5xHlyX3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m3+CaFT1i48vRIgu+ktQYzHcUnmMmgVDR2KPwV43fwQC9HrqLXELmfI/RHYPvhjZ1aImBbkQpNlxLr/oKUP/MPBxBYURX5mgW8QwUCbvpKu2TAav4ZDHnJW3JsKVgGpmtj63tL6iG6uULrbIvdcbEGEKRr6cQ9N0EjEf+gaIF2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=SWIvw2eh; arc=none smtp.client-ip=139.162.151.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=unseen.parts; s=sig; h=In-Reply-To:Content-Type:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kDuaUjBKkfniwOL63PWXizVIL9kQq7TJasYwZpiiDAM=; b=SWIvw2ehFop2jQvJRe9vbASers
-	pxeO+LdJj4YIJNvUDc/sbtQZBt3WdYj8sDlQsCoVWGi/HN7LRHFJNTxSAGFTfbxwc0YsW0zJFvwrI
-	fWQcfc5OZumvlkgbITGSJucm26cazGcEPdDfuxVcq4zRlA0iJHgnHQNSNbbmyRoOZlvOwqeFfaQgL
-	QNyPLl8NiEmXwzgyrQIJWds4WkTW4UFVgaXMqdnOvo1DrIQDghlU5Wlvw4cLg9/dlvpzQAEDsg8p0
-	DGzPlEiXiEMQlJ0zAwif5ih4vh1+3fmVKqGO+0KxaaW55m/lihDZvkBY7SZ55qfIK80UjEQXfsaOp
-	MeZBd9Yg==;
-Received: from minute.unseen.parts ([139.162.151.61]:47592 helo=minute)
-	by minute.unseen.parts with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <ink@unseen.parts>)
-	id 1tkNq4-00057K-05;
-	Tue, 18 Feb 2025 14:40:40 +0100
-Date: Tue, 18 Feb 2025 14:40:38 +0100
-From: Ivan Kokshaysky <ink@unseen.parts>
-To: gregkh@linuxfoundation.org
-Cc: linmag7@gmail.com, macro@orcam.me.uk, mattst88@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: Patch "alpha: make stack 16-byte aligned (most cases)" has been
- added to the 6.6-stable tree
-Message-ID: <Z7SN1kaT-1tuYyvL@minute>
-References: <2025021844-cruelness-freedom-e051@gregkh>
+	s=arc-20240116; t=1739887159; c=relaxed/simple;
+	bh=mnT5VF4Hk8LGQXLGcj6LEtNlRgHwi/VOWfYgVrz0x7k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s0QE8V74+GGirE2HxNottuCqNe9QFI5FlK31oaLEFUKfch9cZKi8Zuzy8HWb3HztMPBMuewno1tMrMiqaVVT93w8vMzv9ts/ZII4I4PMtJPBKV4OVQEAQ8MUwcV3Ovpj/h61BkOU8E42TQFnBHVd8D8AJXKXDPoyE4UVG38cIrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/YdnDLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEA6C4CEE2;
+	Tue, 18 Feb 2025 13:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739887158;
+	bh=mnT5VF4Hk8LGQXLGcj6LEtNlRgHwi/VOWfYgVrz0x7k=;
+	h=Subject:To:Cc:From:Date:From;
+	b=R/YdnDLxKxITVZeQLxANWVJjPrVJFeLt8DBctFI1k4jKv89wpUvcD33whxhJ5Yf4P
+	 V6j8R+VTLbqN1L8/MsJT645quGZPxLkelAyuajCx5nATXbPs71KnUXeF1urqVB1+1H
+	 VqNp2liplwCd+POnH+wUUlBrQC04ZQbiTQSuqwPU=
+Subject: FAILED: patch "[PATCH] drm/tidss: Fix race condition while handling interrupt" failed to apply to 6.6-stable tree
+To: devarsht@ti.com,aradhya.bhatia@linux.dev,jcormier@criticallink.com,tomi.valkeinen@ideasonboard.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 18 Feb 2025 14:59:15 +0100
+Message-ID: <2025021815-chrome-sycamore-9640@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025021844-cruelness-freedom-e051@gregkh>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 18, 2025 at 01:55:45PM +0100, gregkh@linuxfoundation.org wrote:
-> 
-> This is a note to let you know that I've just added the patch titled
-> 
->     alpha: make stack 16-byte aligned (most cases)
 
-Hi Greg, thanks for applying this!
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> Patches currently in stable-queue which might be from ink@unseen.parts are
-> 
-> queue-6.6/alpha-make-stack-16-byte-aligned-most-cases.patch
-> queue-6.6/alpha-align-stack-for-page-fault-and-user-unaligned-trap-handlers.patch
+To reproduce the conflict and resubmit, you may use the following commands:
 
-The third one (commit 77b823fa619f97d alpha: replace hardcoded stack offsets
-with autogenerated ones) is also needed, but it won't apply as-is to 6.6
-and older kernels.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x a9a73f2661e6f625d306c9b0ef082e4593f45a21
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025021815-chrome-sycamore-9640@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Do you want me to provide the patches?
+Possible dependencies:
 
-Ivan.
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a9a73f2661e6f625d306c9b0ef082e4593f45a21 Mon Sep 17 00:00:00 2001
+From: Devarsh Thakkar <devarsht@ti.com>
+Date: Mon, 21 Oct 2024 17:07:50 +0300
+Subject: [PATCH] drm/tidss: Fix race condition while handling interrupt
+ registers
+
+The driver has a spinlock for protecting the irq_masks field and irq
+enable registers. However, the driver misses protecting the irq status
+registers which can lead to races.
+
+Take the spinlock when accessing irqstatus too.
+
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+[Tomi: updated the desc]
+Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
+Tested-by: Jonathan Cormier <jcormier@criticallink.com>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-6-82ddaec94e4a@ideasonboard.com
+
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 515f82e8a0a5..07f5c26cfa26 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2767,8 +2767,12 @@ static void dispc_init_errata(struct dispc_device *dispc)
+  */
+ static void dispc_softreset_k2g(struct dispc_device *dispc)
+ {
++	unsigned long flags;
++
++	spin_lock_irqsave(&dispc->tidss->wait_lock, flags);
+ 	dispc_set_irqenable(dispc, 0);
+ 	dispc_read_and_clear_irqstatus(dispc);
++	spin_unlock_irqrestore(&dispc->tidss->wait_lock, flags);
+ 
+ 	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
+ 		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
+diff --git a/drivers/gpu/drm/tidss/tidss_irq.c b/drivers/gpu/drm/tidss/tidss_irq.c
+index 3cc4024ec7ff..8af4682ba56b 100644
+--- a/drivers/gpu/drm/tidss/tidss_irq.c
++++ b/drivers/gpu/drm/tidss/tidss_irq.c
+@@ -60,7 +60,9 @@ static irqreturn_t tidss_irq_handler(int irq, void *arg)
+ 	unsigned int id;
+ 	dispc_irq_t irqstatus;
+ 
++	spin_lock(&tidss->wait_lock);
+ 	irqstatus = dispc_read_and_clear_irqstatus(tidss->dispc);
++	spin_unlock(&tidss->wait_lock);
+ 
+ 	for (id = 0; id < tidss->num_crtcs; id++) {
+ 		struct drm_crtc *crtc = tidss->crtcs[id];
+
 
