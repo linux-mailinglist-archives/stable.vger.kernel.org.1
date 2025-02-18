@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-116919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64B7A3A9D8
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:50:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4FBA3A9DA
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 21:50:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5001F18956E6
-	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:48:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE803189791C
+	for <lists+stable@lfdr.de>; Tue, 18 Feb 2025 20:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C1F280A4D;
-	Tue, 18 Feb 2025 20:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0612328137B;
+	Tue, 18 Feb 2025 20:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCHWN5XW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cn2Z3Rz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25403280A45;
-	Tue, 18 Feb 2025 20:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0B28136D;
+	Tue, 18 Feb 2025 20:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739910539; cv=none; b=ea4OKNBqNopDKv6Mx/RSA+n5/uNudnCycDifX/IaQ4x01Z3iZVnIgHwo7HyLMu9LTrpSfOkWrHcuBsAF2KfLQ3H6V2yHp4fb3h+7kATtx0jylBoFbo8pU1ZlGSW8qX2dtVV25dLNl5PClKyoSenpbmhm3zV488N2Lvc96SupCiE=
+	t=1739910541; cv=none; b=jr5tNdvCBw8Z5ivBGmpGxk0ld3dF/Mg9Jk2v+53Jd3YniY18ecem18Oj9Pa+RHok9gjBIdzZu6yuzHDV1kclKsNbx6TPSOgAJKBDCKlj7eK0pK7RlHct/+JE161HAuY5v/hBt8hHHtTiUXI5ZgBR5ZcpvPdORCfFn+WODTBEnvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739910539; c=relaxed/simple;
-	bh=R+d/UN2g1Ot0PZPzuPdC1Ph2qbaat1iTw8Rwta8bHyA=;
+	s=arc-20240116; t=1739910541; c=relaxed/simple;
+	bh=+MCfZ3PiDMVDawojJv/00MM2ynUpq/aZUXJ5oFf0hjA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dHexK/B5t2upPtEnJYPQ9GCN+qO5MAvrLzk21Xgu9b2KJ+9D4xPIcHOdiKgd6entdrzB4a0fCR8ItMM9y14yXwGb4cxkL2xlWxyNwgIjpBWGQTgPz5V8ezW2P7fgOSA+KlUWoVAoTY2nNM4GoT+FmEx/9DmqTq9AfBoeXhwWHCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCHWN5XW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F190FC4CEE4;
-	Tue, 18 Feb 2025 20:28:57 +0000 (UTC)
+	 MIME-Version; b=uoyZtpqxtDIdNIaZQmXXKQJifqhO0F5gqPCq/MZ6GpkE9OvLEnLqYPFomPh30I6M6HTiE0vtvNkRuC/aA9J0KpA1QIBh+MfORDkXyo6H2UKKU7SlAYBDCI+AAutjRO1wvgkbhGRTkoLuvNIM3uxQIenScEyPBpKq9z7vVaWixj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cn2Z3Rz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D69AC4CEE2;
+	Tue, 18 Feb 2025 20:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739910539;
-	bh=R+d/UN2g1Ot0PZPzuPdC1Ph2qbaat1iTw8Rwta8bHyA=;
+	s=k20201202; t=1739910541;
+	bh=+MCfZ3PiDMVDawojJv/00MM2ynUpq/aZUXJ5oFf0hjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCHWN5XWA6khghgrsxXe1U7MwQnJvlJmF5tMqrCbSpZRhoX11+LtOPU1tUxzf3NZA
-	 za9W7OIVTByZd+rutpNarncbmMPFCfT6njXfiO+CC6RGHRkBsFfyc6KdRRl7NE4DLZ
-	 /MCoFKMcORPVLhB0BVlx0dVdiF28+MU5EVc31e1o2m2twoTvCu+1r5ylk2j09+S/5j
-	 uGglUhA1fviMZFsCdGMl4OYShzew+WfKbhyGrp5D1CSKpTnDYX4WdegjQpvi7uehYP
-	 kvzP+Hn11P8EP0MFk3y8MD48ah41L9j1kIZm9UnSs2xkavdoLE8dDENx4h873Ijvgy
-	 xgevZoF+x5vnw==
+	b=Cn2Z3Rz7G6VRtNkX5E7uHB+MHQZ/eOVcZbsOH7xYJ4dhUvoTVARYw6X1HlcVDYbLK
+	 Rrxp59OYk8DjkiNv8oztr+XXRACMb+2+okIXUwEE5Ys3zPJgdwHZgI/QmOc3t2NyrM
+	 n1LvRgNKLQIh9AQlHcD3nTiVT6Lkqx36E2SvxK1FBFcwlI8S9xFRG4BpTjN9Hj5Byz
+	 AGd97Jph6NeuYvr37dK4PTxf7eG+HYdgc2cZve6uJc4tzIsCMGPqOSqJwa9sV2AO5x
+	 M2vRIkjHXJoXCUfPXQXa3soktoThnKPWMWMZP02aFFdbugemKe2nEHKGO2V5nUCrQC
+	 GVDQ1FOrhgWJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>,
-	amit.kachhap@gmail.com,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 5/6] thermal/cpufreq_cooling: Remove structure member documentation
-Date: Tue, 18 Feb 2025 15:28:46 -0500
-Message-Id: <20250218202848.3593863-5-sashal@kernel.org>
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	benjamin.berg@intel.com,
+	mst@redhat.com,
+	tiwei.btw@antgroup.com,
+	jiri@resnulli.us,
+	u.kleine-koenig@pengutronix.de,
+	linux-um@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 6/6] um: virtio_uml: use raw spinlock
+Date: Tue, 18 Feb 2025 15:28:47 -0500
+Message-Id: <20250218202848.3593863-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250218202848.3593863-1-sashal@kernel.org>
 References: <20250218202848.3593863-1-sashal@kernel.org>
@@ -69,39 +72,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.178
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a6768c4f92e152265590371975d44c071a5279c7 ]
+[ Upstream commit daa1a05ba431540097ec925d4e01d53ef29a98f1 ]
 
-The structure member documentation refers to a member which does not
-exist any more. Remove it.
+This is needed because at least in time-travel the code
+can be called directly from the deep architecture and
+IRQ handling code.
 
-Link: https://lore.kernel.org/all/202501220046.h3PMBCti-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501220046.h3PMBCti-lkp@intel.com/
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250211084712.2746705-1-daniel.lezcano@linaro.org
-[ rjw: Minor changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/20250110125550.32479-7-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/cpufreq_cooling.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/um/drivers/virtio_uml.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
-index 12a60415af955..8171c806f5f6f 100644
---- a/drivers/thermal/cpufreq_cooling.c
-+++ b/drivers/thermal/cpufreq_cooling.c
-@@ -56,8 +56,6 @@ struct time_in_idle {
-  * @max_level: maximum cooling level. One less than total number of valid
-  *	cpufreq frequencies.
-  * @em: Reference on the Energy Model of the device
-- * @cdev: thermal_cooling_device pointer to keep track of the
-- *	registered cooling device.
-  * @policy: cpufreq policy.
-  * @idle_time: idle time stats
-  * @qos_req: PM QoS contraint to apply
+diff --git a/arch/um/drivers/virtio_uml.c b/arch/um/drivers/virtio_uml.c
+index 204e9dfbff1a0..19fe003932f71 100644
+--- a/arch/um/drivers/virtio_uml.c
++++ b/arch/um/drivers/virtio_uml.c
+@@ -52,7 +52,7 @@ struct virtio_uml_device {
+ 	struct platform_device *pdev;
+ 	struct virtio_uml_platform_data *pdata;
+ 
+-	spinlock_t sock_lock;
++	raw_spinlock_t sock_lock;
+ 	int sock, req_fd, irq;
+ 	u64 features;
+ 	u64 protocol_features;
+@@ -247,7 +247,7 @@ static int vhost_user_send(struct virtio_uml_device *vu_dev,
+ 	if (request_ack)
+ 		msg->header.flags |= VHOST_USER_FLAG_NEED_REPLY;
+ 
+-	spin_lock_irqsave(&vu_dev->sock_lock, flags);
++	raw_spin_lock_irqsave(&vu_dev->sock_lock, flags);
+ 	rc = full_sendmsg_fds(vu_dev->sock, msg, size, fds, num_fds);
+ 	if (rc < 0)
+ 		goto out;
+@@ -267,7 +267,7 @@ static int vhost_user_send(struct virtio_uml_device *vu_dev,
+ 	}
+ 
+ out:
+-	spin_unlock_irqrestore(&vu_dev->sock_lock, flags);
++	raw_spin_unlock_irqrestore(&vu_dev->sock_lock, flags);
+ 	return rc;
+ }
+ 
+@@ -1214,7 +1214,7 @@ static int virtio_uml_probe(struct platform_device *pdev)
+ 		goto error_free;
+ 	vu_dev->sock = rc;
+ 
+-	spin_lock_init(&vu_dev->sock_lock);
++	raw_spin_lock_init(&vu_dev->sock_lock);
+ 
+ 	rc = vhost_user_init(vu_dev);
+ 	if (rc)
 -- 
 2.39.5
 
