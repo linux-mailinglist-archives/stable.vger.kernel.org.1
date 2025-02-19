@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-118074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82BDA3B996
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C743BA3B624
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C5B2188D364
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 275873BE466
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A661DE3A3;
-	Wed, 19 Feb 2025 09:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639B61DEFE1;
+	Wed, 19 Feb 2025 08:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM+nwQvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU0+A5VY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1367F1A314B;
-	Wed, 19 Feb 2025 09:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C41DE4C7;
+	Wed, 19 Feb 2025 08:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957161; cv=none; b=IFG5HEtj+eDc+6bXwzNvN3pJ2K2h2Erp6XfA4AjvotRj2GcihYT5pLGVoWrAA7u0aRiya4Xb8kIQpsq02aTSYB7XvENQFq7Y9MaHavqRZaFF4vdEvLWVVwiBUBH5uKMr8IoCrSep9aS7nDFJAfrbOd549EFs28v9rN1Njk664oM=
+	t=1739955056; cv=none; b=dw7ijpm6DZYqiok6NKxLl5TAF8GWxMeYjFwXg9W+0uWHd/4uKaNeBNV71JnABljQqEl+DdJjqtGERBiRN6H2nu+4TPDoR7e9GQ9nWA0IqRNqZlAwr42Fdpa1Y5fPgfisSfeX98b0fVe5crTER/h157RpXs4rvT3s/jsKuz230ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957161; c=relaxed/simple;
-	bh=e4LYy1W6x6uqUsxRoGQc2AtsAbfmCsscdaPo8jQeLhI=;
+	s=arc-20240116; t=1739955056; c=relaxed/simple;
+	bh=3gDMKrQrFu56poaLT3Hf6VSB4llPy524KBTcneUnyL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1uxfq82BtYwN+1yPJL1g6t/prUJy1oUNIzZKDTtp5j0pshLfcDn/MiunfXNPpz8kFv1mauosiSUbbieE5TfQFMN3kCJfx3UXRROHMytwDtF3G65o3PbPFi06deM+Aju15ceaXeZQdlV27UZOM/Qh/eje/pKI7nk3AjuMIIKMug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM+nwQvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B790C4CEE6;
-	Wed, 19 Feb 2025 09:26:00 +0000 (UTC)
+	 MIME-Version; b=bHSstgZYXrysjIkJAvUAVzY8RsYnhrH3Qfi42A8B/DdmlZrQBhnxTqhIO/MaiLqUvigDxVxr7jxmp/f/gU8LybPzZV4WdSBtCz0adX5pMWuo2ZRSHjfXhmOVJeyEkM0p5LUbCNyKpybIvCgIC/ck0Y0Mfhe/MjFuwR66k/pPNoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU0+A5VY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDA3C4CED1;
+	Wed, 19 Feb 2025 08:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957160;
-	bh=e4LYy1W6x6uqUsxRoGQc2AtsAbfmCsscdaPo8jQeLhI=;
+	s=korg; t=1739955055;
+	bh=3gDMKrQrFu56poaLT3Hf6VSB4llPy524KBTcneUnyL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xM+nwQvyTU5PpY7ijFXzaHBY1co9P1rWL5LwZhGe0IEQLLLBMSE7fnEt/3EUl0iIA
-	 SzOnEpzn4SQKxBUbCpvXLKW0MLEX+RvP9Hen3GdqgVkDsZmOzLUxtNl6KLrBVO7RE1
-	 p8Oa7OQNErkQSlv87anH6NG3S2zWl9w68yXjDCB8=
+	b=xU0+A5VYrd9rYKH4j/3ZLkYjqxkuPwE39Oe/cYs7VQMDmNS/ZDOwcgcUZ3bV02Vxc
+	 M6syzvRxe8EGea8yw4kPpv71b7QqYTu+LcZTw8vzWUVlA+8KvLV1GpIk5SCl0FpAYw
+	 QfG3gFc5wkvI/jRwmo6Q7GvgcBF7Yry2/mwRDrEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 430/578] NFC: nci: Add bounds checking in nci_hci_create_pipe()
+	Lei Huang <huanglei@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 117/230] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
 Date: Wed, 19 Feb 2025 09:27:14 +0100
-Message-ID: <20250219082709.929703710@linuxfoundation.org>
+Message-ID: <20250219082606.267789052@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Lei Huang <huanglei@kylinos.cn>
 
-commit 110b43ef05342d5a11284cc8b21582b698b4ef1c upstream.
+commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
 
-The "pipe" variable is a u8 which comes from the network.  If it's more
-than 127, then it results in memory corruption in the caller,
-nci_hci_connect_gate().
+Teclast disk used on Huawei hisi platforms doesn't work well,
+losing connectivity intermittently if LPM is enabled.
+Add quirk disable LPM to resolve the issue.
 
-Cc: stable@vger.kernel.org
-Fixes: a1b0b9415817 ("NFC: nci: Create pipe on specific gate in nci_hci_connect_gate")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/bcf5453b-7204-4297-9c20-4d8c7dacf586@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/hci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/nfc/nci/hci.c
-+++ b/net/nfc/nci/hci.c
-@@ -540,6 +540,8 @@ static u8 nci_hci_create_pipe(struct nci
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -522,6 +522,9 @@ static const struct usb_device_id usb_qu
+ 	/* Blackmagic Design UltraStudio SDI */
+ 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
  
- 	pr_debug("pipe created=%d\n", pipe);
- 
-+	if (pipe >= NCI_HCI_MAX_PIPES)
-+		pipe = NCI_HCI_INVALID_PIPE;
- 	return pipe;
- }
- 
++	/* Teclast disk */
++	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Hauppauge HVR-950q */
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
