@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1F7A3B6B3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D18A3B688
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46F8A17AE12
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3129B7A6CC9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794691D6DBC;
-	Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CB91DF252;
+	Wed, 19 Feb 2025 09:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ8NL+jX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lsiohctr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA21CAA66;
-	Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25C01BEF71;
+	Wed, 19 Feb 2025 09:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955431; cv=none; b=sxwp6lAelwxxrY4uthB8hLyPlINpqm5i/TbvaeCpHkJPbkmXMCas5AzUz9WeCgOkpnkYNIBfCU8l+mdIxqg21a9eY6faZjFjAZtyP2m9Lhef6eXr7wpK0h7wtKxlB7qSjKkFFezdTsLoHpLAUA2KEtLFgmxROOttlS2o1E7uo1w=
+	t=1739955762; cv=none; b=sPay9tvcojZWupjI0tCiFPSo5U+PeKa+gZHbJa1qS6Ir44bAamxdYz6bWSeSevABNZk+wfwNYtg4/76fCKbuV0nkPCvuwdt8QPYbSZZjK81pzgCOMv8NNmmZ71ZV2adm/vRqrlgJcLqQ8v4Q0dYgf3ZfasI5q1rDDdYugCUU5/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955431; c=relaxed/simple;
-	bh=M2o0H/4yOf/xDFKHJb/DElf8860PFMZB5R6Sfaq329Q=;
+	s=arc-20240116; t=1739955762; c=relaxed/simple;
+	bh=Dgo9ALiSSVmYuADPxYrstpWRND6iUNp2K/A8aeMq/hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIY5RwggzlEp7/8gSTvGt2hak0vmZu0/RElEaonKxZv0IBoojl4MKxWXco7opaXQUXbSH5AMCHjtfm2/Red99cZFIYyJBjZzp78dGLXtFKUb9oZXZWSMAbx5JtmL9wQFPHfZAZmEAhUDsFFLoXgE1Q6nfCGHJvFTLfdYlhpa8u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ8NL+jX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CC4C4CEE6;
-	Wed, 19 Feb 2025 08:57:10 +0000 (UTC)
+	 MIME-Version; b=btWWPDa06pGsZiPGbLUjXs3VCHRqnJe6ILESMTkcGO1F865x3f/awvPFozUV9dR6qOkBt86/nDrZyOfpKSfymi37E2o6ivCm5qyaBf3dbEID7P6vetA6WL64E64aYDJgdn3+waIctVW02yHkgaWI95I2Agqwp/azxgT7pwmh9aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lsiohctr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6657CC4CED1;
+	Wed, 19 Feb 2025 09:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955431;
-	bh=M2o0H/4yOf/xDFKHJb/DElf8860PFMZB5R6Sfaq329Q=;
+	s=korg; t=1739955761;
+	bh=Dgo9ALiSSVmYuADPxYrstpWRND6iUNp2K/A8aeMq/hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQ8NL+jX8fr5xCKIBZ1PQvVwWkyeSOHiglMZpKP1RU5BD9KkBILbvD39S7pa5693r
-	 MGbWKRlDz0AeF/aRmnt3y5HheXmxHafCMdO0L/VUgGMoVLew451YWreRlN33lRQHBf
-	 jNSnsDpXAvqxfIx/QVThFPG3ZkTWSV2BRn3zz8Nk=
+	b=Lsiohctr53LwSBzUIcjPZx2bJ/A21BKHtBNfkIgQU6Sg2Ggdm3Zqdlgmp225KrSyG
+	 5qlat2Ia9geMHM4unsstxwbowRZjLqDEvLzPQ0UvG4XV9U7hlbiRVh+cp6SgleVryO
+	 i8UhIZegHkJS/EdP7di02JEjPGX/I3HgFi9jn0wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/230] btrfs: rename __get_extent_map() and pass btrfs_inode
+Subject: [PATCH 6.6 106/152] ipv4: use RCU protection in __ip_rt_update_pmtu()
 Date: Wed, 19 Feb 2025 09:28:39 +0100
-Message-ID: <20250219082609.596747273@linuxfoundation.org>
+Message-ID: <20250219082554.251723127@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 06de96faf795b5c276a3be612da6b08c6112e747 ]
+[ Upstream commit 139512191bd06f1b496117c76372b2ce372c9a41 ]
 
-The double underscore naming scheme does not apply here, there's only
-only get_extent_map(). As the definition is changed also pass the struct
-btrfs_inode.
+__ip_rt_update_pmtu() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: acc18e1c1d8c ("btrfs: fix stale page cache after race between readahead and direct IO write")
+Fixes: 2fbc6e89b2f1 ("ipv4: Update exception handling for multipath routes via same device")
+Fixes: 1de6b15a434c ("Namespaceify min_pmtu sysctl")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ net/ipv4/route.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 42c9899d9241c..e6e6c4dc53c48 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -901,9 +901,9 @@ void clear_folio_extent_mapped(struct folio *folio)
- 	folio_detach_private(folio);
- }
- 
--static struct extent_map *__get_extent_map(struct inode *inode,
--					   struct folio *folio, u64 start,
--					   u64 len, struct extent_map **em_cached)
-+static struct extent_map *get_extent_map(struct btrfs_inode *inode,
-+					 struct folio *folio, u64 start,
-+					 u64 len, struct extent_map **em_cached)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 2e524c27a5171..97dc30a03dbf2 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1020,9 +1020,9 @@ out:	kfree_skb_reason(skb, reason);
+ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
  {
- 	struct extent_map *em;
- 	struct extent_state *cached_state = NULL;
-@@ -922,14 +922,14 @@ static struct extent_map *__get_extent_map(struct inode *inode,
- 		*em_cached = NULL;
- 	}
+ 	struct dst_entry *dst = &rt->dst;
+-	struct net *net = dev_net(dst->dev);
+ 	struct fib_result res;
+ 	bool lock = false;
++	struct net *net;
+ 	u32 old_mtu;
  
--	btrfs_lock_and_flush_ordered_range(BTRFS_I(inode), start, start + len - 1, &cached_state);
--	em = btrfs_get_extent(BTRFS_I(inode), folio, start, len);
-+	btrfs_lock_and_flush_ordered_range(inode, start, start + len - 1, &cached_state);
-+	em = btrfs_get_extent(inode, folio, start, len);
- 	if (!IS_ERR(em)) {
- 		BUG_ON(*em_cached);
- 		refcount_inc(&em->refs);
- 		*em_cached = em;
- 	}
--	unlock_extent(&BTRFS_I(inode)->io_tree, start, start + len - 1, &cached_state);
-+	unlock_extent(&inode->io_tree, start, start + len - 1, &cached_state);
+ 	if (ip_mtu_locked(dst))
+@@ -1032,6 +1032,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 	if (old_mtu < mtu)
+ 		return;
  
- 	return em;
- }
-@@ -985,8 +985,7 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
- 			end_folio_read(folio, true, cur, iosize);
- 			break;
++	rcu_read_lock();
++	net = dev_net_rcu(dst->dev);
+ 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+ 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+@@ -1039,9 +1041,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 
+ 	if (rt->rt_pmtu == mtu && !lock &&
+ 	    time_before(jiffies, dst->expires - net->ipv4.ip_rt_mtu_expires / 2))
+-		return;
++		goto out;
+ 
+-	rcu_read_lock();
+ 	if (fib_lookup(net, fl4, &res, 0) == 0) {
+ 		struct fib_nh_common *nhc;
+ 
+@@ -1055,14 +1056,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 						      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 			}
+-			rcu_read_unlock();
+-			return;
++			goto out;
  		}
--		em = __get_extent_map(inode, folio, cur, end - cur + 1,
--				      em_cached);
-+		em = get_extent_map(BTRFS_I(inode), folio, cur, end - cur + 1, em_cached);
- 		if (IS_ERR(em)) {
- 			end_folio_read(folio, false, cur, end + 1 - cur);
- 			return PTR_ERR(em);
+ #endif /* CONFIG_IP_ROUTE_MULTIPATH */
+ 		nhc = FIB_RES_NHC(res);
+ 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 				      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 	}
++out:
+ 	rcu_read_unlock();
+ }
+ 
 -- 
 2.39.5
 
