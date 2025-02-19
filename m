@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2232AA3B670
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCF7A3B974
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC6B73A8777
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8EE53BC390
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0A71D5175;
-	Wed, 19 Feb 2025 08:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547D51DE891;
+	Wed, 19 Feb 2025 09:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTr0Fo6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpohN8h9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0595A1CAA6C;
-	Wed, 19 Feb 2025 08:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B181DE4FF;
+	Wed, 19 Feb 2025 09:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954874; cv=none; b=fLK1LXuLQHXK31RV5cn9NjStq98lLE3GH9pdfVnBshFZOHBW+WYr5Qy23R12MX3z2HjPKZp+GsvHW5THJDXfFajYb8ku5UbtplvyTB2YptjdMqa2itCq2s9pKA9NpNFNHdlQq3P5Wx04PaEwC9dETihY8LOvb0gfBDtpnxObzgM=
+	t=1739956922; cv=none; b=h7wc0YGZrAmtws/e1WssiDNH3okQ/qhLbrROKQXvEqnrdkwwp52Y03bPolL8MR7sQP2NL7od4HzrJ9cSnylSBox8CaX6xTNJCd6I9R/0QTWdPPlQSWi1VlqU/IZoJzAJWbZT41hclDDfYqtztnR2MyX4v35Bh0m1DWqtgXNeKKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954874; c=relaxed/simple;
-	bh=KpGDLzV4PuFn5A/iCHnWZmzl+xvaeHp1Q7vmIEmqcMg=;
+	s=arc-20240116; t=1739956922; c=relaxed/simple;
+	bh=yy4EYLqqTsCLOGHwp3TImo3MhqHkFIAyFczCAfp6wyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAWEUJzugN8Nj/uZJTlWgGLo1LkOV1GVBAVZAWK6IsxLCPRLrDkDw2rgU54s0Bc+Fg26RcvlhBMby05G4R3R30VGW/aSFGYqKyS4tRyKKauBMLRaPK3D0MkUIDgC7J9P9K9HzrAvekl53yx7C0SRgciActkDItd9xXbmtkXkcFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTr0Fo6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29651C4CEE6;
-	Wed, 19 Feb 2025 08:47:52 +0000 (UTC)
+	 MIME-Version; b=eo5B2WJVtXWYLeQ/mGnQiInL19OwSmMcNcgMwp17xJ6DCv1tUUlWoiD7Y6ctwP6GHShMwaDHVWUqdq1QIwqR7YT20pL5MmoMeCpk0EqMKqcnqY8liC5NAYzuW2YpaFoXwXFuk9yCNc+ieAkQYYLQRPp7kuvHhAKZ1pjqnicFdBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpohN8h9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B61C4CED1;
+	Wed, 19 Feb 2025 09:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954873;
-	bh=KpGDLzV4PuFn5A/iCHnWZmzl+xvaeHp1Q7vmIEmqcMg=;
+	s=korg; t=1739956921;
+	bh=yy4EYLqqTsCLOGHwp3TImo3MhqHkFIAyFczCAfp6wyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTr0Fo6CWVRSRieW9TbKB0EAeVPDkR8SeJmmT8LZqKV/YZmlmJMCP+haQyx+ixfuL
-	 CRmBEd62x8R3UjgDI8AxdzqBU8NbylX3DbJwf3+q+xx/Kqs9IaFvvD9ZsRCi34Y3Vb
-	 d77qyMEbNks2rdi9eqDeURl43vz+v2sC7yVV1Whw=
+	b=FpohN8h92skybKZaVl+vv9tcCBHPMrAlnJUmzC9pdzCogmNN1R8U05tJ/PniIEvap
+	 80Cy52zYG2KIWjsi9AniOUENzKh2A9RaVAs16Zn0dnsGVZO6yt9sOnu4hdjycY+d0p
+	 FIrv+SeXcft8nM6ZZN5iaep1fBnVNY15lCK3afSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/230] Bluetooth: btintel_pcie: Fix a potential race condition
-Date: Wed, 19 Feb 2025 09:25:48 +0100
-Message-ID: <20250219082602.926016925@linuxfoundation.org>
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 345/578] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
+Date: Wed, 19 Feb 2025 09:25:49 +0100
+Message-ID: <20250219082706.591099999@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-[ Upstream commit 872274b992839ff64fe560767fe7ee5f942ccdb1 ]
+commit 9d241b06802c6c2176ae7aa4f9f17f8a577ed337 upstream.
 
-On HCI_OP_RESET command, firmware raises alive interrupt. Driver needs
-to wait for this before sending other command. This patch fixes the potential
-miss of alive interrupt due to which HCI_OP_RESET can timeout.
+During mass manufacturing, we noticed the mmc_rx_crc_error counter,
+as reported by "ethtool -S eth0 | grep mmc_rx_crc_error", to increase
+above zero during nuttcp speedtests. Most of the time, this did not
+affect the achieved speed, but it prompted this investigation.
 
-Expected flow:
-If tx command is HCI_OP_RESET,
-  1. set data->gp0_received = false
-  2. send HCI_OP_RESET
-  3. wait for alive interrupt
+Cycling through the rx_delay range on six boards (see table below) of
+various ages shows that there is a large good region from 0x12 to 0x35
+where we see zero crc errors on all tested boards.
 
-Actual flow having potential race:
-If tx command is HCI_OP_RESET,
- 1. send HCI_OP_RESET
-   1a. Firmware raises alive interrupt here and in ISR
-       data->gp0_received  is set to true
- 2. set data->gp0_received = false
- 3. wait for alive interrupt
+The old rx_delay value (0x10) seems to have always been on the edge for
+the KSZ9031RNX that is usually placed on Puma.
 
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Fixes: 05c200c8f029 ("Bluetooth: btintel_pcie: Add handshake between driver and firmware")
-Reported-by: Bjorn Helgaas <helgaas@kernel.org>
-Closes: https://patchwork.kernel.org/project/bluetooth/patch/20241001104451.626964-1-kiran.k@intel.com/
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Choose "rx_delay = 0x23" to put us smack in the middle of the good
+region. This works fine as well with the KSZ9131RNX PHY that was used
+for a small number of boards during the COVID chip shortages.
+
+	Board S/N        PHY        rx_delay good region
+	---------        ---        --------------------
+	Puma TT0069903   KSZ9031RNX 0x11 0x35
+	Puma TT0157733   KSZ9031RNX 0x11 0x35
+	Puma TT0681551   KSZ9031RNX 0x12 0x37
+	Puma TT0681156   KSZ9031RNX 0x10 0x38
+	Puma 17496030079 KSZ9031RNX 0x10 0x37 (Puma v1.2 from 2017)
+	Puma TT0681720   KSZ9131RNX 0x02 0x39 (alternative PHY used in very few boards)
+
+	Intersection of good regions = 0x12 0x35
+	Middle of good region = 0x23
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # Puma v2.1 and v2.3 with KSZ9031
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+Link: https://lore.kernel.org/r/20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 8bd663f4bac1b..53f6b4f76bccd 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -1312,6 +1312,10 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
- 			if (opcode == 0xfc01)
- 				btintel_pcie_inject_cmd_complete(hdev, opcode);
- 		}
-+		/* Firmware raises alive interrupt on HCI_OP_RESET */
-+		if (opcode == HCI_OP_RESET)
-+			data->gp0_received = false;
-+
- 		hdev->stat.cmd_tx++;
- 		break;
- 	case HCI_ACLDATA_PKT:
-@@ -1349,7 +1353,6 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
- 			   opcode, btintel_pcie_alivectxt_state2str(old_ctxt),
- 			   btintel_pcie_alivectxt_state2str(data->alive_intr_ctxt));
- 		if (opcode == HCI_OP_RESET) {
--			data->gp0_received = false;
- 			ret = wait_event_timeout(data->gp0_wait_q,
- 						 data->gp0_received,
- 						 msecs_to_jiffies(BTINTEL_DEFAULT_INTR_TIMEOUT_MS));
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -147,7 +147,7 @@
+ 	snps,reset-active-low;
+ 	snps,reset-delays-us = <0 10000 50000>;
+ 	tx_delay = <0x10>;
+-	rx_delay = <0x10>;
++	rx_delay = <0x23>;
+ 	status = "okay";
+ };
+ 
 
 
 
