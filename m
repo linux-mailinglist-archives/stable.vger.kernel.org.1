@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEF2A3B5B6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:00:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFDCA3B47F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403A4175798
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6369217787D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2DB1FECA6;
-	Wed, 19 Feb 2025 08:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C341CAA95;
+	Wed, 19 Feb 2025 08:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qllFr6Mn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5qHEEYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C9B1F17E5;
-	Wed, 19 Feb 2025 08:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757B11C7B62;
+	Wed, 19 Feb 2025 08:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954758; cv=none; b=GEhhWqrtwEW5/9XqtmMAi03a4SsHgxhFclxfXdqNM/qqGB9X+0u9Ttyue8t47jx/mY8frHKd9+xs4C9mEnCvtKaNxs1RGV5xeSrCrjgk6uPwxoo6DZNtdBXd/KopNq/gD8HFj4JOiio/QfP/C8UGi1aKgiPzHKXbuJDs1DjuEYY=
+	t=1739954072; cv=none; b=vF3qgXjy4mmdGZfNSWVHnhMv4TmupyxnKE8ovsf/SN01zYUxPMUZfJS1MH+vX3YiHfXFL1IsmM9g0w64f3PpRD3s5f7t+jMcV8dFlPgI9HYLoYrNjLvpDlAQJ0/TJgIcFHKp7Ppwt0/U8jNRoMjW0l+srU5QuedOM39Zedi+Bs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954758; c=relaxed/simple;
-	bh=AnidAMJAXWfS7QE5WU+6lmBSIUa2JC0f97ICh3k19fk=;
+	s=arc-20240116; t=1739954072; c=relaxed/simple;
+	bh=ZvwgoZVosaW7gxjEZt0PPwiHTHmXYw/zMv4ulsuZ1CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klVclZGY5wDjk3CXtx6qkI/e+b8d7Y17iOCVtvi0A3gVRfDU2fkHewbhjFj8lf/dFkgaUVnHy69TCllJEDJaIohI6Ian6f93MHrqGaWVo2NxqGR8Va/auEDfhEJZDOd2V17eqLHHrsMQy0VPJtGOjG7jZPSvYYtb/ZSmUHSalqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qllFr6Mn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75748C4CED1;
-	Wed, 19 Feb 2025 08:45:57 +0000 (UTC)
+	 MIME-Version; b=PBoNtjTb7eyozrk/h02HJlzHVOwhklzsX0vCNDieztyJeGUnlq9HL6BR8YNDNI38Wb4QhRB4qYkXVYvabNSsWujiD56rPnGcZ6MU80ualoP+UJLzqu2PGDP5E2YfVYv1/yR3Ymm2dnCk/wATVenz/06/F8X46O1olnGA2ORNnnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5qHEEYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00EC4CED1;
+	Wed, 19 Feb 2025 08:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954757;
-	bh=AnidAMJAXWfS7QE5WU+6lmBSIUa2JC0f97ICh3k19fk=;
+	s=korg; t=1739954072;
+	bh=ZvwgoZVosaW7gxjEZt0PPwiHTHmXYw/zMv4ulsuZ1CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qllFr6MnYktydF6gP+b0o/rCqqchEV14qdXrtCSd/zTcUvbsvffIs5eggTYOXHU0d
-	 VxGv/0zUKenOKkweFQWhROzs4Xhq2T4sR52lRKFthZOzDnDlTzh0mPkC3O/BtIFYiC
-	 mhkksHDAQoKKrb1jVWcUFetRvV6ecD7wCn6D/V2E=
+	b=T5qHEEYY8QmkUoI1Jj02Yf5r/OEi9xgWgWtanJ2NGKTQNFKifhfpdvwZi40WhbeaJ
+	 he+C5RjqT2k6M0S1Lp26/pAfaSV4s9b5TUOGXj2qaLl9I2r2mkZ/jC1EY518geRRs3
+	 OcxAruDc8LnhK7LfLFZesx4kMhy1zqJdzdtIK60g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/230] pinctrl: cy8c95x0: Enable regmap locking for debug
-Date: Wed, 19 Feb 2025 09:25:23 +0100
-Message-ID: <20250219082601.944666549@linuxfoundation.org>
+Subject: [PATCH 6.13 070/274] firmware: qcom: scm: smc: Handle missing SCM device
+Date: Wed, 19 Feb 2025 09:25:24 +0100
+Message-ID: <20250219082612.360682169@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit aac4470fa6e695e4d6ac94cc77d4690b57f1d2bc ]
+[ Upstream commit 94f48ecf0a538019ca2025e0b0da391f8e7cc58c ]
 
-When regmap locking is disabled, debugfs is also disabled.
-Enable locking for debug when CONFIG_DEBUG_PINCTRL is set.
+Commit ca61d6836e6f ("firmware: qcom: scm: fix a NULL-pointer
+dereference") makes it explicit that qcom_scm_get_tzmem_pool() can
+return NULL, therefore its users should handle this.
 
-Fixes: f71aba339a66 ("pinctrl: cy8c95x0: Use single I2C lock")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/20250203131506.3318201-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-5-9061013c8d92@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/firmware/qcom/qcom_scm-smc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index 05224808d92be..c0f094f51da84 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -472,7 +472,11 @@ static const struct regmap_config cy8c9520_i2c_regmap = {
- 	.max_register = 0,		/* Updated at runtime */
- 	.num_reg_defaults_raw = 0,	/* Updated at runtime */
- 	.use_single_read = true,	/* Workaround for regcache bug */
-+#if IS_ENABLED(CONFIG_DEBUG_PINCTRL)
-+	.disable_locking = false,
-+#else
- 	.disable_locking = true,
-+#endif
- };
+diff --git a/drivers/firmware/qcom/qcom_scm-smc.c b/drivers/firmware/qcom/qcom_scm-smc.c
+index 2b4c2826f5725..3f10b23ec941b 100644
+--- a/drivers/firmware/qcom/qcom_scm-smc.c
++++ b/drivers/firmware/qcom/qcom_scm-smc.c
+@@ -173,6 +173,9 @@ int __scm_smc_call(struct device *dev, const struct qcom_scm_desc *desc,
+ 		smc.args[i + SCM_SMC_FIRST_REG_IDX] = desc->args[i];
  
- static inline int cy8c95x0_regmap_update_bits_base(struct cy8c95x0_pinctrl *chip,
+ 	if (unlikely(arglen > SCM_SMC_N_REG_ARGS)) {
++		if (!mempool)
++			return -EINVAL;
++
+ 		args_virt = qcom_tzmem_alloc(mempool,
+ 					     SCM_SMC_N_EXT_ARGS * sizeof(u64),
+ 					     flag);
 -- 
 2.39.5
 
