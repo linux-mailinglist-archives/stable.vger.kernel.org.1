@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E43A3B4D1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:47:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B16A3B5FD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF5ED3B4DE1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9F4C3A1A56
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3BC1A314B;
-	Wed, 19 Feb 2025 08:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009F81F63F5;
+	Wed, 19 Feb 2025 08:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfWIJE8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3B+vqZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EF31E32D7;
-	Wed, 19 Feb 2025 08:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B013E1C7B62;
+	Wed, 19 Feb 2025 08:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954240; cv=none; b=rYqlspEDcC7SdHk8gGK1vm9AcVqvRXaX5HTUGjJAfYl1M40DD7ODs7BaLoZOIcVpByuIoxGR0ShW9gK6rck83ejuHRqXOuGHurHAhMI3w3MHfUlPWKqb69w9hFXIKg29kYF2nxiDK669K6CUTL7gU2EjvaF/rjXiLFX1iMN8A/A=
+	t=1739954819; cv=none; b=ZZlvc7dkWSU8oNvxhQXkRXB6kZwrBvRDUg3FgxAX0KTqUKSPnCHGyMKdr+ALtZ+segJXR9VDCp93WeTNQhzU5GSn+UkJyHC11vkCzK8/TiEOeXjxwXYl5wPlbb9qSHAw9V9YK1InubfXyCpLu8B9NDF+ueiH1FGZlaTNoFh+rEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954240; c=relaxed/simple;
-	bh=rzmBRuWXb3v6WnDkC605zE7Fq5SULc3Z2CbR2RtNzGw=;
+	s=arc-20240116; t=1739954819; c=relaxed/simple;
+	bh=5AytZi5iIoVwvh8PKhfkxyPivmGL9S3yynDtoeZop0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuvmX4kWrTBcq/iXV2YmYRdl0kz4P8eJhW6tkHWUP0j7LgEtQQ/5uEl1O1e3hYqwUyfpktmTp07YgOFM1B1HU39k9bdttmxPRek4rYN0aYg9paosz9WNloBn7uEeKWL7KMl5MWHdIFqod9SEmobvbATLVyADRwkMLKbKtdjPIwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfWIJE8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C02C4CED1;
-	Wed, 19 Feb 2025 08:37:20 +0000 (UTC)
+	 MIME-Version; b=MOBz6otCytT2DWIPpUtAyfBtblSa1AZuLcfHh7sI5QM49W5AKjLVLfEC6GRS5WT9r3RvTA0MJIxngYHezqy8G5OHXEE10WOONIy7BAyxKU2+NM0sK3lMCJvCfDTi1z3/3oCLobt1S1qPwJQ4/etRd5lxmq700YbdILv2xW+Ab9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3B+vqZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F8FC4CEE6;
+	Wed, 19 Feb 2025 08:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954240;
-	bh=rzmBRuWXb3v6WnDkC605zE7Fq5SULc3Z2CbR2RtNzGw=;
+	s=korg; t=1739954819;
+	bh=5AytZi5iIoVwvh8PKhfkxyPivmGL9S3yynDtoeZop0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfWIJE8P09M7g1tyTf/gRq1oDiSztRVEFJKzCioKSndJs2Vc0c4DB7wT5gUWP5YC5
-	 6LrXyAQCDs4KHW59c6qe3ttd5QiQKYeJ/kEoAjqQfAr79ruxHxpJkq9zUSLuYhncuq
-	 4XOQm/AxpFUv4LjMfgxUF/GFImehtdGn6MInxKMg=
+	b=v3B+vqZFL0FpF3Ec8gyvY3wybN6Vpuh2iELN7tR+ZPWOCpm++gkgH9yNsaGqQD5a4
+	 uKdVlNx90yLRRMn0EZ3fZzH3BA4WRFa/KZE5mp31xUB/5bfICobScc9YnCIaamdzas
+	 XAPlTiw5X7MWe9hQcVgai+d2e4LbjzAYzfbQU1Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 109/274] ASoC: renesas: SND_SIU_MIGOR should depend on DMADEVICES
+Subject: [PATCH 6.12 046/230] io_uring/uring_cmd: remove dead req_has_async_data() check
 Date: Wed, 19 Feb 2025 09:26:03 +0100
-Message-ID: <20250219082613.884006617@linuxfoundation.org>
+Message-ID: <20250219082603.513531682@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 2e3c688ddaf2bb8e3696a773b5278711a90ea080 ]
+[ Upstream commit 0edf1283a9d1419a2095b4fcdd95c11ac00a191c ]
 
-If CONFIG_DMADEVICES=n:
+Any uring_cmd always has async data allocated now, there's no reason to
+check and clear a cached copy of the SQE.
 
-    WARNING: unmet direct dependencies detected for SND_SOC_SH4_SIU
-      Depends on [n]: SOUND [=y] && SND [=y] && SND_SOC [=y] && (SUPERH [=y] || ARCH_RENESAS || COMPILE_TEST [=n]) && ARCH_SHMOBILE [=y] && HAVE_CLK [=y] && DMADEVICES [=n]
-      Selected by [y]:
-      - SND_SIU_MIGOR [=y] && SOUND [=y] && SND [=y] && SND_SOC [=y] && (SUPERH [=y] || ARCH_RENESAS || COMPILE_TEST [=n]) && SH_MIGOR [=y] && I2C [=y]
-
-SND_SIU_MIGOR selects SND_SOC_SH4_SIU.  As the latter depends on
-DMADEVICES, the former should depend on DMADEVICES, too.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501241032.oOmsmzvk-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/8c17ff52584ce824b8b42d08ea1b942ebeb7f4d9.1737708688.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d10f19dff56e ("io_uring/uring_cmd: switch to always allocating async data")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/uring_cmd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/sound/soc/renesas/Kconfig b/sound/soc/renesas/Kconfig
-index 426632996a0a3..cb01fb36355f0 100644
---- a/sound/soc/renesas/Kconfig
-+++ b/sound/soc/renesas/Kconfig
-@@ -67,7 +67,7 @@ config SND_SH7760_AC97
+diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
+index 874f9e2defd58..b2ce4b5610027 100644
+--- a/io_uring/uring_cmd.c
++++ b/io_uring/uring_cmd.c
+@@ -65,9 +65,6 @@ bool io_uring_try_cancel_uring_cmd(struct io_ring_ctx *ctx,
+ 			continue;
  
- config SND_SIU_MIGOR
- 	tristate "SIU sound support on Migo-R"
--	depends on SH_MIGOR && I2C
-+	depends on SH_MIGOR && I2C && DMADEVICES
- 	select SND_SOC_SH4_SIU
- 	select SND_SOC_WM8978
- 	help
+ 		if (cmd->flags & IORING_URING_CMD_CANCELABLE) {
+-			/* ->sqe isn't available if no async data */
+-			if (!req_has_async_data(req))
+-				cmd->sqe = NULL;
+ 			file->f_op->uring_cmd(cmd, IO_URING_F_CANCEL |
+ 						   IO_URING_F_COMPLETE_DEFER);
+ 			ret = true;
 -- 
 2.39.5
 
