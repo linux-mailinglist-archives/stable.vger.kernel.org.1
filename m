@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75314A3B71A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49721A3B9F3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B3817CD65
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345E48008B3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46691DED4A;
-	Wed, 19 Feb 2025 08:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958D71D47A2;
+	Wed, 19 Feb 2025 09:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSsg9BX+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIqAvEpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6255A1DE8AA;
-	Wed, 19 Feb 2025 08:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497A11CAA86;
+	Wed, 19 Feb 2025 09:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955532; cv=none; b=tbhABDaZgcUHyi1U7ZsPv/WQn4u/SRzuPZ6+Gx+i691+Elswv7bw6NfpRGci+OvTsniI5z01a+QtstYRzGPK7SxwRoLLm4dsxN0D8GgWJfNDHkBGOxvBMWk4vRvnfJ/t0HcQMLD+AP+dIZEJsu6nmT+pI5DG1qn688Aw5ZXRDUw=
+	t=1739957184; cv=none; b=VD8BiBnhLQg1uO1sOvB5CiOdee+3ycB/MmwlvhVba+lZHp5AeIW7IPTlwgpaLfXZYHg5mukGwhbilV59oBwNDFhunkPXzS0pr5PKnuxZsKqFKsxTpjuEkNt2RlSyiVHKvVEpeYNRwimWEYfXk7aLJmxMXmiiwL5kQorae3XsAkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955532; c=relaxed/simple;
-	bh=wlW8OwfYgL3EQpGU8JuS5rvr2yCtFBOutc79/JGXa8A=;
+	s=arc-20240116; t=1739957184; c=relaxed/simple;
+	bh=ZYeUZp6wk2F4GBk82U2MKJ7mbwmyY+wlovXtpaEp7Ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNyn+kvuR3idwtLnqHuFyd/NDEmPeWRanyZ80ts/SJd8oVgGY7fAv79h/yZiYKM+nDVeGCAfaqob+sIrLUQNj0bBscb2oy/FAkjktLCDJu2rpZ4Ang/GDBIW0P7BvVXhlHMB1GLHwxSMf5uxskapmz88B6m+0GvBkIgTu0wv8jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSsg9BX+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70022C4CED1;
-	Wed, 19 Feb 2025 08:58:51 +0000 (UTC)
+	 MIME-Version; b=UCn4FbExQ9cdxCPAsARCRND0Z/8/wUTx1IGCO3LsNuiNZtaaGbFJe6ht0SgBsGcgdoieCjrYu2ZElOR1HDPx02/4dA0J20YHvj2scOJVkSzNqKyTogTnrX69w4fNnQ6CsWIDNBpr3gRlcS/5o16oc9PagX2otszKt0BMMuI3aH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIqAvEpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D237C4CED1;
+	Wed, 19 Feb 2025 09:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955531;
-	bh=wlW8OwfYgL3EQpGU8JuS5rvr2yCtFBOutc79/JGXa8A=;
+	s=korg; t=1739957183;
+	bh=ZYeUZp6wk2F4GBk82U2MKJ7mbwmyY+wlovXtpaEp7Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSsg9BX+OtHdq2jk7FQeFgv/OZcVv6Im/pVW2be3SLfTrfYehsrlKDVqpeK2zQKFl
-	 deK2uv87zf8iv7P0WFS0vPhpll9misyTOUP0CxsQ5nug3b26ToE3OHEUnWl1lMdaKF
-	 vCCe1dNghd2R91N5ILVv8b5eckqEA1J+MzSRMF/I=
+	b=wIqAvEpKYLDpmDo+h4H7qL2SDhIQkbhRh47wv27PpyA805wd6D2I5/cbV9A3vB4kr
+	 F+cq+UBQidKPW7qivSg/eAUHR7wUBg2QxssVVyC06Yf+gwYKbmvmGqEfa+vxzxBsC4
+	 esWVyexuK9lXDTWdXL+fjl72brfCq/88RXPXuQ8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/152] fbdev: omap: use threaded IRQ for LCD DMA
-Date: Wed, 19 Feb 2025 09:27:20 +0100
-Message-ID: <20250219082551.112229099@linuxfoundation.org>
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 437/578] net/ncsi: wait for the last response to Deselect Package before configuring channel
+Date: Wed, 19 Feb 2025 09:27:21 +0100
+Message-ID: <20250219082710.198219422@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Paul Fertser <fercerpav@gmail.com>
 
-[ Upstream commit e4b6b665df815b4841e71b72f06446884e8aad40 ]
+commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
 
-When using touchscreen and framebuffer, Nokia 770 crashes easily with:
+The NCSI state machine as it's currently implemented assumes that
+transition to the next logical state is performed either explicitly by
+calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
+after processing the predefined (ndp->pending_req_num) number of
+replies. Thus to avoid the configuration FSM from advancing prematurely
+and getting out of sync with the process it's essential to not skip
+waiting for a reply.
 
-    BUG: scheduling while atomic: irq/144-ads7846/82/0x00010000
-    Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite configfs omap_udc ohci_omap ohci_hcd
-    CPU: 0 UID: 0 PID: 82 Comm: irq/144-ads7846 Not tainted 6.12.7-770 #2
-    Hardware name: Nokia 770
-    Call trace:
-     unwind_backtrace from show_stack+0x10/0x14
-     show_stack from dump_stack_lvl+0x54/0x5c
-     dump_stack_lvl from __schedule_bug+0x50/0x70
-     __schedule_bug from __schedule+0x4d4/0x5bc
-     __schedule from schedule+0x34/0xa0
-     schedule from schedule_preempt_disabled+0xc/0x10
-     schedule_preempt_disabled from __mutex_lock.constprop.0+0x218/0x3b4
-     __mutex_lock.constprop.0 from clk_prepare_lock+0x38/0xe4
-     clk_prepare_lock from clk_set_rate+0x18/0x154
-     clk_set_rate from sossi_read_data+0x4c/0x168
-     sossi_read_data from hwa742_read_reg+0x5c/0x8c
-     hwa742_read_reg from send_frame_handler+0xfc/0x300
-     send_frame_handler from process_pending_requests+0x74/0xd0
-     process_pending_requests from lcd_dma_irq_handler+0x50/0x74
-     lcd_dma_irq_handler from __handle_irq_event_percpu+0x44/0x130
-     __handle_irq_event_percpu from handle_irq_event+0x28/0x68
-     handle_irq_event from handle_level_irq+0x9c/0x170
-     handle_level_irq from generic_handle_domain_irq+0x2c/0x3c
-     generic_handle_domain_irq from omap1_handle_irq+0x40/0x8c
-     omap1_handle_irq from generic_handle_arch_irq+0x28/0x3c
-     generic_handle_arch_irq from call_with_stack+0x1c/0x24
-     call_with_stack from __irq_svc+0x94/0xa8
-    Exception stack(0xc5255da0 to 0xc5255de8)
-    5da0: 00000001 c22fc620 00000000 00000000 c08384a8 c106fc00 00000000 c240c248
-    5dc0: c113a600 c3f6ec30 00000001 00000000 c22fc620 c5255df0 c22fc620 c0279a94
-    5de0: 60000013 ffffffff
-     __irq_svc from clk_prepare_lock+0x4c/0xe4
-     clk_prepare_lock from clk_get_rate+0x10/0x74
-     clk_get_rate from uwire_setup_transfer+0x40/0x180
-     uwire_setup_transfer from spi_bitbang_transfer_one+0x2c/0x9c
-     spi_bitbang_transfer_one from spi_transfer_one_message+0x2d0/0x664
-     spi_transfer_one_message from __spi_pump_transfer_message+0x29c/0x498
-     __spi_pump_transfer_message from __spi_sync+0x1f8/0x2e8
-     __spi_sync from spi_sync+0x24/0x40
-     spi_sync from ads7846_halfd_read_state+0x5c/0x1c0
-     ads7846_halfd_read_state from ads7846_irq+0x58/0x348
-     ads7846_irq from irq_thread_fn+0x1c/0x78
-     irq_thread_fn from irq_thread+0x120/0x228
-     irq_thread from kthread+0xc8/0xe8
-     kthread from ret_from_fork+0x14/0x28
+This patch makes the code wait for reception of the Deselect Package
+response for the last package probed before proceeding to channel
+configuration.
 
-As a quick fix, switch to a threaded IRQ which provides a stable system.
+Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
+testing.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/omap/lcd_dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ncsi/ncsi-manage.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
-index f85817635a8c2..0da23c57e4757 100644
---- a/drivers/video/fbdev/omap/lcd_dma.c
-+++ b/drivers/video/fbdev/omap/lcd_dma.c
-@@ -432,8 +432,8 @@ static int __init omap_init_lcd_dma(void)
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1385,6 +1385,12 @@ static void ncsi_probe_channel(struct nc
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		break;
+ 	case ncsi_dev_state_probe_package:
++		if (ndp->package_probe_id >= 8) {
++			/* Last package probed, finishing */
++			ndp->flags |= NCSI_DEV_PROBED;
++			break;
++		}
++
+ 		ndp->pending_req_num = 1;
  
- 	spin_lock_init(&lcd_dma.lock);
+ 		nca.type = NCSI_PKT_CMD_SP;
+@@ -1501,13 +1507,8 @@ static void ncsi_probe_channel(struct nc
+ 		if (ret)
+ 			goto error;
  
--	r = request_irq(INT_DMA_LCD, lcd_dma_irq_handler, 0,
--			"LCD DMA", NULL);
-+	r = request_threaded_irq(INT_DMA_LCD, NULL, lcd_dma_irq_handler,
-+				 IRQF_ONESHOT, "LCD DMA", NULL);
- 	if (r != 0)
- 		pr_err("unable to request IRQ for LCD DMA (error %d)\n", r);
- 
--- 
-2.39.5
-
+-		/* Probe next package */
++		/* Probe next package after receiving response */
+ 		ndp->package_probe_id++;
+-		if (ndp->package_probe_id >= 8) {
+-			/* Probe finished */
+-			ndp->flags |= NCSI_DEV_PROBED;
+-			break;
+-		}
+ 		nd->state = ncsi_dev_state_probe_package;
+ 		ndp->active_package = NULL;
+ 		break;
 
 
 
