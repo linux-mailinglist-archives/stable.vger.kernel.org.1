@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02F6A3B571
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A75BA3B4C1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7345C7A37DA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C227179A9A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3CA1D6DB7;
-	Wed, 19 Feb 2025 08:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09101E3787;
+	Wed, 19 Feb 2025 08:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYKqB3Hq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikl6K5Yk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810BC1CAA68;
-	Wed, 19 Feb 2025 08:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB181E32D7;
+	Wed, 19 Feb 2025 08:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954907; cv=none; b=JGdAa0UFz8sfsO7EMReKjDA24CJ84rw2/C1eFoK+K39EVwWIRhyqyYW8XrD/jvlPtlAp0d77BA39dqxsuHpj8tSAUmOrMF5HjVb2ogFx6BJMVKmOUEC1AJdzVhGZAYPYvyqVbxzPAag2O+F168knn1dvCzMBe2z+qay02/eHpMo=
+	t=1739954228; cv=none; b=ZGuNWNCm/8PI65JTE1gF+ncfxcHL5zbbhR8c9kWOfAlexSSb5gGAi2qPAYcFVz6wX7mIgZP9WmpPsmYyXWf4F+5YlVHtF4L6C2Sb/YbAfgu2Cg/IDNvCHbZFn4ci7lt7WZ2GP3uixo4bEf9WRvndrbzhlD2SJpylFmJ0GaMA/r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954907; c=relaxed/simple;
-	bh=7tZtrfzqq0ZC6OOwKJKNV16KgcZCnbwYD6bR80oJvF0=;
+	s=arc-20240116; t=1739954228; c=relaxed/simple;
+	bh=BcgfHOM19G+MrZ4GPtbe85D3wKQpMhGLBt7Et5Puo94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psgOCXQ9aGqTrBkwUND9EfEtCXbnsMX30p9MhtbZ9J7C9scA7McMFKakcBOC8YuKnEyLnd1qaL3cAGfSE/uyono2GuQEQulIzu3Z2FflRm/30AOQEv6lzWmeVX08DdFLe+pBBow8zR4iLxPaSxrwar5bfXHGh39+NAKIZZWErYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYKqB3Hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE15C4CED1;
-	Wed, 19 Feb 2025 08:48:26 +0000 (UTC)
+	 MIME-Version; b=lQrlyyJ/HXA6LE+DOJbMIoTpXw1Gu3fJ/YHuinMvIpZJ/AaptRplLluLlmTtlmZfZUcTXwbVQ91FGP4tevdNjjo7V6Hv8WPvg6juLjXwjSE0jWbK/so4mV8cpma+k/E/hw/WoAUCHOBpb8fX+X40whiE++PRns+gQm1PykHV70g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikl6K5Yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB930C4CED1;
+	Wed, 19 Feb 2025 08:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954907;
-	bh=7tZtrfzqq0ZC6OOwKJKNV16KgcZCnbwYD6bR80oJvF0=;
+	s=korg; t=1739954228;
+	bh=BcgfHOM19G+MrZ4GPtbe85D3wKQpMhGLBt7Et5Puo94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYKqB3HqDcLGlMjRFlM2LMBEvIBGcxv9pGFaAdGHnhxfnzBsUaWd/mbGrtPk+U+dN
-	 K8RLkFT1A0HsTKbiBantffd3WZAvCO8KLzUe3Su/ZzlpKEzfYmBlzqSOHVpxNZYK2B
-	 N1SBtxY4N+qugMcZ/zZZHs5HI/RnCV0yP0FU+gFc=
+	b=ikl6K5YkgXCdZc2bkb7Z+jIGQl6bELaSjXvFi3uYnXFwPTZTff9lQMeNtRn3mWDNK
+	 RyaF6MgxH88N1k9Jh5RrsZr8HJQmiUoq/+LdjCNB7hbiHtqwJHVqSzaWyFkWypCvSI
+	 6AXK1+G/tAkltLUavvWQmpjAcevCs/5RVcOcCgDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/230] PCI: switchtec: Add Microchip PCI100X device IDs
+	stable <stable@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.13 136/274] usb: core: fix pipe creation for get_bMaxPacketSize0
 Date: Wed, 19 Feb 2025 09:26:30 +0100
-Message-ID: <20250219082604.563282082@linuxfoundation.org>
+Message-ID: <20250219082614.929696283@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit a3282f84b2151d254dc4abf24d1255c6382be774 ]
+commit 4aac0db5a0ebc599d4ad9bf5ebab78afa1f33e10 upstream.
 
-Add Microchip parts to the Device ID table so the driver supports PCI100x
-devices.
+When usb_control_msg is used in the get_bMaxPacketSize0 function, the
+USB pipe does not include the endpoint device number. This can cause
+failures when a usb hub port is reinitialized after encountering a bad
+cable connection. As a result, the system logs the following error
+messages:
+usb usb2-port1: cannot reset (err = -32)
+usb usb2-port1: Cannot enable. Maybe the USB cable is bad?
+usb usb2-port1: attempt power cycle
+usb 2-1: new high-speed USB device number 5 using ci_hdrc
+usb 2-1: device descriptor read/8, error -71
 
-Add a new macro to quirk the Microchip Switchtec PCI100x parts to allow DMA
-access via NTB to work when the IOMMU is turned on.
+The problem began after commit 85d07c556216 ("USB: core: Unite old
+scheme and new scheme descriptor reads"). There
+usb_get_device_descriptor was replaced with get_bMaxPacketSize0. Unlike
+usb_get_device_descriptor, the get_bMaxPacketSize0 function uses the
+macro usb_rcvaddr0pipe, which does not include the endpoint device
+number. usb_get_device_descriptor, on the other hand, used the macro
+usb_rcvctrlpipe, which includes the endpoint device number.
 
-PCI100x family has 6 variants; each variant is designed for different
-application usages, different port counts and lane counts:
+By modifying the get_bMaxPacketSize0 function to use usb_rcvctrlpipe
+instead of usb_rcvaddr0pipe, the issue can be resolved. This change will
+ensure that the endpoint device number is included in the USB pipe,
+preventing reinitialization failures. If the endpoint has not set the
+device number yet, it will still work because the device number is 0 in
+udev.
 
-  PCI1001 has 1 x4 upstream port and 3 x4 downstream ports
-  PCI1002 has 1 x4 upstream port and 4 x2 downstream ports
-  PCI1003 has 2 x4 upstream ports, 2 x2 upstream ports, and 2 x2
-    downstream ports
-  PCI1004 has 4 x4 upstream ports
-  PCI1005 has 1 x4 upstream port and 6 x2 downstream ports
-  PCI1006 has 6 x2 upstream ports and 2 x2 downstream ports
-
-[Historical note: these parts use PCI_VENDOR_ID_EFAR (0x1055), from EFAR
-Microsystems, which was acquired in 1996 by Standard Microsystems Corp,
-which was acquired by Microchip Technology in 2012.  The PCI-SIG confirms
-that Vendor ID 0x1055 is assigned to Microchip even though it's not
-visible via https://pcisig.com/membership/member-companies]
-
-Link: https://lore.kernel.org/r/20250120095524.243103-1-Saladi.Rakeshbabu@microchip.com
-Signed-off-by: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>
-[bhelgaas: Vendor ID history]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-By: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 85d07c556216 ("USB: core: Unite old scheme and new scheme descriptor reads")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250203105840.17539-1-eichest@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c           | 11 +++++++++++
- drivers/pci/switch/switchtec.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ drivers/usb/core/hub.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 11fe6869ec3ab..af6cfd88f4b64 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5985,6 +5985,17 @@ SWITCHTEC_QUIRK(0x5552);  /* PAXA 52XG5 */
- SWITCHTEC_QUIRK(0x5536);  /* PAXA 36XG5 */
- SWITCHTEC_QUIRK(0x5528);  /* PAXA 28XG5 */
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -4698,7 +4698,6 @@ void usb_ep0_reinit(struct usb_device *u
+ EXPORT_SYMBOL_GPL(usb_ep0_reinit);
  
-+#define SWITCHTEC_PCI100X_QUIRK(vid) \
-+	DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_EFAR, vid, \
-+		PCI_CLASS_BRIDGE_OTHER, 8, quirk_switchtec_ntb_dma_alias)
-+SWITCHTEC_PCI100X_QUIRK(0x1001);  /* PCI1001XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1002);  /* PCI1002XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1003);  /* PCI1003XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1004);  /* PCI1004XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1005);  /* PCI1005XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1006);  /* PCI1006XG4 */
-+
-+
- /*
-  * The PLX NTB uses devfn proxy IDs to move TLPs between NT endpoints.
-  * These IDs are used to forward responses to the originator on the other
-diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
-index c7e1089ffdafc..b14dfab04d846 100644
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -1739,6 +1739,26 @@ static void switchtec_pci_remove(struct pci_dev *pdev)
- 		.driver_data = gen, \
- 	}
+ #define usb_sndaddr0pipe()	(PIPE_CONTROL << 30)
+-#define usb_rcvaddr0pipe()	((PIPE_CONTROL << 30) | USB_DIR_IN)
  
-+#define SWITCHTEC_PCI100X_DEVICE(device_id, gen) \
-+	{ \
-+		.vendor     = PCI_VENDOR_ID_EFAR, \
-+		.device     = device_id, \
-+		.subvendor  = PCI_ANY_ID, \
-+		.subdevice  = PCI_ANY_ID, \
-+		.class      = (PCI_CLASS_MEMORY_OTHER << 8), \
-+		.class_mask = 0xFFFFFFFF, \
-+		.driver_data = gen, \
-+	}, \
-+	{ \
-+		.vendor     = PCI_VENDOR_ID_EFAR, \
-+		.device     = device_id, \
-+		.subvendor  = PCI_ANY_ID, \
-+		.subdevice  = PCI_ANY_ID, \
-+		.class      = (PCI_CLASS_BRIDGE_OTHER << 8), \
-+		.class_mask = 0xFFFFFFFF, \
-+		.driver_data = gen, \
-+	}
-+
- static const struct pci_device_id switchtec_pci_tbl[] = {
- 	SWITCHTEC_PCI_DEVICE(0x8531, SWITCHTEC_GEN3),  /* PFX 24xG3 */
- 	SWITCHTEC_PCI_DEVICE(0x8532, SWITCHTEC_GEN3),  /* PFX 32xG3 */
-@@ -1833,6 +1853,12 @@ static const struct pci_device_id switchtec_pci_tbl[] = {
- 	SWITCHTEC_PCI_DEVICE(0x5552, SWITCHTEC_GEN5),  /* PAXA 52XG5 */
- 	SWITCHTEC_PCI_DEVICE(0x5536, SWITCHTEC_GEN5),  /* PAXA 36XG5 */
- 	SWITCHTEC_PCI_DEVICE(0x5528, SWITCHTEC_GEN5),  /* PAXA 28XG5 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1001, SWITCHTEC_GEN4),  /* PCI1001 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1002, SWITCHTEC_GEN4),  /* PCI1002 12XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1003, SWITCHTEC_GEN4),  /* PCI1003 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1004, SWITCHTEC_GEN4),  /* PCI1004 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1005, SWITCHTEC_GEN4),  /* PCI1005 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1006, SWITCHTEC_GEN4),  /* PCI1006 16XG4 */
- 	{0}
- };
- MODULE_DEVICE_TABLE(pci, switchtec_pci_tbl);
--- 
-2.39.5
-
+ static int hub_set_address(struct usb_device *udev, int devnum)
+ {
+@@ -4804,7 +4803,7 @@ static int get_bMaxPacketSize0(struct us
+ 	for (i = 0; i < GET_MAXPACKET0_TRIES; ++i) {
+ 		/* Start with invalid values in case the transfer fails */
+ 		buf->bDescriptorType = buf->bMaxPacketSize0 = 0;
+-		rc = usb_control_msg(udev, usb_rcvaddr0pipe(),
++		rc = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+ 				USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
+ 				USB_DT_DEVICE << 8, 0,
+ 				buf, size,
 
 
 
