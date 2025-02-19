@@ -1,101 +1,158 @@
-Return-Path: <stable+bounces-116952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EC4A3B011
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 04:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8A2A3B020
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 04:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACC9F16B337
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 03:37:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E57B16A71B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 03:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF081547FF;
-	Wed, 19 Feb 2025 03:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B64A1A841F;
+	Wed, 19 Feb 2025 03:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BzC9sW61"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="PmBfPsb0"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3A2136A;
-	Wed, 19 Feb 2025 03:37:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEBC191F6A;
+	Wed, 19 Feb 2025 03:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739936246; cv=none; b=YIAhWyWsphervgGTYHLBWJzqxNPRRvcHOCDwni2O/DKHD4KLJjhpMzLl7thMw3ZhQUGCRNrxJZnmKgmWBSCkCWoMHgqORPyielHBrRQGxL6scg062wvpC3gIz2dhM08ZvS00tFuWw8OSajspFGs7eKBeZqc035CUrRD7S7jYbeg=
+	t=1739936486; cv=none; b=H689w5ix8PhbgMjcLzXFTIL/vMJSgYZr+7tLCPUG8IILrhYsum4r9TDP2P+/DWT/Q18mG4jD+qsY3gwx2zf2+CaLE1CZGyyEEhJu2NXl77R1/adHrehgpjJaWrEx1lDETzvP14QhcP4TA8ZWW6QZHXnHkSbvnIhlijOBqTG9a5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739936246; c=relaxed/simple;
-	bh=yXzzcVaNALwy7igFxnJgJRax5d7CA1EwhIEuqRCTu3A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rdrc6cl9tylDFqX+x0uF4TjBkSSRuen+ZJ0ICXe9HWJsoknNPX0FE9q96zvQPkodkvFhJdfmOxNMKWZYZSIjWiNpOexkddUy929fv5ZE+Ynj+RBe4VPUVN6QtzeE2qFQAROBKOYcxV1umCoJa7fdQvZv8htff0DxkdZP/T1RZKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BzC9sW61; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Kl7u8
-	bFLHAjtaElzFILg5UyTJziKGgGFb4LO1YSKTug=; b=BzC9sW61lpYTYF70UeYs9
-	3pgGYPYcyNd+RXZb8SFZXSlWn62tp14ZoF4276oyxRjo2W+I+4D9lztbuUmIfwPb
-	RvskGq2T5hB18evYkfulaO0P0ep5Xmu23lqP8Dg8NlVatDlPCAn3CeawzhBYOwZ7
-	qP1ZyhP2IssKpgsKsjmobA=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wCH0CvPUbVnWpNgNA--.30420S4;
-	Wed, 19 Feb 2025 11:36:49 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	johannes@sipsolutions.net,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: mt76: Add check for devm_kstrdup()
-Date: Wed, 19 Feb 2025 11:36:45 +0800
-Message-Id: <20250219033645.2594753-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1739936486; c=relaxed/simple;
+	bh=lYmU3jNMFnWvp4qwM/KagSvdxMoE3OdWx4ePB/DRziA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tm57ds7eKDIL5ULjPnck8wmn9Gli9U5gR7G0CDoFS/VALZ2PbzsANb0jVkJ7tiuhBF3GCs0+OO+++9ybL7+oN+ZQE/H0Oqi956CdOYiDsBJEiN8r5AKR9gOZigUtYQcsD+7QyG1nyL4U8F52B5D0InIJOtnULPI/izjKgR7QsWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=PmBfPsb0; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=VskwbQNxxGXSCd9W0yEExCUDqdZuOrvg+FF0QwLaHys=;
+	b=PmBfPsb0HiGDtL3NfDx3O1o1ajAsex+lnq3k3gCigLM5JJV9Nme/u2NlizN+sG
+	gv/ZFVnXui9EqAYC4CCP8YOdE8o2x4b01drz/qh7qegzdi0vWEyi/SLHespbB2Kr
+	4y/Ciz0tchOPs9bnvQekW4GTvjF3Yi28cImNZKS9dE04E=
+Received: from [172.19.20.199] (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PikvCgD3306SUrVnoI4wBA--.1330S2;
+	Wed, 19 Feb 2025 11:40:03 +0800 (CST)
+Message-ID: <462e8d90-c0d0-474b-851c-46a44282b768@126.com>
+Date: Wed, 19 Feb 2025 11:40:02 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] mm/hugetlb: wait for hugetlb folios to be freed
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
+ osalvador@suse.de, liuzixing@hygon.cn
+References: <1739878828-9960-1-git-send-email-yangge1116@126.com>
+ <f5c31616-41e8-464b-84ec-8aa0cedfa556@redhat.com>
+ <17ad5bf5-545c-4418-8d08-459ce6ef54cb@126.com>
+ <950cae5a-bff0-49e6-8fe4-a2447c63d8bc@redhat.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <950cae5a-bff0-49e6-8fe4-a2447c63d8bc@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCH0CvPUbVnWpNgNA--.30420S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr4DCr48uF45Cw18ZFyUGFg_yoWDGrc_uF
-	s7Zrn3Xry7Gr1Ykr4jyFsIv34Yk3y8JF1kZrySqrySqrZIgrWkGr9xZrn5XrWDuwnxZr9r
-	ua1DJ3WrZ39IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNtxhDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqAv4bme1R0DC6QABsK
+X-CM-TRANSID:PikvCgD3306SUrVnoI4wBA--.1330S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWFy5KrW7tFyrXF4fWF47XFb_yoW5ZFW7pF
+	W5KF13GFWkJr9IyrnFqw1qkw1vkrWjvFW0gr4rtw13CFnIyrn3KFWayw1Y9ayrAr10kF40
+	qr40qrZxWF1UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjoGQUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifgL4G2e1Un4BNgAAsW
 
-Add check for the return value of devm_kstrdup() in
-mt76_get_of_data_from_mtd() to catch potential exception.
 
-Fixes: e7a6a044f9b9 ("mt76: testmode: move mtd part to mt76_dev")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 0bc66cc19acd..443517d06c9f 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -95,6 +95,10 @@ int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int offset, int l
- 
- #ifdef CONFIG_NL80211_TESTMODE
- 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
-+	if (!dev->test_mtd.name) {
-+		ret = -ENOMEM;
-+		goto out_put_node;
-+	}
- 	dev->test_mtd.offset = offset;
- #endif
- 
--- 
-2.25.1
+在 2025/2/19 1:22, David Hildenbrand 写道:
+> On 18.02.25 13:19, Ge Yang wrote:
+>>
+>>
+>> 在 2025/2/18 19:45, David Hildenbrand 写道:
+>>> On 18.02.25 12:40, yangge1116@126.com wrote:
+>>>> From: Ge Yang <yangge1116@126.com>
+>>>>
+>>>> Since the introduction of commit c77c0a8ac4c52 ("mm/hugetlb: defer
+>>>> freeing
+>>>> of huge pages if in non-task context"), which supports deferring the
+>>>> freeing of hugetlb pages, the allocation of contiguous memory through
+>>>> cma_alloc() may fail probabilistically.
+>>>>
+>>>> In the CMA allocation process, if it is found that the CMA area is
+>>>> occupied
+>>>> by in-use hugetlb folios, these in-use hugetlb folios need to be 
+>>>> migrated
+>>>> to another location. When there are no available hugetlb folios in the
+>>>> free hugetlb pool during the migration of in-use hugetlb folios, new
+>>>> folios
+>>>> are allocated from the buddy system. A temporary state is set on the
+>>>> newly
+>>>> allocated folio. Upon completion of the hugetlb folio migration, the
+>>>> temporary state is transferred from the new folios to the old folios.
+>>>> Normally, when the old folios with the temporary state are freed, it is
+>>>> directly released back to the buddy system. However, due to the 
+>>>> deferred
+>>>> freeing of hugetlb pages, the PageBuddy() check fails, ultimately 
+>>>> leading
+>>>> to the failure of cma_alloc().
+>>>>
+>>>> Here is a simplified call trace illustrating the process:
+>>>> cma_alloc()
+>>>>       ->__alloc_contig_migrate_range() // Migrate in-use hugetlb folios
+>>>>           ->unmap_and_move_huge_page()
+>>>>               ->folio_putback_hugetlb() // Free old folios
+>>>>       ->test_pages_isolated()
+>>>>           ->__test_page_isolated_in_pageblock()
+>>>>                ->PageBuddy(page) // Check if the page is in buddy
+>>>>
+>>>> To resolve this issue, we have implemented a function named
+>>>> wait_for_freed_hugetlb_folios(). This function ensures that the hugetlb
+>>>> folios are properly released back to the buddy system after their
+>>>> migration
+>>>> is completed. By invoking wait_for_freed_hugetlb_folios() before 
+>>>> calling
+>>>> PageBuddy(), we ensure that PageBuddy() will succeed.
+>>>>
+>>>> Fixes: c77c0a8ac4c52 ("mm/hugetlb: defer freeing of huge pages if in
+>>>> non-task context")
+>>>> Signed-off-by: Ge Yang <yangge1116@126.com>
+>>>> Cc: <stable@vger.kernel.org>
+>>>
+>>>
+>>>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>>> +void wait_for_freed_hugetlb_folios(void)
+>>>> +{
+>>>> +    flush_work(&free_hpage_work);
+>>>
+>>> BTW, I was wondering if we could optimize out some calls here by sensing
+>>> if there is actually work.
+>>>
+>> for_each_hstate(h) {
+>>     if (hugetlb_vmemmap_optimizable(h)) {
+>>         flush_work(&free_hpage_work);
+>  >         break;>     }
+>> }
+>> Is this adjustment okay?
+> 
+> I think that's better, except that it would still trigger in scenarios 
+> where hugetlb is completely unused if 
+> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP is around.
+> 
+> Can't we check hpage_freelist?
+> 
+> if (llist_empty(&hpage_freelist))
+>      return;
+> flush_work(&free_hpage_work);
+> 
+Ok, thanks.
+> It should be able to deal with races (we don't care if something is 
+> getting added concurrently, only if there is something right now).
+> 
 
 
