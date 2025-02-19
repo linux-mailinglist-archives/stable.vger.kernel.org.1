@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5CCA3B6FF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C147A3B62B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC4218846FB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58299189B92C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1D1D6DAD;
-	Wed, 19 Feb 2025 08:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D2A1D6DB1;
+	Wed, 19 Feb 2025 08:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3lHimM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lpDFncq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A321A314B;
-	Wed, 19 Feb 2025 08:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E5C1CB51F;
+	Wed, 19 Feb 2025 08:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955567; cv=none; b=aehUwYI64uVrx5ZNIWEyPhZeZu9GG6IxcSwb2YL4moRxHb7oxIWBTUIOC/VRSDjC0nvWPGwN83pFHkH69x9RyZGtCcwhIrhcJ5R/ouV+Ht4RBGxUitYipnweiA92BTXp8nzE8fFZ/qK4M4N+uqUfV4XETPajwdm9qGFM9E0jfl4=
+	t=1739955080; cv=none; b=dpS40B1g1XGfHVS21uWd/+spOAPkS4xB0YuFF522VPZ2LgD1HMrnSZ9AWrjbXcaj7Ek6saTWURg96zRNu3DEb2UvKiQTKF4jZVGxDsABr5QVWYkzj9ATVJCNjC9hudj1U0JbhBa+f/TzRcke1pVSK4K2+Jur1hY8lHZXgN1LWQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955567; c=relaxed/simple;
-	bh=pTilOpqQoYvzHzQQaHODtaEDh22dDquQ5igl/7wKL2M=;
+	s=arc-20240116; t=1739955080; c=relaxed/simple;
+	bh=sqRZML2AyrIc8nYR9uFLgUaUbj/5Q3vfDTye+jcgeaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbkDclDCCPl+bdeKVCGdmKdam2cOPT7INE1oGu5Ra0fnvMaVRrKFYA7CuwBbYXwiq9FQo1vtLRz1h/yli2+eLjhEVdWZWllCsMAPcKo6yZkmElJ7oj6r9nfZLI2j6VSE1kFyyk92h8Di4euaKV+9kj3Mw1ybkabQH/knokLdylk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3lHimM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A981BC4CED1;
-	Wed, 19 Feb 2025 08:59:26 +0000 (UTC)
+	 MIME-Version; b=cvsf4btlpxsDwM8Da3z5s2zp+cRwlBo7ewiXJg/aYWXh+RuJKl67NI37+/I/NNABZKZ6deFGUdQpiKlarptsDLSys5T9YpLTmTl8CLZoG/1ST1/o2pmQ1pLWX61Qq5vc7UbcIVPpYDSYh59bvEQ0woaEdKQNak4v/ZC9oRKDKfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lpDFncq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951D0C4CED1;
+	Wed, 19 Feb 2025 08:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955567;
-	bh=pTilOpqQoYvzHzQQaHODtaEDh22dDquQ5igl/7wKL2M=;
+	s=korg; t=1739955080;
+	bh=sqRZML2AyrIc8nYR9uFLgUaUbj/5Q3vfDTye+jcgeaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3lHimM89dLt/SmB/TO2hR2V5Rr7EEpG/fjsWec5ClDI0/SpC5oOBLZNGiYQYXmSB
-	 LYCrCNBUZu9i+k2oNbRHzLbJGlJL6GNRG11Qw/zWXRcMU6ALVm1RfSIzSAZlFbc6Wj
-	 j+4eM4ZdrPyMX5Ju+KbCdQRP7SEvzrxKzyERdsNI=
+	b=0lpDFncqeqzS+3siL8Q/Oegu0QbphVbbcuweQBZFUEHAtQZOVmpVOjq9a6XWNW4Rf
+	 Td0H/5UvYLkcK33lPpTCT2IhNMmKcJI57BFc1mwJ2ZEkzGjMoDH9HAj85jx694CmZT
+	 zubVNra1THONkrDBFqOj6+7HemD46DNBoaPwHrFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/152] soc/tegra: fuse: Update Tegra234 nvmem keepout list
+	stable <stable@kernel.org>,
+	Roy Luo <royluo@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 124/230] usb: gadget: core: flush gadget workqueue after device removal
 Date: Wed, 19 Feb 2025 09:27:21 +0100
-Message-ID: <20250219082551.151766342@linuxfoundation.org>
+Message-ID: <20250219082606.536963821@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Roy Luo <royluo@google.com>
 
-[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
+commit 399a45e5237ca14037120b1b895bd38a3b4492ea upstream.
 
-Various Nvidia userspace applications and tests access following fuse
-via Fuse nvmem interface:
+device_del() can lead to new work being scheduled in gadget->work
+workqueue. This is observed, for example, with the dwc3 driver with the
+following call stack:
+  device_del()
+    gadget_unbind_driver()
+      usb_gadget_disconnect_locked()
+        dwc3_gadget_pullup()
+	  dwc3_gadget_soft_disconnect()
+	    usb_gadget_set_state()
+	      schedule_work(&gadget->work)
 
-	* odmid
-	* odminfo
-	* boot_security_info
-	* public_key_hash
-	* reserved_odm0
-	* reserved_odm1
-	* reserved_odm2
-	* reserved_odm3
-	* reserved_odm4
-	* reserved_odm5
-	* reserved_odm6
-	* reserved_odm7
-	* odm_lock
-	* pk_h1
-	* pk_h2
-	* revoke_pk_h0
-	* revoke_pk_h1
-	* security_mode
-	* system_fw_field_ratchet0
-	* system_fw_field_ratchet1
-	* system_fw_field_ratchet2
-	* system_fw_field_ratchet3
-	* optin_enable
+Move flush_work() after device_del() to ensure the workqueue is cleaned
+up.
 
-Update tegra234_fuse_keepouts list to allow reading these fuse from
-nvmem sysfs interface.
-
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Roy Luo <royluo@google.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250204233642.666991-1-royluo@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
-index e94d46372a639..402cf939c0326 100644
---- a/drivers/soc/tegra/fuse/fuse-tegra30.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
-@@ -646,15 +646,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
- };
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1543,8 +1543,8 @@ void usb_del_gadget(struct usb_gadget *g
  
- static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
--	{ .start = 0x01c, .end = 0x0c8 },
--	{ .start = 0x12c, .end = 0x184 },
-+	{ .start = 0x01c, .end = 0x064 },
-+	{ .start = 0x084, .end = 0x0a0 },
-+	{ .start = 0x0a4, .end = 0x0c8 },
-+	{ .start = 0x12c, .end = 0x164 },
-+	{ .start = 0x16c, .end = 0x184 },
- 	{ .start = 0x190, .end = 0x198 },
- 	{ .start = 0x1a0, .end = 0x204 },
--	{ .start = 0x21c, .end = 0x250 },
--	{ .start = 0x25c, .end = 0x2f0 },
-+	{ .start = 0x21c, .end = 0x2f0 },
- 	{ .start = 0x310, .end = 0x3d8 },
--	{ .start = 0x400, .end = 0x4f0 },
--	{ .start = 0x4f8, .end = 0x7e8 },
-+	{ .start = 0x400, .end = 0x420 },
-+	{ .start = 0x444, .end = 0x490 },
-+	{ .start = 0x4bc, .end = 0x4f0 },
-+	{ .start = 0x4f8, .end = 0x54c },
-+	{ .start = 0x57c, .end = 0x7e8 },
- 	{ .start = 0x8d0, .end = 0x8d8 },
- 	{ .start = 0xacc, .end = 0xf00 }
- };
--- 
-2.39.5
-
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+-	flush_work(&gadget->work);
+ 	device_del(&gadget->dev);
++	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+ 	device_unregister(&udc->dev);
 
 
 
