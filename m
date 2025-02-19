@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D30A3BA97
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:44:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3175A3B75D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61EF4220F1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C261188F5F3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732E41D90D9;
-	Wed, 19 Feb 2025 09:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6E61DED55;
+	Wed, 19 Feb 2025 09:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrI0v+6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbTKn/3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F481158862;
-	Wed, 19 Feb 2025 09:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE611DE8A6;
+	Wed, 19 Feb 2025 09:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957595; cv=none; b=Fxpq8LSVBMp7R2L6c7T2YKHRyXLLtiMubDTP0jGAB9IBLB44TNLzWESfjGOY2ZsZJs5T89XNSJdluj+qzsoc2FDvZW7zeTJ0SXD0vXxCL7kjtMsfjMVhSjYJRb6gjzeJ+0qi4438eKryUiNgdwakcYfFCclm3zWkNPRrMuCibHQ=
+	t=1739955901; cv=none; b=rY/CmpT7ul8IpEXtPwFID2kdXFjTD7H8uisAsjBK6BnKw1Q4Sk+KEKmEbIjtw+ePScCXAE7Pi7L2cGYIqJMjYCVedNUewLXSU/h1o6iwxYOlUyvRgiTqOpKaarQEI4tZSrl1Fi9ikoUsmvz34Zb7L8qY1XrYR/6xCVpoIOD3hu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957595; c=relaxed/simple;
-	bh=XW4wtEkd1ibvMWzbryKoIMnOEYF5PM8cFl5yRaAr5dU=;
+	s=arc-20240116; t=1739955901; c=relaxed/simple;
+	bh=AHKTlcrZuGnozJ0epa/KWVamWIXzyX0sicNhUSVRAag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tXCMwUPnENNDt9/jk95TZSzslu+kXEhsPVHLrB2/dwoZnw57Au1jyFd0vhscRDUQNP723yy+8ganQW3r9lhPTBy4vj3sLKhOws5asnGIUJ3mURAMmbXwtAVS8Q0+rrzCDRlclWoQetKa1XcTpMYDddGf23z/rkOdYlo2DUrZI8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrI0v+6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF348C4CEE6;
-	Wed, 19 Feb 2025 09:33:14 +0000 (UTC)
+	 MIME-Version; b=u1ie23ca80wkKqx98mlMPzhrZDoDpLgU4IUdTSO1LLoLx3eqVeAl/YLxrpynOUN8RDUrl+N40s2ZofZOVfiAUVvYx0u6h++GtniMDH+PemLvOizLK0iu5MU6tdFrwgnFl71f6+Epn/7aurvDr96p7NPHJhG2Aiz4deJSOfYZmxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbTKn/3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82CDC4CED1;
+	Wed, 19 Feb 2025 09:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957595;
-	bh=XW4wtEkd1ibvMWzbryKoIMnOEYF5PM8cFl5yRaAr5dU=;
+	s=korg; t=1739955901;
+	bh=AHKTlcrZuGnozJ0epa/KWVamWIXzyX0sicNhUSVRAag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrI0v+6krqbb8/g7/vY9cdAJnA/+FCgJVxmjy5I/DIOGtuAmp3YSSrixttwLEmQJt
-	 tNa1hBGNYEEqEilqGxL7R/bjerHAijtlHZXdhUFtPgtfVqAfJmvbAo5eTnmLzcyGw7
-	 m+TydIa7wgjWQfjDOjFdlan8ttLbv2yaq6CrYG60=
+	b=DbTKn/3In/ItGuBrwSMmyv7rfWfgZK9CJTX00vwzpFZvZiKbNkohdjudwzV+mMPfI
+	 42FWO8n5ZUfaKmoojqqYyv9KOnwAjAZr9tZvLLhFmirIQvNwd+0BceryhaJ3fv0ZLZ
+	 m6UmOVE9i+0RTnaZyaZo9mNlmzeqIAISmwKjsfAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.1 558/578] drm/v3d: Stop active perfmon if it is being destroyed
-Date: Wed, 19 Feb 2025 09:29:22 +0100
-Message-ID: <20250219082714.904910484@linuxfoundation.org>
+	syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 150/152] vsock: Orphan socket after transport release
+Date: Wed, 19 Feb 2025 09:29:23 +0100
+Message-ID: <20250219082555.980574749@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Gmeiner <cgmeiner@igalia.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 21f1435b1e6b012a07c42f36b206d2b66fc8f13b upstream.
+commit 78dafe1cf3afa02ed71084b350713b07e72a18fb upstream.
 
-If the active performance monitor (`v3d->active_perfmon`) is being
-destroyed, stop it first. Currently, the active perfmon is not
-stopped during destruction, leaving the `v3d->active_perfmon` pointer
-stale. This can lead to undefined behavior and instability.
+During socket release, sock_orphan() is called without considering that it
+sets sk->sk_wq to NULL. Later, if SO_LINGER is enabled, this leads to a
+null pointer dereferenced in virtio_transport_wait_close().
 
-This patch ensures that the active perfmon is stopped before being
-destroyed, aligning with the behavior introduced in commit
-7d1fd3638ee3 ("drm/v3d: Stop the active perfmon before being destroyed").
+Orphan the socket only after transport release.
 
-Cc: stable@vger.kernel.org # v5.15+
-Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
-Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241118221948.1758130-1-christian.gmeiner@gmail.com
+Partially reverts the 'Fixes:' commit.
+
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+ lock_acquire+0x19e/0x500
+ _raw_spin_lock_irqsave+0x47/0x70
+ add_wait_queue+0x46/0x230
+ virtio_transport_release+0x4e7/0x7f0
+ __vsock_release+0xfd/0x490
+ vsock_release+0x90/0x120
+ __sock_release+0xa3/0x250
+ sock_close+0x14/0x20
+ __fput+0x35e/0xa90
+ __x64_sys_close+0x78/0xd0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Reported-by: syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9d55b199192a4be7d02c
+Fixes: fcdd2242c023 ("vsock: Keep the binding until socket destruction")
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250210-vsock-linger-nullderef-v3-1-ef6244d02b54@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/vmw_vsock/af_vsock.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -175,6 +175,7 @@ int v3d_perfmon_destroy_ioctl(struct drm
- {
- 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
- 	struct drm_v3d_perfmon_destroy *req = data;
-+	struct v3d_dev *v3d = v3d_priv->v3d;
- 	struct v3d_perfmon *perfmon;
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -823,13 +823,19 @@ static void __vsock_release(struct sock
+ 	 */
+ 	lock_sock_nested(sk, level);
  
- 	mutex_lock(&v3d_priv->perfmon.lock);
-@@ -184,6 +185,10 @@ int v3d_perfmon_destroy_ioctl(struct drm
- 	if (!perfmon)
- 		return -EINVAL;
+-	sock_orphan(sk);
++	/* Indicate to vsock_remove_sock() that the socket is being released and
++	 * can be removed from the bound_table. Unlike transport reassignment
++	 * case, where the socket must remain bound despite vsock_remove_sock()
++	 * being called from the transport release() callback.
++	 */
++	sock_set_flag(sk, SOCK_DEAD);
  
-+	/* If the active perfmon is being destroyed, stop it first */
-+	if (perfmon == v3d->active_perfmon)
-+		v3d_perfmon_stop(v3d, perfmon, false);
-+
- 	v3d_perfmon_put(perfmon);
+ 	if (vsk->transport)
+ 		vsk->transport->release(vsk);
+ 	else if (sock_type_connectible(sk->sk_type))
+ 		vsock_remove_sock(vsk);
  
- 	return 0;
++	sock_orphan(sk);
+ 	sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+ 	skb_queue_purge(&sk->sk_receive_queue);
 
 
 
