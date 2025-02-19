@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-117469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FD3A3B5DD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2218CA3B5E2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44C3F7A4006
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 906307A2B4E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F281C7013;
-	Wed, 19 Feb 2025 08:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A6D1EDA29;
+	Wed, 19 Feb 2025 08:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbWoJLw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDhCgtKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1346E1EEA54;
-	Wed, 19 Feb 2025 08:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3A91E3DC6;
+	Wed, 19 Feb 2025 08:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955388; cv=none; b=V/ZUbOgse+6yzAP9IS6NOD8DduVJKJt8Ua4POZ4RPKm0vxTWYQDTioEqnDwFhNPc3h/RI9uVFMquElNtv3NKopgVAV88jbbNjnQrmWB9zvdgrC5IWqpGXqGqSbA7m+yUfXmZyz+wpZy8y3OSpovN6vAu00FCN1vNYnNpfTR/JvI=
+	t=1739955403; cv=none; b=fIJ2e+Ou6q2xJ460LNZj8/TRdi7ip5gotZ+r5emusuK3cKHbsl8ZsgDT9YgdeaBcYd7TiXqbB8j4F1qZclw1U6sCHJAxnK1VH2HsolkWraWp+y2JBLGvgG0P/7r8B7shvSL/biYJML/iu2AbJAMNDwOCZYjki65rR+lzoCHq8tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955388; c=relaxed/simple;
-	bh=OkaIchXxmQUCl38TcdI50OnHkwBuhM3ilyXzXjVz3gY=;
+	s=arc-20240116; t=1739955403; c=relaxed/simple;
+	bh=Z8XA5eMjIwx7Qjr1pb6ldFNkf6xA2XK38UR+O2FVZpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b2SUZUtYqmRRwibR1XsHGwSxH2fVzf+dwY0kSbjtx7xNDZn9Fk/2bq9ADpPT6eyGIfjHID3X2p397pFzsCHyFnA4LTZBnmDQYZoOvzcmf6pCNA7uRa81e0XIzMsp+GioOhyQ/bl3PnHPLihZkfeubN8+ufMEgdvs0qSplsWnISg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbWoJLw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1F9C4CED1;
-	Wed, 19 Feb 2025 08:56:27 +0000 (UTC)
+	 MIME-Version; b=Wo0ol9b2Y98ktBdV7dfYfMiJ6+IjWtxKEG+TYlg44u2f1Bkhr/LG2F57lsDHAI6sPk4WPWHGmUNzE2G4gvNhAoCcWwGYNqBZPtIHv5hJVKyqrjLoYhk0ZJUekYieyverfk6BW6t1z5YoA6SCvnewW49mqfPkjrG1AWM//tQqdPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDhCgtKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BA7C4CED1;
+	Wed, 19 Feb 2025 08:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955388;
-	bh=OkaIchXxmQUCl38TcdI50OnHkwBuhM3ilyXzXjVz3gY=;
+	s=korg; t=1739955403;
+	bh=Z8XA5eMjIwx7Qjr1pb6ldFNkf6xA2XK38UR+O2FVZpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbWoJLw1+2Iw/fUHI1zPVlvQQ8NvgHHbNnnBLRvu5NwHeO5NkC8K/Z05knsUOJZeW
-	 +eW958TSYdkNJn8byRU6yN3bfLYU7DGeRo/c35SLLHh/23lnGvQD6irEzbTs4ebpnk
-	 OySCz7uxrdzj69t5M+RHHTKrqKrt65s/csHUwxC0=
+	b=hDhCgtKohlhMF1UF6BQZhVpZubgqGwzT8UHtuQGZ/vax+Dm1xGhRh5fVmp8xC1mL/
+	 QlBKZmDTl5rKfBfTHX6oo8qEzzm7seZy/kJCPBCmk2ACWJfLkeN6Fk3+JVIKbKuCQ8
+	 WOmwqkXDSmDFpwJnM0jK/nd1h3y7wvWNwTEkms/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Zenla <alex@edera.dev>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.12 220/230] x86/static-call: Remove early_boot_irqs_disabled check to fix Xen PVH dom0
-Date: Wed, 19 Feb 2025 09:28:57 +0100
-Message-ID: <20250219082610.297477064@linuxfoundation.org>
+	Justin Iurman <justin.iurman@uliege.be>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 225/230] net: ipv6: fix dst refleaks in rpl, seg6 and ioam6 lwtunnels
+Date: Wed, 19 Feb 2025 09:29:02 +0100
+Message-ID: <20250219082610.488239972@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
 References: <20250219082601.683263930@linuxfoundation.org>
@@ -68,45 +66,119 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 5cc2db37124bb33914996d6fdbb2ddb3811f2945 upstream.
+commit c71a192976ded2f2f416d03c4f595cdd4478b825 upstream.
 
-__static_call_update_early() has a check for early_boot_irqs_disabled, but
-is used before early_boot_irqs_disabled is set up in start_kernel().
+dst_cache_get() gives us a reference, we need to release it.
 
-Xen PV has always special cased early_boot_irqs_disabled, but Xen PVH does
-not and falls over the BUG when booting as dom0.
+Discovered by the ioam6.sh test, kmemleak was recently fixed
+to catch per-cpu memory leaks.
 
-It is very suspect that early_boot_irqs_disabled starts as 0, becomes 1 for
-a time, then becomes 0 again, but as this needs backporting to fix a
-breakage in a security fix, dropping the BUG_ON() is the far safer option.
-
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219620
-Reported-by: Alex Zenla <alex@edera.dev>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Alex Zenla <alex@edera.dev>
-Link: https://lore.kernel.org/r/20241221211046.6475-1-andrew.cooper3@citrix.com
+Fixes: 985ec6f5e623 ("net: ipv6: rpl_iptunnel: mitigate 2-realloc issue")
+Fixes: 40475b63761a ("net: ipv6: seg6_iptunnel: mitigate 2-realloc issue")
+Fixes: dce525185bc9 ("net: ipv6: ioam6_iptunnel: mitigate 2-realloc issue")
+Reviewed-by: Justin Iurman <justin.iurman@uliege.be>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250130031519.2716843-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/static_call.c |    1 -
- 1 file changed, 1 deletion(-)
+ net/ipv6/ioam6_iptunnel.c |    5 +++--
+ net/ipv6/rpl_iptunnel.c   |    6 ++++--
+ net/ipv6/seg6_iptunnel.c  |    6 ++++--
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -175,7 +175,6 @@ EXPORT_SYMBOL_GPL(arch_static_call_trans
- noinstr void __static_call_update_early(void *tramp, void *func)
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -338,7 +338,7 @@ static int ioam6_do_encap(struct net *ne
+ 
+ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
  {
- 	BUG_ON(system_state != SYSTEM_BOOTING);
--	BUG_ON(!early_boot_irqs_disabled);
- 	BUG_ON(static_call_initialized);
- 	__text_gen_insn(tramp, JMP32_INSN_OPCODE, tramp, func, JMP32_INSN_SIZE);
- 	sync_core();
+-	struct dst_entry *dst = skb_dst(skb), *cache_dst;
++	struct dst_entry *dst = skb_dst(skb), *cache_dst = NULL;
+ 	struct in6_addr orig_daddr;
+ 	struct ioam6_lwt *ilwt;
+ 	int err = -EINVAL;
+@@ -409,7 +409,6 @@ do_encap:
+ 		cache_dst = ip6_route_output(net, NULL, &fl6);
+ 		if (cache_dst->error) {
+ 			err = cache_dst->error;
+-			dst_release(cache_dst);
+ 			goto drop;
+ 		}
+ 
+@@ -431,8 +430,10 @@ do_encap:
+ 		return dst_output(net, sk, skb);
+ 	}
+ out:
++	dst_release(cache_dst);
+ 	return dst->lwtstate->orig_output(net, sk, skb);
+ drop:
++	dst_release(cache_dst);
+ 	kfree_skb(skb);
+ 	return err;
+ }
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -232,7 +232,6 @@ static int rpl_output(struct net *net, s
+ 		dst = ip6_route_output(net, NULL, &fl6);
+ 		if (dst->error) {
+ 			err = dst->error;
+-			dst_release(dst);
+ 			goto drop;
+ 		}
+ 
+@@ -254,6 +253,7 @@ static int rpl_output(struct net *net, s
+ 	return dst_output(net, sk, skb);
+ 
+ drop:
++	dst_release(dst);
+ 	kfree_skb(skb);
+ 	return err;
+ }
+@@ -272,8 +272,10 @@ static int rpl_input(struct sk_buff *skb
+ 	local_bh_enable();
+ 
+ 	err = rpl_do_srh(skb, rlwt, dst);
+-	if (unlikely(err))
++	if (unlikely(err)) {
++		dst_release(dst);
+ 		goto drop;
++	}
+ 
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -482,8 +482,10 @@ static int seg6_input_core(struct net *n
+ 	local_bh_enable();
+ 
+ 	err = seg6_do_srh(skb, dst);
+-	if (unlikely(err))
++	if (unlikely(err)) {
++		dst_release(dst);
+ 		goto drop;
++	}
+ 
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+@@ -571,7 +573,6 @@ static int seg6_output_core(struct net *
+ 		dst = ip6_route_output(net, NULL, &fl6);
+ 		if (dst->error) {
+ 			err = dst->error;
+-			dst_release(dst);
+ 			goto drop;
+ 		}
+ 
+@@ -596,6 +597,7 @@ static int seg6_output_core(struct net *
+ 
+ 	return dst_output(net, sk, skb);
+ drop:
++	dst_release(dst);
+ 	kfree_skb(skb);
+ 	return err;
+ }
 
 
 
