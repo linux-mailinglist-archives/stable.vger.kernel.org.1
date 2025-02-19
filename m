@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3357A3B6BC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0232BA3B9FE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D9933BACA3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75475188EFA2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EC51E008B;
-	Wed, 19 Feb 2025 08:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDDA1DF996;
+	Wed, 19 Feb 2025 09:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxFEYQ8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIYH+ELt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFF01C3BE9;
-	Wed, 19 Feb 2025 08:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD011DE2CA;
+	Wed, 19 Feb 2025 09:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955166; cv=none; b=jhZEJSpD/G30vZcmxSCssxOmbZ9ltWfJC3WrISUBMoYnsr03bDc0w/1nGb+01iSXMtNuB1k2uvtBc3u+y7IvEcLy7zmbrPVyAuWLb056Ryl9BDNHa0j1G1PB4AFtwsrElc87roTk+GOEGN1pNM1M8zyMC1Aj5wEt+LimJMFjOgk=
+	t=1739957266; cv=none; b=cQc1NbGICs8/K40sEhXsKd7Y0z+A2A/Uqs73iQoPOlaKQ9FwvbVZBQx35H0SHeGB8PEClwBf8SVmNElfwwQ240FRMTdkVOQYtO1x1B0a47jeJmFIhmHfFCl/M9euuhfk7acYwr73IfmNHsAgW3hr2ztgWIcCfSpjO1FtTDeIfw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955166; c=relaxed/simple;
-	bh=Mm3iElm1Eqt39zXEsaeraoKbt6li4vsCrP2X17DcG3Q=;
+	s=arc-20240116; t=1739957266; c=relaxed/simple;
+	bh=zyFwFR8lQeWa35Ev/PcLHYC/G/MVokHW/DrRxkx58xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhhZQ/I5OtcRSrutidrtIHGMbSYEiBfxa9KbrTpeaFZHcBxUUHkKBZ9C8HxiLh5f1MzL+WaVXVkc8JQC2ZE4T/BlhhS1oFluDmKVaFGgYOud359flo4tAdy9SRlCYm5/YmBwyXUhKjSdz1ThtjXUFcXDShog4uQUdr1iJXYoylY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxFEYQ8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A04CC4CED1;
-	Wed, 19 Feb 2025 08:52:46 +0000 (UTC)
+	 MIME-Version; b=WAlcjgp9TlwVSe4psIzmJWrAxDL7YBZEAkMdwuE5q8XT5p4pWnZYxnbfqshDywB6sTYCdVZ12ZxBMFQh3IqH522piO5arLwYq1Qm0cuGYwzXvaE021fkEPZYstoY/r1dywXtUzWgOWLykcTabG2rO76jgDV0Se08z/OcnUUVqFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIYH+ELt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B268C4CED1;
+	Wed, 19 Feb 2025 09:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955166;
-	bh=Mm3iElm1Eqt39zXEsaeraoKbt6li4vsCrP2X17DcG3Q=;
+	s=korg; t=1739957266;
+	bh=zyFwFR8lQeWa35Ev/PcLHYC/G/MVokHW/DrRxkx58xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxFEYQ8TEjw5oI7HLRiSJbeM1LYxqTmo4zSy0YXOJsTnuPMahBAvz03nOpmqxUC9s
-	 X8HR/PAW3a9h63GvH/9o2Dc5fLLYx4Fygj/UER9roS6bDvc9Jl2uinbnVDyramW5hH
-	 QYkyDk91DxstJxhYnb1JeWe9z+JujQ+KWotS9OJI=
+	b=AIYH+ELt3sMMo3iYssiu8qsHxi8OYmiJOXyLdgHT9eVy0c0XRGaJFsOQn0H8x0hdM
+	 uH5e1UBY6s41tCJBv9+4jRIi4nM8NUDxhCHP7UWWhdmgqIWv7KMDNWDVyW0WJiYaxg
+	 n5ocq6OMozKGOJWv9mVI3abgzTK20hdg9LHmiPWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 153/230] sched_ext: Fix incorrect autogroup migration detection
-Date: Wed, 19 Feb 2025 09:27:50 +0100
-Message-ID: <20250219082607.676829525@linuxfoundation.org>
+	syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 467/578] ax25: Fix refcount leak caused by setting SO_BINDTODEVICE sockopt
+Date: Wed, 19 Feb 2025 09:27:51 +0100
+Message-ID: <20250219082711.377626112@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,169 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit d6f3e7d564b2309e1f17e709a70eca78d7ca2bb8 upstream.
+[ Upstream commit bca0902e61731a75fc4860c8720168d9f1bae3b6 ]
 
-scx_move_task() is called from sched_move_task() and tells the BPF scheduler
-that cgroup migration is being committed. sched_move_task() is used by both
-cgroup and autogroup migrations and scx_move_task() tried to filter out
-autogroup migrations by testing the destination cgroup and PF_EXITING but
-this is not enough. In fact, without explicitly tagging the thread which is
-doing the cgroup migration, there is no good way to tell apart
-scx_move_task() invocations for racing migration to the root cgroup and an
-autogroup migration.
+If an AX25 device is bound to a socket by setting the SO_BINDTODEVICE
+socket option, a refcount leak will occur in ax25_release().
 
-This led to scx_move_task() incorrectly ignoring a migration from non-root
-cgroup to an autogroup of the root cgroup triggering the following warning:
+Commit 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
+added decrement of device refcounts in ax25_release(). In order for that
+to work correctly the refcounts must already be incremented when the
+device is bound to the socket. An AX25 device can be bound to a socket
+by either calling ax25_bind() or setting SO_BINDTODEVICE socket option.
+In both cases the refcounts should be incremented, but in fact it is done
+only in ax25_bind().
 
-  WARNING: CPU: 7 PID: 1 at kernel/sched/ext.c:3725 scx_cgroup_can_attach+0x196/0x340
-  ...
-  Call Trace:
-  <TASK>
-    cgroup_migrate_execute+0x5b1/0x700
-    cgroup_attach_task+0x296/0x400
-    __cgroup_procs_write+0x128/0x140
-    cgroup_procs_write+0x17/0x30
-    kernfs_fop_write_iter+0x141/0x1f0
-    vfs_write+0x31d/0x4a0
-    __x64_sys_write+0x72/0xf0
-    do_syscall_64+0x82/0x160
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This bug leads to the following issue reported by Syzkaller:
 
-Fix it by adding an argument to sched_move_task() that indicates whether the
-moving is for a cgroup or autogroup migration. After the change,
-scx_move_task() is called only for cgroup migrations and renamed to
-scx_cgroup_move_task().
+================================================================
+refcount_t: decrement hit 0; leaking memory.
+WARNING: CPU: 1 PID: 5932 at lib/refcount.c:31 refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
+Modules linked in:
+CPU: 1 UID: 0 PID: 5932 Comm: syz-executor424 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
+Call Trace:
+ <TASK>
+ __refcount_dec include/linux/refcount.h:336 [inline]
+ refcount_dec include/linux/refcount.h:351 [inline]
+ ref_tracker_free+0x710/0x820 lib/ref_tracker.c:236
+ netdev_tracker_free include/linux/netdevice.h:4156 [inline]
+ netdev_put include/linux/netdevice.h:4173 [inline]
+ netdev_put include/linux/netdevice.h:4169 [inline]
+ ax25_release+0x33f/0xa10 net/ax25/af_ax25.c:1069
+ __sock_release+0xb0/0x270 net/socket.c:640
+ sock_close+0x1c/0x30 net/socket.c:1408
+ ...
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ ...
+ </TASK>
+================================================================
 
-Link: https://github.com/sched-ext/scx/issues/370
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the implementation of ax25_setsockopt() by adding increment of
+refcounts for the new device bound, and decrement of refcounts for
+the old unbound device.
+
+Fixes: 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
+Reported-by: syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250203091203.1744-1-m.masimov@mt-integration.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/autogroup.c |    4 ++--
- kernel/sched/core.c      |    7 ++++---
- kernel/sched/ext.c       |   15 +--------------
- kernel/sched/ext.h       |    4 ++--
- kernel/sched/sched.h     |    2 +-
- 5 files changed, 10 insertions(+), 22 deletions(-)
+ net/ax25/af_ax25.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/kernel/sched/autogroup.c
-+++ b/kernel/sched/autogroup.c
-@@ -150,7 +150,7 @@ void sched_autogroup_exit_task(struct ta
- 	 * see this thread after that: we can no longer use signal->autogroup.
- 	 * See the PF_EXITING check in task_wants_autogroup().
- 	 */
--	sched_move_task(p);
-+	sched_move_task(p, true);
- }
+diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
+index 4b96dedcc3c9c..862e03493b7ed 100644
+--- a/net/ax25/af_ax25.c
++++ b/net/ax25/af_ax25.c
+@@ -685,6 +685,15 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
  
- static void
-@@ -182,7 +182,7 @@ autogroup_move_group(struct task_struct
- 	 * sched_autogroup_exit_task().
- 	 */
- 	for_each_thread(p, t)
--		sched_move_task(t);
-+		sched_move_task(t, true);
++		if (ax25->ax25_dev) {
++			if (dev == ax25->ax25_dev->dev) {
++				rcu_read_unlock();
++				break;
++			}
++			netdev_put(ax25->ax25_dev->dev, &ax25->dev_tracker);
++			ax25_dev_put(ax25->ax25_dev);
++		}
++
+ 		ax25->ax25_dev = ax25_dev_ax25dev(dev);
+ 		if (!ax25->ax25_dev) {
+ 			rcu_read_unlock();
+@@ -692,6 +701,8 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 		ax25_fillin_cb(ax25, ax25->ax25_dev);
++		netdev_hold(dev, &ax25->dev_tracker, GFP_ATOMIC);
++		ax25_dev_hold(ax25->ax25_dev);
+ 		rcu_read_unlock();
+ 		break;
  
- 	unlock_task_sighand(p, &flags);
- 	autogroup_kref_put(prev);
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8953,7 +8953,7 @@ static void sched_change_group(struct ta
-  * now. This function just updates tsk->se.cfs_rq and tsk->se.parent to reflect
-  * its new group.
-  */
--void sched_move_task(struct task_struct *tsk)
-+void sched_move_task(struct task_struct *tsk, bool for_autogroup)
- {
- 	int queued, running, queue_flags =
- 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
-@@ -8982,7 +8982,8 @@ void sched_move_task(struct task_struct
- 		put_prev_task(rq, tsk);
- 
- 	sched_change_group(tsk, group);
--	scx_move_task(tsk);
-+	if (!for_autogroup)
-+		scx_cgroup_move_task(tsk);
- 
- 	if (queued)
- 		enqueue_task(rq, tsk, queue_flags);
-@@ -9083,7 +9084,7 @@ static void cpu_cgroup_attach(struct cgr
- 	struct cgroup_subsys_state *css;
- 
- 	cgroup_taskset_for_each(task, css, tset)
--		sched_move_task(task);
-+		sched_move_task(task, false);
- 
- 	scx_cgroup_finish_attach();
- }
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3919,25 +3919,12 @@ err:
- 	return ops_sanitize_err("cgroup_prep_move", ret);
- }
- 
--void scx_move_task(struct task_struct *p)
-+void scx_cgroup_move_task(struct task_struct *p)
- {
- 	if (!scx_cgroup_enabled)
- 		return;
- 
- 	/*
--	 * We're called from sched_move_task() which handles both cgroup and
--	 * autogroup moves. Ignore the latter.
--	 *
--	 * Also ignore exiting tasks, because in the exit path tasks transition
--	 * from the autogroup to the root group, so task_group_is_autogroup()
--	 * alone isn't able to catch exiting autogroup tasks. This is safe for
--	 * cgroup_move(), because cgroup migrations never happen for PF_EXITING
--	 * tasks.
--	 */
--	if (task_group_is_autogroup(task_group(p)) || (p->flags & PF_EXITING))
--		return;
--
--	/*
- 	 * @p must have ops.cgroup_prep_move() called on it and thus
- 	 * cgrp_moving_from set.
- 	 */
---- a/kernel/sched/ext.h
-+++ b/kernel/sched/ext.h
-@@ -73,7 +73,7 @@ static inline void scx_update_idle(struc
- int scx_tg_online(struct task_group *tg);
- void scx_tg_offline(struct task_group *tg);
- int scx_cgroup_can_attach(struct cgroup_taskset *tset);
--void scx_move_task(struct task_struct *p);
-+void scx_cgroup_move_task(struct task_struct *p);
- void scx_cgroup_finish_attach(void);
- void scx_cgroup_cancel_attach(struct cgroup_taskset *tset);
- void scx_group_set_weight(struct task_group *tg, unsigned long cgrp_weight);
-@@ -82,7 +82,7 @@ void scx_group_set_idle(struct task_grou
- static inline int scx_tg_online(struct task_group *tg) { return 0; }
- static inline void scx_tg_offline(struct task_group *tg) {}
- static inline int scx_cgroup_can_attach(struct cgroup_taskset *tset) { return 0; }
--static inline void scx_move_task(struct task_struct *p) {}
-+static inline void scx_cgroup_move_task(struct task_struct *p) {}
- static inline void scx_cgroup_finish_attach(void) {}
- static inline void scx_cgroup_cancel_attach(struct cgroup_taskset *tset) {}
- static inline void scx_group_set_weight(struct task_group *tg, unsigned long cgrp_weight) {}
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -572,7 +572,7 @@ extern void sched_online_group(struct ta
- extern void sched_destroy_group(struct task_group *tg);
- extern void sched_release_group(struct task_group *tg);
- 
--extern void sched_move_task(struct task_struct *tsk);
-+extern void sched_move_task(struct task_struct *tsk, bool for_autogroup);
- 
- #ifdef CONFIG_FAIR_GROUP_SCHED
- extern int sched_group_set_shares(struct task_group *tg, unsigned long shares);
+-- 
+2.39.5
+
 
 
 
