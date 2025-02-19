@@ -1,261 +1,123 @@
-Return-Path: <stable+bounces-118287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B288A3C1D9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 15:19:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACFDA3C1B9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 15:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2128E3A7CCD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:13:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E9EB7A775A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97311F30A9;
-	Wed, 19 Feb 2025 14:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC48C1E5B65;
+	Wed, 19 Feb 2025 14:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2+NLQTUM";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="R8r0Ax+L";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2+NLQTUM";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="R8r0Ax+L"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="UfCb+LZ0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5447C1F1522
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 14:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EBF1E00BF;
+	Wed, 19 Feb 2025 14:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739974210; cv=none; b=i40VBnuhvjCE62UuuACZRqAkWr3ysxGVVpMMu76kFBgLggU1/dp6O0X/bLmyOLaBM3qAgM/YfgcYS1ECM6a1PwMaOA3BDZQupWMNlyo87OLIVfZtqbfV8quP26fxRJsiYFt4atTEklcJNq6kKM8BEKg8n3LpjsvqplR9D/SVth8=
+	t=1739974473; cv=none; b=nqF87Uf+wklhvRzPjm9XIhFoSDyg7kqPnD+PQ2dbcWr7BYf8WiGJcjCHIARmWJKypEeNKGmSwsmXnPLZkL3o0Efbtnj2CAk5FNde6JJQ/x2BfP/NjTlan0hdKt9X8f6bRv54YIGsOh4L0rr6hbrolmTUjhFkoq5bSnOHgD86lx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739974210; c=relaxed/simple;
-	bh=ftdCmDrYrqznox9ADQ4gf+hDnwH6vudTD6dzNIMQxbk=;
+	s=arc-20240116; t=1739974473; c=relaxed/simple;
+	bh=K2GkpiSmwUXetakePEBxwJPUY3CyQYChySFJcaeeUw0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HADYts3CJ/ksuq/jBkPehqOAM05LQ7XA+tf/G0mJ6KKmN79xYh7A0o4FeK+NV5+8WepbBIdkJ/wol5Y9DqO62TPFhBii5fKbn00IqKfz3wfhW+lSch2ko0Z/162s1up25064c95+1k96XKRG+TLNxLlk385wfgze0+bdbOKcifo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2+NLQTUM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=R8r0Ax+L; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2+NLQTUM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=R8r0Ax+L; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 79275216E6;
-	Wed, 19 Feb 2025 14:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1739974206; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
-	b=2+NLQTUM01xofWCr15NmORqyOX215/vzarmlAKGe1ka94Nc/Kct1uSb9ok6CtuUWQstnhF
-	lKh66iO3AdKVFUMbm3wSK/dBLm5JzJG3y/WMEsGsB+EjsC72i5ScKQqNmDntO/JSD7UXJ/
-	37yBUCDXJLCoSCOcLn5X0puWuAkKFiM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1739974206;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
-	b=R8r0Ax+LaUrZP3ReaJlNwEtlm4J7t7O/NTrEy2g0u+Sga0+lHr40eR5gklYrG+8gour/pj
-	GnrJOO4EAfD/dPCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1739974206; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
-	b=2+NLQTUM01xofWCr15NmORqyOX215/vzarmlAKGe1ka94Nc/Kct1uSb9ok6CtuUWQstnhF
-	lKh66iO3AdKVFUMbm3wSK/dBLm5JzJG3y/WMEsGsB+EjsC72i5ScKQqNmDntO/JSD7UXJ/
-	37yBUCDXJLCoSCOcLn5X0puWuAkKFiM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1739974206;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
-	b=R8r0Ax+LaUrZP3ReaJlNwEtlm4J7t7O/NTrEy2g0u+Sga0+lHr40eR5gklYrG+8gour/pj
-	GnrJOO4EAfD/dPCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 526C813715;
-	Wed, 19 Feb 2025 14:10:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Q0LXEz7mtWdCFwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 19 Feb 2025 14:10:06 +0000
-Message-ID: <9155f04f-74d9-41a3-9690-2ba38b3d79f0@suse.cz>
-Date: Wed, 19 Feb 2025 15:10:05 +0100
+	 In-Reply-To:Content-Type; b=uNevF0NoS+M/fp1Mw3Cm0yJOY8OBx/4i8qXPNBw3pOSi0j8WDElh+u8oe4JvoaHxQPilcydWOolbGIxg2dQ0I/bTYkwtSgo9RYYKt3aVbe68u40+OGVhP4inl5FgBeXB5HoMD5bCrPi/CY92A+WUpNq6nclzdnd2JXcyWKd7x0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=UfCb+LZ0; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38dd9b3419cso3669091f8f.0;
+        Wed, 19 Feb 2025 06:14:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1739974469; x=1740579269; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Wf2RXYvA/APdQSyRpEenuian9qv6Fytwij/nbZajby0=;
+        b=UfCb+LZ0qLtIfXT+zmpgCdJvVCf0k15YSIuiWkKoYFBi4jH3t5TKwtnKO8601eyojG
+         XpgbI8vqp3QngGze8LYQKODE/pFk8uUvoG89WtuoqmIY3IhW1xsXDPKgQv60J2GhTshp
+         niLDjH0N8SEmvJ9JLe1/17hgBwCk+X3FGuZjRu33Xpn8u/et4YU7+E9hmGjUiKmPqKQ5
+         Ipq5gW0Pl9zs+3le8o83R/heS5VTfgyst3kf6oBU3lgzlhXerPTfyKPTPN1E8PgXDRpj
+         pp9PdcHiSJjblQNIh+/b/KXw2iyntP2SMzGiHRqHjfA7aGUJCL62Hp4Dal3Kj4u0kaUP
+         cW7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739974469; x=1740579269;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wf2RXYvA/APdQSyRpEenuian9qv6Fytwij/nbZajby0=;
+        b=NOFZ3I3sYyfjNafoPjTkvxcww/WMOmUQG5rhbbn3PlPgWU4XJDdOMCZ322hH8qwXOP
+         bd8GXePF8ebmACGPvyiLVLDnA4DqIrGvm16slguOmINEiqzaK2aG8B7XFyuQ4iAODVky
+         GIlYYj//VUHQE4eQO0sipuRWaBs6pHmBxDz2OZU0lE7qmqoRO/sZO6uPTmiShge1CxDu
+         w7IuapBTsQ7KJHpC+YxVh3bY2M26c6MoHNGQCOh5biW+mJphs60WCe0oDRA4bsjhcS++
+         nEi0HdQTK9HPRHpjnQpolZR5QdO9FZdDJjUbKsg77sO7dg2DLRfI3y+Ul0z/idp2bqpT
+         riNg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3D5U3Ui1BJbA7WKq14upB44xD0tkNQzp/V83O1ACn6DHyAAQCc0UuDcwjLV/yzJR0CJhyDdUmfKy8Ppk=@vger.kernel.org, AJvYcCWWq1+Yg9AysSyy7/6pAMMX34YZqQW6pdcOiC/XATOA2BxAPH7qR9jgH5YLo8RoQnnIKNZs0xwf@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzlMN5yZYhFgVoH+vm8FXWLBt9pZbOLk2ylBI9+ma4koJkSJqM
+	7PVXEaePgVbTb9n5zv0ZG+BzJsRfeMl41y8w+E7bqSO3QFSl5FA=
+X-Gm-Gg: ASbGncslbOnBPW5ZGojR2/7EU+OsBFmFX6GIEpyJKRqd5e1IPsd/cEXoxtlJc6+rsAB
+	NIFd5irPcm+nIPqYJeYuuv/+J9hbX7GmDvNpLSMuT1r0MlkJlN+X7uxmw2ldPr2O03Szq10DYk5
+	TuJ/JVik8CUBjDH89FPnwFbE3J/2gjHfrl/i0tt3ICZhyO+X9gDiBlitvt502BDvnHMSb4zTWaL
+	eu2tKZaRkI9RAHmv7zmShr/e0ZQBvp7+TmCOGyLzfPgIOnMOwLni0t0zuhm1mN5py4SnwJkoSAU
+	o+9y+K8woGLBzjN1R5B0V9VOvbZ0m1RFSTP8falLnlEmJyiRAykJeD/txByf5XeqWRmF
+X-Google-Smtp-Source: AGHT+IGJCZjLQcnPr2FENPcGiOBYdO/PPeKRrRs/BHzgL5OQKx8IJ/h/Nhze42GLkLBaoXpzjjssEw==
+X-Received: by 2002:a5d:6daa:0:b0:38f:394f:d83 with SMTP id ffacd0b85a97d-38f394f9d8fmr16805665f8f.48.1739974469096;
+        Wed, 19 Feb 2025 06:14:29 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b4e7c.dip0.t-ipconnect.de. [91.43.78.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f25915719sm18171435f8f.60.2025.02.19.06.14.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Feb 2025 06:14:28 -0800 (PST)
+Message-ID: <9354d8a0-e264-4675-abc2-c0940d814437@googlemail.com>
+Date: Wed, 19 Feb 2025 15:14:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: How does swsusp work with randomization features?
-Content-Language: en-US
-To: Huacai Chen <chenhuacai@kernel.org>,
- "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- "Rafael J . Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- linux-pm@vger.kernel.org, GONG Ruiqi <gongruiqi@huaweicloud.com>,
- Xiu Jianfeng <xiujianfeng@huawei.com>, stable@vger.kernel.org,
- Yuli Wang <wangyuli@uniontech.com>, Christoph Lameter <cl@linux.com>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Pekka Enberg
- <penberg@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Kees Cook <kees@kernel.org>, GONG Ruiqi <gongruiqi1@huawei.com>
-References: <20250212141648.599661-1-chenhuacai@loongson.cn>
- <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
- <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com>
- <Z68N4lTIIwudzcLY@MacBook-Air-5.local>
- <CAAhV-H5sFkdcLbvqYBGV2PM1+MOF5NMxwt+pCF9K6MhUu+R63Q@mail.gmail.com>
- <Z686y7g9OZ0DhT7Q@MacBook-Air-5.local>
- <CAAhV-H4BSWC+K=qQfmHfdXuDqUgGcBLZ7Ftb6VEKs1QYVd6wxg@mail.gmail.com>
- <Z7CfLlEw9vtbFJwI@MacBook-Air-5.local>
- <CAAhV-H40eTo+tUx8b8=j4_9sfq7i9wo-LSO9pHKmRU7=wDDdbw@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <CAAhV-H40eTo+tUx8b8=j4_9sfq7i9wo-LSO9pHKmRU7=wDDdbw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.13 000/274] 6.13.4-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250219082609.533585153@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.80
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	SUBJECT_ENDS_QUESTION(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TAGGED_RCPT(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
 
-On 2/16/25 06:08, Huacai Chen wrote:
-> On Sat, Feb 15, 2025 at 10:05 PM Harry (Hyeonggon) Yoo
-> <42.hyeyoo@gmail.com> wrote:
->>
->>
->> You mean when SLAB_FREELIST_RANDOM enabled?
->> Assuming that...
-> Yes.
-> 
->>
->> > the CPU1's idle task stack from
->> > the booting kernel may be the CPU2's idle task stack from the target
->> > kernel, and CPU2's idle task stack from the booting kernel may be the
->> > CPU1's idle task stack from the target kernel
->>
+Am 19.02.2025 um 09:24 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.13.4 release.
+> There are 274 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-The freelist can have more objects than the number of cpus and then it's not
-just exchanging stacks between cpus but also with whatever else allocates
-from the same slab.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
->> What happens if it's not the case?
-> SLAB means "objects with the same type", right? So it is probably the
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-kmalloc() is not objects of the same type, just size
 
-> case. Yes, there is a very very low possibility that not the case,
-> but...
-> 
-> In theory x86_64 also has a low possibility that the idle task's stack
-> or other metadata be overwritten, then should we also disable random
-> kmalloc for x86_64?
+Beste Grüße,
+Peter Schneider
 
-Does x86 really have such possibility? Can you explain in more detail?
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-> On the other hand, if we really need to handle this theoretic
-> possibility about SLAB_FREELIST_RANDOM now, we can simply move
-> init_freelist_randomization() after all initcalls, too.
-
-I think a more robust approach would be to make sure any allocations
-critical for hibernation/resume are static? Are there really multiple CPU's
-idle task stacks involved? Aren't the critical paths single cpu only? I'd
-assume when multiple cpus might be running at that phase, all bets about
-determinism are off? So there could be a statically allocated stack for the
-single cpu?
-
-Note I don't know much about how hibernation works. But it seems fragile to
-rely on rather complex allocators (slab over page allocators) to give me
-exactly the same addresses accross boots, and hack around their
-randomization features to help with that, if there's an alternative to use
-static allocations for the critical pieces of the hibernation/resume code.
-
-> Huacai
-> 
->>
->> > but idle task's stack
->> > from the booting kernel won't be other things from the target kernel
->> > (and won't be overwritten by switching kernel).
->>
->> What guarantees that it won't be overwritten?
->> To me it seems to be a fragile assumption that could be broken.
->>
->> Am I missing something?
->>
->> --
->> Harry
-> 
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
