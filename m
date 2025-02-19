@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D333A3B6D9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAA2A3B98E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8143B8CEC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79232188D5F9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBA71DE8A0;
-	Wed, 19 Feb 2025 08:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3881DDA20;
+	Wed, 19 Feb 2025 09:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6opComU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTKvLSE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB19C1DE89B;
-	Wed, 19 Feb 2025 08:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E991BEF77;
+	Wed, 19 Feb 2025 09:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955519; cv=none; b=rxQF1V6yMidtoNAhomBkYjKC/s/0ArTyicmghfJT6Qh4KFKapJM3akag2CP1c/AIntwpHfYTQdm70+WeTbMN8MDqu7ZXIZnjyskqhr0oD3u1hWVbl1jTIT2KyX7suAeJeBXpJR0/wtmtnI4wPOEf+a3tD1lUqFcU+36dZrGq+kw=
+	t=1739957146; cv=none; b=MpmT8i4+mEjM7kXBMh57e6Y60z3dcOP45V+DhWw/8CCJ5Dybl6rqiBdtycVaORO3lH4871ULDmyFqC6b+EENGrmWnH/CU6qi0LeyoUM0L2I7mKpBquTPfLj248V/9juA9EM5fYlIQZMbFAbsukEnT/V9ptp5V+s7m+HR+cQIWvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955519; c=relaxed/simple;
-	bh=tmSpaVPOubQsauvO7rU23bKkCPSFPFZWzKF4Bvyp2NQ=;
+	s=arc-20240116; t=1739957146; c=relaxed/simple;
+	bh=MLG4M1vIp5vZR/4vpKs7eX1g2TocE2Wye08AOW3F1Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HH0jYc+KibVHTDtiyTW+d8EmFi0RzxVYKD4T7vc24uAQTCeSkhWeaFoBZK2E+fQ2DvbRD8DvqePFN1sYglVPfKMUHtgpIxa0wX+bp4f7dgFRGlgSNeSLaOyyz9pEGAx5sCo2gM/S2MNV1tSAy9tNlpKXB9QTR0H8YdFM7o4cJJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6opComU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2547C4CED1;
-	Wed, 19 Feb 2025 08:58:38 +0000 (UTC)
+	 MIME-Version; b=rglB1zUHc31cgIJZk7L0UdXuLJ6MgBEKjkR/Ot9BR3jjH2XuFWeUDqF+S50AomliA3bCEPFueKATxkWEqKV128SmqvC86zFA/0Phc2Ai1kGSmXeW1/YCOzlgOrTEt8R3J1y1+3MxCisxsK+Tkkdy5y0dBk+TMKRhpkqF0fzqO+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTKvLSE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E43C4CED1;
+	Wed, 19 Feb 2025 09:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955519;
-	bh=tmSpaVPOubQsauvO7rU23bKkCPSFPFZWzKF4Bvyp2NQ=;
+	s=korg; t=1739957146;
+	bh=MLG4M1vIp5vZR/4vpKs7eX1g2TocE2Wye08AOW3F1Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6opComUpb9HX6WuTy5dmqxWmwRbfQ1ShZjYRpR0VGJqCQ9dKU/lMIqea0El1vLwu
-	 X3kLdeR96iEXr7YBeGVVcYQ4m1sqBNP4hV/JxgK0SBqdloyNVJyM2oW/+FPcuFnXN/
-	 wFjSWf6F17Hr0Q6FM6DLc2xBoM4HWlFSvx/vX2A4=
+	b=tTKvLSE2/qhJ4ogvpB4i7MUMmlyE4x2wj+UsqFemSp52PoZFVfb1yDoCW5UUUO/RH
+	 gxKIXZom99hfcHoLk67Q0+bXpXbH4bJdYe3Dqt6zUusX4CFjvsPx2YPFkiSG0GE+B5
+	 Rki8zJcWKnB4wAuAV6FmzBV+l57YpsxpDifgJSyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/152] ax25: Fix refcount leak caused by setting SO_BINDTODEVICE sockopt
-Date: Wed, 19 Feb 2025 09:27:00 +0100
-Message-ID: <20250219082550.315826470@linuxfoundation.org>
+	reveliofuzzing <reveliofuzzing@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.1 417/578] ata: libata-sff: Ensure that we cannot write outside the allocated buffer
+Date: Wed, 19 Feb 2025 09:27:01 +0100
+Message-ID: <20250219082709.423913573@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit bca0902e61731a75fc4860c8720168d9f1bae3b6 ]
+commit 6e74e53b34b6dec5a50e1404e2680852ec6768d2 upstream.
 
-If an AX25 device is bound to a socket by setting the SO_BINDTODEVICE
-socket option, a refcount leak will occur in ax25_release().
+reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
+set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
+ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
+write outside the allocated buffer, overwriting random memory.
 
-Commit 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
-added decrement of device refcounts in ax25_release(). In order for that
-to work correctly the refcounts must already be incremented when the
-device is bound to the socket. An AX25 device can be bound to a socket
-by either calling ax25_bind() or setting SO_BINDTODEVICE socket option.
-In both cases the refcounts should be incremented, but in fact it is done
-only in ax25_bind().
+While a ATA device is supposed to abort a ATA_NOP command, there does seem
+to be a bug either in libata-sff or QEMU, where either this status is not
+set, or the status is cleared before read by ata_sff_hsm_move().
+Anyway, that is most likely a separate bug.
 
-This bug leads to the following issue reported by Syzkaller:
+Looking at __atapi_pio_bytes(), it already has a safety check to ensure
+that __atapi_pio_bytes() cannot write outside the allocated buffer.
 
-================================================================
-refcount_t: decrement hit 0; leaking memory.
-WARNING: CPU: 1 PID: 5932 at lib/refcount.c:31 refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
-Modules linked in:
-CPU: 1 UID: 0 PID: 5932 Comm: syz-executor424 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
-Call Trace:
- <TASK>
- __refcount_dec include/linux/refcount.h:336 [inline]
- refcount_dec include/linux/refcount.h:351 [inline]
- ref_tracker_free+0x710/0x820 lib/ref_tracker.c:236
- netdev_tracker_free include/linux/netdevice.h:4156 [inline]
- netdev_put include/linux/netdevice.h:4173 [inline]
- netdev_put include/linux/netdevice.h:4169 [inline]
- ax25_release+0x33f/0xa10 net/ax25/af_ax25.c:1069
- __sock_release+0xb0/0x270 net/socket.c:640
- sock_close+0x1c/0x30 net/socket.c:1408
- ...
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- ...
- </TASK>
-================================================================
+Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
+cannot write outside the allocated buffer.
 
-Fix the implementation of ax25_setsockopt() by adding increment of
-refcounts for the new device bound, and decrement of refcounts for
-the old unbound device.
-
-Fixes: 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
-Reported-by: syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250203091203.1744-1-m.masimov@mt-integration.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
+Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
+Link: https://lore.kernel.org/r/20250127154303.15567-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ax25/af_ax25.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/ata/libata-sff.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
-index 0f66dd8715bd8..4a16142ac58a9 100644
---- a/net/ax25/af_ax25.c
-+++ b/net/ax25/af_ax25.c
-@@ -685,6 +685,15 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -658,7 +658,7 @@ static void ata_pio_sector(struct ata_qu
+ {
+ 	struct ata_port *ap = qc->ap;
+ 	struct page *page;
+-	unsigned int offset;
++	unsigned int offset, count;
  
-+		if (ax25->ax25_dev) {
-+			if (dev == ax25->ax25_dev->dev) {
-+				rcu_read_unlock();
-+				break;
-+			}
-+			netdev_put(ax25->ax25_dev->dev, &ax25->dev_tracker);
-+			ax25_dev_put(ax25->ax25_dev);
-+		}
+ 	if (!qc->cursg) {
+ 		qc->curbytes = qc->nbytes;
+@@ -674,25 +674,27 @@ static void ata_pio_sector(struct ata_qu
+ 	page = nth_page(page, (offset >> PAGE_SHIFT));
+ 	offset %= PAGE_SIZE;
+ 
+-	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
++	/* don't overrun current sg */
++	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
 +
- 		ax25->ax25_dev = ax25_dev_ax25dev(dev);
- 		if (!ax25->ax25_dev) {
- 			rcu_read_unlock();
-@@ -692,6 +701,8 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 		ax25_fillin_cb(ax25, ax25->ax25_dev);
-+		netdev_hold(dev, &ax25->dev_tracker, GFP_ATOMIC);
-+		ax25_dev_hold(ax25->ax25_dev);
- 		rcu_read_unlock();
- 		break;
++	trace_ata_sff_pio_transfer_data(qc, offset, count);
  
--- 
-2.39.5
-
+ 	/*
+ 	 * Split the transfer when it splits a page boundary.  Note that the
+ 	 * split still has to be dword aligned like all ATA data transfers.
+ 	 */
+ 	WARN_ON_ONCE(offset % 4);
+-	if (offset + qc->sect_size > PAGE_SIZE) {
++	if (offset + count > PAGE_SIZE) {
+ 		unsigned int split_len = PAGE_SIZE - offset;
+ 
+ 		ata_pio_xfer(qc, page, offset, split_len);
+-		ata_pio_xfer(qc, nth_page(page, 1), 0,
+-			     qc->sect_size - split_len);
++		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
+ 	} else {
+-		ata_pio_xfer(qc, page, offset, qc->sect_size);
++		ata_pio_xfer(qc, page, offset, count);
+ 	}
+ 
+-	qc->curbytes += qc->sect_size;
+-	qc->cursg_ofs += qc->sect_size;
++	qc->curbytes += count;
++	qc->cursg_ofs += count;
+ 
+ 	if (qc->cursg_ofs == qc->cursg->length) {
+ 		qc->cursg = sg_next(qc->cursg);
 
 
 
