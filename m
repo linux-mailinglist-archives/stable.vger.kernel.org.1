@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B406A3B4A6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:45:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558AEA3B56E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB4C11899129
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CF281898712
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7241DF75C;
-	Wed, 19 Feb 2025 08:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEFF1C7001;
+	Wed, 19 Feb 2025 08:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyGISih6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVpuK8b1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1D81CBA18;
-	Wed, 19 Feb 2025 08:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558741E5201;
+	Wed, 19 Feb 2025 08:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954137; cv=none; b=OLNrryBOzRZcVkKjx88ogzrXk332NmRhHcGP6KYGhGIe2FWBAAN9nVszpfbsUxVhRlXoAxJoxXCB6xcOqaAtv/WGyzDkaFm0tkmhDWYl6vCyUhFsCZePxjbOTIP1epe5W394cr1/bfydtO+hPhMfDjjckWLst9pnCHiehzgjwOk=
+	t=1739954712; cv=none; b=f1vKvksbWlGQ3rPP1hHwHnxWYgsL9WbfMsBBJ6hpNHVqnTsjRhYyOZ+bmHEO5nYUM/FbT7824o4489s9vzAi4d4tscv+cuslCCIfTmjTkZFLwSxXhGTdfHgwMIKjZQOkfbbBaLIA6vfdgmtnBHPytoEHi6P0smf6ZskvuJUev2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954137; c=relaxed/simple;
-	bh=ZSP7cnhHD1IVmuVDsYstzt1HY2AlKwMxtuiP8CltFK4=;
+	s=arc-20240116; t=1739954712; c=relaxed/simple;
+	bh=pSJDwh3iKa3ouj+ZmXYFvFRB4jS3T/qF+FQQa2/eqBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ff3mt9zSMHcUWZ9FaoS2DZZfWu4++Tmrm8T61+eUbq7RKNxknLbEiaTlaSrE7D5k1Jo/rhheK5hqgwo1PmGaKvY98QxH4/f1SSNBIHoDmBRXtLHFzY1KsJoh7f/xfTeQIQB6crQPH0mXx5qYUq3N7ueSImYklm0yuDDP2HqHIGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyGISih6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75044C4CED1;
-	Wed, 19 Feb 2025 08:35:36 +0000 (UTC)
+	 MIME-Version; b=u9CA+ntBRnF0X3wl6RPH2CGFm66wiP3L0BYKhOrJo5X0LK6NfSa/bfQiuAWlwY6XkIFYIlonizblSLIuBWrtFHCaM9yES/q7RYTCG3dHcuKFgYzOKyiT7We8lVUKvJgo3v9FD/DyJaPNFCXkhi6zMoNY6UF03FLHlCzcRgEh9mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVpuK8b1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65D3C4CED1;
+	Wed, 19 Feb 2025 08:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954136;
-	bh=ZSP7cnhHD1IVmuVDsYstzt1HY2AlKwMxtuiP8CltFK4=;
+	s=korg; t=1739954712;
+	bh=pSJDwh3iKa3ouj+ZmXYFvFRB4jS3T/qF+FQQa2/eqBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyGISih6KfRZVqwd80/8Ru4eE2Ua/cDntAHHSbxjEOTBnmZGSTuFqV7Yz9m+DOgCH
-	 FA6HVY7+hS6YM/JcLPKxGOV9tmdLalIA9bdgO/LVYeAznM69iZuDkCWfJI2z3/JtoP
-	 XwaRSBtIsvuXIVtz/O2NRievMuy7UQK7Fjt93EwU=
+	b=wVpuK8b1uTUUNb2vv3fECN48x/wGMOHGPE9gxaroi/eYWLq4/+kn2etr272WozNW/
+	 giACMq4X4d95Rlfwgbpd2EiVm3tSf3I8cJe/5tH7HvED/u6daRn1Jb1CR0t1xBWRdu
+	 pzgzWyLi7u42OYWkzYihaSMxP6WEm9HAnNl10OE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 077/274] PCI: endpoint: Add size check for fixed size BARs in pci_epc_set_bar()
+Subject: [PATCH 6.12 014/230] HID: hid-steam: Dont use cancel_delayed_work_sync in IRQ context
 Date: Wed, 19 Feb 2025 09:25:31 +0100
-Message-ID: <20250219082612.637497858@linuxfoundation.org>
+Message-ID: <20250219082602.259307532@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit f015b53d634a10fbceba545de70c3e109665c379 ]
+[ Upstream commit b051ffa2aeb2a60e092387b6fb2af1ad42f51a3c ]
 
-A BAR of type BAR_FIXED has a fixed BAR size (the size cannot be changed).
+Lockdep reported that, as steam_do_deck_input_event is called from
+steam_raw_event inside of an IRQ context, it can lead to issues if that IRQ
+occurs while the work to be cancelled is running. By using cancel_delayed_work,
+this issue can be avoided. The exact ordering of the work and the event
+processing is not super important, so this is safe.
 
-When using pci_epf_alloc_space() to allocate backing memory for a BAR,
-pci_epf_alloc_space() will always set the size to the fixed BAR size if
-the BAR type is BAR_FIXED (and will give an error if you the requested size
-is larger than the fixed BAR size).
-
-However, some drivers might not call pci_epf_alloc_space() before calling
-pci_epc_set_bar(), so add a check in pci_epc_set_bar() to ensure that an
-EPF driver cannot set a size different from the fixed BAR size, if the BAR
-type is BAR_FIXED.
-
-The pci_epc_function_is_valid() check is removed because this check is now
-done by pci_epc_get_features().
-
-Link: https://lore.kernel.org/r/20241213143301.4158431-13-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: cd438e57dd05 ("HID: hid-steam: Add gamepad-only mode switched to by holding options")
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/hid/hid-steam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index 75c6688290034..111caa42f6b75 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -609,10 +609,17 @@ EXPORT_SYMBOL_GPL(pci_epc_clear_bar);
- int pci_epc_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 		    struct pci_epf_bar *epf_bar)
- {
--	int ret;
-+	const struct pci_epc_features *epc_features;
-+	enum pci_barno bar = epf_bar->barno;
- 	int flags = epf_bar->flags;
-+	int ret;
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index bf8b633114be6..9b6aec0733ae6 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -1592,7 +1592,7 @@ static void steam_do_deck_input_event(struct steam_device *steam,
  
--	if (!pci_epc_function_is_valid(epc, func_no, vfunc_no))
-+	epc_features = pci_epc_get_features(epc, func_no, vfunc_no);
-+	if (!epc_features)
-+		return -EINVAL;
-+
-+	if (epc_features->bar[bar].type == BAR_FIXED &&
-+	    (epc_features->bar[bar].fixed_size != epf_bar->size))
- 		return -EINVAL;
- 
- 	if ((epf_bar->barno == BAR_5 && flags & PCI_BASE_ADDRESS_MEM_TYPE_64) ||
+ 	if (!(b9 & BIT(6)) && steam->did_mode_switch) {
+ 		steam->did_mode_switch = false;
+-		cancel_delayed_work_sync(&steam->mode_switch);
++		cancel_delayed_work(&steam->mode_switch);
+ 	} else if (!steam->client_opened && (b9 & BIT(6)) && !steam->did_mode_switch) {
+ 		steam->did_mode_switch = true;
+ 		schedule_delayed_work(&steam->mode_switch, 45 * HZ / 100);
 -- 
 2.39.5
 
