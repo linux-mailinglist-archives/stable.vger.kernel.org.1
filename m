@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465D0A3B790
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE77DA3BA73
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E9717AB6D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C84C83BD0B1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B35D1C175A;
-	Wed, 19 Feb 2025 09:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F4A1DE4F1;
+	Wed, 19 Feb 2025 09:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBWsucKV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CisTAXJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9241BD9DE;
-	Wed, 19 Feb 2025 09:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E301DE4D7;
+	Wed, 19 Feb 2025 09:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955858; cv=none; b=uDkQRMtjT6GhIxl1CONnxQgpslnCAGaKSDdFrUlQjd2bQgag3qqKqGAf+/dCdWE9bEra3CKkFllZ+efS3kCIIJ5pKQ8YbTpJ+kkii0HUp37fOdvM+p7njbNFL8MjNet0630GB8aOYcl2Q/1yK1HkI/htuirU5SHph1rQtXLj6a0=
+	t=1739957404; cv=none; b=TgCZ+v+5bolRZNsqHiyh7G2Ji3LwP4jEldBwnA00LW/FkKSLCGdySCOfduAyosAdVe4ecSliLYuVWMO83lXORvdJsD0r9rDHHxjN65buGYz1Dw5aBdeRSi9dNKQfzPPWMxXv0kNOK3quzGjFTGPvvzleQYYkWOKRhbdBUglsjJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955858; c=relaxed/simple;
-	bh=PlYBmtUs8X2xa60A8kHEDA6YRTjzq/K4vt1Mv00OAXc=;
+	s=arc-20240116; t=1739957404; c=relaxed/simple;
+	bh=m/S+0SWUqIOOEI6ypFY7C7DX8hc8NQ7gHGOixWp6QUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5aynlaUNh5TG/UFEl/Ci02VI/1/gV38t2MoF5hH+Kdvv6w9EVP9TM+3VK1er/pW6Yb3tWePE38MoNYylRLAFiECpCkDUv4fv9Ty09SOGQ/CvFo1z2k9RmNFLqpXj6ulhKnUlijLaVYwRpJZ1mdQQB04Etfj00nq6F+8lsLJWH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBWsucKV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626C1C4CED1;
-	Wed, 19 Feb 2025 09:04:17 +0000 (UTC)
+	 MIME-Version; b=GXBHJ0sMnPbABPQdOSOt0cY7cXuqCnKBDDvmR4/0VN3ZLHuvbLqrnrlBwttW2U6UVDygrmiMLh7NuVF7715w1CdUY6yUT6koJ6FvT3v6cI5myQi39ebST98z6hAWkhegCwCZ7Ayqe1yr5GeIoq8We6KrXqDIB00ZVcv0STUD3J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CisTAXJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CC0C4CED1;
+	Wed, 19 Feb 2025 09:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955857;
-	bh=PlYBmtUs8X2xa60A8kHEDA6YRTjzq/K4vt1Mv00OAXc=;
+	s=korg; t=1739957404;
+	bh=m/S+0SWUqIOOEI6ypFY7C7DX8hc8NQ7gHGOixWp6QUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBWsucKVwu8/HDR/5N/FV2uNTLWDByH6oOJ+4Dov8OJJu/7RT1WTptEny9qicjwW8
-	 PcUwHMcIGmJdi/NAxGARlOteTrqGux8eeWIGn0Jxjic2z0Gh/mcU6trCkKF3NKap2b
-	 gCQsDCoCOf/WBbtykE0X86DiOMMD3pwi0V04Kz9Q=
+	b=CisTAXJSDwkHfq31mPjaR0aD1izK9joxyiqZTxnpkLBqpEaopj3cZeiAmDbzYtJuP
+	 YRU8yuElep4zQdY5RqtS4tvpVbHRRXdRSuLCMglqHm/IfIptQye16cjuKVHJpGDzfE
+	 lCSbjWvGOH7zOJLN41+KGCN/aq76ZIAHZnS5Q29w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Vdovin <deliran@verdict.gg>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/152] net: ipv4: Cache pmtu for all packet paths if multipath enabled
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.1 514/578] usb: cdc-acm: Check control transfer buffer size before access
 Date: Wed, 19 Feb 2025 09:28:38 +0100
-Message-ID: <20250219082554.213700144@linuxfoundation.org>
+Message-ID: <20250219082713.201269837@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,297 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Vdovin <deliran@verdict.gg>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 7d3f3b4367f315a61fc615e3138f3d320da8c466 ]
+commit e563b01208f4d1f609bcab13333b6c0e24ce6a01 upstream.
 
-Check number of paths by fib_info_num_path(),
-and update_or_create_fnhe() for every path.
-Problem is that pmtu is cached only for the oif
-that has received icmp message "need to frag",
-other oifs will still try to use "default" iface mtu.
+If the first fragment is shorter than struct usb_cdc_notification, we can't
+calculate an expected_size. Log an error and discard the notification
+instead of reading lengths from memory outside the received data, which can
+lead to memory corruption when the expected_size decreases between
+fragments, causing `expected_size - acm->nb_index` to wrap.
 
-An example topology showing the problem:
+This issue has been present since the beginning of git history; however,
+it only leads to memory corruption since commit ea2583529cd1
+("cdc-acm: reassemble fragmented notifications").
 
-                    |  host1
-                +---------+
-                |  dummy0 | 10.179.20.18/32  mtu9000
-                +---------+
-        +-----------+----------------+
-    +---------+                     +---------+
-    | ens17f0 |  10.179.2.141/31    | ens17f1 |  10.179.2.13/31
-    +---------+                     +---------+
-        |    (all here have mtu 9000)    |
-    +------+                         +------+
-    | ro1  |  10.179.2.140/31        | ro2  |  10.179.2.12/31
-    +------+                         +------+
-        |                                |
----------+------------+-------------------+------
-                        |
-                    +-----+
-                    | ro3 | 10.10.10.10  mtu1500
-                    +-----+
-                        |
-    ========================================
-                some networks
-    ========================================
-                        |
-                    +-----+
-                    | eth0| 10.10.30.30  mtu9000
-                    +-----+
-                        |  host2
+A mitigating factor is that acm_ctrl_irq() can only execute after userspace
+has opened /dev/ttyACM*; but if ModemManager is running, ModemManager will
+do that automatically depending on the USB device's vendor/product IDs and
+its other interfaces.
 
-host1 have enabled multipath and
-sysctl net.ipv4.fib_multipath_hash_policy = 1:
-
-default proto static src 10.179.20.18
-        nexthop via 10.179.2.12 dev ens17f1 weight 1
-        nexthop via 10.179.2.140 dev ens17f0 weight 1
-
-When host1 tries to do pmtud from 10.179.20.18/32 to host2,
-host1 receives at ens17f1 iface an icmp packet from ro3 that ro3 mtu=1500.
-And host1 caches it in nexthop exceptions cache.
-
-Problem is that it is cached only for the iface that has received icmp,
-and there is no way that ro3 will send icmp msg to host1 via another path.
-
-Host1 now have this routes to host2:
-
-ip r g 10.10.30.30 sport 30000 dport 443
-10.10.30.30 via 10.179.2.12 dev ens17f1 src 10.179.20.18 uid 0
-    cache expires 521sec mtu 1500
-
-ip r g 10.10.30.30 sport 30033 dport 443
-10.10.30.30 via 10.179.2.140 dev ens17f0 src 10.179.20.18 uid 0
-    cache
-
-So when host1 tries again to reach host2 with mtu>1500,
-if packet flow is lucky enough to be hashed with oif=ens17f1 its ok,
-if oif=ens17f0 it blackholes and still gets icmp msgs from ro3 to ens17f1,
-until lucky day when ro3 will send it through another flow to ens17f0.
-
-Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20241108093427.317942-1-deliran@verdict.gg
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 139512191bd0 ("ipv4: use RCU protection in __ip_rt_update_pmtu()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c                    |  13 ++++
- tools/testing/selftests/net/pmtu.sh | 112 +++++++++++++++++++++++-----
- 2 files changed, 108 insertions(+), 17 deletions(-)
+ drivers/usb/class/cdc-acm.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index c96837e6626c3..2e524c27a5171 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1046,6 +1046,19 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 		struct fib_nh_common *nhc;
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -360,7 +360,7 @@ static void acm_process_notification(str
+ static void acm_ctrl_irq(struct urb *urb)
+ {
+ 	struct acm *acm = urb->context;
+-	struct usb_cdc_notification *dr = urb->transfer_buffer;
++	struct usb_cdc_notification *dr;
+ 	unsigned int current_size = urb->actual_length;
+ 	unsigned int expected_size, copy_size, alloc_size;
+ 	int retval;
+@@ -387,9 +387,20 @@ static void acm_ctrl_irq(struct urb *urb
  
- 		fib_select_path(net, &res, fl4, NULL);
-+#ifdef CONFIG_IP_ROUTE_MULTIPATH
-+		if (fib_info_num_path(res.fi) > 1) {
-+			int nhsel;
-+
-+			for (nhsel = 0; nhsel < fib_info_num_path(res.fi); nhsel++) {
-+				nhc = fib_info_nhc(res.fi, nhsel);
-+				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
-+						      jiffies + net->ipv4.ip_rt_mtu_expires);
-+			}
-+			rcu_read_unlock();
-+			return;
+ 	usb_mark_last_busy(acm->dev);
+ 
+-	if (acm->nb_index)
++	if (acm->nb_index == 0) {
++		/*
++		 * The first chunk of a message must contain at least the
++		 * notification header with the length field, otherwise we
++		 * can't get an expected_size.
++		 */
++		if (current_size < sizeof(struct usb_cdc_notification)) {
++			dev_dbg(&acm->control->dev, "urb too short\n");
++			goto exit;
 +		}
-+#endif /* CONFIG_IP_ROUTE_MULTIPATH */
- 		nhc = FIB_RES_NHC(res);
- 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 				      jiffies + net->ipv4.ip_rt_mtu_expires);
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 1c0dd2f781678..771f237c43534 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -197,6 +197,12 @@
- #
- # - pmtu_ipv6_route_change
- #	Same as above but with IPv6
-+#
-+# - pmtu_ipv4_mp_exceptions
-+#	Use the same topology as in pmtu_ipv4, but add routeable addresses
-+#	on host A and B on lo reachable via both routers. Host A and B
-+#	addresses have multipath routes to each other, b_r1 mtu = 1500.
-+#	Check that PMTU exceptions are created for both paths.
- 
- source lib.sh
- source net_helper.sh
-@@ -266,7 +272,8 @@ tests="
- 	list_flush_ipv4_exception	ipv4: list and flush cached exceptions	1
- 	list_flush_ipv6_exception	ipv6: list and flush cached exceptions	1
- 	pmtu_ipv4_route_change		ipv4: PMTU exception w/route replace	1
--	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1"
-+	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1
-+	pmtu_ipv4_mp_exceptions		ipv4: PMTU multipath nh exceptions	1"
- 
- # Addressing and routing for tests with routers: four network segments, with
- # index SEGMENT between 1 and 4, a common prefix (PREFIX4 or PREFIX6) and an
-@@ -343,6 +350,9 @@ tunnel6_a_addr="fd00:2::a"
- tunnel6_b_addr="fd00:2::b"
- tunnel6_mask="64"
- 
-+host4_a_addr="192.168.99.99"
-+host4_b_addr="192.168.88.88"
-+
- dummy6_0_prefix="fc00:1000::"
- dummy6_1_prefix="fc00:1001::"
- dummy6_mask="64"
-@@ -902,6 +912,52 @@ setup_ovs_bridge() {
- 	run_cmd ip route add ${prefix6}:${b_r1}::1 via ${prefix6}:${a_r1}::2
- }
- 
-+setup_multipath_new() {
-+	# Set up host A with multipath routes to host B host4_b_addr
-+	run_cmd ${ns_a} ip addr add ${host4_a_addr} dev lo
-+	run_cmd ${ns_a} ip nexthop add id 401 via ${prefix4}.${a_r1}.2 dev veth_A-R1
-+	run_cmd ${ns_a} ip nexthop add id 402 via ${prefix4}.${a_r2}.2 dev veth_A-R2
-+	run_cmd ${ns_a} ip nexthop add id 403 group 401/402
-+	run_cmd ${ns_a} ip route add ${host4_b_addr} src ${host4_a_addr} nhid 403
-+
-+	# Set up host B with multipath routes to host A host4_a_addr
-+	run_cmd ${ns_b} ip addr add ${host4_b_addr} dev lo
-+	run_cmd ${ns_b} ip nexthop add id 401 via ${prefix4}.${b_r1}.2 dev veth_B-R1
-+	run_cmd ${ns_b} ip nexthop add id 402 via ${prefix4}.${b_r2}.2 dev veth_B-R2
-+	run_cmd ${ns_b} ip nexthop add id 403 group 401/402
-+	run_cmd ${ns_b} ip route add ${host4_a_addr} src ${host4_b_addr} nhid 403
-+}
-+
-+setup_multipath_old() {
-+	# Set up host A with multipath routes to host B host4_b_addr
-+	run_cmd ${ns_a} ip addr add ${host4_a_addr} dev lo
-+	run_cmd ${ns_a} ip route add ${host4_b_addr} \
-+			src ${host4_a_addr} \
-+			nexthop via ${prefix4}.${a_r1}.2 weight 1 \
-+			nexthop via ${prefix4}.${a_r2}.2 weight 1
-+
-+	# Set up host B with multipath routes to host A host4_a_addr
-+	run_cmd ${ns_b} ip addr add ${host4_b_addr} dev lo
-+	run_cmd ${ns_b} ip route add ${host4_a_addr} \
-+			src ${host4_b_addr} \
-+			nexthop via ${prefix4}.${b_r1}.2 weight 1 \
-+			nexthop via ${prefix4}.${b_r2}.2 weight 1
-+}
-+
-+setup_multipath() {
-+	if [ "$USE_NH" = "yes" ]; then
-+		setup_multipath_new
-+	else
-+		setup_multipath_old
-+	fi
-+
-+	# Set up routers with routes to dummies
-+	run_cmd ${ns_r1} ip route add ${host4_a_addr} via ${prefix4}.${a_r1}.1
-+	run_cmd ${ns_r2} ip route add ${host4_a_addr} via ${prefix4}.${a_r2}.1
-+	run_cmd ${ns_r1} ip route add ${host4_b_addr} via ${prefix4}.${b_r1}.1
-+	run_cmd ${ns_r2} ip route add ${host4_b_addr} via ${prefix4}.${b_r2}.1
-+}
-+
- setup() {
- 	[ "$(id -u)" -ne 0 ] && echo "  need to run as root" && return $ksft_skip
- 
-@@ -982,23 +1038,15 @@ link_get_mtu() {
- }
- 
- route_get_dst_exception() {
--	ns_cmd="${1}"
--	dst="${2}"
--	dsfield="${3}"
-+	ns_cmd="${1}"; shift
- 
--	if [ -z "${dsfield}" ]; then
--		dsfield=0
--	fi
++		dr = urb->transfer_buffer;
++	} else {
+ 		dr = (struct usb_cdc_notification *)acm->notification_buffer;
 -
--	${ns_cmd} ip route get "${dst}" dsfield "${dsfield}"
-+	${ns_cmd} ip route get "$@"
- }
- 
- route_get_dst_pmtu_from_exception() {
--	ns_cmd="${1}"
--	dst="${2}"
--	dsfield="${3}"
-+	ns_cmd="${1}"; shift
- 
--	mtu_parse "$(route_get_dst_exception "${ns_cmd}" "${dst}" "${dsfield}")"
-+	mtu_parse "$(route_get_dst_exception "${ns_cmd}" "$@")"
- }
- 
- check_pmtu_value() {
-@@ -1141,10 +1189,10 @@ test_pmtu_ipv4_dscp_icmp_exception() {
- 	run_cmd "${ns_a}" ping -q -M want -Q "${dsfield}" -c 1 -w 1 -s "${len}" "${dst2}"
- 
- 	# Check that exceptions have been created with the correct PMTU
--	pmtu_1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst1}" "${policy_mark}")"
-+	pmtu_1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst1}" dsfield "${policy_mark}")"
- 	check_pmtu_value "1400" "${pmtu_1}" "exceeding MTU" || return 1
- 
--	pmtu_2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst2}" "${policy_mark}")"
-+	pmtu_2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst2}" dsfield "${policy_mark}")"
- 	check_pmtu_value "1500" "${pmtu_2}" "exceeding MTU" || return 1
- }
- 
-@@ -1191,9 +1239,9 @@ test_pmtu_ipv4_dscp_udp_exception() {
- 		UDP:"${dst2}":50000,tos="${dsfield}"
- 
- 	# Check that exceptions have been created with the correct PMTU
--	pmtu_1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst1}" "${policy_mark}")"
-+	pmtu_1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst1}" dsfield "${policy_mark}")"
- 	check_pmtu_value "1400" "${pmtu_1}" "exceeding MTU" || return 1
--	pmtu_2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst2}" "${policy_mark}")"
-+	pmtu_2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${dst2}" dsfield "${policy_mark}")"
- 	check_pmtu_value "1500" "${pmtu_2}" "exceeding MTU" || return 1
- }
- 
-@@ -2234,6 +2282,36 @@ test_pmtu_ipv6_route_change() {
- 	test_pmtu_ipvX_route_change 6
- }
- 
-+test_pmtu_ipv4_mp_exceptions() {
-+	setup namespaces routing multipath || return $ksft_skip
-+
-+	trace "${ns_a}"  veth_A-R1    "${ns_r1}" veth_R1-A \
-+	      "${ns_r1}" veth_R1-B    "${ns_b}"  veth_B-R1 \
-+	      "${ns_a}"  veth_A-R2    "${ns_r2}" veth_R2-A \
-+	      "${ns_r2}" veth_R2-B    "${ns_b}"  veth_B-R2
-+
-+	# Set up initial MTU values
-+	mtu "${ns_a}"  veth_A-R1 2000
-+	mtu "${ns_r1}" veth_R1-A 2000
-+	mtu "${ns_r1}" veth_R1-B 1500
-+	mtu "${ns_b}"  veth_B-R1 1500
-+
-+	mtu "${ns_a}"  veth_A-R2 2000
-+	mtu "${ns_r2}" veth_R2-A 2000
-+	mtu "${ns_r2}" veth_R2-B 1500
-+	mtu "${ns_b}"  veth_B-R2 1500
-+
-+	# Ping and expect two nexthop exceptions for two routes
-+	run_cmd ${ns_a} ping -q -M want -i 0.1 -c 1 -s 1800 "${host4_b_addr}"
-+
-+	# Check that exceptions have been created with the correct PMTU
-+	pmtu_a_R1="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R1)"
-+	pmtu_a_R2="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R2)"
-+
-+	check_pmtu_value "1500" "${pmtu_a_R1}" "exceeding MTU (veth_A-R1)" || return 1
-+	check_pmtu_value "1500" "${pmtu_a_R2}" "exceeding MTU (veth_A-R2)" || return 1
-+}
-+
- usage() {
- 	echo
- 	echo "$0 [OPTIONS] [TEST]..."
--- 
-2.39.5
-
++	}
+ 	/* size = notification-header + (optional) data */
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
 
 
 
