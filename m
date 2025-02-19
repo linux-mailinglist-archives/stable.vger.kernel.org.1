@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9800DA3B99C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B732A3B731
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF7157A57E4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA9217B15B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC21DF75B;
-	Wed, 19 Feb 2025 09:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161901F3BB2;
+	Wed, 19 Feb 2025 08:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doAFeyKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYn5HbTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66AF1DF747;
-	Wed, 19 Feb 2025 09:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C528F1F3BB0;
+	Wed, 19 Feb 2025 08:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957249; cv=none; b=K6EO9a90CuW4H5lMOJXXDHT7GTtjgcg/TzY4SjOkZH+kra5CRKPCKQuOk/uiJPdLXTfHXVQpPTLAJRVH1r0RRlzn9Fl2eMY2voBdCiVYAVdFs2T7HVfenXg3ujtj4iDQhr6QNpOWx+FaLuAo9U7MrW4Ffv3rLDZLIEPPGMQSQ14=
+	t=1739955588; cv=none; b=nRsDEZYtZQjEWA3/b/bhjoilrzF4VaVnQIpNKn1+Y379e58d8SyjM90aBEwuRUkGyggdnzEYvTMMx+Bq9tWqFtvZ6JO9YXEfwWZ8TGtmdR48hYNdSYuIQkPBWJ/nOYouy+aiRyuwZgEV+o9CwJm7qb8f42SpNMiVMUEtMRvWEwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957249; c=relaxed/simple;
-	bh=mcSqpvdZRYGo87BAUsaUa7cnRnopykRCFalkfI8Aerg=;
+	s=arc-20240116; t=1739955588; c=relaxed/simple;
+	bh=hSHc7nLmvFxXVRU4RVfNS22mIVB7K2Nn7mQwN/883Ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvXbhf7yVa2Gyzn+WXZnAHa5HWN7vTiCB3nennlqNFPJHnOUU131IhPZOIpHkHyqHAI++P4XIEiD6TM+aw6/JvRZvVKzeUI/5Z9w8zPT2E4ilSE194/QkSF1coGa7XKFIKdlQya8qmGaxgwqc8D5qbnDhqWkNiPh7VIyVUcBkPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doAFeyKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530C4C4CED1;
-	Wed, 19 Feb 2025 09:27:29 +0000 (UTC)
+	 MIME-Version; b=a5oDdseq9ODcB6acoUPldBaQiu8K1viw32qD5Fvra7DG+AvXuAST4U3ai/sa+Y70qBOZmMHATEFS9asdSElohSW89zcy9WBNm5/F2JrMrOKLQ+kGfNBs5CkRY/NH6k2Dq+7GC//jb/TubBrBwWQhC0BJyXYmO4bNptQaNNjZVT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYn5HbTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44842C4CEF9;
+	Wed, 19 Feb 2025 08:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957249;
-	bh=mcSqpvdZRYGo87BAUsaUa7cnRnopykRCFalkfI8Aerg=;
+	s=korg; t=1739955588;
+	bh=hSHc7nLmvFxXVRU4RVfNS22mIVB7K2Nn7mQwN/883Ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doAFeyKNc/+LcorD9WhiRv/g8fecPPdvLu22EtWNTo0zVWeGvisC59iHHDiH9CorA
-	 abGYrRA6gOm2fejmdiggXoiN6573OFB/4imjZhw6mAdNy3iiWI0wU95z/ruAkLGDNI
-	 FNUu/+pkjpU7Zkla61+TJ70NfX8h1X1oKysCu+G4=
+	b=WYn5HbTL3ZIYr11AKQkcZ8NAtQ4ucZZOHn3yeabqEYruD6OhjkxL+po2VJbhHZioy
+	 9HGQBoQnVGuyAs2vR8esi0nllZY9b/pFUX56A/BWZhqd9dsQMmsuvNzezOhCs60/sf
+	 j4ah6WmYXh6MEFKypByQXybpro/Zy7LhcppOlPxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Koichiro Den <koichiro.den@canonical.com>
-Subject: [PATCH 6.1 461/578] btrfs: avoid monopolizing a core when activating a swap file
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 052/152] drm/amdgpu: avoid buffer overflow attach in smu_sys_set_pp_table()
 Date: Wed, 19 Feb 2025 09:27:45 +0100
-Message-ID: <20250219082711.142307065@linuxfoundation.org>
+Message-ID: <20250219082552.104328175@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-commit 2c8507c63f5498d4ee4af404a8e44ceae4345056 upstream.
+commit 1abb2648698bf10783d2236a6b4a7ca5e8021699 upstream.
 
-This commit re-attempts the backport of the change to the linux-6.1.y
-branch. Commit bb8e287f596b ("btrfs: avoid monopolizing a core when
-activating a swap file") on this branch was reverted.
+It malicious user provides a small pptable through sysfs and then
+a bigger pptable, it may cause buffer overflow attack in function
+smu_sys_set_pp_table().
 
-During swap activation we iterate over the extents of a file and we can
-have many thousands of them, so we can end up in a busy loop monopolizing
-a core. Avoid this by doing a voluntary reschedule after processing each
-extent.
-
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -11368,6 +11368,8 @@ static int btrfs_swap_activate(struct sw
- 		}
- 
- 		start += len;
-+
-+		cond_resched();
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -517,7 +517,8 @@ static int smu_sys_set_pp_table(void *ha
+ 		return -EIO;
  	}
  
- 	if (bsi.block_len)
+-	if (!smu_table->hardcode_pptable) {
++	if (!smu_table->hardcode_pptable || smu_table->power_play_table_size < size) {
++		kfree(smu_table->hardcode_pptable);
+ 		smu_table->hardcode_pptable = kzalloc(size, GFP_KERNEL);
+ 		if (!smu_table->hardcode_pptable)
+ 			return -ENOMEM;
 
 
 
