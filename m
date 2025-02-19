@@ -1,148 +1,207 @@
-Return-Path: <stable+bounces-118349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19241A3CBFC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 23:05:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8CEA3CC04
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 23:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E9B3B2A3F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 22:04:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DD8B179076
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 22:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E289B2586FC;
-	Wed, 19 Feb 2025 22:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C723221481E;
+	Wed, 19 Feb 2025 22:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nafVRmno"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A062586E5;
-	Wed, 19 Feb 2025 22:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC4C1B87D3
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 22:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740002686; cv=none; b=ohKkoSKrf66a5+lonHlj1hIXcpSNZLLmLlIBB0J64a3jOZi0TtHX1yc7WLUcCoKF0yNqsKC7XC7Djy2eM2v5UfsgzW1VgMFhJO5zxsfhqR42Y1ZoUd84Y1u40LxmUW0Hs4KM8ysrFrDyqViHdhxZqM+Nwp7KtxQ/uT2IFVSbH4w=
+	t=1740002876; cv=none; b=PqG7h5HBrf1pK3n3CFq9jRXKggN3DmORp2Tmept2373J7UPwX4pqxJlySunb4oFtXH0B/ichMy93Fs9l/umWjMPOKKT8kZl+e6aFiSjxGHKW4SHxcAYIuER7707/KH2+0ZxiGBkbPwtxQhAjS0L9ygDbpfpd4sqVnovqTcOnkwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740002686; c=relaxed/simple;
-	bh=zh4VdXnVHXZjp312HoO8Zj9ZqIman7zjchqknOA/CvY=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=IPv412GmNI25iDV18vDW9N93owIzQ3HrUWEpxn/xWBR2HIn846XEEPW0jxNMFCNyrfiIMyMUxEW0vNJqblVqSsoNq2kFT1t9/Z8muvp0d65ONSTKtvn0jHppdWUb+zBR26g3ZFW1ejcGirwiQSl1yQ7IkL9SzH0aiQ1CVtOk3Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B068C4CEDD;
-	Wed, 19 Feb 2025 22:04:46 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tksBr-00000004qdd-2FYZ;
-	Wed, 19 Feb 2025 17:05:11 -0500
-Message-ID: <20250219220511.392563510@goodmis.org>
-User-Agent: quilt/0.68
-Date: Wed, 19 Feb 2025 17:04:40 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Heiko Carstens <hca@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- stable@vger.kernel.org
-Subject: [PATCH v2 4/5] fprobe: Fix accounting of when to unregister from function graph
-References: <20250219220436.498041541@goodmis.org>
+	s=arc-20240116; t=1740002876; c=relaxed/simple;
+	bh=hEITRrgieNv/Ub1OlYS/X9nUC2LTusnvXfgFsRzkzgM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLnF1tS8b1JGYu9k5Nw/Wxr4+HmxPKy40g56/x+QXJim6qy3X0a3YX1Ul5WpeYITGwB7/aHlyvHTHVAN5Zv5Y64ZWZu/BJ+9lmhieAO26JN8KWOUQnlRgba0SG4pj4fanSsQz+iV7MBqX0jIE8zK2XTy+DuXh1B1czZ5x2nuiyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nafVRmno; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740002867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ow+fKK+YhM2bEIFRB+vXisHYGskL142HuAanS/Q7uf0=;
+	b=nafVRmnoCkdVZuoVmj57PK3/KOT07X29H8wWFSKJMtCbrpCHqXarwzPzZhO0j3WwszTPxI
+	q3r6BhbJYJvfHlS8dfoVqMqKn0Jc+FsgF4/ENVFRKI8S63k9nsZoDD+V8FCFzf8vRPkfUw
+	1peQ34oS9FXwkxGJWv9HhLCYoxeN3M4=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: kvmarm@lists.linux.dev
+Cc: Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	stable@vger.kernel.org,
+	Vladimir Murzin <vladimir.murzin@arm.com>
+Subject: [PATCH] KVM: arm64: Ensure a VMID is allocated before programming VTTBR_EL2
+Date: Wed, 19 Feb 2025 14:07:37 -0800
+Message-Id: <20250219220737.130842-1-oliver.upton@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Steven Rostedt <rostedt@goodmis.org>
+Vladimir reports that a race condition to attach a VMID to a stage-2 MMU
+sometimes results in a vCPU entering the guest with a VMID of 0:
 
-When adding a new fprobe, it will update the function hash to the
-functions the fprobe is attached to and register with function graph to
-have it call the registered functions. The fprobe_graph_active variable
-keeps track of the number of fprobes that are using function graph.
+| CPU1                                            |   CPU2
+|                                                 |
+|                                                 | kvm_arch_vcpu_ioctl_run
+|                                                 |   vcpu_load             <= load VTTBR_EL2
+|                                                 |                            kvm_vmid->id = 0
+|                                                 |
+| kvm_arch_vcpu_ioctl_run                         |
+|   vcpu_load             <= load VTTBR_EL2       |
+|                            with kvm_vmid->id = 0|
+|   kvm_arm_vmid_update   <= allocates fresh      |
+|                            kvm_vmid->id and     |
+|                            reload VTTBR_EL2     |
+|                                                 |
+|                                                 |   kvm_arm_vmid_update <= observes that kvm_vmid->id
+|                                                 |                          already allocated,
+|                                                 |                          skips reload VTTBR_EL2
 
-If two fprobes attach to the same function, it increments the
-fprobe_graph_active for each of them. But when they are removed, the first
-fprobe to be removed will see that the function it is attached to is also
-used by another fprobe and it will not remove that function from
-function_graph. The logic will skip decrementing the fprobe_graph_active
-variable.
+Oh yeah, it's as bad as it looks. Remember that VHE loads the stage-2
+MMU eagerly but a VMID only gets attached to the MMU later on in the
+KVM_RUN loop.
 
-This causes the fprobe_graph_active variable to not go to zero when all
-fprobes are removed, and in doing so it does not unregister from
-function graph. As the fgraph ops hash will now be empty, and an empty
-filter hash means all functions are enabled, this triggers function graph
-to add a callback to the fprobe infrastructure for every function!
+Even in the "best case" where VTTBR_EL2 correctly gets reprogrammed
+before entering the EL1&0 regime, there is a period of time where
+hardware is configured with VMID 0. That's completely insane. So, rather
+than decorating the 'late' binding with another hack, just allocate the
+damn thing up front.
 
- # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
- # echo "f:myevent2 kernel_clone%return" >> /sys/kernel/tracing/dynamic_events
- # cat /sys/kernel/tracing/enabled_functions
-kernel_clone (1)           	tramp: 0xffffffffc0024000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+Attaching a VMID from vcpu_load() is still rollover safe since
+(surprise!) it'll always get called after a vCPU was preempted.
 
- # > /sys/kernel/tracing/dynamic_events
- # cat /sys/kernel/tracing/enabled_functions
-trace_initcall_start_cb (1)             tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-run_init_process (1)            tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-try_to_run_init_process (1)             tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-x86_pmu_show_pmu_cap (1)                tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-cleanup_rapl_pmus (1)                   tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-uncore_free_pcibus_map (1)              tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-uncore_types_exit (1)                   tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-uncore_pci_exit.part.0 (1)              tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-kvm_shutdown (1)                tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-vmx_dump_msrs (1)               tramp: 0xffffffffc0026000 (function_trace_call+0x0/0x170) ->function_trace_call+0x0/0x170
-[..]
-
- # cat /sys/kernel/tracing/enabled_functions | wc -l
-54702
-
-If a fprobe is being removed and all its functions are also traced by
-other fprobes, still decrement the fprobe_graph_active counter.
+Excuse me while I go find a brown paper bag.
 
 Cc: stable@vger.kernel.org
-Fixes: 4346ba1604093 ("fprobe: Rewrite fprobe on function-graph tracer")
-Closes: https://lore.kernel.org/all/20250217114918.10397-A-hca@linux.ibm.com/
-Reported-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 934bf871f011 ("KVM: arm64: Load the stage-2 MMU context in kvm_vcpu_load_vhe()")
+Reported-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 ---
-Changes since v1: https://lore.kernel.org/20250218193126.619197190@goodmis.org
+ arch/arm64/include/asm/kvm_host.h |  2 +-
+ arch/arm64/kvm/arm.c              | 22 ++++++++++------------
+ arch/arm64/kvm/vmid.c             | 11 +++--------
+ 3 files changed, 14 insertions(+), 21 deletions(-)
 
-- Move the check into fprobe_graph_remove_ips() to keep it matching
-  with fprobe_graph_add_ips() (Masami Hiramatsu)
-
- kernel/trace/fprobe.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 62e8f7d56602..33082c4e8154 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -407,7 +407,8 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
- 	if (!fprobe_graph_active)
- 		unregister_ftrace_graph(&fprobe_graph_ops);
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 7cfa024de4e3..e6e8b8970caa 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1271,7 +1271,7 @@ int kvm_arm_pvtime_has_attr(struct kvm_vcpu *vcpu,
+ extern unsigned int __ro_after_init kvm_arm_vmid_bits;
+ int __init kvm_arm_vmid_alloc_init(void);
+ void __init kvm_arm_vmid_alloc_free(void);
+-bool kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid);
++void kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid);
+ void kvm_arm_vmid_clear_active(void);
  
--	ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
-+	if (num)
-+		ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
+ static inline void kvm_arm_pvtime_vcpu_init(struct kvm_vcpu_arch *vcpu_arch)
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 646e806c6ca6..fafe42755031 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -559,6 +559,16 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	mmu = vcpu->arch.hw_mmu;
+ 	last_ran = this_cpu_ptr(mmu->last_vcpu_ran);
+ 
++	/*
++	 * Ensure a VMID is allocated for the MMU before programming VTTBR_EL2,
++	 * which happens eagerly in VHE.
++	 *
++	 * Also, the VMID allocator only preserves VMIDs that are active at the
++	 * time of rollover, so KVM might need to grab a new VMID for the MMU if
++	 * this is called from kvm_sched_in().
++	 */
++	kvm_arm_vmid_update(&mmu->vmid);
++
+ 	/*
+ 	 * We guarantee that both TLBs and I-cache are private to each
+ 	 * vcpu. If detecting that a vcpu from the same VM has
+@@ -1138,18 +1148,6 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 		 */
+ 		preempt_disable();
+ 
+-		/*
+-		 * The VMID allocator only tracks active VMIDs per
+-		 * physical CPU, and therefore the VMID allocated may not be
+-		 * preserved on VMID roll-over if the task was preempted,
+-		 * making a thread's VMID inactive. So we need to call
+-		 * kvm_arm_vmid_update() in non-premptible context.
+-		 */
+-		if (kvm_arm_vmid_update(&vcpu->arch.hw_mmu->vmid) &&
+-		    has_vhe())
+-			__load_stage2(vcpu->arch.hw_mmu,
+-				      vcpu->arch.hw_mmu->arch);
+-
+ 		kvm_pmu_flush_hwstate(vcpu);
+ 
+ 		local_irq_disable();
+diff --git a/arch/arm64/kvm/vmid.c b/arch/arm64/kvm/vmid.c
+index 806223b7022a..7fe8ba1a2851 100644
+--- a/arch/arm64/kvm/vmid.c
++++ b/arch/arm64/kvm/vmid.c
+@@ -135,11 +135,10 @@ void kvm_arm_vmid_clear_active(void)
+ 	atomic64_set(this_cpu_ptr(&active_vmids), VMID_ACTIVE_INVALID);
  }
  
- static int symbols_cmp(const void *a, const void *b)
-@@ -677,8 +678,7 @@ int unregister_fprobe(struct fprobe *fp)
- 	}
- 	del_fprobe_hash(fp);
+-bool kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
++void kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
+ {
+ 	unsigned long flags;
+ 	u64 vmid, old_active_vmid;
+-	bool updated = false;
  
--	if (count)
--		fprobe_graph_remove_ips(addrs, count);
-+	fprobe_graph_remove_ips(addrs, count);
+ 	vmid = atomic64_read(&kvm_vmid->id);
  
- 	kfree_rcu(hlist_array, rcu);
- 	fp->hlist_array = NULL;
--- 
-2.47.2
+@@ -157,21 +156,17 @@ bool kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
+ 	if (old_active_vmid != 0 && vmid_gen_match(vmid) &&
+ 	    0 != atomic64_cmpxchg_relaxed(this_cpu_ptr(&active_vmids),
+ 					  old_active_vmid, vmid))
+-		return false;
++		return;
+ 
+ 	raw_spin_lock_irqsave(&cpu_vmid_lock, flags);
+ 
+ 	/* Check that our VMID belongs to the current generation. */
+ 	vmid = atomic64_read(&kvm_vmid->id);
+-	if (!vmid_gen_match(vmid)) {
++	if (!vmid_gen_match(vmid))
+ 		vmid = new_vmid(kvm_vmid);
+-		updated = true;
+-	}
+ 
+ 	atomic64_set(this_cpu_ptr(&active_vmids), vmid);
+ 	raw_spin_unlock_irqrestore(&cpu_vmid_lock, flags);
+-
+-	return updated;
+ }
+ 
+ /*
 
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+-- 
+2.39.5
 
 
