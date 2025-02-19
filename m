@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-117546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F19DA3B77C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9390AA3B9CD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B74D177CD6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C035C800919
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F3B1C548C;
-	Wed, 19 Feb 2025 09:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BEC188CCA;
+	Wed, 19 Feb 2025 09:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkoc88SH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKLWC578"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31CC1A315E;
-	Wed, 19 Feb 2025 09:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880091BD9D3;
+	Wed, 19 Feb 2025 09:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955619; cv=none; b=rmc7KTpxlfj2glfu15kR1TOzt/4XgDIGZ9rbEHbpGdbQ49ywlXPeGLANZgqcelkCk7POPpnHSfYwfUsU9cYXzYgHzMTpm7p8tIfIQOKUnpKB3j70DyIRZWxESvuB0gFPr1Qtuwz6aN9Zayoj+rz2Z/p27mzAiXYV2oYqFiGmU3w=
+	t=1739957192; cv=none; b=Zc7ZhF3TW7px4uuU/aZpOFm+X57OgqBxuoAnFAC3LJ/f5z1F81IM+xCUcvDXxJBL+aY95NElaXC3V7t+y5GZEyZtDJpa3FcLNS5eTP/9oQbz4pEC2um2ZX6OeyGlUow8AggrplaC/wuoWxgk2LFO7FkkaeNYDtFE+lzEtmGVYTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955619; c=relaxed/simple;
-	bh=vUiNAKCkHA9YmK/p9zgd2CBNpBipxwqnLgUT0JEPX1s=;
+	s=arc-20240116; t=1739957192; c=relaxed/simple;
+	bh=O3HmKxv21leycROBYMk++KHQnKb1Ww0IpE2YVWVvizo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYSoqU8y9Jc9+Oy5BUDJbinwoMSo0SnrkbhR4+QxJX3Gsmm3qiQnghlQTLlESo1pnnWLY4stU9K1lmhSmiR8PFgQ7WYuagUTjD5viZ3vWSQd8N4J84hM9r36KkpyQaO9Dc43Q6bz7mQFO7YdiaitKJsCDCIzz79vTfJqfUNLmkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkoc88SH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E16C4CED1;
-	Wed, 19 Feb 2025 09:00:18 +0000 (UTC)
+	 MIME-Version; b=b0Pn1OMUORv2vRxS7kvjHQAouxnf48Qx/x8C3oQsbgBjFbHuJyE6gJZrHfojSGGH5C4XLoUml+2/LpA7L7vbW8lrBDszcLBY5qZFsr4jb1kipV5LiKeLcnQwtRR5SWhUofNiD9KVIS9o11iRdymz6eAkA2qKnRCJ6XsuRIqeyas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKLWC578; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AD4C4CED1;
+	Wed, 19 Feb 2025 09:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955619;
-	bh=vUiNAKCkHA9YmK/p9zgd2CBNpBipxwqnLgUT0JEPX1s=;
+	s=korg; t=1739957192;
+	bh=O3HmKxv21leycROBYMk++KHQnKb1Ww0IpE2YVWVvizo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkoc88SH5RS2bBVsPZl/qt45C40NrOrmdNg1UWcq15+C69ow/RVGwgzDVMqAIa4P8
-	 Ry8y5see+ElPsKa89LaY6lToMvpZCNw5Nn1RIO/mjFOBKbVwqhcnHc3ChOch+Ss7hw
-	 MvZBasDjTOLArQsiqWTaFhl9I2VOuHVepouPcXn0=
+	b=RKLWC578Q2IezJU9XUlCD9iUgP4oGkWc/ki64CAf95PK94TZoofL+fAU3EhYEzglu
+	 ksnzvHSIRYI0VfTzN/LCK5B8xO7owGXyQiDAbAPl5ftfxy+Rr0wxnoOrasL62kH7Y2
+	 DaM+4+hL1I1MeqhBVqAnuUaTthKcfTKWj+0W3848=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/152] media: i2c: ds90ub913: Add error handling to ub913_hw_init()
-Date: Wed, 19 Feb 2025 09:27:23 +0100
-Message-ID: <20250219082551.231033706@linuxfoundation.org>
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 440/578] rtla: Add trace_instance_stop
+Date: Wed, 19 Feb 2025 09:27:24 +0100
+Message-ID: <20250219082710.314606724@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit acd8f58d7a3bce0fbd3263961cd09555c00464ba ]
+commit e879b5dcf8d044f3865a32d95cc5b213f314c54f upstream.
 
-Add error handling to ub913_hw_init() using a new helper function,
-ub913_update_bits().
+Support not only turning trace on for the timerlat tracer, but also
+turning it off.
 
-Reported-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Closes: https://lore.kernel.org/all/Zv40EQSR__JDN_0M@kekkonen.localdomain/
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will be used in subsequent patches to stop the timerlat tracer
+without also wiping the trace buffer.
+
+Cc: stable@vger.kernel.org
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-2-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub913.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ tools/tracing/rtla/src/trace.c |    8 ++++++++
+ tools/tracing/rtla/src/trace.h |    1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/media/i2c/ds90ub913.c b/drivers/media/i2c/ds90ub913.c
-index 5a650facae415..ae33d1ecf835d 100644
---- a/drivers/media/i2c/ds90ub913.c
-+++ b/drivers/media/i2c/ds90ub913.c
-@@ -8,6 +8,7 @@
-  * Copyright (c) 2023 Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/clk-provider.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
-@@ -146,6 +147,19 @@ static int ub913_write(const struct ub913_data *priv, u8 reg, u8 val)
- 	return ret;
+--- a/tools/tracing/rtla/src/trace.c
++++ b/tools/tracing/rtla/src/trace.c
+@@ -197,6 +197,14 @@ int trace_instance_start(struct trace_in
  }
  
-+static int ub913_update_bits(const struct ub913_data *priv, u8 reg, u8 mask,
-+			     u8 val)
+ /*
++ * trace_instance_stop - stop tracing a given rtla instance
++ */
++int trace_instance_stop(struct trace_instance *trace)
 +{
-+	int ret;
-+
-+	ret = regmap_update_bits(priv->regmap, reg, mask, val);
-+	if (ret < 0)
-+		dev_err(&priv->client->dev,
-+			"Cannot update register 0x%02x %d!\n", reg, ret);
-+
-+	return ret;
++	return tracefs_trace_off(trace->inst);
 +}
 +
- /*
-  * GPIO chip
++/*
+  * trace_events_free - free a list of trace events
   */
-@@ -733,10 +747,13 @@ static int ub913_hw_init(struct ub913_data *priv)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "i2c master init failed\n");
+ static void trace_events_free(struct trace_events *events)
+--- a/tools/tracing/rtla/src/trace.h
++++ b/tools/tracing/rtla/src/trace.h
+@@ -21,6 +21,7 @@ struct trace_instance {
  
--	ub913_read(priv, UB913_REG_GENERAL_CFG, &v);
--	v &= ~UB913_REG_GENERAL_CFG_PCLK_RISING;
--	v |= priv->pclk_polarity_rising ? UB913_REG_GENERAL_CFG_PCLK_RISING : 0;
--	ub913_write(priv, UB913_REG_GENERAL_CFG, v);
-+	ret = ub913_update_bits(priv, UB913_REG_GENERAL_CFG,
-+				UB913_REG_GENERAL_CFG_PCLK_RISING,
-+				FIELD_PREP(UB913_REG_GENERAL_CFG_PCLK_RISING,
-+					   priv->pclk_polarity_rising));
-+
-+	if (ret)
-+		return ret;
+ int trace_instance_init(struct trace_instance *trace, char *tool_name);
+ int trace_instance_start(struct trace_instance *trace);
++int trace_instance_stop(struct trace_instance *trace);
+ void trace_instance_destroy(struct trace_instance *trace);
  
- 	return 0;
- }
--- 
-2.39.5
-
+ struct trace_seq *get_trace_seq(void);
 
 
 
