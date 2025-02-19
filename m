@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-117599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C176CA3B79A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AD2A3B6D0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B41216C346
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A604916E6F6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CFB1E3DC6;
-	Wed, 19 Feb 2025 09:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7601EE033;
+	Wed, 19 Feb 2025 08:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9MUEU0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJNpEE9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3B11E51F8;
-	Wed, 19 Feb 2025 09:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD041EDA36;
+	Wed, 19 Feb 2025 08:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955789; cv=none; b=Sbwwzl9oaTmuXtDFbnLF32VCnHwWiG9IGEuaBakFYXaHsOnmpg9HsjS4M30XQLIdQbGrUlUzQ8InRbNJo7SRWs7kignXLZpE7FacM2NzWV7oXfMgYRKZ2gowKFdbD7vjp3cLVx9AQW2nbzLQvV39EuFMsCKStzPxORm6GxdbRic=
+	t=1739955357; cv=none; b=CdzrNbWW55gZTiRqQKQM7kiF5gXRindDEJs5PiCf1VSZ+bGk8gZtZ7O2qZg7sy7yVhZQ1bbVlRsouclnMIYvTSzKbqd8o0sGWU+bpHbAMc9aGWjrVIUDjhDfWWpVDsR8kutvQLeUbswdgymo47rMsImkXJ5ARGuYsEEU733gJV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955789; c=relaxed/simple;
-	bh=/C+CJePoFVSl4oEXPQ1hQvSKX6QJ7J+ylswQw8z+IqU=;
+	s=arc-20240116; t=1739955357; c=relaxed/simple;
+	bh=toQVNSNnumYiooo/rLX6p00U1fvRbD9fEP0cyQp7TAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPl2r+YGNz/k6K4R1C7iMOf4xRtKvp00ODSA2wDYz4QOaHaf2l7bfApRn/w7uxwAS+wIybZzQ2XxEVvSTUbzKNzS/MqwhvIiy/sFZH2WJaNIrp59hzWjC9vauYJrCY9f5E7NVNz5WRM/fh4UG1hQprS9f5V1In7DZyzL3Tr6NY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9MUEU0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E427C4CED1;
-	Wed, 19 Feb 2025 09:03:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TWq+Cf/XovM3UANfczQxoKTbwu9FDfeZB64WtuwJbO5LjELQp0HnRmpMNYBpEv5oOZvpHtokQP+sY4U97Bc4XXLXGrGESDhx/83XiatsL/TaJ3Ohct29b0v8nWTvH6OY4kSQxyFe/YWWpecxlE7L5uM88aZNrPUJSHIm61hZejc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJNpEE9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87566C4CEE7;
+	Wed, 19 Feb 2025 08:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955789;
-	bh=/C+CJePoFVSl4oEXPQ1hQvSKX6QJ7J+ylswQw8z+IqU=;
+	s=korg; t=1739955356;
+	bh=toQVNSNnumYiooo/rLX6p00U1fvRbD9fEP0cyQp7TAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9MUEU0TDCD6ymEg4jFd5qPtt1OFazlAycSQHm4oWKsXLAzSsAczd2VJmrmT8RSDc
-	 K11BOo+315D+ThvpSjgnD1Ji8WU41jjN+YZ4qCkDB9E5xrPXY80ap6t1vJnWkkUFgw
-	 9VCTTQCW/h2Wn2uTZvxhiy7IHbGKx8q4BUX25Jhc=
+	b=mJNpEE9AeL0cZd6pZTbl57Uo5iNtxTbsCu4zsNEpxh2/rE/9/ZnJ9/eDahxKMbnlx
+	 qHa+JKzglllahIKkWL1ATcOB/h2oLFl2TJ89IA3Sk/xsowwqrINwRpQUtcNyDcNVHV
+	 CPTl9UQWNgOhcgBYeptakHWSgAQ+ZQkVTSFuHmig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/152] HID: hid-steam: Add gamepad-only mode switched to by holding options
+	Leonard Lausen <leonard@lausen.nl>,
+	=?UTF-8?q?Gy=C3=B6rgy=20Kurucz?= <me@kuruczgy.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>
+Subject: [PATCH 6.12 211/230] drm/msm/dpu1: dont choke on disabling the writeback connector
 Date: Wed, 19 Feb 2025 09:28:48 +0100
-Message-ID: <20250219082554.606788496@linuxfoundation.org>
+Message-ID: <20250219082609.946707026@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,229 +63,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit cd438e57dd05b077f4e87c1567beafb2377b6d6b ]
+commit d9f55e2abfb933818c772eba659a9b7ab28a44d0 upstream.
 
-This commit adds a hotkey to switch between "gamepad" mode (mouse and keyboard
-disabled) and "desktop" mode (gamepad disabled) by holding down the options
-button (mapped here as the start button). This mirrors the behavior of the
-official Steam client.
+During suspend/resume process all connectors are explicitly disabled and
+then reenabled. However resume fails because of the connector_status check:
 
-This also adds and uses a function for generating haptic pulses, as Steam also
-does when engaging this hotkey.
+[dpu error]connector not connected 3
+[drm:drm_mode_config_helper_resume [drm_kms_helper]] *ERROR* Failed to resume (-22)
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It doesn't make sense to check for the Writeback connected status (and
+other drivers don't perform such check), so drop the check.
+
+It wasn't a problem before the commit 71174f362d67 ("drm/msm/dpu: move
+writeback's atomic_check to dpu_writeback.c"), since encoder's
+atomic_check() is called under a different conditions that the
+connector's atomic_check() (e.g. it is not called if there is no
+connected CRTC or if the corresponding connector is not a part of the
+new state).
+
+Fixes: 71174f362d67 ("drm/msm/dpu: move writeback's atomic_check to dpu_writeback.c")
+Cc: stable@vger.kernel.org
+Reported-by: Leonard Lausen <leonard@lausen.nl>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/57
+Tested-by: Leonard Lausen <leonard@lausen.nl> # on sc7180 lazor
+Tested-by: György Kurucz <me@kuruczgy.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # Trogdor (sc7180)
+Patchwork: https://patchwork.freedesktop.org/patch/627828/
+Link: https://lore.kernel.org/r/20241209-dpu-fix-wb-v4-1-7fe93059f9e0@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-steam.c | 113 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 103 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 991db5acf5ddb..2f87026f01de1 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -273,6 +273,11 @@ enum {
- 	TRACKPAD_GESTURE_KEYBOARD,
- };
- 
-+/* Pad identifiers for the deck */
-+#define STEAM_PAD_LEFT 0
-+#define STEAM_PAD_RIGHT 1
-+#define STEAM_PAD_BOTH 2
-+
- /* Other random constants */
- #define STEAM_SERIAL_LEN 10
- 
-@@ -291,6 +296,9 @@ struct steam_device {
- 	struct power_supply __rcu *battery;
- 	u8 battery_charge;
- 	u16 voltage;
-+	struct delayed_work mode_switch;
-+	bool did_mode_switch;
-+	bool gamepad_mode;
- 	struct work_struct rumble_work;
- 	u16 rumble_left;
- 	u16 rumble_right;
-@@ -459,6 +467,37 @@ static inline int steam_request_conn_status(struct steam_device *steam)
- 	return ret;
- }
- 
-+/*
-+ * Send a haptic pulse to the trackpads
-+ * Duration and interval are measured in microseconds, count is the number
-+ * of pulses to send for duration time with interval microseconds between them
-+ * and gain is measured in decibels, ranging from -24 to +6
-+ */
-+static inline int steam_haptic_pulse(struct steam_device *steam, u8 pad,
-+				u16 duration, u16 interval, u16 count, u8 gain)
-+{
-+	int ret;
-+	u8 report[10] = {ID_TRIGGER_HAPTIC_PULSE, 8};
-+
-+	/* Left and right are swapped on this report for legacy reasons */
-+	if (pad < STEAM_PAD_BOTH)
-+		pad ^= 1;
-+
-+	report[2] = pad;
-+	report[3] = duration & 0xFF;
-+	report[4] = duration >> 8;
-+	report[5] = interval & 0xFF;
-+	report[6] = interval >> 8;
-+	report[7] = count & 0xFF;
-+	report[8] = count >> 8;
-+	report[9] = gain;
-+
-+	mutex_lock(&steam->report_mutex);
-+	ret = steam_send_report(steam, report, sizeof(report));
-+	mutex_unlock(&steam->report_mutex);
-+	return ret;
-+}
-+
- static inline int steam_haptic_rumble(struct steam_device *steam,
- 				u16 intensity, u16 left_speed, u16 right_speed,
- 				u8 left_gain, u8 right_gain)
-@@ -504,6 +543,9 @@ static int steam_play_effect(struct input_dev *dev, void *data,
- 
- static void steam_set_lizard_mode(struct steam_device *steam, bool enable)
- {
-+	if (steam->gamepad_mode)
-+		enable = false;
-+
- 	if (enable) {
- 		mutex_lock(&steam->report_mutex);
- 		/* enable esc, enter, cursors */
-@@ -541,11 +583,18 @@ static int steam_input_open(struct input_dev *dev)
- 	unsigned long flags;
- 	bool set_lizard_mode;
- 
--	spin_lock_irqsave(&steam->lock, flags);
--	set_lizard_mode = !steam->client_opened && lizard_mode;
--	spin_unlock_irqrestore(&steam->lock, flags);
--	if (set_lizard_mode)
--		steam_set_lizard_mode(steam, false);
-+	/*
-+	 * Disabling lizard mode automatically is only done on the Steam
-+	 * Controller. On the Steam Deck, this is toggled manually by holding
-+	 * the options button instead, handled by steam_mode_switch_cb.
-+	 */
-+	if (!(steam->quirks & STEAM_QUIRK_DECK)) {
-+		spin_lock_irqsave(&steam->lock, flags);
-+		set_lizard_mode = !steam->client_opened && lizard_mode;
-+		spin_unlock_irqrestore(&steam->lock, flags);
-+		if (set_lizard_mode)
-+			steam_set_lizard_mode(steam, false);
-+	}
- 
- 	return 0;
- }
-@@ -556,11 +605,13 @@ static void steam_input_close(struct input_dev *dev)
- 	unsigned long flags;
- 	bool set_lizard_mode;
- 
--	spin_lock_irqsave(&steam->lock, flags);
--	set_lizard_mode = !steam->client_opened && lizard_mode;
--	spin_unlock_irqrestore(&steam->lock, flags);
--	if (set_lizard_mode)
--		steam_set_lizard_mode(steam, true);
-+	if (!(steam->quirks & STEAM_QUIRK_DECK)) {
-+		spin_lock_irqsave(&steam->lock, flags);
-+		set_lizard_mode = !steam->client_opened && lizard_mode;
-+		spin_unlock_irqrestore(&steam->lock, flags);
-+		if (set_lizard_mode)
-+			steam_set_lizard_mode(steam, true);
-+	}
- }
- 
- static enum power_supply_property steam_battery_props[] = {
-@@ -885,6 +936,34 @@ static void steam_work_connect_cb(struct work_struct *work)
- 	}
- }
- 
-+static void steam_mode_switch_cb(struct work_struct *work)
-+{
-+	struct steam_device *steam = container_of(to_delayed_work(work),
-+							struct steam_device, mode_switch);
-+	unsigned long flags;
-+	bool client_opened;
-+	steam->gamepad_mode = !steam->gamepad_mode;
-+	if (!lizard_mode)
-+		return;
-+
-+	if (steam->gamepad_mode)
-+		steam_set_lizard_mode(steam, false);
-+	else {
-+		spin_lock_irqsave(&steam->lock, flags);
-+		client_opened = steam->client_opened;
-+		spin_unlock_irqrestore(&steam->lock, flags);
-+		if (!client_opened)
-+			steam_set_lizard_mode(steam, lizard_mode);
-+	}
-+
-+	steam_haptic_pulse(steam, STEAM_PAD_RIGHT, 0x190, 0, 1, 0);
-+	if (steam->gamepad_mode) {
-+		steam_haptic_pulse(steam, STEAM_PAD_LEFT, 0x14D, 0x14D, 0x2D, 0);
-+	} else {
-+		steam_haptic_pulse(steam, STEAM_PAD_LEFT, 0x1F4, 0x1F4, 0x1E, 0);
-+	}
-+}
-+
- static bool steam_is_valve_interface(struct hid_device *hdev)
- {
- 	struct hid_report_enum *rep_enum;
-@@ -1039,6 +1118,7 @@ static int steam_probe(struct hid_device *hdev,
- 	mutex_init(&steam->report_mutex);
- 	steam->quirks = id->driver_data;
- 	INIT_WORK(&steam->work_connect, steam_work_connect_cb);
-+	INIT_DELAYED_WORK(&steam->mode_switch, steam_mode_switch_cb);
- 	INIT_LIST_HEAD(&steam->list);
- 	INIT_WORK(&steam->rumble_work, steam_haptic_rumble_cb);
- 
-@@ -1096,6 +1176,7 @@ static int steam_probe(struct hid_device *hdev,
- hid_hw_open_fail:
- hid_hw_start_fail:
- 	cancel_work_sync(&steam->work_connect);
-+	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->rumble_work);
- steam_alloc_fail:
- 	hid_err(hdev, "%s: failed with error %d\n",
-@@ -1112,6 +1193,7 @@ static void steam_remove(struct hid_device *hdev)
- 		return;
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
+@@ -42,9 +42,6 @@ static int dpu_wb_conn_atomic_check(stru
+ 	if (!conn_state || !conn_state->connector) {
+ 		DPU_ERROR("invalid connector state\n");
+ 		return -EINVAL;
+-	} else if (conn_state->connector->status != connector_status_connected) {
+-		DPU_ERROR("connector not connected %d\n", conn_state->connector->status);
+-		return -EINVAL;
  	}
  
-+	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->work_connect);
- 	hid_destroy_device(steam->client_hdev);
- 	steam->client_hdev = NULL;
-@@ -1397,6 +1479,17 @@ static void steam_do_deck_input_event(struct steam_device *steam,
- 	b13 = data[13];
- 	b14 = data[14];
- 
-+	if (!(b9 & BIT(6)) && steam->did_mode_switch) {
-+		steam->did_mode_switch = false;
-+		cancel_delayed_work_sync(&steam->mode_switch);
-+	} else if (!steam->client_opened && (b9 & BIT(6)) && !steam->did_mode_switch) {
-+		steam->did_mode_switch = true;
-+		schedule_delayed_work(&steam->mode_switch, 45 * HZ / 100);
-+	}
-+
-+	if (!steam->gamepad_mode)
-+		return;
-+
- 	lpad_touched = b10 & BIT(3);
- 	rpad_touched = b10 & BIT(4);
- 
--- 
-2.39.5
-
+ 	crtc = conn_state->crtc;
 
 
 
