@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDAEA3B480
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D411A3B5DE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 672753B5EC9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F7D5188E72F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A621DF991;
-	Wed, 19 Feb 2025 08:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EA71F91CD;
+	Wed, 19 Feb 2025 08:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO/brNVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgmBfVey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8681DF279;
-	Wed, 19 Feb 2025 08:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D881F8BDD;
+	Wed, 19 Feb 2025 08:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954153; cv=none; b=ClPNU1dLhaT1h0IBjlWoxNuPNYtxOO5aZqdM3OiD1tKs1iy9JM/jRSg7ECP4jXu4aZvLokrirPnuriQQQHZWrGsx7W8YONUsBfYn9haV0dn9OedPzQsTf94F8IrDDjdjDpokq1OLJnDTIPaLHMIMGnpO3cJVU2kMDRNE9q3OvIY=
+	t=1739954835; cv=none; b=O7fKunmzVzsJBUIoweo4RNG+t4yCUzhcyG6k38gn2zYRKDLhqLApBu0IRH55QeeaKI6qrAn326NHgcIpmTOzF+xJU1ZYRh2+M2UefAshypb6GOWTz80rkteOVgIriPjLmDpRSS9uw72e0mLR2/5K6n0GvIJq+sEdJ/E2MDrx05s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954153; c=relaxed/simple;
-	bh=e2GHqYKGYPCj557PDp0RfxzFBRF6KJoX2y37Wh3Zcp0=;
+	s=arc-20240116; t=1739954835; c=relaxed/simple;
+	bh=a76bHN6abmqKFKTmGaq+QCFPbFlQklVislZFyonKF2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rU93kC8aYAZpiHaxrz6ItwBGlraFxX3M5n7rck5ZqNlUw5kgI5euHuF8+A+ZJimE5wRnxvKJAJJRH6PGPmfHrwU+bB5jpPJCjIhSTDVEVmF2n5NHS/TTsWyXp2hUOzvgVQrMSkUSc5y+DdGBew+XbgA7FQZjajxAdDwVyo5G/QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO/brNVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B05C4CEE8;
-	Wed, 19 Feb 2025 08:35:52 +0000 (UTC)
+	 MIME-Version; b=Z1ZLnadhxVh38mb5V/xDbM/4PgOQYdZ1h25CWCEe4djzEEPc5PU+K8Libwzs2Rzh0eO1xfH7mD9I8SIA5f3rfzEDcb48yHBYGtQjNwqIvZJwHTsAWz0s9MMbFBaGtmVHwAG3eE+l3LndWqfcpg5+25N2h3Km8EaLqesGNp1G1gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgmBfVey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85CEC4CED1;
+	Wed, 19 Feb 2025 08:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954153;
-	bh=e2GHqYKGYPCj557PDp0RfxzFBRF6KJoX2y37Wh3Zcp0=;
+	s=korg; t=1739954835;
+	bh=a76bHN6abmqKFKTmGaq+QCFPbFlQklVislZFyonKF2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MO/brNVzcuIirf3w2yfr02iTCkJv4rfF/msRYOb4ehC+mFw9zVcne4dzQ5oLsPr0L
-	 hrQgz+0cvYLt12Kc7hIJwKhhtaYMGeiTpY34w5idUHUVm8Z27qe064Ig0fb7APAsJH
-	 pJ/jlEZqEuIMroye1hZ9mqqy1B930NlAg/8zTUvQ=
+	b=DgmBfVey+aS/yoxqryDrBP9KyN6Ax5UecdrM69jM1Tgq6T96qufJEAuRPNrGwX0OA
+	 0SKCR0GqIH+VLuUKRhj/Fq7o45UrNb5ycRHsi0zSjbNCEDtf6xxjUYtKHYQnJLrBVN
+	 qIurcukISHcUEoquEopZb3yBQu5xnhQ6OyumhpMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.13 114/274] batman-adv: Fix incorrect offset in batadv_tt_tvlv_ogm_handler_v1()
+	Juergen Gross <jgross@suse.com>,
+	Alan Robinson <Alan.Robinson@fujitsu.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 051/230] x86/xen: allow larger contiguous memory regions in PV guests
 Date: Wed, 19 Feb 2025 09:26:08 +0100
-Message-ID: <20250219082614.080496098@linuxfoundation.org>
+Message-ID: <20250219082603.705789601@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Juergen Gross <jgross@suse.com>
 
-commit f4c9c2cc827d803159730b1da813a0c595969831 upstream.
+[ Upstream commit e93ec87286bd1fd30b7389e7a387cfb259f297e3 ]
 
-Since commit 4436df478860 ("batman-adv: Add flex array to struct
-batadv_tvlv_tt_data"), the introduction of batadv_tvlv_tt_data's flex
-array member in batadv_tt_tvlv_ogm_handler_v1() put tt_changes at
-invalid offset. Those TT changes are supposed to be filled from the end
-of batadv_tvlv_tt_data structure (including vlan_data flexible array),
-but only the flex array size is taken into account missing completely
-the size of the fixed part of the structure itself.
+Today a PV guest (including dom0) can create 2MB contiguous memory
+regions for DMA buffers at max. This has led to problems at least
+with the megaraid_sas driver, which wants to allocate a 2.3MB DMA
+buffer.
 
-Fix the tt_change offset computation by using struct_size() instead of
-flex_array_size() so both flex array member and its container structure
-sizes are taken into account.
+The limiting factor is the frame array used to do the hypercall for
+making the memory contiguous, which has 512 entries and is just a
+static array in mmu_pv.c.
 
-Cc: stable@vger.kernel.org
-Fixes: 4436df478860 ("batman-adv: Add flex array to struct batadv_tvlv_tt_data")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In order to not waste memory for non-PV guests, put the initial
+frame array into .init.data section and dynamically allocate an array
+from the .init_after_bootmem hook of PV guests.
+
+In case a contiguous memory area larger than the initially supported
+2MB is requested, allocate a larger buffer for the frame list. Note
+that such an allocation is tried only after memory management has been
+initialized properly, which is tested via a flag being set in the
+.init_after_bootmem hook.
+
+Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Tested-by: Alan Robinson <Alan.Robinson@fujitsu.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/x86/xen/mmu_pv.c | 71 +++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 62 insertions(+), 9 deletions(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3959,23 +3959,21 @@ static void batadv_tt_tvlv_ogm_handler_v
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	u16 num_entries, num_vlan;
--	size_t flex_size;
-+	size_t tt_data_sz;
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index 55a4996d0c04f..ffdf0d299c5d7 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -111,6 +111,51 @@ static pud_t level3_user_vsyscall[PTRS_PER_PUD] __page_aligned_bss;
+  */
+ static DEFINE_SPINLOCK(xen_reservation_lock);
  
- 	if (tvlv_value_len < sizeof(*tt_data))
- 		return;
++/* Protected by xen_reservation_lock. */
++#define MIN_CONTIG_ORDER 9 /* 2MB */
++static unsigned int discontig_frames_order = MIN_CONTIG_ORDER;
++static unsigned long discontig_frames_early[1UL << MIN_CONTIG_ORDER] __initdata;
++static unsigned long *discontig_frames __refdata = discontig_frames_early;
++static bool discontig_frames_dyn;
++
++static int alloc_discontig_frames(unsigned int order)
++{
++	unsigned long *new_array, *old_array;
++	unsigned int old_order;
++	unsigned long flags;
++
++	BUG_ON(order < MIN_CONTIG_ORDER);
++	BUILD_BUG_ON(sizeof(discontig_frames_early) != PAGE_SIZE);
++
++	new_array = (unsigned long *)__get_free_pages(GFP_KERNEL,
++						      order - MIN_CONTIG_ORDER);
++	if (!new_array)
++		return -ENOMEM;
++
++	spin_lock_irqsave(&xen_reservation_lock, flags);
++
++	old_order = discontig_frames_order;
++
++	if (order > discontig_frames_order || !discontig_frames_dyn) {
++		if (!discontig_frames_dyn)
++			old_array = NULL;
++		else
++			old_array = discontig_frames;
++
++		discontig_frames = new_array;
++		discontig_frames_order = order;
++		discontig_frames_dyn = true;
++	} else {
++		old_array = new_array;
++	}
++
++	spin_unlock_irqrestore(&xen_reservation_lock, flags);
++
++	free_pages((unsigned long)old_array, old_order - MIN_CONTIG_ORDER);
++
++	return 0;
++}
++
+ /*
+  * Note about cr3 (pagetable base) values:
+  *
+@@ -812,6 +857,9 @@ static void __init xen_after_bootmem(void)
+ 	SetPagePinned(virt_to_page(level3_user_vsyscall));
+ #endif
+ 	xen_pgd_walk(&init_mm, xen_mark_pinned, FIXADDR_TOP);
++
++	if (alloc_discontig_frames(MIN_CONTIG_ORDER))
++		BUG();
+ }
  
- 	tt_data = tvlv_value;
--	tvlv_value_len -= sizeof(*tt_data);
+ static void xen_unpin_page(struct mm_struct *mm, struct page *page,
+@@ -2199,10 +2247,6 @@ void __init xen_init_mmu_ops(void)
+ 	memset(dummy_mapping, 0xff, PAGE_SIZE);
+ }
+ 
+-/* Protected by xen_reservation_lock. */
+-#define MAX_CONTIG_ORDER 9 /* 2MB */
+-static unsigned long discontig_frames[1<<MAX_CONTIG_ORDER];
 -
- 	num_vlan = ntohs(tt_data->num_vlan);
+ #define VOID_PTE (mfn_pte(0, __pgprot(0)))
+ static void xen_zap_pfn_range(unsigned long vaddr, unsigned int order,
+ 				unsigned long *in_frames,
+@@ -2319,18 +2363,25 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
+ 				 unsigned int address_bits,
+ 				 dma_addr_t *dma_handle)
+ {
+-	unsigned long *in_frames = discontig_frames, out_frame;
++	unsigned long *in_frames, out_frame;
+ 	unsigned long  flags;
+ 	int            success;
+ 	unsigned long vstart = (unsigned long)phys_to_virt(pstart);
  
--	flex_size = flex_array_size(tt_data, vlan_data, num_vlan);
--	if (tvlv_value_len < flex_size)
-+	tt_data_sz = struct_size(tt_data, vlan_data, num_vlan);
-+	if (tvlv_value_len < tt_data_sz)
+-	if (unlikely(order > MAX_CONTIG_ORDER))
+-		return -ENOMEM;
++	if (unlikely(order > discontig_frames_order)) {
++		if (!discontig_frames_dyn)
++			return -ENOMEM;
++
++		if (alloc_discontig_frames(order))
++			return -ENOMEM;
++	}
+ 
+ 	memset((void *) vstart, 0, PAGE_SIZE << order);
+ 
+ 	spin_lock_irqsave(&xen_reservation_lock, flags);
+ 
++	in_frames = discontig_frames;
++
+ 	/* 1. Zap current PTEs, remembering MFNs. */
+ 	xen_zap_pfn_range(vstart, order, in_frames, NULL);
+ 
+@@ -2354,12 +2405,12 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
+ 
+ void xen_destroy_contiguous_region(phys_addr_t pstart, unsigned int order)
+ {
+-	unsigned long *out_frames = discontig_frames, in_frame;
++	unsigned long *out_frames, in_frame;
+ 	unsigned long  flags;
+ 	int success;
+ 	unsigned long vstart;
+ 
+-	if (unlikely(order > MAX_CONTIG_ORDER))
++	if (unlikely(order > discontig_frames_order))
  		return;
  
- 	tt_change = (struct batadv_tvlv_tt_change *)((void *)tt_data
--						     + flex_size);
--	tvlv_value_len -= flex_size;
-+						     + tt_data_sz);
-+	tvlv_value_len -= tt_data_sz;
+ 	vstart = (unsigned long)phys_to_virt(pstart);
+@@ -2367,6 +2418,8 @@ void xen_destroy_contiguous_region(phys_addr_t pstart, unsigned int order)
  
- 	num_entries = batadv_tt_entries(tvlv_value_len);
+ 	spin_lock_irqsave(&xen_reservation_lock, flags);
  
++	out_frames = discontig_frames;
++
+ 	/* 1. Find start MFN of contiguous extent. */
+ 	in_frame = virt_to_mfn((void *)vstart);
+ 
+-- 
+2.39.5
+
 
 
 
