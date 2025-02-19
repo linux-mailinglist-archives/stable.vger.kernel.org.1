@@ -1,123 +1,241 @@
-Return-Path: <stable+bounces-118247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18274A3BC94
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 12:19:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AC7A3BD5A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 12:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE50188A14A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 11:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AFC6173609
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 11:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2A41DEFF9;
-	Wed, 19 Feb 2025 11:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2721DE2C2;
+	Wed, 19 Feb 2025 11:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="JHIKDTi8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bUKlXN2f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71BD1C54A5;
-	Wed, 19 Feb 2025 11:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17041B87C7
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 11:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739963910; cv=none; b=MLXhWrC1dgPlz1Jde+Ussnl2EQWUTwwz2xBbUrOImx7qqlo+FQoVpFCNWAwothsv6gIF6g4s+AUZLn6tZtH3cSHokuzvmicWZiWPBPjIjtLRwuL70HdMD5EO1GCWU4i6MOCdAl+yg46eHJoxcHQlCputAlARdrOqmQ+AJrK5tfI=
+	t=1739965595; cv=none; b=XZ527cJ60MxmTypxAT3aC92ThcvY8asxbTEWL2unhwlIWiOFK8Um5MIbB1Z4BVFB5iZwU2rLHdLLIOgLt1W10rdi6eVGp18PR1kMNRR7LzwexMDD7FEiLx4kGesXspW6qKXgpb6pfJctXMa5Znt1NQtJv7+4duDnsHVn+TE+X20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739963910; c=relaxed/simple;
-	bh=40mCJlvF8cko1+OgcezwWGuKpQJ0u8WrathRhG8tZPg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WApSEx1rPyj34izQUr5DXT9CasjGvs0Oj9t1YZCDQDFBG3dWppys7WrYOWLV/ry0puUwDbXJMq9ihgnJJCKB2Ke/OSe9pJBOIiN11ERBoZ/yxrFR4vpXME4gvKoGwDFr0BQ0ZZXM5AQmq6Zx9nyzfEXMm1yGNEqR6t2YwTReef0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=JHIKDTi8; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38f325ddbc2so3391381f8f.1;
-        Wed, 19 Feb 2025 03:18:28 -0800 (PST)
+	s=arc-20240116; t=1739965595; c=relaxed/simple;
+	bh=W5u1FrXnUB5o2ySGCDV+bt2qhFs4I8vgtzJs7ugYWFA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tyKSOFWjKvEApxm7FdMzakDPhbDLUS7+GSSRUaYTI0s7vcyfV++cxd/VZ0yWY6OPHVnOg8vZCxLQKaHK8OVuvIqbfvgu0pHvj+fgb06m7z8jffH5UHHRjseO4pw3PF0Zv4ul4ZkgPFNtRWWH1YE2B3UZftIDs9U4ThcZoAyXnB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bUKlXN2f; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-4be7f114996so994161137.2
+        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 03:46:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1739963907; x=1740568707; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7nAXyqLiQShxXdHExWOGFHNht5Zg/ZSArUtFxZtpy/s=;
-        b=JHIKDTi8NSwT1M1VZ65GdCS5w7XSXPFyxzV+7PPmNScwcxy7FI3GgTh43+S3WwSOaK
-         5thI3LBc7SrSViIsHFbBjXkH6WMNiL2pkJNCELtYd5HNK37UJxgFcJbPPI4vb/XsX6d3
-         SW7lihlR3UPta8B87YITEQC2vvTEE9kkHWCKS7pN7hf8Vf3CCnKIPU5FwfVetzaxC0Tg
-         7lE975ztprfse5A2/N0FqK9eqGbpjqcyZrAiwauew6mhtJcEpt/rWkr4KFJERJTgZumR
-         +7mXR0QyI3QLnrl/Ns4gM5lszc7WabxTvuaMUJ9AScQ0+l0Mxerlo2UowkOp+slGOByi
-         rFwg==
+        d=linaro.org; s=google; t=1739965592; x=1740570392; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9HAi+JPAWVvmwhTEypy4+thacQq13MfYR6lEe+X0Q8c=;
+        b=bUKlXN2fmNTmjGisVZM7kb0RubGXqzQz3RJgwR6z3z5V7nmjVnypJqcPW2I+9yn2hK
+         FdNc7WF5l/X6kF7GQHBeekKVh0J3Ipnj8AfX1eV/CEaE1fcf5n2BB3y49njcnvJvdJfw
+         3CUV45bIP8+hdry0HG+4w0N41d016/rgx/xQEaXX9p8HFnSDTzJZLJpKWWg3CzZMd60c
+         rxYqBJjnKz8ZQoF0lZoY5ImfnTttBgzfHSC83FTNmq1POT1YwhBIbdbnj6fIorYNulQZ
+         0lZc6+jVUCITR3jPehKhpD038mlMoH7Yt4wbztthRyiiY5pubJWCAlDFxIezVRzt4UIZ
+         nAKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739963907; x=1740568707;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7nAXyqLiQShxXdHExWOGFHNht5Zg/ZSArUtFxZtpy/s=;
-        b=up60SwH+5cCvgLFuebwNgwJ6hvDntmfCEr1FfZNGqsa5WWkUqDYU+nwiKqvpfIEkJl
-         nSSAIpg32WbXtwSmtX/zdjrl8HAVtKsXzkttdVq4ztuY1VMHpHIoLHkoKFRrFMtzPOo1
-         EFtZGvLu/BS6LsM2q193NWJgl1kWUSLkvhETgMHAcXvfb6MM30dMtWIE7OVJQVms/Wda
-         dfVy40idChMXhOvzTArZ0IAZKMDL29g5zy9xaIfWfTDJnV7iN6Y97NE/yTXqnpnNTwe1
-         v6G6GkP73ja9KFD4ASFl4jhlHlrwK2moGRW//jilR6iDiYzGiwpaa8yb5jyNL5FbS1/L
-         +K/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUvdY1DDf6Gw8KPMzi7dR6sjuEbMwxIQnQjILXbSyRdwXtTW/drxSuMozo2N8xrdylGMwF86LiTWe3rvCM=@vger.kernel.org, AJvYcCVjTgTKa3vIm+3IdF6Oh1AMUMk11AQGcbskaBjnOgKJ4dzPOmJXu/zeaerF5aUL8/PITgBPod17@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl2QD1F7o90YdGiQAi5xfm1/OyB94GfA/LhSUX0BLOIkBrDwgo
-	jcW5oOFdVkFFZfLkwSCzj7V+Bdz91JnAn3hnHnaenxcE7DeSD7I=
-X-Gm-Gg: ASbGncviSmp4BsAsryTfAvCst+BAoFHanaZ3aiEDJqxWFw+Fi6W7+VAih6p50uTHGsp
-	ssYGj/G6FtqRySzrAlrOpyzyAJIZVgf3boZ3r9wleAtXlXWl9WIwx2VlIxtx+gBoUgF7gzeFxnH
-	JLPMgh4NwVMeQmRdBE+jQT+2EvKsqIU8HgHHyinY1U12uZXmLoovwRHCofX7t16wbmqBBfVlqKi
-	qT+ZQeU9s7HKu8X7UJ+gHF0wzsyBsoCphEdIRgbB7v8px/jWJfVVra5VMJ2Rd2Zn8NWTRlMuKi8
-	1UTIT2njRq1GpyrgmHMVaC3k1DnYbYSZl0FKUdcRnen3N79+vdBsdREr3w1nKu8V8pr9
-X-Google-Smtp-Source: AGHT+IHqSbU/mySv08zQ+ZnfmJkUguL9G8ebWxSbh5QnTnV41gOwaEKyh41mQEtSGCtKswwMTupuug==
-X-Received: by 2002:a5d:6c66:0:b0:388:c61d:43e0 with SMTP id ffacd0b85a97d-38f34167d68mr19545175f8f.48.1739963906782;
-        Wed, 19 Feb 2025 03:18:26 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4e7c.dip0.t-ipconnect.de. [91.43.78.124])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b434fsm17819691f8f.16.2025.02.19.03.18.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2025 03:18:26 -0800 (PST)
-Message-ID: <7a077c71-e325-41d6-8cf4-d3fa8827e51b@googlemail.com>
-Date: Wed, 19 Feb 2025 12:18:25 +0100
+        d=1e100.net; s=20230601; t=1739965592; x=1740570392;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9HAi+JPAWVvmwhTEypy4+thacQq13MfYR6lEe+X0Q8c=;
+        b=jHcO03QoCdggnOulxUPHBKVpQWKamazIkWSzeLNoOy6LJY7Dto5F1zOdIV4G+OJjVc
+         nR/ihp8Eg2kJFThvHEhRrTnNKYzAQerl0GSgOqhoHb4btXI3/zkTCHAYJRoPwFyyIGig
+         JYj1cwVObBvSACATbvBZjbf3zHd5lNhRtR7tGHQM1QUR44NFmcSfXNvHOUv9UW2+grW5
+         lwJjzUnLDFdqhORXvwC+0suQzzU48VbNtHSbtTqYmCm0PMKKYCBtG3dPYrE9no9eeTqj
+         RUebgyGszdj2GEFvcjPy5IxX01NVI1INDspC3FSAdDDUkmbf6yDj1Drf1O+VCRVP/N2u
+         nl5Q==
+X-Gm-Message-State: AOJu0YzGGQWDtzjlK1qtBd78FWBmry0gXAwlUYmP648culAa/+8jivE4
+	pqRxLk5Kw1HryV2bU1vWOp17UfKIcAKkdlMGSOTlCtgNEuqmojxinJ5HpCn0c+1PhN1fIk6XzFA
+	ZFW4RLthTuKSrftD8zTOPkZcQK5uCy4irVPauMA==
+X-Gm-Gg: ASbGnctGyuWQwPUwMKaZCPrVzUYGq6aUl4MkPkqPetoFqeLK8D/aKIeLMS+8ytI3ttK
+	9iygRTgBVr5KQEgX5FxbPQkETXUL5GMbnFNilEFEnYOU1Yx3+QxxSuxxKkPcgYRbzzBS9ofaosm
+	8=
+X-Google-Smtp-Source: AGHT+IEZMwel+bdv06rxq65I3rJQXcMsB1FE/5DSKjDmaNs3ziyhRih3YYHUPsKR/IZQx53GRqU+Jzw+0+WRrQS8RNc=
+X-Received: by 2002:a05:6102:3f9e:b0:4bc:de7e:415d with SMTP id
+ ada2fe7eead31-4be85c05531mr1674046137.13.1739965591759; Wed, 19 Feb 2025
+ 03:46:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 000/578] 6.1.129-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250219082652.891560343@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250206155234.095034647@linuxfoundation.org> <CA+G9fYvKzV=jo9AmKH2tJeLr0W8xyjxuVO-P+ZEBdou6C=mKUw@mail.gmail.com>
+ <CA+G9fYtqBxt+JwSLCcVBchh94GVRhbo9rTP26ceJ=sf4MDo61Q@mail.gmail.com> <2025021739-jackpot-lip-09f9@gregkh>
+In-Reply-To: <2025021739-jackpot-lip-09f9@gregkh>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 19 Feb 2025 17:16:19 +0530
+X-Gm-Features: AWEUYZlyd4o7hzsRTR-wDg8_BLL7BUQwlm0UHAZOQ22uI97jC6UQqnJWmLWSRIs
+Message-ID: <CA+G9fYtJzD8+BkyBZEss9Vvv2f=8tJUcSyWDGjyOshj1D5hMyA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Herbert Xu <herbert@gondor.apana.org.au>, willy@infradead.org, 
+	Pankaj Raghav <p.raghav@samsung.com>, Yang Shi <yang@os.amperecomputing.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Am 19.02.2025 um 09:20 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.129 release.
-> There are 578 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, 17 Feb 2025 at 17:07, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Feb 17, 2025 at 05:00:43PM +0530, Naresh Kamboju wrote:
+> > On Sat, 8 Feb 2025 at 16:54, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > >
+> > > On Thu, 6 Feb 2025 at 21:36, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > This is the start of the stable review cycle for the 6.6.76 release.
+> > > > There are 389 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Sat, 08 Feb 2025 15:51:12 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.76-rc2.gz
+> > > > or in the git tree and branch at:
+> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > >
+> > > There are three different regressions found and reporting here,
+> > > We are working on bisecting and investigating these issues,
+> >
+> > We observed a kernel warning on QEMU-ARM64 and FVP while running the
+> > newly added selftest: arm64: check_hugetlb_options. This issue appears
+> > on 6.6.76 onward and 6.12.13 onward, as reported in the stable review [1].
+> > However, the test case passes successfully on stable 6.13.
+> >
+> > The selftests: arm64: check_hugetlb_options test was introduced following
+> > the recent upgrade of kselftest test sources to the stable 6.13 branch.
+> > As you are aware, LKFT runs the latest kselftest sources (from stable
+> > 6.13.x) on 6.12.x, 6.6.x, and older kernels for validation purposes.
+> >
+> > >From Anders' bisection results, we identified that the missing patch on
+> > 6.12 is likely causing this regression:
+> >
+> > First fixed commit:
+> > [25c17c4b55def92a01e3eecc9c775a6ee25ca20f]
+> > hugetlb: arm64: add MTE support
+> >
+> > Could you confirm whether this patch is eligible for backporting to
+> > 6.12 and 6.6 kernels?
+> > If backporting is not an option, we will need to skip running this
+> > test case on older kernels.
+>
+> The test case itself should properly "skip" if the feature is not
+> present in the kernel.  Why not fix that up instead?
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+The reported test gets PASS at the end, but generates kernel warning
+while running the test case (always reproducible) on 6.12 and 6.6.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+The reported warning was not seen on stable 6.13.
 
+# Test log:
 
-Beste Grüße,
-Peter Schneider
+# selftests: arm64: check_hugetlb_options
+# 1..12
+# ok 1 Check hugetlb memory with private mapping, sync error mode,
+mmap memory and tag check off
+# ok 2 Check hugetlb memory with private mapping, no error mode, mmap
+memory and tag check off
+# ok 3 Check hugetlb memory with private mapping, sync error mode,
+mmap memory and tag check on
+# ok 4 Check hugetlb memory with private mapping, sync error mode,
+mmap/mprotect memory and tag check on
+# ok 5 Check hugetlb memory with private mapping, async error mode,
+mmap memory and tag check on
+# ok 6 Check hugetlb memory with private mapping, async error mode,
+mmap/mprotect memory and tag check on
+# ok 7 Check clear PROT_MTE flags with private mapping, sync error
+mode and mmap memory
+# ok 8 Check clear PROT_MTE flags with private mapping and sync error
+mode and mmap/mprotect memory
+# ok 9 Check child hugetlb memory with private mapping, precise mode
+and mmap memory
+------------[ cut here ]------------
+[   96.920028] WARNING: CPU: 1 PID: 3611 at
+arch/arm64/mm/copypage.c:29 copy_highpage
+(arch/arm64/include/asm/mte.h:87)
+[   96.922100] Modules linked in: crct10dif_ce sm3_ce sm3 sha3_ce
+sha512_ce sha512_arm64 fuse drm backlight ip_tables x_tables
+[   96.925603] CPU: 1 PID: 3611 Comm: check_hugetlb_o Not tainted 6.6.76-rc2 #1
+[   96.926956] Hardware name: linux,dummy-virt (DT)
+[   96.927695] pstate: 43402009 (nZcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+[   96.928687] pc : copy_highpage (arch/arm64/include/asm/mte.h:87)
+[   96.929037] lr : copy_highpage
+(arch/arm64/include/asm/alternative-macros.h:232
+arch/arm64/include/asm/cpufeature.h:443
+arch/arm64/include/asm/cpufeature.h:504
+arch/arm64/include/asm/cpufeature.h:814 arch/arm64/mm/copypage.c:27)
+[   96.929399] sp : ffff800088aa3ab0
+[   96.930232] x29: ffff800088aa3ab0 x28: 00000000000001ff x27: 0000000000000000
+[   96.930784] x26: 0000000000000000 x25: 0000ffff9b800000 x24: 0000ffff9b9ff000
+[   96.931402] x23: fffffc0003257fc0 x22: ffff0000c95ff000 x21: ffff0000c93ff000
+[   96.932054] x20: fffffc0003257fc0 x19: fffffc000324ffc0 x18: 0000ffff9b800000
+[   96.933357] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[   96.934091] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[   96.935095] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+[   96.935982] x8 : 0bfffc0001800000 x7 : 0000000000000000 x6 : 0000000000000000
+[   96.936536] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+[   96.937089] x2 : 0000000000000000 x1 : ffff0000c9600000 x0 : ffff0000c9400080
+[   96.939431] Call trace:
+[   96.939920] copy_highpage (arch/arm64/include/asm/mte.h:87)
+[   96.940443] copy_user_highpage (arch/arm64/mm/copypage.c:40)
+[   96.940963] copy_user_large_folio (mm/memory.c:5977 mm/memory.c:6109)
+[   96.941535] hugetlb_wp (mm/hugetlb.c:5701)
+[   96.941948] hugetlb_fault (mm/hugetlb.c:6237)
+[   96.942344] handle_mm_fault (mm/memory.c:5330)
+[   96.942794] do_page_fault (arch/arm64/mm/fault.c:513
+arch/arm64/mm/fault.c:626)
+[   96.943341] do_mem_abort (arch/arm64/mm/fault.c:846)
+[   96.943797] el0_da (arch/arm64/kernel/entry-common.c:133
+arch/arm64/kernel/entry-common.c:144
+arch/arm64/kernel/entry-common.c:547)
+[   96.944229] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:0)
+[   96.944765] el0t_64_sync (arch/arm64/kernel/entry.S:599)
+[ 96.945383] ---[ end trace 0000000000000000 ]---#
+ok 10 Check child hugetlb memory with private mapping, precise mode
+and mmap memory
+# ok 11 Check child hugetlb memory with private mapping, precise mode
+and mmap/mprotect memory
+# ok 12 Check child hugetlb memory with private mapping, precise mode
+and mmap/mprotect memory
+# # Totals: pass:12 fail:0 xfail:0 xpass:0 skip:0 error:0
+ok 2 selftests: arm64: check_hugetlb_options
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Links:
+ - https://lore.kernel.org/all/CA+G9fYtqBxt+JwSLCcVBchh94GVRhbo9rTP26ceJ=sf4MDo61Q@mail.gmail.com/
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+>
+> thanks,
+>
+> greg k-h
+
+- Naresh
 
