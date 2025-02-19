@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13753A3B7D7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:18:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE2AA3B699
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6C273BF6DF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9806C3BCD48
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EE61E0B67;
-	Wed, 19 Feb 2025 09:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681741DED73;
+	Wed, 19 Feb 2025 08:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAx1e3tU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi9FaPDX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4EE1DFE1D;
-	Wed, 19 Feb 2025 09:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DD81C68A6;
+	Wed, 19 Feb 2025 08:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955628; cv=none; b=HZ7IwLIa67sTDSq/EDqqpveJvqQva/w65lqqI1UjgxPwVLzwHx9V09NwC1YSoTii+CEYEVGoRKrZmil+h/sqlKwXQ2SJzikKpTATxNj9SHhmtnEpwJIskfkEBSCiYNP9UVnGWTW/Bo56jCP8JnlrC3BZ5ynqwFIqqgEWqNYA6Ec=
+	t=1739955145; cv=none; b=emYEwqCONqrxfYIhanndwMM/7kgBYNLjLvmGbeCo6Qg1VRR5dls83X/3NDyJBVFDrnHtg7Naxa8yz8Sw7/P/y+DT6RSrrjwsUcKaxu7Quxqnb02PJQtx14nYEqS5+Aj1t+4iLnMKckbNTJJzJNFx9QFT9A/p6g9Lq/vXPoEYK/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955628; c=relaxed/simple;
-	bh=yq+lGhkCjVpY48gHTLc9QCkm5mIqZvKDplyrD6gA9/0=;
+	s=arc-20240116; t=1739955145; c=relaxed/simple;
+	bh=4mbo6yhB85rD4f21jU20J53DUVy20+LUQnBcHCvft2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7OwG6jkHIYCJPGHULn3qb6JP1bilGKX1jseXCy1CJdW3j0Op12znhtjdUaoDCITjkk4LBdcb2BRrQDxwy/ShQVmSynVbzewiE5Y/ikp4hLfoFX4yydQCeyQ1TL4h5rC0CBHH06igdGsXhEG4XDp184DrHEHsSBWMV5RCUx4SEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAx1e3tU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED5C4CEE6;
-	Wed, 19 Feb 2025 09:00:28 +0000 (UTC)
+	 MIME-Version; b=Jk8WSLKJXiKsqS9rq7908zBiA/HCPRT4aTRB/SfzJWX24jifehr5q5cLfkGBtpdAYRTSGbmO1Tk1x642ddgc0fkTmq+i4ldcUvlBLxz0cSt4lbWptZFTNIgw1zEBbHVEU2D7HVDnaZqO4sxq5wT9x43A+b4XsL5e+6LwOaYSrSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi9FaPDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A41C4CEE6;
+	Wed, 19 Feb 2025 08:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955628;
-	bh=yq+lGhkCjVpY48gHTLc9QCkm5mIqZvKDplyrD6gA9/0=;
+	s=korg; t=1739955145;
+	bh=4mbo6yhB85rD4f21jU20J53DUVy20+LUQnBcHCvft2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAx1e3tUTS1XRBO0IwsrdQ4vS0ONANHSRWzQz+GPpFGI5tXn5FgFuf5COD81EQwST
-	 bH3lrD0qzG9Wphu42mjcDvbbdtXBa4v/WH5mZO5HS5eADqAX7mPpjWzmkRs3blUF05
-	 YD9LFTPqFRCkd1DbFgB0JWG8ql+klG9+Xd/xswc0=
+	b=Zi9FaPDXeREoGHuQQWvSUTHxIIQon9SXiKvyMBjYHS6HEuESLci3mAJuZx9l26+fF
+	 j7AQVVaU7xm+tiunC0fu0/5fKXsef7zEaZrGOpLLNWMh6mi29L98IRU2igxmtG9YU1
+	 edUqwpp7QPsXFTL2arsiLfDwySDQBRKZ8s01GuAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/152] media: uvcvideo: Add new quirk definition for the Sonix Technology Co. 292a camera
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Pavel Pisa <pisa@cmp.felk.cvut.cz>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 129/230] can: ctucanfd: handle skb allocation failure
 Date: Wed, 19 Feb 2025 09:27:26 +0100
-Message-ID: <20250219082551.348672491@linuxfoundation.org>
+Message-ID: <20250219082606.730771150@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 81f8c0e138c43610cf09b8d2a533068aa58e538e ]
+commit 9bd24927e3eeb85642c7baa3b28be8bea6c2a078 upstream.
 
-The Sonix Technology Co. 292A camera (which uses an AR0330 sensor), can
-produce MJPEG and H.264 streams concurrently. When doing so, it drops
-the last packets of MJPEG frames every time the H.264 stream generates a
-key frame. Set the UVC_QUIRK_MJPEG_NO_EOF quirk to work around the
-issue.
+If skb allocation fails, the pointer to struct can_frame is NULL. This
+is actually handled everywhere inside ctucan_err_interrupt() except for
+the only place.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241128145144.61475-3-isaac.scott@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missed NULL check.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-source IP core - bus independent part.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250114152138.139580-1-pchelkin@ispras.ru
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/can/ctucanfd/ctucanfd_base.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 95c5b90f3e7c1..1e8a3b069266d 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2886,6 +2886,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= (kernel_ulong_t)&uvc_quirk_probe_minmax },
-+	/* Sonix Technology Co. Ltd. - 292A IPC AR0330 */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x0c45,
-+	  .idProduct		= 0x6366,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_MJPEG_NO_EOF) },
- 	/* MT6227 */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
--- 
-2.39.5
-
+--- a/drivers/net/can/ctucanfd/ctucanfd_base.c
++++ b/drivers/net/can/ctucanfd/ctucanfd_base.c
+@@ -867,10 +867,12 @@ static void ctucan_err_interrupt(struct
+ 			}
+ 			break;
+ 		case CAN_STATE_ERROR_ACTIVE:
+-			cf->can_id |= CAN_ERR_CNT;
+-			cf->data[1] = CAN_ERR_CRTL_ACTIVE;
+-			cf->data[6] = bec.txerr;
+-			cf->data[7] = bec.rxerr;
++			if (skb) {
++				cf->can_id |= CAN_ERR_CNT;
++				cf->data[1] = CAN_ERR_CRTL_ACTIVE;
++				cf->data[6] = bec.txerr;
++				cf->data[7] = bec.rxerr;
++			}
+ 			break;
+ 		default:
+ 			netdev_warn(ndev, "unhandled error state (%d:%s)!\n",
 
 
 
