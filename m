@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-117115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D63A3B4C4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:46:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F126BA3B576
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8008A179B0D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA22B7A3C57
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E701E520E;
-	Wed, 19 Feb 2025 08:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCFC1DE2BD;
+	Wed, 19 Feb 2025 08:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YG1tHJ9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzIr4ODv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D29C1E51EB;
-	Wed, 19 Feb 2025 08:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475C81EA7ED;
+	Wed, 19 Feb 2025 08:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954253; cv=none; b=ejU9FT6/wW6OkfCUqlQE2+cyKCyV/0zfcbWul702GGxGQp6LeZdWukTQqUywKu61zFvmfmnMNoPSbHB+5zsGZvBhWZgv4WqpZEKWtykp/dFBLVsFH8vD+wUKwCxekg9/xej0lMEq9fmmX6iCkJ2AgXAy7GFdQwJi0Y5bvsUB3JI=
+	t=1739954913; cv=none; b=OGPBMz6vUQybEjXzh1CH2TQKyP5BOH7HXH5ZuIAZof9MsE2kkn2S1nOB3sFQgra4Cy/oqlaEzEaidLJw6dUTJDt+NN0LJ6McnBGB/7/M+YJp3gkNWBtS+7IS0ThYYHiFATCbnTUbzkZebC3GekF6T90SKgjna6loAgB6KkcrK8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954253; c=relaxed/simple;
-	bh=7Trl/tly7ww9YSXLrt8bTPW/kf4txfgU/EJ2i8zNrW4=;
+	s=arc-20240116; t=1739954913; c=relaxed/simple;
+	bh=6JJT1jRjnHCVMyG+kJjGgVS3XDldUd9rQlAK/y6FZtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWCp3An3lPkURaZqlYYIIuc4b7y/y1XCYh0c7grVBEA4JYG6V1smOZNZTxUQvC2fBMwC5KNyCbiH3KRQJ2X/DBnr37kG2AdbHPQ4mw5Wrdqxy0i9NVlrKNstXjVx3aPzB7W4pEXrwo0Bu8OFtnhKy7HS0jrGIfA+ca0M+Cn9RSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YG1tHJ9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4A4C4CEE8;
-	Wed, 19 Feb 2025 08:37:32 +0000 (UTC)
+	 MIME-Version; b=WSvo0n1F1y23VTEd7xUq64GKOuPd1aBZAeXmPUyJ7XvT5/q7ww3e4hmcIanBDKUOWQZ1M9H/wviVpeb1cGcsjdaRSrOizCrV7IE/UPmMtfOptl6FJvlLEevesT+L+zB8lSyuJwM/RtNaFLuVUEMUZtxxraM3xS4sTnDVaNifQfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzIr4ODv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF27C4CED1;
+	Wed, 19 Feb 2025 08:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954253;
-	bh=7Trl/tly7ww9YSXLrt8bTPW/kf4txfgU/EJ2i8zNrW4=;
+	s=korg; t=1739954913;
+	bh=6JJT1jRjnHCVMyG+kJjGgVS3XDldUd9rQlAK/y6FZtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YG1tHJ9n+CrjUHDDpj+eUVZjs7NuGV9+JC190FG7ZKNV4UkiaFgNLjSKfjGTxoate
-	 q/AGC3kw4d3hZbhZxqBpAiADJOxl8v4TBVSYENdzUAFNJ8W1dZrtu0hA9zd2d3P53J
-	 glIhVAIIucNRbEVz7rsF9rG64Lk0e57rNckMR47s=
+	b=XzIr4ODvDGg/vm9ywOlDg6ktd3BxaOmOIyHv4JRkM3FkFs36eGN6GTy+gHmfZ1o9t
+	 THRB5syNv6LVSzn6v3TxKz0YbWcyqQKR5WUCaEgft0lgG5RRSKqMbAHtsXgJXwRrEY
+	 Tbef8vt5qIv5yyz6QcFnP5CtXKTAfKRbygX0nNhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Forest <forestix@nom.one>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.13 138/274] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 075/230] rtla/timerlat_hist: Abort event processing on second signal
 Date: Wed, 19 Feb 2025 09:26:32 +0100
-Message-ID: <20250219082615.007177568@linuxfoundation.org>
+Message-ID: <20250219082604.640672769@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
+[ Upstream commit d6899e560366e10141189697502bc5521940c588 ]
 
-The fastboot tool for communicating with Android bootloaders does not
-work reliably with this device if USB 2 Link Power Management (LPM)
-is enabled.
+If either SIGINT is received twice, or after a SIGALRM (that is, after
+timerlat was supposed to stop), abort processing events currently left
+in the tracefs buffer and exit immediately.
 
-Various fastboot commands are affected, including the
-following, which usually reproduces the problem within two tries:
+This allows the user to exit rtla without waiting for processing all
+events, should that take longer than wanted, at the cost of not
+processing all samples.
 
-  fastboot getvar kernel
-  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
-
-This issue was hidden on many systems up until commit 63a1f8454962
-("xhci: stored cached port capability values in one place") as the xhci
-driver failed to detect USB 2 LPM support if USB 3 ports were listed
-before USB 2 ports in the "supported protocol capabilities".
-
-Adding the quirk resolves the issue. No drawbacks are expected since
-the device uses different USB product IDs outside of fastboot mode, and
-since fastboot commands worked before, until LPM was enabled on the
-tested system by the aforementioned commit.
-
-Based on a patch from Forest <forestix@nom.one> from which most of the
-code and commit message is taken.
-
-Cc: stable <stable@kernel.org>
-Reported-by: Forest <forestix@nom.one>
-Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
-Tested-by: Forest <forestix@nom.one>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-5-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/tracing/rtla/src/timerlat_hist.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -432,6 +432,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
- 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
- 
-+	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
-+	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* Action Semiconductor flash disk */
- 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
- 			USB_QUIRK_STRING_FETCH_255 },
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 4cbd2d8ebb046..397dc962f5e2a 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -1143,6 +1143,14 @@ static int stop_tracing;
+ static struct trace_instance *hist_inst = NULL;
+ static void stop_hist(int sig)
+ {
++	if (stop_tracing) {
++		/*
++		 * Stop requested twice in a row; abort event processing and
++		 * exit immediately
++		 */
++		tracefs_iterate_stop(hist_inst->inst);
++		return;
++	}
+ 	stop_tracing = 1;
+ 	if (hist_inst)
+ 		trace_instance_stop(hist_inst);
+-- 
+2.39.5
+
 
 
 
