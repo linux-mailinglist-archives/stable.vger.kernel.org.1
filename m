@@ -1,52 +1,60 @@
-Return-Path: <stable+bounces-116951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B490AA3B002
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 04:23:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EC4A3B011
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 04:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F76516BDC1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 03:23:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACC9F16B337
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 03:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BAE18C011;
-	Wed, 19 Feb 2025 03:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF081547FF;
+	Wed, 19 Feb 2025 03:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="myHfhuMo"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BzC9sW61"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4EC17BB0D;
-	Wed, 19 Feb 2025 03:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3A2136A;
+	Wed, 19 Feb 2025 03:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739935393; cv=none; b=N8Nh8x0MljuIOxIi6PcgHhogBXuwoYQZSs/A5vhKWMOcCW0G9itpX0RxtGM0AwMLhRLYVwhPj4+uPpqZCwNujGN8qaJ/FouzDT72HeakWucUfk+nyLcPntpKaxpYOcpCIobhb/yvSKm3ZKcmYXKjcYdMz1yh1wg4FJ6v05T3Opg=
+	t=1739936246; cv=none; b=YIAhWyWsphervgGTYHLBWJzqxNPRRvcHOCDwni2O/DKHD4KLJjhpMzLl7thMw3ZhQUGCRNrxJZnmKgmWBSCkCWoMHgqORPyielHBrRQGxL6scg062wvpC3gIz2dhM08ZvS00tFuWw8OSajspFGs7eKBeZqc035CUrRD7S7jYbeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739935393; c=relaxed/simple;
-	bh=R6QV677NlQ522oBMfkLDcOEZ3lbL5Z5tMyBshHnyZXo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kYX+H/H8abUK96rrvuBf5HcjPwk7OILr8uef6J7AHZI/zMUlOQmbhi98e14vXQiZ3XzUeftc0hsxGyMDvtw1P+1xYOeem4ed6duZnkzBGY7OzhOH2tkLMLH17E31YJpLEJ09onjU08QRXdPEBdUx0BizWmqC0vXd+vqC9NVbFZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=myHfhuMo; arc=none smtp.client-ip=220.197.31.2
+	s=arc-20240116; t=1739936246; c=relaxed/simple;
+	bh=yXzzcVaNALwy7igFxnJgJRax5d7CA1EwhIEuqRCTu3A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rdrc6cl9tylDFqX+x0uF4TjBkSSRuen+ZJ0ICXe9HWJsoknNPX0FE9q96zvQPkodkvFhJdfmOxNMKWZYZSIjWiNpOexkddUy929fv5ZE+Ynj+RBe4VPUVN6QtzeE2qFQAROBKOYcxV1umCoJa7fdQvZv8htff0DxkdZP/T1RZKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BzC9sW61; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=09LR6
-	ViKaxcfzfqLX5rvRGr8rmzBQTTrDelidYgzSC4=; b=myHfhuMoAYE8fXTAygDzl
-	nlG7R4zQAQHCLJ5O1nltULUKWQ/mKV6gM15L5lh2fXNIEPy4DyCU8zOqFOXX7z7C
-	bzUkQURrxGjcG3QLDtOnk+db/nSGsxu1NuAt2ZZNOfKhb+wnrUYtlVKWbRqz2WYQ
-	xatpxTJIEtOrslNqxFx9SQ=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Kl7u8
+	bFLHAjtaElzFILg5UyTJziKGgGFb4LO1YSKTug=; b=BzC9sW61lpYTYF70UeYs9
+	3pgGYPYcyNd+RXZb8SFZXSlWn62tp14ZoF4276oyxRjo2W+I+4D9lztbuUmIfwPb
+	RvskGq2T5hB18evYkfulaO0P0ep5Xmu23lqP8Dg8NlVatDlPCAn3CeawzhBYOwZ7
+	qP1ZyhP2IssKpgsKsjmobA=
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgDHNuaNTrVnlSDSIA--.42964S4;
-	Wed, 19 Feb 2025 11:22:54 +0800 (CST)
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wCH0CvPUbVnWpNgNA--.30420S4;
+	Wed, 19 Feb 2025 11:36:49 +0800 (CST)
 From: Haoxiang Li <haoxiang_li2024@163.com>
-To: zhuyinbo@loongson.cn,
-	arnd@arndb.de
-Cc: loongarch@lists.linux.dev,
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	johannes@sipsolutions.net,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
 	Haoxiang Li <haoxiang_li2024@163.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drivers: loongson: Add check for devm_kstrdup()
-Date: Wed, 19 Feb 2025 11:22:51 +0800
-Message-Id: <20250219032251.2592699-1-haoxiang_li2024@163.com>
+Subject: [PATCH] wifi: mt76: Add check for devm_kstrdup()
+Date: Wed, 19 Feb 2025 11:36:45 +0800
+Message-Id: <20250219033645.2594753-1-haoxiang_li2024@163.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,36 +63,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgDHNuaNTrVnlSDSIA--.42964S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFykGF17tr1DXF4DKw45ZFb_yoWDJrcE9a
-	9FqryrCr15CFy3t34jvr43uryI9ryFv3WYkF15t3Z3Zw42yF1SqrWUZrsxGFW3Xr4IvFn8
-	Zw4vgr1xZFyIyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRXBMtUUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0hv3bme0kM+oVwACsh
+X-CM-TRANSID:_____wCH0CvPUbVnWpNgNA--.30420S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr4DCr48uF45Cw18ZFyUGFg_yoWDGrc_uF
+	s7Zrn3Xry7Gr1Ykr4jyFsIv34Yk3y8JF1kZrySqrySqrZIgrWkGr9xZrn5XrWDuwnxZr9r
+	ua1DJ3WrZ39IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNtxhDUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqAv4bme1R0DC6QABsK
 
 Add check for the return value of devm_kstrdup() in
-loongson2_guts_probe() to catch potential exception.
+mt76_get_of_data_from_mtd() to catch potential exception.
 
-Fixes: b82621ac8450 ("soc: loongson: add GUTS driver for loongson-2 platforms")
+Fixes: e7a6a044f9b9 ("mt76: testmode: move mtd part to mt76_dev")
 Cc: stable@vger.kernel.org
 Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- drivers/soc/loongson/loongson2_guts.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/soc/loongson/loongson2_guts.c b/drivers/soc/loongson/loongson2_guts.c
-index ae42e3a9127f..26212cfcf6b0 100644
---- a/drivers/soc/loongson/loongson2_guts.c
-+++ b/drivers/soc/loongson/loongson2_guts.c
-@@ -117,6 +117,8 @@ static int loongson2_guts_probe(struct platform_device *pdev)
- 	if (machine)
- 		soc_dev_attr.machine = devm_kstrdup(dev, machine, GFP_KERNEL);
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 0bc66cc19acd..443517d06c9f 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -95,6 +95,10 @@ int mt76_get_of_data_from_mtd(struct mt76_dev *dev, void *eep, int offset, int l
  
-+	if (!soc_dev_attr.machine)
-+		return -ENOMEM;
- 	svr = loongson2_guts_get_svr();
- 	soc_die = loongson2_soc_die_match(svr, loongson2_soc_die);
- 	if (soc_die) {
+ #ifdef CONFIG_NL80211_TESTMODE
+ 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
++	if (!dev->test_mtd.name) {
++		ret = -ENOMEM;
++		goto out_put_node;
++	}
+ 	dev->test_mtd.offset = offset;
+ #endif
+ 
 -- 
 2.25.1
 
