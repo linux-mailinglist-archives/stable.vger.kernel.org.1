@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-117986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16019A3B937
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:31:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF224A3B94E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ACFE19C07B8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:25:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B43A17FA21
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00F31DE3C8;
-	Wed, 19 Feb 2025 09:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F821DE4C5;
+	Wed, 19 Feb 2025 09:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miBKrxHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhBToIy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7D61B6D0F;
-	Wed, 19 Feb 2025 09:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E391DE3CE;
+	Wed, 19 Feb 2025 09:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956913; cv=none; b=CZG8j5gpLnMTOe7nY3fNr5VqV3TYjQRYLJJIYdcVLVr47vRaDUWtQnxeY2WwE78lfZAiMZ4j+2s5XWLd16kX/98nNdYhOGflAOiYssdC8W+bvpeTlkYhlscO96PkZy+sB1LF+VWHFGOKL19rwCvG046nu6KPCD2ZqNGgsji2vx4=
+	t=1739956919; cv=none; b=ajIWETBL/JGqqzFK+/aFq3mbZ0qRDNXF9iqTrXGvwdhDWvKRWCVfJmPKnaRtJvDuN0E4vmAtpyWc+uPxGUiW3R+4Kc524cy7Wf6nb9aN2hRgxqmGobs+Bz/iJ8AExOznURcYTY/bjSQQ9O0n4MVio01YpVzt9t74oMyQEGFfFWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956913; c=relaxed/simple;
-	bh=THiIjzchKfy/YLGoCr6uQOaxtrnuiS1djM4WwvtFMtI=;
+	s=arc-20240116; t=1739956919; c=relaxed/simple;
+	bh=XLFseLySva84RkMFdyMGkSuLizl3GQr59DgJw1I0Qck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEKmBjuj5Zwv5CeN+yFRZSSmKTrXYgM3P3O17pOYem8wSIO11Oa/Ubhmo1zlesYoANai1dBz6+Y9OpcirHM56AT9Fsv4fZ/0BbWs2S+gdDu/PcTwxqTULJDqPguSHslzJSPhGmBg25QdvHdBmSZfHeyFZCILLv6ku7Z62Mm+eYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miBKrxHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7BDC4CED1;
-	Wed, 19 Feb 2025 09:21:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LFwaovx3FCaWao3fwdE3NxtoMv7KwcNfdo9CLIo5z+OGDhrSLzJtL+H11t1XWAJIR74h55Uxc3aXCyEuIMqNGzj3xPQb4wW6mKrvz60g5IF54Iey/VhrZDpeSVBNDHO5vU/xEttVzElQKi6JdRo9tnjOKXn4BMKyKAcUHXZH7bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhBToIy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5516C4CED1;
+	Wed, 19 Feb 2025 09:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956913;
-	bh=THiIjzchKfy/YLGoCr6uQOaxtrnuiS1djM4WwvtFMtI=;
+	s=korg; t=1739956919;
+	bh=XLFseLySva84RkMFdyMGkSuLizl3GQr59DgJw1I0Qck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miBKrxHedZxKZXTjIoBE3AjvRNKnOwAksNBHFT44/Dp35tNioDHHPRxjkRcDh+Gao
-	 i4g3vRv4s0Rl35MwvTNSzNVK3c7tM/6yO3a7OgLdpx9BL6RUOCmmWSW4CPvKC9Z41u
-	 RQDxg3p2nrFjHCoM4a/HBMeZHLISHreR//cBQOwo=
+	b=RhBToIy3n18eifjQ8iTc7aAq6XW/YJYnEMbp3QI0AdWfLk6QjVxTbkj07QxS4sGty
+	 sBPzAkQyK9fPFkRpSfRT8BQm4gmcMgNiR4fwYNm01v6IFpjYV9iuC9JT4znWM3YLSj
+	 vgPNH/6yEPfJo2PdnZ/Ti6kfsVbm8q3+HyPaTDYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.1 343/578] binfmt_flat: Fix integer overflow bug on 32 bit systems
-Date: Wed, 19 Feb 2025 09:25:47 +0100
-Message-ID: <20250219082706.509061573@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Chris Zhong <zyw@rock-chips.com>,
+	Guenter Roeck <groeck@chromium.org>,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH 6.1 344/578] drm/rockchip: cdn-dp: Use drm_connector_helper_hpd_irq_event()
+Date: Wed, 19 Feb 2025 09:25:48 +0100
+Message-ID: <20250219082706.550790662@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -60,45 +66,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 55cf2f4b945f6a6416cc2524ba740b83cc9af25a upstream.
+commit 666e1960464140cc4bc9203c203097e70b54c95a upstream.
 
-Most of these sizes and counts are capped at 256MB so the math doesn't
-result in an integer overflow.  The "relocs" count needs to be checked
-as well.  Otherwise on 32bit systems the calculation of "full_data"
-could be wrong.
+The code for detecting and updating the connector status in
+cdn_dp_pd_event_work() has a number of problems.
 
-	full_data = data_len + relocs * sizeof(unsigned long);
+- It does not aquire the locks to call the detect helper and update
+the connector status. These are struct drm_mode_config.connection_mutex
+and struct drm_mode_config.mutex.
 
-Fixes: c995ee28d29d ("binfmt_flat: prevent kernel dammage from corrupted executable headers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Nicolas Pitre <npitre@baylibre.com>
-Link: https://lore.kernel.org/r/5be17f6c-5338-43be-91ef-650153b975cb@stanley.mountain
-Signed-off-by: Kees Cook <kees@kernel.org>
+- It does not use drm_helper_probe_detect(), which helps with the
+details of locking and detection.
+
+- It uses the connector's status field to determine a change to
+the connector status. The epoch_counter field is the correct one. The
+field signals a change even if the connector status' value did not
+change.
+
+Replace the code with a call to drm_connector_helper_hpd_irq_event(),
+which fixes all these problems.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 81632df69772 ("drm/rockchip: cdn-dp: do not use drm_helper_hpd_irq_event")
+Cc: Chris Zhong <zyw@rock-chips.com>
+Cc: Guenter Roeck <groeck@chromium.org>
+Cc: Sandy Huang <hjc@rock-chips.com>
+Cc: "Heiko Stübner" <heiko@sntech.de>
+Cc: Andy Yan <andy.yan@rock-chips.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v4.11+
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105133848.480407-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_flat.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/cdn-dp-core.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/fs/binfmt_flat.c
-+++ b/fs/binfmt_flat.c
-@@ -478,7 +478,7 @@ static int load_flat_file(struct linux_b
- 	 * 28 bits (256 MB) is way more than reasonable in this case.
- 	 * If some top bits are set we have probable binary corruption.
- 	*/
--	if ((text_len | data_len | bss_len | stack_len | full_data) >> 28) {
-+	if ((text_len | data_len | bss_len | stack_len | relocs | full_data) >> 28) {
- 		pr_err("bad header\n");
- 		ret = -ENOEXEC;
- 		goto err;
+--- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
++++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+@@ -948,9 +948,6 @@ static void cdn_dp_pd_event_work(struct
+ {
+ 	struct cdn_dp_device *dp = container_of(work, struct cdn_dp_device,
+ 						event_work);
+-	struct drm_connector *connector = &dp->connector;
+-	enum drm_connector_status old_status;
+-
+ 	int ret;
+ 
+ 	mutex_lock(&dp->lock);
+@@ -1012,11 +1009,7 @@ static void cdn_dp_pd_event_work(struct
+ 
+ out:
+ 	mutex_unlock(&dp->lock);
+-
+-	old_status = connector->status;
+-	connector->status = connector->funcs->detect(connector, false);
+-	if (old_status != connector->status)
+-		drm_kms_helper_hotplug_event(dp->drm_dev);
++	drm_connector_helper_hpd_irq_event(&dp->connector);
+ }
+ 
+ static int cdn_dp_pd_event(struct notifier_block *nb,
 
 
 
