@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41212A3B661
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEBBA3B706
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83879164B3F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C31A9175D04
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D631DEFC6;
-	Wed, 19 Feb 2025 08:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E11DE4FA;
+	Wed, 19 Feb 2025 08:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlTx8oxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMUlp6yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B559D1DED5E;
-	Wed, 19 Feb 2025 08:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DA21DE4C9;
+	Wed, 19 Feb 2025 08:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955040; cv=none; b=aq/mUM7IxXbtyvzDcP0moJfWdaf0ORDSdEpWwFZPdhDGCguZR5gkBmnuRDtsGGIZdzyrUgGlpjx8+OPYq/74avfzjQmKLFV+H7Ro44BYE6QNqZus05yGYOUnXdeTS1TNLA0+Si7felR41VdG+JjI1e2r1+POU1FSuJ+H/qu4P+8=
+	t=1739955468; cv=none; b=iov8DZqMuGIpHNXC8tPsQdVGpC8uQSsV0aPOHs/mhw25jGnnvfmkO9wVc5YN1wtZvyp1sX1hbdLT3IwOZMCiFBqmaOYOXKU0DXTW2supLDW5H01Z7jkO+G6fJBwjLf3b8y12gn4aRSkonzOUDKDKIBEt6Uh3yIkB5iQHTAU2FoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955040; c=relaxed/simple;
-	bh=32W734hV7tquQPfOoM+RLnLgTmrC5rUIfb39DRj4TGg=;
+	s=arc-20240116; t=1739955468; c=relaxed/simple;
+	bh=1FLkriyTQJzUojkgRY/TuGCLt8oH1LqUr//dUREFOcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHp0MygPXaWglcjVPeq+c++yHK+qnM1vR2hysPdjFyts/EC1vZJCdJnouQrqKxJID6j/LNNfGRil2R7QJLm4ln4NnfgLGWS+YhyPH7H8NJrwlJ0qoEJM1RGmH6wHQRypAMRyLxhIcFILPgL8nd2qm/UVl+xeCiOwYwRfsnEOb2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlTx8oxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE86BC4CED1;
-	Wed, 19 Feb 2025 08:50:39 +0000 (UTC)
+	 MIME-Version; b=o/YdW/Hi2LQjB3Pb4Wa5jJtNDvJSVfZnrXkPC2ApxLxrobBWvJ/u80S4dUOaUpx6il+1JuH2ONXgtIv8vK9sbBRuUTPdw0qxSDwc/ADEYAZizpvqJsnmPe4A9JkJHQOhi4fjW9mTvd4XFKPHC20giKlpZ8Q+s8/p5l18JFqobmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMUlp6yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5461C4CED1;
+	Wed, 19 Feb 2025 08:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955040;
-	bh=32W734hV7tquQPfOoM+RLnLgTmrC5rUIfb39DRj4TGg=;
+	s=korg; t=1739955468;
+	bh=1FLkriyTQJzUojkgRY/TuGCLt8oH1LqUr//dUREFOcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlTx8oxGc0zBk4iCVvuSAzUV14uh4SsM6XlFZUBfEw6LXuG2r5q3D1Eo1cczQcLoD
-	 pFo8XEMLYyKjGmE3QDg2/DLLTEccc0zw+h8nDm7JgSNXeiDlsopefMFeJHe65vJV7b
-	 7aD6F6j+TGyqnYf9Bk5Osac6Hfw4g7GfomjjIRHY=
+	b=mMUlp6yqWBQChX2AVUVkGOt2bCXPBd+ie/IYJxupV/zhQujrbH8ZzO6lxU31nPysb
+	 GL6pxMXnE3/b3+mcjkY3TVghTubFEOnubJnXu1VgwBaGh+0eRDBpNcSUe9ezoFaO9K
+	 BHDaHRpI1iO20wtJgtwibbhPi38s/R5rpvsfPdRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Guo Ren <guoren@linux.alibaba.com>
-Subject: [PATCH 6.12 112/230] usb: gadget: udc: renesas_usb3: Fix compiler warning
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Mikolaj Wasiak <mikolaj.wasiak@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 016/152] drm/i915/selftests: avoid using uninitialized context
 Date: Wed, 19 Feb 2025 09:27:09 +0100
-Message-ID: <20250219082606.070724895@linuxfoundation.org>
+Message-ID: <20250219082550.669215531@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Krzysztof Karas <krzysztof.karas@intel.com>
 
-commit 335a1fc1193481f8027f176649c72868172f6f8b upstream.
+[ Upstream commit 53139b3f9998ea07289e7b70b909fea2264a0de9 ]
 
-drivers/usb/gadget/udc/renesas_usb3.c: In function 'renesas_usb3_probe':
-drivers/usb/gadget/udc/renesas_usb3.c:2638:73: warning: '%d'
-directive output may be truncated writing between 1 and 11 bytes into a
-region of size 6 [-Wformat-truncation=]
-2638 |   snprintf(usb3_ep->ep_name, sizeof(usb3_ep->ep_name), "ep%d", i);
-                                    ^~~~~~~~~~~~~~~~~~~~~~~~     ^~   ^
+There is an error path in igt_ppgtt_alloc(), which leads
+to ww object being passed down to i915_gem_ww_ctx_fini() without
+initialization. Correct that by only putting ppgtt->vm and
+returning early.
 
-Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas USB3.0 peripheral controller")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201409.BIQPtkeB-lkp@intel.com/
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250122081231.47594-1-guoren@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 480ae79537b2 ("drm/i915/selftests: Prepare gtt tests for obj->mm.lock removal")
+Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Mikolaj Wasiak <mikolaj.wasiak@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/iuaonpjc3rywmvhna6umjlvzilocn2uqsrxfxfob24e2taocbi@lkaivvfp4777
+(cherry picked from commit 8d8334632ea62424233ac6529712868241d0f8df)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/selftests/i915_gem_gtt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -310,7 +310,7 @@ struct renesas_usb3_request {
- 	struct list_head	queue;
- };
+diff --git a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+index 5c397a2df70e2..5d27e1c733c52 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
++++ b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+@@ -168,7 +168,7 @@ static int igt_ppgtt_alloc(void *arg)
+ 		return PTR_ERR(ppgtt);
  
--#define USB3_EP_NAME_SIZE	8
-+#define USB3_EP_NAME_SIZE	16
- struct renesas_usb3_ep {
- 	struct usb_ep ep;
- 	struct renesas_usb3 *usb3;
+ 	if (!ppgtt->vm.allocate_va_range)
+-		goto err_ppgtt_cleanup;
++		goto ppgtt_vm_put;
+ 
+ 	/*
+ 	 * While we only allocate the page tables here and so we could
+@@ -236,7 +236,7 @@ static int igt_ppgtt_alloc(void *arg)
+ 			goto retry;
+ 	}
+ 	i915_gem_ww_ctx_fini(&ww);
+-
++ppgtt_vm_put:
+ 	i915_vm_put(&ppgtt->vm);
+ 	return err;
+ }
+-- 
+2.39.5
+
 
 
 
