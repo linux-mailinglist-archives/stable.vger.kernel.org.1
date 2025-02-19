@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE3AA3BA4C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AC0A3B754
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDA51899725
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEBC18876C4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA051DF25A;
-	Wed, 19 Feb 2025 09:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B4C1D47B5;
+	Wed, 19 Feb 2025 09:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaSLGvCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1v3DE7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DD31C9B97;
-	Wed, 19 Feb 2025 09:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955B31CAA82;
+	Wed, 19 Feb 2025 09:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957535; cv=none; b=kNH6Sl3wTUI62IiV2uHlYWMtjJllau+pQj7eQlRChQYdEc4l9SyYE3ELRd2Xi7Md2KP08yeMu6RAKoI24w0LtNHep6SmqPWrwlqon3CUn4k/Un5KrtVEGf5QyRXLsj/NIrHN6Ov5q53rNxOj4nyt73XyueyyfrYSn/GQr2NjGnk=
+	t=1739955805; cv=none; b=qndgCcBIWCTBu011hJIxAyTi1ZSA2w2zqz9Kf63Jmsp8NP7uZGUku8Lqp+nrURy8gpHIoq5Z8xXwZH0gNJ/uTVr7ySFkP9IItvjHofS2NEfBpyRwNWC70VeL+9tL0H0bC71AzPcMAC/FHyuQFbqscwzV9ac/vVYIGhBbeihqPbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957535; c=relaxed/simple;
-	bh=ZfuIxYyn5DdFE9U1CvClnQECMA+CoIhT8KdfWDl1xAg=;
+	s=arc-20240116; t=1739955805; c=relaxed/simple;
+	bh=svYiF0TfHUZFQTUiq7XWMo3+dOgR3NJNeGDNyfNFQbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BW2D3yKPRnatZu9f1uTrn0KRQ3beTHrHaMkGugcBuFVM/82tlxkP2D6BEnsRV0tN755YlU4a9xBPoUSfWwlV2sMJIWehoFr6vRqMYBwFb54+UAtjofUsz5AKIKqrArT5IMbBx+Vz6Dh3rMTec5WSKfh7W4mQRxlHsJasVRb8d8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaSLGvCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FEFC4CEE6;
-	Wed, 19 Feb 2025 09:32:14 +0000 (UTC)
+	 MIME-Version; b=kIFyh/OF8y1RYn59SSCdPwLF781bPa2iE7bqGcj/ZxodeXTp2DHFFj+EY2jyUucx2yOdGB3cbbHWv77Vq0RiGpRS6ctLkreyv5NLfVYTCgypaBiPYlVlXLlCpUl2JupFp8LU+0XdqZqFOqHrP4xPkQ0jRAnW0RaczjnkUHNjcQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1v3DE7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7CFC4CED1;
+	Wed, 19 Feb 2025 09:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957535;
-	bh=ZfuIxYyn5DdFE9U1CvClnQECMA+CoIhT8KdfWDl1xAg=;
+	s=korg; t=1739955805;
+	bh=svYiF0TfHUZFQTUiq7XWMo3+dOgR3NJNeGDNyfNFQbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iaSLGvCcaW3EqLzhASTo1Kwut87yJqdyaxnb727u5UR/laGGzaKalDlGM3ISYZ/9w
-	 WG7Lx0HO0fUA3ul21dO1wfjAZ19wgAjglXxJ+gUtxhgIO76nEs3g8rZy9sFakssKi1
-	 njgVbUYKV6+dB6Ibm5P4E7d7Sg9YPx4GdaQLN6wU=
+	b=q1v3DE7qSQHsq+neiMkqFoZmxqE6RGWnVSOvCyLejqG0O2iiR1gB3hO3S3iUAX6Lq
+	 efW5nyRPHSmLHWOofypnLih5omZYU+Gh4kX2GtgwZBY+ERvwyI5Mdp1dnWfnORojrC
+	 0HrFcSoEczcu8o2h9PNa2vjOVuOtnsFWtxh8WEJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 6.1 527/578] alpha: align stack for page fault and user unaligned trap handlers
-Date: Wed, 19 Feb 2025 09:28:51 +0100
-Message-ID: <20250219082713.703715385@linuxfoundation.org>
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 119/152] HID: hid-steam: Make sure rumble work is canceled on removal
+Date: Wed, 19 Feb 2025 09:28:52 +0100
+Message-ID: <20250219082554.761079103@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Vicki Pfau <vi@endrift.com>
 
-commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
+[ Upstream commit cc4f952427aaa44ecfd92542e10a65cce67bd6f4 ]
 
-do_page_fault() and do_entUna() are special because they use
-non-standard stack frame layout. Fix them manually.
+When a force feedback command is sent from userspace, work is scheduled to pass
+this data to the controller without blocking userspace itself. However, in
+theory, this work might not be properly canceled if the controller is removed
+at the exact right time. This patch ensures the work is properly canceled when
+the device is removed.
 
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/kernel/entry.S |   20 ++++++++++----------
- arch/alpha/kernel/traps.c |    2 +-
- arch/alpha/mm/fault.c     |    4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/hid/hid-steam.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
- CFI_START_OSF_FRAME entMM
- 	SAVE_ALL
- /* save $9 - $15 so the inline exception code can manipulate them.  */
--	subq	$sp, 56, $sp
--	.cfi_adjust_cfa_offset	56
-+	subq	$sp, 64, $sp
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_rel_offset	$13, 32
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- /* handle the fault */
- 	lda	$8, 0x3fff
- 	bic	$sp, $8, $8
-@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	addq	$sp, 56, $sp
-+	addq	$sp, 64, $sp
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- /* finish up the syscall as normal.  */
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entMM
-@@ -383,8 +383,8 @@ entUnaUser:
- 	.cfi_restore	$0
- 	.cfi_adjust_cfa_offset	-256
- 	SAVE_ALL		/* setup normal kernel stack */
--	lda	$sp, -56($sp)
--	.cfi_adjust_cfa_offset	56
-+	lda	$sp, -64($sp)
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -400,7 +400,7 @@ entUnaUser:
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
- 	lda	$8, 0x3fff
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- 	bic	$sp, $8, $8
- 	jsr	$26, do_entUnaUser
- 	ldq	$9, 0($sp)
-@@ -410,7 +410,7 @@ entUnaUser:
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	lda	$sp, 56($sp)
-+	lda	$sp, 64($sp)
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -418,7 +418,7 @@ entUnaUser:
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entUna
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index 29a0e1f395339..a25d0034dc1ea 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -1304,6 +1304,7 @@ static void steam_remove(struct hid_device *hdev)
  
---- a/arch/alpha/kernel/traps.c
-+++ b/arch/alpha/kernel/traps.c
-@@ -707,7 +707,7 @@ s_reg_to_mem (unsigned long s_reg)
- static int unauser_reg_offsets[32] = {
- 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
- 	/* r9 ... r15 are stored in front of regs.  */
--	-56, -48, -40, -32, -24, -16, -8,
-+	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
- 	R(r16), R(r17), R(r18),
- 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
- 	R(r27), R(r28), R(gp),
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
- 
- /* Macro for exception fixup code to access integer registers.  */
- #define dpf_reg(r)							\
--	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
--				 (r) <= 18 ? (r)+10 : (r)-10])
-+	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
-+				 (r) <= 18 ? (r)+11 : (r)-10])
- 
- asmlinkage void
- do_page_fault(unsigned long address, unsigned long mmcsr,
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->work_connect);
++	cancel_work_sync(&steam->rumble_work);
+ 	hid_destroy_device(steam->client_hdev);
+ 	steam->client_hdev = NULL;
+ 	steam->client_opened = false;
+-- 
+2.39.5
+
 
 
 
