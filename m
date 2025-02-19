@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E07A3BA27
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C10A3B752
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4888018908A7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A576188578E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B511DED4A;
-	Wed, 19 Feb 2025 09:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAEE1E47BA;
+	Wed, 19 Feb 2025 09:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGKq/mnO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgZOMpba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE401DE8BC;
-	Wed, 19 Feb 2025 09:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB041C7B62;
+	Wed, 19 Feb 2025 09:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957419; cv=none; b=MWs2pETC0Wu5SivGTgeECmzmuHhp5kkKQRkfiva2mYpqeIkCqevWmYOIsy76nc1PpdEdP4+cZ+v63z04s8w6QISvYTflfOO073zvmeedBkqibZBFNJz0LocAcn2hqB7AoV19hLuA40T1SPfjV/lhrWHCg44KvDuNczsbDiNw+P4=
+	t=1739955771; cv=none; b=V5hirWtxsIGzYcJ+EGhYGG709ZEGwypWwACpTL3CUnfA2ahdfGYbmwXj3pTIFB3mKHrGR5XyU1nKMpAZVBfxnvlp7e3SUzvaoLfrv/MoLohGgpmrsf56WFQUKDH9LhNP1cotowisQnZ+4fHckGMATcraMfz7niu5I+AQKAkwNio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957419; c=relaxed/simple;
-	bh=9JbWIEfTPe9UKWz0B5JUHH14MjvmjrjDdacThBZo2js=;
+	s=arc-20240116; t=1739955771; c=relaxed/simple;
+	bh=bYcb16dE9y3qXe/2Toxt1yr0fuye7Q6HFM6+wMWlhxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBv0CyYjVZheUohKJw5YXH3+tv8FFK5ZalNregnf72iM6f46H2qGRJrZ2Sx7X0ES1ngMiIpZwHLZmUEqy1/Sw9kRbJe8+6G7aaxRsBy5obAc9PSLxe4T9lIEagJqJrbPcxYSriOuT+gd/zvt/5YL1tPiYPMS5qC3muQm+rPp1Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGKq/mnO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A010AC4CED1;
-	Wed, 19 Feb 2025 09:30:18 +0000 (UTC)
+	 MIME-Version; b=gjPjve4+Vf34RMeGqbl8A43Ooi4RV4874YUhWpPKdb03A0Jl4xArHlS84AkvqUadBlJTU6zOYq0zA3py/toXRVz9NeMi+9M3Y1i/VwsyfQuYQ3Kc9SjgAPXifWxFz8G8LMofNhdf1GSCr6NpoQcXdWHc2nurpAtfuwmCN/l1jsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgZOMpba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1A6C4CEE6;
+	Wed, 19 Feb 2025 09:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957419;
-	bh=9JbWIEfTPe9UKWz0B5JUHH14MjvmjrjDdacThBZo2js=;
+	s=korg; t=1739955771;
+	bh=bYcb16dE9y3qXe/2Toxt1yr0fuye7Q6HFM6+wMWlhxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGKq/mnODUaDhvGTwfJ/6jHeBjSCS4rUTfhmVSbkpuzZrDD3BKtOgrDCKN68XyTg+
-	 B52CVng4B7jAWFQ1cX1HqyT3csuIdF2bhrlIEjdazU4/jJLnJErOQAGsBDQcVATfBM
-	 XDavoR9aSoTlN7nGp+J+/T9v0IgFsT2e/M7uaTYU=
+	b=pgZOMpbanVBk8dRbJD3uSpPsbnjNFY5+JH0A5yKSpUPWNeDCT0Mb4fLm0lKM07gAe
+	 c4CvOcK963TXipA7Wm/PztSvpRHXmW8qEvimonH/jO1ghWOWq69nHBVsvXv02xITsT
+	 0fUYizHx0lI4lxdjdbeQPZXY0riU+h/bUDAVF8BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 518/578] USB: serial: option: fix Telit Cinterion FN990A name
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 109/152] ipv6: use RCU protection in ip6_default_advmss()
 Date: Wed, 19 Feb 2025 09:28:42 +0100
-Message-ID: <20250219082713.355499653@linuxfoundation.org>
+Message-ID: <20250219082554.369634559@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 12606fe73f33647c5e79bf666833bf0b225e649d upstream.
+[ Upstream commit 3c8ffcd248da34fc41e52a46e51505900115fc2a ]
 
-The correct name for FN990 is FN990A so use it in order to avoid
-confusion with FN990B.
+ip6_default_advmss() needs rcu protection to make
+sure the net structure it reads does not disappear.
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5578689a4e3c ("[NETNS][IPV6] route6 - make route6 per namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-11-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/ipv6/route.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1370,15 +1370,15 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1063, 0xff),	/* Telit LN920 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990 (PCIe) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index c5cee40a658b4..5715d54f3d0be 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3188,13 +3188,18 @@ static unsigned int ip6_default_advmss(const struct dst_entry *dst)
+ {
+ 	struct net_device *dev = dst->dev;
+ 	unsigned int mtu = dst_mtu(dst);
+-	struct net *net = dev_net(dev);
++	struct net *net;
+ 
+ 	mtu -= sizeof(struct ipv6hdr) + sizeof(struct tcphdr);
+ 
++	rcu_read_lock();
++
++	net = dev_net_rcu(dev);
+ 	if (mtu < net->ipv6.sysctl.ip6_rt_min_advmss)
+ 		mtu = net->ipv6.sysctl.ip6_rt_min_advmss;
+ 
++	rcu_read_unlock();
++
+ 	/*
+ 	 * Maximal non-jumbo IPv6 payload is IPV6_MAXPLEN and
+ 	 * corresponding MSS is IPV6_MAXPLEN - tcp_header_size.
+-- 
+2.39.5
+
 
 
 
