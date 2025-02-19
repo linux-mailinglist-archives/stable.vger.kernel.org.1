@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47783A3B610
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D161BA3B4A0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30FF83B7036
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE1A188E2DA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EABF1F55F5;
-	Wed, 19 Feb 2025 08:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC2D1DF271;
+	Wed, 19 Feb 2025 08:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="annMANdK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/D/0U4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EAD1F463F;
-	Wed, 19 Feb 2025 08:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA841DED6F;
+	Wed, 19 Feb 2025 08:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954767; cv=none; b=k4FClxfY8utN7d0aHqo2VgZYL2VXhLpqTTVCJkiU0DwqvnfqpjNtP9Y2mzahGVLQYfGQwKKkSSz7tW8ClcRcLAWNEOrJ1SzDDGP8ALt91N5Rr65djqEKSi0D0Sedk5AGroXTZyS7cYgyZz0nLGkQndChZpJ+6rgdcxG6GFCNlc4=
+	t=1739954125; cv=none; b=YeESymRqR0Wn0W/mnHTafpnzrKCpteW95Gpesc1hLePHZI2WGV5TQoVOnKqBOhogznL39wMAa8k/4ug8vFkQB+X5sIMv6ToXv7nRNPcQkNv/UxuQLQ9p4vACAmdwXio4Du7Aru5UAQMKzrpAVe+l7jSW8g7o+OhB0DMPjWeMoLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954767; c=relaxed/simple;
-	bh=gWPW2VREhfzBowktHqngccayz79ofHB3BMWeniHNW5g=;
+	s=arc-20240116; t=1739954125; c=relaxed/simple;
+	bh=W6e+ceBQt0WSQlaNy1KIEvD+yhRosBZriHuVGsUaNy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8gAjwgQd77ZKzjVSj4vM31KvJWz2WRlHDszqV/bXdxJzJg0BipAmBy8wr/C2yUe++C/bPOLFMDTFKH7K2u6XAMXtwhf7wQyeKyzOyDAEHCsj3j3mYB50SNbC+nP0UBRvIYMO/w79zTc7fVE94BWoosNtH5wwNaOP787zay/muQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=annMANdK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDA9C4CED1;
-	Wed, 19 Feb 2025 08:46:06 +0000 (UTC)
+	 MIME-Version; b=ucTlx8U2Vw06BwwC6HHw7/ZaupC+fVaF41HoawXyXTwRFmARsV44eYpCujFFNW3gF/QPec9XyeVrb260uV0Q3Pd4NDrn3WtEKUySEzcfIDdMAWi9JlL1rejz2e6apAUkRIG9yNIPdm9JqzlCirE852IXNQEqv9aaOukAjLVwGcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/D/0U4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D76BC4CED1;
+	Wed, 19 Feb 2025 08:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954767;
-	bh=gWPW2VREhfzBowktHqngccayz79ofHB3BMWeniHNW5g=;
+	s=korg; t=1739954124;
+	bh=W6e+ceBQt0WSQlaNy1KIEvD+yhRosBZriHuVGsUaNy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=annMANdKNfNkO9H+vrPwPW1HYR2DA1SOUBXWhS82mrYxFrXjQRTX/Np0TI0N7CMvI
-	 nNGBD8wEAbUXJEHZ6K0CtG0d64h5zufBjB40HheLMbOAHeQYH1iWUzktE3WqNQXBct
-	 MD/lQz5QuqoT9P0G2rwlAVIKtqudcM6dIM7GOGz0=
+	b=W/D/0U4Wi84IrysQ4wWlxi3WUbR7B+kqOIZ0mmLlT8j6pjUhY5FlT0o/9YFmd/HU9
+	 9I0OyzCQeAz1tv4XVAgb1AMgzOgFbIYfeY3G2jIzgcwyClwIa5QH6l/26PE5QVBWSP
+	 Z8szcHBxcPG6xcIutkLXDVHtMTtXXrAZK0kujeYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/230] HID: winwing: Add NULL check in winwing_init_led()
-Date: Wed, 19 Feb 2025 09:25:26 +0100
-Message-ID: <20250219082602.061723488@linuxfoundation.org>
+Subject: [PATCH 6.13 073/274] soc/tegra: fuse: Update Tegra234 nvmem keepout list
+Date: Wed, 19 Feb 2025 09:25:27 +0100
+Message-ID: <20250219082612.478803620@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-[ Upstream commit 45ab5166a82d038c898985b0ad43ead69c1f9573 ]
+[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in winwing_init_led() is not checked.
-Add NULL check in winwing_init_led(), to handle kernel NULL
-pointer dereference error.
+Various Nvidia userspace applications and tests access following fuse
+via Fuse nvmem interface:
 
-Fixes: 266c990debad ("HID: Add WinWing Orion2 throttle support")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+	* odmid
+	* odminfo
+	* boot_security_info
+	* public_key_hash
+	* reserved_odm0
+	* reserved_odm1
+	* reserved_odm2
+	* reserved_odm3
+	* reserved_odm4
+	* reserved_odm5
+	* reserved_odm6
+	* reserved_odm7
+	* odm_lock
+	* pk_h1
+	* pk_h2
+	* revoke_pk_h0
+	* revoke_pk_h1
+	* security_mode
+	* system_fw_field_ratchet0
+	* system_fw_field_ratchet1
+	* system_fw_field_ratchet2
+	* system_fw_field_ratchet3
+	* optin_enable
+
+Update tegra234_fuse_keepouts list to allow reading these fuse from
+nvmem sysfs interface.
+
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-winwing.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-winwing.c b/drivers/hid/hid-winwing.c
-index 831b760c66ea7..d4afbbd278079 100644
---- a/drivers/hid/hid-winwing.c
-+++ b/drivers/hid/hid-winwing.c
-@@ -106,6 +106,8 @@ static int winwing_init_led(struct hid_device *hdev,
- 						"%s::%s",
- 						dev_name(&input->dev),
- 						info->led_name);
-+		if (!led->cdev.name)
-+			return -ENOMEM;
+diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
+index eb14e5ff5a0aa..e24ab5f7d2bf1 100644
+--- a/drivers/soc/tegra/fuse/fuse-tegra30.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
+@@ -647,15 +647,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
+ };
  
- 		ret = devm_led_classdev_register(&hdev->dev, &led->cdev);
- 		if (ret)
+ static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
+-	{ .start = 0x01c, .end = 0x0c8 },
+-	{ .start = 0x12c, .end = 0x184 },
++	{ .start = 0x01c, .end = 0x064 },
++	{ .start = 0x084, .end = 0x0a0 },
++	{ .start = 0x0a4, .end = 0x0c8 },
++	{ .start = 0x12c, .end = 0x164 },
++	{ .start = 0x16c, .end = 0x184 },
+ 	{ .start = 0x190, .end = 0x198 },
+ 	{ .start = 0x1a0, .end = 0x204 },
+-	{ .start = 0x21c, .end = 0x250 },
+-	{ .start = 0x25c, .end = 0x2f0 },
++	{ .start = 0x21c, .end = 0x2f0 },
+ 	{ .start = 0x310, .end = 0x3d8 },
+-	{ .start = 0x400, .end = 0x4f0 },
+-	{ .start = 0x4f8, .end = 0x7e8 },
++	{ .start = 0x400, .end = 0x420 },
++	{ .start = 0x444, .end = 0x490 },
++	{ .start = 0x4bc, .end = 0x4f0 },
++	{ .start = 0x4f8, .end = 0x54c },
++	{ .start = 0x57c, .end = 0x7e8 },
+ 	{ .start = 0x8d0, .end = 0x8d8 },
+ 	{ .start = 0xacc, .end = 0xf00 }
+ };
 -- 
 2.39.5
 
