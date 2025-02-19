@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-117107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A75BA3B4C1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:46:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA85A3B524
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C227179A9A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E923B5C76
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09101E3787;
-	Wed, 19 Feb 2025 08:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE9E1D47C7;
+	Wed, 19 Feb 2025 08:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikl6K5Yk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rnkh5LoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB181E32D7;
-	Wed, 19 Feb 2025 08:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD111CAA66;
+	Wed, 19 Feb 2025 08:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954228; cv=none; b=ZGuNWNCm/8PI65JTE1gF+ncfxcHL5zbbhR8c9kWOfAlexSSb5gGAi2qPAYcFVz6wX7mIgZP9WmpPsmYyXWf4F+5YlVHtF4L6C2Sb/YbAfgu2Cg/IDNvCHbZFn4ci7lt7WZ2GP3uixo4bEf9WRvndrbzhlD2SJpylFmJ0GaMA/r4=
+	t=1739954355; cv=none; b=Bsr0mkZGQtVETmYtyb4q08uXgv6EVrxPHhO3UZpLRUBZ45jBG+CjCZew9IE7EtOnyfHYfn7l2PcqwnRyYXe+CIjF6HXKXi76iN2YQXe9V/AsUzxnX+t3O3VZnzmjFbV8YdElTtXmnGJT0Tfccdq6g+gqP1JXWJpwDpHbWp72YUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954228; c=relaxed/simple;
-	bh=BcgfHOM19G+MrZ4GPtbe85D3wKQpMhGLBt7Et5Puo94=;
+	s=arc-20240116; t=1739954355; c=relaxed/simple;
+	bh=Be66IhS8LBBt8TYkz9SFHH00hRUvqDPwJvaW0PEAR0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQrlyyJ/HXA6LE+DOJbMIoTpXw1Gu3fJ/YHuinMvIpZJ/AaptRplLluLlmTtlmZfZUcTXwbVQ91FGP4tevdNjjo7V6Hv8WPvg6juLjXwjSE0jWbK/so4mV8cpma+k/E/hw/WoAUCHOBpb8fX+X40whiE++PRns+gQm1PykHV70g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikl6K5Yk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB930C4CED1;
-	Wed, 19 Feb 2025 08:37:07 +0000 (UTC)
+	 MIME-Version; b=gj6dXXNjeghr//wGlvg8+CcG8C8LcHDbSic7MhUuEpEAaTB12rzwYP84T11qEh6FnOLOjDg5PgsRuRxMqdWxLmv+7hwnvbtG+9jZhzdB6D0BeZfrQG+3bLZiQyJWkrDrOKpGHGfFV7Vryrkj5JOhrc/m2u36dGi67+kWIz26fUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rnkh5LoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3672FC4CED1;
+	Wed, 19 Feb 2025 08:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954228;
-	bh=BcgfHOM19G+MrZ4GPtbe85D3wKQpMhGLBt7Et5Puo94=;
+	s=korg; t=1739954355;
+	bh=Be66IhS8LBBt8TYkz9SFHH00hRUvqDPwJvaW0PEAR0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikl6K5YkgXCdZc2bkb7Z+jIGQl6bELaSjXvFi3uYnXFwPTZTff9lQMeNtRn3mWDNK
-	 RyaF6MgxH88N1k9Jh5RrsZr8HJQmiUoq/+LdjCNB7hbiHtqwJHVqSzaWyFkWypCvSI
-	 6AXK1+G/tAkltLUavvWQmpjAcevCs/5RVcOcCgDk=
+	b=Rnkh5LoIvo1df/bt3AtFDrvgU7wIjPgxO5ShOkdsj7OSdABaJ3FC26DvvKbYUcvjp
+	 F1mlO8NJzzUCiLjr96IDexAtKJVXqhmpqAYbjM6waNklufLbdorwiMnpN/sBxM41sx
+	 spxSFpI9SQ71QHiRFVXMO9W7Zggi8avEn5AplAjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.13 136/274] usb: core: fix pipe creation for get_bMaxPacketSize0
-Date: Wed, 19 Feb 2025 09:26:30 +0100
-Message-ID: <20250219082614.929696283@linuxfoundation.org>
+	Lei Huang <huanglei@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.13 137/274] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
+Date: Wed, 19 Feb 2025 09:26:31 +0100
+Message-ID: <20250219082614.967937683@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -66,65 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Lei Huang <huanglei@kylinos.cn>
 
-commit 4aac0db5a0ebc599d4ad9bf5ebab78afa1f33e10 upstream.
+commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
 
-When usb_control_msg is used in the get_bMaxPacketSize0 function, the
-USB pipe does not include the endpoint device number. This can cause
-failures when a usb hub port is reinitialized after encountering a bad
-cable connection. As a result, the system logs the following error
-messages:
-usb usb2-port1: cannot reset (err = -32)
-usb usb2-port1: Cannot enable. Maybe the USB cable is bad?
-usb usb2-port1: attempt power cycle
-usb 2-1: new high-speed USB device number 5 using ci_hdrc
-usb 2-1: device descriptor read/8, error -71
+Teclast disk used on Huawei hisi platforms doesn't work well,
+losing connectivity intermittently if LPM is enabled.
+Add quirk disable LPM to resolve the issue.
 
-The problem began after commit 85d07c556216 ("USB: core: Unite old
-scheme and new scheme descriptor reads"). There
-usb_get_device_descriptor was replaced with get_bMaxPacketSize0. Unlike
-usb_get_device_descriptor, the get_bMaxPacketSize0 function uses the
-macro usb_rcvaddr0pipe, which does not include the endpoint device
-number. usb_get_device_descriptor, on the other hand, used the macro
-usb_rcvctrlpipe, which includes the endpoint device number.
-
-By modifying the get_bMaxPacketSize0 function to use usb_rcvctrlpipe
-instead of usb_rcvaddr0pipe, the issue can be resolved. This change will
-ensure that the endpoint device number is included in the USB pipe,
-preventing reinitialization failures. If the endpoint has not set the
-device number yet, it will still work because the device number is 0 in
-udev.
-
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
 Cc: stable <stable@kernel.org>
-Fixes: 85d07c556216 ("USB: core: Unite old scheme and new scheme descriptor reads")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250203105840.17539-1-eichest@gmail.com
+Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -4698,7 +4698,6 @@ void usb_ep0_reinit(struct usb_device *u
- EXPORT_SYMBOL_GPL(usb_ep0_reinit);
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -522,6 +522,9 @@ static const struct usb_device_id usb_qu
+ 	/* Blackmagic Design UltraStudio SDI */
+ 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
  
- #define usb_sndaddr0pipe()	(PIPE_CONTROL << 30)
--#define usb_rcvaddr0pipe()	((PIPE_CONTROL << 30) | USB_DIR_IN)
- 
- static int hub_set_address(struct usb_device *udev, int devnum)
- {
-@@ -4804,7 +4803,7 @@ static int get_bMaxPacketSize0(struct us
- 	for (i = 0; i < GET_MAXPACKET0_TRIES; ++i) {
- 		/* Start with invalid values in case the transfer fails */
- 		buf->bDescriptorType = buf->bMaxPacketSize0 = 0;
--		rc = usb_control_msg(udev, usb_rcvaddr0pipe(),
-+		rc = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
- 				USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
- 				USB_DT_DEVICE << 8, 0,
- 				buf, size,
++	/* Teclast disk */
++	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Hauppauge HVR-950q */
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
