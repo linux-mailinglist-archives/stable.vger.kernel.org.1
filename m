@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04816A3BA62
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DEBA3B6A3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAD6E8025A0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35F4F3B3441
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348C01E51ED;
-	Wed, 19 Feb 2025 09:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27D31F2BA9;
+	Wed, 19 Feb 2025 08:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5V1BE8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRHrfFAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F901E503C;
-	Wed, 19 Feb 2025 09:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806A91F1818;
+	Wed, 19 Feb 2025 08:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957480; cv=none; b=DMWtdbHQqBZhG4vfsnW3VQVJ57xpm3i9JAaBVaHnm7mcHAYVB7MxRacFZPZhZsOmHJyD9MKTz5K9PWla6CtWOmATmeYTkCONKnOtW7XUwBzHSRRTzd/2wS/Tl3UUrfgA0lIoEOn+HG/4kmByzggLi2+0IjE+YAQrRA9UejPva1M=
+	t=1739955412; cv=none; b=gsrpsNPJdL/TLEBbN5Tu+PpjiC8rK8u6ODg0CwvQE2Zf073qCgJtoQCw0KI5Vf0t4SSeUQGerK95RBmRAGpm/g3bog1fmRMA7Vj3uWHrY7/ZSxowxHzGAv1c5aa7l0NLkXbY9vLMRxsjQVzvgtiuD2hp7ds359kVyTMBvo+JHcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957480; c=relaxed/simple;
-	bh=1lL/3WRYM9YlucqZCxoFE2T0yW8QzOAiPpTiGAt7ifE=;
+	s=arc-20240116; t=1739955412; c=relaxed/simple;
+	bh=vWpJ2qbVKdhN6wgH6qQ7Ot0D+oy5vJ8X7F/aJraQGfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2Io3jG32fw0QgGGoSbHcLzVztoZvlDwKAiVriHDz1CGStjoiMqq9oZFN7kvq2dbyj2pviPjq9N5hb9NEhe2POv01AspfMMsZkiGA1CAG7Ks0hrw34MpX/FT6xHRChVCazcZ5KdUe5xMK7wQNkf/vn+gbxaMn3fEPXrgJ1f0q28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5V1BE8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EDBC4CED1;
-	Wed, 19 Feb 2025 09:31:19 +0000 (UTC)
+	 MIME-Version; b=DJPfBfkgbrePSEpBtP/OkAy7wAhlHdMUmbByoWdsvcHoP5mt8UeTW2T68v38fGobuF+Hf0jpkQS9rViL0rpChtKh5p94GYemuPpwBiooGgL1rKCrkvC1dRXH16vu+ib8kKUrm3SF2dSyPygVubbNPv6TjjZO65LkxBFepoBW4ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRHrfFAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB821C4CED1;
+	Wed, 19 Feb 2025 08:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957479;
-	bh=1lL/3WRYM9YlucqZCxoFE2T0yW8QzOAiPpTiGAt7ifE=;
+	s=korg; t=1739955412;
+	bh=vWpJ2qbVKdhN6wgH6qQ7Ot0D+oy5vJ8X7F/aJraQGfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5V1BE8CvekVB/KPSiLPSiJTaOgZ1+9DVcfU4TjiuBglknTkY0W+r+GKSN00AeSX7
-	 jxHqn2tQtSPTbyByySersjoWA2e0Aunk1uTVZQJlWJEbutipSuuwcjcKurd6wio5hr
-	 aMW1twfz01Nfj7lgUJk+ajWvOnuJ6rb7DgX5x1RQ=
+	b=kRHrfFAxdwpWRGSMKEIi4gjhR5oYxzOYdRnDjKJCEHw3rkIb5xyrfMqKQmrCApvmK
+	 JzWdBLO3xEXItprrRt62J0NC6/jjSiexwbRfk10xdYhHfIHqRoo3ZU/C6MWRMQd3Go
+	 XaeBKV9VU1AYiTnkSWdJJDaW0Ry7Hac84XjqYnRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 540/578] net: add dev_net_rcu() helper
+	Pumpkin Chang <pumpkin@devco.re>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 227/230] io_uring/kbuf: reallocate buf lists on upgrade
 Date: Wed, 19 Feb 2025 09:29:04 +0100
-Message-ID: <20250219082714.213293497@linuxfoundation.org>
+Message-ID: <20250219082610.565155032@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 482ad2a4ace2740ca0ff1cbc8f3c7f862f3ab507 ]
+commit 8802766324e1f5d414a81ac43365c20142e85603 upstream.
 
-dev->nd_net can change, readers should either
-use rcu_read_lock() or RTNL.
+IORING_REGISTER_PBUF_RING can reuse an old struct io_buffer_list if it
+was created for legacy selected buffer and has been emptied. It violates
+the requirement that most of the field should stay stable after publish.
+Always reallocate it instead.
 
-We currently use a generic helper, dev_net() with
-no debugging support. We probably have many hidden bugs.
-
-Add dev_net_rcu() helper for callers using rcu_read_lock()
-protection.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 71b8471c93fa ("ipv4: use RCU protection in ipv4_default_advmss()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Pumpkin Chang <pumpkin@devco.re>
+Fixes: 2fcabce2d7d34 ("io_uring: disallow mixed provided buffer group registrations")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h   | 6 ++++++
- include/net/net_namespace.h | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ io_uring/kbuf.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index c75aed1fff7d1..d0b4920dee730 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2538,6 +2538,12 @@ struct net *dev_net(const struct net_device *dev)
- 	return read_pnet(&dev->nd_net);
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -420,6 +420,12 @@ void io_destroy_buffers(struct io_ring_c
+ 	}
  }
  
-+static inline
-+struct net *dev_net_rcu(const struct net_device *dev)
++static void io_destroy_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
 +{
-+	return read_pnet_rcu(&dev->nd_net);
++	xa_erase(&ctx->io_bl_xa, bl->bgid);
++	io_put_bl(ctx, bl);
 +}
 +
- static inline
- void dev_net_set(struct net_device *dev, struct net *net)
+ int io_remove_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
  {
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 3ffcc1b02a590..ee50d54936629 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -373,7 +373,7 @@ static inline struct net *read_pnet(const possible_net_t *pnet)
- #endif
- }
+ 	struct io_provide_buf *p = io_kiocb_to_cmd(req, struct io_provide_buf);
+@@ -717,12 +723,13 @@ int io_register_pbuf_ring(struct io_ring
+ 		/* if mapped buffer ring OR classic exists, don't allow */
+ 		if (bl->flags & IOBL_BUF_RING || !list_empty(&bl->buf_list))
+ 			return -EEXIST;
+-	} else {
+-		free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
+-		if (!bl)
+-			return -ENOMEM;
++		io_destroy_bl(ctx, bl);
+ 	}
  
--static inline struct net *read_pnet_rcu(possible_net_t *pnet)
-+static inline struct net *read_pnet_rcu(const possible_net_t *pnet)
- {
- #ifdef CONFIG_NET_NS
- 	return rcu_dereference(pnet->net);
--- 
-2.39.5
-
++	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
++	if (!bl)
++		return -ENOMEM;
++
+ 	if (!(reg.flags & IOU_PBUF_RING_MMAP))
+ 		ret = io_pin_pbuf_ring(&reg, bl);
+ 	else
 
 
 
