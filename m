@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-118028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B639A3B9C3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E847CA3B63A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2008942244A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4B6C3B7A3D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0641C2432;
-	Wed, 19 Feb 2025 09:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADFE1F63E4;
+	Wed, 19 Feb 2025 08:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghP/tTJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHMCHnFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0FF28629E;
-	Wed, 19 Feb 2025 09:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC991EEA54;
+	Wed, 19 Feb 2025 08:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957032; cv=none; b=qTotWwEXL+q2R5Mc0+Ekbdk4ZTBs66H9bKHc5QWdUnIphg47BMa7V0NwILnpNWNhRQ/t0vt04wdPqEOyf0Og0e/6cCLylyxJI3JXQiRDEnN5kE8j/lQwhgkQx2FXPFfnrtWcQgwxZMJ51vBBtWNRa2m/wUSPXznrZW4BWNxuoCo=
+	t=1739954798; cv=none; b=qcXx2KCQHjr6qb6iRxXblK8gKqjQKishoYusGQldEavW4BZutD4uYdO46WqTlZyAh7S1Nlak4snfdnSjwGHj5RhDMCetP7r8dIldQv25rU9u2kH+yIp5fI7/QPtzjMFnB64Hwxp3sH/06C+UKUGkMeP80EqKZPE+wLolbJu2N6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957032; c=relaxed/simple;
-	bh=L+FZ+fj5tDEPjD1wvBWHTCFRYtrnqpa+QjcPuJAxsjk=;
+	s=arc-20240116; t=1739954798; c=relaxed/simple;
+	bh=Ku8sNTQu217ROkcVFR7okDcdeghudvs65SpYgWaxqOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m3/fQsJmTLZe7eUK+KorfH7ZUeoFo3O3JqdoHSk/gLVh6YFvrHO64mKZrVbRvObaW91xEd37CFKF47JXIIw9Y6UOEOuKPfl4lLSlxrp0t2LSvUbPO09In2h1sz2wU81pUoqru4zQ4tvGZMuy1q5TynOi9Pqr9TMIUUEHTo8cYAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghP/tTJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8136C4CED1;
-	Wed, 19 Feb 2025 09:23:51 +0000 (UTC)
+	 MIME-Version; b=V0vB/BypCG6HqIW5xcSgqu5MW9ojzwcnOs3hs3l2A3L3Au4hMKHnQTTM3fJw5I8aXcKKPa7rz7NJFRi2l4ICHa32RYcmX9qVGA+9OrlcZr3Squ5UbuT5IrD7/PWcqGdn3YEA1Esjpb6/ns2Ceh7Sdr6qI+8d9U8qgJllbkyTmpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHMCHnFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D00C4CEE6;
+	Wed, 19 Feb 2025 08:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957032;
-	bh=L+FZ+fj5tDEPjD1wvBWHTCFRYtrnqpa+QjcPuJAxsjk=;
+	s=korg; t=1739954798;
+	bh=Ku8sNTQu217ROkcVFR7okDcdeghudvs65SpYgWaxqOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghP/tTJBx2yNMQ9F974u9Bnyw8Nh6ZmklKgDbHbeZMWBAHO9PZ/bkR0w71HQrrO5U
-	 hqaQ9YTj6EZlQ5aMtIxhUuNUX2GErEVLAYDqSUy7/E6jypZuyFfEpku+nuuFFmcagd
-	 OOC11MFmevLj1yCaejtemGXLSkZ9vo11Vpqf0Z7A=
+	b=sHMCHnFJ2lBSu7hLZn3cfwiR34xorg0r5B1ikgMEs0lO6YVpiAfIBZ4oGYs9WVKs9
+	 +ytvxSYgmPkYJ8IR3uMz10bUljEbPxV2JUgIpM7kFlqaZdfOXj6VT0PyO4k5ZtVi+i
+	 X7Ff9lquK98bj0RBcJIMI9Rz1rmqbEAEK9w2o2ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.1 353/578] drm/i915: Drop 64bpp YUV formats from ICL+ SDR planes
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 040/230] drm/xe/client: bo->client does not need bos_lock
 Date: Wed, 19 Feb 2025 09:25:57 +0100
-Message-ID: <20250219082706.909764764@linuxfoundation.org>
+Message-ID: <20250219082603.279261276@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-commit c7b49506b3ba7a62335e6f666a43f67d5cd9fd1e upstream.
+[ Upstream commit fc876c9524e2a9f816f51d533ed31df789cff65a ]
 
-I'm seeing underruns with these 64bpp YUV formats on TGL.
+bos_lock is to protect list of bos used by client, it is
+not required to protect bo->client so bring it outside of
+bos_lock.
 
-The weird details:
-- only happens on pipe B/C/D SDR planes, pipe A SDR planes
-  seem fine, as do all HDR planes
-- somehow CDCLK related, higher CDCLK allows for bigger plane
-  with these formats without underruns. With 300MHz CDCLK I
-  can only go up to 1200 pixels wide or so, with 650MHz even
-  a 3840 pixel wide plane was OK
-- ICL and ADL so far appear unaffected
-
-So not really sure what's the deal with this, but bspec does
-state "64-bit formats supported only on the HDR planes" so
-let's just drop these formats from the SDR planes. We already
-disallow 64bpp RGB formats.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241218173650.19782-2-ville.syrjala@linux.intel.com
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-(cherry picked from commit 35e1aacfe536d6e8d8d440cd7155366da2541ad4)
+Fixes: b27970f3e11c ("drm/xe: Add tracking support for bos per client")
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250205051042.1991192-1-tejas.upadhyay@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+(cherry picked from commit f74fd53ba34551b7626193fb70c17226f06e9bf1)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/skl_universal_plane.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/xe/xe_drm_client.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/skl_universal_plane.c
-+++ b/drivers/gpu/drm/i915/display/skl_universal_plane.c
-@@ -100,8 +100,6 @@ static const u32 icl_sdr_y_plane_formats
- 	DRM_FORMAT_Y216,
- 	DRM_FORMAT_XYUV8888,
- 	DRM_FORMAT_XVYU2101010,
--	DRM_FORMAT_XVYU12_16161616,
--	DRM_FORMAT_XVYU16161616,
- };
+diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
+index fb52a23e28f84..a89fbfbdab329 100644
+--- a/drivers/gpu/drm/xe/xe_drm_client.c
++++ b/drivers/gpu/drm/xe/xe_drm_client.c
+@@ -135,8 +135,8 @@ void xe_drm_client_add_bo(struct xe_drm_client *client,
+ 	XE_WARN_ON(bo->client);
+ 	XE_WARN_ON(!list_empty(&bo->client_link));
  
- static const u32 icl_sdr_uv_plane_formats[] = {
-@@ -128,8 +126,6 @@ static const u32 icl_sdr_uv_plane_format
- 	DRM_FORMAT_Y216,
- 	DRM_FORMAT_XYUV8888,
- 	DRM_FORMAT_XVYU2101010,
--	DRM_FORMAT_XVYU12_16161616,
--	DRM_FORMAT_XVYU16161616,
- };
- 
- static const u32 icl_hdr_plane_formats[] = {
+-	spin_lock(&client->bos_lock);
+ 	bo->client = xe_drm_client_get(client);
++	spin_lock(&client->bos_lock);
+ 	list_add_tail(&bo->client_link, &client->bos_list);
+ 	spin_unlock(&client->bos_lock);
+ }
+-- 
+2.39.5
+
 
 
 
