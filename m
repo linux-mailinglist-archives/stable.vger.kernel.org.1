@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-117000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2638A3B3ED
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225A1A3B3F3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159C817290C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3363B3A8F31
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BB51CAA7D;
-	Wed, 19 Feb 2025 08:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4D91AF0C8;
+	Wed, 19 Feb 2025 08:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDCz7goe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZD5N+V2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5CB1C9B97;
-	Wed, 19 Feb 2025 08:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172C0155753;
+	Wed, 19 Feb 2025 08:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953895; cv=none; b=bN/TAhwz+mAwILy5gyMOfXWDbGTsd/g7ZHa43iSCXmTqoPaSBlmLx0Xo3MPEwRvqp4x+1BHlo8O1N8XukdrMOhgaG19MwgUH+otjHyOHpkEXNojLPqxSIunEcf2w4vZPvjZ07ruq9tNP+vlldvaNkjfnXRj3Ce+0IrC+yUVCgNI=
+	t=1739953907; cv=none; b=WnxorWmXvwLoe+V7m6XOn+eEgDIUjG9YP7L8At4w6OM+HxjMk0ufsOxS1gAWJB4UYdqqG+WYG7i2MW/cKChwcJfMZ6b0GkdlyVUJ7VO6aQz2qhzDMXt+TWaF7Edmp0XWpXD6/5k+/QDrlp7LqEhmrvn12zo1KJMmnTnUjxSjRjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953895; c=relaxed/simple;
-	bh=G/Sg2/84M8ZZgYBV+iPUsB9cvvllnX2CwDOEUovf9QU=;
+	s=arc-20240116; t=1739953907; c=relaxed/simple;
+	bh=euYLHGeXouYqAKgFbfk7m+3h7ZSFqXW57JHsoSWYpz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sq7KZwMl7WZ0PWVfQxM3PjlzNlElmEClvr1Up8vSnxHz1y1psjW7s91N7NFk7GxoGKz92lkywHyDIMoex6+5kotbSlcCUWUSFGVuwnwUHYIryVkC5nwxA9kKJ4+oGrfD+qa+qM+qpRgcOChsiy5A/HFd+4FV/EarhiJBCF7vU0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDCz7goe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E0CC4CEE7;
-	Wed, 19 Feb 2025 08:31:34 +0000 (UTC)
+	 MIME-Version; b=JiulF0pWSj1CCdHx1UDxWSNBvFPetpoJ6a11QlfRL1xi84ctr63Z9v8kJOulHZgke5m7MvGN1Cuxi1TxTxp9nzeOwE3asFDwsEt45Z77X2l+HyuDUhaq7iPiAMatABDICTXOCOyH5PToj/983YN4+vsckoIUTsw09FsKqAib+js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZD5N+V2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C98C4CED1;
+	Wed, 19 Feb 2025 08:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739953894;
-	bh=G/Sg2/84M8ZZgYBV+iPUsB9cvvllnX2CwDOEUovf9QU=;
+	s=korg; t=1739953907;
+	bh=euYLHGeXouYqAKgFbfk7m+3h7ZSFqXW57JHsoSWYpz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDCz7goeNxRx608pLhPGLfcKDuEnEHG04WDh91DMLbUZwHVU/CTTuVBZRWcJaZlpo
-	 XsfFrCeFy33mr0IKL3rMT5szIMBOULcZ4gAwmjrj3pPmnu2aLWtnyGBfc0K+FsxYq8
-	 h07i5uIZyPwIejU5niJvphDQaxIxXBCpawd9BMqg=
+	b=ZD5N+V2ACzoO/h2mgk+je3xEkpfVJ4UxqHMHw/piL+d3CZ+XWdklwxNZsbLzf7mAs
+	 pQKzs1EutevUhoeuwGrb7u2DeWAqlg48MFWerdGHYIuo5L0A2kFY+QhiYswGbD+JKA
+	 Q6mBfn359j+SHhd5Od5UmuV1pYg75zbj4yXGMtqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Rick Macklem <rmacklem@uoguelph.ca>,
+	Dai Ngo <dai.ngo@oracle.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.13 003/274] nfsd: clear acl_access/acl_default after releasing them
-Date: Wed, 19 Feb 2025 09:24:17 +0100
-Message-ID: <20250219082609.670620012@linuxfoundation.org>
+Subject: [PATCH 6.13 004/274] NFSD: fix hang in nfsd4_shutdown_callback
+Date: Wed, 19 Feb 2025 09:24:18 +0100
+Message-ID: <20250219082609.709037282@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -67,111 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit 7faf14a7b0366f153284db0ad3347c457ea70136 upstream.
+commit 036ac2778f7b28885814c6fbc07e156ad1624d03 upstream.
 
-If getting acl_default fails, acl_access and acl_default will be released
-simultaneously. However, acl_access will still retain a pointer pointing
-to the released posix_acl, which will trigger a WARNING in
-nfs3svc_release_getacl like this:
+If nfs4_client is in courtesy state then there is no point to send
+the callback. This causes nfsd4_shutdown_callback to hang since
+cl_cb_inflight is not 0. This hang lasts about 15 minutes until TCP
+notifies NFSD that the connection was dropped.
 
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 26 PID: 3199 at lib/refcount.c:28
-refcount_warn_saturate+0xb5/0x170
-Modules linked in:
-CPU: 26 UID: 0 PID: 3199 Comm: nfsd Not tainted
-6.12.0-rc6-00079-g04ae226af01f-dirty #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb5/0x170
-Code: cc cc 0f b6 1d b3 20 a5 03 80 fb 01 0f 87 65 48 d8 00 83 e3 01 75
-e4 48 c7 c7 c0 3b 9b 85 c6 05 97 20 a5 03 01 e8 fb 3e 30 ff <0f> 0b eb
-cd 0f b6 1d 8a3
-RSP: 0018:ffffc90008637cd8 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83904fde
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff88871ed36380
-RBP: ffff888158beeb40 R08: 0000000000000001 R09: fffff520010c6f56
-R10: ffffc90008637ab7 R11: 0000000000000001 R12: 0000000000000001
-R13: ffff888140e77400 R14: ffff888140e77408 R15: ffffffff858b42c0
-FS:  0000000000000000(0000) GS:ffff88871ed00000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000562384d32158 CR3: 000000055cc6a000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? refcount_warn_saturate+0xb5/0x170
- ? __warn+0xa5/0x140
- ? refcount_warn_saturate+0xb5/0x170
- ? report_bug+0x1b1/0x1e0
- ? handle_bug+0x53/0xa0
- ? exc_invalid_op+0x17/0x40
- ? asm_exc_invalid_op+0x1a/0x20
- ? tick_nohz_tick_stopped+0x1e/0x40
- ? refcount_warn_saturate+0xb5/0x170
- ? refcount_warn_saturate+0xb5/0x170
- nfs3svc_release_getacl+0xc9/0xe0
- svc_process_common+0x5db/0xb60
- ? __pfx_svc_process_common+0x10/0x10
- ? __rcu_read_unlock+0x69/0xa0
- ? __pfx_nfsd_dispatch+0x10/0x10
- ? svc_xprt_received+0xa1/0x120
- ? xdr_init_decode+0x11d/0x190
- svc_process+0x2a7/0x330
- svc_handle_xprt+0x69d/0x940
- svc_recv+0x180/0x2d0
- nfsd+0x168/0x200
- ? __pfx_nfsd+0x10/0x10
- kthread+0x1a2/0x1e0
- ? kthread+0xf4/0x1e0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x60
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-Kernel panic - not syncing: kernel: panic_on_warn set ...
+This patch modifies nfsd4_run_cb_work to skip the RPC call if
+nfs4_client is in courtesy state.
 
-Clear acl_access/acl_default after posix_acl_release is called to prevent
-UAF from being triggered.
-
-Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Fixes: 66af25799940 ("NFSD: add courteous server support for thread with only delegation")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241107014705.2509463-1-lilingfeng@huaweicloud.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Rick Macklem <rmacklem@uoguelph.ca>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs2acl.c |    2 ++
- fs/nfsd/nfs3acl.c |    2 ++
- 2 files changed, 4 insertions(+)
+ fs/nfsd/nfs4callback.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -84,6 +84,8 @@ out:
- fail:
- 	posix_acl_release(resp->acl_access);
- 	posix_acl_release(resp->acl_default);
-+	resp->acl_access = NULL;
-+	resp->acl_default = NULL;
- 	goto out;
- }
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1547,8 +1547,11 @@ nfsd4_run_cb_work(struct work_struct *wo
+ 		nfsd4_process_cb_update(cb);
  
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -76,6 +76,8 @@ out:
- fail:
- 	posix_acl_release(resp->acl_access);
- 	posix_acl_release(resp->acl_default);
-+	resp->acl_access = NULL;
-+	resp->acl_default = NULL;
- 	goto out;
- }
- 
+ 	clnt = clp->cl_cb_client;
+-	if (!clnt) {
+-		/* Callback channel broken, or client killed; give up: */
++	if (!clnt || clp->cl_state == NFSD4_COURTESY) {
++		/*
++		 * Callback channel broken, client killed or
++		 * nfs4_client in courtesy state; give up.
++		 */
+ 		nfsd41_destroy_cb(cb);
+ 		return;
+ 	}
 
 
 
