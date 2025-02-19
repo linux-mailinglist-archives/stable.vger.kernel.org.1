@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593B2A3BA46
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C176CA3B79A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAC41188AC23
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B41216C346
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927D31EA7C4;
-	Wed, 19 Feb 2025 09:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CFB1E3DC6;
+	Wed, 19 Feb 2025 09:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+0BdRjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9MUEU0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3EA1C5485;
-	Wed, 19 Feb 2025 09:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3B11E51F8;
+	Wed, 19 Feb 2025 09:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957523; cv=none; b=ZEAePM9KH2RoY4baok/f5+PTYX2divcQRw8bGbb9Rw0Kg+9bjVV8xWI9dvVEQEdpauwPqrXpa5/EVWCbK4c/sorHSt9d4K0zMFvTwioxvsApX9pYD49ZkFv9pxSWaESbQUX2syYEu5FVeFSyWqv+zDv/ECOQW78bD/kWXwAFfKY=
+	t=1739955789; cv=none; b=Sbwwzl9oaTmuXtDFbnLF32VCnHwWiG9IGEuaBakFYXaHsOnmpg9HsjS4M30XQLIdQbGrUlUzQ8InRbNJo7SRWs7kignXLZpE7FacM2NzWV7oXfMgYRKZ2gowKFdbD7vjp3cLVx9AQW2nbzLQvV39EuFMsCKStzPxORm6GxdbRic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957523; c=relaxed/simple;
-	bh=z40TIGt7+0GVcgvAYqtfnhCBpGbSISAp9+LvOKRCBdA=;
+	s=arc-20240116; t=1739955789; c=relaxed/simple;
+	bh=/C+CJePoFVSl4oEXPQ1hQvSKX6QJ7J+ylswQw8z+IqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FV58VZoYsBEZjJSg0SxLajx4a7EJ/QEu73IMMHNp5iNibKOWGa2STXSlS/Bn3+cj+3ynQbJ+fFIqZIpGIYx7vsAGF0N15XJKPJZAoa4nNm8ChT1taCMAuik6ZU63XQZbsccVUya0EteGTx+l6s/6k+Zol7V/qCERn6F4TLtq2E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+0BdRjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD532C4CED1;
-	Wed, 19 Feb 2025 09:32:02 +0000 (UTC)
+	 MIME-Version; b=MPl2r+YGNz/k6K4R1C7iMOf4xRtKvp00ODSA2wDYz4QOaHaf2l7bfApRn/w7uxwAS+wIybZzQ2XxEVvSTUbzKNzS/MqwhvIiy/sFZH2WJaNIrp59hzWjC9vauYJrCY9f5E7NVNz5WRM/fh4UG1hQprS9f5V1In7DZyzL3Tr6NY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9MUEU0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E427C4CED1;
+	Wed, 19 Feb 2025 09:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957523;
-	bh=z40TIGt7+0GVcgvAYqtfnhCBpGbSISAp9+LvOKRCBdA=;
+	s=korg; t=1739955789;
+	bh=/C+CJePoFVSl4oEXPQ1hQvSKX6QJ7J+ylswQw8z+IqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+0BdRjwwZL53prrHhJNCmYsjPqgxXkIkNKEzS9aV0mo7V5HypAxQ7VEIdBckO9Jp
-	 gGlYdb17dnRpr5rlXhOAqIu48KlmostJfDx/OX6p/qZWgqr9EFTjM83SIKTlUJVi5/
-	 I5l9alhPPBiZgjmYsjNgXOiWKFs5DHZkAIFQwSpI=
+	b=F9MUEU0TDCD6ymEg4jFd5qPtt1OFazlAycSQHm4oWKsXLAzSsAczd2VJmrmT8RSDc
+	 K11BOo+315D+ThvpSjgnD1Ji8WU41jjN+YZ4qCkDB9E5xrPXY80ap6t1vJnWkkUFgw
+	 9VCTTQCW/h2Wn2uTZvxhiy7IHbGKx8q4BUX25Jhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 6.1 523/578] alpha: make stack 16-byte aligned (most cases)
-Date: Wed, 19 Feb 2025 09:28:47 +0100
-Message-ID: <20250219082713.547579142@linuxfoundation.org>
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 115/152] HID: hid-steam: Add gamepad-only mode switched to by holding options
+Date: Wed, 19 Feb 2025 09:28:48 +0100
+Message-ID: <20250219082554.606788496@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Vicki Pfau <vi@endrift.com>
 
-commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
+[ Upstream commit cd438e57dd05b077f4e87c1567beafb2377b6d6b ]
 
-The problem is that GCC expects 16-byte alignment of the incoming stack
-since early 2004, as Maciej found out [1]:
-  Having actually dug speculatively I can see that the psABI was changed in
- GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
- improperly aligned)") back in Mar 2004, when the stack pointer alignment
- was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
- various suspicious stack pointer adjustments, starting with SP_OFF which
- is not a whole multiple of 16.
+This commit adds a hotkey to switch between "gamepad" mode (mouse and keyboard
+disabled) and "desktop" mode (gamepad disabled) by holding down the options
+button (mapped here as the start button). This mirrors the behavior of the
+official Steam client.
 
-Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
- D.3.1 Stack Alignment
-  This standard requires that stacks be octaword aligned at the time a
-  new procedure is invoked.
+This also adds and uses a function for generating haptic pulses, as Steam also
+does when engaging this hotkey.
 
-However:
-- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
-  the odd number of 64-bit words in 'struct pt_regs', which is the very
-  first thing pushed onto the kernel thread stack;
-- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
-  stack depending on numerous factors.
-
-Somehow we got away with it until recently, when we ended up with
-a stack corruption in kernel/smp.c:smp_call_function_single() due to
-its use of 32-byte aligned local data and the compiler doing clever
-things allocating it on the stack.
-
-This adds padding between the PAL-saved and kernel-saved registers
-so that 'struct pt_regs' have an even number of 64-bit words.
-This makes the stack properly aligned for most of the kernel
-code, except two handlers which need special threatment.
-
-Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
-but let's put this off until later.
-
-Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
-Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
-
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/include/uapi/asm/ptrace.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-steam.c | 113 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 103 insertions(+), 10 deletions(-)
 
---- a/arch/alpha/include/uapi/asm/ptrace.h
-+++ b/arch/alpha/include/uapi/asm/ptrace.h
-@@ -42,6 +42,8 @@ struct pt_regs {
- 	unsigned long trap_a0;
- 	unsigned long trap_a1;
- 	unsigned long trap_a2;
-+/* This makes the stack 16-byte aligned as GCC expects */
-+	unsigned long __pad0;
- /* These are saved by PAL-code: */
- 	unsigned long ps;
- 	unsigned long pc;
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index 991db5acf5ddb..2f87026f01de1 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -273,6 +273,11 @@ enum {
+ 	TRACKPAD_GESTURE_KEYBOARD,
+ };
+ 
++/* Pad identifiers for the deck */
++#define STEAM_PAD_LEFT 0
++#define STEAM_PAD_RIGHT 1
++#define STEAM_PAD_BOTH 2
++
+ /* Other random constants */
+ #define STEAM_SERIAL_LEN 10
+ 
+@@ -291,6 +296,9 @@ struct steam_device {
+ 	struct power_supply __rcu *battery;
+ 	u8 battery_charge;
+ 	u16 voltage;
++	struct delayed_work mode_switch;
++	bool did_mode_switch;
++	bool gamepad_mode;
+ 	struct work_struct rumble_work;
+ 	u16 rumble_left;
+ 	u16 rumble_right;
+@@ -459,6 +467,37 @@ static inline int steam_request_conn_status(struct steam_device *steam)
+ 	return ret;
+ }
+ 
++/*
++ * Send a haptic pulse to the trackpads
++ * Duration and interval are measured in microseconds, count is the number
++ * of pulses to send for duration time with interval microseconds between them
++ * and gain is measured in decibels, ranging from -24 to +6
++ */
++static inline int steam_haptic_pulse(struct steam_device *steam, u8 pad,
++				u16 duration, u16 interval, u16 count, u8 gain)
++{
++	int ret;
++	u8 report[10] = {ID_TRIGGER_HAPTIC_PULSE, 8};
++
++	/* Left and right are swapped on this report for legacy reasons */
++	if (pad < STEAM_PAD_BOTH)
++		pad ^= 1;
++
++	report[2] = pad;
++	report[3] = duration & 0xFF;
++	report[4] = duration >> 8;
++	report[5] = interval & 0xFF;
++	report[6] = interval >> 8;
++	report[7] = count & 0xFF;
++	report[8] = count >> 8;
++	report[9] = gain;
++
++	mutex_lock(&steam->report_mutex);
++	ret = steam_send_report(steam, report, sizeof(report));
++	mutex_unlock(&steam->report_mutex);
++	return ret;
++}
++
+ static inline int steam_haptic_rumble(struct steam_device *steam,
+ 				u16 intensity, u16 left_speed, u16 right_speed,
+ 				u8 left_gain, u8 right_gain)
+@@ -504,6 +543,9 @@ static int steam_play_effect(struct input_dev *dev, void *data,
+ 
+ static void steam_set_lizard_mode(struct steam_device *steam, bool enable)
+ {
++	if (steam->gamepad_mode)
++		enable = false;
++
+ 	if (enable) {
+ 		mutex_lock(&steam->report_mutex);
+ 		/* enable esc, enter, cursors */
+@@ -541,11 +583,18 @@ static int steam_input_open(struct input_dev *dev)
+ 	unsigned long flags;
+ 	bool set_lizard_mode;
+ 
+-	spin_lock_irqsave(&steam->lock, flags);
+-	set_lizard_mode = !steam->client_opened && lizard_mode;
+-	spin_unlock_irqrestore(&steam->lock, flags);
+-	if (set_lizard_mode)
+-		steam_set_lizard_mode(steam, false);
++	/*
++	 * Disabling lizard mode automatically is only done on the Steam
++	 * Controller. On the Steam Deck, this is toggled manually by holding
++	 * the options button instead, handled by steam_mode_switch_cb.
++	 */
++	if (!(steam->quirks & STEAM_QUIRK_DECK)) {
++		spin_lock_irqsave(&steam->lock, flags);
++		set_lizard_mode = !steam->client_opened && lizard_mode;
++		spin_unlock_irqrestore(&steam->lock, flags);
++		if (set_lizard_mode)
++			steam_set_lizard_mode(steam, false);
++	}
+ 
+ 	return 0;
+ }
+@@ -556,11 +605,13 @@ static void steam_input_close(struct input_dev *dev)
+ 	unsigned long flags;
+ 	bool set_lizard_mode;
+ 
+-	spin_lock_irqsave(&steam->lock, flags);
+-	set_lizard_mode = !steam->client_opened && lizard_mode;
+-	spin_unlock_irqrestore(&steam->lock, flags);
+-	if (set_lizard_mode)
+-		steam_set_lizard_mode(steam, true);
++	if (!(steam->quirks & STEAM_QUIRK_DECK)) {
++		spin_lock_irqsave(&steam->lock, flags);
++		set_lizard_mode = !steam->client_opened && lizard_mode;
++		spin_unlock_irqrestore(&steam->lock, flags);
++		if (set_lizard_mode)
++			steam_set_lizard_mode(steam, true);
++	}
+ }
+ 
+ static enum power_supply_property steam_battery_props[] = {
+@@ -885,6 +936,34 @@ static void steam_work_connect_cb(struct work_struct *work)
+ 	}
+ }
+ 
++static void steam_mode_switch_cb(struct work_struct *work)
++{
++	struct steam_device *steam = container_of(to_delayed_work(work),
++							struct steam_device, mode_switch);
++	unsigned long flags;
++	bool client_opened;
++	steam->gamepad_mode = !steam->gamepad_mode;
++	if (!lizard_mode)
++		return;
++
++	if (steam->gamepad_mode)
++		steam_set_lizard_mode(steam, false);
++	else {
++		spin_lock_irqsave(&steam->lock, flags);
++		client_opened = steam->client_opened;
++		spin_unlock_irqrestore(&steam->lock, flags);
++		if (!client_opened)
++			steam_set_lizard_mode(steam, lizard_mode);
++	}
++
++	steam_haptic_pulse(steam, STEAM_PAD_RIGHT, 0x190, 0, 1, 0);
++	if (steam->gamepad_mode) {
++		steam_haptic_pulse(steam, STEAM_PAD_LEFT, 0x14D, 0x14D, 0x2D, 0);
++	} else {
++		steam_haptic_pulse(steam, STEAM_PAD_LEFT, 0x1F4, 0x1F4, 0x1E, 0);
++	}
++}
++
+ static bool steam_is_valve_interface(struct hid_device *hdev)
+ {
+ 	struct hid_report_enum *rep_enum;
+@@ -1039,6 +1118,7 @@ static int steam_probe(struct hid_device *hdev,
+ 	mutex_init(&steam->report_mutex);
+ 	steam->quirks = id->driver_data;
+ 	INIT_WORK(&steam->work_connect, steam_work_connect_cb);
++	INIT_DELAYED_WORK(&steam->mode_switch, steam_mode_switch_cb);
+ 	INIT_LIST_HEAD(&steam->list);
+ 	INIT_WORK(&steam->rumble_work, steam_haptic_rumble_cb);
+ 
+@@ -1096,6 +1176,7 @@ static int steam_probe(struct hid_device *hdev,
+ hid_hw_open_fail:
+ hid_hw_start_fail:
+ 	cancel_work_sync(&steam->work_connect);
++	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->rumble_work);
+ steam_alloc_fail:
+ 	hid_err(hdev, "%s: failed with error %d\n",
+@@ -1112,6 +1193,7 @@ static void steam_remove(struct hid_device *hdev)
+ 		return;
+ 	}
+ 
++	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->work_connect);
+ 	hid_destroy_device(steam->client_hdev);
+ 	steam->client_hdev = NULL;
+@@ -1397,6 +1479,17 @@ static void steam_do_deck_input_event(struct steam_device *steam,
+ 	b13 = data[13];
+ 	b14 = data[14];
+ 
++	if (!(b9 & BIT(6)) && steam->did_mode_switch) {
++		steam->did_mode_switch = false;
++		cancel_delayed_work_sync(&steam->mode_switch);
++	} else if (!steam->client_opened && (b9 & BIT(6)) && !steam->did_mode_switch) {
++		steam->did_mode_switch = true;
++		schedule_delayed_work(&steam->mode_switch, 45 * HZ / 100);
++	}
++
++	if (!steam->gamepad_mode)
++		return;
++
+ 	lpad_touched = b10 & BIT(3);
+ 	rpad_touched = b10 & BIT(4);
+ 
+-- 
+2.39.5
+
 
 
 
