@@ -1,166 +1,182 @@
-Return-Path: <stable+bounces-118311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C5BA3C61C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:25:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA93A3C62C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE4423B6282
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 17:25:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 464BF17966A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 17:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8132144BE;
-	Wed, 19 Feb 2025 17:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDAF21423F;
+	Wed, 19 Feb 2025 17:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvHPgHJF"
+	dkim=pass (2048-bit key) header.d=criticallink.com header.i=@criticallink.com header.b="Q0q77JbU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA302144A1;
-	Wed, 19 Feb 2025 17:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7F120E6F9
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 17:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739985927; cv=none; b=EMcF2uYuZAtplYHvFTdQYPGlu7eQ6+c66PAu6wMtHoWSqREiZlBfWr90ZDOrMb9TQhxz+1skYXYmwHtXnHY5vCWnaTmsTcfQ4uBTYr+xGJWqREBWfWvEboaEmGENHEGC/2negdrrNkazqyVXbrRTUwjB5SihfpYa6tb7E9trPC4=
+	t=1739986005; cv=none; b=VDe/imvG8roeZuyUiunQNe3Av8qPE4McpPcEP3jcefHaJdJPV3fzFbIrCpLuKJHZYEp9VG+7/pd1NUBNCBjZ95mYgqiENRCv7JXw8WmxcSSjHqa3+UO1VaatUNtnruTlkY11nZlt4QYcgTCrvercQBSGQa0PmfR5hQlaTjzwp84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739985927; c=relaxed/simple;
-	bh=ikNfhXqco/zJZ8TCINjDGAPmg4V6noayeVHjFs0Yu/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c3gZB92EkHkW8Bb90feTB7VKb2qxRhcPgEC8VjdtF+6Ghk0hknan3D9kRWThyZ6Ab0xAT5fK/5muUFFFbeNtD1ReeJGPVJzwkWcTSvXr0JYY9NhgrVR8I7kNToQzvAOdK9pomHnUagbY7dr0bpxVeLGuncmIXYpIVRo2FVW+Ors=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvHPgHJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F275C4CED1;
-	Wed, 19 Feb 2025 17:25:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739985927;
-	bh=ikNfhXqco/zJZ8TCINjDGAPmg4V6noayeVHjFs0Yu/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uvHPgHJFzQvrlD3awYsWUcla0n8dIxRVIbz4RH0VeLV8dwEFCU9Qf/wojt3GC0wlk
-	 ++TcMiJI6krHRmoO7At+xX4ymyQFZoIYFB/LCTncBSKYccb1sAaHTYaw3MLAuD6SzD
-	 6erSEDAVcsb561bKcI/1ineoDDo2KywCWcBD+GwqlbdsnLJ80DHKu0wrzDhXUv5abR
-	 /34aQfH2jaf992/jpuMIZG8S8wmGUal9kkaUWdF3TNGJpfmC7Xuy5II8bcPxgFUvzB
-	 jsgIyFqi5fwE+gwm8VUL1PG5PSWcHJ/0/vxj5HIcTQC6FhWCpOa6CMMu9DGj2aVJuO
-	 FphIi8TJL1nWQ==
-Date: Wed, 19 Feb 2025 09:25:24 -0800
-From: Kees Cook <kees@kernel.org>
-To: "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, linux-pm@vger.kernel.org,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Xiu Jianfeng <xiujianfeng@huawei.com>, stable@vger.kernel.org,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Pekka Enberg <penberg@kernel.org>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>
-Subject: Re: How does swsusp work with randomization features? (was: mm/slab:
- Initialise random_kmalloc_seed after initcalls)
-Message-ID: <202502190921.6E26F49@keescook>
-References: <20250212141648.599661-1-chenhuacai@loongson.cn>
- <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
- <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com>
- <Z68N4lTIIwudzcLY@MacBook-Air-5.local>
- <CAAhV-H5sFkdcLbvqYBGV2PM1+MOF5NMxwt+pCF9K6MhUu+R63Q@mail.gmail.com>
- <Z686y7g9OZ0DhT7Q@MacBook-Air-5.local>
+	s=arc-20240116; t=1739986005; c=relaxed/simple;
+	bh=1XiBNuJTzHPL/MRXYAuMZnQavCaHYjRJito6i20Mj+c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=js7t53ZJuKa7ALeQjprVTp2iRtpHPzQWwpiJnr8gLWcPEpptL7Uygknpx0k316P+Epx9DR9f4oBOYYkvG9HO2S3Q5PxQWg6Yk1xshR/MCkrzAoMmqf2G3CFVsoJaw2rHmBvTdVHbO7Uz84h/92ChNmDMVVQQIG6gZT4RZR+XfCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=criticallink.com; spf=pass smtp.mailfrom=criticallink.com; dkim=pass (2048-bit key) header.d=criticallink.com header.i=@criticallink.com header.b=Q0q77JbU; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=criticallink.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=criticallink.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5462ea9691cso77648e87.2
+        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 09:26:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=criticallink.com; s=google; t=1739986001; x=1740590801; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kezi20k2gpXEVyhfLjkzYhktG7Nl+uo5vkpb6jywdqw=;
+        b=Q0q77JbUzqj1pn+Q7Mwx6/WdYZwBNpmzLJPOTLZUpryd1v3XFW03+z4mrwb9RcIKbt
+         sDy85Lu5O+hnoxRcf/msW6WzA7oTidpTKS8FgVNocmFujFfzy8RTvDmzfSSM2YVcRkOu
+         rmQCzYKXyl55yDN8A0PPNqRvxbSBHuMFwtvlrMJOY+TBSrnPsO6ewFvG5AzqxSEph4P6
+         LUQIK6CxqzXJyPKieU9eIMhD5gSXqQCTr7lqbiEDo4Iv4VV1fQEM/7msGWfmSUiEA4SI
+         b93SYBHNgTf8T36uPiauQN9hmDlLTmMU8jf/7lMT8lOjRiqpbHBTpuLJhmaAqPsimYol
+         mSBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739986001; x=1740590801;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Kezi20k2gpXEVyhfLjkzYhktG7Nl+uo5vkpb6jywdqw=;
+        b=Fommx4euMJX/+hsb5A3mIs1WdlbGWgDMZLfgSLy/g1bDnf9I6ukMGFf5lbw5K6Uewa
+         HjhKfxSIgc5j72Ji8CcBIlTHr4FIu2zljGQSvPgzAocxhD+PjABFn8RFXOiIb62dAk9m
+         m6t1GqJXjoZ2cexJhQqamNBo+06Hqdtj2tVl57m2Z6dN6G/2pIBNdN3TRVSEzxyexeJm
+         nOAvWuK8tOuvpj4HpbqVbgpmvApC74wgSH/6VMKxYsz6/01YsvmyTqvjirNW7fADUUhr
+         h+h+RpicW4fyIYW+IPjFxMWp/MrkgOhFek2VLmE2/eVAiNJ+YOVxtqBpe9pNct8iOrsK
+         hUGA==
+X-Gm-Message-State: AOJu0YzLre0bYVQWS0RLwgipqjdiC5+mkk77/kAKO04oZ5a1t46/FQ6h
+	WjvErcNywagVKX263V4OhSGhmAPM4miJPD6401BhcskNA9vkW2v+kk6mr4KewzJEVW/O0CELH0L
+	l0+e8WvjnfGfc2vpuDEi7SAYFDgm1/M0xjty9
+X-Gm-Gg: ASbGncsaeMlFGSub4KdnvZBoOju5vTAZ3ZTgPn/rseXzcR8XHvlNKcOrVmJKoTh8CWR
+	HYxPPsot+ey8uDamAUcgD416sSRLHlSPR+DEEStv5oC7LXcOFIuhLc3bu50b6QipuAd6avyQ=
+X-Google-Smtp-Source: AGHT+IFSn1WjrEpk0+T0pG/tczzy4/xOeK+S+Yz0+rQBtSGOk4g/QyXsCji20gb3M6++A2ENSqW+LMiS6KW5PJWbtM0=
+X-Received: by 2002:a05:6512:1296:b0:545:95b:a335 with SMTP id
+ 2adb3069b0e04-5462eedef16mr1624005e87.14.1739986000801; Wed, 19 Feb 2025
+ 09:26:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z686y7g9OZ0DhT7Q@MacBook-Air-5.local>
+References: <20250219082652.891560343@linuxfoundation.org> <20250219082714.866086296@linuxfoundation.org>
+In-Reply-To: <20250219082714.866086296@linuxfoundation.org>
+From: Jon Cormier <jcormier@criticallink.com>
+Date: Wed, 19 Feb 2025 12:26:29 -0500
+X-Gm-Features: AWEUYZlxoR0yiPgplmwY2NmGsiO5VeidWdgZtI_l2ShA1DApazlZW5h2Y-FNGG8
+Message-ID: <CADL8D3Yf-pQY7nPXK4n7re=BaNNZWPJdY37CkrDi4kfQFfPMqQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 557/578] drm/tidss: Clear the interrupt status for
+ interrupts being disabled
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Devarsh Thakkar <devarsht@ti.com>, Aradhya Bhatia <aradhya.bhatia@linux.dev>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2025 at 09:44:59PM +0900, Harry (Hyeonggon) Yoo wrote:
-> On Fri, Feb 14, 2025 at 06:02:52PM +0800, Huacai Chen wrote:
-> > On Fri, Feb 14, 2025 at 5:33 PM Harry (Hyeonggon) Yoo
-> > <42.hyeyoo@gmail.com> wrote:
-> > >
-> > > On Thu, Feb 13, 2025 at 11:20:22AM +0800, Huacai Chen wrote:
-> > > > Hi, Harry,
-> > > >
-> > > > On Wed, Feb 12, 2025 at 11:39 PM Harry (Hyeonggon) Yoo
-> > > > <42.hyeyoo@gmail.com> wrote:
-> > > > > On Wed, Feb 12, 2025 at 11:17 PM Huacai Chen <chenhuacai@loongson.cn> wrote:
-> > > > > >
-> > > > > > Hibernation assumes the memory layout after resume be the same as that
-> > > > > > before sleep, but CONFIG_RANDOM_KMALLOC_CACHES breaks this assumption.
-> > > > >
-> > > > > Could you please elaborate what do you mean by
-> > > > > hibernation assumes 'the memory layout' after resume be the same as that
-> > > > > before sleep?
-> > > > >
-> > > > > I don't understand how updating random_kmalloc_seed breaks resuming from
-> > > > > hibernation. Changing random_kmalloc_seed affects which kmalloc caches
-> > > > > newly allocated objects are from, but it should not affect the objects that are
-> > > > > already allocated (before hibernation).
-> > > >
-> > > > When resuming, the booting kernel should switch to the target kernel,
-> > > > if the address of switch code (from the booting kernel) is the
-> > > > effective data of the target kernel, then the switch code may be
-> > > > overwritten.
-> > >
-> > > Hmm... I'm still missing some pieces.
-> > > How is the kernel binary overwritten when slab allocations are randomized?
-> > >
-> > > Also, I'm not sure if it's even safe to assume that the memory layout is the
-> > > same across boots. But I'm not an expert on swsusp anyway...
-> > >
-> > > It'd be really helpful for linux-pm folks to clarify 1) what are the
-> > > (architecture-independent) assumptions are for swsusp to work, and
-> > > 2) how architectures dealt with other randomization features like kASLR...
-> >
-> 
-> [+Cc few more people that worked on slab hardening]
-> 
-> > I'm sorry to confuse you. Binary overwriting is indeed caused by
-> > kASLR, so at least on LoongArch we should disable kASLR for
-> > hibernation.
-> 
-> Understood.
-> 
-> > Random kmalloc is another story, on LoongArch it breaks smpboot when
-> > resuming, the details are:
-> > 1, LoongArch uses kmalloc() family to allocate idle_task's
-> > stack/thread_info and other data structures.
-> > 2, If random kmalloc is enabled, idle_task's stack in the booting
-> > kernel may be other things in the target kernel.
-> 
-> Slab hardening features try so hard to prevent such predictability.
-> For example, SLAB_FREELIST_RANDOM could also randomize the address
-> kmalloc objects are allocated at.
-> 
-> Rather than hacking CONFIG_RANDOM_KMALLOC_CACHES like this, we could
-> have a single option to disable slab hardening features that makes
-> the address unpredictable.
-> 
-> It'd be nice to have something like ARCH_SUPPORTS_SLAB_RANDOM which
-> some hardening features depend on. And then let some arches conditionally
-> not select ARCH_SUPPORTS_SLAB_RANDOM if hibernation's enabled
-> (at cost of less hardening)?
+On Wed, Feb 19, 2025 at 4:33=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> 6.1-stable review patch.  If anyone has any objections, please let me kno=
+w.
+Looks good to me
+>
+> ------------------
+>
+> From: Devarsh Thakkar <devarsht@ti.com>
+>
+> commit 361a2ebb5cad211732ec3c5d962de49b21895590 upstream.
+>
+> The driver does not touch the irqstatus register when it is disabling
+> interrupts.  This might cause an interrupt to trigger for an interrupt
+> that was just disabled.
+>
+> To fix the issue, clear the irqstatus registers right after disabling
+> the interrupts.
+>
+> Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Disp=
+lay SubSystem")
+> Cc: stable@vger.kernel.org
+> Reported-by: Jonathan Cormier <jcormier@criticallink.com>
+> Closes: https://e2e.ti.com/support/processors-group/processors/f/processo=
+rs-forum/1394222/am625-issue-about-tidss-rcu_preempt-self-detected-stall-on=
+-cpu/5424479#5424479
+> Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+> [Tomi: mostly rewrote the patch]
+> Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
+> Tested-by: Jonathan Cormier <jcormier@criticallink.com>
+> Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fi=
+x-v1-5-82ddaec94e4a@ideasonboard.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/gpu/drm/tidss/tidss_dispc.c |   10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> --- a/drivers/gpu/drm/tidss/tidss_dispc.c
+> +++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+> @@ -599,7 +599,7 @@ void dispc_k2g_set_irqenable(struct disp
+>  {
+>         dispc_irq_t old_mask =3D dispc_k2g_read_irqenable(dispc);
+>
+> -       /* clear the irqstatus for newly enabled irqs */
+> +       /* clear the irqstatus for irqs that will be enabled */
+>         dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & mask);
+>
+>         dispc_k2g_vp_set_irqenable(dispc, 0, mask);
+> @@ -607,6 +607,9 @@ void dispc_k2g_set_irqenable(struct disp
+>
+>         dispc_write(dispc, DISPC_IRQENABLE_SET, (1 << 0) | (1 << 7));
+>
+> +       /* clear the irqstatus for irqs that were disabled */
+> +       dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & old_mask);
+> +
+>         /* flush posted write */
+>         dispc_k2g_read_irqenable(dispc);
+>  }
+> @@ -738,7 +741,7 @@ static void dispc_k3_set_irqenable(struc
+>
+>         old_mask =3D dispc_k3_read_irqenable(dispc);
+>
+> -       /* clear the irqstatus for newly enabled irqs */
+> +       /* clear the irqstatus for irqs that will be enabled */
+>         dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & mask);
+>
+>         for (i =3D 0; i < dispc->feat->num_vps; ++i) {
+> @@ -763,6 +766,9 @@ static void dispc_k3_set_irqenable(struc
+>         if (main_disable)
+>                 dispc_write(dispc, DISPC_IRQENABLE_CLR, main_disable);
+>
+> +       /* clear the irqstatus for irqs that were disabled */
+> +       dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & old_mask);
+> +
+>         /* Flush posted writes */
+>         dispc_read(dispc, DISPC_IRQENABLE_SET);
+>  }
+>
+>
 
-I find this whole thread confusing. :) Hibernation should already do
-whatever it need to to get out of the way of the kernel it is restoring
-to memory. The random locations shouldn't matter at all: they're all
-stored in the image. I am not a hibernation expert, but my understanding
-is that the "resume" kernel moves itself out of the way to restore the
-KASLR-ed hibernation image and puts everything back exactly as it was.
-Randomization should not matter at all: it's just simply "put everything
-back where it was".
 
-Yes, the tricky part is the "move itself out of the way", but that's
-required for any kernel that support being relocatable (a prerequisite
-for KASLR), and KASLR is just an aggressive form of "the relocatable
-kernel might be anywhere" beyond just different boot loaders putting it
-in a handful of different potential offsets.
+--=20
+Jonathan Cormier
+Senior Software Engineer
 
--- 
-Kees Cook
+Voice:  315.425.4045 x222
+
+http://www.CriticalLink.com
+6712 Brooklawn Parkway, Syracuse, NY 13211
 
