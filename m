@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-117525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EB1A3B621
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C674CA3B657
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 299EF7A18ED
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491423B9D9C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B52C1DF73E;
-	Wed, 19 Feb 2025 08:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346371DFE31;
+	Wed, 19 Feb 2025 08:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okIBmcPP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wAS3tqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7E61CAA9C;
-	Wed, 19 Feb 2025 08:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53601DFDB3;
+	Wed, 19 Feb 2025 08:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955555; cv=none; b=F+US9rcpFhE0Xwc7L5TBdR7xsi4wSWbDKBaHEMClcIDeHoTeS91f81Kya7KHq6/PE8JXxF8QD3//hKcMd3hXAPuCicuXuTzNWlvoRzZ4bFdVUJg61kOg5kSGpAO+qYUjOJLgzPSSQfNmvGm+wpy7VF2ZNUJoRT+aFCxkYjEeBl8=
+	t=1739955121; cv=none; b=rlDHDIWcHHe4BoUM+sIKo02yILmnNkbDhMN61M/H1/dUA3UIJVYONmXFcp1aX9voh/xXxFkD+V+ofgmZNATcGA4c0wREcQP9GOR2DLjza1uIYydVfupFUxHntL9oqo5gn8qKgoGozeTF4NdQn4Yfa+wkNqffVav67ZTU/RZ2cW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955555; c=relaxed/simple;
-	bh=1nXLPom4hN1UNMI6/RPZVKqkuMInlguXhJIRY7Ut0JU=;
+	s=arc-20240116; t=1739955121; c=relaxed/simple;
+	bh=7j0QyIokn4jJ3JsqmPV5/jbFQtpgHdHO/RazSia15kU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COMfJp6ervkdOyuORJfmrx82rEwHSDFjwmrlMlSSdhknxDestY8rMGKGk7gtgbEKhJvJ48gYFGGYUPhIJI09MczuCxMbOX4vA222U1vOFY4bUsTzTsL41ly3zUlbvdwPaG7hQvvVSrBZKZFL4ymvFyK0wJ4P2qKHfKF8Sojogt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okIBmcPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F236C4CED1;
-	Wed, 19 Feb 2025 08:59:14 +0000 (UTC)
+	 MIME-Version; b=WQLQBbh9nnmKpbYudd1VWO+WkbdKyfVfyIkFVPXdr+cG0VC1YisPdKAqUJ2DKWcXhOy2DmS/xZaZzyarsGSb7qDcnan1YH72HE6yQOj4ATjf1oL4U8UfgHcvcZkN2L0Fe1abYikYikAkV9EA3r95mNibGdxfaY7yG9A9XF4ddYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wAS3tqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF64AC4CEE7;
+	Wed, 19 Feb 2025 08:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955554;
-	bh=1nXLPom4hN1UNMI6/RPZVKqkuMInlguXhJIRY7Ut0JU=;
+	s=korg; t=1739955120;
+	bh=7j0QyIokn4jJ3JsqmPV5/jbFQtpgHdHO/RazSia15kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okIBmcPPPNokQAOO0tSl5d8w7yWip7tq7M8KFNZsWT9rq0tXMMN1c8FPHJ8/yw+7X
-	 YW3FG7xvXoeHpThurchVdHTsN6t7qmMtS8lXYrXKyk7lKnJiTUYCyPCjSLg+xz7lsc
-	 m9ckFzqbHS5Od7RhbO+nRDOCR9mNCTyuIssZz6HA=
+	b=0wAS3tqoY1pQP5syrcF5RzI0k827J6bpDePAIrgAdlHqNoqhZpZ7DHAD9GYGnNV3n
+	 QTOXbGlhSc5PAmD98ejO+BRbgFjKkc0gV5aSO3MEw82vlHEW3WicVup4oDRVuwvzyk
+	 KDjCMAF7+UEB0WUh3w9uuLqz16Q+sIHMf2LUhb0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/152] NFS: Fix potential buffer overflowin nfs_sysfs_link_rpc_client()
-Date: Wed, 19 Feb 2025 09:27:35 +0100
-Message-ID: <20250219082551.706797101@linuxfoundation.org>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Ralf Jung <post@ralfj.de>,
+	Jubilee Young <workingjubilee@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH 6.12 139/230] arm64: rust: clean Rust 1.85.0 warning using softfloat target
+Date: Wed, 19 Feb 2025 09:27:36 +0100
+Message-ID: <20250219082607.122634911@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 49fd4e34751e90e6df009b70cd0659dc839e7ca8 ]
+commit 446a8351f160d65a1c5df7097f31c74102ed2bb1 upstream.
 
-name is char[64] where the size of clnt->cl_program->name remains
-unknown. Invoking strcat() directly will also lead to potential buffer
-overflow. Change them to strscpy() and strncat() to fix potential
-issues.
+Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
+[1] about disabling neon in the aarch64 hardfloat target:
 
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    warning: target feature `neon` cannot be toggled with
+             `-Ctarget-feature`: unsound on hard-float targets
+             because it changes float ABI
+      |
+      = note: this was previously accepted by the compiler but
+              is being phased out; it will become a hard error
+              in a future release!
+      = note: for more information, see issue #116344
+              <https://github.com/rust-lang/rust/issues/116344>
+
+Thus, instead, use the softfloat target instead.
+
+While trying it out, I found that the kernel sanitizers were not enabled
+for that built-in target [2]. Upstream Rust agreed to backport
+the enablement for the current beta so that it is ready for
+the 1.85.0 release [3] -- thanks!
+
+However, that still means that before Rust 1.85.0, we cannot switch
+since sanitizers could be in use. Thus conditionally do so.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Ralf Jung <post@ralfj.de>
+Cc: Jubilee Young <workingjubilee@gmail.com>
+Link: https://github.com/rust-lang/rust/pull/133417 [1]
+Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
+Link: https://github.com/rust-lang/rust/pull/135905 [3]
+Link: https://github.com/rust-lang/rust/issues/116344
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Tested-by: Matthew Maurer <mmaurer@google.com>
+Reviewed-by: Ralf Jung <post@ralfj.de>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250210163732.281786-1-ojeda@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/sysfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index bf378ecd5d9fd..7b59a40d40c06 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -280,9 +280,9 @@ void nfs_sysfs_link_rpc_client(struct nfs_server *server,
- 	char name[RPC_CLIENT_NAME_SIZE];
- 	int ret;
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 358c68565bfd..2b25d671365f 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -48,7 +48,11 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_NO_FPU) \
+ KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
+ KBUILD_AFLAGS	+= $(compat_vdso)
  
--	strcpy(name, clnt->cl_program->name);
--	strcat(name, uniq ? uniq : "");
--	strcat(name, "_client");
-+	strscpy(name, clnt->cl_program->name, sizeof(name));
-+	strncat(name, uniq ? uniq : "", sizeof(name) - strlen(name) - 1);
-+	strncat(name, "_client", sizeof(name) - strlen(name) - 1);
++ifeq ($(call test-ge, $(CONFIG_RUSTC_VERSION), 108500),y)
++KBUILD_RUSTFLAGS += --target=aarch64-unknown-none-softfloat
++else
+ KBUILD_RUSTFLAGS += --target=aarch64-unknown-none -Ctarget-feature="-neon"
++endif
  
- 	ret = sysfs_create_link_nowarn(&server->kobj,
- 						&clnt->cl_sysfs->kobject, name);
+ KBUILD_CFLAGS	+= $(call cc-option,-mabi=lp64)
+ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
 -- 
-2.39.5
+2.48.1
 
 
 
