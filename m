@@ -1,159 +1,166 @@
-Return-Path: <stable+bounces-118310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEA7A3C5F3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C5BA3C61C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA5F3B7A61
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 17:18:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE4423B6282
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 17:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE6220E6F9;
-	Wed, 19 Feb 2025 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8132144BE;
+	Wed, 19 Feb 2025 17:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvHPgHJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA35286284;
-	Wed, 19 Feb 2025 17:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA302144A1;
+	Wed, 19 Feb 2025 17:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739985513; cv=none; b=n+vkqaGfi+s1rq88fESmo37QCQiO2obys74PNfd6qG7hgC3wMFYvASLfbRSPds2nrx7yh0qFEPOT85+MUH9oQarSHuX69TRxIWJZt8xtPygwKOzndFlELK+04QOKuyCyLPl1wsv40QkCdbJZC5dpdbYinqH3sGozocI1/1dpSLQ=
+	t=1739985927; cv=none; b=EMcF2uYuZAtplYHvFTdQYPGlu7eQ6+c66PAu6wMtHoWSqREiZlBfWr90ZDOrMb9TQhxz+1skYXYmwHtXnHY5vCWnaTmsTcfQ4uBTYr+xGJWqREBWfWvEboaEmGENHEGC/2negdrrNkazqyVXbrRTUwjB5SihfpYa6tb7E9trPC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739985513; c=relaxed/simple;
-	bh=Axex9ugl2cp1Mnn+czrujd78B3to4P86gl7uF640N9c=;
+	s=arc-20240116; t=1739985927; c=relaxed/simple;
+	bh=ikNfhXqco/zJZ8TCINjDGAPmg4V6noayeVHjFs0Yu/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lAfpFm2X5BhcubaymMPd4bacljPfkuFkNW9L5v5L0iovcYYVgXjoUdRnKghTXg2SHcJVrULcEV1JJeeF/pqhin8+Xz08yvOhFsekrvf/dY5rY/sf/xyk6hWkcjx+COwU544KopoWgnwwEMkIAe72DuGeGt/unPlOQsiOhtFHD7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358C4C4CEE0;
-	Wed, 19 Feb 2025 17:18:27 +0000 (UTC)
-Date: Wed, 19 Feb 2025 17:18:24 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>, willy@infradead.org,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
-Message-ID: <Z7YSYArXkRFEy6FO@arm.com>
-References: <20250206155234.095034647@linuxfoundation.org>
- <CA+G9fYvKzV=jo9AmKH2tJeLr0W8xyjxuVO-P+ZEBdou6C=mKUw@mail.gmail.com>
- <CA+G9fYtqBxt+JwSLCcVBchh94GVRhbo9rTP26ceJ=sf4MDo61Q@mail.gmail.com>
- <Z7Xj-zIe-Sa1syG7@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=c3gZB92EkHkW8Bb90feTB7VKb2qxRhcPgEC8VjdtF+6Ghk0hknan3D9kRWThyZ6Ab0xAT5fK/5muUFFFbeNtD1ReeJGPVJzwkWcTSvXr0JYY9NhgrVR8I7kNToQzvAOdK9pomHnUagbY7dr0bpxVeLGuncmIXYpIVRo2FVW+Ors=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvHPgHJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F275C4CED1;
+	Wed, 19 Feb 2025 17:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739985927;
+	bh=ikNfhXqco/zJZ8TCINjDGAPmg4V6noayeVHjFs0Yu/Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uvHPgHJFzQvrlD3awYsWUcla0n8dIxRVIbz4RH0VeLV8dwEFCU9Qf/wojt3GC0wlk
+	 ++TcMiJI6krHRmoO7At+xX4ymyQFZoIYFB/LCTncBSKYccb1sAaHTYaw3MLAuD6SzD
+	 6erSEDAVcsb561bKcI/1ineoDDo2KywCWcBD+GwqlbdsnLJ80DHKu0wrzDhXUv5abR
+	 /34aQfH2jaf992/jpuMIZG8S8wmGUal9kkaUWdF3TNGJpfmC7Xuy5II8bcPxgFUvzB
+	 jsgIyFqi5fwE+gwm8VUL1PG5PSWcHJ/0/vxj5HIcTQC6FhWCpOa6CMMu9DGj2aVJuO
+	 FphIi8TJL1nWQ==
+Date: Wed, 19 Feb 2025 09:25:24 -0800
+From: Kees Cook <kees@kernel.org>
+To: "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, linux-pm@vger.kernel.org,
+	GONG Ruiqi <gongruiqi@huaweicloud.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>, stable@vger.kernel.org,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@linux.com>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Pekka Enberg <penberg@kernel.org>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>
+Subject: Re: How does swsusp work with randomization features? (was: mm/slab:
+ Initialise random_kmalloc_seed after initcalls)
+Message-ID: <202502190921.6E26F49@keescook>
+References: <20250212141648.599661-1-chenhuacai@loongson.cn>
+ <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
+ <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com>
+ <Z68N4lTIIwudzcLY@MacBook-Air-5.local>
+ <CAAhV-H5sFkdcLbvqYBGV2PM1+MOF5NMxwt+pCF9K6MhUu+R63Q@mail.gmail.com>
+ <Z686y7g9OZ0DhT7Q@MacBook-Air-5.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z7Xj-zIe-Sa1syG7@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z686y7g9OZ0DhT7Q@MacBook-Air-5.local>
 
-On Wed, Feb 19, 2025 at 02:00:27PM +0000, Catalin Marinas wrote:
-> > On Sat, 8 Feb 2025 at 16:54, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > > Regression on qemu-arm64 and FVP noticed this kernel warning running
-> > > selftests: arm64: check_hugetlb_options test case on 6.6.76-rc1 and
-> > > 6.6.76-rc2.
+On Fri, Feb 14, 2025 at 09:44:59PM +0900, Harry (Hyeonggon) Yoo wrote:
+> On Fri, Feb 14, 2025 at 06:02:52PM +0800, Huacai Chen wrote:
+> > On Fri, Feb 14, 2025 at 5:33 PM Harry (Hyeonggon) Yoo
+> > <42.hyeyoo@gmail.com> wrote:
 > > >
-> > > Test regression: WARNING-arch-arm64-mm-copypage-copy_highpage
+> > > On Thu, Feb 13, 2025 at 11:20:22AM +0800, Huacai Chen wrote:
+> > > > Hi, Harry,
+> > > >
+> > > > On Wed, Feb 12, 2025 at 11:39 PM Harry (Hyeonggon) Yoo
+> > > > <42.hyeyoo@gmail.com> wrote:
+> > > > > On Wed, Feb 12, 2025 at 11:17 PM Huacai Chen <chenhuacai@loongson.cn> wrote:
+> > > > > >
+> > > > > > Hibernation assumes the memory layout after resume be the same as that
+> > > > > > before sleep, but CONFIG_RANDOM_KMALLOC_CACHES breaks this assumption.
+> > > > >
+> > > > > Could you please elaborate what do you mean by
+> > > > > hibernation assumes 'the memory layout' after resume be the same as that
+> > > > > before sleep?
+> > > > >
+> > > > > I don't understand how updating random_kmalloc_seed breaks resuming from
+> > > > > hibernation. Changing random_kmalloc_seed affects which kmalloc caches
+> > > > > newly allocated objects are from, but it should not affect the objects that are
+> > > > > already allocated (before hibernation).
+> > > >
+> > > > When resuming, the booting kernel should switch to the target kernel,
+> > > > if the address of switch code (from the booting kernel) is the
+> > > > effective data of the target kernel, then the switch code may be
+> > > > overwritten.
 > > >
-> > > ------------[ cut here ]------------
-> > > [   96.920028] WARNING: CPU: 1 PID: 3611 at
-> > > arch/arm64/mm/copypage.c:29 copy_highpage
-> > > (arch/arm64/include/asm/mte.h:87)
-> > > [   96.922100] Modules linked in: crct10dif_ce sm3_ce sm3 sha3_ce
-> > > sha512_ce sha512_arm64 fuse drm backlight ip_tables x_tables
-> > > [   96.925603] CPU: 1 PID: 3611 Comm: check_hugetlb_o Not tainted 6.6.76-rc2 #1
-> > > [   96.926956] Hardware name: linux,dummy-virt (DT)
-> > > [   96.927695] pstate: 43402009 (nZcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-> > > [   96.928687] pc : copy_highpage (arch/arm64/include/asm/mte.h:87)
-> > > [   96.929037] lr : copy_highpage
-> > > (arch/arm64/include/asm/alternative-macros.h:232
-> > > arch/arm64/include/asm/cpufeature.h:443
-> > > arch/arm64/include/asm/cpufeature.h:504
-> > > arch/arm64/include/asm/cpufeature.h:814 arch/arm64/mm/copypage.c:27)
-> > > [   96.929399] sp : ffff800088aa3ab0
-> > > [   96.930232] x29: ffff800088aa3ab0 x28: 00000000000001ff x27: 0000000000000000
-> > > [   96.930784] x26: 0000000000000000 x25: 0000ffff9b800000 x24: 0000ffff9b9ff000
-> > > [   96.931402] x23: fffffc0003257fc0 x22: ffff0000c95ff000 x21: ffff0000c93ff000
-> > > [   96.932054] x20: fffffc0003257fc0 x19: fffffc000324ffc0 x18: 0000ffff9b800000
-> > > [   96.933357] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> > > [   96.934091] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> > > [   96.935095] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-> > > [   96.935982] x8 : 0bfffc0001800000 x7 : 0000000000000000 x6 : 0000000000000000
-> > > [   96.936536] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-> > > [   96.937089] x2 : 0000000000000000 x1 : ffff0000c9600000 x0 : ffff0000c9400080
-> > > [   96.939431] Call trace:
-> > > [   96.939920] copy_highpage (arch/arm64/include/asm/mte.h:87)
-> > > [   96.940443] copy_user_highpage (arch/arm64/mm/copypage.c:40)
-> > > [   96.940963] copy_user_large_folio (mm/memory.c:5977 mm/memory.c:6109)
-> > > [   96.941535] hugetlb_wp (mm/hugetlb.c:5701)
-> > > [   96.941948] hugetlb_fault (mm/hugetlb.c:6237)
-> > > [   96.942344] handle_mm_fault (mm/memory.c:5330)
-> > > [   96.942794] do_page_fault (arch/arm64/mm/fault.c:513
-> > > arch/arm64/mm/fault.c:626)
-> > > [   96.943341] do_mem_abort (arch/arm64/mm/fault.c:846)
-> > > [   96.943797] el0_da (arch/arm64/kernel/entry-common.c:133
-> > > arch/arm64/kernel/entry-common.c:144
-> > > arch/arm64/kernel/entry-common.c:547)
-> > > [   96.944229] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:0)
-> > > [   96.944765] el0t_64_sync (arch/arm64/kernel/entry.S:599)
-> > > [   96.945383] ---[ end trace 0000000000000000 ]---
+> > > Hmm... I'm still missing some pieces.
+> > > How is the kernel binary overwritten when slab allocations are randomized?
+> > >
+> > > Also, I'm not sure if it's even safe to assume that the memory layout is the
+> > > same across boots. But I'm not an expert on swsusp anyway...
+> > >
+> > > It'd be really helpful for linux-pm folks to clarify 1) what are the
+> > > (architecture-independent) assumptions are for swsusp to work, and
+> > > 2) how architectures dealt with other randomization features like kASLR...
+> >
 > 
-> Prior to commit 25c17c4b55de ("hugetlb: arm64: add mte support"), there
-> was no hugetlb support with MTE, so the above code path should not
-> happen - it seems to get a PROT_MTE hugetlb page which should have been
-> prevented by arch_validate_flags(). Or something else corrupts the page
-> flags and we end up with some random PG_mte_tagged set.
+> [+Cc few more people that worked on slab hardening]
+> 
+> > I'm sorry to confuse you. Binary overwriting is indeed caused by
+> > kASLR, so at least on LoongArch we should disable kASLR for
+> > hibernation.
+> 
+> Understood.
+> 
+> > Random kmalloc is another story, on LoongArch it breaks smpboot when
+> > resuming, the details are:
+> > 1, LoongArch uses kmalloc() family to allocate idle_task's
+> > stack/thread_info and other data structures.
+> > 2, If random kmalloc is enabled, idle_task's stack in the booting
+> > kernel may be other things in the target kernel.
+> 
+> Slab hardening features try so hard to prevent such predictability.
+> For example, SLAB_FREELIST_RANDOM could also randomize the address
+> kmalloc objects are allocated at.
+> 
+> Rather than hacking CONFIG_RANDOM_KMALLOC_CACHES like this, we could
+> have a single option to disable slab hardening features that makes
+> the address unpredictable.
+> 
+> It'd be nice to have something like ARCH_SUPPORTS_SLAB_RANDOM which
+> some hardening features depend on. And then let some arches conditionally
+> not select ARCH_SUPPORTS_SLAB_RANDOM if hibernation's enabled
+> (at cost of less hardening)?
 
-The problem is in the arm64 arch_calc_vm_flag_bits() as it returns
-VM_MTE_ALLOWED for any MAP_ANONYMOUS ignoring MAP_HUGETLB (it's been
-doing this since day 1 of MTE). The implementation does handle the
-hugetlb file mmap() correctly but not the MAP_ANONYMOUS case.
+I find this whole thread confusing. :) Hibernation should already do
+whatever it need to to get out of the way of the kernel it is restoring
+to memory. The random locations shouldn't matter at all: they're all
+stored in the image. I am not a hibernation expert, but my understanding
+is that the "resume" kernel moves itself out of the way to restore the
+KASLR-ed hibernation image and puts everything back exactly as it was.
+Randomization should not matter at all: it's just simply "put everything
+back where it was".
 
-The fix would be something like below:
-
------------------8<--------------------------
-diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
-index 5966ee4a6154..8ff5d88c9f12 100644
---- a/arch/arm64/include/asm/mman.h
-+++ b/arch/arm64/include/asm/mman.h
-@@ -28,7 +28,8 @@ static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
- 	 * backed by tags-capable memory. The vm_flags may be overridden by a
- 	 * filesystem supporting MTE (RAM-based).
- 	 */
--	if (system_supports_mte() && (flags & MAP_ANONYMOUS))
-+	if (system_supports_mte() &&
-+	    ((flags & MAP_ANONYMOUS) && !(flags & MAP_HUGETLB)))
- 		return VM_MTE_ALLOWED;
-
- 	return 0;
--------------------8<-----------------------
-
-This fix won't make sense for mainline since it supports MAP_HUGETLB
-already.
-
-Greg, are you ok with a stable-only fix as above or you'd rather see the
-full 25c17c4b55de ("hugetlb: arm64: add mte support") backported?
-
-Thanks.
+Yes, the tricky part is the "move itself out of the way", but that's
+required for any kernel that support being relocatable (a prerequisite
+for KASLR), and KASLR is just an aggressive form of "the relocatable
+kernel might be anywhere" beyond just different boot loaders putting it
+in a handful of different potential offsets.
 
 -- 
-Catalin
+Kees Cook
 
