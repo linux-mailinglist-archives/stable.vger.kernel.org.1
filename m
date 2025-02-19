@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D27A3B5DC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C26A3B4A9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A640188D6DD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A6F18992F5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807E91F8AE5;
-	Wed, 19 Feb 2025 08:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3091DF977;
+	Wed, 19 Feb 2025 08:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+QAiYhb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTNWdFoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0081F8922;
-	Wed, 19 Feb 2025 08:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B76518FC86;
+	Wed, 19 Feb 2025 08:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954832; cv=none; b=WrS+nNEZ7me1nZD4afEFhASQO15JDC3VGPDfLZNPsN9I9D/tLKuxQ+G0vfIsuZRzkKUOV1FfclDeE+nvFtssIVWie3hCMzJhDX9x4povfnatAxQHDdDPA28dYennxJm3InEyVtZOzPs75t4m2IJssuLCtMA03+oUOm4Bf3nJvLw=
+	t=1739954150; cv=none; b=DmSv1ZESsRLaOfbtVLSf8KjM7XUgHFqFR+bzUBM0Tn9hZ+By0WHgZim+AlD12yMeSygBmYcUOIifZrseMucagb/ejV7HqPewiDwAu690tXhXm/g3thwg9s9ED3rWeRSUUNWoIs5lsZmzVjNpec9cG3wDBswD2PIsFj4t8k8AXKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954832; c=relaxed/simple;
-	bh=/N5RmRlQl7I/vnI28Q3sK3w5oPVxYMtS/W3SiVCfh1Y=;
+	s=arc-20240116; t=1739954150; c=relaxed/simple;
+	bh=pEJGSbd40wOjs+rOn3VHFvmZVVbY5U6edy9aG3FiL84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtVISgYQw3aVLEtBz6FWRl5m9mHMTCEwdqCtsCu2HV80r+zCgEdV+79VHuhA9HcwnSWbh7WexSgQz58e/xzuVztwEByEwRr0lOONLPh0oXe7cEOG/IO8xuWTLlAanl6L5yb/uy2JcyfTAYHHcKNaGly0TU9wtgbyPu0pmlQ51GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+QAiYhb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1928C4CEE9;
-	Wed, 19 Feb 2025 08:47:11 +0000 (UTC)
+	 MIME-Version; b=UV6DHGjETvduf4k14nZSjHA3K0BA1U3TiM+qNk8xG5aYrQq4wEGRSv2H/lQBwUore3JN8PwyroHFVwW0+hkDxa6exI3T8QkBfYqZ26KTfA122+auFj6z0RV4WAiCEgtVu0MWIBLU4L7BXbesgSQUIxEOskmfpJpoJWVqS0LEk/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTNWdFoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC1CC4CEE7;
+	Wed, 19 Feb 2025 08:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954832;
-	bh=/N5RmRlQl7I/vnI28Q3sK3w5oPVxYMtS/W3SiVCfh1Y=;
+	s=korg; t=1739954150;
+	bh=pEJGSbd40wOjs+rOn3VHFvmZVVbY5U6edy9aG3FiL84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+QAiYhbQeOK/Q6b4marPXqnqKgI+rZvBNT3SE5N0gyjsV4tzk0moHUR56Y2XHgIo
-	 M89CMrxYaXKT1yfSGQajtxr86LxcqCguMMSfirz6WqpxNwJPhY+xj1BFIN8a0cQKRX
-	 Viyxw22XK3gFjLADexvTCyG9vIBuYja26T2FTP6E=
+	b=eTNWdFoVrZe1dQ83FAmef93UYT9o63NwyOpytA4fVgiCgWYMbDVvCvkGcSsROGwEX
+	 OrzIKWL3S5zAuDYJY7Amoo4/d1Xn2o1xLrJS5zxTYtLcpOZTXt2CVpjPn5kasjCibz
+	 oq6NKY7vxTF3xQVDWna+7qsaQWFgrRtOOsrZJckk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/230] xen/swiotlb: relax alignment requirements
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.13 113/274] batman-adv: Drop unmanaged ELP metric worker
 Date: Wed, 19 Feb 2025 09:26:07 +0100
-Message-ID: <20250219082603.666271849@linuxfoundation.org>
+Message-ID: <20250219082614.042618315@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +61,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 85fcb57c983f423180ba6ec5d0034242da05cc54 ]
+commit 8c8ecc98f5c65947b0070a24bac11e12e47cc65d upstream.
 
-When mapping a buffer for DMA via .map_page or .map_sg DMA operations,
-there is no need to check the machine frames to be aligned according
-to the mapped areas size. All what is needed in these cases is that the
-buffer is contiguous at machine level.
+The ELP worker needs to calculate new metric values for all neighbors
+"reachable" over an interface. Some of the used metric sources require
+locks which might need to sleep. This sleep is incompatible with the RCU
+list iterator used for the recorded neighbors. The initial approach to work
+around of this problem was to queue another work item per neighbor and then
+run this in a new context.
 
-So carve out the alignment check from range_straddles_page_boundary()
-and move it to a helper called by xen_swiotlb_alloc_coherent() and
-xen_swiotlb_free_coherent() directly.
+Even when this solved the RCU vs might_sleep() conflict, it has a major
+problems: Nothing was stopping the work item in case it is not needed
+anymore - for example because one of the related interfaces was removed or
+the batman-adv module was unloaded - resulting in potential invalid memory
+accesses.
 
-Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
-Reported-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
-Tested-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Directly canceling the metric worker also has various problems:
+
+* cancel_work_sync for a to-be-deactivated interface is called with
+  rtnl_lock held. But the code in the ELP metric worker also tries to use
+  rtnl_lock() - which will never return in this case. This also means that
+  cancel_work_sync would never return because it is waiting for the worker
+  to finish.
+* iterating over the neighbor list for the to-be-deactivated interface is
+  currently done using the RCU specific methods. Which means that it is
+  possible to miss items when iterating over it without the associated
+  spinlock - a behaviour which is acceptable for a periodic metric check
+  but not for a cleanup routine (which must "stop" all still running
+  workers)
+
+The better approch is to get rid of the per interface neighbor metric
+worker and handle everything in the interface worker. The original problems
+are solved by:
+
+* creating a list of neighbors which require new metric information inside
+  the RCU protected context, gathering the metric according to the new list
+  outside the RCU protected context
+* only use rcu_trylock inside metric gathering code to avoid a deadlock
+  when the cancel_delayed_work_sync is called in the interface removal code
+  (which is called with the rtnl_lock held)
+
+Cc: stable@vger.kernel.org
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/swiotlb-xen.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ net/batman-adv/bat_v.c     |    2 -
+ net/batman-adv/bat_v_elp.c |   71 ++++++++++++++++++++++++++++++---------------
+ net/batman-adv/bat_v_elp.h |    2 -
+ net/batman-adv/types.h     |    3 -
+ 4 files changed, 48 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index a337edcf8faf7..26c62e0d34e98 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -74,19 +74,21 @@ static inline phys_addr_t xen_dma_to_phys(struct device *dev,
- 	return xen_bus_to_phys(dev, dma_to_phys(dev, dma_addr));
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -113,8 +113,6 @@ static void
+ batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
+ {
+ 	ewma_throughput_init(&hardif_neigh->bat_v.throughput);
+-	INIT_WORK(&hardif_neigh->bat_v.metric_work,
+-		  batadv_v_elp_throughput_metric_update);
  }
  
-+static inline bool range_requires_alignment(phys_addr_t p, size_t size)
-+{
-+	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
-+	phys_addr_t bus_addr = pfn_to_bfn(XEN_PFN_DOWN(p)) << XEN_PAGE_SHIFT;
+ /**
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -18,6 +18,7 @@
+ #include <linux/if_ether.h>
+ #include <linux/jiffies.h>
+ #include <linux/kref.h>
++#include <linux/list.h>
+ #include <linux/minmax.h>
+ #include <linux/netdevice.h>
+ #include <linux/nl80211.h>
+@@ -26,6 +27,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/skbuff.h>
++#include <linux/slab.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+@@ -42,6 +44,18 @@
+ #include "send.h"
+ 
+ /**
++ * struct batadv_v_metric_queue_entry - list of hardif neighbors which require
++ *  and metric update
++ */
++struct batadv_v_metric_queue_entry {
++	/** @hardif_neigh: hardif neighbor scheduled for metric update */
++	struct batadv_hardif_neigh_node *hardif_neigh;
 +
-+	return IS_ALIGNED(p, algn) && !IS_ALIGNED(bus_addr, algn);
-+}
++	/** @list: list node for metric_queue */
++	struct list_head list;
++};
 +
- static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
++/**
+  * batadv_v_elp_start_timer() - restart timer for ELP periodic work
+  * @hard_iface: the interface for which the timer has to be reset
+  */
+@@ -137,10 +151,17 @@ static bool batadv_v_elp_get_throughput(
+ 		goto default_throughput;
+ 	}
+ 
++	/* only use rtnl_trylock because the elp worker will be cancelled while
++	 * the rntl_lock is held. the cancel_delayed_work_sync() would otherwise
++	 * wait forever when the elp work_item was started and it is then also
++	 * trying to rtnl_lock
++	 */
++	if (!rtnl_trylock())
++		return false;
++
+ 	/* if not a wifi interface, check if this device provides data via
+ 	 * ethtool (e.g. an Ethernet adapter)
+ 	 */
+-	rtnl_lock();
+ 	ret = __ethtool_get_link_ksettings(hard_iface->net_dev, &link_settings);
+ 	rtnl_unlock();
+ 	if (ret == 0) {
+@@ -175,31 +196,19 @@ default_throughput:
+ /**
+  * batadv_v_elp_throughput_metric_update() - worker updating the throughput
+  *  metric of a single hop neighbour
+- * @work: the work queue item
++ * @neigh: the neighbour to probe
+  */
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work)
++static void
++batadv_v_elp_throughput_metric_update(struct batadv_hardif_neigh_node *neigh)
  {
- 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
- 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
--	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
+-	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
+-	struct batadv_hardif_neigh_node *neigh;
+ 	u32 throughput;
+ 	bool valid;
  
- 	next_bfn = pfn_to_bfn(xen_pfn);
- 
--	/* If buffer is physically aligned, ensure DMA alignment. */
--	if (IS_ALIGNED(p, algn) &&
--	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
--		return 1;
+-	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
+-				   metric_work);
+-	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
+-			     bat_v);
 -
- 	for (i = 1; i < nr_pages; i++)
- 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
- 			return 1;
-@@ -156,7 +158,8 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
+ 	valid = batadv_v_elp_get_throughput(neigh, &throughput);
+ 	if (!valid)
+-		goto put_neigh;
++		return;
  
- 	*dma_handle = xen_phys_to_dma(dev, phys);
- 	if (*dma_handle + size - 1 > dma_mask ||
--	    range_straddles_page_boundary(phys, size)) {
-+	    range_straddles_page_boundary(phys, size) ||
-+	    range_requires_alignment(phys, size)) {
- 		if (xen_create_contiguous_region(phys, order, fls64(dma_mask),
- 				dma_handle) != 0)
- 			goto out_free_pages;
-@@ -182,7 +185,8 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	size = ALIGN(size, XEN_PAGE_SIZE);
+ 	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
+-
+-put_neigh:
+-	/* decrement refcounter to balance increment performed before scheduling
+-	 * this task
+-	 */
+-	batadv_hardif_neigh_put(neigh);
+ }
  
- 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
--	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))
-+	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size) ||
-+			 range_requires_alignment(phys, size)))
- 	    	return;
+ /**
+@@ -273,14 +282,16 @@ batadv_v_elp_wifi_neigh_probe(struct bat
+  */
+ static void batadv_v_elp_periodic_work(struct work_struct *work)
+ {
++	struct batadv_v_metric_queue_entry *metric_entry;
++	struct batadv_v_metric_queue_entry *metric_safe;
+ 	struct batadv_hardif_neigh_node *hardif_neigh;
+ 	struct batadv_hard_iface *hard_iface;
+ 	struct batadv_hard_iface_bat_v *bat_v;
+ 	struct batadv_elp_packet *elp_packet;
++	struct list_head metric_queue;
+ 	struct batadv_priv *bat_priv;
+ 	struct sk_buff *skb;
+ 	u32 elp_interval;
+-	bool ret;
  
- 	if (TestClearPageXenRemapped(virt_to_page(vaddr)))
--- 
-2.39.5
-
+ 	bat_v = container_of(work, struct batadv_hard_iface_bat_v, elp_wq.work);
+ 	hard_iface = container_of(bat_v, struct batadv_hard_iface, bat_v);
+@@ -316,6 +327,8 @@ static void batadv_v_elp_periodic_work(s
+ 
+ 	atomic_inc(&hard_iface->bat_v.elp_seqno);
+ 
++	INIT_LIST_HEAD(&metric_queue);
++
+ 	/* The throughput metric is updated on each sent packet. This way, if a
+ 	 * node is dead and no longer sends packets, batman-adv is still able to
+ 	 * react timely to its death.
+@@ -340,16 +353,28 @@ static void batadv_v_elp_periodic_work(s
+ 
+ 		/* Reading the estimated throughput from cfg80211 is a task that
+ 		 * may sleep and that is not allowed in an rcu protected
+-		 * context. Therefore schedule a task for that.
++		 * context. Therefore add it to metric_queue and process it
++		 * outside rcu protected context.
+ 		 */
+-		ret = queue_work(batadv_event_workqueue,
+-				 &hardif_neigh->bat_v.metric_work);
+-
+-		if (!ret)
++		metric_entry = kzalloc(sizeof(*metric_entry), GFP_ATOMIC);
++		if (!metric_entry) {
+ 			batadv_hardif_neigh_put(hardif_neigh);
++			continue;
++		}
++
++		metric_entry->hardif_neigh = hardif_neigh;
++		list_add(&metric_entry->list, &metric_queue);
+ 	}
+ 	rcu_read_unlock();
+ 
++	list_for_each_entry_safe(metric_entry, metric_safe, &metric_queue, list) {
++		batadv_v_elp_throughput_metric_update(metric_entry->hardif_neigh);
++
++		batadv_hardif_neigh_put(metric_entry->hardif_neigh);
++		list_del(&metric_entry->list);
++		kfree(metric_entry);
++	}
++
+ restart_timer:
+ 	batadv_v_elp_start_timer(hard_iface);
+ out:
+--- a/net/batman-adv/bat_v_elp.h
++++ b/net/batman-adv/bat_v_elp.h
+@@ -10,7 +10,6 @@
+ #include "main.h"
+ 
+ #include <linux/skbuff.h>
+-#include <linux/workqueue.h>
+ 
+ int batadv_v_elp_iface_enable(struct batadv_hard_iface *hard_iface);
+ void batadv_v_elp_iface_disable(struct batadv_hard_iface *hard_iface);
+@@ -19,6 +18,5 @@ void batadv_v_elp_iface_activate(struct
+ void batadv_v_elp_primary_iface_set(struct batadv_hard_iface *primary_iface);
+ int batadv_v_elp_packet_recv(struct sk_buff *skb,
+ 			     struct batadv_hard_iface *if_incoming);
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work);
+ 
+ #endif /* _NET_BATMAN_ADV_BAT_V_ELP_H_ */
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -596,9 +596,6 @@ struct batadv_hardif_neigh_node_bat_v {
+ 	 *  neighbor
+ 	 */
+ 	unsigned long last_unicast_tx;
+-
+-	/** @metric_work: work queue callback item for metric update */
+-	struct work_struct metric_work;
+ };
+ 
+ /**
 
 
 
