@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE91A3B47D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BE2A3B5EA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30832177768
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6091882AE4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BA01DED4C;
-	Wed, 19 Feb 2025 08:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329411DB546;
+	Wed, 19 Feb 2025 08:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJLrTQ9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbOMbXrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DD11DED44;
-	Wed, 19 Feb 2025 08:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D860A1D5CE8;
+	Wed, 19 Feb 2025 08:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954066; cv=none; b=XLnPDnMEzeF/gfD06OVxoV/X8V/18JJVZEwMPSN1CKfT0uDK4UOkxRH3h+dUK00IBtHetUTfReqiRj0HZtXQkXSZZW0SNClTH3+Ua+N76x8lkAhAg3wZKri5FXyXE6HhxsBX+SbeX9YUlYjRVS/QVEDSIB1ucfILz/+1TDPajVc=
+	t=1739954879; cv=none; b=CeuPBASa6ugA1WhkWkH+pswpppBNSAX2ICdLH/hX41+c39d/QH+SriAMca9MVTLeDA9UWCtPvff0NKOxmKjvEMzPnA3UtfTtEoS94j7F9b1t6FFpR2GAHxTuC0xlEiayrFuzkODJwfGAxLqRAbBB6Hg4gJRcmR8Ft8+f6EdgmBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954066; c=relaxed/simple;
-	bh=qpDHBhVAOpy5mQrqgmj+9qe+uinl8Q0zMJ/DHuifgUo=;
+	s=arc-20240116; t=1739954879; c=relaxed/simple;
+	bh=UxtPcjLIAKFY85Wd5OAw1BGtw3gehsW+BxzEQVVtI0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jFPaIdvupfCHJv3xd8l3TvUgWAee269BSUkpoK/r4BtbysvU9Bkv4fZl+GJlavGRBk4rQHISkqgOqbOzIFkyxVTZw/+nNjFsNgRbiCKAtuLK+AVZpPLVHJ0F+EpHDBxnUlDqIVDdYdGPVMC6ZJdwmj7VwH6m7XSgcBzSf6HIrz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJLrTQ9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB047C4CED1;
-	Wed, 19 Feb 2025 08:34:25 +0000 (UTC)
+	 MIME-Version; b=mUh7128S5E9A5iHaJ99YSxo+6PYeKYaHGAvQKF5Yzt5yS0Fw7c1AvDutQV4oReg21XJuR23IWtK1XF7Jrogx6MiQviCQIWnZXrInUyQyXKKz/eY5Qg3KW4NuxeX2aRfBhTgNQrs96zyaV/oPGSy4tZBojoTI8dBAixyt3ZcY5zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbOMbXrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504AFC4CED1;
+	Wed, 19 Feb 2025 08:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954066;
-	bh=qpDHBhVAOpy5mQrqgmj+9qe+uinl8Q0zMJ/DHuifgUo=;
+	s=korg; t=1739954879;
+	bh=UxtPcjLIAKFY85Wd5OAw1BGtw3gehsW+BxzEQVVtI0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJLrTQ9vc+D5mq3P3rjXiNNlBgZ1jX7YPvXNZvm16RtXOZbMdMMrMY4rFGjyeZeA0
-	 S2HQpAcCO+QkPY0oa0BUxRhOJChsswJhRCBau3OzvrXi+Vybd+Ir4RS2eokqMhp13q
-	 GlKolSJ/XBlLKPJBc/L6qb1FjHQDu4eAtrP+z7yE=
+	b=zbOMbXrJ6ITXM9j09cSbUClnvHNzfMyP8DmdE+wo1qLK5tSUggAYPzz9JZbEUcJHp
+	 ft8IG6jNajbIyPN3GcavStvgXoe0Ngge2yYJ4ybqhqliZMFTVFfTrPzxNPWYdpWXz6
+	 BEPV8TSpE1YKMnOMSMBqBSdhak5YEHtc2+JUvuGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Ma <hui.ma@airoha.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 086/274] PCI: mediatek-gen3: Avoid PCIe resetting via PERST# for Airoha EN7581 SoC
+Subject: [PATCH 6.12 023/230] idpf: call set_real_num_queues in idpf_open
 Date: Wed, 19 Feb 2025 09:25:40 +0100
-Message-ID: <20250219082612.987357641@linuxfoundation.org>
+Message-ID: <20250219082602.613698787@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,139 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-[ Upstream commit 491cb9c5084790aafa02e843349492c284373231 ]
+[ Upstream commit 52c11d31b5a1d1c747bb5f36cc4808e93e2348f4 ]
 
-Airoha EN7581 has a hw bug asserting/releasing PERST# signal causing
-occasional PCIe link down issues. In order to overcome the problem,
-PERST# signal is not asserted/released during device probe or
-suspend/resume phase and the PCIe block is reset using
-en7523_reset_assert() and en7581_pci_enable().
+On initial driver load, alloc_etherdev_mqs is called with whatever max
+queue values are provided by the control plane. However, if the driver
+is loaded on a system where num_online_cpus() returns less than the max
+queues, the netdev will think there are more queues than are actually
+available. Only num_online_cpus() will be allocated, but
+skb_get_queue_mapping(skb) could possibly return an index beyond the
+range of allocated queues. Consequently, the packet is silently dropped
+and it appears as if TX is broken.
 
-Introduce flags field in the mtk_gen3_pcie_pdata struct in order to
-specify per-SoC capabilities.
+Set the real number of queues during open so the netdev knows how many
+queues will be allocated.
 
-Link: https://lore.kernel.org/r/20250109-pcie-en7581-rst-fix-v4-1-4a45c89fb143@kernel.org
-Tested-by: Hui Ma <hui.ma@airoha.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fixes: 1c325aac10a8 ("idpf: configure resources for TX queues")
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek-gen3.c | 59 ++++++++++++++-------
- 1 file changed, 41 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
-index be52e3a123abd..74dfef8ce9ec1 100644
---- a/drivers/pci/controller/pcie-mediatek-gen3.c
-+++ b/drivers/pci/controller/pcie-mediatek-gen3.c
-@@ -133,10 +133,18 @@ struct mtk_gen3_pcie;
- #define PCIE_CONF_LINK2_CTL_STS		(PCIE_CFG_OFFSET_ADDR + 0xb0)
- #define PCIE_CONF_LINK2_LCR2_LINK_SPEED	GENMASK(3, 0)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index b4fbb99bfad20..a3d6b8f198a86 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -2159,8 +2159,13 @@ static int idpf_open(struct net_device *netdev)
+ 	idpf_vport_ctrl_lock(netdev);
+ 	vport = idpf_netdev_to_vport(netdev);
  
-+enum mtk_gen3_pcie_flags {
-+	SKIP_PCIE_RSTB	= BIT(0), /* Skip PERST# assertion during device
-+				   * probing or suspend/resume phase to
-+				   * avoid hw bugs/issues.
-+				   */
-+};
++	err = idpf_set_real_num_queues(vport);
++	if (err)
++		goto unlock;
 +
- /**
-  * struct mtk_gen3_pcie_pdata - differentiate between host generations
-  * @power_up: pcie power_up callback
-  * @phy_resets: phy reset lines SoC data.
-+ * @flags: pcie device flags.
-  */
- struct mtk_gen3_pcie_pdata {
- 	int (*power_up)(struct mtk_gen3_pcie *pcie);
-@@ -144,6 +152,7 @@ struct mtk_gen3_pcie_pdata {
- 		const char *id[MAX_NUM_PHY_RESETS];
- 		int num_resets;
- 	} phy_resets;
-+	u32 flags;
- };
+ 	err = idpf_vport_open(vport);
  
- /**
-@@ -438,22 +447,33 @@ static int mtk_pcie_startup_port(struct mtk_gen3_pcie *pcie)
- 	val |= PCIE_DISABLE_DVFSRC_VLT_REQ;
- 	writel_relaxed(val, pcie->base + PCIE_MISC_CTRL_REG);
++unlock:
+ 	idpf_vport_ctrl_unlock(netdev);
  
--	/* Assert all reset signals */
--	val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
--	val |= PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB | PCIE_PE_RSTB;
--	writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
--
- 	/*
--	 * Described in PCIe CEM specification sections 2.2 (PERST# Signal)
--	 * and 2.2.1 (Initial Power-Up (G3 to S0)).
--	 * The deassertion of PERST# should be delayed 100ms (TPVPERL)
--	 * for the power and clock to become stable.
-+	 * Airoha EN7581 has a hw bug asserting/releasing PCIE_PE_RSTB signal
-+	 * causing occasional PCIe link down. In order to overcome the issue,
-+	 * PCIE_RSTB signals are not asserted/released at this stage and the
-+	 * PCIe block is reset using en7523_reset_assert() and
-+	 * en7581_pci_enable().
- 	 */
--	msleep(100);
--
--	/* De-assert reset signals */
--	val &= ~(PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB | PCIE_PE_RSTB);
--	writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
-+	if (!(pcie->soc->flags & SKIP_PCIE_RSTB)) {
-+		/* Assert all reset signals */
-+		val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
-+		val |= PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB |
-+		       PCIE_PE_RSTB;
-+		writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
-+
-+		/*
-+		 * Described in PCIe CEM specification revision 6.0.
-+		 *
-+		 * The deassertion of PERST# should be delayed 100ms (TPVPERL)
-+		 * for the power and clock to become stable.
-+		 */
-+		msleep(PCIE_T_PVPERL_MS);
-+
-+		/* De-assert reset signals */
-+		val &= ~(PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB |
-+			 PCIE_PE_RSTB);
-+		writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
-+	}
- 
- 	/* Check if the link is up or not */
- 	err = readl_poll_timeout(pcie->base + PCIE_LINK_STATUS_REG, val,
-@@ -1231,10 +1251,12 @@ static int mtk_pcie_suspend_noirq(struct device *dev)
- 		return err;
- 	}
- 
--	/* Pull down the PERST# pin */
--	val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
--	val |= PCIE_PE_RSTB;
--	writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
-+	if (!(pcie->soc->flags & SKIP_PCIE_RSTB)) {
-+		/* Assert the PERST# pin */
-+		val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
-+		val |= PCIE_PE_RSTB;
-+		writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
-+	}
- 
- 	dev_dbg(pcie->dev, "entered L2 states successfully");
- 
-@@ -1285,6 +1307,7 @@ static const struct mtk_gen3_pcie_pdata mtk_pcie_soc_en7581 = {
- 		.id[2] = "phy-lane2",
- 		.num_resets = 3,
- 	},
-+	.flags = SKIP_PCIE_RSTB,
- };
- 
- static const struct of_device_id mtk_pcie_of_match[] = {
+ 	return err;
 -- 
 2.39.5
 
