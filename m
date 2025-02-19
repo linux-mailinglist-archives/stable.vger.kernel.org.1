@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-117589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9426CA3B684
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2F8A3BA7A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC25B7A6C66
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD5483BD0B9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A001E32CF;
-	Wed, 19 Feb 2025 09:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824051D6DC5;
+	Wed, 19 Feb 2025 09:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3dc8s8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oU7cM5Ez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D91DF252;
-	Wed, 19 Feb 2025 09:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0601B4F21;
+	Wed, 19 Feb 2025 09:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955759; cv=none; b=FvM1kkbQnKu+dMDgmNRahqFpx/jcBrGwocxL/zj4oZmwcYcd3T9PZIXuQuAcsaXQcnQrKrQi6jn92WrGZm7jrJcn2vWok5pGcdybdmmJ1lUd9jokahuLIL2ipeu3z/IUP/RfhiilbZ1Hqs4N1tz+kULfDy30pSnNXuyZ9nTLK7k=
+	t=1739957382; cv=none; b=kMWbDJKtnfI/U9L6bhqm8TmNvFBV5o5be0PgmGQPRNQTPgzvdOgP7dvwkDN+W8sGfHkshVQXhCaJoHfmse84CiDMITzo/PY9JYmh31oLh9DpZAOA3Ts5D9ihd1vnS3cPACrkWMX4Z1Y9qacTshe4KXMb44L4XiMOpAk4m5W59AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955759; c=relaxed/simple;
-	bh=aQkOZ7yUqqsM4T/JQnm1knOlObvHr23zdO7NcSuCNFM=;
+	s=arc-20240116; t=1739957382; c=relaxed/simple;
+	bh=NHnKdemfEtQaveKIU/KP/iaDSAewpk2a7++WLXgvuxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVZKHxFgAea6RCmAx7Uwgk6KkI0obdiVK+LC7/2Ze1nu6aFMFIRoPGvoxuqCvdrVxQ+pbFtbqDHyJoH5b5EgJfllVBvAtgz8zxkjzdy5AGcY6JsWcvSQgn5GKUajXMeGhq+nd1eL+EcIesKDORBRKx6Ulvmf0EBgW7dWvaX3W4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3dc8s8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF2EC4CED1;
-	Wed, 19 Feb 2025 09:02:38 +0000 (UTC)
+	 MIME-Version; b=DQEV8dvu6F/8tAXxB/WPjI+i3Y/wRlp8UGfRZ3vmWiyAQWv/j99c9FlD8g61YgvjHU0mZlFcBIdRsibIyXMD5pnX0PpRhI7ixMkPK3vF5xeq8huiJl0aOf7lx4kkvcuAXE1qLJXASy7DWcqYC0mlzsIDAjWg1LdfRMd8BvPXYRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oU7cM5Ez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6D1C4CED1;
+	Wed, 19 Feb 2025 09:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955758;
-	bh=aQkOZ7yUqqsM4T/JQnm1knOlObvHr23zdO7NcSuCNFM=;
+	s=korg; t=1739957382;
+	bh=NHnKdemfEtQaveKIU/KP/iaDSAewpk2a7++WLXgvuxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3dc8s8vw0M7GtUmYwBaoqk4RdE70yYmCCMe9tJfFwWZ1FwyWCmaakPRNYVwFLgPG
-	 Vi4ipw1lIMlvLPjwIYVBw06cIGwlnkma539bVkCKLLvJS9JQRS4WSn52+gbSsLDOsR
-	 9dNx0g2zcZGL9T7uFtiBcklwScLBrIwtDwQJ1Fp0=
+	b=oU7cM5EzoGMtBc9Zys/OwkncLcidGO9uVMQ3biW9KzBP7KcdapVVvRs19Ki6QdyN5
+	 mtzEOno3DdUqJsEZfAyVlNtFR1EuzB2vTnH7Rx1grvk3LTFTLqGPoaP8vBySg9+xYb
+	 5KTwkYccvXI1FhncgZphhxt+1voKhwBBVK4fOiJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/152] clocksource: Use pr_info() for "Checking clocksource synchronization" message
+	stable <stable@kernel.org>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Subject: [PATCH 6.1 506/578] usb: dwc2: gadget: remove of_node reference upon udc_stop
 Date: Wed, 19 Feb 2025 09:28:30 +0100
-Message-ID: <20250219082553.891887487@linuxfoundation.org>
+Message-ID: <20250219082712.888685093@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit 1f566840a82982141f94086061927a90e79440e5 ]
+commit 58cd423820d5b5610977e55e4acdd06628829ede upstream.
 
-The "Checking clocksource synchronization" message is normally printed
-when clocksource_verify_percpu() is called for a given clocksource if
-both the CLOCK_SOURCE_UNSTABLE and CLOCK_SOURCE_VERIFY_PERCPU flags
-are set.
+In dwc2_hsotg_udc_start(), e.g. when binding composite driver, "of_node"
+is set to hsotg->dev->of_node.
 
-It is an informational message and so pr_info() is the correct choice.
+It causes errors when binding the gadget driver several times, on
+stm32mp157c-ev1 board. Below error is seen:
+"pin PA10 already requested by 49000000.usb-otg; cannot claim for gadget.0"
 
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20250125015442.3740588-1-longman@redhat.com
-Stable-dep-of: 6bb05a33337b ("clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The first time, no issue is seen as when registering the driver, of_node
+isn't NULL:
+-> gadget_dev_desc_UDC_store
+  -> usb_gadget_register_driver_owner
+    -> driver_register
+    ...
+      -> really_probe -> pinctrl_bind_pins (no effect)
+
+Then dwc2_hsotg_udc_start() sets of_node.
+
+The second time (stop the gadget, reconfigure it, then start it again),
+of_node has been set, so the probing code tries to acquire pins for the
+gadget. These pins are hold by the controller, hence the error.
+
+So clear gadget.dev.of_node in udc_stop() routine to avoid the issue.
+
+Fixes: 7d7b22928b90 ("usb: gadget: s3c-hsotg: Propagate devicetree to gadget drivers")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250124173325.2747710-1-fabrice.gasnier@foss.st.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/clocksource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc2/gadget.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index aa864999dc21b..6b5b7c9c14732 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -360,7 +360,8 @@ void clocksource_verify_percpu(struct clocksource *cs)
- 		return;
- 	}
- 	testcpu = smp_processor_id();
--	pr_warn("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n", cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
-+	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
-+		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
- 	for_each_cpu(cpu, &cpus_chosen) {
- 		if (cpu == testcpu)
- 			continue;
--- 
-2.39.5
-
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -4613,6 +4613,7 @@ static int dwc2_hsotg_udc_stop(struct us
+ 	spin_lock_irqsave(&hsotg->lock, flags);
+ 
+ 	hsotg->driver = NULL;
++	hsotg->gadget.dev.of_node = NULL;
+ 	hsotg->gadget.speed = USB_SPEED_UNKNOWN;
+ 	hsotg->enabled = 0;
+ 
 
 
 
