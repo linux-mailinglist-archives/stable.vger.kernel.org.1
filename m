@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B49A3B4CD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:47:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02F6A3B571
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 958AC3AFD57
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7345C7A37DA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D531E32BF;
-	Wed, 19 Feb 2025 08:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3CA1D6DB7;
+	Wed, 19 Feb 2025 08:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQD3WXkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYKqB3Hq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B961E1A2B;
-	Wed, 19 Feb 2025 08:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810BC1CAA68;
+	Wed, 19 Feb 2025 08:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954225; cv=none; b=B9ET+gLdUBxwQjLv53bYSMaDu4SFu2+97XcWVypsdvYLradLzjECLL8Zkr1nnzPmvVaaRQ7Rk6sKgfgAuWU+/RcxHBeL9m/OuBC92TuKE0Nu/6AMYIhKWxVtfcX5/48BtKiR6RoVyrKsILNN6qe0ntB/sjXhjmL2My0mK4xV5aI=
+	t=1739954907; cv=none; b=JGdAa0UFz8sfsO7EMReKjDA24CJ84rw2/C1eFoK+K39EVwWIRhyqyYW8XrD/jvlPtlAp0d77BA39dqxsuHpj8tSAUmOrMF5HjVb2ogFx6BJMVKmOUEC1AJdzVhGZAYPYvyqVbxzPAag2O+F168knn1dvCzMBe2z+qay02/eHpMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954225; c=relaxed/simple;
-	bh=3g0L/UW2xsI24sNhsXfRjVco7kmVmcJdFBlS0u5ECCg=;
+	s=arc-20240116; t=1739954907; c=relaxed/simple;
+	bh=7tZtrfzqq0ZC6OOwKJKNV16KgcZCnbwYD6bR80oJvF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naiRNt9kB6jyU+dZmYWSueTUtiAJi0L6dkTT+3shxm2ELyPpEJoRXwmDRseEq+mivNfvWCq/TvwrY2m4RsKIHYjMmmmTWRp8ZAYKz58ykpbla/WQyFD6Hu/2dL5P7BTt2hGO1p7/Lq9Ok2la9WseQXXI+DyijeVV+Q2oRNW3kDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQD3WXkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB62EC4CED1;
-	Wed, 19 Feb 2025 08:37:04 +0000 (UTC)
+	 MIME-Version; b=psgOCXQ9aGqTrBkwUND9EfEtCXbnsMX30p9MhtbZ9J7C9scA7McMFKakcBOC8YuKnEyLnd1qaL3cAGfSE/uyono2GuQEQulIzu3Z2FflRm/30AOQEv6lzWmeVX08DdFLe+pBBow8zR4iLxPaSxrwar5bfXHGh39+NAKIZZWErYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYKqB3Hq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE15C4CED1;
+	Wed, 19 Feb 2025 08:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954225;
-	bh=3g0L/UW2xsI24sNhsXfRjVco7kmVmcJdFBlS0u5ECCg=;
+	s=korg; t=1739954907;
+	bh=7tZtrfzqq0ZC6OOwKJKNV16KgcZCnbwYD6bR80oJvF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQD3WXkMl0SypUGpKF8UdwIXBos9nvCh9PU5m2cIOzfVX+TjmOe7/1l1n/sMZl4Mq
-	 hU5QVoyEE1NFpVDc0D/inolzUVilIdPu+mKZl46Y3cSmiXd9Wyl/dJV2GhL4Kq9m7L
-	 OVmc2I4/elPsg0bf67mUjrUxQ0WF0byNdK8JQJRs=
+	b=pYKqB3HqDcLGlMjRFlM2LMBEvIBGcxv9pGFaAdGHnhxfnzBsUaWd/mbGrtPk+U+dN
+	 K8RLkFT1A0HsTKbiBantffd3WZAvCO8KLzUe3Su/ZzlpKEzfYmBlzqSOHVpxNZYK2B
+	 N1SBtxY4N+qugMcZ/zZZHs5HI/RnCV0yP0FU+gFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Baoqi Zhang <zhangbaoqi@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.13 135/274] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
-Date: Wed, 19 Feb 2025 09:26:29 +0100
-Message-ID: <20250219082614.890899254@linuxfoundation.org>
+	Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 073/230] PCI: switchtec: Add Microchip PCI100X device IDs
+Date: Wed, 19 Feb 2025 09:26:30 +0100
+Message-ID: <20250219082604.563282082@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>
 
-commit e71f7f42e3c874ac3314b8f250e8416a706165af upstream.
+[ Upstream commit a3282f84b2151d254dc4abf24d1255c6382be774 ]
 
-LS7A EHCI controller doesn't have extended capabilities, so the EECP
-(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
-be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
-fixed in future, now just clear the EECP field to avoid error messages
-on boot:
+Add Microchip parts to the Device ID table so the driver supports PCI100x
+devices.
 
-......
-[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
-......
-[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
-......
+Add a new macro to quirk the Microchip Switchtec PCI100x parts to allow DMA
+access via NTB to work when the IOMMU is turned on.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250202124935.480500-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+PCI100x family has 6 variants; each variant is designed for different
+application usages, different port counts and lane counts:
+
+  PCI1001 has 1 x4 upstream port and 3 x4 downstream ports
+  PCI1002 has 1 x4 upstream port and 4 x2 downstream ports
+  PCI1003 has 2 x4 upstream ports, 2 x2 upstream ports, and 2 x2
+    downstream ports
+  PCI1004 has 4 x4 upstream ports
+  PCI1005 has 1 x4 upstream port and 6 x2 downstream ports
+  PCI1006 has 6 x2 upstream ports and 2 x2 downstream ports
+
+[Historical note: these parts use PCI_VENDOR_ID_EFAR (0x1055), from EFAR
+Microsystems, which was acquired in 1996 by Standard Microsystems Corp,
+which was acquired by Microchip Technology in 2012.  The PCI-SIG confirms
+that Vendor ID 0x1055 is assigned to Microchip even though it's not
+visible via https://pcisig.com/membership/member-companies]
+
+Link: https://lore.kernel.org/r/20250120095524.243103-1-Saladi.Rakeshbabu@microchip.com
+Signed-off-by: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>
+[bhelgaas: Vendor ID history]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-By: Logan Gunthorpe <logang@deltatee.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/pci-quirks.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pci/quirks.c           | 11 +++++++++++
+ drivers/pci/switch/switchtec.c | 26 ++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
 
---- a/drivers/usb/host/pci-quirks.c
-+++ b/drivers/usb/host/pci-quirks.c
-@@ -958,6 +958,15 @@ static void quirk_usb_disable_ehci(struc
- 	 * booting from USB disk or using a usb keyboard
- 	 */
- 	hcc_params = readl(base + EHCI_HCC_PARAMS);
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 11fe6869ec3ab..af6cfd88f4b64 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5985,6 +5985,17 @@ SWITCHTEC_QUIRK(0x5552);  /* PAXA 52XG5 */
+ SWITCHTEC_QUIRK(0x5536);  /* PAXA 36XG5 */
+ SWITCHTEC_QUIRK(0x5528);  /* PAXA 28XG5 */
+ 
++#define SWITCHTEC_PCI100X_QUIRK(vid) \
++	DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_EFAR, vid, \
++		PCI_CLASS_BRIDGE_OTHER, 8, quirk_switchtec_ntb_dma_alias)
++SWITCHTEC_PCI100X_QUIRK(0x1001);  /* PCI1001XG4 */
++SWITCHTEC_PCI100X_QUIRK(0x1002);  /* PCI1002XG4 */
++SWITCHTEC_PCI100X_QUIRK(0x1003);  /* PCI1003XG4 */
++SWITCHTEC_PCI100X_QUIRK(0x1004);  /* PCI1004XG4 */
++SWITCHTEC_PCI100X_QUIRK(0x1005);  /* PCI1005XG4 */
++SWITCHTEC_PCI100X_QUIRK(0x1006);  /* PCI1006XG4 */
 +
-+	/* LS7A EHCI controller doesn't have extended capabilities, the
-+	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
-+	 * register should be 0x0 but it reads as 0xa0.  So clear it to
-+	 * avoid error messages on boot.
-+	 */
-+	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
-+		hcc_params &= ~(0xffL << 8);
 +
- 	offset = (hcc_params >> 8) & 0xff;
- 	while (offset && --count) {
- 		pci_read_config_dword(pdev, offset, &cap);
+ /*
+  * The PLX NTB uses devfn proxy IDs to move TLPs between NT endpoints.
+  * These IDs are used to forward responses to the originator on the other
+diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
+index c7e1089ffdafc..b14dfab04d846 100644
+--- a/drivers/pci/switch/switchtec.c
++++ b/drivers/pci/switch/switchtec.c
+@@ -1739,6 +1739,26 @@ static void switchtec_pci_remove(struct pci_dev *pdev)
+ 		.driver_data = gen, \
+ 	}
+ 
++#define SWITCHTEC_PCI100X_DEVICE(device_id, gen) \
++	{ \
++		.vendor     = PCI_VENDOR_ID_EFAR, \
++		.device     = device_id, \
++		.subvendor  = PCI_ANY_ID, \
++		.subdevice  = PCI_ANY_ID, \
++		.class      = (PCI_CLASS_MEMORY_OTHER << 8), \
++		.class_mask = 0xFFFFFFFF, \
++		.driver_data = gen, \
++	}, \
++	{ \
++		.vendor     = PCI_VENDOR_ID_EFAR, \
++		.device     = device_id, \
++		.subvendor  = PCI_ANY_ID, \
++		.subdevice  = PCI_ANY_ID, \
++		.class      = (PCI_CLASS_BRIDGE_OTHER << 8), \
++		.class_mask = 0xFFFFFFFF, \
++		.driver_data = gen, \
++	}
++
+ static const struct pci_device_id switchtec_pci_tbl[] = {
+ 	SWITCHTEC_PCI_DEVICE(0x8531, SWITCHTEC_GEN3),  /* PFX 24xG3 */
+ 	SWITCHTEC_PCI_DEVICE(0x8532, SWITCHTEC_GEN3),  /* PFX 32xG3 */
+@@ -1833,6 +1853,12 @@ static const struct pci_device_id switchtec_pci_tbl[] = {
+ 	SWITCHTEC_PCI_DEVICE(0x5552, SWITCHTEC_GEN5),  /* PAXA 52XG5 */
+ 	SWITCHTEC_PCI_DEVICE(0x5536, SWITCHTEC_GEN5),  /* PAXA 36XG5 */
+ 	SWITCHTEC_PCI_DEVICE(0x5528, SWITCHTEC_GEN5),  /* PAXA 28XG5 */
++	SWITCHTEC_PCI100X_DEVICE(0x1001, SWITCHTEC_GEN4),  /* PCI1001 16XG4 */
++	SWITCHTEC_PCI100X_DEVICE(0x1002, SWITCHTEC_GEN4),  /* PCI1002 12XG4 */
++	SWITCHTEC_PCI100X_DEVICE(0x1003, SWITCHTEC_GEN4),  /* PCI1003 16XG4 */
++	SWITCHTEC_PCI100X_DEVICE(0x1004, SWITCHTEC_GEN4),  /* PCI1004 16XG4 */
++	SWITCHTEC_PCI100X_DEVICE(0x1005, SWITCHTEC_GEN4),  /* PCI1005 16XG4 */
++	SWITCHTEC_PCI100X_DEVICE(0x1006, SWITCHTEC_GEN4),  /* PCI1006 16XG4 */
+ 	{0}
+ };
+ MODULE_DEVICE_TABLE(pci, switchtec_pci_tbl);
+-- 
+2.39.5
+
 
 
 
