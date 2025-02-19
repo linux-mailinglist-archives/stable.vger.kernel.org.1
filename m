@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9D5A3B7AE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A89CA3B793
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE3F3BC318
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:10:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB607176119
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775801DFE10;
-	Wed, 19 Feb 2025 09:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672BE1DEFEE;
+	Wed, 19 Feb 2025 09:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOA8C4wX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RvxIFDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344F61C760D;
-	Wed, 19 Feb 2025 09:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C781DEFE6;
+	Wed, 19 Feb 2025 09:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956041; cv=none; b=rCxe6SThnUmZ66jUDjMdJXNzH9v+VBk03DUTLDNjT6TVoxg8ngfLdODzh+hxd3hwBAbfSSPssxcfAxU9TQl5mKq9Xld1YvuQyiHKUZ8J3j1u623HsuBdJAnpDw6ihE6Yv9IcI3S2OyjaK//4s8Hop5I3AEttYzh/lBAK3s60XJc=
+	t=1739955952; cv=none; b=feMfxvk07BmnaSi3BNyoa57vl6rMnT8n6+AjA+JKl4JqVbdHw25lZEHsza+cyPjsSIztktlPaXKTC5Y51TzX0YsJTD/Y22BDzy/sREG2sfsoTk+wOL4TNE08ypIaB0h526lzAJymtCzfOKSSopIOqNYBDUc7YPoKRFi31VxHrlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956041; c=relaxed/simple;
-	bh=6WSlpQUVzbw0nCEjGJuj15YM2QcUdhFT+gKmjqpTAEY=;
+	s=arc-20240116; t=1739955952; c=relaxed/simple;
+	bh=SsR5L1vdhG9eiMx1uiR62r8e0/zqwPl0y99FT/8VAC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvdG0UjSXxPX+NKkCeSiA9UOLO8ifSba0RBV7fFVz+aVrWkRIaDupqS6NzwLoPreM8DCpU3aOKxXA2oKr/Qgp3EQxBLxSTE0TfQbouLCHJOz319BTFaPpcsZjfwBlLuGp6M5xw6AQeieMIdYOzdwVRConL9742/LUVGgZHPh53k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOA8C4wX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A871DC4CED1;
-	Wed, 19 Feb 2025 09:07:20 +0000 (UTC)
+	 MIME-Version; b=TvqS6drsOR9CZP/MDRfBJhksI+Lw295XvnxSgakgO5yPu30Tm6Qgheumh1quH3bDxjwCvM6ZuzXUcTESbUTugpF4Mxmn/eZSXc2osvBv2y3D0o4d/yCVB+cjMpqe992JFQ5SW9U9EQz8DWDpvJRWmkbsNnV4bZvwUKk+H3zuKck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RvxIFDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A195CC4CEE7;
+	Wed, 19 Feb 2025 09:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956041;
-	bh=6WSlpQUVzbw0nCEjGJuj15YM2QcUdhFT+gKmjqpTAEY=;
+	s=korg; t=1739955952;
+	bh=SsR5L1vdhG9eiMx1uiR62r8e0/zqwPl0y99FT/8VAC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOA8C4wX7MLXw1n8HW9XXtC47f2AZIH79l2z3Xx0gD4+QUYUX87FbX62NZ8POxZYk
-	 +tvAQoOIOyMCFbZ2whD56EPGhGZmZ8qQUfeElnEXL4aLlq9N6NG6Po5PE09n03h+lq
-	 +cw1pw4untVnAjj/jCwfuFpiiW/apySqFmqe5/90=
+	b=2RvxIFDs6xlFZRemgeNlF0zIUiJ4keKIgzPw0FZrCWyJQhgay0SvbST55epPTHKh1
+	 WR3/KY94o0wvuFt/d6RIvWNvin/54ixFfHxiYaCpoG4B4wO7GWAmisrYyv8A7G2CFe
+	 1Fn9xGhMxJ63e57aIe28FYPFvhvHsAhveKIwh8Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	kernel test robot <lkp@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/578] sched/fair: Fix value reported by hot tasks pulled in /proc/schedstat
-Date: Wed, 19 Feb 2025 09:20:18 +0100
-Message-ID: <20250219082653.452857019@linuxfoundation.org>
+Subject: [PATCH 6.1 015/578] drm/msm/dp: set safe_to_exit_level before printing it
+Date: Wed, 19 Feb 2025 09:20:19 +0100
+Message-ID: <20250219082653.490917031@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,93 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a430d99e349026d53e2557b7b22bd2ebd61fe12a ]
+[ Upstream commit 7dee35d79bb046bfd425aa9e58a82414f67c1cec ]
 
-In /proc/schedstat, lb_hot_gained reports the number hot tasks pulled
-during load balance. This value is incremented in can_migrate_task()
-if the task is migratable and hot. After incrementing the value,
-load balancer can still decide not to migrate this task leading to wrong
-accounting. Fix this by incrementing stats when hot tasks are detached.
-This issue only exists in detach_tasks() where we can decide to not
-migrate hot task even if it is migratable. However, in detach_one_task(),
-we migrate it unconditionally.
+Rather than printing random garbage from stack and pretending that it is
+the default safe_to_exit_level, set the variable beforehand.
 
-[Swapnil: Handled the case where nr_failed_migrations_hot was not accounted properly and wrote commit log]
-
-Fixes: d31980846f96 ("sched: Move up affinity check to mitigate useless redoing overhead")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reported-by: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Not-yet-signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241220063224.17767-2-swapnil.sapkal@amd.com
+Fixes: d13e36d7d222 ("drm/msm/dp: add audio support for Display Port on MSM")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411081748.0PPL9MIj-lkp@intel.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/626804/
+Link: https://lore.kernel.org/r/20241202-fd-dp-audio-fixup-v2-1-d9187ea96dad@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h |  1 +
- kernel/sched/fair.c   | 17 +++++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_audio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 6c82d71fab113..4dc764f3d26f5 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -888,6 +888,7 @@ struct task_struct {
- 	unsigned			sched_reset_on_fork:1;
- 	unsigned			sched_contributes_to_load:1;
- 	unsigned			sched_migrated:1;
-+	unsigned			sched_task_hot:1;
- 
- 	/* Force alignment to the next boundary: */
- 	unsigned			:0;
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index cf3bbddd4b7fc..eedbe66e05273 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8317,6 +8317,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 	int tsk_cache_hot;
- 
- 	lockdep_assert_rq_held(env->src_rq);
-+	if (p->sched_task_hot)
-+		p->sched_task_hot = 0;
- 
- 	/*
- 	 * We do not migrate tasks that are:
-@@ -8389,10 +8391,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 
- 	if (tsk_cache_hot <= 0 ||
- 	    env->sd->nr_balance_failed > env->sd->cache_nice_tries) {
--		if (tsk_cache_hot == 1) {
--			schedstat_inc(env->sd->lb_hot_gained[env->idle]);
--			schedstat_inc(p->stats.nr_forced_migrations);
--		}
-+		if (tsk_cache_hot == 1)
-+			p->sched_task_hot = 1;
- 		return 1;
- 	}
- 
-@@ -8407,6 +8407,12 @@ static void detach_task(struct task_struct *p, struct lb_env *env)
- {
- 	lockdep_assert_rq_held(env->src_rq);
- 
-+	if (p->sched_task_hot) {
-+		p->sched_task_hot = 0;
-+		schedstat_inc(env->sd->lb_hot_gained[env->idle]);
-+		schedstat_inc(p->stats.nr_forced_migrations);
-+	}
-+
- 	deactivate_task(env->src_rq, p, DEQUEUE_NOCLOCK);
- 	set_task_cpu(p, env->dst_cpu);
- }
-@@ -8567,6 +8573,9 @@ static int detach_tasks(struct lb_env *env)
- 
- 		continue;
- next:
-+		if (p->sched_task_hot)
-+			schedstat_inc(p->stats.nr_failed_migrations_hot);
-+
- 		list_move(&p->se.group_node, tasks);
+diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
+index 1245c7aa49df8..a2113d6a022b5 100644
+--- a/drivers/gpu/drm/msm/dp/dp_audio.c
++++ b/drivers/gpu/drm/msm/dp/dp_audio.c
+@@ -410,10 +410,10 @@ static void dp_audio_safe_to_exit_level(struct dp_audio_private *audio)
+ 		safe_to_exit_level = 5;
+ 		break;
+ 	default:
++		safe_to_exit_level = 14;
+ 		drm_dbg_dp(audio->drm_dev,
+ 				"setting the default safe_to_exit_level = %u\n",
+ 				safe_to_exit_level);
+-		safe_to_exit_level = 14;
+ 		break;
  	}
  
 -- 
