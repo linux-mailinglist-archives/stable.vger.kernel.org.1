@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-118098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD70A3BA5D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE0CA3B707
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F868015AC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 551B51652E8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F391EEA34;
-	Wed, 19 Feb 2025 09:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEFC1EF087;
+	Wed, 19 Feb 2025 08:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF6J4tnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPeTQ7Au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268651D5175;
-	Wed, 19 Feb 2025 09:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDE81DE4F9;
+	Wed, 19 Feb 2025 08:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957230; cv=none; b=UPh8QOPunU+O9EThz0/RX19ShXNJN7RZCMV/PkxWF/QeIvQph89yZsyLfKcDP++gaAGR4GfRQolqkCwnD0ioW4/ueqxRxJoG3sLX6GDdKCGAbgaWeCNx9wSzJud+7rnBTS7EB3slNIk7fTqgJnw/MgvfwwCMcfmttmqgnhHDiKw=
+	t=1739955462; cv=none; b=PWK4DPbv63KPW/6EhyyE3sl999nok5ReAJFr/8TSr4+EBj8omVv1NqxRgAqOrGcAvc011S7nqLAbQbG3+f9ZWK9j+0MTw2qro0CXf9nR+t/gN/pUQtikER+bYtf+fgZLKbFoqYSiFWQbkmGbFHQ2vH/nrF8n8lVGFRDJh+LtKaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957230; c=relaxed/simple;
-	bh=guFFBN6DbYYXrM4QWf5pAlwkmfPt15JXYwXz4vNK/Jk=;
+	s=arc-20240116; t=1739955462; c=relaxed/simple;
+	bh=lXXA6hvJlqSYXi8rQ6MY1TOphmtaeaKJYGIKXCF0mqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahfggLDhEb6zx7I1LAmkgAQqg+9sDI1Qv5OqR9Aj2QzdmyTVH/i1HbWl1LCbjbtZNjhiAWyTC+GLbDTQwqbqbjOExixwFCAVnFtELzp2l9l5dVhDNsZ0yv5EZl7iBaPjO/TmIOttkUWSPSGjJDlE2ez2ZEVvJkFaPBsQHK3LHcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF6J4tnP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B26C4CEEB;
-	Wed, 19 Feb 2025 09:27:09 +0000 (UTC)
+	 MIME-Version; b=C7X+U13MaejDUqMhGQSjZ/1DMLGkuO60x3/Ub8bT8p5EYs6K8NNmD1lHFrDUr2KShQqKjBIR2PbvI0Rh50lbAo0wmlDFSuYfkD0oA74kx5ASzhYuWpqxOz+EIedhPH3v9tEf486zf0zow/pYX8zvaTgSnFZbeSpd0ORjGz8afY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPeTQ7Au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99287C4CED1;
+	Wed, 19 Feb 2025 08:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957229;
-	bh=guFFBN6DbYYXrM4QWf5pAlwkmfPt15JXYwXz4vNK/Jk=;
+	s=korg; t=1739955462;
+	bh=lXXA6hvJlqSYXi8rQ6MY1TOphmtaeaKJYGIKXCF0mqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YF6J4tnPY1e+bLjI73SNELI+Eh+7CG3dKxWQbC5fCvcgSeY1SB3AXdyAcLx6vM57z
-	 yUHS/Z1QDrCxMJafOs2B+191+0JQIMVQvntMB9Cq64I2er56/nHsKi2hSTXVEeSDQ+
-	 Im5S2sU22T8c/is3AreckecvEenrxBxtcIHwaj6E=
+	b=bPeTQ7AuIiZOQ3B4up8fYEKO36F3AuykSwoTYflFqz4AeyywU/YJYkapDCqBobAnJ
+	 FSFvInRom5DyU1DaGwloWZpPaxienzngFeZ0Om0kMJBq7FWkMaL1Ot5KfAArJ+hV4P
+	 C1AJ7hM5fNMhOvjWkV0Ut46X7aeIKMEzeIUS7ATQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Galas <ssgalas@cloud.ru>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 422/578] io_uring/net: dont retry connect operation on EPOLLERR
-Date: Wed, 19 Feb 2025 09:27:06 +0100
-Message-ID: <20250219082709.617465244@linuxfoundation.org>
+	Radu Rendec <rrendec@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/152] arm64: cacheinfo: Avoid out-of-bounds write to cacheinfo array
+Date: Wed, 19 Feb 2025 09:27:07 +0100
+Message-ID: <20250219082550.592525070@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Radu Rendec <rrendec@redhat.com>
 
-commit 8c8492ca64e79c6e0f433e8c9d2bcbd039ef83d0 upstream.
+[ Upstream commit 875d742cf5327c93cba1f11e12b08d3cce7a88d2 ]
 
-If a socket is shutdown before the connection completes, POLLERR is set
-in the poll mask. However, connect ignores this as it doesn't know, and
-attempts the connection again. This may lead to a bogus -ETIMEDOUT
-result, where it should have noticed the POLLERR and just returned
--ECONNRESET instead.
+The loop that detects/populates cache information already has a bounds
+check on the array size but does not account for cache levels with
+separate data/instructions cache. Fix this by incrementing the index
+for any populated leaf (instead of any populated level).
 
-Have the poll logic check for whether or not POLLERR is set in the mask,
-and if so, mark the request as failed. Then connect can appropriately
-fail the request rather than retry it.
+Fixes: 5d425c186537 ("arm64: kernel: add support for cpu cache information")
 
-Reported-by: Sergey Galas <ssgalas@cloud.ru>
-Cc: stable@vger.kernel.org
-Link: https://github.com/axboe/liburing/discussions/1335
-Fixes: 3fb1bd688172 ("io_uring/net: handle -EINPROGRESS correct for IORING_OP_CONNECT")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Radu Rendec <rrendec@redhat.com>
+Link: https://lore.kernel.org/r/20250206174420.2178724-1-rrendec@redhat.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c  |    5 +++++
- io_uring/poll.c |    2 ++
- 2 files changed, 7 insertions(+)
+ arch/arm64/kernel/cacheinfo.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1486,6 +1486,11 @@ int io_connect(struct io_kiocb *req, uns
- 		io = &__io;
- 	}
+diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
+index d9c9218fa1fdd..309942b06c5bc 100644
+--- a/arch/arm64/kernel/cacheinfo.c
++++ b/arch/arm64/kernel/cacheinfo.c
+@@ -101,16 +101,18 @@ int populate_cache_leaves(unsigned int cpu)
+ 	unsigned int level, idx;
+ 	enum cache_type type;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+-	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
++	struct cacheinfo *infos = this_cpu_ci->info_list;
  
-+	if (unlikely(req->flags & REQ_F_FAIL)) {
-+		ret = -ECONNRESET;
-+		goto out;
-+	}
-+
- 	file_flags = force_nonblock ? O_NONBLOCK : 0;
- 
- 	ret = __sys_connect_file(req->file, &io->address,
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -288,6 +288,8 @@ static int io_poll_check_events(struct i
- 				return IOU_POLL_REISSUE;
- 			}
+ 	for (idx = 0, level = 1; level <= this_cpu_ci->num_levels &&
+-	     idx < this_cpu_ci->num_leaves; idx++, level++) {
++	     idx < this_cpu_ci->num_leaves; level++) {
+ 		type = get_cache_type(level);
+ 		if (type == CACHE_TYPE_SEPARATE) {
+-			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+-			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
++			if (idx + 1 >= this_cpu_ci->num_leaves)
++				break;
++			ci_leaf_init(&infos[idx++], CACHE_TYPE_DATA, level);
++			ci_leaf_init(&infos[idx++], CACHE_TYPE_INST, level);
+ 		} else {
+-			ci_leaf_init(this_leaf++, type, level);
++			ci_leaf_init(&infos[idx++], type, level);
  		}
-+		if (unlikely(req->cqe.res & EPOLLERR))
-+			req_set_fail(req);
- 		if (req->apoll_events & EPOLLONESHOT)
- 			return IOU_POLL_DONE;
- 		if (io_is_uring_fops(req->file))
+ 	}
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
