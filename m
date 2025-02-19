@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A543DA3B96B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F528A3B663
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 592033BF88B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:26:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2D223A2C01
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B9F1E8351;
-	Wed, 19 Feb 2025 09:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDB91F8916;
+	Wed, 19 Feb 2025 08:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9foE1yT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JciLtDHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9A81E8347;
-	Wed, 19 Feb 2025 09:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3B81EDA29;
+	Wed, 19 Feb 2025 08:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956962; cv=none; b=m7SquLW/hMzhgq6AM4SdzlIh0lgfv1z5IvTtlbdfBODine5pV3CYgPeBPKorK21UXPDk1iCVT3j9lvR9ZSqNqqz32undqDb8zW1IAez3FhP/OTDdT431NY0JGWHsMZF3cfC1votSfI/ZDvaHHviXmYachYxdcU60Qmlv/Rp8DQw=
+	t=1739954826; cv=none; b=pUZJypCrTWiUAH8Nb5sBBNWGPN08VZr7FyYieJvwAz2vflHLO4g4dq6U6sP58zj084MCvm2k9k7ZI0m3qz2ym2b090hn7/VTMAPqjahHwFawzzA+2bKaMQ60oZ/YLFa2PZ7p/HaBifwvzi4f7Yd74XCqXxrhgE6GaTCccHezYBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956962; c=relaxed/simple;
-	bh=03Oz6mn37S696V6f2zGlb/Z+Uymj/Y8CZCTlSiVAWvg=;
+	s=arc-20240116; t=1739954826; c=relaxed/simple;
+	bh=EcJu6Hj7XmSMrwuQ02rYVBppotBdQ4S8XYHnIvHn09E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KfLdY7wW1+lz19uUPj1FXW6nUZdrWO6rm+EwRLHxgbuvBHJ4AVb0MLlq2+xjP/8i35YKi4VL49qSSzz/RFR8qN/kqFdHE3qrzofjbrQeUNmcSgm7EucM/5bumuHK/+4rVdkW9Sxo2HYSKVBpMut+c3j5VlJ+XTeJPvzROwsR1zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9foE1yT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B625C4CED1;
-	Wed, 19 Feb 2025 09:22:41 +0000 (UTC)
+	 MIME-Version; b=WTGY7OrfamDk/3T4ZTUd9mmD3kkW33gUlAzDxuVrpXJvZ8quu0Fk/SR7U67xcm938tIWOo93KmeDVq8YdVEn12igsUk0dFVvO2I3F8l3TpJTGMVRZ9fPpnFZFlbGLT29vvYgz0Fw2XrRAVANvZMQ7/fok+63x5FlbEDiSsRrcVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JciLtDHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465F6C4CEE6;
+	Wed, 19 Feb 2025 08:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956962;
-	bh=03Oz6mn37S696V6f2zGlb/Z+Uymj/Y8CZCTlSiVAWvg=;
+	s=korg; t=1739954825;
+	bh=EcJu6Hj7XmSMrwuQ02rYVBppotBdQ4S8XYHnIvHn09E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9foE1yTDfkx4bBqjcyvtu+7qmdwAmKc5vmFcGQmrsQEQKXsIGQY/cQFSCIXA/4Vn
-	 K9lPSnax8hGvqg5cyOMSXOdKYJsugFcaZ0XpSPej5b053cf5MyQ7pv1M7mcphomImi
-	 upBBDYgqp3ooAL37hzOaYxowRobxvDv90ozmuyG8=
+	b=JciLtDHNU/0jnqEBzW2aBUkh6GNbwovzJRewnnNvN814T0N7Pxg6exp2LCiM1Fg8M
+	 JROSntb+MgNmGEQ+/Zj/dyWnnzSm5E2tDGR4UQ5URoXT9hlfBegVZhPhc7X5v2FgEL
+	 a18Pe5qUhB7XjfQL7qtDlH0Be4NO8/2WH6E3kRzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 361/578] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 048/230] drm/amdgpu: bail out when failed to load fw in psp_init_cap_microcode()
 Date: Wed, 19 Feb 2025 09:26:05 +0100
-Message-ID: <20250219082707.220312172@linuxfoundation.org>
+Message-ID: <20250219082603.589896095@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-commit 89aa5925d201b90a48416784831916ca203658f9 upstream.
+[ Upstream commit a0a455b4bc7483ad60e8b8a50330c1e05bb7bfcf ]
 
-aggr_state and unit fields are u32. The result of their
-multiplication may not fit in this type.
+In function psp_init_cap_microcode(), it should bail out when failed to
+load firmware, otherwise it may cause invalid memory access.
 
-Add explicit casting to prevent overflow.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Link: https://lore.kernel.org/r/20241203084231.6001-1-abelova@astralinux.ru
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07dbfc6b102e ("drm/amd: Use `amdgpu_ucode_*` helpers for PSP")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rpmh.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/clk-rpmh.c
-+++ b/drivers/clk/qcom/clk-rpmh.c
-@@ -332,7 +332,7 @@ static unsigned long clk_rpmh_bcm_recalc
- {
- 	struct clk_rpmh *c = to_clk_rpmh(hw);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 0b28b2cf1517d..d70855d7c61c1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -3713,9 +3713,10 @@ int psp_init_cap_microcode(struct psp_context *psp, const char *chip_name)
+ 		if (err == -ENODEV) {
+ 			dev_warn(adev->dev, "cap microcode does not exist, skip\n");
+ 			err = 0;
+-			goto out;
++		} else {
++			dev_err(adev->dev, "fail to initialize cap microcode\n");
+ 		}
+-		dev_err(adev->dev, "fail to initialize cap microcode\n");
++		goto out;
+ 	}
  
--	return c->aggr_state * c->unit;
-+	return (unsigned long)c->aggr_state * c->unit;
- }
- 
- static const struct clk_ops clk_rpmh_bcm_ops = {
+ 	info = &adev->firmware.ucode[AMDGPU_UCODE_ID_CAP];
+-- 
+2.39.5
+
 
 
 
