@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-117281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F03BA3B5CF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32456A3B496
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CCAF16A9AD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4627188F0AB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B14A1F560B;
-	Wed, 19 Feb 2025 08:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82C71DEFE6;
+	Wed, 19 Feb 2025 08:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMhKJ4r7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLmYocDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95AC1F583C;
-	Wed, 19 Feb 2025 08:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8608B1DEFDC;
+	Wed, 19 Feb 2025 08:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954779; cv=none; b=nOkGfUb35EvYunpXZbjXIYJ+iiQUavlpyDsETtsbDjbYwYWQxma8p1M4JKSm8vmKuUrqn61l1okYQMbrftuz6U+BRTyxvyp08JGSXLDHwBsPElA7HDyslQKF3s9iTU4agaU3tiVA+l1LGaameb2NBQwU6KKyaJD+8Vh6S7e5mhk=
+	t=1739954109; cv=none; b=l9j+HPOCp0cXxAFqEI7RfTT4PxBEUiZOg5Cp8zh0WL+HwN4vtnsgQvbuzFGi4XCFaWIKoKBae0xJM9AnYjmbscDgnqIzus34+12M5+lfkvN/szmFFhovq5YGM1wzTnwigP7Fv4Vuv9dIRjIluuanHPjoaDIjDyTCQcWBvWLLE2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954779; c=relaxed/simple;
-	bh=xEvpxIdaaEm4KcFNw0unh37XKRFGTq6d/C7BzUavG8s=;
+	s=arc-20240116; t=1739954109; c=relaxed/simple;
+	bh=DjlL5Hlbm3D4EsY/Nu7m16ClmefbgKfqkJAd2aSRcyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDbsxzdZ/PgAwV7ffFKnplg9ivx081kEt5AzRI69Jauu8wis0/J8J0NiZuxwn2YInqnklIGnrOC54xH9U2cc1kmx71rSaH3DrfCE/9pVjkY9kupDVwDNWoj3DUacce7ZAw5WB84qvzmyD/SHNEpVxwwePguslx0ipMHUON6/I+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMhKJ4r7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58204C4CEE6;
-	Wed, 19 Feb 2025 08:46:19 +0000 (UTC)
+	 MIME-Version; b=d7P8LpbkmZj+49UimO8wTW+8dcA70KYAfUuxZPAsnK5wLbOSmn7L+suLNLbEmtkg4yoZ6nsRj/+LHjlwiDJ5pRHiTnUA1EQkOCe0j8UDBz174QpwJZ8sXIVguMAlxIGpd4nIi7o0tyqUSJaBilntUgsHxc3rVD513yrh4e0fR7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLmYocDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F19C4CED1;
+	Wed, 19 Feb 2025 08:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954779;
-	bh=xEvpxIdaaEm4KcFNw0unh37XKRFGTq6d/C7BzUavG8s=;
+	s=korg; t=1739954109;
+	bh=DjlL5Hlbm3D4EsY/Nu7m16ClmefbgKfqkJAd2aSRcyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMhKJ4r7EdMwUECvwBOZlLIXPHVBvmi4sg4V9skeyIb26xcon0U1wlnTNP+hYHci3
-	 +8pbFUoh5RQ042KrNttBrLccLIihD/0fuzjBQLznJPqYyyPULvqfdiuWkY7FdUNMLq
-	 slQCJ8+HlfOekhfYcI7fpnE6OdjqEgzJakeJ2ItA=
+	b=KLmYocDwqLK5PAFvHWCjHK7s2DULIZ/Xjt/qDUITE6XLSlyfxjWMjJV4bEKyXU39C
+	 SuXFfe30BUp9y+fxfEy8FZZn7iXoWTiJ7gPmNqXij31+/aoeRSKSFcywN2qp8+PCx1
+	 /V3yhcwSqZFQ/+EXK8wDnZEJ0j2QcbdpXWFsL6Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/230] sched_ext: Fix lock imbalance in dispatch_to_local_dsq()
-Date: Wed, 19 Feb 2025 09:25:51 +0100
-Message-ID: <20250219082603.045274488@linuxfoundation.org>
+Subject: [PATCH 6.13 098/274] vfio/nvgrace-gpu: Read dvsec register to determine need for uncached resmem
+Date: Wed, 19 Feb 2025 09:25:52 +0100
+Message-ID: <20250219082613.458476146@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Ankit Agrawal <ankita@nvidia.com>
 
-[ Upstream commit 1626e5ef0b00386a4fd083fa7c46c8edbd75f9b4 ]
+[ Upstream commit bd53764a60ad586ad5b6ed339423ad5e67824464 ]
 
-While performing the rq locking dance in dispatch_to_local_dsq(), we may
-trigger the following lock imbalance condition, in particular when
-multiple tasks are rapidly changing CPU affinity (i.e., running a
-`stress-ng --race-sched 0`):
+NVIDIA's recently introduced Grace Blackwell (GB) Superchip is a
+continuation with the Grace Hopper (GH) superchip that provides a
+cache coherent access to CPU and GPU to each other's memory with
+an internal proprietary chip-to-chip cache coherent interconnect.
 
-[   13.413579] =====================================
-[   13.413660] WARNING: bad unlock balance detected!
-[   13.413729] 6.13.0-virtme #15 Not tainted
-[   13.413792] -------------------------------------
-[   13.413859] kworker/1:1/80 is trying to release lock (&rq->__lock) at:
-[   13.413954] [<ffffffff873c6c48>] dispatch_to_local_dsq+0x108/0x1a0
-[   13.414111] but there are no more locks to release!
-[   13.414176]
-[   13.414176] other info that might help us debug this:
-[   13.414258] 1 lock held by kworker/1:1/80:
-[   13.414318]  #0: ffff8b66feb41698 (&rq->__lock){-.-.}-{2:2}, at: raw_spin_rq_lock_nested+0x20/0x90
-[   13.414612]
-[   13.414612] stack backtrace:
-[   13.415255] CPU: 1 UID: 0 PID: 80 Comm: kworker/1:1 Not tainted 6.13.0-virtme #15
-[   13.415505] Workqueue:  0x0 (events)
-[   13.415567] Sched_ext: dsp_local_on (enabled+all), task: runnable_at=-2ms
-[   13.415570] Call Trace:
-[   13.415700]  <TASK>
-[   13.415744]  dump_stack_lvl+0x78/0xe0
-[   13.415806]  ? dispatch_to_local_dsq+0x108/0x1a0
-[   13.415884]  print_unlock_imbalance_bug+0x11b/0x130
-[   13.415965]  ? dispatch_to_local_dsq+0x108/0x1a0
-[   13.416226]  lock_release+0x231/0x2c0
-[   13.416326]  _raw_spin_unlock+0x1b/0x40
-[   13.416422]  dispatch_to_local_dsq+0x108/0x1a0
-[   13.416554]  flush_dispatch_buf+0x199/0x1d0
-[   13.416652]  balance_one+0x194/0x370
-[   13.416751]  balance_scx+0x61/0x1e0
-[   13.416848]  prev_balance+0x43/0xb0
-[   13.416947]  __pick_next_task+0x6b/0x1b0
-[   13.417052]  __schedule+0x20d/0x1740
+There is a HW defect on GH systems to support the Multi-Instance
+GPU (MIG) feature [1] that necessiated the presence of a 1G region
+with uncached mapping carved out from the device memory. The 1G
+region is shown as a fake BAR (comprising region 2 and 3) to
+workaround the issue. This is fixed on the GB systems.
 
-This happens because dispatch_to_local_dsq() is racing with
-dispatch_dequeue() and, when the latter wins, we incorrectly assume that
-the task has been moved to dst_rq.
+The presence of the fix for the HW defect is communicated by the
+device firmware through the DVSEC PCI config register with ID 3.
+The module reads this to take a different codepath on GB vs GH.
 
-Fix by properly tracking the currently locked rq.
+Scan through the DVSEC registers to identify the correct one and use
+it to determine the presence of the fix. Save the value in the device's
+nvgrace_gpu_pci_core_device structure.
 
-Fixes: 4d3ca89bdd31 ("sched_ext: Refactor consume_remote_task()")
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Link: https://www.nvidia.com/en-in/technologies/multi-instance-gpu/ [1]
+
+CC: Jason Gunthorpe <jgg@nvidia.com>
+CC: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+Link: https://lore.kernel.org/r/20250124183102.3976-2-ankita@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/vfio/pci/nvgrace-gpu/main.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 4c4681cb9337b..45e7461fd4c94 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -2458,6 +2458,9 @@ static void dispatch_to_local_dsq(struct rq *rq, struct scx_dispatch_q *dst_dsq,
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index a467085038f0c..b76368958d1c5 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -23,6 +23,11 @@
+ /* A hardwired and constant ABI value between the GPU FW and VFIO driver. */
+ #define MEMBLK_SIZE SZ_512M
+ 
++#define DVSEC_BITMAP_OFFSET 0xA
++#define MIG_SUPPORTED_WITH_CACHED_RESMEM BIT(0)
++
++#define GPU_CAP_DVSEC_REGISTER 3
++
+ /*
+  * The state of the two device memory region - resmem and usemem - is
+  * saved as struct mem_region.
+@@ -46,6 +51,7 @@ struct nvgrace_gpu_pci_core_device {
+ 	struct mem_region resmem;
+ 	/* Lock to control device memory kernel mapping */
+ 	struct mutex remap_lock;
++	bool has_mig_hw_bug;
+ };
+ 
+ static void nvgrace_gpu_init_fake_bar_emu_regs(struct vfio_device *core_vdev)
+@@ -812,6 +818,26 @@ nvgrace_gpu_init_nvdev_struct(struct pci_dev *pdev,
+ 	return ret;
+ }
+ 
++static bool nvgrace_gpu_has_mig_hw_bug(struct pci_dev *pdev)
++{
++	int pcie_dvsec;
++	u16 dvsec_ctrl16;
++
++	pcie_dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_NVIDIA,
++					       GPU_CAP_DVSEC_REGISTER);
++
++	if (pcie_dvsec) {
++		pci_read_config_word(pdev,
++				     pcie_dvsec + DVSEC_BITMAP_OFFSET,
++				     &dvsec_ctrl16);
++
++		if (dvsec_ctrl16 & MIG_SUPPORTED_WITH_CACHED_RESMEM)
++			return false;
++	}
++
++	return true;
++}
++
+ static int nvgrace_gpu_probe(struct pci_dev *pdev,
+ 			     const struct pci_device_id *id)
  {
- 	struct rq *src_rq = task_rq(p);
- 	struct rq *dst_rq = container_of(dst_dsq, struct rq, scx.local_dsq);
-+#ifdef CONFIG_SMP
-+	struct rq *locked_rq = rq;
-+#endif
+@@ -832,6 +858,8 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
+ 	dev_set_drvdata(&pdev->dev, &nvdev->core_device);
  
- 	/*
- 	 * We're synchronized against dequeue through DISPATCHING. As @p can't
-@@ -2494,8 +2497,9 @@ static void dispatch_to_local_dsq(struct rq *rq, struct scx_dispatch_q *dst_dsq,
- 	atomic_long_set_release(&p->scx.ops_state, SCX_OPSS_NONE);
- 
- 	/* switch to @src_rq lock */
--	if (rq != src_rq) {
--		raw_spin_rq_unlock(rq);
-+	if (locked_rq != src_rq) {
-+		raw_spin_rq_unlock(locked_rq);
-+		locked_rq = src_rq;
- 		raw_spin_rq_lock(src_rq);
- 	}
- 
-@@ -2513,6 +2517,8 @@ static void dispatch_to_local_dsq(struct rq *rq, struct scx_dispatch_q *dst_dsq,
- 		} else {
- 			move_remote_task_to_local_dsq(p, enq_flags,
- 						      src_rq, dst_rq);
-+			/* task has been moved to dst_rq, which is now locked */
-+			locked_rq = dst_rq;
- 		}
- 
- 		/* if the destination CPU is idle, wake it up */
-@@ -2521,8 +2527,8 @@ static void dispatch_to_local_dsq(struct rq *rq, struct scx_dispatch_q *dst_dsq,
- 	}
- 
- 	/* switch back to @rq lock */
--	if (rq != dst_rq) {
--		raw_spin_rq_unlock(dst_rq);
-+	if (locked_rq != rq) {
-+		raw_spin_rq_unlock(locked_rq);
- 		raw_spin_rq_lock(rq);
- 	}
- #else	/* CONFIG_SMP */
+ 	if (ops == &nvgrace_gpu_pci_ops) {
++		nvdev->has_mig_hw_bug = nvgrace_gpu_has_mig_hw_bug(pdev);
++
+ 		/*
+ 		 * Device memory properties are identified in the host ACPI
+ 		 * table. Set the nvgrace_gpu_pci_core_device structure.
 -- 
 2.39.5
 
