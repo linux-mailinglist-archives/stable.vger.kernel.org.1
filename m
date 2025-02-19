@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-117711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC51A3B7C3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30D4A3B820
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39FFF18867F9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1003E17E0D2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170DD1DE3BE;
-	Wed, 19 Feb 2025 09:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9DB1AF0C8;
+	Wed, 19 Feb 2025 09:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1RJ0IYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YgS2AE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C711DE3B1;
-	Wed, 19 Feb 2025 09:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390761B6CFA;
+	Wed, 19 Feb 2025 09:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956126; cv=none; b=mj0ZUacsAUYCPPiig6z5Ej07UJryx/UschwK5NlbKg+svVr/eMDxAeupeVaIrDj+bTjBrgbmQi+a2qxi0TYJXSiJQm73lUGXimgIqkdkXAjve/eRHGIJZ5L/3TL4dZ7roSGgeXWzv38TsTtPXevkc/bgan6aMFsk74hx9Y/4Uwk=
+	t=1739956246; cv=none; b=He9J4L8QCshM4Z4whbSYVK4/m+JnouCtUsZCWBXzLg7EA7lGHU/JUa5I5oJa1dtvIjIovPau5GCSVSRXysYh3Yib3zudQT5A0CbegpHBxUaz6VIV2PiKkcznuwp0doIioNH65hl95gRP+6EzUDi7YRLTMI0cRy/6H7ttU1zrgtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956126; c=relaxed/simple;
-	bh=zgEIwtYBn1BsnmXP8hZFR7tMuDQybA5wGJZwXz3oENc=;
+	s=arc-20240116; t=1739956246; c=relaxed/simple;
+	bh=I4L2RDEHQhvcs5NxForC15/SdPmUIs19WP93zxHG0BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQ00cQCHRl+vT3vaxjmT/8oIIHcEbCnk1P0tYpm+025au5NGa6mpr8etbmTTcTMKtnwny00Lf6PgMDuLORieKZVVTZM+GYBDUI62nbIt6zG0KLVI/jXKYABzhytod7TFGaUo0MSYuDNqu8v3KI3nTYia+JCkah6/ZeUBGjbhUD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1RJ0IYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49267C4CEE6;
-	Wed, 19 Feb 2025 09:08:46 +0000 (UTC)
+	 MIME-Version; b=uJx9pZohaHi9jEUPh7edJIY1hwKlJv2aKZGYoSE1JkKNkfQ5cZ3Z1z3XPtPIUK4MKphyuy4NibmaxRD9MNrOpA3OtA7I+A9srJvk9sHZrgdTpQBQC0VsJZrZAQ1fCizhNQzeQ3oxSW1OfO27zKN1QiGYQ1XyEXtVg6/CElyeCP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YgS2AE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A31C4CED1;
+	Wed, 19 Feb 2025 09:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956126;
-	bh=zgEIwtYBn1BsnmXP8hZFR7tMuDQybA5wGJZwXz3oENc=;
+	s=korg; t=1739956246;
+	bh=I4L2RDEHQhvcs5NxForC15/SdPmUIs19WP93zxHG0BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1RJ0IYp648LuEtE0kS1bgWH36oIEyH0fCnLokzwgog71intK/T0EdTgHQO64XCC+
-	 aFuoJHEaN7ftXUZGiebl/fBCfr3l0HtQYc/fsmlSZfadsuFGKvrt99AQjxBlnl95B1
-	 dudpe0ff2U2b5cYdf/khrhaPAnd2IoIYB18PoCuw=
+	b=2YgS2AE2k+RyM007pKFj3R1fVj+fRZTNTy173DZPUnaEH/oCIjOU2r6W94uIDowli
+	 fb1OMJtr1P7wu3JZJsHKqKO9bK6osGl+GeJFmosCNo8CRBGPtBxoMVOApry6Ryt+ae
+	 ySsdA6TIKJGm7vAF/iCSiUahbkEPMbf6qW4M4X8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com,
-	Karol Przybylski <karprzy7@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/578] HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check
-Date: Wed, 19 Feb 2025 09:21:16 +0100
-Message-ID: <20250219082655.717384336@linuxfoundation.org>
+Subject: [PATCH 6.1 073/578] mfd: syscon: Remove extern from function prototypes
+Date: Wed, 19 Feb 2025 09:21:17 +0100
+Message-ID: <20250219082655.758933165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,47 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karol Przybylski <karprzy7@gmail.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 50420d7c79c37a3efe4010ff9b1bb14bc61ebccf ]
+[ Upstream commit 0db017f8edd9b9af818bc1d68ba578df1b4c4628 ]
 
-syzbot has found a type mismatch between a USB pipe and the transfer
-endpoint, which is triggered by the hid-thrustmaster driver[1].
-There is a number of similar, already fixed issues [2].
-In this case as in others, implementing check for endpoint type fixes the issue.
+The kernel coding style does not require 'extern' in function prototypes
+in .h files, so remove them as they are not needed.
 
-[1] https://syzkaller.appspot.com/bug?extid=040e8b3db6a96908d470
-[2] https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622
+To avoid checkpatch warnings such as
+CHECK: Lines should not end with a '('
++struct regmap *syscon_regmap_lookup_by_phandle(
 
-Fixes: c49c33637802 ("HID: support for initialization of some Thrustmaster wheels")
-Reported-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
-Tested-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
-Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+The indentation is also updated. No functional changes in this patch.
+
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20240220115012.471689-3-peter.griffin@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 805f7aaf7fee ("mfd: syscon: Fix race in device_node_get_regmap()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-thrustmaster.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/mfd/syscon.h | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
-index cf1679b0d4fbb..6c3e758bbb09e 100644
---- a/drivers/hid/hid-thrustmaster.c
-+++ b/drivers/hid/hid-thrustmaster.c
-@@ -170,6 +170,14 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
- 	ep = &usbif->cur_altsetting->endpoint[1];
- 	b_ep = ep->desc.bEndpointAddress;
+diff --git a/include/linux/mfd/syscon.h b/include/linux/mfd/syscon.h
+index fecc2fa2a3647..c315903f6dab3 100644
+--- a/include/linux/mfd/syscon.h
++++ b/include/linux/mfd/syscon.h
+@@ -17,20 +17,17 @@
+ struct device_node;
  
-+	/* Are the expected endpoints present? */
-+	u8 ep_addr[1] = {b_ep};
-+
-+	if (!usb_check_int_endpoints(usbif, ep_addr)) {
-+		hid_err(hdev, "Unexpected non-int endpoint\n");
-+		return;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(setup_arr); ++i) {
- 		memcpy(send_buf, setup_arr[i], setup_arr_sizes[i]);
- 
+ #ifdef CONFIG_MFD_SYSCON
+-extern struct regmap *device_node_to_regmap(struct device_node *np);
+-extern struct regmap *syscon_node_to_regmap(struct device_node *np);
+-extern struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
+-extern struct regmap *syscon_regmap_lookup_by_phandle(
+-					struct device_node *np,
+-					const char *property);
+-extern struct regmap *syscon_regmap_lookup_by_phandle_args(
+-					struct device_node *np,
+-					const char *property,
+-					int arg_count,
+-					unsigned int *out_args);
+-extern struct regmap *syscon_regmap_lookup_by_phandle_optional(
+-					struct device_node *np,
+-					const char *property);
++struct regmap *device_node_to_regmap(struct device_node *np);
++struct regmap *syscon_node_to_regmap(struct device_node *np);
++struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
++struct regmap *syscon_regmap_lookup_by_phandle(struct device_node *np,
++					       const char *property);
++struct regmap *syscon_regmap_lookup_by_phandle_args(struct device_node *np,
++						    const char *property,
++						    int arg_count,
++						    unsigned int *out_args);
++struct regmap *syscon_regmap_lookup_by_phandle_optional(struct device_node *np,
++							const char *property);
+ #else
+ static inline struct regmap *device_node_to_regmap(struct device_node *np)
+ {
 -- 
 2.39.5
 
