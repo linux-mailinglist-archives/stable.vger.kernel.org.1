@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E61AA3B788
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C17A3B61A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367CF3B7A2D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9E9189DBAC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805CA1DE892;
-	Wed, 19 Feb 2025 08:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F211DF251;
+	Wed, 19 Feb 2025 08:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuT8D5hA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14w8FKih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3433D1A841F;
-	Wed, 19 Feb 2025 08:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBF31DEFF5;
+	Wed, 19 Feb 2025 08:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955499; cv=none; b=EjPCyTTY03aYlT+MIITQ1cWQ+EPRsEqk07mLWPo/yX/IIFZlYsFr6mF5wJa1AoEinbCHJ9ayx41rBhKGkNGEIsbzgnHifaUqrsjSp0ovb8j/E5BQQnvOsedHpcEKCfDyZUUdbI8C0inSL1V6mpQLwgMyZC2U4n/zdUlMPu+u2mk=
+	t=1739955068; cv=none; b=rTx8ZxU0lxVrVXKyTl3oaGOQkq/An/zv5aTz0agLLX2tDPkdTCmYHIe3/z48PrkGhNaybv1+CY/Ani4Lc9kD4e+7t6rMGg3OCk85hU4VDlrYrxqDFTMRm5hIikYlhSogQK/uXcNDIGYJz7L/b43tw0APDoE3xci0MIiNPDQepew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955499; c=relaxed/simple;
-	bh=KE9Vjn9kR9/8331Rm8HcHClKvXHCIiHs5JTcwpZz+O8=;
+	s=arc-20240116; t=1739955068; c=relaxed/simple;
+	bh=sjEllLZxOBSc+VwFkl07RHnZpYrN2nv9rRXUfl9YPwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDoNpHZCsvvL4Xlmi4Qc3Hdqn1HzyOKMLZz2W9LMszSPv+Mh6i3ORiGprbl7RobtE/pqZM2NWK8k1NCy4aUeM7FFMj1+E7lCNR0w7+BlnNVvn9J3Qu9/XpqnYHQGVaghKVaMM8RdYCSvdrge0A8A8MO0BpZ50ZSXPU7iT4WjDXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuT8D5hA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9571C4CED1;
-	Wed, 19 Feb 2025 08:58:18 +0000 (UTC)
+	 MIME-Version; b=l8Ug94DsfuSSqYqEs0QUWN9beFJ6IsESWh5h0NMAttElEiUxTUdrPP13hXvdyNvMTCl+zIs2K6HRYRK1LfseRFlDHlxa85qhJlOe6FFtthEyz/enDX7XOVEMBgvO/j94iP2my0ze1Ta5TI8X4zqSV0u8WCmd7akvukQmwY8llkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14w8FKih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0D4C4CEE7;
+	Wed, 19 Feb 2025 08:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955499;
-	bh=KE9Vjn9kR9/8331Rm8HcHClKvXHCIiHs5JTcwpZz+O8=;
+	s=korg; t=1739955067;
+	bh=sjEllLZxOBSc+VwFkl07RHnZpYrN2nv9rRXUfl9YPwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuT8D5hA2VG+FVMY1xQJHKLj9f8s4E0nldvPfc1/HaNTLgRtWeIxkK8DR6ygYb7lv
-	 ouIgeP6yWGQYV5lWtvRHyBdSMHF73TfPo69wOOpO/1Xv6j6zwHdzzpvVCFXClp6+FO
-	 U+MQeltPeMUAIlk4m64B78R/b8Og+bjM71Hoqyko=
+	b=14w8FKihJ8L670Csws7W65KVrMEXYzmwCrB31LeyFnHbcFREpxm2lasOm/xPkJEpG
+	 O1S4D6ac4f7XfwoYp7Mr8gk74e/96itUWIXTmnrvGt5+slczpOre9Wn90WiVKiTWa+
+	 /esrdMYmdbO84uKCsHJkm95p/WwfgkpGRmpfE+M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/152] tools: fix annoying "mkdir -p ..." logs when building tools in parallel
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.12 121/230] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode quirk
 Date: Wed, 19 Feb 2025 09:27:18 +0100
-Message-ID: <20250219082551.032571237@linuxfoundation.org>
+Message-ID: <20250219082606.421075755@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit d1d0963121769d8d16150b913fe886e48efefa51 ]
+commit 7284922f3e4fa285dff1b8bb593aa9a0b8458f30 upstream.
 
-When CONFIG_OBJTOOL=y or CONFIG_DEBUG_INFO_BTF=y, parallel builds
-show awkward "mkdir -p ..." logs.
+Add Renesas R-Car D3 USB Download mode quirk and update comments
+on all the other Renesas R-Car USB Download mode quirks to discern
+them from each other. This follows R-Car Series, 3rd Generation
+reference manual Rev.2.00 chapter 19.2.8 USB download mode .
 
-  $ make -j16
-    [ snip ]
-  mkdir -p /home/masahiro/ref/linux/tools/objtool && make O=/home/masahiro/ref/linux subdir=tools/objtool --no-print-directory -C objtool
-  mkdir -p /home/masahiro/ref/linux/tools/bpf/resolve_btfids && make O=/home/masahiro/ref/linux subdir=tools/bpf/resolve_btfids --no-print-directory -C bpf/resolve_btfids
-
-Defining MAKEFLAGS=<value> on the command line wipes out command line
-switches from the resultant MAKEFLAGS definition, even though the command
-line switches are active. [1]
-
-MAKEFLAGS puts all single-letter options into the first word, and that
-word will be empty if no single-letter options were given. [2]
-However, this breaks if MAKEFLAGS=<value> is given on the command line.
-
-The tools/ and tools/% targets set MAKEFLAGS=<value> on the command
-line, which breaks the following code in tools/scripts/Makefile.include:
-
-    short-opts := $(firstword -$(MAKEFLAGS))
-
-If MAKEFLAGS really needs modification, it should be done through the
-environment variable, as follows:
-
-    MAKEFLAGS=<value> $(MAKE) ...
-
-That said, I question whether modifying MAKEFLAGS is necessary here.
-The only flag we might want to exclude is --no-print-directory, as the
-tools build system changes the working directory. However, people might
-find the "Entering/Leaving directory" logs annoying.
-
-I simply removed the offending MAKEFLAGS=<value>.
-
-[1]: https://savannah.gnu.org/bugs/?62469
-[2]: https://www.gnu.org/software/make/manual/make.html#Testing-Flags
-
-Fixes: ea01fa9f63ae ("tools: Connect to the kernel build system")
-Fixes: a50e43332756 ("perf tools: Honor parallel jobs")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: Daniel Xu <dxu@dxuuu.xyz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250209145708.106914-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/usb/class/cdc-acm.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 1d777c3eb7fb9..cbd091c511d82 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1348,18 +1348,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
- 
--# Clear a bunch of variables before executing the submake
--ifeq ($(quiet),silent_)
--tools_silent=s
--endif
--
- tools/: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
-+	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
- 
- tools/%: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
-+	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
- 
- # ---------------------------------------------------------------------------
- # Kernel selftest
--- 
-2.39.5
-
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1727,13 +1727,16 @@ static const struct usb_device_id acm_id
+ 	{ USB_DEVICE(0x0870, 0x0001), /* Metricom GS Modem */
+ 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas R-Car H3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x0247),	/* Renesas R-Car D3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas R-Car M3-N USB Download mode */
++	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
++	},
++	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas R-Car E3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+ 	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
 
 
 
