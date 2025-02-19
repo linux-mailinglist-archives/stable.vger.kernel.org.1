@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6553DA3B497
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0D0A3B615
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B251789DD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7626B3B87CA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFEC1DF99D;
-	Wed, 19 Feb 2025 08:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745481F8BC7;
+	Wed, 19 Feb 2025 08:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deBI+SY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYSNGIzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863F31DF279;
-	Wed, 19 Feb 2025 08:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EA61DC04A;
+	Wed, 19 Feb 2025 08:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954156; cv=none; b=Eu+ByeNXm9yhrpww39vy+YCJ0W6uP8i0vwvFKNOOPzjfPvgK0oLrPvE41xXgWQbjrskWHwhpxqEAQ1wQ9iED4GnkKLbfJjRj1vvPmt3nbAi8fB/8w5W5dsbrh9fHgpt5xaI3t0klhMDgTu5YrS5537q+gZt8kZMGbnY7CVLK5cM=
+	t=1739954846; cv=none; b=VHJq0CECzGlxpDbA3qNwCGsTw8DUBipi7XEuXOwJdzaVEFb5Ld9ZXkOyloHaFwKdHxIo60nWcZT/iIhIt/uXPOI8fDkUFYYhaZQjCchvRe2WYLom7/BYy84hIJ9NfsG85ODQtGUj/IHIu7ZrrqLzvK9IejpZNVqg0UcXrqyf6aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954156; c=relaxed/simple;
-	bh=aLh1X2GcFY4/yXwkDzPo7jgPtfhT4FWrLUrpRC9ICvo=;
+	s=arc-20240116; t=1739954846; c=relaxed/simple;
+	bh=O5E6KgYL7oqgL3hhWLAr+FjiMRlY7qAnXpax/G3wY/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgW9G3whALszlGW2FCyryPpv16n+YDf2T9Y7a9fQfSPSZzh2CeScd8bfBKOSqvLPAvGb3L+8xuhATJ5uUj8QRDKY7vC942EpK7+AOkKgXVl0ezRYurl+op3aPYeM4+oDYDFXOSzentCjyuUbZTlBGEO0flst30EiGUH7joQWxoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deBI+SY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D6BC4CED1;
-	Wed, 19 Feb 2025 08:35:55 +0000 (UTC)
+	 MIME-Version; b=o1ollaCgHZpJdGKQ5ycPOmmtN41t1E1dPYdKTijBEzRc2oZKHZJ9GiFOVTEEG4KRGyBy1fuO83sfJB69VQJeqmlZc1ACx+2wyPX56XARZk/Ea7YqwKBEeN+BIZNJnKqxAPnUciInN4ZwWzAs57nPYUOXtFvEgMQKVfznxsbTMvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYSNGIzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9999DC4CED1;
+	Wed, 19 Feb 2025 08:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954156;
-	bh=aLh1X2GcFY4/yXwkDzPo7jgPtfhT4FWrLUrpRC9ICvo=;
+	s=korg; t=1739954846;
+	bh=O5E6KgYL7oqgL3hhWLAr+FjiMRlY7qAnXpax/G3wY/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deBI+SY5Y5aLLkwhG/Vfcv40hs1WICAxDbAcYCdzAoQsxPuaVjyH6TmTYCvphqo/s
-	 5t/akA6CpOh/H++0m54UwMLg9QR4u+O2tphTf4e6zhXpjIteu9sFq4nDYb75yCpP4l
-	 WsfJxCdiEywsSnLUejgk4pZDMUBC2mVNqtUfUpz4=
+	b=JYSNGIzcFlE+5TZHbqOJ7Sti508wGPFLb93PqYQUwdKytFR2r08AMMCitHyLU1L2W
+	 A+43m+mbM1JhUaCvsmHjHH5/jCmrgWHc14YuA4Qs3YhsmLA42pvB3+KReB5i/rrZ0M
+	 ZXZVwgcUeCViWHkK5ss/W26ioXvjSLwwGaXd73Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 115/274] drm/xe: Carve out wopcm portion from the stolen memory
-Date: Wed, 19 Feb 2025 09:26:09 +0100
-Message-ID: <20250219082614.121732110@linuxfoundation.org>
+	Chuyi Zhou <zhouchuyi@bytedance.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/230] sched_ext: Fix the incorrect bpf_list kfunc API in common.bpf.h.
+Date: Wed, 19 Feb 2025 09:26:10 +0100
+Message-ID: <20250219082603.784525429@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Chuyi Zhou <zhouchuyi@bytedance.com>
 
-commit e977499820782ab1c69f354d9f41b6d9ad1f43d9 upstream.
+[ Upstream commit 2e2006c91c842c551521434466f9b4324719c9a7 ]
 
-The top of stolen memory is WOPCM, which shouldn't be accessed. Remove
-this portion from the stolen memory region for discrete platforms.
-This was already done for integrated, but was missing for discrete
-platforms.
+Now BPF only supports bpf_list_push_{front,back}_impl kfunc, not bpf_list_
+push_{front,back}.
 
-This also moves get_wopcm_size() so detect_bar2_dgfx() and
-detect_bar2_integrated can use the same function.
+This patch fix this issue. Without this patch, if we use bpf_list kfunc
+in scx, the BPF verifier would complain:
 
-v2: Improve commit message and suitable stable version tag(Lucas)
+libbpf: extern (func ksym) 'bpf_list_push_back': not found in kernel or
+module BTFs
+libbpf: failed to load object 'scx_foo'
+libbpf: failed to load BPF skeleton 'scx_foo': -EINVAL
 
-Fixes: d8b52a02cb40 ("drm/xe: Implement stolen memory.")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250210143654.2076747-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit 2c7f45cc7e197a792ce5c693e56ea48f60b312da)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With this patch, the bpf list kfunc will work as expected.
+
+Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
+Fixes: 2a52ca7c98960 ("sched_ext: Add scx_simple and scx_example_qmap example schedulers")
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c |   54 ++++++++++++++++++---------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ tools/sched_ext/include/scx/common.bpf.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-+++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-@@ -57,12 +57,35 @@ bool xe_ttm_stolen_cpu_access_needs_ggtt
- 	return GRAPHICS_VERx100(xe) < 1270 && !IS_DGFX(xe);
- }
+diff --git a/tools/sched_ext/include/scx/common.bpf.h b/tools/sched_ext/include/scx/common.bpf.h
+index 248ab790d143e..f7206374a73dd 100644
+--- a/tools/sched_ext/include/scx/common.bpf.h
++++ b/tools/sched_ext/include/scx/common.bpf.h
+@@ -251,8 +251,16 @@ void bpf_obj_drop_impl(void *kptr, void *meta) __ksym;
+ #define bpf_obj_new(type) ((type *)bpf_obj_new_impl(bpf_core_type_id_local(type), NULL))
+ #define bpf_obj_drop(kptr) bpf_obj_drop_impl(kptr, NULL)
  
-+static u32 get_wopcm_size(struct xe_device *xe)
-+{
-+	u32 wopcm_size;
-+	u64 val;
+-void bpf_list_push_front(struct bpf_list_head *head, struct bpf_list_node *node) __ksym;
+-void bpf_list_push_back(struct bpf_list_head *head, struct bpf_list_node *node) __ksym;
++int bpf_list_push_front_impl(struct bpf_list_head *head,
++				    struct bpf_list_node *node,
++				    void *meta, __u64 off) __ksym;
++#define bpf_list_push_front(head, node) bpf_list_push_front_impl(head, node, NULL, 0)
 +
-+	val = xe_mmio_read64_2x32(xe_root_tile_mmio(xe), STOLEN_RESERVED);
-+	val = REG_FIELD_GET64(WOPCM_SIZE_MASK, val);
++int bpf_list_push_back_impl(struct bpf_list_head *head,
++				   struct bpf_list_node *node,
++				   void *meta, __u64 off) __ksym;
++#define bpf_list_push_back(head, node) bpf_list_push_back_impl(head, node, NULL, 0)
 +
-+	switch (val) {
-+	case 0x5 ... 0x6:
-+		val--;
-+		fallthrough;
-+	case 0x0 ... 0x3:
-+		wopcm_size = (1U << val) * SZ_1M;
-+		break;
-+	default:
-+		WARN(1, "Missing case wopcm_size=%llx\n", val);
-+		wopcm_size = 0;
-+	}
-+
-+	return wopcm_size;
-+}
-+
- static s64 detect_bar2_dgfx(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
- {
- 	struct xe_tile *tile = xe_device_get_root_tile(xe);
- 	struct xe_mmio *mmio = xe_root_tile_mmio(xe);
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
--	u64 stolen_size;
-+	u64 stolen_size, wopcm_size;
- 	u64 tile_offset;
- 	u64 tile_size;
- 
-@@ -74,7 +97,13 @@ static s64 detect_bar2_dgfx(struct xe_de
- 	if (drm_WARN_ON(&xe->drm, tile_size < mgr->stolen_base))
- 		return 0;
- 
-+	/* Carve out the top of DSM as it contains the reserved WOPCM region */
-+	wopcm_size = get_wopcm_size(xe);
-+	if (drm_WARN_ON(&xe->drm, !wopcm_size))
-+		return 0;
-+
- 	stolen_size = tile_size - mgr->stolen_base;
-+	stolen_size -= wopcm_size;
- 
- 	/* Verify usage fits in the actual resource available */
- 	if (mgr->stolen_base + stolen_size <= pci_resource_len(pdev, LMEM_BAR))
-@@ -89,29 +118,6 @@ static s64 detect_bar2_dgfx(struct xe_de
- 	return ALIGN_DOWN(stolen_size, SZ_1M);
- }
- 
--static u32 get_wopcm_size(struct xe_device *xe)
--{
--	u32 wopcm_size;
--	u64 val;
--
--	val = xe_mmio_read64_2x32(xe_root_tile_mmio(xe), STOLEN_RESERVED);
--	val = REG_FIELD_GET64(WOPCM_SIZE_MASK, val);
--
--	switch (val) {
--	case 0x5 ... 0x6:
--		val--;
--		fallthrough;
--	case 0x0 ... 0x3:
--		wopcm_size = (1U << val) * SZ_1M;
--		break;
--	default:
--		WARN(1, "Missing case wopcm_size=%llx\n", val);
--		wopcm_size = 0;
--	}
--
--	return wopcm_size;
--}
--
- static u32 detect_bar2_integrated(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
- {
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+ struct bpf_list_node *bpf_list_pop_front(struct bpf_list_head *head) __ksym;
+ struct bpf_list_node *bpf_list_pop_back(struct bpf_list_head *head) __ksym;
+ struct bpf_rb_node *bpf_rbtree_remove(struct bpf_rb_root *root,
+-- 
+2.39.5
+
 
 
 
