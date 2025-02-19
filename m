@@ -1,113 +1,127 @@
-Return-Path: <stable+bounces-118333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BD1A3C94A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 21:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F35A3C96D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 21:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA57177B5B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 20:10:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102CA168938
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 20:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F6A22B5A5;
-	Wed, 19 Feb 2025 20:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A507214A82;
+	Wed, 19 Feb 2025 20:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZPKBkBfA"
+	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="Awq6Xmbh";
+	dkim=pass (2048-bit key) header.d=sladewatkins.net header.i=@sladewatkins.net header.b="tqFTyAwL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195DD21B19E;
-	Wed, 19 Feb 2025 20:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C589214A91
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 20:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739995797; cv=none; b=OaLrwDWI3jEqFSIvmAx1HxhFCmElVxbUGVlX2b4ejXQcZgkQAfHUxP1mCfO/AmQFB7S86V4N6kuR3CBtasfPzhkOArSLzG/7eaeGqKChCytBf0k2SyvZMAFvkzRhqUZVHzjxEtwXf3WPQ36fQ9peEF9e1mwIiCoitMoi8iKksoU=
+	t=1739996041; cv=none; b=EgbmB4jLEmGmT2GdtLrCykTO1Fhj6opHYSzwDW4mXHs2XF8pgdkhBs6I0pH2aT7l2kjG24j9zs/IBvi+rU9EfGuTBTyErhevjz5/81oN03rqBgnxe9u0K4VvxlGCS8AF2AQTJpsRPUad2tPJ+7IPhv99w8Q2XCR9ZDycuBJmUyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739995797; c=relaxed/simple;
-	bh=WhudxD8gvZRLRlaAQPHkju/vck+43uwrkDgMJDCfjwQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=B4MVnldnLbZ0eqtv9Ff7RtBryuwvmV6ylwo3iFN3Cy0PwgfSMw2tDiGCGC3j2xSmIK2kNOvssNKZZv+1bOZfTMSsrcYCPXYn87/GW5aJChGXj1fUWZk3VOQm4GJFgWNxTj3rfNp0S84v1ArG7j7h6S2cA0A1CbXlnohGwFt7lyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZPKBkBfA; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51JGcR7i001826;
-	Wed, 19 Feb 2025 20:09:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pG01oGH7fuiVs0VYeiiXtmylPqK5guGPOI0XpTEK1aQ=; b=ZPKBkBfAhyHSh50b
-	7KRRSj4NAZJlGcFpJuCyUoyACejL2yGE/g3EIg6n7ucjZjwB5/zYXvRm6Q9xn68m
-	IwJDynqmQcq5oa8GZ4pC9RaUGmYMJNcA8oTw+Fdo+0V81W66BiJjertZimZiU2yQ
-	KwjISE4VxpvlD8YTVtofFJ1gZsz9gg9qUhSF0haaOL/jJEtcMNqQ8G9xS63YsgEe
-	dlSTpWWSFP93Ipx0N8k83OempJVFpPm8vOWN6Mneq+uREqlRETDlRviFq60dAUTa
-	t0qZ0JdraMazynmb1SC0Lb9sZm7jBWm/xJXxFHN5lO1673vOC+d/Jd67sH9COCOS
-	J/GmWA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy2buyx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 20:09:37 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51JK9afg001785
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 20:09:36 GMT
-Received: from [10.110.87.61] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 19 Feb
- 2025 12:09:36 -0800
-Message-ID: <0ad8db2c-b5aa-448b-bd4f-e4305bc64b86@quicinc.com>
-Date: Wed, 19 Feb 2025 12:09:28 -0800
+	s=arc-20240116; t=1739996041; c=relaxed/simple;
+	bh=ncGs2z4pfHMjN+d3lpcfpfn98kj6rBfaHKbLUA6xG98=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=npz8A+2rsT/6K2+brFUU9CtoDkWlyrhYKeDhY1C7b9VG9NIo0BnLfHpjAnnUQPnqJkF82I2hfEEL2szgP47LEVZ8b72Ram7+gGcy8nopJu1r+9SIpd+VaaHUaefKTCnJxm/gijNb/d7M4X9HZOyy3/WUrJ8MeCXssAUIGVrfns8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sladewatkins.net; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=Awq6Xmbh; dkim=pass (2048-bit key) header.d=sladewatkins.net header.i=@sladewatkins.net header.b=tqFTyAwL; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sladewatkins.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sladewatkins.com;
+ h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
+ s=selector-1739986532; bh=ut4P1R7thuxaKMIe42U//2Z0wRf+Qh4WiJbioRnnIoI=;
+ b=Awq6Xmbhiym8F2HZvToYTK3lP+Y5eTsASm6KRf0aGFWdro7wF8N31XFQw+5V8wsNGiIR5XfTt8mTPrliDUuTmlfpfhd6wS5o+G2UBtUvjowd3cdJgIWFQfkqVlW8fCiQpUn6fW7TJiTanYZanWK1g/49h0ljmCjRYMB7eM/wNN3/TWqYiL8cOu5DCPQq8/zsKRQPi2nvNANgu4mZSdBloMwLGUlQZhJbLiX7HYOx6pnSaLzMEeaQH3vmu2YaSOB/BNW6epxBq17swS4VITWMW6jb44mi6l96sgOVgfuDkPnY3n7e21l66mCHNX0Di1WnKGMXwG/FHBymA6uKkAUi8w==
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 419E12400AE
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 20:13:57 +0000 (UTC)
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5da15447991so145373a12.3
+        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 12:13:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sladewatkins.net; s=google; t=1739996036; x=1740600836; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ut4P1R7thuxaKMIe42U//2Z0wRf+Qh4WiJbioRnnIoI=;
+        b=tqFTyAwLAy9CZkUqXFTfMmHyLPTuU0ETCCEDtTNODc+RcNHdB2R6IGNgtUVwX+zI9p
+         uk5JLUqbRBHdd/smhDvbaakX3VLr36L1aPP0HTlwQNaMJ54Y5PIdxVXua6EW1xXcD/TL
+         gZjq9XL8tGe0fel/cNQwSauuKNygu8BOqFM3vrML39QOhW1/+BhGxToJ1B05N8v6VYtu
+         wdl+8vVIZ8lK9Vy1CV1k/eekH7yzYgNLmaGOXM6NFcuJmQ1rOHqhgCm5X4ccjdxjj5rt
+         WMfpp6thb9lJU/v2e2ef2SfEmkJtQoBxHRZBQQaWGvMe54K6b4j0CXa69myzu/cJRuac
+         zrhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739996036; x=1740600836;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ut4P1R7thuxaKMIe42U//2Z0wRf+Qh4WiJbioRnnIoI=;
+        b=HiK3yQo7XGJRhRR+RmyNhCW8flDZA0aqtJ9f/jmYzonJyRg6Rni2ro4Rrvm3+9OPKa
+         z9YXGe5Nvhg+Aa7BfutXEKUrMAIg/HUFSUrCmFCZd4Gj2kPVVyhG6wxeHUqZxkuDDsqe
+         w+uUNs2b0V/8xOKqB3ivXW8xH7pN0s6QbZw1ydflG+ciPab427Ck7faVL5A3BqOYlw9L
+         VjTqA4SnjjZhPJV7uMwO3BTYNrcYrV+h5DrK+6ILw3DDYL6s+H5WjQGwtcI2hKmogvXs
+         EOgXP8Q/bfN0SFQUEhcvqjr/x+IqaKFS1ez9yI+IVcdbh3XHnfaXoy6ZhkIiPpPUFB+m
+         WYWg==
+X-Gm-Message-State: AOJu0YycSoKICppfdI9nIeHlOeQW+ft2GPIqhF/Nx33E1IFs8vhRWXFJ
+	yVRCgqy+uKFAz/QTE/H2hF0C6kSmRUfHXx0wtGzqi6a1fNSAffTp3ikgtgeA7eTO9OYG471UU7Q
+	qoZrv1c0vQzXibCmvPeH1o6Aqk+SimvuOEeTREENHzPxu2LU9n++fmY1ml8xGL9gwe82jNGo6Vb
+	J+tCkd4YLetZyeb2qaEpzsyj0gcvA9ZtLcg7xfab6NWj5cV6KkdA==
+X-Gm-Gg: ASbGncvBhQXI1yT8AOmbvOgGkLVgJM9TZFeYFdhWY5wZFGOWCulSf9iUKmdGOGxokCC
+	JvsZEJIeREEcWB7wF3V0CvPxbUutno3yJgopsXAUyW1m3tNsNhzLQQBdenBF3iw==
+X-Received: by 2002:a05:6402:35cb:b0:5dc:caab:9447 with SMTP id 4fb4d7f45d1cf-5e036063e6amr49232745a12.18.1739996035986;
+        Wed, 19 Feb 2025 12:13:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0KvQ9Ik3mCAFqGO1Y3HmZ0iJJC1SyKZfLV7M2w+N5UlImKuoI4YmqvkXHE+fgnAGu7i3sSGq4opUKSR07pFE=
+X-Received: by 2002:a05:6402:35cb:b0:5dc:caab:9447 with SMTP id
+ 4fb4d7f45d1cf-5e036063e6amr49232642a12.18.1739996035270; Wed, 19 Feb 2025
+ 12:13:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/msm/dsi: Add check for devm_kstrdup()
-To: Haoxiang Li <haoxiang_li2024@163.com>, <robdclark@gmail.com>,
-        <dmitry.baryshkov@linaro.org>, <sean@poorly.run>,
-        <marijn.suijten@somainline.org>, <airlied@gmail.com>,
-        <simona@ffwll.ch>, <jonathan@marek.ca>, <quic_jesszhan@quicinc.com>,
-        <konradybcio@kernel.org>
-CC: <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250219040712.2598161-1-haoxiang_li2024@163.com>
-Content-Language: en-US
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20250219040712.2598161-1-haoxiang_li2024@163.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: w6EFJGp3IeYKq0z9dpEfOIMw50JCv7dz
-X-Proofpoint-GUID: w6EFJGp3IeYKq0z9dpEfOIMw50JCv7dz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-19_09,2025-02-19_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 clxscore=1011 adultscore=0 phishscore=0 mlxlogscore=864
- bulkscore=0 malwarescore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502190155
+References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+From: Slade Watkins <srw@sladewatkins.net>
+Date: Wed, 19 Feb 2025 15:13:44 -0500
+X-Gm-Features: AWEUYZlZSDPa0fGt2SFhUpS9xdY1jqEpDAGyJntR_9fKDs7gkaEck9SEpNdTnsI
+Message-ID: <CA+pv=HNn2rhObW67iY-i0LkQoL30uXXxAbfWio7BgFCVp-0r3Q@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/578] 6.1.129-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-MDID: 1739996038-jkHAratyzrZG
+X-MDID-O:
+ us5;at1;1739996038;jkHAratyzrZG;<slade@sladewatkins.com>;3898a0dee3d557fa468e7fbfdd1a7683
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
+On Wed, Feb 19, 2025 at 4:05=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.129 release.
+> There are 578 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
+Hi Greg,
+No regressions or any sort of issues to speak of. Builds fine on my
+x86_64 test machine.
 
-On 2/18/2025 8:07 PM, Haoxiang Li wrote:
-> Add check for the return value of devm_kstrdup() in
-> dsi_host_parse_dt() to catch potential exception.
-> 
-> Fixes: 958d8d99ccb3 ("drm/msm/dsi: parse vsync source from device tree")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->   drivers/gpu/drm/msm/dsi/dsi_host.c | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
-> 
+Tested-by: Slade Watkins <srw@sladewatkins.net>
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+All the best,
+Slade
 
