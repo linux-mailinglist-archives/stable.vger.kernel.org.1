@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-118134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E572CA3B9B2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F9BA3B7BF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E1E97A6BE0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50DD43AFE88
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402021DFE0B;
-	Wed, 19 Feb 2025 09:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0BD1D6DC5;
+	Wed, 19 Feb 2025 08:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vV3UPKrR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mm+9a6QJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28C9176ADE;
-	Wed, 19 Feb 2025 09:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFF41CAA7D;
+	Wed, 19 Feb 2025 08:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957334; cv=none; b=chahE9hSvw1/a1ScWPQqYW0hsOsrQPKP0D8YtNuLbEw4Xlk2aUmfJfx7/Qc97Jka7WM21Us2RvV5kuhuhilg7aAf6S4lHh7hdbAhTk/ZDr97Gjn2G3Q1kVqBo3Ufiou7YYNrw7VWIU6FEEYOfBbGjaGt44HmIJka9sgugjNFcWs=
+	t=1739955576; cv=none; b=GuOKIRaKIJyyzHUu9Lt4OvYX3rcj5FvEGlIDxykjRK/KDaYx+H+6sSKcN/Sa3raB3BCpGb+hEWIPnU7gZSr72i4GnibpoGcWH76G0/uAZlsj4pMMLKPwP8we6NJLda2d9FWYnCtyKxMTazTxJW5rbqpf/YgNniOBW3RUEmkU/Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957334; c=relaxed/simple;
-	bh=rCAWFhlhPQfPjeBg1SLYw/2qmFpWLfg6R2H9Mg8xN6A=;
+	s=arc-20240116; t=1739955576; c=relaxed/simple;
+	bh=XX3EY5PgrcU7SimEIw6Fv/he0BSoBBVZvf+jT7dreMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFasjuRCvvp99EEMF8qa9NA5wy2JMOXuhRlMDMkCNcTziclexCKc5bXBTMJuxNNWvru+0IJrgjiTGZ+LlnGP9CoxpIxqEi8FvNzfznpWeApgUZgvuVmJX9DdGYpV23zpMhdPS7fdaot2O17dQ0Dnd2SmJMyVAqenL99MI6jC390=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vV3UPKrR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C94CC4CED1;
-	Wed, 19 Feb 2025 09:28:53 +0000 (UTC)
+	 MIME-Version; b=h3Vp7LfhlwNjy45xioIWGfIQh85AwhnzCYhGwK04GjyS/MJgt4c+E4fCrDmGHHYHRXShjlfjkSK1is4kQapxFBms4x6xgJTNyOFXY0HapTdu9PzxH+VVmicKF3SeOb+FN9HhxFCU+Jg8CgQV8Vdai+133tWfCaiR0We5pXMjXVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mm+9a6QJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14FEC4CED1;
+	Wed, 19 Feb 2025 08:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957333;
-	bh=rCAWFhlhPQfPjeBg1SLYw/2qmFpWLfg6R2H9Mg8xN6A=;
+	s=korg; t=1739955576;
+	bh=XX3EY5PgrcU7SimEIw6Fv/he0BSoBBVZvf+jT7dreMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vV3UPKrRbF01tHBIyFycQvnTNF6dTH/vLoi2DuieRIvIxYK2mtTAag9+XtUUeWy5l
-	 zW9cYBpqZFOg60gpdc7BxlcqUFl/2Pu3LI/6eaifHyyC52hGy1f45rHk+GvjWfWQe5
-	 RIy+uMO8zoLjffmx7Tl1DKZK2Lc4sB9YBCY8UWO0=
+	b=mm+9a6QJko57lHzsqwwPpFefMFeo4kefiY2mEG0+gTbWP8uN6ZjBChbFMPe3SWZpq
+	 L28T1GUj25uV2GhwiBiCg8uT63S1yP9udPpaAihLdVxHTfQKqnFMTBl0wYVPpGxhj0
+	 86cu67tTWSG5lSJX8Unsb9GZNcB0RU2m+bwRmCVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Binderman <dcb314@hotmail.com>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Vernon Yang <vernon2gm@gmail.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 457/578] maple_tree: fix static analyser cppcheck issue
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/152] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
 Date: Wed, 19 Feb 2025 09:27:41 +0100
-Message-ID: <20250219082710.974895684@linuxfoundation.org>
+Message-ID: <20250219082551.946150994@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 5729e06c819184b7ba40869c1ad53e1a463040b2 upstream.
+[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
 
-Patch series "Maple tree mas_{next,prev}_range() and cleanup", v4.
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-This patchset contains a number of clean ups to the code to make it more
-usable (next/prev range), the addition of debug output formatting, the
-addition of printing the maple state information in the WARN_ON/BUG_ON
-code.
+The 5V version mostly works with the BYTCR defaults, except that it is
+missing a CHAN package in its ACPI tables and the default of using
+SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
+detect signal is not inverted as it usually is.
 
-There is also work done here to keep nodes active during iterations to
-reduce the necessity of re-walking the tree.
+Add a DMI quirk for the 5V version to fix sound not working.
 
-Finally, there is a new interface added to move to the next or previous
-range in the tree, even if it is empty.
-
-The organisation of the patches is as follows:
-
-0001-0004 - Small clean ups
-0005-0018 - Additional debug options and WARN_ON/BUG_ON changes
-0019      - Test module __init and __exit addition
-0020-0021 - More functional clean ups
-0022-0026 - Changes to keep nodes active
-0027-0034 - Add new mas_{prev,next}_range()
-0035      - Use new mas_{prev,next}_range() in mmap_region()
-
-
-This patch (of 35):
-
-Static analyser of the maple tree code noticed that the split variable is
-being used to dereference into an array prior to checking the variable
-itself.  Fix this issue by changing the order of the statement to check
-the variable first.
-
-Link: https://lkml.kernel.org/r/20230518145544.1722059-1-Liam.Howlett@oracle.com
-Link: https://lkml.kernel.org/r/20230518145544.1722059-2-Liam.Howlett@oracle.com
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: David Binderman <dcb314@hotmail.com>
-Reviewed-by: Peng Zhang<zhangpeng.00@bytedance.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Vernon Yang <vernon2gm@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1935,8 +1935,9 @@ static inline int mab_calc_split(struct
- 		 * causes one node to be deficient.
- 		 * NOTE: mt_min_slots is 1 based, b_end and split are zero.
- 		 */
--		while (((bn->pivot[split] - min) < slot_count - 1) &&
--		       (split < slot_count - 1) && (b_end - split > slot_min))
-+		while ((split < slot_count - 1) &&
-+		       ((bn->pivot[split] - min) < slot_count - 1) &&
-+		       (b_end - split > slot_min))
- 			split++;
- 	}
- 
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index ddf68be0af14a..ce80adc30fe94 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1132,7 +1132,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+-	{	/* Vexia Edu Atla 10 tablet */
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
++	{	/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
+-- 
+2.39.5
+
 
 
 
