@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0F2A3B488
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD6DA3B5C0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05052188B6AC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84F617D30F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D22B1DE4E9;
-	Wed, 19 Feb 2025 08:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963321EB1A2;
+	Wed, 19 Feb 2025 08:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+CAxabQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMJBi2hG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAA31C3C1E;
-	Wed, 19 Feb 2025 08:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489E21EB184;
+	Wed, 19 Feb 2025 08:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954057; cv=none; b=dQTVDhrsvLNjqIfhG2lJQpkZn+dedMa22aKeNe63BcKBuW0bXJSL0x75wf0WLZsw2u1wX/2Sb585K0t13UrnxNo5B0L2VcChcMaRU3A/PM3cX2FsD7cUck7wiiMkG0EM+aDQ2d1EZxucsOrHcfdRAndCChWEhYUcOz69ErfHxzw=
+	t=1739954743; cv=none; b=i4bVacM5hvsbeFBjwAWt8f07neuRh1SDKHeZVL5iPNChh57nm8JfQHHC07Rq0GErpr17s8QoZ6aecPWFQOiU9ZS2Udks2h31Zq8F17T4HYrkn9L9Z98DL5nsR6XQjh2lU4QSAduXEnUO3bBKJmMVnyzkIiC/3ZcIqRrgc8sPCCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954057; c=relaxed/simple;
-	bh=NbIVtG1P+Gz9c0YCSzjly8o0RhYVh8w6BXDb4G5V8Hw=;
+	s=arc-20240116; t=1739954743; c=relaxed/simple;
+	bh=qp23OwKToTqGYySvgNsb8TsgymsrdthQHsfGrUhC5NI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtDRyGayX0P8a/BGOZInt3Y3XpCDaw2au6i45tIEmvJUFHcL2L3JfQiUKDQQL+thbFiK0rw6WS5GzQ0UzFQ1W0tY/nYvKRr3DJnvFB5fvnnt0fJtjvmu8mdxgdpZ7pZVWCittW4dsxZDAJHBEagPWBVVWNdkXOybmb2lvi8MBJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+CAxabQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B95BC4CEE6;
-	Wed, 19 Feb 2025 08:34:16 +0000 (UTC)
+	 MIME-Version; b=drUL7uoCcQFJQCpl8Me+fvzXLC20upSDnhg+/zTaqnAHqpktCuradftbpKPhmZ+52aMIaZ3i5FS3lkl5XI+0nOvf1qUJQ6qJ0gASud8Ymk05kd+SNmC9FE1DzMOe7nx7HxPTB6sdur9MntXE+MP48E4fKWE0VoYu5UvfnKzEoKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMJBi2hG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F1C4CEEB;
+	Wed, 19 Feb 2025 08:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954056;
-	bh=NbIVtG1P+Gz9c0YCSzjly8o0RhYVh8w6BXDb4G5V8Hw=;
+	s=korg; t=1739954742;
+	bh=qp23OwKToTqGYySvgNsb8TsgymsrdthQHsfGrUhC5NI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+CAxabQXiTS6YBI5pJ5/ohRExOgZh68p0RxjgkElI+gX5lr4orjuRhuXEUTWEZ+f
-	 FX07i/SFDQdts3td8sEtzvEppzzweQiSxfLplBdIia7x1VyHEHziVyeJjWFJKOt3sI
-	 qLPQUqORuj5wzPs6oezg7M9OJQgwArZq4U97sNGU=
+	b=pMJBi2hGak53sVl9e7km1cqpra5p9FdlfyXM0dzosZUGyEERmZxNbsRuRDxigLunG
+	 UchZ3OqnxEFIY07VxBvbzi24+AbhRhf+iZDZhBFBajZXAm+NaOHt9MqT61B8ACLtiK
+	 jGF+LbF/FQQXTs6dChn3ISlY60jHdmrbwiBZm6A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 083/274] media: uvcvideo: Add Kurokesu C1 PRO camera
-Date: Wed, 19 Feb 2025 09:25:37 +0100
-Message-ID: <20250219082612.872074261@linuxfoundation.org>
+Subject: [PATCH 6.12 021/230] idpf: fix handling rsc packet with a single segment
+Date: Wed, 19 Feb 2025 09:25:38 +0100
+Message-ID: <20250219082602.532340476@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Sridhar Samudrala <sridhar.samudrala@intel.com>
 
-[ Upstream commit 2762eab6d4140781840f253f9a04b8627017248b ]
+[ Upstream commit 69ab25a74e2df53edc2de4acfce0a484bdb88155 ]
 
-Add support for the Kurokesu C1 PRO camera. This camera experiences the
-same issues faced by the Sonix Technology Co. 292A IPC AR0330. As such,
-enable the UVC_QUIRK_MJPEG_NO_EOF quirk for this device to prevent
-frames from being erroneously dropped.
+Handle rsc packet with a single segment same as a multi
+segment rsc packet so that CHECKSUM_PARTIAL is set in the
+skb->ip_summed field. The current code is passing CHECKSUM_NONE
+resulting in TCP GRO layer doing checksum in SW and hiding the
+issue. This will fail when using dmabufs as payload buffers as
+skb frag would be unreadable.
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
+Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 1e14fd0c51d2f..011a14506ea0b 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2837,6 +2837,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= (kernel_ulong_t)&uvc_quirk_probe_minmax },
-+	/* Kurokesu C1 PRO */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x16d0,
-+	  .idProduct		= 0x0ed1,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_MJPEG_NO_EOF) },
- 	/* Syntek (HP Spartan) */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 60d15b3e6e2fa..cd7c297059aed 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3008,8 +3008,6 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 		return -EINVAL;
+ 
+ 	rsc_segments = DIV_ROUND_UP(skb->data_len, rsc_seg_len);
+-	if (unlikely(rsc_segments == 1))
+-		return 0;
+ 
+ 	NAPI_GRO_CB(skb)->count = rsc_segments;
+ 	skb_shinfo(skb)->gso_size = rsc_seg_len;
 -- 
 2.39.5
 
