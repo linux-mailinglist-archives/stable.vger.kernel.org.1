@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-117453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043FAA3B691
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B612FA3B745
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 988D7188BBD0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A93C1888224
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A281EB5D5;
-	Wed, 19 Feb 2025 08:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A101D8A0D;
+	Wed, 19 Feb 2025 09:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSdLIzFy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHnvCeFA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DFB1BEF71;
-	Wed, 19 Feb 2025 08:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D05A1C701E;
+	Wed, 19 Feb 2025 09:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955338; cv=none; b=jnt73tzZLl56jF1A5qbnQ/2sakNrncHh7F4WOpNQHggLAVZyfcWS5TckxEet5H3ArbSSm/yu3YHZ879i7UN8PPPSu3v/hhobxdM4S5/OPv8H7rgDJmE9p/FJrufNc0aCvkCSaPjfpi+aWeBRd0zQOklE3wNBRDnIFuxfpl0O77Y=
+	t=1739955845; cv=none; b=sqedjEHLDF4YM1DpBI1B68UskZtJZrK509slWbIrO1Ku/5R9RQfY0ZCnBTrugALgwXEB1/Y8KaJpGHlQvQjUXFA6k1QBPlWZwvGEevUXsvoK2a4oNhk5CJaRMN9gstN1oudbcW4z0EGOp+fJaH3cfkljiyn/fTPaG/B2vu2AHf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955338; c=relaxed/simple;
-	bh=aATiD80ndvu1v9ljhuBxMal1rb4BeudAW9PJNaWoK/Y=;
+	s=arc-20240116; t=1739955845; c=relaxed/simple;
+	bh=mJcBgy63Z1X/vF6rYz+qkzZ2YPwKhJEN7ZPxnheDqqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=is9yIkabyPVoaiM7OPf25bQy1TYVI/khDnbpezYmm92b5HHmd3Yn3PH81gM0VPGK9qiE+nFWDwpgrTLaKjkFVpPqmaEefEbCnjmNm3mnA7T0Wqr9UcNNJdpFWBQ9YABXZtfbZ9tsxOFYV2vTsgEovHKlsSSXk6mKTzm9prs0Jlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSdLIzFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2ACC4CED1;
-	Wed, 19 Feb 2025 08:55:37 +0000 (UTC)
+	 MIME-Version; b=FHvzBGCqMd4yo24Vb0HHBGJzdEZJNVZUHdviW71Lu4TZ0ERYPPu91K0R9pcwrA0zmRMOQNPVYWjuOU1+iuBig+KCJlyJ9zXsYfd3xf6sK+P3mUok2jGgijzPx6MAt2pO5RMtIuPA6zxWC8OG1FxUppNI3vYkfnutDSRYxq3ntPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHnvCeFA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E92EC4CED1;
+	Wed, 19 Feb 2025 09:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955338;
-	bh=aATiD80ndvu1v9ljhuBxMal1rb4BeudAW9PJNaWoK/Y=;
+	s=korg; t=1739955845;
+	bh=mJcBgy63Z1X/vF6rYz+qkzZ2YPwKhJEN7ZPxnheDqqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSdLIzFyKAsXkALk6Wy0ypxztL457kG5+A1ipbQWph1khWhbaxJWpAWwHHkK4mrBZ
-	 wj8eKurA+SLa8ILhS6fECKjhFkUPTbiPoVyvSi2x2QeKjU8x9NioVpZ8GegtGPz1qj
-	 YnktzskrMnWLpcQaAi/DLOdA75VeJEp5qM+ZdQ5A=
+	b=GHnvCeFA3bWDhyTotnZ8ui/TqFUj0iBBjD/5bD0Cq6jgWrcc26LNInTrx2lIEFpAy
+	 /jmTKJ40kpzeae5ppPn5J85XBEfjbQL8CiwHD8fZ/uSsswVAhtrrwMdO8FMfi5OYTh
+	 Ar5eSZEWfM1gKCtAk0YCHrf9k/hGbi+tvhWYnEbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/230] neighbour: use RCU protection in __neigh_notify()
+Subject: [PATCH 6.6 101/152] net: add dev_net_rcu() helper
 Date: Wed, 19 Feb 2025 09:28:34 +0100
-Message-ID: <20250219082609.402958313@linuxfoundation.org>
+Message-ID: <20250219082554.054298041@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
+[ Upstream commit 482ad2a4ace2740ca0ff1cbc8f3c7f862f3ab507 ]
 
-__neigh_notify() can be called without RTNL or RCU protection.
+dev->nd_net can change, readers should either
+use rcu_read_lock() or RTNL.
 
-Use RCU protection to avoid potential UAF.
+We currently use a generic helper, dev_net() with
+no debugging support. We probably have many hidden bugs.
 
-Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
+Add dev_net_rcu() helper for callers using rcu_read_lock()
+protection.
+
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
+Link: https://patch.msgid.link/20250205155120.1676781-2-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 71b8471c93fa ("ipv4: use RCU protection in ipv4_default_advmss()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/netdevice.h   | 6 ++++++
+ include/net/net_namespace.h | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index cc58315a40a79..c7f7ea61b524a 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3513,10 +3513,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
- static void __neigh_notify(struct neighbour *n, int type, int flags,
- 			   u32 pid)
- {
--	struct net *net = dev_net(n->dev);
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
-+	struct net *net;
- 
-+	rcu_read_lock();
-+	net = dev_net_rcu(n->dev);
- 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
- 	if (skb == NULL)
- 		goto errout;
-@@ -3529,9 +3531,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 		goto errout;
- 	}
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
--	return;
-+	goto out;
- errout:
- 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+out:
-+	rcu_read_unlock();
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 8b5121eb8757e..95ee88dfe0b9c 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2593,6 +2593,12 @@ struct net *dev_net(const struct net_device *dev)
+ 	return read_pnet(&dev->nd_net);
  }
  
- void neigh_app_ns(struct neighbour *n)
++static inline
++struct net *dev_net_rcu(const struct net_device *dev)
++{
++	return read_pnet_rcu(&dev->nd_net);
++}
++
+ static inline
+ void dev_net_set(struct net_device *dev, struct net *net)
+ {
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index b767bdcd9e122..ce3f84c6eb8eb 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -389,7 +389,7 @@ static inline struct net *read_pnet(const possible_net_t *pnet)
+ #endif
+ }
+ 
+-static inline struct net *read_pnet_rcu(possible_net_t *pnet)
++static inline struct net *read_pnet_rcu(const possible_net_t *pnet)
+ {
+ #ifdef CONFIG_NET_NS
+ 	return rcu_dereference(pnet->net);
 -- 
 2.39.5
 
