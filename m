@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BA9A3B780
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D30A3BA97
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F220D179742
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61EF4220F1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA151DE887;
-	Wed, 19 Feb 2025 09:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732E41D90D9;
+	Wed, 19 Feb 2025 09:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7L2cTfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrI0v+6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9F21DE8BF;
-	Wed, 19 Feb 2025 09:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F481158862;
+	Wed, 19 Feb 2025 09:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955894; cv=none; b=qSor2Xm3S8BJjITbXQiV92hR9cRsXWUtcjVILaIMADVnJLQQGfJWNvelpbr6B9BnLGVjwA3B07pQHGhipMcnHZM3rknIMHESU8LFlbSvXiDlDqxpcz5W+OgaMWl2jfB6BBcW8lu94NZEMSmADuiHrpdG5/bg7tQz+a5NI7+L5TI=
+	t=1739957595; cv=none; b=Fxpq8LSVBMp7R2L6c7T2YKHRyXLLtiMubDTP0jGAB9IBLB44TNLzWESfjGOY2ZsZJs5T89XNSJdluj+qzsoc2FDvZW7zeTJ0SXD0vXxCL7kjtMsfjMVhSjYJRb6gjzeJ+0qi4438eKryUiNgdwakcYfFCclm3zWkNPRrMuCibHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955894; c=relaxed/simple;
-	bh=ofaSMnJAguM1QBb16SZ9uJP2y9QXS1WrTzgHb3fku4g=;
+	s=arc-20240116; t=1739957595; c=relaxed/simple;
+	bh=XW4wtEkd1ibvMWzbryKoIMnOEYF5PM8cFl5yRaAr5dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZStc0DiO+7l9IHURqVNEBFxjwaAlrdEN+1XIlNk+LgklWeeR9ORgB7oLZVMNfPdVOrWQI8yWMWUeone6tf5+oWuPhzRbyMl4vyNpbAnks254HJfchHueHJGtkzeaQO3Z1YbbMRHiJYvkCuRVNX3+chYxDOeN3Qh8ybzRIlcXTgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7L2cTfT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C007AC4CED1;
-	Wed, 19 Feb 2025 09:04:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tXCMwUPnENNDt9/jk95TZSzslu+kXEhsPVHLrB2/dwoZnw57Au1jyFd0vhscRDUQNP723yy+8ganQW3r9lhPTBy4vj3sLKhOws5asnGIUJ3mURAMmbXwtAVS8Q0+rrzCDRlclWoQetKa1XcTpMYDddGf23z/rkOdYlo2DUrZI8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrI0v+6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF348C4CEE6;
+	Wed, 19 Feb 2025 09:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955894;
-	bh=ofaSMnJAguM1QBb16SZ9uJP2y9QXS1WrTzgHb3fku4g=;
+	s=korg; t=1739957595;
+	bh=XW4wtEkd1ibvMWzbryKoIMnOEYF5PM8cFl5yRaAr5dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7L2cTfTuRMepZradNyZWHM6z4ce7aydqqbUGbl57sw0k4KKyrlM1BsKsrEMonofY
-	 UsxH2wcMZmrjuFCCePMZPCKprSfQ7emM28/Lul0V7MmNTrk4oR5cqb8Qg1yC+7qTdp
-	 E/zTt6SvgiMfS/zanGzIGjB0+VwtembN7UHscWJ4=
+	b=xrI0v+6krqbb8/g7/vY9cdAJnA/+FCgJVxmjy5I/DIOGtuAmp3YSSrixttwLEmQJt
+	 tNa1hBGNYEEqEilqGxL7R/bjerHAijtlHZXdhUFtPgtfVqAfJmvbAo5eTnmLzcyGw7
+	 m+TydIa7wgjWQfjDOjFdlan8ttLbv2yaq6CrYG60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 149/152] vsock: Keep the binding until socket destruction
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.1 558/578] drm/v3d: Stop active perfmon if it is being destroyed
 Date: Wed, 19 Feb 2025 09:29:22 +0100
-Message-ID: <20250219082555.942115000@linuxfoundation.org>
+Message-ID: <20250219082714.904910484@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,138 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-commit fcdd2242c0231032fc84e1404315c245ae56322a upstream.
+commit 21f1435b1e6b012a07c42f36b206d2b66fc8f13b upstream.
 
-Preserve sockets bindings; this includes both resulting from an explicit
-bind() and those implicitly bound through autobind during connect().
+If the active performance monitor (`v3d->active_perfmon`) is being
+destroyed, stop it first. Currently, the active perfmon is not
+stopped during destruction, leaving the `v3d->active_perfmon` pointer
+stale. This can lead to undefined behavior and instability.
 
-Prevents socket unbinding during a transport reassignment, which fixes a
-use-after-free:
+This patch ensures that the active perfmon is stopped before being
+destroyed, aligning with the behavior introduced in commit
+7d1fd3638ee3 ("drm/v3d: Stop the active perfmon before being destroyed").
 
-    1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
-    2. transport->release() calls vsock_remove_bound() without checking if
-       sk was bound and moved to bound list (refcnt=1)
-    3. vsock_bind() assumes sk is in unbound list and before
-       __vsock_insert_bound(vsock_bound_sockets()) calls
-       __vsock_remove_bound() which does:
-           list_del_init(&vsk->bound_table); // nop
-           sock_put(&vsk->sk);               // refcnt=0
-
-BUG: KASAN: slab-use-after-free in __vsock_bind+0x62e/0x730
-Read of size 4 at addr ffff88816b46a74c by task a.out/2057
- dump_stack_lvl+0x68/0x90
- print_report+0x174/0x4f6
- kasan_report+0xb9/0x190
- __vsock_bind+0x62e/0x730
- vsock_bind+0x97/0xe0
- __sys_bind+0x154/0x1f0
- __x64_sys_bind+0x6e/0xb0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Allocated by task 2057:
- kasan_save_stack+0x1e/0x40
- kasan_save_track+0x10/0x30
- __kasan_slab_alloc+0x85/0x90
- kmem_cache_alloc_noprof+0x131/0x450
- sk_prot_alloc+0x5b/0x220
- sk_alloc+0x2c/0x870
- __vsock_create.constprop.0+0x2e/0xb60
- vsock_create+0xe4/0x420
- __sock_create+0x241/0x650
- __sys_socket+0xf2/0x1a0
- __x64_sys_socket+0x6e/0xb0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 2057:
- kasan_save_stack+0x1e/0x40
- kasan_save_track+0x10/0x30
- kasan_save_free_info+0x37/0x60
- __kasan_slab_free+0x4b/0x70
- kmem_cache_free+0x1a1/0x590
- __sk_destruct+0x388/0x5a0
- __vsock_bind+0x5e1/0x730
- vsock_bind+0x97/0xe0
- __sys_bind+0x154/0x1f0
- __x64_sys_bind+0x6e/0xb0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 7 PID: 2057 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
-RIP: 0010:refcount_warn_saturate+0xce/0x150
- __vsock_bind+0x66d/0x730
- vsock_bind+0x97/0xe0
- __sys_bind+0x154/0x1f0
- __x64_sys_bind+0x6e/0xb0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 7 PID: 2057 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
-RIP: 0010:refcount_warn_saturate+0xee/0x150
- vsock_remove_bound+0x187/0x1e0
- __vsock_release+0x383/0x4a0
- vsock_release+0x90/0x120
- __sock_release+0xa3/0x250
- sock_close+0x14/0x20
- __fput+0x359/0xa80
- task_work_run+0x107/0x1d0
- do_exit+0x847/0x2560
- do_group_exit+0xb8/0x250
- __x64_sys_exit_group+0x3a/0x50
- x64_sys_call+0xfec/0x14f0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250128-vsock-transport-vs-autobind-v3-1-1cf57065b770@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # v5.15+
+Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241118221948.1758130-1-christian.gmeiner@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/v3d/v3d_perfmon.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -336,7 +336,10 @@ EXPORT_SYMBOL_GPL(vsock_find_connected_s
- 
- void vsock_remove_sock(struct vsock_sock *vsk)
+--- a/drivers/gpu/drm/v3d/v3d_perfmon.c
++++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
+@@ -175,6 +175,7 @@ int v3d_perfmon_destroy_ioctl(struct drm
  {
--	vsock_remove_bound(vsk);
-+	/* Transport reassignment must not remove the binding. */
-+	if (sock_flag(sk_vsock(vsk), SOCK_DEAD))
-+		vsock_remove_bound(vsk);
+ 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
+ 	struct drm_v3d_perfmon_destroy *req = data;
++	struct v3d_dev *v3d = v3d_priv->v3d;
+ 	struct v3d_perfmon *perfmon;
+ 
+ 	mutex_lock(&v3d_priv->perfmon.lock);
+@@ -184,6 +185,10 @@ int v3d_perfmon_destroy_ioctl(struct drm
+ 	if (!perfmon)
+ 		return -EINVAL;
+ 
++	/* If the active perfmon is being destroyed, stop it first */
++	if (perfmon == v3d->active_perfmon)
++		v3d_perfmon_stop(v3d, perfmon, false);
 +
- 	vsock_remove_connected(vsk);
- }
- EXPORT_SYMBOL_GPL(vsock_remove_sock);
-@@ -820,12 +823,13 @@ static void __vsock_release(struct sock
- 	 */
- 	lock_sock_nested(sk, level);
+ 	v3d_perfmon_put(perfmon);
  
-+	sock_orphan(sk);
-+
- 	if (vsk->transport)
- 		vsk->transport->release(vsk);
- 	else if (sock_type_connectible(sk->sk_type))
- 		vsock_remove_sock(vsk);
- 
--	sock_orphan(sk);
- 	sk->sk_shutdown = SHUTDOWN_MASK;
- 
- 	skb_queue_purge(&sk->sk_receive_queue);
+ 	return 0;
 
 
 
