@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-117183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAFBA3B4F2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:50:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1194A3B514
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C7C97A2474
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:49:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE69189CB24
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1413B1DF251;
-	Wed, 19 Feb 2025 08:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4497D1D5CE8;
+	Wed, 19 Feb 2025 08:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfGb/2tA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vGM5RIZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C170E1DE3D6;
-	Wed, 19 Feb 2025 08:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C791CD210;
+	Wed, 19 Feb 2025 08:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954461; cv=none; b=YNvhVGFz6aeeMkIyuw+eW6OqirU+sudv+GokBrI1nex9B7Dz0v2W6DnZGD6RuKLC3FsLRLH/FxqkkOz1OLdjLqu3XEAhZT2lWycdvMTMxcBhK29KNcN4oVm6f4WRdBi5ppNfa5mZzX1Cr1R3o9CpkLzzscPhM8USOtQGY7DuDFI=
+	t=1739954359; cv=none; b=SH022M/XHDgP3DDMh2MVLJJQtVoSktSGGG5Jn3NkAfihxih6/IZ+sLyp1oJsh/R8orNhqLvzdXbyv4G2TfnSOg8gxVV3RoDRnmEebeO9CUgFNsGkuLI9+2pukFQNt4gKtUW8DQWt3QvRA1pOStVIA4Wpy7eI0brMm+uKg5m0iaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954461; c=relaxed/simple;
-	bh=uiNzWH4xhZlWjBdJ+2XYeAbkQ3ndR5vhmAez1zOGdzk=;
+	s=arc-20240116; t=1739954359; c=relaxed/simple;
+	bh=Pb1DKxvwqH5/NjQxUgoj7jsfOPBngAsCqvAezW5s0W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiUfrtHvOyI+ixltylWEcpnNbXPILVd/h6Nmlk2j0qT59XPF4VaxMFsKUeFvRQ2+qgh9qjyx3wofx7i3ZsLpe2+fiJfEztr5/FaEf6aZLAr0uT3mDnI2Icj7pkM57LUTolyDsnyglBKDqXRAnCZLRM50eLXHhST7XCnNvh9yvAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfGb/2tA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CF1C4CEE9;
-	Wed, 19 Feb 2025 08:41:01 +0000 (UTC)
+	 MIME-Version; b=bEOTI4Zk6x4vJ2ViY8wVRnpYntQIoOnjEroJohsOEJAGhOCzrr+Ajh/q1IQohcrFfM5SFWdw0oksc6Eyr9k5/NzNDvBfK6IsFcZlaj6v5buvvQ3UTqsmajFXdIT9/bGhA4UwyExzUUkeqDa78sZxVBB3+QEcJGKJ6vRU/b5ln6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vGM5RIZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70899C4CEE6;
+	Wed, 19 Feb 2025 08:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954461;
-	bh=uiNzWH4xhZlWjBdJ+2XYeAbkQ3ndR5vhmAez1zOGdzk=;
+	s=korg; t=1739954358;
+	bh=Pb1DKxvwqH5/NjQxUgoj7jsfOPBngAsCqvAezW5s0W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfGb/2tAvTJGuPK/EcxO/lRWUFLNYS/wFH02d/PVKXZWg4Syfpkcer8Q/TmxLQvpW
-	 UGTqlIHB4pkn9/mqwGOFCrUO3n/pSIufVB4CW2EfDQDU992MdZ9fpKdbSe6pVEJI24
-	 DUmot+1Tgk2SHW42tOJiyOOi2+RsuMsoV9u14qT8=
+	b=2vGM5RIZgQVq2MPKDOHpBUsO5xnpM4PhAFPBSZJMaGnPndNDrNqh4rP9s2D+sRhtt
+	 977d7Fe0oyQw8hGrfzrYqM9G6g/pOXvq0Z7PfjzYvfRuczgs9fW15WyF9RoU/Hn2R0
+	 C87xOTbdFW6YSEcAf1wQlH44g5kg8c/OQF6L2CXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.13 171/274] s390/pci: Fix handling of isolated VFs
-Date: Wed, 19 Feb 2025 09:27:05 +0100
-Message-ID: <20250219082616.283178805@linuxfoundation.org>
+	Delgan <delgan.py@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.13 172/274] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
+Date: Wed, 19 Feb 2025 09:27:06 +0100
+Message-ID: <20250219082616.321856773@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -66,107 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 2844ddbd540fc84d7571cca65d6c43088e4d6952 upstream.
+commit 8743d66979e494c5378563e6b5a32e913380abd8 upstream.
 
-In contrast to the commit message of the fixed commit VFs whose parent
-PF is not configured are not always isolated, that is put on their own
-PCI domain. This is because for VFs to be added to an existing PCI
-domain it is enough for that PCI domain to share the same topology ID or
-PCHID. Such a matching PCI domain without a parent PF may exist when
-a PF from the same PCI card created the domain with the VF being a child
-of a different, non accessible, PF. While not causing technical issues
-it makes the rules which VFs are isolated inconsistent.
+Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
+specified as an edge triggered input and also a wake source but this pin is
+supposed to be an output pin for an LED, so it's effectively floating.
 
-Fix this by explicitly checking that the parent PF exists on the PCI
-domain determined by the topology ID or PCHID before registering the VF.
-This works because a parent PF which is under control of this Linux
-instance must be enabled and configured at the point where its child VFs
-appear because otherwise SR-IOV could not have been enabled on the
-parent.
+Block the interrupt from getting set up for this GPIO on this device.
 
-Fixes: 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs")
 Cc: stable@vger.kernel.org
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Reported-by: Delgan <delgan.py@gmail.com>
+Tested-by: Delgan <delgan.py@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Mika Westerberg <westeri@kernel.org>
+Link: https://lore.kernel.org/r/20250211203222.761206-1-superm1@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_bus.c |   20 ++++++++++++++++++++
- arch/s390/pci/pci_iov.c |    2 +-
- arch/s390/pci/pci_iov.h |    7 +++++++
- 3 files changed, 28 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/arch/s390/pci/pci_bus.c
-+++ b/arch/s390/pci/pci_bus.c
-@@ -331,6 +331,17 @@ error:
- 	return rc;
- }
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1689,6 +1689,20 @@ static const struct dmi_system_id gpioli
+ 			.ignore_wake = "PNP0C50:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from GPIO 11
++		 * Found in BIOS 1.04
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3954
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 14"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "AMDI0030:00@11",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
-+static bool zpci_bus_is_isolated_vf(struct zpci_bus *zbus, struct zpci_dev *zdev)
-+{
-+	struct pci_dev *pdev;
-+
-+	pdev = zpci_iov_find_parent_pf(zbus, zdev);
-+	if (!pdev)
-+		return true;
-+	pci_dev_put(pdev);
-+	return false;
-+}
-+
- int zpci_bus_device_register(struct zpci_dev *zdev, struct pci_ops *ops)
- {
- 	bool topo_is_tid = zdev->tid_avail;
-@@ -345,6 +356,15 @@ int zpci_bus_device_register(struct zpci
- 
- 	topo = topo_is_tid ? zdev->tid : zdev->pchid;
- 	zbus = zpci_bus_get(topo, topo_is_tid);
-+	/*
-+	 * An isolated VF gets its own domain/bus even if there exists
-+	 * a matching domain/bus already
-+	 */
-+	if (zbus && zpci_bus_is_isolated_vf(zbus, zdev)) {
-+		zpci_bus_put(zbus);
-+		zbus = NULL;
-+	}
-+
- 	if (!zbus) {
- 		zbus = zpci_bus_alloc(topo, topo_is_tid);
- 		if (!zbus)
---- a/arch/s390/pci/pci_iov.c
-+++ b/arch/s390/pci/pci_iov.c
-@@ -74,7 +74,7 @@ static int zpci_iov_link_virtfn(struct p
-  * found. If the function is not a VF or has no RequesterID information,
-  * NULL is returned as well.
-  */
--static struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev)
-+struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev)
- {
- 	int i, vfid, devfn, cand_devfn;
- 	struct pci_dev *pdev;
---- a/arch/s390/pci/pci_iov.h
-+++ b/arch/s390/pci/pci_iov.h
-@@ -19,6 +19,8 @@ void zpci_iov_map_resources(struct pci_d
- 
- int zpci_iov_setup_virtfn(struct zpci_bus *zbus, struct pci_dev *virtfn, int vfn);
- 
-+struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev);
-+
- #else /* CONFIG_PCI_IOV */
- static inline void zpci_iov_remove_virtfn(struct pci_dev *pdev, int vfn) {}
- 
-@@ -28,5 +30,10 @@ static inline int zpci_iov_setup_virtfn(
- {
- 	return 0;
- }
-+
-+static inline struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev)
-+{
-+	return NULL;
-+}
- #endif /* CONFIG_PCI_IOV */
- #endif /* __S390_PCI_IOV_h */
 
 
 
