@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-117504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14DEA3B6D5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD570A3B998
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B7E017B3F8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03581884F9D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDB01C5F30;
-	Wed, 19 Feb 2025 08:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFAA1DE3B1;
+	Wed, 19 Feb 2025 09:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaFSrFTe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hz07W8Y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9CD1A841F;
-	Wed, 19 Feb 2025 08:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F55F1A314B;
+	Wed, 19 Feb 2025 09:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955493; cv=none; b=q36q9IbsyGNHpdDurXQAJiZps6XLxJvM0DYprafEFcrELBD64/MUwlnQYSkZHJ9J76H1wil2CWgRd+wGsTeQJVovJ17Y/gJfEqZv9bazhZHPNTcQRXKS2QMhImm/NY7hbm6uOzAdG7kYEvDxbFcAJpFJbJl85w6ceMMDLDQnGjY=
+	t=1739957167; cv=none; b=lm4RF+1X7VxCc9Ezrcx5DqgbjoBxu4w1gMmmVPTyvqRtxrbHPlQbh2w5QWlD2AWpqGLP7CxBoAwclBqUJUt2yQElXvtdxw5ni0y0fBEjbKKALTeqvcjc7uBIn3cSfkCyRszCCCZmvHzWl1TMs6zzCWv32+3RemzbG2O+yJyl3Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955493; c=relaxed/simple;
-	bh=/brVrkQdGmJls25UB6CcMf154mbSA+M7rvV6G/sdWmE=;
+	s=arc-20240116; t=1739957167; c=relaxed/simple;
+	bh=MoDb0wII72tEZJ6sT7CiraQIbEWB4uDuKsnWS6gYx44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnJNWBB9ArfMUlMUpsjsmDExL9zGkVM8/ptse62Pyi9vZfbjkH0G9AgfXK4AQjt21PlppKrOLDJPcfZz8u0q8D8vpQlATg8Jjud49FWIZaciDRDXzuHDmGf5T/trCJQK6w/ERyiXIBQGC0k2u3dWbeHtEbLPIiuJ8wafVB4s5W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaFSrFTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E8BC4CED1;
-	Wed, 19 Feb 2025 08:58:12 +0000 (UTC)
+	 MIME-Version; b=Kxt/7H6mBzWMRxMOEYr73Es1gxOjsADd+HB1GZTaueAARTwUvKmEyvSxaRVzfeOwp6G/9PLtJyAl2lWfZ3jaND0Gl+sJwGGGmO11ffr+9m8stwoK7YSPnYHJuCTwTFXqUOqw7OKzBzcrCH6tgO4NHMpBumWK016vrCibXvnjKFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hz07W8Y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562C6C4CED1;
+	Wed, 19 Feb 2025 09:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955492;
-	bh=/brVrkQdGmJls25UB6CcMf154mbSA+M7rvV6G/sdWmE=;
+	s=korg; t=1739957166;
+	bh=MoDb0wII72tEZJ6sT7CiraQIbEWB4uDuKsnWS6gYx44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaFSrFTeui89XpCroQ91ORL9SW37NRPm868g8vYWlUKza8g5Zds/ZzRyFU3iRd76M
-	 ENqLokFzbDMD2+mDUHloT3Ix7bWDdH7ncAS1IF+meYng3v80vIfD2Jx5Hq3fU5cfbE
-	 Sa+8o5QY41FXzqbViaCE4viFAKmWXFT79q1g1k3s=
+	b=hz07W8Y5VlRpQmhjADntFj2cTsEucGywHYh/LiI7A8KLwo1Kc/M13GN0bxZT/Y5ux
+	 /50DGt9vILzhe/1OQuMaHLzNpZYYSHn8vM0UJO4Z4PfYMRq6vjBOj7Pr2mUAznRndZ
+	 nnYc02uwQEpsAvUnCCWpQ/qRb5WNJ6FfxyPC7quU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/152] block: cleanup and fix batch completion adding conditions
+	Nick Chan <towinchenmi@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 432/578] irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured so
 Date: Wed, 19 Feb 2025 09:27:16 +0100
-Message-ID: <20250219082550.951391825@linuxfoundation.org>
+Message-ID: <20250219082710.006267601@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Nick Chan <towinchenmi@gmail.com>
 
-[ Upstream commit 1f47ed294a2bd577d5ae43e6e28e1c9a3be4a833 ]
+commit 698244bbb3bfd32ddf9a0b70a12b1c7d69056497 upstream.
 
-The conditions for whether or not a request is allowed adding to a
-completion batch are a bit hard to read, and they also have a few
-issues. One is that ioerror may indeed be a random value on passthrough,
-and it's being checked unconditionally of whether or not the given
-request is a passthrough request or not.
+The CPU PMU in Apple SoCs can be configured to fire its interrupt in one of
+several ways, and since Apple A11 one of the methods is FIQ, but the check
+of the configuration register fails to test explicitely for FIQ mode. It
+tests whether the IMODE bitfield is zero or not and the PMCRO_IACT bit is
+set. That results in false positives when the IMODE bitfield is not zero,
+but does not have the mode PMCR0_IMODE_FIQ.
 
-Rewrite the conditions to be separate for easier reading, and only check
-ioerror for non-passthrough requests. This fixes an issue with bio
-unmapping on passthrough, where it fails getting added to a batch. This
-both leads to suboptimal performance, and may trigger a potential
-schedule-under-atomic condition for polled passthrough IO.
+Only handle the PMC interrupt as a FIQ when the CPU PMU has been configured
+to fire FIQs, i.e. the IMODE bitfield value is PMCR0_IMODE_FIQ and
+PMCR0_IACT is set.
 
-Fixes: f794f3351f26 ("block: add support for blk_mq_end_request_batch()")
-Link: https://lore.kernel.org/r/20575f0a-656e-4bb3-9d82-dec6c7e3a35c@kernel.dk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
+Signed-off-by: Nick Chan <towinchenmi@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250118163554.16733-1-towinchenmi@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk-mq.h | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-apple-aic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-index 958ed7e89b301..1d482c2aabbdf 100644
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -849,12 +849,22 @@ static inline bool blk_mq_add_to_batch(struct request *req,
- 				       void (*complete)(struct io_comp_batch *))
- {
- 	/*
--	 * blk_mq_end_request_batch() can't end request allocated from
--	 * sched tags
-+	 * Check various conditions that exclude batch processing:
-+	 * 1) No batch container
-+	 * 2) Has scheduler data attached
-+	 * 3) Not a passthrough request and end_io set
-+	 * 4) Not a passthrough request and an ioerror
- 	 */
--	if (!iob || (req->rq_flags & RQF_SCHED_TAGS) || ioerror ||
--			(req->end_io && !blk_rq_is_passthrough(req)))
-+	if (!iob)
- 		return false;
-+	if (req->rq_flags & RQF_SCHED_TAGS)
-+		return false;
-+	if (!blk_rq_is_passthrough(req)) {
-+		if (req->end_io)
-+			return false;
-+		if (ioerror < 0)
-+			return false;
-+	}
+--- a/drivers/irqchip/irq-apple-aic.c
++++ b/drivers/irqchip/irq-apple-aic.c
+@@ -555,7 +555,8 @@ static void __exception_irq_entry aic_ha
+ 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
+ 	}
  
- 	if (!iob->complete)
- 		iob->complete = complete;
--- 
-2.39.5
-
+-	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
++	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
++			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
+ 		int irq;
+ 		if (cpumask_test_cpu(smp_processor_id(),
+ 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
 
 
 
