@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7678AA3BA05
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCDEA3B7CB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63539801AAE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6DE3B2024
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8881DFD94;
-	Wed, 19 Feb 2025 09:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E281DF27C;
+	Wed, 19 Feb 2025 08:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7GQMvr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbFbF6mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBB01D54E9;
-	Wed, 19 Feb 2025 09:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156AF1DE2C2;
+	Wed, 19 Feb 2025 08:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957308; cv=none; b=HjIolwqQvVJxI3OGbq259uJf2TeEwdbAnSm6lW4cSAPow/l+kEEYhcTHpyPnCMnYhB/NDn+BqL9ciXgvKTZ2kH0GlSj71uvi06PCFCopfxr0QcjEheXo/dAjUmDgt6znMGm3/Wad1HmcSrA+sei1jFXGt0LNVDvS6drBSJsQBPU=
+	t=1739955564; cv=none; b=cLmHuXrG5ZXqL/NCbkWVkNCffN/Vtul5d40Zk7h4Us+cCLJ0la9YXEyalgLDRLnTQZqDBEA23iERoEJXWBPllGU2fR5/WpNlAQxJX9dajMJqpU7ssLBO4KKmDmLIbKP8/hTcDfI2BWUzLwek4SuF4nF98hnedaRC/ERbKm4OJB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957308; c=relaxed/simple;
-	bh=PXi2/IvqREsPPO/ws9DrkUP8ZEeZk+Y06TPNzul4e3k=;
+	s=arc-20240116; t=1739955564; c=relaxed/simple;
+	bh=JVLJYMKixOl6SJG0evsiceynNn6kFpVs9ohMoQTloug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCTMQKJIubg42uS6MgtZR4HuFetNA6LJxqKJfQXuWu5FRD01pJDMWr7GcFvdtZ2gGA4pwuCQamstf/Vnvp9+sL22fiTzMr7VtOjVAKCMON0j/Zv786ccKtUYT04IAcxh0qJyDnsBPSRMtgtXYU4OvrUXwcEtASjDwxJUQLDrtfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7GQMvr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D87C4CED1;
-	Wed, 19 Feb 2025 09:28:27 +0000 (UTC)
+	 MIME-Version; b=HTkzUE+CcuqeyMzYC1E4pnqVOWLqK+ZTIC3d0sWLgSVOaQCcM6pDgZIkh/NsYLTN+rzglOjzoXBaUkh423H0kpXk7W/0BtzOtOEJB8DvrDrzq0Eafs3HdhlPumeBSwgy/XvE1P2N6yrLv6VqMshEuh3jcbBSU6Ng4rxrfwW4/x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbFbF6mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD5AC4CED1;
+	Wed, 19 Feb 2025 08:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957308;
-	bh=PXi2/IvqREsPPO/ws9DrkUP8ZEeZk+Y06TPNzul4e3k=;
+	s=korg; t=1739955564;
+	bh=JVLJYMKixOl6SJG0evsiceynNn6kFpVs9ohMoQTloug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I7GQMvr/ueUxDkHsDQyZij7RRiJX9OigtGo0Ecjl/9AsezaqhHG2ZlNrkqP21x0I9
-	 e4LzcUEEPrIEozNeQftMmty7+MHLF+LkJnV0awUa3kmyvZn/Kn/vjnBqjZN3yYstzv
-	 NtCdGsaRcZfb8nQaJIRwvPVwHIkGt47URvObg1eQ=
+	b=qbFbF6mmGURGbwmbOJrM8mI2obeiKROzF8fswAOJA8gU66lNd8mIM4/HIALEbhpw3
+	 Zbbavhq/L8d6Z/tZomzz1ecgrV14gjgdGEWxzL7BsoEd9/ZB2yKwHynh8/tmVbhof9
+	 MGo5xzellaPcQSjpWBG5suv5c7mI+P4EIVy8+waM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 6.1 453/578] cachefiles: Fix NULL pointer dereference in object->file
-Date: Wed, 19 Feb 2025 09:27:37 +0100
-Message-ID: <20250219082710.811838106@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 045/152] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
+Date: Wed, 19 Feb 2025 09:27:38 +0100
+Message-ID: <20250219082551.826113995@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 31ad74b20227ce6b40910ff78b1c604e42975cf1 upstream.
+[ Upstream commit 8f62ca9c338aae4f73e9ce0221c3d4668359ddd8 ]
 
-At present, the object->file has the NULL pointer dereference problem in
-ondemand-mode. The root cause is that the allocated fd and object->file
-lifetime are inconsistent, and the user-space invocation to anon_fd uses
-object->file. Following is the process that triggers the issue:
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-	  [write fd]				[umount]
-cachefiles_ondemand_fd_write_iter
-				       fscache_cookie_state_machine
-					 cachefiles_withdraw_cookie
-  if (!file) return -ENOBUFS
-					   cachefiles_clean_up_object
-					     cachefiles_unmark_inode_in_use
-					     fput(object->file)
-					     object->file = NULL
-  // file NULL pointer dereference!
-  __cachefiles_write(..., file, ...)
+Both ship with Android 4.4 as factory OS and have the usual broken DSDT
+issues for x86 Android tablets.
 
-Fix this issue by add an additional reference count to the object->file
-before write/llseek, and decrement after it finished.
+Add a quirk to skip ACPI I2C client enumeration for the 5V version to
+complement the existing quirk for the 9V version.
 
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/r/20241107110649.3980193-5-wozizhi@huawei.com
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Bin Lan <lanbincn@qq.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132202.18209-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/interface.c |   14 ++++++++++----
- fs/cachefiles/ondemand.c  |   30 ++++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 10 deletions(-)
+ drivers/acpi/x86/utils.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/cachefiles/interface.c
-+++ b/fs/cachefiles/interface.c
-@@ -327,6 +327,8 @@ static void cachefiles_commit_object(str
- static void cachefiles_clean_up_object(struct cachefiles_object *object,
- 				       struct cachefiles_cache *cache)
- {
-+	struct file *file;
-+
- 	if (test_bit(FSCACHE_COOKIE_RETIRED, &object->cookie->flags)) {
- 		if (!test_bit(CACHEFILES_OBJECT_USING_TMPFILE, &object->flags)) {
- 			cachefiles_see_object(object, cachefiles_obj_see_clean_delete);
-@@ -342,10 +344,14 @@ static void cachefiles_clean_up_object(s
- 	}
- 
- 	cachefiles_unmark_inode_in_use(object, object->file);
--	if (object->file) {
--		fput(object->file);
--		object->file = NULL;
--	}
-+
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	object->file = NULL;
-+	spin_unlock(&object->lock);
-+
-+	if (file)
-+		fput(file);
- }
- 
- /*
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -61,20 +61,26 @@ static ssize_t cachefiles_ondemand_fd_wr
- {
- 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
- 	struct cachefiles_cache *cache = object->volume->cache;
--	struct file *file = object->file;
-+	struct file *file;
- 	size_t len = iter->count;
- 	loff_t pos = kiocb->ki_pos;
- 	const struct cred *saved_cred;
- 	int ret;
- 
--	if (!file)
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	if (!file) {
-+		spin_unlock(&object->lock);
- 		return -ENOBUFS;
-+	}
-+	get_file(file);
-+	spin_unlock(&object->lock);
- 
- 	cachefiles_begin_secure(cache, &saved_cred);
- 	ret = __cachefiles_prepare_write(object, file, &pos, &len, true);
- 	cachefiles_end_secure(cache, saved_cred);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
- 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
- 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
-@@ -83,6 +89,8 @@ static ssize_t cachefiles_ondemand_fd_wr
- 		kiocb->ki_pos += ret;
- 	}
- 
-+out:
-+	fput(file);
- 	return ret;
- }
- 
-@@ -90,12 +98,22 @@ static loff_t cachefiles_ondemand_fd_lls
- 					    int whence)
- {
- 	struct cachefiles_object *object = filp->private_data;
--	struct file *file = object->file;
-+	struct file *file;
-+	loff_t ret;
- 
--	if (!file)
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	if (!file) {
-+		spin_unlock(&object->lock);
- 		return -ENOBUFS;
-+	}
-+	get_file(file);
-+	spin_unlock(&object->lock);
- 
--	return vfs_llseek(file, pos, whence);
-+	ret = vfs_llseek(file, pos, whence);
-+	fput(file);
-+
-+	return ret;
- }
- 
- static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index fdfc88e09986e..e894fdf6d5531 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -400,6 +400,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
++	},
+ 	{
+ 		/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+-- 
+2.39.5
+
 
 
 
