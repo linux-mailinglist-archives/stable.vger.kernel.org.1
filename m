@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF579A3B555
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C59A3B5AB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B74F1891BDC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B669C7A4125
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65D91E0DE3;
-	Wed, 19 Feb 2025 08:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CA81B415A;
+	Wed, 19 Feb 2025 08:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2cXO+dM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXzeJG7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DED1AF0C8;
-	Wed, 19 Feb 2025 08:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8171F1C5D69;
+	Wed, 19 Feb 2025 08:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954570; cv=none; b=tUvtuRC7YfJH9XtSrx0ZUtop+rZsikubwbHQCtGOtM1PsMTEeK+Vgj7l2/0iB7ZopZwQztFOJ0nbdjFjFx14Vg4RZmH1dHS/tIh++tJys0fvRnPw2cOORSvPfU2mpClGTWcn7EtUUeqlw8P4hb9rGjAUwOXhPeGXWTreA0i1Gjo=
+	t=1739955160; cv=none; b=eViOZiXFVhuWI+GuGYX721EQIYbEb1DW9zA5bcPM3uP6P3uI83b7wVbi5Wv7F85vPkSFE2qBmDdVbX+klnXe+v+GWbT8O02HBUrUZrdo+wy8Qzao/K46gkstrDaACh6vMabpVdhwRj05kJSkYFDt7SGoNY0UtG6VVTSpY2PgDV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954570; c=relaxed/simple;
-	bh=4R30CfWaMPAQkfVQEyRa7U0dSrPacwMgbyOnoaal4gg=;
+	s=arc-20240116; t=1739955160; c=relaxed/simple;
+	bh=U07meSbTjkoXTCxB1yRaw0odaCtwmVrfulYQ8huH+n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DE1HZjCBcgFDp487sPseU8LJeqGazd5frRlbCOk1nEjtCVYBA7bzXOgLO8wM7qW3Cl/CmofC4Z2mWoFFtRQviBOyfpsFWgZycPf6t7gEiWf6ZXo5WwFwZ3Nd5ykMh1G0vlTbsxzDQnBEWAqxryE/fAOWpi4WKKY/+k6FMg5k66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2cXO+dM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250D0C4CED1;
-	Wed, 19 Feb 2025 08:42:49 +0000 (UTC)
+	 MIME-Version; b=QmDPbJQjFlBkVkuq82/ljsoDTJ4IWNW1gNmVi06CJMaSEF+MPgXNTCyFOnxT2aJNkCTMgNE2DhQc0sK1e7HNAvDLVr2dDPpBTrf2mmogOlzo/Iba3OndOd8VMh/hFWrJSmMxXX28Tky/ems6/pMuenNTceG7MII2RIMSCcWRTsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXzeJG7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0393CC4CED1;
+	Wed, 19 Feb 2025 08:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954570;
-	bh=4R30CfWaMPAQkfVQEyRa7U0dSrPacwMgbyOnoaal4gg=;
+	s=korg; t=1739955160;
+	bh=U07meSbTjkoXTCxB1yRaw0odaCtwmVrfulYQ8huH+n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2cXO+dM7QCVh/qe/471L2Dy57eYJZTWkp6IbITjeZiIyGUSRob48eLU2EY3CzmH/
-	 mYRznt/tZlWrQoM21ZVwugbuiM6ksmwtU++NLaDsUhd00HEbYrzJRYiDrmOdZM08Ue
-	 ft3KLQo09Mcu0yFUNgChOueP12c/nuLS8ZzbY1Rc=
+	b=hXzeJG7ReNEy9ZyiYqm6l2R+kil8/2aj13RvV4kBuFooHEOeUu45Sz9EQi6fN89p/
+	 ewtPNK00yitevdrpW0oxCQujrd8eUP3+yx+PCH1WKJChWbAhfuRnmMqRmM1gBJloFZ
+	 3ppaqvF5cGopMKe2qUaJwdTxOIiNj+LmznSaynIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 213/274] cpufreq/amd-pstate: Fix cpufreq_policy ref counting
-Date: Wed, 19 Feb 2025 09:27:47 +0100
-Message-ID: <20250219082617.912642742@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 151/230] gpio: stmpe: Check return value of stmpe_reg_read in stmpe_gpio_irq_sync_unlock
+Date: Wed, 19 Feb 2025 09:27:48 +0100
+Message-ID: <20250219082607.595341695@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 3ace20038e19f23fe73259513f1f08d4bf1a3c83 ]
+commit b9644fbfbcab13da7f8b37bef7c51e5b8407d031 upstream.
 
-amd_pstate_update_limits() takes a cpufreq_policy reference but doesn't
-decrement the refcount in one of the exit paths, fix that.
+The stmpe_reg_read function can fail, but its return value is not checked
+in stmpe_gpio_irq_sync_unlock. This can lead to silent failures and
+incorrect behavior if the hardware access fails.
 
-Fixes: 45722e777fd9 ("cpufreq: amd-pstate: Optimize amd_pstate_update_limits()")
-Signed-off-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250205112523.201101-10-dhananjay.ugwekar@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds checks for the return value of stmpe_reg_read. If the
+function fails, an error message is logged and the function returns
+early to avoid further issues.
+
+Fixes: b888fb6f2a27 ("gpio: stmpe: i2c transfer are forbiden in atomic context")
+Cc: stable@vger.kernel.org # 4.16+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250212021849.275-1-vulab@iscas.ac.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/amd-pstate.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-stmpe.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index bdaa19c25887b..0aea414b8ac4a 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -809,20 +809,21 @@ static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
+--- a/drivers/gpio/gpio-stmpe.c
++++ b/drivers/gpio/gpio-stmpe.c
+@@ -191,7 +191,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		[REG_IE][CSB] = STMPE_IDX_IEGPIOR_CSB,
+ 		[REG_IE][MSB] = STMPE_IDX_IEGPIOR_MSB,
+ 	};
+-	int i, j;
++	int ret, i, j;
  
- static void amd_pstate_update_limits(unsigned int cpu)
- {
--	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-+	struct cpufreq_policy *policy = NULL;
- 	struct amd_cpudata *cpudata;
- 	u32 prev_high = 0, cur_high = 0;
- 	int ret;
- 	bool highest_perf_changed = false;
+ 	/*
+ 	 * STMPE1600: to be able to get IRQ from pins,
+@@ -199,8 +199,16 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 	 * GPSR or GPCR registers
+ 	 */
+ 	if (stmpe->partnum == STMPE1600) {
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_LSB: %d\n", ret);
++			goto err;
++		}
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_CSB: %d\n", ret);
++			goto err;
++		}
+ 	}
  
-+	if (!amd_pstate_prefcore)
-+		return;
-+
-+	policy = cpufreq_cpu_get(cpu);
- 	if (!policy)
- 		return;
+ 	for (i = 0; i < CACHE_NR_REGS; i++) {
+@@ -222,6 +230,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		}
+ 	}
  
- 	cpudata = policy->driver_data;
++err:
+ 	mutex_unlock(&stmpe_gpio->irq_lock);
+ }
  
--	if (!amd_pstate_prefcore)
--		return;
--
- 	guard(mutex)(&amd_pstate_driver_lock);
- 
- 	ret = amd_get_highest_perf(cpu, &cur_high);
--- 
-2.39.5
-
 
 
 
