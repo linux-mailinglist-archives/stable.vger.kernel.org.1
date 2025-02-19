@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-118060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1425FA3B98B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFF2A3B6C3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A088E18827F9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FCB318995D3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1F1E25E7;
-	Wed, 19 Feb 2025 09:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62DE1DE898;
+	Wed, 19 Feb 2025 08:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0qwZ/VL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrMRSmZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18461E102E;
-	Wed, 19 Feb 2025 09:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632081A841F;
+	Wed, 19 Feb 2025 08:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957121; cv=none; b=PrD3pqNOIPKrlLrXXREoddJwtod4OA1O6z8MLYEw6xDWF3/iLzlyl9la07Ode3DYzguLR+DVyGEv0HPG42yqNwlj1JQj5Jb+tFhhq94q5/EKUW/7sy21l0Pj85ZSHCG1K2mwaIihyIxYBQs502uEerJqectfc9JZq0rOHNODLu0=
+	t=1739955508; cv=none; b=JkQRriKDYoSAAIm9rGuaysmdIhAnSaDkY9ngfNKJNqO6Q0IRhOJvpgg9M+uVaJ8NGw/9VGsPv512vgVYyjEow/1FxjmptNy2q2pd3TPcEM+eikxXe7vBGx1zrxweXad8a2tcNiuAQWnpXG8CvmOA/dOdhoxLTGN0pf36cJb0SYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957121; c=relaxed/simple;
-	bh=tVw8xRjFU9EUDqEHs2IWJ/zMYCwm5w062c5no6nXH7s=;
+	s=arc-20240116; t=1739955508; c=relaxed/simple;
+	bh=7ydquqqzcfsehK1OnjgC9TtFt1GkVDeo6tnxiLNwZBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0S60QjlMmYA2CuHiAPAPoGVq5HuyJZrxhyYp49d9J/omglMeH5VIi3yksUEdCgbv/EqXocxzqSdkMrNdjl9StpvgLefVGTXTiigbvKZ9AAuFkTSsGHgXERbFaFU1iZWI26qKJ9bwui58WzoEAeoiFjyJJW9JuBUjS7OGBUDW6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0qwZ/VL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F8AC4CED1;
-	Wed, 19 Feb 2025 09:25:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R4xGMI/N+Bx8zQs1DN/SFeHfqttDLODSRPT3fen2yREv5F0esjcUgldCQ0aD+xyuoOWZ6FL2PdPdC3UkLMX5uFYdw0gupowp3PsHRXopkQHsfm9HciaqHpLZQc+l28XsE9kc0gr46BPbK65cNOv3yfgeYVQXd2ruDkcjLqbbfcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrMRSmZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E32C4CED1;
+	Wed, 19 Feb 2025 08:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957120;
-	bh=tVw8xRjFU9EUDqEHs2IWJ/zMYCwm5w062c5no6nXH7s=;
+	s=korg; t=1739955508;
+	bh=7ydquqqzcfsehK1OnjgC9TtFt1GkVDeo6tnxiLNwZBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0qwZ/VLfXT4MGxtchorRis+THVfm8OqJC6WHNpw950wu4DFKO7ZsMYsasMv4Izau
-	 Vg9s0EmhYVDsWElZUireRHE81YW8F/By5H2XFNmBcv4dJ9jpUkrUlzrSV2mmYfXNet
-	 ZDyDA2bctAIFQ+U/MCJloitpPBnvsOIhxgsC853s=
+	b=CrMRSmZgSyeqXxenYDBOsFaq7KUkYUK/xJqkp2H7azZp1P7nAtD2cfUndngS5cIlC
+	 i5BhQzPNMPgjzVGywhsxObpljtCeqx5o6HR6bqDqrjWWiCwbywhepRaIM4oMg8SCfN
+	 T5P29CGYp8kV2I1BDWfZXKsOliG+RDxbjugVV4NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1 414/578] media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+	syzbot+9c9179ac46169c56c1ad@syzkaller.appspotmail.com,
+	=?UTF-8?q?T=C3=BAlio=20Fernandes?= <tuliomf09@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 005/152] HID: hid-thrustmaster: fix stack-out-of-bounds read in usb_check_int_endpoints()
 Date: Wed, 19 Feb 2025 09:26:58 +0100
-Message-ID: <20250219082709.306105491@linuxfoundation.org>
+Message-ID: <20250219082550.237320190@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Tulio Fernandes <tuliomf09@gmail.com>
 
-commit c31cffd5ae2c3d7ef21d9008977a9d117ce7a64e upstream.
+[ Upstream commit 0b43d98ff29be3144e86294486b1373b5df74c0e ]
 
-If there is an event that needs the V4L2_EVENT_CTRL_CH_FLAGS flag, all
-the following events will have that flag, regardless if they need it or
-not.
+Syzbot[1] has detected a stack-out-of-bounds read of the ep_addr array from
+hid-thrustmaster driver. This array is passed to usb_check_int_endpoints
+function from usb.c core driver, which executes a for loop that iterates
+over the elements of the passed array. Not finding a null element at the end of
+the array, it tries to read the next, non-existent element, crashing the kernel.
 
-This is because we keep using the same variable all the time and we do
-not reset its original value.
+To fix this, a 0 element was added at the end of the array to break the for
+loop.
 
-Cc: stable@vger.kernel.org
-Fixes: 805e9b4a06bf ("[media] uvcvideo: Send control change events for slave ctrls when the master changes")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241114-uvc-roi-v15-1-64cfeb56b6f8@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://syzkaller.appspot.com/bug?extid=9c9179ac46169c56c1ad
+
+Reported-by: syzbot+9c9179ac46169c56c1ad@syzkaller.appspotmail.com
+Fixes: 50420d7c79c3 ("HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check")
+Signed-off-by: Túlio Fernandes <tuliomf09@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-thrustmaster.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1564,13 +1564,13 @@ static void uvc_ctrl_send_events(struct
- {
- 	struct uvc_control_mapping *mapping;
- 	struct uvc_control *ctrl;
--	u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
- 	unsigned int i;
- 	unsigned int j;
+diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
+index 6c3e758bbb09e..3b81468a1df29 100644
+--- a/drivers/hid/hid-thrustmaster.c
++++ b/drivers/hid/hid-thrustmaster.c
+@@ -171,7 +171,7 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
+ 	b_ep = ep->desc.bEndpointAddress;
  
- 	for (i = 0; i < xctrls_count; ++i) {
--		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-+		u32 changes = V4L2_EVENT_CTRL_CH_VALUE;
+ 	/* Are the expected endpoints present? */
+-	u8 ep_addr[1] = {b_ep};
++	u8 ep_addr[2] = {b_ep, 0};
  
-+		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
- 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			/* Notification will be sent from an Interrupt event. */
- 			continue;
+ 	if (!usb_check_int_endpoints(usbif, ep_addr)) {
+ 		hid_err(hdev, "Unexpected non-int endpoint\n");
+-- 
+2.39.5
+
 
 
 
