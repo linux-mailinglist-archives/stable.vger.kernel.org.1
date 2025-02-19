@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-118073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94AAA3B9FC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBD6A3B6B9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9007D17F2DF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8E2E178CE5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF54E1DE2C5;
-	Wed, 19 Feb 2025 09:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA87F1C82F4;
+	Wed, 19 Feb 2025 08:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9u75eJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grgU8Uhs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9781B6D0A;
-	Wed, 19 Feb 2025 09:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C1C1C3BF1;
+	Wed, 19 Feb 2025 08:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957158; cv=none; b=V/ZrepRujc3sXTARTkBtI03kG6rm1WRAITIAIDKYP0rn1gh1X+krnuzBMDbfgeDHimfDzWtTdPOep8rWDklAcN856DESRYkF/hV+MCeDbJhVeP0GFi59V8WBpv53eRvD+mAN39PDw3KpkTD2xXVZajkaqPdnZfqtUhKWfC6AMM8=
+	t=1739955483; cv=none; b=TH2DPW5t0EycnhWnNG8RCgMUHydJSIPBQBhV3SsLR68kYffgs0bQKjOIFu8awXxZx/Rab6GPgmnW3/JvdP0ovcRro/DxiCveHTnWqWVgUpcMs7J1Gxz1my/K7+Ze4e44BIFUkLcjbcUyapQ623iOfneKwPWpl2ydR/l79a5YSEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957158; c=relaxed/simple;
-	bh=HCvdH8yNPQfoFMgIpogMkvjjrGu+x1tgxfe99Is0LUw=;
+	s=arc-20240116; t=1739955483; c=relaxed/simple;
+	bh=6H2frLbdbUXfCcFVqL/CreUrf52AS4mqdXAVfmdk/yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIzwdLAzZj5Z5ndXyuaWiUmyMFSsU2aHQNbd8Sz14N3gOfcrjgxKgwnzGhLmu4SDNM9ojgIf6/ZOX0LkkeYeb1ZKUm7YPT89xk1zEvfHZhw99MqAgUHnb4ql/+A/lwRUg5Ydh/3zJGZ/o3V4dKGxYBWn5PP0sXL0kXL5Q3SAWUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9u75eJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D6FC4CED1;
-	Wed, 19 Feb 2025 09:25:57 +0000 (UTC)
+	 MIME-Version; b=Q+HcoU6w/qvZ2b6F7uGztroTrbpLYiUzqEld+ZJNPAMhjH8KIS82E+Air98UsiOQiZNBMEiErpTcPGVESmkUA0Yz2CjJaz+Ftygx6Lg6HASvMyUAKWyjJq7VqTnZV0S58V8hUMI58nsNOTymxNekdd5nwW3u1Fu+qojH16Do/mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grgU8Uhs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F16C4CED1;
+	Wed, 19 Feb 2025 08:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957158;
-	bh=HCvdH8yNPQfoFMgIpogMkvjjrGu+x1tgxfe99Is0LUw=;
+	s=korg; t=1739955483;
+	bh=6H2frLbdbUXfCcFVqL/CreUrf52AS4mqdXAVfmdk/yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9u75eJ6h/PGXuHv6M+S5xptRhj4HpsOK01WieuzTNntIl4EayxgJnebEiuxMwzCW
-	 KFiRmm9sg9uQnhapaUR/KrscvyKHUo5CDm5yq/BazEGm7CjnxC5NgjAWv4T33S4UxF
-	 vZv3mn9khfZx7NTd7LR6jYT3SOpVQSIyrFQLgyuk=
+	b=grgU8Uhs/ACK1INSDt6syqx0H2aNPrrjQqen66J3gqPkCUrWdx2wu3qepK8Pc0jrw
+	 kkrJG7IdP5WoqvULI+ufJ4QfzukLK9gjFV0XXleqiPS2/k5tkCF7kmldaFkw55m5d1
+	 vLOGknsQDmNkRLCZzUclRJzwpBvkHdfDg5mFkwSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pekka Pessi <ppessi@nvidia.com>,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 6.1 429/578] mailbox: tegra-hsp: Clear mailbox before using message
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 020/152] drm/amdgpu: bail out when failed to load fw in psp_init_cap_microcode()
 Date: Wed, 19 Feb 2025 09:27:13 +0100
-Message-ID: <20250219082709.891634008@linuxfoundation.org>
+Message-ID: <20250219082550.831768574@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pekka Pessi <ppessi@nvidia.com>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-commit 0b7f8328f988178b55ee11d772a6e1238c04d29d upstream.
+[ Upstream commit a0a455b4bc7483ad60e8b8a50330c1e05bb7bfcf ]
 
-The Tegra RCE (Camera) driver expects the mailbox to be empty before
-processing the IVC messages. On RT kernel, the threads processing the
-IVC messages (which are invoked after `mbox_chan_received_data()` is
-called) may be on a different CPU or running with a higher priority
-than the HSP interrupt handler thread. This can cause it to act on the
-message before the mailbox gets cleared in the HSP interrupt handler
-resulting in a loss of IVC notification.
+In function psp_init_cap_microcode(), it should bail out when failed to
+load firmware, otherwise it may cause invalid memory access.
 
-Fix this by clearing the mailbox data register before calling
-`mbox_chan_received_data()`.
-
-Fixes: 8f585d14030d ("mailbox: tegra-hsp: Add tegra_hsp_sm_ops")
-Fixes: 74c20dd0f892 ("mailbox: tegra-hsp: Add 128-bit shared mailbox support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pekka Pessi <ppessi@nvidia.com>
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07dbfc6b102e ("drm/amd: Use `amdgpu_ucode_*` helpers for PSP")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/tegra-hsp.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/mailbox/tegra-hsp.c
-+++ b/drivers/mailbox/tegra-hsp.c
-@@ -388,7 +388,6 @@ static void tegra_hsp_sm_recv32(struct t
- 	value = tegra_hsp_channel_readl(channel, HSP_SM_SHRD_MBOX);
- 	value &= ~HSP_SM_SHRD_MBOX_FULL;
- 	msg = (void *)(unsigned long)value;
--	mbox_chan_received_data(channel->chan, msg);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index a4f9015345ccb..6a24e8ceb9449 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -3450,9 +3450,10 @@ int psp_init_cap_microcode(struct psp_context *psp, const char *chip_name)
+ 		if (err == -ENODEV) {
+ 			dev_warn(adev->dev, "cap microcode does not exist, skip\n");
+ 			err = 0;
+-			goto out;
++		} else {
++			dev_err(adev->dev, "fail to initialize cap microcode\n");
+ 		}
+-		dev_err(adev->dev, "fail to initialize cap microcode\n");
++		goto out;
+ 	}
  
- 	/*
- 	 * Need to clear all bits here since some producers, such as TCU, depend
-@@ -398,6 +397,8 @@ static void tegra_hsp_sm_recv32(struct t
- 	 * explicitly, so we have to make sure we cover all possible cases.
- 	 */
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SM_SHRD_MBOX);
-+
-+	mbox_chan_received_data(channel->chan, msg);
- }
- 
- static const struct tegra_hsp_sm_ops tegra_hsp_sm_32bit_ops = {
-@@ -433,7 +434,6 @@ static void tegra_hsp_sm_recv128(struct
- 	value[3] = tegra_hsp_channel_readl(channel, HSP_SHRD_MBOX_TYPE1_DATA3);
- 
- 	msg = (void *)(unsigned long)value;
--	mbox_chan_received_data(channel->chan, msg);
- 
- 	/*
- 	 * Clear data registers and tag.
-@@ -443,6 +443,8 @@ static void tegra_hsp_sm_recv128(struct
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA2);
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_DATA3);
- 	tegra_hsp_channel_writel(channel, 0x0, HSP_SHRD_MBOX_TYPE1_TAG);
-+
-+	mbox_chan_received_data(channel->chan, msg);
- }
- 
- static const struct tegra_hsp_sm_ops tegra_hsp_sm_128bit_ops = {
+ 	info = &adev->firmware.ucode[AMDGPU_UCODE_ID_CAP];
+-- 
+2.39.5
+
 
 
 
