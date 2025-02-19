@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-117883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5469BA3B8A7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:26:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C8AA3B8CB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15803188EF8E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:20:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 560DF3B0805
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1BF1E0E0D;
-	Wed, 19 Feb 2025 09:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975291CAA9E;
+	Wed, 19 Feb 2025 09:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="be7okRj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bt5wGyc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3641D432D;
-	Wed, 19 Feb 2025 09:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553CC1C2432;
+	Wed, 19 Feb 2025 09:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956617; cv=none; b=CRUwZIioI32MCUNw+uY88nFjxESnTIWPC8mgHRogCbL/x0dmusqrGbjaahahEargrOHV38tF/uC5HbBu7K/Mgqa2a8K78boEfBXxzkwwiN5xSZFiHxIxs77zcIrKYUD6llqvpMcQsPlPszAkwe8F6KC1PuUE1BFp2jurBYcZnp0=
+	t=1739956623; cv=none; b=h9UPt8VMgD6+gNEnII4NMsqY/affZTkCeA9SEzpOdjtIGV/9UhzlWWQ1VzxguDXxGnUMEL5ijwOrXSOAnRN0fh2U/o9SD2oYGwM4cv9is0+oS+lZVwwCaAxtORoDjY256XIZa2j+RwZmL35aHagtXq+Smv5r9fbxs07ejnSbq1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956617; c=relaxed/simple;
-	bh=CysB3CfT1eQRkt0q+1ul2mvDjnTgsGBsVAQRu2i7K24=;
+	s=arc-20240116; t=1739956623; c=relaxed/simple;
+	bh=t7ZEt6mySzycWyBa34n17L8KzVzFq/4OrlOwBL5XNuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE4TwDuglSl5D8AUuhyrewocBhcLBPB3D0sFvraL1ThaNuWIEF5mEp1TsBF9wVegnE4Wqxi+mN/DobWkI01MuOYtvthvsBKzHX101v3NBisIZRAsBQeLYZXzseL0kS6qpgFjOH70XQj3rKd8/Lx6nUyq2pc1S2kzvkgjPZUiXVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=be7okRj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0689C4CED1;
-	Wed, 19 Feb 2025 09:16:56 +0000 (UTC)
+	 MIME-Version; b=ZcE11qVY/lQWyW+lK6WrIHFFUUXb0QX6k2Dj1ifjxUe3jtj+iQeBLOaofbtZ3dmhXb3FTPg5Cv3yH7UH05vOqdRzxQyS6YiQVE7m4J97SArpkHZZnKa0QqIFfn0m4FvuCTRu6eR5GoXwFC8sqQ/x6hcs1hSMFD25KaU+b6CykHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bt5wGyc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D45BC4CEE7;
+	Wed, 19 Feb 2025 09:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956617;
-	bh=CysB3CfT1eQRkt0q+1ul2mvDjnTgsGBsVAQRu2i7K24=;
+	s=korg; t=1739956622;
+	bh=t7ZEt6mySzycWyBa34n17L8KzVzFq/4OrlOwBL5XNuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=be7okRj6y7ajWVWm9cPAMD3v+Zf722BK2Tg8/FUmrnd4lXSuhJ5Wv/evVUGhs97Vp
-	 V0/iFnRDd1lAijQ71FWQs2KUuJY0Q9APES8d55PF8CEUYC2WKG6bZttzKBlPL3Btj2
-	 aRCPHrpRWHEOfXoqc+OK4I3dbFaCBYYQexHIht8I=
+	b=bt5wGyc7IiFQNm4R2vTUijNIfwgGwb7YdwXkU0lW1fzg2rjOlCwa+QOMEmAcIopUg
+	 zWt+QIq4ToYVphxCSdJvhJMueOmQuiMxJkmXV8jWVf+KcmRPavw73zfj+qZ28KpexL
+	 0C3wAVoDKa+Z4AjR2ZjzhViK8YDfpiz0zXdFDPi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Petr Vorel <pvorel@suse.cz>,
+	kernel test robot <lkp@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Brian Cain <bcain@quicinc.com>,
+	Brian Cain <brian.cain@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/578] kconfig: fix memory leak in sym_warn_unmet_dep()
-Date: Wed, 19 Feb 2025 09:24:04 +0100
-Message-ID: <20250219082702.478537816@linuxfoundation.org>
+Subject: [PATCH 6.1 241/578] hexagon: fix using plain integer as NULL pointer warning in cmpxchg
+Date: Wed, 19 Feb 2025 09:24:05 +0100
+Message-ID: <20250219082702.516624928@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,33 +69,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit a409fc1463d664002ea9bf700ae4674df03de111 ]
+[ Upstream commit 8a20030038742b9915c6d811a4e6c14b126cafb4 ]
 
-The string allocated in sym_warn_unmet_dep() is never freed, leading
-to a memory leak when an unmet dependency is detected.
+Sparse reports
 
-Fixes: f8f69dc0b4e0 ("kconfig: make unmet dependency warnings readable")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
+    net/ipv4/inet_diag.c:1511:17: sparse: sparse: Using plain integer as NULL pointer
+
+Due to this code calling cmpxchg on a non-integer type
+struct inet_diag_handler *
+
+    return !cmpxchg((const struct inet_diag_handler**)&inet_diag_table[type],
+                    NULL, h) ? 0 : -EEXIST;
+
+While hexagon's cmpxchg assigns an integer value to a variable of this
+type.
+
+    __typeof__(*(ptr)) __oldval = 0;
+
+Update this assignment to cast 0 to the correct type.
+
+The original issue is easily reproduced at head with the below block,
+and is absent after this change.
+
+    make LLVM=1 ARCH=hexagon defconfig
+    make C=1 LLVM=1 ARCH=hexagon net/ipv4/inet_diag.o
+
+Fixes: 99a70aa051d2 ("Hexagon: Add processor and system headers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411091538.PGSTqUBi-lkp@intel.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://lore.kernel.org/r/20241203221736.282020-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/symbol.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/hexagon/include/asm/cmpxchg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
-index 758c42621f7a1..1c0306c9d74e2 100644
---- a/scripts/kconfig/symbol.c
-+++ b/scripts/kconfig/symbol.c
-@@ -321,6 +321,7 @@ static void sym_warn_unmet_dep(struct symbol *sym)
- 			       "  Selected by [m]:\n");
- 
- 	fputs(str_get(&gs), stderr);
-+	str_free(&gs);
- 	sym_warnings++;
- }
- 
+diff --git a/arch/hexagon/include/asm/cmpxchg.h b/arch/hexagon/include/asm/cmpxchg.h
+index cdb705e1496af..72c6e16c3f237 100644
+--- a/arch/hexagon/include/asm/cmpxchg.h
++++ b/arch/hexagon/include/asm/cmpxchg.h
+@@ -56,7 +56,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr,
+ 	__typeof__(ptr) __ptr = (ptr);				\
+ 	__typeof__(*(ptr)) __old = (old);			\
+ 	__typeof__(*(ptr)) __new = (new);			\
+-	__typeof__(*(ptr)) __oldval = 0;			\
++	__typeof__(*(ptr)) __oldval = (__typeof__(*(ptr))) 0;	\
+ 								\
+ 	asm volatile(						\
+ 		"1:	%0 = memw_locked(%1);\n"		\
 -- 
 2.39.5
 
