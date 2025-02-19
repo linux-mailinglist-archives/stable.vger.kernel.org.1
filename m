@@ -1,94 +1,154 @@
-Return-Path: <stable+bounces-116974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3382FA3B2BF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:44:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7CAA3B360
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93CC3B11C4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 07:42:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 283AA172483
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6821C3C1F;
-	Wed, 19 Feb 2025 07:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9B91C5D7D;
+	Wed, 19 Feb 2025 08:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nt4n4ND+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJGmyY3T"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFC11BEF71;
-	Wed, 19 Feb 2025 07:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1BB1C5D4C;
+	Wed, 19 Feb 2025 08:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739950942; cv=none; b=D292e8cPhTAiOAouH3tBGf8YgkoO2EEULoTXUIYMTzVNNl/ItdFRZFwTfSj8PdzdAuk0FwvouS7wsH888BRNlxthPQX4HpDrV3p2TEOF5BJm9fNCRV4rughUezBWpVb7/tZnJb54glBOEsihjKx2mhWyzNohrd/xqxX839YSmuY=
+	t=1739952725; cv=none; b=pGt9Vz6uercCSrC1kZuyQRfofYPay96EZAGup5kmpDExqkHVmoZ1YMihmXlkh0Jzs7NENYPFwU2A5krdUENyN5Ivq6nzAViH7tKBx6qHGuOVZPo2LAzLQIxVZKqS5VDm9W3CXdxAZ9pT9yVc+41J76reUAIRUrGFpqgy0Yma/o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739950942; c=relaxed/simple;
-	bh=IYZV4DKyRp83gdcIJ59Kj8qWqMhJv05T8ZY9PYuaYMU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fDhmfIO3/kKxkCz53aH/2eh66jgm+LY6fOhR/IAx8tgIvEOgKL+QGdH2Q5GlAyUj054pjrArMZElGmq1Vpgx81DYes1ym53/KkKjEHrycAbxL1t3h3jXmdWxduFPhnd5rJ3c4UK04sJHfyOdloh9BdmuPUYj+cNFUbANRnkohYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nt4n4ND+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=IYZV4DKyRp83gdcIJ59Kj8qWqMhJv05T8ZY9PYuaYMU=;
-	t=1739950940; x=1741160540; b=nt4n4ND+hTK+Wh8MxowQLAyQhH2bFT50tAv2l1G3/vZBHY4
-	Rs18KCiZN8YkhnzWzWIdLtkGgqpd2oAUiAqfRWJjPCW4mwMkzbXdA2taAVw5wrD5xQB6sR7vmAKFy
-	V/f6eO1jKLvTg+ila9b0nA8BZKL1ylrTkAPSaAEXYbXvuHsO14VtGLF3RkOhHqimebVISrYgWcuGm
-	9DYaxTIYFxBJFC/RvHknn4LLkgttKfZmJRIJnbGmeB87sd0xjQCC+3TeL4EpAHeB8ZDXJ9iCMY4ma
-	h2Wym2HJY0DArWqj6oHAqBJ+1ttatubfY3tRNDdIzKj5iMd+Wo7fwbA8j03cpsHw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tkeiZ-00000002TFX-0bSF;
-	Wed, 19 Feb 2025 08:42:03 +0100
-Message-ID: <c993aa3a8e86e429d2135974929283a33d0f34ca.camel@sipsolutions.net>
-Subject: Re: [PATCH AUTOSEL 6.6 14/17] um: virt-pci: don't use kmalloc()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Cc: Richard Weinberger <richard@nod.at>, anton.ivanov@cambridgegreys.com, 
-	mst@redhat.com, jiri@resnulli.us, tglx@linutronix.de,
- viro@zeniv.linux.org.uk, 	krzysztof.kozlowski@linaro.org,
- herve.codina@bootlin.com, 	linux-um@lists.infradead.org
-Date: Wed, 19 Feb 2025 08:42:01 +0100
-In-Reply-To: <20250218202743.3593296-14-sashal@kernel.org>
-References: <20250218202743.3593296-1-sashal@kernel.org>
-	 <20250218202743.3593296-14-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1739952725; c=relaxed/simple;
+	bh=LxhVye42dE4kczsJSlXO5KtSjYs1sm4CEC9GNTYMDu0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OmkquDHpWsQ64IMeluyfGO9wQIKul7srFBSgFWKz8F602727/AeFYYa6wrqXPO5VhnJxA3KV0QwGe8A9KZ5kQVCxxQ7XIrSI3v8Hy8O2c9ZOk09g19BdgNyJqxx4tkP/csfds+27lnCX0Nx3lQXl3eDU23V/YVrwo+I+LzykKG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJGmyY3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9D4C4CED1;
+	Wed, 19 Feb 2025 08:12:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739952724;
+	bh=LxhVye42dE4kczsJSlXO5KtSjYs1sm4CEC9GNTYMDu0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aJGmyY3T0P4j1dAiCLGuFL6n64DElahdwnjjIsNMV7nRl5WZr9L3Djm1/dvS2Dnnl
+	 m7VrC01svYHqanP8khXxSdtx0yYhQYdyR1rp8MsljJ8F0PzNazo05rnyu0qhou2IbP
+	 9lh+/s9h+g7lSd6zrWeGPOv5i0Y3ekzLHzYKZa9g=
+Date: Wed, 19 Feb 2025 09:12:01 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pratyush Yadav <ptyadav@amazon.de>
+Cc: stable@vger.kernel.org, Shu Han <ebpqwerty472123@gmail.com>,
+	patches@lists.linux.dev,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Bin Lan <bin.lan.cn@windriver.com>
+Subject: Re: [PATCH 5.10] mm: call the security_mmap_file() LSM hook in
+ remap_file_pages()
+Message-ID: <2025021906-campus-glowworm-8aea@gregkh>
+References: <20250210191056.58787-1-ptyadav@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210191056.58787-1-ptyadav@amazon.de>
 
-On Tue, 2025-02-18 at 15:27 -0500, Sasha Levin wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
->=20
-> [ Upstream commit 5b166b782d327f4b66190cc43afd3be36f2b3b7a ]
->=20
-> This code can be called deep in the IRQ handling, for
-> example, and then cannot normally use kmalloc(). Have
-> its own pre-allocated memory and use from there instead
-> so this doesn't occur. Only in the (very rare) case of
-> memcpy_toio() we'd still need to allocate memory.
+On Mon, Feb 10, 2025 at 07:10:54PM +0000, Pratyush Yadav wrote:
+> From: Shu Han <ebpqwerty472123@gmail.com>
+> 
+> commit ea7e2d5e49c05e5db1922387b09ca74aa40f46e2 upstream.
+> 
+> The remap_file_pages syscall handler calls do_mmap() directly, which
+> doesn't contain the LSM security check. And if the process has called
+> personality(READ_IMPLIES_EXEC) before and remap_file_pages() is called for
+> RW pages, this will actually result in remapping the pages to RWX,
+> bypassing a W^X policy enforced by SELinux.
+> 
+> So we should check prot by security_mmap_file LSM hook in the
+> remap_file_pages syscall handler before do_mmap() is called. Otherwise, it
+> potentially permits an attacker to bypass a W^X policy enforced by
+> SELinux.
+> 
+> The bypass is similar to CVE-2016-10044, which bypass the same thing via
+> AIO and can be found in [1].
+> 
+> The PoC:
+> 
+> $ cat > test.c
+> 
+> int main(void) {
+> 	size_t pagesz = sysconf(_SC_PAGE_SIZE);
+> 	int mfd = syscall(SYS_memfd_create, "test", 0);
+> 	const char *buf = mmap(NULL, 4 * pagesz, PROT_READ | PROT_WRITE,
+> 		MAP_SHARED, mfd, 0);
+> 	unsigned int old = syscall(SYS_personality, 0xffffffff);
+> 	syscall(SYS_personality, READ_IMPLIES_EXEC | old);
+> 	syscall(SYS_remap_file_pages, buf, pagesz, 0, 2, 0);
+> 	syscall(SYS_personality, old);
+> 	// show the RWX page exists even if W^X policy is enforced
+> 	int fd = open("/proc/self/maps", O_RDONLY);
+> 	unsigned char buf2[1024];
+> 	while (1) {
+> 		int ret = read(fd, buf2, 1024);
+> 		if (ret <= 0) break;
+> 		write(1, buf2, ret);
+> 	}
+> 	close(fd);
+> }
+> 
+> $ gcc test.c -o test
+> $ ./test | grep rwx
+> 7f1836c34000-7f1836c35000 rwxs 00002000 00:01 2050 /memfd:test (deleted)
+> 
+> Link: https://project-zero.issues.chromium.org/issues/42452389 [1]
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shu Han <ebpqwerty472123@gmail.com>
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> [PM: subject line tweaks]
+> Signed-off-by: Paul Moore <paul@paul-moore.com>
+> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+> ---
+>  mm/mmap.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 9f76625a1743..2c17eb840e44 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -3078,8 +3078,12 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
+>  	}
+>  
+>  	file = get_file(vma->vm_file);
+> +	ret = security_mmap_file(vma->vm_file, prot, flags);
+> +	if (ret)
+> +		goto out_fput;
+>  	ret = do_mmap(vma->vm_file, start, size,
+>  			prot, flags, pgoff, &populate, NULL);
+> +out_fput:
+>  	fput(file);
+>  out:
+>  	mmap_write_unlock(mm);
+> -- 
+> 2.47.1
+> 
+> 
 
-I don't believe this patch, "um: convert irq_lock to raw spinlock" and
-"um: virtio_uml: use raw spinlock", are relevant to anything older than
-6.12. I don't see how applying them would _hurt_, but I didn't have them
-before 6.12 and had no lockdep complaints about it; I believe some other
-internal IRQ rework caused the issues to pop up.
+This has required fixes for this commit which you did not include here,
+so I'm going to have to drop this from the tree.  Same for the other
+branch you submitted this against.
 
-Never mind that we (Intel WiFi stuff) are probably the only ones ever
-running this virtio_uml/virt-pci with lockdep :)
+Please be more careful and always include all needed commits to resolve
+a problem, we don't want to purposfully add bugs to the kernel tree that
+we have already resolved.
 
-johannes
+thanks,
+
+greg k-h
 
