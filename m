@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D90A3B760
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FBCA3B676
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A700E3BD59B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AEC3189EFB8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCE3155753;
-	Wed, 19 Feb 2025 09:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65421C760D;
+	Wed, 19 Feb 2025 08:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dncSTL7w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoNKMy4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7711C760D;
-	Wed, 19 Feb 2025 09:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717CB1E32D5;
+	Wed, 19 Feb 2025 08:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955676; cv=none; b=PtxTuUOy+kCrFrkxyfKo5/8pSy1ZOG6pL+D49GByfHb2nw3aizPXLoNsu/r1b/EEbIttYyujmMOkZl6zxO9x6+KTMvXbYL45rXOrIh2HI2fGFt7DIXRmEYfXBcbXUGiyLwNy56vrEhp58xD7d6flfWBHpyk1PMzAjMs3cw+DviU=
+	t=1739955242; cv=none; b=QHolgxsT8/qv0lCocL+CbOU01DBQrOEc7jlKAIC9a9x0YnCGksZ1u4C7/vCTi7cBR4MxJcaBgLVhFLKxFh2CIda+gFWxLH+CluWl/+FTw9jKcqe3641CGW5wwY97DU/eFjwxVLWSxQN5VA8HdMzyjArzhheAfrGU3Tj8nWxlvi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955676; c=relaxed/simple;
-	bh=FFKjC5hbGLQDeF58G0MTd4tjOlfLfQ8qcHRtspST07g=;
+	s=arc-20240116; t=1739955242; c=relaxed/simple;
+	bh=klcxPwE+S43xHELbra7lnB5gI+Nt2MDNCVOY9eBkOKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P9YPbxXMYQjJ5bK0xipKfsqjLWwvc62aJKV0mRY9eB54G+gJbV7nvfukfpnXqAZ8fEMjCB8z2xEu9Pyy0Dw6KeQYHoiTQ3fi8nApx+Qoq0OK0HGMxb9xwYHPfQE+ehZg9dZAOrkBhH24meABOxP3QIRSQSeJ9kuQGsidA91A+uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dncSTL7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F4BC4CEE6;
-	Wed, 19 Feb 2025 09:01:15 +0000 (UTC)
+	 MIME-Version; b=KvA/HNvF7gL0FRsXDBm3ay+4dIhivfsad5im8FfLa728jSQ6UFwws67EU9VsiY/zKlT2uLoY7A4sV0LHjASmQrN8jhn8AasG+qSM8EeSMMsAErWjEUqTsGNZrt3CKU/GBGoC+woNCgHgL5h4CrixWPODoU8tkbHtOyaJwrDLyJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoNKMy4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDC2C4CEE8;
+	Wed, 19 Feb 2025 08:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955676;
-	bh=FFKjC5hbGLQDeF58G0MTd4tjOlfLfQ8qcHRtspST07g=;
+	s=korg; t=1739955242;
+	bh=klcxPwE+S43xHELbra7lnB5gI+Nt2MDNCVOY9eBkOKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dncSTL7w2GzfKWNOn51dpdly8RuKwonjSpLbMD059q1ULHv+88yqweFD8lfX3wSt7
-	 p9fW2FqPlXIGe6xlGZ8B7wm5cKvOnazxj7rHsruBqWPlaMjvIwBWKqbGRtzFZ3elMx
-	 ZKgB6u/6rLCa3tt7BpzBZsml8SLeSida73+G4DdI=
+	b=GoNKMy4ARppQxPpoTblxDduLIeqVIRs+CKPTHBbPyXynsHuDDRT42DpmzHYhQCYIg
+	 Mbg8pejxpvSXTz2oDQ5LTxv4UdKRbq9Kz6ZjeFMKn/a48aaS6/x23pB9HnBTqBJgaL
+	 BmnURmZasGA9r9GDI7xQTM/OvqduPOw2uVb/kLEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.6 080/152] kbuild: userprogs: fix bitsize and target detection on clang
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 176/230] cpufreq/amd-pstate: Align offline flow of shared memory and MSR based systems
 Date: Wed, 19 Feb 2025 09:28:13 +0100
-Message-ID: <20250219082553.210968486@linuxfoundation.org>
+Message-ID: <20250219082608.592511027@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
+[ Upstream commit a6960e6b1b0e2cb268f427a99040c408a8d10665 ]
 
-scripts/Makefile.clang was changed in the linked commit to move --target from
-KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
-However that variable is not inspected by the userprogs logic,
-breaking cross compilation on clang.
+Set min_perf to lowest_perf for shared memory systems, similar to the MSR
+based systems.
 
-Use both variables to detect bitsize and target arguments for userprogs.
-
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://lore.kernel.org/r/20241023102108.5980-5-Dhananjay.Ugwekar@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Stable-dep-of: 3ace20038e19 ("cpufreq/amd-pstate: Fix cpufreq_policy ref counting")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1054,8 +1054,8 @@ LDFLAGS_vmlinux += --orphan-handling=$(C
- endif
- 
- # Align the bit size of userspace programs with the kernel
--KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
--KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-+KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
-+KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
- 
- # make the checker run with the right architecture
- CHECKFLAGS += --arch=$(ARCH)
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 161334937090c..895d108428b40 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1636,6 +1636,7 @@ static void amd_pstate_epp_offline(struct cpufreq_policy *policy)
+ 		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
+ 	} else {
+ 		perf_ctrls.desired_perf = 0;
++		perf_ctrls.min_perf = min_perf;
+ 		perf_ctrls.max_perf = min_perf;
+ 		cppc_set_perf(cpudata->cpu, &perf_ctrls);
+ 		perf_ctrls.energy_perf = AMD_CPPC_ENERGY_PERF_PREF(HWP_EPP_BALANCE_POWERSAVE);
+-- 
+2.39.5
+
 
 
 
