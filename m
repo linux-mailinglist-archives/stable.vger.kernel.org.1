@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-117755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30D4A3B820
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:21:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D428A3B825
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1003E17E0D2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80FE17C1E5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9DB1AF0C8;
-	Wed, 19 Feb 2025 09:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2331DE898;
+	Wed, 19 Feb 2025 09:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YgS2AE2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqKlPRDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390761B6CFA;
-	Wed, 19 Feb 2025 09:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE265188CCA;
+	Wed, 19 Feb 2025 09:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956246; cv=none; b=He9J4L8QCshM4Z4whbSYVK4/m+JnouCtUsZCWBXzLg7EA7lGHU/JUa5I5oJa1dtvIjIovPau5GCSVSRXysYh3Yib3zudQT5A0CbegpHBxUaz6VIV2PiKkcznuwp0doIioNH65hl95gRP+6EzUDi7YRLTMI0cRy/6H7ttU1zrgtw=
+	t=1739956150; cv=none; b=eI/gJrzkVFQQiPCK3pmJD8jbXQDzRM4HoyFdzW3UYMq0bhO54ez+OkYYPFqK1KGo54HiHdSmCe6ubW40FaVqIE2mOMrMCILDNJ/O4sGl5Wxa0A3VrbAUp8+QL4nQiPj6tDWAidZ5A76QNwWKY/iWxmlfcl7ugB7j0CPssnL5dh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956246; c=relaxed/simple;
-	bh=I4L2RDEHQhvcs5NxForC15/SdPmUIs19WP93zxHG0BA=;
+	s=arc-20240116; t=1739956150; c=relaxed/simple;
+	bh=wFLdqNIv07tQqMCDKNcZCzvL+VVQvbHYGmDFr/duoR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJx9pZohaHi9jEUPh7edJIY1hwKlJv2aKZGYoSE1JkKNkfQ5cZ3Z1z3XPtPIUK4MKphyuy4NibmaxRD9MNrOpA3OtA7I+A9srJvk9sHZrgdTpQBQC0VsJZrZAQ1fCizhNQzeQ3oxSW1OfO27zKN1QiGYQ1XyEXtVg6/CElyeCP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YgS2AE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A31C4CED1;
-	Wed, 19 Feb 2025 09:10:45 +0000 (UTC)
+	 MIME-Version; b=Z4cMuFVG+Z2qkrYU8goR7y1OTpCx7nf13qtn9f/FbLPuDITvp9+AIE8mmkWozt1TawU/vYPU9/AV2UfivavXJqwvlgvigVUzDzbZVfhJIFaBycZe0+PIMHXorohICOUYYu+7RN5wz9aCwnfLRgyBfnxL/x3e2wbML1GA5JD5w3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqKlPRDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDC2C4CED1;
+	Wed, 19 Feb 2025 09:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956246;
-	bh=I4L2RDEHQhvcs5NxForC15/SdPmUIs19WP93zxHG0BA=;
+	s=korg; t=1739956149;
+	bh=wFLdqNIv07tQqMCDKNcZCzvL+VVQvbHYGmDFr/duoR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2YgS2AE2k+RyM007pKFj3R1fVj+fRZTNTy173DZPUnaEH/oCIjOU2r6W94uIDowli
-	 fb1OMJtr1P7wu3JZJsHKqKO9bK6osGl+GeJFmosCNo8CRBGPtBxoMVOApry6Ryt+ae
-	 ySsdA6TIKJGm7vAF/iCSiUahbkEPMbf6qW4M4X8E=
+	b=cqKlPRDY4DTHgMVhcbRu947fq6L+czW/XmfHE220oow598gW6IOm5Pw/1B9N9INEi
+	 d+nHOMTqIq5crN1k5krBpmv0dwLXEqF+7RMa6RlBkhkmf7T6FabTP280lpjG9dxmnS
+	 Akv4Z251pLqBTY8jPmQd9I7EfhUj9pTXEa602Y9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Peter Griffin <peter.griffin@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Will McVicker <willmcvicker@google.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/578] mfd: syscon: Remove extern from function prototypes
-Date: Wed, 19 Feb 2025 09:21:17 +0100
-Message-ID: <20250219082655.758933165@linuxfoundation.org>
+Subject: [PATCH 6.1 074/578] mfd: syscon: Add of_syscon_register_regmap() API
+Date: Wed, 19 Feb 2025 09:21:18 +0100
+Message-ID: <20250219082655.798817276@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -68,62 +72,120 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 0db017f8edd9b9af818bc1d68ba578df1b4c4628 ]
+[ Upstream commit 769cb63166d90f1fadafa4352f180cbd96b6cb77 ]
 
-The kernel coding style does not require 'extern' in function prototypes
-in .h files, so remove them as they are not needed.
+The of_syscon_register_regmap() API allows an externally created regmap
+to be registered with syscon. This regmap can then be returned to client
+drivers using the syscon_regmap_lookup_by_phandle() APIs.
 
-To avoid checkpatch warnings such as
-CHECK: Lines should not end with a '('
-+struct regmap *syscon_regmap_lookup_by_phandle(
+The API is used by platforms where mmio access to the syscon registers is
+not possible, and a underlying soc driver like exynos-pmu provides a SoC
+specific regmap that can issue a SMC or hypervisor call to write the
+register.
 
-The indentation is also updated. No functional changes in this patch.
+This approach keeps the SoC complexities out of syscon, but allows common
+drivers such as  syscon-poweroff, syscon-reboot and friends that are used
+by many SoCs already to be re-used.
 
 Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20240220115012.471689-3-peter.griffin@linaro.org
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Tested-by: Will McVicker <willmcvicker@google.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240621115544.1655458-2-peter.griffin@linaro.org
 Signed-off-by: Lee Jones <lee@kernel.org>
 Stable-dep-of: 805f7aaf7fee ("mfd: syscon: Fix race in device_node_get_regmap()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mfd/syscon.h | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/mfd/syscon.c       | 48 ++++++++++++++++++++++++++++++++++++++
+ include/linux/mfd/syscon.h |  8 +++++++
+ 2 files changed, 56 insertions(+)
 
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index ecfe151220919..1ce8f6f9d7f54 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -177,6 +177,54 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
+ 	return syscon->regmap;
+ }
+ 
++/**
++ * of_syscon_register_regmap() - Register regmap for specified device node
++ * @np: Device tree node
++ * @regmap: Pointer to regmap object
++ *
++ * Register an externally created regmap object with syscon for the specified
++ * device tree node. This regmap will then be returned to client drivers using
++ * the syscon_regmap_lookup_by_phandle() API.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
++{
++	struct syscon *entry, *syscon = NULL;
++	int ret;
++
++	if (!np || !regmap)
++		return -EINVAL;
++
++	syscon = kzalloc(sizeof(*syscon), GFP_KERNEL);
++	if (!syscon)
++		return -ENOMEM;
++
++	/* check if syscon entry already exists */
++	spin_lock(&syscon_list_slock);
++
++	list_for_each_entry(entry, &syscon_list, list)
++		if (entry->np == np) {
++			ret = -EEXIST;
++			goto err_unlock;
++		}
++
++	syscon->regmap = regmap;
++	syscon->np = np;
++
++	/* register the regmap in syscon list */
++	list_add_tail(&syscon->list, &syscon_list);
++	spin_unlock(&syscon_list_slock);
++
++	return 0;
++
++err_unlock:
++	spin_unlock(&syscon_list_slock);
++	kfree(syscon);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(of_syscon_register_regmap);
++
+ struct regmap *device_node_to_regmap(struct device_node *np)
+ {
+ 	return device_node_get_regmap(np, false);
 diff --git a/include/linux/mfd/syscon.h b/include/linux/mfd/syscon.h
-index fecc2fa2a3647..c315903f6dab3 100644
+index c315903f6dab3..aad9c6b504636 100644
 --- a/include/linux/mfd/syscon.h
 +++ b/include/linux/mfd/syscon.h
-@@ -17,20 +17,17 @@
- struct device_node;
- 
- #ifdef CONFIG_MFD_SYSCON
--extern struct regmap *device_node_to_regmap(struct device_node *np);
--extern struct regmap *syscon_node_to_regmap(struct device_node *np);
--extern struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
--extern struct regmap *syscon_regmap_lookup_by_phandle(
--					struct device_node *np,
--					const char *property);
--extern struct regmap *syscon_regmap_lookup_by_phandle_args(
--					struct device_node *np,
--					const char *property,
--					int arg_count,
--					unsigned int *out_args);
--extern struct regmap *syscon_regmap_lookup_by_phandle_optional(
--					struct device_node *np,
--					const char *property);
-+struct regmap *device_node_to_regmap(struct device_node *np);
-+struct regmap *syscon_node_to_regmap(struct device_node *np);
-+struct regmap *syscon_regmap_lookup_by_compatible(const char *s);
-+struct regmap *syscon_regmap_lookup_by_phandle(struct device_node *np,
-+					       const char *property);
-+struct regmap *syscon_regmap_lookup_by_phandle_args(struct device_node *np,
-+						    const char *property,
-+						    int arg_count,
-+						    unsigned int *out_args);
-+struct regmap *syscon_regmap_lookup_by_phandle_optional(struct device_node *np,
-+							const char *property);
+@@ -28,6 +28,8 @@ struct regmap *syscon_regmap_lookup_by_phandle_args(struct device_node *np,
+ 						    unsigned int *out_args);
+ struct regmap *syscon_regmap_lookup_by_phandle_optional(struct device_node *np,
+ 							const char *property);
++int of_syscon_register_regmap(struct device_node *np,
++			      struct regmap *regmap);
  #else
  static inline struct regmap *device_node_to_regmap(struct device_node *np)
  {
+@@ -67,6 +69,12 @@ static inline struct regmap *syscon_regmap_lookup_by_phandle_optional(
+ 	return NULL;
+ }
+ 
++static inline int of_syscon_register_regmap(struct device_node *np,
++					struct regmap *regmap)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif
+ 
+ #endif /* __LINUX_MFD_SYSCON_H__ */
 -- 
 2.39.5
 
