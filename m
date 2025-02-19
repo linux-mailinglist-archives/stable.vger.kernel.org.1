@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5392AA3B46F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B524A3B5A4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC92172E15
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7AA4189CC91
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4216F1DE3AF;
-	Wed, 19 Feb 2025 08:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9461EFF9B;
+	Wed, 19 Feb 2025 08:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOtPQtJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybtlBYB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1CB1DE2BD;
-	Wed, 19 Feb 2025 08:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDEA1EFFBF;
+	Wed, 19 Feb 2025 08:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954011; cv=none; b=dT+Z2wpAgCQu1CIlhBJ3rd+k0B8zM/1GZCPVFv1Anb8lQOCjt7uZbjwhnrpx4DgHD4TtHGcweyhgzuA/EJLZUoDmAuVYRdQngtQ1pzN7tWwYf4iKlA8PtCm5M8IR0Jt8UCqFSxrb3hSRDfD97pZLtkc00eNyj4lP+hOu/HZmRJY=
+	t=1739954749; cv=none; b=JqpCRltrKC+meFRqsmgKkHcO7MbFSZnQMNCk04azt46Hj5z6Bpyip4TEeBNIG4LcY9i/vglOMs4S7a2t4moOpM2mPmsjbp0Rf37TfO5syaGWhJaZoJtPqHMpWDDFRrcuYXUum0vdKzE2asBg0QEooQXSJuTx6ypTBMizKNzo87U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954011; c=relaxed/simple;
-	bh=5c8q82tMe6VWBWItV+cstBPeOAccbAhasIbEEDEyY90=;
+	s=arc-20240116; t=1739954749; c=relaxed/simple;
+	bh=POdKMBjTUJ+Eu0/pQ8VJi0ZUulq90hkDQ53uKgd6DPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHrZiGX8+jEKvziHfjADo0Ke2CKw8Zj8bP7dw/Ho/jBZZTCH22Pb1lQx7maFKWsYzJvSKUo1stRjUDSk6nYD86o+eB7OWn7t8B1KtQJdn15cxXbMGn6bUWuG6wLD29Vq3m6YLN8X/0NklYyuvE17b5kKecvjCsCOwKTp6iqWJuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOtPQtJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AADAC4CEE6;
-	Wed, 19 Feb 2025 08:33:29 +0000 (UTC)
+	 MIME-Version; b=Sm2kxmnefjtubFdq7UXMseHqwD2PupvOC8w4kUf+UjXejSGi73uqA6Ze5PG9zmlhtSmYVO7J+LWLdqn1sVR7unf1Huge3bW+EmPvL2+Q7K9fi9OvJZnb9qBSCbUTt8BmeX3x4EutBsn0r96zpuwmeAV7x9WbU4TgUbn/YHboeUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybtlBYB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEAAC4CEE7;
+	Wed, 19 Feb 2025 08:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954010;
-	bh=5c8q82tMe6VWBWItV+cstBPeOAccbAhasIbEEDEyY90=;
+	s=korg; t=1739954748;
+	bh=POdKMBjTUJ+Eu0/pQ8VJi0ZUulq90hkDQ53uKgd6DPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOtPQtJA3vS6S+aO3e87Ckre/F+kFWYGazI+34isjTJYqfUKplPVySHh0S4ASy+pi
-	 AQsk3va9iMNq5jdeHyFRC3BqjP2S8sMUJONJLmRiv+RLUMr6jb0uF83gk/vVQJHWTL
-	 fQTTHZ5if3SyN3FMfNid+fGGARvXx8JhWOwhQlzU=
+	b=ybtlBYB5QNKs/Lu3PFsdkPuZDCR6zDzR43ONf3ppvNIW6Q9dAbmFQB1f9NhWjdnAt
+	 diizfeoYjY00R53BlRNDQ5700xeh//1FPtgl3IBKIkdLc6rNE7yqB71TC1+GwnomvF
+	 MRbkaW1aLzYwOnz/f2T5d2ccwp9HwN19FbBlinV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 066/274] gpiolib: Fix crash on error in gpiochip_get_ngpios()
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 003/230] nfsd: validate the nfsd_serv pointer before calling svc_wake_up
 Date: Wed, 19 Feb 2025 09:25:20 +0100
-Message-ID: <20250219082612.207760943@linuxfoundation.org>
+Message-ID: <20250219082601.826478928@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 7b4aebeecbbd5b5fe73e35fad3f62ed21aa7ef44 ]
+commit b9382e29ca538b879645899ce45d652a304e2ed2 upstream.
 
-The gpiochip_get_ngpios() uses chip_*() macros to print messages.
-However these macros rely on gpiodev to be initialised and set,
-which is not the case when called via bgpio_init(). In such a case
-the printing messages will crash on NULL pointer dereference.
-Replace chip_*() macros by the respective dev_*() ones to avoid
-such crash.
+nfsd_file_dispose_list_delayed can be called from the filecache
+laundrette, which is shut down after the nfsd threads are shut down and
+the nfsd_serv pointer is cleared. If nn->nfsd_serv is NULL then there
+are no threads to wake.
 
-Fixes: 55b2395e4e92 ("gpio: mmio: handle "ngpios" properly in bgpio_init()")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250213155646.2882324-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Ensure that the nn->nfsd_serv pointer is non-NULL before calling
+svc_wake_up in nfsd_file_dispose_list_delayed. This is safe since the
+svc_serv is not freed until after the filecache laundrette is cancelled.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Closes: https://bugs.debian.org/1093734
+Fixes: ffb402596147 ("nfsd: Don't leave work of closing files to a work queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/filecache.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 679ed764cb143..ca2f58a2cd45e 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -904,13 +904,13 @@ int gpiochip_get_ngpios(struct gpio_chip *gc, struct device *dev)
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -445,11 +445,20 @@ nfsd_file_dispose_list_delayed(struct li
+ 						struct nfsd_file, nf_gc);
+ 		struct nfsd_net *nn = net_generic(nf->nf_net, nfsd_net_id);
+ 		struct nfsd_fcache_disposal *l = nn->fcache_disposal;
++		struct svc_serv *serv;
+ 
+ 		spin_lock(&l->lock);
+ 		list_move_tail(&nf->nf_gc, &l->freeme);
+ 		spin_unlock(&l->lock);
+-		svc_wake_up(nn->nfsd_serv);
++
++		/*
++		 * The filecache laundrette is shut down after the
++		 * nn->nfsd_serv pointer is cleared, but before the
++		 * svc_serv is freed.
++		 */
++		serv = nn->nfsd_serv;
++		if (serv)
++			svc_wake_up(serv);
  	}
- 
- 	if (gc->ngpio == 0) {
--		chip_err(gc, "tried to insert a GPIO chip with zero lines\n");
-+		dev_err(dev, "tried to insert a GPIO chip with zero lines\n");
- 		return -EINVAL;
- 	}
- 
- 	if (gc->ngpio > FASTPATH_NGPIO)
--		chip_warn(gc, "line cnt %u is greater than fast path cnt %u\n",
--			gc->ngpio, FASTPATH_NGPIO);
-+		dev_warn(dev, "line cnt %u is greater than fast path cnt %u\n",
-+			 gc->ngpio, FASTPATH_NGPIO);
- 
- 	return 0;
  }
--- 
-2.39.5
-
+ 
 
 
 
