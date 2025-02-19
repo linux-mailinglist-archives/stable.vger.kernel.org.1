@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-118077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C449FA3B9BE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873BEA3B6C4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46CFA1787F4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1F618991CB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB171CCB4B;
-	Wed, 19 Feb 2025 09:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A0D1C5F18;
+	Wed, 19 Feb 2025 08:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iP3r1RcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtHjQSe3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC070188CCA;
-	Wed, 19 Feb 2025 09:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1206A1A841F;
+	Wed, 19 Feb 2025 08:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957169; cv=none; b=IWYzXYTVQpPjA6VlTliFCgG6u4pCW2fOhzdRAAkOBEDKpBH/qdFOTc8OVzRvJYUlo0CJL/IhqY0tu1dYHq1PtYYtN3dCg1f74qjVoErBtmxQ0xJUeAr2ncNjt6grqzs3Tewmsdh2QPZb0xvsDHw69j1JbY10UdnBU8fZTo/SGtw=
+	t=1739955496; cv=none; b=j5igT/CgQ6BtfACqcBE+nLQZjCDmMFQ/ST1QnZ46TiqP1QbX/6MlVYGxoI1uplVeSSa2aYa1azqgKzZeBx5M+E/ijrkD+45b4/ShugYj4R3Z4i4tV3Z1BbhnbYd3ImEEfAyeG52CcYU+selOzLaGydTW786hJeQs9yRXnZIcfu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957169; c=relaxed/simple;
-	bh=SUPR+0puziScBKScoxuP2k9GYRD8/Drz4lilGJZs42k=;
+	s=arc-20240116; t=1739955496; c=relaxed/simple;
+	bh=taGogW7ytytSalD2KhCeFv+qz0emWKBXaB+ux3+xR9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3I8Lh9xgqQOBKg566MzINKyzncpSYd9F6sUCajNpmnM4eUDJLg7le62d704KbqgYadt5LFhYd4KOPhdJS0wqcaOCKacAADpd0IppAheKJ7KMzRg8gG7UJpoz45cvajkVhSyiijmU8ti/K9Lb56JsLoRNZR7qgL0/MOqZBw9Ylw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iP3r1RcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35524C4CED1;
-	Wed, 19 Feb 2025 09:26:09 +0000 (UTC)
+	 MIME-Version; b=vEfumJ44A490yP1uSHCf1KjWumXR2yC5tKg9fuFzF01qcNzu7ScdmikamvRJuVwdnZb2EqX/MlAV5tuDMJkkasXwIZWI4UDrSmgsmTqqVTIgKcof1stT4vsih6NHgr1rL7HdG3twdKR3Z2co04bmTg/2xmRyENv7qcqprTVcmho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtHjQSe3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C4DC4CED1;
+	Wed, 19 Feb 2025 08:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957169;
-	bh=SUPR+0puziScBKScoxuP2k9GYRD8/Drz4lilGJZs42k=;
+	s=korg; t=1739955495;
+	bh=taGogW7ytytSalD2KhCeFv+qz0emWKBXaB+ux3+xR9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iP3r1RcZTRskUyql9V0MrO9mKlbVep1zkEvaH0Auwv/43S/gbMQL8Yad9D/SX3Aiy
-	 ZSH9bclsJ4Lr80yAONhgZcemp2S3/thUbf5azuVQvyOXjp24+Nv63f091LnP5rU/b+
-	 iNp8Aj5hZlFMclvRCDVXsHr8On4uy7plsC9ObxnM=
+	b=rtHjQSe38bOggnuEXlMaphvMg5/NHdYY4E77JEuNrACi+XeWtfo959Gmtzm3OK2wQ
+	 g1oX9CTSGqQyw2Kdlsrnpm/8+A7puiCxJUeYhCghnP6yCPm/k9EPP8cEzlcqBKGYno
+	 f7rtcnoyC5qihXCI8BqtL/gm9CsGkyrLD6ZrINt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 433/578] mtd: onenand: Fix uninitialized retlen in do_otp_read()
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 024/152] gpiolib: Fix crash on error in gpiochip_get_ngpios()
 Date: Wed, 19 Feb 2025 09:27:17 +0100
-Message-ID: <20250219082710.044810671@linuxfoundation.org>
+Message-ID: <20250219082550.991613284@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
+[ Upstream commit 7b4aebeecbbd5b5fe73e35fad3f62ed21aa7ef44 ]
 
-The function do_otp_read() does not set the output parameter *retlen,
-which is expected to contain the number of bytes actually read.
-As a result, in onenand_otp_walk(), the tmp_retlen variable remains
-uninitialized after calling do_otp_walk() and used to change
-the values of the buf, len and retlen variables.
+The gpiochip_get_ngpios() uses chip_*() macros to print messages.
+However these macros rely on gpiodev to be initialised and set,
+which is not the case when called via bgpio_init(). In such a case
+the printing messages will crash on NULL pointer dereference.
+Replace chip_*() macros by the respective dev_*() ones to avoid
+such crash.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 55b2395e4e92 ("gpio: mmio: handle "ngpios" properly in bgpio_init()")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250213155646.2882324-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/onenand/onenand_base.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpiolib.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/onenand/onenand_base.c
-+++ b/drivers/mtd/nand/onenand/onenand_base.c
-@@ -2923,6 +2923,7 @@ static int do_otp_read(struct mtd_info *
- 	ret = ONENAND_IS_4KB_PAGE(this) ?
- 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
- 		onenand_read_ops_nolock(mtd, from, &ops);
-+	*retlen = ops.retlen;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 5c0016c77d2ab..efb592b6f6aa7 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -723,13 +723,13 @@ int gpiochip_get_ngpios(struct gpio_chip *gc, struct device *dev)
+ 	}
  
- 	/* Exit OTP access mode */
- 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
+ 	if (gc->ngpio == 0) {
+-		chip_err(gc, "tried to insert a GPIO chip with zero lines\n");
++		dev_err(dev, "tried to insert a GPIO chip with zero lines\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (gc->ngpio > FASTPATH_NGPIO)
+-		chip_warn(gc, "line cnt %u is greater than fast path cnt %u\n",
+-			gc->ngpio, FASTPATH_NGPIO);
++		dev_warn(dev, "line cnt %u is greater than fast path cnt %u\n",
++			 gc->ngpio, FASTPATH_NGPIO);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
