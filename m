@@ -1,138 +1,110 @@
-Return-Path: <stable+bounces-118295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22CAA3C363
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 16:18:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B625A3C37C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 16:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A6B3B870E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 15:15:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5BA81882BC0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 15:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBD11F3B82;
-	Wed, 19 Feb 2025 15:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EAD1F891D;
+	Wed, 19 Feb 2025 15:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i+HrCPnr"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="epKGMJ56"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21F419D074
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 15:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDDA381AF;
+	Wed, 19 Feb 2025 15:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739978150; cv=none; b=C8ZQQpQeJe35iqrYwUy836cdDHvzpkNqFJngbsNFSMJUp05X/xhry/dXDmZprsK3NyZPkxNX7Fq6u2Geg9UJezYSYwkOrO0NnY6gxOBHQYbyLkKicshwgKEWoK2PJZAvkJQxawiSodgRT5kOtf75TOsgf4veFKA774OlH8b43wo=
+	t=1739978321; cv=none; b=ZqnBSpmBq6FVhF6ZQE/Oi+3wWHU78snefKvXtiMt4FrsWHldQCAW3A0eaJb2umEemewMPyyBjbB2OxNbgE9H823sexBJN3/qUxOrTbtTcdKxHEfRsVznZQ2aWdG/xTwf2gu0pSpTUjzBBHK5anFmip/ro/nAEv+MgTKXb9GcEZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739978150; c=relaxed/simple;
-	bh=Iv6t7FRn2B5grw2+MtJh7t4h4IagAcD/o0AdA80NfQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gWqOfg/cNOLDAMgnUzEMt9M1rb0eYTpB8WnE+G9H4z92f1VbFq2B5titJBy/+ZoBru5M2+aUOh3W6ciJTK8BEH39iMrBblxbJ6guh0l/5uVxlrdWCBt39P3pCnVQIAME5ql5tMc/4zyg9OSMzeXjGvEeAmZvagFMDGNwNCKBhbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i+HrCPnr; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6e66b4607d2so26905976d6.3
-        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 07:15:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739978147; x=1740582947; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=i4BufmELc/H5oLk6Se7bfRixYeydt1UGAVr8rJzEKPM=;
-        b=i+HrCPnr7hj8spFtYLMmbJN4GrwJ4dfHSMUILPd3nugBjV6Pnep62sVeUZiv4uLgPh
-         T5XfHCpv0+RcshyV3tbuhiiWfnT2ld6d1s3K5xQdkNuz8mkTHXtYcR0ice9zLOF65Fw1
-         ubEkNcCK8a3lh8bd8Ah5syIhn5dN4swl3Ut1rbLkYuaXN7hFqruJ4qtoWtOc/1b+FlFK
-         ID9D2uAu2/J8lYsiNKaKaN4vKCZoTW0QTfXgK/LFcVaKetL5+vvGWn8YNipDnGOKGlq4
-         osbUvYG3abppm0KL0QsL1qi4AbwA5jcnintQewvvdc8dhBb9guGgDedOfqhdp1+IJ3tV
-         9mHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739978147; x=1740582947;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i4BufmELc/H5oLk6Se7bfRixYeydt1UGAVr8rJzEKPM=;
-        b=Rdpt7H0wqccvN+ByORbBwTmgmUthctBR70h1+6zAA4hwgKYP8RCFTZQStAtYAuPin8
-         FM6ZLKTSrHVdKlhUPJBeF5/LhKEqaAGpILNMvVr9UI/wP1xqQ9+LdCjkpl5WInIsRl9L
-         69MUkgyjqr389spKsBVtIS2dBH6Xdbrs96Okw68x00nWYn+Vt2MfVUoaCrFWIzUiuiax
-         InZcr2tf0bnftzM+2og/Ychk5xskCXauKsoZPQ2uoh9QKBBGmjWZpZJf+Ovdfmiq7Qly
-         dWEDCF8h+rwlTo686jKGpcij2VMWue6CHjulRDqtfaepy699xZHhkTJ3kYvyqpaw1YfB
-         pH+w==
-X-Gm-Message-State: AOJu0YwQNyz1eGAUEbkxLPrk9iTRHE7BHSn0bCxJty4QQPN3Gnl99FYZ
-	z1yjaZgJ11KyuDe0W0L1nxVIw/nCL9Iz+3O/g/tVW6sl8uQ7VXhUhZE2YvFyhPTxRPVwazCPm9F
-	IZlH1VwUFon28ojOTLfN9+IaDosnQLLoSVDvHxQ==
-X-Gm-Gg: ASbGncsMC12wDMw5FgGo/fsL4PjSAyKXrrtfPN6SKFvc2GqCq9swaCSgJITZFpMofQ5
-	GJI1Ho1YMECeY3bIBwreEwg3v9vZvTVI0BMPQVrmp052gJZJEP7NEZFVMJ9LAktzQfRRG3MpuqE
-	I=
-X-Google-Smtp-Source: AGHT+IFOL53hLpR9huwVKcdEp9S5ol3K22XXCd3/mcd/L2bQqRKMnRbCt0AScL5oNtTya9R/VDI/ycGal6VHuQEUFVs=
-X-Received: by 2002:a05:6214:1d2c:b0:6e6:5d61:4f01 with SMTP id
- 6a1803df08f44-6e6974fc658mr68832166d6.8.1739978146707; Wed, 19 Feb 2025
- 07:15:46 -0800 (PST)
+	s=arc-20240116; t=1739978321; c=relaxed/simple;
+	bh=N+uSn/8nCGKQ8qivT7nk7rE+toQsBlzw6bxxMBCQAEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ivmJND79OU3PZv6Y7+6foXbaDeVCC+obdhIZIludbS8b89O7bPYkR+k3CQqqhaj9s5/tBtb2eqwokQfNJAg5tVADRxgpAUnWAg3loXanwXWfbUu1yhCZp414WBOuuDSDxI/nk0q3J7t045CdNjMIYLUY465OPGwu8/9Yp0jD7g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=epKGMJ56; arc=none smtp.client-ip=67.231.149.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51JFH1Qm022119;
+	Wed, 19 Feb 2025 09:18:17 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=jkjcggGWrNZ/iXb/3ceRHdKS8e8cSlNrQV1UXrkbLsU=; b=
+	epKGMJ56EdvKQBxs8RLWrgS8qgnntWA21WqLcv3U8snEH76/+UDGzrfP+ZnfIqTy
+	2Ajx0E766SEr3HarEy++CeZObl/LBPFToE/MnHVoruf4hb+qMfggg+06IAFvmzP6
+	lw9QscYqSaPHo5lVyFY83kDpXSuuAVAgy5UnqM1gPGuoke/V0OSuVmlLuG3l0tLs
+	E1uVx/vQH9ffEMjFOAs3ena98mD+NczNLYtGc+2WO1Ll9NeMZztDz1Nek2w9/8wo
+	l4gz2gma0o/dchb8LrAK5vnSoZHBZJPBu8GrSBNa6l7qf6msjMqISRIVLgx7VgnG
+	FXTb3NQaMTFCIil4DmJ4ow==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 44vyywt38b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Feb 2025 09:18:17 -0600 (CST)
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 19 Feb
+ 2025 15:18:14 +0000
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server id
+ 15.2.1544.14 via Frontend Transport; Wed, 19 Feb 2025 15:18:14 +0000
+Received: from [198.90.208.18] (ediswws06.ad.cirrus.com [198.90.208.18])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id A0F6182025A;
+	Wed, 19 Feb 2025 15:18:14 +0000 (UTC)
+Message-ID: <695e7853-dc6a-41f6-85c1-47aa78085048@opensource.cirrus.com>
+Date: Wed, 19 Feb 2025 15:18:14 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250215075701.840225877@linuxfoundation.org> <CA+G9fYsBu8DOLEDQoGrdZmjwZKvz72tMmrVPnQSJLNMbefYymw@mail.gmail.com>
-In-Reply-To: <CA+G9fYsBu8DOLEDQoGrdZmjwZKvz72tMmrVPnQSJLNMbefYymw@mail.gmail.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 19 Feb 2025 20:45:34 +0530
-X-Gm-Features: AWEUYZmBriKaF0g7ZN6AKPL4WUNipNS0LvWaItl7Uel4aGCuiaCeYdtgGR_kvUY
-Message-ID: <CA+G9fYugvbR5jJrOUHd==_h2MXKDfVjivRnaXxvwWL_dzBXdGw@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/418] 6.12.14-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] firmware: cs_dsp: test_control_parse: null-terminate test
+ strings
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+        "Mark
+ Brown" <broonie@kernel.org>
+CC: <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250211-cs_dsp-kunit-strings-v1-1-d9bc2035d154@linutronix.de>
+Content-Language: en-GB
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <20250211-cs_dsp-kunit-strings-v1-1-d9bc2035d154@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: IQxgJ7Pe1iqm0QDtCdtXDw9Yen8MUrmi
+X-Proofpoint-ORIG-GUID: IQxgJ7Pe1iqm0QDtCdtXDw9Yen8MUrmi
+X-Authority-Analysis: v=2.4 cv=WOSFXmsR c=1 sm=1 tr=0 ts=67b5f639 cx=c_pps a=uGhh+3tQvKmCLpEUO+DX4w==:117 a=uGhh+3tQvKmCLpEUO+DX4w==:17 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=w1d2syhTAAAA:8 a=5WolietwVMrf4Qt7vzEA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=YXXWInSmI4Sqt1AkVdoW:22
+X-Proofpoint-Spam-Reason: safe
 
-On Mon, 17 Feb 2025 at 13:08, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->
-> On Sat, 15 Feb 2025 at 13:29, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.14 release.
-> > There are 418 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Mon, 17 Feb 2025 07:52:41 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.14-rc3.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->
-> Regression on qemu-arm64, qemu-armv7 and qemu-x86-64 on 6.12.14-rc3
-> We will investigate this and get back to you.
->
-> Test regression: arm64, arm, x86 selftests: memfd: run_fuse_test.sh
->
-> * fvp-aemva, kselftest-memfd
->   - memfd_run_fuse_test_sh
-> * qemu-armv7, kselftest-memfd
->   - memfd_run_fuse_test_sh
-> * qemu-arm64, kselftest-memfd
->   - memfd_run_fuse_test_sh
-> * qemu-x86_64, kselftest-memfd
->   - memfd_run_fuse_test_sh
->
-> # Test log
-> selftests: memfd: run_fuse_test.sh
-> ./fuse_mnt: error while loading shared libraries: libfuse.so.2: cannot
-> open shared object file: No such file or directory
-> not ok 2 selftests: memfd: run_fuse_test.sh  exit=127
+On 11/02/2025 3:00 pm, Thomas Weißschuh wrote:
+> The char pointers in 'struct cs_dsp_mock_coeff_def' are expected to
+> point to C strings. They need to be terminated by a null byte.
+> However the code does not allocate that trailing null byte and only
+> works if by chance the allocation is followed by such a null byte.
+> 
+> Refactor the repeated string allocation logic into a new helper which
+> makes sure the terminating null is always present.
+> It also makes the code more readable.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> Fixes: 83baecd92e7c ("firmware: cs_dsp: Add KUnit testing of control parsing")
+> Cc: stable@vger.kernel.org
+> ---
+>   .../cirrus/test/cs_dsp_test_control_parse.c        | 51 ++++++++--------------
+>   1 file changed, 19 insertions(+), 32 deletions(-)
+> 
 
-We are installing libfuse2 in our rootfs to fix this at our end.
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Tested-by: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-- Naresh
 
