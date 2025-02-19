@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84C0A3B74B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0107CA3B6A2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6856E3BA04C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C3A3A1812
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED621E0B96;
-	Wed, 19 Feb 2025 09:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFDB1EB1BB;
+	Wed, 19 Feb 2025 08:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8jwI0iT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMGLkjic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00E31CB518;
-	Wed, 19 Feb 2025 09:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8CE1EB187;
+	Wed, 19 Feb 2025 08:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955651; cv=none; b=ExO+S97FrHoy6lMvrnMdvHOUY6AhHx62UCADoMU/ctAOGui5J/s7FFyCvJaoZDWHAuFP6E6KoyB9zrbgsKtjdwnLuQW8tavFmdZVpE+5QLICjCEpahYTeISn6PCOJBPkRjuMpC3UrL+DJgnGsVJPjkuCoVhkkCCKLJ33VeQqkKo=
+	t=1739955322; cv=none; b=Tddyu5WhlFGwQYASVd/+mZCZUNXU5VpKvEREVoTD+OdpPggXLn1pcK/38SguV6SyAdCa/PO/xCB8Q4vVx2SKRAV/Ldd+U+JZIkLu+qAiQo5U9K0NuUV+gNZqURwJH6/QEsGR4MaUaSYE+3eCBKvKbfdwmiacr2F6Tgmj9W0noZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955651; c=relaxed/simple;
-	bh=kIQsdRq8KqY3D1KwqpFyq5bMOuHEiIIrBHUFfI+izz4=;
+	s=arc-20240116; t=1739955322; c=relaxed/simple;
+	bh=juURhLDD4CddLt9R0alo/N4SeXoUUbMmU9yFuvfliqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WH6xBeP07Dyk+qe1fXhzYsEXexQQKtG+SdPodSZcr5kLgpMvdgsRKBYMbqtC9r/CdzoGvhPjfh59wR4dbJlt9566uAkiuiFBUyyHncv4i2+oMdDky1Zk4U4fWfsSk9gvKm/0Lhpttsv2AGDSR2ZkLktWqvmgUXeC5ydoUCdfiCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8jwI0iT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF8EC4CEE6;
-	Wed, 19 Feb 2025 09:00:51 +0000 (UTC)
+	 MIME-Version; b=H3tfjm8DSDN7IL2Grq/Kght57PrLpcwKLXjnYYFoVPKxhAIVF9B3bIOPkA4w392oLViJLEKMHY2sAiwQmQbF8pcRgRJYyXKrhVzFCHIUjqZxW/wKvorfp3fxtBPbLgijNvyCpWX91xNSs0vyIKWJqDtbmkWTFebVaJdhp4c80rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMGLkjic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515A0C4CED1;
+	Wed, 19 Feb 2025 08:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955651;
-	bh=kIQsdRq8KqY3D1KwqpFyq5bMOuHEiIIrBHUFfI+izz4=;
+	s=korg; t=1739955322;
+	bh=juURhLDD4CddLt9R0alo/N4SeXoUUbMmU9yFuvfliqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8jwI0iTEmp13YrnBUBmtVea1sGsZo5+Fx46JelMd0tA9hN08xRbjcxVkO4J/zSIm
-	 c0yUPTvBIBijXz7kMkehi/YBheF8AzOm79WzPnD1mtIlvGF8Jb3yMq6fFYUxhBZM9b
-	 HbmFCju+IdiVS/cdDmZAlXZ/UYas0rdGBUIRG9Sk=
+	b=NMGLkjicGmEbLRzBW2Ap3J1wJDiV2rwBuR/BjRCR0UoSXzTEhA9SuNZQU0dxi/+PX
+	 FFgBx3Ss4YihmerJuhHHZx+wigIn7eZi6OFjonGL2IsT8N00ed0HEw7RcY/YzepeoC
+	 3rTDalBsYjpHvDOq5Ce8aNEj6rOaG+U3uRUHDv0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 072/152] USB: serial: option: fix Telit Cinterion FN990A name
+	Waiman Long <longman@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	John Stultz <jstultz@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 168/230] clocksource: Use pr_info() for "Checking clocksource synchronization" message
 Date: Wed, 19 Feb 2025 09:28:05 +0100
-Message-ID: <20250219082552.897273309@linuxfoundation.org>
+Message-ID: <20250219082608.272214171@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 12606fe73f33647c5e79bf666833bf0b225e649d upstream.
+[ Upstream commit 1f566840a82982141f94086061927a90e79440e5 ]
 
-The correct name for FN990 is FN990A so use it in order to avoid
-confusion with FN990B.
+The "Checking clocksource synchronization" message is normally printed
+when clocksource_verify_percpu() is called for a given clocksource if
+both the CLOCK_SOURCE_UNSTABLE and CLOCK_SOURCE_VERIFY_PERCPU flags
+are set.
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is an informational message and so pr_info() is the correct choice.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/all/20250125015442.3740588-1-longman@redhat.com
+Stable-dep-of: 6bb05a33337b ("clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/time/clocksource.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1370,15 +1370,15 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1063, 0xff),	/* Telit LN920 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990 (PCIe) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 8a40a616288b8..c4e6b5e6af88c 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -374,7 +374,8 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 		return;
+ 	}
+ 	testcpu = smp_processor_id();
+-	pr_warn("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n", cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
++	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
++		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
+ 	for_each_cpu(cpu, &cpus_chosen) {
+ 		if (cpu == testcpu)
+ 			continue;
+-- 
+2.39.5
+
 
 
 
