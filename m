@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-117895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379E0A3B919
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F315A3B89B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A128178D0D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:21:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78491188BA3B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2AF1DE2BD;
-	Wed, 19 Feb 2025 09:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26A21E520A;
+	Wed, 19 Feb 2025 09:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfoHnfhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVXdsCQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676CB1DDA20;
-	Wed, 19 Feb 2025 09:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6CC1E04BA;
+	Wed, 19 Feb 2025 09:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956651; cv=none; b=NB32KWDw05fTcJ1BFPulxUXSMOYl3WCg1LuOgHhWn98gSxI4XQVa/ljBV1HyarlsBepGUuK7H2C23XtSLuQqlg7oh+zVO9iI+Q3Zx87cJ5JQPj5m6qoLyb8jwdBv9RlzQnEDieCqjE512ct/r/yIEqBGEnSKUnOPq3a0cQSsqVQ=
+	t=1739956557; cv=none; b=GV3s271xNDWaq7GokhwuiRYMUekXXAj1wH6y0ZDxmi2qYTWSPFat01aI7BrdoLXbNOunkoF5oDeMeuKqNHzYHPR9l+lNN5GQ9muKyi08dYe1EWqSzsef828n7xrDjmnz4UNVT4+1O6e9OjSXz0wO/Gso/XMoypLFhNpL/em1RUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956651; c=relaxed/simple;
-	bh=GOVBkhckR9o4IqibJVhtMCsw7ipEldDMshHPPaod3p0=;
+	s=arc-20240116; t=1739956557; c=relaxed/simple;
+	bh=YC41/R21y+x/twDCogc+SGQCUT3o0nWxnEIzIHLd3hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+EjCDH6KkuiAqoVqxiRKvz4lPzsipBLk60iwHtXxRcdqxAbPUmVCLjeMGhicOade0vB6grcLO8canbu8hvUUdhct1MlbDNLp1bNmVujxGXe2Naxhm+DNJQDyqIpFoNPKCrINh8mA/6w87W+19gZ4sdAcrF16hZYv+zW/YxApTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfoHnfhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F80C4CED1;
-	Wed, 19 Feb 2025 09:17:30 +0000 (UTC)
+	 MIME-Version; b=T7/JaHQItJ3GsvY0AZhfULavh/YMeF4fUUOx00CegK5wRspWpJhNB0PAk1mR4W6Y5xGcmjBF+6CI0OjMeSm9jk9M/iUK61/zRUQeIFhE0zL5giiXG39i+I243O+IRUaYtuRseSzmm/s8a/VM0iU6ORK4usn2k2rwqKMRqMuURjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVXdsCQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D7AC4AF0C;
+	Wed, 19 Feb 2025 09:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956651;
-	bh=GOVBkhckR9o4IqibJVhtMCsw7ipEldDMshHPPaod3p0=;
+	s=korg; t=1739956557;
+	bh=YC41/R21y+x/twDCogc+SGQCUT3o0nWxnEIzIHLd3hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfoHnfhvyOZj2z87LR/MkI2MEsXTLvP7XXvgsqqRuoH3lkk9PB7eTg5NIgShi5Luv
-	 fx9On5BjzCaZPkYWMBxhgNGSwLOCb/+kapn2vgtlMJvsOEsLxd97h3IBIcMjhJcGDj
-	 DwniH/KhqbpQ4GIcAXSHbYmci/mVp3mReSG9rXZg=
+	b=nVXdsCQumAt7d0DI+otdQI/qqloAXW+UImPdTG1v3XoLzR9GwcmJNyu+GPo2iKgfF
+	 1bASZCQ4edYOH+sqo3i8QmK09VrtRoHSxttuJtrFOMtDVJnrWHpuB4eLF+UuoPZ4B2
+	 +23dF9RlJqCUSAnSaiN67VkPvD75VY9HnRStJISc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Yifan <luoyifan@cmss.chinamobile.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/578] tools/bootconfig: Fix the wrong format specifier
-Date: Wed, 19 Feb 2025 09:23:35 +0100
-Message-ID: <20250219082701.358243290@linuxfoundation.org>
+Subject: [PATCH 6.1 212/578] xfrm: replay: Fix the update of replay_esn->oseq_hi for GSO
+Date: Wed, 19 Feb 2025 09:23:36 +0100
+Message-ID: <20250219082701.398823256@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,44 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit f6ab7384d554ba80ff4793259d75535874b366f5 ]
+[ Upstream commit c05c5e5aa163f4682ca97a2f0536575fc7dbdecb ]
 
-Use '%u' instead of '%d' for unsigned int.
+When skb needs GSO and wrap around happens, if xo->seq.low (seqno of
+the first skb segment) is before the last seq number but oseq (seqno
+of the last segment) is after it, xo->seq.low is still bigger than
+replay_esn->oseq while oseq is smaller than it, so the update of
+replay_esn->oseq_hi is missed for this case wrap around because of
+the change in the cited commit.
 
-Link: https://lore.kernel.org/all/20241105011048.201629-1-luoyifan@cmss.chinamobile.com/
+For example, if sending a packet with gso_segs=3 while old
+replay_esn->oseq=0xfffffffe, we calculate:
+    xo->seq.low = 0xfffffffe + 1 = 0x0xffffffff
+    oseq = 0xfffffffe + 3 = 0x1
+(oseq < replay_esn->oseq) is true, but (xo->seq.low <
+replay_esn->oseq) is false, so replay_esn->oseq_hi is not incremented.
 
-Fixes: 973780011106 ("tools/bootconfig: Suppress non-error messages")
-Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To fix this issue, change the outer checking back for the update of
+replay_esn->oseq_hi. And add new checking inside for the update of
+packet's oseq_hi.
+
+Fixes: 4b549ccce941 ("xfrm: replay: Fix ESN wrap around for GSO")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bootconfig/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_replay.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 156b62a163c5a..8a48cc2536f56 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -226,7 +226,7 @@ static int load_xbc_from_initrd(int fd, char **buf)
- 	/* Wrong Checksum */
- 	rcsum = xbc_calc_checksum(*buf, size);
- 	if (csum != rcsum) {
--		pr_err("checksum error: %d != %d\n", csum, rcsum);
-+		pr_err("checksum error: %u != %u\n", csum, rcsum);
- 		return -EINVAL;
- 	}
+diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
+index ce56d659c55a6..7f52bb2e14c13 100644
+--- a/net/xfrm/xfrm_replay.c
++++ b/net/xfrm/xfrm_replay.c
+@@ -714,10 +714,12 @@ static int xfrm_replay_overflow_offload_esn(struct xfrm_state *x, struct sk_buff
+ 			oseq += skb_shinfo(skb)->gso_segs;
+ 		}
  
-@@ -395,7 +395,7 @@ static int apply_xbc(const char *path, const char *xbc_path)
- 	xbc_get_info(&ret, NULL);
- 	printf("\tNumber of nodes: %d\n", ret);
- 	printf("\tSize: %u bytes\n", (unsigned int)size);
--	printf("\tChecksum: %d\n", (unsigned int)csum);
-+	printf("\tChecksum: %u\n", (unsigned int)csum);
- 
- 	/* TODO: Check the options by schema */
- 	xbc_exit();
+-		if (unlikely(xo->seq.low < replay_esn->oseq)) {
+-			XFRM_SKB_CB(skb)->seq.output.hi = ++oseq_hi;
+-			xo->seq.hi = oseq_hi;
+-			replay_esn->oseq_hi = oseq_hi;
++		if (unlikely(oseq < replay_esn->oseq)) {
++			replay_esn->oseq_hi = ++oseq_hi;
++			if (xo->seq.low < replay_esn->oseq) {
++				XFRM_SKB_CB(skb)->seq.output.hi = oseq_hi;
++				xo->seq.hi = oseq_hi;
++			}
+ 			if (replay_esn->oseq_hi == 0) {
+ 				replay_esn->oseq--;
+ 				replay_esn->oseq_hi--;
 -- 
 2.39.5
 
