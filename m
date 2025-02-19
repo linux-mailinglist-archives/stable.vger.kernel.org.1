@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2C6A3B664
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767A4A3B67E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A0C189D578
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 281337A6B5B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31651E51EB;
-	Wed, 19 Feb 2025 08:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C561E377F;
+	Wed, 19 Feb 2025 09:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9Oy1NxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtGIM38C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911F51E378C;
-	Wed, 19 Feb 2025 08:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8531BEF82;
+	Wed, 19 Feb 2025 09:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955260; cv=none; b=qaKJ5hd0btGNNUQ6XDXipAeOnWYqBcgdAcjEYtcE8e+wj1ocXQK7vIikW7DB4Yvxrwry6PdlxsJ+3r02SDgUGJYyJorUz2gcxXiXZ3t/2FDwTBwWNEfIIbE2TR78cbOgqVqD416Lr0WqFUziy91/gb8YdLaqYbiyypQdxT/Ko5M=
+	t=1739955747; cv=none; b=o//d/o/Ai8r0tvXLaJ5hmKFms2c9kNKBuzyOfr6ms9CNtLJkxGSQueNxh+cyQjP8ckVgkm0T5MJWZu7MoH8gjfntm6U5mSWw9w13FDL7JDzsfH+zeTXDPa4y+0KGaSrnXQ42DHEIuVnWBL4YuNO4lzJNB8NOPDsR3vYYHzfQhno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955260; c=relaxed/simple;
-	bh=R63+F9GsSdCnh/jF1XCI0MMtNmllJwjWgGXmkeXfKBg=;
+	s=arc-20240116; t=1739955747; c=relaxed/simple;
+	bh=S3OfuMQOopurwvMkCGO7n+1u1y1wWG9/3wMhJtaASjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iti+2amWwz2xtL/Dw11cwirAvuhZQjRI++eP5F3HEW0uxjvHJ7qc+YwmUx+HSGaeobhW8+rIOYzRT6x1N3/BU3X6CvtZH8vArf2deOs2+JjWzt3+gH7fSAc2Geo9mmxU7Ea0oqq/LPD6IDAcwMYcUbUV8iIVwuclYHLSiFabfJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9Oy1NxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EDCC4CEE6;
-	Wed, 19 Feb 2025 08:54:19 +0000 (UTC)
+	 MIME-Version; b=PQ/21CHi9KYr5mg77oXNwQR7zAtbpDfFKYoLQUrw+4xXezUpA8El/T5q615U2cNgCz6QrRjXolXvJDTuja0qYk1mUO5AAbEVBuPHApc8zZ266yNBw6gNVMiqhUQA0chkUnmxld9MpQw7T1lujl4fskMZSfvxtxEG68ShxQ1qN2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtGIM38C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10355C4CED1;
+	Wed, 19 Feb 2025 09:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955260;
-	bh=R63+F9GsSdCnh/jF1XCI0MMtNmllJwjWgGXmkeXfKBg=;
+	s=korg; t=1739955746;
+	bh=S3OfuMQOopurwvMkCGO7n+1u1y1wWG9/3wMhJtaASjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9Oy1NxYm3UmHhQNTSfDOei52qOxFVIXodpcW+XvkVexJ+2UmEZ/H34+K6PgKicff
-	 1435W9BdJjOlJjYYR03pJLuuB4Z1r9P5OJ0jLg3CsD3ftGnHVaqTktQsEz05uhjaoG
-	 yRviNpDqoI7MiV/1bjvJnN8jyLAu/vFHT9wfl0d4=
+	b=DtGIM38CZ0p+Rlm4NNcRCBQtttMor22J/YUDShgBh2z13TRsyzxo3QK0il0VPICD8
+	 eEkrTh8EKxwqbza9XzA3xGzaDhTRd021czft988GJsmu+YQkzCqwgTNfHVsQr9OuZ+
+	 RRmm4kicttVBWxxnwmBAzrLItCfCv2rtB6RGGq+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/230] net: ipv6: ioam6_iptunnel: mitigate 2-realloc issue
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.6 068/152] usb: cdc-acm: Check control transfer buffer size before access
 Date: Wed, 19 Feb 2025 09:28:01 +0100
-Message-ID: <20250219082608.114537407@linuxfoundation.org>
+Message-ID: <20250219082552.738353673@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,195 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit dce525185bc92864e5a318040285ee070563fe34 ]
+commit e563b01208f4d1f609bcab13333b6c0e24ce6a01 upstream.
 
-This patch mitigates the two-reallocations issue with ioam6_iptunnel by
-providing the dst_entry (in the cache) to the first call to
-skb_cow_head(). As a result, the very first iteration may still trigger
-two reallocations (i.e., empty cache), while next iterations would only
-trigger a single reallocation.
+If the first fragment is shorter than struct usb_cdc_notification, we can't
+calculate an expected_size. Log an error and discard the notification
+instead of reading lengths from memory outside the received data, which can
+lead to memory corruption when the expected_size decreases between
+fragments, causing `expected_size - acm->nb_index` to wrap.
 
-Performance tests before/after applying this patch, which clearly shows
-the improvement:
-- inline mode:
-  - before: https://ibb.co/LhQ8V63
-  - after: https://ibb.co/x5YT2bS
-- encap mode:
-  - before: https://ibb.co/3Cjm5m0
-  - after: https://ibb.co/TwpsxTC
-- encap mode with tunsrc:
-  - before: https://ibb.co/Gpy9QPg
-  - after: https://ibb.co/PW1bZFT
+This issue has been present since the beginning of git history; however,
+it only leads to memory corruption since commit ea2583529cd1
+("cdc-acm: reassemble fragmented notifications").
 
-This patch also fixes an incorrect behavior: after the insertion, the
-second call to skb_cow_head() makes sure that the dev has enough
-headroom in the skb for layer 2 and stuff. In that case, the "old"
-dst_entry was used, which is now fixed. After discussing with Paolo, it
-appears that both patches can be merged into a single one -this one-
-(for the sake of readability) and target net-next.
+A mitigating factor is that acm_ctrl_irq() can only execute after userspace
+has opened /dev/ttyACM*; but if ModemManager is running, ModemManager will
+do that automatically depending on the USB device's vendor/product IDs and
+its other interfaces.
 
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 92191dd10730 ("net: ipv6: fix dst ref loops in rpl, seg6 and ioam6 lwtunnels")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ioam6_iptunnel.c | 73 ++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 36 deletions(-)
+ drivers/usb/class/cdc-acm.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index beb6b4cfc551c..e81b45b1f6555 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -255,14 +255,15 @@ static int ioam6_do_fill(struct net *net, struct sk_buff *skb)
- }
- 
- static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
--			   struct ioam6_lwt_encap *tuninfo)
-+			   struct ioam6_lwt_encap *tuninfo,
-+			   struct dst_entry *cache_dst)
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -371,7 +371,7 @@ static void acm_process_notification(str
+ static void acm_ctrl_irq(struct urb *urb)
  {
- 	struct ipv6hdr *oldhdr, *hdr;
- 	int hdrlen, err;
+ 	struct acm *acm = urb->context;
+-	struct usb_cdc_notification *dr = urb->transfer_buffer;
++	struct usb_cdc_notification *dr;
+ 	unsigned int current_size = urb->actual_length;
+ 	unsigned int expected_size, copy_size, alloc_size;
+ 	int retval;
+@@ -398,9 +398,20 @@ static void acm_ctrl_irq(struct urb *urb
  
- 	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
+ 	usb_mark_last_busy(acm->dev);
  
--	err = skb_cow_head(skb, hdrlen + skb->mac_len);
-+	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
- 	if (unlikely(err))
- 		return err;
- 
-@@ -293,7 +294,8 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
- 			  struct ioam6_lwt_encap *tuninfo,
- 			  bool has_tunsrc,
- 			  struct in6_addr *tunsrc,
--			  struct in6_addr *tundst)
-+			  struct in6_addr *tundst,
-+			  struct dst_entry *cache_dst)
- {
- 	struct dst_entry *dst = skb_dst(skb);
- 	struct ipv6hdr *hdr, *inner_hdr;
-@@ -302,7 +304,7 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
- 	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
- 	len = sizeof(*hdr) + hdrlen;
- 
--	err = skb_cow_head(skb, len + skb->mac_len);
-+	err = skb_cow_head(skb, len + dst_dev_overhead(cache_dst, skb));
- 	if (unlikely(err))
- 		return err;
- 
-@@ -336,7 +338,7 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
- 
- static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct dst_entry *dst = skb_dst(skb);
-+	struct dst_entry *dst = skb_dst(skb), *cache_dst;
- 	struct in6_addr orig_daddr;
- 	struct ioam6_lwt *ilwt;
- 	int err = -EINVAL;
-@@ -354,6 +356,10 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 
- 	orig_daddr = ipv6_hdr(skb)->daddr;
- 
-+	local_bh_disable();
-+	cache_dst = dst_cache_get(&ilwt->cache);
-+	local_bh_enable();
-+
- 	switch (ilwt->mode) {
- 	case IOAM6_IPTUNNEL_MODE_INLINE:
- do_inline:
-@@ -361,7 +367,7 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		if (ipv6_hdr(skb)->nexthdr == NEXTHDR_HOP)
- 			goto out;
- 
--		err = ioam6_do_inline(net, skb, &ilwt->tuninfo);
-+		err = ioam6_do_inline(net, skb, &ilwt->tuninfo, cache_dst);
- 		if (unlikely(err))
- 			goto drop;
- 
-@@ -371,7 +377,7 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		/* Encapsulation (ip6ip6) */
- 		err = ioam6_do_encap(net, skb, &ilwt->tuninfo,
- 				     ilwt->has_tunsrc, &ilwt->tunsrc,
--				     &ilwt->tundst);
-+				     &ilwt->tundst, cache_dst);
- 		if (unlikely(err))
- 			goto drop;
- 
-@@ -389,41 +395,36 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		goto drop;
- 	}
- 
--	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
--	if (unlikely(err))
--		goto drop;
-+	if (unlikely(!cache_dst)) {
-+		struct ipv6hdr *hdr = ipv6_hdr(skb);
-+		struct flowi6 fl6;
-+
-+		memset(&fl6, 0, sizeof(fl6));
-+		fl6.daddr = hdr->daddr;
-+		fl6.saddr = hdr->saddr;
-+		fl6.flowlabel = ip6_flowinfo(hdr);
-+		fl6.flowi6_mark = skb->mark;
-+		fl6.flowi6_proto = hdr->nexthdr;
-+
-+		cache_dst = ip6_route_output(net, NULL, &fl6);
-+		if (cache_dst->error) {
-+			err = cache_dst->error;
-+			dst_release(cache_dst);
-+			goto drop;
+-	if (acm->nb_index)
++	if (acm->nb_index == 0) {
++		/*
++		 * The first chunk of a message must contain at least the
++		 * notification header with the length field, otherwise we
++		 * can't get an expected_size.
++		 */
++		if (current_size < sizeof(struct usb_cdc_notification)) {
++			dev_dbg(&acm->control->dev, "urb too short\n");
++			goto exit;
 +		}
- 
--	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
- 		local_bh_disable();
--		dst = dst_cache_get(&ilwt->cache);
-+		dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
- 		local_bh_enable();
- 
--		if (unlikely(!dst)) {
--			struct ipv6hdr *hdr = ipv6_hdr(skb);
--			struct flowi6 fl6;
++		dr = urb->transfer_buffer;
++	} else {
+ 		dr = (struct usb_cdc_notification *)acm->notification_buffer;
 -
--			memset(&fl6, 0, sizeof(fl6));
--			fl6.daddr = hdr->daddr;
--			fl6.saddr = hdr->saddr;
--			fl6.flowlabel = ip6_flowinfo(hdr);
--			fl6.flowi6_mark = skb->mark;
--			fl6.flowi6_proto = hdr->nexthdr;
--
--			dst = ip6_route_output(net, NULL, &fl6);
--			if (dst->error) {
--				err = dst->error;
--				dst_release(dst);
--				goto drop;
--			}
--
--			local_bh_disable();
--			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
--			local_bh_enable();
--		}
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(cache_dst->dev));
-+		if (unlikely(err))
-+			goto drop;
 +	}
- 
-+	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
- 		skb_dst_drop(skb);
--		skb_dst_set(skb, dst);
--
-+		skb_dst_set(skb, cache_dst);
- 		return dst_output(net, sk, skb);
- 	}
- out:
--- 
-2.39.5
-
+ 	/* size = notification-header + (optional) data */
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
 
 
 
