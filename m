@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B046A3BA74
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5489DA3B680
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4CDA802062
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C4D0188B4E1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B69A1D416E;
-	Wed, 19 Feb 2025 09:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0658F1EB1A6;
+	Wed, 19 Feb 2025 08:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVDJqJYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7pmUtOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA92E188CCA;
-	Wed, 19 Feb 2025 09:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78061EB1A1;
+	Wed, 19 Feb 2025 08:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957379; cv=none; b=Z8Z+400tNtiDICeHFlo6VVOUw1YnE9uyUt59DCB/STiO8Ulq2pwcR8U4sL5Qv8d97tB/lFM67/HOg5VTQPnaaEhB6iMgoL/SiFUpvixLe7KvDRLjpNy5iMpwxYJBs/6YyCMEo8A2XHNc4rYA0wQSk9nmkD6LOj70zV3C40oVgXE=
+	t=1739955297; cv=none; b=DzJ6m5RKdlmg/aadbhKacdY0ihNLgHVtUp9Ez4yGPgwCFBZSZDvTHjMMQ4yizbbJQH7wj2h2wYLEHLXGhvg7imIvnP/1g4/Tw4G9gbPss3WsYHlG4z78qZJ7z2Tp8CgcFf8XncO7w8QmgT8VKkiz34p/RJsQbojdxZ7EgQSy/lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957379; c=relaxed/simple;
-	bh=gx5sg+jWN1pcXsqrJftznF+hm0RFKe/AMy4b3uEJJMs=;
+	s=arc-20240116; t=1739955297; c=relaxed/simple;
+	bh=a65jHU6hIwDAaV19bPKCnrh6bXB/jPtm88Mbo2qwpMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOnzDK0tXBkyigyXAIgREUthf5SA8VQS8h8ursDGdwLP4vB/zGlB2vuBXuhxezxH65ya1Z3XgpUxNMRVtBhNa79GLbd4RqgAaTqWcqkQuz6SIRvgojQRmwWH2KOd4yVirfmRdQeLFrutkbNe0oI8p7l0H1YHStP+Ho/VCmv0AAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVDJqJYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF68C4CED1;
-	Wed, 19 Feb 2025 09:29:38 +0000 (UTC)
+	 MIME-Version; b=Mg7Dv+6bXaoHw4g00K9CGt3zB448MsUJ2a/kzH/biF01y9eBX9AoOFAk5ibsIxRmxtDQORnKzk5wxw4q/CySwG3frX5jZ1Dxk5tsIIvgOWv/G3NfwHUzJsOs56GwDAv6ed8QQd36eJ2mEpyUKgx8H2UaOslzlsB7xjO76jKbulg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7pmUtOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B12C4CED1;
+	Wed, 19 Feb 2025 08:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957379;
-	bh=gx5sg+jWN1pcXsqrJftznF+hm0RFKe/AMy4b3uEJJMs=;
+	s=korg; t=1739955297;
+	bh=a65jHU6hIwDAaV19bPKCnrh6bXB/jPtm88Mbo2qwpMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVDJqJYd4MMqbOy9Y/LK8tzGI6GAQfp/utzZlF9zaaSalkkXSFwTQyARjgzqtkXBx
-	 lPIwmSRXp/8YOZAENxvpgtKa1+IMoEmvUPlIoA8xv9p88cjWsnGL0nwlcmU0k2Opg4
-	 SOT52B7eYO9LCvk1IW/lnlaqUpgiIvr+RwtJeolg=
+	b=o7pmUtORJHlVDfPGv+oo67BtkLAmxHtW2RJYNErJaCVaUctPIIM1AV192KvSXztq5
+	 DKbj4230zfpQ5FY4zM0keV3McJPPVgzo6hCtcJ+gymBi6xDQhr2JIrYXixFtLdyPbW
+	 zGgfaszb7jdeKblLK31v9hp4aMOjIbo60bS/BOXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Guo Ren <guoren@linux.alibaba.com>
-Subject: [PATCH 6.1 505/578] usb: gadget: udc: renesas_usb3: Fix compiler warning
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 192/230] ipv6: use RCU protection in ip6_default_advmss()
 Date: Wed, 19 Feb 2025 09:28:29 +0100
-Message-ID: <20250219082712.850266322@linuxfoundation.org>
+Message-ID: <20250219082609.209187035@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 335a1fc1193481f8027f176649c72868172f6f8b upstream.
+[ Upstream commit 3c8ffcd248da34fc41e52a46e51505900115fc2a ]
 
-drivers/usb/gadget/udc/renesas_usb3.c: In function 'renesas_usb3_probe':
-drivers/usb/gadget/udc/renesas_usb3.c:2638:73: warning: '%d'
-directive output may be truncated writing between 1 and 11 bytes into a
-region of size 6 [-Wformat-truncation=]
-2638 |   snprintf(usb3_ep->ep_name, sizeof(usb3_ep->ep_name), "ep%d", i);
-                                    ^~~~~~~~~~~~~~~~~~~~~~~~     ^~   ^
+ip6_default_advmss() needs rcu protection to make
+sure the net structure it reads does not disappear.
 
-Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas USB3.0 peripheral controller")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501201409.BIQPtkeB-lkp@intel.com/
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250122081231.47594-1-guoren@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5578689a4e3c ("[NETNS][IPV6] route6 - make route6 per namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-11-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/route.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -309,7 +309,7 @@ struct renesas_usb3_request {
- 	struct list_head	queue;
- };
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 8ebfed5d63232..2736dea77575b 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3196,13 +3196,18 @@ static unsigned int ip6_default_advmss(const struct dst_entry *dst)
+ {
+ 	struct net_device *dev = dst->dev;
+ 	unsigned int mtu = dst_mtu(dst);
+-	struct net *net = dev_net(dev);
++	struct net *net;
  
--#define USB3_EP_NAME_SIZE	8
-+#define USB3_EP_NAME_SIZE	16
- struct renesas_usb3_ep {
- 	struct usb_ep ep;
- 	struct renesas_usb3 *usb3;
+ 	mtu -= sizeof(struct ipv6hdr) + sizeof(struct tcphdr);
+ 
++	rcu_read_lock();
++
++	net = dev_net_rcu(dev);
+ 	if (mtu < net->ipv6.sysctl.ip6_rt_min_advmss)
+ 		mtu = net->ipv6.sysctl.ip6_rt_min_advmss;
+ 
++	rcu_read_unlock();
++
+ 	/*
+ 	 * Maximal non-jumbo IPv6 payload is IPV6_MAXPLEN and
+ 	 * corresponding MSS is IPV6_MAXPLEN - tcp_header_size.
+-- 
+2.39.5
+
 
 
 
