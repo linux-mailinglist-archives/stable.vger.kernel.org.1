@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81358A3BAAD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:45:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371C2A3B6A0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC2C5802330
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 121A87A6A39
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B431E0B80;
-	Wed, 19 Feb 2025 09:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7ED1D54FA;
+	Wed, 19 Feb 2025 09:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxQb7MZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwavNkoT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD451E0DDC;
-	Wed, 19 Feb 2025 09:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01281C4609;
+	Wed, 19 Feb 2025 09:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957448; cv=none; b=dWWfRu/Dr62DPAcCUTKU9DxkTiGvjTBgAWvKHymMibSJxIxo5Peg7JMVBxdMjTWngua8AfM7uDsjJl0mvrYP+Y8cG+fh/R9Rz1hBkN4cYWDA9v03s2FWwxGl/4OIlvbDZDmKBLSxi8wTEgw00SaF97R59NNJ5b82Xdti+T61fak=
+	t=1739955814; cv=none; b=GwvWRvJBR38/OO5ABM1h3rGjuiTvGzgF/OWOCpBKhnMAfO6fOhpgUp+BFFnuG5oSysMH2RCINrxvFpiyivUWRo/qn0d+n+A+aiIAhJ4oTkkW3ajccA3RRqmqANyjDSeuYqu8P7bpWct+YpjfyjXMohT67m2HfSrCOgnmRWdZrzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957448; c=relaxed/simple;
-	bh=olp0VcGfFuDlHvm11/T26fpe8eyaWVKj3X8NnC38780=;
+	s=arc-20240116; t=1739955814; c=relaxed/simple;
+	bh=ewA+vV+OzI/CvjSGN3EFHFt0mzGTxrb1uoW12o7P0+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8A6fbA57s2loOCftS5ibIeYd+tsVh7en4KtcqzfzfqsdhwMPQpqrndM++2Ys4egX5mW4mr7gFpCqwLteEDLk5UNUWIIi0k1gA3yY9zn8wHKnRC19tYZztfpijdm04sYz36WV1VVT8zIIddRmcvKfFdTkqlGI6V/0jjGoyVQWhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxQb7MZ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98304C4CED1;
-	Wed, 19 Feb 2025 09:30:47 +0000 (UTC)
+	 MIME-Version; b=okAtB8b+MLE8difXgoYezI28QubdReHusR6XS8B9brJmfGKJ9ey63DsblOyNbTCIwlEUyphZnply8ivJfr14G+JD6CSJyLlrEBS0UAsHsojNyloFkMmVX9GVoI2iYk2fmhGyipowx/JO6UhQ77VGdE1y3/7GvFb7AKlYYMWk3uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwavNkoT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4237DC4CED1;
+	Wed, 19 Feb 2025 09:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957448;
-	bh=olp0VcGfFuDlHvm11/T26fpe8eyaWVKj3X8NnC38780=;
+	s=korg; t=1739955814;
+	bh=ewA+vV+OzI/CvjSGN3EFHFt0mzGTxrb1uoW12o7P0+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxQb7MZ2eKtZhQMH3oGmY66eLKz8sh4mFcAKWtoD7uXZqj+2d0RmV9fGHYP/IxLs5
-	 TWgXPBJAEP8kt662fTQxYWGrO6lGm2NdxO6JWl4kbcG+Td3UO+dhHR6yNnkkmvJQ59
-	 JXQzAMhru7PZCP+GRiVf2VeT+HsV5dh5D/ac1/NE=
+	b=EwavNkoTTIJUWBXSJCdG0nxRSWTwwgi/URN64UhLFF8+GRM+A3dm360oYYg4Gsytd
+	 rEYVtso4uWEMgt/swPoojieKEx7EF0YHsvTEjL9dvoA1Xx0N1Cfb3FcMk5LCgkeyUX
+	 tESIpK1p5mstLKrqqv0uiHsDS0xu+tPopmF+pyhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 530/578] partitions: mac: fix handling of bogus partition table
-Date: Wed, 19 Feb 2025 09:28:54 +0100
-Message-ID: <20250219082713.828244865@linuxfoundation.org>
+	Li Zetao <lizetao1@huawei.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/152] neighbour: delete redundant judgment statements
+Date: Wed, 19 Feb 2025 09:28:55 +0100
+Message-ID: <20250219082554.878145031@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Li Zetao <lizetao1@huawei.com>
 
-commit 80e648042e512d5a767da251d44132553fe04ae0 upstream.
+[ Upstream commit c25bdd2ac8cf7da70a226f1a66cdce7af15ff86f ]
 
-Fix several issues in partition probing:
+The initial value of err is -ENOBUFS, and err is guaranteed to be
+less than 0 before all goto errout. Therefore, on the error path
+of errout, there is no need to repeatedly judge that err is less than 0,
+and delete redundant judgments to make the code more concise.
 
- - The bailout for a bad partoffset must use put_dev_sector(), since the
-   preceding read_part_sector() succeeded.
- - If the partition table claims a silly sector size like 0xfff bytes
-   (which results in partition table entries straddling sector boundaries),
-   bail out instead of accessing out-of-bounds memory.
- - We must not assume that the partition table contains proper NUL
-   termination - use strnlen() and strncmp() instead of strlen() and
-   strcmp().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20250214-partition-mac-v1-1-c1c626dffbd5@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: becbd5850c03 ("neighbour: use RCU protection in __neigh_notify()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/mac.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ net/core/neighbour.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/block/partitions/mac.c
-+++ b/block/partitions/mac.c
-@@ -51,13 +51,25 @@ int mac_partition(struct parsed_partitio
- 	}
- 	secsize = be16_to_cpu(md->block_size);
- 	put_dev_sector(sect);
-+
-+	/*
-+	 * If the "block size" is not a power of 2, things get weird - we might
-+	 * end up with a partition straddling a sector boundary, so we wouldn't
-+	 * be able to read a partition entry with read_part_sector().
-+	 * Real block sizes are probably (?) powers of two, so just require
-+	 * that.
-+	 */
-+	if (!is_power_of_2(secsize))
-+		return -1;
- 	datasize = round_down(secsize, 512);
- 	data = read_part_sector(state, datasize / 512, &sect);
- 	if (!data)
- 		return -1;
- 	partoffset = secsize % 512;
--	if (partoffset + sizeof(*part) > datasize)
-+	if (partoffset + sizeof(*part) > datasize) {
-+		put_dev_sector(sect);
- 		return -1;
-+	}
- 	part = (struct mac_partition *) (data + partoffset);
- 	if (be16_to_cpu(part->signature) != MAC_PARTITION_MAGIC) {
- 		put_dev_sector(sect);
-@@ -110,8 +122,8 @@ int mac_partition(struct parsed_partitio
- 				int i, l;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index cb0c233e83962..118d932b3baa1 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3526,8 +3526,7 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+ 	return;
+ errout:
+-	if (err < 0)
+-		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+ }
  
- 				goodness++;
--				l = strlen(part->name);
--				if (strcmp(part->name, "/") == 0)
-+				l = strnlen(part->name, sizeof(part->name));
-+				if (strncmp(part->name, "/", sizeof(part->name)) == 0)
- 					goodness++;
- 				for (i = 0; i <= l - 4; ++i) {
- 					if (strncasecmp(part->name + i, "root",
+ void neigh_app_ns(struct neighbour *n)
+-- 
+2.39.5
+
 
 
 
