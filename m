@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-117009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8F6A3B3F9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB65A3B3D0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C811A18857F3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F20EC3ABA89
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19801CAA88;
-	Wed, 19 Feb 2025 08:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E32B1A841F;
+	Wed, 19 Feb 2025 08:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7B/rDx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0050PUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE661C5F2F;
-	Wed, 19 Feb 2025 08:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A25B155753;
+	Wed, 19 Feb 2025 08:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953922; cv=none; b=LbtHJSDXEHQVSmYYG9I0weJKsEuDuHXdSvvc36ma+ibYBn3+ARUwQELKrTAdezYNv3m3yqed7I0FnvhWHcOT4T0DWwkZbaBhCA8gkvsCctvC0vx2PuOEO9A648UAWAgGrnJoEV94ku32pRfJESWNMzIgRYPiZC2eYQbttWDzQNk=
+	t=1739953825; cv=none; b=ErpIUvg7jtL2US6eBlAl8mDu6I8VvMgdln2JaDzTPcQD5X/JuAiTTbeKZdfIw6HoSTniNVuOVoxLZdw8d6xr0wbqB1vdhtjPrxQnXhR30dow5aeGcj9mo8zb9yRZuZbhNnTmahJ35EFcRST03LgcZr4u7oHXT0m0ikYKBh3z8YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953922; c=relaxed/simple;
-	bh=WDad//lJaRJGvVTVVOmQRndtEvSNxrurdxMjQEI/7sQ=;
+	s=arc-20240116; t=1739953825; c=relaxed/simple;
+	bh=XvpeJUIH4V20Va4/AEGvTI0t/ZUZia3rnxnrC/nSnvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWs9K07najgnc2ALgl50OdtwJgXcbqbxLm0/b6TN1iQKmw0QXQ85+xHOBMD7ZGovBmtYuFKRqvVXAvWLU8pFWhnH73H3MUJyobM+L9mElfpgDIeyh9ITfOobB3hsGktLM0LiDdB+0wRETpX/prtytWfVAfKnB15a76DUnP1Ifbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7B/rDx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7E0C4CEE9;
-	Wed, 19 Feb 2025 08:32:01 +0000 (UTC)
+	 MIME-Version; b=t6atgdoRrNoOStp3bl4BzFmPxRZQm4fV6zsjCCQ+TRpcYlToxE5B2qmplZZ0Kdrx0K6G1qNy7NzA5NkBEi0CLiheoi8AIGuaGAXTN3sJTAb5sXX86Tkdr0EhuhGnkVwYSZ5rveODM2RC6xs5+SCy2lZvnxgMZg8f0/duzTrmQ2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0050PUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E17C4CEE7;
+	Wed, 19 Feb 2025 08:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739953922;
-	bh=WDad//lJaRJGvVTVVOmQRndtEvSNxrurdxMjQEI/7sQ=;
+	s=korg; t=1739953824;
+	bh=XvpeJUIH4V20Va4/AEGvTI0t/ZUZia3rnxnrC/nSnvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7B/rDx+ivOerFfj61w8miHb3Ug+ucSKJ6HIR4vFGzEe0sr2CBnccxrJF1czmA0i9
-	 mHmmt0lcqdaFREnEhzqp5wdy8tKxLiLm4jWbCbg+72jq1oixEt7hc6TzgwdCat3CeE
-	 AoOUJCLisyd6VdYb4/bANw297s8UNJH8ncUm4kqs=
+	b=U0050PUE62XTGdP/Q90j4zjqYvIGnojbPqKH6YLVBucGSmupngd1P2MaVS4jZlUZr
+	 deD5HVsNRA/nLi42C1bVgZSj8u8O1zrdtGRrkO3GJQ9g0oSKiohJ2ZqrAIND3Xizaj
+	 l5Qm6MUaet37Us+xAGWvEtHl7hNT3OEWB0BtTHEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 009/274] pinctrl: cy8c95x0: Enable regmap locking for debug
-Date: Wed, 19 Feb 2025 09:24:23 +0100
-Message-ID: <20250219082609.899472533@linuxfoundation.org>
+Subject: [PATCH 6.13 010/274] pinctrl: cy8c95x0: Rename PWMSEL to SELPWM
+Date: Wed, 19 Feb 2025 09:24:24 +0100
+Message-ID: <20250219082609.939181665@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -68,36 +68,91 @@ Content-Transfer-Encoding: 8bit
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit aac4470fa6e695e4d6ac94cc77d4690b57f1d2bc ]
+[ Upstream commit 0a7404fc5399e1100b14e7e2a4af2e4fd5e3b602 ]
 
-When regmap locking is disabled, debugfs is also disabled.
-Enable locking for debug when CONFIG_DEBUG_PINCTRL is set.
+There are two registers in the hardware, one, "Select PWM",
+is per-port configuration enabling PWM function instead of GPIO.
+The other one is "PWM Select" is per-PWM selector to configure
+PWM itself. Original code uses abbreviation of the latter
+to describe the former. Rename it to follow the datasheet.
 
-Fixes: f71aba339a66 ("pinctrl: cy8c95x0: Use single I2C lock")
+Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/20250203131506.3318201-4-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/20250203131506.3318201-5-andriy.shevchenko@linux.intel.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index c787a9aadfdfb..bfa16f70e29ce 100644
+index bfa16f70e29ce..75100a9fb8e4c 100644
 --- a/drivers/pinctrl/pinctrl-cy8c95x0.c
 +++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -470,7 +470,11 @@ static const struct regmap_config cy8c9520_i2c_regmap = {
- 	.max_register = 0,		/* Updated at runtime */
- 	.num_reg_defaults_raw = 0,	/* Updated at runtime */
- 	.use_single_read = true,	/* Workaround for regcache bug */
-+#if IS_ENABLED(CONFIG_DEBUG_PINCTRL)
-+	.disable_locking = false,
-+#else
- 	.disable_locking = true,
-+#endif
- };
+@@ -42,7 +42,7 @@
+ #define CY8C95X0_PORTSEL	0x18
+ /* Port settings, write PORTSEL first */
+ #define CY8C95X0_INTMASK	0x19
+-#define CY8C95X0_PWMSEL		0x1A
++#define CY8C95X0_SELPWM		0x1A
+ #define CY8C95X0_INVERT		0x1B
+ #define CY8C95X0_DIRECTION	0x1C
+ /* Drive mode register change state on writing '1' */
+@@ -369,8 +369,8 @@ static bool cy8c95x0_volatile_register(struct device *dev, unsigned int reg)
+ 	case CY8C95X0_INPUT_(0) ... CY8C95X0_INPUT_(7):
+ 	case CY8C95X0_INTSTATUS_(0) ... CY8C95X0_INTSTATUS_(7):
+ 	case CY8C95X0_INTMASK:
++	case CY8C95X0_SELPWM:
+ 	case CY8C95X0_INVERT:
+-	case CY8C95X0_PWMSEL:
+ 	case CY8C95X0_DIRECTION:
+ 	case CY8C95X0_DRV_PU:
+ 	case CY8C95X0_DRV_PD:
+@@ -399,7 +399,7 @@ static bool cy8c95x0_muxed_register(unsigned int reg)
+ {
+ 	switch (reg) {
+ 	case CY8C95X0_INTMASK:
+-	case CY8C95X0_PWMSEL:
++	case CY8C95X0_SELPWM:
+ 	case CY8C95X0_INVERT:
+ 	case CY8C95X0_DIRECTION:
+ 	case CY8C95X0_DRV_PU:
+@@ -797,7 +797,7 @@ static int cy8c95x0_gpio_get_pincfg(struct cy8c95x0_pinctrl *chip,
+ 		reg = CY8C95X0_DIRECTION;
+ 		break;
+ 	case PIN_CONFIG_MODE_PWM:
+-		reg = CY8C95X0_PWMSEL;
++		reg = CY8C95X0_SELPWM;
+ 		break;
+ 	case PIN_CONFIG_OUTPUT:
+ 		reg = CY8C95X0_OUTPUT;
+@@ -876,7 +876,7 @@ static int cy8c95x0_gpio_set_pincfg(struct cy8c95x0_pinctrl *chip,
+ 		reg = CY8C95X0_DRV_PP_FAST;
+ 		break;
+ 	case PIN_CONFIG_MODE_PWM:
+-		reg = CY8C95X0_PWMSEL;
++		reg = CY8C95X0_SELPWM;
+ 		break;
+ 	case PIN_CONFIG_OUTPUT_ENABLE:
+ 		return cy8c95x0_pinmux_direction(chip, off, !arg);
+@@ -1161,7 +1161,7 @@ static void cy8c95x0_pin_dbg_show(struct pinctrl_dev *pctldev, struct seq_file *
+ 	bitmap_zero(mask, MAX_LINE);
+ 	__set_bit(pin, mask);
  
- static inline int cy8c95x0_regmap_update_bits_base(struct cy8c95x0_pinctrl *chip,
+-	if (cy8c95x0_read_regs_mask(chip, CY8C95X0_PWMSEL, pwm, mask)) {
++	if (cy8c95x0_read_regs_mask(chip, CY8C95X0_SELPWM, pwm, mask)) {
+ 		seq_puts(s, "not available");
+ 		return;
+ 	}
+@@ -1206,7 +1206,7 @@ static int cy8c95x0_set_mode(struct cy8c95x0_pinctrl *chip, unsigned int off, bo
+ 	u8 port = cypress_get_port(chip, off);
+ 	u8 bit = cypress_get_pin_mask(chip, off);
+ 
+-	return cy8c95x0_regmap_write_bits(chip, CY8C95X0_PWMSEL, port, bit, mode ? bit : 0);
++	return cy8c95x0_regmap_write_bits(chip, CY8C95X0_SELPWM, port, bit, mode ? bit : 0);
+ }
+ 
+ static int cy8c95x0_pinmux_mode(struct cy8c95x0_pinctrl *chip,
 -- 
 2.39.5
 
