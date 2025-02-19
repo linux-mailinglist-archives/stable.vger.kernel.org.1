@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-117588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F54BA3B730
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4466FA3BA70
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64C2617D9E7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BDDA422AB8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6F21E3DC9;
-	Wed, 19 Feb 2025 09:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE545158862;
+	Wed, 19 Feb 2025 09:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1030s2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXxmHtcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5331BEF71;
-	Wed, 19 Feb 2025 09:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BD31C2DC8;
+	Wed, 19 Feb 2025 09:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955756; cv=none; b=pQk5x54HysUgGsvNDp/xeVn49s54fmu8dV4PzT86n5GgGk0W+lIUG8tXRh+bqiSYZtUR+lJvT8TcZyoMveZPox/Vl8SAwiBQIEdff1rz0xBPrN1agaLJqK8J83w5gV/Cx1Uz7Df7T5uAZZTgko/6hFcg5aTjV8MQQdXYK3yvQ6U=
+	t=1739957279; cv=none; b=p6xwPwXhT0jK0IGDHj4DmjdKQdg8tUDsRaWL7Il2ecmoaCkYWgDrpiQvNasZcf96v1MRzE73ww6pgoUD2819pC8eikgzNUScBVAS7Y8d22o18Yphe08BSNPaOvFZFwrsNigIUNyzTgyk0zgkMkeZZgEgPBhv7b0r+1den7D8Uk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955756; c=relaxed/simple;
-	bh=YffarnCP/R3Km7CWnr6xvNvgK41jgJEZGGPOhpNTMgI=;
+	s=arc-20240116; t=1739957279; c=relaxed/simple;
+	bh=cRMtff7lNowMNLBmxwKdyt2EWw6GYLYqwd22b6Cc46o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3bIveL8lxeGe7a3d7vt7gmRqIdjkybJ6PR5eTz1Eb0xxF7JpBjNv/X8nalEVJ/hZHc4r7AdSCZDeZRssFj63Wb3HlY7chHa3GZw5L1ZAZrlF/2iElnxFRycnK7r9JcVe1lojUeVq1oiufRMXY8tI/Rv50JylLb751GwyNk9cxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1030s2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA03C4CEE6;
-	Wed, 19 Feb 2025 09:02:35 +0000 (UTC)
+	 MIME-Version; b=QUqAQWmhOkXmS4Q6WK7+vwBR0kLouN4RJ8sQ4PsrWCqCy8aOFgjj8eVwNaqGIlRipTweOpFz8rwzVYwkwr722S06XuKCP94+ASiZ7NdmnNHpdjjbPH6V++zJN9RtdtveIqtu1GvMBRADmAIYl8MnNm7bWyYwZ4EuG9SP3WJvsXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXxmHtcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF88C4CED1;
+	Wed, 19 Feb 2025 09:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955755;
-	bh=YffarnCP/R3Km7CWnr6xvNvgK41jgJEZGGPOhpNTMgI=;
+	s=korg; t=1739957279;
+	bh=cRMtff7lNowMNLBmxwKdyt2EWw6GYLYqwd22b6Cc46o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1030s2lWotQQ7ySJtyUImcAvMjKwyFTb+q4f0Iwnp/RBVMwGmCKqnXLWzowHucS7
-	 kcSQ46OhpFpWEw/AVGV4qA5mle+mN3fmnGqzkjkEFoJO5lZRZSbWyZf+5oyMP5afqb
-	 v4hNs/f0KcK+2mDoA0k4FuZU3Y4qVXaqW5Gmx06g=
+	b=IXxmHtcKtmMCnvW8e1aQXhqMP0SYLvmpCw7NdzAaaJXnOe6wtdN0LXJodmCFCMacX
+	 3mBj8LyJ54RNxbCbEJ7P48DMR2UnTRMysu7AilkMZT+Ci4v/rduuGD9f+6QwfDdCvR
+	 /EpQAhkdj5vEJJc+jmqGelY/6/nMihQADy8yB2Aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Baoqi Zhang <zhangbaoqi@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 061/152] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
+	syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Roopa Prabhu <roopa@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 470/578] vxlan: check vxlan_vnigroup_init() return value
 Date: Wed, 19 Feb 2025 09:27:54 +0100
-Message-ID: <20250219082552.459228307@linuxfoundation.org>
+Message-ID: <20250219082711.499137531@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e71f7f42e3c874ac3314b8f250e8416a706165af upstream.
+[ Upstream commit 5805402dcc56241987bca674a1b4da79a249bab7 ]
 
-LS7A EHCI controller doesn't have extended capabilities, so the EECP
-(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
-be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
-fixed in future, now just clear the EECP field to avoid error messages
-on boot:
+vxlan_init() must check vxlan_vnigroup_init() success
+otherwise a crash happens later, spotted by syzbot.
 
-......
-[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
-......
-[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
-......
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000002c: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000160-0x0000000000000167]
+CPU: 0 UID: 0 PID: 7313 Comm: syz-executor147 Not tainted 6.14.0-rc1-syzkaller-00276-g69b54314c975 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+ RIP: 0010:vxlan_vnigroup_uninit+0x89/0x500 drivers/net/vxlan/vxlan_vnifilter.c:912
+Code: 00 48 8b 44 24 08 4c 8b b0 98 41 00 00 49 8d 86 60 01 00 00 48 89 c2 48 89 44 24 10 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 4d 04 00 00 49 8b 86 60 01 00 00 48 ba 00 00 00
+RSP: 0018:ffffc9000cc1eea8 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000001 RCX: ffffffff8672effb
+RDX: 000000000000002c RSI: ffffffff8672ecb9 RDI: ffff8880461b4f18
+RBP: ffff8880461b4ef4 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000020000
+R13: ffff8880461b0d80 R14: 0000000000000000 R15: dffffc0000000000
+FS:  00007fecfa95d6c0(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fecfa95cfb8 CR3: 000000004472c000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  vxlan_uninit+0x1ab/0x200 drivers/net/vxlan/vxlan_core.c:2942
+  unregister_netdevice_many_notify+0x12d6/0x1f30 net/core/dev.c:11824
+  unregister_netdevice_many net/core/dev.c:11866 [inline]
+  unregister_netdevice_queue+0x307/0x3f0 net/core/dev.c:11736
+  register_netdevice+0x1829/0x1eb0 net/core/dev.c:10901
+  __vxlan_dev_create+0x7c6/0xa30 drivers/net/vxlan/vxlan_core.c:3981
+  vxlan_newlink+0xd1/0x130 drivers/net/vxlan/vxlan_core.c:4407
+  rtnl_newlink_create net/core/rtnetlink.c:3795 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250202124935.480500-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Reported-by: syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67a9d9b4.050a0220.110943.002d.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Roopa Prabhu <roopa@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250210105242.883482-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/pci-quirks.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/pci-quirks.c
-+++ b/drivers/usb/host/pci-quirks.c
-@@ -946,6 +946,15 @@ static void quirk_usb_disable_ehci(struc
- 	 * booting from USB disk or using a usb keyboard
- 	 */
- 	hcc_params = readl(base + EHCI_HCC_PARAMS);
-+
-+	/* LS7A EHCI controller doesn't have extended capabilities, the
-+	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
-+	 * register should be 0x0 but it reads as 0xa0.  So clear it to
-+	 * avoid error messages on boot.
-+	 */
-+	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
-+		hcc_params &= ~(0xffL << 8);
-+
- 	offset = (hcc_params >> 8) & 0xff;
- 	while (offset && --count) {
- 		pci_read_config_dword(pdev, offset, &cap);
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 155d335c80a7e..50be5a3c47795 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2982,8 +2982,11 @@ static int vxlan_init(struct net_device *dev)
+ 	struct vxlan_dev *vxlan = netdev_priv(dev);
+ 	int err;
+ 
+-	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER)
+-		vxlan_vnigroup_init(vxlan);
++	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER) {
++		err = vxlan_vnigroup_init(vxlan);
++		if (err)
++			return err;
++	}
+ 
+ 	dev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
+ 	if (!dev->tstats) {
+-- 
+2.39.5
+
 
 
 
