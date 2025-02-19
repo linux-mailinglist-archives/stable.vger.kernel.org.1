@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2486EA3B694
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED58A3B69A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA33B17EC0A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75BA67A4C4A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F13019D882;
-	Wed, 19 Feb 2025 08:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F791C7013;
+	Wed, 19 Feb 2025 09:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwTMuh22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ka9+Geje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE771BEF71;
-	Wed, 19 Feb 2025 08:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7438E1C701E;
+	Wed, 19 Feb 2025 09:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955360; cv=none; b=pV0YIhE37cPKVsJzzW3GBNPdfOv1Fawzv/+V4AITZhAtJ0Zzda0yysJy2diVSrm4okOj0BROtjjPPdUEIssjpRpbVc7gJBp9+d3D95bd+lMCjWaQ5YG3pKpy1Ucud5uVnMQ1omJjRBM9fJ5WixsWK/ruzFXoZ5RHAtRgJjW7rwo=
+	t=1739955799; cv=none; b=YHYy+J0ndM2m83BOI2rLa1hE75Y8d1ywb2m5G8CfvihuXPCjjDFqUo1v1YkDI2kPbD57xy9pREb4rvMvRWQGBY/h/gCUVsvGtu7QAKBi6EPpIRxxYKLD+ZQzZ7tybp+z2IysT7wWhLv5MBMIAXA/QErfD87K34SaEz3fGCStmUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955360; c=relaxed/simple;
-	bh=CF/DoEJIR7QmCjweckZ1R/mAam3gNqZgd354MtDtkFA=;
+	s=arc-20240116; t=1739955799; c=relaxed/simple;
+	bh=79VTrdTOkEoAYDL+5qsuwgJxyMiTomsh+3toKmhAjoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GY/lskGjv5T6ZiPxd4BloM07bjJ26TBKYNv0kcloGhaoioRVFVWPevqo3IzPUohU+roUSeN6YabHTP/41mA1TRrRrcNMPFMa8PPNAlxZnaHWbbWXJMbptMToYNhtBDxTAaytN8cumGSJSgnkOaovNosgJat7rUn6TWIyHrLoOKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwTMuh22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C365C4CED1;
-	Wed, 19 Feb 2025 08:55:59 +0000 (UTC)
+	 MIME-Version; b=HzAxRh6O32Kn0VLskOwzF0Mq5TDL1RYXtSRNKHTK8lS++xJldA291HB/4Ep3uPMMWqiBoUbF/1J0F1N/R0Lf9DWwlN8kBVqI2MwZlx7kjbjDNCSxChI+L6aZyKeGvF5TyzfzoHM4b5VictDJPipO7cKRfOAMopR87S2zR3xR2Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ka9+Geje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB866C4CED1;
+	Wed, 19 Feb 2025 09:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955360;
-	bh=CF/DoEJIR7QmCjweckZ1R/mAam3gNqZgd354MtDtkFA=;
+	s=korg; t=1739955799;
+	bh=79VTrdTOkEoAYDL+5qsuwgJxyMiTomsh+3toKmhAjoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwTMuh22n9YupSSHw2ryzMOy30mWcijwrvQfj1QTEJa2EOOsbJEfFf6owDcRHD2Cn
-	 8nBRGoqldQkVSjzS5CoE4Lw3rv4QZ2lf/m1sQwYZK1N2Cs9sJhHD+qmKXgRmxzXu0P
-	 Pdbn/eg5jjeWqQ/vskNvL26TJ630v/uzJedLeM0s=
+	b=Ka9+Geje0VOaVivbOjpvbwbKEQLWLMrIVmoYWauKGoyHmzj77/HzHwulQ2CIY4BFF
+	 MQlzRJ0RqJe5nMSAaSCli3DtT/+Wc88e3V+mUakCOnFEGkpKxaQWCrZZFvHoE/PKLt
+	 VNSi3XV92Byi1GvcGW6dpmTtokFOZqaz6Aq8HGG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.12 212/230] drm/v3d: Stop active perfmon if it is being destroyed
-Date: Wed, 19 Feb 2025 09:28:49 +0100
-Message-ID: <20250219082609.986365568@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vicki Pfau <vi@endrift.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/152] HID: hid-steam: Fix cleanup in probe()
+Date: Wed, 19 Feb 2025 09:28:50 +0100
+Message-ID: <20250219082554.684680910@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Gmeiner <cgmeiner@igalia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 21f1435b1e6b012a07c42f36b206d2b66fc8f13b upstream.
+[ Upstream commit a9f1da09c69f13ef471db8b22107a28042d230ca ]
 
-If the active performance monitor (`v3d->active_perfmon`) is being
-destroyed, stop it first. Currently, the active perfmon is not
-stopped during destruction, leaving the `v3d->active_perfmon` pointer
-stale. This can lead to undefined behavior and instability.
+There are a number of issues in this code.  First of all if
+steam_create_client_hid() fails then it leads to an error pointer
+dereference when we call hid_destroy_device(steam->client_hdev).
 
-This patch ensures that the active perfmon is stopped before being
-destroyed, aligning with the behavior introduced in commit
-7d1fd3638ee3 ("drm/v3d: Stop the active perfmon before being destroyed").
+Also there are a number of leaks.  hid_hw_stop() is not called if
+hid_hw_open() fails for example.  And it doesn't call steam_unregister()
+or hid_hw_close().
 
-Cc: stable@vger.kernel.org # v5.15+
-Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
-Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241118221948.1758130-1-christian.gmeiner@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 691ead124a0c ("HID: hid-steam: Clean up locking")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/1fd87904-dabf-4879-bb89-72d13ebfc91e@moroto.mountain
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hid/hid-steam.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -384,6 +384,7 @@ int v3d_perfmon_destroy_ioctl(struct drm
- {
- 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
- 	struct drm_v3d_perfmon_destroy *req = data;
-+	struct v3d_dev *v3d = v3d_priv->v3d;
- 	struct v3d_perfmon *perfmon;
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index 2f11f77ae2153..59b46163bc526 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -1127,14 +1127,14 @@ static int steam_probe(struct hid_device *hdev,
+ 	 */
+ 	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT & ~HID_CONNECT_HIDRAW);
+ 	if (ret)
+-		goto hid_hw_start_fail;
++		goto err_cancel_work;
  
- 	mutex_lock(&v3d_priv->perfmon.lock);
-@@ -393,6 +394,10 @@ int v3d_perfmon_destroy_ioctl(struct drm
- 	if (!perfmon)
- 		return -EINVAL;
+ 	ret = hid_hw_open(hdev);
+ 	if (ret) {
+ 		hid_err(hdev,
+ 			"%s:hid_hw_open\n",
+ 			__func__);
+-		goto hid_hw_open_fail;
++		goto err_hw_stop;
+ 	}
  
-+	/* If the active perfmon is being destroyed, stop it first */
-+	if (perfmon == v3d->active_perfmon)
-+		v3d_perfmon_stop(v3d, perfmon, false);
-+
- 	v3d_perfmon_put(perfmon);
+ 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
+@@ -1150,33 +1150,37 @@ static int steam_probe(struct hid_device *hdev,
+ 			hid_err(hdev,
+ 				"%s:steam_register failed with error %d\n",
+ 				__func__, ret);
+-			goto input_register_fail;
++			goto err_hw_close;
+ 		}
+ 	}
+ 
+ 	steam->client_hdev = steam_create_client_hid(hdev);
+ 	if (IS_ERR(steam->client_hdev)) {
+ 		ret = PTR_ERR(steam->client_hdev);
+-		goto client_hdev_fail;
++		goto err_stream_unregister;
+ 	}
+ 	steam->client_hdev->driver_data = steam;
+ 
+ 	ret = hid_add_device(steam->client_hdev);
+ 	if (ret)
+-		goto client_hdev_add_fail;
++		goto err_destroy;
  
  	return 0;
+ 
+-client_hdev_add_fail:
+-	hid_hw_stop(hdev);
+-client_hdev_fail:
++err_destroy:
+ 	hid_destroy_device(steam->client_hdev);
+-input_register_fail:
+-hid_hw_open_fail:
+-hid_hw_start_fail:
++err_stream_unregister:
++	if (steam->connected)
++		steam_unregister(steam);
++err_hw_close:
++	hid_hw_close(hdev);
++err_hw_stop:
++	hid_hw_stop(hdev);
++err_cancel_work:
+ 	cancel_work_sync(&steam->work_connect);
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->rumble_work);
++
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
