@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-117184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374DCA3B53B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C88A3B574
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60142177870
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:50:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 273731786CB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E64E1DEFE5;
-	Wed, 19 Feb 2025 08:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778D21E009F;
+	Wed, 19 Feb 2025 08:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHrxvCUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHBo4Hp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DDF1DE3D6;
-	Wed, 19 Feb 2025 08:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C071DE2C2;
+	Wed, 19 Feb 2025 08:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954465; cv=none; b=P7UHG3vs3W3PwaL++KkqWl5mKk1aMdXS0WDbH8P12nLvJYCMP5YjA75ruKN+tf+tktb5w7G5hiwpMI2UaHGlHeIHWRcPNHlmtBLGv6m/Wis8N4L5F5VJ0vv0hYg+boanGff/PxL5RYC/KWJeCoYCpTrgS9SUEJ4+IrezLIbC9UM=
+	t=1739954509; cv=none; b=mgxB+we0OLQHY7CicM9fvfyyBI2ASKJYHFksIzC8wEXsWlbi/gSAuqYapQgZrYUaIJS9KpO9n750HnMwjh0gJJu47upYf51u+g6krHBkaP+5GlrW+Vb1IKPyxh6GeZrvx27lSSqbbchOcjXQN53cImy4hQ8XtzkVKunelT8K0sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954465; c=relaxed/simple;
-	bh=8zfJCjb7xA5SUgYMCTBSS+asuO2jj8lvm6Ey9v85ZTw=;
+	s=arc-20240116; t=1739954509; c=relaxed/simple;
+	bh=N1tQwJ8SSQ0H7SsS61iP19SIBY/FMGhkTbBi0aiOsFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbsG/oIkeq5sBxmn85DiDCuFvt0n2jj5/45iaRtY4hVa85FHmJxlIatTsZP0eKLf99VIcTQE50q7JglMBsn+m27VuisZwGoVmzPmekkBGT3h6hc3sncf2jvaYjkwZDOXhD7UrFX+t9t58kElY9spKbWRP1nvoHqlN+9yyzNi9Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHrxvCUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0A1C4CED1;
-	Wed, 19 Feb 2025 08:41:04 +0000 (UTC)
+	 MIME-Version; b=dKcbhcr6ZsudHmIdOe4j/gurG3oZfVqHDIhmS4qRoJLs28ucaIVCeiu0QIGg5If0zRZ88Bnz1Kx8plY6QDp/4JCC3AP5spQhsBI5XaJ2OZTC/s5sFTPSa1oWyuF0Qy8IS6QCaV5xZvHDFBe++1MU4ibdxL3KkaJm1uStvFZh3S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHBo4Hp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B97BC4CED1;
+	Wed, 19 Feb 2025 08:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954464;
-	bh=8zfJCjb7xA5SUgYMCTBSS+asuO2jj8lvm6Ey9v85ZTw=;
+	s=korg; t=1739954509;
+	bh=N1tQwJ8SSQ0H7SsS61iP19SIBY/FMGhkTbBi0aiOsFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHrxvCUsrEneDuHtL4/L4aH+NdZjn7xBA4H+MqJXVtdhmdcKVB3992Q9C1L+DrSnC
-	 K+SJ7uhpuXyRCpKiTZ3adekZ0g8tE3cwx21/FS2mz1MExS930C/9Z10tH3UhgPeBYw
-	 ZZ7bEwgjDtyvpO+5Ceo5TnuUR6zaQOGz7quo1eMI=
+	b=dHBo4Hp/ibbz0jCS9eQNw6DTuETS5DG5ygQc9MARDask3J8Mt2t6G1/SX6+iPw4H7
+	 HkOLRKJ0Z00jWkHFccGkSqkpjb3qHGQsh0yHM65PjDep87AxSxVhKRZrHDLz03IoJ4
+	 A1v2AFIv7sDO4yNtLaxK+ZeINVceV6Eoj3K5eP2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ruowen Qin <ruqin@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Jinghao Jia <jinghao7@illinois.edu>,
 	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 206/274] samples/hid: remove unnecessary -I flags from libbpf EXTRA_CFLAGS
-Date: Wed, 19 Feb 2025 09:27:40 +0100
-Message-ID: <20250219082617.636980336@linuxfoundation.org>
+Subject: [PATCH 6.13 207/274] samples/hid: fix broken vmlinux path for VMLINUX_BTF
+Date: Wed, 19 Feb 2025 09:27:41 +0100
+Message-ID: <20250219082617.675573094@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -69,59 +71,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Jinghao Jia <jinghao7@illinois.edu>
 
-[ Upstream commit 1739cafdb8decad538410b05a4640055408826de ]
+[ Upstream commit 8b125949df58a00e8797c6e6d3f3d3dc08f4d939 ]
 
-Commit 5a6ea7022ff4 ("samples/bpf: Remove unnecessary -I flags from
-libbpf EXTRA_CFLAGS") fixed the build error caused by redundant include
-path for samples/bpf, but not samples/hid.
+Commit 13b25489b6f8 ("kbuild: change working directory to external
+module directory with M=") changed kbuild working directory of hid-bpf
+sample programs to samples/hid, which broke the vmlinux path for
+VMLINUX_BTF, as the Makefiles assume the current work directory to be
+the kernel output directory and use a relative path (i.e., ./vmlinux):
 
-Apply the same fix on samples/hid as well.
+  Makefile:173: *** Cannot find a vmlinux for VMLINUX_BTF at any of "  /path/to/linux/samples/hid/vmlinux", build the kernel or set VMLINUX_BTF or VMLINUX_H variable.  Stop.
+
+Correctly refer to the kernel output directory using $(objtree).
 
 Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
 Tested-by: Ruowen Qin <ruqin@redhat.com>
+Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Link: https://patch.msgid.link/20250203085506.220297-2-jinghao7@illinois.edu
+Link: https://patch.msgid.link/20250203085506.220297-4-jinghao7@illinois.edu
 Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/hid/Makefile | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ samples/hid/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/samples/hid/Makefile b/samples/hid/Makefile
-index 8ea59e9631a33..69159c81d0457 100644
+index 69159c81d0457..db5a077c77fc8 100644
 --- a/samples/hid/Makefile
 +++ b/samples/hid/Makefile
-@@ -40,16 +40,17 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
- endif
- endif
+@@ -164,7 +164,7 @@ $(obj)/hid_surface_dial.o: $(obj)/hid_surface_dial.skel.h
  
--TPROGS_CFLAGS += -Wall -O2
--TPROGS_CFLAGS += -Wmissing-prototypes
--TPROGS_CFLAGS += -Wstrict-prototypes
-+COMMON_CFLAGS += -Wall -O2
-+COMMON_CFLAGS += -Wmissing-prototypes
-+COMMON_CFLAGS += -Wstrict-prototypes
+ VMLINUX_BTF_PATHS ?= $(abspath $(if $(O),$(O)/vmlinux))				\
+ 		     $(abspath $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux))	\
+-		     $(abspath ./vmlinux)
++		     $(abspath $(objtree)/vmlinux)
+ VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
  
-+TPROGS_CFLAGS += $(COMMON_CFLAGS)
- TPROGS_CFLAGS += -I$(objtree)/usr/include
- TPROGS_CFLAGS += -I$(LIBBPF_INCLUDE)
- TPROGS_CFLAGS += -I$(srctree)/tools/include
- 
- ifdef SYSROOT
--TPROGS_CFLAGS += --sysroot=$(SYSROOT)
-+COMMON_CFLAGS += --sysroot=$(SYSROOT)
- TPROGS_LDFLAGS := -L$(SYSROOT)/usr/lib
- endif
- 
-@@ -112,7 +113,7 @@ clean:
- 
- $(LIBBPF): $(wildcard $(LIBBPF_SRC)/*.[ch] $(LIBBPF_SRC)/Makefile) | $(LIBBPF_OUTPUT)
- # Fix up variables inherited from Kbuild that tools/ build system won't like
--	$(MAKE) -C $(LIBBPF_SRC) RM='rm -rf' EXTRA_CFLAGS="$(TPROGS_CFLAGS)" \
-+	$(MAKE) -C $(LIBBPF_SRC) RM='rm -rf' EXTRA_CFLAGS="$(COMMON_CFLAGS)" \
- 		LDFLAGS=$(TPROGS_LDFLAGS) srctree=$(HID_SAMPLES_PATH)/../../ \
- 		O= OUTPUT=$(LIBBPF_OUTPUT)/ DESTDIR=$(LIBBPF_DESTDIR) prefix= \
- 		$@ install_headers
+ $(obj)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL)
 -- 
 2.39.5
 
