@@ -1,187 +1,128 @@
-Return-Path: <stable+bounces-118242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55376A3BC20
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 11:55:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36499A3BC2A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 11:56:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21E963B6777
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:54:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A8E4188E461
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C851DE89B;
-	Wed, 19 Feb 2025 10:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D26F1DED44;
+	Wed, 19 Feb 2025 10:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="Wjm1U4rl"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JY6YUIY4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDCD1DE899
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 10:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5431DE4F6
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 10:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739962481; cv=none; b=DEhqOXVkct0v6HsJhmnAt56O+IaUkVIA8mDDtXKVvRpW4KBYlQA/AptitwqiyxeoeTYkFGlJSbySNoql8ncLNa8sLWLFzznbT26DeZ9jDwOcrKZ0ktJHuMmpkTI3Q9QCRX9SKaKEU7Hi7qNLBOUJ48Xi8jjO3Ayw6uG9FO0Uueg=
+	t=1739962568; cv=none; b=r4Je8izaH/qRU1GClaBa/1P73OGTzm3HpulwuHnItNkTRCXA7923Jkh+enT9vQBlokP+hm7L4EwiTrWmZFoFJVOugZiw3wUv0+WfD/c8bPubccK4WTuwpfiT5GrtwjqA8DNFysnu03lfjc/QYhQa9oR7mlrbqvpRZ1J3L2tfjrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739962481; c=relaxed/simple;
-	bh=CfG5rFGHn6tfImq7Y/p/eC8/S5f+1eKRF+J81O2jlYI=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YY38jCHFaW4RzXgxg9BrhlXkU1BA8iOEhwL6VtfJ+PVLbendS/16lk2LmFPrDKN70bNMhbNzPaL+KdtaP332QEYFTyZW6syxsBwrWOlcekyss5IgCye0odUkBxaaXmPhv7+GnmDSw/jfPa0yHn8bzThP87UcJpOd0KGdvOi6xpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=Wjm1U4rl; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1739962568; c=relaxed/simple;
+	bh=eaG/GbWLBDk4/YJIcaFIY6f9h1iZspXbx7Ba+G69v9A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sh1dla6WA3nTZHAfsJyALsVAIH9D5i7ebLOaoV5YjDIDIoCz8lvbuTLyzup73Y7B2s4almKGEzRV8Z+zbt9tXon5Qj0kBd1GwW9Y00QS1yjejDwhoAhIE4rXDG6k9BoU7qR7sVR2CS3K5WurLeetQKpn+FIH9DX6k9i44NKxW+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JY6YUIY4; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so38133965e9.2
+        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 02:56:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1739962479; x=1771498479;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=m8/uczRdJiZTSA4aIpkwgqgqOCS1QSkQKWfQCxDWJnc=;
-  b=Wjm1U4rlgErcVsqvzWxDUbbYbi0AWb06j57JHHlxUiTgZd08db2iWfnM
-   s9bjUR4HKB/WQ+HKb37CrrYx+Xn5DB7nVphfZOMVgPTm/tNrY4GH6uxJG
-   RMlHd0vQU82Y7MWbd7MT1UKprbHTYulzLbmXtIofFc8NydRM2jyJOqXje
-   c=;
-X-IronPort-AV: E=Sophos;i="6.13,298,1732579200"; 
-   d="scan'208";a="23901110"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 10:54:38 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:65488]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.141:2525] with esmtp (Farcaster)
- id 4b3bd0a5-ff16-4d77-ac5d-ab05cf93c3b8; Wed, 19 Feb 2025 10:54:37 +0000 (UTC)
-X-Farcaster-Flow-ID: 4b3bd0a5-ff16-4d77-ac5d-ab05cf93c3b8
-Received: from EX19EXOUWA001.ant.amazon.com (10.250.64.209) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 19 Feb 2025 10:54:37 +0000
-Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
- EX19EXOUWA001.ant.amazon.com (10.250.64.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 19 Feb 2025 10:54:37 +0000
-Received: from email-imr-corp-prod-pdx-all-2b-5ec155c2.us-west-2.amazon.com
- (10.25.36.210) by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.39 via Frontend Transport; Wed, 19 Feb 2025 10:54:37 +0000
-Received: from dev-dsk-ptyadav-1c-43206220.eu-west-1.amazon.com (dev-dsk-ptyadav-1c-43206220.eu-west-1.amazon.com [172.19.91.144])
-	by email-imr-corp-prod-pdx-all-2b-5ec155c2.us-west-2.amazon.com (Postfix) with ESMTP id D674440273;
-	Wed, 19 Feb 2025 10:54:36 +0000 (UTC)
-Received: by dev-dsk-ptyadav-1c-43206220.eu-west-1.amazon.com (Postfix, from userid 23027615)
-	id 6B9EE4EB3; Wed, 19 Feb 2025 10:54:36 +0000 (UTC)
-From: Pratyush Yadav <ptyadav@amazon.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, Shu Han <ebpqwerty472123@gmail.com>,
-	<patches@lists.linux.dev>, Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>, Bin Lan <bin.lan.cn@windriver.com>
-Subject: Re: [PATCH 5.10] mm: call the security_mmap_file() LSM hook in
- remap_file_pages()
-In-Reply-To: <2025021906-campus-glowworm-8aea@gregkh> (Greg Kroah-Hartman's
-	message of "Wed, 19 Feb 2025 09:12:01 +0100")
-References: <20250210191056.58787-1-ptyadav@amazon.de>
-	<2025021906-campus-glowworm-8aea@gregkh>
-Date: Wed, 19 Feb 2025 10:54:36 +0000
-Message-ID: <mafs0ldu2kxw3.fsf_-_@amazon.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        d=google.com; s=20230601; t=1739962565; x=1740567365; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r9qTS4Uc1tQ2R+88yELo0rnzGgf96mYUsGo/xuWB5/Y=;
+        b=JY6YUIY4xxn5OBFi3bijk9+3ydD7I2oES18JMesVCCO9RzYvX6MErobQig6j5y2uvC
+         ew6+yRb3MW82rUkrvBDn722JC26ateZbhJpDuW9JE9xxKDcpdZZiZtIu7iQ7/k5NvwsR
+         z1Ga2Y67+rvxWbz909HfX/Ze9QTi+0iKQZhfoKD+b2L+571wlfZwwUBYAu86Awm2SYxK
+         tZzR35u4FMuqp5K1/Dxi35rSGB44NvLsFged4j4NsrAfjH0qR4Yf+78+CgtxBptsNWby
+         NLgNLeC35xrghsVOby6jZSU0RTuo1d95Fac/D3e/jji3xtlRYnS98VgIvT3j/WXYqCKD
+         NwXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739962565; x=1740567365;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r9qTS4Uc1tQ2R+88yELo0rnzGgf96mYUsGo/xuWB5/Y=;
+        b=XI1ZWjtpvJ642CShaQijuFcDPm34Y2sgnXqv17DTbib7Dhi7fPWxxV6ONx1dAtkdHT
+         Frqf5mjxLv6Pjo5rUO+qpqwCvoTE34ZYe1HA6tBKiSbGrN+mCi+vuSx8/sSkfGiS7gOE
+         uzYhCY//RuCithv9HaVVojJE8Uusd2WqQ4elrS9+RFAf+ooTajmOX+yeCfV2Qo9AdmD4
+         TRTKUtSnLbZ1Lm1ORl9l6nXAJClgsaZOvjhjKgA3wei00BGOpwEYPP+flLIweLY4sIzH
+         mH9AGUfyogSz1c/kOmgKI5/hy4oV6t6jY9CkudvcB6LSrmwNmZQZHhlkIziwycJR0MxT
+         7R/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWonps5gnxg7pBxKXh70ZzBWEox17Hg0R7BLli65CBE18sTijqnrBBG+rCtEi0QHq+8oh+XafE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzogXJX1roPrTOV2u6GyLaXtVlCF4EVcoYcoA/xLamF+NOwQBwq
+	RG50WE3XU1zOuq/9/CUdAZ5Az2xg3/tWNDOu9ACRG7tmaO3I+lc2r1kcDhvYWkY38b15Yg==
+X-Google-Smtp-Source: AGHT+IHoREA2ePDbR8mhOuh0W0YArGHABmjjWj+HtOC3f43DWme5eakY/sEFJdfRLZliHhEDJEk89fAn
+X-Received: from wmbbi18.prod.google.com ([2002:a05:600c:3d92:b0:439:7d73:d8fc])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1f0f:b0:439:8653:20bb
+ with SMTP id 5b1f17b1804b1-439865322ddmr103214025e9.14.1739962565036; Wed, 19
+ Feb 2025 02:56:05 -0800 (PST)
+Date: Wed, 19 Feb 2025 11:55:44 +0100
+In-Reply-To: <20250219105542.2418786-4-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250219105542.2418786-4-ardb+git@google.com>
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1436; i=ardb@kernel.org;
+ h=from:subject; bh=HkjZ8co7JO5kD2Q6DjKKl8vHVJcbPC4E7rJMS59Tps8=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIX3rjg2sU0snRccvDPzP8KLlg0DiHoaknAi2kyuDbK0+H
+ VkWVNXcUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACbyYwkjw6UELeZFsydvv/f/
+ YJ7bEfvgrKCv/esDw+r/b9i4eINo8xqG/8FHvQuVzKWbNj9+fExZZruTyRbjx/Vc63tm935gXbN IgBMA
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <20250219105542.2418786-5-ardb+git@google.com>
+Subject: [PATCH v2 1/2] asm-generic/vmlinux.lds: Move .data.rel.ro input into
+ .rodata segment
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, Huacai Chen <chenhuacai@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 19 2025, Greg Kroah-Hartman wrote:
+From: Ard Biesheuvel <ardb@kernel.org>
 
-> On Mon, Feb 10, 2025 at 07:10:54PM +0000, Pratyush Yadav wrote:
->> From: Shu Han <ebpqwerty472123@gmail.com>
->>
->> commit ea7e2d5e49c05e5db1922387b09ca74aa40f46e2 upstream.
->>
->> The remap_file_pages syscall handler calls do_mmap() directly, which
->> doesn't contain the LSM security check. And if the process has called
->> personality(READ_IMPLIES_EXEC) before and remap_file_pages() is called for
->> RW pages, this will actually result in remapping the pages to RWX,
->> bypassing a W^X policy enforced by SELinux.
->>
->> So we should check prot by security_mmap_file LSM hook in the
->> remap_file_pages syscall handler before do_mmap() is called. Otherwise, it
->> potentially permits an attacker to bypass a W^X policy enforced by
->> SELinux.
->>
->> The bypass is similar to CVE-2016-10044, which bypass the same thing via
->> AIO and can be found in [1].
->>
->> The PoC:
->>
->> $ cat > test.c
->>
->> int main(void) {
->>       size_t pagesz = sysconf(_SC_PAGE_SIZE);
->>       int mfd = syscall(SYS_memfd_create, "test", 0);
->>       const char *buf = mmap(NULL, 4 * pagesz, PROT_READ | PROT_WRITE,
->>               MAP_SHARED, mfd, 0);
->>       unsigned int old = syscall(SYS_personality, 0xffffffff);
->>       syscall(SYS_personality, READ_IMPLIES_EXEC | old);
->>       syscall(SYS_remap_file_pages, buf, pagesz, 0, 2, 0);
->>       syscall(SYS_personality, old);
->>       // show the RWX page exists even if W^X policy is enforced
->>       int fd = open("/proc/self/maps", O_RDONLY);
->>       unsigned char buf2[1024];
->>       while (1) {
->>               int ret = read(fd, buf2, 1024);
->>               if (ret <= 0) break;
->>               write(1, buf2, ret);
->>       }
->>       close(fd);
->> }
->>
->> $ gcc test.c -o test
->> $ ./test | grep rwx
->> 7f1836c34000-7f1836c35000 rwxs 00002000 00:01 2050 /memfd:test (deleted)
->>
->> Link: https://project-zero.issues.chromium.org/issues/42452389 [1]
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Shu Han <ebpqwerty472123@gmail.com>
->> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
->> [PM: subject line tweaks]
->> Signed-off-by: Paul Moore <paul@paul-moore.com>
->> Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
->> ---
->>  mm/mmap.c | 4 ++++
->>  1 file changed, 4 insertions(+)
->>
->> diff --git a/mm/mmap.c b/mm/mmap.c
->> index 9f76625a1743..2c17eb840e44 100644
->> --- a/mm/mmap.c
->> +++ b/mm/mmap.c
->> @@ -3078,8 +3078,12 @@ SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
->>       }
->>
->>       file = get_file(vma->vm_file);
->> +     ret = security_mmap_file(vma->vm_file, prot, flags);
->> +     if (ret)
->> +             goto out_fput;
->>       ret = do_mmap(vma->vm_file, start, size,
->>                       prot, flags, pgoff, &populate, NULL);
->> +out_fput:
->>       fput(file);
->>  out:
->>       mmap_write_unlock(mm);
->> --
->> 2.47.1
->>
->>
->
-> This has required fixes for this commit which you did not include here,
-> so I'm going to have to drop this from the tree.  Same for the other
-> branch you submitted this against.
->
-> Please be more careful and always include all needed commits to resolve
-> a problem, we don't want to purposfully add bugs to the kernel tree that
-> we have already resolved.
+When using -fPIE codegen, the compiler will emit const global objects
+(which are useless unless statically initialized) into .data.rel.ro
+rather than .rodata if the object contains fields that carry absolute
+addresses of other code or data objects. This permits the linker to
+annotate such regions as requiring read-write access only at load time,
+but not at execution time (in user space).
 
-My bad. I wanted to fix the CVE assigned to this patch and I didn't
-think of looking for follow-up fixes. Will do that next time around.
+This distinction does not matter for the kernel, but it does imply that
+const data will end up in writable memory if the .data.rel.ro sections
+are not treated in a special way.
 
+So emit .data.rel.ro into the .rodata segment.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ include/asm-generic/vmlinux.lds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 02a4adb4a999..0d5b186abee8 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -457,7 +457,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ 	. = ALIGN((align));						\
+ 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+ 		__start_rodata = .;					\
+-		*(.rodata) *(.rodata.*)					\
++		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
+ 		SCHED_DATA						\
+ 		RO_AFTER_INIT_DATA	/* Read only after init */	\
+ 		. = ALIGN(8);						\
 -- 
-Regards,
-Pratyush Yadav
+2.48.1.601.g30ceb7b040-goog
+
 
