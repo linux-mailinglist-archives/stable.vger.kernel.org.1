@@ -1,138 +1,159 @@
-Return-Path: <stable+bounces-118309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616F0A3C4AB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 17:16:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEA7A3C5F3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A77D3B6D1E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 16:13:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA5F3B7A61
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 17:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63C31FF61B;
-	Wed, 19 Feb 2025 16:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="U7dkyGrk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE6220E6F9;
+	Wed, 19 Feb 2025 17:18:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78451FF1C9
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 16:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA35286284;
+	Wed, 19 Feb 2025 17:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739981573; cv=none; b=YbNOHGpUPJCqYw0IcyHZojdqvDAvUHk+YX+aw8XeYBtz4mghW8lm/SD2fO86DWMVhPbsrqtOG2FTE69g91BeRMuwZuJRPyQViO2d5HzE+uRc6idZtqIWfKWneb439aW7+/qn+Ex/BRmCih2HNvo6mU4j/EACAecIbqL2M9mfHtU=
+	t=1739985513; cv=none; b=n+vkqaGfi+s1rq88fESmo37QCQiO2obys74PNfd6qG7hgC3wMFYvASLfbRSPds2nrx7yh0qFEPOT85+MUH9oQarSHuX69TRxIWJZt8xtPygwKOzndFlELK+04QOKuyCyLPl1wsv40QkCdbJZC5dpdbYinqH3sGozocI1/1dpSLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739981573; c=relaxed/simple;
-	bh=axF2Pp59a3z4NWipdCDsQn5fYbe8VXVp+WNIBSWoobk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeVLwm2AqfZGLY6eIe1d5NMWFpbbR5lpLXaBWn1q5/UTEaDLXVCpPjlcUPEvhJE0KyzqUabjZPIq5tCV5cvmx/4kKQos2BcgDmnzM9uT1c8uhg7aFoiLNAwN6wzgFTREIJq/2/soFH0vLGeqGafXuCj5V6CuBzo9cS9miHfl5Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=U7dkyGrk; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5dedae49c63so3091833a12.0
-        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 08:12:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1739981570; x=1740586370; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pWZtx2jwJGHqxUnFIBqmFUKuSbo4cAmKHNmhP1PJ3qc=;
-        b=U7dkyGrk+ttK0dBMzESf5NGFwMmAxjA8UJMS83+gUOGqgw77NA+Kcs76Tp0u8TrZx+
-         MpvnW6norj9M/3wAF7r8jJPUjriTxpjBV4rL62kYzfUgGbwAwcU4peRZIjICqcbROaTT
-         tlChDhdkpfh/TEg0SsYQws4ozNLCc64+onzzlyEC202M26DV1wt5eCVVnYBXGcoAzWmq
-         3Pe5XbpBfwVJeElDM5C9BdJIDgEKCEAFruwVi1x3pYTd5qg1WJrmJs0rN/z1JpoB8NVC
-         xndkNlTKzxz6oqeJB9G9MIzf0U0MF/diy4X3tJ06kI8NX1NWoJNR+WAWXgFCOX+6B66c
-         D99Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739981570; x=1740586370;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pWZtx2jwJGHqxUnFIBqmFUKuSbo4cAmKHNmhP1PJ3qc=;
-        b=gpwkgUlq1zSwtv5RmPN54SNwNQllkLcuqY+oHis94Ovkek4n793wusM59xX01/d85I
-         /sBtYA5pJEGzO/QvqN6Xe8AdjknwIm+lIwN50l8aYzp0XzZBw8eARx+CdyDY/Qq5bR0B
-         2azVHaIvKZuwtiLmu6RYbHWppZaJBClufolvJLF7CKsJJVjnG7hcuYCVdCAKEgq84e1Z
-         tfQoRcM29m5ZkJ9Jih8hXCocfNJmmoGmyWAotK7gNjjwa/UaSRvU9JHOxApxzINzdTQh
-         lSYAG5DbZSApO4KE1E1ZIPUgvMJM5F5srxCFIRAcbKQneU4rsDSq9vxBtSRP8j1EQjXK
-         pYIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFmYzMhx8VzjUv/aNZfsiampwMI9S5JY0gVCj1KITpAQkqz6gIqph9nnST2gny5R41aBish5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm7XlMyvJbJ19DDGkRxL1engIKc9t8C4aBIlDLwg55JH6PI9Ui
-	ZjDvACKJtQdWtl8IiPjn8FBP4d3GiamsdtVDhwj3lR0q66L9aryWDdxtpxVM0yk=
-X-Gm-Gg: ASbGnctE/d5rK39lx20+FJ1OmPFlG+44LwkwXsRDW0vZdD1JMVel7OSPaHC9ay+fLFK
-	jHqUL3usasLyDtqrFX1KJDUySKzXbg+1zhdlzhlm4E4sPUx6XMt3heUQW/bnnd0cjwwHTZxDSt8
-	S5RaqeYmb11OnXaEE6o30kSvxIdBIUiUzw1MRovS3k22zmd8g95Ni5T2Nvi7qwsELGewUuY1GUr
-	aAxC7XfwkJjLt/9a1PGmZT06rIEg6ZdlQbRd0ODWDfj6PLsOnRLBmutfV5HLSA+nCxLPcLIVNCZ
-	TjZwvVvzYPAszVciuu8wpVy3lirrRZspDLn5KVf5suGr
-X-Google-Smtp-Source: AGHT+IEbhm7NcKnV5miBbyC3Mc4QXaqAGBiokThdnN9Unuo9244Ug/u1c1MM+nOw29agWhNsuqTOsA==
-X-Received: by 2002:a05:6402:5111:b0:5de:4b81:d3ff with SMTP id 4fb4d7f45d1cf-5e0360bb387mr15073998a12.13.1739981570329;
-        Wed, 19 Feb 2025 08:12:50 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.25])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e07f390626sm2548881a12.30.2025.02.19.08.12.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 08:12:48 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: gregkh@linuxfoundation.org,
-	biju.das.jz@bp.renesas.com,
-	geert+renesas@glider.be,
-	yoshihiro.shimoda.uh@renesas.com,
-	laurent.pinchart@ideasonboard.com,
-	phil.edworthy@renesas.com,
-	balbi@ti.com,
-	kuninori.morimoto.gx@renesas.com
-Cc: claudiu.beznea@tuxon.dev,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RTF 3/3] usb: renesas_usbhs: Flush the notify_hotplug_work
-Date: Wed, 19 Feb 2025 18:12:39 +0200
-Message-ID: <20250219161239.1751756-4-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250219161239.1751756-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20250219161239.1751756-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1739985513; c=relaxed/simple;
+	bh=Axex9ugl2cp1Mnn+czrujd78B3to4P86gl7uF640N9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lAfpFm2X5BhcubaymMPd4bacljPfkuFkNW9L5v5L0iovcYYVgXjoUdRnKghTXg2SHcJVrULcEV1JJeeF/pqhin8+Xz08yvOhFsekrvf/dY5rY/sf/xyk6hWkcjx+COwU544KopoWgnwwEMkIAe72DuGeGt/unPlOQsiOhtFHD7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358C4C4CEE0;
+	Wed, 19 Feb 2025 17:18:27 +0000 (UTC)
+Date: Wed, 19 Feb 2025 17:18:24 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>, willy@infradead.org,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
+Message-ID: <Z7YSYArXkRFEy6FO@arm.com>
+References: <20250206155234.095034647@linuxfoundation.org>
+ <CA+G9fYvKzV=jo9AmKH2tJeLr0W8xyjxuVO-P+ZEBdou6C=mKUw@mail.gmail.com>
+ <CA+G9fYtqBxt+JwSLCcVBchh94GVRhbo9rTP26ceJ=sf4MDo61Q@mail.gmail.com>
+ <Z7Xj-zIe-Sa1syG7@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7Xj-zIe-Sa1syG7@arm.com>
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On Wed, Feb 19, 2025 at 02:00:27PM +0000, Catalin Marinas wrote:
+> > On Sat, 8 Feb 2025 at 16:54, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > Regression on qemu-arm64 and FVP noticed this kernel warning running
+> > > selftests: arm64: check_hugetlb_options test case on 6.6.76-rc1 and
+> > > 6.6.76-rc2.
+> > >
+> > > Test regression: WARNING-arch-arm64-mm-copypage-copy_highpage
+> > >
+> > > ------------[ cut here ]------------
+> > > [   96.920028] WARNING: CPU: 1 PID: 3611 at
+> > > arch/arm64/mm/copypage.c:29 copy_highpage
+> > > (arch/arm64/include/asm/mte.h:87)
+> > > [   96.922100] Modules linked in: crct10dif_ce sm3_ce sm3 sha3_ce
+> > > sha512_ce sha512_arm64 fuse drm backlight ip_tables x_tables
+> > > [   96.925603] CPU: 1 PID: 3611 Comm: check_hugetlb_o Not tainted 6.6.76-rc2 #1
+> > > [   96.926956] Hardware name: linux,dummy-virt (DT)
+> > > [   96.927695] pstate: 43402009 (nZcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+> > > [   96.928687] pc : copy_highpage (arch/arm64/include/asm/mte.h:87)
+> > > [   96.929037] lr : copy_highpage
+> > > (arch/arm64/include/asm/alternative-macros.h:232
+> > > arch/arm64/include/asm/cpufeature.h:443
+> > > arch/arm64/include/asm/cpufeature.h:504
+> > > arch/arm64/include/asm/cpufeature.h:814 arch/arm64/mm/copypage.c:27)
+> > > [   96.929399] sp : ffff800088aa3ab0
+> > > [   96.930232] x29: ffff800088aa3ab0 x28: 00000000000001ff x27: 0000000000000000
+> > > [   96.930784] x26: 0000000000000000 x25: 0000ffff9b800000 x24: 0000ffff9b9ff000
+> > > [   96.931402] x23: fffffc0003257fc0 x22: ffff0000c95ff000 x21: ffff0000c93ff000
+> > > [   96.932054] x20: fffffc0003257fc0 x19: fffffc000324ffc0 x18: 0000ffff9b800000
+> > > [   96.933357] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+> > > [   96.934091] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+> > > [   96.935095] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+> > > [   96.935982] x8 : 0bfffc0001800000 x7 : 0000000000000000 x6 : 0000000000000000
+> > > [   96.936536] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+> > > [   96.937089] x2 : 0000000000000000 x1 : ffff0000c9600000 x0 : ffff0000c9400080
+> > > [   96.939431] Call trace:
+> > > [   96.939920] copy_highpage (arch/arm64/include/asm/mte.h:87)
+> > > [   96.940443] copy_user_highpage (arch/arm64/mm/copypage.c:40)
+> > > [   96.940963] copy_user_large_folio (mm/memory.c:5977 mm/memory.c:6109)
+> > > [   96.941535] hugetlb_wp (mm/hugetlb.c:5701)
+> > > [   96.941948] hugetlb_fault (mm/hugetlb.c:6237)
+> > > [   96.942344] handle_mm_fault (mm/memory.c:5330)
+> > > [   96.942794] do_page_fault (arch/arm64/mm/fault.c:513
+> > > arch/arm64/mm/fault.c:626)
+> > > [   96.943341] do_mem_abort (arch/arm64/mm/fault.c:846)
+> > > [   96.943797] el0_da (arch/arm64/kernel/entry-common.c:133
+> > > arch/arm64/kernel/entry-common.c:144
+> > > arch/arm64/kernel/entry-common.c:547)
+> > > [   96.944229] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:0)
+> > > [   96.944765] el0t_64_sync (arch/arm64/kernel/entry.S:599)
+> > > [   96.945383] ---[ end trace 0000000000000000 ]---
+> 
+> Prior to commit 25c17c4b55de ("hugetlb: arm64: add mte support"), there
+> was no hugetlb support with MTE, so the above code path should not
+> happen - it seems to get a PROT_MTE hugetlb page which should have been
+> prevented by arch_validate_flags(). Or something else corrupts the page
+> flags and we end up with some random PG_mte_tagged set.
 
-When performing continuous unbind/bind operations on the USB drivers
-available on the Renesas RZ/G2L SoC, a kernel crash with the message
-"Unable to handle kernel NULL pointer dereference at virtual address"
-may occur. This issue points to the usbhsc_notify_hotplug() function.
+The problem is in the arm64 arch_calc_vm_flag_bits() as it returns
+VM_MTE_ALLOWED for any MAP_ANONYMOUS ignoring MAP_HUGETLB (it's been
+doing this since day 1 of MTE). The implementation does handle the
+hugetlb file mmap() correctly but not the MAP_ANONYMOUS case.
 
-Flush the delayed work to avoid its execution when driver resources are
-unavailable.
+The fix would be something like below:
 
-Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
- drivers/usb/renesas_usbhs/common.c | 2 ++
- 1 file changed, 2 insertions(+)
+-----------------8<--------------------------
+diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
+index 5966ee4a6154..8ff5d88c9f12 100644
+--- a/arch/arm64/include/asm/mman.h
++++ b/arch/arm64/include/asm/mman.h
+@@ -28,7 +28,8 @@ static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
+ 	 * backed by tags-capable memory. The vm_flags may be overridden by a
+ 	 * filesystem supporting MTE (RAM-based).
+ 	 */
+-	if (system_supports_mte() && (flags & MAP_ANONYMOUS))
++	if (system_supports_mte() &&
++	    ((flags & MAP_ANONYMOUS) && !(flags & MAP_HUGETLB)))
+ 		return VM_MTE_ALLOWED;
 
-diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
-index 6c7857b66a21..4b35ef216125 100644
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -781,6 +781,8 @@ static void usbhs_remove(struct platform_device *pdev)
- 
- 	dev_dbg(&pdev->dev, "usb remove\n");
- 
-+	flush_delayed_work(&priv->notify_hotplug_work);
-+
- 	/* power off */
- 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
- 		usbhsc_power_ctrl(priv, 0);
+ 	return 0;
+-------------------8<-----------------------
+
+This fix won't make sense for mainline since it supports MAP_HUGETLB
+already.
+
+Greg, are you ok with a stable-only fix as above or you'd rather see the
+full 25c17c4b55de ("hugetlb: arm64: add mte support") backported?
+
+Thanks.
+
 -- 
-2.43.0
-
+Catalin
 
