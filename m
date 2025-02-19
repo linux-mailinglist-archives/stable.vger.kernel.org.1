@@ -1,290 +1,321 @@
-Return-Path: <stable+bounces-118322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B0CA3C7B2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 19:35:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AC2A3C80B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 19:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5304917B80A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:32:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39F3177F09
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFAC215181;
-	Wed, 19 Feb 2025 18:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF9F214A96;
+	Wed, 19 Feb 2025 18:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="XfF+1Txt"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="TfN/yhsV"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2123.outbound.protection.outlook.com [40.107.236.123])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F85421481B;
-	Wed, 19 Feb 2025 18:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739989878; cv=fail; b=aCO484qxBX+sNz7/w2HqoOnuS+gf/LZVOo0IKFcFjYE4CUvNVqVnTUGS1T7s+2bohWFZDBCvmBI1A0pEjEdDTn7FY7LfvCZDIe4VTHaqOmQHzYCpfyJZIedsSWbfQcjPBVYXuF5TQnQKttNVjwQjW1tbAzzYwN4Xj1Y510Zm1Bs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739989878; c=relaxed/simple;
-	bh=w1JoQAFdV2DfEJexxoGkgPzZjSvrkiD35j5dxII+IF8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SDlzHxdQKlQPdvQFqr3FB7Q6mb6JEmBRHAYKVQYI8lTlN0FMsNoMkHRbK+BjN96U90oChQN8q4QOle8LejTNpZ5f7PxTTcAyGLZIsWoBxwEMThr+N5b1LcSHaDeS5T80qCKAACZIrQs5XpMXFHyHWfyxsszW84cHyablIa9HuXk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=XfF+1Txt; arc=fail smtp.client-ip=40.107.236.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ifr5x2tMGMA7xlTq8e/hHg+S8YTLVslBFBhyQn3PvN76ZeKIi4aSZsakonwS9pjFmwTQYkxCLJOKAQgAVAiCYoPKLPZamZ+wthqdg7vVqhl2LdbF1Ij1SP8EzUWPTBlgRX+ZUDqmxBTHDnmxOVNgqjGHbH0OXgPU60yU0VGcYFMVNj2hnyULWdE3vk1JVc3o2aSOohgHlyJs9PD6i9S5ya+5URjd6Su2tuqm9l7jEYLW4RtvH7QV13gnH9NqbG3JU+y2PiAZIbFMLvc0zVRRnTooN3NEXJqrI5MJYZ4cz1l8GJAVWjOXCSRkkgWodSLNoFtu/hM0Hjln72lgr/RCkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DQp1CRH2+SddS0VKwcPjjD1mGEO4fMPBYESq6vZ+RVQ=;
- b=Yf/PitLJHwBdySK35L2af6Y3MuNAp1YrYJ12ZIS5Mz2dEw703VcjHwDjeT6QxbCDbMcppii6Qv+oskiBX4PT4DEqoctnYuVHYJbNAb1ZtPpxrhXEaEE9t0VEvAfWWVa/9HMnTpzodC9Vo2JRaRj9Pni2/hBTUCj15Pg5RaTdtsmoem0FHQVBvfGx3buUa9Oz/wrDMzxBvNXWIsHA6ezwihaHRwTBCKIbD3Bp69gftCeZeK/6WsaarpozegYAVFi9W7jcUc6nJ/Zruj95kk+Wklj6zLKAQkCD/wzcyBvLOqpOLapSO72nVJoNAnKIPuHC/v1Uu3jf+zbU0g9zel9KMQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DQp1CRH2+SddS0VKwcPjjD1mGEO4fMPBYESq6vZ+RVQ=;
- b=XfF+1TxtgOzSq9jvMcpAVH4aL0z2/1g/3VUgErXkOIVcD4JuLGc2CiTADMou4Bkxxz924hUgcj0nBaBKVJgy2MMucz13uOI+T8F1ratNwkGVW4rniYyx0BA9aET/GpddrJNtfo+Cae6TihYWEL5FB/ZN2nX5Hg7uyV88XngRksY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
- MN0PR01MB7850.prod.exchangelabs.com (2603:10b6:208:37e::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8466.12; Wed, 19 Feb 2025 18:31:13 +0000
-Received: from CH0PR01MB6873.prod.exchangelabs.com
- ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
- ([fe80::3850:9112:f3bf:6460%6]) with mapi id 15.20.8466.015; Wed, 19 Feb 2025
- 18:31:13 +0000
-Message-ID: <c681c266-6385-44dc-b6dc-a61b5425db23@os.amperecomputing.com>
-Date: Wed, 19 Feb 2025 10:31:07 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
- Anders Roxell <anders.roxell@linaro.org>,
- Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Herbert Xu <herbert@gondor.apana.org.au>, willy@infradead.org,
- Pankaj Raghav <p.raghav@samsung.com>, David Hildenbrand <david@redhat.com>
-References: <20250206155234.095034647@linuxfoundation.org>
- <CA+G9fYvKzV=jo9AmKH2tJeLr0W8xyjxuVO-P+ZEBdou6C=mKUw@mail.gmail.com>
- <CA+G9fYtqBxt+JwSLCcVBchh94GVRhbo9rTP26ceJ=sf4MDo61Q@mail.gmail.com>
- <Z7Xj-zIe-Sa1syG7@arm.com> <Z7YSYArXkRFEy6FO@arm.com>
-Content-Language: en-US
-From: Yang Shi <yang@os.amperecomputing.com>
-In-Reply-To: <Z7YSYArXkRFEy6FO@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR03CA0015.namprd03.prod.outlook.com
- (2603:10b6:806:2d3::22) To CH0PR01MB6873.prod.exchangelabs.com
- (2603:10b6:610:112::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A8B1E4AB
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 18:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739991369; cv=none; b=pcPjDlnMwAiqNPpSCjsGOe9cIlL5xO988LSKHoibGLBjiO6EvI6Bo9ZgeUUmYl483RSx7VHwG/+Mn0uxFsGkc6hIqWf9WqzOQ6AFQKjo9gRLRI0/zBf07iLb239fx1Qu1awJWReGl7xiE8OsGbhFgKY4BVv/+xCZKpQxsyp92hc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739991369; c=relaxed/simple;
+	bh=R0pJRv8Y3NNPdEoB02aPXS6NoIQxDsZg5r5rkW3yJPI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rzSJdjmKIjvoQOdmW3LElVYeqDRKAzWWgVXfz2uwOz22NyADBjxuN9bBGooLw598udFmC3ur3wQanu9eFauOdwLU0Z2ytBNy4gfnp+ee2K6q71y3tbV5w7Mzgy4VlGn42ZCLfJ7UeNql1vXicN1IkLlOtG/+W5Av6SK/ZjDOMAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=TfN/yhsV; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1739990984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y5atmT4Hk74zf8egci27Cjs3agvasyE4jnZRp7mFoes=;
+	b=TfN/yhsV9iZvLRgY5rrQz1XprFXd3zkmrFMEZkSEkjQs0SMoqqcqrbbCMaEcTLcyAWXKKl
+	3MM/R4khhq5UnnHwz+e3zhIIuaKPZgaw/Osm7+E8u9MM2IryfAhIxi6yIVep3/CAEADorO
+	YqG7HkQLYLKy964SrbYMmHZrWfPZTCo=
+From: Sven Eckelmann <sven@narfation.org>
+To: stable@vger.kernel.org
+Cc: Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15.y] batman-adv: Drop unmanaged ELP metric worker
+Date: Wed, 19 Feb 2025 19:49:05 +0100
+Message-Id: <20250219184905.814343-1-sven@narfation.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025021839-primal-stiffen-ba9e@gregkh>
+References: <2025021839-primal-stiffen-ba9e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|MN0PR01MB7850:EE_
-X-MS-Office365-Filtering-Correlation-Id: b246058f-ee79-40da-817c-08dd5113969f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UGhVdVpxS1FyNzY5ZkhnTjFFaDFlRmJNWmtXQlRGVDlNYTRwbzE0NWx1VG9n?=
- =?utf-8?B?QXByb0VnRmpESm0yRVJBSmNrL01uMjA1TXdDTXpZOFE4R0REVzBNanVYSEI1?=
- =?utf-8?B?ME9HNG5Gbng4NnZVWkRMTk4vK1pvQ20rNjRqOUsvbmIrYkJNdlI4ZUF6RnJF?=
- =?utf-8?B?WVVhWHRVZTRWSVN0RnprN3JYNG1udEttRjVTUjhxYnRLVjFRYmd5OE1kM2Fi?=
- =?utf-8?B?U2lQNEwwQ1N4TTBmVDM2eStKV0s5SVMvSFI4b01mTzdNNWVPWFFPcTljd01V?=
- =?utf-8?B?cVE1RjZkUTlxdEU5emlnNEJ6TkI0L3FibHRSZ1ZkYXdmSmVJZkxCSGV6WmFW?=
- =?utf-8?B?V3B1c3N3VDd2Um40ZFBQWjZCT09pcUNDdHd0MmQwbFM1K1hjbVFMRE00VnJZ?=
- =?utf-8?B?VG0rNTZpV1hYZjRueEtObENiVWxOcU84bTFqOWFOMmpxT2UvMVBWdEZVQUJZ?=
- =?utf-8?B?RVA2cjA4MVZQMVpJdXV6U0RtdlZzYVlQdEpjT3ROUjRZS3ZBOWFISHp5RVB4?=
- =?utf-8?B?R2RJUjhlaWJqMm1QSWVBR2VMSURZQllIc2c0andYNk4rc1FDTzg0dzRoSEVH?=
- =?utf-8?B?K3RXRUo5czdBMDQ3UkVxNmRsL0xYK2pmMk15Vms5TFVNbzNXdWErZHFsdlVq?=
- =?utf-8?B?bFllOGFLNHJLUlB0WGFjZnJsZmtML2huMElUUnBETkFvcmptTmwrbWp0RzZu?=
- =?utf-8?B?UHhsR3AwaksxRjcrZTZtczdOMGwybFVyYVZaNkVtSFR1Sk40MUdoVFIxNlZz?=
- =?utf-8?B?UEtaUWtiazAxL0l0YldBRUtVWmRPV3p2ZlVlZEpndFdaR05rTDQ3N2VkU2pa?=
- =?utf-8?B?ZjhVU1BGaVF1ZkU5ei9VZWg4WHY5YThPWWh6Z3dlZjJkNEVaemp1cXBhYkJy?=
- =?utf-8?B?TU12K09HenRKcDVyWnNoY1FCaUNBSHhIeDFYUis4bTlvVWMzL0d6UWt3aTZ1?=
- =?utf-8?B?cGs4MGdwNVNHelM4ZmIvbXNsc0pEc2U4ZW13eEIwcVNxYVBNWDNTVC9tclpQ?=
- =?utf-8?B?UnVsUmlQM0w0VlgyYXNKVUQxdlBXdkVsZ2NtMk1lS3c5TWdSNWNURk5abWJT?=
- =?utf-8?B?RTZVSENGN0RPcU1iTjJIOGtkRXhJSlRQaVZrWGs4RWoxWUVrN251anU2bktI?=
- =?utf-8?B?dElUcmVhRFNleldlczNqS3UrVkVFTGNaYm5jSXluMHlHTjZ2d01uR1dDdkVz?=
- =?utf-8?B?QjRvK2pBWE9JN1Z4NTdIck9DVFJDOHZDcDNrSi9nYlY2cGZJRjU5eitkaUtq?=
- =?utf-8?B?K0xvVm5zakt2STdhaWRjSFVIM0VDeGkzdzZCaTNGOHJSU21HbjA0Ri9IK2w3?=
- =?utf-8?B?SDRaUnpuZitScC95M0tqUExNU0FGeU9zbElpditYaisxOEVDcWRoUnJ1SzNO?=
- =?utf-8?B?V0JUN2txOWJ4TytnRUZMZWY2d1ljN25lcnlmRGNQVjVrTHhjM3FiM25icEJ3?=
- =?utf-8?B?amc2cWU5NUJiWG1HYnNNS1Zid0xvcXNTVWs1Z1k1UDRnd2Rmak5MRER1Vlcz?=
- =?utf-8?B?MEJoM3RJVHdhNmxmOVpLUjhlRkIzbW5JVWNTam03WHBtcForejF1QjVKZWJ2?=
- =?utf-8?B?SXpsUndjZkQrY3haWk1vNHlvUU1oS2E1eUQwL2Z5ZjhMZVZwYm5OYktjaTcy?=
- =?utf-8?B?T2lGTm5mT3YvQjZZYVZodXZNNFc5TnlZeERKTk90OGVwaEFGZlJWaGRDY29p?=
- =?utf-8?B?ZC9aaEswVTRVRk4xNE9reVkrRnQzOTJYNUJDVlNxSHJzREpSazdEU1l6clQz?=
- =?utf-8?B?dUZNRDVvcjN3NjRtaGpiQ3JwV0MxRVM3dmdQa0xxcUdFNzE4SkYxRDlWdmYw?=
- =?utf-8?B?eEw2bFlkb0c1b2Y2LzZ6a1MySmd0ZTErcnJTZEhjZFNTV1B0K01uNG9nNGVX?=
- =?utf-8?Q?eSSZDxluz3pya?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MW1TODJtZ2JFOWR1Wm93UEV5WmN5ejYyLzRHeWtZbHU2aDBjY2pnL3VBQ3Z1?=
- =?utf-8?B?UnhjQk56T3M4djEyOFVKUDd1Q1c3Ritnb082a1BWbXNnSzd1cUJOYlBxSmtl?=
- =?utf-8?B?dlB2bkd5S0U0TVl1aUovV0xDTlRPTUxoNUYxY3RZM05JOHNiUEQzdVQwZklK?=
- =?utf-8?B?alNGdFB5Y1pwTTRHNjk3WWZwTVY5ejY5cTlWQmpkVWJpWGFzcU4yUGtlcjdH?=
- =?utf-8?B?NzA4eFl3K20yVzlXVHJuViswdE9uOFVqZUl5QkhHeEhmcHBkbW5nMUZrM3Vz?=
- =?utf-8?B?RHgwWEdmNldPbm9OMGJWcHNManU2a0cyRmVqWXZ6c01kd2ljTmhWTnZ3N0F2?=
- =?utf-8?B?ZlZNTnRjZE9Xby96T3lkemlHanFwckUrTHU4M256NDVkQ2orZHppU1lVcCt6?=
- =?utf-8?B?U21pTjRUeU85bTRzbVlIcE9OazBRQXVyZDIwd29lcDB1VHd0UWZnd3k1UGdB?=
- =?utf-8?B?RDZyWTNHSlpPZUhGWmFIcWlHOUFaMDdTVGtMekpQUlpPZEwxc1c0aHVYRUZZ?=
- =?utf-8?B?aXhpUTI3b2kzTngvRGRkMVR0NnhYUzgwNG45K0lXVUZBaVBHRDNRWnpZNE9S?=
- =?utf-8?B?R0ZJdmtDUlRvU2tCcmVPbk9GbTlIVlpVa24vZC8xcVpRVHppbVRpaTBPRzNp?=
- =?utf-8?B?eW16ckxrS25tOUl1M1BtdFpubmNLVmhSekZxYy9pSkdGN2piZnVCcDhNMC9I?=
- =?utf-8?B?dGQ2WHhwVHJIK0piMy9LQTR3empYRE5ZU09MOXppc0MvM0hodEtHbXFPdHJJ?=
- =?utf-8?B?U09XSkFGNXVaNTdCSnZodXZya2tGMmVMbGx2ZWE3QkFxVDQ4WmxIOU1EVExN?=
- =?utf-8?B?WGhndnA0V3BTOW5Rb2ZCNW1sSkxwcnRIZkhOc2N1THRJcE1VQTNGaTFXZkVT?=
- =?utf-8?B?S0tNdVFyd1RnVy9zSnhEVmtRN0F2Tjg3RHAxOFFkTHRXMXlRZVhTczdIRi9H?=
- =?utf-8?B?VDlJSTFDMGdET1VaTzFhTlZnMlZSUUJWbXNZaG0xTk5CNTg5NGZ0SDlFYjl4?=
- =?utf-8?B?NnI1QzFSUERDYS95S0FYaXl2bUd4b0NjVGMzL2FtS0ZOTXpWNUpCanBxSGl0?=
- =?utf-8?B?TGljTk9CQ1F1TW9IcU5FWVcxb0hBWjZCeSswdXpBKzB2ODZkMHZ3Vlk0a3d4?=
- =?utf-8?B?eUN2aUJsKzZDMzhLR01nNnBWL2h5QmlKZXBlUlpXRU4zVjVNQlA0N2VRdURE?=
- =?utf-8?B?U1BEUTg0RUJWWXZXaUpkQzFLVFJ2czJYUFdFdGNnS0QyTEV6T1VldlBlQlNi?=
- =?utf-8?B?MHhMMlh2ZDVFczdPRmZ4R3J3cHo2MzBmNGJUaVh5Y2gyUzZteFo3MkY5YkU4?=
- =?utf-8?B?NTJIMEJGZVlGZ2xqaTV4RWxMVWk4MGFsaVplRG1ucXZ1RmpZWFZOclAyZVR2?=
- =?utf-8?B?T2oyZFdaUklyRHJjajBoZTE5bmR3TUExTjdBUlhyc1A4VkI1bTNTSXZIbXh6?=
- =?utf-8?B?ZHdnWFlqWjFRVTdBckVzTG5hb1BXbmtEbmZiRnJrZlFpNXoyZVN5THhJR1Ro?=
- =?utf-8?B?MFhMalgxYnN6RkhFS0xjS0pkdGpEUFRCZmp6NGU0RkwzTnZNN2tLZ0lhNXVr?=
- =?utf-8?B?OWxqdERVTnNtVzlSeUhVd1hjNHkvSWtIcGJiQmxTYzAwRGZPZHF6dDdTeE00?=
- =?utf-8?B?dEdQUWFUaVFhY3dDQWdja29jb3dIbWJLa2gvQ3JKZ1JyMnZSenR6OTZPTllp?=
- =?utf-8?B?VFNjTjRNNi9HRWdGR2xZLzRlZFh0SFFSMWxON3hGUWYzQXpycHZjZjFpY2tN?=
- =?utf-8?B?dy9YamlRdlRGWk1ibHNLb21XbVUrQno2cERnY2hVTC9jNFQzNENYRDhLQUV2?=
- =?utf-8?B?bGd2eDhva0JGdFp4RHdwVmY1bGhXSHMyQnU3a3F0ZXlFTzNiK3FUWG9taXgz?=
- =?utf-8?B?V29GaG1MR3J3RlFWdTA3M24vQ3QvL3BqaXBoT3UybGNtNTBYTXZZUVpnbHVN?=
- =?utf-8?B?SCtHZy9BSzdSTjVVK21VRW9IQjluOW93VGhTSXFQR0VET0wrZ2l0bCtXOGc0?=
- =?utf-8?B?anFiTGJYMlIzVFY1d21QQVdlZzF2NzdBM25XaDh0cVhBdG1QOHgrQ2ttblpu?=
- =?utf-8?B?U28rVmY1eFNxWXFwTUFaektRcXZ1NGMyZ25UYmIxRk9FZTBsMFFXY1BKYjly?=
- =?utf-8?B?NW9aZDFZUjBtQlJqOXBtS2pwNGxmbzBGU3VwajVKYWtYRnE5cldta05WZEdv?=
- =?utf-8?Q?fRvguxD7Mmd/Wm1XPNlZg7k=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b246058f-ee79-40da-817c-08dd5113969f
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 18:31:13.1297
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tja+ZVzUXxzxPV085fM4COJec0C2RsBOGcrMw8CP9aP57UzVFdff+2r6w9AG5VDQVoHf7BeCW+OZlJmQj9ro2N4laFTfjXmsYaQl6bvj8Zo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR01MB7850
+Content-Transfer-Encoding: 8bit
 
+commit 8c8ecc98f5c65947b0070a24bac11e12e47cc65d upstream.
 
+The ELP worker needs to calculate new metric values for all neighbors
+"reachable" over an interface. Some of the used metric sources require
+locks which might need to sleep. This sleep is incompatible with the RCU
+list iterator used for the recorded neighbors. The initial approach to work
+around of this problem was to queue another work item per neighbor and then
+run this in a new context.
 
+Even when this solved the RCU vs might_sleep() conflict, it has a major
+problems: Nothing was stopping the work item in case it is not needed
+anymore - for example because one of the related interfaces was removed or
+the batman-adv module was unloaded - resulting in potential invalid memory
+accesses.
 
-On 2/19/25 9:18 AM, Catalin Marinas wrote:
-> On Wed, Feb 19, 2025 at 02:00:27PM +0000, Catalin Marinas wrote:
->>> On Sat, 8 Feb 2025 at 16:54, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->>>> Regression on qemu-arm64 and FVP noticed this kernel warning running
->>>> selftests: arm64: check_hugetlb_options test case on 6.6.76-rc1 and
->>>> 6.6.76-rc2.
->>>>
->>>> Test regression: WARNING-arch-arm64-mm-copypage-copy_highpage
->>>>
->>>> ------------[ cut here ]------------
->>>> [   96.920028] WARNING: CPU: 1 PID: 3611 at
->>>> arch/arm64/mm/copypage.c:29 copy_highpage
->>>> (arch/arm64/include/asm/mte.h:87)
->>>> [   96.922100] Modules linked in: crct10dif_ce sm3_ce sm3 sha3_ce
->>>> sha512_ce sha512_arm64 fuse drm backlight ip_tables x_tables
->>>> [   96.925603] CPU: 1 PID: 3611 Comm: check_hugetlb_o Not tainted 6.6.76-rc2 #1
->>>> [   96.926956] Hardware name: linux,dummy-virt (DT)
->>>> [   96.927695] pstate: 43402009 (nZcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
->>>> [   96.928687] pc : copy_highpage (arch/arm64/include/asm/mte.h:87)
->>>> [   96.929037] lr : copy_highpage
->>>> (arch/arm64/include/asm/alternative-macros.h:232
->>>> arch/arm64/include/asm/cpufeature.h:443
->>>> arch/arm64/include/asm/cpufeature.h:504
->>>> arch/arm64/include/asm/cpufeature.h:814 arch/arm64/mm/copypage.c:27)
->>>> [   96.929399] sp : ffff800088aa3ab0
->>>> [   96.930232] x29: ffff800088aa3ab0 x28: 00000000000001ff x27: 0000000000000000
->>>> [   96.930784] x26: 0000000000000000 x25: 0000ffff9b800000 x24: 0000ffff9b9ff000
->>>> [   96.931402] x23: fffffc0003257fc0 x22: ffff0000c95ff000 x21: ffff0000c93ff000
->>>> [   96.932054] x20: fffffc0003257fc0 x19: fffffc000324ffc0 x18: 0000ffff9b800000
->>>> [   96.933357] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
->>>> [   96.934091] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
->>>> [   96.935095] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
->>>> [   96.935982] x8 : 0bfffc0001800000 x7 : 0000000000000000 x6 : 0000000000000000
->>>> [   96.936536] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
->>>> [   96.937089] x2 : 0000000000000000 x1 : ffff0000c9600000 x0 : ffff0000c9400080
->>>> [   96.939431] Call trace:
->>>> [   96.939920] copy_highpage (arch/arm64/include/asm/mte.h:87)
->>>> [   96.940443] copy_user_highpage (arch/arm64/mm/copypage.c:40)
->>>> [   96.940963] copy_user_large_folio (mm/memory.c:5977 mm/memory.c:6109)
->>>> [   96.941535] hugetlb_wp (mm/hugetlb.c:5701)
->>>> [   96.941948] hugetlb_fault (mm/hugetlb.c:6237)
->>>> [   96.942344] handle_mm_fault (mm/memory.c:5330)
->>>> [   96.942794] do_page_fault (arch/arm64/mm/fault.c:513
->>>> arch/arm64/mm/fault.c:626)
->>>> [   96.943341] do_mem_abort (arch/arm64/mm/fault.c:846)
->>>> [   96.943797] el0_da (arch/arm64/kernel/entry-common.c:133
->>>> arch/arm64/kernel/entry-common.c:144
->>>> arch/arm64/kernel/entry-common.c:547)
->>>> [   96.944229] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:0)
->>>> [   96.944765] el0t_64_sync (arch/arm64/kernel/entry.S:599)
->>>> [   96.945383] ---[ end trace 0000000000000000 ]---
->> Prior to commit 25c17c4b55de ("hugetlb: arm64: add mte support"), there
->> was no hugetlb support with MTE, so the above code path should not
->> happen - it seems to get a PROT_MTE hugetlb page which should have been
->> prevented by arch_validate_flags(). Or something else corrupts the page
->> flags and we end up with some random PG_mte_tagged set.
-> The problem is in the arm64 arch_calc_vm_flag_bits() as it returns
-> VM_MTE_ALLOWED for any MAP_ANONYMOUS ignoring MAP_HUGETLB (it's been
-> doing this since day 1 of MTE). The implementation does handle the
-> hugetlb file mmap() correctly but not the MAP_ANONYMOUS case.
+Directly canceling the metric worker also has various problems:
 
-Yeah, thanks for catching this. mmap'ing to hugetlbfs file should return 
--EINVAL on prior 6.13 kernel. So it should be just anonymous mapping.
+* cancel_work_sync for a to-be-deactivated interface is called with
+  rtnl_lock held. But the code in the ELP metric worker also tries to use
+  rtnl_lock() - which will never return in this case. This also means that
+  cancel_work_sync would never return because it is waiting for the worker
+  to finish.
+* iterating over the neighbor list for the to-be-deactivated interface is
+  currently done using the RCU specific methods. Which means that it is
+  possible to miss items when iterating over it without the associated
+  spinlock - a behaviour which is acceptable for a periodic metric check
+  but not for a cleanup routine (which must "stop" all still running
+  workers)
 
-Thanks,
-Yang
+The better approch is to get rid of the per interface neighbor metric
+worker and handle everything in the interface worker. The original problems
+are solved by:
 
+* creating a list of neighbors which require new metric information inside
+  the RCU protected context, gathering the metric according to the new list
+  outside the RCU protected context
+* only use rcu_trylock inside metric gathering code to avoid a deadlock
+  when the cancel_delayed_work_sync is called in the interface removal code
+  (which is called with the rtnl_lock held)
 
->
-> The fix would be something like below:
->
-> -----------------8<--------------------------
-> diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
-> index 5966ee4a6154..8ff5d88c9f12 100644
-> --- a/arch/arm64/include/asm/mman.h
-> +++ b/arch/arm64/include/asm/mman.h
-> @@ -28,7 +28,8 @@ static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
->   	 * backed by tags-capable memory. The vm_flags may be overridden by a
->   	 * filesystem supporting MTE (RAM-based).
->   	 */
-> -	if (system_supports_mte() && (flags & MAP_ANONYMOUS))
-> +	if (system_supports_mte() &&
-> +	    ((flags & MAP_ANONYMOUS) && !(flags & MAP_HUGETLB)))
->   		return VM_MTE_ALLOWED;
->
->   	return 0;
-> -------------------8<-----------------------
->
-> This fix won't make sense for mainline since it supports MAP_HUGETLB
-> already.
->
-> Greg, are you ok with a stable-only fix as above or you'd rather see the
-> full 25c17c4b55de ("hugetlb: arm64: add mte support") backported?
->
-> Thanks.
->
+Cc: stable@vger.kernel.org
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+---
+ net/batman-adv/bat_v.c     |  2 --
+ net/batman-adv/bat_v_elp.c | 74 +++++++++++++++++++++++++-------------
+ net/batman-adv/bat_v_elp.h |  2 --
+ net/batman-adv/types.h     |  3 --
+ 4 files changed, 50 insertions(+), 31 deletions(-)
+
+diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
+index 54e41fc709c3..651e01b86141 100644
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -113,8 +113,6 @@ static void
+ batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
+ {
+ 	ewma_throughput_init(&hardif_neigh->bat_v.throughput);
+-	INIT_WORK(&hardif_neigh->bat_v.metric_work,
+-		  batadv_v_elp_throughput_metric_update);
+ }
+ 
+ /**
+diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
+index 956c4e799a69..85467a06f9c2 100644
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -18,6 +18,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+ #include <linux/kref.h>
++#include <linux/list.h>
+ #include <linux/minmax.h>
+ #include <linux/netdevice.h>
+ #include <linux/nl80211.h>
+@@ -27,6 +28,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/skbuff.h>
++#include <linux/slab.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
+@@ -42,6 +44,18 @@
+ #include "routing.h"
+ #include "send.h"
+ 
++/**
++ * struct batadv_v_metric_queue_entry - list of hardif neighbors which require
++ *  and metric update
++ */
++struct batadv_v_metric_queue_entry {
++	/** @hardif_neigh: hardif neighbor scheduled for metric update */
++	struct batadv_hardif_neigh_node *hardif_neigh;
++
++	/** @list: list node for metric_queue */
++	struct list_head list;
++};
++
+ /**
+  * batadv_v_elp_start_timer() - restart timer for ELP periodic work
+  * @hard_iface: the interface for which the timer has to be reset
+@@ -138,11 +152,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+ 		goto default_throughput;
+ 	}
+ 
++	memset(&link_settings, 0, sizeof(link_settings));
++
++	/* only use rtnl_trylock because the elp worker will be cancelled while
++	 * the rntl_lock is held. the cancel_delayed_work_sync() would otherwise
++	 * wait forever when the elp work_item was started and it is then also
++	 * trying to rtnl_lock
++	 */
++	if (!rtnl_trylock())
++		return false;
++
+ 	/* if not a wifi interface, check if this device provides data via
+ 	 * ethtool (e.g. an Ethernet adapter)
+ 	 */
+-	memset(&link_settings, 0, sizeof(link_settings));
+-	rtnl_lock();
+ 	ret = __ethtool_get_link_ksettings(hard_iface->net_dev, &link_settings);
+ 	rtnl_unlock();
+ 	if (ret == 0) {
+@@ -177,31 +199,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+ /**
+  * batadv_v_elp_throughput_metric_update() - worker updating the throughput
+  *  metric of a single hop neighbour
+- * @work: the work queue item
++ * @neigh: the neighbour to probe
+  */
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work)
++static void
++batadv_v_elp_throughput_metric_update(struct batadv_hardif_neigh_node *neigh)
+ {
+-	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
+-	struct batadv_hardif_neigh_node *neigh;
+ 	u32 throughput;
+ 	bool valid;
+ 
+-	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
+-				   metric_work);
+-	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
+-			     bat_v);
+-
+ 	valid = batadv_v_elp_get_throughput(neigh, &throughput);
+ 	if (!valid)
+-		goto put_neigh;
++		return;
+ 
+ 	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
+-
+-put_neigh:
+-	/* decrement refcounter to balance increment performed before scheduling
+-	 * this task
+-	 */
+-	batadv_hardif_neigh_put(neigh);
+ }
+ 
+ /**
+@@ -275,14 +285,16 @@ batadv_v_elp_wifi_neigh_probe(struct batadv_hardif_neigh_node *neigh)
+  */
+ static void batadv_v_elp_periodic_work(struct work_struct *work)
+ {
++	struct batadv_v_metric_queue_entry *metric_entry;
++	struct batadv_v_metric_queue_entry *metric_safe;
+ 	struct batadv_hardif_neigh_node *hardif_neigh;
+ 	struct batadv_hard_iface *hard_iface;
+ 	struct batadv_hard_iface_bat_v *bat_v;
+ 	struct batadv_elp_packet *elp_packet;
++	struct list_head metric_queue;
+ 	struct batadv_priv *bat_priv;
+ 	struct sk_buff *skb;
+ 	u32 elp_interval;
+-	bool ret;
+ 
+ 	bat_v = container_of(work, struct batadv_hard_iface_bat_v, elp_wq.work);
+ 	hard_iface = container_of(bat_v, struct batadv_hard_iface, bat_v);
+@@ -318,6 +330,8 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
+ 
+ 	atomic_inc(&hard_iface->bat_v.elp_seqno);
+ 
++	INIT_LIST_HEAD(&metric_queue);
++
+ 	/* The throughput metric is updated on each sent packet. This way, if a
+ 	 * node is dead and no longer sends packets, batman-adv is still able to
+ 	 * react timely to its death.
+@@ -342,16 +356,28 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
+ 
+ 		/* Reading the estimated throughput from cfg80211 is a task that
+ 		 * may sleep and that is not allowed in an rcu protected
+-		 * context. Therefore schedule a task for that.
++		 * context. Therefore add it to metric_queue and process it
++		 * outside rcu protected context.
+ 		 */
+-		ret = queue_work(batadv_event_workqueue,
+-				 &hardif_neigh->bat_v.metric_work);
+-
+-		if (!ret)
++		metric_entry = kzalloc(sizeof(*metric_entry), GFP_ATOMIC);
++		if (!metric_entry) {
+ 			batadv_hardif_neigh_put(hardif_neigh);
++			continue;
++		}
++
++		metric_entry->hardif_neigh = hardif_neigh;
++		list_add(&metric_entry->list, &metric_queue);
+ 	}
+ 	rcu_read_unlock();
+ 
++	list_for_each_entry_safe(metric_entry, metric_safe, &metric_queue, list) {
++		batadv_v_elp_throughput_metric_update(metric_entry->hardif_neigh);
++
++		batadv_hardif_neigh_put(metric_entry->hardif_neigh);
++		list_del(&metric_entry->list);
++		kfree(metric_entry);
++	}
++
+ restart_timer:
+ 	batadv_v_elp_start_timer(hard_iface);
+ out:
+diff --git a/net/batman-adv/bat_v_elp.h b/net/batman-adv/bat_v_elp.h
+index 9e2740195fa2..c9cb0a307100 100644
+--- a/net/batman-adv/bat_v_elp.h
++++ b/net/batman-adv/bat_v_elp.h
+@@ -10,7 +10,6 @@
+ #include "main.h"
+ 
+ #include <linux/skbuff.h>
+-#include <linux/workqueue.h>
+ 
+ int batadv_v_elp_iface_enable(struct batadv_hard_iface *hard_iface);
+ void batadv_v_elp_iface_disable(struct batadv_hard_iface *hard_iface);
+@@ -19,6 +18,5 @@ void batadv_v_elp_iface_activate(struct batadv_hard_iface *primary_iface,
+ void batadv_v_elp_primary_iface_set(struct batadv_hard_iface *primary_iface);
+ int batadv_v_elp_packet_recv(struct sk_buff *skb,
+ 			     struct batadv_hard_iface *if_incoming);
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work);
+ 
+ #endif /* _NET_BATMAN_ADV_BAT_V_ELP_H_ */
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 2635763bbd67..e659623b7a33 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -596,9 +596,6 @@ struct batadv_hardif_neigh_node_bat_v {
+ 	 *  neighbor
+ 	 */
+ 	unsigned long last_unicast_tx;
+-
+-	/** @metric_work: work queue callback item for metric update */
+-	struct work_struct metric_work;
+ };
+ 
+ /**
+-- 
+2.39.5
 
 
