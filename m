@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-118114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BAA1A3BA12
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE852A3B744
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B817161843
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7658117C70C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376741C3C00;
-	Wed, 19 Feb 2025 09:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498721DF26F;
+	Wed, 19 Feb 2025 08:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDjyNrBE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e23mX6+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D571C7013;
-	Wed, 19 Feb 2025 09:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7A91DE2C2;
+	Wed, 19 Feb 2025 08:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957276; cv=none; b=bvH8Uub9sBXI5IwZ3HwtZ4EYF8n/zhAaJ94/5QCqeiwfu3NaFTe/XYoXwg1BwM61Y8BSaTvwKbllFmyJFE3HP0MTKqo+MmAWP8EWCOpUMRvfy0XPKIwin8hPuZG8XRU7gCODhvufWLugf7978xjcsGjUhpm3XQksHY87b9KqOHk=
+	t=1739955561; cv=none; b=XMk5ze2+ZsB31ybt7mz+M7cosU/LetRy6cyXOvBWlsQGdvSIg8jxCwM9S9IjLyXmwjZD/iZuXMGhnN27qaiVlRN7cbGmaawu3ibiFVyVPj3nTtyPCYhCVwwqMX+W05Io/1b6RXWTrbv4oWQJzADAw3LTsjBoZzV5xbzgUpGkam4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957276; c=relaxed/simple;
-	bh=NFIY0CH/4KSXfc8nb5tztqHmev4l+45BcovcPYHVl58=;
+	s=arc-20240116; t=1739955561; c=relaxed/simple;
+	bh=XdS5GrskjMFlIGSFDnlwUxKknI8QAYkenbIYXadQFVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DG1Q/2cJi68ZdNjjVoI5hMCNDxeXOB4f4g1+e3PsgWryHx1Z94pkou+32wgN4M4wzkWMF8IUw3NUsFV/lkQp6HMIxslnNBAqgs1gfwnRn8APkD0WcMiG0RF4SSK1gPfWka3f3HWnx1BtSTRCb7aX/aNIwQW+O9je7XoyN9Mlc+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDjyNrBE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CFBC4CED1;
-	Wed, 19 Feb 2025 09:27:55 +0000 (UTC)
+	 MIME-Version; b=NiIUHrY15jjRHOH6Qb9ppAWVXG750AHYawUuZaUTyoj+vmarxjZ/8AZ4Ie8/o8mO7B2AJen7jGr0BkX7RosnioHYwZULYlxxM5LJKBdcJ4rxaDgtZZ7+/AHZTm7tts6uVeyT0QkJUix44N90hiyEVJASYhzi1xfwQFe0R/1u95A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e23mX6+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70398C4CED1;
+	Wed, 19 Feb 2025 08:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957275;
-	bh=NFIY0CH/4KSXfc8nb5tztqHmev4l+45BcovcPYHVl58=;
+	s=korg; t=1739955560;
+	bh=XdS5GrskjMFlIGSFDnlwUxKknI8QAYkenbIYXadQFVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDjyNrBEftATl8PhFys2pAh468mIbP/3rhORrdh4mlrmSDHUdZcHSyxq74IIahvvT
-	 u2y1I1z27DrWXnItq1rwfdkA6l1lTMyo+xWAjYDLvC6zqpLymj7d19rk4KtmmjLVim
-	 Bc1keO1YZly2AAXK3+YXCDFx3z2xwltxenbjNGQY=
+	b=e23mX6+ZX8OXamSgFV1x575M+VwLsdgthX23CdTgD6p0Lk6wzVHX7r9u2k+RlPNhr
+	 bPnTMrfE+XS8Fnx51/0tfT5OBdpv5H3SpJPp3PrfvVNo/BLnt/bKrahFoMqHMYUmTr
+	 Vgf47dvIPWVd5V79ItPxLPPIXb6EUCiDIKaMWeWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiacheng Xu <stitch@zju.edu.cn>,
-	syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com,
-	Su Yue <glass.su@suse.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 452/578] ocfs2: check dir i_size in ocfs2_find_entry
-Date: Wed, 19 Feb 2025 09:27:36 +0100
-Message-ID: <20250219082710.772742711@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	Koichiro Den <koichiro.den@canonical.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/152] selftests: gpio: gpio-sim: Fix missing chip disablements
+Date: Wed, 19 Feb 2025 09:27:37 +0100
+Message-ID: <20250219082551.787507387@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,222 +63,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Koichiro Den <koichiro.den@canonical.com>
 
-commit b0fce54b8c0d8e5f2b4c243c803c5996e73baee8 upstream.
+[ Upstream commit f8524ac33cd452aef5384504b3264db6039a455e ]
 
-syz reports an out of bounds read:
+Since upstream commit 8bd76b3d3f3a ("gpio: sim: lock up configfs that an
+instantiated device depends on"), rmdir for an active virtual devices
+been prohibited.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in ocfs2_match fs/ocfs2/dir.c:334
-[inline]
-BUG: KASAN: slab-out-of-bounds in ocfs2_search_dirblock+0x283/0x6e0
-fs/ocfs2/dir.c:367
-Read of size 1 at addr ffff88804d8b9982 by task syz-executor.2/14802
+Update gpio-sim selftest to align with the change.
 
-CPU: 0 UID: 0 PID: 14802 Comm: syz-executor.2 Not tainted 6.13.0-rc4 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
-04/01/2014
-Sched_ext: serialise (enabled+all), task: runnable_at=-10ms
-Call Trace:
-<TASK>
-__dump_stack lib/dump_stack.c:94 [inline]
-dump_stack_lvl+0x229/0x350 lib/dump_stack.c:120
-print_address_description mm/kasan/report.c:378 [inline]
-print_report+0x164/0x530 mm/kasan/report.c:489
-kasan_report+0x147/0x180 mm/kasan/report.c:602
-ocfs2_match fs/ocfs2/dir.c:334 [inline]
-ocfs2_search_dirblock+0x283/0x6e0 fs/ocfs2/dir.c:367
-ocfs2_find_entry_id fs/ocfs2/dir.c:414 [inline]
-ocfs2_find_entry+0x1143/0x2db0 fs/ocfs2/dir.c:1078
-ocfs2_find_files_on_disk+0x18e/0x530 fs/ocfs2/dir.c:1981
-ocfs2_lookup_ino_from_name+0xb6/0x110 fs/ocfs2/dir.c:2003
-ocfs2_lookup+0x30a/0xd40 fs/ocfs2/namei.c:122
-lookup_open fs/namei.c:3627 [inline]
-open_last_lookups fs/namei.c:3748 [inline]
-path_openat+0x145a/0x3870 fs/namei.c:3984
-do_filp_open+0xe9/0x1c0 fs/namei.c:4014
-do_sys_openat2+0x135/0x1d0 fs/open.c:1402
-do_sys_open fs/open.c:1417 [inline]
-__do_sys_openat fs/open.c:1433 [inline]
-__se_sys_openat fs/open.c:1428 [inline]
-__x64_sys_openat+0x15d/0x1c0 fs/open.c:1428
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xf6/0x210 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f01076903ad
-Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89
-f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
-f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f01084acfc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007f01077cbf80 RCX: 00007f01076903ad
-RDX: 0000000000105042 RSI: 0000000020000080 RDI: ffffffffffffff9c
-RBP: 00007f01077cbf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000000001ff R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f01077cbf80 R14: 00007f010764fc90 R15: 00007f010848d000
-</TASK>
-==================================================================
-
-And a general protection fault in ocfs2_prepare_dir_for_insert:
-
-==================================================================
-loop0: detected capacity change from 0 to 32768
-JBD2: Ignoring recovery information on journal
-ocfs2: Mounting device (7,0) on (node local, slot 0) with ordered data
-mode.
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 0 UID: 0 PID: 5096 Comm: syz-executor792 Not tainted
-6.11.0-rc4-syzkaller-00002-gb0da640826ba #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:ocfs2_find_dir_space_id fs/ocfs2/dir.c:3406 [inline]
-RIP: 0010:ocfs2_prepare_dir_for_insert+0x3309/0x5c70 fs/ocfs2/dir.c:4280
-Code: 00 00 e8 2a 25 13 fe e9 ba 06 00 00 e8 20 25 13 fe e9 4f 01 00 00
-e8 16 25 13 fe 49 8d 7f 08 49 8d 5f 09 48 89 f8 48 c1 e8 03 <42> 0f b6
-04 20 84 c0 0f 85 bd 23 00 00 48 89 d8 48 c1 e8 03 42 0f
-RSP: 0018:ffffc9000af9f020 EFLAGS: 00010202
-RAX: 0000000000000001 RBX: 0000000000000009 RCX: ffff88801e27a440
-RDX: 0000000000000000 RSI: 0000000000000400 RDI: 0000000000000008
-RBP: ffffc9000af9f830 R08: ffffffff8380395b R09: ffffffff838090a7
-R10: 0000000000000002 R11: ffff88801e27a440 R12: dffffc0000000000
-R13: ffff88803c660878 R14: f700000000000088 R15: 0000000000000000
-FS:  000055555a677380(0000) GS:ffff888020800000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000560bce569178 CR3: 000000001de5a000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-ocfs2_mknod+0xcaf/0x2b40 fs/ocfs2/namei.c:292
-vfs_mknod+0x36d/0x3b0 fs/namei.c:4088
-do_mknodat+0x3ec/0x5b0
-__do_sys_mknodat fs/namei.c:4166 [inline]
-__se_sys_mknodat fs/namei.c:4163 [inline]
-__x64_sys_mknodat+0xa7/0xc0 fs/namei.c:4163
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2dafda3a99
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89
-f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08
-0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8
-64 89 01 48
-RSP: 002b:00007ffe336a6658 EFLAGS: 00000246 ORIG_RAX:
-0000000000000103
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX:
-00007f2dafda3a99
-RDX: 00000000000021c0 RSI: 0000000020000040 RDI:
-00000000ffffff9c
-RBP: 00007f2dafe1b5f0 R08: 0000000000004480 R09:
-000055555a6784c0
-R10: 0000000000000103 R11: 0000000000000246 R12:
-00007ffe336a6680
-R13: 00007ffe336a68a8 R14: 431bde82d7b634db R15:
-00007f2dafdec03b
-</TASK>
-==================================================================
-
-The two reports are all caused invalid negative i_size of dir inode.  For
-ocfs2, dir_inode can't be negative or zero.
-
-Here add a check in which is called by ocfs2_check_dir_for_entry().  It
-fixes the second report as ocfs2_check_dir_for_entry() must be called
-before ocfs2_prepare_dir_for_insert().  Also set a up limit for dir with
-OCFS2_INLINE_DATA_FL.  The i_size can't be great than blocksize.
-
-Link: https://lkml.kernel.org/r/20250106140640.92260-1-glass.su@suse.com
-Reported-by: Jiacheng Xu <stitch@zju.edu.cn>
-Link: https://lore.kernel.org/ocfs2-devel/17a04f01.1ae74.19436d003fc.Coremail.stitch@zju.edu.cn/T/#u
-Reported-by: syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000005894f3062018caf1@google.com/T/
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202501221006.a1ca5dfa-lkp@intel.com
+Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Link: https://lore.kernel.org/r/20250122043309.304621-1-koichiro.den@canonical.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dir.c |   25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ tools/testing/selftests/gpio/gpio-sim.sh | 31 +++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 6 deletions(-)
 
---- a/fs/ocfs2/dir.c
-+++ b/fs/ocfs2/dir.c
-@@ -1065,26 +1065,39 @@ int ocfs2_find_entry(const char *name, i
- {
- 	struct buffer_head *bh;
- 	struct ocfs2_dir_entry *res_dir = NULL;
-+	int ret = 0;
- 
- 	if (ocfs2_dir_indexed(dir))
- 		return ocfs2_find_entry_dx(name, namelen, dir, lookup);
- 
-+	if (unlikely(i_size_read(dir) <= 0)) {
-+		ret = -EFSCORRUPTED;
-+		mlog_errno(ret);
-+		goto out;
-+	}
- 	/*
- 	 * The unindexed dir code only uses part of the lookup
- 	 * structure, so there's no reason to push it down further
- 	 * than this.
- 	 */
--	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL)
-+	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
-+		if (unlikely(i_size_read(dir) > dir->i_sb->s_blocksize)) {
-+			ret = -EFSCORRUPTED;
-+			mlog_errno(ret);
-+			goto out;
-+		}
- 		bh = ocfs2_find_entry_id(name, namelen, dir, &res_dir);
--	else
-+	} else {
- 		bh = ocfs2_find_entry_el(name, namelen, dir, &res_dir);
-+	}
- 
- 	if (bh == NULL)
- 		return -ENOENT;
- 
- 	lookup->dl_leaf_bh = bh;
- 	lookup->dl_entry = res_dir;
--	return 0;
-+out:
-+	return ret;
+diff --git a/tools/testing/selftests/gpio/gpio-sim.sh b/tools/testing/selftests/gpio/gpio-sim.sh
+index 6fb66a687f173..bbc29ed9c60a9 100755
+--- a/tools/testing/selftests/gpio/gpio-sim.sh
++++ b/tools/testing/selftests/gpio/gpio-sim.sh
+@@ -46,12 +46,6 @@ remove_chip() {
+ 	rmdir $CONFIGFS_DIR/$CHIP || fail "Unable to remove the chip"
  }
  
- /*
-@@ -2011,6 +2024,7 @@ int ocfs2_lookup_ino_from_name(struct in
-  *
-  * Return 0 if the name does not exist
-  * Return -EEXIST if the directory contains the name
-+ * Return -EFSCORRUPTED if found corruption
-  *
-  * Callers should have i_rwsem + a cluster lock on dir
-  */
-@@ -2024,9 +2038,12 @@ int ocfs2_check_dir_for_entry(struct ino
- 	trace_ocfs2_check_dir_for_entry(
- 		(unsigned long long)OCFS2_I(dir)->ip_blkno, namelen, name);
+-configfs_cleanup() {
+-	for CHIP in `ls $CONFIGFS_DIR/`; do
+-		remove_chip $CHIP
+-	done
+-}
+-
+ create_chip() {
+ 	local CHIP=$1
  
--	if (ocfs2_find_entry(name, namelen, dir, &lookup) == 0) {
-+	ret = ocfs2_find_entry(name, namelen, dir, &lookup);
-+	if (ret == 0) {
- 		ret = -EEXIST;
- 		mlog_errno(ret);
-+	} else if (ret == -ENOENT) {
-+		ret = 0;
- 	}
+@@ -105,6 +99,13 @@ disable_chip() {
+ 	echo 0 > $CONFIGFS_DIR/$CHIP/live || fail "Unable to disable the chip"
+ }
  
- 	ocfs2_free_dir_lookup_result(&lookup);
++configfs_cleanup() {
++	for CHIP in `ls $CONFIGFS_DIR/`; do
++		disable_chip $CHIP
++		remove_chip $CHIP
++	done
++}
++
+ configfs_chip_name() {
+ 	local CHIP=$1
+ 	local BANK=$2
+@@ -181,6 +182,7 @@ create_chip chip
+ create_bank chip bank
+ enable_chip chip
+ test -n `cat $CONFIGFS_DIR/chip/bank/chip_name` || fail "chip_name doesn't work"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "1.2. chip_name returns 'none' if the chip is still pending"
+@@ -195,6 +197,7 @@ create_chip chip
+ create_bank chip bank
+ enable_chip chip
+ test -n `cat $CONFIGFS_DIR/chip/dev_name` || fail "dev_name doesn't work"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2. Creating and configuring simulated chips"
+@@ -204,6 +207,7 @@ create_chip chip
+ create_bank chip bank
+ enable_chip chip
+ test "`get_chip_num_lines chip bank`" = "1" || fail "default number of lines is not 1"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.2. Number of lines can be specified"
+@@ -212,6 +216,7 @@ create_bank chip bank
+ set_num_lines chip bank 16
+ enable_chip chip
+ test "`get_chip_num_lines chip bank`" = "16" || fail "number of lines is not 16"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.3. Label can be set"
+@@ -220,6 +225,7 @@ create_bank chip bank
+ set_label chip bank foobar
+ enable_chip chip
+ test "`get_chip_label chip bank`" = "foobar" || fail "label is incorrect"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.4. Label can be left empty"
+@@ -227,6 +233,7 @@ create_chip chip
+ create_bank chip bank
+ enable_chip chip
+ test -z "`cat $CONFIGFS_DIR/chip/bank/label`" || fail "label is not empty"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.5. Line names can be configured"
+@@ -238,6 +245,7 @@ set_line_name chip bank 2 bar
+ enable_chip chip
+ test "`get_line_name chip bank 0`" = "foo" || fail "line name is incorrect"
+ test "`get_line_name chip bank 2`" = "bar" || fail "line name is incorrect"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.6. Line config can remain unused if offset is greater than number of lines"
+@@ -248,6 +256,7 @@ set_line_name chip bank 5 foobar
+ enable_chip chip
+ test "`get_line_name chip bank 0`" = "" || fail "line name is incorrect"
+ test "`get_line_name chip bank 1`" = "" || fail "line name is incorrect"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.7. Line configfs directory names are sanitized"
+@@ -267,6 +276,7 @@ for CHIP in $CHIPS; do
+ 	enable_chip $CHIP
+ done
+ for CHIP in $CHIPS; do
++  disable_chip $CHIP
+ 	remove_chip $CHIP
+ done
+ 
+@@ -278,6 +288,7 @@ echo foobar > $CONFIGFS_DIR/chip/bank/label 2> /dev/null && \
+ 	fail "Setting label of a live chip should fail"
+ echo 8 > $CONFIGFS_DIR/chip/bank/num_lines 2> /dev/null && \
+ 	fail "Setting number of lines of a live chip should fail"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.10. Can't create line items when chip is live"
+@@ -285,6 +296,7 @@ create_chip chip
+ create_bank chip bank
+ enable_chip chip
+ mkdir $CONFIGFS_DIR/chip/bank/line0 2> /dev/null && fail "Creating line item should fail"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "2.11. Probe errors are propagated to user-space"
+@@ -316,6 +328,7 @@ mkdir -p $CONFIGFS_DIR/chip/bank/line4/hog
+ enable_chip chip
+ $BASE_DIR/gpio-mockup-cdev -s 1 /dev/`configfs_chip_name chip bank` 4 2> /dev/null && \
+ 	fail "Setting the value of a hogged line shouldn't succeed"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "3. Controlling simulated chips"
+@@ -331,6 +344,7 @@ test "$?" = "1" || fail "pull set incorrectly"
+ sysfs_set_pull chip bank 0 pull-down
+ $BASE_DIR/gpio-mockup-cdev /dev/`configfs_chip_name chip bank` 1
+ test "$?" = "0" || fail "pull set incorrectly"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "3.2. Pull can be read from sysfs"
+@@ -344,6 +358,7 @@ SYSFS_PATH=/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/pull
+ test `cat $SYSFS_PATH` = "pull-down" || fail "reading the pull failed"
+ sysfs_set_pull chip bank 0 pull-up
+ test `cat $SYSFS_PATH` = "pull-up" || fail "reading the pull failed"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "3.3. Incorrect input in sysfs is rejected"
+@@ -355,6 +370,7 @@ DEVNAME=`configfs_dev_name chip`
+ CHIPNAME=`configfs_chip_name chip bank`
+ SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/pull"
+ echo foobar > $SYSFS_PATH 2> /dev/null && fail "invalid input not detected"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "3.4. Can't write to value"
+@@ -365,6 +381,7 @@ DEVNAME=`configfs_dev_name chip`
+ CHIPNAME=`configfs_chip_name chip bank`
+ SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/value"
+ echo 1 > $SYSFS_PATH 2> /dev/null && fail "writing to 'value' succeeded unexpectedly"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "4. Simulated GPIO chips are functional"
+@@ -382,6 +399,7 @@ $BASE_DIR/gpio-mockup-cdev -s 1 /dev/`configfs_chip_name chip bank` 0 &
+ sleep 0.1 # FIXME Any better way?
+ test `cat $SYSFS_PATH` = "1" || fail "incorrect value read from sysfs"
+ kill $!
++disable_chip chip
+ remove_chip chip
+ 
+ echo "4.2. Bias settings work correctly"
+@@ -394,6 +412,7 @@ CHIPNAME=`configfs_chip_name chip bank`
+ SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/value"
+ $BASE_DIR/gpio-mockup-cdev -b pull-up /dev/`configfs_chip_name chip bank` 0
+ test `cat $SYSFS_PATH` = "1" || fail "bias setting does not work"
++disable_chip chip
+ remove_chip chip
+ 
+ echo "GPIO $MODULE test PASS"
+-- 
+2.39.5
+
 
 
 
