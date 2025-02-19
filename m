@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-117789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75387A3B841
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:22:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22113A3B811
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F32189A6AC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:17:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7223A67A1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4524B1BD9C6;
-	Wed, 19 Feb 2025 09:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D81D1C549E;
+	Wed, 19 Feb 2025 09:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfKQhDYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5ihBn1H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE7C1DC184;
-	Wed, 19 Feb 2025 09:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A32155753;
+	Wed, 19 Feb 2025 09:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956346; cv=none; b=GGoXt4H2Vr223K4HxLNF/S3w3n+EhBQAMpJjaysSLlJdTmnEiPrT2nr2hxnEKR6AWKbkAupXiHWsdhXuWSLwbsdfRUk5D44ZhesIAGl8mG4xHvabu1E3rSVdg8W0SWyZErrLLiCccKNmmIv3wv2BKu50gak2yabBaOIT4NbCCwg=
+	t=1739956252; cv=none; b=ef2CGu29+P245lbJP7QJuvD6jeaUCLyd2NHS33N9z2mcl1l0btr4yrX8FiY6iIpfoWZD+B0T++dVROv0/QFB0/6W9Cv0IivAB0hCPODczvF3fNa/yl3Fpok1D4rYb+b0kbaljzmmSSi6JMChyCq38bTzwL0YXR84ENkmhB4m6mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956346; c=relaxed/simple;
-	bh=YONoKE2Smrs4wy8/iKtQ6EwCnYnNtRfs9OgSebwyjvg=;
+	s=arc-20240116; t=1739956252; c=relaxed/simple;
+	bh=bKCzlWs1HAchJSxEPcvVKc1NvGDTfq3EQjEizmY4Cxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tavgGgf3MWZe+vayxSulZXyR8r2kHseUBvIQlfExfyBbPFvjTOP5sMiVCSi1CVn+5D6pZyNvDd0lfSsLHbRpZflk2LAqdofQWe3SoQtFLZ+00e5v4CB+DnL3rNX+70QCPNZahtvJ1WmeGVMuLE+0iZG/O636BzwAzxwfIXBzXxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfKQhDYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433DFC4CED1;
-	Wed, 19 Feb 2025 09:12:25 +0000 (UTC)
+	 MIME-Version; b=RxXGWT44gcTM0T/QolPa5Zb3ez1GGFCyu2xzGx9VBt9AhEIcg5LbzSikDewpeBrj9I+IuSm8lhkuG0nRaPXbzI+ODlNkt9UfkjEpp6NQD05YtyB2Xo9bqBXXAZxH7pmaQ7E84GMMZU+murMck8Qs/E+4DPhTCgASfQJCxpq9hi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5ihBn1H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E5CC4CEE7;
+	Wed, 19 Feb 2025 09:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956345;
-	bh=YONoKE2Smrs4wy8/iKtQ6EwCnYnNtRfs9OgSebwyjvg=;
+	s=korg; t=1739956251;
+	bh=bKCzlWs1HAchJSxEPcvVKc1NvGDTfq3EQjEizmY4Cxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfKQhDYAq8oOfmct7nxvuWZn3mnxhQWPk8BDRbvkJFCsjcJKMjBhAPz7jt6HwwG08
-	 C34EKan4rf4VNbDK1y3p09Nm5LnBbdzdOg8rvuy6z6wcWWB6tjvkZ1PWrTzg+lgZyI
-	 GOmRp2rYPmuUXPPlOSFRdDbgb8i6s5/uagDLP87U=
+	b=T5ihBn1HiJSHJId/2GKnxSj7ITVPN47RG8j5lvtPSIKIZye39kOtHHjOCbZbkyHc+
+	 RvakZUg5y36Fk4yTXtp5NDDKSnQ0iPvB+nulS2C8D/Be/5JiLPkrHlDCyzxkmDwzQO
+	 e7KGGswiLlWKCbJzhs4dCsccAK8vyDVTvANVjWGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
+	Francesco Nigro <fnigro@redhat.com>,
+	Ilan Green <igreen@redhat.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
+	Clark Williams <williams@redhat.com>,
 	Ian Rogers <irogers@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Ingo Molnar <mingo@kernel.org>,
 	James Clark <james.clark@linaro.org>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Stephane Eranian <eranian@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/578] perf top: Dont complain about lack of vmlinux when not resolving some kernel samples
-Date: Wed, 19 Feb 2025 09:22:00 +0100
-Message-ID: <20250219082657.543508647@linuxfoundation.org>
+Subject: [PATCH 6.1 117/578] perf namespaces: Introduce nsinfo__set_in_pidns()
+Date: Wed, 19 Feb 2025 09:22:01 +0100
+Message-ID: <20250219082657.584297672@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -74,59 +80,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 058b38ccd2af9e5c95590b018e8425fa148d7aca ]
+[ Upstream commit 9c6a585d257f6845731f4e36b45fe42b5c3162f5 ]
 
-Recently we got a case where a kernel sample wasn't being resolved due
-to a bug that was not setting the end address on kernel functions
-implemented in assembly (see Link: tag), and then those were not being
-found by machine__resolve() -> map__find_symbol().
+When we're processing a perf.data file we will, for every thread in that
+file do a machine__findnew_thread(machine, pid, tid) that when that pid
+is seen for the first time will create a 'struct thread' representing
+it.
 
-So we ended up with:
+That in turn will call nsinfo__new() -> nsinfo__init() and there it will
+assume we're running live, which is wrong and will need to be addressed
+in a followup patch.
 
-  # perf top --stdio
-  PerfTop: 0 irqs/s  kernel: 0%  exact: 0% lost: 0/0 drop: 0/0 [cycles/P]
-  -----------------------------------------------------------------------
+The nsinfo__new() assumes that if we can't access that thread it has
+already finished and will ignore the -1 return from nsinfo__init(), just
+taking notes to avoid trying to enter in that namespace, since it isn't
+there anymore, a race.
 
-  Warning:
-  A vmlinux file was not found.
-  Kernel samples will not be resolved.
-  ^Z
-  [1]+  Stopped                 perf top --stdio
-  #
+When doing this from 'perf inject', tho, we can fill in parts of that
+nsinfo from what we get from the PERF_RECORD_MMAP2 (pid, tid) and in the
+jitdump file name, that has the form of jit-<PID>.dump.
 
-But then resolving all other kernel symbols.
+So if the pid in the jitdump file name is not the one in the
+PERF_RECORD_MMAP2, we can assume that its the pid of the process
+_inside_ the namespace, and that perf was runing outside that namespace.
 
-So just fixup the logic to only print that warning when there are no
-symbols in the kernel map.
+This will be done in the following patch.
 
-Fixes: d88205db9caa0e9d ("perf dso: Add dso__has_symbols() method")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Reported-by: Francesco Nigro <fnigro@redhat.com>
+Reported-by: Ilan Green <igreen@redhat.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Clark Williams <williams@redhat.com>
 Cc: Ian Rogers <irogers@google.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Ingo Molnar <mingo@kernel.org>
 Cc: James Clark <james.clark@linaro.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/lkml/Z3buKhcCsZi3_aGb@x1
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>
+Link: https://lore.kernel.org/r/20241206204828.507527-4-acme@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 64a7617efd5a ("perf namespaces: Fixup the nsinfo__in_pidns() return type, its bool")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/namespaces.c | 5 +++++
+ tools/perf/util/namespaces.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index f9917848cdad0..d24e495062a84 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -807,7 +807,7 @@ static void perf_event__process_sample(struct perf_tool *tool,
- 		 * invalid --vmlinux ;-)
- 		 */
- 		if (!machine->kptr_restrict_warned && !top->vmlinux_warned &&
--		    __map__is_kernel(al.map) && map__has_symbols(al.map)) {
-+		    __map__is_kernel(al.map) && !map__has_symbols(al.map)) {
- 			if (symbol_conf.vmlinux_name) {
- 				char serr[256];
- 				dso__strerror_load(al.map->dso, serr, sizeof(serr));
+diff --git a/tools/perf/util/namespaces.c b/tools/perf/util/namespaces.c
+index dd536220cdb9e..fe59c2b9cd624 100644
+--- a/tools/perf/util/namespaces.c
++++ b/tools/perf/util/namespaces.c
+@@ -242,6 +242,11 @@ pid_t nsinfo__in_pidns(const struct nsinfo  *nsi)
+         return nsi->in_pidns;
+ }
+ 
++void nsinfo__set_in_pidns(struct nsinfo *nsi)
++{
++	RC_CHK_ACCESS(nsi)->in_pidns = true;
++}
++
+ void nsinfo__mountns_enter(struct nsinfo *nsi,
+ 				  struct nscookie *nc)
+ {
+diff --git a/tools/perf/util/namespaces.h b/tools/perf/util/namespaces.h
+index 567829262c428..62a9145a6ffba 100644
+--- a/tools/perf/util/namespaces.h
++++ b/tools/perf/util/namespaces.h
+@@ -58,6 +58,7 @@ pid_t nsinfo__tgid(const struct nsinfo  *nsi);
+ pid_t nsinfo__nstgid(const struct nsinfo  *nsi);
+ pid_t nsinfo__pid(const struct nsinfo  *nsi);
+ pid_t nsinfo__in_pidns(const struct nsinfo  *nsi);
++void nsinfo__set_in_pidns(struct nsinfo *nsi);
+ 
+ void nsinfo__mountns_enter(struct nsinfo *nsi, struct nscookie *nc);
+ void nsinfo__mountns_exit(struct nscookie *nc);
 -- 
 2.39.5
 
