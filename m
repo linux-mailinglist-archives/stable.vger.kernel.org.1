@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC30EA3B708
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13753A3B7D7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9961A3BBBEE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6C273BF6DF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CD71DFE23;
-	Wed, 19 Feb 2025 08:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EE61E0B67;
+	Wed, 19 Feb 2025 09:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSXMV+G8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAx1e3tU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D671B6D0A;
-	Wed, 19 Feb 2025 08:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4EE1DFE1D;
+	Wed, 19 Feb 2025 09:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955111; cv=none; b=TzQgeU348IAtkqDBGfo1ktAUwY2lgrqnuYaAm9V4EZJxJg0tddF9Zf+Mjd9FFBb7yqwUQJDRgJ+Z1FtL7GVMm5A9sXo8zTjnMgSP5x31/VYpPM/OaKzNBP6YsP5i3s9TAOiuxJhiMGsqbFp2cNcAZkSMjoPRW5ib9k9S6pPq6FU=
+	t=1739955628; cv=none; b=HZ7IwLIa67sTDSq/EDqqpveJvqQva/w65lqqI1UjgxPwVLzwHx9V09NwC1YSoTii+CEYEVGoRKrZmil+h/sqlKwXQ2SJzikKpTATxNj9SHhmtnEpwJIskfkEBSCiYNP9UVnGWTW/Bo56jCP8JnlrC3BZ5ynqwFIqqgEWqNYA6Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955111; c=relaxed/simple;
-	bh=Evu643GM1eWmiiAPhX5Bl6+oPz06Sd3XLedFjRUf2hE=;
+	s=arc-20240116; t=1739955628; c=relaxed/simple;
+	bh=yq+lGhkCjVpY48gHTLc9QCkm5mIqZvKDplyrD6gA9/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yu6B0+YUXMc5fy8GnKL6U43JJ/plmYl/sWxkABfn+HdpV8ZWIvzpVZUYd++SwhvPjuFvUskuWLVIWDg1D8gHACzRTN1MNApDl21vvllEDoleegsEajH+Z/+ThHsYsNm99AgMea4K8yxVJ2oS4GZKB5Van/8mCai59PYMKzYASiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSXMV+G8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D80C4CEEC;
-	Wed, 19 Feb 2025 08:51:50 +0000 (UTC)
+	 MIME-Version; b=G7OwG6jkHIYCJPGHULn3qb6JP1bilGKX1jseXCy1CJdW3j0Op12znhtjdUaoDCITjkk4LBdcb2BRrQDxwy/ShQVmSynVbzewiE5Y/ikp4hLfoFX4yydQCeyQ1TL4h5rC0CBHH06igdGsXhEG4XDp184DrHEHsSBWMV5RCUx4SEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAx1e3tU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED5C4CEE6;
+	Wed, 19 Feb 2025 09:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955111;
-	bh=Evu643GM1eWmiiAPhX5Bl6+oPz06Sd3XLedFjRUf2hE=;
+	s=korg; t=1739955628;
+	bh=yq+lGhkCjVpY48gHTLc9QCkm5mIqZvKDplyrD6gA9/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSXMV+G8zPfW+6n1xPtziwTS7uWuV9gZ1yR/CIdSWM33gDQj1PbWZrRBHpk3Fgfcc
-	 /NvsEzB0164sG3ljW18bj1LDTno0nxo6cKQOAvefBWRuIBn3JDsJwU8PshTqc+5NoD
-	 i23wcNko7DcX+mZzAF0FK1Lnfdq+MU0uttvBmdnA=
+	b=RAx1e3tUTS1XRBO0IwsrdQ4vS0ONANHSRWzQz+GPpFGI5tXn5FgFuf5COD81EQwST
+	 bH3lrD0qzG9Wphu42mjcDvbbdtXBa4v/WH5mZO5HS5eADqAX7mPpjWzmkRs3blUF05
+	 YD9LFTPqFRCkd1DbFgB0JWG8ql+klG9+Xd/xswc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 128/230] USB: serial: option: drop MeiG Smart defines
-Date: Wed, 19 Feb 2025 09:27:25 +0100
-Message-ID: <20250219082606.693212875@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 033/152] media: uvcvideo: Add new quirk definition for the Sonix Technology Co. 292a camera
+Date: Wed, 19 Feb 2025 09:27:26 +0100
+Message-ID: <20250219082551.348672491@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Isaac Scott <isaac.scott@ideasonboard.com>
 
-commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
+[ Upstream commit 81f8c0e138c43610cf09b8d2a533068aa58e538e ]
 
-Several MeiG Smart modems apparently use the same product id, making the
-defines even less useful.
+The Sonix Technology Co. 292A camera (which uses an AR0330 sensor), can
+produce MJPEG and H.264 streams concurrently. When doing so, it drops
+the last packets of MJPEG frames every time the H.264 stream generates a
+key frame. Set the UVC_QUIRK_MJPEG_NO_EOF quirk to work around the
+issue.
 
-Drop them in favour of using comments consistently to make the id table
-slightly less unwieldy.
-
-Cc: stable@vger.kernel.org
-Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241128145144.61475-3-isaac.scott@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -619,18 +619,6 @@ static void option_instat_callback(struc
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
- 
--/* MeiG Smart Technology products */
--#define MEIGSMART_VENDOR_ID			0x2dee
--/*
-- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
-- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
-- */
--#define MEIGSMART_PRODUCT_SRM825L		0x4d22
--/* MeiG Smart SLM320 based on UNISOC UIS8910 */
--#define MEIGSMART_PRODUCT_SLM320		0x4d41
--/* MeiG Smart SLM770A based on ASR1803 */
--#define MEIGSMART_PRODUCT_SLM770A		0x4d57
--
- /* Device flags */
- 
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
-@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
- 	  .driver_info = NCTRL(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 95c5b90f3e7c1..1e8a3b069266d 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2886,6 +2886,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceSubClass	= 1,
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= (kernel_ulong_t)&uvc_quirk_probe_minmax },
++	/* Sonix Technology Co. Ltd. - 292A IPC AR0330 */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x0c45,
++	  .idProduct		= 0x6366,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_MJPEG_NO_EOF) },
+ 	/* MT6227 */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
+-- 
+2.39.5
+
 
 
 
