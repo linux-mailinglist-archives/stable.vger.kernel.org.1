@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-118186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EEEA3BA3E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03C1A3B6AF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59CAF1897E20
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3AEC188FAF4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D8D1E51F5;
-	Wed, 19 Feb 2025 09:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A5F1F2BA7;
+	Wed, 19 Feb 2025 08:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+yWyfGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kybU6Lf0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AB51E503C;
-	Wed, 19 Feb 2025 09:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5ADC1EEA2A;
+	Wed, 19 Feb 2025 08:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957482; cv=none; b=X9kzbl4i2g6Gjr1GxfI6lD36pTod9brF5S9SKiEDt97Z72FeuwJ1y2gwgCCc3k3iajxaolCcX/J9ODZXSmiv6YT+5MOHYFzwxhfZuSz9Zaw3F1bC+SQwShnqUGHpKIYHmxLhkQV51zzxKPD5oCsbfA8M5v9Z0+TeWsn87194sMg=
+	t=1739955418; cv=none; b=by6yzIzAQdqjy/l1jw6Ft1D2lV3i/Qi1/AzOOsFMS0JsTMQmxJEPHcP9BuVS6TCYNV3JG/1M4IM8R9gzVPKdOOCXd8wHvxih0a+ye9Ewo+m8vgoIIPiWnEZwDKIqoCWspMLpFDrAxnRXR6mzo+x1rvRDEbiYjb6WAtPjTLNc01c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957482; c=relaxed/simple;
-	bh=xsqB1GbDQM1p8Us4Tn5FAfkG/0kj3xjrvsTmRe5Gwes=;
+	s=arc-20240116; t=1739955418; c=relaxed/simple;
+	bh=qpl+EJ3bMzfQEY7KsalJ4WfacmRQ6TiAZ5bb3YceV5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oS+Tl46s7syYbvkl9Li8jKb0dUqTwvL9faLguSLHpC66OVgX/VbU2KiV842a7rHKGFPGUFu0kVnVvEnL8ffuofJ6RhjqQFuo7aLmLLNipYeVLN3uVdO+pNaEDZNYCuvOx21OUz1+X9vewnRmOXYwsEjxVKZ6ujtSjHfaFVvAlGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+yWyfGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31188C4CED1;
-	Wed, 19 Feb 2025 09:31:22 +0000 (UTC)
+	 MIME-Version; b=Ag5VvDA5Pg4sGkJ7YmZJZ6RyRn6C5WaUX5mRbykLl83Cagn8J6z44cLw9pw5tYQa6XzpEsGdO0IfITD+S2PoAOQRxaIOS75msujCIDufO74csiyaL9hu/dK3+QZb7rdwnKeReot5kHVQcor9cVcg2j6lNjyqdcnohIIeKkFEzg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kybU6Lf0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B34C4CEE7;
+	Wed, 19 Feb 2025 08:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957482;
-	bh=xsqB1GbDQM1p8Us4Tn5FAfkG/0kj3xjrvsTmRe5Gwes=;
+	s=korg; t=1739955418;
+	bh=qpl+EJ3bMzfQEY7KsalJ4WfacmRQ6TiAZ5bb3YceV5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+yWyfGddQ/VPcEFY3NbitZR5zR3q6x2gemPyxx4Pa5BIpU3o2wL3cqpZ2MbsHyEw
-	 Vk0Mob4rroapKanIphbOPsKc21kH2fdU7VlXktxHhW9IH9NQMKd4mUmqNkho8Vy/rb
-	 iiloCzxzkl/sWIj+eY9wkcuYZtEWMNZsBWGtgYGY=
+	b=kybU6Lf0WC/g/uxD+MwUKlwT/uhxjg/KI9lq8Rkb05h7PPEAQgGaXHWrW0mwzjh/g
+	 7QifxBA8YgTuJDUvKyGX0AaZk0voIZUSXd1X0yg0BngY/Zc0J6WJgHtrcC9b3jNhzF
+	 ePOH87DX7lXWZJMWR8FmkCr+kVaAwGvn5HYUCMMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 541/578] ipv4: use RCU protection in ipv4_default_advmss()
-Date: Wed, 19 Feb 2025 09:29:05 +0100
-Message-ID: <20250219082714.251549267@linuxfoundation.org>
+	syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 229/230] vsock: Orphan socket after transport release
+Date: Wed, 19 Feb 2025 09:29:06 +0100
+Message-ID: <20250219082610.640666611@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 71b8471c93fa0bcab911fcb65da1eb6c4f5f735f ]
+commit 78dafe1cf3afa02ed71084b350713b07e72a18fb upstream.
 
-ipv4_default_advmss() must use RCU protection to make
-sure the net structure it reads does not disappear.
+During socket release, sock_orphan() is called without considering that it
+sets sk->sk_wq to NULL. Later, if SO_LINGER is enabled, this leads to a
+null pointer dereferenced in virtio_transport_wait_close().
 
-Fixes: 2e9589ff809e ("ipv4: Namespaceify min_adv_mss sysctl knob")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-5-edumazet@google.com
+Orphan the socket only after transport release.
+
+Partially reverts the 'Fixes:' commit.
+
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+ lock_acquire+0x19e/0x500
+ _raw_spin_lock_irqsave+0x47/0x70
+ add_wait_queue+0x46/0x230
+ virtio_transport_release+0x4e7/0x7f0
+ __vsock_release+0xfd/0x490
+ vsock_release+0x90/0x120
+ __sock_release+0xa3/0x250
+ sock_close+0x14/0x20
+ __fput+0x35e/0xa90
+ __x64_sys_close+0x78/0xd0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Reported-by: syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9d55b199192a4be7d02c
+Fixes: fcdd2242c023 ("vsock: Keep the binding until socket destruction")
+Tested-by: Luigi Leonardi <leonardi@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250210-vsock-linger-nullderef-v3-1-ef6244d02b54@rbox.co
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/vmw_vsock/af_vsock.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index f877a96fd1eb5..5f18520d054c0 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1306,10 +1306,15 @@ static void set_class_tag(struct rtable *rt, u32 tag)
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -824,13 +824,19 @@ static void __vsock_release(struct sock
+ 	 */
+ 	lock_sock_nested(sk, level);
  
- static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
- {
--	struct net *net = dev_net(dst->dev);
- 	unsigned int header_size = sizeof(struct tcphdr) + sizeof(struct iphdr);
--	unsigned int advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
--				    net->ipv4.ip_rt_min_advmss);
-+	unsigned int advmss;
-+	struct net *net;
-+
-+	rcu_read_lock();
-+	net = dev_net_rcu(dst->dev);
-+	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
-+				   net->ipv4.ip_rt_min_advmss);
-+	rcu_read_unlock();
+-	sock_orphan(sk);
++	/* Indicate to vsock_remove_sock() that the socket is being released and
++	 * can be removed from the bound_table. Unlike transport reassignment
++	 * case, where the socket must remain bound despite vsock_remove_sock()
++	 * being called from the transport release() callback.
++	 */
++	sock_set_flag(sk, SOCK_DEAD);
  
- 	return min(advmss, IPV4_MAX_PMTU - header_size);
- }
--- 
-2.39.5
-
+ 	if (vsk->transport)
+ 		vsk->transport->release(vsk);
+ 	else if (sock_type_connectible(sk->sk_type))
+ 		vsock_remove_sock(vsk);
+ 
++	sock_orphan(sk);
+ 	sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+ 	skb_queue_purge(&sk->sk_receive_queue);
 
 
 
