@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-117608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34502A3B756
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD2BA3B9E5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A1B1888C3E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BD527A855E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315F81D7E54;
-	Wed, 19 Feb 2025 09:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D6F1E102D;
+	Wed, 19 Feb 2025 09:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxci0NyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzkZhd91"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50521D63E8;
-	Wed, 19 Feb 2025 09:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DD61E0E16;
+	Wed, 19 Feb 2025 09:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955817; cv=none; b=dUjxoR41eNHcBG62Wap3SvSn1EK6fKjeyE50MdEnZxFDRzMxbwn41p/97cL0mz9D6OSbtOLU4BaqmUQZNg8+3BudwaKf6U7JAvUAlpqfe+4HoYgjH6OHsKoanDNCk+CpFWda4Zn02uJQpU2FT/qe2bND7arbftbNZPQRUGgHniY=
+	t=1739957453; cv=none; b=Cl7d/IYJ6uiLfEGo+wEwEY/j6dcnDeryzwO8Y0plb4SGHUhZ/u1aAMeHuxT1J9NfeIjiue1Bm8r8WAueQYZNUPlXRWpOHAqDwbxQSBcCtAMbXAm80iW4C7aRAeyDd823pJlKxr6K1PJP+4ceKvasCJq8hTyEPPrJPa2xnfnYDlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955817; c=relaxed/simple;
-	bh=9JcsFF4UatNFKJuIICrRgV4GyAku7KCKY3fOF+japdw=;
+	s=arc-20240116; t=1739957453; c=relaxed/simple;
+	bh=GuIR4CC29JOQSohVJMsbtABaoL0TsFupxmYHP0FAAqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYcPT6beJCVGX1QegBNf967053mIaHL+yQR+7P7oFatpWeyPFh92Aj3z+8saYh3+ZCTobEv9ryFiUkKtPRIe9qXRUmdqvvoyAzx/CNmmsmRd7OAk6RYD4KhkvivpAx7mbZqKFMsPknNU6vKkZpT2HczwnaPZv2lyafhyh1OU/sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxci0NyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57744C4CEE6;
-	Wed, 19 Feb 2025 09:03:37 +0000 (UTC)
+	 MIME-Version; b=NUa0tT3p5ADEk3eIIjIGC9Jb0VXySqPyy4GeFrojwlNwR/JbYf+Zu71mz49xGT0s1WmXnsHoAk1kkUhDe/xoZO/1hFSNZC6m1gCsYyby/nL8KXx5Ftj6YoRj/SCrnEzYG4YaxfZ2Y+ppSja7Pkfew0LC/FwptIBccfhnk77z9EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzkZhd91; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B181C4CED1;
+	Wed, 19 Feb 2025 09:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955817;
-	bh=9JcsFF4UatNFKJuIICrRgV4GyAku7KCKY3fOF+japdw=;
+	s=korg; t=1739957453;
+	bh=GuIR4CC29JOQSohVJMsbtABaoL0TsFupxmYHP0FAAqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxci0NyG7a0OD2QMEQtVW07gEgOMNSMKOu0qtbw1IPicf/s1do8pEegd6prj7ZAkh
-	 am3T8NcJrezL4fgZ0FDYDxM8XXC3aWKZVrmkSngqMcKlh+eGIvsC56K1/USCgSmTD1
-	 fnr0Y7TBElGH7gJieTOKBtk8pakRc2Bks+dNyGmU=
+	b=uzkZhd91xi0Tq7VrSXYgz7jK8t26Lhn2iAjOLtAqhtLO28/Bj3QNfvQKJGLTR3eLk
+	 dFY5AEWlgL0Iejgri9h5t4PoDYXsaZR/5rseQpnmxRlDdFIFBGHzw8u1xjHvgBvMvG
+	 Vo+tELVtsfASaYAahUXyBLtKrDVVkg4sSxQTA4Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/152] neighbour: use RCU protection in __neigh_notify()
+	Nathan Chancellor <nathan@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 532/578] arm64: Handle .ARM.attributes section in linker scripts
 Date: Wed, 19 Feb 2025 09:28:56 +0100
-Message-ID: <20250219082554.918054462@linuxfoundation.org>
+Message-ID: <20250219082713.906353876@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
+commit ca0f4fe7cf7183bfbdc67ca2de56ae1fc3a8db2b upstream.
 
-__neigh_notify() can be called without RTNL or RCU protection.
+A recent LLVM commit [1] started generating an .ARM.attributes section
+similar to the one that exists for 32-bit, which results in orphan
+section warnings (or errors if CONFIG_WERROR is enabled) from the linker
+because it is not handled in the arm64 linker scripts.
 
-Use RCU protection to avoid potential UAF.
+  ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
 
-Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+
+Discard the new sections in the necessary linker scripts to resolve the
+warnings, as the kernel and vDSO do not need to retain it, similar to
+the .note.gnu.property section.
+
+Cc: stable@vger.kernel.org
+Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
+Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250206-arm64-handle-arm-attributes-in-linker-script-v3-1-d53d169913eb@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/vdso/vdso.lds.S |    1 +
+ arch/arm64/kernel/vmlinux.lds.S   |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 118d932b3baa1..e44feb39d459a 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3508,10 +3508,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
- static void __neigh_notify(struct neighbour *n, int type, int flags,
- 			   u32 pid)
- {
--	struct net *net = dev_net(n->dev);
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
-+	struct net *net;
- 
-+	rcu_read_lock();
-+	net = dev_net_rcu(n->dev);
- 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
- 	if (skb == NULL)
- 		goto errout;
-@@ -3524,9 +3526,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 		goto errout;
+--- a/arch/arm64/kernel/vdso/vdso.lds.S
++++ b/arch/arm64/kernel/vdso/vdso.lds.S
+@@ -38,6 +38,7 @@ SECTIONS
+ 	 */
+ 	/DISCARD/	: {
+ 		*(.note.GNU-stack .note.gnu.property)
++		*(.ARM.attributes)
  	}
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
--	return;
-+	goto out;
- errout:
- 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+out:
-+	rcu_read_unlock();
- }
+ 	.note		: { *(.note.*) }		:text	:note
  
- void neigh_app_ns(struct neighbour *n)
--- 
-2.39.5
-
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -149,6 +149,7 @@ SECTIONS
+ 	/DISCARD/ : {
+ 		*(.interp .dynamic)
+ 		*(.dynsym .dynstr .hash .gnu.hash)
++		*(.ARM.attributes)
+ 	}
+ 
+ 	. = KIMAGE_VADDR;
 
 
 
