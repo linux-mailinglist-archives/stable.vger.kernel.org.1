@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-118102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6366A3B9FF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D333A3B6D9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819FE420BD2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8143B8CEC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8251EFFB3;
-	Wed, 19 Feb 2025 09:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBA71DE8A0;
+	Wed, 19 Feb 2025 08:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOfqrJVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6opComU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A51D1DF25D;
-	Wed, 19 Feb 2025 09:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB19C1DE89B;
+	Wed, 19 Feb 2025 08:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957241; cv=none; b=XFLEXCTEi9Ce2ApaKYc0Rc4Wv7/yQ8AsCpAvUBULV6GmIzpayyfuPAES/tolblSjLy0hIIiEMSDDtSjeobg961up39ENH/f6ib++FZNGiDEnhro1TEsrXFlYQSHfhqn4epWCwYvkwNabYhXf6xzIEm0ogBdbSPli38Xye0EBFV8=
+	t=1739955519; cv=none; b=rxQF1V6yMidtoNAhomBkYjKC/s/0ArTyicmghfJT6Qh4KFKapJM3akag2CP1c/AIntwpHfYTQdm70+WeTbMN8MDqu7ZXIZnjyskqhr0oD3u1hWVbl1jTIT2KyX7suAeJeBXpJR0/wtmtnI4wPOEf+a3tD1lUqFcU+36dZrGq+kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957241; c=relaxed/simple;
-	bh=O6qKr1O0mPYtjZ0gfRq9heDmobWhU5nzqjkF0Z02zuE=;
+	s=arc-20240116; t=1739955519; c=relaxed/simple;
+	bh=tmSpaVPOubQsauvO7rU23bKkCPSFPFZWzKF4Bvyp2NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/BzBM2K0F2NWSQd+G0LhYJM6cTcOyl72/gVSf3WsJX5uT11B9Q2sGn0VE/rCTr6HeVS8H/LSEfFHeC+HMRrI78mMahDZ/KMUKYdYwwH406f/Z4As5sQFHQ6b99NQ7xfOf7gxvhDK3misQB5jP9D3/iaiIYhPKyBdKiwPKLzxbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOfqrJVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A37C4CED1;
-	Wed, 19 Feb 2025 09:27:20 +0000 (UTC)
+	 MIME-Version; b=HH0jYc+KibVHTDtiyTW+d8EmFi0RzxVYKD4T7vc24uAQTCeSkhWeaFoBZK2E+fQ2DvbRD8DvqePFN1sYglVPfKMUHtgpIxa0wX+bp4f7dgFRGlgSNeSLaOyyz9pEGAx5sCo2gM/S2MNV1tSAy9tNlpKXB9QTR0H8YdFM7o4cJJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6opComU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2547C4CED1;
+	Wed, 19 Feb 2025 08:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957241;
-	bh=O6qKr1O0mPYtjZ0gfRq9heDmobWhU5nzqjkF0Z02zuE=;
+	s=korg; t=1739955519;
+	bh=tmSpaVPOubQsauvO7rU23bKkCPSFPFZWzKF4Bvyp2NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOfqrJVYDXE7xQ3fo9wWxz2fF/DYQI/caf+fL62Y+R4rz/bevX3uStgJeJUlaUYuF
-	 RpjYCez2I/wqNQlcbTfMkn1W5cyshrShK6X5OI7+PqgRMurx5m+sfmbGYYDWbqxbJK
-	 0OVDphFRZIDs1SWPKERooruO+bg1/HD/KYcrvLWU=
+	b=h6opComUpb9HX6WuTy5dmqxWmwRbfQ1ShZjYRpR0VGJqCQ9dKU/lMIqea0El1vLwu
+	 X3kLdeR96iEXr7YBeGVVcYQ4m1sqBNP4hV/JxgK0SBqdloyNVJyM2oW/+FPcuFnXN/
+	 wFjSWf6F17Hr0Q6FM6DLc2xBoM4HWlFSvx/vX2A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
 	Jakub Kicinski <kuba@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Patrick Wang <patrick.wang.shcn@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 416/578] mm: kmemleak: fix upper boundary check for physical address objects
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/152] ax25: Fix refcount leak caused by setting SO_BINDTODEVICE sockopt
 Date: Wed, 19 Feb 2025 09:27:00 +0100
-Message-ID: <20250219082709.382941580@linuxfoundation.org>
+Message-ID: <20250219082550.315826470@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 488b5b9eca68497b533ced059be5eff19578bbca upstream.
+[ Upstream commit bca0902e61731a75fc4860c8720168d9f1bae3b6 ]
 
-Memblock allocations are registered by kmemleak separately, based on their
-physical address.  During the scanning stage, it checks whether an object
-is within the min_low_pfn and max_low_pfn boundaries and ignores it
-otherwise.
+If an AX25 device is bound to a socket by setting the SO_BINDTODEVICE
+socket option, a refcount leak will occur in ax25_release().
 
-With the recent addition of __percpu pointer leak detection (commit
-6c99d4eb7c5e ("kmemleak: enable tracking for percpu pointers")), kmemleak
-started reporting leaks in setup_zone_pageset() and
-setup_per_cpu_pageset().  These were caused by the node_data[0] object
-(initialised in alloc_node_data()) ending on the PFN_PHYS(max_low_pfn)
-boundary.  The non-strict upper boundary check introduced by commit
-84c326299191 ("mm: kmemleak: check physical address when scan") causes the
-pg_data_t object to be ignored (not scanned) and the __percpu pointers it
-contains to be reported as leaks.
+Commit 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
+added decrement of device refcounts in ax25_release(). In order for that
+to work correctly the refcounts must already be incremented when the
+device is bound to the socket. An AX25 device can be bound to a socket
+by either calling ax25_bind() or setting SO_BINDTODEVICE socket option.
+In both cases the refcounts should be incremented, but in fact it is done
+only in ax25_bind().
 
-Make the max_low_pfn upper boundary check strict when deciding whether to
-ignore a physical address object and not scan it.
+This bug leads to the following issue reported by Syzkaller:
 
-Link: https://lkml.kernel.org/r/20250127184233.2974311-1-catalin.marinas@arm.com
-Fixes: 84c326299191 ("mm: kmemleak: check physical address when scan")
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Patrick Wang <patrick.wang.shcn@gmail.com>
-Cc: <stable@vger.kernel.org>	[6.0.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+================================================================
+refcount_t: decrement hit 0; leaking memory.
+WARNING: CPU: 1 PID: 5932 at lib/refcount.c:31 refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
+Modules linked in:
+CPU: 1 UID: 0 PID: 5932 Comm: syz-executor424 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
+Call Trace:
+ <TASK>
+ __refcount_dec include/linux/refcount.h:336 [inline]
+ refcount_dec include/linux/refcount.h:351 [inline]
+ ref_tracker_free+0x710/0x820 lib/ref_tracker.c:236
+ netdev_tracker_free include/linux/netdevice.h:4156 [inline]
+ netdev_put include/linux/netdevice.h:4173 [inline]
+ netdev_put include/linux/netdevice.h:4169 [inline]
+ ax25_release+0x33f/0xa10 net/ax25/af_ax25.c:1069
+ __sock_release+0xb0/0x270 net/socket.c:640
+ sock_close+0x1c/0x30 net/socket.c:1408
+ ...
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ ...
+ </TASK>
+================================================================
+
+Fix the implementation of ax25_setsockopt() by adding increment of
+refcounts for the new device bound, and decrement of refcounts for
+the old unbound device.
+
+Fixes: 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
+Reported-by: syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250203091203.1744-1-m.masimov@mt-integration.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kmemleak.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ax25/af_ax25.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -1520,7 +1520,7 @@ static void kmemleak_scan(void)
- 			unsigned long phys = object->pointer;
- 
- 			if (PHYS_PFN(phys) < min_low_pfn ||
--			    PHYS_PFN(phys + object->size) >= max_low_pfn)
-+			    PHYS_PFN(phys + object->size) > max_low_pfn)
- 				__paint_it(object, KMEMLEAK_BLACK);
+diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
+index 0f66dd8715bd8..4a16142ac58a9 100644
+--- a/net/ax25/af_ax25.c
++++ b/net/ax25/af_ax25.c
+@@ -685,6 +685,15 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
  		}
  
++		if (ax25->ax25_dev) {
++			if (dev == ax25->ax25_dev->dev) {
++				rcu_read_unlock();
++				break;
++			}
++			netdev_put(ax25->ax25_dev->dev, &ax25->dev_tracker);
++			ax25_dev_put(ax25->ax25_dev);
++		}
++
+ 		ax25->ax25_dev = ax25_dev_ax25dev(dev);
+ 		if (!ax25->ax25_dev) {
+ 			rcu_read_unlock();
+@@ -692,6 +701,8 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 		ax25_fillin_cb(ax25, ax25->ax25_dev);
++		netdev_hold(dev, &ax25->dev_tracker, GFP_ATOMIC);
++		ax25_dev_hold(ax25->ax25_dev);
+ 		rcu_read_unlock();
+ 		break;
+ 
+-- 
+2.39.5
+
 
 
 
