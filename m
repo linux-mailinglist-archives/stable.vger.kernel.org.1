@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-117618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6295EA3B7C2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3004A3B6FC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4E0D3BC43D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655DE17595E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29511DE2C6;
-	Wed, 19 Feb 2025 09:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76971F17EB;
+	Wed, 19 Feb 2025 08:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTw/WHgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+PbXs2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10771CAA8E;
-	Wed, 19 Feb 2025 09:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DD71E3DC6;
+	Wed, 19 Feb 2025 08:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955848; cv=none; b=hjoxyd+3JmCWxE7E0KqcPfCTnqyS6dZhAovJAXVpS4D//+FvLRP80u0wlFp9zsSguLF9enQ9WjfAWckAsQ+tFeu9lLO/Lj5a/K/olyKeBw4QJ3U/8b4sgLrRxRYClF671KPxPGkI+6nEi6TPzFHNHhb0wtMPQuSg/NEIfc0S0o8=
+	t=1739955406; cv=none; b=cpPjpi6yjOZfWQNQ516wwC4Uf7FTIbj1vcX07FtJ381DWH3miITNyW1DGkHtUblM2w+YW9qtS2whnwUNEDz/3TgTyyrAqwOaCkENpM0zwYnRr/1L66BCqMLUcEIo3coy9TzmwImVln73hSb+GxE5D+KPpk7pnQO6UKVhNpuWaWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955848; c=relaxed/simple;
-	bh=cVtC4dihLgK0nl9aj02bZvwtn0XuM9z8j8lL60p+Jyc=;
+	s=arc-20240116; t=1739955406; c=relaxed/simple;
+	bh=GzQmepPTzCXF2v1xd6soZbe9VKLtbjQgVO/gOpMpfWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppc9PtEtQCxMukdlK9SsC98HaY1a7M5f2bSY6z9QZPRLrMPYd6/CtDLPKbyOpHv6t9uMKsxOsIXdqR4nPPLDqtGVghPbaAxou5vKe/suNO0eyRdIVGQgvhQLQ2m9slWULwvtk7CcxGMKSt2enrSXAhdmhj/+99/vEeD0754Ujp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTw/WHgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E8DC4CED1;
-	Wed, 19 Feb 2025 09:04:08 +0000 (UTC)
+	 MIME-Version; b=imCzCqc44sHyvH7OhzYMhpwIhdu3IpJ9hKPq5oK2sw+ZLvsOXowf/GJ6vZJK1/Xq69JCLrfTtX+swrxA/54Gg1B6QP6ikrvoEkmGWFvmhkxNKfroVCjPgaB+6lWUFoT3FSil0PSRwqmakIA85OuRq2d1JYFmXE9XFv7InKhC778=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+PbXs2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04595C4CED1;
+	Wed, 19 Feb 2025 08:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955848;
-	bh=cVtC4dihLgK0nl9aj02bZvwtn0XuM9z8j8lL60p+Jyc=;
+	s=korg; t=1739955406;
+	bh=GzQmepPTzCXF2v1xd6soZbe9VKLtbjQgVO/gOpMpfWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTw/WHgwhHdalx6m0U2qsgS5+PX/PtyEHgjqyLQZJ8Dy9Y0gMPXI2QzFH71gRHECi
-	 crmtn5ljOpQuvPEW68ud8djAo0zoZHakRrfZaP98vkpZovRuyFUyN8Dop1USjsc9qW
-	 dpWc/zE2MyJjbOpLpyVokg84fO7UfFvjAf1zlNIM=
+	b=H+PbXs2Q7+VW1+4HmMDbvdIsZ+yyjwCLsDzirgKUDepXp+wd/kbH3vR4guH/IC1H2
+	 KKTAfHDmUDSRw1Lleq1XVwL/ty7CAdxj+FSU6BZ2MRoDgG+4RD2jN6lOYppzWmThny
+	 ffwPfPbkaFrmVZLvFITFcEuWVv8hYLT9EtN9uk0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/152] ipv4: use RCU protection in ipv4_default_advmss()
-Date: Wed, 19 Feb 2025 09:28:35 +0100
-Message-ID: <20250219082554.094610438@linuxfoundation.org>
+Subject: [PATCH 6.12 199/230] openvswitch: use RCU protection in ovs_vport_cmd_fill_info()
+Date: Wed, 19 Feb 2025 09:28:36 +0100
+Message-ID: <20250219082609.480351530@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 71b8471c93fa0bcab911fcb65da1eb6c4f5f735f ]
+[ Upstream commit 90b2f49a502fa71090d9f4fe29a2f51fe5dff76d ]
 
-ipv4_default_advmss() must use RCU protection to make
-sure the net structure it reads does not disappear.
+ovs_vport_cmd_fill_info() can be called without RTNL or RCU.
 
-Fixes: 2e9589ff809e ("ipv4: Namespaceify min_adv_mss sysctl knob")
+Use RCU protection and dev_net_rcu() to avoid potential UAF.
+
+Fixes: 9354d4520342 ("openvswitch: reliable interface indentification in port dumps")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-5-edumazet@google.com
+Link: https://patch.msgid.link/20250207135841.1948589-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/openvswitch/datapath.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 61fc2166a870e..15cf2949ce951 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1306,10 +1306,15 @@ static void set_class_tag(struct rtable *rt, u32 tag)
- 
- static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 78d9961fcd446..8d3c01f0e2aa1 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2102,6 +2102,7 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
  {
--	struct net *net = dev_net(dst->dev);
- 	unsigned int header_size = sizeof(struct tcphdr) + sizeof(struct iphdr);
--	unsigned int advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
--				    net->ipv4.ip_rt_min_advmss);
-+	unsigned int advmss;
-+	struct net *net;
-+
+ 	struct ovs_header *ovs_header;
+ 	struct ovs_vport_stats vport_stats;
++	struct net *net_vport;
+ 	int err;
+ 
+ 	ovs_header = genlmsg_put(skb, portid, seq, &dp_vport_genl_family,
+@@ -2118,12 +2119,15 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
+ 		goto nla_put_failure;
+ 
+-	if (!net_eq(net, dev_net(vport->dev))) {
+-		int id = peernet2id_alloc(net, dev_net(vport->dev), gfp);
 +	rcu_read_lock();
-+	net = dev_net_rcu(dst->dev);
-+	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
-+				   net->ipv4.ip_rt_min_advmss);
++	net_vport = dev_net_rcu(vport->dev);
++	if (!net_eq(net, net_vport)) {
++		int id = peernet2id_alloc(net, net_vport, GFP_ATOMIC);
+ 
+ 		if (nla_put_s32(skb, OVS_VPORT_ATTR_NETNSID, id))
+-			goto nla_put_failure;
++			goto nla_put_failure_unlock;
+ 	}
 +	rcu_read_unlock();
  
- 	return min(advmss, IPV4_MAX_PMTU - header_size);
- }
+ 	ovs_vport_get_stats(vport, &vport_stats);
+ 	if (nla_put_64bit(skb, OVS_VPORT_ATTR_STATS,
+@@ -2144,6 +2148,8 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	genlmsg_end(skb, ovs_header);
+ 	return 0;
+ 
++nla_put_failure_unlock:
++	rcu_read_unlock();
+ nla_put_failure:
+ 	err = -EMSGSIZE;
+ error:
 -- 
 2.39.5
 
