@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-117340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400EFA3B65F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C161A3B997
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8D01177FA1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61AC73BD93E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359721DE88C;
-	Wed, 19 Feb 2025 08:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8CE1E0DEB;
+	Wed, 19 Feb 2025 09:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4M0Ky+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOyGhaSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E544D1C175A;
-	Wed, 19 Feb 2025 08:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4883B1E0B86;
+	Wed, 19 Feb 2025 09:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954969; cv=none; b=nMqq7gJYITv1iIPRLii4zbhJxi3Xne1qWdJlXXUlpsV2XPc6Y1SN8mEOEZSpXRPCmJ+BEi4XOr0gtguje7dob58V7L8YnpeGLOZWoSXs7w1jYJ0m1IuD2MIeOoUPvshD7LZeScet+uFbdFNoJwpSL/Q4iU7pxLvyv/Vg/u00UVM=
+	t=1739957092; cv=none; b=TYYPO24FQDAmYRy85Qr5qtJc4SrRa0m3vYDfDBRRQyiFcgFEyc81wgAHGgw857k+SVPg7DdXeriVYt1CzOITFXcYa3z0AtOdtjWZqwAx0Z/9hUl43j4w4W7pu2I0d3kIy1WybaJcYADza5Jn/+QDqFYyjSVKQ77AvuYL3yqHgUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954969; c=relaxed/simple;
-	bh=atBxWtpTpawNYaQzSeTwY1fHbtB3bozLg9byAK/lWks=;
+	s=arc-20240116; t=1739957092; c=relaxed/simple;
+	bh=a7BVLvZZ3+vnEtPzFELodMEtP2pvQMDBaosHjKZNLbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBwDTjRm2POb6sISaBk4E7jSFC3Uq+ffLRAnoll7vYw2sFNj3oLvvW3BJcC9EWokS1Xk07BUO+ezr5CJJpQmBNgz8wdg7XtBUuQjLu405j3DvgnQAsZBcdKLjY+nxtU6OwTSdtsd9VUXZRF5uTHVIlQ+l98L4r+fRxBPKA1HUKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4M0Ky+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE0AC4CED1;
-	Wed, 19 Feb 2025 08:49:28 +0000 (UTC)
+	 MIME-Version; b=Ls/RO9F4tfvDiPAT8K3DwFEDnyufxzkgJraLHO0W6US/B+wsvRIeB8soKU6iMbV4tV5qF3qFSMp1ICGGtezWX/ZQVL2W24a2C0OQHR+LiFR9IyXspACecaeOz4u2soKCMOkD4Ocz48rIymdKOiKc6ZxR/dnhTFBMPcWiEFUkEXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOyGhaSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA752C4CED1;
+	Wed, 19 Feb 2025 09:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954968;
-	bh=atBxWtpTpawNYaQzSeTwY1fHbtB3bozLg9byAK/lWks=;
+	s=korg; t=1739957092;
+	bh=a7BVLvZZ3+vnEtPzFELodMEtP2pvQMDBaosHjKZNLbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4M0Ky+AG5T7C5tFKXPZ2Ne4fsKkgE7oMXIVuiRzZwgcqg2o+TkEs3iV8Ilw1v7OT
-	 NVwkrNATJxCqH7qYl2foZ55yYJWg802CxLUgk5QOGBys4BtLhyVnW6lMqgP46lquEw
-	 BfTvsgc38wdCtDbQNusLIe6nEtkuyQj7vwockotw=
+	b=pOyGhaStwLsYEQRXHwh2nO84oZu7rI/9wWNjQ1kASY5sEAGGI/nqC6gCYGsr9xqQZ
+	 P0vFDVRicnosJgu4dnkJ67Tue3mjnuU/QVLT25ULpsS0mGUa53tNLQbS2RPwkdLKYW
+	 h570nA6m8lvPE1CGTtiGZtEYuZQ+wVpctr4MG8PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leon@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/230] kbuild: suppress stdout from merge_config for silent builds
-Date: Wed, 19 Feb 2025 09:26:48 +0100
-Message-ID: <20250219082605.258769697@linuxfoundation.org>
+	Juri Lelli <juri.lelli@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	John Kacur <jkacur@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 405/578] rv: Reset per-task monitors also for idle tasks
+Date: Wed, 19 Feb 2025 09:26:49 +0100
+Message-ID: <20250219082708.956420137@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 1f937a4bcb0472015818f30f4d3c5546d3f09933 ]
+commit 8259cb14a70680553d5e82d65d1302fe589e9b39 upstream.
 
-merge_config does not respect the Make's -s (--silent) option.
+RV per-task monitors are implemented through a monitor structure
+available for each task_struct. This structure is reset every time the
+monitor is (re-)started, to avoid inconsistencies if the monitor was
+activated previously.
+To do so, we reset the monitor on all threads using the macro
+for_each_process_thread. However, this macro excludes the idle tasks on
+each CPU. Idle tasks could be considered tasks on their own right and it
+should be up to the model whether to ignore them or not.
 
-Let's sink the stdout from merge_config for silent builds.
+Reset monitors also on the idle tasks for each present CPU whenever we
+reset all per-task monitors.
 
-This commit does not cater to the direct invocation of merge_config.sh
-(e.g. arch/mips/Makefile).
-
-Reported-by: Leon Romanovsky <leon@kernel.org>
-Closes: https://lore.kernel.org/all/e534ce33b0e1060eb85ece8429810f087b034c88.1733234008.git.leonro@nvidia.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: Leon Romanovsky <leon@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: John Kacur <jkacur@redhat.com>
+Link: https://lore.kernel.org/20250115151547.605750-2-gmonaco@redhat.com
+Fixes: 792575348ff7 ("rv/include: Add deterministic automata monitor definition via C macros")
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.defconf | 13 +++++++------
- scripts/kconfig/Makefile |  4 +++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ include/rv/da_monitor.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
-index 226ea3df3b4b4..a44307f08e9d6 100644
---- a/scripts/Makefile.defconf
-+++ b/scripts/Makefile.defconf
-@@ -1,6 +1,11 @@
- # SPDX-License-Identifier: GPL-2.0
- # Configuration heplers
+diff --git a/include/rv/da_monitor.h b/include/rv/da_monitor.h
+index 9705b2a98e49..510c88bfabd4 100644
+--- a/include/rv/da_monitor.h
++++ b/include/rv/da_monitor.h
+@@ -14,6 +14,7 @@
+ #include <rv/automata.h>
+ #include <linux/rv.h>
+ #include <linux/bug.h>
++#include <linux/sched.h>
  
-+cmd_merge_fragments = \
-+	$(srctree)/scripts/kconfig/merge_config.sh \
-+	$4 -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$2 \
-+	$(foreach config,$3,$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+
- # Creates 'merged defconfigs'
- # ---------------------------------------------------------------------------
- # Usage:
-@@ -8,9 +13,7 @@
- #
- # Input config fragments without '.config' suffix
- define merge_into_defconfig
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+	$(call cmd,merge_fragments,$1,$2)
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
+ #ifdef CONFIG_RV_REACTORS
  
-@@ -22,8 +25,6 @@ endef
- #
- # Input config fragments without '.config' suffix
- define merge_into_defconfig_override
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-Q -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+	$(call cmd,merge_fragments,$1,$2,-Q)
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
-diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-index a0a0be38cbdc1..fb50bd4f4103f 100644
---- a/scripts/kconfig/Makefile
-+++ b/scripts/kconfig/Makefile
-@@ -105,9 +105,11 @@ configfiles = $(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARC
- all-config-fragments = $(call configfiles,*.config)
- config-fragments = $(call configfiles,$@)
- 
-+cmd_merge_fragments = $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
-+
- %.config: $(obj)/conf
- 	$(if $(config-fragments),, $(error $@ fragment does not exists on this architecture))
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
-+	$(call cmd,merge_fragments)
- 	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- 
- PHONY += tinyconfig
+@@ -324,10 +325,13 @@ static inline struct da_monitor *da_get_monitor_##name(struct task_struct *tsk)
+ static void da_monitor_reset_all_##name(void)							\
+ {												\
+ 	struct task_struct *g, *p;								\
++	int cpu;										\
+ 												\
+ 	read_lock(&tasklist_lock);								\
+ 	for_each_process_thread(g, p)								\
+ 		da_monitor_reset_##name(da_get_monitor_##name(p));				\
++	for_each_present_cpu(cpu)								\
++		da_monitor_reset_##name(da_get_monitor_##name(idle_task(cpu)));			\
+ 	read_unlock(&tasklist_lock);								\
+ }												\
+ 												\
 -- 
-2.39.5
+2.48.1
 
 
 
