@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223EEA3B941
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:31:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDA3A3B8D6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC483A6DD7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:23:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D246819C00B3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAD01CDA14;
-	Wed, 19 Feb 2025 09:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5871F1CAA93;
+	Wed, 19 Feb 2025 09:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIhfvFRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ieK5IwRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5437F1805B;
-	Wed, 19 Feb 2025 09:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A901C831A;
+	Wed, 19 Feb 2025 09:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956846; cv=none; b=N68WtLEzPc5t2beC812f+mnbX25fpyc85h/kyTkTXoxI0PIYJjbmFUCbbUue4g8e02lOwCqW7gdqQj6fQpnuxAIsqYpe7oSheod/x77JpTKf4XQaHpTS/4F5tgEnTAf5j7mILoN3anmpS+FqOJFqteHaJu732WjpRT1izZ5/USw=
+	t=1739956755; cv=none; b=bhTJ/Ojc59/ATtyDjEXCfhJzAZ8FTyhmZ6zGAyHu1TQ5jPaGNHZtuaF1OLmFM6lVoxhgGFNRAxT0GgGYAa42Nhdi7O5EkogbT3QQ2PTuBOaXbQUBJydmhTZrTLsb7RqzcNcYLUIcHRd7EapsysKyjPcVymSbG3djozdNy69f/HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956846; c=relaxed/simple;
-	bh=8/gxTR/z9e+HXVvajLERWbGF8aIoDYb+ijs8vwpGocM=;
+	s=arc-20240116; t=1739956755; c=relaxed/simple;
+	bh=stuYAaVOoYzhSOEbSOdZBuwR4QaYgZUDB5lkUR5HHRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPcZ5T+C1kNWwasGgY0g4FV7bsvksfxEZ5N3lfuoaXaokdmeHlQyx84txDr0/rlWyR4rXRma9V0INQt7SC9o+2OrPBxpSsJ1zqEqONBKIHlggmLA2jjtXKtNizwCFu73yspbT+6IpsK8Ra+4/StwOX0WYzNkt8OiU3bwd91anNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIhfvFRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13A0C4CED1;
-	Wed, 19 Feb 2025 09:20:45 +0000 (UTC)
+	 MIME-Version; b=j2zpxFtuPw2FY2sUWw8NCIK8OvmzypuPsCAU4fMl93ID4LK7s9iDd4IGiEKeg8eooPYeH3ZsfZQVA468FX7QyalwObolnq419NDOyCU8thUcl6TFB5+24pGvZGXJUKzphfB+hXIehncfenoMFJt0a5G1kTF/1plFT1UzLStOKVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ieK5IwRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A449C4CED1;
+	Wed, 19 Feb 2025 09:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956846;
-	bh=8/gxTR/z9e+HXVvajLERWbGF8aIoDYb+ijs8vwpGocM=;
+	s=korg; t=1739956754;
+	bh=stuYAaVOoYzhSOEbSOdZBuwR4QaYgZUDB5lkUR5HHRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIhfvFRrD55t83S0L05sUUL+wI9eIIwJ1fJK0glNnjK1hSH2aZL+BrjLu52Rw9baw
-	 MKtR4e5rdCoxaZfUnlSRNIBdb+xP6h9JSzLrcf/3h1Ga+2ZpsxKw1Gcx5UY2qZazgN
-	 RnRpFW4Cz6bgnGhp6kJYBF+LpyP2hTII5faDDDh4=
+	b=ieK5IwRVPleY/GlZbYy85fUW2c3PvdZGmPDOkEPPVfVRlKG5iwMhSHQxEJkuzKVDi
+	 /q6nfojAjv/MftXFIq+7hjhQNj3rLcXvj2kFhSRYK5GmemytxEzcmJGCKBaABYxDN8
+	 dxrsMEk5gec072H/YMFPOw7JzcrNaemo5IabuOMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 288/578] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
-Date: Wed, 19 Feb 2025 09:24:52 +0100
-Message-ID: <20250219082704.341451887@linuxfoundation.org>
+Subject: [PATCH 6.1 289/578] tomoyo: dont emit warning in tomoyo_write_control()
+Date: Wed, 19 Feb 2025 09:24:53 +0100
+Message-ID: <20250219082704.381071349@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,39 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
+[ Upstream commit 3df7546fc03b8f004eee0b9e3256369f7d096685 ]
 
-In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
-instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
-Compile tested only.
+syzbot is reporting too large allocation warning at tomoyo_write_control(),
+for one can write a very very long line without new line character. To fix
+this warning, I use __GFP_NOWARN rather than checking for KMALLOC_MAX_SIZE,
+for practically a valid line should be always shorter than 32KB where the
+"too small to fail" memory-allocation rule applies.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+One might try to write a valid line that is longer than 32KB, but such
+request will likely fail with -ENOMEM. Therefore, I feel that separately
+returning -EINVAL when a line is longer than KMALLOC_MAX_SIZE is redundant.
+There is no need to distinguish over-32KB and over-KMALLOC_MAX_SIZE.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
+Reported-by: syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7536f77535e5210a5c76
+Reported-by: Leo Stone <leocstone@gmail.com>
+Closes: https://lkml.kernel.org/r/20241216021459.178759-2-leocstone@gmail.com
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
- 1 file changed, 3 insertions(+)
+ security/tomoyo/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-index 8580a27547891..42e7bc67e9143 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
-@@ -23427,6 +23427,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
- 				break;
- 		}
+diff --git a/security/tomoyo/common.c b/security/tomoyo/common.c
+index a7af085550b2d..5f1cdd0af115d 100644
+--- a/security/tomoyo/common.c
++++ b/security/tomoyo/common.c
+@@ -2664,7 +2664,7 @@ ssize_t tomoyo_write_control(struct tomoyo_io_buffer *head,
  
-+		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
-+			return;
-+
- 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
- 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
- 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
+ 		if (head->w.avail >= head->writebuf_size - 1) {
+ 			const int len = head->writebuf_size * 2;
+-			char *cp = kzalloc(len, GFP_NOFS);
++			char *cp = kzalloc(len, GFP_NOFS | __GFP_NOWARN);
+ 
+ 			if (!cp) {
+ 				error = -ENOMEM;
 -- 
 2.39.5
 
