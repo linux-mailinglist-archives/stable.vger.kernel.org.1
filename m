@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB0A3B73E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD95A3B666
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51BFB189D4F7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85E90188848C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818BF1E25E3;
-	Wed, 19 Feb 2025 09:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9EF1E5B9B;
+	Wed, 19 Feb 2025 08:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOmUlp8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWG2/ArH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5881E1A17;
-	Wed, 19 Feb 2025 09:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45481E503C;
+	Wed, 19 Feb 2025 08:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955701; cv=none; b=j0AbVyYscNs1dbX6BDP59TMLnMC3htG/Ywi6Do7Z4SwZjrqv6YyhJJoz6aZvh6Pi5J0MaFbIz3tAcagstiGGcrw3GuGsJpWwGJUYRXKSm1H/kEUipg5+bEAFFKY6O/uX9SwwzdTqpuZ0QzrRgu2XNATBZap1WzQLh9UPtGxxOtc=
+	t=1739955269; cv=none; b=eyueo2klnDSFArXQ+jFrzGJGwbX7XFwSGvhKZVl1QBJdl/Iw/A1KrQrRZm4GGoqR3fY+HdCszf0adWsox0DLISirHok/UjKuO9Blr81B8TUunLMAL+PETTVTHn4vm2GBTApGbTZ4jbfxEqZkSzOqXnN0fLVUppnHEpFZ1krV4fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955701; c=relaxed/simple;
-	bh=NzRvGVp77xyXXM/t+aXs57pq/Xwoc+6YxOJj3X3U8aA=;
+	s=arc-20240116; t=1739955269; c=relaxed/simple;
+	bh=QSn7woUF3uHlqNsyDO8lOCX/SXyRPMbVRUl7XbXeUnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATHT/nVNpsn2CwRGXWJEUUaVl1DAffmQJwmSaSpHtumoFX6YIzGJEJvRraNz3a1bzUxMatuPHwG8sGWUus0/dR7NDpw8QJCTL3VuEnhrUnjv0COjU4CElmT6nSKeMV6NpY/8cimvCjwvPcORPvlCXY/exiiO4mz2oDevYJ5q5Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOmUlp8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B6EC4CED1;
-	Wed, 19 Feb 2025 09:01:40 +0000 (UTC)
+	 MIME-Version; b=LrLItn8qzl5ZhKct5gRmYhAzU9X/WeV6hc7Cg3lDnSu3NcB3Wx53dDpupTk+OJcrQhY8MKu887wV1kHuK1noq46zyxLGJ0IbHGGv+bTuIeyeWCq413uiTRzRon7gTofhDy9HnU8XjZmMq7PArA7QNni2OiYxwkmUfF15IAghsII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWG2/ArH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361EBC4CED1;
+	Wed, 19 Feb 2025 08:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955701;
-	bh=NzRvGVp77xyXXM/t+aXs57pq/Xwoc+6YxOJj3X3U8aA=;
+	s=korg; t=1739955269;
+	bh=QSn7woUF3uHlqNsyDO8lOCX/SXyRPMbVRUl7XbXeUnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOmUlp8unf1hGPiKoVvzqjD73A6LMmShQMNczvLvcvkFCmewW3N6ywrwVqfKNif91
-	 BeeOKLQGimZtCdWffZNnOGv+m3oCS9X61mt7rWHper/1RE2uizeKHt1o+EQA+KivoI
-	 uvVsztKxBy+CUVEh3uoyDS81DRjPA8pGZg6cgcbQ=
+	b=eWG2/ArHHMd5Owa/shADAOhwQE7Q7BmKlkUoPwDq59rFA82QArmfC6I1kYy24JiF3
+	 L3TtgLgTah9HfP4jrifMyLw7wJ7WECpkzER81VTZ5PHivXGhHRexmK5q41H6YU+fEH
+	 k75++EyO2sTaJiup7nlni0MPdD0jmlJa80sgh1sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Delgan <delgan.py@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 087/152] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
-Date: Wed, 19 Feb 2025 09:28:20 +0100
-Message-ID: <20250219082553.497377543@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/230] net: add dev_net_rcu() helper
+Date: Wed, 19 Feb 2025 09:28:21 +0100
+Message-ID: <20250219082608.898100879@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 8743d66979e494c5378563e6b5a32e913380abd8 upstream.
+[ Upstream commit 482ad2a4ace2740ca0ff1cbc8f3c7f862f3ab507 ]
 
-Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
-specified as an edge triggered input and also a wake source but this pin is
-supposed to be an output pin for an LED, so it's effectively floating.
+dev->nd_net can change, readers should either
+use rcu_read_lock() or RTNL.
 
-Block the interrupt from getting set up for this GPIO on this device.
+We currently use a generic helper, dev_net() with
+no debugging support. We probably have many hidden bugs.
 
-Cc: stable@vger.kernel.org
-Reported-by: Delgan <delgan.py@gmail.com>
-Tested-by: Delgan <delgan.py@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Mika Westerberg <westeri@kernel.org>
-Link: https://lore.kernel.org/r/20250211203222.761206-1-superm1@kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add dev_net_rcu() helper for callers using rcu_read_lock()
+protection.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 71b8471c93fa ("ipv4: use RCU protection in ipv4_default_advmss()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/linux/netdevice.h   | 6 ++++++
+ include/net/net_namespace.h | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1706,6 +1706,20 @@ static const struct dmi_system_id gpioli
- 			.ignore_wake = "PNP0C50:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups from GPIO 11
-+		 * Found in BIOS 1.04
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3954
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 14"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_interrupt = "AMDI0030:00@11",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 02d3bafebbe77..4f17b786828af 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2577,6 +2577,12 @@ struct net *dev_net(const struct net_device *dev)
+ 	return read_pnet(&dev->nd_net);
+ }
  
++static inline
++struct net *dev_net_rcu(const struct net_device *dev)
++{
++	return read_pnet_rcu(&dev->nd_net);
++}
++
+ static inline
+ void dev_net_set(struct net_device *dev, struct net *net)
+ {
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 9398c8f499536..da93873df4dbd 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -387,7 +387,7 @@ static inline struct net *read_pnet(const possible_net_t *pnet)
+ #endif
+ }
+ 
+-static inline struct net *read_pnet_rcu(possible_net_t *pnet)
++static inline struct net *read_pnet_rcu(const possible_net_t *pnet)
+ {
+ #ifdef CONFIG_NET_NS
+ 	return rcu_dereference(pnet->net);
+-- 
+2.39.5
+
 
 
 
