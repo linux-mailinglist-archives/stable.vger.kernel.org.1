@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523ACA3B52A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:55:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202E9A3B5F9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C743B0223
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22B8B178E27
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74121FDE19;
-	Wed, 19 Feb 2025 08:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CE51DEFE5;
+	Wed, 19 Feb 2025 08:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n78fScKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVUR0LSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9A41CF5C0;
-	Wed, 19 Feb 2025 08:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B1E1DE3D8;
+	Wed, 19 Feb 2025 08:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954368; cv=none; b=t17l+Nkrq7iUOQ0Mlr5zHjq4HRxuySNBmWLt1G8ATm4fpLKug2PQGIgb+zsImpMUrzT66vFwom/deRl16vcRVk3OyWG2moZAkSDUJoG7Zio6E/zAzhAUjbblcXcTIc45w/AFQsKBfx4i87Sj5spxL6YuI6Id9OKnltrNEmP5paU=
+	t=1739955064; cv=none; b=gWgfiXGFU/+KDy4OvQLLewyjxQw0MCUqkq68cm/xtcPBkglQuSn/FjNucfQSgbD17Irs1FPScld75qlnjJi5XaqQXW7xEKszC+8ifNXWoPcubWpjaDV6YDpVlX7+QCBPImnsCeAJn3XiiNHr8ZegBR7Wpa26umFlJ2r849D7Frk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954368; c=relaxed/simple;
-	bh=B/pKr/WIBJRQB2DMEGDg/QUzboRzCpBL66z2c6XJv/U=;
+	s=arc-20240116; t=1739955064; c=relaxed/simple;
+	bh=+nPENRwxu0tSRzhwFoukex1B95sKVMebwJIvL3r5WhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNIjSyG56nwUKj3mAcj3e2WcZDut2M1ZmQBN44mhXCphbH2PqHbwULeD6GMrk/tCvDtrnGg8H3lYXB+3px7WYlbDuAmSExEOkaVEJyTVXOdhSLdhs7k55quGRzLLSl0Q5zfSjz4EIWaYlRBj9YQy0H2x24FCrUeSS2QlfgJPeOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n78fScKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B623FC4CED1;
-	Wed, 19 Feb 2025 08:39:27 +0000 (UTC)
+	 MIME-Version; b=BlPKvzhyIv3xjskWl7LgnqN8SCluHS1mw0li/8qrwIutbG58GInarIKbfWTX9aKctfnA+PYdl1fbi4kKhpYV9IzLgVLMmI1xsLrKOFwuNtKeE0lovhgEX0JNuI0IF/qFscqsontiuFbSnZa3xcbw2ehmKnV7gGMM6zJEZrwEfFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVUR0LSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFD2C4CEE7;
+	Wed, 19 Feb 2025 08:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954368;
-	bh=B/pKr/WIBJRQB2DMEGDg/QUzboRzCpBL66z2c6XJv/U=;
+	s=korg; t=1739955064;
+	bh=+nPENRwxu0tSRzhwFoukex1B95sKVMebwJIvL3r5WhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n78fScKvPHWYgBf9uJ1f+JOgCTl+H+fNT3axzII6sNhKHJZE60hj0KjIUc/E8bzGQ
-	 Kvd7mkEl6ptJCaoBmN1n9ixKYucm0zBVc9wjaVMxjZ0aImJH1gk8eNRbr26ck4pnR4
-	 uOx8t2QpQi2Vr+ceHIw657cpaVdPORnpJMG7svrI=
+	b=hVUR0LSISqHDG/C+2L2QbGIKsXJle6VU1VGg3/dvUN8N23jo2uRxsUHOuzgVCNrTJ
+	 ZNyjaihT4AS1LJy+iZjxws+pqtD/YgK1mrzGbOXIcJ5wuRUtcEKeXBQ1+xZRE1c2IA
+	 hdzQWdmEbY5NDm55fdAA0apNc1Q+S/YdLyqCLrKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy-ld Lu <andy-ld.lu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.13 183/274] mmc: mtk-sd: Fix register settings for hs400(es) mode
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Robert Morris <rtm@csail.mit.edu>
+Subject: [PATCH 6.12 120/230] USB: hub: Ignore non-compliant devices with too many configs or interfaces
 Date: Wed, 19 Feb 2025 09:27:17 +0100
-Message-ID: <20250219082616.745540366@linuxfoundation.org>
+Message-ID: <20250219082606.382397567@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 3e68abf2b9cebe76c6cd4b1aca8e95cd671035a3 upstream.
+commit 2240fed37afbcdb5e8b627bc7ad986891100e05d upstream.
 
-For hs400(es) mode, the 'hs400-ds-delay' is typically configured in the
-dts. However, some projects may only define 'mediatek,hs400-ds-dly3',
-which can lead to initialization failures in hs400es mode. CMD13 reported
-response crc error in the mmc_switch_status() just after switching to
-hs400es mode.
+Robert Morris created a test program which can cause
+usb_hub_to_struct_hub() to dereference a NULL or inappropriate
+pointer:
 
-[    1.914038][   T82] mmc0: mmc_select_hs400es failed, error -84
-[    1.914954][   T82] mmc0: error -84 whilst initialising MMC card
+Oops: general protection fault, probably for non-canonical address
+0xcccccccccccccccc: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
+CPU: 7 UID: 0 PID: 117 Comm: kworker/7:1 Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #14
+Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_hub_adjust_deviceremovable+0x78/0x110
+...
+Call Trace:
+ <TASK>
+ ? die_addr+0x31/0x80
+ ? exc_general_protection+0x1b4/0x3c0
+ ? asm_exc_general_protection+0x26/0x30
+ ? usb_hub_adjust_deviceremovable+0x78/0x110
+ hub_probe+0x7c7/0xab0
+ usb_probe_interface+0x14b/0x350
+ really_probe+0xd0/0x2d0
+ ? __pfx___device_attach_driver+0x10/0x10
+ __driver_probe_device+0x6e/0x110
+ driver_probe_device+0x1a/0x90
+ __device_attach_driver+0x7e/0xc0
+ bus_for_each_drv+0x7f/0xd0
+ __device_attach+0xaa/0x1a0
+ bus_probe_device+0x8b/0xa0
+ device_add+0x62e/0x810
+ usb_set_configuration+0x65d/0x990
+ usb_generic_driver_probe+0x4b/0x70
+ usb_probe_device+0x36/0xd0
 
-Currently, the hs400_ds_dly3 value is set within the tuning function. This
-means that the PAD_DS_DLY3 field is not configured before tuning process,
-which is the reason for the above-mentioned CMD13 response crc error.
+The cause of this error is that the device has two interfaces, and the
+hub driver binds to interface 1 instead of interface 0, which is where
+usb_hub_to_struct_hub() looks.
 
-Move the PAD_DS_DLY3 field configuration into msdc_prepare_hs400_tuning(),
-and add a value check of hs400_ds_delay to prevent overwriting by zero when
-the 'hs400-ds-delay' is not set in the dts. In addition, since hs400(es)
-only tune the PAD_DS_DLY1, the PAD_DS_DLY2_SEL bit should be cleared to
-bypass it.
+We can prevent the problem from occurring by refusing to accept hub
+devices that violate the USB spec by having more than one
+configuration or interface.
 
-Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
-Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250123092644.7359-1-andy-ld.lu@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-and-tested-by: Robert Morris <rtm@csail.mit.edu>
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/95564.1737394039@localhost/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/c27f3bf4-63d8-4fb5-ac82-09e3cd19f61c@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c |   31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ drivers/usb/core/hub.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -273,6 +273,7 @@
- #define MSDC_PAD_TUNE_CMD2_SEL	  BIT(21)   /* RW */
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1848,6 +1848,17 @@ static int hub_probe(struct usb_interfac
+ 	hdev = interface_to_usbdev(intf);
  
- #define PAD_DS_TUNE_DLY_SEL       BIT(0)	  /* RW */
-+#define PAD_DS_TUNE_DLY2_SEL      BIT(1)	  /* RW */
- #define PAD_DS_TUNE_DLY1	  GENMASK(6, 2)   /* RW */
- #define PAD_DS_TUNE_DLY2	  GENMASK(11, 7)  /* RW */
- #define PAD_DS_TUNE_DLY3	  GENMASK(16, 12) /* RW */
-@@ -318,6 +319,7 @@
- 
- /* EMMC50_PAD_DS_TUNE mask */
- #define PAD_DS_DLY_SEL		BIT(16)	/* RW */
-+#define PAD_DS_DLY2_SEL		BIT(15)	/* RW */
- #define PAD_DS_DLY1		GENMASK(14, 10)	/* RW */
- #define PAD_DS_DLY3		GENMASK(4, 0)	/* RW */
- 
-@@ -2498,13 +2500,23 @@ tune_done:
- static int msdc_prepare_hs400_tuning(struct mmc_host *mmc, struct mmc_ios *ios)
- {
- 	struct msdc_host *host = mmc_priv(mmc);
-+
- 	host->hs400_mode = true;
- 
--	if (host->top_base)
--		writel(host->hs400_ds_delay,
--		       host->top_base + EMMC50_PAD_DS_TUNE);
--	else
--		writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
-+	if (host->top_base) {
-+		if (host->hs400_ds_dly3)
-+			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
-+				      PAD_DS_DLY3, host->hs400_ds_dly3);
-+		if (host->hs400_ds_delay)
-+			writel(host->hs400_ds_delay,
-+			       host->top_base + EMMC50_PAD_DS_TUNE);
-+	} else {
-+		if (host->hs400_ds_dly3)
-+			sdr_set_field(host->base + PAD_DS_TUNE,
-+				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
-+		if (host->hs400_ds_delay)
-+			writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
+ 	/*
++	 * The USB 2.0 spec prohibits hubs from having more than one
++	 * configuration or interface, and we rely on this prohibition.
++	 * Refuse to accept a device that violates it.
++	 */
++	if (hdev->descriptor.bNumConfigurations > 1 ||
++			hdev->actconfig->desc.bNumInterfaces > 1) {
++		dev_err(&intf->dev, "Invalid hub with more than one config or interface\n");
++		return -EINVAL;
 +	}
- 	/* hs400 mode must set it to 0 */
- 	sdr_clr_bits(host->base + MSDC_PATCH_BIT2, MSDC_PATCH_BIT2_CFGCRCSTS);
- 	/* to improve read performance, set outstanding to 2 */
-@@ -2524,14 +2536,11 @@ static int msdc_execute_hs400_tuning(str
- 	if (host->top_base) {
- 		sdr_set_bits(host->top_base + EMMC50_PAD_DS_TUNE,
- 			     PAD_DS_DLY_SEL);
--		if (host->hs400_ds_dly3)
--			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
--				      PAD_DS_DLY3, host->hs400_ds_dly3);
-+		sdr_clr_bits(host->top_base + EMMC50_PAD_DS_TUNE,
-+			     PAD_DS_DLY2_SEL);
- 	} else {
- 		sdr_set_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY_SEL);
--		if (host->hs400_ds_dly3)
--			sdr_set_field(host->base + PAD_DS_TUNE,
--				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
-+		sdr_clr_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY2_SEL);
- 	}
- 
- 	host->hs400_tuning = true;
++
++	/*
+ 	 * Set default autosuspend delay as 0 to speedup bus suspend,
+ 	 * based on the below considerations:
+ 	 *
 
 
 
