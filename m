@@ -1,128 +1,139 @@
-Return-Path: <stable+bounces-117372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0FBA3B647
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43335A3B6F2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2C613B99A7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7860717C176
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD2B1DF962;
-	Wed, 19 Feb 2025 08:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="o1FeUPlN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F071EEA27;
+	Wed, 19 Feb 2025 08:56:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8F91CAA9C
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 08:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4441CAA65;
+	Wed, 19 Feb 2025 08:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955074; cv=none; b=DPmp6jDo/w/fVa9I6c9CeTZ0nPgMLr/JxDcyKrJyRvIVW92fZkAob7O8DhFukr6ZkKZ66srrk0NATxfK3ObGmq3cP66EwZ+aZiUubmJ8FqxNR9BgS5Ujp9TV/c9sl866JvGDENssOmWix2y8wDbjApgVuyRJLL4zG+beLgnqkVo=
+	t=1739955397; cv=none; b=qqCtBkBVaVIkrNHk1/ASO4m8/AH5EnH+pkncP7DrQcr+MjZbe2CP4ICdVscRR8AA9jnNdwmSLzIfbrLI0ifCyogrWWwJO5JD5fCuOXwuX4sdQkpCzUgkbYNSip12JbChpGP8qjNNstTSkahXnMGdDalmiiij2l16L1B3W0gO44w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955074; c=relaxed/simple;
-	bh=QlRt4GjR1jTQddX7TI/CWL55VeGCGZqXC6zBvzHvQVE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XNdMmtzMUZYU1airR6GqvoSP31akDv1GA5DKmIo3GWNql9HgHkMsCE0yBZK7s+YLjItjtwkYQxBdqoOnBAAuB4aEptNtvXGBT9m/SHKiOuSA04fHruY3wpxx8jedoqZStqyEyiAeqrrghkjWFWzsmVfQxMbTxaoG8O8VMslEwTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=o1FeUPlN; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5462ea9691cso904436e87.2
-        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 00:51:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1739955068; x=1740559868; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QlRt4GjR1jTQddX7TI/CWL55VeGCGZqXC6zBvzHvQVE=;
-        b=o1FeUPlNj2ECx+vKbeYadrDGg39J25so27tgeLPmCS/x4a6J+K6GZlwiCkRVHdy0R8
-         M3wwgKL1zOi25+dvSjevUgqVN+OC1cZOWQf2HdbeMzamttbQRs61n7SbHB43eqPQTbC0
-         NkRAOWk1BzEcdQx1l/VdRF5EsH0OUcgydRaA41Cc7MWBaMRGDg6cJ0dFgozWdp1w4qOU
-         +u22E4K0wISQkFfMvYhRo0Pe///PNz7BZYhYsQkoh+6wFu/BmrmtgrZMm+j1oFCFbx2g
-         nrjt12vBoBij+AJs3scQfRBy0HufJPXNO4xe9YgWIY/3SpJS6s5j70G+5GvowhnYVCQu
-         z4eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739955068; x=1740559868;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QlRt4GjR1jTQddX7TI/CWL55VeGCGZqXC6zBvzHvQVE=;
-        b=O5ij7vsYi6UXPNj6j/yk5YgsyAxgmpYfuRv/w3AL3CZlHXymbiTNbwcpTCpdltaYip
-         +r1c0+Cz06x5O3w5bGWccP19bu8dDqXtQi3xmnPAOac8Is+l+aeTLDrUg20QHMVS6NiN
-         6/tlyJXVeoy63mYtJXi1bVOzdwNupgAVE1uzzOdPlV2cV0wlQKo9pZ85SMtdB+aD/B7Y
-         uqVe0vWR4BnIjeo1MMtYcCBDm66z92GA7OKQEcTxjDUv3Pjq2ajmBBtM2OVcimDpsoDy
-         6B/fvdy+KtYarPrlGGDARYnil2rognsiOXUnD9aiiUnrFXmWsHLTUCP2aQ0xUx38VOqj
-         +X+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVEFzgSqehzxPv/ZWN53Gpt20ByrFvoNr5LnpVvznQXvmEMI5K8luHbRkxzAa/b+r/VXdCvq/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9yRVo/6fhjyTofjtzao8X4hFwOeIjTslef4CPsy+XSRPsCIaD
-	4UI2rMQPvAwWfaoxwRQWX+pyePose3AWYhsx8SaUDCg1BaViYDgq+BQNctaqpRZhQinvOdOcOxv
-	/2UIrOky8PHQkoLkJusWk6wk6wk2xBA7wxyaZKQ==
-X-Gm-Gg: ASbGncub1l8sbZFQKNuwiKgHhkOAWwaVD4VVxFPm+0OkouKaKOEEihbOxlWBb6ZG+Qf
-	R492ONSeVfMtj3260T3KKZnNtI9H0N7loiyFoMuojYlr+qVbAWp/dAOp9MeGztCHkUTlzExyURn
-	Q8f0D80YVoDBtz7v4iR+iUL/gGq0w=
-X-Google-Smtp-Source: AGHT+IH64ll7H5Pnr+AXMsIuNzl9rxkEnslGqgkEA+cDQgfdDUoTUpRoWEehaV1nkpYxzRdLERpqNeVg5AkiS0DCNsY=
-X-Received: by 2002:a05:6512:3e23:b0:545:b28:2fa2 with SMTP id
- 2adb3069b0e04-5462eed85e0mr1036454e87.7.1739955067864; Wed, 19 Feb 2025
- 00:51:07 -0800 (PST)
+	s=arc-20240116; t=1739955397; c=relaxed/simple;
+	bh=abNsQdu3JhM7h7rMfFp3U0VqkyS8CqdHzs/8jrwx3bc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VuPKBHQkmekVRiFJnymFda88z+6ub85goPzPTmOuvv6JdLbNzVcVHMBIi5G1KYYeqoDN/bH4+vVlW3IzEcJNffzCwnWTu6Vv3B7uS40NuENlUy7o0n7oACGHQtx3BrDbNH8jAPGp+ZWk9xBcgBvePlKwnaYYuRzUPjuwCzxQ+20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 003F11682;
+	Wed, 19 Feb 2025 00:56:53 -0800 (PST)
+Received: from [10.162.42.6] (unknown [10.162.42.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4EF9A3F5A1;
+	Wed, 19 Feb 2025 00:56:21 -0800 (PST)
+Message-ID: <5fbfd74e-7f87-4f4f-86a7-7d4c38e0b4ba@arm.com>
+Date: Wed, 19 Feb 2025 14:26:19 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210-gpio-sanitize-retvals-v1-0-12ea88506cb2@linaro.org>
- <CGME20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254@eucas1p1.samsung.com>
- <20250210-gpio-sanitize-retvals-v1-1-12ea88506cb2@linaro.org> <dfe03f88-407e-4ef1-ad30-42db53bbd4e4@samsung.com>
-In-Reply-To: <dfe03f88-407e-4ef1-ad30-42db53bbd4e4@samsung.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 19 Feb 2025 09:50:55 +0100
-X-Gm-Features: AWEUYZmqO0kHQqF5k5xCw4NLQbgyDdiC_HWCKvZXBPIn3qhchpNyNDYCJKAkPtE
-Message-ID: <CAMRc=MduJK0_gat2aVQbR9udYNj9oDcoN=me0wa4K6L8dX_52Q@mail.gmail.com>
-Subject: Re: [PATCH 1/8] gpiolib: check the return value of gpio_chip::get_direction()
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] arm64: hugetlb: Fix flush_hugetlb_tlb_range()
+ invalidation level
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ David Hildenbrand <david@redhat.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Mark Rutland <mark.rutland@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250217140419.1702389-1-ryan.roberts@arm.com>
+ <20250217140419.1702389-4-ryan.roberts@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20250217140419.1702389-4-ryan.roberts@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 19, 2025 at 9:38=E2=80=AFAM Marek Szyprowski
-<m.szyprowski@samsung.com> wrote:
->
-> Hi Bartosz,
->
-> On 10.02.2025 11:51, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > As per the API contract - gpio_chip::get_direction() may fail and retur=
-n
-> > a negative error number. However, we treat it as if it always returned =
-0
-> > or 1. Check the return value of the callback and propagate the error
-> > number up the stack.
-> >
->
-> This change breaks bcm2835 pincontrol/gpio driver (and probably others)
-> in next-20250218. The problem is that some gpio lines are initially
-> configured as alternate function (i.e. uart) and .get_direction returns
-> -EINVAL for them, what in turn causes the whole gpio chip fail to
-> register. Here is the log with WARN_ON() added to line
-> drivers/pinctrl/bcm/pinctrl-bcm2835.c:350 from Raspberry Pi 4B:
->
-> Any suggestions how to fix this issue? Should we add
-> GPIO_LINE_DIRECTION_UNKNOWN?
->
+On 2/17/25 19:34, Ryan Roberts wrote:
+> commit c910f2b65518 ("arm64/mm: Update tlb invalidation routines for
+> FEAT_LPA2") changed the "invalidation level unknown" hint from 0 to
+> TLBI_TTL_UNKNOWN (INT_MAX). But the fallback "unknown level" path in
+> flush_hugetlb_tlb_range() was not updated. So as it stands, when trying
+> to invalidate CONT_PMD_SIZE or CONT_PTE_SIZE hugetlb mappings, we will
+> spuriously try to invalidate at level 0 on LPA2-enabled systems.
+> 
+> Fix this so that the fallback passes TLBI_TTL_UNKNOWN, and while we are
+> at it, explicitly use the correct stride and level for CONT_PMD_SIZE and
+> CONT_PTE_SIZE, which should provide a minor optimization.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: c910f2b65518 ("arm64/mm: Update tlb invalidation routines for FEAT_LPA2")
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
-That would be quite an intrusive change and not something for the
-middle of the release cycle. I think we need to revert to the previous
-behavior for this particular use-case: check ret for EINVAL and assume
-it means input as it's the "safe" setting. Now the question is - can
-this only happen during the chip registration or should we filter out
-EINVAL at each gpiod_get_direction() call?
+LGTM
 
-Bart
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+> ---
+>  arch/arm64/include/asm/hugetlb.h | 22 ++++++++++++++++------
+>  1 file changed, 16 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+> index 03db9cb21ace..07fbf5bf85a7 100644
+> --- a/arch/arm64/include/asm/hugetlb.h
+> +++ b/arch/arm64/include/asm/hugetlb.h
+> @@ -76,12 +76,22 @@ static inline void flush_hugetlb_tlb_range(struct vm_area_struct *vma,
+>  {
+>  	unsigned long stride = huge_page_size(hstate_vma(vma));
+>  
+> -	if (stride == PMD_SIZE)
+> -		__flush_tlb_range(vma, start, end, stride, false, 2);
+> -	else if (stride == PUD_SIZE)
+> -		__flush_tlb_range(vma, start, end, stride, false, 1);
+> -	else
+> -		__flush_tlb_range(vma, start, end, PAGE_SIZE, false, 0);
+> +	switch (stride) {
+> +#ifndef __PAGETABLE_PMD_FOLDED
+> +	case PUD_SIZE:
+> +		__flush_tlb_range(vma, start, end, PUD_SIZE, false, 1);
+> +		break;
+> +#endif
+> +	case CONT_PMD_SIZE:
+> +	case PMD_SIZE:
+> +		__flush_tlb_range(vma, start, end, PMD_SIZE, false, 2);
+> +		break;
+> +	case CONT_PTE_SIZE:
+> +		__flush_tlb_range(vma, start, end, PAGE_SIZE, false, 3);
+> +		break;
+> +	default:
+> +		__flush_tlb_range(vma, start, end, PAGE_SIZE, false, TLBI_TTL_UNKNOWN);
+> +	}
+>  }
+>  
+>  #endif /* __ASM_HUGETLB_H */
 
