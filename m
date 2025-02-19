@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-117497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185FDA3B6D7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A56A3BA25
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BC43B8F88
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45FA23BBC67
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9186C1DE3BE;
-	Wed, 19 Feb 2025 08:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1BF18FC86;
+	Wed, 19 Feb 2025 09:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoV+GPCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLRmBze7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501A21CAA68;
-	Wed, 19 Feb 2025 08:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7881A314B;
+	Wed, 19 Feb 2025 09:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955471; cv=none; b=PGr7TxHYol/6+cMI4cHwv5n16+m1Fw5nzr9dCZgaPVnqtAqhl8Iz7Vgwjf5C0xof7TYQNHnZozg2t4eqNUTyKsSb+Fkdot2OsS4yGb9EPKEKG5UMOYWTV3eJM0MzNVamxWtft/N1PPoAILZyf5nOkp1XvV1Q3Bwh6eSonMBKLu0=
+	t=1739957149; cv=none; b=EEv4feJ7leA9LD+o/rVM9QUJ8QOcRM+GvGBX4rbuHZj+zuuw69u5fVrO0SDeHaGDitXX0qi+8C+6cyDim9XeL79OOh5EDw+YnxjhjUFl6eC8gTMoKXHCc0HyBgbimkonmnvveUFagEVCi2tEysr+SaRx0XaIncayX21RqR4P1FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955471; c=relaxed/simple;
-	bh=gs2yJcTUFfQbt3AT2hY7KWfWyvPh/uHYFn/+2msdmYE=;
+	s=arc-20240116; t=1739957149; c=relaxed/simple;
+	bh=hUaSZ2UjFgCryo+iOwKW4vCytxnQ4rQ8nwhjPcw6dCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvsoOJPld2Ektam3VywsRkk6tUofuyH7PcBqX1mxm12YjMYXKwY4c1DEJ8kfZ+xqdyggvkM+9QfUc+2nynhLitvPphSK36V5mIAr6wSpeaVH8ksXBQWBVzZfl7RfOC5fFV71DxxCVqb6IqzjgyB+8uYFEdDnllihtjAD40yV2uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoV+GPCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56BBC4CED1;
-	Wed, 19 Feb 2025 08:57:50 +0000 (UTC)
+	 MIME-Version; b=jQCc8c8JI5jCyOCmEXxhgbKz9zOGdZI1BoBToE2LIFbVKY8ckzkwI2okmlwdZTZgQiB4djKmaKTxDry2vPO1FqFNsgthvKs2fD65Rk6kH+Vao9nSxOexF25VlzetWlKdQRmXaLO7Od9pcfejTutewC/n8nArhhmPoLT93wPZYn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLRmBze7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0322AC4CED1;
+	Wed, 19 Feb 2025 09:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955471;
-	bh=gs2yJcTUFfQbt3AT2hY7KWfWyvPh/uHYFn/+2msdmYE=;
+	s=korg; t=1739957149;
+	bh=hUaSZ2UjFgCryo+iOwKW4vCytxnQ4rQ8nwhjPcw6dCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JoV+GPCz42LaAUZBEMINliQYOCX4PEc6xdAK+6I9Qp2S45rE7tv1L13cmMRlU/wYY
-	 QmGQEjIJzrkVJQ65ytYQOfg1SbURmGDUcERZZwOvqsIipBUjACxUGZvKfioFJeGhIJ
-	 gbHLnT7heH3riv8OR5rbdpDqIW6KE/zc67BoGaqQ=
+	b=WLRmBze7rsSaxxV7r+SW9w7W8YcIjPL3HAPAVp4n55nOFxtnP84l33adeSrJv07bN
+	 z/iZh4j/4rrsjIWGgbx6XA9f3TxVeumlcBghGnhVhRqgQKCb/7SoOgBc9qOAcp/vqR
+	 oG+st7Hs9JuLC9ceGIuhFW6qBwvB790eUS7Yxaz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Markus Mayer <mmayer@broadcom.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/152] gpio: bcm-kona: Fix GPIO lock/unlock for banks above bank 0
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 426/578] ocfs2: fix incorrect CPU endianness conversion causing mount failure
 Date: Wed, 19 Feb 2025 09:27:10 +0100
-Message-ID: <20250219082550.708100507@linuxfoundation.org>
+Message-ID: <20250219082709.772648783@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +67,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit de1d0d160f64ee76df1d364d521b2faf465a091c ]
+commit f921da2c34692dfec5f72b5ae347b1bea22bb369 upstream.
 
-The GPIO lock/unlock functions clear/write a bit to the relevant
-register for each bank. However, due to an oversight the bit that
-was being written was based on the total GPIO number, not the index
-of the GPIO within the relevant bank, causing it to fail for any
-GPIO above 32 (thus any GPIO for banks above bank 0).
+Commit 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
+introduced a regression bug.  The blksz_bits value is already converted to
+CPU endian in the previous code; therefore, the code shouldn't use
+le32_to_cpu() anymore.
 
-Fix lock/unlock for these banks by using the correct bit.
-
-Fixes: bdb93c03c550 ("gpio: bcm281xx: Centralize register locking")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Markus Mayer <mmayer@broadcom.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-1-409135eab780@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250121112204.12834-1-heming.zhao@suse.com
+Fixes: 23aab037106d ("ocfs2: fix UBSAN warning in ocfs2_verify_volume()")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-bcm-kona.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/ocfs2/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
-index 5321ef98f4427..77bd4ec93a231 100644
---- a/drivers/gpio/gpio-bcm-kona.c
-+++ b/drivers/gpio/gpio-bcm-kona.c
-@@ -86,11 +86,12 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	u32 val;
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
-+	int bit = GPIO_BIT(gpio);
- 
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val |= BIT(gpio);
-+	val |= BIT(bit);
- 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
- 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-@@ -102,11 +103,12 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	u32 val;
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
-+	int bit = GPIO_BIT(gpio);
- 
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val &= ~BIT(gpio);
-+	val &= ~BIT(bit);
- 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
- 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
--- 
-2.39.5
-
+--- a/fs/ocfs2/super.c
++++ b/fs/ocfs2/super.c
+@@ -2342,7 +2342,7 @@ static int ocfs2_verify_volume(struct oc
+ 			mlog(ML_ERROR, "found superblock with incorrect block "
+ 			     "size bits: found %u, should be 9, 10, 11, or 12\n",
+ 			     blksz_bits);
+-		} else if ((1 << le32_to_cpu(blksz_bits)) != blksz) {
++		} else if ((1 << blksz_bits) != blksz) {
+ 			mlog(ML_ERROR, "found superblock with incorrect block "
+ 			     "size: found %u, should be %u\n", 1 << blksz_bits, blksz);
+ 		} else if (le16_to_cpu(di->id2.i_super.s_major_rev_level) !=
 
 
 
