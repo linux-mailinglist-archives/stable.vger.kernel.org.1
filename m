@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-117049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E364A3B462
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1444EA3B58E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63E253B0561
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F31A17CE56
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE481DE2B7;
-	Wed, 19 Feb 2025 08:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5011BC062;
+	Wed, 19 Feb 2025 08:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWKre/OX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJpAve9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1AA1C5F29;
-	Wed, 19 Feb 2025 08:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4A41E5B97;
+	Wed, 19 Feb 2025 08:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954047; cv=none; b=g5SnNIOvih9oPtPdOaMSan+Ak16EpEAbZd37Hzpsdj4C5ruXEoX+v+8qWYvPsVd7OdvzcPSomtUgSWEO+RfUClUTBvFyVc6h1DaBdbOzpMObZ6abdZ20zkGIRSpjKyVCLyVLmOZ+sZIabwrtiMSYDYDvF4qnVhIyw2EGoz8IA9U=
+	t=1739954730; cv=none; b=UimmL43ZjpCBqWbn950L4HFSrjSJ5Y+m6Z9e1rQWy7x+wb6eG0MAFPwxDrzSo9drqmLy8+7BUHiJOEdOz8d/zJV6FV35NQon1VnS7/SPbxdzO3DcJrvGIiVEjGhyZX6v/9GV2has9N7c9hqyAhxCRVNNOXY90GIMncN0qALzYXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954047; c=relaxed/simple;
-	bh=o+DsA2a2gu4iO+DDyWFPDDxUNE/sd48P5B1g2USkXIM=;
+	s=arc-20240116; t=1739954730; c=relaxed/simple;
+	bh=ZvrJrIqdQu96y+Ao3h3CrYTWUTY7VM3LZdjJwNv1xiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6HrnOLZ4UFFw51z5ylw22ctn3D8LSWOnjhN4cOrqYCYCUQAMYNMWp8M0vg5OwadZfYZRyH/ww0HUwVqGsBoogA5pe0OgprwbPaGC3SX9KHCkScDXHOWfSY3cKAmcoGIkyFffP6crO0kahirvwIiYE+/6jc66YjDs2kflbky1gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWKre/OX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEF8C4CED1;
-	Wed, 19 Feb 2025 08:34:06 +0000 (UTC)
+	 MIME-Version; b=Hva7VUlBJ7qZpuAgqT2wJIC/eqCzT2aW0n1auyte9eXQr+S4bnuZqKCazc8pkPkzrD4iZ6JiMWJEROB4aZ0ZJiI0Z/v5ujVJ6N4ClwXiK1CI2llo+4nxd4s0U0YLpL7lEhtLK7/RCOK5JYCD3wFeWmmSgRwjAFAOlCIgbe9Mc0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJpAve9K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DFAC4CED1;
+	Wed, 19 Feb 2025 08:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954047;
-	bh=o+DsA2a2gu4iO+DDyWFPDDxUNE/sd48P5B1g2USkXIM=;
+	s=korg; t=1739954729;
+	bh=ZvrJrIqdQu96y+Ao3h3CrYTWUTY7VM3LZdjJwNv1xiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWKre/OXAT5R67Y5nZTssZGolEU+r6d1a8EjO0/vu7xoNYbQ+a50Ah5jVod4pRWNO
-	 LWctJNue3+H9RUfglLJ4NClWDKHqzJ8L/IdPKCP7eWhjku3rhP+4yZCDTNOlmIpaa1
-	 KQv8+9qzJ0NraadxLNfuF3R14Ua8c/ngkxCgUOsU=
+	b=fJpAve9KqJSfsIp79V4xqEXaNFW1r3iT1czgxdj+eTzmXfXJZetD0ff1GSUUs19At
+	 C3cjkgY6PIqSJA5UeZuZTKmA8RBMT/hoftJ6a+tp08QFIPdn/3AFRtoznqIVVlhu1N
+	 03AIllWPct+wZ+Dbg+Sj1kDpAIN4E15yz3ZI+u6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naushir Patuck <naush@raspberrypi.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Reyders Morales <reyders1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 080/274] media: bcm2835-unicam: Disable trigger mode operation
-Date: Wed, 19 Feb 2025 09:25:34 +0100
-Message-ID: <20250219082612.753907761@linuxfoundation.org>
+Subject: [PATCH 6.12 018/230] Documentation/networking: fix basic node example document ISO 15765-2
+Date: Wed, 19 Feb 2025 09:25:35 +0100
+Message-ID: <20250219082602.415555786@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naushir Patuck <naush@raspberrypi.com>
+From: Reyders Morales <reyders1@gmail.com>
 
-[ Upstream commit 697a252bb2ea414cc1c0b4cf4e3d94a879eaf162 ]
+[ Upstream commit d0b197b6505fe3788860fc2a81b3ce53cbecc69c ]
 
-The imx219/imx708 sensors frequently generate a single corrupt frame
-(image or embedded data) when the sensor first starts. This can either
-be a missing line, or invalid samples within the line. This only occurrs
-using the upstream Unicam kernel driver.
+In the current struct sockaddr_can tp is member of can_addr. tp is not
+member of struct sockaddr_can.
 
-Disabling trigger mode elimiates this corruption. Since trigger mode is
-a legacy feature copied from the firmware driver and not expected to be
-needed, remove it. Tested on the Raspberry Pi cameras and shows no ill
-effects.
-
-Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Reyders Morales <reyders1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250203224720.42530-1-reyders1@gmail.com
+Fixes: 67711e04254c ("Documentation: networking: document ISO 15765-2")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/broadcom/bcm2835-unicam.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ Documentation/networking/iso15765-2.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/broadcom/bcm2835-unicam.c b/drivers/media/platform/broadcom/bcm2835-unicam.c
-index 3aed0e493c81f..4090a8e477402 100644
---- a/drivers/media/platform/broadcom/bcm2835-unicam.c
-+++ b/drivers/media/platform/broadcom/bcm2835-unicam.c
-@@ -816,11 +816,6 @@ static irqreturn_t unicam_isr(int irq, void *dev)
- 		}
- 	}
+diff --git a/Documentation/networking/iso15765-2.rst b/Documentation/networking/iso15765-2.rst
+index 0e9d960741783..37ebb2c417cb4 100644
+--- a/Documentation/networking/iso15765-2.rst
++++ b/Documentation/networking/iso15765-2.rst
+@@ -369,8 +369,8 @@ to their default.
  
--	if (unicam_reg_read(unicam, UNICAM_ICTL) & UNICAM_FCM) {
--		/* Switch out of trigger mode if selected */
--		unicam_reg_write_field(unicam, UNICAM_ICTL, 1, UNICAM_TFC);
--		unicam_reg_write_field(unicam, UNICAM_ICTL, 0, UNICAM_FCM);
--	}
- 	return IRQ_HANDLED;
- }
+   addr.can_family = AF_CAN;
+   addr.can_ifindex = if_nametoindex("can0");
+-  addr.tp.tx_id = 0x18DA42F1 | CAN_EFF_FLAG;
+-  addr.tp.rx_id = 0x18DAF142 | CAN_EFF_FLAG;
++  addr.can_addr.tp.tx_id = 0x18DA42F1 | CAN_EFF_FLAG;
++  addr.can_addr.tp.rx_id = 0x18DAF142 | CAN_EFF_FLAG;
  
-@@ -984,8 +979,7 @@ static void unicam_start_rx(struct unicam_device *unicam,
- 
- 	unicam_reg_write_field(unicam, UNICAM_ANA, 0, UNICAM_DDL);
- 
--	/* Always start in trigger frame capture mode (UNICAM_FCM set) */
--	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_FCM | UNICAM_IBOB;
-+	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_IBOB;
- 	line_int_freq = max(fmt->height >> 2, 128);
- 	unicam_set_field(&val, line_int_freq, UNICAM_LCIE_MASK);
- 	unicam_reg_write(unicam, UNICAM_ICTL, val);
+   ret = bind(s, (struct sockaddr *)&addr, sizeof(addr));
+   if (ret < 0)
 -- 
 2.39.5
 
