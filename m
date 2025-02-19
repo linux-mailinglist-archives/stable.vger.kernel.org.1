@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-118079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B315A3B999
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17B8A3B61D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2801885AF8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70957189DE29
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E893A1CC8B0;
-	Wed, 19 Feb 2025 09:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575991DF755;
+	Wed, 19 Feb 2025 08:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFDQF1Py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1btVxVbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6893188CCA;
-	Wed, 19 Feb 2025 09:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E641DF744;
+	Wed, 19 Feb 2025 08:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957175; cv=none; b=WFDFOAc+B5JaQvyaGPI6zJR0vcO6DJUxhTXiNfsBVcgmFDZrV9uSy71gXOPufBbegoMvlJgEEv1pjq1WNZznOgaoFEG8ugFwJAsO2CezLAzRtBWzPHdKS3LAdqJ0hwdpcQnAEsCLUeAXB4qok4BjFEACh5nQihqwof3nfMYbCaE=
+	t=1739955074; cv=none; b=DBNzT1HxIjsF/7gN+5GqsZho2aTWOkH+Jb5fyCKp8bvqxGnumswqU0x/iTng4prnDWJnA1wOTX7q54LzSKIstDHYB7CSUWG0okgjJq5HXjUK8pipViNzeFXXHeKr7XwpH2coBzjQlwLVdPMMI//A4QSTg0r+HDhOBvwfKNRmTFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957175; c=relaxed/simple;
-	bh=t5WGsgCfxSeMbagri7E4u541anHqQqhSDX2jHkx2UWQ=;
+	s=arc-20240116; t=1739955074; c=relaxed/simple;
+	bh=nLvJdZJy4K3ol0+f9zPT6hGJyRwzeuQivJyC6cRoL6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKQoBHe5YwnnrkeOHIwI56JEyp4K2LTQxQqn1TqWYS+KDeYouWDC1KmfXo12Z0/LGH4vauXX+NCV9mZ13fPiJtTxcBIkgHRHUe0a58cVgleWjBMiTxj5g/jk5870y6jHS2cmJyL+JCZ06XwiqQZ2Uo2SqiVqdhK7v+iJ1pBZpCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFDQF1Py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA94C4CED1;
-	Wed, 19 Feb 2025 09:26:14 +0000 (UTC)
+	 MIME-Version; b=B50Z226wpDNPRxtWBU5YvyySVh7jN7MCSUeUCPQGjN6AfFuTc2k/VMmm5qdisWpec0t5sBRoMiy9sHWGBg8o6MTGt8HjXWg7cJukWxMOeyZ3jwzcJE6qsbQiySFSToNCt1LtWJFwnZWSGXNzcqmVHHMbOM4kSiEQ6EQfI4hrtIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1btVxVbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9C1C4CED1;
+	Wed, 19 Feb 2025 08:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957175;
-	bh=t5WGsgCfxSeMbagri7E4u541anHqQqhSDX2jHkx2UWQ=;
+	s=korg; t=1739955073;
+	bh=nLvJdZJy4K3ol0+f9zPT6hGJyRwzeuQivJyC6cRoL6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFDQF1PyqnLVQaFqFHwM2l/Ycw1zOkU4mGwq7DpeIm1hs6lEny/AY7fWYlJAbYtJK
-	 wTWAGJ1YkMg+Z+uyf47Iob8BMOY+u5KLDpD56/86Fo+QP1gskYqwgcFn3O4JwjIRfv
-	 GLDf/qfvgWhvf0NyEDNRorlNgQdvkEjWN0+xrW00=
+	b=1btVxVbP6DUwIv6LIG8xS5f7QCDfsN1N42Hn6yHBmv4N8Wxy9JhzsqwftOz3x68tI
+	 dGiz6tcw8PHSU3n/BTRujYvK+NAZFTonDLgRq88gzFS8cE311LBWnYWc3dojCDEz8b
+	 vqx1qmyuX/0sNwtoJzf+gwEZ9Q4RubftjQG2ZwD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 435/578] misc: fastrpc: Fix registered buffer page address
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.12 122/230] usb: cdc-acm: Check control transfer buffer size before access
 Date: Wed, 19 Feb 2025 09:27:19 +0100
-Message-ID: <20250219082710.122223386@linuxfoundation.org>
+Message-ID: <20250219082606.459497015@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Jann Horn <jannh@google.com>
 
-commit 6ca4ea1f88a06a04ed7b2c9c6bf9f00833b68214 upstream.
+commit e563b01208f4d1f609bcab13333b6c0e24ce6a01 upstream.
 
-For registered  buffers, fastrpc driver sends the buffer information
-to remote subsystem. There is a problem with current implementation
-where the page address is being sent with an offset leading to
-improper buffer address on DSP. This is leads to functional failures
-as DSP expects base address in page information and extracts offset
-information from remote arguments. Mask the offset and pass the base
-page address to DSP.
+If the first fragment is shorter than struct usb_cdc_notification, we can't
+calculate an expected_size. Log an error and discard the notification
+instead of reading lengths from memory outside the received data, which can
+lead to memory corruption when the expected_size decreases between
+fragments, causing `expected_size - acm->nb_index` to wrap.
 
-This issue is observed is a corner case when some buffer which is registered
-with fastrpc framework is passed with some offset by user and then the DSP
-implementation tried to read the data. As DSP expects base address and takes
-care of offsetting with remote arguments, passing an offsetted address will
-result in some unexpected data read in DSP.
+This issue has been present since the beginning of git history; however,
+it only leads to memory corruption since commit ea2583529cd1
+("cdc-acm: reassemble fragmented notifications").
 
-All generic usecases usually pass the buffer as it is hence is problem is
-not usually observed. If someone tries to pass offsetted buffer and then
-tries to compare data at HLOS and DSP end, then the ambiguity will be observed.
+A mitigating factor is that acm_ctrl_irq() can only execute after userspace
+has opened /dev/ttyACM*; but if ModemManager is running, ModemManager will
+do that automatically depending on the USB device's vendor/product IDs and
+its other interfaces.
 
-Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
-Cc: stable@kernel.org
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-3-srinivas.kandagatla@linaro.org
+Cc: stable <stable@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-acm.c |   17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -934,7 +934,7 @@ static int fastrpc_get_args(u32 kernel,
- 			mmap_read_lock(current->mm);
- 			vma = find_vma(current->mm, ctx->args[i].ptr);
- 			if (vma)
--				pages[i].addr += ctx->args[i].ptr -
-+				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
- 						 vma->vm_start;
- 			mmap_read_unlock(current->mm);
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -371,7 +371,7 @@ static void acm_process_notification(str
+ static void acm_ctrl_irq(struct urb *urb)
+ {
+ 	struct acm *acm = urb->context;
+-	struct usb_cdc_notification *dr = urb->transfer_buffer;
++	struct usb_cdc_notification *dr;
+ 	unsigned int current_size = urb->actual_length;
+ 	unsigned int expected_size, copy_size, alloc_size;
+ 	int retval;
+@@ -398,9 +398,20 @@ static void acm_ctrl_irq(struct urb *urb
  
+ 	usb_mark_last_busy(acm->dev);
+ 
+-	if (acm->nb_index)
++	if (acm->nb_index == 0) {
++		/*
++		 * The first chunk of a message must contain at least the
++		 * notification header with the length field, otherwise we
++		 * can't get an expected_size.
++		 */
++		if (current_size < sizeof(struct usb_cdc_notification)) {
++			dev_dbg(&acm->control->dev, "urb too short\n");
++			goto exit;
++		}
++		dr = urb->transfer_buffer;
++	} else {
+ 		dr = (struct usb_cdc_notification *)acm->notification_buffer;
+-
++	}
+ 	/* size = notification-header + (optional) data */
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
 
 
 
