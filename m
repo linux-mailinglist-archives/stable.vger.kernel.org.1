@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B68A3B6A5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C557AA3B769
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A63527A6F14
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5660A3B6425
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88FD1D88AC;
-	Wed, 19 Feb 2025 09:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6093C1EFF9B;
+	Wed, 19 Feb 2025 08:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRthEZ4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oO1ax86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764661D5CF8;
-	Wed, 19 Feb 2025 09:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6921CAA65;
+	Wed, 19 Feb 2025 08:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955821; cv=none; b=Xzt6dNF5GbqRwxwAChKqkV47TiB/pJS+ynpy72vwSVlJJHbz+hhHXUrsrcAJUsUmcpvAEo36JF+6crug0TzMCVDziO3pMGXyvTyEs1XBVE6JUWSdvuH10LCQiYozZgs/tRdezxo3Fd0T9FJTp+k2UmOI+/G7xvq7fABJe2ajD2E=
+	t=1739955391; cv=none; b=bxXjpTHch/VH48JgJnu8r9r4wFn+41bY1A2xk7epV/YJ7Woc4Qi9yKxZmt1E4OzfF5CHS+RmxAf2GDQOgc7ec5wADQy+F6xfI1hbB0QdZducvpu9Wa3ougYqChkZSi3gTJl/SoczBwYN/V7fUOJ8VWQBcW6eaCEUtUMjXDwVNEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955821; c=relaxed/simple;
-	bh=wF2tlxvDHX82m/fk7Hr0M2uEMnLpjqehQiwwsLg0v/w=;
+	s=arc-20240116; t=1739955391; c=relaxed/simple;
+	bh=+wF3/Ds3iOSewy0F66KWJY2XG6pSO8Osr5LM6IbYnt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMEIpoQMS98NVbVLdoPE3E+im5BqcmhSvCX3CyOFoOVaxN59T6VmJqTZfC4e9vFHCNuRmAxLgxNE0lG/0vlXGwvovW66OhrGZTLs3Dzmq8csiE7zffnXZTGe3s0fiCV1OP6PBpP+jzZbiIdC+qWXye4HWMPrVU2eMSEVbUNr6S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRthEZ4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B90C4CED1;
-	Wed, 19 Feb 2025 09:03:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N3zEaEDt81Vf2nMdnAITFYqHmqEVeaSCxqwCREX+1iJJmFgyDWiwQ263INnqddMetfWIonTsypXyrSYRAmypoYIXkIRqgQtHEhhoBrHfZe/uOimSdqK6pXSF+sKshAXGvkYbsNLVcvpqC2gBESjsYBdjkS9NNBoGN0ePcy+quH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oO1ax86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A70C4CED1;
+	Wed, 19 Feb 2025 08:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955821;
-	bh=wF2tlxvDHX82m/fk7Hr0M2uEMnLpjqehQiwwsLg0v/w=;
+	s=korg; t=1739955391;
+	bh=+wF3/Ds3iOSewy0F66KWJY2XG6pSO8Osr5LM6IbYnt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRthEZ4qwg63IoJIELKdPKnT2mwJFfyoVoE7fAiM/sZdXQ7Vh4bYnR7o35PPY2RNE
-	 M5ayXAVma4tGQAMGPRUR109EaontdranmIuf5AkLJT65kwLKyd4pnHYA+EzMevjko8
-	 JuVvejwy7ymyyY+4+F99uzv1li+RkzUGfe3KbU2o=
+	b=1oO1ax86CYDGRWfuMCS9Dsj2dM0CHjxlHIX/fGYJOn/QYDq5zORqr3Rt+D4CPffq5
+	 PlNotGSMYMZ63ed5zX0yII1vr6RO+WrT8ILeogOxFB+NEGtc1DLdx3f9kl8FBkNm7Z
+	 a+4vx/+64Rm0n+NJGB/R7eAFedsrUEBa7SAcVWqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/152] arp: use RCU protection in arp_xmit()
-Date: Wed, 19 Feb 2025 09:28:57 +0100
-Message-ID: <20250219082554.956345912@linuxfoundation.org>
+	Jason Xing <kernelxing@tencent.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 6.12 221/230] bpf: handle implicit declaration of function gettid in bpf_iter.c
+Date: Wed, 19 Feb 2025 09:28:58 +0100
+Message-ID: <20250219082610.335736714@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit a42b69f692165ec39db42d595f4f65a4c8f42e44 ]
+commit 42602e3a06f8e5b9a059344e305c9bee2dcc87c8 upstream.
 
-arp_xmit() can be called without RTNL or RCU protection.
+As we can see from the title, when I compiled the selftests/bpf, I
+saw the error:
+implicit declaration of function ‘gettid’ ; did you mean ‘getgid’? [-Werror=implicit-function-declaration]
+  skel->bss->tid = gettid();
+                   ^~~~~~
+                   getgid
 
-Use RCU protection to avoid potential UAF.
+Directly call the syscall solves this issue.
 
-Fixes: 29a26a568038 ("netfilter: Pass struct net into the netfilter hooks")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+Tested-by: Alan Maguire <alan.maguire@oracle.com>
+Link: https://lore.kernel.org/r/20241029074627.80289-1-kerneljasonxing@gmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/arp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/bpf_iter.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-index 0d0d725b46ad0..02776453bf97a 100644
---- a/net/ipv4/arp.c
-+++ b/net/ipv4/arp.c
-@@ -658,10 +658,12 @@ static int arp_xmit_finish(struct net *net, struct sock *sk, struct sk_buff *skb
-  */
- void arp_xmit(struct sk_buff *skb)
- {
-+	rcu_read_lock();
- 	/* Send it off, maybe filter it using firewalling first.  */
- 	NF_HOOK(NFPROTO_ARP, NF_ARP_OUT,
--		dev_net(skb->dev), NULL, skb, NULL, skb->dev,
-+		dev_net_rcu(skb->dev), NULL, skb, NULL, skb->dev,
- 		arp_xmit_finish);
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL(arp_xmit);
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -226,7 +226,7 @@ static void test_task_common_nocheck(str
+ 	ASSERT_OK(pthread_create(&thread_id, NULL, &do_nothing_wait, NULL),
+ 		  "pthread_create");
  
--- 
-2.39.5
-
+-	skel->bss->tid = gettid();
++	skel->bss->tid = syscall(SYS_gettid);
+ 
+ 	do_dummy_read_opts(skel->progs.dump_task, opts);
+ 
+@@ -255,10 +255,10 @@ static void *run_test_task_tid(void *arg
+ 	union bpf_iter_link_info linfo;
+ 	int num_unknown_tid, num_known_tid;
+ 
+-	ASSERT_NEQ(getpid(), gettid(), "check_new_thread_id");
++	ASSERT_NEQ(getpid(), syscall(SYS_gettid), "check_new_thread_id");
+ 
+ 	memset(&linfo, 0, sizeof(linfo));
+-	linfo.task.tid = gettid();
++	linfo.task.tid = syscall(SYS_gettid);
+ 	opts.link_info = &linfo;
+ 	opts.link_info_len = sizeof(linfo);
+ 	test_task_common(&opts, 0, 1);
 
 
 
