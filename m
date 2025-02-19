@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-117888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1B3A3B92F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156EAA3B8D5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FB3917CDF1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:21:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84F517D780
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1281E7C23;
-	Wed, 19 Feb 2025 09:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2711BDA91;
+	Wed, 19 Feb 2025 09:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPtxmoSz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tUFQX/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9301E1041;
-	Wed, 19 Feb 2025 09:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450341B85D7;
+	Wed, 19 Feb 2025 09:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956631; cv=none; b=gKIuwDMwYi0b9NwAzH5YeqOGAX1cvXJn3CYqAagsGQmTfHnUKa6LSLek/QBOK0l57PnX/QCZG4FMiJZegpuvausmoFBxG/zU+XxYY16YzNgV+Eva/JX6td9yPJwW+13j+PGP7kMCKoyDFrjVkveUGh7DIagzt+0UORn0efBF0DU=
+	t=1739956749; cv=none; b=CnrWXoMr9hfZsd9NfGkQzBPSA+T9h8I3IR1T7DH9dSOp+9sU6Gz+48Is/XGCtIdcVVHheHKG1lMdIY/xwaVUDKhWEAMO+QzfQJzHdad36mMRBvaVNSi1zE2Gkec9voUP5EkAOI28DCena6U9VXzPN38u3t2ipSwyL4hvofOMp8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956631; c=relaxed/simple;
-	bh=BXJT0lKePGJ+duA/s7DdlIaOVFzTYQYny0lO5i1eDYQ=;
+	s=arc-20240116; t=1739956749; c=relaxed/simple;
+	bh=ocx2acbUu+z47GDREWbTukJdsXWERv37FfU56RRvMok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nM7EmNqtoO3NL5sQU9OVf2jUvCwsHejxX+VgVkPum8Tj36DLVSz0mkREB+ZwoUmzIy5GpFQjlrsQiQIT71IfYKUj1GhmGMzb7FAHZw/fL29oi7xog1m+wh6h73L25RDpi73t4BnE1evhvk6NlJ0uN5KlJBAN+AWc7T8TlTpephY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPtxmoSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA1AC4CED1;
-	Wed, 19 Feb 2025 09:17:10 +0000 (UTC)
+	 MIME-Version; b=NlK4f2mi9MNpN80MtaF4YSxFnv/tzRCMifPqa+hKUKFVk/Qk6buB39tHMgz5o+iahRXyJV9v16iUvW1n4MFegl2uBZn43N3lEgzy3GMSGcsN0y2X4+H46yK3Sp/T4jQqioQ7Q6GMl2X1Z8L7iP0HSyjxc4gIy7CuVJEtR89Xahw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tUFQX/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C65C4CED1;
+	Wed, 19 Feb 2025 09:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956631;
-	bh=BXJT0lKePGJ+duA/s7DdlIaOVFzTYQYny0lO5i1eDYQ=;
+	s=korg; t=1739956748;
+	bh=ocx2acbUu+z47GDREWbTukJdsXWERv37FfU56RRvMok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPtxmoSzzGN6DVG7td5A6q0MaFxeEKHIOUWm3lNJ7MPUD/Iz7DFudg6iYWcfSOND0
-	 PNi4ZFQ2WBjuPOUvWOs4Hn1Z5He4GBgk4NuLYqrUP7Ia5GKSBAbdapaoj0NS01Haf4
-	 jMl9rB9rFWnpJ8ej37ORTnB5gWYATcJTh09wzx/Y=
+	b=1tUFQX/XKPeqje19OxWO61oNkXa/qJG8oQX99KEQ7BHzp7sfGIL2JyaPVOBmj3QRP
+	 19luEF1p0ikz/UywXAL2SQsjYhWmHDNvJhq/VdaGKKtM27hYQ/+PMaogKLxEGKKhgU
+	 nhNNr/LTqaXRAr7UQCbaMoRopUQOoBQV7zCIAU0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 244/578] NFSD: Reset cb_seq_status after NFS4ERR_DELAY
-Date: Wed, 19 Feb 2025 09:24:08 +0100
-Message-ID: <20250219082702.633109310@linuxfoundation.org>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: [PATCH 6.1 245/578] kbuild: switch from lz4c to lz4 for compression
+Date: Wed, 19 Feb 2025 09:24:09 +0100
+Message-ID: <20250219082702.670070819@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,42 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Parth Pancholi <parth.pancholi@toradex.com>
 
-commit 961b4b5e86bf56a2e4b567f81682defa5cba957e upstream.
+commit e397a603e49cc7c7c113fad9f55a09637f290c34 upstream.
 
-I noticed that once an NFSv4.1 callback operation gets a
-NFS4ERR_DELAY status on CB_SEQUENCE and then the connection is lost,
-the callback client loops, resending it indefinitely.
+Replace lz4c with lz4 for kernel image compression.
+Although lz4 and lz4c are functionally similar, lz4c has been deprecated
+upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25, lz4
+and lz4c have been packaged together, making it safe to update the
+requirement from lz4c to lz4.
 
-The switch arm in nfsd4_cb_sequence_done() that handles
-NFS4ERR_DELAY uses rpc_restart_call() to rearm the RPC state machine
-for the retransmit, but that path does not call the rpc_prepare_call
-callback again. Thus cb_seq_status is set to -10008 by the first
-NFS4ERR_DELAY result, but is never set back to 1 for the retransmits.
+Consequently, some distributions and build systems, such as OpenEmbedded,
+have fully transitioned to using lz4. OpenEmbedded core adopted this
+change in commit fe167e082cbd ("bitbake.conf: require lz4 instead of
+lz4c"), causing compatibility issues when building the mainline kernel
+in the latest OpenEmbedded environment, as seen in the errors below.
 
-nfsd4_cb_sequence_done() thinks it's getting nothing but a
-long series of CB_SEQUENCE NFS4ERR_DELAY replies.
+This change also updates the LZ4 compression commands to make it backward
+compatible by replacing stdin and stdout with the '-' option, due to some
+unclear reason, the stdout keyword does not work for lz4 and '-' works for
+both. In addition, this modifies the legacy '-c1' with '-9' which is also
+compatible with both. This fixes the mainline kernel build failures with
+the latest master OpenEmbedded builds associated with the mentioned
+compatibility issues.
 
-Fixes: 7ba6cad6c88f ("nfsd: New helper nfsd4_cb_sequence_done() for processing more cb errors")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+LZ4     arch/arm/boot/compressed/piggy_data
+/bin/sh: 1: lz4c: not found
+...
+...
+ERROR: oe_runmake failed
+
+Link: https://github.com/lz4/lz4/pull/553
+Suggested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c |    1 +
- 1 file changed, 1 insertion(+)
+ Makefile             |    2 +-
+ scripts/Makefile.lib |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1202,6 +1202,7 @@ static bool nfsd4_cb_sequence_done(struc
- 		ret = false;
- 		break;
- 	case -NFS4ERR_DELAY:
-+		cb->cb_seq_status = 1;
- 		if (!rpc_restart_call(task))
- 			goto out;
+--- a/Makefile
++++ b/Makefile
+@@ -528,7 +528,7 @@ KGZIP		= gzip
+ KBZIP2		= bzip2
+ KLZOP		= lzop
+ LZMA		= lzma
+-LZ4		= lz4c
++LZ4		= lz4
+ XZ		= xz
+ ZSTD		= zstd
  
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -459,10 +459,10 @@ quiet_cmd_lzo_with_size = LZO     $@
+       cmd_lzo_with_size = { cat $(real-prereqs) | $(KLZOP) -9; $(size_append); } > $@
+ 
+ quiet_cmd_lz4 = LZ4     $@
+-      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout > $@
++      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -9 - - > $@
+ 
+ quiet_cmd_lz4_with_size = LZ4     $@
+-      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout; \
++      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -9 - -; \
+                   $(size_append); } > $@
+ 
+ # U-Boot mkimage
 
 
 
