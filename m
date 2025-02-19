@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-117336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC4BA3B66F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDC4A3B9C5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D88E23B9368
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89E2178174
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C681DE892;
-	Wed, 19 Feb 2025 08:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7601DF965;
+	Wed, 19 Feb 2025 09:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYpeDvYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="athQbQG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F281DE3AF;
-	Wed, 19 Feb 2025 08:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A6C1C1AD4;
+	Wed, 19 Feb 2025 09:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954956; cv=none; b=inE0pU4AtqupVsFwa5/CyMVdOBZLCOr+8GSaVCE336f/JUt2itSCDrzbVs64qr8ksEzWSaoKvYoc/wBPgNadKw+cgBvX/xqiSKNkUqAYQu21vPRR/9AOrv/i3siXYZbu2T1Tpqn8fV7A0UX3ivB8jI08IgIp8jfQ9iUSeuKmzSc=
+	t=1739957002; cv=none; b=fIz/e6JKV0XmY30z3YfdhLTyEFsK9XUnMfMqDugPk4TtNEAgJW+BAC87hNmzj/CK60KfgQwe+1HRj4fO7d38mdNDaiztP2PUDsEeUh9iJE3HfMj69UgYqbiN6GU6+yWF8MNaDqGCnUQCpjk8DNJk60ggxaEKsHRkvwNpaSMlvII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954956; c=relaxed/simple;
-	bh=0YMd8nVhTIL6b8c+MUlzw5V12Tn0QGn8cfrAHmaYnVg=;
+	s=arc-20240116; t=1739957002; c=relaxed/simple;
+	bh=TPNdTysKPeH1Q2RjOCA638R8PLKVzdZvWX026c1zdms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZJamkn+xqtpo/vYFQ0h5hJAoRB0HQI1Gh9UCk0rtb9SnmUcH9GqFBay6bMRp0xEqEP1n8OE8PVLKHJxS8bvdoicrsDp0rtlgx6OXA9a4yNUlzfTkx3G8DyDJsVPPuEyzrgO8UGlwSnH2bo1Hf6x4Y90k335c7UKMK99i9p50LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYpeDvYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB97C4CEE7;
-	Wed, 19 Feb 2025 08:49:15 +0000 (UTC)
+	 MIME-Version; b=DigdhQCUY+GdaxH5BRRNwRO3hSIa/6z3B/r97siz/m0bESBlCHik1D4SqSAnjDBE+/j3xBWxIgoqWeRt57n/7/64JWOuyX8ijWxvyqcUSUZkoCJW43js6zk7Rj1OsEMq6BbBLC4Wh2WTZ2sEy1XprfKbqwk8VG77YBCuWMGv1aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=athQbQG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A26C4CED1;
+	Wed, 19 Feb 2025 09:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954956;
-	bh=0YMd8nVhTIL6b8c+MUlzw5V12Tn0QGn8cfrAHmaYnVg=;
+	s=korg; t=1739957002;
+	bh=TPNdTysKPeH1Q2RjOCA638R8PLKVzdZvWX026c1zdms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYpeDvYL8hP5cA00YJOcEA0QIRBTYxR/3Xo1Xvbwdiymn0PaLzjBrPXALUeo0O9X4
-	 K0QKU3m40nqkXSA984KqQUKgbjMi6d7PYTIZpXHiSzJGLm/dVtuuZUP3hX/UT8YIMw
-	 gvBuh+6k0qA9ej1s3G9Dq/QbKMdKAfbSAKdCfGGU=
+	b=athQbQG6Ts2+ZZ//3UccwT8KOuYSHyUgPAjx5MlrMYhjanM4daLzybZV07a31E5Gd
+	 6gWN78cGgjKxMm5YSrgGXWOYpw8cgig/3K69WegLjjnmcqyk8HEUCCZW4ukKyttVEs
+	 8ljRJfdFXx7F1PgrVbUKZp1LzcOQSRdAVwahvcGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/230] soc/tegra: fuse: Update Tegra234 nvmem keepout list
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 374/578] usb: gadget: f_tcm: ep_autoconfig with fullspeed endpoint
 Date: Wed, 19 Feb 2025 09:26:18 +0100
-Message-ID: <20250219082604.100880981@linuxfoundation.org>
+Message-ID: <20250219082707.727274771@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
+commit 25224c1f07d31c261d04dfbc705a7a0f314a825d upstream.
 
-Various Nvidia userspace applications and tests access following fuse
-via Fuse nvmem interface:
+Match usb endpoint using fullspeed endpoint descriptor to make sure the
+wMaxPacketSize for fullspeed descriptors is automatically configured.
 
-	* odmid
-	* odminfo
-	* boot_security_info
-	* public_key_hash
-	* reserved_odm0
-	* reserved_odm1
-	* reserved_odm2
-	* reserved_odm3
-	* reserved_odm4
-	* reserved_odm5
-	* reserved_odm6
-	* reserved_odm7
-	* odm_lock
-	* pk_h1
-	* pk_h2
-	* revoke_pk_h0
-	* revoke_pk_h1
-	* security_mode
-	* system_fw_field_ratchet0
-	* system_fw_field_ratchet1
-	* system_fw_field_ratchet2
-	* system_fw_field_ratchet3
-	* optin_enable
-
-Update tegra234_fuse_keepouts list to allow reading these fuse from
-nvmem sysfs interface.
-
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/e4507bc824aed6e7c7f5a718392ab6a7c1480a7f.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
-index eb14e5ff5a0aa..e24ab5f7d2bf1 100644
---- a/drivers/soc/tegra/fuse/fuse-tegra30.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
-@@ -647,15 +647,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
- };
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1998,43 +1998,39 @@ static int tcm_bind(struct usb_configura
+ 	bot_intf_desc.bInterfaceNumber = iface;
+ 	uasp_intf_desc.bInterfaceNumber = iface;
+ 	fu->iface = iface;
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bi_desc,
+-			&uasp_bi_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_bi_desc);
+ 	if (!ep)
+ 		goto ep_fail;
  
- static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
--	{ .start = 0x01c, .end = 0x0c8 },
--	{ .start = 0x12c, .end = 0x184 },
-+	{ .start = 0x01c, .end = 0x064 },
-+	{ .start = 0x084, .end = 0x0a0 },
-+	{ .start = 0x0a4, .end = 0x0c8 },
-+	{ .start = 0x12c, .end = 0x164 },
-+	{ .start = 0x16c, .end = 0x184 },
- 	{ .start = 0x190, .end = 0x198 },
- 	{ .start = 0x1a0, .end = 0x204 },
--	{ .start = 0x21c, .end = 0x250 },
--	{ .start = 0x25c, .end = 0x2f0 },
-+	{ .start = 0x21c, .end = 0x2f0 },
- 	{ .start = 0x310, .end = 0x3d8 },
--	{ .start = 0x400, .end = 0x4f0 },
--	{ .start = 0x4f8, .end = 0x7e8 },
-+	{ .start = 0x400, .end = 0x420 },
-+	{ .start = 0x444, .end = 0x490 },
-+	{ .start = 0x4bc, .end = 0x4f0 },
-+	{ .start = 0x4f8, .end = 0x54c },
-+	{ .start = 0x57c, .end = 0x7e8 },
- 	{ .start = 0x8d0, .end = 0x8d8 },
- 	{ .start = 0xacc, .end = 0xf00 }
- };
--- 
-2.39.5
-
+ 	fu->ep_in = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_bo_desc,
+-			&uasp_bo_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_bo_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_out = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_status_desc,
+-			&uasp_status_in_ep_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_status_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_status = ep;
+ 
+-	ep = usb_ep_autoconfig_ss(gadget, &uasp_ss_cmd_desc,
+-			&uasp_cmd_comp_desc);
++	ep = usb_ep_autoconfig(gadget, &uasp_fs_cmd_desc);
+ 	if (!ep)
+ 		goto ep_fail;
+ 	fu->ep_cmd = ep;
+ 
+ 	/* Assume endpoint addresses are the same for both speeds */
+-	uasp_bi_desc.bEndpointAddress =	uasp_ss_bi_desc.bEndpointAddress;
+-	uasp_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
++	uasp_bi_desc.bEndpointAddress =	uasp_fs_bi_desc.bEndpointAddress;
++	uasp_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
+ 	uasp_status_desc.bEndpointAddress =
+-		uasp_ss_status_desc.bEndpointAddress;
+-	uasp_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
++		uasp_fs_status_desc.bEndpointAddress;
++	uasp_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+ 
+-	uasp_fs_bi_desc.bEndpointAddress = uasp_ss_bi_desc.bEndpointAddress;
+-	uasp_fs_bo_desc.bEndpointAddress = uasp_ss_bo_desc.bEndpointAddress;
+-	uasp_fs_status_desc.bEndpointAddress =
+-		uasp_ss_status_desc.bEndpointAddress;
+-	uasp_fs_cmd_desc.bEndpointAddress = uasp_ss_cmd_desc.bEndpointAddress;
++	uasp_ss_bi_desc.bEndpointAddress = uasp_fs_bi_desc.bEndpointAddress;
++	uasp_ss_bo_desc.bEndpointAddress = uasp_fs_bo_desc.bEndpointAddress;
++	uasp_ss_status_desc.bEndpointAddress =
++		uasp_fs_status_desc.bEndpointAddress;
++	uasp_ss_cmd_desc.bEndpointAddress = uasp_fs_cmd_desc.bEndpointAddress;
+ 
+ 	ret = usb_assign_descriptors(f, uasp_fs_function_desc,
+ 			uasp_hs_function_desc, uasp_ss_function_desc,
 
 
 
