@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0B1A3B797
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A296BA3BA1F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08E2B17F559
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A04551891DFF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726671DC04A;
-	Wed, 19 Feb 2025 09:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82E71C3F2B;
+	Wed, 19 Feb 2025 09:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWqGY/Z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqnAZiJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FCD1D90D9;
-	Wed, 19 Feb 2025 09:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67E72AE74;
+	Wed, 19 Feb 2025 09:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955827; cv=none; b=nW5xWESVm3zIQpBgVOe7mwU4p0b+r/jp9DYr047wARucwSnf+y8LgRwsE0qX99CHwTbZwtbopHPDwyc5oSJ1oNa90d0P6hhz0wJ9XxcKMDXLJSU8/acQeErNdB0+hphGKsUAj1KQjYWlMhXOXqRbaCJ5gIwBpErhF0lPapba1b8=
+	t=1739957390; cv=none; b=iyr9dK8vcE1s7xST525XthCu4563yAps6scgQGKKStAJOXh7GRVV1izUpOrRY5E6o4nUuOQrBwAR5uJk80x3WdJTM59GzBRhlAV1k/TCzT3JouspERgku3vnnnySMAAugAaCDm50e4LShA41MU8m5b7hduuo5ql25dU7XUSc1k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955827; c=relaxed/simple;
-	bh=Q9a3zzWjYqVZXHTDz13PL+w8CeUTvfYa92InAZKJyq4=;
+	s=arc-20240116; t=1739957390; c=relaxed/simple;
+	bh=OcdA8cTbCjIwzigM0Jy+Hy3MrMS2QBYcsvT0OGO8hu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukcBtHl54NIAahzxCBP1QUQSDt9id0M+7W1RTkN3HcB2mPW1ecmN5UVE48RnuZUZHSPwNFODfBRxaWnRRME0MnXzDnFggWOpXkFbed1faB6u485CbACkaxwPSqVQ6plBsdk3WOjUBRcrgHYpz9Bsop+hKUSaaRamagP5LfuezUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWqGY/Z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCFFC4CED1;
-	Wed, 19 Feb 2025 09:03:46 +0000 (UTC)
+	 MIME-Version; b=U0jQSs30phq5Mm+pIg5Bscp73l/1a32fNylx62b2T6NAAGrtfeSq6RXHrjI8j2FXjVpSew3YXAlWGSsOfl1/BE1J2lAxHSpjNWbd+BSGqv7XmT0aH4g9tsNjYrR+Zi+aveds25M3ZUmpLkhx5OYh+iPCrYJzd6E3hgUcNLlfVNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqnAZiJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD70C4CED1;
+	Wed, 19 Feb 2025 09:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955827;
-	bh=Q9a3zzWjYqVZXHTDz13PL+w8CeUTvfYa92InAZKJyq4=;
+	s=korg; t=1739957390;
+	bh=OcdA8cTbCjIwzigM0Jy+Hy3MrMS2QBYcsvT0OGO8hu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWqGY/Z/ndov9x7oF5MCSWDm947s7djPXyDoP6Wkcr4USoQVGqKIOvJH9rXXzpwsE
-	 AKp36ucvzarfCbxW7ksBskyZV77BCZaf/54ZIecbTqQZI067LlNnowQ69o7n41W29U
-	 uf9iiKx7wYGTRhPzSCFJDYDEXRAD3koL7UssrQIc=
+	b=bqnAZiJdSkkRSc80MCLqK3/Q8UPtDGLeK6GzyuSwdcuIx89OMSN1j371kWCGxpYrH
+	 2NegZUnyvJu/sCwOO8CjIYniioC+K1p49lOG4D5aCUpam1W0s2oL/gwvM2faHQSsZm
+	 OA97NPCLEYzMpIEuynz/Rc3uZiwMx4Wgqqn+So1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/152] ipv4: add RCU protection to ip4_dst_hoplimit()
-Date: Wed, 19 Feb 2025 09:28:32 +0100
-Message-ID: <20250219082553.975726891@linuxfoundation.org>
+	Lei Huang <huanglei@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 509/578] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
+Date: Wed, 19 Feb 2025 09:28:33 +0100
+Message-ID: <20250219082713.007628208@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lei Huang <huanglei@kylinos.cn>
 
-[ Upstream commit 469308552ca4560176cfc100e7ca84add1bebd7c ]
+commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
 
-ip4_dst_hoplimit() must use RCU protection to make
-sure the net structure it reads does not disappear.
+Teclast disk used on Huawei hisi platforms doesn't work well,
+losing connectivity intermittently if LPM is enabled.
+Add quirk disable LPM to resolve the issue.
 
-Fixes: fa50d974d104 ("ipv4: Namespaceify ip_default_ttl sysctl knob")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/route.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/route.h b/include/net/route.h
-index 51a45b1887b56..0171e9e1bbea3 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -357,10 +357,15 @@ static inline int inet_iif(const struct sk_buff *skb)
- static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
- {
- 	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
--	struct net *net = dev_net(dst->dev);
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -522,6 +522,9 @@ static const struct usb_device_id usb_qu
+ 	/* Blackmagic Design UltraStudio SDI */
+ 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
  
--	if (hoplimit == 0)
-+	if (hoplimit == 0) {
-+		const struct net *net;
++	/* Teclast disk */
++	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
 +
-+		rcu_read_lock();
-+		net = dev_net_rcu(dst->dev);
- 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
-+		rcu_read_unlock();
-+	}
- 	return hoplimit;
- }
- 
--- 
-2.39.5
-
+ 	/* Hauppauge HVR-950q */
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
