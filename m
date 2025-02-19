@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-117131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C866DA3B4E5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:49:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40221A3B5FF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3053B7E9E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:44:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D40E07A1E60
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4331EB1B5;
-	Wed, 19 Feb 2025 08:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6A01DE883;
+	Wed, 19 Feb 2025 08:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxDFBLfG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T80Hu3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AB11DE2D8;
-	Wed, 19 Feb 2025 08:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE331C3BF1;
+	Wed, 19 Feb 2025 08:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954304; cv=none; b=pnUav2eEfjJ3o1V8Mupvf8gss1Wa9ZGwQhsPT9+YOcydyq8m042vTbIc4TSRyTY6vUWeqarWtiHlGiubcHIquSL1L6OF3ny0zEjULJeEid/T63ZfTO2qpOYmNoEnBSFfep9KgL2VAsTupO9OaJfcYIRihyXkQYeGavaxRIURBes=
+	t=1739955480; cv=none; b=f2aFn6aJRTptHThYMJcEBaXO769+Czpn18klxLgNzZJC3YpuTtIXv6Tf2KWXzcJW/fxiG3xjoGL0IIYOi8KmITDsXaBVvkLYTpeMqsSzdn29rKZkSz2ZxMBWEup0XtMSxu0H/N4HlV3vct+qAT1l07NevC3O6xPUZKM/kqfwRT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954304; c=relaxed/simple;
-	bh=Bq5tmamhAFQiOssS/cruO3gYFpsgc3B4GJX0qJLzxZ4=;
+	s=arc-20240116; t=1739955480; c=relaxed/simple;
+	bh=ls0CfXKmCY4o8/kbWnF+/n5bc8AOORMwj9LNyaHofDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQvOTnuH7A9PeNG4dkZIAeLbyCrlaURjyIdLburFMt8xtn4Ub9SWbR/0egk207vBc1JnKwBGtJdDP8f/hMry4M0z3MLFi9j/3+l7eUUyqZkSlppVW/fjuHS1pi5AlqXbgxnWUgBlgnroDKCcAPsVvc1motox51BlLwgwEW9JtYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxDFBLfG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76677C4CED1;
-	Wed, 19 Feb 2025 08:38:22 +0000 (UTC)
+	 MIME-Version; b=Dzz1zr0DEW9qSy+VWgmBSTe9RG5qxFAIVebPd3g/xReZxI/SvMMmC2Od2tuOm9AMktRz6tDwzKROfapLV8ZuM7lgmjAccACOh24/oJml3tJAIO3wpnPpfu+SsXyK7R4gm6uw+UI1t+SY21svhTp3dan4KxlAeyK9mpGCFgub+oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T80Hu3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D97C4CED1;
+	Wed, 19 Feb 2025 08:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954302;
-	bh=Bq5tmamhAFQiOssS/cruO3gYFpsgc3B4GJX0qJLzxZ4=;
+	s=korg; t=1739955480;
+	bh=ls0CfXKmCY4o8/kbWnF+/n5bc8AOORMwj9LNyaHofDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxDFBLfGw7xBK63hItT+3E3Z/7TWoz3L/O20eceDHtfCjsR3HmReThavvKmO47d/u
-	 0NlOQ747j4LUpAVLhbOw7zB50vcqjzzvgTnP7nny8YwJPJbtngmJj5tVaSjsHMQgA0
-	 RSBuC8AlxduXjlUbCcUDt/DBdcRjszGQrh1Cjf/U=
+	b=2T80Hu3E9bLga315pTCzrnyjRjde7Hwz0uz+urRKytOwUHFvcpO3GXdGDU6NfmoJz
+	 r9P4cdxQ7RvB65AV/iJDissBVY11E3pqoXadZhkqqWU3452UWGixSkATCfz/1n6Zih
+	 uN7UAWfWIoNvdTmbGd3fAvf6j+UgQdRDgN0YCbVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.13 161/274] objtool/rust: add one more `noreturn` Rust function
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 002/152] NFSD: fix hang in nfsd4_shutdown_callback
 Date: Wed, 19 Feb 2025 09:26:55 +0100
-Message-ID: <20250219082615.896623240@linuxfoundation.org>
+Message-ID: <20250219082550.116921034@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit cee6f9a9c87b6ecfb51845950c28216b231c3610 upstream.
+commit 036ac2778f7b28885814c6fbc07e156ad1624d03 upstream.
 
-Starting with Rust 1.85.0 (currently in beta, to be released 2025-02-20),
-under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
-one may trigger a new `objtool` warning:
+If nfs4_client is in courtesy state then there is no point to send
+the callback. This causes nfsd4_shutdown_callback to hang since
+cl_cb_inflight is not 0. This hang lasts about 15 minutes until TCP
+notifies NFSD that the connection was dropped.
 
-    rust/kernel.o: warning: objtool: _R...securityNtB2_11SecurityCtx8as_bytes()
-    falls through to next function _R...core3ops4drop4Drop4drop()
+This patch modifies nfsd4_run_cb_work to skip the RPC call if
+nfs4_client is in courtesy state.
 
-due to a call to the `noreturn` symbol:
-
-    core::panicking::assert_failed::<usize, usize>
-
-Thus add it to the list so that `objtool` knows it is actually `noreturn`.
-Do so matching with `strstr` since it is a generic.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
-Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20250112143951.751139-1-ojeda@kernel.org
-[ Updated Cc: stable@ to include 6.13.y. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Fixes: 66af25799940 ("NFSD: add courteous server support for thread with only delegation")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4callback.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -218,6 +218,7 @@ static bool is_rust_noreturn(const struc
- 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
- 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
- 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
-+	       strstr(func->name, "_4core9panicking13assert_failed")					||
- 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
- 	       (strstr(func->name, "_4core5slice5index24slice_") &&
- 		str_ends_with(func->name, "_fail"));
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1410,8 +1410,11 @@ nfsd4_run_cb_work(struct work_struct *wo
+ 		nfsd4_process_cb_update(cb);
+ 
+ 	clnt = clp->cl_cb_client;
+-	if (!clnt) {
+-		/* Callback channel broken, or client killed; give up: */
++	if (!clnt || clp->cl_state == NFSD4_COURTESY) {
++		/*
++		 * Callback channel broken, client killed or
++		 * nfs4_client in courtesy state; give up.
++		 */
+ 		nfsd41_destroy_cb(cb);
+ 		return;
+ 	}
 
 
 
