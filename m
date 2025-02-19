@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-117062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDE1A3B483
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0EFA3B55D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E69DA177C40
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C06F37A4329
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274101DED6B;
-	Wed, 19 Feb 2025 08:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8041DC04A;
+	Wed, 19 Feb 2025 08:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3B0V4yQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsJBahSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95801DED64;
-	Wed, 19 Feb 2025 08:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2701CAA6F;
+	Wed, 19 Feb 2025 08:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954087; cv=none; b=CpSJXdDwpFSt+azIQo23IvAYM4wJLihYeZ5FOfkNWpoM6VRMowP5O7U9TAgCZIjA4zidO+BxYdbC9tl/ln4xHKyXGRB4IPmkLoIVy9JiI5uzbXPh1f6IBGfcDwionO7Ft1hb1Ygk8VmdOTVHFYtSoNYKSme11evN1BGN7x8K1Yw=
+	t=1739954870; cv=none; b=h5+GB7CcyD/IticRMh+dSoyC5YlGnGVXPBuu40I2/1fSpV2eSuP2EYwLJQXe4RVrpxBBbvs2JD2+qxGLO8PYAK1g8OvstJmVB97+UFkzmdFOVoKrqh6faMn1YVhF4GptXIvK9VHBRfnSNiZZKdb3K9+JivekTwM1LlDMYaHp3NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954087; c=relaxed/simple;
-	bh=ojFhZRX455DxYgJbYYTcrEZLyLzXgt0+CAtGLJtt3pM=;
+	s=arc-20240116; t=1739954870; c=relaxed/simple;
+	bh=PniVTAYu6RvF+7NNSiznkLHx1Rzm9PGMi3uz/PyEwEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFqI7vwR7Pzsdl7FPw3PV3NISkoztvgcTxa6M11zkGkHRlq9CrRQjrryFUvm5Rjo+BPyK9qg3kcqWU8de2OnPOvGlmK9c5dSatB3SK0arbXTzG9dNGYN1Oiy82GHusSbiwQu43WuNJPl+/c3U44yUmnTEqeeq6Fo4SuYw8Fs5ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3B0V4yQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575C9C4CED1;
-	Wed, 19 Feb 2025 08:34:47 +0000 (UTC)
+	 MIME-Version; b=LRKbygYr6WzBe3lU6MgR1Xzben4kbbFT/W7KXAiXhBK1do5LZEZwjkP2oeN7keeZl8mxNFH9vVArF3yhKo2QTv9lth1OXXuiisaHAsxy3v9Myws7TY6X8NqxBqKgwipe6IjbLeZefnVhOk7MYsihqfMEtOQs181bPvH98KK6ak8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsJBahSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF83C4CED1;
+	Wed, 19 Feb 2025 08:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954087;
-	bh=ojFhZRX455DxYgJbYYTcrEZLyLzXgt0+CAtGLJtt3pM=;
+	s=korg; t=1739954870;
+	bh=PniVTAYu6RvF+7NNSiznkLHx1Rzm9PGMi3uz/PyEwEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3B0V4yQ9F81tI74yKKrJziA4GotbepCwA63dJDKfHL1TjI0EwNguXolZK1SeGQg0
-	 bp5v0kAbMSEivYAuzv5+bWMhBDM/NesicptgN1j1RGCyZ2tRdb4BxFrPYaKh1DoB0o
-	 y3pWd4bxolmRsHQREckAdO/1LP5+ujzL4uWrtPcM=
+	b=BsJBahSmpMtRJBGjaRanUwVjOUtmGUa3pOIACU5kYjAW3HJb9apxGuZGGqyKsdY4M
+	 jVr5NbQ0fTCD8DXAlKkVUzEm03tsQo/++xKExuAaSkbApQzi1lKonrg7PXqnMc5sAM
+	 g3VNsugqmkwf7PbdjOAshSfuTGYXyX60+A8XkFFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 092/274] serial: 8250_pci: Resolve WCH vendor ID ambiguity
-Date: Wed, 19 Feb 2025 09:25:46 +0100
-Message-ID: <20250219082613.227044672@linuxfoundation.org>
+Subject: [PATCH 6.12 030/230] net: ethernet: ti: am65_cpsw: fix tx_cleanup for XDP case
+Date: Wed, 19 Feb 2025 09:25:47 +0100
+Message-ID: <20250219082602.886016845@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,219 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 16076ca3a1565491bcb28689e555d569a39391c7 ]
+[ Upstream commit 4542536f664f752db5feba2c5998b165933c34f2 ]
 
-There are two sites of the same brand: wch.cn and wch-ic.com.
-They are property of the same company, but it appears that they
-managed to get two different PCI vendor IDs. Rename them accordingly
-using standard pattern, i.e. PCI_VENDOR_ID_...
+For XDP transmit case, swdata doesn't contain SKB but the
+XDP Frame. Infer the correct swdata based on buffer type
+and return the XDP Frame for XDP transmit case.
 
-While at it, move to PCI_VDEVICE() in the ID tables.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241204031114.1029882-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Fixes: 8acacc40f733 ("net: ethernet: ti: am65-cpsw: Add minimal XDP support")
+Link: https://patch.msgid.link/20250210-am65-cpsw-xdp-fixes-v1-3-ec6b1f7f1aca@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c | 82 +++++++++++++++---------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
-index 3c3f7c926afb8..dfac79744d377 100644
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -64,23 +64,23 @@
- #define PCIE_DEVICE_ID_NEO_2_OX_IBM	0x00F6
- #define PCI_DEVICE_ID_PLX_CRONYX_OMEGA	0xc001
- #define PCI_DEVICE_ID_INTEL_PATSBURG_KT 0x1d3d
--#define PCI_VENDOR_ID_WCH		0x4348
--#define PCI_DEVICE_ID_WCH_CH352_2S	0x3253
--#define PCI_DEVICE_ID_WCH_CH353_4S	0x3453
--#define PCI_DEVICE_ID_WCH_CH353_2S1PF	0x5046
--#define PCI_DEVICE_ID_WCH_CH353_1S1P	0x5053
--#define PCI_DEVICE_ID_WCH_CH353_2S1P	0x7053
--#define PCI_DEVICE_ID_WCH_CH355_4S	0x7173
-+#define PCI_VENDOR_ID_WCHCN		0x4348
-+#define PCI_DEVICE_ID_WCHCN_CH352_2S	0x3253
-+#define PCI_DEVICE_ID_WCHCN_CH353_4S	0x3453
-+#define PCI_DEVICE_ID_WCHCN_CH353_2S1PF	0x5046
-+#define PCI_DEVICE_ID_WCHCN_CH353_1S1P	0x5053
-+#define PCI_DEVICE_ID_WCHCN_CH353_2S1P	0x7053
-+#define PCI_DEVICE_ID_WCHCN_CH355_4S	0x7173
- #define PCI_VENDOR_ID_AGESTAR		0x5372
- #define PCI_DEVICE_ID_AGESTAR_9375	0x6872
- #define PCI_DEVICE_ID_BROADCOM_TRUMANAGE 0x160a
- #define PCI_DEVICE_ID_AMCC_ADDIDATA_APCI7800 0x818e
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 14df3c0141679..3e090f87f97eb 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -585,16 +585,24 @@ static void am65_cpsw_nuss_xmit_free(struct am65_cpsw_tx_chn *tx_chn,
+ static void am65_cpsw_nuss_tx_cleanup(void *data, dma_addr_t desc_dma)
+ {
+ 	struct am65_cpsw_tx_chn *tx_chn = data;
++	enum am65_cpsw_tx_buf_type buf_type;
+ 	struct cppi5_host_desc_t *desc_tx;
++	struct xdp_frame *xdpf;
+ 	struct sk_buff *skb;
+ 	void **swdata;
  
--#define PCIE_VENDOR_ID_WCH		0x1c00
--#define PCIE_DEVICE_ID_WCH_CH382_2S1P	0x3250
--#define PCIE_DEVICE_ID_WCH_CH384_4S	0x3470
--#define PCIE_DEVICE_ID_WCH_CH384_8S	0x3853
--#define PCIE_DEVICE_ID_WCH_CH382_2S	0x3253
-+#define PCI_VENDOR_ID_WCHIC		0x1c00
-+#define PCI_DEVICE_ID_WCHIC_CH382_2S1P	0x3250
-+#define PCI_DEVICE_ID_WCHIC_CH384_4S	0x3470
-+#define PCI_DEVICE_ID_WCHIC_CH384_8S	0x3853
-+#define PCI_DEVICE_ID_WCHIC_CH382_2S	0x3253
+ 	desc_tx = k3_cppi_desc_pool_dma2virt(tx_chn->desc_pool, desc_dma);
+ 	swdata = cppi5_hdesc_get_swdata(desc_tx);
+-	skb = *(swdata);
+-	am65_cpsw_nuss_xmit_free(tx_chn, desc_tx);
++	buf_type = am65_cpsw_nuss_buf_type(tx_chn, desc_dma);
++	if (buf_type == AM65_CPSW_TX_BUF_TYPE_SKB) {
++		skb = *(swdata);
++		dev_kfree_skb_any(skb);
++	} else {
++		xdpf = *(swdata);
++		xdp_return_frame(xdpf);
++	}
  
- #define PCI_DEVICE_ID_MOXA_CP102E	0x1024
- #define PCI_DEVICE_ID_MOXA_CP102EL	0x1025
-@@ -2817,80 +2817,80 @@ static struct pci_serial_quirk pci_serial_quirks[] = {
- 	},
- 	/* WCH CH353 1S1P card (16550 clone) */
- 	{
--		.vendor         = PCI_VENDOR_ID_WCH,
--		.device         = PCI_DEVICE_ID_WCH_CH353_1S1P,
-+		.vendor         = PCI_VENDOR_ID_WCHCN,
-+		.device         = PCI_DEVICE_ID_WCHCN_CH353_1S1P,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch353_setup,
- 	},
- 	/* WCH CH353 2S1P card (16550 clone) */
- 	{
--		.vendor         = PCI_VENDOR_ID_WCH,
--		.device         = PCI_DEVICE_ID_WCH_CH353_2S1P,
-+		.vendor         = PCI_VENDOR_ID_WCHCN,
-+		.device         = PCI_DEVICE_ID_WCHCN_CH353_2S1P,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch353_setup,
- 	},
- 	/* WCH CH353 4S card (16550 clone) */
- 	{
--		.vendor         = PCI_VENDOR_ID_WCH,
--		.device         = PCI_DEVICE_ID_WCH_CH353_4S,
-+		.vendor         = PCI_VENDOR_ID_WCHCN,
-+		.device         = PCI_DEVICE_ID_WCHCN_CH353_4S,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch353_setup,
- 	},
- 	/* WCH CH353 2S1PF card (16550 clone) */
- 	{
--		.vendor         = PCI_VENDOR_ID_WCH,
--		.device         = PCI_DEVICE_ID_WCH_CH353_2S1PF,
-+		.vendor         = PCI_VENDOR_ID_WCHCN,
-+		.device         = PCI_DEVICE_ID_WCHCN_CH353_2S1PF,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch353_setup,
- 	},
- 	/* WCH CH352 2S card (16550 clone) */
- 	{
--		.vendor		= PCI_VENDOR_ID_WCH,
--		.device		= PCI_DEVICE_ID_WCH_CH352_2S,
-+		.vendor		= PCI_VENDOR_ID_WCHCN,
-+		.device		= PCI_DEVICE_ID_WCHCN_CH352_2S,
- 		.subvendor	= PCI_ANY_ID,
- 		.subdevice	= PCI_ANY_ID,
- 		.setup		= pci_wch_ch353_setup,
- 	},
- 	/* WCH CH355 4S card (16550 clone) */
- 	{
--		.vendor		= PCI_VENDOR_ID_WCH,
--		.device		= PCI_DEVICE_ID_WCH_CH355_4S,
-+		.vendor		= PCI_VENDOR_ID_WCHCN,
-+		.device		= PCI_DEVICE_ID_WCHCN_CH355_4S,
- 		.subvendor	= PCI_ANY_ID,
- 		.subdevice	= PCI_ANY_ID,
- 		.setup		= pci_wch_ch355_setup,
- 	},
- 	/* WCH CH382 2S card (16850 clone) */
- 	{
--		.vendor         = PCIE_VENDOR_ID_WCH,
--		.device         = PCIE_DEVICE_ID_WCH_CH382_2S,
-+		.vendor         = PCI_VENDOR_ID_WCHIC,
-+		.device         = PCI_DEVICE_ID_WCHIC_CH382_2S,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch38x_setup,
- 	},
- 	/* WCH CH382 2S1P card (16850 clone) */
- 	{
--		.vendor         = PCIE_VENDOR_ID_WCH,
--		.device         = PCIE_DEVICE_ID_WCH_CH382_2S1P,
-+		.vendor         = PCI_VENDOR_ID_WCHIC,
-+		.device         = PCI_DEVICE_ID_WCHIC_CH382_2S1P,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch38x_setup,
- 	},
- 	/* WCH CH384 4S card (16850 clone) */
- 	{
--		.vendor         = PCIE_VENDOR_ID_WCH,
--		.device         = PCIE_DEVICE_ID_WCH_CH384_4S,
-+		.vendor         = PCI_VENDOR_ID_WCHIC,
-+		.device         = PCI_DEVICE_ID_WCHIC_CH384_4S,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.setup          = pci_wch_ch38x_setup,
- 	},
- 	/* WCH CH384 8S card (16850 clone) */
- 	{
--		.vendor         = PCIE_VENDOR_ID_WCH,
--		.device         = PCIE_DEVICE_ID_WCH_CH384_8S,
-+		.vendor         = PCI_VENDOR_ID_WCHIC,
-+		.device         = PCI_DEVICE_ID_WCHIC_CH384_8S,
- 		.subvendor      = PCI_ANY_ID,
- 		.subdevice      = PCI_ANY_ID,
- 		.init           = pci_wch_ch38x_init,
-@@ -3967,11 +3967,11 @@ static const struct pci_device_id blacklist[] = {
+-	dev_kfree_skb_any(skb);
++	am65_cpsw_nuss_xmit_free(tx_chn, desc_tx);
+ }
  
- 	/* multi-io cards handled by parport_serial */
- 	/* WCH CH353 2S1P */
--	{ PCI_DEVICE(0x4348, 0x7053), 0, 0, REPORT_CONFIG(PARPORT_SERIAL), },
-+	{ PCI_VDEVICE(WCHCN, 0x7053), REPORT_CONFIG(PARPORT_SERIAL), },
- 	/* WCH CH353 1S1P */
--	{ PCI_DEVICE(0x4348, 0x5053), 0, 0, REPORT_CONFIG(PARPORT_SERIAL), },
-+	{ PCI_VDEVICE(WCHCN, 0x5053), REPORT_CONFIG(PARPORT_SERIAL), },
- 	/* WCH CH382 2S1P */
--	{ PCI_DEVICE(0x1c00, 0x3250), 0, 0, REPORT_CONFIG(PARPORT_SERIAL), },
-+	{ PCI_VDEVICE(WCHIC, 0x3250), REPORT_CONFIG(PARPORT_SERIAL), },
- 
- 	/* Intel platforms with MID UART */
- 	{ PCI_VDEVICE(INTEL, 0x081b), REPORT_8250_CONFIG(MID), },
-@@ -6044,27 +6044,27 @@ static const struct pci_device_id serial_pci_tbl[] = {
- 	 * WCH CH353 series devices: The 2S1P is handled by parport_serial
- 	 * so not listed here.
- 	 */
--	{	PCI_VENDOR_ID_WCH, PCI_DEVICE_ID_WCH_CH353_4S,
-+	{	PCI_VENDOR_ID_WCHCN, PCI_DEVICE_ID_WCHCN_CH353_4S,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0, pbn_b0_bt_4_115200 },
- 
--	{	PCI_VENDOR_ID_WCH, PCI_DEVICE_ID_WCH_CH353_2S1PF,
-+	{	PCI_VENDOR_ID_WCHCN, PCI_DEVICE_ID_WCHCN_CH353_2S1PF,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0, pbn_b0_bt_2_115200 },
- 
--	{	PCI_VENDOR_ID_WCH, PCI_DEVICE_ID_WCH_CH355_4S,
-+	{	PCI_VENDOR_ID_WCHCN, PCI_DEVICE_ID_WCHCN_CH355_4S,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0, pbn_b0_bt_4_115200 },
- 
--	{	PCIE_VENDOR_ID_WCH, PCIE_DEVICE_ID_WCH_CH382_2S,
-+	{	PCI_VENDOR_ID_WCHIC, PCI_DEVICE_ID_WCHIC_CH382_2S,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0, pbn_wch382_2 },
- 
--	{	PCIE_VENDOR_ID_WCH, PCIE_DEVICE_ID_WCH_CH384_4S,
-+	{	PCI_VENDOR_ID_WCHIC, PCI_DEVICE_ID_WCHIC_CH384_4S,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0, pbn_wch384_4 },
- 
--	{	PCIE_VENDOR_ID_WCH, PCIE_DEVICE_ID_WCH_CH384_8S,
-+	{	PCI_VENDOR_ID_WCHIC, PCI_DEVICE_ID_WCHIC_CH384_8S,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0, pbn_wch384_8 },
- 	/*
+ static struct sk_buff *am65_cpsw_build_skb(void *page_addr,
 -- 
 2.39.5
 
