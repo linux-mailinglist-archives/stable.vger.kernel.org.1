@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04292A3B4F6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:50:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86638A3B607
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30113B9254
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:45:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00E5A7A3100
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DB61C5F2F;
-	Wed, 19 Feb 2025 08:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F1B1DE8A9;
+	Wed, 19 Feb 2025 08:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpP7qHh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUR1zIuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9A61F418E;
-	Wed, 19 Feb 2025 08:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8FD1DE3AE;
+	Wed, 19 Feb 2025 08:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954325; cv=none; b=Q3z5PnZZCPFHXjyCGqwrm58dwzXy6whXGGSuuswHri4bZFgF1YDdCIBkApQJE2d0FPP1uw5I499f3w+DXMD0ofN6LEpCoOXGVo1P2BTup+M7x1+Xu5lY5s96SmfAMp/RKwIcz8p3U8whuPA4UTGylsRnobe0chgfHIW+rRHy/dM=
+	t=1739955525; cv=none; b=NyLLWHipJvl+RftoY7IeKku7/6TFftrUmvhmpb0w7ExU6HwC/Sx+PhKlckWeT6PfgdjKMTVbSKrRgs5a81q1is2C/6d66mncA8T6+qSH+NeqYsdESNelWKAFbPFIZxy8897co4wiWNuJmlXj2xV427iCpxRwW9qeg+hm4CfxAq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954325; c=relaxed/simple;
-	bh=mjz1ZikebpyGCjzifVpVV8io5c5Xzvz4I+VjnbyFo0k=;
+	s=arc-20240116; t=1739955525; c=relaxed/simple;
+	bh=Vp8QG/0DPEtrTSiuq4xox1Ik95uEcZSn5bdvu0DZZ8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+7bD9UvxHBqDlqMBg8WyD1CA7rtt8KdzXtgGuB1Q5pKx9ageqylfpKoBhKL2uI6EMROnKzt8YWit46tX2/IC6iI69pKrRoYIFXSv5YWqS4a4C5kKKsR9s/JDf071AYtczqpKvfKUaWirwEQailCgUbDpP80IQclQ0XGVK/cqJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpP7qHh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D17C4CEE8;
-	Wed, 19 Feb 2025 08:38:44 +0000 (UTC)
+	 MIME-Version; b=Fz8X7EA4D6hDdGnw2Sb8Jl585uyn6Aycd4PxgLhsQTiHa7RlBo148nOcLxgQQ0xIKDIYQb66JfHH3gF9tJH/N5sIWvxxB25UF4Yh5sGlJPPRXlEHhwJbKT1LMagb3UcPsdNyYPF9GnjuEx2sgmrEfUEHVs/tooG7Ckz6Fwhrzmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUR1zIuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505E6C4CED1;
+	Wed, 19 Feb 2025 08:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954325;
-	bh=mjz1ZikebpyGCjzifVpVV8io5c5Xzvz4I+VjnbyFo0k=;
+	s=korg; t=1739955525;
+	bh=Vp8QG/0DPEtrTSiuq4xox1Ik95uEcZSn5bdvu0DZZ8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpP7qHh2IEj+1k6YWbyJFxABsa7jA20XFShNriUSrTj0zkPbf9HOEYYsPCXJHM8qw
-	 DCrpIhVgIMWLPJjGDZN16IWw15Ej13cSPSG1AQ+5qYabiSRrqZ3Y8XKlEjTxDEUXho
-	 pbqIE8Y3vI7SH9WRkFCOTyhUJqVqixtzVjXXQQlc=
+	b=ZUR1zIuLLf8atY2QqhpMchXsw21t5H2t96AunPtnv4i+Qe0m6HqFCZbDq0yrdqO7c
+	 0BIAre3o34htvUV8Yx9DKs6g0ee8ZeRLxJ8kCMaanHn6lSdtoZVzLlP8xmAC/Ayqfo
+	 JbpwoxYHbN0G32aHPf6jUp7dfn42SHbkl69MapFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>
-Subject: [PATCH 6.13 167/274] serial: 8250: Fix fifo underflow on flush
-Date: Wed, 19 Feb 2025 09:27:01 +0100
-Message-ID: <20250219082616.127787997@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/152] vrf: use RCU protection in l3mdev_l3_out()
+Date: Wed, 19 Feb 2025 09:27:02 +0100
+Message-ID: <20250219082550.394390009@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9e512eaaf8f4008c44ede3dfc0fbc9d9c5118583 upstream.
+[ Upstream commit 6d0ce46a93135d96b7fa075a94a88fe0da8e8773 ]
 
-When flushing the serial port's buffer, uart_flush_buffer() calls
-kfifo_reset() but if there is an outstanding DMA transfer then the
-completion function will consume data from the kfifo via
-uart_xmit_advance(), underflowing and leading to ongoing DMA as the
-driver tries to transmit another 2^32 bytes.
+l3mdev_l3_out() can be called without RCU being held:
 
-This is readily reproduced with serial-generic and amidi sending even
-short messages as closing the device on exit will wait for the fifo to
-drain and in the underflow case amidi hangs for 30 seconds on exit in
-tty_wait_until_sent().  A trace of that gives:
+raw_sendmsg()
+ ip_push_pending_frames()
+  ip_send_skb()
+   ip_local_out()
+    __ip_local_out()
+     l3mdev_ip_out()
 
-     kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
-           amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
- irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
- irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
- irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
- irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
- irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
- irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
- irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
+Add rcu_read_lock() / rcu_read_unlock() pair to avoid
+a potential UAF.
 
-Since the port lock is held in when the kfifo is reset in
-uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
-hook to adjust the outstanding DMA byte count is sufficient to avoid the
-kfifo underflow.
-
-Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
-Cc: stable <stable@kernel.org>
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20250208124148.1189191-1-jkeeping@inmusicbrands.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a8e3e1a9f020 ("net: l3mdev: Add hook to output path")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250.h      |    2 ++
- drivers/tty/serial/8250/8250_dma.c  |   16 ++++++++++++++++
- drivers/tty/serial/8250/8250_port.c |    9 +++++++++
- 3 files changed, 27 insertions(+)
+ include/net/l3mdev.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -374,6 +374,7 @@ static inline int is_omap1510_8250(struc
+diff --git a/include/net/l3mdev.h b/include/net/l3mdev.h
+index 031c661aa14df..bdfa9d414360c 100644
+--- a/include/net/l3mdev.h
++++ b/include/net/l3mdev.h
+@@ -198,10 +198,12 @@ struct sk_buff *l3mdev_l3_out(struct sock *sk, struct sk_buff *skb, u16 proto)
+ 	if (netif_is_l3_slave(dev)) {
+ 		struct net_device *master;
  
- #ifdef CONFIG_SERIAL_8250_DMA
- extern int serial8250_tx_dma(struct uart_8250_port *);
-+extern void serial8250_tx_dma_flush(struct uart_8250_port *);
- extern int serial8250_rx_dma(struct uart_8250_port *);
- extern void serial8250_rx_dma_flush(struct uart_8250_port *);
- extern int serial8250_request_dma(struct uart_8250_port *);
-@@ -406,6 +407,7 @@ static inline int serial8250_tx_dma(stru
- {
- 	return -1;
- }
-+static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
- static inline int serial8250_rx_dma(struct uart_8250_port *p)
- {
- 	return -1;
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -149,6 +149,22 @@ err:
- 	return ret;
- }
++		rcu_read_lock();
+ 		master = netdev_master_upper_dev_get_rcu(dev);
+ 		if (master && master->l3mdev_ops->l3mdev_l3_out)
+ 			skb = master->l3mdev_ops->l3mdev_l3_out(master, sk,
+ 								skb, proto);
++		rcu_read_unlock();
+ 	}
  
-+void serial8250_tx_dma_flush(struct uart_8250_port *p)
-+{
-+	struct uart_8250_dma *dma = p->dma;
-+
-+	if (!dma->tx_running)
-+		return;
-+
-+	/*
-+	 * kfifo_reset() has been called by the serial core, avoid
-+	 * advancing and underflowing in __dma_tx_complete().
-+	 */
-+	dma->tx_size = 0;
-+
-+	dmaengine_terminate_async(dma->rxchan);
-+}
-+
- int serial8250_rx_dma(struct uart_8250_port *p)
- {
- 	struct uart_8250_dma		*dma = p->dma;
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2544,6 +2544,14 @@ static void serial8250_shutdown(struct u
- 		serial8250_do_shutdown(port);
- }
- 
-+static void serial8250_flush_buffer(struct uart_port *port)
-+{
-+	struct uart_8250_port *up = up_to_u8250p(port);
-+
-+	if (up->dma)
-+		serial8250_tx_dma_flush(up);
-+}
-+
- static unsigned int serial8250_do_get_divisor(struct uart_port *port,
- 					      unsigned int baud,
- 					      unsigned int *frac)
-@@ -3227,6 +3235,7 @@ static const struct uart_ops serial8250_
- 	.break_ctl	= serial8250_break_ctl,
- 	.startup	= serial8250_startup,
- 	.shutdown	= serial8250_shutdown,
-+	.flush_buffer	= serial8250_flush_buffer,
- 	.set_termios	= serial8250_set_termios,
- 	.set_ldisc	= serial8250_set_ldisc,
- 	.pm		= serial8250_pm,
+ 	return skb;
+-- 
+2.39.5
+
 
 
 
