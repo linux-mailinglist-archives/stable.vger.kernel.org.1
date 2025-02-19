@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-117325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EBDA3B619
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9E3A3B97F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 517893BE1B0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB35B3A92AC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC821DE2B5;
-	Wed, 19 Feb 2025 08:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5221DF968;
+	Wed, 19 Feb 2025 09:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQrqIODg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBo6yuvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EB61DC747;
-	Wed, 19 Feb 2025 08:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2B81DF74F;
+	Wed, 19 Feb 2025 09:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954922; cv=none; b=uH5FJcVTP8kHi7MZ6vKFTpzaxu+GNHiD+oucmSWPGyWwsmMai8h9LcUwVlLldQ1aVkQuzw6FlnfFLRzXLc/FegP2I+LkBKaCghlZcx5w6EknPtzXy1Shq/lOzMCRvomq+XOw8Z8ikEXWMS80BigE/+dBtaSGH+pqT+juPFwMTZI=
+	t=1739956999; cv=none; b=cMfJotO2IzO4B72tVUtN/jp3jX1AMVP8ygywdkPypwU7Qg7uNzWzRD6KmHA3yua6U3WLfIKE3rJPHjEEjEw0rrI076gN6qsQR5V885adRytuPyZcYlexzZDTcYCE16p7CPJWGbrxYUwDAXaOc4XJZZcwBJybV2rX+L07whr9498=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954922; c=relaxed/simple;
-	bh=D59jGf0KDXFQYL1z80DZarNHXGGmUT2Q6g5kOZnawWA=;
+	s=arc-20240116; t=1739956999; c=relaxed/simple;
+	bh=n4/giDNQMEDAERYSmMciVMUslC2lhE+R3rYtM09C94Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMi2ED0U7W+a7PvJtrA3opK3cHuzH97zYRK3Kd/n/b15Kyjt2lb2SR5KYfVX1nvrgtCDZcBozbci38gU92NhiXYhWRlViehyvFi6nSw1lNVFzPBlESqQjMSWJ3BSs92MeimQH3NiQUQzbYb11y9VU/UVjyJKHo/MftATTsVbX6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQrqIODg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8A7C4CED1;
-	Wed, 19 Feb 2025 08:48:41 +0000 (UTC)
+	 MIME-Version; b=Cm4aoRU4OwoprWJPQc8lOXz0Uate5pTW5hYPOl4itgmBeysW9oK+2OZQWLQaxbz4bdXOmVzcDLoXDg1h1Wgjvs/gr1CGu5nKqAyn6CaVexTVQLLPtoQQZgDNmix1rHWssUhkGTcWe9Bd+Q6iCwYuT6/rmoaRO8Kn/IYaSTyQRZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBo6yuvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2FDC4CED1;
+	Wed, 19 Feb 2025 09:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954922;
-	bh=D59jGf0KDXFQYL1z80DZarNHXGGmUT2Q6g5kOZnawWA=;
+	s=korg; t=1739956999;
+	bh=n4/giDNQMEDAERYSmMciVMUslC2lhE+R3rYtM09C94Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQrqIODgy3rA1urqphUPW63WnPZoBlMMdjUiSTtiQESnCZbgvIYQl4Q017q5pwmTr
-	 1Puaj/jutdhN91T7w7Pse0AjYU9K6UmT3YdJYRGmMXerI7dMwKJ5HTIbe9w2rmAb3k
-	 SIwr1Z+YYbdE0hMSWHHmlT3mUO/qZz+SZgK2RGqk=
+	b=fBo6yuvpLc85guxW6nfgDahG2o12xUdEJkxcIF0mGaDsRGTJr2PejRDk98VNWHDaL
+	 wLtIDnKtPJSie7TQw9sB9qpekZW7HyXa/SSkeOc38ddGafhjINK/VAK7F4jPobjL8R
+	 SewDipAT8spqwoXSC5eq8vJXVA5HDNo19OAdpFwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/230] fbdev: omap: use threaded IRQ for LCD DMA
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 373/578] usb: gadget: f_tcm: Decrement command ref count on cleanup
 Date: Wed, 19 Feb 2025 09:26:17 +0100
-Message-ID: <20250219082604.062874408@linuxfoundation.org>
+Message-ID: <20250219082707.689256579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit e4b6b665df815b4841e71b72f06446884e8aad40 ]
+commit 3b2a52e88ab0c9469eaadd4d4c8f57d072477820 upstream.
 
-When using touchscreen and framebuffer, Nokia 770 crashes easily with:
+We submitted the command with TARGET_SCF_ACK_KREF, which requires
+acknowledgment of command completion. If the command fails, make sure to
+decrement the ref count.
 
-    BUG: scheduling while atomic: irq/144-ads7846/82/0x00010000
-    Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite configfs omap_udc ohci_omap ohci_hcd
-    CPU: 0 UID: 0 PID: 82 Comm: irq/144-ads7846 Not tainted 6.12.7-770 #2
-    Hardware name: Nokia 770
-    Call trace:
-     unwind_backtrace from show_stack+0x10/0x14
-     show_stack from dump_stack_lvl+0x54/0x5c
-     dump_stack_lvl from __schedule_bug+0x50/0x70
-     __schedule_bug from __schedule+0x4d4/0x5bc
-     __schedule from schedule+0x34/0xa0
-     schedule from schedule_preempt_disabled+0xc/0x10
-     schedule_preempt_disabled from __mutex_lock.constprop.0+0x218/0x3b4
-     __mutex_lock.constprop.0 from clk_prepare_lock+0x38/0xe4
-     clk_prepare_lock from clk_set_rate+0x18/0x154
-     clk_set_rate from sossi_read_data+0x4c/0x168
-     sossi_read_data from hwa742_read_reg+0x5c/0x8c
-     hwa742_read_reg from send_frame_handler+0xfc/0x300
-     send_frame_handler from process_pending_requests+0x74/0xd0
-     process_pending_requests from lcd_dma_irq_handler+0x50/0x74
-     lcd_dma_irq_handler from __handle_irq_event_percpu+0x44/0x130
-     __handle_irq_event_percpu from handle_irq_event+0x28/0x68
-     handle_irq_event from handle_level_irq+0x9c/0x170
-     handle_level_irq from generic_handle_domain_irq+0x2c/0x3c
-     generic_handle_domain_irq from omap1_handle_irq+0x40/0x8c
-     omap1_handle_irq from generic_handle_arch_irq+0x28/0x3c
-     generic_handle_arch_irq from call_with_stack+0x1c/0x24
-     call_with_stack from __irq_svc+0x94/0xa8
-    Exception stack(0xc5255da0 to 0xc5255de8)
-    5da0: 00000001 c22fc620 00000000 00000000 c08384a8 c106fc00 00000000 c240c248
-    5dc0: c113a600 c3f6ec30 00000001 00000000 c22fc620 c5255df0 c22fc620 c0279a94
-    5de0: 60000013 ffffffff
-     __irq_svc from clk_prepare_lock+0x4c/0xe4
-     clk_prepare_lock from clk_get_rate+0x10/0x74
-     clk_get_rate from uwire_setup_transfer+0x40/0x180
-     uwire_setup_transfer from spi_bitbang_transfer_one+0x2c/0x9c
-     spi_bitbang_transfer_one from spi_transfer_one_message+0x2d0/0x664
-     spi_transfer_one_message from __spi_pump_transfer_message+0x29c/0x498
-     __spi_pump_transfer_message from __spi_sync+0x1f8/0x2e8
-     __spi_sync from spi_sync+0x24/0x40
-     spi_sync from ads7846_halfd_read_state+0x5c/0x1c0
-     ads7846_halfd_read_state from ads7846_irq+0x58/0x348
-     ads7846_irq from irq_thread_fn+0x1c/0x78
-     irq_thread_fn from irq_thread+0x120/0x228
-     irq_thread from kthread+0xc8/0xe8
-     kthread from ret_from_fork+0x14/0x28
-
-As a quick fix, switch to a threaded IRQ which provides a stable system.
-
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3c667b4d9c8b0b580346a69ff53616b6a74cfea2.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/omap/lcd_dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
-index f85817635a8c2..0da23c57e4757 100644
---- a/drivers/video/fbdev/omap/lcd_dma.c
-+++ b/drivers/video/fbdev/omap/lcd_dma.c
-@@ -432,8 +432,8 @@ static int __init omap_init_lcd_dma(void)
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -973,6 +973,7 @@ static void usbg_data_write_cmpl(struct
+ 	return;
  
- 	spin_lock_init(&lcd_dma.lock);
+ cleanup:
++	target_put_sess_cmd(se_cmd);
+ 	transport_generic_free_cmd(&cmd->se_cmd, 0);
+ }
  
--	r = request_irq(INT_DMA_LCD, lcd_dma_irq_handler, 0,
--			"LCD DMA", NULL);
-+	r = request_threaded_irq(INT_DMA_LCD, NULL, lcd_dma_irq_handler,
-+				 IRQF_ONESHOT, "LCD DMA", NULL);
- 	if (r != 0)
- 		pr_err("unable to request IRQ for LCD DMA (error %d)\n", r);
- 
--- 
-2.39.5
-
 
 
 
