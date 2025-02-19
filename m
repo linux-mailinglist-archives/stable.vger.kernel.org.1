@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-117635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3175A3B75D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174EDA3BA86
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:43:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C261188F5F3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 910873BEB52
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6E61DED55;
-	Wed, 19 Feb 2025 09:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBA11DE89B;
+	Wed, 19 Feb 2025 09:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbTKn/3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jo8ujuDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE611DE8A6;
-	Wed, 19 Feb 2025 09:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C6D1DE8B0;
+	Wed, 19 Feb 2025 09:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955901; cv=none; b=rY/CmpT7ul8IpEXtPwFID2kdXFjTD7H8uisAsjBK6BnKw1Q4Sk+KEKmEbIjtw+ePScCXAE7Pi7L2cGYIqJMjYCVedNUewLXSU/h1o6iwxYOlUyvRgiTqOpKaarQEI4tZSrl1Fi9ikoUsmvz34Zb7L8qY1XrYR/6xCVpoIOD3hu0=
+	t=1739957600; cv=none; b=Zo+jNjrDwi/pLOxTYTkIDbfB4KnsCk42Aeem9IXDr8LJZAcS7NEl/yaFr2ttU7e7SSIlXwM0zwEKmIMGgR+kuI4t4JBbrPH3VBOzqikrqDG5QY+2/MuUXX0xuVbFOY6TTjWMJW0IafGYEqOthOvjX18ePuBYbYFqao2QHAjfpbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955901; c=relaxed/simple;
-	bh=AHKTlcrZuGnozJ0epa/KWVamWIXzyX0sicNhUSVRAag=;
+	s=arc-20240116; t=1739957600; c=relaxed/simple;
+	bh=THdSF2SX+lzr54sO+bveNOek/GfRMn9wn8e2NfgV0Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1ie23ca80wkKqx98mlMPzhrZDoDpLgU4IUdTSO1LLoLx3eqVeAl/YLxrpynOUN8RDUrl+N40s2ZofZOVfiAUVvYx0u6h++GtniMDH+PemLvOizLK0iu5MU6tdFrwgnFl71f6+Epn/7aurvDr96p7NPHJhG2Aiz4deJSOfYZmxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbTKn/3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82CDC4CED1;
-	Wed, 19 Feb 2025 09:05:00 +0000 (UTC)
+	 MIME-Version; b=bqmpN9Svww4/DMzpRaSkbYUgkRBYXqj0SAovG2SVhQuZ5sqGP8YXWfWhwyqQ1ciFTdL88EyB799Y4XpKlGta0j+1BqIqdI+MY9dpFBw0J9n2DH0Qg363QTrpc8gzu6/uYoeUjRNM/6xIsuiS2ntQDkRgS3BDoR0EFEiapd5gM3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jo8ujuDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D46CC4CED1;
+	Wed, 19 Feb 2025 09:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955901;
-	bh=AHKTlcrZuGnozJ0epa/KWVamWIXzyX0sicNhUSVRAag=;
+	s=korg; t=1739957597;
+	bh=THdSF2SX+lzr54sO+bveNOek/GfRMn9wn8e2NfgV0Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbTKn/3In/ItGuBrwSMmyv7rfWfgZK9CJTX00vwzpFZvZiKbNkohdjudwzV+mMPfI
-	 42FWO8n5ZUfaKmoojqqYyv9KOnwAjAZr9tZvLLhFmirIQvNwd+0BceryhaJ3fv0ZLZ
-	 m6UmOVE9i+0RTnaZyaZo9mNlmzeqIAISmwKjsfAU=
+	b=jo8ujuDWX6XMPmniA0fyQtnOP+H0eT0dJjhA5J+RR886LlHPVGV05LBTVC8l9MS81
+	 AfQsf9UW5vXr5GshJRmFoGa1wOGZqcxqMt15z7w1BqANWJ34jiczy9zbBSjnIZdZJ5
+	 n4AXqFFuzcetWjl20SVVJkMaPrLpbMIOd/FIKKaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com,
-	Luigi Leonardi <leonardi@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 150/152] vsock: Orphan socket after transport release
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 6.1 559/578] kdb: Do not assume write() callback available
 Date: Wed, 19 Feb 2025 09:29:23 +0100
-Message-ID: <20250219082555.980574749@linuxfoundation.org>
+Message-ID: <20250219082714.945543689@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit 78dafe1cf3afa02ed71084b350713b07e72a18fb upstream.
+commit 6d3e0d8cc63221dec670d0ee92ac57961581e975 upstream.
 
-During socket release, sock_orphan() is called without considering that it
-sets sk->sk_wq to NULL. Later, if SO_LINGER is enabled, this leads to a
-null pointer dereferenced in virtio_transport_wait_close().
+It is allowed for consoles to not provide a write() callback. For
+example ttynull does this.
 
-Orphan the socket only after transport release.
+Check if a write() callback is available before using it.
 
-Partially reverts the 'Fixes:' commit.
-
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
- lock_acquire+0x19e/0x500
- _raw_spin_lock_irqsave+0x47/0x70
- add_wait_queue+0x46/0x230
- virtio_transport_release+0x4e7/0x7f0
- __vsock_release+0xfd/0x490
- vsock_release+0x90/0x120
- __sock_release+0xa3/0x250
- sock_close+0x14/0x20
- __fput+0x35e/0xa90
- __x64_sys_close+0x78/0xd0
- do_syscall_64+0x93/0x1b0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Reported-by: syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9d55b199192a4be7d02c
-Fixes: fcdd2242c023 ("vsock: Keep the binding until socket destruction")
-Tested-by: Luigi Leonardi <leonardi@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Link: https://patch.msgid.link/20250210-vsock-linger-nullderef-v3-1-ef6244d02b54@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-2-john.ogness@linutronix.de
+Cc: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/af_vsock.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/debug/kdb/kdb_io.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -823,13 +823,19 @@ static void __vsock_release(struct sock
- 	 */
- 	lock_sock_nested(sk, level);
- 
--	sock_orphan(sk);
-+	/* Indicate to vsock_remove_sock() that the socket is being released and
-+	 * can be removed from the bound_table. Unlike transport reassignment
-+	 * case, where the socket must remain bound despite vsock_remove_sock()
-+	 * being called from the transport release() callback.
-+	 */
-+	sock_set_flag(sk, SOCK_DEAD);
- 
- 	if (vsk->transport)
- 		vsk->transport->release(vsk);
- 	else if (sock_type_connectible(sk->sk_type))
- 		vsock_remove_sock(vsk);
- 
-+	sock_orphan(sk);
- 	sk->sk_shutdown = SHUTDOWN_MASK;
- 
- 	skb_queue_purge(&sk->sk_receive_queue);
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -576,6 +576,8 @@ static void kdb_msg_write(const char *ms
+ 			continue;
+ 		if (c == dbg_io_ops->cons)
+ 			continue;
++		if (!c->write)
++			continue;
+ 		/*
+ 		 * Set oops_in_progress to encourage the console drivers to
+ 		 * disregard their internal spin locks: in the current calling
 
 
 
