@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B8BA3B5F5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887E4A3B486
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A306B3BE02A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89C023B6E88
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ACB1FC0E2;
-	Wed, 19 Feb 2025 08:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637DA1DFE13;
+	Wed, 19 Feb 2025 08:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHO1kJao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOKydVuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDBF1EEA2A;
-	Wed, 19 Feb 2025 08:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105B61DFDA2;
+	Wed, 19 Feb 2025 08:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954849; cv=none; b=VNbfx8c+TDn0t3TYD5B8dWjHiopFJXOyeY2nM8PBWg9aRu35F7YTZ7//oWfUPtLVHeSbnCENye+RNDwsjNwMLyG4hW8P6n2CpiBHkhEZSUwQlQTSyXAq9r2UDAs8+GQHI2i2Zsf9Ui3h+QvKC0nmzfCxlZQJk/E7MlYXLIQvrHc=
+	t=1739954163; cv=none; b=FHpLhSXjFY5QFXiYhjnB7jOxewZlco3Y84IiYBCgICLnEPO0ojL/wW0NE0h/EqZKTsa9y0YpTznmi2H61tGd44X6n++72Z0oVEx2FgzhddNMySFIu9hL7lZmo/gV5OaIL9jPikZStvf++mXTzjqtx9Bz3Z0eYgOW1VQVlzMT7Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954849; c=relaxed/simple;
-	bh=oJsJ6U5FU3Qlzqhoh6f9NCbIGrvhfyJ08EL+NWLF5Js=;
+	s=arc-20240116; t=1739954163; c=relaxed/simple;
+	bh=5jy59Cf0Cjr+gONY3u1wA7BBQ9KjJ/h5bqS32UGh7js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQ2DYN4WL3fm3jPQCAHc5kkP+Xoy+pHuzWyCOtP2r0CyZvy+zfwto7NBxdw5v6vZkB2wJKfAxFJsHa7O/AU8gKgPE75pp0ZkPi0y4zNpYHP+vz8HB+20LmomdtsJg9jm6XKd1gN1FbQuCB2m68xl5aAjDzJfpKQWNsGnnR7Lj+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHO1kJao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B254DC4CEE6;
-	Wed, 19 Feb 2025 08:47:28 +0000 (UTC)
+	 MIME-Version; b=pw702NemMUOzOt/rggOIAdKnO3ZC4DAd2YIylm5jnRQHTSyjUtlB5hvkb3R/rfL6c9nx5bBSLEw4nK22UUbpOkQ83LtOxss0aLj4NcfqW632pwxs477w7FDHmMZj5rMGAqPZG1E03eeMPN4pC00kGvV6BTPAzzgtr0mi+wKbbGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOKydVuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B209C4CEE7;
+	Wed, 19 Feb 2025 08:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954849;
-	bh=oJsJ6U5FU3Qlzqhoh6f9NCbIGrvhfyJ08EL+NWLF5Js=;
+	s=korg; t=1739954162;
+	bh=5jy59Cf0Cjr+gONY3u1wA7BBQ9KjJ/h5bqS32UGh7js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHO1kJaohLdqval8Kk6kAe56EbpVOuomglrWEJXm33ZfXca6zSNVjWVlh/CgxCyC6
-	 36RIDearLBV8nmI4i8aFkEWSbRCAfixdD3KEaVsgGEWjMcEKh+eNGfptsmwVhKwaXf
-	 zLsBD40Xdo0taZekcKcwXmaV7EjO2BJimfW/cLLg=
+	b=zOKydVucZ6+zL5i8HSmpOB5p7nB7l2tj73LUXFgTSuerJjqthMMhQSBGOYTe0kzOU
+	 y4gmrnz99d+toCUMI08DsEbgmz72pCOKxlU81lplZwXn+XUy+Fy0TTrgjvhscbhDhj
+	 OUm+EW9g6IcQWIQUir3CBxyvL4lDD46b82INtHC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuyi Zhou <zhouchuyi@bytedance.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/230] sched_ext: Use SCX_CALL_OP_TASK in task_tick_scx
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 117/274] drm/amdgpu: bump version for RV/PCO compute fix
 Date: Wed, 19 Feb 2025 09:26:11 +0100
-Message-ID: <20250219082603.827357661@linuxfoundation.org>
+Message-ID: <20250219082614.200745355@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuyi Zhou <zhouchuyi@bytedance.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f5717c93a1b999970f3a64d771a1a9ee68cc37d0 ]
+commit 55ed2b1b50d029dd7e49a35f6628ca64db6d75d8 upstream.
 
-Now when we use scx_bpf_task_cgroup() in ops.tick() to get the cgroup of
-the current task, the following error will occur:
+Bump the driver version for RV/PCO compute stability fix
+so mesa can use this check to enable compute queues on
+RV/PCO.
 
-scx_foo[3795244] triggered exit kind 1024:
-  runtime error (called on a task not being operated on)
-
-The reason is that we are using SCX_CALL_OP() instead of SCX_CALL_OP_TASK()
-when calling ops.tick(), which triggers the error during the subsequent
-scx_kf_allowed_on_arg_tasks() check.
-
-SCX_CALL_OP_TASK() was first introduced in commit 36454023f50b ("sched_ext:
-Track tasks that are subjects of the in-flight SCX operation") to ensure
-task's rq lock is held when accessing task's sched_group. Since ops.tick()
-is marked as SCX_KF_TERMINAL and task_tick_scx() is protected by the rq
-lock, we can use SCX_CALL_OP_TASK() to avoid the above issue. Similarly,
-the same changes should be made for ops.disable() and ops.exit_task(), as
-they are also protected by task_rq_lock() and it's safe to access the
-task's task_group.
-
-Fixes: 36454023f50b ("sched_ext: Track tasks that are subjects of the in-flight SCX operation")
-Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 45e7461fd4c94..b88fa640325e5 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3447,7 +3447,7 @@ static void task_tick_scx(struct rq *rq, struct task_struct *curr, int queued)
- 		curr->scx.slice = 0;
- 		touch_core_sched(rq, curr);
- 	} else if (SCX_HAS_OP(tick)) {
--		SCX_CALL_OP(SCX_KF_REST, tick, curr);
-+		SCX_CALL_OP_TASK(SCX_KF_REST, tick, curr);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -120,9 +120,10 @@
+  * - 3.58.0 - Add GFX12 DCC support
+  * - 3.59.0 - Cleared VRAM
+  * - 3.60.0 - Add AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE (Vulkan requirement)
++ * - 3.61.0 - Contains fix for RV/PCO compute queues
+  */
+ #define KMS_DRIVER_MAJOR	3
+-#define KMS_DRIVER_MINOR	60
++#define KMS_DRIVER_MINOR	61
+ #define KMS_DRIVER_PATCHLEVEL	0
  
- 	if (!curr->scx.slice)
-@@ -3594,7 +3594,7 @@ static void scx_ops_disable_task(struct task_struct *p)
- 	WARN_ON_ONCE(scx_get_task_state(p) != SCX_TASK_ENABLED);
- 
- 	if (SCX_HAS_OP(disable))
--		SCX_CALL_OP(SCX_KF_REST, disable, p);
-+		SCX_CALL_OP_TASK(SCX_KF_REST, disable, p);
- 	scx_set_task_state(p, SCX_TASK_READY);
- }
- 
-@@ -3623,7 +3623,7 @@ static void scx_ops_exit_task(struct task_struct *p)
- 	}
- 
- 	if (SCX_HAS_OP(exit_task))
--		SCX_CALL_OP(SCX_KF_REST, exit_task, p, &args);
-+		SCX_CALL_OP_TASK(SCX_KF_REST, exit_task, p, &args);
- 	scx_set_task_state(p, SCX_TASK_NONE);
- }
- 
--- 
-2.39.5
-
+ /*
 
 
 
