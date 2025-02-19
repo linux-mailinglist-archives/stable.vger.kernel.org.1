@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6E0A3B4A1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F9AA3B5B2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BFC1898A0D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E3C3BB722
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225961DF730;
-	Wed, 19 Feb 2025 08:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3381DE3A7;
+	Wed, 19 Feb 2025 08:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaPr02ov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3fSXflz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D561E1DF27F;
-	Wed, 19 Feb 2025 08:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0F61E3DE4;
+	Wed, 19 Feb 2025 08:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954127; cv=none; b=jGT1ownbaODFbYdWon1pOoIvwJHbXwTpv7vYR2ftxnTobczGaaoea22YlYMvq0bzXN1/74ezS1IEhxOz2SlpZRHzkpPww67r2vGoDXySUjcxDJL+/+XjcwtOXC8ovG+qAABogxWGXS3dlVPcPerPXkjI59hV/BgF/8IXlKeNLbQ=
+	t=1739954703; cv=none; b=NbjVfmlp1toSqDrNHN4vlm+iOhSf8wPuuALvR+XpUrZw54sbAC9j7kmEVEL//UvpVCCWcnEcVWuAC4pi2vzKkj5bv4JonQB9DDePXEJzjl/BZ/ME+4LAtVBTwRbWulAMzHgBS+Jlf4WRXGr4fdJQXiXLfxLKE2lKsfFUemrCiN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954127; c=relaxed/simple;
-	bh=+dy0LmEogKpBPb9Qr0iZIR+nwj5EFfRkUr/dvSs5iG4=;
+	s=arc-20240116; t=1739954703; c=relaxed/simple;
+	bh=q1EgEgIelniAp8Ha+RkC5zUjHa9CO63xrniw2x9UTQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+YsCeoWqN2+/5/AVQ+er9sCNs/+x5Ih1cHdfYy3wujgEggOImrtCAxE9h2FhPb4gZxQe2XGS7x2Ozofu6zp8j9PBoGNSOJvvzWpjx/wMell9r1MHtea/5rclWlVwCC/QPcszKCnqzdOQ8JixszOYacOABj6SnBsDZfNu9m8084=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaPr02ov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576CDC4CEE8;
-	Wed, 19 Feb 2025 08:35:27 +0000 (UTC)
+	 MIME-Version; b=XWBmdQAjNnBnaMDO5P978OD+1yD7nFt8nyvFJ23UzLGEYQL4mL+O7sdV3wxIWkTSh5w2rxBkSs+ipCuJwXJkRJGtsOmtYTBr7bul4HaBs0GZrhr1O6i1yUyzGAAChBGZWM/sm1Te2JrtG78xMykkO4yJh0Jyd94pn4DvblAsgSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3fSXflz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEDAC4CEE6;
+	Wed, 19 Feb 2025 08:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954127;
-	bh=+dy0LmEogKpBPb9Qr0iZIR+nwj5EFfRkUr/dvSs5iG4=;
+	s=korg; t=1739954702;
+	bh=q1EgEgIelniAp8Ha+RkC5zUjHa9CO63xrniw2x9UTQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaPr02ovG8MFl36vRie1S+jZ/zTc6VbDMh3BwBdzP9Aoflxg/8aHjB8SfFb5GwI/o
-	 2ba5dsHMdrvjLYv27+KjpZIxpr5NLz/nkzKT4MmioFW8/yRbsKGpKogRJ8We6zVbKs
-	 ZN5TXdRdrT+mTVtt23SrcDlMjr4NZrwqtACudNgE=
+	b=S3fSXflzVu8M0sg1voWzILerKs7b05hYNTdPt/6Kdhkg/aQph2qF+UAqGyNwDrkh9
+	 qeVsnj3+ZRtlZRWGW0Y2lfCKeGdXjZSsszxZ/Pnf4WZuSGK11YPEWat+Y42SFgat5m
+	 fc2SmMdyRHMJiK+u6dxXxDlvf8o/X9CF0Cym3EJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 074/274] i3c: mipi-i3c-hci: Add Intel specific quirk to ring resuming
+Subject: [PATCH 6.12 011/230] scripts/Makefile.extrawarn: Do not show clangs non-kprintf warnings at W=1
 Date: Wed, 19 Feb 2025 09:25:28 +0100
-Message-ID: <20250219082612.518470252@linuxfoundation.org>
+Message-ID: <20250219082602.142535412@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit ccdb2e0e3b00d13df90ac7a0524dd855173f1171 ]
+[ Upstream commit 738fc998b639407346a9e026514f0562301462cd ]
 
-MIPI I3C HCI on Intel hardware requires a quirk where ring needs to stop
-and set to run again after resuming the halted controller. This is not
-expected from the MIPI I3C HCI specification and is Intel specific.
+Clang's -Wformat-overflow and -Wformat-truncation have chosen to check
+'%p' unlike GCC but it does not know about the kernel's pointer
+extensions in lib/vsprintf.c, so the developers split that part of the
+warning out for the kernel to disable because there will always be false
+positives.
 
-Add this quirk to generic aborted transfer handling and execute it only
-when ring is not in running state after a transfer error and attempted
-controller resume. This is the case on Intel hardware.
+Commit 908dd508276d ("kbuild: enable -Wformat-truncation on clang") did
+disabled these warnings but only in a block that would be called when
+W=1 was not passed, so they would appear with W=1. Move the disabling of
+the non-kprintf warnings to a block that always runs so that they are
+never seen, regardless of warning level.
 
-It is not fully clear to me what is the ring running state in generic
-hardware in such case. I would expect if ring is not running, then stop
-request is a no-op and run request is either required or does the same
-what controller resume would do.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20241231115904.620052-1-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 908dd508276d ("kbuild: enable -Wformat-truncation on clang")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501291646.VtwF98qd-lkp@intel.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ scripts/Makefile.extrawarn | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index e8e56a8d20573..491dfe70b6600 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -758,9 +758,26 @@ static bool hci_dma_irq_handler(struct i3c_hci *hci)
- 			complete(&rh->op_done);
- 
- 		if (status & INTR_TRANSFER_ABORT) {
-+			u32 ring_status;
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 04faf15ed316a..d75897559d184 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -31,6 +31,11 @@ KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) += -Wno-array-bounds
+ ifdef CONFIG_CC_IS_CLANG
+ # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
+ KBUILD_CFLAGS += -Wno-gnu
 +
- 			dev_notice_ratelimited(&hci->master.dev,
- 				"ring %d: Transfer Aborted\n", i);
- 			mipi_i3c_hci_resume(hci);
-+			ring_status = rh_reg_read(RING_STATUS);
-+			if (!(ring_status & RING_STATUS_RUNNING) &&
-+			    status & INTR_TRANSFER_COMPLETION &&
-+			    status & INTR_TRANSFER_ERR) {
-+				/*
-+				 * Ring stop followed by run is an Intel
-+				 * specific required quirk after resuming the
-+				 * halted controller. Do it only when the ring
-+				 * is not in running state after a transfer
-+				 * error.
-+				 */
-+				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
-+				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE |
-+							   RING_CTRL_RUN_STOP);
-+			}
- 		}
- 		if (status & INTR_WARN_INS_STOP_MODE)
- 			dev_warn_ratelimited(&hci->master.dev,
++# Clang checks for overflow/truncation with '%p', while GCC does not:
++# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111219
++KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow-non-kprintf)
++KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation-non-kprintf)
+ else
+ 
+ # gcc inanely warns about local variables called 'main'
+@@ -102,11 +107,6 @@ KBUILD_CFLAGS += $(call cc-disable-warning, packed-not-aligned)
+ KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow)
+ ifdef CONFIG_CC_IS_GCC
+ KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation)
+-else
+-# Clang checks for overflow/truncation with '%p', while GCC does not:
+-# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111219
+-KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow-non-kprintf)
+-KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation-non-kprintf)
+ endif
+ KBUILD_CFLAGS += $(call cc-disable-warning, stringop-truncation)
+ 
 -- 
 2.39.5
 
