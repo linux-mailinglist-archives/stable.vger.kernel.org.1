@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F8A3B5CD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80443A3B4C8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F34818861BD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E253F1883D3F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4341EEA54;
-	Wed, 19 Feb 2025 08:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1824B1E377F;
+	Wed, 19 Feb 2025 08:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVqIs4m8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuU6dH5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4041F63F5;
-	Wed, 19 Feb 2025 08:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0D31CCB21;
+	Wed, 19 Feb 2025 08:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954816; cv=none; b=rxNlsdxxiub7VJLkR/rJY5cs+Mjh4UedLIbc5oO/jTgfWs8KQwI4qJfXPW/CILXj6zingPe6R1T42zuDtbZsNRBmNyz3KdqvrrGBz2HbfrayT08GrsVspdQmtj0snDqePSLp619Rnx0xiOCfn4iTa3dZ6fswNN6gPlc03FwuZ+U=
+	t=1739954237; cv=none; b=bzEhjLywk6TlNTu4uOvGr8iC8I5prpXrmpyWDo86T3nlkQBt2CPNPwYgGCSDcpnrOWPcfL8Y5hAL2b6QWB7bbHflWSPGDyAMsxJoL19qEjGnZW4t+nWansFepFK8DB55aHkknFucpkAP6DF98TiVQM1LcDx8eaJ6fRFID2GPYlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954816; c=relaxed/simple;
-	bh=lclQWHCZBJ3UybZgS1hPeZqj78qqV1ruaaW4A0RNCEA=;
+	s=arc-20240116; t=1739954237; c=relaxed/simple;
+	bh=12COoD621v5n+FTO7M/3aKsL+3aUZTGLEOFiHwwXqZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8/hECvb+kvhVbBBEz7i6P6A1++Q/kDr/fUtkyhyDfUE/ywwtrKONupXL1LAgsXUPXKKJSeXv1xpYpEL6uBVj/8ahB3YAgd0ze3B/XRSNQSvvZGlGhBsWn3rc3x8MZm/qhjRdtIBD09ojt4/UTl1FRC44eyDRJNVQGkLLTFDe8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVqIs4m8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA9C4CEE6;
-	Wed, 19 Feb 2025 08:46:55 +0000 (UTC)
+	 MIME-Version; b=oErQIMK3QhItodYs5e8fICvQxmid5uTh/eFkLRda8g5h41LUmv7lc+X6QI4pJzc0d0jFA/XgxBEewwXx6+ji1Elzkf+aY0v0F5FnouKtUq2oSfRMO2oLhPo+7EoJpa4vFVMKNYepf2gDGZYqWlk8XDvQD7ZpczmdvphiGL8NIRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuU6dH5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AA7C4CED1;
+	Wed, 19 Feb 2025 08:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954816;
-	bh=lclQWHCZBJ3UybZgS1hPeZqj78qqV1ruaaW4A0RNCEA=;
+	s=korg; t=1739954237;
+	bh=12COoD621v5n+FTO7M/3aKsL+3aUZTGLEOFiHwwXqZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVqIs4m8sSjcUfmSiWWmcfZhhnJDLMrzla1vJuVqZacRolL9Gn89CAlcNojP+sono
-	 GIZepIdRM014b63GcGcCaWSrC8cv/+Lxy9mvfuK2DynfL0pa3S1n/kmjAcjltLHb7a
-	 E+LFJlf/ymEEpnoyGAfpZznVqbGfj29P5b7Iiepk=
+	b=DuU6dH5srZs8f0chowrgp+5/SVJhSTmt54XULL8bMfkj6GAryDXsemLtIvGxSr+L5
+	 4nZ/N4SrEAyzQNn2wQU2Sj/JxfGIK3Bt7qnS7t4uGjE+hfTQFS0+wc/oNHvWsEoQYj
+	 hzL1yG4oE7qbtvspGhCVJ5u6oRzrS7MjtwMho6EY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/230] io_uring/waitid: dont abuse io_tw_state
+Subject: [PATCH 6.13 108/274] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
 Date: Wed, 19 Feb 2025 09:26:02 +0100
-Message-ID: <20250219082603.473344414@linuxfoundation.org>
+Message-ID: <20250219082613.845539677@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 06521ac0485effdcc9c792cb0b40ed8e6f2f5fb8 ]
+[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
 
-struct io_tw_state is managed by core io_uring, and opcode handling code
-must never try to cheat and create their own instances, it's plain
-incorrect.
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-io_waitid_complete() attempts exactly that outside of the task work
-context, and even though the ring is locked, there would be no one to
-reap the requests from the defer completion list. It only works now
-because luckily it's called before io_uring_try_cancel_uring_cmd(),
-which flushes completions.
+The 5V version mostly works with the BYTCR defaults, except that it is
+missing a CHAN package in its ACPI tables and the default of using
+SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
+detect signal is not inverted as it usually is.
 
-Fixes: f31ecf671ddc4 ("io_uring: add IORING_OP_WAITID support")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add a DMI quirk for the 5V version to fix sound not working.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/waitid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/waitid.c b/io_uring/waitid.c
-index 6362ec20abc0c..2f7b5eeab845e 100644
---- a/io_uring/waitid.c
-+++ b/io_uring/waitid.c
-@@ -118,7 +118,6 @@ static int io_waitid_finish(struct io_kiocb *req, int ret)
- static void io_waitid_complete(struct io_kiocb *req, int ret)
- {
- 	struct io_waitid *iw = io_kiocb_to_cmd(req, struct io_waitid);
--	struct io_tw_state ts = {};
- 
- 	/* anyone completing better be holding a reference */
- 	WARN_ON_ONCE(!(atomic_read(&iw->refs) & IO_WAITID_REF_MASK));
-@@ -131,7 +130,6 @@ static void io_waitid_complete(struct io_kiocb *req, int ret)
- 	if (ret < 0)
- 		req_set_fail(req);
- 	io_req_set_res(req, ret, 0);
--	io_req_task_complete(req, &ts);
- }
- 
- static bool __io_waitid_cancel(struct io_ring_ctx *ctx, struct io_kiocb *req)
-@@ -153,6 +151,7 @@ static bool __io_waitid_cancel(struct io_ring_ctx *ctx, struct io_kiocb *req)
- 	list_del_init(&iwa->wo.child_wait.entry);
- 	spin_unlock_irq(&iw->head->lock);
- 	io_waitid_complete(req, -ECANCELED);
-+	io_req_queue_tw_complete(req, -ECANCELED);
- 	return true;
- }
- 
-@@ -258,6 +257,7 @@ static void io_waitid_cb(struct io_kiocb *req, struct io_tw_state *ts)
- 	}
- 
- 	io_waitid_complete(req, ret);
-+	io_req_task_complete(req, ts);
- }
- 
- static int io_waitid_wait(struct wait_queue_entry *wait, unsigned mode,
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 9caa4407c1ca3..6446cda0f8572 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1132,7 +1132,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+-	{	/* Vexia Edu Atla 10 tablet */
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
++	{	/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
 -- 
 2.39.5
 
