@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7CDA3B5C2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:01:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6E0A3B4A1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39783BB687
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BFC1898A0D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86521E3DC9;
-	Wed, 19 Feb 2025 08:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225961DF730;
+	Wed, 19 Feb 2025 08:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKV5llj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaPr02ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7361E1DE3A7;
-	Wed, 19 Feb 2025 08:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D561E1DF27F;
+	Wed, 19 Feb 2025 08:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954699; cv=none; b=kxanhmgsLNwGG7EAng7+ddilZu9fr9v2ukXv1fQRuBT8v+kL+VXDvkU2OnQJ7wcPS4vdMkWUmQ75yR3pX4tjLUcKGBQUWb6Dt8ybXJRLGYEYDWdP3s3GebpdxCMg/t3FGopKBDfPbHmnzb5UP6FGRI8f6jpCKLbQaMtbpTX9GdU=
+	t=1739954127; cv=none; b=jGT1ownbaODFbYdWon1pOoIvwJHbXwTpv7vYR2ftxnTobczGaaoea22YlYMvq0bzXN1/74ezS1IEhxOz2SlpZRHzkpPww67r2vGoDXySUjcxDJL+/+XjcwtOXC8ovG+qAABogxWGXS3dlVPcPerPXkjI59hV/BgF/8IXlKeNLbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954699; c=relaxed/simple;
-	bh=O3i6VOrpTPMH2NkH2rskFatMvUmDeZ0ZLTRMrB7p7V8=;
+	s=arc-20240116; t=1739954127; c=relaxed/simple;
+	bh=+dy0LmEogKpBPb9Qr0iZIR+nwj5EFfRkUr/dvSs5iG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOApXmyMhKxevqiaGAdEW2qIl4cpFkYqgvSmKRyFJpZzBxHEHxqmGF+yyZ7es7W759p2td1HSVUI4nRcdg/6ml1oRvkWYFHbCCjwwhZxGiSUqEXw959SNBxVIQ3I2HjVLDgQMeZ0ncxwTjlQw53jRrAGHp4YI02yObeu0Rv4ano=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKV5llj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD72BC4CEE6;
-	Wed, 19 Feb 2025 08:44:58 +0000 (UTC)
+	 MIME-Version; b=F+YsCeoWqN2+/5/AVQ+er9sCNs/+x5Ih1cHdfYy3wujgEggOImrtCAxE9h2FhPb4gZxQe2XGS7x2Ozofu6zp8j9PBoGNSOJvvzWpjx/wMell9r1MHtea/5rclWlVwCC/QPcszKCnqzdOQ8JixszOYacOABj6SnBsDZfNu9m8084=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaPr02ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576CDC4CEE8;
+	Wed, 19 Feb 2025 08:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954699;
-	bh=O3i6VOrpTPMH2NkH2rskFatMvUmDeZ0ZLTRMrB7p7V8=;
+	s=korg; t=1739954127;
+	bh=+dy0LmEogKpBPb9Qr0iZIR+nwj5EFfRkUr/dvSs5iG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKV5llj4FpudcQp/1wgif5yE0NUwOvxGADO9xzDq4L7r+isSwxTASGgE99HRs1OwZ
-	 xVZ775jMLuyrYjt8uwifRKywRhWvQkT4sNFw/dgoFQ4MwBrYgkNcOUzrLoK5g++bDB
-	 MHV730PIaa0KXVrMzSi6kF2BW1tT1HvcKG7wMBMI=
+	b=oaPr02ovG8MFl36vRie1S+jZ/zTc6VbDMh3BwBdzP9Aoflxg/8aHjB8SfFb5GwI/o
+	 2ba5dsHMdrvjLYv27+KjpZIxpr5NLz/nkzKT4MmioFW8/yRbsKGpKogRJ8We6zVbKs
+	 ZN5TXdRdrT+mTVtt23SrcDlMjr4NZrwqtACudNgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/230] HID: multitouch: Add NULL check in mt_input_configured
-Date: Wed, 19 Feb 2025 09:25:27 +0100
-Message-ID: <20250219082602.102552932@linuxfoundation.org>
+Subject: [PATCH 6.13 074/274] i3c: mipi-i3c-hci: Add Intel specific quirk to ring resuming
+Date: Wed, 19 Feb 2025 09:25:28 +0100
+Message-ID: <20250219082612.518470252@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 9b8e2220d3a052a690b1d1b23019673e612494c5 ]
+[ Upstream commit ccdb2e0e3b00d13df90ac7a0524dd855173f1171 ]
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in mt_input_configured() is not checked.
-Add NULL check in mt_input_configured(), to handle kernel NULL
-pointer dereference error.
+MIPI I3C HCI on Intel hardware requires a quirk where ring needs to stop
+and set to run again after resuming the halted controller. This is not
+expected from the MIPI I3C HCI specification and is Intel specific.
 
-Fixes: 479439463529 ("HID: multitouch: Correct devm device reference for hidinput input_dev name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Add this quirk to generic aborted transfer handling and execute it only
+when ring is not in running state after a transfer error and attempted
+controller resume. This is the case on Intel hardware.
+
+It is not fully clear to me what is the ring running state in generic
+hardware in such case. I would expect if ring is not running, then stop
+request is a no-op and run request is either required or does the same
+what controller resume would do.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20241231115904.620052-1-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 369414c92fccb..93b5c648ef82c 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1673,9 +1673,12 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		break;
- 	}
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index e8e56a8d20573..491dfe70b6600 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -758,9 +758,26 @@ static bool hci_dma_irq_handler(struct i3c_hci *hci)
+ 			complete(&rh->op_done);
  
--	if (suffix)
-+	if (suffix) {
- 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
- 						 "%s %s", hdev->name, suffix);
-+		if (!hi->input->name)
-+			return -ENOMEM;
-+	}
- 
- 	return 0;
- }
+ 		if (status & INTR_TRANSFER_ABORT) {
++			u32 ring_status;
++
+ 			dev_notice_ratelimited(&hci->master.dev,
+ 				"ring %d: Transfer Aborted\n", i);
+ 			mipi_i3c_hci_resume(hci);
++			ring_status = rh_reg_read(RING_STATUS);
++			if (!(ring_status & RING_STATUS_RUNNING) &&
++			    status & INTR_TRANSFER_COMPLETION &&
++			    status & INTR_TRANSFER_ERR) {
++				/*
++				 * Ring stop followed by run is an Intel
++				 * specific required quirk after resuming the
++				 * halted controller. Do it only when the ring
++				 * is not in running state after a transfer
++				 * error.
++				 */
++				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
++				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE |
++							   RING_CTRL_RUN_STOP);
++			}
+ 		}
+ 		if (status & INTR_WARN_INS_STOP_MODE)
+ 			dev_warn_ratelimited(&hci->master.dev,
 -- 
 2.39.5
 
