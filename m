@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEE5A3B626
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA62A3B768
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D004518858DF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692BA3BA647
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE911DFD8B;
-	Wed, 19 Feb 2025 08:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974271DE890;
+	Wed, 19 Feb 2025 08:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI8/UTMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfEgf+pS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2F11D47A2;
-	Wed, 19 Feb 2025 08:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550C91BD9DE;
+	Wed, 19 Feb 2025 08:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955098; cv=none; b=uyrtqKF1rMLfznYI3/hlz5Va9oYjncjp48o/T4kPSoDVW3X/WAZkbhkzdftIaAXsI7P9xa+5RbndmbtCKToQJ7t+Gi9VcSgOvM/60Vs1otaoL2Q1MAprCYiz9LNDNqRkCFZ8aMK6MCbvj91w7e89ZhWym3To+j44c7MIWAHWYKI=
+	t=1739955502; cv=none; b=qEqGTOzYw/RnG0R1+JqInv8ZLdTAA9YtzQQv2g2bM5Znb5nKLqfeEnAu2av4txbfWZ+M2ijAtJJa3qmijy688Lre+JOV5XSoR2bQfrXg/5VIHmyADp9RcrfYK761sk9P5zpkDVOdlC7tCk1h/d+RG6ekT9qOjxEP8xT43Ndf6bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955098; c=relaxed/simple;
-	bh=HGrnZXnPN81LzYrRBpASryEm6CzYH8724BcknCk50ds=;
+	s=arc-20240116; t=1739955502; c=relaxed/simple;
+	bh=Nq9vycatZHDnb1k7kfhd4/+/xt0Nnyjw9PixoKUCCZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaUibBClpY0hiOpVJRdwEab73/Q6HGuzlY0MOg2gdS93+DLErt+ezUdRq0bQMAemNjsRRYGrBiMYHIYBa9DMKPnha1v78bikkucTjF1XxZ2UcI+H78Y+37KhNpiRtXRqp97azS8t8HLtzPD5Mf0DS5q0gnjGgoB19Fql4jbVW9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI8/UTMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D94C4CEE6;
-	Wed, 19 Feb 2025 08:51:37 +0000 (UTC)
+	 MIME-Version; b=bBArPxU0s6YuEiH1SpkI4LOywJNQolDkvmtjVVLa9gJjTQwLgelxwvxj7JfBX5YdNgknepP+vfkRos/IaSaT0ruzcVe8JRglDpgK3MNQK90uZp4ckQQ4V4IO0C1WnDBlkr9DttYU3vF7L2mbwiC5K375mK/JMg0BSZW5L+mpE9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfEgf+pS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64D5C4CED1;
+	Wed, 19 Feb 2025 08:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955098;
-	bh=HGrnZXnPN81LzYrRBpASryEm6CzYH8724BcknCk50ds=;
+	s=korg; t=1739955502;
+	bh=Nq9vycatZHDnb1k7kfhd4/+/xt0Nnyjw9PixoKUCCZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MI8/UTMiQACLdKzoHwfp1MH6XxJE6VAH1hkqMo2nEyB90GtIxqLReNAmjNR48WPpZ
-	 Ll0UyzsXySZYRE3fmt9AUheWPy8KEllzKxaxZBXKOGQZSAqg0SosEoekyyS5tFyhAf
-	 GIG0aWsLJfDfwTKVfMP7rkqZ0YQSTXjlDXVCrdZ4=
+	b=AfEgf+pSsVSwyzbBB5COyTSZpZ6XboKRMI2Ho4udRz2S9EGXVqwdPftaIMdlUd8zP
+	 Rsc7grC9Vr3LOPfdpMtAT+zliZJccdo9H9vsS3y0gwqlIVCN0aEghiVEEov5EIiIs7
+	 7Lh2XQxe3v3qo1jIH0IbH82wezbwogI8EfxLi1rU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Jiang Liu <gerry@linux.alibaba.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 099/230] drm/amdgpu: avoid buffer overflow attach in smu_sys_set_pp_table()
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 003/152] pinctrl: cy8c95x0: Respect IRQ trigger settings from firmware
 Date: Wed, 19 Feb 2025 09:26:56 +0100
-Message-ID: <20250219082605.569700904@linuxfoundation.org>
+Message-ID: <20250219082550.158047466@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiang Liu <gerry@linux.alibaba.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 1abb2648698bf10783d2236a6b4a7ca5e8021699 upstream.
+[ Upstream commit 1ddee69108d305bbc059cbf31c0b47626796be77 ]
 
-It malicious user provides a small pptable through sysfs and then
-a bigger pptable, it may cause buffer overflow attack in function
-smu_sys_set_pp_table().
+Some of the platforms may connect the INT pin via inversion logic
+effectively make the triggering to be active-low.
+Remove explicit trigger flag to respect the settings from firmware.
 
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without this change even idling chip produces spurious interrupts
+and kernel disables the line in the result:
+
+  irq 33: nobody cared (try booting with the "irqpoll" option)
+  CPU: 0 UID: 0 PID: 125 Comm: irq/33-i2c-INT3 Not tainted 6.12.0-00236-g8b874ed11dae #64
+  Hardware name: Intel Corp. QUARK/Galileo, BIOS 0x01000900 01/01/2014
+  ...
+  handlers:
+  [<86e86bea>] irq_default_primary_handler threaded [<d153e44a>] cy8c95x0_irq_handler [pinctrl_cy8c95x0]
+  Disabling IRQ #33
+
+Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250117142304.596106-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -607,7 +607,8 @@ static int smu_sys_set_pp_table(void *ha
- 		return -EIO;
- 	}
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index f2b9db66fdb6a..d2488d80912c9 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -1281,7 +1281,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
  
--	if (!smu_table->hardcode_pptable) {
-+	if (!smu_table->hardcode_pptable || smu_table->power_play_table_size < size) {
-+		kfree(smu_table->hardcode_pptable);
- 		smu_table->hardcode_pptable = kzalloc(size, GFP_KERNEL);
- 		if (!smu_table->hardcode_pptable)
- 			return -ENOMEM;
+ 	ret = devm_request_threaded_irq(chip->dev, irq,
+ 					NULL, cy8c95x0_irq_handler,
+-					IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_HIGH,
++					IRQF_ONESHOT | IRQF_SHARED,
+ 					dev_name(chip->dev), chip);
+ 	if (ret) {
+ 		dev_err(chip->dev, "failed to request irq %d\n", irq);
+-- 
+2.39.5
+
 
 
 
