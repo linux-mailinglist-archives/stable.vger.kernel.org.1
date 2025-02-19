@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-117276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472FCA3B5D2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4994AA3B495
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3035917B914
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDEC188F07D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23001FECCD;
-	Wed, 19 Feb 2025 08:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FF61DEFD8;
+	Wed, 19 Feb 2025 08:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfjMa9qS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAu9G/Fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9041E1FECBE;
-	Wed, 19 Feb 2025 08:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CED41C5F18;
+	Wed, 19 Feb 2025 08:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954764; cv=none; b=DmNgqfGnuNWBGtV1Zs9RIqrq0VezfNrD4WNS9o/jNjf2rGJ10F9EkXrwF0jnFEPCH1lfiUBK/FAEt3Tct3QrCyn69ne+9xRwjlMg2bjzfUnp06j2Re4rufDMxlniuy857IdhuHOxDJRrhqKkC3Y5YypHNNJ8LiA9BeuqV7LnCEc=
+	t=1739954106; cv=none; b=sleU8hfRagU49EcXNW5wjqnJgSGO3xwP5cXKNNAJu+QadTnoxh6lfma/iAcELthyuPDN++gKnQP2xd36GVSYGw5ckWm/VbJmxLsYQogPmwMN79MCShB3vxzMBOqlrByJMKxp0a/SGpj3tKm3pKe2eNv7AOqaD1IPtnz4ccDJuMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954764; c=relaxed/simple;
-	bh=KjNsuu+QQy2UzEpmhy6po8RBko1hnzk+g3tqqaZ6fyk=;
+	s=arc-20240116; t=1739954106; c=relaxed/simple;
+	bh=FCup1DIH89ejJ2vRM0cnWRalBv7rwJIyWxdfMMVjaMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqpyYi+49mYUK42yaiyLi4gI4P9+BpKzGkO1DCUqzVI/Z4cGeGnoXcN54NCZJkqDMT5l0K1UCckrdqSYooLqSf+2EXTUWi3wn5oYZ96a238hbEfSqu9UnU7udJXe8ZNBoQYMHT8BRZyovZNeEH+T0La87g0Um1i+cQIzfDCNLX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfjMa9qS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4708C4CED1;
-	Wed, 19 Feb 2025 08:46:03 +0000 (UTC)
+	 MIME-Version; b=CEcr/mvdXVKWS/GdJO/BlbfBzzptw2QTFlrPdKs3Wsu1191ZplJtoXsUQ8hCApSRVqU+8tpgu+kEaPPRUevKo1qLlb2FIxM16oM+6qV52ZU4FE5WzravWQf9fyD+Vpm1JGvFpd8tcexEQLeLViYof2IUwiuwt/mJ9BZVTSVh0jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAu9G/Fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FFDC4CED1;
+	Wed, 19 Feb 2025 08:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954764;
-	bh=KjNsuu+QQy2UzEpmhy6po8RBko1hnzk+g3tqqaZ6fyk=;
+	s=korg; t=1739954106;
+	bh=FCup1DIH89ejJ2vRM0cnWRalBv7rwJIyWxdfMMVjaMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfjMa9qS5eIBwdQTqTSRy+pDVOatoXoQ/Q1dGSgFOlTHCZhuF0HcSPyrJ3AdXXk5z
-	 c8xR88nDAnzASko+UpHkCYRxGq4deGrx87dPWHOyyMFtktgD8NNwa7wQS6gEx5FBsd
-	 VPcMH/+os0X6dSL80odkkBCtANAiAqmn8cTewpWY=
+	b=aAu9G/FiQZV6OQeJXE/0n7VQ97Jmsw659iGSfiikCwogqtNMKc75gbMGJ5R+9t6lS
+	 dqVN+vXXvN7hQO3UtAbq7a1p/5ILsTkEag9BHu1CB89xkJzCbnVFodobOX/n9tLNPO
+	 OY8Syn06vKWGR4+eaRfszT1B/3EVP/vuKwRuTOMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Varadarajan Narayanan <quic_varada@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/230] pinctrl: cy8c95x0: Respect IRQ trigger settings from firmware
+Subject: [PATCH 6.13 071/274] soc: qcom: llcc: Update configuration data for IPQ5424
 Date: Wed, 19 Feb 2025 09:25:25 +0100
-Message-ID: <20250219082602.023620805@linuxfoundation.org>
+Message-ID: <20250219082612.399608235@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit 1ddee69108d305bbc059cbf31c0b47626796be77 ]
+[ Upstream commit c88c323b610a6048b87c5d9fff69659678f69924 ]
 
-Some of the platforms may connect the INT pin via inversion logic
-effectively make the triggering to be active-low.
-Remove explicit trigger flag to respect the settings from firmware.
+The 'broadcast' register space is present only in chipsets that
+have multiple instances of LLCC IP. Since IPQ5424 has only one
+instance, both the LLCC and LLCC_BROADCAST points to the same
+register space.
 
-Without this change even idling chip produces spurious interrupts
-and kernel disables the line in the result:
-
-  irq 33: nobody cared (try booting with the "irqpoll" option)
-  CPU: 0 UID: 0 PID: 125 Comm: irq/33-i2c-INT3 Not tainted 6.12.0-00236-g8b874ed11dae #64
-  Hardware name: Intel Corp. QUARK/Galileo, BIOS 0x01000900 01/01/2014
-  ...
-  handlers:
-  [<86e86bea>] irq_default_primary_handler threaded [<d153e44a>] cy8c95x0_irq_handler [pinctrl_cy8c95x0]
-  Disabling IRQ #33
-
-Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/20250117142304.596106-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241121051935.1055222-3-quic_varada@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/llcc-qcom.c | 57 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index 8e65797192abc..7a6a1434ae7f4 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1373,7 +1373,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index 1560db00a0124..56823b6a2facc 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -142,6 +142,7 @@ struct qcom_llcc_config {
+ 	bool skip_llcc_cfg;
+ 	bool no_edac;
+ 	bool irq_configured;
++	bool no_broadcast_register;
+ };
  
- 	ret = devm_request_threaded_irq(chip->dev, irq,
- 					NULL, cy8c95x0_irq_handler,
--					IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_HIGH,
-+					IRQF_ONESHOT | IRQF_SHARED,
- 					dev_name(chip->dev), chip);
- 	if (ret) {
- 		dev_err(chip->dev, "failed to request irq %d\n", irq);
+ struct qcom_sct_config {
+@@ -154,6 +155,38 @@ enum llcc_reg_offset {
+ 	LLCC_COMMON_STATUS0,
+ };
+ 
++static const struct llcc_slice_config ipq5424_data[] =  {
++	{
++		.usecase_id = LLCC_CPUSS,
++		.slice_id = 1,
++		.max_cap = 768,
++		.priority = 1,
++		.bonus_ways = 0xFFFF,
++		.retain_on_pc = true,
++		.activate_on_init = true,
++		.write_scid_cacheable_en = true,
++		.stale_en = true,
++		.stale_cap_en = true,
++		.alloc_oneway_en = true,
++		.ovcap_en = true,
++		.ovcap_prio = true,
++		.vict_prio = true,
++	},
++	{
++		.usecase_id = LLCC_VIDSC0,
++		.slice_id = 2,
++		.max_cap = 256,
++		.priority = 2,
++		.fixed_size = true,
++		.bonus_ways = 0xF000,
++		.retain_on_pc = true,
++		.activate_on_init = true,
++		.write_scid_cacheable_en = true,
++		.stale_en = true,
++		.stale_cap_en = true,
++	},
++};
++
+ static const struct llcc_slice_config sa8775p_data[] =  {
+ 	{
+ 		.usecase_id = LLCC_CPUSS,
+@@ -3186,6 +3219,16 @@ static const struct qcom_llcc_config qdu1000_cfg[] = {
+ 	},
+ };
+ 
++static const struct qcom_llcc_config ipq5424_cfg[] = {
++	{
++		.sct_data       = ipq5424_data,
++		.size           = ARRAY_SIZE(ipq5424_data),
++		.reg_offset     = llcc_v2_1_reg_offset,
++		.edac_reg_offset = &llcc_v2_1_edac_reg_offset,
++		.no_broadcast_register = true,
++	},
++};
++
+ static const struct qcom_llcc_config sa8775p_cfg[] = {
+ 	{
+ 		.sct_data	= sa8775p_data,
+@@ -3361,6 +3404,11 @@ static const struct qcom_sct_config qdu1000_cfgs = {
+ 	.num_config	= ARRAY_SIZE(qdu1000_cfg),
+ };
+ 
++static const struct qcom_sct_config ipq5424_cfgs = {
++	.llcc_config	= ipq5424_cfg,
++	.num_config	= ARRAY_SIZE(ipq5424_cfg),
++};
++
+ static const struct qcom_sct_config sa8775p_cfgs = {
+ 	.llcc_config	= sa8775p_cfg,
+ 	.num_config	= ARRAY_SIZE(sa8775p_cfg),
+@@ -3958,8 +4006,12 @@ static int qcom_llcc_probe(struct platform_device *pdev)
+ 
+ 	drv_data->bcast_regmap = qcom_llcc_init_mmio(pdev, i, "llcc_broadcast_base");
+ 	if (IS_ERR(drv_data->bcast_regmap)) {
+-		ret = PTR_ERR(drv_data->bcast_regmap);
+-		goto err;
++		if (cfg->no_broadcast_register) {
++			drv_data->bcast_regmap = regmap;
++		} else {
++			ret = PTR_ERR(drv_data->bcast_regmap);
++			goto err;
++		}
+ 	}
+ 
+ 	/* Extract version of the IP */
+@@ -4030,6 +4082,7 @@ static int qcom_llcc_probe(struct platform_device *pdev)
+ }
+ 
+ static const struct of_device_id qcom_llcc_of_match[] = {
++	{ .compatible = "qcom,ipq5424-llcc", .data = &ipq5424_cfgs},
+ 	{ .compatible = "qcom,qcs615-llcc", .data = &qcs615_cfgs},
+ 	{ .compatible = "qcom,qcs8300-llcc", .data = &qcs8300_cfgs},
+ 	{ .compatible = "qcom,qdu1000-llcc", .data = &qdu1000_cfgs},
 -- 
 2.39.5
 
