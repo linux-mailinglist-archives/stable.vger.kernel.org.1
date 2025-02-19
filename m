@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57ABFA3B603
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60CCA3B4B1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 165A43B9587
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6FC716670A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5EA1D61B1;
-	Wed, 19 Feb 2025 08:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1B51E0DE6;
+	Wed, 19 Feb 2025 08:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEP02bXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsIxlSYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0874C1C175A;
-	Wed, 19 Feb 2025 08:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082D31E00B6;
+	Wed, 19 Feb 2025 08:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954972; cv=none; b=QxLMbBgEXiRn17y2aJLH6ZjwbCj9o4zK8n2fA/rvCcksv28zMMK7/Gn8wYAnNuet0C83OS+h3wSivc3aAZJXcPwmiUd14ywQw4kMPvvt3ApbmS/wqHYOuoFYmc60t3098LTY71l9aq0GRDHlxlq3G4vf7Art+x0q6hoYfEJUhJ8=
+	t=1739954195; cv=none; b=Br8Z1/i0Jgsh2x58PybvfF1/Y96vnA3tGp9dJShqh6JFyQ5mi0iD5MbWfR5pGwlJvOOS2Fp2o3W8d7fRjjwphI8r+jodaVVIi5iBxfdZ35rFyTEpQ2wIxuilIFjQJp9fqB7UUZDcpKRyUC+gEwW5bEReiigy+eNIDoMTQkaxCl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954972; c=relaxed/simple;
-	bh=Gp1gDIit/EEnuyOiF9lq4fuCPfKuqs3IM2M9t5w0v0g=;
+	s=arc-20240116; t=1739954195; c=relaxed/simple;
+	bh=QLqcfsWe2N91sscldA9HYXdX82Ry6ZAAcC+1Po2Pcvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq9JCO8JTFBUI8MzOh/ct1QCIAKYeajhum0BE07RuEdy+04fI4ZsoNsggbwm7sgGCJCzBJStJRkvjjnrJ2Al90cuJQ0aE3y7AhQyJHn/0tf191kp3FoDTrzpqJuT7eOTmOFAA0jnFXEh92cmTxb355DUTlomMffe7DQZqi4/i1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEP02bXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6904DC4CED1;
-	Wed, 19 Feb 2025 08:49:31 +0000 (UTC)
+	 MIME-Version; b=Ns3oaMngceZIBATjpNR8NJpoci+K+EceyP9hWwO+6ySxc6WVWL4mjOjNLLnS4tfJdSSZWCumR8qI7dTcwUIxswIxz2LFXKnbLZ78i6vqzmyBP7q8XqX4sBWIzjFT4h1swdTJzxTDzCZGHvLXM7f1R3LjKOIGW5919RNeP+F7k9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsIxlSYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C31C4CED1;
+	Wed, 19 Feb 2025 08:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954971;
-	bh=Gp1gDIit/EEnuyOiF9lq4fuCPfKuqs3IM2M9t5w0v0g=;
+	s=korg; t=1739954194;
+	bh=QLqcfsWe2N91sscldA9HYXdX82Ry6ZAAcC+1Po2Pcvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eEP02bXigBimOGl2Zw9HgUy5EeaLs+1tS3dglUTZBbZNii6u3KjWCFv/r+RQFgSU7
-	 sU034ueIKlkQDDbV7y3UrJS6BZBpphoRrAPL74L5tv9gaic2bWb7KPzODT2oGXUsyC
-	 4a3xrYDHKhFcG56RoHfkW4ara9C2IHltxAS7PJiA=
+	b=bsIxlSYTos3Orwx7GSEPJsLglcLbCE+sjfek4vQVuPhef2vsGOkeUYIHtRrh3gcVa
+	 w1jFyDEX+/mnUKCLZw/tIFG0LSLFXN/xM8q4c3MI/6uf8ao06+2s+5xTQEzttJvadh
+	 veq+SkBMpWw+3wxIf/vLiq6OjYisAqlpOtMiN2nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/230] i3c: mipi-i3c-hci: Add Intel specific quirk to ring resuming
-Date: Wed, 19 Feb 2025 09:26:19 +0100
-Message-ID: <20250219082604.139744468@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.13 126/274] ring-buffer: Validate the persistent meta data subbuf array
+Date: Wed, 19 Feb 2025 09:26:20 +0100
+Message-ID: <20250219082614.544668477@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit ccdb2e0e3b00d13df90ac7a0524dd855173f1171 ]
+commit f5b95f1fa2ef3a03f49eeec658ba97e721412b32 upstream.
 
-MIPI I3C HCI on Intel hardware requires a quirk where ring needs to stop
-and set to run again after resuming the halted controller. This is not
-expected from the MIPI I3C HCI specification and is Intel specific.
+The meta data for a mapped ring buffer contains an array of indexes of all
+the subbuffers. The first entry is the reader page, and the rest of the
+entries lay out the order of the subbuffers in how the ring buffer link
+list is to be created.
 
-Add this quirk to generic aborted transfer handling and execute it only
-when ring is not in running state after a transfer error and attempted
-controller resume. This is the case on Intel hardware.
+The validator currently makes sure that all the entries are within the
+range of 0 and nr_subbufs. But it does not check if there are any
+duplicates.
 
-It is not fully clear to me what is the ring running state in generic
-hardware in such case. I would expect if ring is not running, then stop
-request is a no-op and run request is either required or does the same
-what controller resume would do.
+While working on the ring buffer, I corrupted this array, where I added
+duplicates. The validator did not catch it and created the ring buffer
+link list on top of it. Luckily, the corruption was only that the reader
+page was also in the writer path and only presented corrupted data but did
+not crash the kernel. But if there were duplicates in the writer side,
+then it could corrupt the ring buffer link list and cause a crash.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20241231115904.620052-1-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Create a bitmask array with the size of the number of subbuffers. Then
+clear it. When walking through the subbuf array checking to see if the
+entries are within the range, test if its bit is already set in the
+subbuf_mask. If it is, then there is duplicates and fail the validation.
+If not, set the corresponding bit and continue.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Link: https://lore.kernel.org/20250214102820.7509ddea@gandalf.local.home
+Fixes: c76883f18e59b ("ring-buffer: Add test if range of boot buffer is valid")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ kernel/trace/ring_buffer.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index 13adc58400942..fe955703e59b5 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -762,9 +762,26 @@ static bool hci_dma_irq_handler(struct i3c_hci *hci, unsigned int mask)
- 			complete(&rh->op_done);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1672,7 +1672,8 @@ static void *rb_range_buffer(struct ring
+  * must be the same.
+  */
+ static bool rb_meta_valid(struct ring_buffer_meta *meta, int cpu,
+-			  struct trace_buffer *buffer, int nr_pages)
++			  struct trace_buffer *buffer, int nr_pages,
++			  unsigned long *subbuf_mask)
+ {
+ 	int subbuf_size = PAGE_SIZE;
+ 	struct buffer_data_page *subbuf;
+@@ -1680,6 +1681,9 @@ static bool rb_meta_valid(struct ring_bu
+ 	unsigned long buffers_end;
+ 	int i;
  
- 		if (status & INTR_TRANSFER_ABORT) {
-+			u32 ring_status;
++	if (!subbuf_mask)
++		return false;
 +
- 			dev_notice_ratelimited(&hci->master.dev,
- 				"ring %d: Transfer Aborted\n", i);
- 			mipi_i3c_hci_resume(hci);
-+			ring_status = rh_reg_read(RING_STATUS);
-+			if (!(ring_status & RING_STATUS_RUNNING) &&
-+			    status & INTR_TRANSFER_COMPLETION &&
-+			    status & INTR_TRANSFER_ERR) {
-+				/*
-+				 * Ring stop followed by run is an Intel
-+				 * specific required quirk after resuming the
-+				 * halted controller. Do it only when the ring
-+				 * is not in running state after a transfer
-+				 * error.
-+				 */
-+				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
-+				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE |
-+							   RING_CTRL_RUN_STOP);
-+			}
+ 	/* Check the meta magic and meta struct size */
+ 	if (meta->magic != RING_BUFFER_META_MAGIC ||
+ 	    meta->struct_size != sizeof(*meta)) {
+@@ -1712,6 +1716,8 @@ static bool rb_meta_valid(struct ring_bu
+ 
+ 	subbuf = rb_subbufs_from_meta(meta);
+ 
++	bitmap_clear(subbuf_mask, 0, meta->nr_subbufs);
++
+ 	/* Is the meta buffers and the subbufs themselves have correct data? */
+ 	for (i = 0; i < meta->nr_subbufs; i++) {
+ 		if (meta->buffers[i] < 0 ||
+@@ -1725,6 +1731,12 @@ static bool rb_meta_valid(struct ring_bu
+ 			return false;
  		}
- 		if (status & INTR_WARN_INS_STOP_MODE)
- 			dev_warn_ratelimited(&hci->master.dev,
--- 
-2.39.5
-
+ 
++		if (test_bit(meta->buffers[i], subbuf_mask)) {
++			pr_info("Ring buffer boot meta [%d] array has duplicates\n", cpu);
++			return false;
++		}
++
++		set_bit(meta->buffers[i], subbuf_mask);
+ 		subbuf = (void *)subbuf + subbuf_size;
+ 	}
+ 
+@@ -1889,17 +1901,22 @@ static void rb_meta_init_text_addr(struc
+ static void rb_range_meta_init(struct trace_buffer *buffer, int nr_pages)
+ {
+ 	struct ring_buffer_meta *meta;
++	unsigned long *subbuf_mask;
+ 	unsigned long delta;
+ 	void *subbuf;
+ 	int cpu;
+ 	int i;
+ 
++	/* Create a mask to test the subbuf array */
++	subbuf_mask = bitmap_alloc(nr_pages + 1, GFP_KERNEL);
++	/* If subbuf_mask fails to allocate, then rb_meta_valid() will return false */
++
+ 	for (cpu = 0; cpu < nr_cpu_ids; cpu++) {
+ 		void *next_meta;
+ 
+ 		meta = rb_range_meta(buffer, nr_pages, cpu);
+ 
+-		if (rb_meta_valid(meta, cpu, buffer, nr_pages)) {
++		if (rb_meta_valid(meta, cpu, buffer, nr_pages, subbuf_mask)) {
+ 			/* Make the mappings match the current address */
+ 			subbuf = rb_subbufs_from_meta(meta);
+ 			delta = (unsigned long)subbuf - meta->first_buffer;
+@@ -1943,6 +1960,7 @@ static void rb_range_meta_init(struct tr
+ 			subbuf += meta->subbuf_size;
+ 		}
+ 	}
++	bitmap_free(subbuf_mask);
+ }
+ 
+ static void *rbm_start(struct seq_file *m, loff_t *pos)
 
 
 
