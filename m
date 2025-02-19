@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-118024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3836A3B972
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B04EA3B68D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 299B21899594
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 590143B9640
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166711CEAC3;
-	Wed, 19 Feb 2025 09:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444661DE8A8;
+	Wed, 19 Feb 2025 08:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tA4gyABQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoLchjlO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7241C7013;
-	Wed, 19 Feb 2025 09:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013FE1C5F30;
+	Wed, 19 Feb 2025 08:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957019; cv=none; b=fyDumGULlAOkXdUOKeFP5FKldut7cfBINmi6+Me2MhE0mP2TYocnXEjk7TeGf5EJWO8Bj6tn9PwatwM78vNMHgZdJKx4Rb7Mq3gL3IwvWPJP4WArB9dDYMDVcuhpzZnfJENPfVQrFzvqNez/L7KHTzSDusxK3hfcXo/XIPgUgUU=
+	t=1739954984; cv=none; b=ExwQYg0tv1MmY1VxuI4i+1XLOPSI3ITkHSYczjsfzKo1b8n/lBHUvepSQcg05NOHgKYYmL1MDie+uPY9269f+c8q5AYKTyy4NVbVvOLrmasVrdYNq39W45QZ/56WpEVMKwxnVFFH7td8NHP7BMcVwJqR3fBio30xBj4M05Wv6sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957019; c=relaxed/simple;
-	bh=UTo5eZO7ywTRiuOasps4IcR9EAdNwsWlemgzLIUqNPM=;
+	s=arc-20240116; t=1739954984; c=relaxed/simple;
+	bh=X6+Yaa7MV30HKXWsIhji+80KmrGFJHo6nup/CpDcL5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U95s09A3RySUNGjMVrSL5W9oTnJxVWFrlJohopr6qKUnyJWlNsNC1eFOzoWT4MPY3GUTjcDR17o49tSyU1OW7c9hActR9i/rZLonIO1Q85XFBNsQUNKiI4e43ioYuH30LcwJmZdYzd2B+PB2agPXypps8QjxsYkeQkDL2lpLNo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tA4gyABQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C23C4CED1;
-	Wed, 19 Feb 2025 09:23:39 +0000 (UTC)
+	 MIME-Version; b=sf+hSUbrEVIB7V9r0+mKOZ3blxKZRxV5x2gQl2+AKFTUySw9Pw4eE2BKUAPp6jvPviEH+3XYJ+BX2FfrtpDOIfZOj1QkenMxHNU2c1WHNbIHyYQDUKfsS+SB4RjSSqgrg6SQ/QOTgwEAxBPYpkGNRONzUf+qJFON8TzvD+zI7fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoLchjlO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7866DC4CED1;
+	Wed, 19 Feb 2025 08:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957019;
-	bh=UTo5eZO7ywTRiuOasps4IcR9EAdNwsWlemgzLIUqNPM=;
+	s=korg; t=1739954983;
+	bh=X6+Yaa7MV30HKXWsIhji+80KmrGFJHo6nup/CpDcL5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tA4gyABQN4/2yWH8Yi85ySO5jktfmV3NYiinJ/MVE2YpoRqr5F9k9TzKkdv6wn7Qn
-	 o0pZS6e+bk+BZjHdByJPn01uh/UDdFFPn5pZUqqDshUZCNjgpuwGhlsHs5ooPIeeE6
-	 xpwhpF7se11dP5hJAT7zuIAxx44KvabvBWFUDTLM=
+	b=BoLchjlOoRaQy64DVF4SW69sGSwwTjvbduhZg3qawRMMKkLMzVAK2HJ8ePMleC6i4
+	 hhBvVMfABohkWGl1hzK0M2+4G1SDFYsp6Lv+JdGqMZuSzw5VC3HIK7bUkJCLWSo9md
+	 DlkUBnvzz2ZYOEtjR1oxlXfGnKW1Mhqr7VgubjQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.1 379/578] serial: sh-sci: Do not probe the serial port if its slot in sci_ports[] is in use
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 066/230] media: i2c: ds90ub953: Add error handling for i2c reads/writes
 Date: Wed, 19 Feb 2025 09:26:23 +0100
-Message-ID: <20250219082707.926835251@linuxfoundation.org>
+Message-ID: <20250219082604.293400918@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 9f7dea875cc7f9c1a56a5c688290634a59cd1420 upstream.
+[ Upstream commit 0794c43ea1e451007e80246e1288ebbf44139397 ]
 
-In the sh-sci driver, sci_ports[0] is used by earlycon. If the earlycon is
-still active when sci_probe() is called and the new serial port is supposed
-to map to sci_ports[0], return -EBUSY to prevent breaking the earlycon.
+Add error handling for i2c reads/writes in various places.
 
-This situation should occurs in debug scenarios, and users should be
-aware of the potential conflict.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Closes: https://lore.kernel.org/all/Zv40EQSR__JDN_0M@kekkonen.localdomain/
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/media/i2c/ds90ub953.c | 46 ++++++++++++++++++++++++-----------
+ 1 file changed, 32 insertions(+), 14 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -165,6 +165,7 @@ struct sci_port {
- static struct sci_port sci_ports[SCI_NPORTS];
- static unsigned long sci_ports_in_use;
- static struct uart_driver sci_uart_driver;
-+static bool sci_uart_earlycon;
- 
- static inline struct sci_port *
- to_sci_port(struct uart_port *uart)
-@@ -3318,6 +3319,7 @@ static int sci_probe_single(struct platf
- static int sci_probe(struct platform_device *dev)
- {
- 	struct plat_sci_port *p;
-+	struct resource *res;
- 	struct sci_port *sp;
- 	unsigned int dev_id;
+diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
+index 10daecf6f4579..f0bad3e64f23d 100644
+--- a/drivers/media/i2c/ds90ub953.c
++++ b/drivers/media/i2c/ds90ub953.c
+@@ -398,8 +398,13 @@ static int ub953_gpiochip_probe(struct ub953_data *priv)
  	int ret;
-@@ -3347,6 +3349,26 @@ static int sci_probe(struct platform_dev
- 	}
  
- 	sp = &sci_ports[dev_id];
+ 	/* Set all GPIOs to local input mode */
+-	ub953_write(priv, UB953_REG_LOCAL_GPIO_DATA, 0);
+-	ub953_write(priv, UB953_REG_GPIO_INPUT_CTRL, 0xf);
++	ret = ub953_write(priv, UB953_REG_LOCAL_GPIO_DATA, 0);
++	if (ret)
++		return ret;
 +
-+	/*
-+	 * In case:
-+	 * - the probed port alias is zero (as the one used by earlycon), and
-+	 * - the earlycon is still active (e.g., "earlycon keep_bootcon" in
-+	 *   bootargs)
-+	 *
-+	 * defer the probe of this serial. This is a debug scenario and the user
-+	 * must be aware of it.
-+	 *
-+	 * Except when the probed port is the same as the earlycon port.
-+	 */
-+
-+	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -ENODEV;
-+
-+	if (sci_uart_earlycon && sp == &sci_ports[0] && sp->port.mapbase != res->start)
-+		return dev_err_probe(&dev->dev, -EBUSY, "sci_port[0] is used by earlycon!\n");
-+
- 	platform_set_drvdata(dev, sp);
++	ret = ub953_write(priv, UB953_REG_GPIO_INPUT_CTRL, 0xf);
++	if (ret)
++		return ret;
  
- 	ret = sci_probe_single(dev, dev_id, p, sp);
-@@ -3445,6 +3467,7 @@ static int __init early_console_setup(st
- 	port_cfg.type = type;
- 	sci_ports[0].cfg = &port_cfg;
- 	sci_ports[0].params = sci_probe_regmap(&port_cfg);
-+	sci_uart_earlycon = true;
- 	port_cfg.scscr = sci_serial_in(&sci_ports[0].port, SCSCR);
- 	sci_serial_out(&sci_ports[0].port, SCSCR,
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ 	gc->label = dev_name(dev);
+ 	gc->parent = dev;
+@@ -961,10 +966,11 @@ static void ub953_calc_clkout_params(struct ub953_data *priv,
+ 	clkout_data->rate = clkout_rate;
+ }
+ 
+-static void ub953_write_clkout_regs(struct ub953_data *priv,
+-				    const struct ub953_clkout_data *clkout_data)
++static int ub953_write_clkout_regs(struct ub953_data *priv,
++				   const struct ub953_clkout_data *clkout_data)
+ {
+ 	u8 clkout_ctrl0, clkout_ctrl1;
++	int ret;
+ 
+ 	if (priv->hw_data->is_ub971)
+ 		clkout_ctrl0 = clkout_data->m;
+@@ -974,8 +980,15 @@ static void ub953_write_clkout_regs(struct ub953_data *priv,
+ 
+ 	clkout_ctrl1 = clkout_data->n;
+ 
+-	ub953_write(priv, UB953_REG_CLKOUT_CTRL0, clkout_ctrl0);
+-	ub953_write(priv, UB953_REG_CLKOUT_CTRL1, clkout_ctrl1);
++	ret = ub953_write(priv, UB953_REG_CLKOUT_CTRL0, clkout_ctrl0);
++	if (ret)
++		return ret;
++
++	ret = ub953_write(priv, UB953_REG_CLKOUT_CTRL1, clkout_ctrl1);
++	if (ret)
++		return ret;
++
++	return 0;
+ }
+ 
+ static unsigned long ub953_clkout_recalc_rate(struct clk_hw *hw,
+@@ -1055,9 +1068,7 @@ static int ub953_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	dev_dbg(&priv->client->dev, "%s %lu (requested %lu)\n", __func__,
+ 		clkout_data.rate, rate);
+ 
+-	ub953_write_clkout_regs(priv, &clkout_data);
+-
+-	return 0;
++	return ub953_write_clkout_regs(priv, &clkout_data);
+ }
+ 
+ static const struct clk_ops ub953_clkout_ops = {
+@@ -1082,7 +1093,9 @@ static int ub953_register_clkout(struct ub953_data *priv)
+ 
+ 	/* Initialize clkout to 25MHz by default */
+ 	ub953_calc_clkout_params(priv, UB953_DEFAULT_CLKOUT_RATE, &clkout_data);
+-	ub953_write_clkout_regs(priv, &clkout_data);
++	ret = ub953_write_clkout_regs(priv, &clkout_data);
++	if (ret)
++		return ret;
+ 
+ 	priv->clkout_clk_hw.init = &init;
+ 
+@@ -1229,10 +1242,15 @@ static int ub953_hw_init(struct ub953_data *priv)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "i2c init failed\n");
+ 
+-	ub953_write(priv, UB953_REG_GENERAL_CFG,
+-		    (priv->non_continous_clk ? 0 : UB953_REG_GENERAL_CFG_CONT_CLK) |
+-		    ((priv->num_data_lanes - 1) << UB953_REG_GENERAL_CFG_CSI_LANE_SEL_SHIFT) |
+-		    UB953_REG_GENERAL_CFG_CRC_TX_GEN_ENABLE);
++	v = 0;
++	v |= priv->non_continous_clk ? 0 : UB953_REG_GENERAL_CFG_CONT_CLK;
++	v |= (priv->num_data_lanes - 1) <<
++		UB953_REG_GENERAL_CFG_CSI_LANE_SEL_SHIFT;
++	v |= UB953_REG_GENERAL_CFG_CRC_TX_GEN_ENABLE;
++
++	ret = ub953_write(priv, UB953_REG_GENERAL_CFG, v);
++	if (ret)
++		return ret;
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
