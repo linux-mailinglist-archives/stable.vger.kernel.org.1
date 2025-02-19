@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535C5A3B697
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3968AA3B784
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76BB417B4AD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01EB63AFF64
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393531E8322;
-	Wed, 19 Feb 2025 08:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092BB1E25F1;
+	Wed, 19 Feb 2025 09:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL3KsdSR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OceQkYZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93A1E503C;
-	Wed, 19 Feb 2025 08:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D1E1E2614;
+	Wed, 19 Feb 2025 09:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955279; cv=none; b=O7FYHXXKgcQ5K7GMY4FevThB3ROj4n3wu1pgC1xUj2lO5aSwdKqD/ySzrGBseoTNEZeZjxsBk2Feb/rFnVx1BU+Ge7pZS3e2wMjvYQxDXERLGqezvOGE3UX0Vuy7iIibvJMYgNeADt/3QsxU2lsfEftfodSedpULyKWQ+3lS5dE=
+	t=1739955716; cv=none; b=oT3MuWdYaYbtn00YVQJyHnxnaO2VIBl8VzMTdxnhaOjXGSiTuGKTgWlZyKpW5mT4BdNo5KNFpBsWnP6/SBnnC+r2feN6okLxr3bdRNXrewi+rGHwv4aYuHw9AOUzsXfOAyKCBcfN5CTbYNSb1pF7bbyi1fqErQajruJmf9/X30k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955279; c=relaxed/simple;
-	bh=flctWTV94UMmuHpWcxM7O3UwakazB0FwkRgOmb37dO0=;
+	s=arc-20240116; t=1739955716; c=relaxed/simple;
+	bh=0EQJorR3t0JL4dn918en+Jqx5nunekhb4Tqq6znd0KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHRsjhQ8y1M3nbAeQbMKgn+h8wWGAGkPF/RewHCx6bHZFSHidIxKscdlpW2JaQwWxbOx+dPJzgggrMWBJ4hJNeRM2JI6vQfWdYwsUWMFaY5VKf+pbxwGp+aq6KxhFo6kKbIIy1k1IaIuq8KBPVLHIe/DWadlNfN5oBPpc7gHy1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL3KsdSR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7056EC4CED1;
-	Wed, 19 Feb 2025 08:54:38 +0000 (UTC)
+	 MIME-Version; b=Iri2mX6AbpPXjAIOduxY9vslixa7iy6KFPSFv3q14SpaizldForlU1SOxA2YbWyBfqc61vfUmILWKBvqL8p4tSrhEZWJXKCk0LZri5U7LeX4cMRyx18hi1usIN7JMpIZXUVwdgvEiyO4tC9nsUF+nuM/Uw4vecOSOuaKBNw0y5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OceQkYZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AF0C4CED1;
+	Wed, 19 Feb 2025 09:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955278;
-	bh=flctWTV94UMmuHpWcxM7O3UwakazB0FwkRgOmb37dO0=;
+	s=korg; t=1739955716;
+	bh=0EQJorR3t0JL4dn918en+Jqx5nunekhb4Tqq6znd0KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JL3KsdSR3qGpngdu1PLrSBxLCNbQKSS3hwQ2tL/JGPP1SJtdHtqyWfWOJbFBcJdVy
-	 xaPjZK6a4duSL3v+gTke6Xy4F/X/8LpbyiGmOjjSSHEl3fj6wMJHdUxdXa5pzeuXLM
-	 38AvTU0lL2YMONd8ApIypywyuCV9cn0ZNUstT2kQ=
+	b=OceQkYZ7tqjUmSfxl9mQweHfrcjuCp6PwO5M27o4vW1kq9bk+rVBFkI9RMsQ7RQcV
+	 wjIeFGhCAB4u9KIvfsmUTXT6wmBCvLnpGIglAX2a2uNvTszHLkTV9WiSaqwHx4/pdf
+	 B4kTn+CSwa3SJ44WRYNGvyvaUne3GNqGjrLyWqtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/230] ipv4: use RCU protection in inet_select_addr()
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 091/152] regmap-irq: Add missing kfree()
 Date: Wed, 19 Feb 2025 09:28:24 +0100
-Message-ID: <20250219082609.016705177@linuxfoundation.org>
+Message-ID: <20250219082553.653862536@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 719817cd293e4fa389e1f69c396f3f816ed5aa41 ]
+commit 32ffed055dcee17f6705f545b069e44a66067808 upstream.
 
-inet_select_addr() must use RCU protection to make
-sure the net structure it reads does not disappear.
+Add kfree() for "d->main_status_buf" to the error-handling path to prevent
+a memory leak.
 
-Fixes: c4544c724322 ("[NETNS]: Process inet_select_addr inside a namespace.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
+Cc: stable@vger.kernel.org  # v5.1+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://patch.msgid.link/20250205004343.14413-1-jiashengjiangcool@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/devinet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regmap-irq.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 7cf5f7d0d0de2..a55e95046984d 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -1351,10 +1351,11 @@ __be32 inet_select_addr(const struct net_device *dev, __be32 dst, int scope)
- 	__be32 addr = 0;
- 	unsigned char localnet_scope = RT_SCOPE_HOST;
- 	struct in_device *in_dev;
--	struct net *net = dev_net(dev);
-+	struct net *net;
- 	int master_idx;
- 
- 	rcu_read_lock();
-+	net = dev_net_rcu(dev);
- 	in_dev = __in_dev_get_rcu(dev);
- 	if (!in_dev)
- 		goto no_in_dev;
--- 
-2.39.5
-
+--- a/drivers/base/regmap/regmap-irq.c
++++ b/drivers/base/regmap/regmap-irq.c
+@@ -894,6 +894,7 @@ err_alloc:
+ 	kfree(d->wake_buf);
+ 	kfree(d->mask_buf_def);
+ 	kfree(d->mask_buf);
++	kfree(d->main_status_buf);
+ 	kfree(d->status_buf);
+ 	kfree(d->status_reg_buf);
+ 	if (d->config_buf) {
+@@ -969,6 +970,7 @@ void regmap_del_irq_chip(int irq, struct
+ 	kfree(d->wake_buf);
+ 	kfree(d->mask_buf_def);
+ 	kfree(d->mask_buf);
++	kfree(d->main_status_buf);
+ 	kfree(d->status_reg_buf);
+ 	kfree(d->status_buf);
+ 	if (d->config_buf) {
 
 
 
