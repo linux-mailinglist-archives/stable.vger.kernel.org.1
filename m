@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-117211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECAFA3B589
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F26A3B56D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC4A178AB7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 965FF1898C95
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160B1E0DB0;
-	Wed, 19 Feb 2025 08:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793F1E25E3;
+	Wed, 19 Feb 2025 08:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XN/dskdS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U95tq9y2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA9D1C5F0C;
-	Wed, 19 Feb 2025 08:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121EE1DE3A7;
+	Wed, 19 Feb 2025 08:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954555; cv=none; b=qvupUytDRtKyZW6GnfxvR/bZjR7mHV0IzWD9i2Qy2A34B39lbe+AWb7UeKoCy9/pHN5bVSc5P23eyu4PjTGzedSQzOZTSnNW+by4Kna8quaAmiiKOADcpEIE5Yicgy4tCntDDkJNzvF5eSAfXSWhw7nB5YjaALqHnFNgJLucGtc=
+	t=1739954685; cv=none; b=Q4gfAxjDHMIvfoPyB93F3bDAWWXoFZbcpqfsA2Dky2gkIQ7dBL37MJDLAruSIhGT37SSLTL+dRydIaQfTBXRsvKy5v5lPZIa+iS5iqyAZnCZscrPBaJL8Y4utzWeoXKf2X/8yjtFrVIoRGQ6FwgJank4r2rc4yYWgMbF6BIfdbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954555; c=relaxed/simple;
-	bh=8cZsoPvpbdp5K6+VwvvB8MPh4kWI3LQAIVI0SmZnD8s=;
+	s=arc-20240116; t=1739954685; c=relaxed/simple;
+	bh=aG3BApIrN/n7nW/ugGB96GgSFjNxkQy8I/uJrROlRBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwRhrwb2YkcSBEw1D0h79Q+e+gXdJ2po+i4x34XIFgGfhafUv7J1MeY6GdcriR1Z3P+3ajvmDu3YuXjJ0huac0ay9rxteLhIeFjmJEFeuJzVD3GiMDtmG1R91ZowLXAz8S8vHEXGBolSFwRNwjUg1nLTc7XiWoktL+7U2XFHfJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XN/dskdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5554C4CED1;
-	Wed, 19 Feb 2025 08:42:34 +0000 (UTC)
+	 MIME-Version; b=Mj0zbjDdLJp+bbHKSzti5S4SJ5cg9pQnoyer7TyijJ0MFfV5cgtYrsWW7krguhyjqs/W1WAtJwJdBN6poX6T5GLi6J/11749EYxpAKEBFbg7lWsWk/DW5OclMenIpgpgpSBrScjyh/YSdu1BIcC8LsavWKi3lWK0k4HXHud1jqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U95tq9y2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D63C4CED1;
+	Wed, 19 Feb 2025 08:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954555;
-	bh=8cZsoPvpbdp5K6+VwvvB8MPh4kWI3LQAIVI0SmZnD8s=;
+	s=korg; t=1739954685;
+	bh=aG3BApIrN/n7nW/ugGB96GgSFjNxkQy8I/uJrROlRBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XN/dskdSxcBkHV1JsjhH6tEU7sDfDGlC+BZ6ic4mjvUdK9vuDmo0AopSy1UwRE8C2
-	 Pe97ZvIx+RgyCDnul5AGLmnSCA5Wrg5REfQ7tgiHtSiQQHrDoCfStDwYih/W+01D87
-	 6tbb00Mplq4SyrC/51h/+7TWYkM1It8lWjy/n+3o=
+	b=U95tq9y2hgiPWnJoV091JIazRICjtScamoXQw/vldn2xTPpuP2tP1azSVtBXcyAZ+
+	 abhWyVgySzk4a6OAOReWrnQ/I7/npH+suSZwzKGyK4JwyR310z5GJc40LCCk1DXDvR
+	 mlkoM4xW4EVLVD9+RufBgd7oj/fJ2WRBqGjbxw18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 238/274] arp: use RCU protection in arp_xmit()
-Date: Wed, 19 Feb 2025 09:28:12 +0100
-Message-ID: <20250219082618.895385377@linuxfoundation.org>
+Subject: [PATCH 6.13 239/274] openvswitch: use RCU protection in ovs_vport_cmd_fill_info()
+Date: Wed, 19 Feb 2025 09:28:13 +0100
+Message-ID: <20250219082618.934091155@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -70,41 +69,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a42b69f692165ec39db42d595f4f65a4c8f42e44 ]
+[ Upstream commit 90b2f49a502fa71090d9f4fe29a2f51fe5dff76d ]
 
-arp_xmit() can be called without RTNL or RCU protection.
+ovs_vport_cmd_fill_info() can be called without RTNL or RCU.
 
-Use RCU protection to avoid potential UAF.
+Use RCU protection and dev_net_rcu() to avoid potential UAF.
 
-Fixes: 29a26a568038 ("netfilter: Pass struct net into the netfilter hooks")
+Fixes: 9354d4520342 ("openvswitch: reliable interface indentification in port dumps")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-5-edumazet@google.com
+Link: https://patch.msgid.link/20250207135841.1948589-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/arp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/openvswitch/datapath.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-index cb9a7ed8abd3a..f23a1ec6694cb 100644
---- a/net/ipv4/arp.c
-+++ b/net/ipv4/arp.c
-@@ -659,10 +659,12 @@ static int arp_xmit_finish(struct net *net, struct sock *sk, struct sk_buff *skb
-  */
- void arp_xmit(struct sk_buff *skb)
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 225f6048867f4..5d548eda742df 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2101,6 +2101,7 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
  {
-+	rcu_read_lock();
- 	/* Send it off, maybe filter it using firewalling first.  */
- 	NF_HOOK(NFPROTO_ARP, NF_ARP_OUT,
--		dev_net(skb->dev), NULL, skb, NULL, skb->dev,
-+		dev_net_rcu(skb->dev), NULL, skb, NULL, skb->dev,
- 		arp_xmit_finish);
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL(arp_xmit);
+ 	struct ovs_header *ovs_header;
+ 	struct ovs_vport_stats vport_stats;
++	struct net *net_vport;
+ 	int err;
  
+ 	ovs_header = genlmsg_put(skb, portid, seq, &dp_vport_genl_family,
+@@ -2117,12 +2118,15 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
+ 		goto nla_put_failure;
+ 
+-	if (!net_eq(net, dev_net(vport->dev))) {
+-		int id = peernet2id_alloc(net, dev_net(vport->dev), gfp);
++	rcu_read_lock();
++	net_vport = dev_net_rcu(vport->dev);
++	if (!net_eq(net, net_vport)) {
++		int id = peernet2id_alloc(net, net_vport, GFP_ATOMIC);
+ 
+ 		if (nla_put_s32(skb, OVS_VPORT_ATTR_NETNSID, id))
+-			goto nla_put_failure;
++			goto nla_put_failure_unlock;
+ 	}
++	rcu_read_unlock();
+ 
+ 	ovs_vport_get_stats(vport, &vport_stats);
+ 	if (nla_put_64bit(skb, OVS_VPORT_ATTR_STATS,
+@@ -2143,6 +2147,8 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	genlmsg_end(skb, ovs_header);
+ 	return 0;
+ 
++nla_put_failure_unlock:
++	rcu_read_unlock();
+ nla_put_failure:
+ 	err = -EMSGSIZE;
+ error:
 -- 
 2.39.5
 
