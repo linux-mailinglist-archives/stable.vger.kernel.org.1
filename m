@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2DDA3B6C8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F55BA3BA3C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3CE417DC58
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63AF317C200
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38E61E520E;
-	Wed, 19 Feb 2025 08:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1E41CBA18;
+	Wed, 19 Feb 2025 09:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPftLL3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To1TGSc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A371E51FA;
-	Wed, 19 Feb 2025 08:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B01A28629E;
+	Wed, 19 Feb 2025 09:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955266; cv=none; b=bqG9VlhWf2c9n3a/YraM4lkb88/kTr2QjH57P2cdKRd4DIttJc/q/h5qDzmmsaQN3DU+a6hKIc2pqEZyvzhd7YES48SH45/WUAQ/IXoAjo2KOKSBuGEpHjNuO82Rcgaak6qL1rVU0kVc5nUmYoNvX2B/SAHMxUCpLyRMYCzL9Cs=
+	t=1739957351; cv=none; b=gIscQF1HQu9HgXBYCZi9k8kq6SuzezDpIGEisr3Wt/fryiKwtiQ0ldJsMErItKRaKl9d7KxGbU4sxCYhuWYPzlbbQRQQsZNbBsfRbzXJ5jRb+GhZLjmmV4fsCOTeq9yuB5CqOKEaRAUAVw1yTAodH8wBxrbwK6S4qS5tzfMJjGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955266; c=relaxed/simple;
-	bh=5H7KCHcwEb+7HGI7zMTyMlHoW++P5ESdpcidAWfWnMA=;
+	s=arc-20240116; t=1739957351; c=relaxed/simple;
+	bh=L/TterFDqxNkS8qOQ3qXmcdLOK2bqzzU+gsiNXj7F1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MC7FuQNk2yErodAmfVjaEHRfLD+J8YuaQGMMSgiPRpzi1OvFhfc+hfs3FSgRv8Ca347iq7xJFktxoHELEp5A01wMwWd0FJAEOjVhWS+xWNmR6xfvv6I5w04vNnfHIwI4snPSX9DiA30z3ACi60NoEfpGqWLVh0B1OkN6mq9Dpq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPftLL3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20702C4CEE8;
-	Wed, 19 Feb 2025 08:54:25 +0000 (UTC)
+	 MIME-Version; b=E9VXrbckF7HZiMSFguIP8eUWlTAIUAGEEZS4TAEGbw93aB2EFxigXySNUX+XnK6sMAGN2SQf8XqCsJu3PjclPWqw4wz+uL70zJAkWejTs/hueG1Gef4YbB9K6IcZaRn/dTS3vB6m1DNwNzVGMVACn3L2lQgGqhhcOT9X8q2yv+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To1TGSc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953BCC4CED1;
+	Wed, 19 Feb 2025 09:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955266;
-	bh=5H7KCHcwEb+7HGI7zMTyMlHoW++P5ESdpcidAWfWnMA=;
+	s=korg; t=1739957351;
+	bh=L/TterFDqxNkS8qOQ3qXmcdLOK2bqzzU+gsiNXj7F1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPftLL3k1GAN9LccPcyzoAGgU6qWaVIyvOmpVNOT2dujfpDjdJzKthe1/CiWMaIOr
-	 jkqs4v/Sd11WkHaeLKpTXpJwU/gL/2aELc7lt//SEv/gErCMEXfsifo6QDYLfIzbzj
-	 TslA2Q7MytZayAiMvABQzrlehauQ+3rLbBF44Uj8=
+	b=To1TGSc/q/rK6Yl1cQKlbK1wwL1ZSQcQm9zgtna9jIF1gouVIpK0cpJrRBIXh9pph
+	 Rnh4foys/pzTGw4tOYXARf/yUWBeGtGyJuGw9+dsBwe101fevlV3enS1xA5psnZOl6
+	 bgDHNrLPgLtAbwMWWHphEPRGZQsRAGhwNd0drNCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/230] ipv4: use RCU protection in ip_dst_mtu_maybe_forward()
+	Andy Strohman <andrew@andrewstrohman.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.1 496/578] batman-adv: fix panic during interface removal
 Date: Wed, 19 Feb 2025 09:28:20 +0100
-Message-ID: <20250219082608.859325401@linuxfoundation.org>
+Message-ID: <20250219082712.503304512@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andy Strohman <andrew@andrewstrohman.com>
 
-[ Upstream commit 071d8012869b6af352acca346ade13e7be90a49f ]
+commit ccb7276a6d26d6f8416e315b43b45e15ee7f29e2 upstream.
 
-ip_dst_mtu_maybe_forward() must use RCU protection to make
-sure the net structure it reads does not disappear.
+Reference counting is used to ensure that
+batadv_hardif_neigh_node and batadv_hard_iface
+are not freed before/during
+batadv_v_elp_throughput_metric_update work is
+finished.
 
-Fixes: f87c10a8aa1e8 ("ipv4: introduce ip_dst_mtu_maybe_forward and protect forwarding path against pmtu spoofing")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But there isn't a guarantee that the hard if will
+remain associated with a soft interface up until
+the work is finished.
+
+This fixes a crash triggered by reboot that looks
+like this:
+
+Call trace:
+ batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
+ batadv_v_elp_throughput_metric_update+0x1c/0xa4
+ process_one_work+0x178/0x398
+ worker_thread+0x2e8/0x4d0
+ kthread+0xd8/0xdc
+ ret_from_fork+0x10/0x20
+
+(the batadv_v_mesh_free call is misleading,
+and does not actually happen)
+
+I was able to make the issue happen more reliably
+by changing hardif_neigh->bat_v.metric_work work
+to be delayed work. This allowed me to track down
+and confirm the fix.
+
+Cc: stable@vger.kernel.org
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
+[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
+ soft_iface]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip.h | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/batman-adv/bat_v_elp.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index d92d3bc3ec0e2..fe4f854381143 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -465,9 +465,12 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
- 						    bool forwarding)
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -67,12 +67,19 @@ static void batadv_v_elp_start_timer(str
+ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
  {
- 	const struct rtable *rt = dst_rtable(dst);
--	struct net *net = dev_net(dst->dev);
--	unsigned int mtu;
-+	unsigned int mtu, res;
-+	struct net *net;
-+
-+	rcu_read_lock();
+ 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
++	struct net_device *soft_iface = hard_iface->soft_iface;
+ 	struct ethtool_link_ksettings link_settings;
+ 	struct net_device *real_netdev;
+ 	struct station_info sinfo;
+ 	u32 throughput;
+ 	int ret;
  
-+	net = dev_net_rcu(dst->dev);
- 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
- 	    ip_mtu_locked(dst) ||
- 	    !forwarding) {
-@@ -491,7 +494,11 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
- out:
- 	mtu = min_t(unsigned int, mtu, IP_MAX_MTU);
- 
--	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
-+	res = mtu - lwtunnel_headroom(dst->lwtstate, mtu);
++	/* don't query throughput when no longer associated with any
++	 * batman-adv interface
++	 */
++	if (!soft_iface)
++		return BATADV_THROUGHPUT_DEFAULT_VALUE;
 +
-+	rcu_read_unlock();
-+
-+	return res;
- }
+ 	/* if the user specified a customised value for this interface, then
+ 	 * return it directly
+ 	 */
+@@ -142,7 +149,7 @@ static u32 batadv_v_elp_get_throughput(s
  
- static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
--- 
-2.39.5
-
+ default_throughput:
+ 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
+-		batadv_info(hard_iface->soft_iface,
++		batadv_info(soft_iface,
+ 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
+ 			    hard_iface->net_dev->name,
+ 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
 
 
 
