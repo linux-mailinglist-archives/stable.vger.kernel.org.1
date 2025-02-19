@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-117263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D71BA3B50C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:52:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E364A3B462
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F9247A3550
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63E253B0561
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0891E5B9B;
-	Wed, 19 Feb 2025 08:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE481DE2B7;
+	Wed, 19 Feb 2025 08:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDYsIMYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWKre/OX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8491E520A;
-	Wed, 19 Feb 2025 08:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1AA1C5F29;
+	Wed, 19 Feb 2025 08:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954726; cv=none; b=SD0WaPPOXTz5tu8gIWo1mtocTC0Z95mpwFGW+ZdTrNq/voLkhQDgc2V/iCZvDnnxYCEOEdyeyTO4+kDRo5NvzHjjsof7uNO+a3uirPaqIb75QQEPfGj9wwH9pShD++GFNieNVAh2GYuL0Dw3T/WD7lcGYPE+fE2m34xQAlaU448=
+	t=1739954047; cv=none; b=g5SnNIOvih9oPtPdOaMSan+Ak16EpEAbZd37Hzpsdj4C5ruXEoX+v+8qWYvPsVd7OdvzcPSomtUgSWEO+RfUClUTBvFyVc6h1DaBdbOzpMObZ6abdZ20zkGIRSpjKyVCLyVLmOZ+sZIabwrtiMSYDYDvF4qnVhIyw2EGoz8IA9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954726; c=relaxed/simple;
-	bh=GZs81haMnQ/Kveh7Z9QAlOWh3A61jZ/tvoE02RbK78I=;
+	s=arc-20240116; t=1739954047; c=relaxed/simple;
+	bh=o+DsA2a2gu4iO+DDyWFPDDxUNE/sd48P5B1g2USkXIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPi2M/gxsk5d1z44vqep0uxfOJi57LaibS6ZP0dvGH2omKbaklS8KS5o9VSn5AUFlJR7l0JsLoPVWtLXpM6N1wxc6wOfNgwUAKoo2wof1HJ9aZjZegFVRPd21kcxx82qd8CMzVVDDfeIJiP/7qrqd3DcVZU+yq02qg5dTuGuArs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDYsIMYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C26AC4CED1;
-	Wed, 19 Feb 2025 08:45:26 +0000 (UTC)
+	 MIME-Version; b=S6HrnOLZ4UFFw51z5ylw22ctn3D8LSWOnjhN4cOrqYCYCUQAMYNMWp8M0vg5OwadZfYZRyH/ww0HUwVqGsBoogA5pe0OgprwbPaGC3SX9KHCkScDXHOWfSY3cKAmcoGIkyFffP6crO0kahirvwIiYE+/6jc66YjDs2kflbky1gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWKre/OX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEF8C4CED1;
+	Wed, 19 Feb 2025 08:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954726;
-	bh=GZs81haMnQ/Kveh7Z9QAlOWh3A61jZ/tvoE02RbK78I=;
+	s=korg; t=1739954047;
+	bh=o+DsA2a2gu4iO+DDyWFPDDxUNE/sd48P5B1g2USkXIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qDYsIMYfCKzfJv26joVxfLwdBPqoe9+d/zhrsZ+zr6THVpu4j91FjQs3adRjyU/E8
-	 Z9upCSWbe0FexOFBlrGRrofV3MTt1IJ7qThIBSD2CKNIBx8lTbUyRbFprdGVppRvMK
-	 3Xs82qLi2gFcdSpCJ+Krrj10nqdCPaji4MpQOoT8=
+	b=VWKre/OXAT5R67Y5nZTssZGolEU+r6d1a8EjO0/vu7xoNYbQ+a50Ah5jVod4pRWNO
+	 LWctJNue3+H9RUfglLJ4NClWDKHqzJ8L/IdPKCP7eWhjku3rhP+4yZCDTNOlmIpaa1
+	 KQv8+9qzJ0NraadxLNfuF3R14Ua8c/ngkxCgUOsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Naushir Patuck <naush@raspberrypi.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/230] net: fib_rules: annotate data-races around rule->[io]ifindex
+Subject: [PATCH 6.13 080/274] media: bcm2835-unicam: Disable trigger mode operation
 Date: Wed, 19 Feb 2025 09:25:34 +0100
-Message-ID: <20250219082602.375855774@linuxfoundation.org>
+Message-ID: <20250219082612.753907761@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Naushir Patuck <naush@raspberrypi.com>
 
-[ Upstream commit cb827db50a88aebec516151681adb6db10b688ee ]
+[ Upstream commit 697a252bb2ea414cc1c0b4cf4e3d94a879eaf162 ]
 
-rule->iifindex and rule->oifindex can be read without holding RTNL.
+The imx219/imx708 sensors frequently generate a single corrupt frame
+(image or embedded data) when the sensor first starts. This can either
+be a missing line, or invalid samples within the line. This only occurrs
+using the upstream Unicam kernel driver.
 
-Add READ_ONCE()/WRITE_ONCE() annotations where needed.
+Disabling trigger mode elimiates this corruption. Since trigger mode is
+a legacy feature copied from the firmware driver and not expected to be
+needed, remove it. Tested on the Raspberry Pi cameras and shows no ill
+effects.
 
-Fixes: 32affa5578f0 ("fib: rules: no longer hold RTNL in fib_nl_dumprule()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250206083051.2494877-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/fib_rules.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/media/platform/broadcom/bcm2835-unicam.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/net/core/fib_rules.c b/net/core/fib_rules.c
-index 154a2681f55cc..388ff1d6d86b7 100644
---- a/net/core/fib_rules.c
-+++ b/net/core/fib_rules.c
-@@ -37,8 +37,8 @@ static const struct fib_kuid_range fib_kuid_range_unset = {
- 
- bool fib_rule_matchall(const struct fib_rule *rule)
- {
--	if (rule->iifindex || rule->oifindex || rule->mark || rule->tun_id ||
--	    rule->flags)
-+	if (READ_ONCE(rule->iifindex) || READ_ONCE(rule->oifindex) ||
-+	    rule->mark || rule->tun_id || rule->flags)
- 		return false;
- 	if (rule->suppress_ifgroup != -1 || rule->suppress_prefixlen != -1)
- 		return false;
-@@ -260,12 +260,14 @@ static int fib_rule_match(struct fib_rule *rule, struct fib_rules_ops *ops,
- 			  struct flowi *fl, int flags,
- 			  struct fib_lookup_arg *arg)
- {
--	int ret = 0;
-+	int iifindex, oifindex, ret = 0;
- 
--	if (rule->iifindex && (rule->iifindex != fl->flowi_iif))
-+	iifindex = READ_ONCE(rule->iifindex);
-+	if (iifindex && (iifindex != fl->flowi_iif))
- 		goto out;
- 
--	if (rule->oifindex && (rule->oifindex != fl->flowi_oif))
-+	oifindex = READ_ONCE(rule->oifindex);
-+	if (oifindex && (oifindex != fl->flowi_oif))
- 		goto out;
- 
- 	if ((rule->mark ^ fl->flowi_mark) & rule->mark_mask)
-@@ -1038,14 +1040,14 @@ static int fib_nl_fill_rule(struct sk_buff *skb, struct fib_rule *rule,
- 	if (rule->iifname[0]) {
- 		if (nla_put_string(skb, FRA_IIFNAME, rule->iifname))
- 			goto nla_put_failure;
--		if (rule->iifindex == -1)
-+		if (READ_ONCE(rule->iifindex) == -1)
- 			frh->flags |= FIB_RULE_IIF_DETACHED;
+diff --git a/drivers/media/platform/broadcom/bcm2835-unicam.c b/drivers/media/platform/broadcom/bcm2835-unicam.c
+index 3aed0e493c81f..4090a8e477402 100644
+--- a/drivers/media/platform/broadcom/bcm2835-unicam.c
++++ b/drivers/media/platform/broadcom/bcm2835-unicam.c
+@@ -816,11 +816,6 @@ static irqreturn_t unicam_isr(int irq, void *dev)
+ 		}
  	}
  
- 	if (rule->oifname[0]) {
- 		if (nla_put_string(skb, FRA_OIFNAME, rule->oifname))
- 			goto nla_put_failure;
--		if (rule->oifindex == -1)
-+		if (READ_ONCE(rule->oifindex) == -1)
- 			frh->flags |= FIB_RULE_OIF_DETACHED;
- 	}
- 
-@@ -1217,10 +1219,10 @@ static void attach_rules(struct list_head *rules, struct net_device *dev)
- 	list_for_each_entry(rule, rules, list) {
- 		if (rule->iifindex == -1 &&
- 		    strcmp(dev->name, rule->iifname) == 0)
--			rule->iifindex = dev->ifindex;
-+			WRITE_ONCE(rule->iifindex, dev->ifindex);
- 		if (rule->oifindex == -1 &&
- 		    strcmp(dev->name, rule->oifname) == 0)
--			rule->oifindex = dev->ifindex;
-+			WRITE_ONCE(rule->oifindex, dev->ifindex);
- 	}
+-	if (unicam_reg_read(unicam, UNICAM_ICTL) & UNICAM_FCM) {
+-		/* Switch out of trigger mode if selected */
+-		unicam_reg_write_field(unicam, UNICAM_ICTL, 1, UNICAM_TFC);
+-		unicam_reg_write_field(unicam, UNICAM_ICTL, 0, UNICAM_FCM);
+-	}
+ 	return IRQ_HANDLED;
  }
  
-@@ -1230,9 +1232,9 @@ static void detach_rules(struct list_head *rules, struct net_device *dev)
+@@ -984,8 +979,7 @@ static void unicam_start_rx(struct unicam_device *unicam,
  
- 	list_for_each_entry(rule, rules, list) {
- 		if (rule->iifindex == dev->ifindex)
--			rule->iifindex = -1;
-+			WRITE_ONCE(rule->iifindex, -1);
- 		if (rule->oifindex == dev->ifindex)
--			rule->oifindex = -1;
-+			WRITE_ONCE(rule->oifindex, -1);
- 	}
- }
+ 	unicam_reg_write_field(unicam, UNICAM_ANA, 0, UNICAM_DDL);
  
+-	/* Always start in trigger frame capture mode (UNICAM_FCM set) */
+-	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_FCM | UNICAM_IBOB;
++	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_IBOB;
+ 	line_int_freq = max(fmt->height >> 2, 128);
+ 	unicam_set_field(&val, line_int_freq, UNICAM_LCIE_MASK);
+ 	unicam_reg_write(unicam, UNICAM_ICTL, val);
 -- 
 2.39.5
 
