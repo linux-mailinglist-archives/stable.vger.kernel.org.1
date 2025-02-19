@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-118057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AE6A3B987
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D43A3B632
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A13E188F902
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4272A3B8DD1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9B01D8A0D;
-	Wed, 19 Feb 2025 09:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B491CAA6C;
+	Wed, 19 Feb 2025 08:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojaop3pp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOXbxwpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8611E1A16;
-	Wed, 19 Feb 2025 09:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128DE1CAA68;
+	Wed, 19 Feb 2025 08:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957112; cv=none; b=aH2RYjJ5aGbpJ5GDOw1DvfBJzpNrN9CBUQJaDOFo7XvYDCWluITHEs6HN93WOOBs9hm+909hkjOUIno1IA6tYvsYltQc6AvxzeCpBQqdzC9HbuTDe0Wlu3iP0K6Lf4ajDP0n00TK+njr5NTDHMYSRrnVoJ5Cyu+vkb5VFB2xbCQ=
+	t=1739954904; cv=none; b=A8L2REjCHNFxom0mxboQKB7H/XUir27S0r+mLizUGwXMesnUvlD5KSSopk7b8EDyCsNe7QnOUesZezE0AhK02BeQVFsIR8ngKXO1MjxYX/FbxdMDOqRb1FwNM13G8ZBB5PauvKC/1yrg2ePxZH06SwxOiVVjqFq+1IX2P1spDr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957112; c=relaxed/simple;
-	bh=PZ5o6HyWm0aYxRllVinhemGsRjRXMaZVAORj8hv8+dY=;
+	s=arc-20240116; t=1739954904; c=relaxed/simple;
+	bh=fktvcBNKtM03xA2WMx2T2hn1W5zFzrEtD9OtJe1CJZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJdtvDFl1eaRVMOcitwSSr1WvsrwBYWVopNmi80XAj/b6AOtB1T1GZMcplodPmwpG5ZyYCOwBIdO2gS9z/+GRhPRhrFlbEMQpctlYPJ9jABkL0mWrqOHC4ASXWBzdjBuZw1e+gLcGvJ/WwkYqCtM3zWT5Mam+Tna1joZdKnx9zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojaop3pp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1FBC4CED1;
-	Wed, 19 Feb 2025 09:25:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KsoO5QfZmwJD+Fjdj8vZQEcqg58dtpZPErEpCYLAU+B4pbPTy7zTiLs2nAandIpvvwTbD/n6LdAShV6ZDg7+yhpOscYDPJ+60T5N+50Zp6h/cqYpqeAvK6brBw6aXtgcyM6Y1Qu4TtycIr41y4htfCYcypNng53BIgz7Zf+9eak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOXbxwpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1FBC4CED1;
+	Wed, 19 Feb 2025 08:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957112;
-	bh=PZ5o6HyWm0aYxRllVinhemGsRjRXMaZVAORj8hv8+dY=;
+	s=korg; t=1739954903;
+	bh=fktvcBNKtM03xA2WMx2T2hn1W5zFzrEtD9OtJe1CJZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojaop3ppZNA6S57aFraC0tWEMObV9d/p/4dxskwU9BINqgu/ThTVMbW+Uf8yFz8eJ
-	 dJdUtZqHJNi/WScRlmJffP7v2iWe71d/TLXcy5C1LDhjWjowGiwwDqtk/dIqD02MyK
-	 ZvxElAOtk+ZZ+4Ule1b/cJaMK+lwCtyCuecAZ0A8=
+	b=QOXbxwplIHZtL5sy2d+E+a1Y9jwd3ANSMc/s436IcjRK9Ub2bLuQRWRYplWNVommM
+	 VDW0HUpvkV8J6iY55eFM/mDSiLj3vZCpff1Latmo1nvW8e+jsY3WK7UGv3ifQg6AGF
+	 GxyD0txHDdBo1AFAeDzcGRneqKKjClMAB2H0gkWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 385/578] block: dont revert iter for -EIOCBQUEUED
+	Takashi Iwai <tiwai@suse.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 072/230] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
 Date: Wed, 19 Feb 2025 09:26:29 +0100
-Message-ID: <20250219082708.170281186@linuxfoundation.org>
+Message-ID: <20250219082604.525002041@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,51 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b13ee668e8280ca5b07f8ce2846b9957a8a10853 upstream.
+[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
 
-blkdev_read_iter() has a few odd checks, like gating the position and
-count adjustment on whether or not the result is bigger-than-or-equal to
-zero (where bigger than makes more sense), and not checking the return
-value of blkdev_direct_IO() before doing an iov_iter_revert(). The
-latter can lead to attempting to revert with a negative value, which
-when passed to iov_iter_revert() as an unsigned value will lead to
-throwing a WARN_ON() because unroll is bigger than MAX_RW_COUNT.
+Apparently the Raptor Lake-P reference firmware configures the PIO log size
+correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
+Zenbook UX3402VA_UX3402VA, do not.
 
-Be sane and don't revert for -EIOCBQUEUED, like what is done in other
-spots.
+Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  DPC: RP PIO log size 0 is invalid
+
+and also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
+
+Note that the bug report also mentions 8086:a76e, which has been already
+added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
+Root Ports").
+
+Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/fops.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -601,11 +601,12 @@ static ssize_t blkdev_read_iter(struct k
- 		file_accessed(iocb->ki_filp);
- 
- 		ret = blkdev_direct_IO(iocb, to);
--		if (ret >= 0) {
-+		if (ret > 0) {
- 			iocb->ki_pos += ret;
- 			count -= ret;
- 		}
--		iov_iter_revert(to, count - iov_iter_count(to));
-+		if (ret != -EIOCBQUEUED)
-+			iov_iter_revert(to, count - iov_iter_count(to));
- 		if (ret < 0 || !count)
- 			goto reexpand;
- 	}
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 8103bc24a54ea..11fe6869ec3ab 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6254,6 +6254,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
+-- 
+2.39.5
+
 
 
 
