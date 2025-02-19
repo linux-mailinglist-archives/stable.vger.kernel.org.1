@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D112A3B73A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE3AA3BA4C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C812188A1E6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDA51899725
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A5C1CEEBE;
-	Wed, 19 Feb 2025 09:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA051DF25A;
+	Wed, 19 Feb 2025 09:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXFmv1uI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaSLGvCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A381C701E;
-	Wed, 19 Feb 2025 09:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DD31C9B97;
+	Wed, 19 Feb 2025 09:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955802; cv=none; b=chOcfw17UzCMT7UJgy0z8/CDIYvnWn6flAdIDxWxVmgHtwwV82gjrr7McdphGAWmXGyuo/d28XtdZMIxb3ILiSbmmfGohURxj2b2/7zIaTRUzBncnrll9yvSZ67zblJrBppnqQVnm+2TdkC4lsb9GdyRWhs68K6qoxQln2NsimQ=
+	t=1739957535; cv=none; b=kNH6Sl3wTUI62IiV2uHlYWMtjJllau+pQj7eQlRChQYdEc4l9SyYE3ELRd2Xi7Md2KP08yeMu6RAKoI24w0LtNHep6SmqPWrwlqon3CUn4k/Un5KrtVEGf5QyRXLsj/NIrHN6Ov5q53rNxOj4nyt73XyueyyfrYSn/GQr2NjGnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955802; c=relaxed/simple;
-	bh=EH0DPQQzNVAKUd6BE6aZ60nSe77MeLMTnSGPRHqgsLs=;
+	s=arc-20240116; t=1739957535; c=relaxed/simple;
+	bh=ZfuIxYyn5DdFE9U1CvClnQECMA+CoIhT8KdfWDl1xAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/WprP2kOzZxP0QJdOu9NFSogfqkRnK/ZdrCDBcVlGxSaG4jI/jc59Kj1jgc8qMf46QeIKx3X3BDeA2PCZlNps5Rn3qHCPFxjF8LLfNHaz64amEYVcOnhOEFoXOnIAwufeGMrGuMVf8m9rvW4g4CU90kGvbUUhSSWPIQR8fla+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXFmv1uI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1222C4CED1;
-	Wed, 19 Feb 2025 09:03:21 +0000 (UTC)
+	 MIME-Version; b=BW2D3yKPRnatZu9f1uTrn0KRQ3beTHrHaMkGugcBuFVM/82tlxkP2D6BEnsRV0tN755YlU4a9xBPoUSfWwlV2sMJIWehoFr6vRqMYBwFb54+UAtjofUsz5AKIKqrArT5IMbBx+Vz6Dh3rMTec5WSKfh7W4mQRxlHsJasVRb8d8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaSLGvCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FEFC4CEE6;
+	Wed, 19 Feb 2025 09:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955802;
-	bh=EH0DPQQzNVAKUd6BE6aZ60nSe77MeLMTnSGPRHqgsLs=;
+	s=korg; t=1739957535;
+	bh=ZfuIxYyn5DdFE9U1CvClnQECMA+CoIhT8KdfWDl1xAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXFmv1uIQoZ3KIv50W6lTngIgX4dPIqa/YSrKchwCsK7FLlEM9+C+dIJ20d05Fvmo
-	 pbHz2RkBo3wk1XsKC+jAaT4qGlAQb9QbpBMCyqvK5TL13wVMqclMk1OyqxrNcBwqMn
-	 1eSw7HSNMGODt4dYNU3gaNfGTqGgm0L/sVckBaNQ=
+	b=iaSLGvCcaW3EqLzhASTo1Kwut87yJqdyaxnb727u5UR/laGGzaKalDlGM3ISYZ/9w
+	 WG7Lx0HO0fUA3ul21dO1wfjAZ19wgAjglXxJ+gUtxhgIO76nEs3g8rZy9sFakssKi1
+	 njgVbUYKV6+dB6Ibm5P4E7d7Sg9YPx4GdaQLN6wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Maisel <mmm-1@posteo.net>,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/152] HID: hid-steam: Add Deck IMU support
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 6.1 527/578] alpha: align stack for page fault and user unaligned trap handlers
 Date: Wed, 19 Feb 2025 09:28:51 +0100
-Message-ID: <20250219082554.723957704@linuxfoundation.org>
+Message-ID: <20250219082713.703715385@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,291 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Maisel <mmm-1@posteo.net>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-[ Upstream commit 3347e1654f24dbbd357ea4e3c0d8dcc12d8586c7 ]
+commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
 
-The Deck's controller features an accelerometer and gyroscope which
-send their measurement values by default in the main HID input report.
-Expose both sensors to userspace through a separate evdev node as it
-is done by the hid-nintendo and hid-playstation drivers.
+do_page_fault() and do_entUna() are special because they use
+non-standard stack frame layout. Fix them manually.
 
-Signed-off-by: Max Maisel <mmm-1@posteo.net>
-Reviewed-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-steam.c | 155 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 147 insertions(+), 8 deletions(-)
+ arch/alpha/kernel/entry.S |   20 ++++++++++----------
+ arch/alpha/kernel/traps.c |    2 +-
+ arch/alpha/mm/fault.c     |    4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 59b46163bc526..29a0e1f395339 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -66,6 +66,14 @@ static LIST_HEAD(steam_devices);
- #define STEAM_DECK_TRIGGER_RESOLUTION 5461
- /* Joystick runs are about 5 mm and 32768 units */
- #define STEAM_DECK_JOYSTICK_RESOLUTION 6553
-+/* Accelerometer has 16 bit resolution and a range of +/- 2g */
-+#define STEAM_DECK_ACCEL_RES_PER_G 16384
-+#define STEAM_DECK_ACCEL_RANGE 32768
-+#define STEAM_DECK_ACCEL_FUZZ 32
-+/* Gyroscope has 16 bit resolution and a range of +/- 2000 dps */
-+#define STEAM_DECK_GYRO_RES_PER_DPS 16
-+#define STEAM_DECK_GYRO_RANGE 32768
-+#define STEAM_DECK_GYRO_FUZZ 1
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
+ CFI_START_OSF_FRAME entMM
+ 	SAVE_ALL
+ /* save $9 - $15 so the inline exception code can manipulate them.  */
+-	subq	$sp, 56, $sp
+-	.cfi_adjust_cfa_offset	56
++	subq	$sp, 64, $sp
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_rel_offset	$13, 32
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ /* handle the fault */
+ 	lda	$8, 0x3fff
+ 	bic	$sp, $8, $8
+@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	addq	$sp, 56, $sp
++	addq	$sp, 64, $sp
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ /* finish up the syscall as normal.  */
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entMM
+@@ -383,8 +383,8 @@ entUnaUser:
+ 	.cfi_restore	$0
+ 	.cfi_adjust_cfa_offset	-256
+ 	SAVE_ALL		/* setup normal kernel stack */
+-	lda	$sp, -56($sp)
+-	.cfi_adjust_cfa_offset	56
++	lda	$sp, -64($sp)
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -400,7 +400,7 @@ entUnaUser:
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+ 	lda	$8, 0x3fff
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ 	bic	$sp, $8, $8
+ 	jsr	$26, do_entUnaUser
+ 	ldq	$9, 0($sp)
+@@ -410,7 +410,7 @@ entUnaUser:
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	lda	$sp, 56($sp)
++	lda	$sp, 64($sp)
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -418,7 +418,7 @@ entUnaUser:
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entUna
  
- #define STEAM_PAD_FUZZ 256
+--- a/arch/alpha/kernel/traps.c
++++ b/arch/alpha/kernel/traps.c
+@@ -707,7 +707,7 @@ s_reg_to_mem (unsigned long s_reg)
+ static int unauser_reg_offsets[32] = {
+ 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
+ 	/* r9 ... r15 are stored in front of regs.  */
+-	-56, -48, -40, -32, -24, -16, -8,
++	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
+ 	R(r16), R(r17), R(r18),
+ 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
+ 	R(r27), R(r28), R(gp),
+--- a/arch/alpha/mm/fault.c
++++ b/arch/alpha/mm/fault.c
+@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
  
-@@ -288,6 +296,7 @@ struct steam_device {
- 	struct mutex report_mutex;
- 	bool client_opened;
- 	struct input_dev __rcu *input;
-+	struct input_dev __rcu *sensors;
- 	unsigned long quirks;
- 	struct work_struct work_connect;
- 	bool connected;
-@@ -302,6 +311,7 @@ struct steam_device {
- 	struct work_struct rumble_work;
- 	u16 rumble_left;
- 	u16 rumble_right;
-+	unsigned int sensor_timestamp_us;
- };
+ /* Macro for exception fixup code to access integer registers.  */
+ #define dpf_reg(r)							\
+-	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
+-				 (r) <= 18 ? (r)+10 : (r)-10])
++	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
++				 (r) <= 18 ? (r)+11 : (r)-10])
  
- static int steam_recv_report(struct steam_device *steam,
-@@ -824,6 +834,74 @@ static int steam_input_register(struct steam_device *steam)
- 	return ret;
- }
- 
-+static int steam_sensors_register(struct steam_device *steam)
-+{
-+	struct hid_device *hdev = steam->hdev;
-+	struct input_dev *sensors;
-+	int ret;
-+
-+	if (!(steam->quirks & STEAM_QUIRK_DECK))
-+		return 0;
-+
-+	rcu_read_lock();
-+	sensors = rcu_dereference(steam->sensors);
-+	rcu_read_unlock();
-+	if (sensors) {
-+		dbg_hid("%s: already connected\n", __func__);
-+		return 0;
-+	}
-+
-+	sensors = input_allocate_device();
-+	if (!sensors)
-+		return -ENOMEM;
-+
-+	input_set_drvdata(sensors, steam);
-+	sensors->dev.parent = &hdev->dev;
-+
-+	sensors->name = "Steam Deck Motion Sensors";
-+	sensors->phys = hdev->phys;
-+	sensors->uniq = steam->serial_no;
-+	sensors->id.bustype = hdev->bus;
-+	sensors->id.vendor = hdev->vendor;
-+	sensors->id.product = hdev->product;
-+	sensors->id.version = hdev->version;
-+
-+	__set_bit(INPUT_PROP_ACCELEROMETER, sensors->propbit);
-+	__set_bit(EV_MSC, sensors->evbit);
-+	__set_bit(MSC_TIMESTAMP, sensors->mscbit);
-+
-+	input_set_abs_params(sensors, ABS_X, -STEAM_DECK_ACCEL_RANGE,
-+			STEAM_DECK_ACCEL_RANGE, STEAM_DECK_ACCEL_FUZZ, 0);
-+	input_set_abs_params(sensors, ABS_Y, -STEAM_DECK_ACCEL_RANGE,
-+			STEAM_DECK_ACCEL_RANGE, STEAM_DECK_ACCEL_FUZZ, 0);
-+	input_set_abs_params(sensors, ABS_Z, -STEAM_DECK_ACCEL_RANGE,
-+			STEAM_DECK_ACCEL_RANGE, STEAM_DECK_ACCEL_FUZZ, 0);
-+	input_abs_set_res(sensors, ABS_X, STEAM_DECK_ACCEL_RES_PER_G);
-+	input_abs_set_res(sensors, ABS_Y, STEAM_DECK_ACCEL_RES_PER_G);
-+	input_abs_set_res(sensors, ABS_Z, STEAM_DECK_ACCEL_RES_PER_G);
-+
-+	input_set_abs_params(sensors, ABS_RX, -STEAM_DECK_GYRO_RANGE,
-+			STEAM_DECK_GYRO_RANGE, STEAM_DECK_GYRO_FUZZ, 0);
-+	input_set_abs_params(sensors, ABS_RY, -STEAM_DECK_GYRO_RANGE,
-+			STEAM_DECK_GYRO_RANGE, STEAM_DECK_GYRO_FUZZ, 0);
-+	input_set_abs_params(sensors, ABS_RZ, -STEAM_DECK_GYRO_RANGE,
-+			STEAM_DECK_GYRO_RANGE, STEAM_DECK_GYRO_FUZZ, 0);
-+	input_abs_set_res(sensors, ABS_RX, STEAM_DECK_GYRO_RES_PER_DPS);
-+	input_abs_set_res(sensors, ABS_RY, STEAM_DECK_GYRO_RES_PER_DPS);
-+	input_abs_set_res(sensors, ABS_RZ, STEAM_DECK_GYRO_RES_PER_DPS);
-+
-+	ret = input_register_device(sensors);
-+	if (ret)
-+		goto sensors_register_fail;
-+
-+	rcu_assign_pointer(steam->sensors, sensors);
-+	return 0;
-+
-+sensors_register_fail:
-+	input_free_device(sensors);
-+	return ret;
-+}
-+
- static void steam_input_unregister(struct steam_device *steam)
- {
- 	struct input_dev *input;
-@@ -837,6 +915,24 @@ static void steam_input_unregister(struct steam_device *steam)
- 	input_unregister_device(input);
- }
- 
-+static void steam_sensors_unregister(struct steam_device *steam)
-+{
-+	struct input_dev *sensors;
-+
-+	if (!(steam->quirks & STEAM_QUIRK_DECK))
-+		return;
-+
-+	rcu_read_lock();
-+	sensors = rcu_dereference(steam->sensors);
-+	rcu_read_unlock();
-+
-+	if (!sensors)
-+		return;
-+	RCU_INIT_POINTER(steam->sensors, NULL);
-+	synchronize_rcu();
-+	input_unregister_device(sensors);
-+}
-+
- static void steam_battery_unregister(struct steam_device *steam)
- {
- 	struct power_supply *battery;
-@@ -889,18 +985,28 @@ static int steam_register(struct steam_device *steam)
- 	spin_lock_irqsave(&steam->lock, flags);
- 	client_opened = steam->client_opened;
- 	spin_unlock_irqrestore(&steam->lock, flags);
-+
- 	if (!client_opened) {
- 		steam_set_lizard_mode(steam, lizard_mode);
- 		ret = steam_input_register(steam);
--	} else
--		ret = 0;
-+		if (ret != 0)
-+			goto steam_register_input_fail;
-+		ret = steam_sensors_register(steam);
-+		if (ret != 0)
-+			goto steam_register_sensors_fail;
-+	}
-+	return 0;
- 
-+steam_register_sensors_fail:
-+	steam_input_unregister(steam);
-+steam_register_input_fail:
- 	return ret;
- }
- 
- static void steam_unregister(struct steam_device *steam)
- {
- 	steam_battery_unregister(steam);
-+	steam_sensors_unregister(steam);
- 	steam_input_unregister(steam);
- 	if (steam->serial_no[0]) {
- 		hid_info(steam->hdev, "Steam Controller '%s' disconnected",
-@@ -1009,6 +1115,7 @@ static int steam_client_ll_open(struct hid_device *hdev)
- 	steam->client_opened = true;
- 	spin_unlock_irqrestore(&steam->lock, flags);
- 
-+	steam_sensors_unregister(steam);
- 	steam_input_unregister(steam);
- 
- 	return 0;
-@@ -1029,6 +1136,7 @@ static void steam_client_ll_close(struct hid_device *hdev)
- 	if (connected) {
- 		steam_set_lizard_mode(steam, lizard_mode);
- 		steam_input_register(steam);
-+		steam_sensors_register(steam);
- 	}
- }
- 
-@@ -1120,6 +1228,7 @@ static int steam_probe(struct hid_device *hdev,
- 	INIT_DELAYED_WORK(&steam->mode_switch, steam_mode_switch_cb);
- 	INIT_LIST_HEAD(&steam->list);
- 	INIT_WORK(&steam->rumble_work, steam_haptic_rumble_cb);
-+	steam->sensor_timestamp_us = 0;
- 
- 	/*
- 	 * With the real steam controller interface, do not connect hidraw.
-@@ -1379,12 +1488,12 @@ static void steam_do_input_event(struct steam_device *steam,
-  *  18-19 | s16   | ABS_HAT0Y | left-pad Y value
-  *  20-21 | s16   | ABS_HAT1X | right-pad X value
-  *  22-23 | s16   | ABS_HAT1Y | right-pad Y value
-- *  24-25 | s16   | --        | accelerometer X value
-- *  26-27 | s16   | --        | accelerometer Y value
-- *  28-29 | s16   | --        | accelerometer Z value
-- *  30-31 | s16   | --        | gyro X value
-- *  32-33 | s16   | --        | gyro Y value
-- *  34-35 | s16   | --        | gyro Z value
-+ *  24-25 | s16   | IMU ABS_X | accelerometer X value
-+ *  26-27 | s16   | IMU ABS_Z | accelerometer Y value
-+ *  28-29 | s16   | IMU ABS_Y | accelerometer Z value
-+ *  30-31 | s16   | IMU ABS_RX | gyro X value
-+ *  32-33 | s16   | IMU ABS_RZ | gyro Y value
-+ *  34-35 | s16   | IMU ABS_RY | gyro Z value
-  *  36-37 | s16   | --        | quaternion W value
-  *  38-39 | s16   | --        | quaternion X value
-  *  40-41 | s16   | --        | quaternion Y value
-@@ -1545,6 +1654,32 @@ static void steam_do_deck_input_event(struct steam_device *steam,
- 	input_sync(input);
- }
- 
-+static void steam_do_deck_sensors_event(struct steam_device *steam,
-+		struct input_dev *sensors, u8 *data)
-+{
-+	/*
-+	 * The deck input report is received every 4 ms on average,
-+	 * with a jitter of +/- 4 ms even though the USB descriptor claims
-+	 * that it uses 1 kHz.
-+	 * Since the HID report does not include a sensor timestamp,
-+	 * use a fixed increment here.
-+	 */
-+	steam->sensor_timestamp_us += 4000;
-+
-+	if (!steam->gamepad_mode)
-+		return;
-+
-+	input_event(sensors, EV_MSC, MSC_TIMESTAMP, steam->sensor_timestamp_us);
-+	input_report_abs(sensors, ABS_X, steam_le16(data + 24));
-+	input_report_abs(sensors, ABS_Z, -steam_le16(data + 26));
-+	input_report_abs(sensors, ABS_Y, steam_le16(data + 28));
-+	input_report_abs(sensors, ABS_RX, steam_le16(data + 30));
-+	input_report_abs(sensors, ABS_RZ, -steam_le16(data + 32));
-+	input_report_abs(sensors, ABS_RY, steam_le16(data + 34));
-+
-+	input_sync(sensors);
-+}
-+
- /*
-  * The size for this message payload is 11.
-  * The known values are:
-@@ -1582,6 +1717,7 @@ static int steam_raw_event(struct hid_device *hdev,
- {
- 	struct steam_device *steam = hid_get_drvdata(hdev);
- 	struct input_dev *input;
-+	struct input_dev *sensors;
- 	struct power_supply *battery;
- 
- 	if (!steam)
-@@ -1627,6 +1763,9 @@ static int steam_raw_event(struct hid_device *hdev,
- 		input = rcu_dereference(steam->input);
- 		if (likely(input))
- 			steam_do_deck_input_event(steam, input, data);
-+		sensors = rcu_dereference(steam->sensors);
-+		if (likely(sensors))
-+			steam_do_deck_sensors_event(steam, sensors, data);
- 		rcu_read_unlock();
- 		break;
- 	case ID_CONTROLLER_WIRELESS:
--- 
-2.39.5
-
+ asmlinkage void
+ do_page_fault(unsigned long address, unsigned long mmcsr,
 
 
 
