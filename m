@@ -1,278 +1,148 @@
-Return-Path: <stable+bounces-117139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416A4A3B4C5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:46:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF95A3B541
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A24FE7A27E6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:45:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5AC177931
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A821F473C;
-	Wed, 19 Feb 2025 08:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAABF1DF726;
+	Wed, 19 Feb 2025 08:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tkM/w88C"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XtLC5qF0"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC131F3BBB
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 08:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09381DF258;
+	Wed, 19 Feb 2025 08:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954328; cv=none; b=Pdl0fByifGv+CP6qhXWk3OgAMQjcaJ2kZZ86CRsx7kjd8EjH8URG+gpEe3sA9/DsWI3fO2ifOAcHFiCUW5EUL45dt/tilRJrSZjVuZiEUY84P12bUdaaUf1ZUJ+BfTmsV2FZb05+r/lA0i1jD2EOzfC+das8w0A3jhXgPHCG8Ow=
+	t=1739954472; cv=none; b=ncxNveLA0R0UAFEAGK3UlP12wlw6OpNEM3ke2T64z6z2Qxc7O5cBnQvcCHJn9AdzZ+JIRgh11WYfpfrb4GvjlwsUMwyuduHDRGTxLERoOns5aFV5OCUNJBD5cZrulx4cd6nNwjhefppY3qXZQU4uAbhY5BW+wFA8CLCkSj4DJNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954328; c=relaxed/simple;
-	bh=sSkJBdJIFGfc3oMTs08rgL6qZZ5qeZIovZ90HYpvPA0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=eaql+a80XzsKavePJ+0BHtmGGPpZE1WoTKenb6dYzMuf+Nt+UZbwzMn1NpTR2DV8VABBCE8mQL7KctZGekmV8zj/YtR49P9/hBshnp0sey5N6/5iqWYDXNoyxxJ/ZlOLVg5E7XwVDgZ4yaWzrNjipDUeDtkmHoh43+pkw537ImA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tkM/w88C; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250219083836euoutp0143a42df5900fc44adae55534a807c971~ljzuKwnqS0250802508euoutp01H
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 08:38:36 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250219083836euoutp0143a42df5900fc44adae55534a807c971~ljzuKwnqS0250802508euoutp01H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1739954316;
-	bh=6VHoY15Gd74cbqK2q1xU2So2fYHFema61iUif7A/vgQ=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=tkM/w88COXkKbniUZfISCQZVt0IsWY0RslgoqcRb3gQfLqnQ/IQfxBFqapnn5jc/w
-	 nRCbUXK1WfpP+npHirqtbmgcN4peY4PhuY/uS/EUgYuYVuYQmGhmgFlGujT7+G/PB5
-	 07iGjOJakEFTYnyQM01y66ZlnORr/QlLmYYAfte0=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20250219083836eucas1p26aa7fe037c01b0828959cd98380501ac~ljzt5nth91811318113eucas1p22;
-	Wed, 19 Feb 2025 08:38:36 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id 95.5C.20397.C8895B76; Wed, 19
-	Feb 2025 08:38:36 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254~ljztcuI5s0030500305eucas1p1g;
-	Wed, 19 Feb 2025 08:38:36 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20250219083836eusmtrp2e7cfb0cca1e4d13332514bb9df6e63e4~ljztcMyMQ2901929019eusmtrp2F;
-	Wed, 19 Feb 2025 08:38:36 +0000 (GMT)
-X-AuditID: cbfec7f5-ed1d670000004fad-f6-67b5988cd40d
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id 3B.3E.19920.C8895B76; Wed, 19
-	Feb 2025 08:38:36 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250219083835eusmtip13ff514541a0bb992c712835816369505~ljzsg7Vwc2399823998eusmtip1m;
-	Wed, 19 Feb 2025 08:38:35 +0000 (GMT)
-Message-ID: <dfe03f88-407e-4ef1-ad30-42db53bbd4e4@samsung.com>
-Date: Wed, 19 Feb 2025 09:38:34 +0100
+	s=arc-20240116; t=1739954472; c=relaxed/simple;
+	bh=/Wrku1AaEED36219iq52vwReJihoH6uxEhawhwYibxc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dgGcPrFTeWR3fJtLWgk5rlvDIop3MwOtVMc50YwEyS9YaxmWA0GAFXfZXdcY3o/ZivIZHspWeogXlFCPcySFOricICTH7ZnjN7bwhb1h1uDWXFw4/EeeQa44YzZxDXfJBFVXuubCSsGLWuq7p8powo9zh1krjYVzQxXWuHJd4PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XtLC5qF0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51J0N3Oj010056;
+	Wed, 19 Feb 2025 08:40:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=N6c/s20pIDfoB9/BFl1ZEm
+	TIze5jb/cLpzgJIpq8gH8=; b=XtLC5qF0J+hgVhW/Ac+uQ47JMA7u+rknDoJmUp
+	xBMvV95aSZIx6/UXoHCmGEB4bCajONhVeUJQxB7/b60xgh55+kVjVgRUhLRmbwQt
+	0cJb46AfONy2E4lbKehMT9oVj0ll0NiHCalpQtYXzad8gZ77w7q6IChybr/9/hHJ
+	Atzv6vK971oIdPx5/4SAamhGN4gYJ7Q75mSay34PN+NaS7BPw0iQ7ydEIK71x3fZ
+	lY1FEIniv853sNkzLIuyMyez8dxkS0puj0Tj+gYy55GR0pHxNEpROftGFUOCkgt1
+	1A9h7LG0Ulx4QVHTyain3JzRvSepPrsM1QJCurzp/bu4ZNYQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy0ht5c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Feb 2025 08:40:38 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51J8ebkM004831
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Feb 2025 08:40:37 GMT
+Received: from ap-kernel-sh01-lnx.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 19 Feb 2025 00:40:33 -0800
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+To: <anshuman.khandual@arm.com>, <catalin.marinas@arm.com>, <david@redhat.com>
+CC: <will@kernel.org>, <ardb@kernel.org>, <ryan.roberts@arm.com>,
+        <mark.rutland@arm.com>, <joey.gouly@arm.com>,
+        <dave.hansen@linux.intel.com>, <akpm@linux-foundation.org>,
+        <chenfeiyang@loongson.cn>, <chenhuacai@kernel.org>,
+        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <quic_tingweiz@quicinc.com>,
+        Zhenhua Huang <quic_zhenhuah@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH v8] arm64: mm: Populate vmemmap at the page level if not section aligned
+Date: Wed, 19 Feb 2025 16:40:01 +0800
+Message-ID: <20250219084001.1272445-1-quic_zhenhuah@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] gpiolib: check the return value of
- gpio_chip::get_direction()
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij
-	<linus.walleij@linaro.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, Bartosz
-	Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20250210-gpio-sanitize-retvals-v1-1-12ea88506cb2@linaro.org>
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsWy7djP87o9M7amG5x9rWKx4tsaJotdD7ax
-	WUz5s5zJYvP8P4wWl3fNYbNYsPERowObx+Jrt1k97lzbw+bxeZNcAHMUl01Kak5mWWqRvl0C
-	V0bPvH7mgl7tihcrWpgaGB8odTFyckgImEhM2nuTvYuRi0NIYAWjxLRbjxkhnC+MEufeHGWC
-	cD4zSrx+8ZMFpqXhQCszRGI5o0TfjL9QLR8ZJXY9mM4EUsUrYCfxfssWMJtFQFXi3OZ3bBBx
-	QYmTM5+ATRIVkJe4f2sG0HIODmGBCIn7rfUgYRGBYIkvT2+wgcxkFuhhlLjz4zErSIJZQFzi
-	1pP5YDPZBAwlut52gc3kFPCSeHVsDhNEjbxE89bZYNdJCJzgkLj6ZSc7xNkuEk/X9jNB2MIS
-	r45vgYrLSPzfOZ8JoqGdUWLB7/tQzgRGiYbntxghqqwl7pz7xQZyKrOApsT6XfoQYUeJmys+
-	MoOEJQT4JG68FYQ4gk9i0rbpUGFeiY42IYhqNYlZx9fBrT144RLzBEalWUjBMgvJm7OQvDML
-	Ye8CRpZVjOKppcW56anFxnmp5XrFibnFpXnpesn5uZsYgYnm9L/jX3cwrnj1Ue8QIxMH4yFG
-	CQ5mJRHetvot6UK8KYmVValF+fFFpTmpxYcYpTlYlMR5F+1vTRcSSE8sSc1OTS1ILYLJMnFw
-	SjUwSSju5ly2+zeD2Nf3z9T95/w8N8uz7yxPxWaJO14Bvow1L1+wr3sQonnugKPgJ7187d+B
-	r2O9z/8/LJ1Slb+89Pltrd+ZTYcYl1qpHnrXfsFw5+fqRT7zuq/UyfxzvW757oj6nLr7phOl
-	Z/sIM+5/WNR+/ZyDqqetGot2OYtux1rzHN0nJdoNmY8OKvzJnvS369+duYFuD1vdu9J/RT/Z
-	1nXeWVBqj87P48Vfk9jtWZ0d9Ra/ThVa8pO58LiH7oMlX4L4jIqZr9yYvefFWVEVBu47Pxfn
-	3794frrt2sC64vAWS74FKgb3g77aFWi839J0+8m91aGSPdttnnn/Z/qiq3AjJaF2LX/YLYHG
-	OO6fSizFGYmGWsxFxYkA/eY1OqMDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIIsWRmVeSWpSXmKPExsVy+t/xu7o9M7amG6zYwm6x4tsaJotdD7ax
-	WUz5s5zJYvP8P4wWl3fNYbNYsPERowObx+Jrt1k97lzbw+bxeZNcAHOUnk1RfmlJqkJGfnGJ
-	rVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2CXkbPvH7mgl7tihcrWpgaGB8o
-	dTFyckgImEg0HGhl7mLk4hASWMoosbrnFAtEQkbi5LQGVghbWOLPtS42iKL3jBKdj/6xgSR4
-	Bewk3m/ZwgRiswioSpzb/A4qLihxcuYTsEGiAvIS92/NYO9i5OAQFoiQuN9aDxIWEQiWWHS3
-	kxHEZhboYZQ4/d4cYn4no8TSn19ZIBLiEreezAebzyZgKNH1tgtsPqeAl8SrY3OYIGrMJLq2
-	dkENkpdo3jqbeQKj0CwkZ8xCMmoWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93E
-	CIyrbcd+bt7BOO/VR71DjEwcjIcYJTiYlUR42+q3pAvxpiRWVqUW5ccXleakFh9iNAWGxURm
-	KdHkfGBk55XEG5oZmBqamFkamFqaGSuJ87pdPp8mJJCeWJKanZpakFoE08fEwSnVwOSlGr39
-	1m7O/1GbK1X3njCSLUi76rl4vv6KsN51qZrlsZ/zvjLYtUSWLhbb1yl0QP7E/H2nbLz2+Kv1
-	SDz8daSf+ee9gw3bT0RufrtU03zh5G3/OAsd/yblue7bE9lsUhxzdpaeej+Ht0v2tm3+Rv69
-	NU/k1rwR1t6mveRvWAv76b+8vzaxas3R/Fl+WE/m37ma2TvM5SPM2uzve8yZfMCxacOlgtCf
-	j0Xm7PJrfqzmPfviX08W3txzX3UeR58R8P/KsTFDdtLd5NJI8XdzTgWICU759IS1WPZ68I2N
-	F3ZNzmrtslY/FxC1i5HXzOrN7FNudafabjFO8nvys7x1+yyjNKdX1m5ZB2O73X6eN1JiKc5I
-	NNRiLipOBAAH3wAGNAMAAA==
-X-CMS-MailID: 20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254
-References: <20250210-gpio-sanitize-retvals-v1-0-12ea88506cb2@linaro.org>
-	<20250210-gpio-sanitize-retvals-v1-1-12ea88506cb2@linaro.org>
-	<CGME20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254@eucas1p1.samsung.com>
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mWlH5yR6FFP0v0452-L2Ku2R7Qn3eOSG
+X-Proofpoint-ORIG-GUID: mWlH5yR6FFP0v0452-L2Ku2R7Qn3eOSG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-19_03,2025-02-18_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502190068
 
-Hi Bartosz,
+On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+to 27, making one section 128M. The related page struct which vmemmap
+points to is 2M then.
+Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+vmemmap to populate at the PMD section level which was suitable
+initially since hot plug granule is always one section(128M). However,
+commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+existing arm64 assumptions.
 
-On 10.02.2025 11:51, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> As per the API contract - gpio_chip::get_direction() may fail and return
-> a negative error number. However, we treat it as if it always returned 0
-> or 1. Check the return value of the callback and propagate the error
-> number up the stack.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
->   drivers/gpio/gpiolib.c | 44 +++++++++++++++++++++++++++++---------------
->   1 file changed, 29 insertions(+), 15 deletions(-)
->
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 679ed764cb14..5d3774dc748b 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -1057,8 +1057,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
->   		desc->gdev = gdev;
->   
->   		if (gc->get_direction && gpiochip_line_is_valid(gc, desc_index)) {
-> -			assign_bit(FLAG_IS_OUT,
-> -				   &desc->flags, !gc->get_direction(gc, desc_index));
-> +			ret = gc->get_direction(gc, desc_index);
-> +			if (ret < 0)
-> +				goto err_cleanup_desc_srcu;
-> +
-> +			assign_bit(FLAG_IS_OUT, &desc->flags, !ret);
->   		} else {
->   			assign_bit(FLAG_IS_OUT,
->   				   &desc->flags, !gc->direction_input);
+The first problem is that if start or end is not aligned to a section
+boundary, such as when a subsection is hot added, populating the entire
+section is wasteful.
 
-This change breaks bcm2835 pincontrol/gpio driver (and probably others) 
-in next-20250218. The problem is that some gpio lines are initially 
-configured as alternate function (i.e. uart) and .get_direction returns 
--EINVAL for them, what in turn causes the whole gpio chip fail to 
-register. Here is the log with WARN_ON() added to line 
-drivers/pinctrl/bcm/pinctrl-bcm2835.c:350 from Raspberry Pi 4B:
+The next problem is if we hotplug something that spans part of 128 MiB
+section (subsections, let's call it memblock1), and then hotplug something
+that spans another part of a 128 MiB section(subsections, let's call it
+memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
+the entire PMD entry which also supports memblock2 even though memblock2
+is still active.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 1 at drivers/pinctrl/bcm/pinctrl-bcm2835.c:350 
-bcm2835_gpio_get_direction+0x80/0x98
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
-6.14.0-rc3-next-20250218-dirty #9817
-  Hardware name: Raspberry Pi 4 Model B (DT)
-  pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : bcm2835_gpio_get_direction+0x80/0x98
-  lr : bcm2835_gpio_get_direction+0x18/0x98
-  ...
-  Call trace:
-   bcm2835_gpio_get_direction+0x80/0x98 (P)
-   gpiochip_add_data_with_key+0x874/0xef0
-   bcm2835_pinctrl_probe+0x354/0x53c
-   platform_probe+0x68/0xdc
-   really_probe+0xbc/0x298
-   __driver_probe_device+0x78/0x12c
-   driver_probe_device+0xdc/0x164
-   __driver_attach+0x9c/0x1ac
-   bus_for_each_dev+0x74/0xd4
-   driver_attach+0x24/0x30
-   bus_add_driver+0xe4/0x208
-   driver_register+0x60/0x128
-   __platform_driver_register+0x24/0x30
-   bcm2835_pinctrl_driver_init+0x20/0x2c
-   do_one_initcall+0x64/0x308
-   kernel_init_freeable+0x280/0x4e8
-   kernel_init+0x20/0x1d8
-   ret_from_fork+0x10/0x20
-  irq event stamp: 100380
-  hardirqs last  enabled at (100379): [<ffff8000812d7d5c>] 
-_raw_spin_unlock_irqrestore+0x74/0x78
-  hardirqs last disabled at (100380): [<ffff8000812c8918>] el1_dbg+0x24/0x8c
-  softirqs last  enabled at (93674): [<ffff80008005ed4c>] 
-handle_softirqs+0x4c4/0x4dc
-  softirqs last disabled at (93669): [<ffff8000800105a0>] 
-__do_softirq+0x14/0x20
-  ---[ end trace 0000000000000000 ]---
-  gpiochip_add_data_with_key: GPIOs 512..569 (pinctrl-bcm2711) failed to 
-register, -22
-  pinctrl-bcm2835 fe200000.gpio: could not add GPIO chip
-  pinctrl-bcm2835 fe200000.gpio: probe with driver pinctrl-bcm2835 
-failed with error -22
+Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
+fix similar to x86-64: populate to pages levels if start/end is not aligned
+with section boundary.
 
+Cc: <stable@vger.kernel.org> # v5.4+
+Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+---
+Hi Catalin and David,
+Following our latest discussion, I've updated the patch for your review.
+I also removed Catalin's review tag since I've made significant modifications.
+ arch/arm64/mm/mmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Any suggestions how to fix this issue? Should we add 
-GPIO_LINE_DIRECTION_UNKNOWN?
-
-
-> @@ -2728,13 +2731,18 @@ int gpiod_direction_input_nonotify(struct gpio_desc *desc)
->   	if (guard.gc->direction_input) {
->   		ret = guard.gc->direction_input(guard.gc,
->   						gpio_chip_hwgpio(desc));
-> -	} else if (guard.gc->get_direction &&
-> -		  (guard.gc->get_direction(guard.gc,
-> -					   gpio_chip_hwgpio(desc)) != 1)) {
-> -		gpiod_warn(desc,
-> -			   "%s: missing direction_input() operation and line is output\n",
-> -			   __func__);
-> -		return -EIO;
-> +	} else if (guard.gc->get_direction) {
-> +		ret = guard.gc->get_direction(guard.gc,
-> +					      gpio_chip_hwgpio(desc));
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		if (ret != GPIO_LINE_DIRECTION_IN) {
-> +			gpiod_warn(desc,
-> +				   "%s: missing direction_input() operation and line is output\n",
-> +				    __func__);
-> +			return -EIO;
-> +		}
->   	}
->   	if (ret == 0) {
->   		clear_bit(FLAG_IS_OUT, &desc->flags);
-> @@ -2771,12 +2779,18 @@ static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
->   						 gpio_chip_hwgpio(desc), val);
->   	} else {
->   		/* Check that we are in output mode if we can */
-> -		if (guard.gc->get_direction &&
-> -		    guard.gc->get_direction(guard.gc, gpio_chip_hwgpio(desc))) {
-> -			gpiod_warn(desc,
-> -				"%s: missing direction_output() operation\n",
-> -				__func__);
-> -			return -EIO;
-> +		if (guard.gc->get_direction) {
-> +			ret = guard.gc->get_direction(guard.gc,
-> +						      gpio_chip_hwgpio(desc));
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			if (ret != GPIO_LINE_DIRECTION_OUT) {
-> +				gpiod_warn(desc,
-> +					   "%s: missing direction_output() operation\n",
-> +					   __func__);
-> +				return -EIO;
-> +			}
->   		}
->   		/*
->   		 * If we can't actively set the direction, we are some
->
-Best regards
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b4df5bc5b1b8..de05ccf47f21 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1177,8 +1177,11 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 		struct vmem_altmap *altmap)
+ {
+ 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
++	/* [start, end] should be within one section */
++	WARN_ON(end - start > PAGES_PER_SECTION * sizeof(struct page));
+ 
+-	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
++	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
++		(end - start < PAGES_PER_SECTION * sizeof(struct page)))
+ 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 	else
+ 		return vmemmap_populate_hugepages(start, end, node, altmap);
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.25.1
 
 
