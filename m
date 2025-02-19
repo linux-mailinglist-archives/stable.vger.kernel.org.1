@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A07DA3BA5F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2120A3B6B7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0236C17E043
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33DBC162710
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C1C1BC062;
-	Wed, 19 Feb 2025 09:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77FE1EB1A2;
+	Wed, 19 Feb 2025 08:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjN6gjwy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndGAAIhs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75292AE74;
-	Wed, 19 Feb 2025 09:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A381EB19D;
+	Wed, 19 Feb 2025 08:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957387; cv=none; b=MqxTADIKoQJz1ICkdXqo9oYOsp/pMFLJp5NsuJ9/CVPjTQNoMtfy0mwoP9q5GVtzuwwnyUK3s7Q2xPzl+pZ5MUYGj6ZgLFiA3TCzzF/6yPkbZfy8UNB6+sxECc5jSaqjbsFb8jt+eMliYInbKo5K+ozTkx4Oy54bVdYxD19J8ko=
+	t=1739955308; cv=none; b=QdvU/UWeli9Ly7J16COu5wy0mWFrhVTBXd/6a4VGKzftnB5SICDZcvmi3xMpjbtdQewlwN0f62w3Byid7D2h0b+nU0ssMwno3/7vdskiI5xtEfh4FQLVw2W6jfn38G/ABhqXF2n3jlibLct3Ei0LjAGX1SsMPMXMb9FB8/Vu57U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957387; c=relaxed/simple;
-	bh=arvPjKlLtSR3Wqbi1wkOBySWYcAgRSI7Wx1On1FkT9Y=;
+	s=arc-20240116; t=1739955308; c=relaxed/simple;
+	bh=EJFN7g/9tE+rCmW5MaM+xHDF2YnLzoju2U+HswUqgwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQXsPXYAvG2epv2saIcmRMbhRy++R8zKYU/4bKhwZF1QNZJuAWQ9jVz2W5Mj57VFlhKoigEazcXma9N3015vP2mRnWrLKVKTyt0D3pXY1ktGqClAWZ+LYWyd2vREnxSbdj0aZ8JRV0DlTTzLhjGQruYD8t41hmkPz1CBGlIktqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjN6gjwy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAEBC4CED1;
-	Wed, 19 Feb 2025 09:29:47 +0000 (UTC)
+	 MIME-Version; b=FaVNx1Eb6MThrxwpOE8d669pbhyP61w0YlaTTtwL24KIIuDv8DhkFZFQf14F7SKy7rxDm6XT46/+q3csYUay2mH3xzapESgn4iuWL4qrZ7rfjgdBwZXCZkuqAahoRyuPikuIHQI/zsSGXWEqGoVU4Sor54kHseEu8O/eJlGjFJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndGAAIhs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A538CC4CEE6;
+	Wed, 19 Feb 2025 08:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957387;
-	bh=arvPjKlLtSR3Wqbi1wkOBySWYcAgRSI7Wx1On1FkT9Y=;
+	s=korg; t=1739955308;
+	bh=EJFN7g/9tE+rCmW5MaM+xHDF2YnLzoju2U+HswUqgwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjN6gjwyNqL6tuwx+5hypysTPgYeHPRtFDv8jKdt6M8VpqkVLqtRYUWXcinF78PLX
-	 N1i9fcHSE1c29zO2OKjIVRelYjdFM3ohFJ5Os7UxABZOEX7QNTzu87+iXHaeLPPaRO
-	 ImGEeuXUMNvJko474/778zi1oteScUXQqWX0j7Wk=
+	b=ndGAAIhsPb0Ga5rYtccWnGCcf795l++S3YAErpigmKIJ5wKmkqFEFHKOV5JiK/zRw
+	 i7/4CFlwG6wIMn4GvTna3IPMaWsxUpMDqDqT+LtZHA5VAe4A4N3c6vSVcrKAyYGHsy
+	 BxTuP0hnj3IMfv0LbmUYMdPDE27g4s7QdXSLs3QI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 508/578] usb: core: fix pipe creation for get_bMaxPacketSize0
+	Vicki Pfau <vi@endrift.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 195/230] HID: hid-steam: Move hidraw input (un)registering to work
 Date: Wed, 19 Feb 2025 09:28:32 +0100
-Message-ID: <20250219082712.968452003@linuxfoundation.org>
+Message-ID: <20250219082609.326523291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Vicki Pfau <vi@endrift.com>
 
-commit 4aac0db5a0ebc599d4ad9bf5ebab78afa1f33e10 upstream.
+[ Upstream commit 79504249d7e27cad4a3eeb9afc6386e418728ce0 ]
 
-When usb_control_msg is used in the get_bMaxPacketSize0 function, the
-USB pipe does not include the endpoint device number. This can cause
-failures when a usb hub port is reinitialized after encountering a bad
-cable connection. As a result, the system logs the following error
-messages:
-usb usb2-port1: cannot reset (err = -32)
-usb usb2-port1: Cannot enable. Maybe the USB cable is bad?
-usb usb2-port1: attempt power cycle
-usb 2-1: new high-speed USB device number 5 using ci_hdrc
-usb 2-1: device descriptor read/8, error -71
+Due to an interplay between locking in the input and hid transport subsystems,
+attempting to register or deregister the relevant input devices during the
+hidraw open/close events can lead to a lock ordering issue. Though this
+shouldn't cause a deadlock, this commit moves the input device manipulation to
+deferred work to sidestep the issue.
 
-The problem began after commit 85d07c556216 ("USB: core: Unite old
-scheme and new scheme descriptor reads"). There
-usb_get_device_descriptor was replaced with get_bMaxPacketSize0. Unlike
-usb_get_device_descriptor, the get_bMaxPacketSize0 function uses the
-macro usb_rcvaddr0pipe, which does not include the endpoint device
-number. usb_get_device_descriptor, on the other hand, used the macro
-usb_rcvctrlpipe, which includes the endpoint device number.
-
-By modifying the get_bMaxPacketSize0 function to use usb_rcvctrlpipe
-instead of usb_rcvaddr0pipe, the issue can be resolved. This change will
-ensure that the endpoint device number is included in the USB pipe,
-preventing reinitialization failures. If the endpoint has not set the
-device number yet, it will still work because the device number is 0 in
-udev.
-
-Cc: stable <stable@kernel.org>
-Fixes: 85d07c556216 ("USB: core: Unite old scheme and new scheme descriptor reads")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250203105840.17539-1-eichest@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 385a4886778f6 ("HID: steam: remove input device when a hid client is running.")
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/hid/hid-steam.c | 38 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -4651,7 +4651,6 @@ void usb_ep0_reinit(struct usb_device *u
- EXPORT_SYMBOL_GPL(usb_ep0_reinit);
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index daca250e51c8b..7b35966898785 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -313,6 +313,7 @@ struct steam_device {
+ 	u16 rumble_left;
+ 	u16 rumble_right;
+ 	unsigned int sensor_timestamp_us;
++	struct work_struct unregister_work;
+ };
  
- #define usb_sndaddr0pipe()	(PIPE_CONTROL << 30)
--#define usb_rcvaddr0pipe()	((PIPE_CONTROL << 30) | USB_DIR_IN)
+ static int steam_recv_report(struct steam_device *steam,
+@@ -1072,6 +1073,31 @@ static void steam_mode_switch_cb(struct work_struct *work)
+ 	}
+ }
  
- static int hub_set_address(struct usb_device *udev, int devnum)
++static void steam_work_unregister_cb(struct work_struct *work)
++{
++	struct steam_device *steam = container_of(work, struct steam_device,
++							unregister_work);
++	unsigned long flags;
++	bool connected;
++	bool opened;
++
++	spin_lock_irqsave(&steam->lock, flags);
++	opened = steam->client_opened;
++	connected = steam->connected;
++	spin_unlock_irqrestore(&steam->lock, flags);
++
++	if (connected) {
++		if (opened) {
++			steam_sensors_unregister(steam);
++			steam_input_unregister(steam);
++		} else {
++			steam_set_lizard_mode(steam, lizard_mode);
++			steam_input_register(steam);
++			steam_sensors_register(steam);
++		}
++	}
++}
++
+ static bool steam_is_valve_interface(struct hid_device *hdev)
  {
-@@ -4757,7 +4756,7 @@ static int get_bMaxPacketSize0(struct us
- 	for (i = 0; i < GET_MAXPACKET0_TRIES; ++i) {
- 		/* Start with invalid values in case the transfer fails */
- 		buf->bDescriptorType = buf->bMaxPacketSize0 = 0;
--		rc = usb_control_msg(udev, usb_rcvaddr0pipe(),
-+		rc = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
- 				USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
- 				USB_DT_DEVICE << 8, 0,
- 				buf, size,
+ 	struct hid_report_enum *rep_enum;
+@@ -1117,8 +1143,7 @@ static int steam_client_ll_open(struct hid_device *hdev)
+ 	steam->client_opened++;
+ 	spin_unlock_irqrestore(&steam->lock, flags);
+ 
+-	steam_sensors_unregister(steam);
+-	steam_input_unregister(steam);
++	schedule_work(&steam->unregister_work);
+ 
+ 	return 0;
+ }
+@@ -1135,11 +1160,7 @@ static void steam_client_ll_close(struct hid_device *hdev)
+ 	connected = steam->connected && !steam->client_opened;
+ 	spin_unlock_irqrestore(&steam->lock, flags);
+ 
+-	if (connected) {
+-		steam_set_lizard_mode(steam, lizard_mode);
+-		steam_input_register(steam);
+-		steam_sensors_register(steam);
+-	}
++	schedule_work(&steam->unregister_work);
+ }
+ 
+ static int steam_client_ll_raw_request(struct hid_device *hdev,
+@@ -1231,6 +1252,7 @@ static int steam_probe(struct hid_device *hdev,
+ 	INIT_LIST_HEAD(&steam->list);
+ 	INIT_WORK(&steam->rumble_work, steam_haptic_rumble_cb);
+ 	steam->sensor_timestamp_us = 0;
++	INIT_WORK(&steam->unregister_work, steam_work_unregister_cb);
+ 
+ 	/*
+ 	 * With the real steam controller interface, do not connect hidraw.
+@@ -1291,6 +1313,7 @@ static int steam_probe(struct hid_device *hdev,
+ 	cancel_work_sync(&steam->work_connect);
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->rumble_work);
++	cancel_work_sync(&steam->unregister_work);
+ 
+ 	return ret;
+ }
+@@ -1307,6 +1330,7 @@ static void steam_remove(struct hid_device *hdev)
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->work_connect);
+ 	cancel_work_sync(&steam->rumble_work);
++	cancel_work_sync(&steam->unregister_work);
+ 	hid_destroy_device(steam->client_hdev);
+ 	steam->client_hdev = NULL;
+ 	steam->client_opened = 0;
+-- 
+2.39.5
+
 
 
 
