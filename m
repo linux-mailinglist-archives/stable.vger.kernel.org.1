@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2484A3B5EE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF34A3B4CC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:47:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDC683BE156
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91A3F3AF840
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406901DD0EF;
-	Wed, 19 Feb 2025 08:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F411E32C3;
+	Wed, 19 Feb 2025 08:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8GjJr0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaRwzwKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82E01CAA68;
-	Wed, 19 Feb 2025 08:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39FE1A314B;
+	Wed, 19 Feb 2025 08:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954901; cv=none; b=gLeSnBdECrZjDrCXp1025HSJeQfeG3psE0Rlht38yh5TOznprT37HqiigMeNLWmhwZ8c66rxsKm9o6XaYLZ1TXnRSbq5iJAZRcKcefVmRLHkbd/sG23QyfTVo2TJbU80V4Gxa6e6PP+hciQzIdgJvYJpxw9cRJRl2R/0cUN3+x4=
+	t=1739954222; cv=none; b=cRmZ7rKs+Wl9LZjEMVc6PLB8ZfW7Vghyf3G0ata+zxMve72ZZ+F7gWYtsd4ENsa68TNryCr36GcbD+gPt5T0WxSthw1ktJvbf3qXVpX9nCCncs+yJjrjU+LOONS5K6ERRC2PRHSX0nE2515ciS/xmqpfr1OndV0hPLZr4FYlCUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954901; c=relaxed/simple;
-	bh=PKFdFfI1fHlNVO6BV/+clWnWLa1ZRejvTaWY3PVQFwc=;
+	s=arc-20240116; t=1739954222; c=relaxed/simple;
+	bh=17B6ScSwk8OgVQTUCsuKPlDF86Mwm29kB7kh48v3+rA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7GlBngVfxxjrx6erz1l/29xlolPbauR+Dd4XvZ/Dk2a9YOS8sV7Y6LmvtksXjhxAJ5APPCaFVHT0XMifkl8nK+2FojofqMw2b50VsYbwForlgkFWMJpJ+qIP6Rqkb/CaIg4tnT8OUZIObTvKeWhEkpaJBSPjOFnTqRZRTfiOKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8GjJr0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB0EC4CEE6;
-	Wed, 19 Feb 2025 08:48:19 +0000 (UTC)
+	 MIME-Version; b=FHtle/CmA4/rUEHd/jG21RMdSKL9D5Orlc0z0PuNsLPD/YslamGSAl7J+6F3MIZfbwqVPHGupigmRrn7j8hsY/V7H4z7+QPO71WfaivK8Aw7lourM6LMKIvwKCF6WpsjJnAnC09bmp6qkA7DVrRuuQznrl70WcaIqwgt14L/Wl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaRwzwKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93ACC4CED1;
+	Wed, 19 Feb 2025 08:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954900;
-	bh=PKFdFfI1fHlNVO6BV/+clWnWLa1ZRejvTaWY3PVQFwc=;
+	s=korg; t=1739954222;
+	bh=17B6ScSwk8OgVQTUCsuKPlDF86Mwm29kB7kh48v3+rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8GjJr0rxhNLadhb+bhdLwklhi0Sf26YqyPj1a/BoRDVGO37TlQrOq8RiByc0VsBD
-	 wBkyRhQtqks7S0CB2q0Gz794aXewpV/KmhPP3Y5Ew0ksw6ErEOR7/pD7ja+fM9e/0W
-	 C/YV1FcKHQ5yaBzRQwEvyiXOOQhuGIekHTwWbrrY=
+	b=OaRwzwKvX4aX1f9rjJ65VoxHU40/1dBn3R72T5OTh2pltnvUuPuIJv5xmAFky8ai4
+	 ZyNF6LTr8muyzeufL33GEQPxQ6eB9OhplQrkP9l4J83UJNhUx0aSz/Ahva2wlrSfu6
+	 qa6A6KEe4lkDrNI6eohq0RFVsnMTsfFWsOS1L+Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/230] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
+	stable <stable@kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH 6.13 134/274] usb: xhci: Restore xhci_pci support for Renesas HCs
 Date: Wed, 19 Feb 2025 09:26:28 +0100
-Message-ID: <20250219082604.485865356@linuxfoundation.org>
+Message-ID: <20250219082614.852720113@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
+commit c81d9fcd5b9402166048f377d4e5e0ee6f9ef26d upstream.
 
-syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
+Some Renesas HCs require firmware upload to work, this is handled by the
+xhci_pci_renesas driver. Other variants of those chips load firmware from
+a SPI flash and are ready to work with xhci_pci alone.
 
-If dvb->mux is not initialized successfully by vidtv_mux_init() in the
-vidtv_start_streaming(), it will trigger null pointer dereference about mux
-in vidtv_mux_stop_thread().
+A refactor merged in v6.12 broke the latter configuration so that users
+are finding their hardware ignored by the normal driver and are forced to
+enable the firmware loader which isn't really necessary on their systems.
 
-Adjust the timing of streaming initialization and check it before
-stopping it.
+Let xhci_pci work with those chips as before when the firmware loader is
+disabled by kernel configuration.
 
-[1]
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
-Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
-RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
-RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
-RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
-R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
-FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
- vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
- dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
- dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
- dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
- dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
- dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
- __fput+0x3f8/0xb60 fs/file_table.c:450
- task_work_run+0x14e/0x250 kernel/task_work.c:239
- get_signal+0x1d3/0x2610 kernel/signal.c:2790
- arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 25f51b76f90f ("xhci-pci: Make xhci-pci-renesas a proper modular driver")
+Cc: stable <stable@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219616
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219726
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://lore.kernel.org/r/20250128104529.58a79bfc@foxbook
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-index 613949df897d3..6d964e392d313 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -191,10 +191,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -653,8 +653,8 @@ put_runtime_pm:
+ }
+ EXPORT_SYMBOL_NS_GPL(xhci_pci_common_probe, "xhci");
  
- 	mux_args.mux_buf_sz  = mux_buf_sz;
+-static const struct pci_device_id pci_ids_reject[] = {
+-	/* handled by xhci-pci-renesas */
++/* handled by xhci-pci-renesas if enabled */
++static const struct pci_device_id pci_ids_renesas[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
+ 	{ /* end: all zeroes */ }
+@@ -662,7 +662,8 @@ static const struct pci_device_id pci_id
  
--	dvb->streaming = true;
- 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
- 	if (!dvb->mux)
- 		return -ENOMEM;
-+
-+	dvb->streaming = true;
- 	vidtv_mux_start_thread(dvb->mux);
- 
- 	dev_dbg_ratelimited(dev, "Started streaming\n");
-@@ -205,6 +206,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
+ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
  {
- 	struct device *dev = &dvb->pdev->dev;
+-	if (pci_match_id(pci_ids_reject, dev))
++	if (IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS) &&
++			pci_match_id(pci_ids_renesas, dev))
+ 		return -ENODEV;
  
-+	if (!dvb->streaming) {
-+		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
-+		return 0;
-+	}
-+
- 	dvb->streaming = false;
- 	vidtv_mux_stop_thread(dvb->mux);
- 	vidtv_mux_destroy(dvb->mux);
--- 
-2.39.5
-
+ 	return xhci_pci_common_probe(dev, id);
 
 
 
