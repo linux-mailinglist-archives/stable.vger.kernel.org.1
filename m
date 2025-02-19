@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-117766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F19EA3B815
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:21:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6ABAA3B848
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1FF188941F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:15:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5619617C7C6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E949E1DFE23;
-	Wed, 19 Feb 2025 09:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25851DF972;
+	Wed, 19 Feb 2025 09:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7xBLuSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vbIIm3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88D31DFE16;
-	Wed, 19 Feb 2025 09:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9DC1C9B97;
+	Wed, 19 Feb 2025 09:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956277; cv=none; b=rPeYcxtMANc2+QCQpRitKr7Y2pTC/dpC53V7QjuEepnHBZVex65LbwOKBUE5nnF15H6zxUj5gBSvRhbt9T01zi1frT64IILo0/n7tBvvzGN/2dZALNNH+TbgOyrTUl59Hzk81dRbdLiEDzsMx8g6YNyCMd5m+nzjp55pllHfiRk=
+	t=1739956283; cv=none; b=jtKJT5p/mFip8X7zM5isaKhTg3NGdGp3Q4DKpU5DPu3KA1Pz/n89GpK+zxA8ufb4Q426ROwFiUr6HXgIwZWqnJUe5LYj8KcKEUZen2pIK64USMWmOLSV4WTFIyp2x+Zv6edFeT+psZ0G4fkQ4QxvjNXmwzL2mJwfkXr1vwuKi7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956277; c=relaxed/simple;
-	bh=68e6cAin3XA3iv/KMIQ2bmVmn+2/w8FPIxYOpAAwgzk=;
+	s=arc-20240116; t=1739956283; c=relaxed/simple;
+	bh=OzmE0696ugMpJ9XTwQnLF4BbvloWK7N6kUYAPh1/ZCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqiCA8YwtVwCHHonE7515782C4bo0OJuzKr7FYfogRRUM91TN+l7A/hNqd1a1rx8DSls45fcswcVAYnABHa5K8sMcy6bfymc8mcsmBj97f5DjaZ/ml0TipYrnslCMyJ+dOyWYFvEi6viPTMsQvO2blGQG4YNmbd5sD72lpfEyeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7xBLuSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35008C4CED1;
-	Wed, 19 Feb 2025 09:11:17 +0000 (UTC)
+	 MIME-Version; b=BULVWiXzhqVG2tqI3hnUishCo92sd9etfbJEGpHEL7iPzNWXKIfvVe0apY2YZ0gHPkVzmFCQdDQ6/Xz0z/LPiwSS4yOgkGZ4n6R5cj8BNLi/u5DHOOoxM3wz0c1lxbkrXcukqboOuqi+MgimUmacEoO9i2oFZNA1jy8Pv0HOUS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vbIIm3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D811FC4CED1;
+	Wed, 19 Feb 2025 09:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956277;
-	bh=68e6cAin3XA3iv/KMIQ2bmVmn+2/w8FPIxYOpAAwgzk=;
+	s=korg; t=1739956283;
+	bh=OzmE0696ugMpJ9XTwQnLF4BbvloWK7N6kUYAPh1/ZCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7xBLuSH4eeLpeOxoBzhrXR1MvaD+7vSEEfuKrc55F2Y7oC8gOyg4e4iJ391WTgp3
-	 RWJnqlpw3byqwp6PkvXVCMz63YFB84nsTOA517pm42sHJrFRrrKxjbmeDEZI7Bw0A4
-	 Q/stv/5TkmOxcKcxgu8rZlTCV27MNMVwe7mTEYMo=
+	b=2vbIIm3l43lwxtQGVKa/9ftroR9NHqMULP1VbcLQHSKajC+ekcQhJZc5uJJPQQ7Lc
+	 51DxMBltMMxZHwqF1Tp+0VZV+p4j2FZm+ehMDydxhST+YTwA/Yh62TYmxKdM4gA2MO
+	 6m5IDyBh4Op20CpoqEaHikHCNYc9saOjF5vaGIuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/578] bpf: tcp: Mark bpf_load_hdr_opt() arg2 as read-write
-Date: Wed, 19 Feb 2025 09:22:10 +0100
-Message-ID: <20250219082657.944226918@linuxfoundation.org>
+Subject: [PATCH 6.1 127/578] ALSA: hda/realtek - Fixed headphone distorted sound on Acer Aspire A115-31 laptop
+Date: Wed, 19 Feb 2025 09:22:11 +0100
+Message-ID: <20250219082657.982885587@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,42 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Xu <dxu@dxuuu.xyz>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 8ac412a3361173e3000b16167af3d1f6f90af613 ]
+[ Upstream commit 5cb4e5b056772e341b590755a976081776422053 ]
 
-MEM_WRITE attribute is defined as: "Non-presence of MEM_WRITE means that
-MEM is only being read". bpf_load_hdr_opt() both reads and writes from
-its arg2 - void *search_res.
+Sound played through headphones is distorted.
 
-This matters a lot for the next commit where we more precisely track
-stack accesses. Without this annotation, the verifier will make false
-assumptions about the contents of memory written to by helpers and
-possibly prune valid branches.
-
-Fixes: 6fad274f06f0 ("bpf: Add MEM_WRITE attribute")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-Link: https://lore.kernel.org/r/730e45f8c39be2a5f3d8c4406cceca9d574cbf14.1736886479.git.dxu@dxuuu.xyz
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 34ab5bbc6e82 ("ALSA: hda/realtek - Add Headset Mic supported Acer NB platform")
+Closes: https://lore.kernel.org/linux-sound/e142749b-7714-4733-9452-918fbe328c8f@gmail.com/
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0a89b6c18ed94378a105fa61e9f290e4@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b35615c469e27..370f61f9bf4ba 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7529,7 +7529,7 @@ static const struct bpf_func_proto bpf_sock_ops_load_hdr_opt_proto = {
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_MEM,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg3_type	= ARG_CONST_SIZE,
- 	.arg4_type	= ARG_ANYTHING,
- };
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index eec488aa7890d..8da964c3856fe 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9583,6 +9583,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1025, 0x1308, "Acer Aspire Z24-890", ALC286_FIXUP_ACER_AIO_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1025, 0x132a, "Acer TravelMate B114-21", ALC233_FIXUP_ACER_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1025, 0x1330, "Acer TravelMate X514-51T", ALC255_FIXUP_ACER_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1025, 0x1360, "Acer Aspire A115", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x141f, "Acer Spin SP513-54N", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x142b, "Acer Swift SF314-42", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x1430, "Acer TravelMate B311R-31", ALC256_FIXUP_ACER_MIC_NO_PRESENCE),
 -- 
 2.39.5
 
