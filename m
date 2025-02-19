@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-117673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE1EA3B713
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802E4A3B7BB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A62F47A6E6B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5F9176062
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD491DE4CD;
-	Wed, 19 Feb 2025 09:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBC71DFDA3;
+	Wed, 19 Feb 2025 09:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCYXnt9y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFzGWttN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2131CAA86;
-	Wed, 19 Feb 2025 09:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD621A315E;
+	Wed, 19 Feb 2025 09:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956012; cv=none; b=XM6ms5tH0Z0yZ3oErr8HpVxzLYuYgW+HPoQRRgwh/8/M5a7C0P+JMHkBVegbVmDUqjGk7qLEl9+qZXjvrb1b1gb9dXK4sAoiJgx0Gb2BQsmE3SYrv+4HjZjTlVo6vp+MJdXNl06+Ey2HMVNbO2taZASFZR0MIErb9w2ijtiw+EY=
+	t=1739956027; cv=none; b=JJPOX+PYJypWmmxxh7/z3QQHcmmbZtQYhIdvNqGctLHyVnDbs/ygs0TSiBWbAYI15wbCj4HEZm/A0B0oPywzMc5n4hL/7VowY+lpSrpXe3SZEqqubAdj8VT+ycithMiWLleyv/QDLYoZJgpEyxgh0JLLvKN1vygQh1DbuRbSQDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956012; c=relaxed/simple;
-	bh=wetrCDqJGvIH92Pvp8JjuaGrJyHanP/jlxl573ziXoM=;
+	s=arc-20240116; t=1739956027; c=relaxed/simple;
+	bh=EodkXTcDnDXzk4fhYSzvAERU0sVJXX282TCcouF8KfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EarGCxGPVnwOuKETN1U4HyS83QKnlhyV2Nw/ljAb5t7dGTxBQx+A6mVSPtGvFFINzA7xK8zWD4tdb5ERkmaxhydfaIPaYd4BdlA0U1IC5DZ8h4TDGOFyR0e3fVvt8ATpxi/sk5Va2KQXFZDSTNJZ544YsKN7mWajmdqzf9PmgQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCYXnt9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32F8C4CED1;
-	Wed, 19 Feb 2025 09:06:51 +0000 (UTC)
+	 MIME-Version; b=gkek4z2gKkyk2xv3yXFq6nRj/SnGtcQ755q5M48QyK0CpS73B/JEeTaeqdrJJg74aawpq1Av7wf+kY9ZQOewkO88e2fBDKPkXWp2lg3QK6eZ/lKv0Qnhvwjw4pI5njXCyKZABD9sWT0OwCRdTFoOAwaE6p+hdx6CMpO3j2my0kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFzGWttN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640D8C4CED1;
+	Wed, 19 Feb 2025 09:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956012;
-	bh=wetrCDqJGvIH92Pvp8JjuaGrJyHanP/jlxl573ziXoM=;
+	s=korg; t=1739956026;
+	bh=EodkXTcDnDXzk4fhYSzvAERU0sVJXX282TCcouF8KfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCYXnt9yqbHbsRwXRP4d+DBDlwvM11+DulczKJHOZnrFFuzJLUoNZ+D8aB/WOEZH5
-	 KsjcQSenCXaSuIpLSS93PJwfuafIO1fvpcSAPT0jqissw2Epo2kToh7kPhDcrEwgcw
-	 DAIPQd+DH1aMEXy7a8oyobl6wx9ZvA/j8m4++7p8=
+	b=AFzGWttNeIpIiv4EP+PrgL5Gqx1b5SC+oy2kTxyGXLpIOD8A01oqWjiMhOgkA7GK/
+	 N+ZyVpwD5sFaDVJjT2WXZQ7Uja+FFYqwt2hl0oNGS+/3pNya7L2iPhL92RKzQaQluN
+	 tRsKdDYuMjXTa9BNtruzeuoOI72puaeIDIRTLtiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/578] nvme: Add error check for xa_store in nvme_get_effects_log
-Date: Wed, 19 Feb 2025 09:20:12 +0100
-Message-ID: <20250219082653.224654434@linuxfoundation.org>
+Subject: [PATCH 6.1 009/578] selftests/powerpc: Fix argument order to timer_sub()
+Date: Wed, 19 Feb 2025 09:20:13 +0100
+Message-ID: <20250219082653.262759536@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -68,50 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit ac32057acc7f3d7a238dafaa9b2aa2bc9750080e ]
+[ Upstream commit 2bf66e66d2e6feece6175ec09ec590a0a8563bdd ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index csi is already used. This fix adds an
-error check of the return value of xa_store() in nvme_get_effects_log().
+Commit c814bf958926 ("powerpc/selftests: Use timersub() for
+gettimeofday()"), got the order of arguments to timersub() wrong,
+leading to a negative time delta being reported, eg:
 
-Fixes: 1cf7a12e09aa ("nvme: use an xarray to lookup the Commands Supported and Effects log")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+  test: gettimeofday
+  tags: git_version:v6.12-rc5-409-gdddf291c3030
+  time = -3.297781
+  success: gettimeofday
+
+The correct order is minuend, subtrahend, which in this case is end,
+start. Which gives:
+
+  test: gettimeofday
+  tags: git_version:v6.12-rc5-409-gdddf291c3030-dirty
+  time = 3.300650
+  success: gettimeofday
+
+Fixes: c814bf958926 ("powerpc/selftests: Use timersub() for gettimeofday()")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241218114347.428108-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/powerpc/benchmarks/gettimeofday.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 92ffeb6605618..abca395385b2e 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3099,7 +3099,7 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
- static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 				struct nvme_effects_log **log)
- {
--	struct nvme_effects_log	*cel = xa_load(&ctrl->cels, csi);
-+	struct nvme_effects_log *old, *cel = xa_load(&ctrl->cels, csi);
- 	int ret;
- 
- 	if (cel)
-@@ -3116,7 +3116,11 @@ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 		return ret;
+diff --git a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
+index 580fcac0a09f3..b71ef8a493ed1 100644
+--- a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
++++ b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
+@@ -20,7 +20,7 @@ static int test_gettimeofday(void)
+ 		gettimeofday(&tv_end, NULL);
  	}
  
--	xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	old = xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	if (xa_is_err(old)) {
-+		kfree(cel);
-+		return xa_err(old);
-+	}
- out:
- 	*log = cel;
- 	return 0;
+-	timersub(&tv_start, &tv_end, &tv_diff);
++	timersub(&tv_end, &tv_start, &tv_diff);
+ 
+ 	printf("time = %.6f\n", tv_diff.tv_sec + (tv_diff.tv_usec) * 1e-6);
+ 
 -- 
 2.39.5
 
