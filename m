@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B524A3B5A4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC924A3B45D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7AA4189CC91
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36553AA899
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9461EFF9B;
-	Wed, 19 Feb 2025 08:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB001DE2C4;
+	Wed, 19 Feb 2025 08:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybtlBYB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE9273zM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDEA1EFFBF;
-	Wed, 19 Feb 2025 08:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AB51DE2B5;
+	Wed, 19 Feb 2025 08:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954749; cv=none; b=JqpCRltrKC+meFRqsmgKkHcO7MbFSZnQMNCk04azt46Hj5z6Bpyip4TEeBNIG4LcY9i/vglOMs4S7a2t4moOpM2mPmsjbp0Rf37TfO5syaGWhJaZoJtPqHMpWDDFRrcuYXUum0vdKzE2asBg0QEooQXSJuTx6ypTBMizKNzo87U=
+	t=1739954015; cv=none; b=LHhT4uylgA98FVaMmt6MLg4j3PM3v6BBpFVWmFZK7h4RZjKiC3Biy9M18xanGPeozfg5PFJkBV6Un7lXmPtM4tZm9OTRbxXawqYxkTIwyFYqnyduGFaIla0Zhw7L1ui6z81K9RNvOVvO6M9bpmj5pxJimopVESI+K6XwSqgl/z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954749; c=relaxed/simple;
-	bh=POdKMBjTUJ+Eu0/pQ8VJi0ZUulq90hkDQ53uKgd6DPA=;
+	s=arc-20240116; t=1739954015; c=relaxed/simple;
+	bh=5rSjT0VbXrwEFUka6MvHc2QYMmTdzi9XH3Nv4CDVM04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm2kxmnefjtubFdq7UXMseHqwD2PupvOC8w4kUf+UjXejSGi73uqA6Ze5PG9zmlhtSmYVO7J+LWLdqn1sVR7unf1Huge3bW+EmPvL2+Q7K9fi9OvJZnb9qBSCbUTt8BmeX3x4EutBsn0r96zpuwmeAV7x9WbU4TgUbn/YHboeUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybtlBYB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEAAC4CEE7;
-	Wed, 19 Feb 2025 08:45:48 +0000 (UTC)
+	 MIME-Version; b=PJS5GfHRU15lBdn6YYxkKruhF3ths52EjszgIOS0YERjNGBAb4/ihC0mgPEfi/ImWfFyATdg1NDD/gYYsSLPtfSk7GYH8MaMj9sjpOHjyN5hF9jKLETtQ30fAbouud8bv/7O8bTTzJeyIC6MynL13nqCRY1z/3e1hE3SABC0bqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE9273zM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DDBC4CEE8;
+	Wed, 19 Feb 2025 08:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954748;
-	bh=POdKMBjTUJ+Eu0/pQ8VJi0ZUulq90hkDQ53uKgd6DPA=;
+	s=korg; t=1739954013;
+	bh=5rSjT0VbXrwEFUka6MvHc2QYMmTdzi9XH3Nv4CDVM04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybtlBYB5QNKs/Lu3PFsdkPuZDCR6zDzR43ONf3ppvNIW6Q9dAbmFQB1f9NhWjdnAt
-	 diizfeoYjY00R53BlRNDQ5700xeh//1FPtgl3IBKIkdLc6rNE7yqB71TC1+GwnomvF
-	 MRbkaW1aLzYwOnz/f2T5d2ccwp9HwN19FbBlinV0=
+	b=tE9273zMSe667xYv9KsrxVVPbYIBgr8XjoUODjgxJSWjLnmqHEM4lRrOS7TP3mXnK
+	 habGAersZaWxE2gwJoENaG2zPHFGYjUpdbjVzSfm7ZWMPuMLJYEnZY+d8Ze+kT8hDH
+	 tr3tRHkIFWO1H9V20cyPELwIajcQanlq6sGriFyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 003/230] nfsd: validate the nfsd_serv pointer before calling svc_wake_up
-Date: Wed, 19 Feb 2025 09:25:20 +0100
-Message-ID: <20250219082601.826478928@linuxfoundation.org>
+	Hamish McIntyre-Bhatty <kernel-bugzilla@regd.hamishmb.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 067/274] iommu/amd: Expicitly enable CNTRL.EPHEn bit in resume path
+Date: Wed, 19 Feb 2025 09:25:21 +0100
+Message-ID: <20250219082612.245355059@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-commit b9382e29ca538b879645899ce45d652a304e2ed2 upstream.
+[ Upstream commit ef75966abf950c0539534effa4960caa29fb7167 ]
 
-nfsd_file_dispose_list_delayed can be called from the filecache
-laundrette, which is shut down after the nfsd threads are shut down and
-the nfsd_serv pointer is cleared. If nn->nfsd_serv is NULL then there
-are no threads to wake.
+With recent kernel, AMDGPU failed to resume after suspend on certain laptop.
 
-Ensure that the nn->nfsd_serv pointer is non-NULL before calling
-svc_wake_up in nfsd_file_dispose_list_delayed. This is safe since the
-svc_serv is not freed until after the filecache laundrette is cancelled.
+Sample log:
+-----------
+Nov 14 11:52:19 Thinkbook kernel: iommu ivhd0: AMD-Vi: Event logged [ILLEGAL_DEV_TABLE_ENTRY device=0000:06:00.0 pasid=0x00000 address=0x135300000 flags=0x0080]
+Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[0]: 7d90000000000003
+Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[1]: 0000100103fc0009
+Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[2]: 2000000117840013
+Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[3]: 0000000000000000
 
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Closes: https://bugs.debian.org/1093734
-Fixes: ffb402596147 ("nfsd: Don't leave work of closing files to a work queue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because in resume path, CNTRL[EPHEn] is not set. Fix this by
+setting CNTRL[EPHEn] to 1 in resume path if EFR[EPHSUP] is set.
+
+Note
+  May be better approach is to save the control register in suspend path
+  and restore it in resume path instead of trying to set indivisual
+  bits. We will have separate patch for that.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219499
+Fixes: c4cb23111103 ("iommu/amd: Add support for enable/disable IOPF")
+Tested-by: Hamish McIntyre-Bhatty <kernel-bugzilla@regd.hamishmb.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20250127094411.5931-1-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/iommu/amd/amd_iommu_types.h | 1 +
+ drivers/iommu/amd/init.c            | 4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -445,11 +445,20 @@ nfsd_file_dispose_list_delayed(struct li
- 						struct nfsd_file, nf_gc);
- 		struct nfsd_net *nn = net_generic(nf->nf_net, nfsd_net_id);
- 		struct nfsd_fcache_disposal *l = nn->fcache_disposal;
-+		struct svc_serv *serv;
+diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
+index fdb0357e0bb91..903b426c9f893 100644
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -175,6 +175,7 @@
+ #define CONTROL_GAM_EN		25
+ #define CONTROL_GALOG_EN	28
+ #define CONTROL_GAINT_EN	29
++#define CONTROL_EPH_EN		45
+ #define CONTROL_XT_EN		50
+ #define CONTROL_INTCAPXT_EN	51
+ #define CONTROL_IRTCACHEDIS	59
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index db4b52aae1fcf..4c0f876445de1 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2635,6 +2635,10 @@ static void iommu_init_flags(struct amd_iommu *iommu)
  
- 		spin_lock(&l->lock);
- 		list_move_tail(&nf->nf_gc, &l->freeme);
- 		spin_unlock(&l->lock);
--		svc_wake_up(nn->nfsd_serv);
+ 	/* Set IOTLB invalidation timeout to 1s */
+ 	iommu_set_inv_tlb_timeout(iommu, CTRL_INV_TO_1S);
 +
-+		/*
-+		 * The filecache laundrette is shut down after the
-+		 * nn->nfsd_serv pointer is cleared, but before the
-+		 * svc_serv is freed.
-+		 */
-+		serv = nn->nfsd_serv;
-+		if (serv)
-+			svc_wake_up(serv);
- 	}
++	/* Enable Enhanced Peripheral Page Request Handling */
++	if (check_feature(FEATURE_EPHSUP))
++		iommu_feature_enable(iommu, CONTROL_EPH_EN);
  }
  
+ static void iommu_apply_resume_quirks(struct amd_iommu *iommu)
+-- 
+2.39.5
+
 
 
 
