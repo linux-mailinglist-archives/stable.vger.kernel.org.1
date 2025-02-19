@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-118188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97672A3BA6A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4FBA3B6AB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0993B84D6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1D273B4211
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CE21E51F8;
-	Wed, 19 Feb 2025 09:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBA21C701E;
+	Wed, 19 Feb 2025 08:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CU/uQogs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRyRe7RT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DE31E47A5;
-	Wed, 19 Feb 2025 09:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28621EEA2A;
+	Wed, 19 Feb 2025 08:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957488; cv=none; b=RD2udxrhet7mO9knNYM9oJr8dxBGpbO8ZFjs0rqUBvtLmHf51zmrujPMVt3bHW1muKOM57sYsPB0UiTk5hDc1DVh9UGPXpfITJJRRk+xuzg5mPWe4XT9v2q+aryUgszZdGXGChgJcwDkIN4nIadTLi5PENKgvoCaBN/x9uilZKE=
+	t=1739955421; cv=none; b=hKC9d/CYloitxyRXGQTOHJLQE4Fqz/6HiMBPqi8w7BSVu7lExiiXErPNWkU4hoTVTPRVkr3k5MCk8yh/kKlgTyrE6I3NGBud3aciUvuDZUM45nh01pPG+ra3vH/ZN1jAd92F5SIwBdBPe3NmbRzhuHorgLfZUD1Su+xPrbd95qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957488; c=relaxed/simple;
-	bh=nKv56Ils0Y9/D85hEa+B3jlOUWLCtS+koJ99d5uwe8A=;
+	s=arc-20240116; t=1739955421; c=relaxed/simple;
+	bh=qgsTKqmVCT7ZqcAHTR/c/A9f8HkP5hI16QcugY34Fx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8zl7eWE3vZY5okIKLc8p+S79MUUluO9bYYkhATedEZJOKVTQEiBP5p/nFRq9vvmfv6KaX6bGPOz6zbpLwaHCduOPGZfvwJrnx0FX5alHvx+MU8oCoeY9Yj34n77PYR8VLneClDzpqJ8q94VakucIdCtRUACXqO2AZ8FdYdKDzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CU/uQogs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D921BC4CED1;
-	Wed, 19 Feb 2025 09:31:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wdugtf2DiJly+77ZxN0wXOT1m14gdKLzrrmQwEyyXXChuhHcD45IHyFoKmRHTlEb6g8UF8VwCjH0flyeDtgOMk0qmfKgyqz1kdsyA6SuK3QGtGLMtyY2amDOUpxGGqr7MG6lyfG6U5+p7yF3P/FUoT43uChE9/VXHz5GazBZRyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRyRe7RT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24140C4CED1;
+	Wed, 19 Feb 2025 08:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957488;
-	bh=nKv56Ils0Y9/D85hEa+B3jlOUWLCtS+koJ99d5uwe8A=;
+	s=korg; t=1739955421;
+	bh=qgsTKqmVCT7ZqcAHTR/c/A9f8HkP5hI16QcugY34Fx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CU/uQogstSEM0bIrAh3digX0q+3re4g2fqU0uyodbO9JI6h6Sxs4w5ApnFsSAoz2t
-	 ZM4qBWTtG5a/kuc6KxRguEyCauclV7pm6CxHZqhkXzxwNUkvwNGnwpmh68YSsfBdJm
-	 6BHcXwUu5OmZX7OzwX4aUAVhRLPFDEGVTbQeM6J8=
+	b=FRyRe7RT92qgu8S6H3SdpUcOUi+ilNCkQjckstXDGnFJOkmqhCpL/iU5V5maes2vl
+	 J0CXCgbpr10XLNNIL86EbjyqCJBLOIIq6C6HXrCG64Lmr0not3UQVqv2x5ergCrlFO
+	 3m8jmgAS7F4WnVr3aw+o4wsqsWH5Hkbq559FEgfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 543/578] ipv4: use RCU protection in inet_select_addr()
+	=?UTF-8?q?Stefan=20N=C3=BCrnberger?= <stefan.nuernberger@cyberus-technology.de>
+Subject: [PATCH 6.12 230/230] Revert "vfio/platform: check the bounds of read/write syscalls"
 Date: Wed, 19 Feb 2025 09:29:07 +0100
-Message-ID: <20250219082714.329470880@linuxfoundation.org>
+Message-ID: <20250219082610.679699587@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 719817cd293e4fa389e1f69c396f3f816ed5aa41 ]
+This reverts commit 61ba518195d61c38c6cb86f83135e51f93735442.
 
-inet_select_addr() must use RCU protection to make
-sure the net structure it reads does not disappear.
+It had been committed multiple times to the tree, and isn't needed
+again.
 
-Fixes: c4544c724322 ("[NETNS]: Process inet_select_addr inside a namespace.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/a082db2605514513a0a8568382d5bd2b6f1877a0.camel@cyberus-technology.de
+Reported-by: Stefan Nürnberger <stefan.nuernberger@cyberus-technology.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/devinet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 430ca93ba939d..1738cc2bfc7f0 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -1320,10 +1320,11 @@ __be32 inet_select_addr(const struct net_device *dev, __be32 dst, int scope)
- 	__be32 addr = 0;
- 	unsigned char localnet_scope = RT_SCOPE_HOST;
- 	struct in_device *in_dev;
--	struct net *net = dev_net(dev);
-+	struct net *net;
- 	int master_idx;
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -393,11 +393,6 @@ static ssize_t vfio_platform_read_mmio(s
  
- 	rcu_read_lock();
-+	net = dev_net_rcu(dev);
- 	in_dev = __in_dev_get_rcu(dev);
- 	if (!in_dev)
- 		goto no_in_dev;
--- 
-2.39.5
-
+ 	count = min_t(size_t, count, reg->size - off);
+ 
+-	if (off >= reg->size)
+-		return -EINVAL;
+-
+-	count = min_t(size_t, count, reg->size - off);
+-
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -479,11 +474,6 @@ static ssize_t vfio_platform_write_mmio(
+ 
+ 	if (off >= reg->size)
+ 		return -EINVAL;
+-
+-	count = min_t(size_t, count, reg->size - off);
+-
+-	if (off >= reg->size)
+-		return -EINVAL;
+ 
+ 	count = min_t(size_t, count, reg->size - off);
+ 
 
 
 
