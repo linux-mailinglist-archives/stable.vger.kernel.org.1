@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B31A3B7F5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:20:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B4EA3B7B2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B93F7188C171
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33B527A83D6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFF11DF254;
-	Wed, 19 Feb 2025 09:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606FA1DF251;
+	Wed, 19 Feb 2025 09:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTZF5QLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYGO+n0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593F71DEFF3;
-	Wed, 19 Feb 2025 09:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5591D6DB1;
+	Wed, 19 Feb 2025 09:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956211; cv=none; b=pMK96tOgBHzdm+UazyJn04U1sDWDuSf6qOIwuLS5Q2H5SyvvMe+hMyqB+NT8+IijSJ9/ASHR3qoBgngODD/MNChOOAUxaqywHlt+y78SUUNy680ak5upyN5Pm4S6jhIo9oF1P3vlBebSreCKvG1X7z8s42P0JmNSvyNHIaAyhFU=
+	t=1739956218; cv=none; b=kofqEPZ/XsJHUPMpw73H7vQZr/QfoAOpQjgxPSXtW+gyufWj+IBf7+To28XNpwslvuqGuvJwZOkvFPdJuMX5MMhDBzQzocmhf2e184swpZWVkbV5WUZ6v9TQrzkFoOSqm4EK0QXqZpAKWCx3WcBVr73AF9BnGoXGKAa0uxchGdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956211; c=relaxed/simple;
-	bh=hkT1KN0+Lq+29EiMjBqMEbPtWmkgBKAAQ1yim52IDI0=;
+	s=arc-20240116; t=1739956218; c=relaxed/simple;
+	bh=nZisILbqVzXQVekr06YZPeiKdurobpSgxbYA63uqn0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FG2FEELfWw3L8LRK7Wu093zApyRsUSGrfz3TLc2L3SIsqBWA4bpebwvqM7AvN5kKQqJnIIYEZsl/py8me3qpvISBMelf+VWGDCLPzcTcJy8cpmjgE0c8tyqg6oIeVZxYMX8acNqpmItw+nCqMztddyXRtaXtxJpP7wb4sbD26ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTZF5QLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5D6C4CED1;
-	Wed, 19 Feb 2025 09:10:09 +0000 (UTC)
+	 MIME-Version; b=eTMSABWs3QJz2WRAYSzYTytmSnr7gaMll/f3fU2kpKjOM/eno/5thhZetRESuNUoP+l31tE3J+xSD7wMQZ3Pz4zURY3fQZER7iQMYLWjq5BcUzrbxORpVoNWpB6rVGMyty+uEvPI/yGsGrbhXWDAwQb6MmThlOSk/IuMWQkwMCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYGO+n0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371B8C4CED1;
+	Wed, 19 Feb 2025 09:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956209;
-	bh=hkT1KN0+Lq+29EiMjBqMEbPtWmkgBKAAQ1yim52IDI0=;
+	s=korg; t=1739956215;
+	bh=nZisILbqVzXQVekr06YZPeiKdurobpSgxbYA63uqn0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTZF5QLMLEdmS3muIBkprEZ5niarzn2IGrTsoPa16thH0qlNwAnNPuQPnjilLS9e8
-	 UEDgLj/X6jQ/fFTL5I6nCyV7jrc3AG9jASEhqcCghc/iNJ8iY9Jt8DVkSDmT21AQTt
-	 kQDj9mYjQ/HXEyrx6dRt16zdF+zfCPlEtWuWzpiA=
+	b=NYGO+n0k4Uww2x4enysBogltP+6S83R6+XEA4A/rGU79q/Hql+YIP+I5TiZcXZY8/
+	 mlMGcsdZjgsuJQ6d7Jpsn6c3Gh8G1NC09+AAPLhGyNgqDPhzjhoVbIsAW6S0iimdqi
+	 FezqTd154FS/5tVAdoaRnF0xnUt5eKgrcMrp6SWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Marco Leogrande <leogrande@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/578] libbpf: dont adjust USDT semaphore address if .stapsdt.base addr is missing
-Date: Wed, 19 Feb 2025 09:21:46 +0100
-Message-ID: <20250219082656.978617985@linuxfoundation.org>
+Subject: [PATCH 6.1 103/578] tools/testing/selftests/bpf/test_tc_tunnel.sh: Fix wait for server bind
+Date: Wed, 19 Feb 2025 09:21:47 +0100
+Message-ID: <20250219082657.019592928@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,44 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Marco Leogrande <leogrande@google.com>
 
-[ Upstream commit 98ebe5ef6f5c4517ba92fb3e56f95827ebea83fd ]
+[ Upstream commit e2f0791124a1b6ca8d570110cbd487969d9d41ef ]
 
-USDT ELF note optionally can record an offset of .stapsdt.base, which is
-used to make adjustments to USDT target attach address. Currently,
-libbpf will do this address adjustment unconditionally if it finds
-.stapsdt.base ELF section in target binary. But there is a corner case
-where .stapsdt.base ELF section is present, but specific USDT note
-doesn't reference it. In such case, libbpf will basically just add base
-address and end up with absolutely incorrect USDT target address.
+Commit f803bcf9208a ("selftests/bpf: Prevent client connect before
+server bind in test_tc_tunnel.sh") added code that waits for the
+netcat server to start before the netcat client attempts to connect to
+it. However, not all calls to 'server_listen' were guarded.
 
-This adjustment has to be done only if both .stapsdt.sema section is
-present and USDT note is recording a reference to it.
+This patch adds the existing 'wait_for_port' guard after the remaining
+call to 'server_listen'.
 
-Fixes: 74cc6311cec9 ("libbpf: Add USDT notes parsing and resolution logic")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20241121224558.796110-1-andrii@kernel.org
+Fixes: f803bcf9208a ("selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh")
+Signed-off-by: Marco Leogrande <leogrande@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/r/20241202204530.1143448-1-leogrande@google.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/usdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
-index af1cb30556b46..b8e83712a5d72 100644
---- a/tools/lib/bpf/usdt.c
-+++ b/tools/lib/bpf/usdt.c
-@@ -653,7 +653,7 @@ static int collect_usdt_targets(struct usdt_manager *man, Elf *elf, const char *
- 		 *   [0] https://sourceware.org/systemtap/wiki/UserSpaceProbeImplementation
- 		 */
- 		usdt_abs_ip = note.loc_addr;
--		if (base_addr)
-+		if (base_addr && note.base_addr)
- 			usdt_abs_ip += base_addr - note.base_addr;
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 365a2c7a89bad..8766e88b5a407 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -296,6 +296,7 @@ else
+ 	client_connect
+ 	verify_data
+ 	server_listen
++	wait_for_port ${port} ${netcat_opt}
+ fi
  
- 		/* When attaching uprobes (which is what USDTs basically are)
+ # bpf_skb_net_shrink does not take tunnel flags yet, cannot update L3.
 -- 
 2.39.5
 
