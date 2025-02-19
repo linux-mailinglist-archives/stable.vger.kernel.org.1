@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD7EA3B71F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8449BA3BA21
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 931CC3B6F0A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C289F189159F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83661D6DB5;
-	Wed, 19 Feb 2025 08:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8A91C6FE7;
+	Wed, 19 Feb 2025 09:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN4P20Wq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyOd0Hzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CEC1C4609;
-	Wed, 19 Feb 2025 08:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD6D2AE74;
+	Wed, 19 Feb 2025 09:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955443; cv=none; b=TrMaXzEig7DQ+6b/fpJaFotYtoc9YlsRVBMj/tBqDL3dlwfGAdOrBTwRgqua600AeSvYhnvxRQnMClAn4yZV/+SiPq8+bSkBCyoJZ+am+Ocyz2wqo6XF/baw/yGc4D7WTiY2o46idwuGzcAFHjKrjHEBrKxV9gq7fnuYwqKJplE=
+	t=1739957393; cv=none; b=l273LIG35VRXnhmv9ylOREA1ZEQCTx5+hQdHhSfQbqb3XPnvdX337GoJCfNAEoWQlpcGnivA3ByoF8npdXhUkvofoO3mrnlm750iHZJukqdGpBy5PB6qL4cQ5J8AO2mkQS7ZlCk+WCuBcui6qQGRkYShNO/4PntqwT1kmRuhW2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955443; c=relaxed/simple;
-	bh=aQ4GRJzQ7SZSiH/d4BG/FB3yOV5Vdy3lBBwzFfW6v6o=;
+	s=arc-20240116; t=1739957393; c=relaxed/simple;
+	bh=A3ApIVLF/m6na6D8MPFHGBconhEnMSJ8l9sGsHIkxIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9Ry1kNj3n6EKmsLdI07JAniodKsDakC7a4gyr/dZx5J7yw5xuVkHHtd2+S7ZM7RbH+3VWQMikUKi60uZfgcTZFxSZIVijDHgc0rXUnB1eQ+HEx2uilKLJNVY01MtZXMvpY7RwKtn8YaU/zarTKm/qut897EgOc5J7EdMQ1q1Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN4P20Wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAECEC4CED1;
-	Wed, 19 Feb 2025 08:57:22 +0000 (UTC)
+	 MIME-Version; b=Og8L33XpNoeKqdY2phDuKPtDZVlsEJu6tMdJ4fuiFNZsMvxb2QWncebxu4h51N9yBcMMaf8CkELTmSY9HWYnNgocEArM9HBbSkdzg3JSjQpq7Zau/du/+OTZtnFUtFs/NXswYNBseHVHPJ/1zYSeCnmgV7Egp6gk7AvG7oOSZBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyOd0Hzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217A2C4CED1;
+	Wed, 19 Feb 2025 09:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955443;
-	bh=aQ4GRJzQ7SZSiH/d4BG/FB3yOV5Vdy3lBBwzFfW6v6o=;
+	s=korg; t=1739957393;
+	bh=A3ApIVLF/m6na6D8MPFHGBconhEnMSJ8l9sGsHIkxIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dN4P20WqddQWNFQZyLXyP4g0fUGN8EKYtYyyu+6JQe0j3m+7gWujhZ1ianCrq8WeY
-	 Dl4HUvsxsUTF0ip4J7W3/GNnLd8u5z8V0ZqDED7jp+RdJAoY/wFFg8oyxiFRGhLDCQ
-	 Iq21/wZSUW3y+sv9+ziTrWKGddmM7nHD2w+l9Wq4=
+	b=TyOd0Hzn3RiuWV6E2gi9T2eEp/uKpvL9aTO3Dy5ybAPEuXavGN/MhScpRGvqJeWzB
+	 c/ngZD1biaLljYDYGnhD9vLwmEG2+h1su2OHe33HIK7QQjH/J3EpBi6yL64lCFg1BS
+	 xfYjh7LrF2IXbbrXdQN49IDKaHTje6nklNFJTJAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/230] ndisc: use RCU protection in ndisc_alloc_skb()
-Date: Wed, 19 Feb 2025 09:28:33 +0100
-Message-ID: <20250219082609.364657813@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Forest <forestix@nom.one>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 510/578] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+Date: Wed, 19 Feb 2025 09:28:34 +0100
+Message-ID: <20250219082713.046576474@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 628e6d18930bbd21f2d4562228afe27694f66da9 ]
+commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
 
-ndisc_alloc_skb() can be called without RTNL or RCU being held.
+The fastboot tool for communicating with Android bootloaders does not
+work reliably with this device if USB 2 Link Power Management (LPM)
+is enabled.
 
-Add RCU protection to avoid possible UAF.
+Various fastboot commands are affected, including the
+following, which usually reproduces the problem within two tries:
 
-Fixes: de09334b9326 ("ndisc: Introduce ndisc_alloc_skb() helper.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  fastboot getvar kernel
+  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+
+This issue was hidden on many systems up until commit 63a1f8454962
+("xhci: stored cached port capability values in one place") as the xhci
+driver failed to detect USB 2 LPM support if USB 3 ports were listed
+before USB 2 ports in the "supported protocol capabilities".
+
+Adding the quirk resolves the issue. No drawbacks are expected since
+the device uses different USB product IDs outside of fastboot mode, and
+since fastboot commands worked before, until LPM was enabled on the
+tested system by the aforementioned commit.
+
+Based on a patch from Forest <forestix@nom.one> from which most of the
+code and commit message is taken.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Forest <forestix@nom.one>
+Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
+Tested-by: Forest <forestix@nom.one>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ndisc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 264b10a947577..90f8aa2d7af2e 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -418,15 +418,11 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
- {
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	struct sock *sk = dev_net(dev)->ipv6.ndisc_sk;
- 	struct sk_buff *skb;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -432,6 +432,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
+ 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
  
- 	skb = alloc_skb(hlen + sizeof(struct ipv6hdr) + len + tlen, GFP_ATOMIC);
--	if (!skb) {
--		ND_PRINTK(0, err, "ndisc: %s failed to allocate an skb\n",
--			  __func__);
-+	if (!skb)
- 		return NULL;
--	}
- 
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
-@@ -437,7 +433,9 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
- 	/* Manually assign socket ownership as we avoid calling
- 	 * sock_alloc_send_pskb() to bypass wmem buffer limits
- 	 */
--	skb_set_owner_w(skb, sk);
-+	rcu_read_lock();
-+	skb_set_owner_w(skb, dev_net_rcu(dev)->ipv6.ndisc_sk);
-+	rcu_read_unlock();
- 
- 	return skb;
- }
--- 
-2.39.5
-
++	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
++	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Action Semiconductor flash disk */
+ 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
+ 			USB_QUIRK_STRING_FETCH_255 },
 
 
 
