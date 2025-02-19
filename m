@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-117545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1AAA3B7A3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F54BA3B730
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642313BE1A4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64C2617D9E7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51491C4A20;
-	Wed, 19 Feb 2025 09:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6F21E3DC9;
+	Wed, 19 Feb 2025 09:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKeQeDHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1030s2l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921FA1B4F21;
-	Wed, 19 Feb 2025 09:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5331BEF71;
+	Wed, 19 Feb 2025 09:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955616; cv=none; b=XRLLXwIlzftT3uHthdwyBmrWHaU+u1m7sf+tnRiiEf9g0nKNR/XtNkTdhCBe+Ys+w1n1ZAaudDlZaS+ZyBEU4r7a+mEWTzsLzRNafV+SQMSeFW80q8xXnht7i6s58SBMUuGAiPRWTunYStolGKXZjJwJrHBcTYq5/n9Ef5B3hhw=
+	t=1739955756; cv=none; b=pQk5x54HysUgGsvNDp/xeVn49s54fmu8dV4PzT86n5GgGk0W+lIUG8tXRh+bqiSYZtUR+lJvT8TcZyoMveZPox/Vl8SAwiBQIEdff1rz0xBPrN1agaLJqK8J83w5gV/Cx1Uz7Df7T5uAZZTgko/6hFcg5aTjV8MQQdXYK3yvQ6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955616; c=relaxed/simple;
-	bh=djB94WU2n0ifvJ1hG18QoDDVCx/ucPMEefk3xbeqIxo=;
+	s=arc-20240116; t=1739955756; c=relaxed/simple;
+	bh=YffarnCP/R3Km7CWnr6xvNvgK41jgJEZGGPOhpNTMgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0ZJJHLu3t6lm+1FNEagJyZ7m/qCJSJrE8HHT5oblYkDiO0llcj9lvIvAVGhMO4wxplEqkEhmLOmT0DEm1yj8KwNZaYzY0G1Sk+ZUjLoocPbLzMS+ycpLsf+7gQKKfe1gkNhGoIvV3GvIeuZGqyoSZTFpkLm0JR7HGjppREplJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKeQeDHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10987C4CED1;
-	Wed, 19 Feb 2025 09:00:15 +0000 (UTC)
+	 MIME-Version; b=j3bIveL8lxeGe7a3d7vt7gmRqIdjkybJ6PR5eTz1Eb0xxF7JpBjNv/X8nalEVJ/hZHc4r7AdSCZDeZRssFj63Wb3HlY7chHa3GZw5L1ZAZrlF/2iElnxFRycnK7r9JcVe1lojUeVq1oiufRMXY8tI/Rv50JylLb751GwyNk9cxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1030s2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA03C4CEE6;
+	Wed, 19 Feb 2025 09:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955616;
-	bh=djB94WU2n0ifvJ1hG18QoDDVCx/ucPMEefk3xbeqIxo=;
+	s=korg; t=1739955755;
+	bh=YffarnCP/R3Km7CWnr6xvNvgK41jgJEZGGPOhpNTMgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKeQeDHMREHlOVuoL9ktibaSy8aOvNwYyJsKL+eW/nip4Fi1Bl5elOIQz6Uq+yReN
-	 Bnmu9/JePqJiH0Usa2usJODqEbB/UCBZK8pz+usc+XhVUpXuBGECo3SI27hKzFXSDj
-	 e+/BMXIa/CYOxakQh5K1CRqtuFAIVEN8u0v/cD1E=
+	b=m1030s2lWotQQ7ySJtyUImcAvMjKwyFTb+q4f0Iwnp/RBVMwGmCKqnXLWzowHucS7
+	 kcSQ46OhpFpWEw/AVGV4qA5mle+mN3fmnGqzkjkEFoJO5lZRZSbWyZf+5oyMP5afqb
+	 v4hNs/f0KcK+2mDoA0k4FuZU3Y4qVXaqW5Gmx06g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: [PATCH 6.6 060/152] usb: dwc2: gadget: remove of_node reference upon udc_stop
-Date: Wed, 19 Feb 2025 09:27:53 +0100
-Message-ID: <20250219082552.419218607@linuxfoundation.org>
+	Baoqi Zhang <zhangbaoqi@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 061/152] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
+Date: Wed, 19 Feb 2025 09:27:54 +0100
+Message-ID: <20250219082552.459228307@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
 References: <20250219082550.014812078@linuxfoundation.org>
@@ -65,52 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 58cd423820d5b5610977e55e4acdd06628829ede upstream.
+commit e71f7f42e3c874ac3314b8f250e8416a706165af upstream.
 
-In dwc2_hsotg_udc_start(), e.g. when binding composite driver, "of_node"
-is set to hsotg->dev->of_node.
+LS7A EHCI controller doesn't have extended capabilities, so the EECP
+(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
+be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
+fixed in future, now just clear the EECP field to avoid error messages
+on boot:
 
-It causes errors when binding the gadget driver several times, on
-stm32mp157c-ev1 board. Below error is seen:
-"pin PA10 already requested by 49000000.usb-otg; cannot claim for gadget.0"
+......
+[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
+......
+[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
+......
 
-The first time, no issue is seen as when registering the driver, of_node
-isn't NULL:
--> gadget_dev_desc_UDC_store
-  -> usb_gadget_register_driver_owner
-    -> driver_register
-    ...
-      -> really_probe -> pinctrl_bind_pins (no effect)
-
-Then dwc2_hsotg_udc_start() sets of_node.
-
-The second time (stop the gadget, reconfigure it, then start it again),
-of_node has been set, so the probing code tries to acquire pins for the
-gadget. These pins are hold by the controller, hence the error.
-
-So clear gadget.dev.of_node in udc_stop() routine to avoid the issue.
-
-Fixes: 7d7b22928b90 ("usb: gadget: s3c-hsotg: Propagate devicetree to gadget drivers")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250124173325.2747710-1-fabrice.gasnier@foss.st.com
+Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250202124935.480500-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/gadget.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/pci-quirks.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -4612,6 +4612,7 @@ static int dwc2_hsotg_udc_stop(struct us
- 	spin_lock_irqsave(&hsotg->lock, flags);
- 
- 	hsotg->driver = NULL;
-+	hsotg->gadget.dev.of_node = NULL;
- 	hsotg->gadget.speed = USB_SPEED_UNKNOWN;
- 	hsotg->enabled = 0;
- 
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -946,6 +946,15 @@ static void quirk_usb_disable_ehci(struc
+ 	 * booting from USB disk or using a usb keyboard
+ 	 */
+ 	hcc_params = readl(base + EHCI_HCC_PARAMS);
++
++	/* LS7A EHCI controller doesn't have extended capabilities, the
++	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
++	 * register should be 0x0 but it reads as 0xa0.  So clear it to
++	 * avoid error messages on boot.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
++		hcc_params &= ~(0xffL << 8);
++
+ 	offset = (hcc_params >> 8) & 0xff;
+ 	while (offset && --count) {
+ 		pci_read_config_dword(pdev, offset, &cap);
 
 
 
