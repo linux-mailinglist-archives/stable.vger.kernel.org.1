@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E9CA3B650
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B8EA3B77D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64C9B1887FB5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EC1E17CEB5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566011E0DE2;
-	Wed, 19 Feb 2025 08:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28201E0B74;
+	Wed, 19 Feb 2025 09:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8kL3Fff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlCENHTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143561E0DD0;
-	Wed, 19 Feb 2025 08:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7BF1E0084;
+	Wed, 19 Feb 2025 09:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955180; cv=none; b=PMBPHCdniVVCgxf6nhXEjwJ+ao3fGbPpmb3qpg6WehMoKs5qSNW1sqGRzAbfECWsTlOQj8r7QYpp3sRB0qnnvCBghM54txKP//nXw00KdVpRYEZO7WaA5YDh17fr6c6rPnj5zlxSv+IKFuFEJA8YWnmLKQKMrJxZ7otN9yLBKyQ=
+	t=1739955631; cv=none; b=ikYd42ndN22uiLvWa8FKBNk4EM4BPsIJR8gaPyeLKf9meznKzNeYrxfxp/nx5wPNf9IFlryvjJrcUSLNzQqfsG1PyJglWCdaG+CMa912Th4LH/mYCd667ifUjaFOeSaCNqdaMY5SC8kEfSpeeHb4rvpmf9tD+Q6eWAZFVS0UiDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955180; c=relaxed/simple;
-	bh=FCwyM+q1SaYBTTX3gXgB1p5+pZHzHHdPg9YcnIubNI0=;
+	s=arc-20240116; t=1739955631; c=relaxed/simple;
+	bh=T5HstHVP/vt8WjW7s65tnTz50QFlVKQvmoxbudKqPbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPUMK/aKMVlnW46XrH9Maf39bW+sl7lnr91uOwhbQXVPmqIlhzql/nvPR07J8RZGPlFCGAc3aherSQQmj/r2StltXYoquFCAWcmEKmiOx/T658LWbdM5chb6DB4L0i58RP0hmE4mzq8XvVVIJwMS+ZsR75s5Ytp6PjzJnps4qH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8kL3Fff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C2FC4CED1;
-	Wed, 19 Feb 2025 08:52:59 +0000 (UTC)
+	 MIME-Version; b=n0yrNcs67Jl/0l17FNcUpqQlRpBlYgie8E/XwKOxQtoFgQzsokFwPZPsRqi3qzkK8Lvqu9/FYmlvRGZTwML070b9skC91s+U2unavBcIEklCf/46aJReyeMcBG/K8St2MXPprY3zy26Utle61DVf4O+7ZORgoO0dVp3m65L+URE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlCENHTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334A0C4CED1;
+	Wed, 19 Feb 2025 09:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955180;
-	bh=FCwyM+q1SaYBTTX3gXgB1p5+pZHzHHdPg9YcnIubNI0=;
+	s=korg; t=1739955631;
+	bh=T5HstHVP/vt8WjW7s65tnTz50QFlVKQvmoxbudKqPbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8kL3FffLTu36+QsryZpCnNwMNXIasIfzjUsINZ8k29Ab2yXashOt0k1kMI5qbU+o
-	 KGGYrhHJsW8K8jCOQMFArVWeqP4+LjJj07O3sfDa0LuAjKfivEmQyOswWX7sdN+zFf
-	 45I6xYGaIOrYxWL45DgqWMlpRSqv/gIdF2SmbYhE=
+	b=PlCENHTe6Yht/1vQz/caqzgyP97esEKixINXCmDXj7Wpgag12nnJ1Apecqydt1sEb
+	 XiFTHG46vIf9fHdcFyCCUO9lkV/BPD1m0vOBtooI/+0V4QWalxivado0pSZ4bS6wJC
+	 pg5Zjnw8D2FRnlav2u769FSl2rTYlbiGhxNdaWJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 130/230] can: c_can: fix unbalanced runtime PM disable in error path
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/152] media: uvcvideo: Add Kurokesu C1 PRO camera
 Date: Wed, 19 Feb 2025 09:27:27 +0100
-Message-ID: <20250219082606.771771714@linuxfoundation.org>
+Message-ID: <20250219082551.388809299@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Isaac Scott <isaac.scott@ideasonboard.com>
 
-commit 257a2cd3eb578ee63d6bf90475dc4f4b16984139 upstream.
+[ Upstream commit 2762eab6d4140781840f253f9a04b8627017248b ]
 
-Runtime PM is enabled as one of the last steps of probe(), so all
-earlier gotos to "exit_free_device" label were not correct and were
-leading to unbalanced runtime PM disable depth.
+Add support for the Kurokesu C1 PRO camera. This camera experiences the
+same issues faced by the Sonix Technology Co. 292A IPC AR0330. As such,
+enable the UVC_QUIRK_MJPEG_NO_EOF quirk for this device to prevent
+frames from being erroneously dropped.
 
-Fixes: 6e2fe01dd6f9 ("can: c_can: move runtime PM enable/disable to c_can_platform")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250112-syscon-phandle-args-can-v1-1-314d9549906f@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_platform.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -385,15 +385,16 @@ static int c_can_plat_probe(struct platf
- 	if (ret) {
- 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
- 			KBUILD_MODNAME, ret);
--		goto exit_free_device;
-+		goto exit_pm_runtime;
- 	}
- 
- 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
- 		 KBUILD_MODNAME, priv->base, dev->irq);
- 	return 0;
- 
--exit_free_device:
-+exit_pm_runtime:
- 	pm_runtime_disable(priv->device);
-+exit_free_device:
- 	free_c_can_dev(dev);
- exit:
- 	dev_err(&pdev->dev, "probe failed\n");
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 1e8a3b069266d..ae2e8bd2b3f73 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2923,6 +2923,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceSubClass	= 1,
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= (kernel_ulong_t)&uvc_quirk_probe_minmax },
++	/* Kurokesu C1 PRO */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x16d0,
++	  .idProduct		= 0x0ed1,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_MJPEG_NO_EOF) },
+ 	/* Syntek (HP Spartan) */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
+-- 
+2.39.5
+
 
 
 
