@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-117125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E984A3B4EA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:49:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC4A3B4E9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87FD5176677
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:43:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEB3B1887704
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156E91EA7DC;
-	Wed, 19 Feb 2025 08:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282A41EB197;
+	Wed, 19 Feb 2025 08:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRXICJHm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKGxPFzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B785C1F2BA7;
-	Wed, 19 Feb 2025 08:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A251EB184;
+	Wed, 19 Feb 2025 08:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954284; cv=none; b=AvD9gwYsO80Dd4MMFnQ5alL47ZA5qFFyJD3GH6SXCLXW4kN9NDeaeKnrJ0/oFTtngw1JcNbdPT3u4aHI5ZBFlu1p8M/R8yTX8nc8R6ScdF4Avnf7dwtylQ2aBoj2YKfBTFuDbdk6Mv2iwlM+nf+S/CL5Rj3SY9JwDl8jAN4x+Xk=
+	t=1739954290; cv=none; b=WmsHjeXZDuLSFtV5F9Qd1yenRlef4cRCmWz68pWFuSNkQYw6yRk2jcsgTLv5SE2ayYDeC98vWCUL/72WdZWbeXskGifvmXWyTCJUYY/l77efzOUj/KsubLwXaQZDExpzmRj0nn+85lAspg8wgZSuhLU51rwHL9fJo/3Pgbv6M18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954284; c=relaxed/simple;
-	bh=6zIAYRDKASaay8QAqV0/hoYgZ5dfVauUPAHDdKvu7q8=;
+	s=arc-20240116; t=1739954290; c=relaxed/simple;
+	bh=K0GrVqAJMl87WwlixZRz+hC5ZsetCDU+9Ru/2TiQjWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxVZsCoBQaoehc8NfSOrkjP5rIAmQFz49pVeHbx0SYum0gSORcCr9rGudsMJH3vqLj9ZtmcagFXk/gtI9F/oY+tE90cgsdMRqd+vd+Goy8TKOEVvHOk/VR6R6eemtAJfv1SGbbaGDb1gKoNJ3oNGa6iGjpV3sx3qD4FbXfDwcvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRXICJHm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C96C4CED1;
-	Wed, 19 Feb 2025 08:38:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XpVRWhw2LR/zG+uaI0weRaGYUsHUnh1DuIvbdBBFkAoI9ouUOWYsXCznrvicYUqZxEm/HYbUfUpKQmdiD3F1nnBuZOal0K0CVLxnk2YKrKdv08ZI201DlUotcX73BrkNTH33qVMEsAAuZ/ohrDuJc0umYbzrwKXnS0JVO38FQR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKGxPFzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BAFC4CEE6;
+	Wed, 19 Feb 2025 08:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954284;
-	bh=6zIAYRDKASaay8QAqV0/hoYgZ5dfVauUPAHDdKvu7q8=;
+	s=korg; t=1739954290;
+	bh=K0GrVqAJMl87WwlixZRz+hC5ZsetCDU+9Ru/2TiQjWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRXICJHmS0/DzevYEUCpCSwGBUjZaRFGPFnRap5jX+hlXVVICcMpB901m0Utx0sGd
-	 u0uYA092dhM2cu88RcGvj2Es4TOwEkByUDt/en40Jged2hXto6CpGQ9TqnbjwbwLA1
-	 tOb/n031lmnaG/aq36QIorXQmKNOoukWb/YNyyH8=
+	b=lKGxPFzcgUe6TFesCPBzNzBYUhluVnkVx2xXBIuVS9sGgGw6PweOnKV8Bb5+d1iY9
+	 sLfl6gIgqFF8fh09pMNAwc5CHA/9Rq5duEVsYeNJqH7TqIik4G0DvwrNf3yrs5UQvl
+	 vugqeJhfeKo8wxsBxtLSzuG0nZQ/jLFrGvL0aU1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.13 156/274] wifi: ath12k: fix handling of 6 GHz rules
-Date: Wed, 19 Feb 2025 09:26:50 +0100
-Message-ID: <20250219082615.700329438@linuxfoundation.org>
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+Subject: [PATCH 6.13 157/274] PCI: Avoid FLR for Mediatek MT7922 WiFi
+Date: Wed, 19 Feb 2025 09:26:51 +0100
+Message-ID: <20250219082615.738407330@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -59,152 +59,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit 64a1ba4072b34af1b76bf15fca5c2075b8cc4d64 upstream.
+commit 81f64e925c29fe6e99f04b131fac1935ac931e81 upstream.
 
-In the US country code, to avoid including 6 GHz rules in the 5 GHz rules
-list, the number of 5 GHz rules is set to a default constant value of 4
-(REG_US_5G_NUM_REG_RULES). However, if there are more than 4 valid 5 GHz
-rules, the current logic will bypass the legitimate 6 GHz rules.
+The Mediatek MT7922 WiFi device advertises FLR support, but it apparently
+does not work, and all subsequent config reads return ~0:
 
-For example, if there are 5 valid 5 GHz rules and 1 valid 6 GHz rule, the
-current logic will only consider 4 of the 5 GHz rules, treating the last
-valid rule as a 6 GHz rule. Consequently, the actual 6 GHz rule is never
-processed, leading to the eventual disabling of 6 GHz channels.
+  pci 0000:01:00.0: [14c3:0616] type 00 class 0x028000 PCIe Endpoint
+  pciback 0000:01:00.0: not ready 65535ms after FLR; giving up
 
-To fix this issue, instead of hardcoding the value to 4, use a helper
-function to determine the number of 6 GHz rules present in the 5 GHz rules
-list and ignore only those rules.
+After an FLR, pci_dev_wait() waits for the device to become ready.  Prior
+to d591f6804e7e ("PCI: Wait for device readiness with Configuration RRS"),
+it polls PCI_COMMAND until it is something other that PCI_POSSIBLE_ERROR
+(~0).  If it times out, pci_dev_wait() returns -ENOTTY and
+__pci_reset_function_locked() tries the next available reset method.
+Typically this is Secondary Bus Reset, which does work, so the MT7922 is
+eventually usable.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+After d591f6804e7e, if Configuration Request Retry Status Software
+Visibility (RRS SV) is enabled, pci_dev_wait() polls PCI_VENDOR_ID until it
+is something other than the special 0x0001 Vendor ID that indicates a
+completion with RRS status.
 
+When RRS SV is enabled, reads of PCI_VENDOR_ID should return either 0x0001,
+i.e., the config read was completed with RRS, or a valid Vendor ID.  On the
+MT7922, it seems that all config reads after FLR return ~0 indefinitely.
+When pci_dev_wait() reads PCI_VENDOR_ID and gets 0xffff, it assumes that's
+a valid Vendor ID and the device is now ready, so it returns with success.
+
+After pci_dev_wait() returns success, we restore config space and continue.
+Since the MT7922 is not actually ready after the FLR, the restore fails and
+the device is unusable.
+
+We considered changing pci_dev_wait() to continue polling if a
+PCI_VENDOR_ID read returns either 0x0001 or 0xffff.  This "works" as it did
+before d591f6804e7e, although we have to wait for the timeout and then fall
+back to SBR.  But it doesn't work for SR-IOV VFs, which *always* return
+0xffff as the Vendor ID.
+
+Mark Mediatek MT7922 WiFi devices to avoid the use of FLR completely.  This
+will cause fallback to another reset method, such as SBR.
+
+Link: https://lore.kernel.org/r/20250212193516.88741-1-helgaas@kernel.org
+Fixes: d591f6804e7e ("PCI: Wait for device readiness with Configuration RRS")
+Link: https://github.com/QubesOS/qubes-issues/issues/9689#issuecomment-2582927149
+Link: https://lore.kernel.org/r/Z4pHll_6GX7OUBzQ@mail-itl
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
 Cc: stable@vger.kernel.org
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250123-fix_6ghz_rules_handling-v1-1-d734bfa58ff4@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c |   61 +++++++++++++++++++++++++---------
- drivers/net/wireless/ath/ath12k/wmi.h |    1 
- 2 files changed, 45 insertions(+), 17 deletions(-)
+ drivers/pci/quirks.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -4681,6 +4681,22 @@ static struct ath12k_reg_rule
- 	return reg_rule_ptr;
- }
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5521,7 +5521,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IN
+  * AMD Matisse USB 3.0 Host Controller 0x149c
+  * Intel 82579LM Gigabit Ethernet Controller 0x1502
+  * Intel 82579V Gigabit Ethernet Controller 0x1503
+- *
++ * Mediatek MT7922 802.11ax PCI Express Wireless Network Adapter
+  */
+ static void quirk_no_flr(struct pci_dev *dev)
+ {
+@@ -5533,6 +5533,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AM
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AMD, 0x7901, quirk_no_flr);
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1502, quirk_no_flr);
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1503, quirk_no_flr);
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x0616, quirk_no_flr);
  
-+static u8 ath12k_wmi_ignore_num_extra_rules(struct ath12k_wmi_reg_rule_ext_params *rule,
-+					    u32 num_reg_rules)
-+{
-+	u8 num_invalid_5ghz_rules = 0;
-+	u32 count, start_freq;
-+
-+	for (count = 0; count < num_reg_rules; count++) {
-+		start_freq = le32_get_bits(rule[count].freq_info, REG_RULE_START_FREQ);
-+
-+		if (start_freq >= ATH12K_MIN_6G_FREQ)
-+			num_invalid_5ghz_rules++;
-+	}
-+
-+	return num_invalid_5ghz_rules;
-+}
-+
- static int ath12k_pull_reg_chan_list_ext_update_ev(struct ath12k_base *ab,
- 						   struct sk_buff *skb,
- 						   struct ath12k_reg_info *reg_info)
-@@ -4691,6 +4707,7 @@ static int ath12k_pull_reg_chan_list_ext
- 	u32 num_2g_reg_rules, num_5g_reg_rules;
- 	u32 num_6g_reg_rules_ap[WMI_REG_CURRENT_MAX_AP_TYPE];
- 	u32 num_6g_reg_rules_cl[WMI_REG_CURRENT_MAX_AP_TYPE][WMI_REG_MAX_CLIENT_TYPE];
-+	u8 num_invalid_5ghz_ext_rules;
- 	u32 total_reg_rules = 0;
- 	int ret, i, j;
- 
-@@ -4784,20 +4801,6 @@ static int ath12k_pull_reg_chan_list_ext
- 
- 	memcpy(reg_info->alpha2, &ev->alpha2, REG_ALPHA2_LEN);
- 
--	/* FIXME: Currently FW includes 6G reg rule also in 5G rule
--	 * list for country US.
--	 * Having same 6G reg rule in 5G and 6G rules list causes
--	 * intersect check to be true, and same rules will be shown
--	 * multiple times in iw cmd. So added hack below to avoid
--	 * parsing 6G rule from 5G reg rule list, and this can be
--	 * removed later, after FW updates to remove 6G reg rule
--	 * from 5G rules list.
--	 */
--	if (memcmp(reg_info->alpha2, "US", 2) == 0) {
--		reg_info->num_5g_reg_rules = REG_US_5G_NUM_REG_RULES;
--		num_5g_reg_rules = reg_info->num_5g_reg_rules;
--	}
--
- 	reg_info->dfs_region = le32_to_cpu(ev->dfs_region);
- 	reg_info->phybitmap = le32_to_cpu(ev->phybitmap);
- 	reg_info->num_phy = le32_to_cpu(ev->num_phy);
-@@ -4900,8 +4903,29 @@ static int ath12k_pull_reg_chan_list_ext
- 		}
- 	}
- 
-+	ext_wmi_reg_rule += num_2g_reg_rules;
-+
-+	/* Firmware might include 6 GHz reg rule in 5 GHz rule list
-+	 * for few countries along with separate 6 GHz rule.
-+	 * Having same 6 GHz reg rule in 5 GHz and 6 GHz rules list
-+	 * causes intersect check to be true, and same rules will be
-+	 * shown multiple times in iw cmd.
-+	 * Hence, avoid parsing 6 GHz rule from 5 GHz reg rule list
-+	 */
-+	num_invalid_5ghz_ext_rules = ath12k_wmi_ignore_num_extra_rules(ext_wmi_reg_rule,
-+								       num_5g_reg_rules);
-+
-+	if (num_invalid_5ghz_ext_rules) {
-+		ath12k_dbg(ab, ATH12K_DBG_WMI,
-+			   "CC: %s 5 GHz reg rules number %d from fw, %d number of invalid 5 GHz rules",
-+			   reg_info->alpha2, reg_info->num_5g_reg_rules,
-+			   num_invalid_5ghz_ext_rules);
-+
-+		num_5g_reg_rules = num_5g_reg_rules - num_invalid_5ghz_ext_rules;
-+		reg_info->num_5g_reg_rules = num_5g_reg_rules;
-+	}
-+
- 	if (num_5g_reg_rules) {
--		ext_wmi_reg_rule += num_2g_reg_rules;
- 		reg_info->reg_rules_5g_ptr =
- 			create_ext_reg_rules_from_wmi(num_5g_reg_rules,
- 						      ext_wmi_reg_rule);
-@@ -4913,7 +4937,12 @@ static int ath12k_pull_reg_chan_list_ext
- 		}
- 	}
- 
--	ext_wmi_reg_rule += num_5g_reg_rules;
-+	/* We have adjusted the number of 5 GHz reg rules above. But still those
-+	 * many rules needs to be adjusted in ext_wmi_reg_rule.
-+	 *
-+	 * NOTE: num_invalid_5ghz_ext_rules will be 0 for rest other cases.
-+	 */
-+	ext_wmi_reg_rule += (num_5g_reg_rules + num_invalid_5ghz_ext_rules);
- 
- 	for (i = 0; i < WMI_REG_CURRENT_MAX_AP_TYPE; i++) {
- 		reg_info->reg_rules_6g_ap_ptr[i] =
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -3943,7 +3943,6 @@ struct ath12k_wmi_eht_rate_set_params {
- #define MAX_REG_RULES 10
- #define REG_ALPHA2_LEN 2
- #define MAX_6G_REG_RULES 5
--#define REG_US_5G_NUM_REG_RULES 4
- 
- enum wmi_start_event_param {
- 	WMI_VDEV_START_RESP_EVENT = 0,
+ /* FLR may cause the SolidRun SNET DPU (rev 0x1) to hang */
+ static void quirk_no_flr_snet(struct pci_dev *dev)
 
 
 
