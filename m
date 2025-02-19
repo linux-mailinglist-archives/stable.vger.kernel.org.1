@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-118050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C161A3B997
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0253EA3B65B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61AC73BD93E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555103A7074
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8CE1E0DEB;
-	Wed, 19 Feb 2025 09:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3521DFD94;
+	Wed, 19 Feb 2025 08:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOyGhaSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lk6Kq7N7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4883B1E0B86;
-	Wed, 19 Feb 2025 09:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4531DFD8D;
+	Wed, 19 Feb 2025 08:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957092; cv=none; b=TYYPO24FQDAmYRy85Qr5qtJc4SrRa0m3vYDfDBRRQyiFcgFEyc81wgAHGgw857k+SVPg7DdXeriVYt1CzOITFXcYa3z0AtOdtjWZqwAx0Z/9hUl43j4w4W7pu2I0d3kIy1WybaJcYADza5Jn/+QDqFYyjSVKQ77AvuYL3yqHgUc=
+	t=1739955108; cv=none; b=bcmTrttHuAbk/JAuHUKybHAXWBex9UQZ81bNk4sypSeRqiayHXcfDaZHb6ch/rIKqdHxPji/zvW922mhcBdqa80HcAWfx3cY6WhZ1ez87JpsixNknpUrNIXFeFjIU2MzpQQwmb0cm9ImBu69NN00+4P9g+9TIyynXc4hqez7x9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957092; c=relaxed/simple;
-	bh=a7BVLvZZ3+vnEtPzFELodMEtP2pvQMDBaosHjKZNLbQ=;
+	s=arc-20240116; t=1739955108; c=relaxed/simple;
+	bh=ROc1Sluo6MhvOljVIksRMy3BTKE1uhqquDNcjMEMRls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ls/RO9F4tfvDiPAT8K3DwFEDnyufxzkgJraLHO0W6US/B+wsvRIeB8soKU6iMbV4tV5qF3qFSMp1ICGGtezWX/ZQVL2W24a2C0OQHR+LiFR9IyXspACecaeOz4u2soKCMOkD4Ocz48rIymdKOiKc6ZxR/dnhTFBMPcWiEFUkEXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOyGhaSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA752C4CED1;
-	Wed, 19 Feb 2025 09:24:51 +0000 (UTC)
+	 MIME-Version; b=jlIMbYIcON26dvZOmsHNR00tHg+f6R35tHENehC6mEgibcutUIP8CLc93t/GJPckTHMqn+anAhCUkYmbWuEKCNRaJHGpSZ8FVPAt6NZNCn0v6iY1WDosZHQUW8caxvxNIQ29tLpux6udAxv5ZfxhrJ9uG3mO9LIWR9tNjypO53I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lk6Kq7N7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7020AC4CEEC;
+	Wed, 19 Feb 2025 08:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957092;
-	bh=a7BVLvZZ3+vnEtPzFELodMEtP2pvQMDBaosHjKZNLbQ=;
+	s=korg; t=1739955108;
+	bh=ROc1Sluo6MhvOljVIksRMy3BTKE1uhqquDNcjMEMRls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOyGhaStwLsYEQRXHwh2nO84oZu7rI/9wWNjQ1kASY5sEAGGI/nqC6gCYGsr9xqQZ
-	 P0vFDVRicnosJgu4dnkJ67Tue3mjnuU/QVLT25ULpsS0mGUa53tNLQbS2RPwkdLKYW
-	 h570nA6m8lvPE1CGTtiGZtEYuZQ+wVpctr4MG8PI=
+	b=lk6Kq7N7oIYmGGTxlf08cy3pEbLwyrE6qqN0DADsvil2REvc1Dy4S1iYQnVnrAyNz
+	 Ze2v2hJgYdFvyVMTiAGIXwDh0r4U9upWNqLShml91yFRO1sbvu2go8hceXke4xz6ZJ
+	 rNoHtmMavvFiR+CcUGnxpD6p5kkW3gJsZR1KxStc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Kacur <jkacur@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 405/578] rv: Reset per-task monitors also for idle tasks
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 092/230] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
 Date: Wed, 19 Feb 2025 09:26:49 +0100
-Message-ID: <20250219082708.956420137@linuxfoundation.org>
+Message-ID: <20250219082605.296981889@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8259cb14a70680553d5e82d65d1302fe589e9b39 upstream.
+[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
 
-RV per-task monitors are implemented through a monitor structure
-available for each task_struct. This structure is reset every time the
-monitor is (re-)started, to avoid inconsistencies if the monitor was
-activated previously.
-To do so, we reset the monitor on all threads using the macro
-for_each_process_thread. However, this macro excludes the idle tasks on
-each CPU. Idle tasks could be considered tasks on their own right and it
-should be up to the model whether to ignore them or not.
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-Reset monitors also on the idle tasks for each present CPU whenever we
-reset all per-task monitors.
+The 5V version mostly works with the BYTCR defaults, except that it is
+missing a CHAN package in its ACPI tables and the default of using
+SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
+detect signal is not inverted as it usually is.
 
-Cc: stable@vger.kernel.org
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: John Kacur <jkacur@redhat.com>
-Link: https://lore.kernel.org/20250115151547.605750-2-gmonaco@redhat.com
-Fixes: 792575348ff7 ("rv/include: Add deterministic automata monitor definition via C macros")
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a DMI quirk for the 5V version to fix sound not working.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/rv/da_monitor.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/include/rv/da_monitor.h b/include/rv/da_monitor.h
-index 9705b2a98e49..510c88bfabd4 100644
---- a/include/rv/da_monitor.h
-+++ b/include/rv/da_monitor.h
-@@ -14,6 +14,7 @@
- #include <rv/automata.h>
- #include <linux/rv.h>
- #include <linux/bug.h>
-+#include <linux/sched.h>
- 
- #ifdef CONFIG_RV_REACTORS
- 
-@@ -324,10 +325,13 @@ static inline struct da_monitor *da_get_monitor_##name(struct task_struct *tsk)
- static void da_monitor_reset_all_##name(void)							\
- {												\
- 	struct task_struct *g, *p;								\
-+	int cpu;										\
- 												\
- 	read_lock(&tasklist_lock);								\
- 	for_each_process_thread(g, p)								\
- 		da_monitor_reset_##name(da_get_monitor_##name(p));				\
-+	for_each_present_cpu(cpu)								\
-+		da_monitor_reset_##name(da_get_monitor_##name(idle_task(cpu)));			\
- 	read_unlock(&tasklist_lock);								\
- }												\
- 												\
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 54f77f57ec8e2..1148e9498d8e8 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1132,7 +1132,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+-	{	/* Vexia Edu Atla 10 tablet */
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
++	{	/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
 -- 
-2.48.1
+2.39.5
 
 
 
