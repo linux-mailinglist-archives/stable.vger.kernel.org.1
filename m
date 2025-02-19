@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-117481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4FBA3B6AB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BCEA3B7BD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1D273B4211
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43FD717529A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBA21C701E;
-	Wed, 19 Feb 2025 08:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7901DED70;
+	Wed, 19 Feb 2025 09:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRyRe7RT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezIEWPgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28621EEA2A;
-	Wed, 19 Feb 2025 08:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84691D6DB1;
+	Wed, 19 Feb 2025 09:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955421; cv=none; b=hKC9d/CYloitxyRXGQTOHJLQE4Fqz/6HiMBPqi8w7BSVu7lExiiXErPNWkU4hoTVTPRVkr3k5MCk8yh/kKlgTyrE6I3NGBud3aciUvuDZUM45nh01pPG+ra3vH/ZN1jAd92F5SIwBdBPe3NmbRzhuHorgLfZUD1Su+xPrbd95qU=
+	t=1739955916; cv=none; b=SnRyjr13dh1SHfG1eJsnLJUpC9x8fg+CAlSm7EgCZdWHYF6tevR9aqtCRKDqjf4bVFsyUImNRBJCPIe0JcZj6PSan4bZeeNkRLFYqm/OsmDkowPH2pqGCaY34McVEsGAdq//1VEY6MHBfqKnctnntE2B2Iuby2iestTfjQMCisM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955421; c=relaxed/simple;
-	bh=qgsTKqmVCT7ZqcAHTR/c/A9f8HkP5hI16QcugY34Fx0=;
+	s=arc-20240116; t=1739955916; c=relaxed/simple;
+	bh=Pa5i4u+AWIOpeSXLc4jPGliAkxSpRBOxFtOLA/iZxDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wdugtf2DiJly+77ZxN0wXOT1m14gdKLzrrmQwEyyXXChuhHcD45IHyFoKmRHTlEb6g8UF8VwCjH0flyeDtgOMk0qmfKgyqz1kdsyA6SuK3QGtGLMtyY2amDOUpxGGqr7MG6lyfG6U5+p7yF3P/FUoT43uChE9/VXHz5GazBZRyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRyRe7RT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24140C4CED1;
-	Wed, 19 Feb 2025 08:57:00 +0000 (UTC)
+	 MIME-Version; b=nYTD0BX2Hl+/E14e9n9ktzyuYhLD/2Krt4sKsoHyqfnZMpoVYDkvEIp7RbIbGwaQbsElExOQR0jc4FQ2QlbXu8uyT/A1GqAH0YbC8xD3HV7q8DoFuIKI06rIddIEw9W0FnkH+oOgLxrY5MUS48i/eY/TcabItAHsZ5A0qvtl7JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezIEWPgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD1DC4CEE7;
+	Wed, 19 Feb 2025 09:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955421;
-	bh=qgsTKqmVCT7ZqcAHTR/c/A9f8HkP5hI16QcugY34Fx0=;
+	s=korg; t=1739955916;
+	bh=Pa5i4u+AWIOpeSXLc4jPGliAkxSpRBOxFtOLA/iZxDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRyRe7RT92qgu8S6H3SdpUcOUi+ilNCkQjckstXDGnFJOkmqhCpL/iU5V5maes2vl
-	 J0CXCgbpr10XLNNIL86EbjyqCJBLOIIq6C6HXrCG64Lmr0not3UQVqv2x5ergCrlFO
-	 3m8jmgAS7F4WnVr3aw+o4wsqsWH5Hkbq559FEgfQ=
+	b=ezIEWPgXPo6fUss0q2sYpzG7yXgvURTuYugoFXILwDA3ZPdi6KNpxecYCmS9PWnU2
+	 R/+4x3oPZiBXbJigGgvo8TWNv5d/EFsafr1VRlPhudFJCgQKwkjmxdi/Q+5cAUd/NU
+	 OwVh5EFS1+6AfHFIOMoirMHTVRxYg0HvSbakDLCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20N=C3=BCrnberger?= <stefan.nuernberger@cyberus-technology.de>
-Subject: [PATCH 6.12 230/230] Revert "vfio/platform: check the bounds of read/write syscalls"
-Date: Wed, 19 Feb 2025 09:29:07 +0100
-Message-ID: <20250219082610.679699587@linuxfoundation.org>
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 135/152] drm/amd/display: Pass non-null to dcn20_validate_apply_pipe_split_flags
+Date: Wed, 19 Feb 2025 09:29:08 +0100
+Message-ID: <20250219082555.386027187@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +64,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alex Hung <alex.hung@amd.com>
 
-This reverts commit 61ba518195d61c38c6cb86f83135e51f93735442.
+commit 5559598742fb4538e4c51c48ef70563c49c2af23 upstream.
 
-It had been committed multiple times to the tree, and isn't needed
-again.
+[WHAT & HOW]
+"dcn20_validate_apply_pipe_split_flags" dereferences merge, and thus it
+cannot be a null pointer. Let's pass a valid pointer to avoid null
+dereference.
 
-Link: https://lore.kernel.org/r/a082db2605514513a0a8568382d5bd2b6f1877a0.camel@cyberus-technology.de
-Reported-by: Stefan Nürnberger <stefan.nuernberger@cyberus-technology.de>
+This fixes 2 FORWARD_NULL issues reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ dcn20 and dcn21 were moved from drivers/gpu/drm/amd/display/dc to
+  drivers/gpu/drm/amd/display/dc/resource since commit
+  8b8eed05a1c6 ("drm/amd/display: Refactor resource into component directory").
+  The path is changed accordingly to apply the patch on 6.6.y. ]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c |    3 ++-
+ drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -393,11 +393,6 @@ static ssize_t vfio_platform_read_mmio(s
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
+@@ -2026,6 +2026,7 @@ bool dcn20_fast_validate_bw(
+ {
+ 	bool out = false;
+ 	int split[MAX_PIPES] = { 0 };
++	bool merge[MAX_PIPES] = { false };
+ 	int pipe_cnt, i, pipe_idx, vlevel;
  
- 	count = min_t(size_t, count, reg->size - off);
+ 	ASSERT(pipes);
+@@ -2050,7 +2051,7 @@ bool dcn20_fast_validate_bw(
+ 	if (vlevel > context->bw_ctx.dml.soc.num_states)
+ 		goto validate_fail;
  
--	if (off >= reg->size)
--		return -EINVAL;
--
--	count = min_t(size_t, count, reg->size - off);
--
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -479,11 +474,6 @@ static ssize_t vfio_platform_write_mmio(
+-	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, NULL);
++	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, merge);
  
- 	if (off >= reg->size)
- 		return -EINVAL;
--
--	count = min_t(size_t, count, reg->size - off);
--
--	if (off >= reg->size)
--		return -EINVAL;
+ 	/*initialize pipe_just_split_from to invalid idx*/
+ 	for (i = 0; i < MAX_PIPES; i++)
+--- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
+@@ -800,6 +800,7 @@ bool dcn21_fast_validate_bw(struct dc *d
+ {
+ 	bool out = false;
+ 	int split[MAX_PIPES] = { 0 };
++	bool merge[MAX_PIPES] = { false };
+ 	int pipe_cnt, i, pipe_idx, vlevel;
  
- 	count = min_t(size_t, count, reg->size - off);
+ 	ASSERT(pipes);
+@@ -842,7 +843,7 @@ bool dcn21_fast_validate_bw(struct dc *d
+ 			goto validate_fail;
+ 	}
  
+-	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, NULL);
++	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, merge);
+ 
+ 	for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
+ 		struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
 
 
 
