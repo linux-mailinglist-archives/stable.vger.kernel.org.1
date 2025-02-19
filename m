@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-118026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37162A3B9BC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5A6A3B620
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20FD43BFF84
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24CBA178897
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E61E1CAA8A;
-	Wed, 19 Feb 2025 09:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648DD1CF284;
+	Wed, 19 Feb 2025 08:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfxO6s3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf/bz0Sp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D675158862;
-	Wed, 19 Feb 2025 09:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7FC1CDA14;
+	Wed, 19 Feb 2025 08:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957026; cv=none; b=mz/uLC2EtV8ZXqH2NSMRCXDYfOL9ca0J3owVsb5oG7HkMf3FomItQeqAcHqaSkQabiymFRJSYJmDQUgCzxkzA/Uy7TW+C+znH4vUhOcayW2K9W7Z+HMNcucGbaJnxROuae3PvAdazfHtBoxihT/lvYIZqvrEC53HyxciTwW0Bu8=
+	t=1739954891; cv=none; b=Hcc8q2SE8gXRUmv+vC6zbQKdmXbIP0iKA2jZZqU5THkTHEhXD+vKZ1N2ifL/13dMp03wbVCSgvLb2aRNklHkbxGK2t1DR4nqRXI9u40xKgSt71y4EFpFWqFZ+0dAaJwv2R2vflembweHgbdlRupP1DHeXlCQRuQb735ATtEpwJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957026; c=relaxed/simple;
-	bh=uiAQNG8qD5YdUEldyUtkL2F7falbc14KT+5sqdGqeEM=;
+	s=arc-20240116; t=1739954891; c=relaxed/simple;
+	bh=y/dW4tlpsKfvXqntTYhCf5CzFYPhP/Lci8B08Ra97EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFH5q79fOJY3XChxcj6slAkz+54wvYS46ypK6O8TlojmR/FKG32G2zBOPUyG7VOyKky5OpqP9GmsL3EPizAUyaJ5YtQP3sf5JqJrfcXsAIroRAf3YCOfMPGW99UWB7Ocx/hTkkBmDrG2UVN647zFeuprP20XMUzKPmh9kHFWFJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfxO6s3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8694FC4CED1;
-	Wed, 19 Feb 2025 09:23:45 +0000 (UTC)
+	 MIME-Version; b=WyJLIb0v9yMbI5Nica4nLda+QPRj/t+AIRrFzvU6Ysgi5lRRcajT7F+9dTI7jVkSQtfFel1dWiy+NQFd5b6568b4Mf03GvzKvoxoAx/acag3vwP8Hz9+v0U+F/5JL0xFMSzFSpnqIWsYhbW2IsY83c7EhrxvBMANL0l3U7ZAILY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf/bz0Sp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC76C4CEE6;
+	Wed, 19 Feb 2025 08:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957025;
-	bh=uiAQNG8qD5YdUEldyUtkL2F7falbc14KT+5sqdGqeEM=;
+	s=korg; t=1739954891;
+	bh=y/dW4tlpsKfvXqntTYhCf5CzFYPhP/Lci8B08Ra97EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfxO6s3ICh6TX0Y0HP0mEENLrH4NYiFQ2L07LAxIS6+XOnmctGftVng8s85J824ia
-	 AQ3UN3lU4dqG8h1bFM+v/hsSphDzlRBJkZKmOUnaTpqK/TFEP/AWjQ8KJNYg147kvm
-	 S74K9PM3Dm1qiYqDlrqd4R9ooQVMbelE466r8zCE=
+	b=Qf/bz0SpTNoschSo3W6jmBbw4Ve8Pv6704Om28CjrzZTx419VJDxWaEXblQ8We+0N
+	 bKeIMC8uu8H5l/S+CaXe/TFijUp/AMEGjSuYC2N6/oVIcXVdFr75EXk1h5tPuNd9hb
+	 W5SfeoFtC7H0P/C+KPgOKA/BZ/U8YFTHx4HKD9oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 381/578] powerpc/pseries/eeh: Fix get PE state translation
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 068/230] media: uvcvideo: Implement dual stream quirk to fix loss of usb packets
 Date: Wed, 19 Feb 2025 09:26:25 +0100
-Message-ID: <20250219082708.004649456@linuxfoundation.org>
+Message-ID: <20250219082604.369496794@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Isaac Scott <isaac.scott@ideasonboard.com>
 
-commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
+[ Upstream commit c2eda35e675b6ea4a0a21a4b1167b121571a9036 ]
 
-The PE Reset State "0" returned by RTAS calls
-"ibm_read_slot_reset_[state|state2]" indicates that the reset is
-deactivated and the PE is in a state where MMIO and DMA are allowed.
-However, the current implementation of "pseries_eeh_get_state()" does
-not reflect this, causing drivers to incorrectly assume that MMIO and
-DMA operations cannot be resumed.
+Some cameras, such as the Sonix Technology Co. 292A, exhibit issues when
+running two parallel streams, causing USB packets to be dropped when an
+H.264 stream posts a keyframe while an MJPEG stream is running
+simultaneously. This occasionally causes the driver to erroneously
+output two consecutive JPEG images as a single frame.
 
-The userspace drivers as a part of EEH recovery using VFIO ioctls fail
-to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
-ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
-userspace drivers from functioning properly on pseries systems.
+To fix this, we inspect the buffer, and trigger a new frame when we
+find an SOI.
 
-The patch addresses this issue by updating 'pseries_eeh_get_state()'
-to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
-the result mask for PE Reset State "0". This ensures correct state
-reporting to the callers, aligning the behavior with the PAPR specification
-and fixing the bug in EEH recovery for VFIO user workflows.
-
-Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241128145144.61475-2-isaac.scott@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c | 27 ++++++++++++++++++++++++++-
+ drivers/media/usb/uvc/uvcvideo.h  |  1 +
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-+++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index d2fe01bcd209e..eab7b8f557305 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -20,6 +20,7 @@
+ #include <linux/atomic.h>
+ #include <linux/unaligned.h>
  
- 	switch(rets[0]) {
- 	case 0:
--		result = EEH_STATE_MMIO_ACTIVE |
--			 EEH_STATE_DMA_ACTIVE;
-+		result = EEH_STATE_MMIO_ACTIVE	|
-+			 EEH_STATE_DMA_ACTIVE	|
-+			 EEH_STATE_MMIO_ENABLED	|
-+			 EEH_STATE_DMA_ENABLED;
- 		break;
- 	case 1:
- 		result = EEH_STATE_RESET_ACTIVE |
++#include <media/jpeg.h>
+ #include <media/v4l2-common.h>
+ 
+ #include "uvcvideo.h"
+@@ -1137,6 +1138,7 @@ static void uvc_video_stats_stop(struct uvc_streaming *stream)
+ static int uvc_video_decode_start(struct uvc_streaming *stream,
+ 		struct uvc_buffer *buf, const u8 *data, int len)
+ {
++	u8 header_len;
+ 	u8 fid;
+ 
+ 	/*
+@@ -1150,6 +1152,7 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
+ 		return -EINVAL;
+ 	}
+ 
++	header_len = data[0];
+ 	fid = data[1] & UVC_STREAM_FID;
+ 
+ 	/*
+@@ -1231,9 +1234,31 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
+ 		return -EAGAIN;
+ 	}
+ 
++	/*
++	 * Some cameras, when running two parallel streams (one MJPEG alongside
++	 * another non-MJPEG stream), are known to lose the EOF packet for a frame.
++	 * We can detect the end of a frame by checking for a new SOI marker, as
++	 * the SOI always lies on the packet boundary between two frames for
++	 * these devices.
++	 */
++	if (stream->dev->quirks & UVC_QUIRK_MJPEG_NO_EOF &&
++	    (stream->cur_format->fcc == V4L2_PIX_FMT_MJPEG ||
++	    stream->cur_format->fcc == V4L2_PIX_FMT_JPEG)) {
++		const u8 *packet = data + header_len;
++
++		if (len >= header_len + 2 &&
++		    packet[0] == 0xff && packet[1] == JPEG_MARKER_SOI &&
++		    buf->bytesused != 0) {
++			buf->state = UVC_BUF_STATE_READY;
++			buf->error = 1;
++			stream->last_fid ^= UVC_STREAM_FID;
++			return -EAGAIN;
++		}
++	}
++
+ 	stream->last_fid = fid;
+ 
+-	return data[0];
++	return header_len;
+ }
+ 
+ static inline enum dma_data_direction uvc_stream_dir(
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 272dc9cf01ee7..74ac2106f08e2 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -76,6 +76,7 @@
+ #define UVC_QUIRK_NO_RESET_RESUME	0x00004000
+ #define UVC_QUIRK_DISABLE_AUTOSUSPEND	0x00008000
+ #define UVC_QUIRK_INVALID_DEVICE_SOF	0x00010000
++#define UVC_QUIRK_MJPEG_NO_EOF		0x00020000
+ 
+ /* Format flags */
+ #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+-- 
+2.39.5
+
 
 
 
