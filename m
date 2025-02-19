@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-117333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E32FA3B5FA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393D1A3B4D7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C18918988E7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6443B3B6061
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20AF1DE887;
-	Wed, 19 Feb 2025 08:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AC71E5716;
+	Wed, 19 Feb 2025 08:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHveNFGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhkWkFsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0721DE3BE;
-	Wed, 19 Feb 2025 08:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F418D1E51F7;
+	Wed, 19 Feb 2025 08:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954947; cv=none; b=m+5tQw01a+O9ao2kONnD/1KpldGd18D/gQmDg6yLTDQU/JaR1SxqX8/G4VEF0x6KwBe/HAAy2e9/KZf90B5I9WeEli9PZy/yDo0p6C5y4D/BCcCarLGlhECZcSqbCTMXb0T2qRwbEXpMqgq3NwyqQ1Mou/NTKkKyxlmHv8tdUD4=
+	t=1739954260; cv=none; b=egKRUOnaiVXnnLjOtQzEWbSTSGEaob9BmZ9nvt7a1PO0nIZRvCBd5xAtUJ/ab2oLdKsH7JRULqZWvvcYER/TV1c20xsoc9l+tOwe7rwCYWeTRoo5ISUe/Sv7LWSZxuxX/aZrPBmtfIqUvX0ibetqPw28xAVt60uF8w+1KN+xrWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954947; c=relaxed/simple;
-	bh=4guqVsx8NksCE1CHiVKwP0mZAXuavuC066R7+xa77sY=;
+	s=arc-20240116; t=1739954260; c=relaxed/simple;
+	bh=WOOiql+TMiPu2AOank4uuG2OopV/VfW2d8E/H0K/cjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCwpQWliYJytHm1jYxDzYiUAYcMfeWS27J3QAsqNXENZDH/dSbJEjmcq37+nT0jBJFmTcqP72BkeVq9I1HY7eBgrrCeZ6e0wHoCPjTAPQHYiFwsqkxlPZqdLBm+Vg1VikrcfRa5183babxU2NoZRDZeV70QVjxXInaCeWV3snW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHveNFGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CBDC4CED1;
-	Wed, 19 Feb 2025 08:49:06 +0000 (UTC)
+	 MIME-Version; b=Y2Qxb7rxeRd3nlPrbx2dnYkoIthGmsaNY28ooTAeJu2flfX2Y1Gd+EaMZ5ldsRnGigibrwZGkfgWOhu8KE0vcqqf77sdLrshj5EM42hAbxRRhwWcQ0XgKI97FSOwrEWrsP33B1E7e+87bOrY9jE0c6jXcS2Kvn+pf8wfnXMaP7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhkWkFsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725F8C4CED1;
+	Wed, 19 Feb 2025 08:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954947;
-	bh=4guqVsx8NksCE1CHiVKwP0mZAXuavuC066R7+xa77sY=;
+	s=korg; t=1739954259;
+	bh=WOOiql+TMiPu2AOank4uuG2OopV/VfW2d8E/H0K/cjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHveNFGVAAPy4ERowbbqpsmuL3Ww+G2JWfSCeWFLHxVzqawItk7GbYkk4/YWEUzpK
-	 6Y1e89QwzFLsS5leSMeZzbSTmSsxSCm3yygwafJbsermNzppBNjIunqfYVy7nJIssM
-	 q+q5j+jbdByGNZRm8WSO6LMqK3Kr5loQxfgj+yhY=
+	b=GhkWkFswIkAHQL5TFPoxYGrF1XMBfWsuO47izShGRpj6j5BJaLCJWmqIa3QxjVZda
+	 ynSBHBfHfD8tp5YtSKOuCvYAEoSXtyEMtXumHj/3MlFabmPkCFaFSgooGILCc50nJj
+	 JeSHdjb126e/2BJfPK/7/zLu5rgDbgswUjlpYkJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/230] fs/ntfs3: Unify inode corruption marking with _ntfs_bad_inode()
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.13 148/274] USB: serial: option: drop MeiG Smart defines
 Date: Wed, 19 Feb 2025 09:26:42 +0100
-Message-ID: <20250219082605.025193447@linuxfoundation.org>
+Message-ID: <20250219082615.392244132@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,165 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 55ad333de0f80bc0caee10c6c27196cdcf8891bb ]
+commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
 
-Also reworked error handling in a couple of places.
+Several MeiG Smart modems apparently use the same product id, making the
+defines even less useful.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Drop them in favour of using comments consistently to make the id table
+slightly less unwieldy.
+
+Cc: stable@vger.kernel.org
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrib.c  |  4 ++--
- fs/ntfs3/dir.c     |  2 +-
- fs/ntfs3/frecord.c | 12 +++++++-----
- fs/ntfs3/fsntfs.c  |  6 +++++-
- fs/ntfs3/index.c   |  6 ++----
- fs/ntfs3/inode.c   |  3 +++
- 6 files changed, 20 insertions(+), 13 deletions(-)
+ drivers/usb/serial/option.c |   28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 8d789b017fa9b..da1a9312e61a0 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -1406,7 +1406,7 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
- 	 */
- 	if (!attr->non_res) {
- 		if (vbo[1] + bytes_per_off > le32_to_cpu(attr->res.data_size)) {
--			ntfs_inode_err(&ni->vfs_inode, "is corrupted");
-+			_ntfs_bad_inode(&ni->vfs_inode);
- 			return -EINVAL;
- 		}
- 		addr = resident_data(attr);
-@@ -2587,7 +2587,7 @@ int attr_force_nonresident(struct ntfs_inode *ni)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,18 +619,6 @@ static void option_instat_callback(struc
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
- 	attr = ni_find_attr(ni, NULL, &le, ATTR_DATA, NULL, 0, NULL, &mi);
- 	if (!attr) {
--		ntfs_bad_inode(&ni->vfs_inode, "no data attribute");
-+		_ntfs_bad_inode(&ni->vfs_inode);
- 		return -ENOENT;
- 	}
+-/* MeiG Smart Technology products */
+-#define MEIGSMART_VENDOR_ID			0x2dee
+-/*
+- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
+- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
+- */
+-#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+-/* MeiG Smart SLM320 based on UNISOC UIS8910 */
+-#define MEIGSMART_PRODUCT_SLM320		0x4d41
+-/* MeiG Smart SLM770A based on ASR1803 */
+-#define MEIGSMART_PRODUCT_SLM770A		0x4d57
+-
+ /* Device flags */
  
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index fc6a8aa29e3af..b6da80c69ca63 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -512,7 +512,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 		ctx->pos = pos;
- 	} else if (err < 0) {
- 		if (err == -EINVAL)
--			ntfs_inode_err(dir, "directory corrupted");
-+			_ntfs_bad_inode(dir);
- 		ctx->pos = eod;
- 	}
- 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index c33e818b3164c..175662acd5eaf 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -148,8 +148,10 @@ int ni_load_mi_ex(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
- 		goto out;
- 
- 	err = mi_get(ni->mi.sbi, rno, &r);
--	if (err)
-+	if (err) {
-+		_ntfs_bad_inode(&ni->vfs_inode);
- 		return err;
-+	}
- 
- 	ni_add_mi(ni, r);
- 
-@@ -238,8 +240,7 @@ struct ATTRIB *ni_find_attr(struct ntfs_inode *ni, struct ATTRIB *attr,
- 	return attr;
- 
- out:
--	ntfs_inode_err(&ni->vfs_inode, "failed to parse mft record");
--	ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
-+	_ntfs_bad_inode(&ni->vfs_inode);
- 	return NULL;
- }
- 
-@@ -330,6 +331,7 @@ struct ATTRIB *ni_load_attr(struct ntfs_inode *ni, enum ATTR_TYPE type,
- 	    vcn <= le64_to_cpu(attr->nres.evcn))
- 		return attr;
- 
-+	_ntfs_bad_inode(&ni->vfs_inode);
- 	return NULL;
- }
- 
-@@ -1604,8 +1606,8 @@ int ni_delete_all(struct ntfs_inode *ni)
- 		roff = le16_to_cpu(attr->nres.run_off);
- 
- 		if (roff > asize) {
--			_ntfs_bad_inode(&ni->vfs_inode);
--			return -EINVAL;
-+			/* ni_enum_attr_ex checks this case. */
-+			continue;
- 		}
- 
- 		/* run==1 means unpack and deallocate. */
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 0fa636038b4e4..6c73e93afb478 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -908,7 +908,11 @@ void ntfs_bad_inode(struct inode *inode, const char *hint)
- 
- 	ntfs_inode_err(inode, "%s", hint);
- 	make_bad_inode(inode);
--	ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
-+	/* Avoid recursion if bad inode is $Volume. */
-+	if (inode->i_ino != MFT_REC_VOL &&
-+	    !(sbi->flags & NTFS_FLAGS_LOG_REPLAYING)) {
-+		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
-+	}
- }
- 
- /*
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 9089c58a005ce..7eb9fae22f8da 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1094,8 +1094,7 @@ int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
- 
- ok:
- 	if (!index_buf_check(ib, bytes, &vbn)) {
--		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
--		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
-+		_ntfs_bad_inode(&ni->vfs_inode);
- 		err = -EINVAL;
- 		goto out;
- 	}
-@@ -1117,8 +1116,7 @@ int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
- 
- out:
- 	if (err == -E_NTFS_CORRUPT) {
--		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
--		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
-+		_ntfs_bad_inode(&ni->vfs_inode);
- 		err = -EINVAL;
- 	}
- 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index be04d2845bb7b..a1e11228dafd0 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -410,6 +410,9 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 	if (!std5)
- 		goto out;
- 
-+	if (is_bad_inode(inode))
-+		goto out;
-+
- 	if (!is_match && name) {
- 		err = -ENOENT;
- 		goto out;
--- 
-2.39.5
-
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
 
 
 
