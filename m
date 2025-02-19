@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2518BA3B777
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260D3A3B6AA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767053BE64F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82A433BD5B3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB1C1E32B9;
-	Wed, 19 Feb 2025 09:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDC21E98FC;
+	Wed, 19 Feb 2025 08:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3tn1fH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQcn4P8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1BB1E32A0;
-	Wed, 19 Feb 2025 09:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1A81E98E8;
+	Wed, 19 Feb 2025 08:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955723; cv=none; b=DM+4jmgNwbcYZZ48TwRyolxTMNwy14wmQfZZ4xN/qQjCOmdKhay3M2aHwK+UMRSzQk8bRHHUw3fSL0RHgOz52/Xgl+FYUySGYg73QipOdN+avUc4D9vn8x8+/kiC7ThxpWRmRRWt53dXWm+2vR61q1Zo4HSY18P0MYr/5vg54b0=
+	t=1739955285; cv=none; b=ScuzFcQ0G0PyRIGT0rCgc1dWLbRJzS8NXHQLDUikdZLqfMw/ElqXMDLOK598jSZqy2wYps1Uo4YoUFfA6GT5Edk+x287mq1nK/ffVzVkUebg4Sdpbg7oWV3S1vDrcbPNQv66fCrF6RG0EdID4HGHK8R/zBe8WbEXX6DS8WEx6MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955723; c=relaxed/simple;
-	bh=dCtXuKb+XLSugYxFrFA3d8gUL7VhgNJIBRWSoV/R3Rk=;
+	s=arc-20240116; t=1739955285; c=relaxed/simple;
+	bh=SaALOE5ycBD0GUUXJR/xbWiJGBR21FmRQzF+b8r14RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWiwu8KT6teM2bBfcbiuIaqfzJ+/IFTyRcYdWoZyfZ+ngZeYC/mPcptG364gtvwcP2rXEBrfLmdtlfOY7NA1CzDjfEscgfz3EY3k8T7mbrCmyeif1eKMw1ocRVLM+8FykZBDh0Zr4O/fZhHomWyU3DksADofqBdJI/ZAlPhDlHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3tn1fH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C75AC4CED1;
-	Wed, 19 Feb 2025 09:02:02 +0000 (UTC)
+	 MIME-Version; b=A/VAeMhG6Ei6W41tA5BGVrjkI7KHhVDQ4haKEXDPXZbTX2di22A4gIl+9TEF1ybBnM62McaVAW+HC9sNj0ARpBFaCV6RHPmHiesa9ihBr74jjkarW8C/kHkKwD1ogZ7zE93omvwcq0x48JKKG7kMaDk+Dls2vBOH5yxpLmnq2bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQcn4P8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C072C4CEE6;
+	Wed, 19 Feb 2025 08:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955723;
-	bh=dCtXuKb+XLSugYxFrFA3d8gUL7VhgNJIBRWSoV/R3Rk=;
+	s=korg; t=1739955285;
+	bh=SaALOE5ycBD0GUUXJR/xbWiJGBR21FmRQzF+b8r14RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3tn1fH68NQ7C88lfGwCfC2nAoqgP1U/2d6sJau9iWdske5YHeIJYNs0nI7e7fF2H
-	 N+PSX14QiNpK4RBVDKV/2wPo9G94+IA0SVL5olRWcBXhBqJetc3chCXzEySLaV/n2k
-	 l/kIPJf7aOYl1KHj/jPAhp4hd7+zQs3wyhasLAz0=
+	b=FQcn4P8owscP59jZTlm3bQ/M18JdY+6B+ufWlXrSfR0YSCaJweSgkUa9Mou4WRoMv
+	 49CvaCQ+hVfiZG9Ej6jMbl3p9FXjZA6tKEjuMQJWssSZ4RwKSLhrtxMZzUKcx20InM
+	 j/LiUpcrMcuUcSiWzNLXdev/dNxW71ADCGOJTyfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy-ld Lu <andy-ld.lu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 093/152] mmc: mtk-sd: Fix register settings for hs400(es) mode
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 189/230] ipv4: use RCU protection in __ip_rt_update_pmtu()
 Date: Wed, 19 Feb 2025 09:28:26 +0100
-Message-ID: <20250219082553.732576773@linuxfoundation.org>
+Message-ID: <20250219082609.094731819@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 3e68abf2b9cebe76c6cd4b1aca8e95cd671035a3 upstream.
+[ Upstream commit 139512191bd06f1b496117c76372b2ce372c9a41 ]
 
-For hs400(es) mode, the 'hs400-ds-delay' is typically configured in the
-dts. However, some projects may only define 'mediatek,hs400-ds-dly3',
-which can lead to initialization failures in hs400es mode. CMD13 reported
-response crc error in the mmc_switch_status() just after switching to
-hs400es mode.
+__ip_rt_update_pmtu() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-[    1.914038][   T82] mmc0: mmc_select_hs400es failed, error -84
-[    1.914954][   T82] mmc0: error -84 whilst initialising MMC card
-
-Currently, the hs400_ds_dly3 value is set within the tuning function. This
-means that the PAD_DS_DLY3 field is not configured before tuning process,
-which is the reason for the above-mentioned CMD13 response crc error.
-
-Move the PAD_DS_DLY3 field configuration into msdc_prepare_hs400_tuning(),
-and add a value check of hs400_ds_delay to prevent overwriting by zero when
-the 'hs400-ds-delay' is not set in the dts. In addition, since hs400(es)
-only tune the PAD_DS_DLY1, the PAD_DS_DLY2_SEL bit should be cleared to
-bypass it.
-
-Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
-Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250123092644.7359-1-andy-ld.lu@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2fbc6e89b2f1 ("ipv4: Update exception handling for multipath routes via same device")
+Fixes: 1de6b15a434c ("Namespaceify min_pmtu sysctl")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |   31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ net/ipv4/route.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -260,6 +260,7 @@
- #define MSDC_PAD_TUNE_CMD_SEL	  BIT(21)   /* RW */
- 
- #define PAD_DS_TUNE_DLY_SEL       BIT(0)	  /* RW */
-+#define PAD_DS_TUNE_DLY2_SEL      BIT(1)	  /* RW */
- #define PAD_DS_TUNE_DLY1	  GENMASK(6, 2)   /* RW */
- #define PAD_DS_TUNE_DLY2	  GENMASK(11, 7)  /* RW */
- #define PAD_DS_TUNE_DLY3	  GENMASK(16, 12) /* RW */
-@@ -305,6 +306,7 @@
- 
- /* EMMC50_PAD_DS_TUNE mask */
- #define PAD_DS_DLY_SEL		BIT(16)	/* RW */
-+#define PAD_DS_DLY2_SEL		BIT(15)	/* RW */
- #define PAD_DS_DLY1		GENMASK(14, 10)	/* RW */
- #define PAD_DS_DLY3		GENMASK(4, 0)	/* RW */
- 
-@@ -2309,13 +2311,23 @@ tune_done:
- static int msdc_prepare_hs400_tuning(struct mmc_host *mmc, struct mmc_ios *ios)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f707cdb26ff20..41b320f0c20eb 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1008,9 +1008,9 @@ out:	kfree_skb_reason(skb, reason);
+ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
  {
- 	struct msdc_host *host = mmc_priv(mmc);
-+
- 	host->hs400_mode = true;
+ 	struct dst_entry *dst = &rt->dst;
+-	struct net *net = dev_net(dst->dev);
+ 	struct fib_result res;
+ 	bool lock = false;
++	struct net *net;
+ 	u32 old_mtu;
  
--	if (host->top_base)
--		writel(host->hs400_ds_delay,
--		       host->top_base + EMMC50_PAD_DS_TUNE);
--	else
--		writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
-+	if (host->top_base) {
-+		if (host->hs400_ds_dly3)
-+			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
-+				      PAD_DS_DLY3, host->hs400_ds_dly3);
-+		if (host->hs400_ds_delay)
-+			writel(host->hs400_ds_delay,
-+			       host->top_base + EMMC50_PAD_DS_TUNE);
-+	} else {
-+		if (host->hs400_ds_dly3)
-+			sdr_set_field(host->base + PAD_DS_TUNE,
-+				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
-+		if (host->hs400_ds_delay)
-+			writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
-+	}
- 	/* hs400 mode must set it to 0 */
- 	sdr_clr_bits(host->base + MSDC_PATCH_BIT2, MSDC_PATCH_BIT2_CFGCRCSTS);
- 	/* to improve read performance, set outstanding to 2 */
-@@ -2335,14 +2347,11 @@ static int msdc_execute_hs400_tuning(str
- 	if (host->top_base) {
- 		sdr_set_bits(host->top_base + EMMC50_PAD_DS_TUNE,
- 			     PAD_DS_DLY_SEL);
--		if (host->hs400_ds_dly3)
--			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
--				      PAD_DS_DLY3, host->hs400_ds_dly3);
-+		sdr_clr_bits(host->top_base + EMMC50_PAD_DS_TUNE,
-+			     PAD_DS_DLY2_SEL);
- 	} else {
- 		sdr_set_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY_SEL);
--		if (host->hs400_ds_dly3)
--			sdr_set_field(host->base + PAD_DS_TUNE,
--				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
-+		sdr_clr_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY2_SEL);
+ 	if (ip_mtu_locked(dst))
+@@ -1020,6 +1020,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 	if (old_mtu < mtu)
+ 		return;
+ 
++	rcu_read_lock();
++	net = dev_net_rcu(dst->dev);
+ 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+ 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+@@ -1027,9 +1029,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 
+ 	if (rt->rt_pmtu == mtu && !lock &&
+ 	    time_before(jiffies, dst->expires - net->ipv4.ip_rt_mtu_expires / 2))
+-		return;
++		goto out;
+ 
+-	rcu_read_lock();
+ 	if (fib_lookup(net, fl4, &res, 0) == 0) {
+ 		struct fib_nh_common *nhc;
+ 
+@@ -1043,14 +1044,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 						      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 			}
+-			rcu_read_unlock();
+-			return;
++			goto out;
+ 		}
+ #endif /* CONFIG_IP_ROUTE_MULTIPATH */
+ 		nhc = FIB_RES_NHC(res);
+ 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 				      jiffies + net->ipv4.ip_rt_mtu_expires);
  	}
++out:
+ 	rcu_read_unlock();
+ }
  
- 	host->hs400_tuning = true;
+-- 
+2.39.5
+
 
 
 
