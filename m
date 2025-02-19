@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C255A3B57A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA0DA3B4DD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 175447A4E73
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06E8B7A5DD6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB72B1DE4DB;
-	Wed, 19 Feb 2025 08:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9541EBA18;
+	Wed, 19 Feb 2025 08:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuseZqmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXxr0wsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881A71DE4C2;
-	Wed, 19 Feb 2025 08:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB361CEEBE;
+	Wed, 19 Feb 2025 08:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954938; cv=none; b=iCpcaZ+Lc25+AWBFwtEMY1iUzbbhMID2LMIzY6k0DorPBkoBDpEnlOnIqcrT3n4oZWrJ6ubWCgXnGsJ+ZrwLIFkeBrGyOAsBOhKu85MbKSrI96OZPFHKQ3oxXxz7s2VfDtvwmQAcLSXR3SgJXzqf4ZEClchphH+AVj+ars+lSTM=
+	t=1739954349; cv=none; b=p8Qps2ihzG5TQ4wIhS00R7SO+WeDkih+AmsXhMKdaGDRWiMqQkqdLi06jg61TY16NZ8vJzmZ25x+LOetBtsL9S7PDFTBqQjrZMkEqK/I4aMJMaApNwogDdwbU3PPOFHoQsVOCoY5kLuMTSVjmBvjC+YxzZjDdWTrSsTg3B9TtA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954938; c=relaxed/simple;
-	bh=SjLoO5Wd5EInBYXfmzWnblnoq+AbC4B3Tt09UILspfc=;
+	s=arc-20240116; t=1739954349; c=relaxed/simple;
+	bh=4ZKGLe6CuAkga9Z4QuJu81UUZXnmZpXnBqaGs9KZuro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jw96a+XZfdT0IzWrZ/tYWtyP/c7snL1F9GxEM9Xlu3muxevjjptm7gDd/FE043EV5+VmAnlOdbcevyxM0MpL9CccERfYce8bt3ntPaZgzD9uPVwKDg0qkwlQme6gpSY0s876SJD7hyNMm2cWk9CbOt9QTxRgDaMuC8nuuhu0TCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuseZqmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1E1C4CED1;
-	Wed, 19 Feb 2025 08:48:57 +0000 (UTC)
+	 MIME-Version; b=sDR9hJLzgyFDsFKusBkxqX4tTTblWc7TpnipJbttDmQP0vu10SOxI3Or3vmcVxa64ywZDL1Y1Zf0dWA0I/WHxOJ59hsqxxwhcCx7YiyE8yv7ckytjgZuZYntZ6UTtfpcNGcY8pX647qYe6uxadr7Ku3iwspMMFCnArmx+8A470s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXxr0wsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE2AC4CED1;
+	Wed, 19 Feb 2025 08:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954938;
-	bh=SjLoO5Wd5EInBYXfmzWnblnoq+AbC4B3Tt09UILspfc=;
+	s=korg; t=1739954349;
+	bh=4ZKGLe6CuAkga9Z4QuJu81UUZXnmZpXnBqaGs9KZuro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuseZqmYltECdwRHnxozY83Pi8prxizUlPp79WI5MGfGj/USWNlHjr01iT04Vd9JZ
-	 33I+32pK+PgnSBhFujYBUKXLHnJeyhmZ1aYaHfYmB+ADx/cphW/czr5AJk+md2atUM
-	 Y168vqLyjWo50bdxE1kHSVltsrNpo3Qik1/hPrW0=
+	b=IXxr0wsXTnP4rU/Wb/f/sZ/POm70lIra9dQq6qkHKj+uoMgZcDnN8ItBcE8QuSqYv
+	 vtCMNYXmF1n2VMyHs2FqEJSxgb8OCEWE0sQXg/25KVRpn5prXCM3oW/mYPSr5Coswc
+	 3PhqKVKyZryFFxCUFQFT6XHEozsV5OzrK7w5jm1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/230] NFS: Fix potential buffer overflowin nfs_sysfs_link_rpc_client()
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.13 145/274] USB: serial: option: add MeiG Smart SLM828
 Date: Wed, 19 Feb 2025 09:26:39 +0100
-Message-ID: <20250219082604.909160592@linuxfoundation.org>
+Message-ID: <20250219082615.276384066@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Chester A. Unal <chester.a.unal@arinc9.com>
 
-[ Upstream commit 49fd4e34751e90e6df009b70cd0659dc839e7ca8 ]
+commit db79e75460fc59b19f9c89d4b068e61cee59f37d upstream.
 
-name is char[64] where the size of clnt->cl_program->name remains
-unknown. Invoking strcat() directly will also lead to potential buffer
-overflow. Change them to strscpy() and strncat() to fix potential
-issues.
+MeiG Smart SLM828 is an LTE-A CAT6 modem with the mPCIe form factor. The
+"Cls=ff(vend.) Sub=10 Prot=02" and "Cls=ff(vend.) Sub=10 Prot=03"
+interfaces respond to AT commands. Add these interfaces.
 
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The product ID the modem uses is shared across multiple modems. Therefore,
+add comments to describe which interface is used for which modem.
+
+T:  Bus=01 Lev=01 Prnt=05 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev=05.04
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=4da7ec42
+C:  #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=10 Prot=01 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=10 Prot=02 Driver=(none)
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=10 Prot=03 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=10 Prot=04 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=10 Prot=05 Driver=qmi_wwan
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Link: https://lore.kernel.org/20250124-for-johan-meig-slm828-v2-1-6b4cd3f6344f@arinc9.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/sysfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index bf378ecd5d9fd..7b59a40d40c06 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -280,9 +280,9 @@ void nfs_sysfs_link_rpc_client(struct nfs_server *server,
- 	char name[RPC_CLIENT_NAME_SIZE];
- 	int ret;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -621,7 +621,10 @@ static void option_instat_callback(struc
  
--	strcpy(name, clnt->cl_program->name);
--	strcat(name, uniq ? uniq : "");
--	strcat(name, "_client");
-+	strscpy(name, clnt->cl_program->name, sizeof(name));
-+	strncat(name, uniq ? uniq : "", sizeof(name) - strlen(name) - 1);
-+	strncat(name, "_client", sizeof(name) - strlen(name) - 1);
- 
- 	ret = sysfs_create_link_nowarn(&server->kobj,
- 						&clnt->cl_sysfs->kobject, name);
--- 
-2.39.5
-
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
+-/* MeiG Smart SRM815/SRM825L based on Qualcomm 315 */
++/*
++ * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
++ * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
++ */
+ #define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
+@@ -2405,10 +2408,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
 
 
 
