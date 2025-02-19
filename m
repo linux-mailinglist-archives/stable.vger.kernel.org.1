@@ -1,101 +1,90 @@
-Return-Path: <stable+bounces-118264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA0CA3BF8C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:12:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0717BA3BF7E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 291141752E5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 13:10:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 308323AA549
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 13:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893481DF724;
-	Wed, 19 Feb 2025 13:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37321E0DE6;
+	Wed, 19 Feb 2025 13:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GdiNPkgN"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="6N9/mEt4"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C63B1E47A5;
-	Wed, 19 Feb 2025 13:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC001DF724;
+	Wed, 19 Feb 2025 13:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739970604; cv=none; b=nC+EjKWics7B6mZqWd1UgdUnha/XiMXiaGqzKOAzz+47IY/1ErC3a3JgD8hoGn7uFv7kzJPqNQg46L02vTXJA7CUwHWaH+M7aq7+ueK0CiSK+eE55XgrcGet17fIK3KYUFQsvkuAGG7GcWat3TI2OP/KuAT0rdEwWcrtqXkg+/c=
+	t=1739970529; cv=none; b=YAHFBLitYoTiqdasDDe30YRBbIGWRw3XQ0NRbgBw1jkbuK4DCJzuP7vcljimp7uMzZWbNmdLeNi28GxHJClYPe/eJ2ocp/d8N9OQ59aSt1GKJnPgwPeYfoWquLxuWbC6NaLy3q/Y+y31otb2SIMOutj5sMFIn03+wJQFHfRJdOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739970604; c=relaxed/simple;
-	bh=hhInF30wke/UovUOXAo1FFA7iYgBOW3/hkzvAoWVCCY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jUYFsdncAetgUE2v3s5vDxTCo4KQegDa9QCf/+QVVG3Yn2e6TkLQtCXapxvG1YEzrDS8vOJKA/aEISxlPFujHPE3YQftIX07bZOWavOCkRfOTbs9xa4pCVrDrGS1PxXdxLGDfLWDow1wpgadtHpU5xS+df8/i2kT8jPBygolgNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GdiNPkgN; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Huuvv
-	E5ZoWF1UAGvFneCadtnRZGO01ETPd9/BIZRpBI=; b=GdiNPkgNIWJq9fxfCpCgQ
-	bQ1qbXV4JfrXThmi+r3MCVsIWpF5HckJQy3bnBRp+n83HrvehZpfEFN57v+L+uej
-	ri2TxtBfhnc+b7DkfRoUF/DePXhvnaGnuAVpvnmzUA3xcgUmi93lngAdOI8lsFD5
-	+9bu5JNfV9insVqH5dAohg=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wB3yiyy17VnoJLHNA--.52215S4;
-	Wed, 19 Feb 2025 21:08:03 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: jani.nikula@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
-	tursulin@ursulin.net,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	gustavo.sousa@intel.com
-Cc: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
+	s=arc-20240116; t=1739970529; c=relaxed/simple;
+	bh=Dmhq1otLEb52QzA5/vDqPObz/CJLQjndNWKTPXQJrVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UP4Tq7WpW+oQnkKg5bn2zOEXO2m6kdjkMOrsK33Jwq/8V3sgg7wqTnBJznzdMb/EmI0QvFBhfWaPk5+mQI2A9FFdwGq28TzxMk7WxiXsuW+OuvZzR9uvJEzkzIWZJD4AMVYgZPO2KcRDAAL8jrRPZLP2KVBMVUYevMCfZb7+Vhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=6N9/mEt4; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ps97fPFgvv7ms46pdb7Qt0QiYmDXak+HI5iWt8qfj18=; b=6N9/mEt4wns58U5pxS7JkGhoPU
+	UFX563rzhNHSXzCCq2Jet0BYWl4sNkymJ8TAE/z5OOIGxvRczgf65AOkGucoerbi+NUVIG3CbWs8g
+	E3tvfbA72FvMDSoh52QcJ19ca9RIWQH1F0kd82c2MdxJwxtwCNlAh468rRDWOlBiGepo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tkjoZ-00FdPJ-95; Wed, 19 Feb 2025 14:08:35 +0100
+Date: Wed, 19 Feb 2025 14:08:35 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Ido Schimmel <idosch@idosch.org>, netdev@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/display: Add check for alloc_ordered_workqueue() and alloc_workqueue()
-Date: Wed, 19 Feb 2025 21:08:00 +0800
-Message-Id: <20250219130800.2638016-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+Subject: Re: [PATCH net-next v2 1/2] net: advertise 'netns local' property
+ via netlink
+Message-ID: <e542b4f8-176d-4c2a-bb93-6c7380a5a16b@lunn.ch>
+References: <20250218171334.3593873-1-nicolas.dichtel@6wind.com>
+ <20250218171334.3593873-2-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wB3yiyy17VnoJLHNA--.52215S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKw4kKFy7ArykKF47tr4rAFb_yoWkKrbEkF
-	WrZr1xGry5C3ZruF1UCrn3uryFvr4Yyry8AryxtryYyr47Kw10vrWkZr15Xw1rAFy3AFWq
-	93W8WF1kAws7WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNvtCUUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqBH4bme10+BHjQAAsE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218171334.3593873-2-nicolas.dichtel@6wind.com>
 
-Add check for the return value of alloc_ordered_workqueue()
-and alloc_workqueue() to catch potential exception.
+On Tue, Feb 18, 2025 at 06:12:35PM +0100, Nicolas Dichtel wrote:
+> Since the below commit, there is no way to see if the netns_local property
+> is set on a device. Let's add a netlink attribute to advertise it.
+> 
+> CC: stable@vger.kernel.org
+> Fixes: 05c1280a2bcf ("netdev_features: convert NETIF_F_NETNS_LOCAL to dev->netns_local")
 
-Fixes: 40053823baad ("drm/i915/display: move modeset probe/remove functions to intel_display_driver.c")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+So you would like this backported. The patch Subject is then wrong and
+indicate it is for net. Please see:
+
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+The second patch does not have a fixes tag, and i would say is just
+ongoing development, not a fix. So please submit that one to net-next.
+
+The code changes themselves look O.K. to me.
+
+    Andrew
+
 ---
- drivers/gpu/drm/i915/display/intel_display_driver.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_display_driver.c b/drivers/gpu/drm/i915/display/intel_display_driver.c
-index 50ec0c3c7588..dfe5b779aefd 100644
---- a/drivers/gpu/drm/i915/display/intel_display_driver.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
-@@ -245,6 +245,11 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
- 						WQ_UNBOUND, WQ_UNBOUND_MAX_ACTIVE);
- 	display->wq.cleanup = alloc_workqueue("i915_cleanup", WQ_HIGHPRI, 0);
- 
-+	if (!display->wq.modeset || !display->wq.flip || !display->wq.cleanup) {
-+		ret = -ENOMEM;
-+		goto cleanup_vga_client_pw_domain_dmc;
-+	}
-+
- 	intel_mode_config_init(display);
- 
- 	ret = intel_cdclk_init(display);
--- 
-2.25.1
-
+pw-bot: cr
 
