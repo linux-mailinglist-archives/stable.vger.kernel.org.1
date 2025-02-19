@@ -1,196 +1,225 @@
-Return-Path: <stable+bounces-118259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15414A3BF65
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:06:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B539A3BF75
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:08:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0296C17BE9D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 13:01:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC6E3A83F1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 13:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2701E231E;
-	Wed, 19 Feb 2025 13:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1665A1E0DDC;
+	Wed, 19 Feb 2025 13:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrZQZz+m"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CYtePnx+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2078.outbound.protection.outlook.com [40.107.212.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AF51CAA6F
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 13:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739970040; cv=none; b=LuExxBm7bWrwc6VylXs3MgWESpZJAkPrAGQg2n2CQPV0AIqluV72pF5kD4puftAo6vgIoA/AjhIdjAsNGnZYWGoVZx9BFB9iESwUPQBgjZKg8Jjr45dhGOjfkrtvJVpLtlEboKyg8sF8AqBlaqascp5TlwymzjWeCZ9IjdPQ+UI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739970040; c=relaxed/simple;
-	bh=LS63qe6wNoHdlV2bGuG6kytVejypA4SDMFfYpslUWOw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JqLeB7HYx0XmLBAibOTg1UDWYcaCX4lWyDol/MUXpZ6UnO2NTXpMeVIGWH/YhHIs9TtpLUg+W6FLgYIS1tSm89t+ajdudNwj8z7LLmzhTHiihsH4B08j9ymKQWltDOHPFSNbsYLcV3vTaVblMCnvVjHmARKqEpoISCtbu0tcTss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrZQZz+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3A3C4CEDD;
-	Wed, 19 Feb 2025 13:00:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739970039;
-	bh=LS63qe6wNoHdlV2bGuG6kytVejypA4SDMFfYpslUWOw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrZQZz+mWtxQQkU159H+xN/7wssTynWvLWoRKhiA4lRBR/k1+Vw9RkxPOBTRdB5c4
-	 MDL0FYQVLvrLI5SJl8dd2ad2pCzSvRHjM+YPzhsED3/eZ+sLk1lwSAlMKHJxuiO3pL
-	 E/Xx/ey62iNCcAPOI9gBkxjHVEdhP76BzxhSbFeJUI25fHfUzuAAzjYkmZ4xQDPovs
-	 6mftIZO9D+JxkEJc3Kve2E/kthg6tgx6E1AgikBCC6V4CSJm4+tY/4U5Y1XLD1cM7T
-	 mSwdTE2fREKkvaiiGGXfeOL9Ox0CSPi3uRZmcEK1y4wHU8hc3kqFM0iQfR0NlbRJ9k
-	 IBu2SmKWCmOiA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Hagar Hemdan <hagarhem@amazon.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] block, bfq: split sync bfq_queues on a per-actuator basis
-Date: Wed, 19 Feb 2025 08:00:35 -0500
-Message-Id: <20250219075548-b15300b0512e10b0@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250219090907.30462-1-hagarhem@amazon.com>
-References: 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582551D6DC5
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 13:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739970382; cv=fail; b=P3V20aySnDMXA5hOPGDFlVqU7msjrAKPKHyAcOUizEm1sBnmI5lAsglYkELH9baYmDCJrCEICtByMqO7e3zilSsrupsx3a7X/l7lgY5iZPI17yYOZg9Wz3hL0tiNuypncS/n/ylYdYfrOllJYNEoWS53cY5Zaw+YrWdg4K8ecGU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739970382; c=relaxed/simple;
+	bh=Q3ghiaXexeG3mEoFNhsKdLbdyDAnZlv53sMJ3PfUkCc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=WZBhqFoNvJXy7d55Oo2rgOBxcjOSGbX+wwfru7f2nCQeEYY7m21PiIl1dPJbj0u572Y8AGhulvdE9bptiNoKwzDvh3mLib8KRmET7cPY8coHYZ7CFvI0qZ/uAyWT6RlmlnyN/3WKcqTR5/MC6FdW8KFoA/HTV1qOPQT4yiqk1Pc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CYtePnx+; arc=fail smtp.client-ip=40.107.212.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QBr5NqAImQ4Yc5mJ1xqBbNm3MxIHV68u9ACTCLUznezs0UcKTkusRNXqQhrVEk1A8bPCYVEEmasjgdiC4cAQtVOV0WN6yFQYdPBS3LEh2icLsuOI0MrHT5Xm+dxHIV7/9+2t+JHmU9xhmt8lsZDUHDzlR2oMG4tCGOPDOVTnumEcnP8PsebNRLu88JZtGqHjyRT9YtSZydOmfiqwd4hsvtixZFWAQkcd4OUnQtDqa8uwgtNpcjmEAK5NOHfRkeVQdZ1g0PybWvuJllj+VJxlxV9q8FQiYbrYhlPXnYxL9JjXUxCPTNzwGC2fWVR88RkbEcZIjXI9wERibtbJteHu0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Cqon8esRIMlkxlVk0JZk4XKfoSpuHq2n02R7oGkuhVU=;
+ b=MQg3W5sOlpRI+/ZKsjwjuUGYnEhMCzeYuW7mockCjLQdWy1k9Nk+4EAvvb7PibBy5SZo6OnaWfCaDjd+/RNEyAtdC2zhYNHVM5qDChCDkJtCtb0FTejUCY0XCEKNUuvkUxqabpyyI/xArTE6yeUK5JV8Lj+X+HskPYSIFWaOdNWMXl0UGX0PXT1OQkfY9e3bmzU8LjDw7RX0GQP0FD8LADCE3qX4h6PiHPGFOmY2ghHs4HMuBA/C437AZU0o+sssOYu27XkKL/kBVhYuYHEDsCtrJ1fYaPIjOEVGTtU6iUDarScXI90BwzukGYY9VcQny6RCXSzySoPXLD7D6yf7/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Cqon8esRIMlkxlVk0JZk4XKfoSpuHq2n02R7oGkuhVU=;
+ b=CYtePnx+FsHzK/6Ne8sovW3jAf7DD6o6GNRswL297Vb3M+F4JXXVjKNK7xfp1wrneu4M0G42SCEVZE0i+uNy48ZXr/m37FLLPyLe2APk5OT6epdqZiPe50+GyBYk1HyWLPjSvZMH/gDLTRtelYzVHegrdYWMLt0rxyAQPwhIG0k=
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
+ by CY8PR12MB8362.namprd12.prod.outlook.com (2603:10b6:930:7e::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Wed, 19 Feb
+ 2025 13:05:59 +0000
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::491a:cce3:e531:3c42]) by BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::491a:cce3:e531:3c42%4]) with mapi id 15.20.8466.013; Wed, 19 Feb 2025
+ 13:05:59 +0000
+From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, "Lazar, Lijo"
+	<Lijo.Lazar@amd.com>
+Subject: RE: [PATCH 6.12 098/230] drm/amdgpu: bump version for RV/PCO compute
+ fix
+Thread-Topic: [PATCH 6.12 098/230] drm/amdgpu: bump version for RV/PCO compute
+ fix
+Thread-Index: AQHbgqt9dpJh6H0cX0SEvrTz/nq7c7NOmE7A
+Date: Wed, 19 Feb 2025 13:05:59 +0000
+Message-ID:
+ <BL1PR12MB5144AD9C4847BB7B6E89168AF7C52@BL1PR12MB5144.namprd12.prod.outlook.com>
+References: <20250219082601.683263930@linuxfoundation.org>
+ <20250219082605.530543710@linuxfoundation.org>
+In-Reply-To: <20250219082605.530543710@linuxfoundation.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=eb39d42c-fce3-4c7d-ace5-ab8752b4fe06;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
+ Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-02-19T13:04:48Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Tag=10,
+ 0, 1, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|CY8PR12MB8362:EE_
+x-ms-office365-filtering-correlation-id: 8c19de53-bd80-492f-6d82-08dd50e62782
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?AApn/n1Z7b2JUsyAt8wV9WfH2zjh0CxM/U8uhKlLGTaLtoSHexqCArN7kkQZ?=
+ =?us-ascii?Q?zsDMgCyOOlKYOtDBotu/fHsvQPY7YYiAOCRv3zQ7pQmNDIkoA7i5m8wEpEIh?=
+ =?us-ascii?Q?K7oPGCkXO9Cg8z0SHb65VIiDayA0F7aG7MsNOh9P02MHBVGlkyo66sm+FK9u?=
+ =?us-ascii?Q?LbUnGRFbZDPDMhUUPJkGQFkAcoTh7o7AvMJ5slWuslm1b9lT2PDD09fEmm+Y?=
+ =?us-ascii?Q?gqpeVR/TzDFAVAbr/UMucfRc8lVp5vgBEm30xUfn4x1/+yBKsF8ociCVJPpr?=
+ =?us-ascii?Q?PHl2nB99KPbvXNDsEO020P6AVXbb/mH0WFkkcFigR+/g5Eb2yK+RQ0QhLvGn?=
+ =?us-ascii?Q?WJvWh9LX2VZIUd4PdSTXf56u6to1+8T8DUklz52HDcaWDKKjEjhfhOZ22B/g?=
+ =?us-ascii?Q?GpzYuGaCyi2Gqc2jIw8W1H4v+/tODEtnumFySd+77Kjm95wImy3NqUzy36uA?=
+ =?us-ascii?Q?TCcRXttBdxDKnzORVprh9YxZCmpn6mwqBEUPo4eSzoOqUo+/O9r/LAe556Oo?=
+ =?us-ascii?Q?2gD9jUD0bD1DPdoVfpT4xrxDUae15es4K8r+5uPvy65qMVN1bWu4dO/ACApn?=
+ =?us-ascii?Q?tDxqRfd0kvAujViLmqNzXH26qeVpwfBlbe/myqkISfbcU3DH9e9+Hx3eJk8Q?=
+ =?us-ascii?Q?FelR+hMREjA7Qoo+Byfu3n85SANr13AJeBVSE7GWvs7A27BXzABbA5N5WvKu?=
+ =?us-ascii?Q?XVNYN1NS0uyViiTBDKFd3dTOWlyr4RTI3FqYMaE12g1RWewqcgc3Yd6/9Fc7?=
+ =?us-ascii?Q?8Ocmft2CvGnDusDe+xMyq56xIQA33nB1fupq+zbJr6UV0f+kRETWzKQHv4CO?=
+ =?us-ascii?Q?ND4QLZSOGzbBvXfpBsn7kZwy2UTA+CVsakmadGJ291KPedGw04d3knHwcLgU?=
+ =?us-ascii?Q?Ecz6p1/5s7d/7eQ6jwxyjnR7f3AgOfzibp9UvXfyUJICpDlEghnStk9p/C71?=
+ =?us-ascii?Q?Uk3Bycl64w81htdDfKki++QMV+Z2vGE0EoQVLFONWMJFlbDKgMVr/BXMJs65?=
+ =?us-ascii?Q?M0US/BOpM5i3nMSDxR6HjgZGGwk8JhFir3ASPYHrdLuI0r98A+gA3WR2XuUa?=
+ =?us-ascii?Q?8ni6RFaXOz0GUVX0ptzIQF434D3i/LQBkmzsscEjWAqzwLntrXmnST/0gP53?=
+ =?us-ascii?Q?tMLNLSAe6yekIlXXqFrThttlW3YU+n5IBW/KTfT5jGpcesHV0N+4wXlbM85d?=
+ =?us-ascii?Q?f2GdMY/lnK+A1NVYbxVWeFprpQ111oj8BmY8PLYL8P7a/k9J+/7IoKm6JuQ7?=
+ =?us-ascii?Q?1xlDk/bRqSGs+sacQ4U4jPGcxKoASux0FG5vzqDizCCPR8gZml4PdGmEuvCN?=
+ =?us-ascii?Q?Dzmn6Pgs9lFP9MnfVf6ByR+SD4wjXMiaqv8J/i+EThopjgI7eutuNmNzLOYq?=
+ =?us-ascii?Q?bNpt+QNcBkyosrgEg76W5rpaGpxMcLplepbX40Kz0zlY3ZeXtY3Mh990ggaH?=
+ =?us-ascii?Q?bs+AOtYFcWkNM3o2RGqEYA5cBoxW4iTy?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?jJ5Zdc/x/1zzrZzHFXopZXYu9e1q4H/SWtvkCF1y5oh5HnaUe3ZEse8pqntc?=
+ =?us-ascii?Q?gRKj4lnp0ZUv4YL52cLJUKlfanO5erFB4Osr9Vb/yTn3+T45M4dq/AqBw8Bw?=
+ =?us-ascii?Q?5aczjEmZvxTWVCGe0yeO26rtVk3B2zPkpIugqZAhd66trVZ7dlLUQ94V84kc?=
+ =?us-ascii?Q?SDOiEQUCR4YxqB+pGyn/8w0xpkk4iMUhfLsmcc53HjQDbh5Xge0ebP//Xdpz?=
+ =?us-ascii?Q?uHASUPwTUFah5Jcij9nimZE/AvRk+v1eC19WJRiH5+H9o1szXp+VDzhKUOWu?=
+ =?us-ascii?Q?wDfFO+IcNRt9Hd9sHdSp0n5uOMCHc2dTliMnovmLOasvmvtxO5j+8EcdRp3u?=
+ =?us-ascii?Q?/+hyb6zzMPQC6A7xw2FrYFhzOA8vdT1SbX7wzMXQLFuNe1sHaDwJPIGcnAIv?=
+ =?us-ascii?Q?SX3NfeielnaRh/d7ijVd4JWXX44nO9j8JBB62fRzNn62yxMqmecG37JcHteF?=
+ =?us-ascii?Q?SID8FBGTYf5UiqTE9O/6Vb5XhZV4H+NYCUi4qjRW+mXAgpErHwPCeiQRYfiV?=
+ =?us-ascii?Q?orgBUnF7M/KV5Vf4Iqc90mJvBLqbVRuKhhlDnTpldmhAmeoDrqjIcNmrR8fy?=
+ =?us-ascii?Q?JRO+8v5Qpbz9f21X+SjxzebQPn7XS+nsuQ//+ymec7Bui3S3r7mEw9NJSb4j?=
+ =?us-ascii?Q?41iLAu2KtzBcShJhrKwLpKkDgVz4eTZg8sLV9+K4jYSNqZo+wL+yP2sZSfzu?=
+ =?us-ascii?Q?lRDtdGvt9bArePzJCsMcrnA65paT0AfJAKaKHmIRW4LmrX5Uner4kZiexlMp?=
+ =?us-ascii?Q?DrJ6op0Xsv5BwKXkOFQlpCSqMIoWt/O/2kaWgq9j2Pjayva28TQkoy1RRdjR?=
+ =?us-ascii?Q?FtnIG/pt8L8VvaJMLL2qNrQYu+cZCsISyf5PbZPDbN8kD2TF3T5vCowdSgCz?=
+ =?us-ascii?Q?hS80svS+X+b+pYz+CG7F7pL4t/v6eSHulKWStTu07R8IPkVVVJP3zUwLWNzj?=
+ =?us-ascii?Q?QCU2B05J5ad8mas5s42hefIn5EP6cuc3L8vJdTwyc31jqqXd0SjMIMRBo+Q7?=
+ =?us-ascii?Q?1FVngTU62AT3rOmr3QweWIR06jbvErW5vPOnb4q6VUSaPR3oa8HY64VdNrPE?=
+ =?us-ascii?Q?z9iSuewMNpIpqDJ/1E7N22rMQDl8/jyM7uxPONL0DK4l5DARE1yar7/0j41G?=
+ =?us-ascii?Q?OaU0/ViHW7YHOS4NPN0ege3ZMv2wBoljz1DU1cSBvYbXcvXtRbF4QuZhKZAn?=
+ =?us-ascii?Q?o3EXFY5FC89d5tC02nzB4jkLuBs9D2I5ORLwDpFK6uS+q+uq5JHrh21erCd3?=
+ =?us-ascii?Q?FmTMoZxTBXGEpvcByFiXUABwKkNu8KVfu40FU+XuUJz+1hdfKdk5fkpYqpoO?=
+ =?us-ascii?Q?eW/B9rBSQkOcgIoNc5U6GoquCxssE9/iNMgFMkbz+RXO7JeTMf/1l47rdDaX?=
+ =?us-ascii?Q?ELC+MyOf0hijaT3kPqTXKIfGFUvo1PbwstNRpYF0J/6pxQSIUpWzz1X+W6F1?=
+ =?us-ascii?Q?+RIUK5NnINW6HGkSM9JsvdEoeOHF7aWYkVaxVka9LJdR/J4is5oLhVV3EJzL?=
+ =?us-ascii?Q?re3vNF+Gepb398d72X53CkxqnH1SDbjNFStqO8Ycqqi507YF1nAH9fO/ysBb?=
+ =?us-ascii?Q?QEm4gJDihcqhyl8rxxA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c19de53-bd80-492f-6d82-08dd50e62782
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2025 13:05:59.1669
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rD4DaH88aONq29h9eQrFrp2pW/6tRJEmA65TARwmFyUV4PllZZBVgBg0cA67eFc+kxKJe4EqVbJ7c20p/IOrgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8362
 
-[ Sasha's backport helper bot ]
+[Public]
 
-Hi,
+> -----Original Message-----
+> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Sent: Wednesday, February 19, 2025 3:27 AM
+> To: stable@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; patches@lists.linux.=
+dev;
+> Lazar, Lijo <Lijo.Lazar@amd.com>; Deucher, Alexander
+> <Alexander.Deucher@amd.com>
+> Subject: [PATCH 6.12 098/230] drm/amdgpu: bump version for RV/PCO compute
+> fix
+>
+> 6.12-stable review patch.  If anyone has any objections, please let me kn=
+ow.
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Please drop this one from all stable trees.  It has a dependency on another=
+ patch that was dropped due to needing a stable specific backport.  I'll in=
+clude it with the backport.
 
-The upstream commit SHA1 provided is correct: 9778369a2d6c5ed2b81a04164c4aa9da1bdb193d
+Alex
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hagar Hemdan<hagarhem@amazon.com>
-Commit author: Paolo Valente<paolo.valente@linaro.org>
+>
+> ------------------
+>
+> From: Alex Deucher <alexander.deucher@amd.com>
+>
+> commit 55ed2b1b50d029dd7e49a35f6628ca64db6d75d8 upstream.
+>
+> Bump the driver version for RV/PCO compute stability fix so mesa can use =
+this
+> check to enable compute queues on RV/PCO.
+>
+> Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Cc: stable@vger.kernel.org # 6.12.x
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+> @@ -119,9 +119,10 @@
+>   * - 3.58.0 - Add GFX12 DCC support
+>   * - 3.59.0 - Cleared VRAM
+>   * - 3.60.0 - Add
+> AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE (Vulkan
+> requirement)
+> + * - 3.61.0 - Contains fix for RV/PCO compute queues
+>   */
+>  #define KMS_DRIVER_MAJOR     3
+> -#define KMS_DRIVER_MINOR     60
+> +#define KMS_DRIVER_MINOR     61
+>  #define KMS_DRIVER_PATCHLEVEL        0
+>
+>  /*
+>
 
-
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-
-Note: The patch differs from the upstream commit:
----
-1:  9778369a2d6c5 ! 1:  e73e0a774c936 block, bfq: split sync bfq_queues on a per-actuator basis
-    @@ Metadata
-      ## Commit message ##
-         block, bfq: split sync bfq_queues on a per-actuator basis
-     
-    +    commit 9778369a2d6c5ed2b81a04164c4aa9da1bdb193d upstream.
-    +
-         Single-LUN multi-actuator SCSI drives, as well as all multi-actuator
-         SATA drives appear as a single device to the I/O subsystem [1].  Yet
-         they address commands to different actuators internally, as a function
-    @@ Commit message
-         Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
-         Link: https://lore.kernel.org/r/20230103145503.71712-2-paolo.valente@linaro.org
-         Signed-off-by: Jens Axboe <axboe@kernel.dk>
-    +    Stable-dep-of: e8b8344de398 ("block, bfq: fix bfqq uaf in bfq_limit_depth()")
-    +    [Hagar: needed contextual fixes]
-    +    Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-     
-      ## block/bfq-cgroup.c ##
-     @@ block/bfq-cgroup.c: void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
-    @@ block/bfq-cgroup.c: void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *
-      /**
-       * __bfq_bic_change_cgroup - move @bic to @bfqg.
-       * @bfqd: the queue descriptor.
-    -@@ block/bfq-cgroup.c: static void __bfq_bic_change_cgroup(struct bfq_data *bfqd,
-    - 				    struct bfq_io_cq *bic,
-    - 				    struct bfq_group *bfqg)
-    +@@ block/bfq-cgroup.c: void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
-    +  * sure that the reference to cgroup is valid across the call (see
-    +  * comments in bfq_bic_update_cgroup on this issue)
-    +  */
-    +-static void *__bfq_bic_change_cgroup(struct bfq_data *bfqd,
-    ++static void __bfq_bic_change_cgroup(struct bfq_data *bfqd,
-    + 				     struct bfq_io_cq *bic,
-    + 				     struct bfq_group *bfqg)
-      {
-     -	struct bfq_queue *async_bfqq = bic_to_bfqq(bic, false);
-     -	struct bfq_queue *sync_bfqq = bic_to_bfqq(bic, true);
-    @@ block/bfq-cgroup.c: static void __bfq_bic_change_cgroup(struct bfq_data *bfqd,
-     -				 * request from the old cgroup.
-     -				 */
-     -				bfq_put_cooperator(sync_bfqq);
-    --				bfq_release_process_ref(bfqd, sync_bfqq);
-     -				bic_set_bfqq(bic, NULL, true);
-    +-				bfq_release_process_ref(bfqd, sync_bfqq);
-     -			}
-     -		}
-     +		if (sync_bfqq)
-     +			bfq_sync_bfqq_move(bfqd, sync_bfqq, bic, bfqg, act_idx);
-      	}
-    +-
-    +-	return bfqg;
-      }
-      
-    + void bfq_bic_update_cgroup(struct bfq_io_cq *bic, struct bio *bio)
-     
-      ## block/bfq-iosched.c ##
-     @@ block/bfq-iosched.c: static const unsigned long bfq_late_stable_merging = 600;
-    @@ block/bfq-iosched.c: static bool bfq_bio_merge(struct request_queue *q, struct b
-      	} else {
-      		bfqd->bio_bfqq = NULL;
-      	}
-    -@@ block/bfq-iosched.c: bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
-    +@@ block/bfq-iosched.c: static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
-      	/*
-      	 * Merge queues (that is, let bic redirect its requests to new_bfqq)
-      	 */
-    @@ block/bfq-iosched.c: static void bfq_check_ioprio_change(struct bfq_io_cq *bic,
-     -	bfqq = bic_to_bfqq(bic, false);
-     +	bfqq = bic_to_bfqq(bic, false, bfq_actuator_index(bfqd, bio));
-      	if (bfqq) {
-    - 		bfq_release_process_ref(bfqd, bfqq);
-    + 		struct bfq_queue *old_bfqq = bfqq;
-    + 
-      		bfqq = bfq_get_queue(bfqd, bio, false, bic, true);
-     -		bic_set_bfqq(bic, bfqq, false);
-     +		bic_set_bfqq(bic, bfqq, false, bfq_actuator_index(bfqd, bio));
-    + 		bfq_release_process_ref(bfqd, old_bfqq);
-      	}
-      
-     -	bfqq = bic_to_bfqq(bic, true);
-    @@ block/bfq-iosched.c: static bool __bfq_insert_request(struct bfq_data *bfqd, str
-      		 * then complete the merge and redirect it to
-      		 * new_bfqq.
-      		 */
-    --		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq)
-    +-		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq) {
-     +		if (bic_to_bfqq(RQ_BIC(rq), true,
-    -+				bfq_actuator_index(bfqd, rq->bio)) == bfqq)
-    - 			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
-    - 					bfqq, new_bfqq);
-    - 
-    ++				bfq_actuator_index(bfqd, rq->bio)) == bfqq) {
-    + 			while (bfqq != new_bfqq)
-    + 				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
-    + 		}
-     @@ block/bfq-iosched.c: bfq_split_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq)
-      		return bfqq;
-      	}
-    @@ block/bfq-iosched.h: struct bfq_group {
-     +				unsigned int actuator_idx);
-      struct bfq_data *bic_to_bfqd(struct bfq_io_cq *bic);
-      void bfq_pos_tree_add_move(struct bfq_data *bfqd, struct bfq_queue *bfqq);
-    - void bfq_weights_tree_add(struct bfq_queue *bfqq);
-    + void bfq_weights_tree_add(struct bfq_data *bfqd, struct bfq_queue *bfqq,
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
