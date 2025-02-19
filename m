@@ -1,150 +1,118 @@
-Return-Path: <stable+bounces-118250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EC0A3BDD8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 13:15:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38852A3BDD3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 13:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3CC21613FC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 12:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E149E3A7E45
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 12:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D50C1DFE02;
-	Wed, 19 Feb 2025 12:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2A11CF5E2;
+	Wed, 19 Feb 2025 12:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdwpvn88"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z7MrmYvl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72631BD4E4;
-	Wed, 19 Feb 2025 12:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4FF1BEF75
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 12:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739967216; cv=none; b=idRTBhOupZUklHxxhh1pvv4lAreBtgqFjhm7p2tRnHL4B6EHgL61O766gIWFpUQKnn5I6HDxcSxydlEdacb55fB02Ot6WD/WKpLpapFgKN4uJutdf+SAxjVe71fmK9ciZYcqQzVpux/HimR25P/DiJs/s5tm8K5Cr0uKsj4x4TE=
+	t=1739967170; cv=none; b=kySTpnhBoKv499et8DwwiqRUfeKQTlqmzcFeWBsbCLY0uq/T04jfGJbKYooETlANE66/g+tD67uw40iwT3lBMBeL7Z6zteWumHlqH8LEjb++tUexbs6Y5Ff0+dfDYuntAtIwtKJr98AQLApBmXEeBYyEkXQpoMWk8RI6GF9d4CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739967216; c=relaxed/simple;
-	bh=VwZvAjw6hrQKHNmoh6jgmw70TBaConXEcu8BQE9Ymbs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BkbiNzRHXlNQMNSpHTpgvzAZVOiMoXPI5xV5403kfuN8EqBK4mRochLkW0luPo8nhqiSzPkjVXflpdKcVC2XESsJXjvqzc6RPky+CZtn5K/7DL3a1ThuDyB1Sba2TBZvrl2cTNf+hk25RVAnY0NFlmykXyD0SDmwrbETeSOg7KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdwpvn88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37CFC4CED1;
-	Wed, 19 Feb 2025 12:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739967215;
-	bh=VwZvAjw6hrQKHNmoh6jgmw70TBaConXEcu8BQE9Ymbs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sdwpvn88YqYn+PFnG/VmA6j5cmCZfbkJa0i5Cs+LZQt5dXQSGcZTxEL/0KeLMYYl/
-	 UFxkcA4dBqGez51nO+VC+/fspD6+etar/FDZKN0IvjV/7KupJYA+oWu2Cbd7JK6JBs
-	 TDEWnQPHp2pGaXO3fkphVMRt0Bpql3vyOC8gjEig=
-Date: Wed, 19 Feb 2025 13:13:32 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>, willy@infradead.org,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH 6.6 000/389] 6.6.76-rc2 review
-Message-ID: <2025021901-silenced-phonebook-9b81@gregkh>
-References: <20250206155234.095034647@linuxfoundation.org>
- <CA+G9fYvKzV=jo9AmKH2tJeLr0W8xyjxuVO-P+ZEBdou6C=mKUw@mail.gmail.com>
- <CA+G9fYtqBxt+JwSLCcVBchh94GVRhbo9rTP26ceJ=sf4MDo61Q@mail.gmail.com>
- <2025021739-jackpot-lip-09f9@gregkh>
- <CA+G9fYtJzD8+BkyBZEss9Vvv2f=8tJUcSyWDGjyOshj1D5hMyA@mail.gmail.com>
+	s=arc-20240116; t=1739967170; c=relaxed/simple;
+	bh=ZV1Mu/4JnGjawx649b6S+Kvo/ot2A1voDsH6TNAZNqY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HZi+M8t5FLKubVQx4Ofdx7fJgExhsnaCizZNwoeHK/dE/q9RlXGOzrJjV36S3UB61hg30rKYHwsHRJ7DE0ISxSmMHrFbMAhh83ugoQz3U2NLWBiQDQj7XwG3QeRVNCX1nXx3rrNmYymjsV7VyYMeOeFNOp4boHWdTqO/8/9/WDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z7MrmYvl; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f1e8efe82so7314261f8f.0
+        for <stable@vger.kernel.org>; Wed, 19 Feb 2025 04:12:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739967167; x=1740571967; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aRap/+wtbzBBvj/Oq3kcOcN0gvl/NE+wgoVj4vRH6cQ=;
+        b=Z7MrmYvliznJNMoJSMvpBbGUlfqOhLaT5/jiqh80r6CwNxJYFf7bV0A+0+DWXU6IHu
+         Zf/I3hSrfaYyGHR/AFlhGVBEByILkRX9fL/EaHrDy4g5zDSq3r9R6I5L+ewiXjwl+b6h
+         EJpgiX3eLFwkkyVaMiznZlBYac4PTwCmZQsbEBps7/+p11qbj7E5ecWJCvDxgg1driUh
+         GYbHDLlgcbBTX8CsFlCVwC/0HZ0xMpJIqlgiKCg7GYJkcGq6MG+qIZ7RgEf5xRwypktX
+         ZFYjc7f+3lOy70S0Ls0ibKswbKkkqRZWgPOt5TKlFOY/ppqcuW642r/dbbJIOV7NRa8z
+         eqmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739967167; x=1740571967;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aRap/+wtbzBBvj/Oq3kcOcN0gvl/NE+wgoVj4vRH6cQ=;
+        b=MAx1nQvaI11LyNPOoPrvC4WY7vZZAnZVUW55Y5j5bcSkf0Y5ht/SFGaBQffrGeC0EQ
+         bs4JLH7tX0rTravMPDyedPUQs+IGakAoSb4u/P4ka3HuudeThKOCndPq4v5yWDBJpfKQ
+         FHDluEWnKAvFH3s0TQjGgGPdi4hkYSHxqHucSK/arMRs87RldVVNQ2bs8RDll1zDWtJ3
+         DhLqeUW4xXyE9tVcumwpHIRQTrcmA1GhxajI+LW7xM541IyC4sZyGG8I1crnOX8k8tZm
+         Y5GDQfmKMnrXe0IY+s/iObmC5OKFFHxPd2LtKdUSKsMEU7UnS0eG3fX68SNpnG5AeViZ
+         6+cQ==
+X-Gm-Message-State: AOJu0Yzzyxa14NrS01d0nYyc5xtASaGdA5GMTqNy44AjRU7trtBxBvLk
+	Et3fKj8fOW20PoQTbMLRfrw3J6vl8El7+iyCCnCibC3JmGDrsSytEdR1/A==
+X-Gm-Gg: ASbGncsN6mmKNYz3RbTQETIbue1tvGdaGH7qp/tud9GZnwizVpMOiYHZoENv8c0naBD
+	+xwGyRLHf+2kaxQfSic+aUqKT7YUD28BCEmce3qj4LaNpBWH9k63u6kkUw1ofEY4NU8yWM+0SV0
+	QtChelX3usQO09I8M5pr8rJ1o7x0sg7DLFfebb+9VP4ACUiXYXlZtZEGyRNEkXTOyScpriySDie
+	on0zZ0bFsX+Ul10q8N42zgPGpB59JXYqGxeuC+a59bkcGBDabrBmGanQ9TXSW9W+/LVg7G6EBig
+	YYElX/shTNJ9cDi+DQs7l5L6l4w8p12OWpXf1+k++Ug5PGVe
+X-Google-Smtp-Source: AGHT+IEVv+E502vjz4E5BYTvtvhk71Tt1E9fxL4bryO5XBjYLGaeTgcIHGTSGBITpwIYG15h3Ak9nA==
+X-Received: by 2002:a05:6000:1f87:b0:38d:d8fb:e91a with SMTP id ffacd0b85a97d-38f33f35862mr17858406f8f.27.1739967167008;
+        Wed, 19 Feb 2025 04:12:47 -0800 (PST)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:cfff])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba53232282sm1270067266b.12.2025.02.19.04.12.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Feb 2025 04:12:46 -0800 (PST)
+Message-ID: <f2f9e3ba-07fd-4fb0-ad05-893ef41a1a3f@gmail.com>
+Date: Wed, 19 Feb 2025 12:13:52 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYtJzD8+BkyBZEss9Vvv2f=8tJUcSyWDGjyOshj1D5hMyA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12.y 6.13.y] io_uring/kbuf: reallocate buf lists on
+ upgrade
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+ Pumpkin Chang <pumpkin@devco.re>
+References: <2025021855-snugly-hacked-a8fa@gregkh>
+ <df02f3ce337d92947f14bdd4617b769265098e29.1739926925.git.asml.silence@gmail.com>
+ <de75fce7-a3ba-4bf9-bd06-c5713eb84fcb@gmail.com>
+ <2025021941-getaway-polish-00a9@gregkh>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <2025021941-getaway-polish-00a9@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 19, 2025 at 05:16:19PM +0530, Naresh Kamboju wrote:
-> On Mon, 17 Feb 2025 at 17:07, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Mon, Feb 17, 2025 at 05:00:43PM +0530, Naresh Kamboju wrote:
-> > > On Sat, 8 Feb 2025 at 16:54, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > > >
-> > > > On Thu, 6 Feb 2025 at 21:36, Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > This is the start of the stable review cycle for the 6.6.76 release.
-> > > > > There are 389 patches in this series, all will be posted as a response
-> > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > let me know.
-> > > > >
-> > > > > Responses should be made by Sat, 08 Feb 2025 15:51:12 +0000.
-> > > > > Anything received after that time might be too late.
-> > > > >
-> > > > > The whole patch series can be found in one patch at:
-> > > > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.76-rc2.gz
-> > > > > or in the git tree and branch at:
-> > > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> > > > > and the diffstat can be found below.
-> > > > >
-> > > > > thanks,
-> > > > >
-> > > > > greg k-h
-> > > >
-> > > >
-> > > > There are three different regressions found and reporting here,
-> > > > We are working on bisecting and investigating these issues,
-> > >
-> > > We observed a kernel warning on QEMU-ARM64 and FVP while running the
-> > > newly added selftest: arm64: check_hugetlb_options. This issue appears
-> > > on 6.6.76 onward and 6.12.13 onward, as reported in the stable review [1].
-> > > However, the test case passes successfully on stable 6.13.
-> > >
-> > > The selftests: arm64: check_hugetlb_options test was introduced following
-> > > the recent upgrade of kselftest test sources to the stable 6.13 branch.
-> > > As you are aware, LKFT runs the latest kselftest sources (from stable
-> > > 6.13.x) on 6.12.x, 6.6.x, and older kernels for validation purposes.
-> > >
-> > > >From Anders' bisection results, we identified that the missing patch on
-> > > 6.12 is likely causing this regression:
-> > >
-> > > First fixed commit:
-> > > [25c17c4b55def92a01e3eecc9c775a6ee25ca20f]
-> > > hugetlb: arm64: add MTE support
-> > >
-> > > Could you confirm whether this patch is eligible for backporting to
-> > > 6.12 and 6.6 kernels?
-> > > If backporting is not an option, we will need to skip running this
-> > > test case on older kernels.
-> >
-> > The test case itself should properly "skip" if the feature is not
-> > present in the kernel.  Why not fix that up instead?
+On 2/19/25 05:53, Greg KH wrote:
+> On Wed, Feb 19, 2025 at 01:30:04AM +0000, Pavel Begunkov wrote:
+>> On 2/19/25 01:28, Pavel Begunkov wrote:
+>>> [ upstream commit 8802766324e1f5d414a81ac43365c20142e85603 ]
+>>>
+>>> IORING_REGISTER_PBUF_RING can reuse an old struct io_buffer_list if it
+>>> was created for legacy selected buffer and has been emptied. It violates
+>>> the requirement that most of the field should stay stable after publish.
+>>> Always reallocate it instead.
+>>
+>> Just a note that it should apply to 6.13 and 6.12, can you
+>> pick it for both of them?
 > 
-> The reported test gets PASS at the end, but generates kernel warning
-> while running the test case (always reproducible) on 6.12 and 6.6.
-> 
-> The reported warning was not seen on stable 6.13.
+> Now done, thanks!
 
-So this implies that userspace can cause a kernel warning?  That means
-it can cause a DoS, that's not good at all.
+Great, thanks
 
-So the commit you mention actually fixes a bug then?  Otherwise this
-feels really odd, as that means that any kernel without that change can
-crash this way.  What changed to cause this to happen?
+-- 
+Pavel Begunkov
 
-thanks,
-
-greg k-h
 
