@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-117217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA85A3B579
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D8CA3B537
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4CF7165C33
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502DD1888EB0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1783E1D14FF;
-	Wed, 19 Feb 2025 08:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFF91DF26F;
+	Wed, 19 Feb 2025 08:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HY13CiMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMmDfkr7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98E31A314B;
-	Wed, 19 Feb 2025 08:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037D21DED5E;
+	Wed, 19 Feb 2025 08:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954573; cv=none; b=InoROFPew/CUv33xaoPXCSyhBDwlSLHk5M7DoVT99Kne4dO9Y66sWLD0Q/OfuLCHMycqyfdaCpa2pWP5PA7YaTJfAKpB+Mt16UT+cgFkil5DfQmFBMiS228XeTBZXhZtjq+JXdFLhnuN3G/wJHuUUWVxmTn2Y3YWxkCEkWUcr3Q=
+	t=1739954473; cv=none; b=DS6GNkpKQhGxpp0CZF7iNEprNjdgZL529jgXZmmTiTk5SHBQ+c7xMAcwgg/OersaP5DV6LRK4ASN9amIJyWPi+YMSxmAqRjw877rWQkwCKazgPH0StZAI4PNkIeJO/KT6V7mnGt2z3zGts02HCTAHq+iGIUIICdqiqWK9ctbp8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954573; c=relaxed/simple;
-	bh=cgi+o2Slgp5ovmsWDCI3GJrlQrfkA3rcIqOkpxG6chA=;
+	s=arc-20240116; t=1739954473; c=relaxed/simple;
+	bh=el+DCZlMeRCzujGn9uji9l8cVLddeTr2IWuU5+IK0HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwHgvsCvXO733Ccyr/nvIUn/A8QsGL74Ts0jQ8pvbbJ7lRhTQfd/2Hk7zgpzPa30Y2cQfuFSWiQfQGeHi4vP+UwexIj4GfklDND7Xufmb7uChks/4cwJgYZQHfh4EqV+M7Hgu5RPdiac9073yABr3wKmK7hZM6JkuMLmQ1YP0BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HY13CiMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0BFC4CED1;
-	Wed, 19 Feb 2025 08:42:53 +0000 (UTC)
+	 MIME-Version; b=X6O6QqOhxmY5L0TZ4s0vda3n9j/2PTMWoLEDI4calCMUChEH/BIZAPib6qhkhtA+nC06Z8TyLf7NULd5qC2L0rZHkOaK/DJ0FwVN3iABdyfL303/gtA5aInXLkOilo9C6/xnKMLpVenrzpn7V8SxnBrZRW1e4uaT+12n3AL9u80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMmDfkr7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C192C4CED1;
+	Wed, 19 Feb 2025 08:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954573;
-	bh=cgi+o2Slgp5ovmsWDCI3GJrlQrfkA3rcIqOkpxG6chA=;
+	s=korg; t=1739954472;
+	bh=el+DCZlMeRCzujGn9uji9l8cVLddeTr2IWuU5+IK0HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HY13CiMfBXVlihWKfLoXaFut2tJneWsrRsmq4M0bvn/j1Dj+MTlgbTvbP5gnWz9VA
-	 ULGJcacVAgc+P7e0gTLWWOkpLbIYVtVGpJg9TrNn7XGifL9DJEtrfZafUx+KoZbDNe
-	 VD2WiQzV7EQRSmNFW16cpFjdemorAyRGbm9Sc1SU=
+	b=JMmDfkr7ePQRfDD80oqvR1Mr3LxR+BCTzbqAzWQWnmbrrXJutDJ5960VEAsix1/1z
+	 fPXyDGL8b209lGj1FAzWySH9ixyRWn97In5O0zwOTpEhbDFKaw6c2pYyZCjHDJmyQV
+	 g0hVlPOeDQXHLnhyG9eSTjTKf6LrQMY4Nl/PTlXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 214/274] ipv4: add RCU protection to ip4_dst_hoplimit()
-Date: Wed, 19 Feb 2025 09:27:48 +0100
-Message-ID: <20250219082617.954819127@linuxfoundation.org>
+Subject: [PATCH 6.13 215/274] ipv4: use RCU protection in ip_dst_mtu_maybe_forward()
+Date: Wed, 19 Feb 2025 09:27:49 +0100
+Message-ID: <20250219082617.992464793@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -69,43 +69,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 469308552ca4560176cfc100e7ca84add1bebd7c ]
+[ Upstream commit 071d8012869b6af352acca346ade13e7be90a49f ]
 
-ip4_dst_hoplimit() must use RCU protection to make
+ip_dst_mtu_maybe_forward() must use RCU protection to make
 sure the net structure it reads does not disappear.
 
-Fixes: fa50d974d104 ("ipv4: Namespaceify ip_default_ttl sysctl knob")
+Fixes: f87c10a8aa1e8 ("ipv4: introduce ip_dst_mtu_maybe_forward and protect forwarding path against pmtu spoofing")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-3-edumazet@google.com
+Link: https://patch.msgid.link/20250205155120.1676781-4-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/route.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/net/ip.h | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/route.h b/include/net/route.h
-index 84cb1e04f5cd9..64949854d35dc 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -368,10 +368,15 @@ static inline int inet_iif(const struct sk_buff *skb)
- static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 0e548c1f2a0ec..23ecb10945b0f 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -471,9 +471,12 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
+ 						    bool forwarding)
  {
- 	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
+ 	const struct rtable *rt = dst_rtable(dst);
 -	struct net *net = dev_net(dst->dev);
- 
--	if (hoplimit == 0)
-+	if (hoplimit == 0) {
-+		const struct net *net;
+-	unsigned int mtu;
++	unsigned int mtu, res;
++	struct net *net;
 +
-+		rcu_read_lock();
-+		net = dev_net_rcu(dst->dev);
- 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
-+		rcu_read_unlock();
-+	}
- 	return hoplimit;
++	rcu_read_lock();
+ 
++	net = dev_net_rcu(dst->dev);
+ 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
+ 	    ip_mtu_locked(dst) ||
+ 	    !forwarding) {
+@@ -497,7 +500,11 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
+ out:
+ 	mtu = min_t(unsigned int, mtu, IP_MAX_MTU);
+ 
+-	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
++	res = mtu - lwtunnel_headroom(dst->lwtstate, mtu);
++
++	rcu_read_unlock();
++
++	return res;
  }
  
+ static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
 -- 
 2.39.5
 
