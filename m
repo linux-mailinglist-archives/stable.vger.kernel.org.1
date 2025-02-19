@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14072A3B6A6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD208A3BA0F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5CAB162D10
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DF83AF4A0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9921E1E0B66;
-	Wed, 19 Feb 2025 08:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE5D1CDA14;
+	Wed, 19 Feb 2025 09:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2MOtg66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmNciYGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467C1C5D69;
-	Wed, 19 Feb 2025 08:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B15E1DF74C;
+	Wed, 19 Feb 2025 09:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955176; cv=none; b=UFhrcnu9s5Lvn1dK9qCmRTChz7MMzLHuOiZAUcCjCh5h8sfQWhi8AcLTsmjx2d9lEpO2YSTumjV4eUp9yMp0SMT5wr3KqxP/lLmercrtmbMLEaOrmFB2teDHGYung6+9vdRXSrDui5kSIEbfdYnVShWHyybzFbbcesjNoR40dDs=
+	t=1739957272; cv=none; b=CItx4ytUYdUmMMDnk5T3NYSnPjH4HgW6b7L8CbR32RsYwoOKDvur7Er6sRgYWgnOMkvT86MBOOBjhSG0SrKHfAGXC92Nlt1+NoIjVn25Nuyemb6WFAFCFmcd201xVsAOpGPxrfFKkPFM96wjxIflcYqK8UA8K5+TsvZPgDNDS6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955176; c=relaxed/simple;
-	bh=KhPSRv6ZrioGQ34uBJDJ/KNZ3YKMEIrMJtP0TrbjmL4=;
+	s=arc-20240116; t=1739957272; c=relaxed/simple;
+	bh=Up6mrYyStS+fV2kaFrtsagoZqFk8UbgMikbN8Q4QMRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbkSzY1/J9DZPS1IX3o7ni8QlWJx4MFl8H6mWhPRSVrqO5+KR4NE3w7pP5GCEVe8YUJdRY84GMsviPrv4jRE7eOXGX29jPCS5L/r611RKKTYuydb9sfhAG+dYC6Dr0QhC7Y2/uwDrn9pRW0q1x/joTyqNBRy/ALJF5ZSx30QzyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2MOtg66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7144BC4CED1;
-	Wed, 19 Feb 2025 08:52:55 +0000 (UTC)
+	 MIME-Version; b=ASbCSngWZ95WpazU4xUd+UNkduCB7EICpHD6bN6gQ+MVjSAUbq6o7SbDIQJPetj1KSMk0hx0TreARRvm97I8sDBqUnlhj1aiBhICpy7YWw0rubhkp8LB6RUmLmNKIkAwyYaZSnlX+BjoSqmiIyK/PbxjIlSQgyn16YeCiIYuybk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmNciYGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032FCC4CED1;
+	Wed, 19 Feb 2025 09:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955175;
-	bh=KhPSRv6ZrioGQ34uBJDJ/KNZ3YKMEIrMJtP0TrbjmL4=;
+	s=korg; t=1739957272;
+	bh=Up6mrYyStS+fV2kaFrtsagoZqFk8UbgMikbN8Q4QMRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2MOtg66T31gqskF9f0172GTo3YtURt5riHyDBvELytweo4ul0mLcYwUN4OsVZGD2
-	 4uU2im19Osultr6Hfa6PSe+jiiHURfOuVBjEqK6S5uNt6PYz5RWwEjnsma7GzcBG8c
-	 f27FHzNg8dHMm2IpLBns4XtT0BgVWeNBixHJCwgk=
+	b=XmNciYGKM6gZydmRsup6Xg6iu98kNoUyrRiatWFtRVR1XDV55BFodAvz3NHTAQBwE
+	 sHZn+Zr6TItQWedN5uQ+MwLel2gsJi74xXZ1HbmTBA8PGBumMd9s6Rb+9UC5MAJqMV
+	 uCrw/dg48tdUTOTX1TLeb77txj3c7ZsDXXCyqUNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 156/230] regmap-irq: Add missing kfree()
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 469/578] vrf: use RCU protection in l3mdev_l3_out()
 Date: Wed, 19 Feb 2025 09:27:53 +0100
-Message-ID: <20250219082607.797074993@linuxfoundation.org>
+Message-ID: <20250219082711.455604084@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 32ffed055dcee17f6705f545b069e44a66067808 upstream.
+[ Upstream commit 6d0ce46a93135d96b7fa075a94a88fe0da8e8773 ]
 
-Add kfree() for "d->main_status_buf" to the error-handling path to prevent
-a memory leak.
+l3mdev_l3_out() can be called without RCU being held:
 
-Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
-Cc: stable@vger.kernel.org  # v5.1+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20250205004343.14413-1-jiashengjiangcool@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+raw_sendmsg()
+ ip_push_pending_frames()
+  ip_send_skb()
+   ip_local_out()
+    __ip_local_out()
+     l3mdev_ip_out()
+
+Add rcu_read_lock() / rcu_read_unlock() pair to avoid
+a potential UAF.
+
+Fixes: a8e3e1a9f020 ("net: l3mdev: Add hook to output path")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-irq.c |    2 ++
+ include/net/l3mdev.h | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -909,6 +909,7 @@ err_alloc:
- 	kfree(d->wake_buf);
- 	kfree(d->mask_buf_def);
- 	kfree(d->mask_buf);
-+	kfree(d->main_status_buf);
- 	kfree(d->status_buf);
- 	kfree(d->status_reg_buf);
- 	if (d->config_buf) {
-@@ -984,6 +985,7 @@ void regmap_del_irq_chip(int irq, struct
- 	kfree(d->wake_buf);
- 	kfree(d->mask_buf_def);
- 	kfree(d->mask_buf);
-+	kfree(d->main_status_buf);
- 	kfree(d->status_reg_buf);
- 	kfree(d->status_buf);
- 	if (d->config_buf) {
+diff --git a/include/net/l3mdev.h b/include/net/l3mdev.h
+index 031c661aa14df..bdfa9d414360c 100644
+--- a/include/net/l3mdev.h
++++ b/include/net/l3mdev.h
+@@ -198,10 +198,12 @@ struct sk_buff *l3mdev_l3_out(struct sock *sk, struct sk_buff *skb, u16 proto)
+ 	if (netif_is_l3_slave(dev)) {
+ 		struct net_device *master;
+ 
++		rcu_read_lock();
+ 		master = netdev_master_upper_dev_get_rcu(dev);
+ 		if (master && master->l3mdev_ops->l3mdev_l3_out)
+ 			skb = master->l3mdev_ops->l3mdev_l3_out(master, sk,
+ 								skb, proto);
++		rcu_read_unlock();
+ 	}
+ 
+ 	return skb;
+-- 
+2.39.5
+
 
 
 
