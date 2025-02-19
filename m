@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F42A3B6C7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07292A3B6D1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D69823A3E7B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4BCD189DD1F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36791E25F2;
-	Wed, 19 Feb 2025 08:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090251DF259;
+	Wed, 19 Feb 2025 08:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVctD9M0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDBAMrrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727691E25E1;
-	Wed, 19 Feb 2025 08:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F301DE3AE;
+	Wed, 19 Feb 2025 08:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955213; cv=none; b=M2gX9NAt7yW6MPULQF0vcKClSQnpxSbV+kZ9C3+nxlhxzQzAhe8NAmKI28S14OSUVaDrtF2vNTpOq6GGbxe7m5wAoNKgI66pqR8xxNpMFoLNIlMZI0qlHITbt9+1FfFCfDFj1zxKw7AjjZpZSb0bO47Fr8ZkV3YzU8a4CnikMq4=
+	t=1739955541; cv=none; b=AzEG7J0csREV6UBTDA1JhITwUqsLJIWi4I3fIE6PuxtJYVeC22IE5eux9KuNZCkZcqpLuZkX55h4HoYcdawWzgPRMPG6M8Jgjjg4HFNtoyhZl/V1IctevceyFkJqvOop75W2i2AnDeSDfAA0j6DqSZqZ2aKHBERH3lF6NUaNzHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955213; c=relaxed/simple;
-	bh=H7olvc8Uc2awvIC+E7bLsOniZDDLx0DX4Rm0vDTQMVM=;
+	s=arc-20240116; t=1739955541; c=relaxed/simple;
+	bh=PHH3TKWF3RLHG3SgfCKX6bCCp/vmvMan43V0nfsFcjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJF5xMivWNr+0SZOe0W+7uruJYVBU+B0poEqpr2KOcUphHRq9B6ahcInGetJMHqNpE4reqKjEyYXLAjWAz206xDruhhA6aXTkGOh92WGlazkirnLJJ/9im3qBCxn8qJOcnvzIa9EBl3Xi1IWA6aD8NaXp/mPhFTZoLS7ImhmUiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVctD9M0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1E1C4CEE8;
-	Wed, 19 Feb 2025 08:53:32 +0000 (UTC)
+	 MIME-Version; b=e86+E6ctfE8ynHhB5HWhoSdUJRiWTnPB5fypLvGH0chG+gGXfdu3v1KbI/uk4D3t3Utu11A5TN+LHg5s6KnW9623ZZkYpxd24DodCy3B+bNiWzKStROQ3tzzBf7uNs98LPt9KEyUPh2vz454a2XuchLNcGcTF6UT2lkS1k214uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDBAMrrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D073FC4CED1;
+	Wed, 19 Feb 2025 08:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955213;
-	bh=H7olvc8Uc2awvIC+E7bLsOniZDDLx0DX4Rm0vDTQMVM=;
+	s=korg; t=1739955541;
+	bh=PHH3TKWF3RLHG3SgfCKX6bCCp/vmvMan43V0nfsFcjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVctD9M0c6+Ruzn64b5uTAozXKPLtI0zd96qJrPLa77M7y1/yf/ADbt0eaINV9fMU
-	 bCSfv4M8NZu8fqS5+rEQ9toirqy9rsKc6CLo2Lz5p5cd7C9PgcsCZtzAMYlO+xY7Ko
-	 w1NfbskqN87K7DBAy7RTuEqL8wWdL96Tft1qedq4=
+	b=mDBAMrrEfGkWvr91b7jjrR6CgY7rj+ApouZIVyhDkzzmHsw5nV3dGxv+GvV0bc5Cv
+	 1KP2VFnzUBQ4SXk+Res9938MfLQQrAuvFnFTnPeMbRkC6zfy1td7L71UwRdHDaZVXf
+	 J43+GOr8C6Sz8lxihhhEs+A11hHnUkwOXbWUgEEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 6.12 134/230] alpha: make stack 16-byte aligned (most cases)
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/152] scsi: ufs: bsg: Set bsg_queue to NULL after removal
 Date: Wed, 19 Feb 2025 09:27:31 +0100
-Message-ID: <20250219082606.927583939@linuxfoundation.org>
+Message-ID: <20250219082551.544333548@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
+[ Upstream commit 1e95c798d8a7f70965f0f88d4657b682ff0ec75f ]
 
-The problem is that GCC expects 16-byte alignment of the incoming stack
-since early 2004, as Maciej found out [1]:
-  Having actually dug speculatively I can see that the psABI was changed in
- GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
- improperly aligned)") back in Mar 2004, when the stack pointer alignment
- was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
- various suspicious stack pointer adjustments, starting with SP_OFF which
- is not a whole multiple of 16.
+Currently, this does not cause any issues, but I believe it is necessary to
+set bsg_queue to NULL after removing it to prevent potential use-after-free
+(UAF) access.
 
-Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
- D.3.1 Stack Alignment
-  This standard requires that stacks be octaword aligned at the time a
-  new procedure is invoked.
-
-However:
-- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
-  the odd number of 64-bit words in 'struct pt_regs', which is the very
-  first thing pushed onto the kernel thread stack;
-- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
-  stack depending on numerous factors.
-
-Somehow we got away with it until recently, when we ended up with
-a stack corruption in kernel/smp.c:smp_call_function_single() due to
-its use of 32-byte aligned local data and the compiler doing clever
-things allocating it on the stack.
-
-This adds padding between the PAL-saved and kernel-saved registers
-so that 'struct pt_regs' have an even number of 64-bit words.
-This makes the stack properly aligned for most of the kernel
-code, except two handlers which need special threatment.
-
-Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
-but let's put this off until later.
-
-Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
-Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
-
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241218014214.64533-3-kanie@linux.alibaba.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/include/uapi/asm/ptrace.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ufs/core/ufs_bsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/alpha/include/uapi/asm/ptrace.h
-+++ b/arch/alpha/include/uapi/asm/ptrace.h
-@@ -42,6 +42,8 @@ struct pt_regs {
- 	unsigned long trap_a0;
- 	unsigned long trap_a1;
- 	unsigned long trap_a2;
-+/* This makes the stack 16-byte aligned as GCC expects */
-+	unsigned long __pad0;
- /* These are saved by PAL-code: */
- 	unsigned long ps;
- 	unsigned long pc;
+diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
+index f21423a7a6d7d..8fbd46cd8c2b8 100644
+--- a/drivers/ufs/core/ufs_bsg.c
++++ b/drivers/ufs/core/ufs_bsg.c
+@@ -216,6 +216,7 @@ void ufs_bsg_remove(struct ufs_hba *hba)
+ 		return;
+ 
+ 	bsg_remove_queue(hba->bsg_queue);
++	hba->bsg_queue = NULL;
+ 
+ 	device_del(bsg_dev);
+ 	put_device(bsg_dev);
+-- 
+2.39.5
+
 
 
 
