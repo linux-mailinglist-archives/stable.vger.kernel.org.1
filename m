@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-118202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F29EA3BA7F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 452F9A3B746
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A743B17E6E0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C7917C800
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2F01DEFE9;
-	Wed, 19 Feb 2025 09:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CB51D47C7;
+	Wed, 19 Feb 2025 09:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZ8eWXWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC2mi33l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E1C1C5485;
-	Wed, 19 Feb 2025 09:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E37F1C701E;
+	Wed, 19 Feb 2025 09:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957529; cv=none; b=E+hai2/8NwJzKwcow405m+V2fY+cnfmHLQPEG2gkB7ERbawA9GToyhtadhin7PW4ZauVvUOu0G1cVeTildU8+bm3iyhooTDU1AKlYfAzmrOhyz3uWls0wD0poRFxmA4OAcbPxLrxd4UCOpelYzPPIAc1Sqaw7MlJUUO2C5cijkw=
+	t=1739955796; cv=none; b=WxA0WpAESP2GSx0Bl52LbmlNckdEQeluL69/+C/w0yn61vfZ0HnPgCChoWocvdavFZh/qMBIAcfwnPS1Y3Vbc1G3bl7rRgHyBoPHfN9A/kIdKoxI1tjSf1r+5lFACiQmMCxR04A+on7GZWtlfBPAGX5U+QAK6RjVC21Xc+xNhms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957529; c=relaxed/simple;
-	bh=x1YmXfBoLYu3Lv4gSApinXDWumbynjQK0Ic6QW/tWmE=;
+	s=arc-20240116; t=1739955796; c=relaxed/simple;
+	bh=xfu4ixxMRRv+jpSM5uNp21BftV8ex9J6IgSfyMtPOPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zoou6yla7jQt0DRViCzkZgsxZpSF7Yj3e2gFHZOL4ptgDttUb1MCco5svFWTOWtRwvdXHuyuwf7kN4zMOYnTlXue+03rGJInpL5fitqnPeCDoB8Dv7Ybzad9OIQu7YNzvs6RKSPWe0THObI4Wveym8OCCcjn6kRD/Lc6hXmMeVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZ8eWXWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA11FC4CEF0;
-	Wed, 19 Feb 2025 09:32:08 +0000 (UTC)
+	 MIME-Version; b=bnvy02nwzsIxtc6/zFK6YV9+uZCrA7ExJJAuxs3nmXLvws4HSfeKEhEg7nm0HCYkPksgcROTfLcfiZEwCT+DvXRb7ldp8atJyQ+C2QhW9HbJRhR7YCNP1HNcR/v7CKGrWmGG8AlKRL6SlDgKxWzos1r1Cm/Ut83BVfKVEGXoMwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC2mi33l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AE5C4CEE7;
+	Wed, 19 Feb 2025 09:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957529;
-	bh=x1YmXfBoLYu3Lv4gSApinXDWumbynjQK0Ic6QW/tWmE=;
+	s=korg; t=1739955795;
+	bh=xfu4ixxMRRv+jpSM5uNp21BftV8ex9J6IgSfyMtPOPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZ8eWXWR+xRYG8eRGYtBECFuUhO7Z7ZfLCPMZfDBYMTnO/lIniuIzcHzLuVOr0Fuv
-	 AUavOQnzTlFpkdOT9vrjHREd7hmJSs3CE97ZxTqTu+j+KpZHmM+ULBohI6M+k4ZgFO
-	 DSkhoqocbXUyM8RykqP/DmJUlX+WAun9nonS6BJU=
+	b=SC2mi33lCJGhCHypSJIyPzyyFXkMA3EV1GByvddTKFPAEc1gBO4vLPepMyEVEXhd5
+	 7yDgcj5P8uvHPLvQnDVLHqPzYGGRoC0LQrxUvfyOoaiCD1TeOckOKv4Tbm8Tr/vEu4
+	 UVLpsByTgJ5smTEndKEd/P3bJqEVIPxZa44+o01c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: [PATCH 6.1 525/578] cgroup: fix race between fork and cgroup.kill
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vicki Pfau <vi@endrift.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 116/152] HID: hid-steam: remove pointless error message
 Date: Wed, 19 Feb 2025 09:28:49 +0100
-Message-ID: <20250219082713.624915189@linuxfoundation.org>
+Message-ID: <20250219082554.646465488@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,170 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit b69bb476dee99d564d65d418e9a20acca6f32c3f upstream.
+[ Upstream commit a9668169961106f3598384fe95004106ec191201 ]
 
-Tejun reported the following race between fork() and cgroup.kill at [1].
+This error message doesn't really add any information.  If modprobe
+fails then the user will already know what the error code is.  In the
+case of kmalloc() it's a style violation to print an error message for
+that because kmalloc has it's own better error messages built in.
 
-Tejun:
-  I was looking at cgroup.kill implementation and wondering whether there
-  could be a race window. So, __cgroup_kill() does the following:
-
-   k1. Set CGRP_KILL.
-   k2. Iterate tasks and deliver SIGKILL.
-   k3. Clear CGRP_KILL.
-
-  The copy_process() does the following:
-
-   c1. Copy a bunch of stuff.
-   c2. Grab siglock.
-   c3. Check fatal_signal_pending().
-   c4. Commit to forking.
-   c5. Release siglock.
-   c6. Call cgroup_post_fork() which puts the task on the css_set and tests
-       CGRP_KILL.
-
-  The intention seems to be that either a forking task gets SIGKILL and
-  terminates on c3 or it sees CGRP_KILL on c6 and kills the child. However, I
-  don't see what guarantees that k3 can't happen before c6. ie. After a
-  forking task passes c5, k2 can take place and then before the forking task
-  reaches c6, k3 can happen. Then, nobody would send SIGKILL to the child.
-  What am I missing?
-
-This is indeed a race. One way to fix this race is by taking
-cgroup_threadgroup_rwsem in write mode in __cgroup_kill() as the fork()
-side takes cgroup_threadgroup_rwsem in read mode from cgroup_can_fork()
-to cgroup_post_fork(). However that would be heavy handed as this adds
-one more potential stall scenario for cgroup.kill which is usually
-called under extreme situation like memory pressure.
-
-To fix this race, let's maintain a sequence number per cgroup which gets
-incremented on __cgroup_kill() call. On the fork() side, the
-cgroup_can_fork() will cache the sequence number locally and recheck it
-against the cgroup's sequence number at cgroup_post_fork() site. If the
-sequence numbers mismatch, it means __cgroup_kill() can been called and
-we should send SIGKILL to the newly created task.
-
-Reported-by: Tejun Heo <tj@kernel.org>
-Closes: https://lore.kernel.org/all/Z5QHE2Qn-QZ6M-KW@slm.duckdns.org/ [1]
-Fixes: 661ee6280931 ("cgroup: introduce cgroup.kill")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/305898fb-6bd4-4749-806c-05ec51bbeb80@moroto.mountain
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup-defs.h |    6 +++---
- include/linux/sched/task.h  |    1 +
- kernel/cgroup/cgroup.c      |   20 ++++++++++++--------
- 3 files changed, 16 insertions(+), 11 deletions(-)
+ drivers/hid/hid-steam.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -71,9 +71,6 @@ enum {
+diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
+index 2f87026f01de1..2f11f77ae2153 100644
+--- a/drivers/hid/hid-steam.c
++++ b/drivers/hid/hid-steam.c
+@@ -1108,10 +1108,9 @@ static int steam_probe(struct hid_device *hdev,
+ 		return hid_hw_start(hdev, HID_CONNECT_DEFAULT);
  
- 	/* Cgroup is frozen. */
- 	CGRP_FROZEN,
--
--	/* Control group has to be killed. */
--	CGRP_KILL,
- };
- 
- /* cgroup_root->flags */
-@@ -424,6 +421,9 @@ struct cgroup {
- 
- 	int nr_threaded_children;	/* # of live threaded child cgroups */
- 
-+	/* sequence number for cgroup.kill, serialized by css_set_lock. */
-+	unsigned int kill_seq;
+ 	steam = devm_kzalloc(&hdev->dev, sizeof(*steam), GFP_KERNEL);
+-	if (!steam) {
+-		ret = -ENOMEM;
+-		goto steam_alloc_fail;
+-	}
++	if (!steam)
++		return -ENOMEM;
 +
- 	struct kernfs_node *kn;		/* cgroup kernfs entry */
- 	struct cgroup_file procs_file;	/* handle for "cgroup.procs" */
- 	struct cgroup_file events_file;	/* handle for "cgroup.events" */
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -38,6 +38,7 @@ struct kernel_clone_args {
- 	void *fn_arg;
- 	struct cgroup *cgrp;
- 	struct css_set *cset;
-+	unsigned int kill_seq;
- };
- 
- /*
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3952,7 +3952,7 @@ static void __cgroup_kill(struct cgroup
- 	lockdep_assert_held(&cgroup_mutex);
- 
- 	spin_lock_irq(&css_set_lock);
--	set_bit(CGRP_KILL, &cgrp->flags);
-+	cgrp->kill_seq++;
- 	spin_unlock_irq(&css_set_lock);
- 
- 	css_task_iter_start(&cgrp->self, CSS_TASK_ITER_PROCS | CSS_TASK_ITER_THREADED, &it);
-@@ -3968,10 +3968,6 @@ static void __cgroup_kill(struct cgroup
- 		send_sig(SIGKILL, task, 0);
- 	}
- 	css_task_iter_end(&it);
--
--	spin_lock_irq(&css_set_lock);
--	clear_bit(CGRP_KILL, &cgrp->flags);
--	spin_unlock_irq(&css_set_lock);
+ 	steam->hdev = hdev;
+ 	hid_set_drvdata(hdev, steam);
+ 	spin_lock_init(&steam->lock);
+@@ -1178,9 +1177,6 @@ static int steam_probe(struct hid_device *hdev,
+ 	cancel_work_sync(&steam->work_connect);
+ 	cancel_delayed_work_sync(&steam->mode_switch);
+ 	cancel_work_sync(&steam->rumble_work);
+-steam_alloc_fail:
+-	hid_err(hdev, "%s: failed with error %d\n",
+-			__func__, ret);
+ 	return ret;
  }
  
- static void cgroup_kill(struct cgroup *cgrp)
-@@ -6409,6 +6405,10 @@ static int cgroup_css_set_fork(struct ke
- 	spin_lock_irq(&css_set_lock);
- 	cset = task_css_set(current);
- 	get_css_set(cset);
-+	if (kargs->cgrp)
-+		kargs->kill_seq = kargs->cgrp->kill_seq;
-+	else
-+		kargs->kill_seq = cset->dfl_cgrp->kill_seq;
- 	spin_unlock_irq(&css_set_lock);
- 
- 	if (!(kargs->flags & CLONE_INTO_CGROUP)) {
-@@ -6592,6 +6592,7 @@ void cgroup_post_fork(struct task_struct
- 		      struct kernel_clone_args *kargs)
- 	__releases(&cgroup_threadgroup_rwsem) __releases(&cgroup_mutex)
- {
-+	unsigned int cgrp_kill_seq = 0;
- 	unsigned long cgrp_flags = 0;
- 	bool kill = false;
- 	struct cgroup_subsys *ss;
-@@ -6605,10 +6606,13 @@ void cgroup_post_fork(struct task_struct
- 
- 	/* init tasks are special, only link regular threads */
- 	if (likely(child->pid)) {
--		if (kargs->cgrp)
-+		if (kargs->cgrp) {
- 			cgrp_flags = kargs->cgrp->flags;
--		else
-+			cgrp_kill_seq = kargs->cgrp->kill_seq;
-+		} else {
- 			cgrp_flags = cset->dfl_cgrp->flags;
-+			cgrp_kill_seq = cset->dfl_cgrp->kill_seq;
-+		}
- 
- 		WARN_ON_ONCE(!list_empty(&child->cg_list));
- 		cset->nr_tasks++;
-@@ -6643,7 +6647,7 @@ void cgroup_post_fork(struct task_struct
- 		 * child down right after we finished preparing it for
- 		 * userspace.
- 		 */
--		kill = test_bit(CGRP_KILL, &cgrp_flags);
-+		kill = kargs->kill_seq != cgrp_kill_seq;
- 	}
- 
- 	spin_unlock_irq(&css_set_lock);
+-- 
+2.39.5
+
 
 
 
