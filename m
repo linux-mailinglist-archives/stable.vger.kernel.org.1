@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF477A3B726
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFA0A3B99F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7336718983F4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAB247A4A0C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51ED51DE2A1;
-	Wed, 19 Feb 2025 08:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A401DF965;
+	Wed, 19 Feb 2025 09:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2Ztdhy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2Spy4ex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088161D79BE;
-	Wed, 19 Feb 2025 08:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70081DE2CA;
+	Wed, 19 Feb 2025 09:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955598; cv=none; b=bGKiWuABnQ7VOGvOqca1hotBrTPf6pjyDrNgdKyEKDr3rm08nuPYS+328zKZwccLm2MWlVvHt0eKIZpYj60MpzNRJ/BlbXyvypnNK867CsW1OMNxYEcY1PHEGgMaQBTI04a+V4D3UmPr+K6+3gi3qe490i8B0fWV/G8CgE9m368=
+	t=1739957258; cv=none; b=h8QXuSacuQKy3DyEobgbso9mpV3aGhYvpdyqKXviBhgC9HGxyd9GveSQzoTAlppfjirjhGruB94akw/+68m6du3FEknz4+qVTFjpQxKOXZ1nix709lBSfypUKyU7PIcaK95fMD8ZwJV71mxNIC7YisCV9iv/mTZzRFkDVdFbM/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955598; c=relaxed/simple;
-	bh=OM+zorXML8uHGcbwyf7nXz+onrDHrAHWwCiKTn6KlpU=;
+	s=arc-20240116; t=1739957258; c=relaxed/simple;
+	bh=I4T6ii8k9Rsuq2yzzzGFaNI4GxZ6pV6Lu0qb0d6HMAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDQImjZgdOx7edEnkxLmpYxtk4n7M6QfF74jHEix1M72DJgp9zlo2Agt0AvXm+vNj8ipQe59L21ooK8eMzUAuLs8aQdWgOOE4CPbQqdc7DjKxWDNuaPZLdU+9vqWv8qnzM0bd1hCItn6nwc55cCDON15/v4rceu8Wa4BsuLpAGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2Ztdhy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC62C4CED1;
-	Wed, 19 Feb 2025 08:59:57 +0000 (UTC)
+	 MIME-Version; b=nCYmPGfuthAkThWffuhrYaclHMvRQrJLWwe23nHSy8tEIN6e5TOh33wrVq5KQ4faw7xqooVmWLywPLLmJYlZmsaca7fB3ezBhDkrn1HZYR+fariFaArJxQSlCeWUc/6kgBe7cF1mrr6jj1CMA0gD3ofB5esMTwSWyvJUiMs8gAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2Spy4ex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED03C4CED1;
+	Wed, 19 Feb 2025 09:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955597;
-	bh=OM+zorXML8uHGcbwyf7nXz+onrDHrAHWwCiKTn6KlpU=;
+	s=korg; t=1739957258;
+	bh=I4T6ii8k9Rsuq2yzzzGFaNI4GxZ6pV6Lu0qb0d6HMAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2Ztdhy07loDqBo/j8lHYZbxuy3+Tg1EefrAYnNZW+p8oc6NCMGn8gVazfL2Vbtkg
-	 w3BPPTdf7fJ53LeU15m8Y0Cvvvf5hDPNUSKfCZJU4W5UN7+0Q3fpBNM/SB7jO2YXmW
-	 EzBSXZTyeX/vDwtk06815dPF7NNtB7Cm0dUsOEfY=
+	b=W2Spy4exnOQ8Cspw0BbAEWP5Owzr3BS0lqGjP1S8S4Lj6eqWcGohYpgFPSkB3JY3O
+	 j0XWfpMG5F06X3uNdiqyQug9jc0q8ABCMgHm7UEwWnD1X4eblYO4ar4sXvT0DC+g6W
+	 48fJh7IE8C/0ra7K218iw7Cgo4tt7CZkmkyupDWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.6 055/152] perf/x86/intel: Ensure LBRs are disabled when a CPU is starting
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 464/578] pinctrl: cy8c95x0: Respect IRQ trigger settings from firmware
 Date: Wed, 19 Feb 2025 09:27:48 +0100
-Message-ID: <20250219082552.224064337@linuxfoundation.org>
+Message-ID: <20250219082711.257924151@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit c631a2de7ae48d50434bdc205d901423f8577c65 upstream.
+[ Upstream commit 1ddee69108d305bbc059cbf31c0b47626796be77 ]
 
-Explicitly clear DEBUGCTL.LBR when a CPU is starting, prior to purging the
-LBR MSRs themselves, as at least one system has been found to transfer
-control to the kernel with LBRs enabled (it's unclear whether it's a BIOS
-flaw or a CPU goof).  Because the kernel preserves the original DEBUGCTL,
-even when toggling LBRs, leaving DEBUGCTL.LBR as is results in running
-with LBRs enabled at all times.
+Some of the platforms may connect the INT pin via inversion logic
+effectively make the triggering to be active-low.
+Remove explicit trigger flag to respect the settings from firmware.
 
-Closes: https://lore.kernel.org/all/c9d8269bff69f6359731d758e3b1135dedd7cc61.camel@redhat.com
-Reported-by: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250131010721.470503-1-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without this change even idling chip produces spurious interrupts
+and kernel disables the line in the result:
+
+  irq 33: nobody cared (try booting with the "irqpoll" option)
+  CPU: 0 UID: 0 PID: 125 Comm: irq/33-i2c-INT3 Not tainted 6.12.0-00236-g8b874ed11dae #64
+  Hardware name: Intel Corp. QUARK/Galileo, BIOS 0x01000900 01/01/2014
+  ...
+  handlers:
+  [<86e86bea>] irq_default_primary_handler threaded [<d153e44a>] cy8c95x0_irq_handler [pinctrl_cy8c95x0]
+  Disabling IRQ #33
+
+Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250117142304.596106-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c     |    5 ++++-
- arch/x86/include/asm/msr-index.h |    3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4715,8 +4715,11 @@ static void intel_pmu_cpu_starting(int c
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 5abab6bc763ae..f7c8ae9808133 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -1234,7 +1234,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
  
- 	init_debug_store_on_cpu(cpu);
- 	/*
--	 * Deal with CPUs that don't clear their LBRs on power-up.
-+	 * Deal with CPUs that don't clear their LBRs on power-up, and that may
-+	 * even boot with LBRs enabled.
- 	 */
-+	if (!static_cpu_has(X86_FEATURE_ARCH_LBR) && x86_pmu.lbr_nr)
-+		msr_clear_bit(MSR_IA32_DEBUGCTLMSR, DEBUGCTLMSR_LBR_BIT);
- 	intel_pmu_lbr_reset();
- 
- 	cpuc->lbr_sel = NULL;
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -358,7 +358,8 @@
- #define MSR_IA32_PASID_VALID		BIT_ULL(31)
- 
- /* DEBUGCTLMSR bits (others vary by model): */
--#define DEBUGCTLMSR_LBR			(1UL <<  0) /* last branch recording */
-+#define DEBUGCTLMSR_LBR_BIT		0	     /* last branch recording */
-+#define DEBUGCTLMSR_LBR			(1UL <<  DEBUGCTLMSR_LBR_BIT)
- #define DEBUGCTLMSR_BTF_SHIFT		1
- #define DEBUGCTLMSR_BTF			(1UL <<  1) /* single-step on branches */
- #define DEBUGCTLMSR_BUS_LOCK_DETECT	(1UL <<  2)
+ 	ret = devm_request_threaded_irq(chip->dev, irq,
+ 					NULL, cy8c95x0_irq_handler,
+-					IRQF_ONESHOT | IRQF_SHARED | IRQF_TRIGGER_HIGH,
++					IRQF_ONESHOT | IRQF_SHARED,
+ 					dev_name(chip->dev), chip);
+ 	if (ret) {
+ 		dev_err(chip->dev, "failed to request irq %d\n", irq);
+-- 
+2.39.5
+
 
 
 
