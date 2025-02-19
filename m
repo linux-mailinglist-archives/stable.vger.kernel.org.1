@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CECCA3B76B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 112D4A3BA53
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37DB188D6CA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027521899FCD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806EF1DE890;
-	Wed, 19 Feb 2025 09:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDB51C2432;
+	Wed, 19 Feb 2025 09:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLidAt0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC9jzl42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAC51DE4F8;
-	Wed, 19 Feb 2025 09:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDBF158862;
+	Wed, 19 Feb 2025 09:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955888; cv=none; b=CgSebMn2OppR/NJY/2KYvL/AZU+RzYwvGVro3bi8RHjZRi9Rli+MrBUgKTFedojGaZu0PeOgVr1E9QNTR/Ef0MKUsIHaUrsm+L0dsJcr5+6mbl2KqbFpw2rNDZdL2e5EHqS/N7EV+1Ui9PkVp9cMLWMvOXjLb3Depkt/6ExK9JA=
+	t=1739957575; cv=none; b=UeQyAdgCAoX9TPaL6C6V93HEI/JEzs+Fi/8kuaAciXLLR/n/tJe6UeY6pzYhH5LfPS3b3lRdONwjQyaI6rSwRJ7EYnKMDhWhG1EU1oqb4q87BRDOA0JIzpODzMBx3nmSBjW44mF8gmG7qMq6HlpNDTAvSTeUiHIoLJQvtRnTaCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955888; c=relaxed/simple;
-	bh=077S8HrbwTwEA6Om5zTmwsObDeYBWarU2/UBaN7E0Rk=;
+	s=arc-20240116; t=1739957575; c=relaxed/simple;
+	bh=wuPdFnKMLLLcW7csfBrZfVBqEOjDW0lQhjrUT9uDpvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bshi00OIUM3M6bvY06SfR7L2P8opIyatTzzDyLbPgl3YkhXohHdK1t4tMpt/8Y07tzOLvorHHckxJij70jLGIVfI3niYJfSpm5tGI7pxTGhem++7vs77CdihN07LvhHmt7qlYDrN0k5RYW/h6jeMbOjnKCW8qQCQDnsreCK1XbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLidAt0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B380EC4CEE7;
-	Wed, 19 Feb 2025 09:04:47 +0000 (UTC)
+	 MIME-Version; b=CxGRiXgG9DaWx8BPZGplPWwCtNKhg0vgSPGgfTPoo9lM48gn8CBjDWNv8V140ZhegQpnoYHeAn5SFf0oCAGfRoMA2PLBg8DzDwvmyTKIpaqMqvT1p2j10ilzCIXWnFHDAOVDQDGAojgGguDX5Hsg8CRb03jVQc7H7TQ/YCo1Fl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC9jzl42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DC8C4CED1;
+	Wed, 19 Feb 2025 09:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955888;
-	bh=077S8HrbwTwEA6Om5zTmwsObDeYBWarU2/UBaN7E0Rk=;
+	s=korg; t=1739957575;
+	bh=wuPdFnKMLLLcW7csfBrZfVBqEOjDW0lQhjrUT9uDpvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLidAt0yqRe5/P7e+8tYCnAe9tbX3KluOoPw9nqn0LKjhi89DMf9BksA/yLqNUSXw
-	 FiL3Wuy9+U6dwlJK6bQqBqJYkP9QJMuNgdHcG9inGE28eqpvQt9ZZ+JgJj+lH8DsVt
-	 MXWm8Uy/WfeYk3f/BlMx2eTSEEP1T76tlxN2fwu0=
+	b=tC9jzl42kAJph11EU07+h/yjma6bbj/y5WRLw/Frg/2mrChrTdhGiF73eSBIpXxGN
+	 ZRPQ0PygEDHTZQArwZggevPwCPH8kYKy6dy3DvQAbSYG7n0VBhBwU/P//uVoYjYmP1
+	 yWRWvu5Lo0LWmgcUsclpsF5tW8M2miNk1SbDA8Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 147/152] HID: hid-steam: Dont use cancel_delayed_work_sync in IRQ context
+	Bin Liu <b-liu@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Jonathan Cormier <jcormier@criticallink.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.1 556/578] drm/tidss: Fix issue in irq handling causing irq-flood issue
 Date: Wed, 19 Feb 2025 09:29:20 +0100
-Message-ID: <20250219082555.864348315@linuxfoundation.org>
+Message-ID: <20250219082714.827798335@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit b051ffa2aeb2a60e092387b6fb2af1ad42f51a3c upstream.
+commit 44b6730ab53ef04944fbaf6da0e77397531517b7 upstream.
 
-Lockdep reported that, as steam_do_deck_input_event is called from
-steam_raw_event inside of an IRQ context, it can lead to issues if that IRQ
-occurs while the work to be cancelled is running. By using cancel_delayed_work,
-this issue can be avoided. The exact ordering of the work and the event
-processing is not super important, so this is safe.
+It has been observed that sometimes DSS will trigger an interrupt and
+the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
+VID level interrupt-statuses are zero.
 
-Fixes: cd438e57dd05 ("HID: hid-steam: Add gamepad-only mode switched to by holding options")
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+As the top level irqstatus is supposed to tell whether we have VP/VID
+interrupts, the thinking of the driver authors was that this particular
+case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
+bits which has corresponding interrupts in VP/VID status. So when this
+issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
+interrupt flood.
+
+It is unclear why the issue happens. It could be a race issue in the
+driver, but no such race has been found. It could also be an issue with
+the HW. However a similar case can be easily triggered by manually
+writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
+DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
+the bit, we get an interrupt flood.
+
+To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
+solution is that if the top level irqstatus is the one that triggers the
+interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
+unhandled if VP/VID interrupt statuses have bits set. However, testing
+shows that if any of the irqstatuses is set (i.e. even if
+DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
+interrupt.
+
+Co-developed-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Bin Liu <b-liu@ti.com>
+Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
+Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Cc: stable@vger.kernel.org
+Tested-by: Jonathan Cormier <jcormier@criticallink.com>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-steam.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -1615,7 +1615,7 @@ static void steam_do_deck_input_event(st
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -679,24 +679,20 @@ static
+ void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
+ {
+ 	unsigned int i;
+-	u32 top_clear = 0;
  
- 	if (!(b9 & BIT(6)) && steam->did_mode_switch) {
- 		steam->did_mode_switch = false;
--		cancel_delayed_work_sync(&steam->mode_switch);
-+		cancel_delayed_work(&steam->mode_switch);
- 	} else if (!steam->client_opened && (b9 & BIT(6)) && !steam->did_mode_switch) {
- 		steam->did_mode_switch = true;
- 		schedule_delayed_work(&steam->mode_switch, 45 * HZ / 100);
+ 	for (i = 0; i < dispc->feat->num_vps; ++i) {
+-		if (clearmask & DSS_IRQ_VP_MASK(i)) {
++		if (clearmask & DSS_IRQ_VP_MASK(i))
+ 			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
+-			top_clear |= BIT(i);
+-		}
+ 	}
+ 	for (i = 0; i < dispc->feat->num_planes; ++i) {
+-		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
++		if (clearmask & DSS_IRQ_PLANE_MASK(i))
+ 			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
+-			top_clear |= BIT(4 + i);
+-		}
+ 	}
+ 	if (dispc->feat->subrev == DISPC_K2G)
+ 		return;
+ 
+-	dispc_write(dispc, DISPC_IRQSTATUS, top_clear);
++	/* always clear the top level irqstatus */
++	dispc_write(dispc, DISPC_IRQSTATUS, dispc_read(dispc, DISPC_IRQSTATUS));
+ 
+ 	/* Flush posted writes */
+ 	dispc_read(dispc, DISPC_IRQSTATUS);
 
 
 
