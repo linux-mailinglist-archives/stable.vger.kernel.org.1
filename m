@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-117553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5BCA3B711
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B315A3B999
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D608A189ED22
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2801885AF8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163161E0B86;
-	Wed, 19 Feb 2025 09:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E893A1CC8B0;
+	Wed, 19 Feb 2025 09:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1N+UJU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFDQF1Py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64BF1E0B7C;
-	Wed, 19 Feb 2025 09:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6893188CCA;
+	Wed, 19 Feb 2025 09:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955637; cv=none; b=XSVF4U7Gxiu3YiEle5l9Uap1ySznneYRnndU+/1e/XChln/Jhrxa/eVH42/zv6LoG3kTGf2/H6wN22cYcRZzB3LHtQYl7WFbiWI5ipjEVl7oLXo0sUkuoyUOVzYQmDwYdq0mFkaB/fJsLmt4VS3of9i7Me9xU6+JsRB+GeCXR/U=
+	t=1739957175; cv=none; b=WFDFOAc+B5JaQvyaGPI6zJR0vcO6DJUxhTXiNfsBVcgmFDZrV9uSy71gXOPufBbegoMvlJgEEv1pjq1WNZznOgaoFEG8ugFwJAsO2CezLAzRtBWzPHdKS3LAdqJ0hwdpcQnAEsCLUeAXB4qok4BjFEACh5nQihqwof3nfMYbCaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955637; c=relaxed/simple;
-	bh=nthfx4gaUVhqQxvm0EkhC2xdxwne0tJvEzA9ZbCbLR4=;
+	s=arc-20240116; t=1739957175; c=relaxed/simple;
+	bh=t5WGsgCfxSeMbagri7E4u541anHqQqhSDX2jHkx2UWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9/ne1mFIk2/03qlKQzp3Edd4mtuVzZTjLekKlYC31oXUtDcXQKPLfT0deKy16XzLNPoH21Mq+2D9OjBvyPaqElwNHUuFTDgeIx7vRuPVWMWyT3lyqAEAQAYOdLuZYsyhCuFjwQalopTpQsYtfCBiHNnWuhurKskFAnBDNUoD5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1N+UJU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A37BC4CED1;
-	Wed, 19 Feb 2025 09:00:37 +0000 (UTC)
+	 MIME-Version; b=dKQoBHe5YwnnrkeOHIwI56JEyp4K2LTQxQqn1TqWYS+KDeYouWDC1KmfXo12Z0/LGH4vauXX+NCV9mZ13fPiJtTxcBIkgHRHUe0a58cVgleWjBMiTxj5g/jk5870y6jHS2cmJyL+JCZ06XwiqQZ2Uo2SqiVqdhK7v+iJ1pBZpCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFDQF1Py; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA94C4CED1;
+	Wed, 19 Feb 2025 09:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955637;
-	bh=nthfx4gaUVhqQxvm0EkhC2xdxwne0tJvEzA9ZbCbLR4=;
+	s=korg; t=1739957175;
+	bh=t5WGsgCfxSeMbagri7E4u541anHqQqhSDX2jHkx2UWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1N+UJU4PDQFG49F9G04Qfzz0duVL6Iaxib13W9XaFWbsDHu7oyyxHPxoS3YhHx2B
-	 t+77UZYJoAJSxFkNmdD414nAaRF2njrn+wKpMZz0kst8L+Cq8C1FcqmkH3ohsdOqwg
-	 Qrq0P5vTzIoxYaXKatCMKZJAuAMdpl+sbPcJTjks=
+	b=wFDQF1PyqnLVQaFqFHwM2l/Ycw1zOkU4mGwq7DpeIm1hs6lEny/AY7fWYlJAbYtJK
+	 wTWAGJ1YkMg+Z+uyf47Iob8BMOY+u5KLDpD56/86Fo+QP1gskYqwgcFn3O4JwjIRfv
+	 GLDf/qfvgWhvf0NyEDNRorlNgQdvkEjWN0+xrW00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Firas Jahjah <firasj@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/152] RDMA/efa: Reset device on probe failure
+	stable@kernel.org,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.1 435/578] misc: fastrpc: Fix registered buffer page address
 Date: Wed, 19 Feb 2025 09:27:19 +0100
-Message-ID: <20250219082551.072514537@linuxfoundation.org>
+Message-ID: <20250219082710.122223386@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-[ Upstream commit 123c13f10ed3627ba112172d8bd122a72cae226d ]
+commit 6ca4ea1f88a06a04ed7b2c9c6bf9f00833b68214 upstream.
 
-Make sure the device is being reset on driver exit whatever the reason
-is, to keep the device aligned and allow it to close shared resources
-(e.g. admin queue).
+For registered  buffers, fastrpc driver sends the buffer information
+to remote subsystem. There is a problem with current implementation
+where the page address is being sent with an offset leading to
+improper buffer address on DSP. This is leads to functional failures
+as DSP expects base address in page information and extracts offset
+information from remote arguments. Mask the offset and pass the base
+page address to DSP.
 
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Link: https://patch.msgid.link/20241225131548.15155-1-mrgolin@amazon.com
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue is observed is a corner case when some buffer which is registered
+with fastrpc framework is passed with some offset by user and then the DSP
+implementation tried to read the data. As DSP expects base address and takes
+care of offsetting with remote arguments, passing an offsetted address will
+result in some unexpected data read in DSP.
+
+All generic usecases usually pass the buffer as it is hence is problem is
+not usually observed. If someone tries to pass offsetted buffer and then
+tries to compare data at HLOS and DSP end, then the ambiguity will be observed.
+
+Fixes: 80f3afd72bd4 ("misc: fastrpc: consider address offset before sending to DSP")
+Cc: stable@kernel.org
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20250110134239.123603-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/efa/efa_main.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_main.c b/drivers/infiniband/hw/efa/efa_main.c
-index 15ee920811187..924940ca9de0a 100644
---- a/drivers/infiniband/hw/efa/efa_main.c
-+++ b/drivers/infiniband/hw/efa/efa_main.c
-@@ -452,7 +452,6 @@ static void efa_ib_device_remove(struct efa_dev *dev)
- 	ibdev_info(&dev->ibdev, "Unregister ib device\n");
- 	ib_unregister_device(&dev->ibdev);
- 	efa_destroy_eqs(dev);
--	efa_com_dev_reset(&dev->edev, EFA_REGS_RESET_NORMAL);
- 	efa_release_doorbell_bar(dev);
- }
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -934,7 +934,7 @@ static int fastrpc_get_args(u32 kernel,
+ 			mmap_read_lock(current->mm);
+ 			vma = find_vma(current->mm, ctx->args[i].ptr);
+ 			if (vma)
+-				pages[i].addr += ctx->args[i].ptr -
++				pages[i].addr += (ctx->args[i].ptr & PAGE_MASK) -
+ 						 vma->vm_start;
+ 			mmap_read_unlock(current->mm);
  
-@@ -623,12 +622,14 @@ static struct efa_dev *efa_probe_device(struct pci_dev *pdev)
- 	return ERR_PTR(err);
- }
- 
--static void efa_remove_device(struct pci_dev *pdev)
-+static void efa_remove_device(struct pci_dev *pdev,
-+			      enum efa_regs_reset_reason_types reset_reason)
- {
- 	struct efa_dev *dev = pci_get_drvdata(pdev);
- 	struct efa_com_dev *edev;
- 
- 	edev = &dev->edev;
-+	efa_com_dev_reset(edev, reset_reason);
- 	efa_com_admin_destroy(edev);
- 	efa_free_irq(dev, &dev->admin_irq);
- 	efa_disable_msix(dev);
-@@ -656,7 +657,7 @@ static int efa_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	return 0;
- 
- err_remove_device:
--	efa_remove_device(pdev);
-+	efa_remove_device(pdev, EFA_REGS_RESET_INIT_ERR);
- 	return err;
- }
- 
-@@ -665,7 +666,7 @@ static void efa_remove(struct pci_dev *pdev)
- 	struct efa_dev *dev = pci_get_drvdata(pdev);
- 
- 	efa_ib_device_remove(dev);
--	efa_remove_device(pdev);
-+	efa_remove_device(pdev, EFA_REGS_RESET_NORMAL);
- }
- 
- static struct pci_driver efa_pci_driver = {
--- 
-2.39.5
-
 
 
 
