@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECB7A3B764
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1767A3BA0A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03B9A188DAF3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB50D7A8BF2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CF31DE4E6;
-	Wed, 19 Feb 2025 09:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406F91DEFCC;
+	Wed, 19 Feb 2025 09:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtsXDJon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSJqyM87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6A018FC86;
-	Wed, 19 Feb 2025 09:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F178C1DEFE3;
+	Wed, 19 Feb 2025 09:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955873; cv=none; b=g7J5oUrhgJsEoVufGG+l/8QATde5/pCCurLAg5d0AfCtLzSsLbyrUvTOwSv/YaBiXPtCcDFAGqVkgFxY4oN1JNfBytv543pBGsfvEM9fz5ItBrinhYhf0EMb692CZ9CTzLu5tUxRMNBTbxEXKw4RsRSe1KFbeBEw469pm3mCcyQ=
+	t=1739957516; cv=none; b=baIMMS6j+tTN8wo7kIMWjNqNMGHbH8X3HMeMUzxszeTq7aw5fGtOF+xFvjQGzfKRB4GMSsvkUZEjYH1feAMOAIVZ2dPB85m1Puf9oIWH6n0v20PVXvemxmI0tmCouUd/0GNn79tGOYFyX/vgMF845HsFZvVQH9L/yrVgBEgNx9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955873; c=relaxed/simple;
-	bh=I0BDWQE7t7y/EDqgodCOVOH0v3M4MTgh3cKz0eGmI90=;
+	s=arc-20240116; t=1739957516; c=relaxed/simple;
+	bh=Js0q1PwrdiLLEqYB+e4lBm929zW02TEa6olcH8FW1xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaA9NCjpnqtOAbm1RPHOVQdzv4Wa7VFeK8R7SFFYsG4C8yqc8nBWiYHSqFBCHdzRh9jH483vZ9Dtjb28BbydASh69jrhQpaSMrHncV6wQdhr78isBE1Cwi9CTydoyp/Ng1iCs5ce6DpioD2kcsimHILfPskkr8Uw4QCC1P9otJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtsXDJon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964C4C4CED1;
-	Wed, 19 Feb 2025 09:04:32 +0000 (UTC)
+	 MIME-Version; b=dqzX+ykWKNILWD8DwrwqSPf5Mqljo8ZoKSzoTlbZTBz+oZoa+HDW7YCZCeNMJizKuEY2dzzITBbnJ59RE0RxGv687NTz8McXvdmMWt+OIV0quUepZTGFaCuc9QUsnaRqh0alX7Hpz0CrpeoKc01FFR0vF42N8lqS1bq7C9MX5yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSJqyM87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FC9C4CEEA;
+	Wed, 19 Feb 2025 09:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955873;
-	bh=I0BDWQE7t7y/EDqgodCOVOH0v3M4MTgh3cKz0eGmI90=;
+	s=korg; t=1739957514;
+	bh=Js0q1PwrdiLLEqYB+e4lBm929zW02TEa6olcH8FW1xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtsXDJonvw0GZzq89roJkwsp7CBh1k96oMxD1B7y8r9ppAcGT5Q44+LPANT8N55Tp
-	 EiC81HbH36pZ//f+pDZ8l5aMTDoicIIbDWIDbXZs2Xz1kY/QjDAa9hmYnAfPn+TwY5
-	 ioQtZgld5JEq8YzvEJdv4AyD5iz8gEw7BCtWwuTE=
+	b=bSJqyM87oylwXfRG55VXseRW4lyUKJppScGHVcHJRD+r8RGWBGwc9RtFL7iHNSIdy
+	 wv1c79fV/jar4wY8V0R04Vco9f/0bLpJgIemjDiws/jAjgOZtxHYXwWQ62YatNCxSZ
+	 hSeI//NHJpwM/wOHhZpCny+6V5zxLe0Q2EVYKl08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.6 142/152] md/raid5: implement pers->bitmap_sector()
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 551/578] neighbour: use RCU protection in __neigh_notify()
 Date: Wed, 19 Feb 2025 09:29:15 +0100
-Message-ID: <20250219082555.664212457@linuxfoundation.org>
+Message-ID: <20250219082714.634445855@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9c89f604476cf15c31fbbdb043cff7fbf1dbe0cb upstream.
+[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
 
-Bitmap is used for the whole array for raid1/raid10, hence IO for the
-array can be used directly for bitmap. However, bitmap is used for
-underlying disks for raid5, hence IO for the array can't be used
-directly for bitmap.
+__neigh_notify() can be called without RTNL or RCU protection.
 
-Implement pers->bitmap_sector() for raid5 to convert IO ranges from the
-array to the underlying disks.
+Use RCU protection to avoid potential UAF.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250109015145.158868-5-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
-[ Resolve minor conflicts ]
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ net/core/neighbour.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5996,6 +5996,54 @@ static enum reshape_loc get_reshape_loc(
- 	return LOC_BEHIND_RESHAPE;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index b127533e74f37..2e2c009b5a2db 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3498,10 +3498,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
+ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid)
+ {
+-	struct net *net = dev_net(n->dev);
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
++	struct net *net;
+ 
++	rcu_read_lock();
++	net = dev_net_rcu(n->dev);
+ 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
+ 	if (skb == NULL)
+ 		goto errout;
+@@ -3514,9 +3516,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 		goto errout;
+ 	}
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+-	return;
++	goto out;
+ errout:
+ 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++out:
++	rcu_read_unlock();
  }
  
-+static void raid5_bitmap_sector(struct mddev *mddev, sector_t *offset,
-+				unsigned long *sectors)
-+{
-+	struct r5conf *conf = mddev->private;
-+	sector_t start = *offset;
-+	sector_t end = start + *sectors;
-+	sector_t prev_start = start;
-+	sector_t prev_end = end;
-+	int sectors_per_chunk;
-+	enum reshape_loc loc;
-+	int dd_idx;
-+
-+	sectors_per_chunk = conf->chunk_sectors *
-+		(conf->raid_disks - conf->max_degraded);
-+	start = round_down(start, sectors_per_chunk);
-+	end = round_up(end, sectors_per_chunk);
-+
-+	start = raid5_compute_sector(conf, start, 0, &dd_idx, NULL);
-+	end = raid5_compute_sector(conf, end, 0, &dd_idx, NULL);
-+
-+	/*
-+	 * For LOC_INSIDE_RESHAPE, this IO will wait for reshape to make
-+	 * progress, hence it's the same as LOC_BEHIND_RESHAPE.
-+	 */
-+	loc = get_reshape_loc(mddev, conf, prev_start);
-+	if (likely(loc != LOC_AHEAD_OF_RESHAPE)) {
-+		*offset = start;
-+		*sectors = end - start;
-+		return;
-+	}
-+
-+	sectors_per_chunk = conf->prev_chunk_sectors *
-+		(conf->previous_raid_disks - conf->max_degraded);
-+	prev_start = round_down(prev_start, sectors_per_chunk);
-+	prev_end = round_down(prev_end, sectors_per_chunk);
-+
-+	prev_start = raid5_compute_sector(conf, prev_start, 1, &dd_idx, NULL);
-+	prev_end = raid5_compute_sector(conf, prev_end, 1, &dd_idx, NULL);
-+
-+	/*
-+	 * for LOC_AHEAD_OF_RESHAPE, reshape can make progress before this IO
-+	 * is handled in make_stripe_request(), we can't know this here hence
-+	 * we set bits for both.
-+	 */
-+	*offset = min(start, prev_start);
-+	*sectors = max(end, prev_end) - *offset;
-+}
-+
- static enum stripe_result make_stripe_request(struct mddev *mddev,
- 		struct r5conf *conf, struct stripe_request_ctx *ctx,
- 		sector_t logical_sector, struct bio *bi)
-@@ -9099,6 +9147,7 @@ static struct md_personality raid6_perso
- 	.quiesce	= raid5_quiesce,
- 	.takeover	= raid6_takeover,
- 	.change_consistency_policy = raid5_change_consistency_policy,
-+	.bitmap_sector  = raid5_bitmap_sector,
- };
- static struct md_personality raid5_personality =
- {
-@@ -9124,6 +9173,7 @@ static struct md_personality raid5_perso
- 	.quiesce	= raid5_quiesce,
- 	.takeover	= raid5_takeover,
- 	.change_consistency_policy = raid5_change_consistency_policy,
-+	.bitmap_sector  = raid5_bitmap_sector,
- };
- 
- static struct md_personality raid4_personality =
-@@ -9150,6 +9200,7 @@ static struct md_personality raid4_perso
- 	.quiesce	= raid5_quiesce,
- 	.takeover	= raid4_takeover,
- 	.change_consistency_policy = raid5_change_consistency_policy,
-+	.bitmap_sector  = raid5_bitmap_sector,
- };
- 
- static int __init raid5_init(void)
+ void neigh_app_ns(struct neighbour *n)
+-- 
+2.39.5
+
 
 
 
