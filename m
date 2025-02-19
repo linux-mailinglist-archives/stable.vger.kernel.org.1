@@ -1,130 +1,109 @@
-Return-Path: <stable+bounces-116956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130C6A3B02C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 04:50:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D64A3B04A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 05:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2491F188C7CE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 03:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 626C93A2171
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 04:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A440E189F3B;
-	Wed, 19 Feb 2025 03:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A28319DF99;
+	Wed, 19 Feb 2025 04:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U4lKHWWr"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="PJG0W018"
 X-Original-To: stable@vger.kernel.org
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355D68C0B
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 03:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF405286289;
+	Wed, 19 Feb 2025 04:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739937042; cv=none; b=lCSMOLKze7OCRSzYgxU6DsG3LRgZgNE5PW7gmBLwLfmncl+zEc4bKSwnWibXhNrcQG/XgsDY+S0RzwxvJBDqSgPMwJVKCXGek3BS0puYbeNaqKgCKVdssD32rFZr0c/3Mxe18Z9KaSYqGBjeQlWG66i7685yWIqhGTBdYHYTZFg=
+	t=1739938080; cv=none; b=ZGJVQmrb6WjQ3RetLS4bkq6NbWpA84bNgee2k4fNw4H9QVMsRqU9cvZ+BM3zHeQKxi5Kj2+v+896V02gvBnX1sarII0hVeL4+ewRkDp6tMaEPodoSQgv/Bl6iwDw8LDa2LPxQ6lzMaN9QTFZ/KxolfdNhgs8nNXa1DJm0hEXzAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739937042; c=relaxed/simple;
-	bh=J8+NPZwTw8bslS0dqKvL9vPv+Cqwy7Gi7z+qq6XDXAU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=miku73S/GoB9h2Iui+SMbNTWqtL/vJM91ximPwucjo4dkiJueRL9PMfIOjbwIu03QOeAPlLMv69XCN6VrMzrASd0e1mEL2si+Mtlmtwe1JoarDNFuX0QVMklxqpOGzvniHOZ08bXorZ4gjX3XyuopBaZyoBNwlOG91jovJXpmhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U4lKHWWr; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739937036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+mTZtKiZbGjUlF//qydZXq9I7TGlMAO3W6yY9azH3lk=;
-	b=U4lKHWWrRTAt+1u9ZvH2qjJeFRMKnGlVYnfmPMhDK5kXTuxn91feHvigeA+D6nGpHxqjf/
-	rSUq49Cow9bhTvx/R4AXLTgWmLOARvhEUGp+F1+PL/z67+cO5LQ1s5mQpjfrgT8qMbriEW
-	t8c02WOCwhRjUi15bOEz7v/tiBWlbik=
+	s=arc-20240116; t=1739938080; c=relaxed/simple;
+	bh=33TK78y0PcEokxOnvoUZpDtewFSxLvkFIrg8wBNvyd8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XYzc+/B0OTbXW2yNNm+LI8RwwrrsD0eapAedUizcqY7c0ctpriJYIG4SWwjTwqrdg5pultc1K0tcO7YYxVCe1sOeoGdnvNvZnQHQs7c5DCXYC7eWO0Smc5btmcKisTnC0GDUAUE9c/EOMVLcbaiQZPCxBowS1zYY4Y3wdMIDa5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=PJG0W018; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=up4oV
+	Pi+blECBbrnd4T1e6VKTPf3P8EZCAss6qkrV/0=; b=PJG0W018kemkmYJXkR3jD
+	ijqMuKCb7r0I0Zde4PsxuxoRVUVBivHiMnCM4cSVGB8rNF6ngN5K1RPpoPvdTdrn
+	PabrRoYCA+ypoyrktG5sSIsS7D1otVJBpZL+XmiuZ9OEk9IJ2bP7PYrAgtNNZCJG
+	3vHrqu3UR2M/3AwDx/Paeg=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAHiij0WLVnLIlmNA--.661S4;
+	Wed, 19 Feb 2025 12:07:17 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: robdclark@gmail.com,
+	quic_abhinavk@quicinc.com,
+	dmitry.baryshkov@linaro.org,
+	sean@poorly.run,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jonathan@marek.ca,
+	quic_jesszhan@quicinc.com,
+	konradybcio@kernel.org,
+	haoxiang_li2024@163.com
+Cc: linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/msm/dsi: Add check for devm_kstrdup()
+Date: Wed, 19 Feb 2025 12:07:12 +0800
+Message-Id: <20250219040712.2598161-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH V4] mm/hugetlb: wait for hugetlb folios to be freed
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <1739936804-18199-1-git-send-email-yangge1116@126.com>
-Date: Wed, 19 Feb 2025 11:49:57 +0800
-Cc: akpm@linux-foundation.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- 21cnbao@gmail.com,
- david@redhat.com,
- baolin.wang@linux.alibaba.com,
- osalvador@suse.de,
- liuzixing@hygon.cn
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1C15A7E5-D78A-40DA-B7C5-3F49E790AC58@linux.dev>
-References: <1739936804-18199-1-git-send-email-yangge1116@126.com>
-To: yangge1116@126.com
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAHiij0WLVnLIlmNA--.661S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZw13Ww47WFWkJry8XF4rGrg_yoWDCFb_uF
+	yqqrnxXrsIyFsrKa4jyF1IyrW2kan0gF4rZ3W8tasay34jqr1FqwnavrZYvr4qvr18JF92
+	kanFqF15XrsrGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRuBTYDUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkBT4bme1Uc0AhgABsb
 
+Add check for the return value of devm_kstrdup() in
+dsi_host_parse_dt() to catch potential exception.
 
+Fixes: 958d8d99ccb3 ("drm/msm/dsi: parse vsync source from device tree")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-> On Feb 19, 2025, at 11:46, yangge1116@126.com wrote:
->=20
-> From: Ge Yang <yangge1116@126.com>
->=20
-> Since the introduction of commit c77c0a8ac4c52 ("mm/hugetlb: defer =
-freeing
-> of huge pages if in non-task context"), which supports deferring the
-> freeing of hugetlb pages, the allocation of contiguous memory through
-> cma_alloc() may fail probabilistically.
->=20
-> In the CMA allocation process, if it is found that the CMA area is =
-occupied
-> by in-use hugetlb folios, these in-use hugetlb folios need to be =
-migrated
-> to another location. When there are no available hugetlb folios in the
-> free hugetlb pool during the migration of in-use hugetlb folios, new =
-folios
-> are allocated from the buddy system. A temporary state is set on the =
-newly
-> allocated folio. Upon completion of the hugetlb folio migration, the
-> temporary state is transferred from the new folios to the old folios.
-> Normally, when the old folios with the temporary state are freed, it =
-is
-> directly released back to the buddy system. However, due to the =
-deferred
-> freeing of hugetlb pages, the PageBuddy() check fails, ultimately =
-leading
-> to the failure of cma_alloc().
->=20
-> Here is a simplified call trace illustrating the process:
-> cma_alloc()
->    ->__alloc_contig_migrate_range() // Migrate in-use hugetlb folios
->        ->unmap_and_move_huge_page()
->            ->folio_putback_hugetlb() // Free old folios
->    ->test_pages_isolated()
->        ->__test_page_isolated_in_pageblock()
->             ->PageBuddy(page) // Check if the page is in buddy
->=20
-> To resolve this issue, we have implemented a function named
-> wait_for_freed_hugetlb_folios(). This function ensures that the =
-hugetlb
-> folios are properly released back to the buddy system after their =
-migration
-> is completed. By invoking wait_for_freed_hugetlb_folios() before =
-calling
-> PageBuddy(), we ensure that PageBuddy() will succeed.
->=20
-> Fixes: c77c0a8ac4c52 ("mm/hugetlb: defer freeing of huge pages if in =
-non-task context")
-> Signed-off-by: Ge Yang <yangge1116@126.com>
-> Cc: <stable@vger.kernel.org>
-
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 007311c21fda..6dd1e10d8014 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -1827,8 +1827,15 @@ static int dsi_host_parse_dt(struct msm_dsi_host *msm_host)
+ 			__func__, ret);
+ 		goto err;
+ 	}
+-	if (!ret)
++	if (!ret) {
+ 		msm_dsi->te_source = devm_kstrdup(dev, te_source, GFP_KERNEL);
++		if (!msm_dsi->te_source) {
++			DRM_DEV_ERROR(dev, "%s: failed to allocate te_source\n",
++				__func__);
++			ret = -ENOMEM;
++			goto err;
++		}
++	}
+ 	ret = 0;
+ 
+ 	if (of_property_present(np, "syscon-sfpb")) {
+-- 
+2.25.1
 
 
