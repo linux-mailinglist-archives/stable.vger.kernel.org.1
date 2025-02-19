@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-118203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CDBA3BA0E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B84A3B695
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BF637A6F07
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED651886B57
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B871DF251;
-	Wed, 19 Feb 2025 09:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935AB1EB5D4;
+	Wed, 19 Feb 2025 08:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esdDIAWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoVwV6S3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968231DE2B5;
-	Wed, 19 Feb 2025 09:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499F41EEA27;
+	Wed, 19 Feb 2025 08:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957532; cv=none; b=foHS4XLWTHVLsf07vRMQ+Hdk75rXGHYQlGQUtros+OK2aIGvqbgiK/pwWlNHJGCqpxUarwTVkVkuAFoeZ6IZhZikeEGKHj3YEKdzY91i1PvYTRGi+W7Hd2NvWRoCyAHjOkIF6LdEe/xU6hs9O9FmRvyMztjLdDKZN2szD7r8hZo=
+	t=1739955363; cv=none; b=RHs0XBkOvm41gjpH9EF+vHNIyTv7myjMZ/HiBTXs7K1RUYNcxhu83NisqPGSTXfX/ogw4TgX+zVmx4q9MWXcmUxx1LJ8eGMQkjYNHiOY4mXB9xv/6ZAr1sjbS4IRmsOrhiQ5gXwayg0xwSxEK/Teel+1K6/Qcvl64JGDhP04Oak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957532; c=relaxed/simple;
-	bh=cXRnmJ/ULFsBd6c/GC48EmoXon4AbodOSg4xiP982Ys=;
+	s=arc-20240116; t=1739955363; c=relaxed/simple;
+	bh=Gq44AhOdQ1g2CXtPMrMEzTNCkU5IXtWvD2CYhHGH83w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1CDtO05TwQTdB9cY1QsSvQeXRvUu/0X/0QDH1OlPM5V2ajthk8M6UsKj3ujbP/VQzmafxdGlCv/pLER4Ami3ZWQmTBRGW8OuzXw9z0PrXRkJk2lmJI5YpMlbZQ0e4XSWSz0TU3vLOMurEefKlKpX5qFqac199BgLhSu0kUBXxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esdDIAWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA46C4CEE7;
-	Wed, 19 Feb 2025 09:32:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EjMtGoHmUknMfmOaIykEMDtitHkKJO4adPTpEVHGThYMiPQEez47j+7UHGUqX4+5qSVbln3UML2ZT9+9GMM84DrX0xGelF8aQmdcowR0vSXz+uOokx/rRM/eViwv9g3tws7iVY6ggiQxaWek8btbQmHekerzm2pkn44tj8qTVFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoVwV6S3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB97FC4CED1;
+	Wed, 19 Feb 2025 08:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957532;
-	bh=cXRnmJ/ULFsBd6c/GC48EmoXon4AbodOSg4xiP982Ys=;
+	s=korg; t=1739955363;
+	bh=Gq44AhOdQ1g2CXtPMrMEzTNCkU5IXtWvD2CYhHGH83w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esdDIAWz2QokPQfCebEKQa3osXlHFA8+e97kn0A3pqSR1nkz0HQwtFxzBCiN1GNxZ
-	 Wsx1xf0+1eqtMy5yVy7mca2Cnk8hhSS9OFqPWbUONXlfLvOiv0Gt1ggg+w05OoOhA1
-	 jnPEOwegd6Ny/rQQwzifn39zmqXgGsQ7NsU2KhmA=
+	b=YoVwV6S3Cn2du/tLiGtHfCFNEN7cLi9JgnLklAzlEF4Ovgnt8vhdyuAVnG85zToJY
+	 kKhY0DIvwRDmWe7tiMkWgPBdmElVS2rLVkH2GnZrVuwzBsUnj8i0FDdWCXaap6QU75
+	 BQa3aNU0xcPV/pClYswK8FTfaRsNlThstV73kmF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>
-Subject: [PATCH 6.1 526/578] serial: 8250: Fix fifo underflow on flush
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	intel-xe@lists.freedesktop.org,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: [PATCH 6.12 213/230] drm/xe/tracing: Fix a potential TP_printk UAF
 Date: Wed, 19 Feb 2025 09:28:50 +0100
-Message-ID: <20250219082713.665271926@linuxfoundation.org>
+Message-ID: <20250219082610.026162189@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,121 +65,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit 9e512eaaf8f4008c44ede3dfc0fbc9d9c5118583 upstream.
+commit 07089083a526ea19daa72a1edf9d6e209615b77c upstream.
 
-When flushing the serial port's buffer, uart_flush_buffer() calls
-kfifo_reset() but if there is an outstanding DMA transfer then the
-completion function will consume data from the kfifo via
-uart_xmit_advance(), underflowing and leading to ongoing DMA as the
-driver tries to transmit another 2^32 bytes.
+The commit
+afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+exposes potential UAFs in the xe_bo_move trace event.
 
-This is readily reproduced with serial-generic and amidi sending even
-short messages as closing the device on exit will wait for the fifo to
-drain and in the underflow case amidi hangs for 30 seconds on exit in
-tty_wait_until_sent().  A trace of that gives:
+Fix those by avoiding dereferencing the
+xe_mem_type_to_name[] array at TP_printk time.
 
-     kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
-           amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
- irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
- irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
- irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
- irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
- irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
- irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
- irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
+Since some code refactoring has taken place, explicit backporting may
+be needed for kernels older than 6.10.
 
-Since the port lock is held in when the kfifo is reset in
-uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
-hook to adjust the outstanding DMA byte count is sufficient to avoid the
-kfifo underflow.
-
-Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
-Cc: stable <stable@kernel.org>
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://lore.kernel.org/r/20250208124148.1189191-1-jkeeping@inmusicbrands.com
+Fixes: e46d3f813abd ("drm/xe/trace: Extract bo, vm, vma traces")
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: intel-xe@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.11+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241223134250.14345-1-thomas.hellstrom@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250.h      |    2 ++
- drivers/tty/serial/8250/8250_dma.c  |   16 ++++++++++++++++
- drivers/tty/serial/8250/8250_port.c |    9 +++++++++
- 3 files changed, 27 insertions(+)
+ drivers/gpu/drm/xe/xe_trace_bo.h |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -344,6 +344,7 @@ static inline int is_omap1510_8250(struc
+--- a/drivers/gpu/drm/xe/xe_trace_bo.h
++++ b/drivers/gpu/drm/xe/xe_trace_bo.h
+@@ -55,8 +55,8 @@ TRACE_EVENT(xe_bo_move,
+ 	    TP_STRUCT__entry(
+ 		     __field(struct xe_bo *, bo)
+ 		     __field(size_t, size)
+-		     __field(u32, new_placement)
+-		     __field(u32, old_placement)
++		     __string(new_placement_name, xe_mem_type_to_name[new_placement])
++		     __string(old_placement_name, xe_mem_type_to_name[old_placement])
+ 		     __string(device_id, __dev_name_bo(bo))
+ 		     __field(bool, move_lacks_source)
+ 			),
+@@ -64,15 +64,15 @@ TRACE_EVENT(xe_bo_move,
+ 	    TP_fast_assign(
+ 		   __entry->bo      = bo;
+ 		   __entry->size = bo->size;
+-		   __entry->new_placement = new_placement;
+-		   __entry->old_placement = old_placement;
++		   __assign_str(new_placement_name);
++		   __assign_str(old_placement_name);
+ 		   __assign_str(device_id);
+ 		   __entry->move_lacks_source = move_lacks_source;
+ 		   ),
+ 	    TP_printk("move_lacks_source:%s, migrate object %p [size %zu] from %s to %s device_id:%s",
+ 		      __entry->move_lacks_source ? "yes" : "no", __entry->bo, __entry->size,
+-		      xe_mem_type_to_name[__entry->old_placement],
+-		      xe_mem_type_to_name[__entry->new_placement], __get_str(device_id))
++		      __get_str(old_placement_name),
++		      __get_str(new_placement_name), __get_str(device_id))
+ );
  
- #ifdef CONFIG_SERIAL_8250_DMA
- extern int serial8250_tx_dma(struct uart_8250_port *);
-+extern void serial8250_tx_dma_flush(struct uart_8250_port *);
- extern int serial8250_rx_dma(struct uart_8250_port *);
- extern void serial8250_rx_dma_flush(struct uart_8250_port *);
- extern int serial8250_request_dma(struct uart_8250_port *);
-@@ -376,6 +377,7 @@ static inline int serial8250_tx_dma(stru
- {
- 	return -1;
- }
-+static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
- static inline int serial8250_rx_dma(struct uart_8250_port *p)
- {
- 	return -1;
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -133,6 +133,22 @@ err:
- 	return ret;
- }
- 
-+void serial8250_tx_dma_flush(struct uart_8250_port *p)
-+{
-+	struct uart_8250_dma *dma = p->dma;
-+
-+	if (!dma->tx_running)
-+		return;
-+
-+	/*
-+	 * kfifo_reset() has been called by the serial core, avoid
-+	 * advancing and underflowing in __dma_tx_complete().
-+	 */
-+	dma->tx_size = 0;
-+
-+	dmaengine_terminate_async(dma->rxchan);
-+}
-+
- int serial8250_rx_dma(struct uart_8250_port *p)
- {
- 	struct uart_8250_dma		*dma = p->dma;
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2550,6 +2550,14 @@ static unsigned int npcm_get_divisor(str
- 	return DIV_ROUND_CLOSEST(port->uartclk, 16 * baud + 2) - 2;
- }
- 
-+static void serial8250_flush_buffer(struct uart_port *port)
-+{
-+	struct uart_8250_port *up = up_to_u8250p(port);
-+
-+	if (up->dma)
-+		serial8250_tx_dma_flush(up);
-+}
-+
- static unsigned int serial8250_do_get_divisor(struct uart_port *port,
- 					      unsigned int baud,
- 					      unsigned int *frac)
-@@ -3260,6 +3268,7 @@ static const struct uart_ops serial8250_
- 	.break_ctl	= serial8250_break_ctl,
- 	.startup	= serial8250_startup,
- 	.shutdown	= serial8250_shutdown,
-+	.flush_buffer	= serial8250_flush_buffer,
- 	.set_termios	= serial8250_set_termios,
- 	.set_ldisc	= serial8250_set_ldisc,
- 	.pm		= serial8250_pm,
+ DECLARE_EVENT_CLASS(xe_vma,
 
 
 
