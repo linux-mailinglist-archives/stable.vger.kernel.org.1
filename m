@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-118065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D99A3B9A1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F4A3B644
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426A51674A5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6CC3BA596
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7840D1D9A50;
-	Wed, 19 Feb 2025 09:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988BC1DDC35;
+	Wed, 19 Feb 2025 08:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bE25apru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXTzbsXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B2D1DB546;
-	Wed, 19 Feb 2025 09:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558651CAA68;
+	Wed, 19 Feb 2025 08:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957135; cv=none; b=O0sP5SQLhj6owZ3PjTrEOSGvq1jjhtcBAfx2497eR4TRgoYsq9EPT5bbKMQO6Ydx/EqvU4NA2spKRliK1yG490XAifuZuHF7lRBpPb0ewjbaIHDa3Bq2lS57nhlv2b9p2Fy/pWwsfiVAve9FyifMHa0fvIkaYnCRoPVmVir4dNY=
+	t=1739954916; cv=none; b=lorLslR5ysMl3Oc95IDLFcNt74wKpCYZ3ML5FvudtDlO1hGkU6nwnwdK25PvxsW8wnwl9JqWYipJUp4kQh/MRqDaYrL9KtTSDFDm9T3L1ROvUuCzszS1oEPpz5+AVioDkqSNZ5tfBG+OUfTIN8PfJ5zMENvQzldybAO9yVe1AhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957135; c=relaxed/simple;
-	bh=RMwBODmdnyZF8gL6qXVnhlEf3qc6RS2Fd3Ev0S/6GTs=;
+	s=arc-20240116; t=1739954916; c=relaxed/simple;
+	bh=AA9m/YvxmtsumhrE9dpOyv5Bm9peg2hBrllaDmCRM4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9CgrEvCVmGr6YIx0WwFtc2jYMRAfbR2HivxR6TK4etbhv/F/aTnVnVBeJCO8Hwmz2jEo6sfhy4/OonTi/8gD3cW4IQGxbKoDLrgKTHPhVm5NefzumeZZHRYSQUfH4G1xvRKj2civQ8Btb2RyQ2TBLYc+FCtqGhoMnEGbmr2GL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bE25apru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AF3C4CED1;
-	Wed, 19 Feb 2025 09:25:34 +0000 (UTC)
+	 MIME-Version; b=O0fSvAvzLSWb0mHMaGvc436yQn0D9fkG13eLwfl3JBKJFAjMIpb/2TeW3Ae8WGAQQhohHsCsWaqYjUI6XhAXJEp1jD7EleVwRMIMXWmx+sHRBWuv9echHvkcnjYWoICrVkDRjKmLVpuEm58ob1p/rouJx6lAXwq/aT8KH43KXlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXTzbsXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EF7C4CED1;
+	Wed, 19 Feb 2025 08:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957135;
-	bh=RMwBODmdnyZF8gL6qXVnhlEf3qc6RS2Fd3Ev0S/6GTs=;
+	s=korg; t=1739954916;
+	bh=AA9m/YvxmtsumhrE9dpOyv5Bm9peg2hBrllaDmCRM4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bE25apruEZgHo/AcGXq589QgO8ildAsfperfhbbP0vl4G4dTj7gR8KVELHzbuYZyG
-	 jCYVR+fJnSAUcFp3j85QgMBu6O+mX5KVpHHl22mhKmzhqwrQXVbkD67UfbsBU6I1O8
-	 9HZ4XW6ky8qpsLGbpBt2ea5WRMpzI+ZoX13YzsOE=
+	b=cXTzbsXNcYbIJPYc9aUJ4lAniz4uIlfWYJN/AqDikEkReiHAlq9UYXu8hI7XWSExk
+	 K6XLQOHImGgkqAmuiGxMitRO3nKLO6cYiLiPmuJJnZPCfpF7F7ZhGDCM7jcLZ1a7Qp
+	 KPfZDWSzMmCecXO/XTWCIBDrJRQK/7LF8fpfWuwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brad Griffis <bgriffis@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.1 389/578] arm64: tegra: Fix Tegra234 PCIe interrupt-map
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 076/230] rtla/timerlat_top: Abort event processing on second signal
 Date: Wed, 19 Feb 2025 09:26:33 +0100
-Message-ID: <20250219082708.327427684@linuxfoundation.org>
+Message-ID: <20250219082604.678414183@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brad Griffis <bgriffis@nvidia.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit b615fbd70fce8582d92b3bdbbf3c9b80cadcfb55 upstream.
+[ Upstream commit 80967b354a76b360943af384c10d807d98bea5c4 ]
 
-For interrupt-map entries, the DTS specification requires
-that #address-cells is defined for both the child node and the
-interrupt parent.  For the PCIe interrupt-map entries, the parent
-node ("gic") has not specified #address-cells. The existing layout
-of the PCIe interrupt-map entries indicates that it assumes
-that #address-cells is zero for this node.
+If either SIGINT is received twice, or after a SIGALRM (that is, after
+timerlat was supposed to stop), abort processing events currently left
+in the tracefs buffer and exit immediately.
 
-Explicitly set #address-cells to zero for "gic" so that it complies
-with the device tree specification.
+This allows the user to exit rtla without waiting for processing all
+events, should that take longer than wanted, at the cost of not
+processing all samples.
 
-NVIDIA EDK2 works around this issue by assuming #address-cells
-is zero in this scenario, but that workaround is being removed and so
-this update is needed or else NVIDIA EDK2 cannot successfully parse the
-device tree and the board cannot boot.
-
-Fixes: ec142c44b026 ("arm64: tegra: Add P2U and PCIe controller nodes to Tegra234 DT")
-Signed-off-by: Brad Griffis <bgriffis@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241213235602.452303-1-bgriffis@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-6-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/tracing/rtla/src/timerlat_top.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
-@@ -1574,6 +1574,8 @@
- 			#redistributor-regions = <1>;
- 			#interrupt-cells = <3>;
- 			interrupt-controller;
-+
-+			#address-cells = <0>;
- 		};
- 
- 		smmu_iso: iommu@10000000{
+diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
+index d13be28dacd59..0def5fec51ed7 100644
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -897,6 +897,14 @@ static int stop_tracing;
+ static struct trace_instance *top_inst = NULL;
+ static void stop_top(int sig)
+ {
++	if (stop_tracing) {
++		/*
++		 * Stop requested twice in a row; abort event processing and
++		 * exit immediately
++		 */
++		tracefs_iterate_stop(top_inst->inst);
++		return;
++	}
+ 	stop_tracing = 1;
+ 	if (top_inst)
+ 		trace_instance_stop(top_inst);
+-- 
+2.39.5
+
 
 
 
