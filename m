@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD29A3B6BB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34502A3B756
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7292C1769B0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A1B1888C3E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3479E1EFF98;
-	Wed, 19 Feb 2025 08:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315F81D7E54;
+	Wed, 19 Feb 2025 09:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEM88xQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxci0NyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73731DF253;
-	Wed, 19 Feb 2025 08:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50521D63E8;
+	Wed, 19 Feb 2025 09:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955382; cv=none; b=N0qo9G9jFGmQDWNtatYnzaYACy57RTaiSj1FwKuzYSJBJcFerjoZYkxsSkVu4H3McDFlCoATyCY88WbxR2ulFkM7DJ//EljA+pXPTg/jRj5/b0L+L6+omeOKmGq7PvHsvQeqDfed/WTIrE5rIA+VXmTpc7E/JqhHbwW//L6VNm8=
+	t=1739955817; cv=none; b=dUjxoR41eNHcBG62Wap3SvSn1EK6fKjeyE50MdEnZxFDRzMxbwn41p/97cL0mz9D6OSbtOLU4BaqmUQZNg8+3BudwaKf6U7JAvUAlpqfe+4HoYgjH6OHsKoanDNCk+CpFWda4Zn02uJQpU2FT/qe2bND7arbftbNZPQRUGgHniY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955382; c=relaxed/simple;
-	bh=CIh8PsFho+dIl6lIkb/edxdalNue9VAIpBNwaCAPAlY=;
+	s=arc-20240116; t=1739955817; c=relaxed/simple;
+	bh=9JcsFF4UatNFKJuIICrRgV4GyAku7KCKY3fOF+japdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1/XeA2xW/CmW0/Mw/9N/VTx6wnNBF6WDIRxlCpF1XFhNT6w5BQ9qd3Ua6rbR/BsCoKUa1Y1dl0qoRxHl2exaSONJhRyjHVvpGUkDtLEQj2kXUA1CRoQgu1L7asWLtM46c905zBLlLgKyX79cJDxVu2dlHw16DMqCrSDj3iu1zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEM88xQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664CAC4CED1;
-	Wed, 19 Feb 2025 08:56:21 +0000 (UTC)
+	 MIME-Version; b=mYcPT6beJCVGX1QegBNf967053mIaHL+yQR+7P7oFatpWeyPFh92Aj3z+8saYh3+ZCTobEv9ryFiUkKtPRIe9qXRUmdqvvoyAzx/CNmmsmRd7OAk6RYD4KhkvivpAx7mbZqKFMsPknNU6vKkZpT2HczwnaPZv2lyafhyh1OU/sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxci0NyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57744C4CEE6;
+	Wed, 19 Feb 2025 09:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955381;
-	bh=CIh8PsFho+dIl6lIkb/edxdalNue9VAIpBNwaCAPAlY=;
+	s=korg; t=1739955817;
+	bh=9JcsFF4UatNFKJuIICrRgV4GyAku7KCKY3fOF+japdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEM88xQLmv8Fnpxdw23f27yljbu/jTKUbIdD2fsCmKoWoKYFY8ksR5dOrWycr87R7
-	 VDoDrwx6IltgCNyT5pzE8m7/xZDYHGwCnbHtbxv2XmKi+A48Kwhk/p9qVKQ556QQ8S
-	 URm0q3qJcl5DvEQYO7NbzprDpDxdFSh5VLn7gl8g=
+	b=cxci0NyG7a0OD2QMEQtVW07gEgOMNSMKOu0qtbw1IPicf/s1do8pEegd6prj7ZAkh
+	 am3T8NcJrezL4fgZ0FDYDxM8XXC3aWKZVrmkSngqMcKlh+eGIvsC56K1/USCgSmTD1
+	 fnr0Y7TBElGH7gJieTOKBtk8pakRc2Bks+dNyGmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juri Lelli <juri.lelli@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 6.12 218/230] sched/deadline: Correctly account for allocated bandwidth during hotplug
-Date: Wed, 19 Feb 2025 09:28:55 +0100
-Message-ID: <20250219082610.220664753@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/152] neighbour: use RCU protection in __neigh_notify()
+Date: Wed, 19 Feb 2025 09:28:56 +0100
+Message-ID: <20250219082554.918054462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d4742f6ed7ea6df56e381f82ba4532245fa1e561 upstream.
+[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
 
-For hotplug operations, DEADLINE needs to check that there is still enough
-bandwidth left after removing the CPU that is going offline. We however
-fail to do so currently.
+__neigh_notify() can be called without RTNL or RCU protection.
 
-Restore the correct behavior by restructuring dl_bw_manage() a bit, so
-that overflow conditions (not enough bandwidth left) are properly
-checked. Also account for dl_server bandwidth, i.e. discount such
-bandwidth in the calculation since NORMAL tasks will be anyway moved
-away from the CPU as a result of the hotplug operation.
+Use RCU protection to avoid potential UAF.
 
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Tested-by: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/20241114142810.794657-3-juri.lelli@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c     |    2 +-
- kernel/sched/deadline.c |   48 +++++++++++++++++++++++++++++++++++++++---------
- kernel/sched/sched.h    |    2 +-
- 3 files changed, 41 insertions(+), 11 deletions(-)
+ net/core/neighbour.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8094,7 +8094,7 @@ static void cpuset_cpu_active(void)
- static int cpuset_cpu_inactive(unsigned int cpu)
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 118d932b3baa1..e44feb39d459a 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3508,10 +3508,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
+ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid)
  {
- 	if (!cpuhp_tasks_frozen) {
--		int ret = dl_bw_check_overflow(cpu);
-+		int ret = dl_bw_deactivate(cpu);
+-	struct net *net = dev_net(n->dev);
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
++	struct net *net;
  
- 		if (ret)
- 			return ret;
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -3475,29 +3475,31 @@ int dl_cpuset_cpumask_can_shrink(const s
- }
- 
- enum dl_bw_request {
--	dl_bw_req_check_overflow = 0,
-+	dl_bw_req_deactivate = 0,
- 	dl_bw_req_alloc,
- 	dl_bw_req_free
- };
- 
- static int dl_bw_manage(enum dl_bw_request req, int cpu, u64 dl_bw)
- {
--	unsigned long flags;
-+	unsigned long flags, cap;
- 	struct dl_bw *dl_b;
- 	bool overflow = 0;
-+	u64 fair_server_bw = 0;
- 
- 	rcu_read_lock_sched();
- 	dl_b = dl_bw_of(cpu);
- 	raw_spin_lock_irqsave(&dl_b->lock, flags);
- 
--	if (req == dl_bw_req_free) {
-+	cap = dl_bw_capacity(cpu);
-+	switch (req) {
-+	case dl_bw_req_free:
- 		__dl_sub(dl_b, dl_bw, dl_bw_cpus(cpu));
--	} else {
--		unsigned long cap = dl_bw_capacity(cpu);
--
-+		break;
-+	case dl_bw_req_alloc:
- 		overflow = __dl_overflow(dl_b, cap, 0, dl_bw);
- 
--		if (req == dl_bw_req_alloc && !overflow) {
-+		if (!overflow) {
- 			/*
- 			 * We reserve space in the destination
- 			 * root_domain, as we can't fail after this point.
-@@ -3506,6 +3508,34 @@ static int dl_bw_manage(enum dl_bw_reque
- 			 */
- 			__dl_add(dl_b, dl_bw, dl_bw_cpus(cpu));
- 		}
-+		break;
-+	case dl_bw_req_deactivate:
-+		/*
-+		 * cpu is going offline and NORMAL tasks will be moved away
-+		 * from it. We can thus discount dl_server bandwidth
-+		 * contribution as it won't need to be servicing tasks after
-+		 * the cpu is off.
-+		 */
-+		if (cpu_rq(cpu)->fair_server.dl_server)
-+			fair_server_bw = cpu_rq(cpu)->fair_server.dl_bw;
-+
-+		/*
-+		 * Not much to check if no DEADLINE bandwidth is present.
-+		 * dl_servers we can discount, as tasks will be moved out the
-+		 * offlined CPUs anyway.
-+		 */
-+		if (dl_b->total_bw - fair_server_bw > 0) {
-+			/*
-+			 * Leaving at least one CPU for DEADLINE tasks seems a
-+			 * wise thing to do.
-+			 */
-+			if (dl_bw_cpus(cpu))
-+				overflow = __dl_overflow(dl_b, cap, fair_server_bw, 0);
-+			else
-+				overflow = 1;
-+		}
-+
-+		break;
++	rcu_read_lock();
++	net = dev_net_rcu(n->dev);
+ 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
+ 	if (skb == NULL)
+ 		goto errout;
+@@ -3524,9 +3526,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 		goto errout;
  	}
- 
- 	raw_spin_unlock_irqrestore(&dl_b->lock, flags);
-@@ -3514,9 +3544,9 @@ static int dl_bw_manage(enum dl_bw_reque
- 	return overflow ? -EBUSY : 0;
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+-	return;
++	goto out;
+ errout:
+ 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++out:
++	rcu_read_unlock();
  }
  
--int dl_bw_check_overflow(int cpu)
-+int dl_bw_deactivate(int cpu)
- {
--	return dl_bw_manage(dl_bw_req_check_overflow, cpu, 0);
-+	return dl_bw_manage(dl_bw_req_deactivate, cpu, 0);
- }
- 
- int dl_bw_alloc(int cpu, u64 dl_bw)
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -362,7 +362,7 @@ extern void __getparam_dl(struct task_st
- extern bool __checkparam_dl(const struct sched_attr *attr);
- extern bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr);
- extern int  dl_cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
--extern int  dl_bw_check_overflow(int cpu);
-+extern int  dl_bw_deactivate(int cpu);
- extern s64 dl_scaled_delta_exec(struct rq *rq, struct sched_dl_entity *dl_se, s64 delta_exec);
- /*
-  * SCHED_DEADLINE supports servers (nested scheduling) with the following
+ void neigh_app_ns(struct neighbour *n)
+-- 
+2.39.5
+
 
 
 
