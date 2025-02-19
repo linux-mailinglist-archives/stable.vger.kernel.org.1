@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAE7A3B67B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B046A3BA74
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96F0E17B94E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4CDA802062
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81731EB196;
-	Wed, 19 Feb 2025 08:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B69A1D416E;
+	Wed, 19 Feb 2025 09:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoL1O0LZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVDJqJYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850991EA7FC;
-	Wed, 19 Feb 2025 08:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA92E188CCA;
+	Wed, 19 Feb 2025 09:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955291; cv=none; b=SNxMSaZJ1DPz3pP7ByIoQe6feYQk26fFyeK9NDLZ5mHsHLVoA/nTCeYYZBfrq0tpuOyCmLyRflddZBp2A4O7VyENX8rhuiQTgvjWij5AGoqq22wZsfxfwod+LYj8tH8DbPBnaHyNFzm2lWpU+1jPvlVSoP9qdRwRq9w5iJJWTQE=
+	t=1739957379; cv=none; b=Z8Z+400tNtiDICeHFlo6VVOUw1YnE9uyUt59DCB/STiO8Ulq2pwcR8U4sL5Qv8d97tB/lFM67/HOg5VTQPnaaEhB6iMgoL/SiFUpvixLe7KvDRLjpNy5iMpwxYJBs/6YyCMEo8A2XHNc4rYA0wQSk9nmkD6LOj70zV3C40oVgXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955291; c=relaxed/simple;
-	bh=oN8SAyp5r34LtbOuL4EHi0H/SLodEqgBUyVYekcFZ1o=;
+	s=arc-20240116; t=1739957379; c=relaxed/simple;
+	bh=gx5sg+jWN1pcXsqrJftznF+hm0RFKe/AMy4b3uEJJMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRH+f/uk9a2vRjqaClpI3kVEMD8Djkt3v3Z6Fp6Oy4+FjI9dyQbf3XICP8vBpwtZgJwi8Xr+lf5j4jOXcOBI/ux8mxPu0BYgqZJ6q/9vmonvs2kmsKUeLEnBf/zCn6Ksvt0KozSDgfnJKHSwIB8AFVXn0zzEIghXR1SiTzPB5II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoL1O0LZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCC1C4CEE7;
-	Wed, 19 Feb 2025 08:54:50 +0000 (UTC)
+	 MIME-Version; b=eOnzDK0tXBkyigyXAIgREUthf5SA8VQS8h8ursDGdwLP4vB/zGlB2vuBXuhxezxH65ya1Z3XgpUxNMRVtBhNa79GLbd4RqgAaTqWcqkQuz6SIRvgojQRmwWH2KOd4yVirfmRdQeLFrutkbNe0oI8p7l0H1YHStP+Ho/VCmv0AAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVDJqJYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF68C4CED1;
+	Wed, 19 Feb 2025 09:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955291;
-	bh=oN8SAyp5r34LtbOuL4EHi0H/SLodEqgBUyVYekcFZ1o=;
+	s=korg; t=1739957379;
+	bh=gx5sg+jWN1pcXsqrJftznF+hm0RFKe/AMy4b3uEJJMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KoL1O0LZJCjOgVcWsEmwmB18rbr1kUa4gUKODSHZRKSfgEGcmJPCO9KlohKjmGoBa
-	 Z8TxaFCWjkGBVomGa/w9qUoK+Z7fMDbXHNKleR8QCQ7cE+ZAX3Y4U1zDA0K85uZJGM
-	 c92Mj6jSQepQ1PK+6OBvlPiRWcjOil+I4R4WlLcQ=
+	b=eVDJqJYd4MMqbOy9Y/LK8tzGI6GAQfp/utzZlF9zaaSalkkXSFwTQyARjgzqtkXBx
+	 lPIwmSRXp/8YOZAENxvpgtKa1+IMoEmvUPlIoA8xv9p88cjWsnGL0nwlcmU0k2Opg4
+	 SOT52B7eYO9LCvk1IW/lnlaqUpgiIvr+RwtJeolg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/230] flow_dissector: use RCU protection to fetch dev_net()
-Date: Wed, 19 Feb 2025 09:28:28 +0100
-Message-ID: <20250219082609.171507790@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Guo Ren <guoren@linux.alibaba.com>
+Subject: [PATCH 6.1 505/578] usb: gadget: udc: renesas_usb3: Fix compiler warning
+Date: Wed, 19 Feb 2025 09:28:29 +0100
+Message-ID: <20250219082712.850266322@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-[ Upstream commit afec62cd0a4191cde6dd3a75382be4d51a38ce9b ]
+commit 335a1fc1193481f8027f176649c72868172f6f8b upstream.
 
-__skb_flow_dissect() can be called from arbitrary contexts.
+drivers/usb/gadget/udc/renesas_usb3.c: In function 'renesas_usb3_probe':
+drivers/usb/gadget/udc/renesas_usb3.c:2638:73: warning: '%d'
+directive output may be truncated writing between 1 and 11 bytes into a
+region of size 6 [-Wformat-truncation=]
+2638 |   snprintf(usb3_ep->ep_name, sizeof(usb3_ep->ep_name), "ep%d", i);
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~     ^~   ^
 
-It must extend its RCU protection section to include
-the call to dev_net(), which can become dev_net_rcu().
-
-This makes sure the net structure can not disappear under us.
-
-Fixes: 9b52e3f267a6 ("flow_dissector: handle no-skb use case")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-10-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas USB3.0 peripheral controller")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501201409.BIQPtkeB-lkp@intel.com/
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250122081231.47594-1-guoren@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/flow_dissector.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/udc/renesas_usb3.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 0e638a37aa096..5db41bf2ed93e 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1108,10 +1108,12 @@ bool __skb_flow_dissect(const struct net *net,
- 					      FLOW_DISSECTOR_KEY_BASIC,
- 					      target_container);
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -309,7 +309,7 @@ struct renesas_usb3_request {
+ 	struct list_head	queue;
+ };
  
-+	rcu_read_lock();
-+
- 	if (skb) {
- 		if (!net) {
- 			if (skb->dev)
--				net = dev_net(skb->dev);
-+				net = dev_net_rcu(skb->dev);
- 			else if (skb->sk)
- 				net = sock_net(skb->sk);
- 		}
-@@ -1122,7 +1124,6 @@ bool __skb_flow_dissect(const struct net *net,
- 		enum netns_bpf_attach_type type = NETNS_BPF_FLOW_DISSECTOR;
- 		struct bpf_prog_array *run_array;
- 
--		rcu_read_lock();
- 		run_array = rcu_dereference(init_net.bpf.run_array[type]);
- 		if (!run_array)
- 			run_array = rcu_dereference(net->bpf.run_array[type]);
-@@ -1150,17 +1151,17 @@ bool __skb_flow_dissect(const struct net *net,
- 			prog = READ_ONCE(run_array->items[0].prog);
- 			result = bpf_flow_dissect(prog, &ctx, n_proto, nhoff,
- 						  hlen, flags);
--			if (result == BPF_FLOW_DISSECTOR_CONTINUE)
--				goto dissect_continue;
--			__skb_flow_bpf_to_target(&flow_keys, flow_dissector,
--						 target_container);
--			rcu_read_unlock();
--			return result == BPF_OK;
-+			if (result != BPF_FLOW_DISSECTOR_CONTINUE) {
-+				__skb_flow_bpf_to_target(&flow_keys, flow_dissector,
-+							 target_container);
-+				rcu_read_unlock();
-+				return result == BPF_OK;
-+			}
- 		}
--dissect_continue:
--		rcu_read_unlock();
- 	}
- 
-+	rcu_read_unlock();
-+
- 	if (dissector_uses_key(flow_dissector,
- 			       FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
- 		struct ethhdr *eth = eth_hdr(skb);
--- 
-2.39.5
-
+-#define USB3_EP_NAME_SIZE	8
++#define USB3_EP_NAME_SIZE	16
+ struct renesas_usb3_ep {
+ 	struct usb_ep ep;
+ 	struct renesas_usb3 *usb3;
 
 
 
