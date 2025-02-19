@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D0CA3B73F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A68A3BA0B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042AB17D473
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D151317DBE3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5A21E3796;
-	Wed, 19 Feb 2025 09:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925401DE887;
+	Wed, 19 Feb 2025 09:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx0ecYtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUxqoZuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70781BEF82;
-	Wed, 19 Feb 2025 09:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E30C1C2DC8;
+	Wed, 19 Feb 2025 09:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955749; cv=none; b=TQHGMlq90/0hW5kt80KPBG1BL9bbaaQ04nT7W91u/WNPyATiKeOsw986pFQlB8SM1EnvPBVprKiuOXarxD1MqBHgvLNvpWASPkcCy6aSMzosHpN+9Vaid/qmmEjz1kugd4ST0BpzEGqoMx30JgdSYvKGc9G0ny/Xp6mlBHQ/RZE=
+	t=1739957302; cv=none; b=V7goKgR+Y80Idm6yQ4v5ZFgnQRtjbtr17BF3Jht7+PKLGUJl5ovnJvdQusHcIyQU8SJ4qmiHTPtQFQeeuZHA+ENuWdWFZyt0FnxIm8Rfdy/MfVRBjpKq/cq9mthsQJV572vSaj83aKOPn3RJEjDm5lKkp2Qd5T5M7wqVqdXe/AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955749; c=relaxed/simple;
-	bh=OrhVNWx5Ekwm/cS6QyeKxPqk4st6pW0vJ2wXmLVkhLI=;
+	s=arc-20240116; t=1739957302; c=relaxed/simple;
+	bh=WfJ9GcByBBzsEXFShmXcN9Iw+oRSgdT9/nWE79C5kz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtK+riYogkRarMXMHLNGteEHNd97fTO6WdPJhSVatB/WhoA4ol4M8xpCakCh0PD250k9d95tnGV7LBWiYTkRK16IOwOgCbvuLbokF4oi2V7ViBe4zVH7YFYlEFJM6wimeC2vPnwzHm9DScy8vNMKq2maF42AvUAWUt7QpwYGTB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx0ecYtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A92C4CED1;
-	Wed, 19 Feb 2025 09:02:28 +0000 (UTC)
+	 MIME-Version; b=sUi/rZ6SKAxAGwGR8qe8+RvF4lDoM3ZevQEKZ2pQphDvUcrPG4regDyztmoN3OUgqz3bIJ1YSXtH937xQg6QHKiVr6xwHFQpXK00EiQxV93fV3zXvJ2ho1+BgzVQe0P5heFNN2PAq3KiLC3VnzsQ6yVPKstBJ59ZHsbNca5O3aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUxqoZuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6E6C4CEE6;
+	Wed, 19 Feb 2025 09:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955749;
-	bh=OrhVNWx5Ekwm/cS6QyeKxPqk4st6pW0vJ2wXmLVkhLI=;
+	s=korg; t=1739957302;
+	bh=WfJ9GcByBBzsEXFShmXcN9Iw+oRSgdT9/nWE79C5kz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sx0ecYtI0GsBur/BbmSYNMUzAgsuy873U3eObeaT+LvXAM7INle71iQnO7rwIoRAl
-	 YdGRZm0y38UL1hTJI00jclP4zhcDI5LUGgj+VqEzOua7IwocHnMtSaai6pwjFE2+hi
-	 1I/Qqg8/g5/O1Gv+tWivfuudeobngHxNt5Xnnfe0=
+	b=oUxqoZuXwYmpMkrNGW3256cf3SPK9rNeblp1MNL9n/M98ARw354plb93vbQ6K44FK
+	 sNad+xGCS9VgHOtHqPLxSpMshTnGmuxQSu8kzt1lcz/oU/uI2QDF2GNPX3vB3TD8oj
+	 261r/zcekjLon/q5yOMMS+r0CFvYowScN+4426bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.6 069/152] usb: cdc-acm: Fix handling of oversized fragments
+	Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 478/578] xen/swiotlb: relax alignment requirements
 Date: Wed, 19 Feb 2025 09:28:02 +0100
-Message-ID: <20250219082552.776261796@linuxfoundation.org>
+Message-ID: <20250219082711.805570856@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 12e712964f41d05ae034989892de445781c46730 upstream.
+[ Upstream commit 85fcb57c983f423180ba6ec5d0034242da05cc54 ]
 
-If we receive an initial fragment of size 8 bytes which specifies a wLength
-of 1 byte (so the reassembled message is supposed to be 9 bytes long), and
-we then receive a second fragment of size 9 bytes (which is not supposed to
-happen), we currently wrongly bypass the fragment reassembly code but still
-pass the pointer to the acm->notification_buffer to
-acm_process_notification().
+When mapping a buffer for DMA via .map_page or .map_sg DMA operations,
+there is no need to check the machine frames to be aligned according
+to the mapped areas size. All what is needed in these cases is that the
+buffer is contiguous at machine level.
 
-Make this less wrong by always going through fragment reassembly when we
-expect more fragments.
+So carve out the alignment check from range_straddles_page_boundary()
+and move it to a helper called by xen_swiotlb_alloc_coherent() and
+xen_swiotlb_free_coherent() directly.
 
-Before this patch, receiving an overlong fragment could lead to `newctrl`
-in acm_process_notification() being uninitialized data (instead of data
-coming from the device).
-
-Cc: stable <stable@kernel.org>
-Fixes: ea2583529cd1 ("cdc-acm: reassemble fragmented notifications")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
+Reported-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
+Tested-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/swiotlb-xen.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -416,7 +416,7 @@ static void acm_ctrl_irq(struct urb *urb
- 	expected_size = sizeof(struct usb_cdc_notification) +
- 					le16_to_cpu(dr->wLength);
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 0451e6ebc21a3..0893c1012de62 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -74,19 +74,21 @@ static inline phys_addr_t xen_dma_to_phys(struct device *dev,
+ 	return xen_bus_to_phys(dev, dma_to_phys(dev, dma_addr));
+ }
  
--	if (current_size < expected_size) {
-+	if (acm->nb_index != 0 || current_size < expected_size) {
- 		/* notification is transmitted fragmented, reassemble */
- 		if (acm->nb_size < expected_size) {
- 			u8 *new_buffer;
++static inline bool range_requires_alignment(phys_addr_t p, size_t size)
++{
++	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
++	phys_addr_t bus_addr = pfn_to_bfn(XEN_PFN_DOWN(p)) << XEN_PAGE_SHIFT;
++
++	return IS_ALIGNED(p, algn) && !IS_ALIGNED(bus_addr, algn);
++}
++
+ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
+ {
+ 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
+ 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
+-	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
+ 
+ 	next_bfn = pfn_to_bfn(xen_pfn);
+ 
+-	/* If buffer is physically aligned, ensure DMA alignment. */
+-	if (IS_ALIGNED(p, algn) &&
+-	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
+-		return 1;
+-
+ 	for (i = 1; i < nr_pages; i++)
+ 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
+ 			return 1;
+@@ -155,7 +157,8 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
+ 
+ 	*dma_handle = xen_phys_to_dma(dev, phys);
+ 	if (*dma_handle + size - 1 > dma_mask ||
+-	    range_straddles_page_boundary(phys, size)) {
++	    range_straddles_page_boundary(phys, size) ||
++	    range_requires_alignment(phys, size)) {
+ 		if (xen_create_contiguous_region(phys, order, fls64(dma_mask),
+ 				dma_handle) != 0)
+ 			goto out_free_pages;
+@@ -181,7 +184,8 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	size = ALIGN(size, XEN_PAGE_SIZE);
+ 
+ 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
+-	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))
++	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size) ||
++			 range_requires_alignment(phys, size)))
+ 	    	return;
+ 
+ 	if (TestClearPageXenRemapped(virt_to_page(vaddr)))
+-- 
+2.39.5
+
 
 
 
