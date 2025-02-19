@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED58A3B69A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CDBA3BA0E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75BA67A4C4A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BF637A6F07
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F791C7013;
-	Wed, 19 Feb 2025 09:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B871DF251;
+	Wed, 19 Feb 2025 09:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ka9+Geje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esdDIAWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7438E1C701E;
-	Wed, 19 Feb 2025 09:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968231DE2B5;
+	Wed, 19 Feb 2025 09:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955799; cv=none; b=YHYy+J0ndM2m83BOI2rLa1hE75Y8d1ywb2m5G8CfvihuXPCjjDFqUo1v1YkDI2kPbD57xy9pREb4rvMvRWQGBY/h/gCUVsvGtu7QAKBi6EPpIRxxYKLD+ZQzZ7tybp+z2IysT7wWhLv5MBMIAXA/QErfD87K34SaEz3fGCStmUA=
+	t=1739957532; cv=none; b=foHS4XLWTHVLsf07vRMQ+Hdk75rXGHYQlGQUtros+OK2aIGvqbgiK/pwWlNHJGCqpxUarwTVkVkuAFoeZ6IZhZikeEGKHj3YEKdzY91i1PvYTRGi+W7Hd2NvWRoCyAHjOkIF6LdEe/xU6hs9O9FmRvyMztjLdDKZN2szD7r8hZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955799; c=relaxed/simple;
-	bh=79VTrdTOkEoAYDL+5qsuwgJxyMiTomsh+3toKmhAjoE=;
+	s=arc-20240116; t=1739957532; c=relaxed/simple;
+	bh=cXRnmJ/ULFsBd6c/GC48EmoXon4AbodOSg4xiP982Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzAxRh6O32Kn0VLskOwzF0Mq5TDL1RYXtSRNKHTK8lS++xJldA291HB/4Ep3uPMMWqiBoUbF/1J0F1N/R0Lf9DWwlN8kBVqI2MwZlx7kjbjDNCSxChI+L6aZyKeGvF5TyzfzoHM4b5VictDJPipO7cKRfOAMopR87S2zR3xR2Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ka9+Geje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB866C4CED1;
-	Wed, 19 Feb 2025 09:03:18 +0000 (UTC)
+	 MIME-Version; b=Z1CDtO05TwQTdB9cY1QsSvQeXRvUu/0X/0QDH1OlPM5V2ajthk8M6UsKj3ujbP/VQzmafxdGlCv/pLER4Ami3ZWQmTBRGW8OuzXw9z0PrXRkJk2lmJI5YpMlbZQ0e4XSWSz0TU3vLOMurEefKlKpX5qFqac199BgLhSu0kUBXxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esdDIAWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA46C4CEE7;
+	Wed, 19 Feb 2025 09:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955799;
-	bh=79VTrdTOkEoAYDL+5qsuwgJxyMiTomsh+3toKmhAjoE=;
+	s=korg; t=1739957532;
+	bh=cXRnmJ/ULFsBd6c/GC48EmoXon4AbodOSg4xiP982Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ka9+Geje0VOaVivbOjpvbwbKEQLWLMrIVmoYWauKGoyHmzj77/HzHwulQ2CIY4BFF
-	 MQlzRJ0RqJe5nMSAaSCli3DtT/+Wc88e3V+mUakCOnFEGkpKxaQWCrZZFvHoE/PKLt
-	 VNSi3XV92Byi1GvcGW6dpmTtokFOZqaz6Aq8HGG0=
+	b=esdDIAWz2QokPQfCebEKQa3osXlHFA8+e97kn0A3pqSR1nkz0HQwtFxzBCiN1GNxZ
+	 Wsx1xf0+1eqtMy5yVy7mca2Cnk8hhSS9OFqPWbUONXlfLvOiv0Gt1ggg+w05OoOhA1
+	 jnPEOwegd6Ny/rQQwzifn39zmqXgGsQ7NsU2KhmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vicki Pfau <vi@endrift.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/152] HID: hid-steam: Fix cleanup in probe()
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 6.1 526/578] serial: 8250: Fix fifo underflow on flush
 Date: Wed, 19 Feb 2025 09:28:50 +0100
-Message-ID: <20250219082554.684680910@linuxfoundation.org>
+Message-ID: <20250219082713.665271926@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit a9f1da09c69f13ef471db8b22107a28042d230ca ]
+commit 9e512eaaf8f4008c44ede3dfc0fbc9d9c5118583 upstream.
 
-There are a number of issues in this code.  First of all if
-steam_create_client_hid() fails then it leads to an error pointer
-dereference when we call hid_destroy_device(steam->client_hdev).
+When flushing the serial port's buffer, uart_flush_buffer() calls
+kfifo_reset() but if there is an outstanding DMA transfer then the
+completion function will consume data from the kfifo via
+uart_xmit_advance(), underflowing and leading to ongoing DMA as the
+driver tries to transmit another 2^32 bytes.
 
-Also there are a number of leaks.  hid_hw_stop() is not called if
-hid_hw_open() fails for example.  And it doesn't call steam_unregister()
-or hid_hw_close().
+This is readily reproduced with serial-generic and amidi sending even
+short messages as closing the device on exit will wait for the fifo to
+drain and in the underflow case amidi hangs for 30 seconds on exit in
+tty_wait_until_sent().  A trace of that gives:
 
-Fixes: 691ead124a0c ("HID: hid-steam: Clean up locking")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/1fd87904-dabf-4879-bb89-72d13ebfc91e@moroto.mountain
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+     kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
+           amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
+ irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
+ irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
+ irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
+ irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
+ irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
+
+Since the port lock is held in when the kfifo is reset in
+uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
+hook to adjust the outstanding DMA byte count is sufficient to avoid the
+kfifo underflow.
+
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+Cc: stable <stable@kernel.org>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://lore.kernel.org/r/20250208124148.1189191-1-jkeeping@inmusicbrands.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-steam.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/tty/serial/8250/8250.h      |    2 ++
+ drivers/tty/serial/8250/8250_dma.c  |   16 ++++++++++++++++
+ drivers/tty/serial/8250/8250_port.c |    9 +++++++++
+ 3 files changed, 27 insertions(+)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 2f11f77ae2153..59b46163bc526 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -1127,14 +1127,14 @@ static int steam_probe(struct hid_device *hdev,
- 	 */
- 	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT & ~HID_CONNECT_HIDRAW);
- 	if (ret)
--		goto hid_hw_start_fail;
-+		goto err_cancel_work;
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -344,6 +344,7 @@ static inline int is_omap1510_8250(struc
  
- 	ret = hid_hw_open(hdev);
- 	if (ret) {
- 		hid_err(hdev,
- 			"%s:hid_hw_open\n",
- 			__func__);
--		goto hid_hw_open_fail;
-+		goto err_hw_stop;
- 	}
- 
- 	if (steam->quirks & STEAM_QUIRK_WIRELESS) {
-@@ -1150,33 +1150,37 @@ static int steam_probe(struct hid_device *hdev,
- 			hid_err(hdev,
- 				"%s:steam_register failed with error %d\n",
- 				__func__, ret);
--			goto input_register_fail;
-+			goto err_hw_close;
- 		}
- 	}
- 
- 	steam->client_hdev = steam_create_client_hid(hdev);
- 	if (IS_ERR(steam->client_hdev)) {
- 		ret = PTR_ERR(steam->client_hdev);
--		goto client_hdev_fail;
-+		goto err_stream_unregister;
- 	}
- 	steam->client_hdev->driver_data = steam;
- 
- 	ret = hid_add_device(steam->client_hdev);
- 	if (ret)
--		goto client_hdev_add_fail;
-+		goto err_destroy;
- 
- 	return 0;
- 
--client_hdev_add_fail:
--	hid_hw_stop(hdev);
--client_hdev_fail:
-+err_destroy:
- 	hid_destroy_device(steam->client_hdev);
--input_register_fail:
--hid_hw_open_fail:
--hid_hw_start_fail:
-+err_stream_unregister:
-+	if (steam->connected)
-+		steam_unregister(steam);
-+err_hw_close:
-+	hid_hw_close(hdev);
-+err_hw_stop:
-+	hid_hw_stop(hdev);
-+err_cancel_work:
- 	cancel_work_sync(&steam->work_connect);
- 	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->rumble_work);
-+
+ #ifdef CONFIG_SERIAL_8250_DMA
+ extern int serial8250_tx_dma(struct uart_8250_port *);
++extern void serial8250_tx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_rx_dma(struct uart_8250_port *);
+ extern void serial8250_rx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_request_dma(struct uart_8250_port *);
+@@ -376,6 +377,7 @@ static inline int serial8250_tx_dma(stru
+ {
+ 	return -1;
+ }
++static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
+ static inline int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	return -1;
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -133,6 +133,22 @@ err:
  	return ret;
  }
  
--- 
-2.39.5
-
++void serial8250_tx_dma_flush(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	if (!dma->tx_running)
++		return;
++
++	/*
++	 * kfifo_reset() has been called by the serial core, avoid
++	 * advancing and underflowing in __dma_tx_complete().
++	 */
++	dma->tx_size = 0;
++
++	dmaengine_terminate_async(dma->rxchan);
++}
++
+ int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	struct uart_8250_dma		*dma = p->dma;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2550,6 +2550,14 @@ static unsigned int npcm_get_divisor(str
+ 	return DIV_ROUND_CLOSEST(port->uartclk, 16 * baud + 2) - 2;
+ }
+ 
++static void serial8250_flush_buffer(struct uart_port *port)
++{
++	struct uart_8250_port *up = up_to_u8250p(port);
++
++	if (up->dma)
++		serial8250_tx_dma_flush(up);
++}
++
+ static unsigned int serial8250_do_get_divisor(struct uart_port *port,
+ 					      unsigned int baud,
+ 					      unsigned int *frac)
+@@ -3260,6 +3268,7 @@ static const struct uart_ops serial8250_
+ 	.break_ctl	= serial8250_break_ctl,
+ 	.startup	= serial8250_startup,
+ 	.shutdown	= serial8250_shutdown,
++	.flush_buffer	= serial8250_flush_buffer,
+ 	.set_termios	= serial8250_set_termios,
+ 	.set_ldisc	= serial8250_set_ldisc,
+ 	.pm		= serial8250_pm,
 
 
 
