@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-118087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68DBA3B9B8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E9CA3B650
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0537D3BA7F4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64C9B1887FB5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38101DE4D2;
-	Wed, 19 Feb 2025 09:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566011E0DE2;
+	Wed, 19 Feb 2025 08:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4+m9tIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8kL3Fff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6087F1DE4CE;
-	Wed, 19 Feb 2025 09:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143561E0DD0;
+	Wed, 19 Feb 2025 08:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957198; cv=none; b=pAMfgyL5fJy7sCzDA+5SlF9O62Qeg3nccHeRVQUlolwxKQjyGK4kQt+/tPTE8DIjSD0v6qAE9Vq/JCAq+Z+COW2HyzuBWYiIoFZBbMNM/pN4gFOtv8qB5NvvnSgWMkE8IGt8gl8x4+dmbm6VEXKoztYE7+8rJNItPjTXTuVcEww=
+	t=1739955180; cv=none; b=PMBPHCdniVVCgxf6nhXEjwJ+ao3fGbPpmb3qpg6WehMoKs5qSNW1sqGRzAbfECWsTlOQj8r7QYpp3sRB0qnnvCBghM54txKP//nXw00KdVpRYEZO7WaA5YDh17fr6c6rPnj5zlxSv+IKFuFEJA8YWnmLKQKMrJxZ7otN9yLBKyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957198; c=relaxed/simple;
-	bh=q2emHbMYT9MHc1jZZ3tvgCGdigIVU7rqyZprZ/G+Flc=;
+	s=arc-20240116; t=1739955180; c=relaxed/simple;
+	bh=FCwyM+q1SaYBTTX3gXgB1p5+pZHzHHdPg9YcnIubNI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAyoUhWv1UHPSI+/7eNT5IAStXeGLpNHH6cVxGgtRHmOd2WG85Ajk2uooqVZ5YlBlZqmdZRXE3GMec3Bg6XUkmyuJX+JPg6Bkf0x4/oE4HQMkkfoYYxeTZTINNBdy5yuvR8q3eIys+HRcLPjXqEv0IJYufSo7lsEXJkDw38r6ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4+m9tIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA899C4CED1;
-	Wed, 19 Feb 2025 09:26:37 +0000 (UTC)
+	 MIME-Version; b=LPUMK/aKMVlnW46XrH9Maf39bW+sl7lnr91uOwhbQXVPmqIlhzql/nvPR07J8RZGPlFCGAc3aherSQQmj/r2StltXYoquFCAWcmEKmiOx/T658LWbdM5chb6DB4L0i58RP0hmE4mzq8XvVVIJwMS+ZsR75s5Ytp6PjzJnps4qH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8kL3Fff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C2FC4CED1;
+	Wed, 19 Feb 2025 08:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957198;
-	bh=q2emHbMYT9MHc1jZZ3tvgCGdigIVU7rqyZprZ/G+Flc=;
+	s=korg; t=1739955180;
+	bh=FCwyM+q1SaYBTTX3gXgB1p5+pZHzHHdPg9YcnIubNI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4+m9tIHROD7hQw6MRMXmTXdy41O2LHS7W5HcNhUnabzIzBTrP3QIqYBmJbyWidjV
-	 D3tQm7jYrFaCGtiIniNop+xuoCqSo7h43itA/IH9V0cIwLd4g42ATgCFZJ6nYL+6a9
-	 vdMg01lqanJWG/spZdQW2FvbPrur2RPeBFpoH/QI=
+	b=V8kL3FffLTu36+QsryZpCnNwMNXIasIfzjUsINZ8k29Ab2yXashOt0k1kMI5qbU+o
+	 KGGYrhHJsW8K8jCOQMFArVWeqP4+LjJj07O3sfDa0LuAjKfivEmQyOswWX7sdN+zFf
+	 45I6xYGaIOrYxWL45DgqWMlpRSqv/gIdF2SmbYhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 442/578] rtla/timerlat_top: Stop timerlat tracer on signal
-Date: Wed, 19 Feb 2025 09:27:26 +0100
-Message-ID: <20250219082710.390694228@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 130/230] can: c_can: fix unbalanced runtime PM disable in error path
+Date: Wed, 19 Feb 2025 09:27:27 +0100
+Message-ID: <20250219082606.771771714@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a4dfce7559d75430c464294ddee554be2a413c4a upstream.
+commit 257a2cd3eb578ee63d6bf90475dc4f4b16984139 upstream.
 
-Currently, when either SIGINT from the user or SIGALRM from the duration
-timer is caught by rtla-timerlat, stop_tracing is set to break out of
-the main loop. This is not sufficient for cases where the timerlat
-tracer is producing more data than rtla can consume, since in that case,
-rtla is looping indefinitely inside tracefs_iterate_raw_events, never
-reaches the check of stop_tracing and hangs.
+Runtime PM is enabled as one of the last steps of probe(), so all
+earlier gotos to "exit_free_device" label were not correct and were
+leading to unbalanced runtime PM disable depth.
 
-In addition to setting stop_tracing, also stop the timerlat tracer on
-received signal (SIGINT or SIGALRM). This will stop new samples so that
-the existing samples may be processed and tracefs_iterate_raw_events
-eventually exits.
-
+Fixes: 6e2fe01dd6f9 ("can: c_can: move runtime PM enable/disable to c_can_platform")
 Cc: stable@vger.kernel.org
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/20250116144931.649593-4-tglozar@redhat.com
-Fixes: a828cd18bc4a ("rtla: Add timerlat tool and timelart top mode")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250112-syscon-phandle-args-can-v1-1-314d9549906f@linaro.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/can/c_can/c_can_platform.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -575,9 +575,12 @@ out_err:
- }
- 
- static int stop_tracing;
-+static struct trace_instance *top_inst = NULL;
- static void stop_top(int sig)
- {
- 	stop_tracing = 1;
-+	if (top_inst)
-+		trace_instance_stop(top_inst);
- }
- 
- /*
-@@ -620,6 +623,13 @@ int timerlat_top_main(int argc, char *ar
+--- a/drivers/net/can/c_can/c_can_platform.c
++++ b/drivers/net/can/c_can/c_can_platform.c
+@@ -385,15 +385,16 @@ static int c_can_plat_probe(struct platf
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
+ 			KBUILD_MODNAME, ret);
+-		goto exit_free_device;
++		goto exit_pm_runtime;
  	}
  
- 	trace = &top->trace;
-+	/*
-+	* Save trace instance into global variable so that SIGINT can stop
-+	* the timerlat tracer.
-+	* Otherwise, rtla could loop indefinitely when overloaded.
-+	*/
-+	top_inst = trace;
-+
+ 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
+ 		 KBUILD_MODNAME, priv->base, dev->irq);
+ 	return 0;
  
- 	retval = enable_timerlat(trace);
- 	if (retval) {
-@@ -690,7 +700,7 @@ int timerlat_top_main(int argc, char *ar
- 
- 	return_value = 0;
- 
--	if (trace_is_off(&top->trace, &record->trace)) {
-+	if (trace_is_off(&top->trace, &record->trace) && !stop_tracing) {
- 		printf("rtla timerlat hit stop tracing\n");
- 		if (params->trace_output) {
- 			printf("  Saving trace to %s\n", params->trace_output);
+-exit_free_device:
++exit_pm_runtime:
+ 	pm_runtime_disable(priv->device);
++exit_free_device:
+ 	free_c_can_dev(dev);
+ exit:
+ 	dev_err(&pdev->dev, "probe failed\n");
 
 
 
