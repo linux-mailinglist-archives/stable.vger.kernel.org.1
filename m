@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-116987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C7FA3B3DC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D6BA3B3DD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED5F3AF0F5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42AA23AEC85
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651E71C68B6;
-	Wed, 19 Feb 2025 08:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3421C68A6;
+	Wed, 19 Feb 2025 08:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVz3iBTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMwC8P15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDF51C5D56;
-	Wed, 19 Feb 2025 08:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779701C5D56;
+	Wed, 19 Feb 2025 08:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953853; cv=none; b=tRHSQcqIYqhFjYnU4wCxHne6Ue7wR50JLc/QEhA4WdNqEuq1t8ndbxRlGTE85L1ie+w37wq9VIzIbORx49dLXwWyzqSNXdcyEPGoF9EF9kP+mHuauADICs/78fqsh/ae5V+ALleIDVzbTTszUmDCvdAeM6vJYJNVcm+hDOccAbo=
+	t=1739953859; cv=none; b=C6xbqDjI0SU19rz2blG/heeGgi24/M/jAYRLqav8KRrdoBLnpxLoy+ktcQ7szzzsdDQ7OD8Iwelh0ACugnskQ6e7XadI75au210BlOdQw3i9KUGCX2zevetTzPBuIjg+KEJrXNTQ4Yqvs0RnUi/++1J4HWlj2GzmK4ec6fwkP/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953853; c=relaxed/simple;
-	bh=AJAnCD5NWb6zkTzQeP6E0gTOx1ELWz3hrPiJ/ONB2Co=;
+	s=arc-20240116; t=1739953859; c=relaxed/simple;
+	bh=APBwybGDeqAgKwE0G0KzpUvxl/AyZKu+Vt4w8yU0BNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQrL1MSHAesNJwS2ekKxqX1fRD/l586Gm3Xd7ZPqhH5MKMZq8K9WIAgXosb99tcoWu8xjuE+T5r4hqVXcrlINPWSYqa3WASamNofGqyDKSo9YtbljH9b3aCpUXchA7SBWeYHocsdwX1tMBJoSJV76URr+8N4Sbw1+cjB87K5szw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVz3iBTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE07C4CED1;
-	Wed, 19 Feb 2025 08:30:52 +0000 (UTC)
+	 MIME-Version; b=WYLQ3HDw8fj2+Lom68AtPwqbPtbb2XpjA+nxdqTet5YEfWDXmIirQtJb55siZ3n0eilluboMroVfov7bJ8TEI9ALONCw1+d7QDdFhWwDYAOC7Ckp1Afw45re2xfWnReG5snPpU3rMJBzXaIlWmdPDzkPAXtMjI1kTshF+4bbKtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMwC8P15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F126C4CED1;
+	Wed, 19 Feb 2025 08:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739953853;
-	bh=AJAnCD5NWb6zkTzQeP6E0gTOx1ELWz3hrPiJ/ONB2Co=;
+	s=korg; t=1739953859;
+	bh=APBwybGDeqAgKwE0G0KzpUvxl/AyZKu+Vt4w8yU0BNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVz3iBTojbmvgpNQteA0XzfZl2dnwGgKipfv7NGXDtQl2ADKMZO5jT/wZYhTGMA8I
-	 z2BknZZM+jF3PH5fFdWvGfc2bc/XLgLpzA4kpl4ifB9pRY/BZEMhhD3DDAyWE2gSQb
-	 VW1XBTMRs4DgvljBP06R/VMa6nq8uPVhk3P0W9ys=
+	b=uMwC8P15WEBPlUc9gWNfd+Mo/0Sq5IwnEnxPnFyayWGbURml/gnVo11eO4Mukgkwt
+	 XzSlJfwrhFtE1Cabx+/frMivCAt3LEeXnsIUq7zIM7Ni7JyWs5bXuxqszeM8wWYAIl
+	 VQecxU4iKi7WpVYdBOpj/oGzkaRANjCSg3hOOevQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 019/274] ax25: Fix refcount leak caused by setting SO_BINDTODEVICE sockopt
-Date: Wed, 19 Feb 2025 09:24:33 +0100
-Message-ID: <20250219082610.291578272@linuxfoundation.org>
+Subject: [PATCH 6.13 020/274] net: fib_rules: annotate data-races around rule->[io]ifindex
+Date: Wed, 19 Feb 2025 09:24:34 +0100
+Message-ID: <20250219082610.330366400@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -67,91 +68,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bca0902e61731a75fc4860c8720168d9f1bae3b6 ]
+[ Upstream commit cb827db50a88aebec516151681adb6db10b688ee ]
 
-If an AX25 device is bound to a socket by setting the SO_BINDTODEVICE
-socket option, a refcount leak will occur in ax25_release().
+rule->iifindex and rule->oifindex can be read without holding RTNL.
 
-Commit 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
-added decrement of device refcounts in ax25_release(). In order for that
-to work correctly the refcounts must already be incremented when the
-device is bound to the socket. An AX25 device can be bound to a socket
-by either calling ax25_bind() or setting SO_BINDTODEVICE socket option.
-In both cases the refcounts should be incremented, but in fact it is done
-only in ax25_bind().
+Add READ_ONCE()/WRITE_ONCE() annotations where needed.
 
-This bug leads to the following issue reported by Syzkaller:
-
-================================================================
-refcount_t: decrement hit 0; leaking memory.
-WARNING: CPU: 1 PID: 5932 at lib/refcount.c:31 refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
-Modules linked in:
-CPU: 1 UID: 0 PID: 5932 Comm: syz-executor424 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x1ed/0x210 lib/refcount.c:31
-Call Trace:
- <TASK>
- __refcount_dec include/linux/refcount.h:336 [inline]
- refcount_dec include/linux/refcount.h:351 [inline]
- ref_tracker_free+0x710/0x820 lib/ref_tracker.c:236
- netdev_tracker_free include/linux/netdevice.h:4156 [inline]
- netdev_put include/linux/netdevice.h:4173 [inline]
- netdev_put include/linux/netdevice.h:4169 [inline]
- ax25_release+0x33f/0xa10 net/ax25/af_ax25.c:1069
- __sock_release+0xb0/0x270 net/socket.c:640
- sock_close+0x1c/0x30 net/socket.c:1408
- ...
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- ...
- </TASK>
-================================================================
-
-Fix the implementation of ax25_setsockopt() by adding increment of
-refcounts for the new device bound, and decrement of refcounts for
-the old unbound device.
-
-Fixes: 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
-Reported-by: syzbot+33841dc6aa3e1d86b78a@syzkaller.appspotmail.com
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20250203091203.1744-1-m.masimov@mt-integration.ru
+Fixes: 32affa5578f0 ("fib: rules: no longer hold RTNL in fib_nl_dumprule()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250206083051.2494877-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ax25/af_ax25.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/core/fib_rules.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
-index aa6c714892ec9..9f3b8b682adb2 100644
---- a/net/ax25/af_ax25.c
-+++ b/net/ax25/af_ax25.c
-@@ -685,6 +685,15 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
+diff --git a/net/core/fib_rules.c b/net/core/fib_rules.c
+index 34185d138c95a..ff1cebd71f7b4 100644
+--- a/net/core/fib_rules.c
++++ b/net/core/fib_rules.c
+@@ -37,8 +37,8 @@ static const struct fib_kuid_range fib_kuid_range_unset = {
  
-+		if (ax25->ax25_dev) {
-+			if (dev == ax25->ax25_dev->dev) {
-+				rcu_read_unlock();
-+				break;
-+			}
-+			netdev_put(ax25->ax25_dev->dev, &ax25->dev_tracker);
-+			ax25_dev_put(ax25->ax25_dev);
-+		}
-+
- 		ax25->ax25_dev = ax25_dev_ax25dev(dev);
- 		if (!ax25->ax25_dev) {
- 			rcu_read_unlock();
-@@ -692,6 +701,8 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 		ax25_fillin_cb(ax25, ax25->ax25_dev);
-+		netdev_hold(dev, &ax25->dev_tracker, GFP_ATOMIC);
-+		ax25_dev_hold(ax25->ax25_dev);
- 		rcu_read_unlock();
- 		break;
+ bool fib_rule_matchall(const struct fib_rule *rule)
+ {
+-	if (rule->iifindex || rule->oifindex || rule->mark || rule->tun_id ||
+-	    rule->flags)
++	if (READ_ONCE(rule->iifindex) || READ_ONCE(rule->oifindex) ||
++	    rule->mark || rule->tun_id || rule->flags)
+ 		return false;
+ 	if (rule->suppress_ifgroup != -1 || rule->suppress_prefixlen != -1)
+ 		return false;
+@@ -261,12 +261,14 @@ static int fib_rule_match(struct fib_rule *rule, struct fib_rules_ops *ops,
+ 			  struct flowi *fl, int flags,
+ 			  struct fib_lookup_arg *arg)
+ {
+-	int ret = 0;
++	int iifindex, oifindex, ret = 0;
+ 
+-	if (rule->iifindex && (rule->iifindex != fl->flowi_iif))
++	iifindex = READ_ONCE(rule->iifindex);
++	if (iifindex && (iifindex != fl->flowi_iif))
+ 		goto out;
+ 
+-	if (rule->oifindex && (rule->oifindex != fl->flowi_oif))
++	oifindex = READ_ONCE(rule->oifindex);
++	if (oifindex && (oifindex != fl->flowi_oif))
+ 		goto out;
+ 
+ 	if ((rule->mark ^ fl->flowi_mark) & rule->mark_mask)
+@@ -1039,14 +1041,14 @@ static int fib_nl_fill_rule(struct sk_buff *skb, struct fib_rule *rule,
+ 	if (rule->iifname[0]) {
+ 		if (nla_put_string(skb, FRA_IIFNAME, rule->iifname))
+ 			goto nla_put_failure;
+-		if (rule->iifindex == -1)
++		if (READ_ONCE(rule->iifindex) == -1)
+ 			frh->flags |= FIB_RULE_IIF_DETACHED;
+ 	}
+ 
+ 	if (rule->oifname[0]) {
+ 		if (nla_put_string(skb, FRA_OIFNAME, rule->oifname))
+ 			goto nla_put_failure;
+-		if (rule->oifindex == -1)
++		if (READ_ONCE(rule->oifindex) == -1)
+ 			frh->flags |= FIB_RULE_OIF_DETACHED;
+ 	}
+ 
+@@ -1218,10 +1220,10 @@ static void attach_rules(struct list_head *rules, struct net_device *dev)
+ 	list_for_each_entry(rule, rules, list) {
+ 		if (rule->iifindex == -1 &&
+ 		    strcmp(dev->name, rule->iifname) == 0)
+-			rule->iifindex = dev->ifindex;
++			WRITE_ONCE(rule->iifindex, dev->ifindex);
+ 		if (rule->oifindex == -1 &&
+ 		    strcmp(dev->name, rule->oifname) == 0)
+-			rule->oifindex = dev->ifindex;
++			WRITE_ONCE(rule->oifindex, dev->ifindex);
+ 	}
+ }
+ 
+@@ -1231,9 +1233,9 @@ static void detach_rules(struct list_head *rules, struct net_device *dev)
+ 
+ 	list_for_each_entry(rule, rules, list) {
+ 		if (rule->iifindex == dev->ifindex)
+-			rule->iifindex = -1;
++			WRITE_ONCE(rule->iifindex, -1);
+ 		if (rule->oifindex == dev->ifindex)
+-			rule->oifindex = -1;
++			WRITE_ONCE(rule->oifindex, -1);
+ 	}
+ }
  
 -- 
 2.39.5
