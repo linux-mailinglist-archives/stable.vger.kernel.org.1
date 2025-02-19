@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-117576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B625A3B7A2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC53CA3BA03
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E733BE20A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6666E1884195
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086DA1E2607;
-	Wed, 19 Feb 2025 09:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959951CF284;
+	Wed, 19 Feb 2025 09:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mLjyBrV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ilcvx/2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7711E25EB;
-	Wed, 19 Feb 2025 09:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540BD1CD213;
+	Wed, 19 Feb 2025 09:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955713; cv=none; b=IjV2izo7L11CKDhmrp0LIew8Djjc6fHmCplVLFZD+YwOZoWCvwMPcJu9oHV98sF+6sFyzXMEi8o0h15qLAV0xC9fGg1Df3InAd79Dd3UMWydeqRZR2o431RMs1pwr9rg7nVp0v/l2NiSTIiOYYrB3Kyj5TMDRUKKnM5K6jqzK3c=
+	t=1739957288; cv=none; b=CwR5KW2L32iArBiZDN5YrrWrjp0evH/CDcFlE8wUQh/CatSo/ZrMXaI0aRMsFUjMlQIfDThmvWeOeOGtW+xveqxBypN6jrcGmw5A+lZ8fYQBM2MEqFCAKb9HBEOTnW0n1XRazhy39LlUv8B+IAjWpJrdI9VEf+8osXRF19gQgTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955713; c=relaxed/simple;
-	bh=WjPpR+Hnt6/oMvAbclM0gEKFtmbcOIVUl34jimOBViw=;
+	s=arc-20240116; t=1739957288; c=relaxed/simple;
+	bh=rl2XNc30GX4aLvIm+YIT/dsh1Zq4kSe2/vWZuV2wp58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MkaxWdox8E5znGFuESaglJhRxqzR+8mzh+4LQ9qUq4z1S+URNaCQ7NDwk8c64BTp4M74UfO6ox7g1RRX0l/WauQ7ev/XrlhABdOEeus5jQxjFGjW5Hv/qIPsCt554GQAJ7oEym6y8v01b8JDiUMpAAHmQHsY2i2C/Cw+k3qndqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mLjyBrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1F5C4CED1;
-	Wed, 19 Feb 2025 09:01:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CALVA/vutvTGw36KJJA8eNEokZIgwmhKkek+ZO+pndtQwl3vVx7030N6rcMUScgSMcBC6gMScpPccFQIPktc/i83Pwrbx7rDoyjwW7nb2eHilGtp12+9FBs/HuJTcoOXtfXsiqYGHYyXB2q8fQdnUMLys4cUuaWedc2lORwHzT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ilcvx/2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C31C4CED1;
+	Wed, 19 Feb 2025 09:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955713;
-	bh=WjPpR+Hnt6/oMvAbclM0gEKFtmbcOIVUl34jimOBViw=;
+	s=korg; t=1739957287;
+	bh=rl2XNc30GX4aLvIm+YIT/dsh1Zq4kSe2/vWZuV2wp58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mLjyBrVR1EBWOSNqf0DCghrhNzRjZRO4JQUMp/7VeAQhrNlw8hmNCl8viiAL2z+g
-	 hJseQZyWOMfMBHm25lktNE5B4p4AdBLIQtAmYniWLHgvkE7l0d6ROZERdD8aG9w/rX
-	 J0RlwQK+fMOQJC7GFdUI4tuj7//Mea8bwGH0X5pw=
+	b=Ilcvx/2jeosvl3onPmT3RPWkhwSVEBN3rn29j3nGoCvNakfslDEccDqXSX6Lfi7d2
+	 f/rDgndR0dVhgtv9HPWzGwOXrq+lPOYCmh02pXqfZB1jXTN4cg82HOql8UNgM8gBV4
+	 vtTzJC7PSIHKjhCXBAuua0sGylmtYl0fL8ToCGSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Forest <forestix@nom.one>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 064/152] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+	Axel Busch <axel.busch@ibm.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Muhammad Adeel <muhammad.adeel@ibm.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 473/578] cgroup: Remove steal time from usage_usec
 Date: Wed, 19 Feb 2025 09:27:57 +0100
-Message-ID: <20250219082552.579316605@linuxfoundation.org>
+Message-ID: <20250219082711.614532049@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Muhammad Adeel <Muhammad.Adeel@ibm.com>
 
-commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
+[ Upstream commit db5fd3cf8bf41b84b577b8ad5234ea95f327c9be ]
 
-The fastboot tool for communicating with Android bootloaders does not
-work reliably with this device if USB 2 Link Power Management (LPM)
-is enabled.
+The CPU usage time is the time when user, system or both are using the CPU.
+Steal time is the time when CPU is waiting to be run by the Hypervisor. It
+should not be added to the CPU usage time, hence removing it from the
+usage_usec entry.
 
-Various fastboot commands are affected, including the
-following, which usually reproduces the problem within two tries:
-
-  fastboot getvar kernel
-  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
-
-This issue was hidden on many systems up until commit 63a1f8454962
-("xhci: stored cached port capability values in one place") as the xhci
-driver failed to detect USB 2 LPM support if USB 3 ports were listed
-before USB 2 ports in the "supported protocol capabilities".
-
-Adding the quirk resolves the issue. No drawbacks are expected since
-the device uses different USB product IDs outside of fastboot mode, and
-since fastboot commands worked before, until LPM was enabled on the
-tested system by the aforementioned commit.
-
-Based on a patch from Forest <forestix@nom.one> from which most of the
-code and commit message is taken.
-
-Cc: stable <stable@kernel.org>
-Reported-by: Forest <forestix@nom.one>
-Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
-Tested-by: Forest <forestix@nom.one>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 936f2a70f2077 ("cgroup: add cpu.stat file to root cgroup")
+Acked-by: Axel Busch <axel.busch@ibm.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Muhammad Adeel <muhammad.adeel@ibm.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/cgroup/rstat.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -432,6 +432,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
- 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
+diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
+index 7006fc8dd6774..0ae90c15cad85 100644
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -477,7 +477,6 @@ static void root_cgroup_cputime(struct cgroup_base_stat *bstat)
  
-+	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
-+	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* Action Semiconductor flash disk */
- 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
- 			USB_QUIRK_STRING_FETCH_255 },
+ 		cputime->sum_exec_runtime += user;
+ 		cputime->sum_exec_runtime += sys;
+-		cputime->sum_exec_runtime += cpustat[CPUTIME_STEAL];
+ 
+ #ifdef CONFIG_SCHED_CORE
+ 		bstat->forceidle_sum += cpustat[CPUTIME_FORCEIDLE];
+-- 
+2.39.5
+
 
 
 
