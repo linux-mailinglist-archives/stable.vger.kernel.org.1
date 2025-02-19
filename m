@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FF4A3B57D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A9CA3B54D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9F7E3ABCB3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2D2188FFD7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E411D6DB1;
-	Wed, 19 Feb 2025 08:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B39D1E0DCD;
+	Wed, 19 Feb 2025 08:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFdGUcym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2E91636"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216C1D61B5;
-	Wed, 19 Feb 2025 08:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9101D14FF;
+	Wed, 19 Feb 2025 08:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954543; cv=none; b=qlvxEeD1fqZo4NwHNcvtAtYUlqOpsZgGlG8mu7+dDZNcsQlCimPgL3WNkxvuJJ03GtwgAeqN+s7yXBzBbtmA5biWzukqZsSezWLZrkpYWKlCVvYJb3RoFoHVsazwXa8JAZLv+bJIkKXaUjIONAqZ47BjTGFfkypyaAihFobAurs=
+	t=1739954558; cv=none; b=Jmh+BSPaevhDRea3LkcQorHGpUeRIjRSM9DolUai1B+Ouhu2DZbVqgpSU/xaBG42eDg0pssaY4MB+yYQKJ29cKN2aUVgEdpg8m0ZlxZPyAjYivKh24W+Fp6Dk0dwJGZXJ8rwwBwFZrse4zUgM3BMbFkeiFXUPyurCPX2wtvMAj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954543; c=relaxed/simple;
-	bh=+UkydMG6S0Dqpzrzmjeb+fTpWVW6I6+gCb4njAVEeR4=;
+	s=arc-20240116; t=1739954558; c=relaxed/simple;
+	bh=kDJYY5RrjyFgsXu0rlRCylI3qhLvp4KP7klQZZFBsQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7lE+/A2A9eicJkQTKoVeMRvupIk2CVkRNRML1w2kmua1msk5BWDIpd+WzgTc4TjxhK6LgdC6sXwDMaOY0Knf2Q6h/K33On+5LkzD4Gc3Wk95Sg8I/aUQ0Q6euzWv1yXl9/hMk1z5oKP1Nxu1glhCg2VXHEsf+KTtia2lGZ6fl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFdGUcym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F085C4CEE6;
-	Wed, 19 Feb 2025 08:42:22 +0000 (UTC)
+	 MIME-Version; b=bf7eSYpDvN8dk6RFBH0odEcq8Q4Zo+jg6Osd5h3VA/nwhq/QKbpVsevVyRYtTGl+4+HLi0afG3CCUO5EgEZwi2uNcT6RC1/oCGyetSLUXxnQesFQaJrP1bJFsEvvIYj67RouDk6bYcFo4dqdvVjZVUylrrmFj+MY5PwVR99p2QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2E91636; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB035C4CED1;
+	Wed, 19 Feb 2025 08:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954542;
-	bh=+UkydMG6S0Dqpzrzmjeb+fTpWVW6I6+gCb4njAVEeR4=;
+	s=korg; t=1739954558;
+	bh=kDJYY5RrjyFgsXu0rlRCylI3qhLvp4KP7klQZZFBsQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFdGUcymt7mGK4VjWD9XBDHQjNdnVuuEY4oIKSNQtYgujkbHK27hcVp59db9Vhc9u
-	 WOMVQe6HbXFSDcJI99qJf6k1W5tXWJXuunishRcyYlmFYD+VFr7FFoIFhujuOHeQ8i
-	 uGbmxp+shyNLV+f5qboVKpS7OKsbTV6wrf3qJfp4=
+	b=f2E91636IXIBYn9JmQQUc9z3luh5FFWSfvexoDL3Annpjq4zUFaBN6NfUkBzF8Wsf
+	 feyRWmuVqIDnm/r4uWPtifjTU/bi8czr1OcqiJ02yaL46TZYody3e8ghStOU52fHTQ
+	 fg/K1PtsorFoMspgvmhvt//seSG0Q5HEOrW2mvgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Justin M. Forbes" <jforbes@fedoraproject.org>,
-	Kees Cook <kees@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 208/274] rust: kbuild: add -fzero-init-padding-bits to bindgen_skip_cflags
-Date: Wed, 19 Feb 2025 09:27:42 +0100
-Message-ID: <20250219082617.719741047@linuxfoundation.org>
+Subject: [PATCH 6.13 209/274] cpufreq/amd-pstate: Refactor amd_pstate_epp_reenable() and amd_pstate_epp_offline()
+Date: Wed, 19 Feb 2025 09:27:43 +0100
+Message-ID: <20250219082617.758039198@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -67,40 +67,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Justin M. Forbes <jforbes@fedoraproject.org>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit a9c621a217128eb3fb7522cf763992d9437fd5ba ]
+[ Upstream commit b1089e0c8817fda93d474eaa82ad86386887aefe ]
 
-This seems to break the build when building with gcc15:
+Replace similar code chunks with amd_pstate_update_perf() and
+amd_pstate_set_epp() function calls.
 
-    Unable to generate bindings: ClangDiagnostic("error: unknown
-    argument: '-fzero-init-padding-bits=all'\n")
-
-Thus skip that flag.
-
-Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
-Fixes: dce4aab8441d ("kbuild: Use -fzero-init-padding-bits=all")
-Reviewed-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250129215003.1736127-1-jforbes@fedoraproject.org
-[ Slightly reworded commit. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://lore.kernel.org/r/20241204144842.164178-4-Dhananjay.Ugwekar@amd.com
+[ML: Fix LKP reported error about unused variable]
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Stable-dep-of: 3ace20038e19 ("cpufreq/amd-pstate: Fix cpufreq_policy ref counting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/amd-pstate.c | 38 +++++++-----------------------------
+ 1 file changed, 7 insertions(+), 31 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index a40a3936126d6..43cd7f845a9a3 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -238,6 +238,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fzero-call-used-regs=% -fno-stack-clash-protection \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
-+	-fzero-init-padding-bits=% \
- 	--param=% --param asan-%
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index f6d04eb40af94..72c613cba7086 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1605,25 +1605,17 @@ static int amd_pstate_epp_set_policy(struct cpufreq_policy *policy)
  
- # Derived from `scripts/Makefile.clang`.
+ static void amd_pstate_epp_reenable(struct amd_cpudata *cpudata)
+ {
+-	struct cppc_perf_ctrls perf_ctrls;
+-	u64 value, max_perf;
++	u64 max_perf;
+ 	int ret;
+ 
+ 	ret = amd_pstate_cppc_enable(true);
+ 	if (ret)
+ 		pr_err("failed to enable amd pstate during resume, return %d\n", ret);
+ 
+-	value = READ_ONCE(cpudata->cppc_req_cached);
+ 	max_perf = READ_ONCE(cpudata->highest_perf);
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
+-		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
+-	} else {
+-		perf_ctrls.max_perf = max_perf;
+-		cppc_set_perf(cpudata->cpu, &perf_ctrls);
+-		perf_ctrls.energy_perf = AMD_CPPC_ENERGY_PERF_PREF(cpudata->epp_cached);
+-		cppc_set_epp_perf(cpudata->cpu, &perf_ctrls, 1);
+-	}
++	amd_pstate_update_perf(cpudata, 0, 0, max_perf, false);
++	amd_pstate_set_epp(cpudata, cpudata->epp_cached);
+ }
+ 
+ static int amd_pstate_epp_cpu_online(struct cpufreq_policy *policy)
+@@ -1643,31 +1635,15 @@ static int amd_pstate_epp_cpu_online(struct cpufreq_policy *policy)
+ static void amd_pstate_epp_offline(struct cpufreq_policy *policy)
+ {
+ 	struct amd_cpudata *cpudata = policy->driver_data;
+-	struct cppc_perf_ctrls perf_ctrls;
+ 	int min_perf;
+-	u64 value;
+ 
+ 	min_perf = READ_ONCE(cpudata->lowest_perf);
+-	value = READ_ONCE(cpudata->cppc_req_cached);
+ 
+ 	mutex_lock(&amd_pstate_limits_lock);
+-	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
+-		cpudata->epp_policy = CPUFREQ_POLICY_UNKNOWN;
+-
+-		/* Set max perf same as min perf */
+-		value &= ~AMD_CPPC_MAX_PERF(~0L);
+-		value |= AMD_CPPC_MAX_PERF(min_perf);
+-		value &= ~AMD_CPPC_MIN_PERF(~0L);
+-		value |= AMD_CPPC_MIN_PERF(min_perf);
+-		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
+-	} else {
+-		perf_ctrls.desired_perf = 0;
+-		perf_ctrls.min_perf = min_perf;
+-		perf_ctrls.max_perf = min_perf;
+-		cppc_set_perf(cpudata->cpu, &perf_ctrls);
+-		perf_ctrls.energy_perf = AMD_CPPC_ENERGY_PERF_PREF(HWP_EPP_BALANCE_POWERSAVE);
+-		cppc_set_epp_perf(cpudata->cpu, &perf_ctrls, 1);
+-	}
++
++	amd_pstate_update_perf(cpudata, min_perf, 0, min_perf, false);
++	amd_pstate_set_epp(cpudata, AMD_CPPC_EPP_BALANCE_POWERSAVE);
++
+ 	mutex_unlock(&amd_pstate_limits_lock);
+ }
+ 
 -- 
 2.39.5
 
