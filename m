@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2DCA3B6DC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98936A3B947
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2BD17F017
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 252D47A6F16
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95F31DEFD6;
-	Wed, 19 Feb 2025 08:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2F91DED51;
+	Wed, 19 Feb 2025 09:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rw7R9vhg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHj1SUwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DC81DEFC5;
-	Wed, 19 Feb 2025 08:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AAA1DED45;
+	Wed, 19 Feb 2025 09:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955535; cv=none; b=NqIqVWcT7R3mkBv06kZpBKaoPGMuaGW08BKs+gMEUeXLWx0RJtF7J8gNlNVKICBqgNV0IIDR3Rd25p49h6XxEH8F83OvZysbhyXZ5daVYDIjYGrbTpxs8FigUtfKH6Ks5aaO5CQUNzW33biZaaqIgwy+5e3EIvX1RdALXusd+ck=
+	t=1739957212; cv=none; b=EktKZzDJJzO70p1X+RsyGfiSTPkrB5JTglgkjfNwlM79Lxt7dqluxAq8V+svUSPxdGL2Cx06imuIuzkt+CBEmxFQQSFyklSrx1cHwCvPvZ6lbPdNaebRQi5PF6VP7Cc1rlyVfGQRPprZtjMkWRrUdaSzvQKEyWRfF9rvUJQf064=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955535; c=relaxed/simple;
-	bh=wAZ7idLX5r8TTFWzaAdPL8UzwP9qQ1elHgdEj66blOE=;
+	s=arc-20240116; t=1739957212; c=relaxed/simple;
+	bh=i+z3IHMlNqVW4M5nSgTfc2F5DcoDt1lcgghMAH0Pcm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PsijgzP347GtZMMvveOpn1W/NN2aIdQBcVP5mcue+sSiEmG5pEnPEawX2tAwahmdpInVPlZ5Udx354maRjw5xdBTihbrJBEtvbhep1GAvoisTi5HI9iz8Ql2q/pob1f6qCeBDxAgTb4CNw5zTxvWKBGJtoEAG+jhpjS9UT/ZYBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rw7R9vhg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9DDC4CED1;
-	Wed, 19 Feb 2025 08:58:54 +0000 (UTC)
+	 MIME-Version; b=tsNyvSfu/Wgm5Y2TqBbosZPzLoYmgZTEx8bERma3lMAXBbJXMJ69jw0aGl19aPpDVKA1CFDTOaTE7CQ3nHCyPKXFcmemjvV5hHbyaY2010P7rbLY44meFr/bgJyiiSXP35w3IrI1mdQvqv6wGhxFOakTorwqxtk1J7s/1ui8K8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHj1SUwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E105C4CEE6;
+	Wed, 19 Feb 2025 09:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955535;
-	bh=wAZ7idLX5r8TTFWzaAdPL8UzwP9qQ1elHgdEj66blOE=;
+	s=korg; t=1739957212;
+	bh=i+z3IHMlNqVW4M5nSgTfc2F5DcoDt1lcgghMAH0Pcm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rw7R9vhgPyIsHQLQYOWjRIBtpcvvbal7GGilBdhUTtPPGO4xVY4Hs9Z9GQD2zJvYo
-	 ttsG6Zg8aACd2zMiqvl4lao18NHz4U9yf/lN0NxTvYsAeaoeUil0hDAypJrm0agasK
-	 KZHXWk/Wx9Z2siJ84TbxfQL8GSWV3qOtuALsDOrM=
+	b=GHj1SUwUUEVDNij8GopOxr1cFCh1sdqmlyrAWlllOJsyKab3Apa0JWMmcvcPh6A/y
+	 5yNOpWV6AjDoVXUxUUyxUr4iifXKZNE4IDPj0B+dpT8i/HYSVnjrFb3cA3A9Yh9ZZp
+	 SMft8zHKwU9tIWfLsYKFsa2IhCW2Ci5Zhqgc5HOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/152] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
-Date: Wed, 19 Feb 2025 09:27:29 +0100
-Message-ID: <20250219082551.467142100@linuxfoundation.org>
+	Muhammad Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Jacob Soo <jacob.soo@starlabs.sg>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 446/578] io_uring: fix multishots with selected buffers
+Date: Wed, 19 Feb 2025 09:27:30 +0100
+Message-ID: <20250219082710.540588323@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
+[ upstream commit d63b0e8a628e62ca85a0f7915230186bb92f8bb4 ]
 
-Apparently the Raptor Lake-P reference firmware configures the PIO log size
-correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
-Zenbook UX3402VA_UX3402VA, do not.
+We do io_kbuf_recycle() when arming a poll but every iteration of a
+multishot can grab more buffers, which is why we need to flush the kbuf
+ring state before continuing with waiting.
 
-Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
-
-  DPC: RP PIO log size 0 is invalid
-
-and also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
-
-Note that the bug report also mentions 8086:a76e, which has been already
-added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
-Root Ports").
-
-Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b3fdea6ecb55c ("io_uring: multishot recv")
+Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Reported-by: Jacob Soo <jacob.soo@starlabs.sg>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/1bfc9990fe435f1fc6152ca9efeba5eb3e68339c.1738025570.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/poll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index fd35ad0648a07..a256928fb126c 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6247,6 +6247,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- #endif
--- 
-2.39.5
-
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -307,6 +307,8 @@ static int io_poll_check_events(struct i
+ 			}
+ 		} else {
+ 			int ret = io_poll_issue(req, locked);
++			io_kbuf_recycle(req, 0);
++
+ 			if (ret == IOU_STOP_MULTISHOT)
+ 				return IOU_POLL_REMOVE_POLL_USE_RES;
+ 			if (ret < 0)
 
 
 
