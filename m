@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841D7A3B83E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:22:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B327A3B922
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E65EE7A2279
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:20:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FDC6167010
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FB21DE4DB;
-	Wed, 19 Feb 2025 09:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5FC1DE3AE;
+	Wed, 19 Feb 2025 09:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rPiVCkF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tzi7WoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E081DE4CC;
-	Wed, 19 Feb 2025 09:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599741CCEE7;
+	Wed, 19 Feb 2025 09:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956686; cv=none; b=HLfDx94alpbF/3iQbdRM4FpmpN7si9NHVaN3FY7n5h8IgLEqqQYguhDWdExDhlMnWOQ4O7ApSkiw3jASy3dri3JDeDOAu+7t61BWw9nTBcKw3oVVONdmF9W+7ldMIfSspN7TL2F9qIu9VAsmyJP+AnfducgVO/AeVTHO8JGeJJ0=
+	t=1739956717; cv=none; b=osltku8tuitUSPAGFBmnKlgDhP4RRjSNlOg449Fs6rQbLwKBvFhobPKII2AEL4Ko7EG3oGMUiOvCDgGFSMYIQ5jejCq8l3jpIIEPAqhWtg0pN//EzdM+gVsK8scqDqxROw8178A9cLZS9aO5rn9dVgOwn7/sb21dPmX3hWhzbDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956686; c=relaxed/simple;
-	bh=VISn+zkwH46DKaHTRbB1ChacsT5Xzufc5UXudgcS9Qc=;
+	s=arc-20240116; t=1739956717; c=relaxed/simple;
+	bh=1GuWYc2TFIq0nGZDgsCEp9kw46AfdkoAzt83SRqqjoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnfSJC5OZOfSDPuNcQmGeHP3zWs91PziyEDH3ZBXsdjoRsujlzFA4IVIVf86mgapw+diKVmvUDc1tvQMnE/YQTK6JpYi7X/2O17mcBd3kt/dvoA0ara2Qe3fs0hj/rxcejnKmJbTBTHqXVESpkS6XiaaGdpmHqS9kQxzbP3j4+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rPiVCkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA97C4CEE8;
-	Wed, 19 Feb 2025 09:18:05 +0000 (UTC)
+	 MIME-Version; b=oxr2Z/De3HvEhdS7TLWotM7qeoAi9pfdP1p7VG/c+g1ez7QLjuqgHFlECDzrNu0CD20pWDHm4pq9opoJ7s+zq/w23ynPEluqegk+2PkZLRzZwr+c8ZUvCgqsmiZUYkMhnGpuLXIj9xSLNgPLUhpy/74EA8PC3c7HwPBZ8xfGq6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tzi7WoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F65C4CED1;
+	Wed, 19 Feb 2025 09:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956685;
-	bh=VISn+zkwH46DKaHTRbB1ChacsT5Xzufc5UXudgcS9Qc=;
+	s=korg; t=1739956717;
+	bh=1GuWYc2TFIq0nGZDgsCEp9kw46AfdkoAzt83SRqqjoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rPiVCkFjG+xl+D4gKV0irg8866J1eDEFIR/ItOYRMRf/BqL8s766XJOABR97yfqm
-	 GWG5Y2fO1U2larGIOiuMjxkIXchSb39qFtFIeuieQHCICQHV4ctLfSa2DWfeqiWOGx
-	 haFWKNOIzYtcB82JjyPe+lEdHxDh9VQN8CvnSUsE=
+	b=1tzi7WoK+ivqg2mwDkREMw8R+1fkrr1by8nfdskon3csVRMU/ZRaRe9qsRwgFdxVE
+	 daAGC9VOvtyi2Gnqfk4mmpoAyKFg4GjVLeeuK26nHZEUrIShmfaO+mXlgz4gR+CC16
+	 jpVDH6oGUTD6n52SkI3rKcZ3n4jjamIE8n9uCgok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Puranjay Mohan <pjy@amazon.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 6.1 247/578] nvme: fix metadata handling in nvme-passthrough
-Date: Wed, 19 Feb 2025 09:24:11 +0100
-Message-ID: <20250219082702.748812057@linuxfoundation.org>
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Tim Huang <tim.huang@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 248/578] drm/amd/display: fix double free issue during amdgpu module unload
+Date: Wed, 19 Feb 2025 09:24:12 +0100
+Message-ID: <20250219082702.786652860@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -69,72 +68,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Puranjay Mohan <pjy@amazon.com>
+From: Tim Huang <tim.huang@amd.com>
 
-commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 upstream.
+commit 20b5a8f9f4670a8503aa9fa95ca632e77c6bf55d upstream.
 
-On an NVMe namespace that does not support metadata, it is possible to
-send an IO command with metadata through io-passthru. This allows issues
-like [1] to trigger in the completion code path.
-nvme_map_user_request() doesn't check if the namespace supports metadata
-before sending it forward. It also allows admin commands with metadata to
-be processed as it ignores metadata when bdev == NULL and may report
-success.
+Flexible endpoints use DIGs from available inflexible endpoints,
+so only the encoders of inflexible links need to be freed.
+Otherwise, a double free issue may occur when unloading the
+amdgpu module.
 
-Reject an IO command with metadata when the NVMe namespace doesn't
-support it and reject an admin command if it has metadata.
+[  279.190523] RIP: 0010:__slab_free+0x152/0x2f0
+[  279.190577] Call Trace:
+[  279.190580]  <TASK>
+[  279.190582]  ? show_regs+0x69/0x80
+[  279.190590]  ? die+0x3b/0x90
+[  279.190595]  ? do_trap+0xc8/0xe0
+[  279.190601]  ? do_error_trap+0x73/0xa0
+[  279.190605]  ? __slab_free+0x152/0x2f0
+[  279.190609]  ? exc_invalid_op+0x56/0x70
+[  279.190616]  ? __slab_free+0x152/0x2f0
+[  279.190642]  ? asm_exc_invalid_op+0x1f/0x30
+[  279.190648]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
+[  279.191096]  ? __slab_free+0x152/0x2f0
+[  279.191102]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
+[  279.191469]  kfree+0x260/0x2b0
+[  279.191474]  dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
+[  279.191821]  link_destroy+0xd7/0x130 [amdgpu]
+[  279.192248]  dc_destruct+0x90/0x270 [amdgpu]
+[  279.192666]  dc_destroy+0x19/0x40 [amdgpu]
+[  279.193020]  amdgpu_dm_fini+0x16e/0x200 [amdgpu]
+[  279.193432]  dm_hw_fini+0x26/0x40 [amdgpu]
+[  279.193795]  amdgpu_device_fini_hw+0x24c/0x400 [amdgpu]
+[  279.194108]  amdgpu_driver_unload_kms+0x4f/0x70 [amdgpu]
+[  279.194436]  amdgpu_pci_remove+0x40/0x80 [amdgpu]
+[  279.194632]  pci_device_remove+0x3a/0xa0
+[  279.194638]  device_remove+0x40/0x70
+[  279.194642]  device_release_driver_internal+0x1ad/0x210
+[  279.194647]  driver_detach+0x4e/0xa0
+[  279.194650]  bus_remove_driver+0x6f/0xf0
+[  279.194653]  driver_unregister+0x33/0x60
+[  279.194657]  pci_unregister_driver+0x44/0x90
+[  279.194662]  amdgpu_exit+0x19/0x1f0 [amdgpu]
+[  279.194939]  __do_sys_delete_module.isra.0+0x198/0x2f0
+[  279.194946]  __x64_sys_delete_module+0x16/0x20
+[  279.194950]  do_syscall_64+0x58/0x120
+[  279.194954]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[  279.194980]  </TASK>
 
-[1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
-
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ Minor changes to make it work on 6.1 ]
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/ioctl.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_link.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2011-2014, Intel Corporation.
-  * Copyright (c) 2017-2021 Christoph Hellwig.
-  */
-+#include <linux/blk-integrity.h>
- #include <linux/ptrace.h>	/* for force_successful_syscall_return */
- #include <linux/nvme_ioctl.h>
- #include <linux/io_uring.h>
-@@ -95,10 +96,15 @@ static int nvme_map_user_request(struct
- 	struct request_queue *q = req->q;
- 	struct nvme_ns *ns = q->queuedata;
- 	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
-+	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
-+	bool has_metadata = meta_buffer && meta_len;
- 	struct bio *bio = NULL;
- 	void *meta = NULL;
- 	int ret;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
+@@ -83,7 +83,7 @@ static void dc_link_destruct(struct dc_l
+ 	if (link->panel_cntl)
+ 		link->panel_cntl->funcs->destroy(&link->panel_cntl);
  
-+	if (has_metadata && !supports_metadata)
-+		return -EINVAL;
-+
- 	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
- 		struct iov_iter iter;
- 
-@@ -122,7 +128,7 @@ static int nvme_map_user_request(struct
- 	if (bdev)
- 		bio_set_dev(bio, bdev);
- 
--	if (bdev && meta_buffer && meta_len) {
-+	if (has_metadata) {
- 		meta = nvme_add_user_metadata(req, meta_buffer, meta_len,
- 				meta_seed);
- 		if (IS_ERR(meta)) {
+-	if (link->link_enc) {
++	if (link->link_enc && !link->is_dig_mapping_flexible) {
+ 		/* Update link encoder resource tracking variables. These are used for
+ 		 * the dynamic assignment of link encoders to streams. Virtual links
+ 		 * are not assigned encoder resources on creation.
 
 
 
