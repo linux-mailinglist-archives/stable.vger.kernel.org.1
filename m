@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A98FA3B5A8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:00:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F41DA3B557
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 487C33BB42C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07731188DAEF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520181DE2A4;
-	Wed, 19 Feb 2025 08:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7F31E0E05;
+	Wed, 19 Feb 2025 08:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lX3O06v3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZobAbtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFFD1ADC84;
-	Wed, 19 Feb 2025 08:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9151AF0C8;
+	Wed, 19 Feb 2025 08:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954682; cv=none; b=VKMPnI1IbL+xvuVr2OGtNSvcGLvMZHxSGPcODO+59aTh2M79/X/L4M19afcZKcZmTgiFT7L1Rk6IvOjjJWZNGeYhGeDzPQYpGXrYKnhG6UNShmep8axa5xm/UCQNNSSQojPVsha/bltsizXF7XPTcnVNborF+lYWXhyEfqoAREM=
+	t=1739954583; cv=none; b=TpZejjGJpANrQ18roM+Ebgv6NHzrxrxLSpB7hH0njvwkwKz2nLocWDkiUb41RlD5yW/BU583OQI74s+mIpG+HdEwMCF+YxYSh5seRH0g2Iw5L+XX3srN9gabIYf2iL92XSAfjsNet/QFgnleA+G8MfzKyIgSmcZOJv5pKluDZ+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954682; c=relaxed/simple;
-	bh=OLOrwV3yP4nGBcbjESegT/kEwja0+KCMh4bLHys4dzc=;
+	s=arc-20240116; t=1739954583; c=relaxed/simple;
+	bh=T/BKVZ/BvSvsZa88A7wQnV4t2CgloaWO8Rf9ebI+YNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSy293jD+I9T4C/XOouwEXx3xBgvODWU9EsAdO5X0xkZt4b7sbHHk1fRGkfhc8XtrQzEUzrPfAOaEaaW7mPZDH0Lzl+mQUPKawRGYo8zBqa1+GjittRyBooEDmhh/PqlYYYjRzg9vNLnTI2tlPodrNTR7MJuy3Qgl6gEeaLL74o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lX3O06v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A78C4CED1;
-	Wed, 19 Feb 2025 08:44:41 +0000 (UTC)
+	 MIME-Version; b=md7IpajX5uLERwOgLQ9Rd2p/CXEPsAKCwN0GB9ljf2vKfFg7Adn2xLGAMATezTUUUlztkfW7JzWlCsX37+a5jzRKqSFUuDUdVy2aJr6uGv8Lv0C8RJ8OKlfsfcjq+JgGPxVz6BJv02zwc4r0L5okMhhCaN8PRMveFPzcvHXuJr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZobAbtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C85C4CED1;
+	Wed, 19 Feb 2025 08:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954681;
-	bh=OLOrwV3yP4nGBcbjESegT/kEwja0+KCMh4bLHys4dzc=;
+	s=korg; t=1739954583;
+	bh=T/BKVZ/BvSvsZa88A7wQnV4t2CgloaWO8Rf9ebI+YNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lX3O06v34RaJ7hJxhs8vL2/zQmC0SVNG65tieAa94cIzEsg+DJEvPZLmRhTlYCXJ1
-	 3FWAQg1eZ7UEfgjVSUMV/VgMT2hcrgX8aDwujTDeDtFytS+UjfvoQWQJ7STUIWaXWn
-	 lvOhjiNjPmRAhWXg8zsZU/D+VtXt5q2zkynSQgzA=
+	b=XZobAbtDIBtMUTmYp/LCD5oir+eXa4LUM/Qb+lUqoci2oAS1FOOL8eUPN8NEQYD1i
+	 ue8NJwNMLrwYqvNzXzSE98l9BThOmD4oFUkXlnC1jlcfG1+xrkfhUeW1nVC0qQzA49
+	 2HU/48sx/6dNZv8cqs6CASdikUSfgeHUUnB00Rko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Joe Damato <jdamato@fastly.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 248/274] ipv6: mcast: add RCU protection to mld_newpack()
-Date: Wed, 19 Feb 2025 09:28:22 +0100
-Message-ID: <20250219082619.285752957@linuxfoundation.org>
+Subject: [PATCH 6.13 249/274] s390/qeth: move netif_napi_add_tx() and napi_enable() from under BH
+Date: Wed, 19 Feb 2025 09:28:23 +0100
+Message-ID: <20250219082619.324177916@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -67,78 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit a527750d877fd334de87eef81f1cb5f0f0ca3373 ]
+[ Upstream commit 0d0b752f2497471ddd2b32143d167d42e18a8f3c ]
 
-mld_newpack() can be called without RTNL or RCU being held.
+Like other drivers qeth is calling local_bh_enable() after napi_schedule()
+to kick-start softirqs [0].
+Since netif_napi_add_tx() and napi_enable() now take the netdev_lock()
+mutex [1], move them out from under the BH protection. Same solution as in
+commit a60558644e20 ("wifi: mt76: move napi_enable() from under BH")
 
-Note that we no longer can use sock_alloc_send_skb() because
-ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
-
-Instead use alloc_skb() and charge the net->ipv6.igmp_sk
-socket under RCU protection.
-
-Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250212141021.1663666-1-edumazet@google.com
+Fixes: 1b23cdbd2bbc ("net: protect netdev->napi_list with netdev_lock()")
+Link: https://lore.kernel.org/netdev/20240612181900.4d9d18d0@kernel.org/ [0]
+Link: https://lore.kernel.org/netdev/20250115035319.559603-1-kuba@kernel.org/ [1]
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Acked-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250212163659.2287292-1-wintera@linux.ibm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/s390/net/qeth_core_main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 6551648512585..b7b62e5a562e5 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -1730,21 +1730,19 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
- 	struct net_device *dev = idev->dev;
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	struct net *net = dev_net(dev);
- 	const struct in6_addr *saddr;
- 	struct in6_addr addr_buf;
- 	struct mld2_report *pmr;
- 	struct sk_buff *skb;
- 	unsigned int size;
- 	struct sock *sk;
--	int err;
-+	struct net *net;
+diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
+index a3adaec5504e4..20328d695ef92 100644
+--- a/drivers/s390/net/qeth_core_main.c
++++ b/drivers/s390/net/qeth_core_main.c
+@@ -7050,14 +7050,16 @@ int qeth_open(struct net_device *dev)
+ 	card->data.state = CH_STATE_UP;
+ 	netif_tx_start_all_queues(dev);
  
--	sk = net->ipv6.igmp_sk;
- 	/* we assume size > sizeof(ra) here
- 	 * Also try to not allocate high-order pages for big MTU
- 	 */
- 	size = min_t(int, mtu, PAGE_SIZE / 2) + hlen + tlen;
--	skb = sock_alloc_send_skb(sk, size, 1, &err);
-+	skb = alloc_skb(size, GFP_KERNEL);
- 	if (!skb)
- 		return NULL;
- 
-@@ -1752,6 +1750,12 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
- 	skb_reserve(skb, hlen);
- 	skb_tailroom_reserve(skb, mtu, tlen);
- 
-+	rcu_read_lock();
+-	local_bh_disable();
+ 	qeth_for_each_output_queue(card, queue, i) {
+ 		netif_napi_add_tx(dev, &queue->napi, qeth_tx_poll);
+ 		napi_enable(&queue->napi);
+-		napi_schedule(&queue->napi);
+ 	}
+-
+ 	napi_enable(&card->napi);
 +
-+	net = dev_net_rcu(dev);
-+	sk = net->ipv6.igmp_sk;
-+	skb_set_owner_w(skb, sk);
-+
- 	if (ipv6_get_lladdr(dev, &addr_buf, IFA_F_TENTATIVE)) {
- 		/* <draft-ietf-magma-mld-source-05.txt>:
- 		 * use unspecified address as the source address
-@@ -1763,6 +1767,8 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
- 
- 	ip6_mc_hdr(sk, skb, dev, saddr, &mld2_all_mcr, NEXTHDR_HOP, 0);
- 
-+	rcu_read_unlock();
-+
- 	skb_put_data(skb, ra, sizeof(ra));
- 
- 	skb_set_transport_header(skb, skb_tail_pointer(skb) - skb->data);
++	local_bh_disable();
++	qeth_for_each_output_queue(card, queue, i) {
++		napi_schedule(&queue->napi);
++	}
+ 	napi_schedule(&card->napi);
+ 	/* kick-start the NAPI softirq: */
+ 	local_bh_enable();
 -- 
 2.39.5
 
