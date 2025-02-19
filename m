@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AECA3B6E4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96529A3BA49
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4B317A6B86
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DD5D17F88B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F171DE8A6;
-	Wed, 19 Feb 2025 09:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601091E8320;
+	Wed, 19 Feb 2025 09:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hH+41Vw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cH3vTp9f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221E81DE3AE;
-	Wed, 19 Feb 2025 09:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E97C1E8326;
+	Wed, 19 Feb 2025 09:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955920; cv=none; b=QpusVjKWzGxRKU33w9AJPk8rLc+16XvG1ZIKzWnJnRyH/T2c5TKDykY9jJW/v0mPGVZPuNG4whvWofVUGmJ1dHWiqHpt7YnS9gI/+yTqks7jtQ+8ty+l64/nEf0vJIsQmwUJIJwwzveh2JPGbxaUQK2UzJcqL5e1LUgXnGFBVdM=
+	t=1739957494; cv=none; b=oSlooQkAafnZ+EspapVH18NunWQU+Okbe0a5S+BPYJMb+uPVBFrOk2rWQ1OrR0K7kNtlTnkUGINDiNPFNEgV0KzRKiDCsdAEkDNp5gjcoX298v8ce49inkdJwaFY62qNuFLYH5SE78HnnhrIkEMyYVGr8KF+mU8EBrKpieoe4zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955920; c=relaxed/simple;
-	bh=WJ9QrhpDG3PBkQJEgOATq+H58dvJkm4W2aGRYHy/C+M=;
+	s=arc-20240116; t=1739957494; c=relaxed/simple;
+	bh=GvIyji47UWh5CgbmtwEgP3bcwv8cLKxW0wEKyTYFw6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qa5DZApWu+OrjT/+GXk2LPo2Rc8Vy8nYRAWqvNpryzcdFdzaGQseqeE/PgBi+f31/T75UUX5caohilpV0uFfVLb/zipiSJUU2LIdOhy+y3oirxDGu2AoS35SMtMeoXZ6Sm3LAIG5i4UQKicKw/+l8yaOT959gHQ3Ii3pYEzLQDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hH+41Vw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAC3C4CED1;
-	Wed, 19 Feb 2025 09:05:19 +0000 (UTC)
+	 MIME-Version; b=Cr8WAJGWab9yNYkHW9+pp5Mmt9LOboW3i5QRZEnfv2Ny3LRKwlKdBSW6HBNc+63+LRIm3mlTTQom2cA2YYZBokmC5kQTj4W+eITJ27c9hobZDjLzbXd4gFbiX+zPLyk5jFk9kApGex2ZQ4TxpoKZJHvL7T9utAw4HPIQotN285U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cH3vTp9f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC46C4CED1;
+	Wed, 19 Feb 2025 09:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955919;
-	bh=WJ9QrhpDG3PBkQJEgOATq+H58dvJkm4W2aGRYHy/C+M=;
+	s=korg; t=1739957494;
+	bh=GvIyji47UWh5CgbmtwEgP3bcwv8cLKxW0wEKyTYFw6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hH+41Vw9U/i9vemZI9jOrQYW4AxSfQvIxWt1BE/Re5v0Mzoe3I4eP142rzrFY4N+M
-	 fz7sweV7HfrKMedE7srWYQQUZB5/Isw+hDHyhLCAfrm2I+UXNVE+dFcEyZvWzlhpii
-	 5+rby0Jq3f1U1yqZKVqshicZzAvAwZPIkXQLhGIU=
+	b=cH3vTp9fFVxaIvaAgt9EFoafzICVVNfFCMzaoGWFjsUPxwOkm3AnUN+sQRNB4QAcq
+	 j4tieh8otOm+zlCqmiOklzWx0Pc44XCvFuMumh2jRXLqQKki73P5CBwvJa1hCoapDs
+	 6Q4vO6777Dac0nYUnNrO6u2vwjSQzr/EFfPuGFGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.6 136/152] netdevsim: print human readable IP address
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 545/578] ipv4: use RCU protection in __ip_rt_update_pmtu()
 Date: Wed, 19 Feb 2025 09:29:09 +0100
-Message-ID: <20250219082555.423615193@linuxfoundation.org>
+Message-ID: <20250219082714.406300300@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c71bc6da6198a6d88df86094f1052bb581951d65 upstream.
+[ Upstream commit 139512191bd06f1b496117c76372b2ce372c9a41 ]
 
-Currently, IPSec addresses are printed in hexadecimal format, which is
-not user-friendly. e.g.
+__ip_rt_update_pmtu() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-  SA count=2 tx=20
-  sa[0] rx ipaddr=0x00000000 00000000 00000000 0100a8c0
-  sa[0]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-  sa[1] tx ipaddr=0x00000000 00000000 00000000 00000000
-  sa[1]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
-
-This patch updates the code to print the IPSec address in a human-readable
-format for easier debug. e.g.
-
- # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
- SA count=4 tx=40
- sa[0] tx ipaddr=0.0.0.0
- sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
- sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
- sa[1] rx ipaddr=192.168.0.1
- sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
- sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
- sa[2] tx ipaddr=::
- sa[2]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
- sa[2]    key=0x3167608a ca4f1397 43565909 941fa627
- sa[3] rx ipaddr=2000::1
- sa[3]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
- sa[3]    key=0x3167608a ca4f1397 43565909 941fa627
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241010040027.21440-2-liuhangbin@gmail.com
+Fixes: 2fbc6e89b2f1 ("ipv4: Update exception handling for multipath routes via same device")
+Fixes: 1de6b15a434c ("Namespaceify min_pmtu sysctl")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-8-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/ipsec.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/ipv4/route.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/net/netdevsim/ipsec.c
-+++ b/drivers/net/netdevsim/ipsec.c
-@@ -39,10 +39,14 @@ static ssize_t nsim_dbg_netdev_ops_read(
- 		if (!sap->used)
- 			continue;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 0bda6916ebcfb..4574dcba9f193 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1020,9 +1020,9 @@ out:	kfree_skb_reason(skb, reason);
+ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ {
+ 	struct dst_entry *dst = &rt->dst;
+-	struct net *net = dev_net(dst->dev);
+ 	struct fib_result res;
+ 	bool lock = false;
++	struct net *net;
+ 	u32 old_mtu;
  
--		p += scnprintf(p, bufsize - (p - buf),
--			       "sa[%i] %cx ipaddr=0x%08x %08x %08x %08x\n",
--			       i, (sap->rx ? 'r' : 't'), sap->ipaddr[0],
--			       sap->ipaddr[1], sap->ipaddr[2], sap->ipaddr[3]);
-+		if (sap->xs->props.family == AF_INET6)
-+			p += scnprintf(p, bufsize - (p - buf),
-+				       "sa[%i] %cx ipaddr=%pI6c\n",
-+				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr);
-+		else
-+			p += scnprintf(p, bufsize - (p - buf),
-+				       "sa[%i] %cx ipaddr=%pI4\n",
-+				       i, (sap->rx ? 'r' : 't'), &sap->ipaddr[3]);
- 		p += scnprintf(p, bufsize - (p - buf),
- 			       "sa[%i]    spi=0x%08x proto=0x%x salt=0x%08x crypt=%d\n",
- 			       i, be32_to_cpu(sap->xs->id.spi),
+ 	if (ip_mtu_locked(dst))
+@@ -1032,6 +1032,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 	if (old_mtu < mtu)
+ 		return;
+ 
++	rcu_read_lock();
++	net = dev_net_rcu(dst->dev);
+ 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
+ 		lock = true;
+ 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
+@@ -1039,9 +1041,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 
+ 	if (rt->rt_pmtu == mtu && !lock &&
+ 	    time_before(jiffies, dst->expires - net->ipv4.ip_rt_mtu_expires / 2))
+-		return;
++		goto out;
+ 
+-	rcu_read_lock();
+ 	if (fib_lookup(net, fl4, &res, 0) == 0) {
+ 		struct fib_nh_common *nhc;
+ 
+@@ -1055,14 +1056,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 						      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 			}
+-			rcu_read_unlock();
+-			return;
++			goto out;
+ 		}
+ #endif /* CONFIG_IP_ROUTE_MULTIPATH */
+ 		nhc = FIB_RES_NHC(res);
+ 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 				      jiffies + net->ipv4.ip_rt_mtu_expires);
+ 	}
++out:
+ 	rcu_read_unlock();
+ }
+ 
+-- 
+2.39.5
+
 
 
 
