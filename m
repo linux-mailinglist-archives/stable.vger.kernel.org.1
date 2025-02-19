@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D161BA3B4A0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7CDA3B5C2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE1A188E2DA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39783BB687
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC2D1DF271;
-	Wed, 19 Feb 2025 08:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86521E3DC9;
+	Wed, 19 Feb 2025 08:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/D/0U4W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKV5llj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA841DED6F;
-	Wed, 19 Feb 2025 08:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7361E1DE3A7;
+	Wed, 19 Feb 2025 08:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954125; cv=none; b=YeESymRqR0Wn0W/mnHTafpnzrKCpteW95Gpesc1hLePHZI2WGV5TQoVOnKqBOhogznL39wMAa8k/4ug8vFkQB+X5sIMv6ToXv7nRNPcQkNv/UxuQLQ9p4vACAmdwXio4Du7Aru5UAQMKzrpAVe+l7jSW8g7o+OhB0DMPjWeMoLo=
+	t=1739954699; cv=none; b=kxanhmgsLNwGG7EAng7+ddilZu9fr9v2ukXv1fQRuBT8v+kL+VXDvkU2OnQJ7wcPS4vdMkWUmQ75yR3pX4tjLUcKGBQUWb6Dt8ybXJRLGYEYDWdP3s3GebpdxCMg/t3FGopKBDfPbHmnzb5UP6FGRI8f6jpCKLbQaMtbpTX9GdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954125; c=relaxed/simple;
-	bh=W6e+ceBQt0WSQlaNy1KIEvD+yhRosBZriHuVGsUaNy4=;
+	s=arc-20240116; t=1739954699; c=relaxed/simple;
+	bh=O3i6VOrpTPMH2NkH2rskFatMvUmDeZ0ZLTRMrB7p7V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucTlx8U2Vw06BwwC6HHw7/ZaupC+fVaF41HoawXyXTwRFmARsV44eYpCujFFNW3gF/QPec9XyeVrb260uV0Q3Pd4NDrn3WtEKUySEzcfIDdMAWi9JlL1rejz2e6apAUkRIG9yNIPdm9JqzlCirE852IXNQEqv9aaOukAjLVwGcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/D/0U4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D76BC4CED1;
-	Wed, 19 Feb 2025 08:35:24 +0000 (UTC)
+	 MIME-Version; b=OOApXmyMhKxevqiaGAdEW2qIl4cpFkYqgvSmKRyFJpZzBxHEHxqmGF+yyZ7es7W759p2td1HSVUI4nRcdg/6ml1oRvkWYFHbCCjwwhZxGiSUqEXw959SNBxVIQ3I2HjVLDgQMeZ0ncxwTjlQw53jRrAGHp4YI02yObeu0Rv4ano=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKV5llj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD72BC4CEE6;
+	Wed, 19 Feb 2025 08:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954124;
-	bh=W6e+ceBQt0WSQlaNy1KIEvD+yhRosBZriHuVGsUaNy4=;
+	s=korg; t=1739954699;
+	bh=O3i6VOrpTPMH2NkH2rskFatMvUmDeZ0ZLTRMrB7p7V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/D/0U4Wi84IrysQ4wWlxi3WUbR7B+kqOIZ0mmLlT8j6pjUhY5FlT0o/9YFmd/HU9
-	 9I0OyzCQeAz1tv4XVAgb1AMgzOgFbIYfeY3G2jIzgcwyClwIa5QH6l/26PE5QVBWSP
-	 Z8szcHBxcPG6xcIutkLXDVHtMTtXXrAZK0kujeYM=
+	b=UKV5llj4FpudcQp/1wgif5yE0NUwOvxGADO9xzDq4L7r+isSwxTASGgE99HRs1OwZ
+	 xVZ775jMLuyrYjt8uwifRKywRhWvQkT4sNFw/dgoFQ4MwBrYgkNcOUzrLoK5g++bDB
+	 MHV730PIaa0KXVrMzSi6kF2BW1tT1HvcKG7wMBMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 073/274] soc/tegra: fuse: Update Tegra234 nvmem keepout list
+Subject: [PATCH 6.12 010/230] HID: multitouch: Add NULL check in mt_input_configured
 Date: Wed, 19 Feb 2025 09:25:27 +0100
-Message-ID: <20250219082612.478803620@linuxfoundation.org>
+Message-ID: <20250219082602.102552932@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
+[ Upstream commit 9b8e2220d3a052a690b1d1b23019673e612494c5 ]
 
-Various Nvidia userspace applications and tests access following fuse
-via Fuse nvmem interface:
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in mt_input_configured() is not checked.
+Add NULL check in mt_input_configured(), to handle kernel NULL
+pointer dereference error.
 
-	* odmid
-	* odminfo
-	* boot_security_info
-	* public_key_hash
-	* reserved_odm0
-	* reserved_odm1
-	* reserved_odm2
-	* reserved_odm3
-	* reserved_odm4
-	* reserved_odm5
-	* reserved_odm6
-	* reserved_odm7
-	* odm_lock
-	* pk_h1
-	* pk_h2
-	* revoke_pk_h0
-	* revoke_pk_h1
-	* security_mode
-	* system_fw_field_ratchet0
-	* system_fw_field_ratchet1
-	* system_fw_field_ratchet2
-	* system_fw_field_ratchet3
-	* optin_enable
-
-Update tegra234_fuse_keepouts list to allow reading these fuse from
-nvmem sysfs interface.
-
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: 479439463529 ("HID: multitouch: Correct devm device reference for hidinput input_dev name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
-index eb14e5ff5a0aa..e24ab5f7d2bf1 100644
---- a/drivers/soc/tegra/fuse/fuse-tegra30.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
-@@ -647,15 +647,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
- };
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 369414c92fccb..93b5c648ef82c 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1673,9 +1673,12 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ 		break;
+ 	}
  
- static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
--	{ .start = 0x01c, .end = 0x0c8 },
--	{ .start = 0x12c, .end = 0x184 },
-+	{ .start = 0x01c, .end = 0x064 },
-+	{ .start = 0x084, .end = 0x0a0 },
-+	{ .start = 0x0a4, .end = 0x0c8 },
-+	{ .start = 0x12c, .end = 0x164 },
-+	{ .start = 0x16c, .end = 0x184 },
- 	{ .start = 0x190, .end = 0x198 },
- 	{ .start = 0x1a0, .end = 0x204 },
--	{ .start = 0x21c, .end = 0x250 },
--	{ .start = 0x25c, .end = 0x2f0 },
-+	{ .start = 0x21c, .end = 0x2f0 },
- 	{ .start = 0x310, .end = 0x3d8 },
--	{ .start = 0x400, .end = 0x4f0 },
--	{ .start = 0x4f8, .end = 0x7e8 },
-+	{ .start = 0x400, .end = 0x420 },
-+	{ .start = 0x444, .end = 0x490 },
-+	{ .start = 0x4bc, .end = 0x4f0 },
-+	{ .start = 0x4f8, .end = 0x54c },
-+	{ .start = 0x57c, .end = 0x7e8 },
- 	{ .start = 0x8d0, .end = 0x8d8 },
- 	{ .start = 0xacc, .end = 0xf00 }
- };
+-	if (suffix)
++	if (suffix) {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
++		if (!hi->input->name)
++			return -ENOMEM;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
