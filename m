@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-118069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAA2A3B98E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2098DA3B6D4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79232188D5F9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F6B188D636
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3881DDA20;
-	Wed, 19 Feb 2025 09:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A83C1DE89B;
+	Wed, 19 Feb 2025 08:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTKvLSE2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmTBPOqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E991BEF77;
-	Wed, 19 Feb 2025 09:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB47D18FC86;
+	Wed, 19 Feb 2025 08:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957146; cv=none; b=MpmT8i4+mEjM7kXBMh57e6Y60z3dcOP45V+DhWw/8CCJ5Dybl6rqiBdtycVaORO3lH4871ULDmyFqC6b+EENGrmWnH/CU6qi0LeyoUM0L2I7mKpBquTPfLj248V/9juA9EM5fYlIQZMbFAbsukEnT/V9ptp5V+s7m+HR+cQIWvU=
+	t=1739955522; cv=none; b=sccpCmHqxfS8nrTXq7921vVbnCuBFoE0uYMDPDfm5F6zOoJYZleSLMHq1PzTmc3hizYZ4D6e3bAb6IFyqKnHgdt0/EeUF30nunG8Dpx01JfKKiZ8nU5PmDklWFxuLXvlyT79Zg6n1+jDdKtvL7xPoxyBM586VUDC8KNheJQLmak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957146; c=relaxed/simple;
-	bh=MLG4M1vIp5vZR/4vpKs7eX1g2TocE2Wye08AOW3F1Tc=;
+	s=arc-20240116; t=1739955522; c=relaxed/simple;
+	bh=Nx/sDaRxz7fpdYdFh0JIyK+qhgINaDq6kOoiRShWYHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rglB1zUHc31cgIJZk7L0UdXuLJ6MgBEKjkR/Ot9BR3jjH2XuFWeUDqF+S50AomliA3bCEPFueKATxkWEqKV128SmqvC86zFA/0Phc2Ai1kGSmXeW1/YCOzlgOrTEt8R3J1y1+3MxCisxsK+Tkkdy5y0dBk+TMKRhpkqF0fzqO+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTKvLSE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E43C4CED1;
-	Wed, 19 Feb 2025 09:25:45 +0000 (UTC)
+	 MIME-Version; b=D9aFl3f0wLE3c5gXXExNuywhzvWv3f1+8LG28LCPwNd9FWp5MDezl1cwem2B9XhwUirjOAM7l2e+MF0QT1q14fdNcxwdOSj9w9zb7ttx6DIH6Mg21r2pNb/eXsziZKgpqwYvcHmGs17n198gEpLCXIF49tTquOzOK2NOmol9un4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmTBPOqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B31BC4CED1;
+	Wed, 19 Feb 2025 08:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957146;
-	bh=MLG4M1vIp5vZR/4vpKs7eX1g2TocE2Wye08AOW3F1Tc=;
+	s=korg; t=1739955522;
+	bh=Nx/sDaRxz7fpdYdFh0JIyK+qhgINaDq6kOoiRShWYHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTKvLSE2/qhJ4ogvpB4i7MUMmlyE4x2wj+UsqFemSp52PoZFVfb1yDoCW5UUUO/RH
-	 gxKIXZom99hfcHoLk67Q0+bXpXbH4bJdYe3Dqt6zUusX4CFjvsPx2YPFkiSG0GE+B5
-	 Rki8zJcWKnB4wAuAV6FmzBV+l57YpsxpDifgJSyI=
+	b=MmTBPOqPG2ve2b5NKy+1M5QlfXu3hP1HqDrImIvcpT85yrdahdeGv0DYS40j6Cri1
+	 HSvAs6JBA0sqywcRsg2QT2Q09/Y0kN1uyDQ7VlEkQYaMFyo61vJGciUB2XKyBHXYAs
+	 j9hNi9/DDF3wkQnZH5x7ehj24jojpAhF2tH/LrPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	reveliofuzzing <reveliofuzzing@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.1 417/578] ata: libata-sff: Ensure that we cannot write outside the allocated buffer
+	Eric Dumazet <edumazet@google.com>,
+	Stephen Suryaputra <ssuryaextr@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 008/152] ndisc: ndisc_send_redirect() must use dev_get_by_index_rcu()
 Date: Wed, 19 Feb 2025 09:27:01 +0100
-Message-ID: <20250219082709.423913573@linuxfoundation.org>
+Message-ID: <20250219082550.356361916@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 6e74e53b34b6dec5a50e1404e2680852ec6768d2 upstream.
+[ Upstream commit 48145a57d4bbe3496e8e4880b23ea6b511e6e519 ]
 
-reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
-set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
-ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
-write outside the allocated buffer, overwriting random memory.
+ndisc_send_redirect() is called under RCU protection, not RTNL.
 
-While a ATA device is supposed to abort a ATA_NOP command, there does seem
-to be a bug either in libata-sff or QEMU, where either this status is not
-set, or the status is cleared before read by ata_sff_hsm_move().
-Anyway, that is most likely a separate bug.
+It must use dev_get_by_index_rcu() instead of __dev_get_by_index()
 
-Looking at __atapi_pio_bytes(), it already has a safety check to ensure
-that __atapi_pio_bytes() cannot write outside the allocated buffer.
-
-Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
-cannot write outside the allocated buffer.
-
-Cc: stable@vger.kernel.org
-Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
-Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
-Link: https://lore.kernel.org/r/20250127154303.15567-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f17becfbea5 ("vrf: check the original netdevice for generating redirect")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Stephen Suryaputra <ssuryaextr@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-sff.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ net/ipv6/ndisc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -658,7 +658,7 @@ static void ata_pio_sector(struct ata_qu
- {
- 	struct ata_port *ap = qc->ap;
- 	struct page *page;
--	unsigned int offset;
-+	unsigned int offset, count;
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 2ad0ef47b07c2..561972143ca42 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1680,7 +1680,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	bool ret;
  
- 	if (!qc->cursg) {
- 		qc->curbytes = qc->nbytes;
-@@ -674,25 +674,27 @@ static void ata_pio_sector(struct ata_qu
- 	page = nth_page(page, (offset >> PAGE_SHIFT));
- 	offset %= PAGE_SIZE;
- 
--	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
-+	/* don't overrun current sg */
-+	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
-+
-+	trace_ata_sff_pio_transfer_data(qc, offset, count);
- 
- 	/*
- 	 * Split the transfer when it splits a page boundary.  Note that the
- 	 * split still has to be dword aligned like all ATA data transfers.
- 	 */
- 	WARN_ON_ONCE(offset % 4);
--	if (offset + qc->sect_size > PAGE_SIZE) {
-+	if (offset + count > PAGE_SIZE) {
- 		unsigned int split_len = PAGE_SIZE - offset;
- 
- 		ata_pio_xfer(qc, page, offset, split_len);
--		ata_pio_xfer(qc, nth_page(page, 1), 0,
--			     qc->sect_size - split_len);
-+		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
- 	} else {
--		ata_pio_xfer(qc, page, offset, qc->sect_size);
-+		ata_pio_xfer(qc, page, offset, count);
+ 	if (netif_is_l3_master(skb->dev)) {
+-		dev = __dev_get_by_index(dev_net(skb->dev), IPCB(skb)->iif);
++		dev = dev_get_by_index_rcu(dev_net(skb->dev), IPCB(skb)->iif);
+ 		if (!dev)
+ 			return;
  	}
- 
--	qc->curbytes += qc->sect_size;
--	qc->cursg_ofs += qc->sect_size;
-+	qc->curbytes += count;
-+	qc->cursg_ofs += count;
- 
- 	if (qc->cursg_ofs == qc->cursg->length) {
- 		qc->cursg = sg_next(qc->cursg);
+-- 
+2.39.5
+
 
 
 
