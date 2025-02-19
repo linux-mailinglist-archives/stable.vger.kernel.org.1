@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C3A3B74D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82827A3BA52
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB64E18861BA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7833D3AFE14
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4991D9A50;
-	Wed, 19 Feb 2025 09:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED8F1E1A20;
+	Wed, 19 Feb 2025 09:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2r57Ltw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbPv2ehH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383D01C701E;
-	Wed, 19 Feb 2025 09:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DFD1E1C0F;
+	Wed, 19 Feb 2025 09:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955830; cv=none; b=TeKpM6x0N5q1q8toaF1Rh5CyXNhI42Gc5RVhqmGY3hU/TBygtQujLAhMEjTSXVhKrU3C9YJvn2jc0Oe5IBCdHJhKLiMZOIP3MMXubQZVV0N8y428yZXJ8wdd6N4fv35RREsGdlvP6rw/MGT4Gx1BqijHgoBOVIvkrm+fegYyMfM=
+	t=1739957462; cv=none; b=F2KaOF4WJ4ec0iWsxaCJXAvZxjr10mzF/NjBm1TroFCUfN0ILmrEn2OcIcl/avizRGjQ6F4BYhbtrrCDBFoS4ByWLmuBmXrULtZBj8Yc0/lEWC/ljywrCh2FmT7YC3Mh3e5vtoTRK46t9ecXPpV4W8pzAaEguaXemwb/FYW6paY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955830; c=relaxed/simple;
-	bh=JDI/bF3QrCBA6rjCEOWtGaVIvF+dXo3cbb1CbMue/DE=;
+	s=arc-20240116; t=1739957462; c=relaxed/simple;
+	bh=PV1+7TzcW/IS25Rb0hkIXsBcrTFGMwA+nIz5a/CDsqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EX9j2kuJwcdMlFGdQ0xnXgkMh0DSLrlAYLwhHZCjBmkRuhG2mjYXXjQGQ/8SgBH8ph0eI8TeGB711OP2z8dm09Ln0Bx6gAR/G9P4BscY7U0WjqsHacRqSCm2Ly4WsWFhoon84MOo+BN8r7pL2sFdcfsPjB+wndbeZGGzqiIi5xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2r57Ltw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFE3C4CED1;
-	Wed, 19 Feb 2025 09:03:49 +0000 (UTC)
+	 MIME-Version; b=loXTi5kWIhDBzrfbBd6k5vOyfztaVzMLCH/8kCBVvAFIs6hC5TVdyrXYC5A89gbuVrJpk69q8lwSfGWJ1hbcVzoKrHDJRxYVSYeXsQ5+H/AyT1vdBA/MUsI1anTsRZ0U0u/w+tiImNojua0VlqV4C4biLz49O4tbhlCATfYra+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbPv2ehH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3C2C4CED1;
+	Wed, 19 Feb 2025 09:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955830;
-	bh=JDI/bF3QrCBA6rjCEOWtGaVIvF+dXo3cbb1CbMue/DE=;
+	s=korg; t=1739957462;
+	bh=PV1+7TzcW/IS25Rb0hkIXsBcrTFGMwA+nIz5a/CDsqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x2r57LtwaTKqI8s7AwdP43v2la+vDkMpMiYpqmK3gnGRnM1eqEskeMT5VTnW3OECt
-	 /OC3zPaXDnmlDIAyeT3EuFiUekXVCduVq30cr1Bvt/v1eApwPTEK7OLlyRAFI9KPgc
-	 KGZcxBBcomkog/cMqwyTy6UbplKm1icqF7iIwehs=
+	b=cbPv2ehH9lk0xzrXjoyPHzjdSTNuBohUU8zhJ/EBLingZJLsBLvZlOCPYdS/AN2JN
+	 5k118ojdiViJpii4GUOAl4jBIiOJ5gAMnrepWvDc18lXpJWsPFT5DqaKbrgCj5CYB6
+	 A+iz+9VK4p97WEUTO+GgWm2EIRwZI9VeeIvXSS2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/152] ndisc: extend RCU protection in ndisc_send_skb()
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 535/578] btrfs: fix hole expansion when writing at an offset beyond EOF
 Date: Wed, 19 Feb 2025 09:28:59 +0100
-Message-ID: <20250219082555.032916615@linuxfoundation.org>
+Message-ID: <20250219082714.022429500@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ed6ae1f325d3c43966ec1b62ac1459e2b8e45640 ]
+commit da2dccd7451de62b175fb8f0808d644959e964c7 upstream.
 
-ndisc_send_skb() can be called without RTNL or RCU held.
+At btrfs_write_check() if our file's i_size is not sector size aligned and
+we have a write that starts at an offset larger than the i_size that falls
+within the same page of the i_size, then we end up not zeroing the file
+range [i_size, write_offset).
 
-Acquire rcu_read_lock() earlier, so that we can use dev_net_rcu()
-and avoid a potential UAF.
+The code is this:
 
-Fixes: 1762f7e88eb3 ("[NETNS][IPV6] ndisc - make socket control per namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    start_pos = round_down(pos, fs_info->sectorsize);
+    oldsize = i_size_read(inode);
+    if (start_pos > oldsize) {
+        /* Expand hole size to cover write data, preventing empty gap */
+        loff_t end_pos = round_up(pos + count, fs_info->sectorsize);
+
+        ret = btrfs_cont_expand(BTRFS_I(inode), oldsize, end_pos);
+        if (ret)
+            return ret;
+    }
+
+So if our file's i_size is 90269 bytes and a write at offset 90365 bytes
+comes in, we get 'start_pos' set to 90112 bytes, which is less than the
+i_size and therefore we don't zero out the range [90269, 90365) by
+calling btrfs_cont_expand().
+
+This is an old bug introduced in commit 9036c10208e1 ("Btrfs: update hole
+handling v2"), from 2008, and the buggy code got moved around over the
+years.
+
+Fix this by discarding 'start_pos' and comparing against the write offset
+('pos') without any alignment.
+
+This bug was recently exposed by test case generic/363 which tests this
+scenario by polluting ranges beyond EOF with an mmap write and than verify
+that after a file increases we get zeroes for the range which is supposed
+to be a hole and not what we wrote with the previous mmaped write.
+
+We're only seeing this exposed now because generic/363 used to run only
+on xfs until last Sunday's fstests update.
+
+The test was failing like this:
+
+   $ ./check generic/363
+   FSTYP         -- btrfs
+   PLATFORM      -- Linux/x86_64 debian0 6.13.0-rc7-btrfs-next-185+ #17 SMP PREEMPT_DYNAMIC Mon Feb  3 12:28:46 WET 2025
+   MKFS_OPTIONS  -- /dev/sdc
+   MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+
+   generic/363 0s ... [failed, exit status 1]- output mismatch (see /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad)
+#      --- tests/generic/363.out	2025-02-05 15:31:14.013646509 +0000
+#      +++ /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad	2025-02-05 17:25:33.112630781 +0000
+       @@ -1 +1,46 @@
+        QA output created by 363
+       +READ BAD DATA: offset = 0xdcad, size = 0xd921, fname = /home/fdmanana/btrfs-tests/dev/junk
+       +OFFSET      GOOD    BAD     RANGE
+       +0x1609d     0x0000  0x3104  0x0
+       +operation# (mod 256) for the bad data may be 4
+       +0x1609e     0x0000  0x0472  0x1
+       +operation# (mod 256) for the bad data may be 4
+       ...
+       (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/generic/363.out /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad'  to see the entire diff)
+   Ran: generic/363
+   Failures: generic/363
+   Failed 1 of 1 tests
+
+Fixes: 9036c10208e1 ("Btrfs: update hole handling v2")
+CC: stable@vger.kernel.org
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ndisc.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/btrfs/file.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index ea3cb26da5846..8d853971f2f68 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -471,16 +471,20 @@ static void ip6_nd_hdr(struct sk_buff *skb,
- void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
- 		    const struct in6_addr *saddr)
- {
-+	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
- 	struct dst_entry *dst = skb_dst(skb);
--	struct net *net = dev_net(skb->dev);
--	struct sock *sk = net->ipv6.ndisc_sk;
- 	struct inet6_dev *idev;
-+	struct net *net;
-+	struct sock *sk;
- 	int err;
--	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
- 	u8 type;
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1122,7 +1122,6 @@ static int btrfs_write_check(struct kioc
+ 	loff_t pos = iocb->ki_pos;
+ 	int ret;
+ 	loff_t oldsize;
+-	loff_t start_pos;
  
- 	type = icmp6h->icmp6_type;
+ 	/*
+ 	 * Quickly bail out on NOWAIT writes if we don't have the nodatacow or
+@@ -1147,9 +1146,8 @@ static int btrfs_write_check(struct kioc
+ 	 */
+ 	update_time_for_write(inode);
  
-+	rcu_read_lock();
-+
-+	net = dev_net_rcu(skb->dev);
-+	sk = net->ipv6.ndisc_sk;
- 	if (!dst) {
- 		struct flowi6 fl6;
- 		int oif = skb->dev->ifindex;
-@@ -488,6 +492,7 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
- 		icmpv6_flow_init(sk, &fl6, type, saddr, daddr, oif);
- 		dst = icmp6_dst_alloc(skb->dev, &fl6);
- 		if (IS_ERR(dst)) {
-+			rcu_read_unlock();
- 			kfree_skb(skb);
- 			return;
- 		}
-@@ -502,7 +507,6 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
+-	start_pos = round_down(pos, fs_info->sectorsize);
+ 	oldsize = i_size_read(inode);
+-	if (start_pos > oldsize) {
++	if (pos > oldsize) {
+ 		/* Expand hole size to cover write data, preventing empty gap */
+ 		loff_t end_pos = round_up(pos + count, fs_info->sectorsize);
  
- 	ip6_nd_hdr(skb, saddr, daddr, inet6_sk(sk)->hop_limit, skb->len);
- 
--	rcu_read_lock();
- 	idev = __in6_dev_get(dst->dev);
- 	IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTREQUESTS);
- 
--- 
-2.39.5
-
 
 
 
