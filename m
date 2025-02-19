@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676D7A3B68C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9998A3BA9A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50CA67A6D58
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11A13B8534
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1D91DF253;
-	Wed, 19 Feb 2025 09:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8AA1DED53;
+	Wed, 19 Feb 2025 09:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oObURpUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no1ixNl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2921C173F;
-	Wed, 19 Feb 2025 09:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E7C286285;
+	Wed, 19 Feb 2025 09:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955774; cv=none; b=GCfF5TwHpfkEa5zou+lLA2qRRD8ivQtrOZd9OlDWN1vykD6BM02INTNW4QSl1GUr4d6KcsD8no6VYWA9tLxPPrT120COZpPWXL1Np4kEtPcdlz9n6azoailggT1uNigFs5E+oZloaDMIJF9wXjUqTIlnQ6vTh1Zm/1OA2Gk376o=
+	t=1739957541; cv=none; b=OMC8gxchjNjNRikGGY/k5kPrZKApaZw50Scsajl/b740vI6CJ910q2v5FgOz7jbPL6BVK0wFmRXWAQhn5WsobowElwmWzp5zXjrxEcA1zjJ0vfC7nZd2pYA+6EBUaNJJuo1wcJ9siwG9A7sbBhlceSr/ml2YQpFrBzVs+3fQ/90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955774; c=relaxed/simple;
-	bh=JjliWF8VDxqFCoEJEArIteFdS5qoAYVnVFknLUVfSfM=;
+	s=arc-20240116; t=1739957541; c=relaxed/simple;
+	bh=DmOhW5ixSh9hBvbF6ieCu+NEBb2+MoA3hfq/LZGypD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+xoXRStnQip1rt9F2FnlPzGK6YLM2U7sTn6GhJ/m2JqEvaNrBtEKuAfvtopH9B+VoHaOzyyv9/tVr0fEo4Zw+9jNDvl4FAc4vkInQm0s2khDR/6h42HAaxcDNyB69q6P7x5cE7Q7taV6tarXNI5Ob8fPSeL3/ZD6MZX6YdBKv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oObURpUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A8DC4CED1;
-	Wed, 19 Feb 2025 09:02:53 +0000 (UTC)
+	 MIME-Version; b=uNUgOVuyw2HoozfaTO5UtUSmFVpUUY9XkzEPGtfrk+exDc1NzXnqQJMkxHJo3reJRCUlVBAsbm/pI/QHeWNa79mbAFM/F1/ZcR+WXY90AumtUKAJe8GXbJt83Tpw8YGwj3gVgMtixtCNhq4RYdsNFyalNYqPUz3afJ/KhFzaH6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no1ixNl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D16AC4CED1;
+	Wed, 19 Feb 2025 09:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955774;
-	bh=JjliWF8VDxqFCoEJEArIteFdS5qoAYVnVFknLUVfSfM=;
+	s=korg; t=1739957540;
+	bh=DmOhW5ixSh9hBvbF6ieCu+NEBb2+MoA3hfq/LZGypD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oObURpUC9xsQAphE1xID4uLm2ro8BECdi5Zals8HL/tkDFNG3YF05IxRcFwKuw8Pv
-	 np/ezMlhZfc1h83Yl/3y2B2sMvC9/17wFAEw18rcQdWhU6ehl06ct2DSvexnfS1UuM
-	 Vbw1suUPCh8yFJQl8ueCZSYL1e0oonIY5glzA7E4=
+	b=no1ixNl5lgQI1rA/XS2IBE6oEqZ6FSc3PCDdy0wKYNi+NbvGot+rEh2bUEDF8UcJG
+	 eEj/yvEsy8CAZ6b3kKw32apRgXVguT9r3xM6PUhtAxSvUGtLo/qUFm9PrixotzPP4r
+	 aYrYllhntsX7oYfgolydmsfAZMO4H8PkiNV8tMyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/152] ipv6: icmp: convert to dev_net_rcu()
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 519/578] USB: serial: option: drop MeiG Smart defines
 Date: Wed, 19 Feb 2025 09:28:43 +0100
-Message-ID: <20250219082554.410331264@linuxfoundation.org>
+Message-ID: <20250219082713.393160798@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,196 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 34aef2b0ce3aa4eb4ef2e1f5cad3738d527032f5 ]
+commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
 
-icmp6_send() must acquire rcu_read_lock() sooner to ensure
-the dev_net() call done from a safe context.
+Several MeiG Smart modems apparently use the same product id, making the
+defines even less useful.
 
-Other ICMPv6 uses of dev_net() seem safe, change them to
-dev_net_rcu() to get LOCKDEP support to catch bugs.
+Drop them in favour of using comments consistently to make the id table
+slightly less unwieldy.
 
-Fixes: 9a43b709a230 ("[NETNS][IPV6] icmp6 - make icmpv6_socket per namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-12-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/icmp.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ drivers/usb/serial/option.c |   28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 35df405ce1f75..fd91fd139d76c 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -76,7 +76,7 @@ static int icmpv6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- {
- 	/* icmpv6_notify checks 8 bytes can be pulled, icmp6hdr is 8 bytes */
- 	struct icmp6hdr *icmp6 = (struct icmp6hdr *) (skb->data + offset);
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,18 +619,6 @@ static void option_instat_callback(struc
+ /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
+ #define LUAT_PRODUCT_AIR720U			0x4e00
  
- 	if (type == ICMPV6_PKT_TOOBIG)
- 		ip6_update_pmtu(skb, net, info, skb->dev->ifindex, 0, sock_net_uid(net, NULL));
-@@ -473,7 +473,10 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+-/* MeiG Smart Technology products */
+-#define MEIGSMART_VENDOR_ID			0x2dee
+-/*
+- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
+- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
+- */
+-#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+-/* MeiG Smart SLM320 based on UNISOC UIS8910 */
+-#define MEIGSMART_PRODUCT_SLM320		0x4d41
+-/* MeiG Smart SLM770A based on ASR1803 */
+-#define MEIGSMART_PRODUCT_SLM770A		0x4d57
+-
+ /* Device flags */
  
- 	if (!skb->dev)
- 		return;
--	net = dev_net(skb->dev);
-+
-+	rcu_read_lock();
-+
-+	net = dev_net_rcu(skb->dev);
- 	mark = IP6_REPLY_MARK(net, skb->mark);
- 	/*
- 	 *	Make sure we respect the rules
-@@ -496,7 +499,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 		    !(type == ICMPV6_PARAMPROB &&
- 		      code == ICMPV6_UNK_OPTION &&
- 		      (opt_unrec(skb, info))))
--			return;
-+			goto out;
- 
- 		saddr = NULL;
- 	}
-@@ -526,7 +529,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 	if ((addr_type == IPV6_ADDR_ANY) || (addr_type & IPV6_ADDR_MULTICAST)) {
- 		net_dbg_ratelimited("icmp6_send: addr_any/mcast source [%pI6c > %pI6c]\n",
- 				    &hdr->saddr, &hdr->daddr);
--		return;
-+		goto out;
- 	}
- 
- 	/*
-@@ -535,7 +538,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 	if (is_ineligible(skb)) {
- 		net_dbg_ratelimited("icmp6_send: no reply to icmp error [%pI6c > %pI6c]\n",
- 				    &hdr->saddr, &hdr->daddr);
--		return;
-+		goto out;
- 	}
- 
- 	/* Needed by both icmpv6_global_allow and icmpv6_xmit_lock */
-@@ -582,7 +585,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 	np = inet6_sk(sk);
- 
- 	if (!icmpv6_xrlim_allow(sk, type, &fl6, apply_ratelimit))
--		goto out;
-+		goto out_unlock;
- 
- 	tmp_hdr.icmp6_type = type;
- 	tmp_hdr.icmp6_code = code;
-@@ -600,7 +603,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 
- 	dst = icmpv6_route_lookup(net, skb, sk, &fl6);
- 	if (IS_ERR(dst))
--		goto out;
-+		goto out_unlock;
- 
- 	ipc6.hlimit = ip6_sk_dst_hoplimit(np, &fl6, dst);
- 
-@@ -616,7 +619,6 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 		goto out_dst_release;
- 	}
- 
--	rcu_read_lock();
- 	idev = __in6_dev_get(skb->dev);
- 
- 	if (ip6_append_data(sk, icmpv6_getfrag, &msg,
-@@ -630,13 +632,15 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
- 		icmpv6_push_pending_frames(sk, &fl6, &tmp_hdr,
- 					   len + sizeof(struct icmp6hdr));
- 	}
--	rcu_read_unlock();
-+
- out_dst_release:
- 	dst_release(dst);
--out:
-+out_unlock:
- 	icmpv6_xmit_unlock(sk);
- out_bh_enable:
- 	local_bh_enable();
-+out:
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL(icmp6_send);
- 
-@@ -679,8 +683,8 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
- 	skb_pull(skb2, nhs);
- 	skb_reset_network_header(skb2);
- 
--	rt = rt6_lookup(dev_net(skb->dev), &ipv6_hdr(skb2)->saddr, NULL, 0,
--			skb, 0);
-+	rt = rt6_lookup(dev_net_rcu(skb->dev), &ipv6_hdr(skb2)->saddr,
-+			NULL, 0, skb, 0);
- 
- 	if (rt && rt->dst.dev)
- 		skb2->dev = rt->dst.dev;
-@@ -717,7 +721,7 @@ EXPORT_SYMBOL(ip6_err_gen_icmpv6_unreach);
- 
- static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
- {
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	struct sock *sk;
- 	struct inet6_dev *idev;
- 	struct ipv6_pinfo *np;
-@@ -832,7 +836,7 @@ enum skb_drop_reason icmpv6_notify(struct sk_buff *skb, u8 type,
- 				   u8 code, __be32 info)
- {
- 	struct inet6_skb_parm *opt = IP6CB(skb);
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	const struct inet6_protocol *ipprot;
- 	enum skb_drop_reason reason;
- 	int inner_offset;
-@@ -889,7 +893,7 @@ enum skb_drop_reason icmpv6_notify(struct sk_buff *skb, u8 type,
- static int icmpv6_rcv(struct sk_buff *skb)
- {
- 	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
--	struct net *net = dev_net(skb->dev);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	struct net_device *dev = icmp6_dev(skb);
- 	struct inet6_dev *idev = __in6_dev_get(dev);
- 	const struct in6_addr *saddr, *daddr;
-@@ -921,7 +925,7 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 		skb_set_network_header(skb, nh);
- 	}
- 
--	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INMSGS);
-+	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
- 
- 	saddr = &ipv6_hdr(skb)->saddr;
- 	daddr = &ipv6_hdr(skb)->daddr;
-@@ -939,7 +943,7 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 
- 	type = hdr->icmp6_type;
- 
--	ICMP6MSGIN_INC_STATS(dev_net(dev), idev, type);
-+	ICMP6MSGIN_INC_STATS(dev_net_rcu(dev), idev, type);
- 
- 	switch (type) {
- 	case ICMPV6_ECHO_REQUEST:
-@@ -1034,9 +1038,9 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 
- csum_error:
- 	reason = SKB_DROP_REASON_ICMP_CSUM;
--	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_CSUMERRORS);
-+	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_CSUMERRORS);
- discard_it:
--	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INERRORS);
-+	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INERRORS);
- drop_no_count:
- 	kfree_skb_reason(skb, reason);
- 	return 0;
--- 
-2.39.5
-
+ /* Highest interface number which can be used with NCTRL() and RSVD() */
+@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
+@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
+-	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+ 	  .driver_info = NCTRL(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
 
 
 
