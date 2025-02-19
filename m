@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-117452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29E0A3B6E1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F37A3BA3B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAF761761C4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751D9801A3E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9091C1EB5DC;
-	Wed, 19 Feb 2025 08:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7F01D5CC6;
+	Wed, 19 Feb 2025 09:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TepUrBpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1eGWNmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9581E8855;
-	Wed, 19 Feb 2025 08:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3301D515B;
+	Wed, 19 Feb 2025 09:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955335; cv=none; b=aDhtzfEbqyn0GQNNI4AdRG9SVPt/wK/CcUL9L3YrRyXWDWwogQUuK16rVL/YW2Falpm+Sm+G2yD/2a7ZexLWbtSihP50v48n0G/TJzdaFEL0FyGkzT+w0iHh/mjtpTZqSJHcDiMMTYxrm0al6+y5f5wwZAUl9cfdeAKTJILRHV8=
+	t=1739957293; cv=none; b=oktpNpboiilgmQQ7LkLC9c+gDIyHrVBPIoOEDScATPfHpDYCTBdx53R9KU+xMK1Ah6gKAamYYRkA83JxdPp2dTuEQ03kqO6l8ZIZkl3PZHKoinhqcMjfdS/zm7SzWDhnsT2h6/mVYY5BNzuAeptf9n7YsitxSWRrycuxYH2I9jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955335; c=relaxed/simple;
-	bh=E9SmRarCItTobkmH/rVe15gX1XCq55z8ceOX59Bw37E=;
+	s=arc-20240116; t=1739957293; c=relaxed/simple;
+	bh=wpyUJGgwRsuaC/LPo2qOD/qGafYkNI/wDQTOaWz/UBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vat43BWliv87bqMoTEr9jMfKOs0QJ9vtrVR+HX8dp6F0nkXfYgcNYqCFOHacvOSsxVcCYrZchljE3yT1G/UpsFtiCvJ9av37ITkkV/awh6gz3SFUtiSB1Yye1yfWvoBGInGl9U6Z++zFZRgNuxKZ/Wewi05SlJxjDRzjTvBFN5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TepUrBpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AE9C4CED1;
-	Wed, 19 Feb 2025 08:55:34 +0000 (UTC)
+	 MIME-Version; b=Uij4NHbbrb2M9+hwerT2Wp2JlsWRalnYTxUky58noGGxB/wCBpeUxfwmrx3JUivyf0+YX29ycpL3vkOR6T1cAUyhMlNW6wldSdKG9Maoz/AW1t0K4yraOEbBIY3NtlrCaxNh/Zq/k/WBKHDKeVTYIM8iNYBIxqqL7myU95gskhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1eGWNmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340A9C4CED1;
+	Wed, 19 Feb 2025 09:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955335;
-	bh=E9SmRarCItTobkmH/rVe15gX1XCq55z8ceOX59Bw37E=;
+	s=korg; t=1739957293;
+	bh=wpyUJGgwRsuaC/LPo2qOD/qGafYkNI/wDQTOaWz/UBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TepUrBpDFoLxAEFsZMLXjZQ0YGaQlubOU/49YKbXglBeoNff2yg838K5L1YWUhK9i
-	 BenFAWGNvYdg+B4zzpqJ4bWj0jL5ry5r8n2JdWm0l2GC4mEewp370ofyq67sqPZv+V
-	 AI5vgq9gZni1Fv+SWpe7GNzW7uIGx0tLqc6kR00w=
+	b=d1eGWNmEitcbjfS8OSAy0CP07jF2AyNGWdsp1+McoZasY5LlN9tMQJQKgk3Ea8FvZ
+	 EZUSQkwXM1QPghukROAW5jFSb2tzy+BqfsWAFDITrx9BPiMDZgP/diHFLA+M4H11af
+	 H2e4GSCLQs5jW/8h/Lt+8C0O/dIWT6V1OYZIKVjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 162/230] btrfs: fix hole expansion when writing at an offset beyond EOF
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 475/578] gpio: bcm-kona: Fix GPIO lock/unlock for banks above bank 0
 Date: Wed, 19 Feb 2025 09:27:59 +0100
-Message-ID: <20250219082608.033803132@linuxfoundation.org>
+Message-ID: <20250219082711.689940459@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-commit da2dccd7451de62b175fb8f0808d644959e964c7 upstream.
+[ Upstream commit de1d0d160f64ee76df1d364d521b2faf465a091c ]
 
-At btrfs_write_check() if our file's i_size is not sector size aligned and
-we have a write that starts at an offset larger than the i_size that falls
-within the same page of the i_size, then we end up not zeroing the file
-range [i_size, write_offset).
+The GPIO lock/unlock functions clear/write a bit to the relevant
+register for each bank. However, due to an oversight the bit that
+was being written was based on the total GPIO number, not the index
+of the GPIO within the relevant bank, causing it to fail for any
+GPIO above 32 (thus any GPIO for banks above bank 0).
 
-The code is this:
+Fix lock/unlock for these banks by using the correct bit.
 
-    start_pos = round_down(pos, fs_info->sectorsize);
-    oldsize = i_size_read(inode);
-    if (start_pos > oldsize) {
-        /* Expand hole size to cover write data, preventing empty gap */
-        loff_t end_pos = round_up(pos + count, fs_info->sectorsize);
-
-        ret = btrfs_cont_expand(BTRFS_I(inode), oldsize, end_pos);
-        if (ret)
-            return ret;
-    }
-
-So if our file's i_size is 90269 bytes and a write at offset 90365 bytes
-comes in, we get 'start_pos' set to 90112 bytes, which is less than the
-i_size and therefore we don't zero out the range [90269, 90365) by
-calling btrfs_cont_expand().
-
-This is an old bug introduced in commit 9036c10208e1 ("Btrfs: update hole
-handling v2"), from 2008, and the buggy code got moved around over the
-years.
-
-Fix this by discarding 'start_pos' and comparing against the write offset
-('pos') without any alignment.
-
-This bug was recently exposed by test case generic/363 which tests this
-scenario by polluting ranges beyond EOF with an mmap write and than verify
-that after a file increases we get zeroes for the range which is supposed
-to be a hole and not what we wrote with the previous mmaped write.
-
-We're only seeing this exposed now because generic/363 used to run only
-on xfs until last Sunday's fstests update.
-
-The test was failing like this:
-
-   $ ./check generic/363
-   FSTYP         -- btrfs
-   PLATFORM      -- Linux/x86_64 debian0 6.13.0-rc7-btrfs-next-185+ #17 SMP PREEMPT_DYNAMIC Mon Feb  3 12:28:46 WET 2025
-   MKFS_OPTIONS  -- /dev/sdc
-   MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
-
-   generic/363 0s ... [failed, exit status 1]- output mismatch (see /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad)
-#      --- tests/generic/363.out	2025-02-05 15:31:14.013646509 +0000
-#      +++ /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad	2025-02-05 17:25:33.112630781 +0000
-       @@ -1 +1,46 @@
-        QA output created by 363
-       +READ BAD DATA: offset = 0xdcad, size = 0xd921, fname = /home/fdmanana/btrfs-tests/dev/junk
-       +OFFSET      GOOD    BAD     RANGE
-       +0x1609d     0x0000  0x3104  0x0
-       +operation# (mod 256) for the bad data may be 4
-       +0x1609e     0x0000  0x0472  0x1
-       +operation# (mod 256) for the bad data may be 4
-       ...
-       (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/generic/363.out /home/fdmanana/git/hub/xfstests/results//generic/363.out.bad'  to see the entire diff)
-   Ran: generic/363
-   Failures: generic/363
-   Failed 1 of 1 tests
-
-Fixes: 9036c10208e1 ("Btrfs: update hole handling v2")
-CC: stable@vger.kernel.org
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bdb93c03c550 ("gpio: bcm281xx: Centralize register locking")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Markus Mayer <mmayer@broadcom.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-1-409135eab780@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpio/gpio-bcm-kona.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1148,7 +1148,6 @@ int btrfs_write_check(struct kiocb *iocb
- 	loff_t pos = iocb->ki_pos;
- 	int ret;
- 	loff_t oldsize;
--	loff_t start_pos;
+diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+index 70770429ba483..7e8adc5cc15a0 100644
+--- a/drivers/gpio/gpio-bcm-kona.c
++++ b/drivers/gpio/gpio-bcm-kona.c
+@@ -85,11 +85,12 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	u32 val;
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
++	int bit = GPIO_BIT(gpio);
  
- 	/*
- 	 * Quickly bail out on NOWAIT writes if we don't have the nodatacow or
-@@ -1172,9 +1171,8 @@ int btrfs_write_check(struct kiocb *iocb
- 	 */
- 	update_time_for_write(inode);
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
  
--	start_pos = round_down(pos, fs_info->sectorsize);
- 	oldsize = i_size_read(inode);
--	if (start_pos > oldsize) {
-+	if (pos > oldsize) {
- 		/* Expand hole size to cover write data, preventing empty gap */
- 		loff_t end_pos = round_up(pos + count, fs_info->sectorsize);
+ 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val |= BIT(gpio);
++	val |= BIT(bit);
+ 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
  
+ 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
+@@ -101,11 +102,12 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	u32 val;
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
++	int bit = GPIO_BIT(gpio);
+ 
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val &= ~BIT(gpio);
++	val &= ~BIT(bit);
+ 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
+ 
+ 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
+-- 
+2.39.5
+
 
 
 
