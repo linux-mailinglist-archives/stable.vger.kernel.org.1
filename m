@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-118075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C6CA3B9D6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C14DEA3B6D5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15AFA17A4AA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B7E017B3F8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7D71B6D0F;
-	Wed, 19 Feb 2025 09:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDB01C5F30;
+	Wed, 19 Feb 2025 08:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0FsXk3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaFSrFTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBD41A314B;
-	Wed, 19 Feb 2025 09:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9CD1A841F;
+	Wed, 19 Feb 2025 08:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957164; cv=none; b=Citui9ufF+cQ5a64rjO3ym724wd4h6VFCeF0pOsM/bgvKYkw55wpvXFIjdIhxvmdnU4FSoaZu20e8uVNAwx3R+WAQI56fMp5TdMns47n40ib1GsTVUB0A5tlFVJJVgxtjjnc1wco5UAkOu1931pz04eudbslsPHSYv3luvzqu3U=
+	t=1739955493; cv=none; b=q36q9IbsyGNHpdDurXQAJiZps6XLxJvM0DYprafEFcrELBD64/MUwlnQYSkZHJ9J76H1wil2CWgRd+wGsTeQJVovJ17Y/gJfEqZv9bazhZHPNTcQRXKS2QMhImm/NY7hbm6uOzAdG7kYEvDxbFcAJpFJbJl85w6ceMMDLDQnGjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957164; c=relaxed/simple;
-	bh=BhHSkcFLWBIU9R10b15Ssu0Wv7sLtuYe9jhfKHtB0xY=;
+	s=arc-20240116; t=1739955493; c=relaxed/simple;
+	bh=/brVrkQdGmJls25UB6CcMf154mbSA+M7rvV6G/sdWmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzw9TKoVep5zsneCRwakBnQrAK6OrtfuDZEWwDcJ9OrlawDvFEyz/8JR36voxvdjzmCzvSV64zd+6qGRdAMVH75bEK2RXKYrAb53OFIz06wCe+qC9U+27h8tcpR4PwglOVQQNvRtpLA7T9cw7nv0+tHaoN+UylQ0NqcNyNTa6lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0FsXk3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A16C4CED1;
-	Wed, 19 Feb 2025 09:26:03 +0000 (UTC)
+	 MIME-Version; b=FnJNWBB9ArfMUlMUpsjsmDExL9zGkVM8/ptse62Pyi9vZfbjkH0G9AgfXK4AQjt21PlppKrOLDJPcfZz8u0q8D8vpQlATg8Jjud49FWIZaciDRDXzuHDmGf5T/trCJQK6w/ERyiXIBQGC0k2u3dWbeHtEbLPIiuJ8wafVB4s5W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaFSrFTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E8BC4CED1;
+	Wed, 19 Feb 2025 08:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957163;
-	bh=BhHSkcFLWBIU9R10b15Ssu0Wv7sLtuYe9jhfKHtB0xY=;
+	s=korg; t=1739955492;
+	bh=/brVrkQdGmJls25UB6CcMf154mbSA+M7rvV6G/sdWmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0FsXk3c9o3hDqo3PDJoNxfljaQCnhax/wlPTVawfpSaR9+hZ0/YYwYLpxZT/Mn1R
-	 GpVHzs9rBAYFRBnJSrVqWb5linWYES5udQhoFuZ9Fj7miKKSQ/l++yyJLwVgmSJIPk
-	 jQ4OXZalbgrlyin73TKCO//UhHXFA8GsvvjJVnDw=
+	b=xaFSrFTeui89XpCroQ91ORL9SW37NRPm868g8vYWlUKza8g5Zds/ZzRyFU3iRd76M
+	 ENqLokFzbDMD2+mDUHloT3Ix7bWDdH7ncAS1IF+meYng3v80vIfD2Jx5Hq3fU5cfbE
+	 Sa+8o5QY41FXzqbViaCE4viFAKmWXFT79q1g1k3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 431/578] i3c: master: Fix missing ret assignment in set_speed()
-Date: Wed, 19 Feb 2025 09:27:15 +0100
-Message-ID: <20250219082709.967686292@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/152] block: cleanup and fix batch completion adding conditions
+Date: Wed, 19 Feb 2025 09:27:16 +0100
+Message-ID: <20250219082550.951391825@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit b266e0d4dac00eecdfaf50ec3f708fd0c3b39637 upstream.
+[ Upstream commit 1f47ed294a2bd577d5ae43e6e28e1c9a3be4a833 ]
 
-Fix a probe failure in the i3c master driver that occurs when no i3c
-devices are connected to the bus.
+The conditions for whether or not a request is allowed adding to a
+completion batch are a bit hard to read, and they also have a few
+issues. One is that ioerror may indeed be a random value on passthrough,
+and it's being checked unconditionally of whether or not the given
+request is a passthrough request or not.
 
-The issue arises in `i3c_master_bus_init()` where the `ret` value is not
-updated after calling `master->ops->set_speed()`. If no devices are
-present, `ret` remains set to `I3C_ERROR_M2`, causing the code to
-incorrectly proceed to `err_bus_cleanup`.
+Rewrite the conditions to be separate for easier reading, and only check
+ioerror for non-passthrough requests. This fixes an issue with bio
+unmapping on passthrough, where it fails getting added to a batch. This
+both leads to suboptimal performance, and may trigger a potential
+schedule-under-atomic condition for polled passthrough IO.
 
-Cc: stable@vger.kernel.org
-Fixes: aef79e189ba2 ("i3c: master: support to adjust first broadcast address speed")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20250108225533.915334-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f794f3351f26 ("block: add support for blk_mq_end_request_batch()")
+Link: https://lore.kernel.org/r/20575f0a-656e-4bb3-9d82-dec6c7e3a35c@kernel.dk
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/blk-mq.h | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1861,7 +1861,7 @@ static int i3c_master_bus_init(struct i3
- 		goto err_bus_cleanup;
+diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
+index 958ed7e89b301..1d482c2aabbdf 100644
+--- a/include/linux/blk-mq.h
++++ b/include/linux/blk-mq.h
+@@ -849,12 +849,22 @@ static inline bool blk_mq_add_to_batch(struct request *req,
+ 				       void (*complete)(struct io_comp_batch *))
+ {
+ 	/*
+-	 * blk_mq_end_request_batch() can't end request allocated from
+-	 * sched tags
++	 * Check various conditions that exclude batch processing:
++	 * 1) No batch container
++	 * 2) Has scheduler data attached
++	 * 3) Not a passthrough request and end_io set
++	 * 4) Not a passthrough request and an ioerror
+ 	 */
+-	if (!iob || (req->rq_flags & RQF_SCHED_TAGS) || ioerror ||
+-			(req->end_io && !blk_rq_is_passthrough(req)))
++	if (!iob)
+ 		return false;
++	if (req->rq_flags & RQF_SCHED_TAGS)
++		return false;
++	if (!blk_rq_is_passthrough(req)) {
++		if (req->end_io)
++			return false;
++		if (ioerror < 0)
++			return false;
++	}
  
- 	if (master->ops->set_speed) {
--		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
-+		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
- 		if (ret)
- 			goto err_bus_cleanup;
- 	}
+ 	if (!iob->complete)
+ 		iob->complete = complete;
+-- 
+2.39.5
+
 
 
 
