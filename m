@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435C8A3B600
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D272A3B4F1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:50:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4268C17C1D4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 799117A1984
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D8C1DEFD8;
-	Wed, 19 Feb 2025 08:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00311DEFE9;
+	Wed, 19 Feb 2025 08:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7dh33Rz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0rTzl8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23DA1DED4C;
-	Wed, 19 Feb 2025 08:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D641DE3D6;
+	Wed, 19 Feb 2025 08:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955049; cv=none; b=IfrPLghQZSc4sg+d62rlecaBokdRTHcNnMHrCPIuumTi4ahP69S+4s7h+qlm3weTvPmTo317vZEU+ubZMy0IOm5e6wTb9b0myjC9PUbMdTwNgAClZzZvM6VuYcd21zqOHbV6IlJa8uIGxKaSiX3tS2D+N0y1+5UQWhIHW1R4I7k=
+	t=1739954455; cv=none; b=s3ybuAj7pDfhXVK0FqiVPN0AnRyhbEDd+snc+BaEurPgnoihMbjyOs01F8eLkcs93t/aXgWfRnIC53oR4LI2AKDmNiliT51r2+Maow5hDDO8Uswiz3pU05N7Bk2kCyBJZ++Z4IXtCxChsfCwjvXizPD+zX6Wswd98Sot3UPOvco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955049; c=relaxed/simple;
-	bh=bFKRCcsI5tyh14ym3nAkCuP+bsnncrl8iSXhpQiHEK8=;
+	s=arc-20240116; t=1739954455; c=relaxed/simple;
+	bh=U28+zILs9PfA0GvfG1DVbQr95Ra8qlDrLbhW9S+8AK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGTKMEbouW10Dj2h18KcvhPSMDMVHZMSDpC+I7s7eDoCryiQZ2tC34S6QPp5eYjlYE1S2XkFujYqyCXDiLEnqQUCiDxQ4yxExlEIwuybRMDJIH9kXq0dj/YWCKm9BW4jXLkRLV6fXzPlEye7RW89JnHHp40Hl1tbyHjovJ0z96Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7dh33Rz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAD5C4CED1;
-	Wed, 19 Feb 2025 08:50:48 +0000 (UTC)
+	 MIME-Version; b=aTP7ZBZHGT5S+EhG35OCA2tfpHd+j7V/vwEr1i6DRLcgrmWz7rcWvzNnoodN2nKUud2cLAgWH199ChCfuuGxVvru6vZojJTTvokP8wWQOn1Z40paRbFh8jWcDm0VhpikkMdzgfS3Z/7kyWKHeKJhurSsvnpBZ9kIKqyZmiyzwKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0rTzl8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6BEC4CEE7;
+	Wed, 19 Feb 2025 08:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955049;
-	bh=bFKRCcsI5tyh14ym3nAkCuP+bsnncrl8iSXhpQiHEK8=;
+	s=korg; t=1739954455;
+	bh=U28+zILs9PfA0GvfG1DVbQr95Ra8qlDrLbhW9S+8AK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7dh33Rz8+DKKisUVgpXIy0i4HVM3MGrHxmYmE98osLmUYmbgTAI44egxroSD5LRF
-	 PVN5eAA+6Xm80XRbtmXEXa+A0I8tzgcdwyIuKc2EefZODaH2QAvmkvUap+ay1snhG0
-	 84P5BmNXu/9bt8GBTDxMzz3PNu81r8VtOQG6PsCI=
+	b=Y0rTzl8ttGGCF+Tpv1P7JGG/boyMICkBZdtTSgJ3QTMDsHmcWfOakC9gVXKOlslRa
+	 8G3V4PA9/CxODfceYJUdF6gxoTYhNE0ZB8VaiSYSHn+Ml2J9HKxbZljOuC3cgOq3nU
+	 dVOPT1R1Mq+4qWBHxsv5EwLNsnRsvPD1REbViprI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Baoqi Zhang <zhangbaoqi@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 115/230] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
-Date: Wed, 19 Feb 2025 09:27:12 +0100
-Message-ID: <20250219082606.190454396@linuxfoundation.org>
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.13 179/274] iommu: Fix potential memory leak in iopf_queue_remove_device()
+Date: Wed, 19 Feb 2025 09:27:13 +0100
+Message-ID: <20250219082616.592749091@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit e71f7f42e3c874ac3314b8f250e8416a706165af upstream.
+commit 9759ae2cee7cd42b95f1c48aa3749bd02b5ddb08 upstream.
 
-LS7A EHCI controller doesn't have extended capabilities, so the EECP
-(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
-be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
-fixed in future, now just clear the EECP field to avoid error messages
-on boot:
+The iopf_queue_remove_device() helper removes a device from the per-iommu
+iopf queue when PRI is disabled on the device. It responds to all
+outstanding iopf's with an IOMMU_PAGE_RESP_INVALID code and detaches the
+device from the queue.
 
-......
-[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
-[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
-......
-[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
-[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
-......
+However, it fails to release the group structure that represents a group
+of iopf's awaiting for a response after responding to the hardware. This
+can cause a memory leak if iopf_queue_remove_device() is called with
+pending iopf's.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250202124935.480500-1-chenhuacai@loongson.cn
+Fix it by calling iopf_free_group() after the iopf group is responded.
+
+Fixes: 199112327135 ("iommu: Track iopf group instead of last fault")
+Cc: stable@vger.kernel.org
+Suggested-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250117055800.782462-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/pci-quirks.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/iommu/io-pgfault.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/pci-quirks.c
-+++ b/drivers/usb/host/pci-quirks.c
-@@ -958,6 +958,15 @@ static void quirk_usb_disable_ehci(struc
- 	 * booting from USB disk or using a usb keyboard
- 	 */
- 	hcc_params = readl(base + EHCI_HCC_PARAMS);
-+
-+	/* LS7A EHCI controller doesn't have extended capabilities, the
-+	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
-+	 * register should be 0x0 but it reads as 0xa0.  So clear it to
-+	 * avoid error messages on boot.
-+	 */
-+	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
-+		hcc_params &= ~(0xffL << 8);
-+
- 	offset = (hcc_params >> 8) & 0xff;
- 	while (offset && --count) {
- 		pci_read_config_dword(pdev, offset, &cap);
+--- a/drivers/iommu/io-pgfault.c
++++ b/drivers/iommu/io-pgfault.c
+@@ -478,6 +478,7 @@ void iopf_queue_remove_device(struct iop
+ 
+ 		ops->page_response(dev, iopf, &resp);
+ 		list_del_init(&group->pending_node);
++		iopf_free_group(group);
+ 	}
+ 	mutex_unlock(&fault_param->lock);
+ 
 
 
 
