@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AFCA3B4B5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A61A3B604
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E8167A666E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:43:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24B9C7A417B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0491EB1B7;
-	Wed, 19 Feb 2025 08:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED21DE895;
+	Wed, 19 Feb 2025 08:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGIyTNKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaCLc/6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573CB1DE2D8;
-	Wed, 19 Feb 2025 08:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784481A841F;
+	Wed, 19 Feb 2025 08:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954315; cv=none; b=jnW5Xcx3Lfk0cLlVygQS4ixH84cTMYAffYBvjr17dM5G8+tK35mXX2NQy2Y7Uh1JWDvQjQCxv71Oveqsxyy6vcTIfWVRWXxHL3p9SdOssdbPxc/lzSmYWMdARNoTGD1DQPtNZh17MuZEFdzrTOfCmGdwqo5E3KHmN/L23apK9Cs=
+	t=1739955511; cv=none; b=d8Qv+p7T8p+zXcttlct/mnOg0Pjk6QbS12D6E681Kve7jrK4g+S6vQIralcjouukIKXVw5SdHNrsQp+O5ryCqesXXSPgT2b4eh03MxMDm876fpp1KGuG0duPksF+VKv7gE7mDZqaFIwta1pr4GTg9Kb00XajTSVlXoILBmsMBXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954315; c=relaxed/simple;
-	bh=QTJsXJdcXcI0AFsOuM41yeGQWVVidgWWP7bGAIJmOK8=;
+	s=arc-20240116; t=1739955511; c=relaxed/simple;
+	bh=dG3WPuJGNl/djPjBEDjbqqomI2+oSbIJ0+LbugfMNoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooJQcRYt268bH90EUfpm33wzl4jxAIu7wyCY11yIsjc8a2lz0vb4YvDWQW/b1b9Z203BVJpLoujrEu1mcwMp9C31cI7A5/M1kfWMT3dO97Fk19aOWeifxh1LJsgWBmZu3Exq6y6yHOO5LicBHIWQba7Dpv9N6j3GAio2MJS30jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGIyTNKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F2DC4CEE6;
-	Wed, 19 Feb 2025 08:38:34 +0000 (UTC)
+	 MIME-Version; b=kmeuHKbeUiBx8RxrJxY38Vl0lDHq4csV2YPJf6LNc+0TC3SUsoZIrEBm0NAGnKAzdDitEovbQpSztLTFhHx7eNdibTACaOx72shJIBQhWv6seYcNINgnd5t2ingZLNIfvUkeyVNZUca9YM3siEE8Q97GQrNO5ijxoDgzoEdp2Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaCLc/6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB68C4CEE6;
+	Wed, 19 Feb 2025 08:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954315;
-	bh=QTJsXJdcXcI0AFsOuM41yeGQWVVidgWWP7bGAIJmOK8=;
+	s=korg; t=1739955511;
+	bh=dG3WPuJGNl/djPjBEDjbqqomI2+oSbIJ0+LbugfMNoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGIyTNKozz+qvLgVrpvEN/zrNiHzl4zir2ti69QKYBWgT9QQGCFvXFcmFZc+NvD2f
-	 bOqC6pOOBTBVq1YG/luZdei0deyqQTRcmLT6Vdds+phaUFEz33boIdiDTPyGs00mRG
-	 iHrdTgxuvZzVpn45klMkJm4LzvQVZRorb3dTuuEI=
+	b=TaCLc/6wZBAzBp/3zQrHMmEWBPcZ4ExkPxMWb+DwD1ZDTjnZ5t0E5gnMuE0I2kgyX
+	 694odN+CKch55nMDS0lRFKnui72j1xJEq070dzl5IuCnEqTiaKFm9omi2o/vT36Uf8
+	 ZVukMQ9RpmZsBm+19wENnZz9a86fC/tK+rjZ4kg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.13 165/274] serial: port: Assign ->iotype correctly when ->iobase is set
+	Kohei Ito <ito.kohei@socionext.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 006/152] spi: sn-f-ospi: Fix division by zero
 Date: Wed, 19 Feb 2025 09:26:59 +0100
-Message-ID: <20250219082616.052648145@linuxfoundation.org>
+Message-ID: <20250219082550.277119781@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 166ac2bba167d575e7146beaa66093bc7c072f43 upstream.
+[ Upstream commit 3588b1c0fde2f58d166e3f94a5a58d64b893526c ]
 
-Currently the ->iotype is always assigned to the UPIO_MEM when
-the respective property is not found. However, this will not
-support the cases when user wants to have UPIO_PORT to be set
-or preserved.  Support this scenario by checking ->iobase value
-and default the ->iotype respectively.
+When there is no dummy cycle in the spi-nor commands, both dummy bus cycle
+bytes and width are zero. Because of the cpu's warning when divided by
+zero, the warning should be avoided. Return just zero to avoid such
+calculations.
 
-Fixes: 1117a6fdc7c1 ("serial: 8250_of: Switch to use uart_read_port_properties()")
-Fixes: e894b6005dce ("serial: port: Introduce a common helper to read properties")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250124161530.398361-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b74dd64c861 ("spi: Add Socionext F_OSPI SPI flash controller driver")
+Co-developed-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kohei Ito <ito.kohei@socionext.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://patch.msgid.link/20250206085747.3834148-1-hayashi.kunihiko@socionext.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_port.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sn-f-ospi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/serial_port.c
-+++ b/drivers/tty/serial/serial_port.c
-@@ -173,6 +173,7 @@ EXPORT_SYMBOL(uart_remove_one_port);
-  * The caller is responsible to initialize the following fields of the @port
-  *   ->dev (must be valid)
-  *   ->flags
-+ *   ->iobase
-  *   ->mapbase
-  *   ->mapsize
-  *   ->regshift (if @use_defaults is false)
-@@ -214,7 +215,7 @@ static int __uart_read_properties(struct
- 	/* Read the registers I/O access type (default: MMIO 8-bit) */
- 	ret = device_property_read_u32(dev, "reg-io-width", &value);
- 	if (ret) {
--		port->iotype = UPIO_MEM;
-+		port->iotype = port->iobase ? UPIO_PORT : UPIO_MEM;
- 	} else {
- 		switch (value) {
- 		case 1:
+diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
+index a7c3b3923b4af..fd8c8eb37d01d 100644
+--- a/drivers/spi/spi-sn-f-ospi.c
++++ b/drivers/spi/spi-sn-f-ospi.c
+@@ -116,6 +116,9 @@ struct f_ospi {
+ 
+ static u32 f_ospi_get_dummy_cycle(const struct spi_mem_op *op)
+ {
++	if (!op->dummy.nbytes)
++		return 0;
++
+ 	return (op->dummy.nbytes * 8) / op->dummy.buswidth;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
