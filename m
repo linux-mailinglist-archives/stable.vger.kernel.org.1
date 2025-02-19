@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-117744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C144A3B862
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:24:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A36A3B7B8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93BE3161EFE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C8DA7A3A50
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6711DF25A;
-	Wed, 19 Feb 2025 09:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96261DF277;
+	Wed, 19 Feb 2025 09:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZ/VCa17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of7CuJny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD60013FD86;
-	Wed, 19 Feb 2025 09:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFE1DF265;
+	Wed, 19 Feb 2025 09:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956213; cv=none; b=IaNF6yFp+sr86EfNXS6pW5jWhn/eADMPD2txsk39iXdl0H/wxYoReCxi5tsqZ5SQnW3VnN2DsYUIiiuO3SWpiXp1xQ61Sh8d6yCF1YkMJG6jfuwnXtJG6u6wUNCffJGS7weGHNUfjqJNtgXHHQdkxq1yQ0OoSbk3CKmxd7So390=
+	t=1739956229; cv=none; b=C0ZgVwj7yO8MaYm7kruTdlP3hUMNFbpSLcQfBYieRB9sNEzJwlmVNWRynDp+jaXnUY7qX7YmsO5td0fUqBecCUU5mDC1jdo1HfI4gD1j7pMTm1LQAJU8nJiVupdC2mfZ/CSFd/Ds32j1DnpjqeDyCUlF78I2pVWDnIV5IVJw8nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956213; c=relaxed/simple;
-	bh=ncKzvr9jyKwMCoKVRWOKuqtlffOVUqM20zNzzPDfbSs=;
+	s=arc-20240116; t=1739956229; c=relaxed/simple;
+	bh=uKRfEsiv1bRaFc+ZxLdZFuNQdGMrmVthX7rAbewuOYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mz8RXX+m67xRoxNN9Y9WbvFE0gxPdwZS1gurReWZVM1gr3s+y62Lkt9A6/Vqq2fBt07Q9860ZisDJ+u4qYDZocim121Dyv4W3vEZv35bFFKRPxpmNqb2dgde/fH8BzyviXY2Pa3kcZujEzyAkBKGm2d6g+2LmUMcqvB722a+VrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZ/VCa17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D3BC4CED1;
-	Wed, 19 Feb 2025 09:10:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MwBg97eyyLq+2zJ+IHpVubRL7gvD9500vwiA3chS5wIzoN4WzAqFKzeh1bhRNQiuuMTk9mKiRUxk7lRZ81d3HDMe2mRtAx2YEyztBPzdyhudkTxGBgyXL0DpTj8ezShDkvVqIzrY5EdpI9wHvnW6Hr4K2YMAQvisvnJJhB6PQA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of7CuJny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5297C4CEE6;
+	Wed, 19 Feb 2025 09:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956212;
-	bh=ncKzvr9jyKwMCoKVRWOKuqtlffOVUqM20zNzzPDfbSs=;
+	s=korg; t=1739956229;
+	bh=uKRfEsiv1bRaFc+ZxLdZFuNQdGMrmVthX7rAbewuOYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZ/VCa171j5ep3L2IQmNyzHNW2xP6DIGwHBQy2pt2flYtcMaqiMXKlWyi1z1G8PH3
-	 FYrcjZf6Cgg7kAlSfIGwA1gTMJqU4dsZ9s17g3WApoo0nsLFzri+ALnGYq6ooYf2KT
-	 IKLdKmataWB7bWjK8EQvcCjvKyCyGhgnW2WJiC+0=
+	b=of7CuJnyg0hMdZ/pM0pBvNTdPLAJFM8N2cJdnZC70SbE51rImkEAIwm6fpH0NArUH
+	 807P7lg2o+G/7P8ZoT2lb4R0UbABeSZMomup+gZfWm9TyDhISyZSnBsj6f+h2pTcn7
+	 aT11W9a4avphzjj/IET5141VwWrb+N5mnfVvo5ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Will McVicker <willmcvicker@google.com>,
-	Pankaj Dubey <pankaj.dubey@samsung.com>,
-	Lee Jones <lee@kernel.org>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/578] mfd: syscon: Fix race in device_node_get_regmap()
-Date: Wed, 19 Feb 2025 09:21:20 +0100
-Message-ID: <20250219082655.878496617@linuxfoundation.org>
+Subject: [PATCH 6.1 077/578] samples/landlock: Fix possible NULL dereference in parse_path()
+Date: Wed, 19 Feb 2025 09:21:21 +0100
+Message-ID: <20250219082655.917659052@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -63,129 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 805f7aaf7fee14a57b56af01d270edf6c10765e8 ]
+[ Upstream commit 078bf9438a31567e2c0587159ccefde835fb1ced ]
 
-It is possible for multiple, simultaneous callers calling
-device_node_get_regmap() with the same node to fail to find an entry in
-the syscon_list. There is a period of time while the first caller is
-calling of_syscon_register() that subsequent callers also fail to find
-an entry in the syscon_list and then call of_syscon_register() a second
-time.
+malloc() may return NULL, leading to NULL dereference.  Add a NULL
+check.
 
-Fix this by keeping the lock held until after of_syscon_register()
-completes and adds the node to syscon_list. Convert the spinlock to a
-mutex as many of the functions called in of_syscon_register() such as
-kzalloc() and of_clk_get() may sleep.
-
-Fixes: bdb0066df96e ("mfd: syscon: Decouple syscon interface from platform devices")
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Tested-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Reviewed-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Link: https://lore.kernel.org/r/20241217-syscon-fixes-v2-1-4f56d750541d@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ba84b0bf5a16 ("samples/landlock: Add a sandbox manager example")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://lore.kernel.org/r/20241128032955.11711-1-zichenxie0106@gmail.com
+[mic: Simplify fix]
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ samples/landlock/sandboxer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index cc7b07882fee4..8302cd63a73d0 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -15,6 +15,7 @@
- #include <linux/io.h>
- #include <linux/init.h>
- #include <linux/list.h>
-+#include <linux/mutex.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_platform.h>
-@@ -26,7 +27,7 @@
- 
- static struct platform_driver syscon_driver;
- 
--static DEFINE_SPINLOCK(syscon_list_slock);
-+static DEFINE_MUTEX(syscon_list_lock);
- static LIST_HEAD(syscon_list);
- 
- struct syscon {
-@@ -51,6 +52,8 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
- 	struct regmap_config syscon_config = syscon_regmap_config;
- 	struct resource res;
- 
-+	WARN_ON(!mutex_is_locked(&syscon_list_lock));
-+
- 	struct syscon *syscon __free(kfree) = kzalloc(sizeof(*syscon), GFP_KERNEL);
- 	if (!syscon)
- 		return ERR_PTR(-ENOMEM);
-@@ -131,9 +134,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
- 	syscon->regmap = regmap;
- 	syscon->np = np;
- 
--	spin_lock(&syscon_list_slock);
- 	list_add_tail(&syscon->list, &syscon_list);
--	spin_unlock(&syscon_list_slock);
- 
- 	return_ptr(syscon);
- 
-@@ -152,7 +153,7 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
- {
- 	struct syscon *entry, *syscon = NULL;
- 
--	spin_lock(&syscon_list_slock);
-+	mutex_lock(&syscon_list_lock);
- 
- 	list_for_each_entry(entry, &syscon_list, list)
- 		if (entry->np == np) {
-@@ -160,11 +161,11 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
- 			break;
+diff --git a/samples/landlock/sandboxer.c b/samples/landlock/sandboxer.c
+index f29bb3c722307..ce9b77bc167b1 100644
+--- a/samples/landlock/sandboxer.c
++++ b/samples/landlock/sandboxer.c
+@@ -65,6 +65,9 @@ static int parse_path(char *env_path, const char ***const path_list)
  		}
- 
--	spin_unlock(&syscon_list_slock);
--
- 	if (!syscon)
- 		syscon = of_syscon_register(np, check_clk);
- 
-+	mutex_unlock(&syscon_list_lock);
+ 	}
+ 	*path_list = malloc(num_paths * sizeof(**path_list));
++	if (!*path_list)
++		return -1;
 +
- 	if (IS_ERR(syscon))
- 		return ERR_CAST(syscon);
+ 	for (i = 0; i < num_paths; i++)
+ 		(*path_list)[i] = strsep(&env_path, ENV_PATH_TOKEN);
  
-@@ -195,7 +196,7 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
- 		return -ENOMEM;
- 
- 	/* check if syscon entry already exists */
--	spin_lock(&syscon_list_slock);
-+	mutex_lock(&syscon_list_lock);
- 
- 	list_for_each_entry(entry, &syscon_list, list)
- 		if (entry->np == np) {
-@@ -208,12 +209,12 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
- 
- 	/* register the regmap in syscon list */
- 	list_add_tail(&syscon->list, &syscon_list);
--	spin_unlock(&syscon_list_slock);
-+	mutex_unlock(&syscon_list_lock);
- 
- 	return 0;
- 
- err_unlock:
--	spin_unlock(&syscon_list_slock);
-+	mutex_unlock(&syscon_list_lock);
- 	kfree(syscon);
- 	return ret;
- }
+@@ -99,6 +102,10 @@ static int populate_ruleset(const char *const env_var, const int ruleset_fd,
+ 	env_path_name = strdup(env_path_name);
+ 	unsetenv(env_var);
+ 	num_paths = parse_path(env_path_name, &path_list);
++	if (num_paths < 0) {
++		fprintf(stderr, "Failed to allocate memory\n");
++		goto out_free_name;
++	}
+ 	if (num_paths == 1 && path_list[0][0] == '\0') {
+ 		/*
+ 		 * Allows to not use all possible restrictions (e.g. use
 -- 
 2.39.5
 
