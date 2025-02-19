@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-118135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E490A3B9B4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFA6A3B63C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 621BD7A7BE9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9627C189CE6E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270D11DFE10;
-	Wed, 19 Feb 2025 09:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A671DFE1D;
+	Wed, 19 Feb 2025 08:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eq+s4bL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcxFU3Gx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60851D88DB;
-	Wed, 19 Feb 2025 09:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79B11C548C;
+	Wed, 19 Feb 2025 08:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957336; cv=none; b=MMDSEI+6HpCH29EHYCFemRd1bx94d87pZbSREDuNs+FY4jh2TEFnWEbNWoX/BxhdFjg3xehygVywA33ymD7eD47Y9pwzxHIsNBLDLXRS4bPbMKdY5ZOmrLYKq5Zao0R5mZtTYKBZrjEfPO30XtHqLz4Tqm/o/vyRWOZ3cqVpaRs=
+	t=1739955139; cv=none; b=Z1goWKFKGuXmN3dDp61QwTeD2eRULJ63MUrab1MZCIBwm3JJom0do92XdLl95P8dZgWnfwxFi6pzU1Y1qjKQsk/HQfwiuBOkUOibiEQ4LOZibjXRlA33zd8+88Obd6w9EPPWqPOBi3xJ2aICcGQul7veztyqXIYOZ5xmdLx6e7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957336; c=relaxed/simple;
-	bh=uzmmus7CYBAIE+f6BB0oY8hUxc3UM/DZZ7ZkLjhzsNI=;
+	s=arc-20240116; t=1739955139; c=relaxed/simple;
+	bh=ESpRhYCsiy3ZWyBFbLv87br8InwiUFzxwqSxHoLLUY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpiUe8qjfTGFBL1G9u5xefRnuZmC3t/2LnwsjX5LISjs9GcSPRqvIcXL50OixvpSPhnWTZlaiORXqMtskkRGy9EDBJskjE3rLlDRR+miqX9QUmgr+Xe9Ugd2Qa5hQdDrUbgPC4sIw2M0vzBm1MxuTte7zZtK7OTYAnWlKRp3aP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eq+s4bL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D394C4CED1;
-	Wed, 19 Feb 2025 09:28:56 +0000 (UTC)
+	 MIME-Version; b=Ae0VAFGsE7dy3Ylg53q4IRqYvT4P1vhzHkyBiOClOKn2sgkdP85wuTuE/8F5x4ldKX5bKNYwyPU/S1quU8rFQ6fUTqvvXTYMeOFEao9RBuXGP9LAuK75kGQS0WtgD1KHB+8OUPuP+SZ8/9Yunvn+IOtnpmsm/V5YJ5ImEuNIN2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcxFU3Gx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DADDC4CED1;
+	Wed, 19 Feb 2025 08:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957336;
-	bh=uzmmus7CYBAIE+f6BB0oY8hUxc3UM/DZZ7ZkLjhzsNI=;
+	s=korg; t=1739955138;
+	bh=ESpRhYCsiy3ZWyBFbLv87br8InwiUFzxwqSxHoLLUY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eq+s4bLnr0G/PcJErSKqdJN3B4naWV/4ziaZTiGZq2taembfVoNoYLRT4/DGgqRY
-	 Xn/f7XIwh8SG1Mq5lP8NyCRJg0bfOvTNlY++q/ySQAkSuZhVdWqZf8KtFcEVon7Fq+
-	 /M7AWcpIZ7Galta1SHNVXxWsjBSQg7OsSf7NdeRo=
+	b=jcxFU3GxdvMLDk0Q6RCaacwmw2C475YQrl7Z0UHoDYCJGnBPb/MTPEqkJSyiy6jas
+	 yDC/H7SL3Q9VZl1ynQ3dsryKaX8Sv0d8yqRvPiyfrxVJ6lvrFVvk+51vW1sGTf5c6m
+	 Rc5XBMSkNICVdr0Q8vwhfRR/cwsULD1/ynXfWHBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 458/578] maple_tree: simplify split calculation
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 6.12 145/230] serial: 8250: Fix fifo underflow on flush
 Date: Wed, 19 Feb 2025 09:27:42 +0100
-Message-ID: <20250219082711.023421388@linuxfoundation.org>
+Message-ID: <20250219082607.360150815@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-commit 4f6a6bed0bfef4b966f076f33eb4f5547226056a upstream.
+commit 9e512eaaf8f4008c44ede3dfc0fbc9d9c5118583 upstream.
 
-Patch series "simplify split calculation", v3.
+When flushing the serial port's buffer, uart_flush_buffer() calls
+kfifo_reset() but if there is an outstanding DMA transfer then the
+completion function will consume data from the kfifo via
+uart_xmit_advance(), underflowing and leading to ongoing DMA as the
+driver tries to transmit another 2^32 bytes.
 
+This is readily reproduced with serial-generic and amidi sending even
+short messages as closing the device on exit will wait for the fifo to
+drain and in the underflow case amidi hangs for 30 seconds on exit in
+tty_wait_until_sent().  A trace of that gives:
 
-This patch (of 3):
+     kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
+           amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
+ irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
+ irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
+ irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
+ irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
+ irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
 
-The current calculation for splitting nodes tries to enforce a minimum
-span on the leaf nodes.  This code is complex and never worked correctly
-to begin with, due to the min value being passed as 0 for all leaves.
+Since the port lock is held in when the kfifo is reset in
+uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
+hook to adjust the outstanding DMA byte count is sufficient to avoid the
+kfifo underflow.
 
-The calculation should just split the data as equally as possible
-between the new nodes.  Note that b_end will be one more than the data,
-so the left side is still favoured in the calculation.
-
-The current code may also lead to a deficient node by not leaving enough
-data for the right side of the split. This issue is also addressed with
-the split calculation change.
-
-[Liam.Howlett@Oracle.com: rephrase the change log]
-Link: https://lkml.kernel.org/r/20241113031616.10530-1-richard.weiyang@gmail.com
-Link: https://lkml.kernel.org/r/20241113031616.10530-2-richard.weiyang@gmail.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+Cc: stable <stable@kernel.org>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://lore.kernel.org/r/20250208124148.1189191-1-jkeeping@inmusicbrands.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c |   23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ drivers/tty/serial/8250/8250.h      |    2 ++
+ drivers/tty/serial/8250/8250_dma.c  |   16 ++++++++++++++++
+ drivers/tty/serial/8250/8250_port.c |    9 +++++++++
+ 3 files changed, 27 insertions(+)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1890,11 +1890,11 @@ static inline int mab_no_null_split(stru
-  * Return: The first split location.  The middle split is set in @mid_split.
-  */
- static inline int mab_calc_split(struct ma_state *mas,
--	 struct maple_big_node *bn, unsigned char *mid_split, unsigned long min)
-+	 struct maple_big_node *bn, unsigned char *mid_split)
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -374,6 +374,7 @@ static inline int is_omap1510_8250(struc
+ 
+ #ifdef CONFIG_SERIAL_8250_DMA
+ extern int serial8250_tx_dma(struct uart_8250_port *);
++extern void serial8250_tx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_rx_dma(struct uart_8250_port *);
+ extern void serial8250_rx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_request_dma(struct uart_8250_port *);
+@@ -406,6 +407,7 @@ static inline int serial8250_tx_dma(stru
  {
- 	unsigned char b_end = bn->b_end;
- 	int split = b_end / 2; /* Assume equal split. */
--	unsigned char slot_min, slot_count = mt_slots[bn->type];
-+	unsigned char slot_count = mt_slots[bn->type];
- 
- 	/*
- 	 * To support gap tracking, all NULL entries are kept together and a node cannot
-@@ -1927,18 +1927,7 @@ static inline int mab_calc_split(struct
- 		split = b_end / 3;
- 		*mid_split = split * 2;
- 	} else {
--		slot_min = mt_min_slots[bn->type];
--
- 		*mid_split = 0;
--		/*
--		 * Avoid having a range less than the slot count unless it
--		 * causes one node to be deficient.
--		 * NOTE: mt_min_slots is 1 based, b_end and split are zero.
--		 */
--		while ((split < slot_count - 1) &&
--		       ((bn->pivot[split] - min) < slot_count - 1) &&
--		       (b_end - split > slot_min))
--			split++;
- 	}
- 
- 	/* Avoid ending a node on a NULL entry */
-@@ -2664,7 +2653,7 @@ static inline struct maple_enode
- static inline unsigned char mas_mab_to_node(struct ma_state *mas,
- 	struct maple_big_node *b_node, struct maple_enode **left,
- 	struct maple_enode **right, struct maple_enode **middle,
--	unsigned char *mid_split, unsigned long min)
-+	unsigned char *mid_split)
+ 	return -1;
+ }
++static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
+ static inline int serial8250_rx_dma(struct uart_8250_port *p)
  {
- 	unsigned char split = 0;
- 	unsigned char slot_count = mt_slots[b_node->type];
-@@ -2677,7 +2666,7 @@ static inline unsigned char mas_mab_to_n
- 	if (b_node->b_end < slot_count) {
- 		split = b_node->b_end;
- 	} else {
--		split = mab_calc_split(mas, b_node, mid_split, min);
-+		split = mab_calc_split(mas, b_node, mid_split);
- 		*right = mas_new_ma_node(mas, b_node);
- 	}
+ 	return -1;
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -149,6 +149,22 @@ err:
+ 	return ret;
+ }
  
-@@ -3076,7 +3065,7 @@ static int mas_spanning_rebalance(struct
- 		mast->bn->b_end--;
- 		mast->bn->type = mte_node_type(mast->orig_l->node);
- 		split = mas_mab_to_node(mas, mast->bn, &left, &right, &middle,
--					&mid_split, mast->orig_l->min);
-+					&mid_split);
- 		mast_set_split_parents(mast, left, middle, right, split,
- 				       mid_split);
- 		mast_cp_to_nodes(mast, left, middle, right, split, mid_split);
-@@ -3591,7 +3580,7 @@ static int mas_split(struct ma_state *ma
- 		if (mas_push_data(mas, height, &mast, false))
- 			break;
++void serial8250_tx_dma_flush(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	if (!dma->tx_running)
++		return;
++
++	/*
++	 * kfifo_reset() has been called by the serial core, avoid
++	 * advancing and underflowing in __dma_tx_complete().
++	 */
++	dma->tx_size = 0;
++
++	dmaengine_terminate_async(dma->rxchan);
++}
++
+ int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	struct uart_8250_dma		*dma = p->dma;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2524,6 +2524,14 @@ static void serial8250_shutdown(struct u
+ 		serial8250_do_shutdown(port);
+ }
  
--		split = mab_calc_split(mas, b_node, &mid_split, prev_l_mas.min);
-+		split = mab_calc_split(mas, b_node, &mid_split);
- 		mast_split_data(&mast, mas, split);
- 		/*
- 		 * Usually correct, mab_mas_cp in the above call overwrites
++static void serial8250_flush_buffer(struct uart_port *port)
++{
++	struct uart_8250_port *up = up_to_u8250p(port);
++
++	if (up->dma)
++		serial8250_tx_dma_flush(up);
++}
++
+ static unsigned int serial8250_do_get_divisor(struct uart_port *port,
+ 					      unsigned int baud,
+ 					      unsigned int *frac)
+@@ -3207,6 +3215,7 @@ static const struct uart_ops serial8250_
+ 	.break_ctl	= serial8250_break_ctl,
+ 	.startup	= serial8250_startup,
+ 	.shutdown	= serial8250_shutdown,
++	.flush_buffer	= serial8250_flush_buffer,
+ 	.set_termios	= serial8250_set_termios,
+ 	.set_ldisc	= serial8250_set_ldisc,
+ 	.pm		= serial8250_pm,
 
 
 
