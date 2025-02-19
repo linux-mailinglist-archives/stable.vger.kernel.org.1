@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2120A3B6B7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0B1A3B797
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33DBC162710
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08E2B17F559
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77FE1EB1A2;
-	Wed, 19 Feb 2025 08:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726671DC04A;
+	Wed, 19 Feb 2025 09:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndGAAIhs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWqGY/Z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A381EB19D;
-	Wed, 19 Feb 2025 08:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FCD1D90D9;
+	Wed, 19 Feb 2025 09:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955308; cv=none; b=QdvU/UWeli9Ly7J16COu5wy0mWFrhVTBXd/6a4VGKzftnB5SICDZcvmi3xMpjbtdQewlwN0f62w3Byid7D2h0b+nU0ssMwno3/7vdskiI5xtEfh4FQLVw2W6jfn38G/ABhqXF2n3jlibLct3Ei0LjAGX1SsMPMXMb9FB8/Vu57U=
+	t=1739955827; cv=none; b=nW5xWESVm3zIQpBgVOe7mwU4p0b+r/jp9DYr047wARucwSnf+y8LgRwsE0qX99CHwTbZwtbopHPDwyc5oSJ1oNa90d0P6hhz0wJ9XxcKMDXLJSU8/acQeErNdB0+hphGKsUAj1KQjYWlMhXOXqRbaCJ5gIwBpErhF0lPapba1b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955308; c=relaxed/simple;
-	bh=EJFN7g/9tE+rCmW5MaM+xHDF2YnLzoju2U+HswUqgwY=;
+	s=arc-20240116; t=1739955827; c=relaxed/simple;
+	bh=Q9a3zzWjYqVZXHTDz13PL+w8CeUTvfYa92InAZKJyq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FaVNx1Eb6MThrxwpOE8d669pbhyP61w0YlaTTtwL24KIIuDv8DhkFZFQf14F7SKy7rxDm6XT46/+q3csYUay2mH3xzapESgn4iuWL4qrZ7rfjgdBwZXCZkuqAahoRyuPikuIHQI/zsSGXWEqGoVU4Sor54kHseEu8O/eJlGjFJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndGAAIhs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A538CC4CEE6;
-	Wed, 19 Feb 2025 08:55:07 +0000 (UTC)
+	 MIME-Version; b=ukcBtHl54NIAahzxCBP1QUQSDt9id0M+7W1RTkN3HcB2mPW1ecmN5UVE48RnuZUZHSPwNFODfBRxaWnRRME0MnXzDnFggWOpXkFbed1faB6u485CbACkaxwPSqVQ6plBsdk3WOjUBRcrgHYpz9Bsop+hKUSaaRamagP5LfuezUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWqGY/Z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCFFC4CED1;
+	Wed, 19 Feb 2025 09:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955308;
-	bh=EJFN7g/9tE+rCmW5MaM+xHDF2YnLzoju2U+HswUqgwY=;
+	s=korg; t=1739955827;
+	bh=Q9a3zzWjYqVZXHTDz13PL+w8CeUTvfYa92InAZKJyq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndGAAIhsPb0Ga5rYtccWnGCcf795l++S3YAErpigmKIJ5wKmkqFEFHKOV5JiK/zRw
-	 i7/4CFlwG6wIMn4GvTna3IPMaWsxUpMDqDqT+LtZHA5VAe4A4N3c6vSVcrKAyYGHsy
-	 BxTuP0hnj3IMfv0LbmUYMdPDE27g4s7QdXSLs3QI=
+	b=uWqGY/Z/ndov9x7oF5MCSWDm947s7djPXyDoP6Wkcr4USoQVGqKIOvJH9rXXzpwsE
+	 AKp36ucvzarfCbxW7ksBskyZV77BCZaf/54ZIecbTqQZI067LlNnowQ69o7n41W29U
+	 uf9iiKx7wYGTRhPzSCFJDYDEXRAD3koL7UssrQIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/230] HID: hid-steam: Move hidraw input (un)registering to work
+Subject: [PATCH 6.6 099/152] ipv4: add RCU protection to ip4_dst_hoplimit()
 Date: Wed, 19 Feb 2025 09:28:32 +0100
-Message-ID: <20250219082609.326523291@linuxfoundation.org>
+Message-ID: <20250219082553.975726891@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 79504249d7e27cad4a3eeb9afc6386e418728ce0 ]
+[ Upstream commit 469308552ca4560176cfc100e7ca84add1bebd7c ]
 
-Due to an interplay between locking in the input and hid transport subsystems,
-attempting to register or deregister the relevant input devices during the
-hidraw open/close events can lead to a lock ordering issue. Though this
-shouldn't cause a deadlock, this commit moves the input device manipulation to
-deferred work to sidestep the issue.
+ip4_dst_hoplimit() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-Fixes: 385a4886778f6 ("HID: steam: remove input device when a hid client is running.")
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: fa50d974d104 ("ipv4: Namespaceify ip_default_ttl sysctl knob")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-steam.c | 38 +++++++++++++++++++++++++++++++-------
- 1 file changed, 31 insertions(+), 7 deletions(-)
+ include/net/route.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index daca250e51c8b..7b35966898785 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -313,6 +313,7 @@ struct steam_device {
- 	u16 rumble_left;
- 	u16 rumble_right;
- 	unsigned int sensor_timestamp_us;
-+	struct work_struct unregister_work;
- };
- 
- static int steam_recv_report(struct steam_device *steam,
-@@ -1072,6 +1073,31 @@ static void steam_mode_switch_cb(struct work_struct *work)
- 	}
- }
- 
-+static void steam_work_unregister_cb(struct work_struct *work)
-+{
-+	struct steam_device *steam = container_of(work, struct steam_device,
-+							unregister_work);
-+	unsigned long flags;
-+	bool connected;
-+	bool opened;
-+
-+	spin_lock_irqsave(&steam->lock, flags);
-+	opened = steam->client_opened;
-+	connected = steam->connected;
-+	spin_unlock_irqrestore(&steam->lock, flags);
-+
-+	if (connected) {
-+		if (opened) {
-+			steam_sensors_unregister(steam);
-+			steam_input_unregister(steam);
-+		} else {
-+			steam_set_lizard_mode(steam, lizard_mode);
-+			steam_input_register(steam);
-+			steam_sensors_register(steam);
-+		}
-+	}
-+}
-+
- static bool steam_is_valve_interface(struct hid_device *hdev)
+diff --git a/include/net/route.h b/include/net/route.h
+index 51a45b1887b56..0171e9e1bbea3 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -357,10 +357,15 @@ static inline int inet_iif(const struct sk_buff *skb)
+ static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
  {
- 	struct hid_report_enum *rep_enum;
-@@ -1117,8 +1143,7 @@ static int steam_client_ll_open(struct hid_device *hdev)
- 	steam->client_opened++;
- 	spin_unlock_irqrestore(&steam->lock, flags);
+ 	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
+-	struct net *net = dev_net(dst->dev);
  
--	steam_sensors_unregister(steam);
--	steam_input_unregister(steam);
-+	schedule_work(&steam->unregister_work);
- 
- 	return 0;
- }
-@@ -1135,11 +1160,7 @@ static void steam_client_ll_close(struct hid_device *hdev)
- 	connected = steam->connected && !steam->client_opened;
- 	spin_unlock_irqrestore(&steam->lock, flags);
- 
--	if (connected) {
--		steam_set_lizard_mode(steam, lizard_mode);
--		steam_input_register(steam);
--		steam_sensors_register(steam);
--	}
-+	schedule_work(&steam->unregister_work);
+-	if (hoplimit == 0)
++	if (hoplimit == 0) {
++		const struct net *net;
++
++		rcu_read_lock();
++		net = dev_net_rcu(dst->dev);
+ 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
++		rcu_read_unlock();
++	}
+ 	return hoplimit;
  }
  
- static int steam_client_ll_raw_request(struct hid_device *hdev,
-@@ -1231,6 +1252,7 @@ static int steam_probe(struct hid_device *hdev,
- 	INIT_LIST_HEAD(&steam->list);
- 	INIT_WORK(&steam->rumble_work, steam_haptic_rumble_cb);
- 	steam->sensor_timestamp_us = 0;
-+	INIT_WORK(&steam->unregister_work, steam_work_unregister_cb);
- 
- 	/*
- 	 * With the real steam controller interface, do not connect hidraw.
-@@ -1291,6 +1313,7 @@ static int steam_probe(struct hid_device *hdev,
- 	cancel_work_sync(&steam->work_connect);
- 	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->rumble_work);
-+	cancel_work_sync(&steam->unregister_work);
- 
- 	return ret;
- }
-@@ -1307,6 +1330,7 @@ static void steam_remove(struct hid_device *hdev)
- 	cancel_delayed_work_sync(&steam->mode_switch);
- 	cancel_work_sync(&steam->work_connect);
- 	cancel_work_sync(&steam->rumble_work);
-+	cancel_work_sync(&steam->unregister_work);
- 	hid_destroy_device(steam->client_hdev);
- 	steam->client_hdev = NULL;
- 	steam->client_opened = 0;
 -- 
 2.39.5
 
