@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-118082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49721A3B9F3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5CCA3B6FF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345E48008B3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC4218846FB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958D71D47A2;
-	Wed, 19 Feb 2025 09:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1D1D6DAD;
+	Wed, 19 Feb 2025 08:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIqAvEpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3lHimM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497A11CAA86;
-	Wed, 19 Feb 2025 09:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A321A314B;
+	Wed, 19 Feb 2025 08:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957184; cv=none; b=VD8BiBnhLQg1uO1sOvB5CiOdee+3ycB/MmwlvhVba+lZHp5AeIW7IPTlwgpaLfXZYHg5mukGwhbilV59oBwNDFhunkPXzS0pr5PKnuxZsKqFKsxTpjuEkNt2RlSyiVHKvVEpeYNRwimWEYfXk7aLJmxMXmiiwL5kQorae3XsAkY=
+	t=1739955567; cv=none; b=aehUwYI64uVrx5ZNIWEyPhZeZu9GG6IxcSwb2YL4moRxHb7oxIWBTUIOC/VRSDjC0nvWPGwN83pFHkH69x9RyZGtCcwhIrhcJ5R/ouV+Ht4RBGxUitYipnweiA92BTXp8nzE8fFZ/qK4M4N+uqUfV4XETPajwdm9qGFM9E0jfl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957184; c=relaxed/simple;
-	bh=ZYeUZp6wk2F4GBk82U2MKJ7mbwmyY+wlovXtpaEp7Ag=;
+	s=arc-20240116; t=1739955567; c=relaxed/simple;
+	bh=pTilOpqQoYvzHzQQaHODtaEDh22dDquQ5igl/7wKL2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCn4FbExQ9cdxCPAsARCRND0Z/8/wUTx1IGCO3LsNuiNZtaaGbFJe6ht0SgBsGcgdoieCjrYu2ZElOR1HDPx02/4dA0J20YHvj2scOJVkSzNqKyTogTnrX69w4fNnQ6CsWIDNBpr3gRlcS/5o16oc9PagX2otszKt0BMMuI3aH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIqAvEpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D237C4CED1;
-	Wed, 19 Feb 2025 09:26:23 +0000 (UTC)
+	 MIME-Version; b=bbkDclDCCPl+bdeKVCGdmKdam2cOPT7INE1oGu5Ra0fnvMaVRrKFYA7CuwBbYXwiq9FQo1vtLRz1h/yli2+eLjhEVdWZWllCsMAPcKo6yZkmElJ7oj6r9nfZLI2j6VSE1kFyyk92h8Di4euaKV+9kj3Mw1ybkabQH/knokLdylk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3lHimM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A981BC4CED1;
+	Wed, 19 Feb 2025 08:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957183;
-	bh=ZYeUZp6wk2F4GBk82U2MKJ7mbwmyY+wlovXtpaEp7Ag=;
+	s=korg; t=1739955567;
+	bh=pTilOpqQoYvzHzQQaHODtaEDh22dDquQ5igl/7wKL2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIqAvEpKYLDpmDo+h4H7qL2SDhIQkbhRh47wv27PpyA805wd6D2I5/cbV9A3vB4kr
-	 F+cq+UBQidKPW7qivSg/eAUHR7wUBg2QxssVVyC06Yf+gwYKbmvmGqEfa+vxzxBsC4
-	 esWVyexuK9lXDTWdXL+fjl72brfCq/88RXPXuQ8U=
+	b=l3lHimM89dLt/SmB/TO2hR2V5Rr7EEpG/fjsWec5ClDI0/SpC5oOBLZNGiYQYXmSB
+	 LYCrCNBUZu9i+k2oNbRHzLbJGlJL6GNRG11Qw/zWXRcMU6ALVm1RfSIzSAZlFbc6Wj
+	 j+4eM4ZdrPyMX5Ju+KbCdQRP7SEvzrxKzyERdsNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 437/578] net/ncsi: wait for the last response to Deselect Package before configuring channel
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/152] soc/tegra: fuse: Update Tegra234 nvmem keepout list
 Date: Wed, 19 Feb 2025 09:27:21 +0100
-Message-ID: <20250219082710.198219422@linuxfoundation.org>
+Message-ID: <20250219082551.151766342@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-commit 6bb194d036c6e1b329dcdff459338cdd9a54802a upstream.
+[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
 
-The NCSI state machine as it's currently implemented assumes that
-transition to the next logical state is performed either explicitly by
-calling `schedule_work(&ndp->work)` to re-queue itself or implicitly
-after processing the predefined (ndp->pending_req_num) number of
-replies. Thus to avoid the configuration FSM from advancing prematurely
-and getting out of sync with the process it's essential to not skip
-waiting for a reply.
+Various Nvidia userspace applications and tests access following fuse
+via Fuse nvmem interface:
 
-This patch makes the code wait for reception of the Deselect Package
-response for the last package probed before proceeding to channel
-configuration.
+	* odmid
+	* odminfo
+	* boot_security_info
+	* public_key_hash
+	* reserved_odm0
+	* reserved_odm1
+	* reserved_odm2
+	* reserved_odm3
+	* reserved_odm4
+	* reserved_odm5
+	* reserved_odm6
+	* reserved_odm7
+	* odm_lock
+	* pk_h1
+	* pk_h2
+	* revoke_pk_h0
+	* revoke_pk_h1
+	* security_mode
+	* system_fw_field_ratchet0
+	* system_fw_field_ratchet1
+	* system_fw_field_ratchet2
+	* system_fw_field_ratchet3
+	* optin_enable
 
-Thanks go to Potin Lai and Cosmo Chou for the initial investigation and
-testing.
+Update tegra234_fuse_keepouts list to allow reading these fuse from
+nvmem sysfs interface.
 
-Fixes: 8e13f70be05e ("net/ncsi: Probe single packages to avoid conflict")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Link: https://patch.msgid.link/20250116152900.8656-1-fercerpav@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-manage.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1385,6 +1385,12 @@ static void ncsi_probe_channel(struct nc
- 		nd->state = ncsi_dev_state_probe_package;
- 		break;
- 	case ncsi_dev_state_probe_package:
-+		if (ndp->package_probe_id >= 8) {
-+			/* Last package probed, finishing */
-+			ndp->flags |= NCSI_DEV_PROBED;
-+			break;
-+		}
-+
- 		ndp->pending_req_num = 1;
+diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
+index e94d46372a639..402cf939c0326 100644
+--- a/drivers/soc/tegra/fuse/fuse-tegra30.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
+@@ -646,15 +646,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
+ };
  
- 		nca.type = NCSI_PKT_CMD_SP;
-@@ -1501,13 +1507,8 @@ static void ncsi_probe_channel(struct nc
- 		if (ret)
- 			goto error;
- 
--		/* Probe next package */
-+		/* Probe next package after receiving response */
- 		ndp->package_probe_id++;
--		if (ndp->package_probe_id >= 8) {
--			/* Probe finished */
--			ndp->flags |= NCSI_DEV_PROBED;
--			break;
--		}
- 		nd->state = ncsi_dev_state_probe_package;
- 		ndp->active_package = NULL;
- 		break;
+ static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
+-	{ .start = 0x01c, .end = 0x0c8 },
+-	{ .start = 0x12c, .end = 0x184 },
++	{ .start = 0x01c, .end = 0x064 },
++	{ .start = 0x084, .end = 0x0a0 },
++	{ .start = 0x0a4, .end = 0x0c8 },
++	{ .start = 0x12c, .end = 0x164 },
++	{ .start = 0x16c, .end = 0x184 },
+ 	{ .start = 0x190, .end = 0x198 },
+ 	{ .start = 0x1a0, .end = 0x204 },
+-	{ .start = 0x21c, .end = 0x250 },
+-	{ .start = 0x25c, .end = 0x2f0 },
++	{ .start = 0x21c, .end = 0x2f0 },
+ 	{ .start = 0x310, .end = 0x3d8 },
+-	{ .start = 0x400, .end = 0x4f0 },
+-	{ .start = 0x4f8, .end = 0x7e8 },
++	{ .start = 0x400, .end = 0x420 },
++	{ .start = 0x444, .end = 0x490 },
++	{ .start = 0x4bc, .end = 0x4f0 },
++	{ .start = 0x4f8, .end = 0x54c },
++	{ .start = 0x57c, .end = 0x7e8 },
+ 	{ .start = 0x8d0, .end = 0x8d8 },
+ 	{ .start = 0xacc, .end = 0xf00 }
+ };
+-- 
+2.39.5
+
 
 
 
