@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-117323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F4A3B644
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B179A3B9F9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6CC3BA596
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DD817E662
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988BC1DDC35;
-	Wed, 19 Feb 2025 08:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94A21DDC11;
+	Wed, 19 Feb 2025 09:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXTzbsXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebkEHPjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558651CAA68;
-	Wed, 19 Feb 2025 08:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778461C173D;
+	Wed, 19 Feb 2025 09:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954916; cv=none; b=lorLslR5ysMl3Oc95IDLFcNt74wKpCYZ3ML5FvudtDlO1hGkU6nwnwdK25PvxsW8wnwl9JqWYipJUp4kQh/MRqDaYrL9KtTSDFDm9T3L1ROvUuCzszS1oEPpz5+AVioDkqSNZ5tfBG+OUfTIN8PfJ5zMENvQzldybAO9yVe1AhI=
+	t=1739957138; cv=none; b=YMh3UpQgYicibHfMYl8BhE/GoG9quHJXlGkIu+SjCw/VvtfO9Lsh0O5p2+lz8wApeGljJPWoea+gqfEylSZUDHCQQaDo4u3OEVp8BLOx2SxLet0PJBGAfv6oXtA8+Lki6FY7v237FIc1ATnQ/4Uwzkbw4kQx4xwXfPlCkM4M6jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954916; c=relaxed/simple;
-	bh=AA9m/YvxmtsumhrE9dpOyv5Bm9peg2hBrllaDmCRM4Q=;
+	s=arc-20240116; t=1739957138; c=relaxed/simple;
+	bh=oXmMRJi99mRrVvUJbO9Bm8p5tqp+V45Sx27m8aMENVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0fSvAvzLSWb0mHMaGvc436yQn0D9fkG13eLwfl3JBKJFAjMIpb/2TeW3Ae8WGAQQhohHsCsWaqYjUI6XhAXJEp1jD7EleVwRMIMXWmx+sHRBWuv9echHvkcnjYWoICrVkDRjKmLVpuEm58ob1p/rouJx6lAXwq/aT8KH43KXlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXTzbsXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EF7C4CED1;
-	Wed, 19 Feb 2025 08:48:35 +0000 (UTC)
+	 MIME-Version; b=c3A9n3QOH7G23sGs2RRtOlxW+YgC4R8tvqA14TtPjZQgW4Yzx4g5pm6iC3t7KLQAy7iHQuO+uH77r6P5aub0GBPIzYcW9Odw051VJ7oBiCoggG/Gj/NDivlZozFlsMDubK6XwbnTPRZTNpC5pk0U71Dwt+5rgOWUEG0oOi2CgdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebkEHPjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D115C4CED1;
+	Wed, 19 Feb 2025 09:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954916;
-	bh=AA9m/YvxmtsumhrE9dpOyv5Bm9peg2hBrllaDmCRM4Q=;
+	s=korg; t=1739957137;
+	bh=oXmMRJi99mRrVvUJbO9Bm8p5tqp+V45Sx27m8aMENVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXTzbsXNcYbIJPYc9aUJ4lAniz4uIlfWYJN/AqDikEkReiHAlq9UYXu8hI7XWSExk
-	 K6XLQOHImGgkqAmuiGxMitRO3nKLO6cYiLiPmuJJnZPCfpF7F7ZhGDCM7jcLZ1a7Qp
-	 KPfZDWSzMmCecXO/XTWCIBDrJRQK/7LF8fpfWuwk=
+	b=ebkEHPjDx1gEQgmqNSrNAKFmnpEeEgztRdWpRcoXfTjKekCIsxznSoIao3zHqAJ8G
+	 /3orS/KBYIYNzr3rTcisrfwx8kInkyNpwEsJsif70Uf2qWYCNOabUbdK3oWHGqB7HF
+	 4plvuegLYo24d8ebf/mbuRFy9R3485AwW/YQ/7wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/230] rtla/timerlat_top: Abort event processing on second signal
-Date: Wed, 19 Feb 2025 09:26:33 +0100
-Message-ID: <20250219082604.678414183@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.1 390/578] PCI: endpoint: Finish virtual EP removal in pci_epf_remove_vepf()
+Date: Wed, 19 Feb 2025 09:26:34 +0100
+Message-ID: <20250219082708.368299427@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 80967b354a76b360943af384c10d807d98bea5c4 ]
+commit 3b9f942eb21c92041905e3943a8d5177c9a9d89d upstream.
 
-If either SIGINT is received twice, or after a SIGALRM (that is, after
-timerlat was supposed to stop), abort processing events currently left
-in the tracefs buffer and exit immediately.
+When removing a virtual Endpoint, pci_epf_remove_vepf() failed to clear
+epf_vf->epf_pf, which caused a subsequent pci_epf_add_vepf() to incorrectly
+return -EBUSY:
 
-This allows the user to exit rtla without waiting for processing all
-events, should that take longer than wanted, at the cost of not
-processing all samples.
+  pci_epf_add_vepf(epf_pf, epf_vf)      // add
+  pci_epf_remove_vepf(epf_pf, epf_vf)   // remove
+  pci_epf_add_vepf(epf_pf, epf_vf)      // add again, -EBUSY error
 
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/20250116144931.649593-6-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by clearing epf_vf->epf_pf in pci_epf_remove_vepf().
+
+Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-3-4d86dd573e4b@quicinc.com
+Fixes: 1cf362e907f3 ("PCI: endpoint: Add support to add virtual function in endpoint core")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/endpoint/pci-epf-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index d13be28dacd59..0def5fec51ed7 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -897,6 +897,14 @@ static int stop_tracing;
- static struct trace_instance *top_inst = NULL;
- static void stop_top(int sig)
- {
-+	if (stop_tracing) {
-+		/*
-+		 * Stop requested twice in a row; abort event processing and
-+		 * exit immediately
-+		 */
-+		tracefs_iterate_stop(top_inst->inst);
-+		return;
-+	}
- 	stop_tracing = 1;
- 	if (top_inst)
- 		trace_instance_stop(top_inst);
--- 
-2.39.5
-
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -234,6 +234,7 @@ void pci_epf_remove_vepf(struct pci_epf
+ 
+ 	mutex_lock(&epf_pf->lock);
+ 	clear_bit(epf_vf->vfunc_no, &epf_pf->vfunction_num_map);
++	epf_vf->epf_pf = NULL;
+ 	list_del(&epf_vf->list);
+ 	mutex_unlock(&epf_pf->lock);
+ }
 
 
 
