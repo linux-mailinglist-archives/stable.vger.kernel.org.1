@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-117102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35267A3B4C0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:46:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D80BEA3B542
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 437151898A52
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F4617A1FA8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819691AF0C8;
-	Wed, 19 Feb 2025 08:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8199A1E8326;
+	Wed, 19 Feb 2025 08:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihlJeMC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9l0Wb8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2211E1A3D;
-	Wed, 19 Feb 2025 08:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D64E1DE2BE;
+	Wed, 19 Feb 2025 08:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954213; cv=none; b=K5CpeLDUgKqiNFtL/6TBweu2i6G7eUkZoKOf5WcKm+HVLPZLHelou8PfunbeOXYd+b/6T1/sLvXXrLTlKQswT7y3fJ4aRr3D+x/kBiyUhqz3A48e1u+5WzNcCevAeAeuSIbuXKSod3qa47UPu1p57sgyQDUKb3BvcpuOHRKf+7U=
+	t=1739954804; cv=none; b=hlNtk+ym/gvMltNDp8U4G5KszyY4o/PY1LklX2bGqE8wUz2R4PIpMmD1D8YUJz0U56lRUuQbYxJ0M+q+1nwwdQm4HqC2qeNsBKaMXS8YFfToTgZxTZ5wXi06vjsJqdYOLCIsdebNBtEH1mtkEoGcYg9P5CBnI7lyREUpkjam/hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954213; c=relaxed/simple;
-	bh=ekL2r2tPAPinBG3IU5Ss4PezCsLNh8lGMOOE+RIADXY=;
+	s=arc-20240116; t=1739954804; c=relaxed/simple;
+	bh=+OPPbOYocak65dpg2/vE3oVp94Gc+Aq8qjnStTMpZwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5NbGKEbhKoTvPFoonBMeFqwHyfqE1oFFUbHJjpGow5tMzbL5fvJn7+xtuSv7w4mePdFqbPUVkrlf75PHmrhNzEatzphcUPsY6/P1eYCxhINirXSZWdea2xXXYoUWT7T3e/g1xRExaipecTmW1QL0xnvKrsuWM9J/0vBlmlJl3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihlJeMC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DCBC4CED1;
-	Wed, 19 Feb 2025 08:36:52 +0000 (UTC)
+	 MIME-Version; b=asyWZPFKvZWXi3QPYA9w65PCE3VdPJjicR8Bd0tIbMdHqwiXTg+YDhBAaDEoWnx/IIHFxf6ZRZTV5++0rgPF7c8fsDQOrisX5DKRWGPAu/EcKvW1YWuGoGr+K2ElI6koJt8ta6ekSA2asEMv/NyyRg3jMveFFLSyssVBb+B9b5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9l0Wb8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3B5C4CEE6;
+	Wed, 19 Feb 2025 08:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954213;
-	bh=ekL2r2tPAPinBG3IU5Ss4PezCsLNh8lGMOOE+RIADXY=;
+	s=korg; t=1739954804;
+	bh=+OPPbOYocak65dpg2/vE3oVp94Gc+Aq8qjnStTMpZwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihlJeMC3oVveHV4evNCFhAdOpvET0uCrb8mh/rgve+KmhNU+UUHJpercDQ5FRk3BL
-	 PwxVg8ZdAYIJpvSKNJxXmYRcUuWK40NW33qUa2ulET4W5dKv8AdU4LrlzxPzHS+Rta
-	 MnqNJpU3AGLNAX2fu1UgZDH5hMXA4/U+301NqwzY=
+	b=l9l0Wb8goBlSyMiywVW7STJqipCuNCHWvHL1P3kMiA/yLb+Uwng9lcaHyymlq3J9c
+	 yZE2OJ4TU//gTKnLuD+v/8DQ7Ic2OJztuO4qdI+dy0QjDFsWanfWF59hSKZzUyNmp5
+	 jugF2PqsCNAHWnYagZ5LG/So5pSrikzyDg60t6fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test roboto <oliver.sang@intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 105/274] x86/mm/tlb: Only trim the mm_cpumask once a second
+Subject: [PATCH 6.12 042/230] gpio: bcm-kona: Fix GPIO lock/unlock for banks above bank 0
 Date: Wed, 19 Feb 2025 09:25:59 +0100
-Message-ID: <20250219082613.727333486@linuxfoundation.org>
+Message-ID: <20250219082603.356843932@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,154 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@fb.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 6db2526c1d694c91c6e05e2f186c085e9460f202 ]
+[ Upstream commit de1d0d160f64ee76df1d364d521b2faf465a091c ]
 
-Setting and clearing CPU bits in the mm_cpumask is only ever done
-by the CPU itself, from the context switch code or the TLB flush
-code.
+The GPIO lock/unlock functions clear/write a bit to the relevant
+register for each bank. However, due to an oversight the bit that
+was being written was based on the total GPIO number, not the index
+of the GPIO within the relevant bank, causing it to fail for any
+GPIO above 32 (thus any GPIO for banks above bank 0).
 
-Synchronization is handled by switch_mm_irqs_off() blocking interrupts.
+Fix lock/unlock for these banks by using the correct bit.
 
-Sending TLB flush IPIs to CPUs that are in the mm_cpumask, but no
-longer running the program causes a regression in the will-it-scale
-tlbflush2 test. This test is contrived, but a large regression here
-might cause a small regression in some real world workload.
-
-Instead of always sending IPIs to CPUs that are in the mm_cpumask,
-but no longer running the program, send these IPIs only once a second.
-
-The rest of the time we can skip over CPUs where the loaded_mm is
-different from the target mm.
-
-Reported-by: kernel test roboto <oliver.sang@intel.com>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241204210316.612ee573@fangorn
-Closes: https://lore.kernel.org/oe-lkp/202411282207.6bd28eae-lkp@intel.com/
+Fixes: bdb93c03c550 ("gpio: bcm281xx: Centralize register locking")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Markus Mayer <mmayer@broadcom.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-1-409135eab780@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/mmu.h         |  2 ++
- arch/x86/include/asm/mmu_context.h |  1 +
- arch/x86/include/asm/tlbflush.h    |  1 +
- arch/x86/mm/tlb.c                  | 35 +++++++++++++++++++++++++++---
- 4 files changed, 36 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-bcm-kona.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-index ce4677b8b7356..3b496cdcb74b3 100644
---- a/arch/x86/include/asm/mmu.h
-+++ b/arch/x86/include/asm/mmu.h
-@@ -37,6 +37,8 @@ typedef struct {
- 	 */
- 	atomic64_t tlb_gen;
+diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+index 5321ef98f4427..77bd4ec93a231 100644
+--- a/drivers/gpio/gpio-bcm-kona.c
++++ b/drivers/gpio/gpio-bcm-kona.c
+@@ -86,11 +86,12 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	u32 val;
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
++	int bit = GPIO_BIT(gpio);
  
-+	unsigned long next_trim_cpumask;
-+
- #ifdef CONFIG_MODIFY_LDT_SYSCALL
- 	struct rw_semaphore	ldt_usr_sem;
- 	struct ldt_struct	*ldt;
-diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
-index 2886cb668d7fa..795fdd53bd0a6 100644
---- a/arch/x86/include/asm/mmu_context.h
-+++ b/arch/x86/include/asm/mmu_context.h
-@@ -151,6 +151,7 @@ static inline int init_new_context(struct task_struct *tsk,
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
  
- 	mm->context.ctx_id = atomic64_inc_return(&last_mm_ctx_id);
- 	atomic64_set(&mm->context.tlb_gen, 0);
-+	mm->context.next_trim_cpumask = jiffies + HZ;
+ 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val |= BIT(gpio);
++	val |= BIT(bit);
+ 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
  
- #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
- 	if (cpu_feature_enabled(X86_FEATURE_OSPKE)) {
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 69e79fff41b80..02fc2aa06e9e0 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -222,6 +222,7 @@ struct flush_tlb_info {
- 	unsigned int		initiating_cpu;
- 	u8			stride_shift;
- 	u8			freed_tables;
-+	u8			trim_cpumask;
- };
+ 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
+@@ -102,11 +103,12 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	u32 val;
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
++	int bit = GPIO_BIT(gpio);
  
- void flush_tlb_local(void);
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index a2becb85bea79..90a9e47409131 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -893,9 +893,36 @@ static void flush_tlb_func(void *info)
- 			nr_invalidate);
- }
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
  
--static bool tlb_is_not_lazy(int cpu, void *data)
-+static bool should_flush_tlb(int cpu, void *data)
- {
--	return !per_cpu(cpu_tlbstate_shared.is_lazy, cpu);
-+	struct flush_tlb_info *info = data;
-+
-+	/* Lazy TLB will get flushed at the next context switch. */
-+	if (per_cpu(cpu_tlbstate_shared.is_lazy, cpu))
-+		return false;
-+
-+	/* No mm means kernel memory flush. */
-+	if (!info->mm)
-+		return true;
-+
-+	/* The target mm is loaded, and the CPU is not lazy. */
-+	if (per_cpu(cpu_tlbstate.loaded_mm, cpu) == info->mm)
-+		return true;
-+
-+	/* In cpumask, but not the loaded mm? Periodically remove by flushing. */
-+	if (info->trim_cpumask)
-+		return true;
-+
-+	return false;
-+}
-+
-+static bool should_trim_cpumask(struct mm_struct *mm)
-+{
-+	if (time_after(jiffies, READ_ONCE(mm->context.next_trim_cpumask))) {
-+		WRITE_ONCE(mm->context.next_trim_cpumask, jiffies + HZ);
-+		return true;
-+	}
-+	return false;
- }
+ 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val &= ~BIT(gpio);
++	val &= ~BIT(bit);
+ 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
  
- DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
-@@ -929,7 +956,7 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
- 	if (info->freed_tables)
- 		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
- 	else
--		on_each_cpu_cond_mask(tlb_is_not_lazy, flush_tlb_func,
-+		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
- 				(void *)info, 1, cpumask);
- }
- 
-@@ -980,6 +1007,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
- 	info->freed_tables	= freed_tables;
- 	info->new_tlb_gen	= new_tlb_gen;
- 	info->initiating_cpu	= smp_processor_id();
-+	info->trim_cpumask	= 0;
- 
- 	return info;
- }
-@@ -1022,6 +1050,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
- 	 * flush_tlb_func_local() directly in this case.
- 	 */
- 	if (cpumask_any_but(mm_cpumask(mm), cpu) < nr_cpu_ids) {
-+		info->trim_cpumask = should_trim_cpumask(mm);
- 		flush_tlb_multi(mm_cpumask(mm), info);
- 	} else if (mm == this_cpu_read(cpu_tlbstate.loaded_mm)) {
- 		lockdep_assert_irqs_enabled();
+ 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
 -- 
 2.39.5
 
