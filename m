@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-117459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9AD2A3B6D0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE45A3BAA5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A604916E6F6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5353A9E2A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7601EE033;
-	Wed, 19 Feb 2025 08:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27031EA7D3;
+	Wed, 19 Feb 2025 09:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJNpEE9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1JbKSO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD041EDA36;
-	Wed, 19 Feb 2025 08:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7781DEFF5;
+	Wed, 19 Feb 2025 09:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955357; cv=none; b=CdzrNbWW55gZTiRqQKQM7kiF5gXRindDEJs5PiCf1VSZ+bGk8gZtZ7O2qZg7sy7yVhZQ1bbVlRsouclnMIYvTSzKbqd8o0sGWU+bpHbAMc9aGWjrVIUDjhDfWWpVDsR8kutvQLeUbswdgymo47rMsImkXJ5ARGuYsEEU733gJV4=
+	t=1739957526; cv=none; b=RVlod7rpEo+LAawRic+S/R6ovw1AiTPRt9rToYJ7qgwuiuA5JTq7bxkOPE9HBLYLR8GFPqxjo2WHqdLQNSLtgXfSSexBfNfAwbcNG2HKU3y/r4Oyd6hHVV4bCPjk19yg394vwE179WC9NedCH9DHC6pfWzHTaKeJttpVCLRGlHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955357; c=relaxed/simple;
-	bh=toQVNSNnumYiooo/rLX6p00U1fvRbD9fEP0cyQp7TAQ=;
+	s=arc-20240116; t=1739957526; c=relaxed/simple;
+	bh=+56VadAMhP3u1szqufUMvNqwgcbQ5jP7dLOnNAkzKCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TWq+Cf/XovM3UANfczQxoKTbwu9FDfeZB64WtuwJbO5LjELQp0HnRmpMNYBpEv5oOZvpHtokQP+sY4U97Bc4XXLXGrGESDhx/83XiatsL/TaJ3Ohct29b0v8nWTvH6OY4kSQxyFe/YWWpecxlE7L5uM88aZNrPUJSHIm61hZejc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJNpEE9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87566C4CEE7;
-	Wed, 19 Feb 2025 08:55:56 +0000 (UTC)
+	 MIME-Version; b=IYuIwKm4Z0gWUeMXQroDev+6Xj3/YMdq4CdUkRmvlsZke6m5sP714Af+C+WSHXaC6UOCnjtGJgjG8sAXVYCoIpzU3Rx7l2Pv2FxM6jPslAnBbVcHI3syi/FB/DWzIgTbnfXjhaCJ4CB//mwJjo7QEEoIKPKNtry0rWeBEzGn6Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1JbKSO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A52C4CEEA;
+	Wed, 19 Feb 2025 09:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955356;
-	bh=toQVNSNnumYiooo/rLX6p00U1fvRbD9fEP0cyQp7TAQ=;
+	s=korg; t=1739957526;
+	bh=+56VadAMhP3u1szqufUMvNqwgcbQ5jP7dLOnNAkzKCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJNpEE9AeL0cZd6pZTbl57Uo5iNtxTbsCu4zsNEpxh2/rE/9/ZnJ9/eDahxKMbnlx
-	 qHa+JKzglllahIKkWL1ATcOB/h2oLFl2TJ89IA3Sk/xsowwqrINwRpQUtcNyDcNVHV
-	 CPTl9UQWNgOhcgBYeptakHWSgAQ+ZQkVTSFuHmig=
+	b=I1JbKSO9FJexZhIROaKaLQKTpZsCfWv5kNMLkwKSa4cFhkh5hpWfYAf00FtpefRLQ
+	 b1gtv9N3CyCLlkKotKUUr2IzVZObyHcAtmSZbt7DwtSJXm9v1iA7i5pr9YkZUzACPD
+	 E8vLsa2KK6gboLBB4sbuno+3HaFhJtd8XfWfvzi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonard Lausen <leonard@lausen.nl>,
-	=?UTF-8?q?Gy=C3=B6rgy=20Kurucz?= <me@kuruczgy.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>
-Subject: [PATCH 6.12 211/230] drm/msm/dpu1: dont choke on disabling the writeback connector
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 524/578] efi: Avoid cold plugged memory for placing the kernel
 Date: Wed, 19 Feb 2025 09:28:48 +0100
-Message-ID: <20250219082609.946707026@linuxfoundation.org>
+Message-ID: <20250219082713.586482199@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +58,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit d9f55e2abfb933818c772eba659a9b7ab28a44d0 upstream.
+commit ba69e0750b0362870294adab09339a0c39c3beaf upstream.
 
-During suspend/resume process all connectors are explicitly disabled and
-then reenabled. However resume fails because of the connector_status check:
+UEFI 2.11 introduced EFI_MEMORY_HOT_PLUGGABLE to annotate system memory
+regions that are 'cold plugged' at boot, i.e., hot pluggable memory that
+is available from early boot, and described as system RAM by the
+firmware.
 
-[dpu error]connector not connected 3
-[drm:drm_mode_config_helper_resume [drm_kms_helper]] *ERROR* Failed to resume (-22)
+Existing loaders and EFI applications running in the boot context will
+happily use this memory for allocating data structures that cannot be
+freed or moved at runtime, and this prevents the memory from being
+unplugged. Going forward, the new EFI_MEMORY_HOT_PLUGGABLE attribute
+should be tested, and memory annotated as such should be avoided for
+such allocations.
 
-It doesn't make sense to check for the Writeback connected status (and
-other drivers don't perform such check), so drop the check.
+In the EFI stub, there are a couple of occurrences where, instead of the
+high-level AllocatePages() UEFI boot service, a low-level code sequence
+is used that traverses the EFI memory map and carves out the requested
+number of pages from a free region. This is needed, e.g., for allocating
+as low as possible, or for allocating pages at random.
 
-It wasn't a problem before the commit 71174f362d67 ("drm/msm/dpu: move
-writeback's atomic_check to dpu_writeback.c"), since encoder's
-atomic_check() is called under a different conditions that the
-connector's atomic_check() (e.g. it is not called if there is no
-connected CRTC or if the corresponding connector is not a part of the
-new state).
+While AllocatePages() should presumably avoid special purpose memory and
+cold plugged regions, this manual approach needs to incorporate this
+logic itself, in order to prevent the kernel itself from ending up in a
+hot unpluggable region, preventing it from being unplugged.
 
-Fixes: 71174f362d67 ("drm/msm/dpu: move writeback's atomic_check to dpu_writeback.c")
+So add the EFI_MEMORY_HOTPLUGGABLE macro definition, and check for it
+where appropriate.
+
 Cc: stable@vger.kernel.org
-Reported-by: Leonard Lausen <leonard@lausen.nl>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/57
-Tested-by: Leonard Lausen <leonard@lausen.nl> # on sc7180 lazor
-Tested-by: György Kurucz <me@kuruczgy.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # Trogdor (sc7180)
-Patchwork: https://patchwork.freedesktop.org/patch/627828/
-Link: https://lore.kernel.org/r/20241209-dpu-fix-wb-v4-1-7fe93059f9e0@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/firmware/efi/efi.c                 |    6 ++++--
+ drivers/firmware/efi/libstub/randomalloc.c |    3 +++
+ drivers/firmware/efi/libstub/relocate.c    |    3 +++
+ include/linux/efi.h                        |    1 +
+ 4 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-@@ -42,9 +42,6 @@ static int dpu_wb_conn_atomic_check(stru
- 	if (!conn_state || !conn_state->connector) {
- 		DPU_ERROR("invalid connector state\n");
- 		return -EINVAL;
--	} else if (conn_state->connector->status != connector_status_connected) {
--		DPU_ERROR("connector not connected %d\n", conn_state->connector->status);
--		return -EINVAL;
- 	}
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -835,13 +835,15 @@ char * __init efi_md_typeattr_format(cha
+ 		     EFI_MEMORY_WB | EFI_MEMORY_UCE | EFI_MEMORY_RO |
+ 		     EFI_MEMORY_WP | EFI_MEMORY_RP | EFI_MEMORY_XP |
+ 		     EFI_MEMORY_NV | EFI_MEMORY_SP | EFI_MEMORY_CPU_CRYPTO |
+-		     EFI_MEMORY_RUNTIME | EFI_MEMORY_MORE_RELIABLE))
++		     EFI_MEMORY_MORE_RELIABLE | EFI_MEMORY_HOT_PLUGGABLE |
++		     EFI_MEMORY_RUNTIME))
+ 		snprintf(pos, size, "|attr=0x%016llx]",
+ 			 (unsigned long long)attr);
+ 	else
+ 		snprintf(pos, size,
+-			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
++			 "|%3s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s|%2s|%2s|%2s|%2s]",
+ 			 attr & EFI_MEMORY_RUNTIME		? "RUN" : "",
++			 attr & EFI_MEMORY_HOT_PLUGGABLE	? "HP"  : "",
+ 			 attr & EFI_MEMORY_MORE_RELIABLE	? "MR"  : "",
+ 			 attr & EFI_MEMORY_CPU_CRYPTO   	? "CC"  : "",
+ 			 attr & EFI_MEMORY_SP			? "SP"  : "",
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -25,6 +25,9 @@ static unsigned long get_entry_num_slots
+ 	if (md->type != EFI_CONVENTIONAL_MEMORY)
+ 		return 0;
  
- 	crtc = conn_state->crtc;
++	if (md->attribute & EFI_MEMORY_HOT_PLUGGABLE)
++		return 0;
++
+ 	if (efi_soft_reserve_enabled() &&
+ 	    (md->attribute & EFI_MEMORY_SP))
+ 		return 0;
+--- a/drivers/firmware/efi/libstub/relocate.c
++++ b/drivers/firmware/efi/libstub/relocate.c
+@@ -53,6 +53,9 @@ efi_status_t efi_low_alloc_above(unsigne
+ 		if (desc->type != EFI_CONVENTIONAL_MEMORY)
+ 			continue;
+ 
++		if (desc->attribute & EFI_MEMORY_HOT_PLUGGABLE)
++			continue;
++
+ 		if (efi_soft_reserve_enabled() &&
+ 		    (desc->attribute & EFI_MEMORY_SP))
+ 			continue;
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -125,6 +125,7 @@ typedef	struct {
+ #define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
+ #define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* soft reserved */
+ #define EFI_MEMORY_CPU_CRYPTO	((u64)0x0000000000080000ULL)	/* supports encryption */
++#define EFI_MEMORY_HOT_PLUGGABLE	BIT_ULL(20)	/* supports unplugging at runtime */
+ #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
+ #define EFI_MEMORY_DESCRIPTOR_VERSION	1
+ 
 
 
 
