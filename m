@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-118120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F37A3BA3B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F394A3B72A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751D9801A3E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC9CC189D64F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7F01D5CC6;
-	Wed, 19 Feb 2025 09:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D129D1E32DD;
+	Wed, 19 Feb 2025 09:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1eGWNmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w/jqwQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3301D515B;
-	Wed, 19 Feb 2025 09:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6D41E25EB;
+	Wed, 19 Feb 2025 09:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957293; cv=none; b=oktpNpboiilgmQQ7LkLC9c+gDIyHrVBPIoOEDScATPfHpDYCTBdx53R9KU+xMK1Ah6gKAamYYRkA83JxdPp2dTuEQ03kqO6l8ZIZkl3PZHKoinhqcMjfdS/zm7SzWDhnsT2h6/mVYY5BNzuAeptf9n7YsitxSWRrycuxYH2I9jo=
+	t=1739955740; cv=none; b=lF5Z5Lrt3wLMIiFMNDS65Wi7cm+EoA/Y3HLXvn9dcYu40NwPOiAA7f1fTfXo/3hCu4cLqS6bDrBbD+hRcuAFKbQLI2VyKkLcwMBQYhR74cpy8qmoLj/fFckmy5eEofydtgGkocEESlea/00fDWg1FNQ5/YC7WYFOiHqfXlnOXNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957293; c=relaxed/simple;
-	bh=wpyUJGgwRsuaC/LPo2qOD/qGafYkNI/wDQTOaWz/UBg=;
+	s=arc-20240116; t=1739955740; c=relaxed/simple;
+	bh=IXyYxUP4+ifgInFRNRtieQHdwex+WkJ55QUW18bsbG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uij4NHbbrb2M9+hwerT2Wp2JlsWRalnYTxUky58noGGxB/wCBpeUxfwmrx3JUivyf0+YX29ycpL3vkOR6T1cAUyhMlNW6wldSdKG9Maoz/AW1t0K4yraOEbBIY3NtlrCaxNh/Zq/k/WBKHDKeVTYIM8iNYBIxqqL7myU95gskhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1eGWNmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340A9C4CED1;
-	Wed, 19 Feb 2025 09:28:13 +0000 (UTC)
+	 MIME-Version; b=lxrIveR2xWT929+hcq/GDLMiO+DcYo0EADCegvztrXWCOJyKBx1dWuReTy3ggi1jPoXWMWP3LnbH2Scas9ykuKxYf6j0KKYp25YOLovzTkS7U/Gy9WL3hrTqiRnHfYRb86QuUswhlhmWgzvtcoosn0doJK/ezwuqdMogxNbf6fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w/jqwQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D723C4CED1;
+	Wed, 19 Feb 2025 09:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957293;
-	bh=wpyUJGgwRsuaC/LPo2qOD/qGafYkNI/wDQTOaWz/UBg=;
+	s=korg; t=1739955740;
+	bh=IXyYxUP4+ifgInFRNRtieQHdwex+WkJ55QUW18bsbG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1eGWNmEitcbjfS8OSAy0CP07jF2AyNGWdsp1+McoZasY5LlN9tMQJQKgk3Ea8FvZ
-	 EZUSQkwXM1QPghukROAW5jFSb2tzy+BqfsWAFDITrx9BPiMDZgP/diHFLA+M4H11af
-	 H2e4GSCLQs5jW/8h/Lt+8C0O/dIWT6V1OYZIKVjY=
+	b=0w/jqwQibirIDejAz0Bt4PzeJSYLHKa+XEzZt460LBeUTEbHhaxt5yNv7vZQUc6MK
+	 SOvUH93LSa/yHCxJynLlAUdO/ln39HiaoKZZdpNLa7oSxWLX3m4FPOTCCC7KYukZZ+
+	 wDNh+WAPwEwLtxXWcnc/e1VYzySvJUWN5Gau3peE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Markus Mayer <mmayer@broadcom.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 475/578] gpio: bcm-kona: Fix GPIO lock/unlock for banks above bank 0
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Robert Morris <rtm@csail.mit.edu>
+Subject: [PATCH 6.6 066/152] USB: hub: Ignore non-compliant devices with too many configs or interfaces
 Date: Wed, 19 Feb 2025 09:27:59 +0100
-Message-ID: <20250219082711.689940459@linuxfoundation.org>
+Message-ID: <20250219082552.660184760@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit de1d0d160f64ee76df1d364d521b2faf465a091c ]
+commit 2240fed37afbcdb5e8b627bc7ad986891100e05d upstream.
 
-The GPIO lock/unlock functions clear/write a bit to the relevant
-register for each bank. However, due to an oversight the bit that
-was being written was based on the total GPIO number, not the index
-of the GPIO within the relevant bank, causing it to fail for any
-GPIO above 32 (thus any GPIO for banks above bank 0).
+Robert Morris created a test program which can cause
+usb_hub_to_struct_hub() to dereference a NULL or inappropriate
+pointer:
 
-Fix lock/unlock for these banks by using the correct bit.
+Oops: general protection fault, probably for non-canonical address
+0xcccccccccccccccc: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
+CPU: 7 UID: 0 PID: 117 Comm: kworker/7:1 Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #14
+Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_hub_adjust_deviceremovable+0x78/0x110
+...
+Call Trace:
+ <TASK>
+ ? die_addr+0x31/0x80
+ ? exc_general_protection+0x1b4/0x3c0
+ ? asm_exc_general_protection+0x26/0x30
+ ? usb_hub_adjust_deviceremovable+0x78/0x110
+ hub_probe+0x7c7/0xab0
+ usb_probe_interface+0x14b/0x350
+ really_probe+0xd0/0x2d0
+ ? __pfx___device_attach_driver+0x10/0x10
+ __driver_probe_device+0x6e/0x110
+ driver_probe_device+0x1a/0x90
+ __device_attach_driver+0x7e/0xc0
+ bus_for_each_drv+0x7f/0xd0
+ __device_attach+0xaa/0x1a0
+ bus_probe_device+0x8b/0xa0
+ device_add+0x62e/0x810
+ usb_set_configuration+0x65d/0x990
+ usb_generic_driver_probe+0x4b/0x70
+ usb_probe_device+0x36/0xd0
 
-Fixes: bdb93c03c550 ("gpio: bcm281xx: Centralize register locking")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Markus Mayer <mmayer@broadcom.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-1-409135eab780@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The cause of this error is that the device has two interfaces, and the
+hub driver binds to interface 1 instead of interface 0, which is where
+usb_hub_to_struct_hub() looks.
+
+We can prevent the problem from occurring by refusing to accept hub
+devices that violate the USB spec by having more than one
+configuration or interface.
+
+Reported-and-tested-by: Robert Morris <rtm@csail.mit.edu>
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/95564.1737394039@localhost/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/c27f3bf4-63d8-4fb5-ac82-09e3cd19f61c@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-bcm-kona.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/core/hub.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
-index 70770429ba483..7e8adc5cc15a0 100644
---- a/drivers/gpio/gpio-bcm-kona.c
-+++ b/drivers/gpio/gpio-bcm-kona.c
-@@ -85,11 +85,12 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	u32 val;
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
-+	int bit = GPIO_BIT(gpio);
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1819,6 +1819,17 @@ static int hub_probe(struct usb_interfac
+ 	hdev = interface_to_usbdev(intf);
  
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val |= BIT(gpio);
-+	val |= BIT(bit);
- 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
- 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
-@@ -101,11 +102,12 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
- 	u32 val;
- 	unsigned long flags;
- 	int bank_id = GPIO_BANK(gpio);
-+	int bit = GPIO_BIT(gpio);
- 
- 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
- 
- 	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
--	val &= ~BIT(gpio);
-+	val &= ~BIT(bit);
- 	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
- 
- 	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
--- 
-2.39.5
-
+ 	/*
++	 * The USB 2.0 spec prohibits hubs from having more than one
++	 * configuration or interface, and we rely on this prohibition.
++	 * Refuse to accept a device that violates it.
++	 */
++	if (hdev->descriptor.bNumConfigurations > 1 ||
++			hdev->actconfig->desc.bNumInterfaces > 1) {
++		dev_err(&intf->dev, "Invalid hub with more than one config or interface\n");
++		return -EINVAL;
++	}
++
++	/*
+ 	 * Set default autosuspend delay as 0 to speedup bus suspend,
+ 	 * based on the below considerations:
+ 	 *
 
 
 
