@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236F0A3B63E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1186A3B9B6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16BDD163337
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66B3A4218E1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5511DE8B7;
-	Wed, 19 Feb 2025 08:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889B31E25F2;
+	Wed, 19 Feb 2025 09:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIEpIKT7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQlF4Sw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF8D1C175A;
-	Wed, 19 Feb 2025 08:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441D71E102E;
+	Wed, 19 Feb 2025 09:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955001; cv=none; b=EiCu+0jyF/uakXbpr1d1oVOb4+oDLQ0eqlhJ5G61/u48tWPuvOg4wq25Oey2YiZ3Zbl6OnEpir6ge8nYe/7yfiuOybbr2iQtG1SYY9v7kJitU3ME4HPwwcU+M8oF+5VmrFu5WC+bcLSNUuKan4TadS5wvWbDdHdyfhbzoNt3GmU=
+	t=1739957124; cv=none; b=jKTg/Ck8kcW5ikPWz3AUQEecLrGIpxFIR27cUz979d5e7iorktBly15fnggvVKX9aCVoMkrXdp260A9Prqc0wLzsFoBpKrSmZqO4ihkWskSKbolUU3NRxkghbOon8v69KZHhbowOVP+b+AK9cJLR0I+Ez1WSCPPp4mxumwvugkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955001; c=relaxed/simple;
-	bh=+HtchtPuMuJFzwxvA/GHOst+IHcSPhEKyeStCD4HSzQ=;
+	s=arc-20240116; t=1739957124; c=relaxed/simple;
+	bh=e53JNnSl41JNYrc2zMjIADYLsmlm8NzpcybzG6L0FQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpoZrUUyGiaibQwhtakt+kk3E01JPUC274k29UoojDs2RAckWT0s1lV/P2u135Dox33St/vSBOMpB7kz3p+/77z5546CHQzqgB4pcDSR/bbB/7UiL1VBgkc+Xoreetp+8CmfImxf+Vq9fmFkkjVeTHAQ9Y7hOVBJibaevz/SUwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIEpIKT7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060A6C4CED1;
-	Wed, 19 Feb 2025 08:50:00 +0000 (UTC)
+	 MIME-Version; b=e81MIvNWCN+EueaqKXzPNcsEskO7ridrZsGcdJBxQcVA5IOarxzbO8aeHTT9FeZel+a4S+emmPxdydkYr1MX021xAq10mBfBKYRfwd4/+sKuI61XXf4I5T1AxgBrAfedDg23oHNclOyAhY8aZUfPUFDM8al5RHos2JTzRq4uixU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQlF4Sw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4195CC4CED1;
+	Wed, 19 Feb 2025 09:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955001;
-	bh=+HtchtPuMuJFzwxvA/GHOst+IHcSPhEKyeStCD4HSzQ=;
+	s=korg; t=1739957123;
+	bh=e53JNnSl41JNYrc2zMjIADYLsmlm8NzpcybzG6L0FQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIEpIKT7XjoV2Sx7eYNgRqNQWErjD0D/g/2j6SGTyvFprp5u+hNGB8ZjzbmbBxJaT
-	 YHH4FGLO0CL04wMeS41T+S9BR9c5P2GkebmO3XesrDXw9JkfXYf6d7cDyKhaAbIBDu
-	 VvapEQRHUr3e1RE1HWsPPB400KW3qYS1+0KZKAPQ=
+	b=sQlF4Sw1KP7lUnnxFdiA/Y53Dji3dFwNzuI4rEGj6+/bOvb7XwwFMDJtKLtkCkaIb
+	 Xnxayc0FfiIR9c5Fb0o1AB8zgy8awgJuhKDELRR5fv8Fa5Galicwdb23zVJsEOf7cY
+	 t/2ASBdzuZop8BqihbQrqSOqoU3SJRhq48NXc+tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 102/230] KVM: nSVM: Enter guest mode before initializing nested NPT MMU
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.1 415/578] media: uvcvideo: Remove redundant NULL assignment
 Date: Wed, 19 Feb 2025 09:26:59 +0100
-Message-ID: <20250219082605.686424065@linuxfoundation.org>
+Message-ID: <20250219082709.344403241@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 46d6c6f3ef0eaff71c2db6d77d4e2ebb7adac34f upstream.
+commit 04d3398f66d2d31c4b8caea88f051a4257b7a161 upstream.
 
-When preparing vmcb02 for nested VMRUN (or state restore), "enter" guest
-mode prior to initializing the MMU for nested NPT so that guest_mode is
-set in the MMU's role.  KVM's model is that all L2 MMUs are tagged with
-guest_mode, as the behavior of hypervisor MMUs tends to be significantly
-different than kernel MMUs.
+ctrl->handle will only be different than NULL for controls that have
+mappings. This is because that assignment is only done inside
+uvc_ctrl_set() for mapped controls.
 
-Practically speaking, the bug is relatively benign, as KVM only directly
-queries role.guest_mode in kvm_mmu_free_guest_mode_roots() and
-kvm_mmu_page_ad_need_write_protect(), which SVM doesn't use, and in paths
-that are optimizations (mmu_page_zap_pte() and
-shadow_mmu_try_split_huge_pages()).
-
-And while the role is incorprated into shadow page usage, because nested
-NPT requires KVM to be using NPT for L1, reusing shadow pages across L1
-and L2 is impossible as L1 MMUs will always have direct=1, while L2 MMUs
-will have direct=0.
-
-Hoist the TLB processing and setting of HF_GUEST_MASK to the beginning
-of the flow instead of forcing guest_mode in the MMU, as nothing in
-nested_vmcb02_prepare_control() between the old and new locations touches
-TLB flush requests or HF_GUEST_MASK, i.e. there's no reason to present
-inconsistent vCPU state to the MMU.
-
-Fixes: 69cb877487de ("KVM: nSVM: move MMU setup to nested_prepare_vmcb_control")
 Cc: stable@vger.kernel.org
-Reported-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://lore.kernel.org/r/20250130010825.220346-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-2-26c867231118@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c    |    2 +-
- arch/x86/kvm/svm/nested.c |   10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5591,7 +5591,7 @@ void kvm_init_shadow_npt_mmu(struct kvm_
- 	union kvm_mmu_page_role root_role;
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1531,10 +1531,8 @@ bool uvc_ctrl_status_event_async(struct
+ 	struct uvc_device *dev = chain->dev;
+ 	struct uvc_ctrl_work *w = &dev->async_ctrl;
  
- 	/* NPT requires CR0.PG=1. */
--	WARN_ON_ONCE(cpu_role.base.direct);
-+	WARN_ON_ONCE(cpu_role.base.direct || !cpu_role.base.guest_mode);
+-	if (list_empty(&ctrl->info.mappings)) {
+-		ctrl->handle = NULL;
++	if (list_empty(&ctrl->info.mappings))
+ 		return false;
+-	}
  
- 	root_role = cpu_role.base;
- 	root_role.level = kvm_mmu_get_tdp_level(vcpu);
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -646,6 +646,11 @@ static void nested_vmcb02_prepare_contro
- 	u32 pause_count12;
- 	u32 pause_thresh12;
- 
-+	nested_svm_transition_tlb_flush(vcpu);
-+
-+	/* Enter Guest-Mode */
-+	enter_guest_mode(vcpu);
-+
- 	/*
- 	 * Filled at exit: exit_code, exit_code_hi, exit_info_1, exit_info_2,
- 	 * exit_int_info, exit_int_info_err, next_rip, insn_len, insn_bytes.
-@@ -762,11 +767,6 @@ static void nested_vmcb02_prepare_contro
- 		}
- 	}
- 
--	nested_svm_transition_tlb_flush(vcpu);
--
--	/* Enter Guest-Mode */
--	enter_guest_mode(vcpu);
--
- 	/*
- 	 * Merge guest and host intercepts - must be called with vcpu in
- 	 * guest-mode to take effect.
+ 	w->data = data;
+ 	w->urb = urb;
 
 
 
