@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-118116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C620A3BA01
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E07AA3B71C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34ABB188AD10
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 096923BC953
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB371CAA9E;
-	Wed, 19 Feb 2025 09:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1AC1E0E0C;
+	Wed, 19 Feb 2025 08:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMPjV6j0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZrP/BWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CA717A2FE;
-	Wed, 19 Feb 2025 09:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D10D1E0E01;
+	Wed, 19 Feb 2025 08:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957282; cv=none; b=UDrrZJm3uCFcinCOMiNQLsAH4tA4pDjSoRONrBpaLxp7Zoia4OddzDOcgX2meK+z0w+JUymUMqgkEVnfdZcHjGTpCse74rndtm1kmyKYRQ2o460uRJ+NsQ3o7+52mXu3LXtxprN9bOkGRppdmTyt2HEqpANTiO3iUlg5zPmVzN0=
+	t=1739955186; cv=none; b=JKRXS7r/4kSHYYVnlBZ0B/ZZKy37R103QBG5hPeXyoFE9bd8EFRyl+64lK8IBksxw+gsCuYFDiHWqjIGBtIjB8t2KvlbanGEDF1RQ4ja9e6L5ff3PDnZHLvjJueu7e2/DVJtJ1QEcs9S4Hf9dfY3GH1fNwQHUTAdLfCcHe8E9Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957282; c=relaxed/simple;
-	bh=v9XpLGmCdIJ0uEOkkuhXjvnGE3kfnDhno2tmqJ6LQiw=;
+	s=arc-20240116; t=1739955186; c=relaxed/simple;
+	bh=8upv19+DPACD3eQxCnHktLcj2d/dPxbNVCuKEmXBZ4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8WVqpp839M0STulJIN4AZoWveErqXigSnyStvIk45KkfKBroKNn3PZiF68eNDLjq0huSeKrm/BhVxFB+WXs1Qn/Wr0SWXdalxP9kGlf6W6u92W55XbMTA1KzJoI3Uj1Z7YubP+I67waLcvHmMSi3ROPJgw01MCLyzFeDXUiWYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMPjV6j0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90670C4CED1;
-	Wed, 19 Feb 2025 09:28:01 +0000 (UTC)
+	 MIME-Version; b=ebV/C/waTGcBnzR4TeEJIQ53NAXv6ibqw+FkOR27niYb+IQawgmSWKxobES3XQ5ifEm+GFaNGBk7ju22635ylUIXYlWj4bZuUIhETNZ9oM9Q0Tz/viJBIE8qAnqUzWFjAyC0u/RBcGxZfpgR9fmLLOuintEmrIfPSVT8gm/leJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZrP/BWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3909C4CED1;
+	Wed, 19 Feb 2025 08:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957282;
-	bh=v9XpLGmCdIJ0uEOkkuhXjvnGE3kfnDhno2tmqJ6LQiw=;
+	s=korg; t=1739955186;
+	bh=8upv19+DPACD3eQxCnHktLcj2d/dPxbNVCuKEmXBZ4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMPjV6j0fxydnlWmLjCOcJtwKOlY/yI1k1LON/qZL1iKpFhqhQ08h9h+eAnsVpFS8
-	 LsCaSWnEkIuNuxadW48jnIoM1PtRH6iiSLSms/MtxacewsMqJUUuDJa9KQ7pJ7hqyY
-	 bn9lkakZPEfkTyBdvqJkB1wysvssK0RgwikphSUQ=
+	b=kZrP/BWbgYOF+cvMX29NjHfibsBClUsWyy1l/sA5G+9I/BhitQrWWPJ79KdgnWQ3Y
+	 IwEAH7qTM+dUUXwRqzFsmdS9DvqlZb4bIqUVK9LJYYewpfLXxJV4XV1SaRPqvC/Vm3
+	 mx/6NEr2oGCDJ3P/rcbhBqmQNEUzfMUhlzlvcY8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 471/578] team: better TEAM_OPTION_TYPE_STRING validation
+	Andy-ld Lu <andy-ld.lu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 158/230] mmc: mtk-sd: Fix register settings for hs400(es) mode
 Date: Wed, 19 Feb 2025 09:27:55 +0100
-Message-ID: <20250219082711.538310486@linuxfoundation.org>
+Message-ID: <20250219082607.875287234@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
 
-[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
+commit 3e68abf2b9cebe76c6cd4b1aca8e95cd671035a3 upstream.
 
-syzbot reported following splat [1]
+For hs400(es) mode, the 'hs400-ds-delay' is typically configured in the
+dts. However, some projects may only define 'mediatek,hs400-ds-dly3',
+which can lead to initialization failures in hs400es mode. CMD13 reported
+response crc error in the mmc_switch_status() just after switching to
+hs400es mode.
 
-Make sure user-provided data contains one nul byte.
+[    1.914038][   T82] mmc0: mmc_select_hs400es failed, error -84
+[    1.914954][   T82] mmc0: error -84 whilst initialising MMC card
 
-[1]
- BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
- BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
-  string_nocheck lib/vsprintf.c:633 [inline]
-  string+0x3ec/0x5f0 lib/vsprintf.c:714
-  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
-  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
-  team_mode_get drivers/net/team/team_core.c:480 [inline]
-  team_change_mode drivers/net/team/team_core.c:607 [inline]
-  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
-  team_option_set drivers/net/team/team_core.c:375 [inline]
-  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
-  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
-  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
-  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
-  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
-  sock_sendmsg_nosec net/socket.c:718 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:733
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
-  __sys_sendmsg net/socket.c:2659 [inline]
-  __do_sys_sendmsg net/socket.c:2664 [inline]
-  __se_sys_sendmsg net/socket.c:2662 [inline]
-  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
-  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Currently, the hs400_ds_dly3 value is set within the tuning function. This
+means that the PAD_DS_DLY3 field is not configured before tuning process,
+which is the reason for the above-mentioned CMD13 response crc error.
 
-Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
-Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the PAD_DS_DLY3 field configuration into msdc_prepare_hs400_tuning(),
+and add a value check of hs400_ds_delay to prevent overwriting by zero when
+the 'hs400-ds-delay' is not set in the dts. In addition, since hs400(es)
+only tune the PAD_DS_DLY1, the PAD_DS_DLY2_SEL bit should be cleared to
+bypass it.
+
+Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250123092644.7359-1-andy-ld.lu@mediatek.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/team/team.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c |   31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index b23aa3c8bdf8e..c2327fa10747c 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2670,7 +2670,9 @@ static int team_nl_cmd_options_set(struct sk_buff *skb, struct genl_info *info)
- 				ctx.data.u32_val = nla_get_u32(attr_data);
- 				break;
- 			case TEAM_OPTION_TYPE_STRING:
--				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
-+				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
-+				    !memchr(nla_data(attr_data), '\0',
-+					    nla_len(attr_data))) {
- 					err = -EINVAL;
- 					goto team_put;
- 				}
--- 
-2.39.5
-
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -263,6 +263,7 @@
+ #define MSDC_PAD_TUNE_CMD2_SEL	  BIT(21)   /* RW */
+ 
+ #define PAD_DS_TUNE_DLY_SEL       BIT(0)	  /* RW */
++#define PAD_DS_TUNE_DLY2_SEL      BIT(1)	  /* RW */
+ #define PAD_DS_TUNE_DLY1	  GENMASK(6, 2)   /* RW */
+ #define PAD_DS_TUNE_DLY2	  GENMASK(11, 7)  /* RW */
+ #define PAD_DS_TUNE_DLY3	  GENMASK(16, 12) /* RW */
+@@ -308,6 +309,7 @@
+ 
+ /* EMMC50_PAD_DS_TUNE mask */
+ #define PAD_DS_DLY_SEL		BIT(16)	/* RW */
++#define PAD_DS_DLY2_SEL		BIT(15)	/* RW */
+ #define PAD_DS_DLY1		GENMASK(14, 10)	/* RW */
+ #define PAD_DS_DLY3		GENMASK(4, 0)	/* RW */
+ 
+@@ -2361,13 +2363,23 @@ tune_done:
+ static int msdc_prepare_hs400_tuning(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
+ 	struct msdc_host *host = mmc_priv(mmc);
++
+ 	host->hs400_mode = true;
+ 
+-	if (host->top_base)
+-		writel(host->hs400_ds_delay,
+-		       host->top_base + EMMC50_PAD_DS_TUNE);
+-	else
+-		writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
++	if (host->top_base) {
++		if (host->hs400_ds_dly3)
++			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
++				      PAD_DS_DLY3, host->hs400_ds_dly3);
++		if (host->hs400_ds_delay)
++			writel(host->hs400_ds_delay,
++			       host->top_base + EMMC50_PAD_DS_TUNE);
++	} else {
++		if (host->hs400_ds_dly3)
++			sdr_set_field(host->base + PAD_DS_TUNE,
++				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
++		if (host->hs400_ds_delay)
++			writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
++	}
+ 	/* hs400 mode must set it to 0 */
+ 	sdr_clr_bits(host->base + MSDC_PATCH_BIT2, MSDC_PATCH_BIT2_CFGCRCSTS);
+ 	/* to improve read performance, set outstanding to 2 */
+@@ -2387,14 +2399,11 @@ static int msdc_execute_hs400_tuning(str
+ 	if (host->top_base) {
+ 		sdr_set_bits(host->top_base + EMMC50_PAD_DS_TUNE,
+ 			     PAD_DS_DLY_SEL);
+-		if (host->hs400_ds_dly3)
+-			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
+-				      PAD_DS_DLY3, host->hs400_ds_dly3);
++		sdr_clr_bits(host->top_base + EMMC50_PAD_DS_TUNE,
++			     PAD_DS_DLY2_SEL);
+ 	} else {
+ 		sdr_set_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY_SEL);
+-		if (host->hs400_ds_dly3)
+-			sdr_set_field(host->base + PAD_DS_TUNE,
+-				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
++		sdr_clr_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY2_SEL);
+ 	}
+ 
+ 	host->hs400_tuning = true;
 
 
 
