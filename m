@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-118119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F313AA3B9EA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:37:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41973A3B74E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2791417576B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DF2179C1B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F1D1CD213;
-	Wed, 19 Feb 2025 09:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F1E1E32D5;
+	Wed, 19 Feb 2025 09:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYCNr4xI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1v/WAart"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C7728629E;
-	Wed, 19 Feb 2025 09:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD781E32C3;
+	Wed, 19 Feb 2025 09:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957290; cv=none; b=kpXN+5QuNY6k7nIyOlID9aOiP0TwRqr6mc6d6W0n05KBP+rl21c/3XGkZzSHJdV/2fAJIuB/EcrlsFvIHdOh2a3JCoEej9Uz4+sChrTidI5nEBoHHUGGMbJwmpbkKpn7j/RbwgZji5TxB6wYtXeCGmEqzsPBtmUMQtGU9RGBiAs=
+	t=1739955737; cv=none; b=Fdk7pWwY5un5uImR/Am/Lq+BAoELI3iM/+Nb+iLy5eSScY8qhU/L1K/N/ys+h2jaeR+GUn0moyVDapcPWM+qu3MAOWuqBfp5gzOyhsvEc53QCY4EItv3zAkwWqCU5BpMcYPaT6GyFXvhwXC/GtAl3FNDjhub/aUYqoNA8uleBro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957290; c=relaxed/simple;
-	bh=1rMtAGpzfxIhs2LUAgnARlwuxweml2qTxXBYHfPPnCQ=;
+	s=arc-20240116; t=1739955737; c=relaxed/simple;
+	bh=6C9sPVvushIjFrd1gPcKfDwi718fv6/lRH/l5SdMUu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cb9sPiSwsiTYkeW/lTsMb/dmy2CAXMD4cP5jgLFFW/xFIAWdP0/kLKi+scXix5+iQ2zjhTWLc/qj4EUPLGKbKUXiwH60KBqvz6lapWac/EQOXe2/RzkSsXacJrFwDz7Y7/z9kkST3TFFD0bqWE+mW7JgMYyP8Np1UrhYpFhclaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYCNr4xI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB85C4CED1;
-	Wed, 19 Feb 2025 09:28:10 +0000 (UTC)
+	 MIME-Version; b=JWT/kRVEnBn+Zou44Sz7EyRJT4VFENGWAghA1EHaw/znbGbTf9LpK7ABLlAItmii3LxqolrWOYz6y0wckKBLVQIDL4TK5ABblbLlEUMXjunkZ1ZYPwBg3u9sz7865abSsK5pmu14feVKdgpzBh1wPuytpqUrupuDnPTR8BkPRxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1v/WAart; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3CDC4CED1;
+	Wed, 19 Feb 2025 09:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957290;
-	bh=1rMtAGpzfxIhs2LUAgnARlwuxweml2qTxXBYHfPPnCQ=;
+	s=korg; t=1739955737;
+	bh=6C9sPVvushIjFrd1gPcKfDwi718fv6/lRH/l5SdMUu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYCNr4xIq2+RQG2HIVqjyz4zZl5+dNXiyVPVujg6Gm3/rlyjSGhm3N4yAIrD/3Zns
-	 O7igfXccs/Ps0N1vLqY2PPXg5qw7rBQ6eGoRHv1S3i5GS+6WwyZIDKbjbkm87f7Vo3
-	 mhZlyb9t07bsTGcJ5GdKsMqIMQQc2m/5elwtXeCo=
+	b=1v/WAartXDw1vAfVWyDh5LW5XXc+MD8rtRRw0BhOGTz00sEht/RQoC5MDuKg1sIVu
+	 TqB2K4HL4J9z+sI3c+NIh2t2fS4a4sQ+WeVMpqPcepDuG8LqDbmnIlLwTYW6/C8aIV
+	 zEB0UrDz3Fsr3l9x2awrptvzsZWMfRgNt7m17tKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Mikolaj Wasiak <mikolaj.wasiak@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 474/578] drm/i915/selftests: avoid using uninitialized context
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 065/152] usb: gadget: f_midi: fix MIDI Streaming descriptor lengths
 Date: Wed, 19 Feb 2025 09:27:58 +0100
-Message-ID: <20250219082711.652419563@linuxfoundation.org>
+Message-ID: <20250219082552.617916694@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Karas <krzysztof.karas@intel.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit 53139b3f9998ea07289e7b70b909fea2264a0de9 ]
+commit da1668997052ed1cb00322e1f3b63702615c9429 upstream.
 
-There is an error path in igt_ppgtt_alloc(), which leads
-to ww object being passed down to i915_gem_ww_ctx_fini() without
-initialization. Correct that by only putting ppgtt->vm and
-returning early.
+While the MIDI jacks are configured correctly, and the MIDIStreaming
+endpoint descriptors are filled with the correct information,
+bNumEmbMIDIJack and bLength are set incorrectly in these descriptors.
 
-Fixes: 480ae79537b2 ("drm/i915/selftests: Prepare gtt tests for obj->mm.lock removal")
-Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Mikolaj Wasiak <mikolaj.wasiak@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/iuaonpjc3rywmvhna6umjlvzilocn2uqsrxfxfob24e2taocbi@lkaivvfp4777
-(cherry picked from commit 8d8334632ea62424233ac6529712868241d0f8df)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This does not matter when the numbers of in and out ports are equal, but
+when they differ the host will receive broken descriptors with
+uninitialized stack memory leaking into the descriptor for whichever
+value is smaller.
+
+The precise meaning of "in" and "out" in the port counts is not clearly
+defined and can be confusing.  But elsewhere the driver consistently
+uses this to match the USB meaning of IN and OUT viewed from the host,
+so that "in" ports send data to the host and "out" ports receive data
+from it.
+
+Cc: stable <stable@kernel.org>
+Fixes: c8933c3f79568 ("USB: gadget: f_midi: allow a dynamic number of input and output ports")
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20250130195035.3883857-1-jkeeping@inmusicbrands.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/selftests/i915_gem_gtt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_midi.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
-index e050a2de5fd1d..e25f76b46b0a4 100644
---- a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
-+++ b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
-@@ -164,7 +164,7 @@ static int igt_ppgtt_alloc(void *arg)
- 		return PTR_ERR(ppgtt);
- 
- 	if (!ppgtt->vm.allocate_va_range)
--		goto err_ppgtt_cleanup;
-+		goto ppgtt_vm_put;
- 
- 	/*
- 	 * While we only allocate the page tables here and so we could
-@@ -232,7 +232,7 @@ static int igt_ppgtt_alloc(void *arg)
- 			goto retry;
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -1008,11 +1008,11 @@ static int f_midi_bind(struct usb_config
  	}
- 	i915_gem_ww_ctx_fini(&ww);
--
-+ppgtt_vm_put:
- 	i915_vm_put(&ppgtt->vm);
- 	return err;
- }
--- 
-2.39.5
-
+ 
+ 	/* configure the endpoint descriptors ... */
+-	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
+-	ms_out_desc.bNumEmbMIDIJack = midi->in_ports;
++	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
++	ms_out_desc.bNumEmbMIDIJack = midi->out_ports;
+ 
+-	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
+-	ms_in_desc.bNumEmbMIDIJack = midi->out_ports;
++	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
++	ms_in_desc.bNumEmbMIDIJack = midi->in_ports;
+ 
+ 	/* ... and add them to the list */
+ 	endpoint_descriptor_index = i;
 
 
 
