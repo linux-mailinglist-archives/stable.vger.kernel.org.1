@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86638A3B607
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AB4A3B506
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00E5A7A3100
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4DD1899047
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F1B1DE8A9;
-	Wed, 19 Feb 2025 08:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35FC1F5615;
+	Wed, 19 Feb 2025 08:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUR1zIuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blxZbYXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8FD1DE3AE;
-	Wed, 19 Feb 2025 08:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6A51F5438;
+	Wed, 19 Feb 2025 08:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955525; cv=none; b=NyLLWHipJvl+RftoY7IeKku7/6TFftrUmvhmpb0w7ExU6HwC/Sx+PhKlckWeT6PfgdjKMTVbSKrRgs5a81q1is2C/6d66mncA8T6+qSH+NeqYsdESNelWKAFbPFIZxy8897co4wiWNuJmlXj2xV427iCpxRwW9qeg+hm4CfxAq8=
+	t=1739954328; cv=none; b=h06MeHkj1gjBKP5uCsz693ICWt6vV/cAu8kpQzuXMMDoFfWMT26I5/lfcULhMkyE0mF/wzQogMd1lVmbH+9Ye7Spibd9I4a+5h7zLBbcCuN4xOpWp8jo0un5vWIlj3gaGSI0NQtb2NEJqUl4ACX3yN0Dwy4qH/rGVvOUp2NniuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955525; c=relaxed/simple;
-	bh=Vp8QG/0DPEtrTSiuq4xox1Ik95uEcZSn5bdvu0DZZ8s=;
+	s=arc-20240116; t=1739954328; c=relaxed/simple;
+	bh=JNy5Ucb6s2994NKrEuqs7ldEuLfQFjuId+Gy2+Mx7XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fz8X7EA4D6hDdGnw2Sb8Jl585uyn6Aycd4PxgLhsQTiHa7RlBo148nOcLxgQQ0xIKDIYQb66JfHH3gF9tJH/N5sIWvxxB25UF4Yh5sGlJPPRXlEHhwJbKT1LMagb3UcPsdNyYPF9GnjuEx2sgmrEfUEHVs/tooG7Ckz6Fwhrzmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUR1zIuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505E6C4CED1;
-	Wed, 19 Feb 2025 08:58:45 +0000 (UTC)
+	 MIME-Version; b=A1pX8YEYG7Q2LRhpV1mK+XBJlK8FA5IaduE9KY4ib+aKJZNVIPknpZ5tVjy0Bo2qjZ6wBDhUinYPY0IIPpCmIEEbJnyov2zjJoeGWKBowE73kf397cAPNBxosdDWawiHj7RNrjm7WasvrWu9EZV/RsOap9+TlxyrmxOcIJXQePY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blxZbYXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33AAC4CEF3;
+	Wed, 19 Feb 2025 08:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955525;
-	bh=Vp8QG/0DPEtrTSiuq4xox1Ik95uEcZSn5bdvu0DZZ8s=;
+	s=korg; t=1739954328;
+	bh=JNy5Ucb6s2994NKrEuqs7ldEuLfQFjuId+Gy2+Mx7XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUR1zIuLLf8atY2QqhpMchXsw21t5H2t96AunPtnv4i+Qe0m6HqFCZbDq0yrdqO7c
-	 0BIAre3o34htvUV8Yx9DKs6g0ee8ZeRLxJ8kCMaanHn6lSdtoZVzLlP8xmAC/Ayqfo
-	 JbpwoxYHbN0G32aHPf6jUp7dfn42SHbkl69MapFU=
+	b=blxZbYXFXZc5FKjZ4GsCudwtrKdaOo0wR2mTMYcqC7GHkKrbvlcbxBJwW0gMO476R
+	 vRplpjNk2kQret7dyIckqC8yHym9UFBYozXQJE5uNdiP12p1YHrRsYQms0CKqs+L0H
+	 iJJjO5o7o0bFu+cNgVmtHO+H4T7cQnKkQNtEo1Ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/152] vrf: use RCU protection in l3mdev_l3_out()
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 6.13 168/274] alpha: replace hardcoded stack offsets with autogenerated ones
 Date: Wed, 19 Feb 2025 09:27:02 +0100
-Message-ID: <20250219082550.394390009@linuxfoundation.org>
+Message-ID: <20250219082616.166376755@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-[ Upstream commit 6d0ce46a93135d96b7fa075a94a88fe0da8e8773 ]
+commit 77b823fa619f97d16409ca37ad4f7936e28c5f83 upstream.
 
-l3mdev_l3_out() can be called without RCU being held:
+This allows the assembly in entry.S to automatically keep in sync with
+changes in the stack layout (struct pt_regs and struct switch_stack).
 
-raw_sendmsg()
- ip_push_pending_frames()
-  ip_send_skb()
-   ip_local_out()
-    __ip_local_out()
-     l3mdev_ip_out()
-
-Add rcu_read_lock() / rcu_read_unlock() pair to avoid
-a potential UAF.
-
-Fixes: a8e3e1a9f020 ("net: l3mdev: Add hook to output path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/l3mdev.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/alpha/kernel/asm-offsets.c |    4 ++++
+ arch/alpha/kernel/entry.S       |    4 ----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/l3mdev.h b/include/net/l3mdev.h
-index 031c661aa14df..bdfa9d414360c 100644
---- a/include/net/l3mdev.h
-+++ b/include/net/l3mdev.h
-@@ -198,10 +198,12 @@ struct sk_buff *l3mdev_l3_out(struct sock *sk, struct sk_buff *skb, u16 proto)
- 	if (netif_is_l3_slave(dev)) {
- 		struct net_device *master;
+--- a/arch/alpha/kernel/asm-offsets.c
++++ b/arch/alpha/kernel/asm-offsets.c
+@@ -19,9 +19,13 @@ static void __used foo(void)
+ 	DEFINE(TI_STATUS, offsetof(struct thread_info, status));
+ 	BLANK();
  
-+		rcu_read_lock();
- 		master = netdev_master_upper_dev_get_rcu(dev);
- 		if (master && master->l3mdev_ops->l3mdev_l3_out)
- 			skb = master->l3mdev_ops->l3mdev_l3_out(master, sk,
- 								skb, proto);
-+		rcu_read_unlock();
- 	}
++	DEFINE(SP_OFF, offsetof(struct pt_regs, ps));
+ 	DEFINE(SIZEOF_PT_REGS, sizeof(struct pt_regs));
+ 	BLANK();
  
- 	return skb;
--- 
-2.39.5
-
++	DEFINE(SWITCH_STACK_SIZE, sizeof(struct switch_stack));
++	BLANK();
++
+ 	DEFINE(HAE_CACHE, offsetof(struct alpha_machine_vector, hae_cache));
+ 	DEFINE(HAE_REG, offsetof(struct alpha_machine_vector, hae_register));
+ }
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -15,10 +15,6 @@
+ 	.set noat
+ 	.cfi_sections	.debug_frame
+ 
+-/* Stack offsets.  */
+-#define SP_OFF			184
+-#define SWITCH_STACK_SIZE	64
+-
+ .macro	CFI_START_OSF_FRAME	func
+ 	.align	4
+ 	.globl	\func
 
 
 
