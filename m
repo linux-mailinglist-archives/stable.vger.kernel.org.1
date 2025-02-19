@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260D3A3B6AA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38FDA3BA1C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82A433BD5B3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 811C11890F8F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDC21E98FC;
-	Wed, 19 Feb 2025 08:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319961CCEF0;
+	Wed, 19 Feb 2025 09:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQcn4P8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6Vdz0xy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1A81E98E8;
-	Wed, 19 Feb 2025 08:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ED51B6D0A;
+	Wed, 19 Feb 2025 09:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955285; cv=none; b=ScuzFcQ0G0PyRIGT0rCgc1dWLbRJzS8NXHQLDUikdZLqfMw/ElqXMDLOK598jSZqy2wYps1Uo4YoUFfA6GT5Edk+x287mq1nK/ffVzVkUebg4Sdpbg7oWV3S1vDrcbPNQv66fCrF6RG0EdID4HGHK8R/zBe8WbEXX6DS8WEx6MY=
+	t=1739957371; cv=none; b=MPAsLKICjStFiupWwMNkyoE8lcncd6Ae8YIbzLQE9O2BiXulKQQ63YlWthRKNsoBS15+TJaDKXp4bT0BJ72wDDWOLhmVn3KMTbYa/XMjvqSIfYO9giZ1YBVSEZNAWuHdSqdRzUF3I/NLk1tiSekjZ28CHqu8M1qmrMWZ/PBwjQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955285; c=relaxed/simple;
-	bh=SaALOE5ycBD0GUUXJR/xbWiJGBR21FmRQzF+b8r14RY=;
+	s=arc-20240116; t=1739957371; c=relaxed/simple;
+	bh=MjkEeaTLgBytNfwqIUjH+w2P0hukfBMsAzOcnzDnWiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/VAeMhG6Ei6W41tA5BGVrjkI7KHhVDQ4haKEXDPXZbTX2di22A4gIl+9TEF1ybBnM62McaVAW+HC9sNj0ARpBFaCV6RHPmHiesa9ihBr74jjkarW8C/kHkKwD1ogZ7zE93omvwcq0x48JKKG7kMaDk+Dls2vBOH5yxpLmnq2bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQcn4P8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C072C4CEE6;
-	Wed, 19 Feb 2025 08:54:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IfmbwB/zojB5+SPpz37wZ1PuoBNabtJSWsCODSMHjR84jH1v6YUojNRCTGdme3QmQQlOTicV/NXvFUUhdVR7vN4wPaGVddK6OewefYHDpDl5ORGqFItbi21ipXUUwwCtAtBEagl/Obf/u2Tm16u5ibdlAuRf6ZVfVpNaARPpi9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6Vdz0xy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62178C4CED1;
+	Wed, 19 Feb 2025 09:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955285;
-	bh=SaALOE5ycBD0GUUXJR/xbWiJGBR21FmRQzF+b8r14RY=;
+	s=korg; t=1739957370;
+	bh=MjkEeaTLgBytNfwqIUjH+w2P0hukfBMsAzOcnzDnWiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQcn4P8owscP59jZTlm3bQ/M18JdY+6B+ufWlXrSfR0YSCaJweSgkUa9Mou4WRoMv
-	 49CvaCQ+hVfiZG9Ej6jMbl3p9FXjZA6tKEjuMQJWssSZ4RwKSLhrtxMZzUKcx20InM
-	 j/LiUpcrMcuUcSiWzNLXdev/dNxW71ADCGOJTyfo=
+	b=M6Vdz0xyBLjrirRT7NmEzitNtsO4oManT+99+MCrbl8DrOQLM8ZIZM2nYMQp/r1px
+	 hvy01Uv/sxUut21XNVzOorGTUCA4/059Gg6xwRwQhJLqvicUqxaZEih1yY1yvkTC7N
+	 Shy6cDuZwKHJCtFUjTNdht46KB+zQch71DNR2WU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 189/230] ipv4: use RCU protection in __ip_rt_update_pmtu()
-Date: Wed, 19 Feb 2025 09:28:26 +0100
-Message-ID: <20250219082609.094731819@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 503/578] usb: dwc3: Fix timeout issue during controller enter/exit from halt state
+Date: Wed, 19 Feb 2025 09:28:27 +0100
+Message-ID: <20250219082712.773761921@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-[ Upstream commit 139512191bd06f1b496117c76372b2ce372c9a41 ]
+commit d3a8c28426fc1fb3252753a9f1db0d691ffc21b0 upstream.
 
-__ip_rt_update_pmtu() must use RCU protection to make
-sure the net structure it reads does not disappear.
+There is a frequent timeout during controller enter/exit from halt state
+after toggling the run_stop bit by SW. This timeout occurs when
+performing frequent role switches between host and device, causing
+device enumeration issues due to the timeout. This issue was not present
+when USB2 suspend PHY was disabled by passing the SNPS quirks
+(snps,dis_u2_susphy_quirk and snps,dis_enblslpm_quirk) from the DTS.
+However, there is a requirement to enable USB2 suspend PHY by setting of
+GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY bits when controller starts
+in gadget or host mode results in the timeout issue.
 
-Fixes: 2fbc6e89b2f1 ("ipv4: Update exception handling for multipath routes via same device")
-Fixes: 1de6b15a434c ("Namespaceify min_pmtu sysctl")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit addresses this timeout issue by ensuring that the bits
+GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
+the dwc3_gadget_run_stop sequence and restoring them after the
+dwc3_gadget_run_stop sequence is completed.
+
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250201163903.459-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/usb/dwc3/gadget.c |   34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index f707cdb26ff20..41b320f0c20eb 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1008,9 +1008,9 @@ out:	kfree_skb_reason(skb, reason);
- static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2485,10 +2485,38 @@ static int dwc3_gadget_run_stop(struct d
  {
- 	struct dst_entry *dst = &rt->dst;
--	struct net *net = dev_net(dst->dev);
- 	struct fib_result res;
- 	bool lock = false;
-+	struct net *net;
- 	u32 old_mtu;
+ 	u32			reg;
+ 	u32			timeout = 2000;
++	u32			saved_config = 0;
  
- 	if (ip_mtu_locked(dst))
-@@ -1020,6 +1020,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 	if (old_mtu < mtu)
- 		return;
+ 	if (pm_runtime_suspended(dwc->dev))
+ 		return 0;
  
-+	rcu_read_lock();
-+	net = dev_net_rcu(dst->dev);
- 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
- 		lock = true;
- 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
-@@ -1027,9 +1029,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
++	/*
++	 * When operating in USB 2.0 speeds (HS/FS), ensure that
++	 * GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
++	 * or stopping the controller. This resolves timeout issues that occur
++	 * during frequent role switches between host and device modes.
++	 *
++	 * Save and clear these settings, then restore them after completing the
++	 * controller start or stop sequence.
++	 *
++	 * This solution was discovered through experimentation as it is not
++	 * mentioned in the dwc3 programming guide. It has been tested on an
++	 * Exynos platforms.
++	 */
++	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++	if (reg & DWC3_GUSB2PHYCFG_SUSPHY) {
++		saved_config |= DWC3_GUSB2PHYCFG_SUSPHY;
++		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
++	}
++
++	if (reg & DWC3_GUSB2PHYCFG_ENBLSLPM) {
++		saved_config |= DWC3_GUSB2PHYCFG_ENBLSLPM;
++		reg &= ~DWC3_GUSB2PHYCFG_ENBLSLPM;
++	}
++
++	if (saved_config)
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	if (is_on) {
+ 		if (DWC3_VER_IS_WITHIN(DWC3, ANY, 187A)) {
+@@ -2516,6 +2544,12 @@ static int dwc3_gadget_run_stop(struct d
+ 		reg &= DWC3_DSTS_DEVCTRLHLT;
+ 	} while (--timeout && !(!is_on ^ !reg));
  
- 	if (rt->rt_pmtu == mtu && !lock &&
- 	    time_before(jiffies, dst->expires - net->ipv4.ip_rt_mtu_expires / 2))
--		return;
-+		goto out;
++	if (saved_config) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++		reg |= saved_config;
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++	}
++
+ 	if (!timeout)
+ 		return -ETIMEDOUT;
  
--	rcu_read_lock();
- 	if (fib_lookup(net, fl4, &res, 0) == 0) {
- 		struct fib_nh_common *nhc;
- 
-@@ -1043,14 +1044,14 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
- 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 						      jiffies + net->ipv4.ip_rt_mtu_expires);
- 			}
--			rcu_read_unlock();
--			return;
-+			goto out;
- 		}
- #endif /* CONFIG_IP_ROUTE_MULTIPATH */
- 		nhc = FIB_RES_NHC(res);
- 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 				      jiffies + net->ipv4.ip_rt_mtu_expires);
- 	}
-+out:
- 	rcu_read_unlock();
- }
- 
--- 
-2.39.5
-
 
 
 
