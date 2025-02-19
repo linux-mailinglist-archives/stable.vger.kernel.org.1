@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1C7A3B651
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37162A3B9BC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 663501779AB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20FD43BFF84
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8095A1DE8B4;
-	Wed, 19 Feb 2025 08:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E61E1CAA8A;
+	Wed, 19 Feb 2025 09:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7fu7+6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfxO6s3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1001DE8AE;
-	Wed, 19 Feb 2025 08:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D675158862;
+	Wed, 19 Feb 2025 09:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954987; cv=none; b=QKe9GpgDe6qk3zzegERxet/3fDalA28oRD0HFJ2bwe1XWHYnJ78VoVLb8YziB9/dqURH41LPTm1KOcvvXV31oQZwiSc9eZwMHVoYMIWi2hLqXUtxqvi6zs5QeVmcH7/fk8dmPIItQ6bwTljCwCKTdqzeIeBZ1rXeFjt27v98QMA=
+	t=1739957026; cv=none; b=mz/uLC2EtV8ZXqH2NSMRCXDYfOL9ca0J3owVsb5oG7HkMf3FomItQeqAcHqaSkQabiymFRJSYJmDQUgCzxkzA/Uy7TW+C+znH4vUhOcayW2K9W7Z+HMNcucGbaJnxROuae3PvAdazfHtBoxihT/lvYIZqvrEC53HyxciTwW0Bu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954987; c=relaxed/simple;
-	bh=gXZqU8Dte7ANQ1pveeI4crInpVbP5HSihwansS+cUJ8=;
+	s=arc-20240116; t=1739957026; c=relaxed/simple;
+	bh=uiAQNG8qD5YdUEldyUtkL2F7falbc14KT+5sqdGqeEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEvA55jDMApUrVkEWKnbZyjDdhVxeHgkQLiyXK35/4bRseYkCF0mxQ8tK5nxXlMR8KT6AihqFuaPu88JwJy/FYf7hmLcZ2t0t1d3v6v0TdvdjM3VNd2QKE//BM5EhLGVz6qkYZdgDmPzH6CfDd4KYamTcVmCfZey5TyVvrlY1Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7fu7+6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842A0C4CED1;
-	Wed, 19 Feb 2025 08:49:46 +0000 (UTC)
+	 MIME-Version; b=SFH5q79fOJY3XChxcj6slAkz+54wvYS46ypK6O8TlojmR/FKG32G2zBOPUyG7VOyKky5OpqP9GmsL3EPizAUyaJ5YtQP3sf5JqJrfcXsAIroRAf3YCOfMPGW99UWB7Ocx/hTkkBmDrG2UVN647zFeuprP20XMUzKPmh9kHFWFJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfxO6s3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8694FC4CED1;
+	Wed, 19 Feb 2025 09:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954987;
-	bh=gXZqU8Dte7ANQ1pveeI4crInpVbP5HSihwansS+cUJ8=;
+	s=korg; t=1739957025;
+	bh=uiAQNG8qD5YdUEldyUtkL2F7falbc14KT+5sqdGqeEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7fu7+6qSxlzdEaiwu0gVA9UMr6ssqNfWfANTx4ZyW7yMxe2C2qPcE4c/48K8MJd5
-	 2a7YbhSxTKhzYNW+gkc3TnFSU9xcOltqVsJ9Gp7AasFZq4D4/gXSU2Bmd8knsiDqhj
-	 HjGewAd7qRMa4CHGA38wwezJOoZUttK+C84yF54A=
+	b=jfxO6s3ICh6TX0Y0HP0mEENLrH4NYiFQ2L07LAxIS6+XOnmctGftVng8s85J824ia
+	 AQ3UN3lU4dqG8h1bFM+v/hsSphDzlRBJkZKmOUnaTpqK/TFEP/AWjQ8KJNYg147kvm
+	 S74K9PM3Dm1qiYqDlrqd4R9ooQVMbelE466r8zCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naushir Patuck <naush@raspberrypi.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/230] media: bcm2835-unicam: Disable trigger mode operation
-Date: Wed, 19 Feb 2025 09:26:24 +0100
-Message-ID: <20250219082604.331066423@linuxfoundation.org>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Narayana Murty N <nnmlinux@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.1 381/578] powerpc/pseries/eeh: Fix get PE state translation
+Date: Wed, 19 Feb 2025 09:26:25 +0100
+Message-ID: <20250219082708.004649456@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naushir Patuck <naush@raspberrypi.com>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-[ Upstream commit 697a252bb2ea414cc1c0b4cf4e3d94a879eaf162 ]
+commit 11b93559000c686ad7e5ab0547e76f21cc143844 upstream.
 
-The imx219/imx708 sensors frequently generate a single corrupt frame
-(image or embedded data) when the sensor first starts. This can either
-be a missing line, or invalid samples within the line. This only occurrs
-using the upstream Unicam kernel driver.
+The PE Reset State "0" returned by RTAS calls
+"ibm_read_slot_reset_[state|state2]" indicates that the reset is
+deactivated and the PE is in a state where MMIO and DMA are allowed.
+However, the current implementation of "pseries_eeh_get_state()" does
+not reflect this, causing drivers to incorrectly assume that MMIO and
+DMA operations cannot be resumed.
 
-Disabling trigger mode elimiates this corruption. Since trigger mode is
-a legacy feature copied from the firmware driver and not expected to be
-needed, remove it. Tested on the Raspberry Pi cameras and shows no ill
-effects.
+The userspace drivers as a part of EEH recovery using VFIO ioctls fail
+to detect when the recovery process is complete. The VFIO_EEH_PE_GET_STATE
+ioctl does not report the expected EEH_PE_STATE_NORMAL state, preventing
+userspace drivers from functioning properly on pseries systems.
 
-Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The patch addresses this issue by updating 'pseries_eeh_get_state()'
+to include "EEH_STATE_MMIO_ENABLED" and "EEH_STATE_DMA_ENABLED" in
+the result mask for PE Reset State "0". This ensures correct state
+reporting to the callers, aligning the behavior with the PAPR specification
+and fixing the bug in EEH recovery for VFIO user workflows.
+
+Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Link: https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250116103954.17324-1-nnmlinux@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/broadcom/bcm2835-unicam.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ arch/powerpc/platforms/pseries/eeh_pseries.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/broadcom/bcm2835-unicam.c b/drivers/media/platform/broadcom/bcm2835-unicam.c
-index a1d93c14553d8..9f81e1582a300 100644
---- a/drivers/media/platform/broadcom/bcm2835-unicam.c
-+++ b/drivers/media/platform/broadcom/bcm2835-unicam.c
-@@ -816,11 +816,6 @@ static irqreturn_t unicam_isr(int irq, void *dev)
- 		}
- 	}
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct
  
--	if (unicam_reg_read(unicam, UNICAM_ICTL) & UNICAM_FCM) {
--		/* Switch out of trigger mode if selected */
--		unicam_reg_write_field(unicam, UNICAM_ICTL, 1, UNICAM_TFC);
--		unicam_reg_write_field(unicam, UNICAM_ICTL, 0, UNICAM_FCM);
--	}
- 	return IRQ_HANDLED;
- }
- 
-@@ -984,8 +979,7 @@ static void unicam_start_rx(struct unicam_device *unicam,
- 
- 	unicam_reg_write_field(unicam, UNICAM_ANA, 0, UNICAM_DDL);
- 
--	/* Always start in trigger frame capture mode (UNICAM_FCM set) */
--	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_FCM | UNICAM_IBOB;
-+	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_IBOB;
- 	line_int_freq = max(fmt->height >> 2, 128);
- 	unicam_set_field(&val, line_int_freq, UNICAM_LCIE_MASK);
- 	unicam_reg_write(unicam, UNICAM_ICTL, val);
--- 
-2.39.5
-
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
+ 		break;
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
 
 
 
