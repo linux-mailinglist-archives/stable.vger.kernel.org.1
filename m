@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-117044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAD3A3B473
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C081A3B3FC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9759816DE59
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70640173233
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62BF1DE2CE;
-	Wed, 19 Feb 2025 08:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFA81CAA9C;
+	Wed, 19 Feb 2025 08:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOAzcY3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrX6BDLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EBB1DE2B7;
-	Wed, 19 Feb 2025 08:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB811C6FE3;
+	Wed, 19 Feb 2025 08:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954032; cv=none; b=B1+CRsaqFF5yZ/V8se8vqLn2N1X1jQ8/9pTC8R59bAqFT2l0xjWrxYdnIWyEyENrQdV2G1882Iz30eEym+aMpd9ua91TamsOVeqRuQyBv2HHWyN/moV34x6jD5Qb3Eo5l1yF1LsBzgFXlkhIkyDnIyLUcu/PO3a5tif7Uh3BEwY=
+	t=1739953932; cv=none; b=XZq2QgLHDt0WPcczXVdt6YV+10UTIBP71/bU9JSUmAskdLl/PM9013q40XriRm2fKyQXhju+LW1KgeuXTUE34CSX1j10AQHdp23sWL7kpZICu8wMX59O7Hb7NgsyEEN0EeHDsKhTYwdJ2qLn9wSWBy7aHDNMKF8KygCF3m22NTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954032; c=relaxed/simple;
-	bh=u+LwmM6KHXIOdhu8HeN3jcZ0wQxkH/UYA/vyzc7ZVtU=;
+	s=arc-20240116; t=1739953932; c=relaxed/simple;
+	bh=Ynhag8F+6Nzkl3CPrKIfa2OBQJHQ1EQ59JyucLhqbBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejjxnOFH4oZYD1oUF6ama9X868q8i35B68J2F56jQsBkdoeZVZEzxd2mLuixthGaKVZ2y8STYweg5HcjFpX+JfWBdEfJSKN2O4dLKb+O3LT/ZDpLoyaetpE25ES3FIfznjz+PrZhDa3qDOZOlWx0GLyth8uiRhNWq9NWcwnOois=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOAzcY3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A531FC4CED1;
-	Wed, 19 Feb 2025 08:33:51 +0000 (UTC)
+	 MIME-Version; b=M9sMURRB5V5PiROpJ4sUKVsEGrIgqyJgQSGS3LQyYkyyrV/U2QqnmM88eH3nddGZel4NFn3ZdwFBk7EsoAW5+F3Enxi5HkXu/pF419WwUXFP5r/D5Pxlfqq9/OfhOZ8m7pNSqzAVW/vkiCS13v2eOtTajJrQz7wBQwnRdzsLgtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrX6BDLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D700C4CED1;
+	Wed, 19 Feb 2025 08:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954032;
-	bh=u+LwmM6KHXIOdhu8HeN3jcZ0wQxkH/UYA/vyzc7ZVtU=;
+	s=korg; t=1739953932;
+	bh=Ynhag8F+6Nzkl3CPrKIfa2OBQJHQ1EQ59JyucLhqbBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOAzcY3Ts2JSMPh2f4dtxC8c3qGVqUUGUKnofNe/jyk6ST9Uu+ObJSjxakUUotcAz
-	 gDXxBV3UtixhX6bNO0DzjVYQvuYWExSUReSubAWeKm5K6aWHnU+zUBpTHBBo+X7yie
-	 /0aBxCGXjY2c2JXYv/muRP3CgDTfhevqakn6/vO4=
+	b=yrX6BDLcz/Pb9X+NzfDc/S2FtzhgQRIwALo/qVatvoTZCVB543NVXbzFOCllCcf4c
+	 LuUzGyR7y7dW8b2HsDLP3W4hxEmYdWK+E6gRUBHyI7G13umnrkyUkqDbNOL4FyvI0i
+	 5K2d8EtVRf3mTJIpBf0FClA4/eE/luCrM7UYuC8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rupinderjit Singh <rusingh@redhat.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 042/274] gpu: host1x: Fix a use of uninitialized mutex
-Date: Wed, 19 Feb 2025 09:24:56 +0100
-Message-ID: <20250219082611.173354464@linuxfoundation.org>
+Subject: [PATCH 6.13 043/274] drm/panthor: avoid garbage value in panthor_ioctl_dev_query()
+Date: Wed, 19 Feb 2025 09:24:57 +0100
+Message-ID: <20250219082611.211278228@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -67,123 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rupinderjit Singh <rusingh@redhat.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 02458fbfaa0170aabf8506f7d4ed054f02414251 ]
+[ Upstream commit 3b32b7f638fe61e9d29290960172f4e360e38233 ]
 
-commit c8347f915e67 ("gpu: host1x: Fix boot regression for Tegra")
-caused a use of uninitialized mutex leading to below warning when
-CONFIG_DEBUG_MUTEXES and CONFIG_DEBUG_LOCK_ALLOC are enabled.
+'priorities_info' is uninitialized, and the uninitialized value is copied
+to user object when calling PANTHOR_UOBJ_SET(). Using memset to initialize
+'priorities_info' to avoid this garbage value problem.
 
-[   41.662843] ------------[ cut here ]------------
-[   41.663012] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-[   41.663035] WARNING: CPU: 4 PID: 794 at kernel/locking/mutex.c:587 __mutex_lock+0x670/0x878
-[   41.663458] Modules linked in: rtw88_8822c(+) bluetooth(+) rtw88_pci rtw88_core mac80211 aquantia libarc4 crc_itu_t cfg80211 tegra194_cpufreq dwmac_tegra(+) arm_dsu_pmu stmmac_platform stmmac pcs_xpcs rfkill at24 host1x(+) tegra_bpmp_thermal ramoops reed_solomon fuse loop nfnetlink xfs mmc_block rpmb_core ucsi_ccg ina3221 crct10dif_ce xhci_tegra ghash_ce lm90 sha2_ce sha256_arm64 sha1_ce sdhci_tegra pwm_fan sdhci_pltfm sdhci gpio_keys rtc_tegra cqhci mmc_core phy_tegra_xusb i2c_tegra tegra186_gpc_dma i2c_tegra_bpmp spi_tegra114 dm_mirror dm_region_hash dm_log dm_mod
-[   41.665078] CPU: 4 UID: 0 PID: 794 Comm: (udev-worker) Not tainted 6.11.0-29.31_1538613708.el10.aarch64+debug #1
-[   41.665838] Hardware name: NVIDIA NVIDIA Jetson AGX Orin Developer Kit/Jetson, BIOS 36.3.0-gcid-35594366 02/26/2024
-[   41.672555] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   41.679636] pc : __mutex_lock+0x670/0x878
-[   41.683834] lr : __mutex_lock+0x670/0x878
-[   41.688035] sp : ffff800084b77090
-[   41.691446] x29: ffff800084b77160 x28: ffffdd4bebf7b000 x27: ffffdd4be96b1000
-[   41.698799] x26: 1fffe0002308361c x25: 1ffff0001096ee18 x24: 0000000000000000
-[   41.706149] x23: 0000000000000000 x22: 0000000000000002 x21: ffffdd4be6e3c7a0
-[   41.713500] x20: ffff800084b770f0 x19: ffff00011841b1e8 x18: 0000000000000000
-[   41.720675] x17: 0000000000000000 x16: 0000000000000000 x15: 0720072007200720
-[   41.728023] x14: 0000000000000000 x13: 0000000000000001 x12: ffff6001a96eaab3
-[   41.735375] x11: 1fffe001a96eaab2 x10: ffff6001a96eaab2 x9 : ffffdd4be4838bbc
-[   41.742723] x8 : 00009ffe5691554e x7 : ffff000d4b755593 x6 : 0000000000000001
-[   41.749985] x5 : ffff000d4b755590 x4 : 1fffe0001d88f001 x3 : dfff800000000000
-[   41.756988] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000ec478000
-[   41.764251] Call trace:
-[   41.766695]  __mutex_lock+0x670/0x878
-[   41.770373]  mutex_lock_nested+0x2c/0x40
-[   41.774134]  host1x_intr_start+0x54/0xf8 [host1x]
-[   41.778863]  host1x_runtime_resume+0x150/0x228 [host1x]
-[   41.783935]  pm_generic_runtime_resume+0x84/0xc8
-[   41.788485]  __rpm_callback+0xa0/0x478
-[   41.792422]  rpm_callback+0x15c/0x1a8
-[   41.795922]  rpm_resume+0x698/0xc08
-[   41.799597]  __pm_runtime_resume+0xa8/0x140
-[   41.803621]  host1x_probe+0x810/0xbc0 [host1x]
-[   41.807909]  platform_probe+0xcc/0x1a8
-[   41.811845]  really_probe+0x188/0x800
-[   41.815347]  __driver_probe_device+0x164/0x360
-[   41.819810]  driver_probe_device+0x64/0x1a8
-[   41.823834]  __driver_attach+0x180/0x490
-[   41.827773]  bus_for_each_dev+0x104/0x1a0
-[   41.831797]  driver_attach+0x44/0x68
-[   41.835296]  bus_add_driver+0x23c/0x4e8
-[   41.839235]  driver_register+0x15c/0x3a8
-[   41.843170]  __platform_register_drivers+0xa4/0x208
-[   41.848159]  tegra_host1x_init+0x4c/0xff8 [host1x]
-[   41.853147]  do_one_initcall+0xd4/0x380
-[   41.856997]  do_init_module+0x1dc/0x698
-[   41.860758]  load_module+0xc70/0x1300
-[   41.864435]  __do_sys_init_module+0x1a8/0x1d0
-[   41.868721]  __arm64_sys_init_module+0x74/0xb0
-[   41.873183]  invoke_syscall.constprop.0+0xdc/0x1e8
-[   41.877997]  do_el0_svc+0x154/0x1d0
-[   41.881671]  el0_svc+0x54/0x140
-[   41.884820]  el0t_64_sync_handler+0x120/0x130
-[   41.889285]  el0t_64_sync+0x1a4/0x1a8
-[   41.892960] irq event stamp: 69737
-[   41.896370] hardirqs last  enabled at (69737): [<ffffdd4be6d7768c>] _raw_spin_unlock_irqrestore+0x44/0xe8
-[   41.905739] hardirqs last disabled at (69736): [<ffffdd4be59dcd40>] clk_enable_lock+0x98/0x198
-[   41.914314] softirqs last  enabled at (68082): [<ffffdd4be466b1d0>] handle_softirqs+0x4c8/0x890
-[   41.922977] softirqs last disabled at (67945): [<ffffdd4be44f02a4>] __do_softirq+0x1c/0x28
-[   41.931289] ---[ end trace 0000000000000000 ]---
-
-Inside the probe function when pm_runtime_enable() is called,
-the PM core invokes a resume callback if the device Host1x is
-in a suspended state. As it can be seen in the logs above,
-this leads to host1x_intr_start() function call which is
-trying to acquire a mutex lock. But, the function
-host_intr_init() only gets called after the pm_runtime_enable()
-where mutex is initialised leading to the use of mutex
-prior to its initialisation.
-
-Fix this by moving the mutex initialisation prior to the runtime
-PM enablement function pm_runtime_enable() in probe.
-
-Fixes: c8347f915e67 ("gpu: host1x: Fix boot regression for Tegra")
-Signed-off-by: Rupinderjit Singh <rusingh@redhat.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.ozlabs.org/project/linux-tegra/patch/20250206155803.201942-1-rusingh@redhat.com/
+Fixes: f70000ef2352 ("drm/panthor: Add DEV_QUERY_GROUP_PRIORITIES_INFO dev query")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250119025828.1168419-1-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/host1x/dev.c  | 2 ++
- drivers/gpu/host1x/intr.c | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panthor/panthor_drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/host1x/dev.c b/drivers/gpu/host1x/dev.c
-index 7b1d091f3c090..46cae925b0959 100644
---- a/drivers/gpu/host1x/dev.c
-+++ b/drivers/gpu/host1x/dev.c
-@@ -619,6 +619,8 @@ static int host1x_probe(struct platform_device *pdev)
- 		goto free_contexts;
- 	}
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+index 0b3fbee3d37a8..44f5c72d46c3f 100644
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -802,6 +802,7 @@ static void panthor_query_group_priorities_info(struct drm_file *file,
+ {
+ 	int prio;
  
-+	mutex_init(&host->intr_mutex);
-+
- 	pm_runtime_enable(&pdev->dev);
- 
- 	err = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
-diff --git a/drivers/gpu/host1x/intr.c b/drivers/gpu/host1x/intr.c
-index b3285dd101804..f77a678949e96 100644
---- a/drivers/gpu/host1x/intr.c
-+++ b/drivers/gpu/host1x/intr.c
-@@ -104,8 +104,6 @@ int host1x_intr_init(struct host1x *host)
- 	unsigned int id;
- 	int i, err;
- 
--	mutex_init(&host->intr_mutex);
--
- 	for (id = 0; id < host1x_syncpt_nb_pts(host); ++id) {
- 		struct host1x_syncpt *syncpt = &host->syncpt[id];
- 
++	memset(arg, 0, sizeof(*arg));
+ 	for (prio = PANTHOR_GROUP_PRIORITY_REALTIME; prio >= 0; prio--) {
+ 		if (!group_priority_permit(file, prio))
+ 			arg->allowed_mask |= BIT(prio);
 -- 
 2.39.5
 
