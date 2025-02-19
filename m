@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-117620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94753A3B76E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7648DA3B6AC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A06017BC7F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF24F17C177
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D201DE4C6;
-	Wed, 19 Feb 2025 09:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3F1EDA3C;
+	Wed, 19 Feb 2025 08:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV8A+98W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBp+PbG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10F71C5F18;
-	Wed, 19 Feb 2025 09:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64D51D54E9;
+	Wed, 19 Feb 2025 08:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955855; cv=none; b=DAJU/k2Q/3l97KqlBenMv7/oeioVJE/PoKJjOvGinuA9fLZvzavFckLNXZGSboe+vwQdH/qGq0IAyxg9y4kUGda+1wwlUuT6wDrzngmtzv1DPWgN9/yvhnJOnT5iHFx3SMgQ1XbrWEznMX015WUPYv9LlmHNhwGsEsAzwANLH4c=
+	t=1739955424; cv=none; b=cr0/T2O9BaIO3RQh1oazH5EwhqGWSe98rl0PKhk0gCpThfjUj/R2R7HQW+V+N3JkRIHXo3mQi6xsKX2vgAZLs0QPnEqrVml4y35Dvl5xHIv9phbRu94I2QlL9kyDEFQy1zM8TCyJP4AXTb2DiUUTndyKbO9dHNMxydLRqNjrQEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955855; c=relaxed/simple;
-	bh=bHyVomJ9kQ0kGGjviph2o5Vd0tzAP5d+TWDgFN9aZDc=;
+	s=arc-20240116; t=1739955424; c=relaxed/simple;
+	bh=3SrB2qTeNqX940EiYnN6MsoYMToD+wA3CVYBBFe9LQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hynPs/ShgFjsr7qlynvG6eBPerqhV3Uk7iN5O5WEVl+L+6sMewMzVjYtgq5x90PGTSTmBFvpDOHC74uUzvpHtgcA0/7J5A+2GRA85PiW5paSMsdEBZDPM5w80k8VI/wkyRs/fjsXbLmVRInzRPqlwXWLyDknvSHaPav1NVCFSg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV8A+98W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C3DC4CED1;
-	Wed, 19 Feb 2025 09:04:14 +0000 (UTC)
+	 MIME-Version; b=bw4j7L4el0HvZ/dG1EA/FTSjBUHTo+eu0AtaOMM47XuPRdWKXyxYMPfKXhLsrzyuV9eErTV44/xAP07jpZJt4hdDRirGAw0Jjx5BLmtTp5d7qljsmz6ms9vEiK/7VbnLVsK3iwE4NCCqijssnjMa0zBQjBgaAgmiU5l0hvL9J8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBp+PbG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F11C4CED1;
+	Wed, 19 Feb 2025 08:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955854;
-	bh=bHyVomJ9kQ0kGGjviph2o5Vd0tzAP5d+TWDgFN9aZDc=;
+	s=korg; t=1739955424;
+	bh=3SrB2qTeNqX940EiYnN6MsoYMToD+wA3CVYBBFe9LQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oV8A+98W1F81rfUKFpS9GV8lHsFVrgTp55GLNd0VAB82KyrV5xyDvvyNJnga0Jwpf
-	 fBiBRiC4jJtLwVmuTC9FVodA9OAd2HobkXQ3OpYTeMfXeoycY1GdycVuCUmU+N8vl1
-	 rrx9SoG+GPv4t4mtOnLEQ7SckHv6J9yzFyL7zez4=
+	b=RBp+PbG6GDW8rHpP7UPHjlv7iPc1omcVOkzgrwrg8HhiBHi4w+gNdSNEOTf0bTyBN
+	 OOxy83u7IciHlwS/nUAVsx69vpTDSjCcHI8Bij1khSxiEERZ+8FNA8x6ObQFKfi+uy
+	 yIHcY+3mgfJN4raQigBSR/N4BfQs5OYBipw9deHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/152] ipv4: use RCU protection in inet_select_addr()
+Subject: [PATCH 6.12 200/230] ndisc: extend RCU protection in ndisc_send_skb()
 Date: Wed, 19 Feb 2025 09:28:37 +0100
-Message-ID: <20250219082554.173310567@linuxfoundation.org>
+Message-ID: <20250219082609.518652700@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 719817cd293e4fa389e1f69c396f3f816ed5aa41 ]
+[ Upstream commit ed6ae1f325d3c43966ec1b62ac1459e2b8e45640 ]
 
-inet_select_addr() must use RCU protection to make
-sure the net structure it reads does not disappear.
+ndisc_send_skb() can be called without RTNL or RCU held.
 
-Fixes: c4544c724322 ("[NETNS]: Process inet_select_addr inside a namespace.")
+Acquire rcu_read_lock() earlier, so that we can use dev_net_rcu()
+and avoid a potential UAF.
+
+Fixes: 1762f7e88eb3 ("[NETNS][IPV6] ndisc - make socket control per namespace")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-7-edumazet@google.com
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-8-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/ndisc.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 4822f68edbf08..c33b1ecc591e4 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -1341,10 +1341,11 @@ __be32 inet_select_addr(const struct net_device *dev, __be32 dst, int scope)
- 	__be32 addr = 0;
- 	unsigned char localnet_scope = RT_SCOPE_HOST;
- 	struct in_device *in_dev;
--	struct net *net = dev_net(dev);
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 90f8aa2d7af2e..8699d1a188dc4 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -471,16 +471,20 @@ static void ip6_nd_hdr(struct sk_buff *skb,
+ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
+ 		    const struct in6_addr *saddr)
+ {
++	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net *net = dev_net(skb->dev);
+-	struct sock *sk = net->ipv6.ndisc_sk;
+ 	struct inet6_dev *idev;
 +	struct net *net;
- 	int master_idx;
++	struct sock *sk;
+ 	int err;
+-	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
+ 	u8 type;
  
- 	rcu_read_lock();
-+	net = dev_net_rcu(dev);
- 	in_dev = __in_dev_get_rcu(dev);
- 	if (!in_dev)
- 		goto no_in_dev;
+ 	type = icmp6h->icmp6_type;
+ 
++	rcu_read_lock();
++
++	net = dev_net_rcu(skb->dev);
++	sk = net->ipv6.ndisc_sk;
+ 	if (!dst) {
+ 		struct flowi6 fl6;
+ 		int oif = skb->dev->ifindex;
+@@ -488,6 +492,7 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
+ 		icmpv6_flow_init(sk, &fl6, type, saddr, daddr, oif);
+ 		dst = icmp6_dst_alloc(skb->dev, &fl6);
+ 		if (IS_ERR(dst)) {
++			rcu_read_unlock();
+ 			kfree_skb(skb);
+ 			return;
+ 		}
+@@ -502,7 +507,6 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
+ 
+ 	ip6_nd_hdr(skb, saddr, daddr, READ_ONCE(inet6_sk(sk)->hop_limit), skb->len);
+ 
+-	rcu_read_lock();
+ 	idev = __in6_dev_get(dst->dev);
+ 	IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTREQUESTS);
+ 
 -- 
 2.39.5
 
