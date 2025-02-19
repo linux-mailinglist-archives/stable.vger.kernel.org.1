@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A296BA3BA1F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38E7A3B79B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A04551891DFF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7EBD17EBDB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82E71C3F2B;
-	Wed, 19 Feb 2025 09:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34771DE2BD;
+	Wed, 19 Feb 2025 09:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqnAZiJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFPHqY2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67E72AE74;
-	Wed, 19 Feb 2025 09:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2971BEF77;
+	Wed, 19 Feb 2025 09:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957390; cv=none; b=iyr9dK8vcE1s7xST525XthCu4563yAps6scgQGKKStAJOXh7GRVV1izUpOrRY5E6o4nUuOQrBwAR5uJk80x3WdJTM59GzBRhlAV1k/TCzT3JouspERgku3vnnnySMAAugAaCDm50e4LShA41MU8m5b7hduuo5ql25dU7XUSc1k4=
+	t=1739955842; cv=none; b=RWoLxZ7aznXIJ6+GxmkTxeOvQRRgHJHJNGq84tWPz+XfUYdO3aSoeapLumefqRwD2jIcSWECZOUMhz9DIBRHHnVt2dko7Wmw551/35Zo9QJndUT47etgKz3NGFvR+6nrL+jbmIUwEsT9YqNyniWjTNDmjSKxLjIH2VEL2rz8YSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957390; c=relaxed/simple;
-	bh=OcdA8cTbCjIwzigM0Jy+Hy3MrMS2QBYcsvT0OGO8hu4=;
+	s=arc-20240116; t=1739955842; c=relaxed/simple;
+	bh=WTCzh5n+eFstLWs/tu16xhMAQabjwlknPktiFAd/vhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0jQSs30phq5Mm+pIg5Bscp73l/1a32fNylx62b2T6NAAGrtfeSq6RXHrjI8j2FXjVpSew3YXAlWGSsOfl1/BE1J2lAxHSpjNWbd+BSGqv7XmT0aH4g9tsNjYrR+Zi+aveds25M3ZUmpLkhx5OYh+iPCrYJzd6E3hgUcNLlfVNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqnAZiJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD70C4CED1;
-	Wed, 19 Feb 2025 09:29:50 +0000 (UTC)
+	 MIME-Version; b=MUuCWM2q3tYjyLrOV0lqjBzx+LCJnXX36ZTMr7dcbyF15vopGmoRRpiBW2hNkm8OAD2ZCQN7+ajOPK5XXCf1fm6IDp6WV+DDwcXYB4IpP53lCFgP52eEB1LH7Qf28R/zR1/sZmfK7ZxQfzflm6eGNw1gtaexIUvwh9q0nYTBA20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFPHqY2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEF6C4CEE6;
+	Wed, 19 Feb 2025 09:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957390;
-	bh=OcdA8cTbCjIwzigM0Jy+Hy3MrMS2QBYcsvT0OGO8hu4=;
+	s=korg; t=1739955842;
+	bh=WTCzh5n+eFstLWs/tu16xhMAQabjwlknPktiFAd/vhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqnAZiJdSkkRSc80MCLqK3/Q8UPtDGLeK6GzyuSwdcuIx89OMSN1j371kWCGxpYrH
-	 2NegZUnyvJu/sCwOO8CjIYniioC+K1p49lOG4D5aCUpam1W0s2oL/gwvM2faHQSsZm
-	 OA97NPCLEYzMpIEuynz/Rc3uZiwMx4Wgqqn+So1I=
+	b=zFPHqY2YbCiyDYyp8i7JbYjrazuhvVhntf7CCkxEtwmXsBaCYrnUbvrRnJgu4+TwO
+	 Uw7PBJCAm6H76U0z4BowzPJua7yD4AcZF2T9H77f+EhbeYw6jfdLJdJpd8ISw2HkLK
+	 Ap2xNQen9NQ7qllqLzB5piIHff2zr2qSVTikfVIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 509/578] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
+	Jiri Pirko <jiri@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 100/152] net: treat possible_net_t net pointer as an RCU one and add read_pnet_rcu()
 Date: Wed, 19 Feb 2025 09:28:33 +0100
-Message-ID: <20250219082713.007628208@linuxfoundation.org>
+Message-ID: <20250219082554.013897174@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Jiri Pirko <jiri@nvidia.com>
 
-commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
+[ Upstream commit 2034d90ae41ae93e30d492ebcf1f06f97a9cfba6 ]
 
-Teclast disk used on Huawei hisi platforms doesn't work well,
-losing connectivity intermittently if LPM is enabled.
-Add quirk disable LPM to resolve the issue.
+Make the net pointer stored in possible_net_t structure annotated as
+an RCU pointer. Change the access helpers to treat it as such.
+Introduce read_pnet_rcu() helper to allow caller to dereference
+the net pointer under RCU read lock.
 
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 71b8471c93fa ("ipv4: use RCU protection in ipv4_default_advmss()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/net/net_namespace.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -522,6 +522,9 @@ static const struct usb_device_id usb_qu
- 	/* Blackmagic Design UltraStudio SDI */
- 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 1befad79a6734..b767bdcd9e122 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -369,21 +369,30 @@ static inline void put_net_track(struct net *net, netns_tracker *tracker)
  
-+	/* Teclast disk */
-+	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
+ typedef struct {
+ #ifdef CONFIG_NET_NS
+-	struct net *net;
++	struct net __rcu *net;
+ #endif
+ } possible_net_t;
+ 
+ static inline void write_pnet(possible_net_t *pnet, struct net *net)
+ {
+ #ifdef CONFIG_NET_NS
+-	pnet->net = net;
++	rcu_assign_pointer(pnet->net, net);
+ #endif
+ }
+ 
+ static inline struct net *read_pnet(const possible_net_t *pnet)
+ {
+ #ifdef CONFIG_NET_NS
+-	return pnet->net;
++	return rcu_dereference_protected(pnet->net, true);
++#else
++	return &init_net;
++#endif
++}
 +
- 	/* Hauppauge HVR-950q */
- 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
++static inline struct net *read_pnet_rcu(possible_net_t *pnet)
++{
++#ifdef CONFIG_NET_NS
++	return rcu_dereference(pnet->net);
+ #else
+ 	return &init_net;
+ #endif
+-- 
+2.39.5
+
 
 
 
