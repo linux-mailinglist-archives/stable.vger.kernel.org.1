@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-117196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C88A3B574
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FF4A3B57D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 273731786CB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9F7E3ABCB3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778D21E009F;
-	Wed, 19 Feb 2025 08:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E411D6DB1;
+	Wed, 19 Feb 2025 08:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHBo4Hp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFdGUcym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C071DE2C2;
-	Wed, 19 Feb 2025 08:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216C1D61B5;
+	Wed, 19 Feb 2025 08:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954509; cv=none; b=mgxB+we0OLQHY7CicM9fvfyyBI2ASKJYHFksIzC8wEXsWlbi/gSAuqYapQgZrYUaIJS9KpO9n750HnMwjh0gJJu47upYf51u+g6krHBkaP+5GlrW+Vb1IKPyxh6GeZrvx27lSSqbbchOcjXQN53cImy4hQ8XtzkVKunelT8K0sU=
+	t=1739954543; cv=none; b=qlvxEeD1fqZo4NwHNcvtAtYUlqOpsZgGlG8mu7+dDZNcsQlCimPgL3WNkxvuJJ03GtwgAeqN+s7yXBzBbtmA5biWzukqZsSezWLZrkpYWKlCVvYJb3RoFoHVsazwXa8JAZLv+bJIkKXaUjIONAqZ47BjTGFfkypyaAihFobAurs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954509; c=relaxed/simple;
-	bh=N1tQwJ8SSQ0H7SsS61iP19SIBY/FMGhkTbBi0aiOsFE=;
+	s=arc-20240116; t=1739954543; c=relaxed/simple;
+	bh=+UkydMG6S0Dqpzrzmjeb+fTpWVW6I6+gCb4njAVEeR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKcbhcr6ZsudHmIdOe4j/gurG3oZfVqHDIhmS4qRoJLs28ucaIVCeiu0QIGg5If0zRZ88Bnz1Kx8plY6QDp/4JCC3AP5spQhsBI5XaJ2OZTC/s5sFTPSa1oWyuF0Qy8IS6QCaV5xZvHDFBe++1MU4ibdxL3KkaJm1uStvFZh3S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHBo4Hp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B97BC4CED1;
-	Wed, 19 Feb 2025 08:41:48 +0000 (UTC)
+	 MIME-Version; b=T7lE+/A2A9eicJkQTKoVeMRvupIk2CVkRNRML1w2kmua1msk5BWDIpd+WzgTc4TjxhK6LgdC6sXwDMaOY0Knf2Q6h/K33On+5LkzD4Gc3Wk95Sg8I/aUQ0Q6euzWv1yXl9/hMk1z5oKP1Nxu1glhCg2VXHEsf+KTtia2lGZ6fl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFdGUcym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F085C4CEE6;
+	Wed, 19 Feb 2025 08:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954509;
-	bh=N1tQwJ8SSQ0H7SsS61iP19SIBY/FMGhkTbBi0aiOsFE=;
+	s=korg; t=1739954542;
+	bh=+UkydMG6S0Dqpzrzmjeb+fTpWVW6I6+gCb4njAVEeR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHBo4Hp/ibbz0jCS9eQNw6DTuETS5DG5ygQc9MARDask3J8Mt2t6G1/SX6+iPw4H7
-	 HkOLRKJ0Z00jWkHFccGkSqkpjb3qHGQsh0yHM65PjDep87AxSxVhKRZrHDLz03IoJ4
-	 A1v2AFIv7sDO4yNtLaxK+ZeINVceV6Eoj3K5eP2I=
+	b=XFdGUcymt7mGK4VjWD9XBDHQjNdnVuuEY4oIKSNQtYgujkbHK27hcVp59db9Vhc9u
+	 WOMVQe6HbXFSDcJI99qJf6k1W5tXWJXuunishRcyYlmFYD+VFr7FFoIFhujuOHeQ8i
+	 uGbmxp+shyNLV+f5qboVKpS7OKsbTV6wrf3qJfp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruowen Qin <ruqin@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	"Justin M. Forbes" <jforbes@fedoraproject.org>,
+	Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 207/274] samples/hid: fix broken vmlinux path for VMLINUX_BTF
-Date: Wed, 19 Feb 2025 09:27:41 +0100
-Message-ID: <20250219082617.675573094@linuxfoundation.org>
+Subject: [PATCH 6.13 208/274] rust: kbuild: add -fzero-init-padding-bits to bindgen_skip_cflags
+Date: Wed, 19 Feb 2025 09:27:42 +0100
+Message-ID: <20250219082617.719741047@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -69,45 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinghao Jia <jinghao7@illinois.edu>
+From: Justin M. Forbes <jforbes@fedoraproject.org>
 
-[ Upstream commit 8b125949df58a00e8797c6e6d3f3d3dc08f4d939 ]
+[ Upstream commit a9c621a217128eb3fb7522cf763992d9437fd5ba ]
 
-Commit 13b25489b6f8 ("kbuild: change working directory to external
-module directory with M=") changed kbuild working directory of hid-bpf
-sample programs to samples/hid, which broke the vmlinux path for
-VMLINUX_BTF, as the Makefiles assume the current work directory to be
-the kernel output directory and use a relative path (i.e., ./vmlinux):
+This seems to break the build when building with gcc15:
 
-  Makefile:173: *** Cannot find a vmlinux for VMLINUX_BTF at any of "  /path/to/linux/samples/hid/vmlinux", build the kernel or set VMLINUX_BTF or VMLINUX_H variable.  Stop.
+    Unable to generate bindings: ClangDiagnostic("error: unknown
+    argument: '-fzero-init-padding-bits=all'\n")
 
-Correctly refer to the kernel output directory using $(objtree).
+Thus skip that flag.
 
-Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
-Tested-by: Ruowen Qin <ruqin@redhat.com>
-Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Link: https://patch.msgid.link/20250203085506.220297-4-jinghao7@illinois.edu
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Fixes: dce4aab8441d ("kbuild: Use -fzero-init-padding-bits=all")
+Reviewed-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20250129215003.1736127-1-jforbes@fedoraproject.org
+[ Slightly reworded commit. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/hid/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/samples/hid/Makefile b/samples/hid/Makefile
-index 69159c81d0457..db5a077c77fc8 100644
---- a/samples/hid/Makefile
-+++ b/samples/hid/Makefile
-@@ -164,7 +164,7 @@ $(obj)/hid_surface_dial.o: $(obj)/hid_surface_dial.skel.h
+diff --git a/rust/Makefile b/rust/Makefile
+index a40a3936126d6..43cd7f845a9a3 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -238,6 +238,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fzero-call-used-regs=% -fno-stack-clash-protection \
+ 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+ 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
++	-fzero-init-padding-bits=% \
+ 	--param=% --param asan-%
  
- VMLINUX_BTF_PATHS ?= $(abspath $(if $(O),$(O)/vmlinux))				\
- 		     $(abspath $(if $(KBUILD_OUTPUT),$(KBUILD_OUTPUT)/vmlinux))	\
--		     $(abspath ./vmlinux)
-+		     $(abspath $(objtree)/vmlinux)
- VMLINUX_BTF ?= $(abspath $(firstword $(wildcard $(VMLINUX_BTF_PATHS))))
- 
- $(obj)/vmlinux.h: $(VMLINUX_BTF) $(BPFTOOL)
+ # Derived from `scripts/Makefile.clang`.
 -- 
 2.39.5
 
