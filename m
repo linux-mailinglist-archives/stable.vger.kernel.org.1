@@ -1,77 +1,720 @@
-Return-Path: <stable+bounces-118233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B7EA3BA32
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DB7A3B7E7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 799537A825B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CE0618882FA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F3B1DFDA5;
-	Wed, 19 Feb 2025 09:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D012A1DE8A6;
+	Wed, 19 Feb 2025 09:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiuTnvH6"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="B70S5esW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50AC1DE2CE;
-	Wed, 19 Feb 2025 09:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0099E1DED5E
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 09:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957618; cv=none; b=YUSck6bk/MLYzriopIflSQ/UrXVKCY07hn+IboyGvd9QzQN9VohupHJc66VVnUXI+EbYdFOTIw1IgqejNVWcN8yYCJb2p+Uvz6MdUeEXYd1P4zSaJaoQIzRnxCHjrwNlo4qBGQIwhR2OMYjl+O2GB8Q9lRJsLNPujlQ7XjuCTCY=
+	t=1739956167; cv=none; b=LgD1awrTUIIkoR4oh1WIT/rHe6vv9WUxVoNQrkiJ5ENB5/BaRYsWzBkrSLH3lHOwtiR9wG2BTa6mbc0wVbaym0FgVaaZq0NmOF+sxcbdHvfO2Mvult4083iAIS0VEnC/s0buShPDOvPuyN5JUHDnFGIKenD30x3cXSCN/PKRd0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957618; c=relaxed/simple;
-	bh=9R0y3yeoS+AheQWZTkPuFpEYVnJpEy9OY4NRatWANy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MeI9Hr9aYrSrfj3G+g8PaGXMz0k5q2hqfAXEOQmvrtb4WV2tlBrq2zSZXMMqGErs8xsPcQ3XpzeC/ck7vX5Ok0lg1JflUgCNaeJJof0qw37pJvi55LVvzWBAeD4fgzYl3J1+COd9aPxRdcJ+TewSxyhXDFbRp8KodV3DqepowNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiuTnvH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB19EC4CED1;
-	Wed, 19 Feb 2025 09:33:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957618;
-	bh=9R0y3yeoS+AheQWZTkPuFpEYVnJpEy9OY4NRatWANy0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PiuTnvH6gI2Q4QNzs7Qo9fWlcPQoCKk6WuZ0ku1wZt/UPj5upQv+HabEhNx7blkdX
-	 xV1GZIcu2dW7rUYkI8oc+N7h59cB4VFkn21630PSWcsU4K07+dVdknk7VHQyDF7CLa
-	 1ty4J72qqi3uH38liTT3JRZXQ4tt4n2JFk7UQkTM=
-Date: Wed, 19 Feb 2025 10:09:00 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ankit Agrawal <ankita@nvidia.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13 098/274] vfio/nvgrace-gpu: Read dvsec register to
- determine need for uncached resmem
-Message-ID: <2025021942-scariness-quarters-03b2@gregkh>
-References: <20250219082609.533585153@linuxfoundation.org>
- <20250219082613.458476146@linuxfoundation.org>
- <SA1PR12MB719961A0F0CFBF6AD3561D94B0C52@SA1PR12MB7199.namprd12.prod.outlook.com>
+	s=arc-20240116; t=1739956167; c=relaxed/simple;
+	bh=gXVsNZjEIJuMj+Wabd8hWgqe44K42HhdsBPIKhcPf/M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZqEXMnMVQlFaVOEbpF2Qn6loyP1GxWbJOP82Ud83v900EvP6pYwQwZqWDOcGk8egs7HFuSXEgbvozeTq/ETi4pJSS1ugrcORg6W2B/DUMLSa3NdGYMpxORR51Hvo96XRuBY2nO4aD0boE30PRTw1/xqJnKdgNZdkzFS8p+y54W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=B70S5esW; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739956165; x=1771492165;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZCn/ERYNZYKukwRuA1faxl4FIssHsrftwD169zW9kp4=;
+  b=B70S5esWh4XEeGBN3dmDU5Cfi+ISID7MkLwoFiDJIBjLjEKG1I2AOne0
+   ogykZOEd7wF4osTOljpIh3FQ7jKDyIUoRmtAofnbz4C8Iu1NxI73tAGeL
+   Kl1ai7+FmDFimJTwuGel5YK5MgHjyL5flX6Bz521scfmEW739tIFh2o07
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.13,298,1732579200"; 
+   d="scan'208";a="468122377"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 09:09:19 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:33882]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.28.176:2525] with esmtp (Farcaster)
+ id cac4cd9e-1ae7-4c26-9b20-4f4434522b3d; Wed, 19 Feb 2025 09:09:16 +0000 (UTC)
+X-Farcaster-Flow-ID: cac4cd9e-1ae7-4c26-9b20-4f4434522b3d
+Received: from EX19MTAUWB002.ant.amazon.com (10.250.64.231) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 19 Feb 2025 09:09:16 +0000
+Received: from email-imr-corp-prod-pdx-all-2b-a57195ef.us-west-2.amazon.com
+ (10.25.36.214) by mail-relay.amazon.com (10.250.64.228) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.39 via Frontend Transport; Wed, 19 Feb 2025 09:09:16 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-pdx-all-2b-a57195ef.us-west-2.amazon.com (Postfix) with ESMTP id 50EC2A043E;
+	Wed, 19 Feb 2025 09:09:16 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id AA91C20DC9; Wed, 19 Feb 2025 09:09:15 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, Paolo Valente <paolo.valente@linaro.org>,
+	"Damien Le Moal" <damien.lemoal@opensource.wdc.com>, Gabriele Felici
+	<felicigb@gmail.com>, Carmine Zaccagnino <carmine@carminezacc.com>, "Jens
+ Axboe" <axboe@kernel.dk>, Hagar Hemdan <hagarhem@amazon.com>
+Subject: [PATCH 6.1] block, bfq: split sync bfq_queues on a per-actuator basis
+Date: Wed, 19 Feb 2025 09:09:01 +0000
+Message-ID: <20250219090907.30462-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA1PR12MB719961A0F0CFBF6AD3561D94B0C52@SA1PR12MB7199.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 19, 2025 at 09:00:19AM +0000, Ankit Agrawal wrote:
-> Hi Greg, thanks for sending this out. One thing is that this was part
-> of a 4 patch series. However, I only see 2 patches here. Are you planning
-> to include them later? Following are the other 2 patches for reference:
-> 3/4: https://lore.kernel.org/all/20250124183102.3976-4-ankita@nvidia.com/
-> 4/4: https://lore.kernel.org/all/20250124183102.3976-5-ankita@nvidia.com/
+From: Paolo Valente <paolo.valente@linaro.org>
 
-What are the git commit ids for these changes in Linus's tree?
+commit 9778369a2d6c5ed2b81a04164c4aa9da1bdb193d upstream.
 
-thanks,
+Single-LUN multi-actuator SCSI drives, as well as all multi-actuator
+SATA drives appear as a single device to the I/O subsystem [1].  Yet
+they address commands to different actuators internally, as a function
+of Logical Block Addressing (LBAs). A given sector is reachable by
+only one of the actuators. For example, Seagate’s Serial Advanced
+Technology Attachment (SATA) version contains two actuators and maps
+the lower half of the SATA LBA space to the lower actuator and the
+upper half to the upper actuator.
 
-greg k-h
+Evidently, to fully utilize actuators, no actuator must be left idle
+or underutilized while there is pending I/O for it. The block layer
+must somehow control the load of each actuator individually. This
+commit lays the ground for allowing BFQ to provide such a per-actuator
+control.
+
+BFQ associates an I/O-request sync bfq_queue with each process doing
+synchronous I/O, or with a group of processes, in case of queue
+merging. Then BFQ serves one bfq_queue at a time. While in service, a
+bfq_queue is emptied in request-position order. Yet the same process,
+or group of processes, may generate I/O for different actuators. In
+this case, different streams of I/O (each for a different actuator)
+get all inserted into the same sync bfq_queue. So there is basically
+no individual control on when each stream is served, i.e., on when the
+I/O requests of the stream are picked from the bfq_queue and
+dispatched to the drive.
+
+This commit enables BFQ to control the service of each actuator
+individually for synchronous I/O, by simply splitting each sync
+bfq_queue into N queues, one for each actuator. In other words, a sync
+bfq_queue is now associated to a pair (process, actuator). As a
+consequence of this split, the per-queue proportional-share policy
+implemented by BFQ will guarantee that the sync I/O generated for each
+actuator, by each process, receives its fair share of service.
+
+This is just a preparatory patch. If the I/O of the same process
+happens to be sent to different queues, then each of these queues may
+undergo queue merging. To handle this event, the bfq_io_cq data
+structure must be properly extended. In addition, stable merging must
+be disabled to avoid loss of control on individual actuators. Finally,
+also async queues must be split. These issues are described in detail
+and addressed in next commits. As for this commit, although multiple
+per-process bfq_queues are provided, the I/O of each process or group
+of processes is still sent to only one queue, regardless of the
+actuator the I/O is for. The forwarding to distinct bfq_queues will be
+enabled after addressing the above issues.
+
+[1] https://www.linaro.org/blog/budget-fair-queueing-bfq-linux-io-scheduler-optimizations-for-multi-actuator-sata-hard-drives/
+
+Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Signed-off-by: Gabriele Felici <felicigb@gmail.com>
+Signed-off-by: Carmine Zaccagnino <carmine@carminezacc.com>
+Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
+Link: https://lore.kernel.org/r/20230103145503.71712-2-paolo.valente@linaro.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: e8b8344de398 ("block, bfq: fix bfqq uaf in bfq_limit_depth()")
+[Hagar: needed contextual fixes]
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+ block/bfq-cgroup.c  |  95 +++++++++++++-------------
+ block/bfq-iosched.c | 160 +++++++++++++++++++++++++++++---------------
+ block/bfq-iosched.h |  51 +++++++++++---
+ 3 files changed, 196 insertions(+), 110 deletions(-)
+
+diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
+index 60b4299bec8ec..5d202b775beb4 100644
+--- a/block/bfq-cgroup.c
++++ b/block/bfq-cgroup.c
+@@ -704,6 +704,46 @@ void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+ 	bfq_put_queue(bfqq);
+ }
+ 
++static void bfq_sync_bfqq_move(struct bfq_data *bfqd,
++			       struct bfq_queue *sync_bfqq,
++			       struct bfq_io_cq *bic,
++			       struct bfq_group *bfqg,
++			       unsigned int act_idx)
++{
++	struct bfq_queue *bfqq;
++
++	if (!sync_bfqq->new_bfqq && !bfq_bfqq_coop(sync_bfqq)) {
++		/* We are the only user of this bfqq, just move it */
++		if (sync_bfqq->entity.sched_data != &bfqg->sched_data)
++			bfq_bfqq_move(bfqd, sync_bfqq, bfqg);
++		return;
++	}
++
++	/*
++	 * The queue was merged to a different queue. Check
++	 * that the merge chain still belongs to the same
++	 * cgroup.
++	 */
++	for (bfqq = sync_bfqq; bfqq; bfqq = bfqq->new_bfqq)
++		if (bfqq->entity.sched_data != &bfqg->sched_data)
++			break;
++	if (bfqq) {
++		/*
++		 * Some queue changed cgroup so the merge is not valid
++		 * anymore. We cannot easily just cancel the merge (by
++		 * clearing new_bfqq) as there may be other processes
++		 * using this queue and holding refs to all queues
++		 * below sync_bfqq->new_bfqq. Similarly if the merge
++		 * already happened, we need to detach from bfqq now
++		 * so that we cannot merge bio to a request from the
++		 * old cgroup.
++		 */
++		bfq_put_cooperator(sync_bfqq);
++		bfq_release_process_ref(bfqd, sync_bfqq);
++		bic_set_bfqq(bic, NULL, true, act_idx);
++	}
++}
++
+ /**
+  * __bfq_bic_change_cgroup - move @bic to @bfqg.
+  * @bfqd: the queue descriptor.
+@@ -714,60 +754,25 @@ void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+  * sure that the reference to cgroup is valid across the call (see
+  * comments in bfq_bic_update_cgroup on this issue)
+  */
+-static void *__bfq_bic_change_cgroup(struct bfq_data *bfqd,
++static void __bfq_bic_change_cgroup(struct bfq_data *bfqd,
+ 				     struct bfq_io_cq *bic,
+ 				     struct bfq_group *bfqg)
+ {
+-	struct bfq_queue *async_bfqq = bic_to_bfqq(bic, false);
+-	struct bfq_queue *sync_bfqq = bic_to_bfqq(bic, true);
+-	struct bfq_entity *entity;
++	unsigned int act_idx;
+ 
+-	if (async_bfqq) {
+-		entity = &async_bfqq->entity;
++	for (act_idx = 0; act_idx < bfqd->num_actuators; act_idx++) {
++		struct bfq_queue *async_bfqq = bic_to_bfqq(bic, false, act_idx);
++		struct bfq_queue *sync_bfqq = bic_to_bfqq(bic, true, act_idx);
+ 
+-		if (entity->sched_data != &bfqg->sched_data) {
+-			bic_set_bfqq(bic, NULL, false);
++		if (async_bfqq &&
++		    async_bfqq->entity.sched_data != &bfqg->sched_data) {
++			bic_set_bfqq(bic, NULL, false, act_idx);
+ 			bfq_release_process_ref(bfqd, async_bfqq);
+ 		}
+-	}
+ 
+-	if (sync_bfqq) {
+-		if (!sync_bfqq->new_bfqq && !bfq_bfqq_coop(sync_bfqq)) {
+-			/* We are the only user of this bfqq, just move it */
+-			if (sync_bfqq->entity.sched_data != &bfqg->sched_data)
+-				bfq_bfqq_move(bfqd, sync_bfqq, bfqg);
+-		} else {
+-			struct bfq_queue *bfqq;
+-
+-			/*
+-			 * The queue was merged to a different queue. Check
+-			 * that the merge chain still belongs to the same
+-			 * cgroup.
+-			 */
+-			for (bfqq = sync_bfqq; bfqq; bfqq = bfqq->new_bfqq)
+-				if (bfqq->entity.sched_data !=
+-				    &bfqg->sched_data)
+-					break;
+-			if (bfqq) {
+-				/*
+-				 * Some queue changed cgroup so the merge is
+-				 * not valid anymore. We cannot easily just
+-				 * cancel the merge (by clearing new_bfqq) as
+-				 * there may be other processes using this
+-				 * queue and holding refs to all queues below
+-				 * sync_bfqq->new_bfqq. Similarly if the merge
+-				 * already happened, we need to detach from
+-				 * bfqq now so that we cannot merge bio to a
+-				 * request from the old cgroup.
+-				 */
+-				bfq_put_cooperator(sync_bfqq);
+-				bic_set_bfqq(bic, NULL, true);
+-				bfq_release_process_ref(bfqd, sync_bfqq);
+-			}
+-		}
++		if (sync_bfqq)
++			bfq_sync_bfqq_move(bfqd, sync_bfqq, bic, bfqg, act_idx);
+ 	}
+-
+-	return bfqg;
+ }
+ 
+ void bfq_bic_update_cgroup(struct bfq_io_cq *bic, struct bio *bio)
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index f759457646530..76b2e66d09070 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -377,16 +377,23 @@ static const unsigned long bfq_late_stable_merging = 600;
+ #define RQ_BIC(rq)		((struct bfq_io_cq *)((rq)->elv.priv[0]))
+ #define RQ_BFQQ(rq)		((rq)->elv.priv[1])
+ 
+-struct bfq_queue *bic_to_bfqq(struct bfq_io_cq *bic, bool is_sync)
++struct bfq_queue *bic_to_bfqq(struct bfq_io_cq *bic, bool is_sync,
++			      unsigned int actuator_idx)
+ {
+-	return bic->bfqq[is_sync];
++	if (is_sync)
++		return bic->bfqq[1][actuator_idx];
++
++	return bic->bfqq[0][actuator_idx];
+ }
+ 
+ static void bfq_put_stable_ref(struct bfq_queue *bfqq);
+ 
+-void bic_set_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq, bool is_sync)
++void bic_set_bfqq(struct bfq_io_cq *bic,
++		  struct bfq_queue *bfqq,
++		  bool is_sync,
++		  unsigned int actuator_idx)
+ {
+-	struct bfq_queue *old_bfqq = bic->bfqq[is_sync];
++	struct bfq_queue *old_bfqq = bic->bfqq[is_sync][actuator_idx];
+ 
+ 	/* Clear bic pointer if bfqq is detached from this bic */
+ 	if (old_bfqq && old_bfqq->bic == bic)
+@@ -405,7 +412,10 @@ void bic_set_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq, bool is_sync)
+ 	 * we cancel the stable merge if
+ 	 * bic->stable_merge_bfqq == bfqq.
+ 	 */
+-	bic->bfqq[is_sync] = bfqq;
++	if (is_sync)
++		bic->bfqq[1][actuator_idx] = bfqq;
++	else
++		bic->bfqq[0][actuator_idx] = bfqq;
+ 
+ 	if (bfqq && bic->stable_merge_bfqq == bfqq) {
+ 		/*
+@@ -680,9 +690,9 @@ static void bfq_limit_depth(blk_opf_t opf, struct blk_mq_alloc_data *data)
+ {
+ 	struct bfq_data *bfqd = data->q->elevator->elevator_data;
+ 	struct bfq_io_cq *bic = bfq_bic_lookup(data->q);
+-	struct bfq_queue *bfqq = bic ? bic_to_bfqq(bic, op_is_sync(opf)) : NULL;
+ 	int depth;
+ 	unsigned limit = data->q->nr_requests;
++	unsigned int act_idx;
+ 
+ 	/* Sync reads have full depth available */
+ 	if (op_is_sync(opf) && !op_is_write(opf)) {
+@@ -692,14 +702,21 @@ static void bfq_limit_depth(blk_opf_t opf, struct blk_mq_alloc_data *data)
+ 		limit = (limit * depth) >> bfqd->full_depth_shift;
+ 	}
+ 
+-	/*
+-	 * Does queue (or any parent entity) exceed number of requests that
+-	 * should be available to it? Heavily limit depth so that it cannot
+-	 * consume more available requests and thus starve other entities.
+-	 */
+-	if (bfqq && bfqq_request_over_limit(bfqq, limit))
+-		depth = 1;
++	for (act_idx = 0; bic && act_idx < bfqd->num_actuators; act_idx++) {
++		struct bfq_queue *bfqq =
++			bic_to_bfqq(bic, op_is_sync(opf), act_idx);
+ 
++		/*
++		 * Does queue (or any parent entity) exceed number of
++		 * requests that should be available to it? Heavily
++		 * limit depth so that it cannot consume more
++		 * available requests and thus starve other entities.
++		 */
++		if (bfqq && bfqq_request_over_limit(bfqq, limit)) {
++			depth = 1;
++			break;
++		}
++	}
+ 	bfq_log(bfqd, "[%s] wr_busy %d sync %d depth %u",
+ 		__func__, bfqd->wr_busy_queues, op_is_sync(opf), depth);
+ 	if (depth)
+@@ -1820,6 +1837,18 @@ static bool bfq_bfqq_higher_class_or_weight(struct bfq_queue *bfqq,
+ 	return bfqq_weight > in_serv_weight;
+ }
+ 
++/*
++ * Get the index of the actuator that will serve bio.
++ */
++static unsigned int bfq_actuator_index(struct bfq_data *bfqd, struct bio *bio)
++{
++	/*
++	 * Multi-actuator support not complete yet, so always return 0
++	 * for the moment (to keep incomplete mechanisms off).
++	 */
++	return 0;
++}
++
+ static bool bfq_better_to_idle(struct bfq_queue *bfqq);
+ 
+ static void bfq_bfqq_handle_idle_busy_switch(struct bfq_data *bfqd,
+@@ -2150,7 +2179,7 @@ static void bfq_check_waker(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+ 	 * We reset waker detection logic also if too much time has passed
+  	 * since the first detection. If wakeups are rare, pointless idling
+ 	 * doesn't hurt throughput that much. The condition below makes sure
+-	 * we do not uselessly idle blocking waker in more than 1/64 cases. 
++	 * we do not uselessly idle blocking waker in more than 1/64 cases.
+ 	 */
+ 	if (bfqd->last_completed_rq_bfqq !=
+ 	    bfqq->tentative_waker_bfqq ||
+@@ -2486,7 +2515,8 @@ static bool bfq_bio_merge(struct request_queue *q, struct bio *bio,
+ 		 */
+ 		bfq_bic_update_cgroup(bic, bio);
+ 
+-		bfqd->bio_bfqq = bic_to_bfqq(bic, op_is_sync(bio->bi_opf));
++		bfqd->bio_bfqq = bic_to_bfqq(bic, op_is_sync(bio->bi_opf),
++					     bfq_actuator_index(bfqd, bio));
+ 	} else {
+ 		bfqd->bio_bfqq = NULL;
+ 	}
+@@ -3188,7 +3218,7 @@ static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
+ 	/*
+ 	 * Merge queues (that is, let bic redirect its requests to new_bfqq)
+ 	 */
+-	bic_set_bfqq(bic, new_bfqq, true);
++	bic_set_bfqq(bic, new_bfqq, true, bfqq->actuator_idx);
+ 	bfq_mark_bfqq_coop(new_bfqq);
+ 	/*
+ 	 * new_bfqq now belongs to at least two bics (it is a shared queue):
+@@ -4818,11 +4848,8 @@ static struct bfq_queue *bfq_select_queue(struct bfq_data *bfqd)
+ 	 */
+ 	if (bfq_bfqq_wait_request(bfqq) ||
+ 	    (bfqq->dispatched != 0 && bfq_better_to_idle(bfqq))) {
+-		struct bfq_queue *async_bfqq =
+-			bfqq->bic && bfqq->bic->bfqq[0] &&
+-			bfq_bfqq_busy(bfqq->bic->bfqq[0]) &&
+-			bfqq->bic->bfqq[0]->next_rq ?
+-			bfqq->bic->bfqq[0] : NULL;
++		unsigned int act_idx = bfqq->actuator_idx;
++		struct bfq_queue *async_bfqq = NULL;
+ 		struct bfq_queue *blocked_bfqq =
+ 			!hlist_empty(&bfqq->woken_list) ?
+ 			container_of(bfqq->woken_list.first,
+@@ -4830,6 +4857,10 @@ static struct bfq_queue *bfq_select_queue(struct bfq_data *bfqd)
+ 				     woken_list_node)
+ 			: NULL;
+ 
++		if (bfqq->bic && bfqq->bic->bfqq[0][act_idx] &&
++		    bfq_bfqq_busy(bfqq->bic->bfqq[0][act_idx]) &&
++		    bfqq->bic->bfqq[0][act_idx]->next_rq)
++			async_bfqq = bfqq->bic->bfqq[0][act_idx];
+ 		/*
+ 		 * The next four mutually-exclusive ifs decide
+ 		 * whether to try injection, and choose the queue to
+@@ -4914,7 +4945,7 @@ static struct bfq_queue *bfq_select_queue(struct bfq_data *bfqd)
+ 		    icq_to_bic(async_bfqq->next_rq->elv.icq) == bfqq->bic &&
+ 		    bfq_serv_to_charge(async_bfqq->next_rq, async_bfqq) <=
+ 		    bfq_bfqq_budget_left(async_bfqq))
+-			bfqq = bfqq->bic->bfqq[0];
++			bfqq = bfqq->bic->bfqq[0][act_idx];
+ 		else if (bfqq->waker_bfqq &&
+ 			   bfq_bfqq_busy(bfqq->waker_bfqq) &&
+ 			   bfqq->waker_bfqq->next_rq &&
+@@ -5375,48 +5406,54 @@ static void bfq_exit_bfqq(struct bfq_data *bfqd, struct bfq_queue *bfqq)
+ 	bfq_release_process_ref(bfqd, bfqq);
+ }
+ 
+-static void bfq_exit_icq_bfqq(struct bfq_io_cq *bic, bool is_sync)
++static void bfq_exit_icq_bfqq(struct bfq_io_cq *bic, bool is_sync,
++			      unsigned int actuator_idx)
+ {
+-	struct bfq_queue *bfqq = bic_to_bfqq(bic, is_sync);
++	struct bfq_queue *bfqq = bic_to_bfqq(bic, is_sync, actuator_idx);
+ 	struct bfq_data *bfqd;
+ 
+ 	if (bfqq)
+ 		bfqd = bfqq->bfqd; /* NULL if scheduler already exited */
+ 
+ 	if (bfqq && bfqd) {
+-		unsigned long flags;
+-
+-		spin_lock_irqsave(&bfqd->lock, flags);
+-		bic_set_bfqq(bic, NULL, is_sync);
++		bic_set_bfqq(bic, NULL, is_sync, actuator_idx);
+ 		bfq_exit_bfqq(bfqd, bfqq);
+-		spin_unlock_irqrestore(&bfqd->lock, flags);
+ 	}
+ }
+ 
+ static void bfq_exit_icq(struct io_cq *icq)
+ {
+ 	struct bfq_io_cq *bic = icq_to_bic(icq);
++	struct bfq_data *bfqd = bic_to_bfqd(bic);
++	unsigned long flags;
++	unsigned int act_idx;
++	/*
++	 * If bfqd and thus bfqd->num_actuators is not available any
++	 * longer, then cycle over all possible per-actuator bfqqs in
++	 * next loop. We rely on bic being zeroed on creation, and
++	 * therefore on its unused per-actuator fields being NULL.
++	 */
++	unsigned int num_actuators = BFQ_MAX_ACTUATORS;
+ 
+-	if (bic->stable_merge_bfqq) {
+-		struct bfq_data *bfqd = bic->stable_merge_bfqq->bfqd;
++	/*
++	 * bfqd is NULL if scheduler already exited, and in that case
++	 * this is the last time these queues are accessed.
++	 */
++	if (bfqd) {
++		spin_lock_irqsave(&bfqd->lock, flags);
++		num_actuators = bfqd->num_actuators;
++	}
+ 
+-		/*
+-		 * bfqd is NULL if scheduler already exited, and in
+-		 * that case this is the last time bfqq is accessed.
+-		 */
+-		if (bfqd) {
+-			unsigned long flags;
++	if (bic->stable_merge_bfqq)
++		bfq_put_stable_ref(bic->stable_merge_bfqq);
+ 
+-			spin_lock_irqsave(&bfqd->lock, flags);
+-			bfq_put_stable_ref(bic->stable_merge_bfqq);
+-			spin_unlock_irqrestore(&bfqd->lock, flags);
+-		} else {
+-			bfq_put_stable_ref(bic->stable_merge_bfqq);
+-		}
++	for (act_idx = 0; act_idx < num_actuators; act_idx++) {
++		bfq_exit_icq_bfqq(bic, true, act_idx);
++		bfq_exit_icq_bfqq(bic, false, act_idx);
+ 	}
+ 
+-	bfq_exit_icq_bfqq(bic, true);
+-	bfq_exit_icq_bfqq(bic, false);
++	if (bfqd)
++		spin_unlock_irqrestore(&bfqd->lock, flags);
+ }
+ 
+ /*
+@@ -5493,25 +5530,27 @@ static void bfq_check_ioprio_change(struct bfq_io_cq *bic, struct bio *bio)
+ 
+ 	bic->ioprio = ioprio;
+ 
+-	bfqq = bic_to_bfqq(bic, false);
++	bfqq = bic_to_bfqq(bic, false, bfq_actuator_index(bfqd, bio));
+ 	if (bfqq) {
+ 		struct bfq_queue *old_bfqq = bfqq;
+ 
+ 		bfqq = bfq_get_queue(bfqd, bio, false, bic, true);
+-		bic_set_bfqq(bic, bfqq, false);
++		bic_set_bfqq(bic, bfqq, false, bfq_actuator_index(bfqd, bio));
+ 		bfq_release_process_ref(bfqd, old_bfqq);
+ 	}
+ 
+-	bfqq = bic_to_bfqq(bic, true);
++	bfqq = bic_to_bfqq(bic, true, bfq_actuator_index(bfqd, bio));
+ 	if (bfqq)
+ 		bfq_set_next_ioprio_data(bfqq, bic);
+ }
+ 
+ static void bfq_init_bfqq(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+-			  struct bfq_io_cq *bic, pid_t pid, int is_sync)
++			  struct bfq_io_cq *bic, pid_t pid, int is_sync,
++			  unsigned int act_idx)
+ {
+ 	u64 now_ns = ktime_get_ns();
+ 
++	bfqq->actuator_idx = act_idx;
+ 	RB_CLEAR_NODE(&bfqq->entity.rb_node);
+ 	INIT_LIST_HEAD(&bfqq->fifo);
+ 	INIT_HLIST_NODE(&bfqq->burst_list_node);
+@@ -5762,7 +5801,7 @@ static struct bfq_queue *bfq_get_queue(struct bfq_data *bfqd,
+ 
+ 	if (bfqq) {
+ 		bfq_init_bfqq(bfqd, bfqq, bic, current->pid,
+-			      is_sync);
++			      is_sync, bfq_actuator_index(bfqd, bio));
+ 		bfq_init_entity(&bfqq->entity, bfqg);
+ 		bfq_log_bfqq(bfqd, bfqq, "allocated");
+ 	} else {
+@@ -6078,7 +6117,8 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
+ 		 * then complete the merge and redirect it to
+ 		 * new_bfqq.
+ 		 */
+-		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq) {
++		if (bic_to_bfqq(RQ_BIC(rq), true,
++				bfq_actuator_index(bfqd, rq->bio)) == bfqq) {
+ 			while (bfqq != new_bfqq)
+ 				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
+ 		}
+@@ -6632,7 +6672,7 @@ bfq_split_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq)
+ 		return bfqq;
+ 	}
+ 
+-	bic_set_bfqq(bic, NULL, true);
++	bic_set_bfqq(bic, NULL, true, bfqq->actuator_idx);
+ 
+ 	bfq_put_cooperator(bfqq);
+ 
+@@ -6646,7 +6686,8 @@ static struct bfq_queue *bfq_get_bfqq_handle_split(struct bfq_data *bfqd,
+ 						   bool split, bool is_sync,
+ 						   bool *new_queue)
+ {
+-	struct bfq_queue *bfqq = bic_to_bfqq(bic, is_sync);
++	unsigned int act_idx = bfq_actuator_index(bfqd, bio);
++	struct bfq_queue *bfqq = bic_to_bfqq(bic, is_sync, act_idx);
+ 
+ 	if (likely(bfqq && bfqq != &bfqd->oom_bfqq))
+ 		return bfqq;
+@@ -6658,7 +6699,7 @@ static struct bfq_queue *bfq_get_bfqq_handle_split(struct bfq_data *bfqd,
+ 		bfq_put_queue(bfqq);
+ 	bfqq = bfq_get_queue(bfqd, bio, is_sync, bic, split);
+ 
+-	bic_set_bfqq(bic, bfqq, is_sync);
++	bic_set_bfqq(bic, bfqq, is_sync, act_idx);
+ 	if (split && is_sync) {
+ 		if ((bic->was_in_burst_list && bfqd->large_burst) ||
+ 		    bic->saved_in_large_burst)
+@@ -7139,8 +7180,10 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
+ 	 * Our fallback bfqq if bfq_find_alloc_queue() runs into OOM issues.
+ 	 * Grab a permanent reference to it, so that the normal code flow
+ 	 * will not attempt to free it.
++	 * Set zero as actuator index: we will pretend that
++	 * all I/O requests are for the same actuator.
+ 	 */
+-	bfq_init_bfqq(bfqd, &bfqd->oom_bfqq, NULL, 1, 0);
++	bfq_init_bfqq(bfqd, &bfqd->oom_bfqq, NULL, 1, 0, 0);
+ 	bfqd->oom_bfqq.ref++;
+ 	bfqd->oom_bfqq.new_ioprio = BFQ_DEFAULT_QUEUE_IOPRIO;
+ 	bfqd->oom_bfqq.new_ioprio_class = IOPRIO_CLASS_BE;
+@@ -7159,6 +7202,13 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
+ 
+ 	bfqd->queue = q;
+ 
++	/*
++	 * Multi-actuator support not complete yet, unconditionally
++	 * set to only one actuator for the moment (to keep incomplete
++	 * mechanisms off).
++	 */
++	bfqd->num_actuators = 1;
++
+ 	INIT_LIST_HEAD(&bfqd->dispatch);
+ 
+ 	hrtimer_init(&bfqd->idle_slice_timer, CLOCK_MONOTONIC,
+diff --git a/block/bfq-iosched.h b/block/bfq-iosched.h
+index 71f721670ab62..2b413ddffbb95 100644
+--- a/block/bfq-iosched.h
++++ b/block/bfq-iosched.h
+@@ -33,6 +33,14 @@
+  */
+ #define BFQ_SOFTRT_WEIGHT_FACTOR	100
+ 
++/*
++ * Maximum number of actuators supported. This constant is used simply
++ * to define the size of the static array that will contain
++ * per-actuator data. The current value is hopefully a good upper
++ * bound to the possible number of actuators of any actual drive.
++ */
++#define BFQ_MAX_ACTUATORS 8
++
+ struct bfq_entity;
+ 
+ /**
+@@ -225,12 +233,14 @@ struct bfq_ttime {
+  * struct bfq_queue - leaf schedulable entity.
+  *
+  * A bfq_queue is a leaf request queue; it can be associated with an
+- * io_context or more, if it  is  async or shared  between  cooperating
+- * processes. @cgroup holds a reference to the cgroup, to be sure that it
+- * does not disappear while a bfqq still references it (mostly to avoid
+- * races between request issuing and task migration followed by cgroup
+- * destruction).
+- * All the fields are protected by the queue lock of the containing bfqd.
++ * io_context or more, if it is async or shared between cooperating
++ * processes. Besides, it contains I/O requests for only one actuator
++ * (an io_context is associated with a different bfq_queue for each
++ * actuator it generates I/O for). @cgroup holds a reference to the
++ * cgroup, to be sure that it does not disappear while a bfqq still
++ * references it (mostly to avoid races between request issuing and
++ * task migration followed by cgroup destruction).  All the fields are
++ * protected by the queue lock of the containing bfqd.
+  */
+ struct bfq_queue {
+ 	/* reference counter */
+@@ -395,6 +405,9 @@ struct bfq_queue {
+ 	 * the woken queues when this queue exits.
+ 	 */
+ 	struct hlist_head woken_list;
++
++	/* index of the actuator this queue is associated with */
++	unsigned int actuator_idx;
+ };
+ 
+ /**
+@@ -403,8 +416,17 @@ struct bfq_queue {
+ struct bfq_io_cq {
+ 	/* associated io_cq structure */
+ 	struct io_cq icq; /* must be the first member */
+-	/* array of two process queues, the sync and the async */
+-	struct bfq_queue *bfqq[2];
++	/*
++	 * Matrix of associated process queues: first row for async
++	 * queues, second row sync queues. Each row contains one
++	 * column for each actuator. An I/O request generated by the
++	 * process is inserted into the queue pointed by bfqq[i][j] if
++	 * the request is to be served by the j-th actuator of the
++	 * drive, where i==0 or i==1, depending on whether the request
++	 * is async or sync. So there is a distinct queue for each
++	 * actuator.
++	 */
++	struct bfq_queue *bfqq[2][BFQ_MAX_ACTUATORS];
+ 	/* per (request_queue, blkcg) ioprio */
+ 	int ioprio;
+ #ifdef CONFIG_BFQ_GROUP_IOSCHED
+@@ -768,6 +790,13 @@ struct bfq_data {
+ 	 */
+ 	unsigned int word_depths[2][2];
+ 	unsigned int full_depth_shift;
++
++	/*
++	 * Number of independent actuators. This is equal to 1 in
++	 * case of single-actuator drives.
++	 */
++	unsigned int num_actuators;
++
+ };
+ 
+ enum bfqq_state_flags {
+@@ -964,8 +993,10 @@ struct bfq_group {
+ 
+ extern const int bfq_timeout;
+ 
+-struct bfq_queue *bic_to_bfqq(struct bfq_io_cq *bic, bool is_sync);
+-void bic_set_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq, bool is_sync);
++struct bfq_queue *bic_to_bfqq(struct bfq_io_cq *bic, bool is_sync,
++				unsigned int actuator_idx);
++void bic_set_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq, bool is_sync,
++				unsigned int actuator_idx);
+ struct bfq_data *bic_to_bfqd(struct bfq_io_cq *bic);
+ void bfq_pos_tree_add_move(struct bfq_data *bfqd, struct bfq_queue *bfqq);
+ void bfq_weights_tree_add(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+-- 
+2.47.1
+
 
