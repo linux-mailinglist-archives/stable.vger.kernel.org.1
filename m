@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-117127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC4A3B4E9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:49:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA7CA3B593
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEB3B1887704
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:44:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D8C67A51D5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282A41EB197;
-	Wed, 19 Feb 2025 08:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847EE1DED7D;
+	Wed, 19 Feb 2025 08:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKGxPFzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuO68Nw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A251EB184;
-	Wed, 19 Feb 2025 08:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FC41DED5C;
+	Wed, 19 Feb 2025 08:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954290; cv=none; b=WmsHjeXZDuLSFtV5F9Qd1yenRlef4cRCmWz68pWFuSNkQYw6yRk2jcsgTLv5SE2ayYDeC98vWCUL/72WdZWbeXskGifvmXWyTCJUYY/l77efzOUj/KsubLwXaQZDExpzmRj0nn+85lAspg8wgZSuhLU51rwHL9fJo/3Pgbv6M18=
+	t=1739955037; cv=none; b=vEQ2c4cJ+GbWD1mUgllj09mze1840U2ke+bfiFZEOeu2NTQDsoTuW4pz8AuE7FZ82lOQWZskMyMON51jlsWRNmmCBufvGQ5FaD/kTcAYAWM/FTtkJ/6X9E44ju6y1s9oeYe6wS0PawQMxdgSdkkBJIJ7fA8jW5DjEYGJbozF404=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954290; c=relaxed/simple;
-	bh=K0GrVqAJMl87WwlixZRz+hC5ZsetCDU+9Ru/2TiQjWM=;
+	s=arc-20240116; t=1739955037; c=relaxed/simple;
+	bh=Iaj24D2JuCl89UBW1jh7GDpUOPoN8X18n7MT/VfuV50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XpVRWhw2LR/zG+uaI0weRaGYUsHUnh1DuIvbdBBFkAoI9ouUOWYsXCznrvicYUqZxEm/HYbUfUpKQmdiD3F1nnBuZOal0K0CVLxnk2YKrKdv08ZI201DlUotcX73BrkNTH33qVMEsAAuZ/ohrDuJc0umYbzrwKXnS0JVO38FQR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKGxPFzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BAFC4CEE6;
-	Wed, 19 Feb 2025 08:38:10 +0000 (UTC)
+	 MIME-Version; b=WNAfOIP0gFGyVHb7nHLnV8LnLeEaFpF11HA5Jpm0koTren7M/7Nv0y/EYe2H07M/WGaabZ8Hryh5/q+iBTVc1qRnAVB694mcomE3Ea2DYVoTu5K3riw9+t/dZgecEWIpiRx0sHIX93ZaX1J0WXWWBiU5/9pzJanuA6OjfpOz2yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuO68Nw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5141C4CEE6;
+	Wed, 19 Feb 2025 08:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954290;
-	bh=K0GrVqAJMl87WwlixZRz+hC5ZsetCDU+9Ru/2TiQjWM=;
+	s=korg; t=1739955037;
+	bh=Iaj24D2JuCl89UBW1jh7GDpUOPoN8X18n7MT/VfuV50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKGxPFzcgUe6TFesCPBzNzBYUhluVnkVx2xXBIuVS9sGgGw6PweOnKV8Bb5+d1iY9
-	 sLfl6gIgqFF8fh09pMNAwc5CHA/9Rq5duEVsYeNJqH7TqIik4G0DvwrNf3yrs5UQvl
-	 vugqeJhfeKo8wxsBxtLSzuG0nZQ/jLFrGvL0aU1s=
+	b=FuO68Nw+32/ws+mG0IN9ddYpQTjr4T5clozIyt08odBBgGR9Jc9z/SbIhmNIsUZQC
+	 gUP/D7+Y4M1I3Iwn8UkSs/uzdqN2AZmWgGBktK2CSK2M/iA0B27VHwH2tbtCe2t5Rh
+	 PusxzJAm4LQ0SmiDiSIn3Ae1xsnu/UdtxoQH1IFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-Subject: [PATCH 6.13 157/274] PCI: Avoid FLR for Mediatek MT7922 WiFi
+	Andy Strohman <andrew@andrewstrohman.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.12 094/230] batman-adv: fix panic during interface removal
 Date: Wed, 19 Feb 2025 09:26:51 +0100
-Message-ID: <20250219082615.738407330@linuxfoundation.org>
+Message-ID: <20250219082605.375549037@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Andy Strohman <andrew@andrewstrohman.com>
 
-commit 81f64e925c29fe6e99f04b131fac1935ac931e81 upstream.
+commit ccb7276a6d26d6f8416e315b43b45e15ee7f29e2 upstream.
 
-The Mediatek MT7922 WiFi device advertises FLR support, but it apparently
-does not work, and all subsequent config reads return ~0:
+Reference counting is used to ensure that
+batadv_hardif_neigh_node and batadv_hard_iface
+are not freed before/during
+batadv_v_elp_throughput_metric_update work is
+finished.
 
-  pci 0000:01:00.0: [14c3:0616] type 00 class 0x028000 PCIe Endpoint
-  pciback 0000:01:00.0: not ready 65535ms after FLR; giving up
+But there isn't a guarantee that the hard if will
+remain associated with a soft interface up until
+the work is finished.
 
-After an FLR, pci_dev_wait() waits for the device to become ready.  Prior
-to d591f6804e7e ("PCI: Wait for device readiness with Configuration RRS"),
-it polls PCI_COMMAND until it is something other that PCI_POSSIBLE_ERROR
-(~0).  If it times out, pci_dev_wait() returns -ENOTTY and
-__pci_reset_function_locked() tries the next available reset method.
-Typically this is Secondary Bus Reset, which does work, so the MT7922 is
-eventually usable.
+This fixes a crash triggered by reboot that looks
+like this:
 
-After d591f6804e7e, if Configuration Request Retry Status Software
-Visibility (RRS SV) is enabled, pci_dev_wait() polls PCI_VENDOR_ID until it
-is something other than the special 0x0001 Vendor ID that indicates a
-completion with RRS status.
+Call trace:
+ batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
+ batadv_v_elp_throughput_metric_update+0x1c/0xa4
+ process_one_work+0x178/0x398
+ worker_thread+0x2e8/0x4d0
+ kthread+0xd8/0xdc
+ ret_from_fork+0x10/0x20
 
-When RRS SV is enabled, reads of PCI_VENDOR_ID should return either 0x0001,
-i.e., the config read was completed with RRS, or a valid Vendor ID.  On the
-MT7922, it seems that all config reads after FLR return ~0 indefinitely.
-When pci_dev_wait() reads PCI_VENDOR_ID and gets 0xffff, it assumes that's
-a valid Vendor ID and the device is now ready, so it returns with success.
+(the batadv_v_mesh_free call is misleading,
+and does not actually happen)
 
-After pci_dev_wait() returns success, we restore config space and continue.
-Since the MT7922 is not actually ready after the FLR, the restore fails and
-the device is unusable.
+I was able to make the issue happen more reliably
+by changing hardif_neigh->bat_v.metric_work work
+to be delayed work. This allowed me to track down
+and confirm the fix.
 
-We considered changing pci_dev_wait() to continue polling if a
-PCI_VENDOR_ID read returns either 0x0001 or 0xffff.  This "works" as it did
-before d591f6804e7e, although we have to wait for the timeout and then fall
-back to SBR.  But it doesn't work for SR-IOV VFs, which *always* return
-0xffff as the Vendor ID.
-
-Mark Mediatek MT7922 WiFi devices to avoid the use of FLR completely.  This
-will cause fallback to another reset method, such as SBR.
-
-Link: https://lore.kernel.org/r/20250212193516.88741-1-helgaas@kernel.org
-Fixes: d591f6804e7e ("PCI: Wait for device readiness with Configuration RRS")
-Link: https://github.com/QubesOS/qubes-issues/issues/9689#issuecomment-2582927149
-Link: https://lore.kernel.org/r/Z4pHll_6GX7OUBzQ@mail-itl
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
 Cc: stable@vger.kernel.org
+Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
+Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
+[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
+ soft_iface]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_v_elp.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5521,7 +5521,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IN
-  * AMD Matisse USB 3.0 Host Controller 0x149c
-  * Intel 82579LM Gigabit Ethernet Controller 0x1502
-  * Intel 82579V Gigabit Ethernet Controller 0x1503
-- *
-+ * Mediatek MT7922 802.11ax PCI Express Wireless Network Adapter
-  */
- static void quirk_no_flr(struct pci_dev *dev)
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -66,12 +66,19 @@ static void batadv_v_elp_start_timer(str
+ static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
  {
-@@ -5533,6 +5533,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AM
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AMD, 0x7901, quirk_no_flr);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1502, quirk_no_flr);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1503, quirk_no_flr);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x0616, quirk_no_flr);
+ 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
++	struct net_device *soft_iface = hard_iface->soft_iface;
+ 	struct ethtool_link_ksettings link_settings;
+ 	struct net_device *real_netdev;
+ 	struct station_info sinfo;
+ 	u32 throughput;
+ 	int ret;
  
- /* FLR may cause the SolidRun SNET DPU (rev 0x1) to hang */
- static void quirk_no_flr_snet(struct pci_dev *dev)
++	/* don't query throughput when no longer associated with any
++	 * batman-adv interface
++	 */
++	if (!soft_iface)
++		return BATADV_THROUGHPUT_DEFAULT_VALUE;
++
+ 	/* if the user specified a customised value for this interface, then
+ 	 * return it directly
+ 	 */
+@@ -141,7 +148,7 @@ static u32 batadv_v_elp_get_throughput(s
+ 
+ default_throughput:
+ 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
+-		batadv_info(hard_iface->soft_iface,
++		batadv_info(soft_iface,
+ 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
+ 			    hard_iface->net_dev->name,
+ 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
 
 
 
