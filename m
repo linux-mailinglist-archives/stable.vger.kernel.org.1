@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-117313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BE2A3B5EA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B382A3B47E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6091882AE4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44FEB1777FC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329411DB546;
-	Wed, 19 Feb 2025 08:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953C51DED4A;
+	Wed, 19 Feb 2025 08:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbOMbXrJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4HgAxfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D860A1D5CE8;
-	Wed, 19 Feb 2025 08:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CD81DE88A;
+	Wed, 19 Feb 2025 08:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954879; cv=none; b=CeuPBASa6ugA1WhkWkH+pswpppBNSAX2ICdLH/hX41+c39d/QH+SriAMca9MVTLeDA9UWCtPvff0NKOxmKjvEMzPnA3UtfTtEoS94j7F9b1t6FFpR2GAHxTuC0xlEiayrFuzkODJwfGAxLqRAbBB6Hg4gJRcmR8Ft8+f6EdgmBI=
+	t=1739954069; cv=none; b=TmPEIgPedxBxnuvfMFVJcHV1xwhEVVj5tAv4KPKBa49xwdqT1ehQk5hRKhxiqL8EQbWik9IvrKVGnEM29S+quDHo0wIZOCGa/2kvToVa7MNdEgDxEfVt4mEUpLFjgZm+jPLemEOgZqnj7zBTB1v7wsJydyCAiv5Voon782PAjuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954879; c=relaxed/simple;
-	bh=UxtPcjLIAKFY85Wd5OAw1BGtw3gehsW+BxzEQVVtI0Q=;
+	s=arc-20240116; t=1739954069; c=relaxed/simple;
+	bh=a+pMtoeXN4iOikiSf7t3aOKZjQjWS2TZRZA0E0Szb8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUh7128S5E9A5iHaJ99YSxo+6PYeKYaHGAvQKF5Yzt5yS0Fw7c1AvDutQV4oReg21XJuR23IWtK1XF7Jrogx6MiQviCQIWnZXrInUyQyXKKz/eY5Qg3KW4NuxeX2aRfBhTgNQrs96zyaV/oPGSy4tZBojoTI8dBAixyt3ZcY5zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbOMbXrJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504AFC4CED1;
-	Wed, 19 Feb 2025 08:47:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pZ62lgqnznyO4aXeO1lc9P1otko13S3Uye8RRRIbgWD/P7zHGDo6BeDOG5BrGId1PxJMQ+UTv+D7z1GBfWvIXMYtwVi/4S/9cF9ym1DbcWeapeExfHLNzkMcMsQdAvCB0Wn5gzWhJHaIn8fWvDd3ttOZpVW9btRkfKKb9ufMzPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4HgAxfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F13C4CED1;
+	Wed, 19 Feb 2025 08:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954879;
-	bh=UxtPcjLIAKFY85Wd5OAw1BGtw3gehsW+BxzEQVVtI0Q=;
+	s=korg; t=1739954069;
+	bh=a+pMtoeXN4iOikiSf7t3aOKZjQjWS2TZRZA0E0Szb8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbOMbXrJ6ITXM9j09cSbUClnvHNzfMyP8DmdE+wo1qLK5tSUggAYPzz9JZbEUcJHp
-	 ft8IG6jNajbIyPN3GcavStvgXoe0Ngge2yYJ4ybqhqliZMFTVFfTrPzxNPWYdpWXz6
-	 BEPV8TSpE1YKMnOMSMBqBSdhak5YEHtc2+JUvuGY=
+	b=b4HgAxfWkTg/d5pImRiZH7A2QJodpheNVd0iC8W77+Ds8sV1cP3HgIZPTRVjQ61cT
+	 Y4jfyoo7BrAc6p8LuV2Z04Lt5UZC0yhsEZH7Wl8/uP1HoeK0uU6+fcja6SvSjq0qxV
+	 EfMYb5u5EolTOruKIZ7kHmg2TWKPQrrISqcTVd/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Hay <joshua.a.hay@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/230] idpf: call set_real_num_queues in idpf_open
-Date: Wed, 19 Feb 2025 09:25:40 +0100
-Message-ID: <20250219082602.613698787@linuxfoundation.org>
+Subject: [PATCH 6.13 087/274] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
+Date: Wed, 19 Feb 2025 09:25:41 +0100
+Message-ID: <20250219082613.025689182@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Hay <joshua.a.hay@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 52c11d31b5a1d1c747bb5f36cc4808e93e2348f4 ]
+[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
 
-On initial driver load, alloc_etherdev_mqs is called with whatever max
-queue values are provided by the control plane. However, if the driver
-is loaded on a system where num_online_cpus() returns less than the max
-queues, the netdev will think there are more queues than are actually
-available. Only num_online_cpus() will be allocated, but
-skb_get_queue_mapping(skb) could possibly return an index beyond the
-range of allocated queues. Consequently, the packet is silently dropped
-and it appears as if TX is broken.
+Apparently the Raptor Lake-P reference firmware configures the PIO log size
+correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
+Zenbook UX3402VA_UX3402VA, do not.
 
-Set the real number of queues during open so the netdev knows how many
-queues will be allocated.
+Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
 
-Fixes: 1c325aac10a8 ("idpf: configure resources for TX queues")
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+  DPC: RP PIO log size 0 is invalid
+
+and also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
+
+Note that the bug report also mentions 8086:a76e, which has been already
+added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
+Root Ports").
+
+Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pci/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index b4fbb99bfad20..a3d6b8f198a86 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -2159,8 +2159,13 @@ static int idpf_open(struct net_device *netdev)
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
-+	err = idpf_set_real_num_queues(vport);
-+	if (err)
-+		goto unlock;
-+
- 	err = idpf_vport_open(vport);
- 
-+unlock:
- 	idpf_vport_ctrl_unlock(netdev);
- 
- 	return err;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 76f4df75b08a1..4ed3704ce92e8 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6253,6 +6253,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
 -- 
 2.39.5
 
