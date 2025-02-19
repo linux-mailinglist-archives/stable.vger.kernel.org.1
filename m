@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-117176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DB6A3B540
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDD7A3B4EE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD61175F66
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:49:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACFA57A2469
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7B61DED67;
-	Wed, 19 Feb 2025 08:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B7E1DED7B;
+	Wed, 19 Feb 2025 08:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVZGBJ3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORiy1gY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053311DED5C;
-	Wed, 19 Feb 2025 08:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F341DED58;
+	Wed, 19 Feb 2025 08:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954443; cv=none; b=CVei9YFBjek5OALCF2n2u7dJINB8mZ5TvbH1Lx7bEKQVHw6qCFBxl5+FyfZAZeR5s9D0OIRd9ZpqLN+N3U4yXFKIgXwGy94tPAtWj33bDwta4X8GY4Ok73AJNrthI25fB+ZMnzU7kMBY4kfQ1yb8zggVSF7KJnpa/F7Irma98zg=
+	t=1739954446; cv=none; b=TqRmGH08iDRq7WGvbGzHH6JbXGWhxhjnQeWXfGBJA/3Tu1TDVVZ1VMxZCzGhpcX9vM62R3RouG0Mq0QVvLkdDIK4kyiO2nl1e60GB7YarBy9eO90Hp5DEUB35NdXSnjwcgW/D9ttbeOsaVRlrVFd04jZBU6p3oivtJff5QAf7BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954443; c=relaxed/simple;
-	bh=XLPJMM5tgTCtNmVxQY67jXNJY8A5s9rwCq9fJRuoM5w=;
+	s=arc-20240116; t=1739954446; c=relaxed/simple;
+	bh=0nPK9oNohmdR3XjqyU+7lvfE9HFcdcHFQCXPyMdO9Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLC8o4/v9Ha26j1n2z1EVTYZnoKxeL6cSvY/MdrmsH52nKxxVaa09kgZ0QfWX6d4+pzpajUz5lc6Z1RJs1wLiErt8CYgG+GCymnPz96k0/jsha/2t5gGwFlN0V8SABxex1Ldk5M6BmMElRAjvhGPWTw0QgZW3mfrzRilmgYQCyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVZGBJ3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6573EC4CEE8;
-	Wed, 19 Feb 2025 08:40:42 +0000 (UTC)
+	 MIME-Version; b=LZfijfK7faUJf/I1diK0SndASyJ5ho1wYFa/CxwCim5MZnYa9W/tO2NDINn6IP9AiWVL+JCXuWPXdp6sClusRAyB8m4sWAH51dxSUsKZGQnUTjy/pZubCg0+YQamh37TtcEpR+UTjAI/GAqNdHdcNlPM6sWCtFnK4GxbVA5VAqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORiy1gY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EB1C4CED1;
+	Wed, 19 Feb 2025 08:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954442;
-	bh=XLPJMM5tgTCtNmVxQY67jXNJY8A5s9rwCq9fJRuoM5w=;
+	s=korg; t=1739954445;
+	bh=0nPK9oNohmdR3XjqyU+7lvfE9HFcdcHFQCXPyMdO9Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVZGBJ3uPU/MRw/PFuxptrIRduq4hNWy/DRum5wz/cxDFNpRmnPk/aGXQW8quNcBt
-	 1AlN6VzmaHa0x8XYxHZL98o0xnQywuycl5OC0105N+FkibvdDtkaVfpHR3/Gw4w0ig
-	 gO49qmgbGz5cVdaSBqOzodSmPAfYqCEbpGNjLt5Y=
+	b=ORiy1gY3MwMxAI8XTJgg4QZ+Uj5Pljhs1G/FBHKRcBiLS3JoowchWb424YrMg6pO3
+	 XdsCgZyN0P+8Vpw0BrvWXWJ+IrG+BnrAs3CjcBlDfAjT8jMq6Pn12/PwM5iYcPwDIO
+	 lQ8Skchzg4fuMq84J78EHawev7AiNzVW39w6u5kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.13 175/274] iommu/vt-d: Make intel_iommu_drain_pasid_prq() cover faults for RID
-Date: Wed, 19 Feb 2025 09:27:09 +0100
-Message-ID: <20250219082616.437902018@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.13 176/274] sched_ext: Fix incorrect autogroup migration detection
+Date: Wed, 19 Feb 2025 09:27:10 +0100
+Message-ID: <20250219082616.477395661@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -67,59 +65,165 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit add43c4fbc92f8b48c1acd64e953af3b1be4cd9c upstream.
+commit d6f3e7d564b2309e1f17e709a70eca78d7ca2bb8 upstream.
 
-This driver supports page faults on PCI RID since commit <9f831c16c69e>
-("iommu/vt-d: Remove the pasid present check in prq_event_thread") by
-allowing the reporting of page faults with the pasid_present field cleared
-to the upper layer for further handling. The fundamental assumption here
-is that the detach or replace operations act as a fence for page faults.
-This implies that all pending page faults associated with a specific RID
-or PASID are flushed when a domain is detached or replaced from a device
-RID or PASID.
+scx_move_task() is called from sched_move_task() and tells the BPF scheduler
+that cgroup migration is being committed. sched_move_task() is used by both
+cgroup and autogroup migrations and scx_move_task() tried to filter out
+autogroup migrations by testing the destination cgroup and PF_EXITING but
+this is not enough. In fact, without explicitly tagging the thread which is
+doing the cgroup migration, there is no good way to tell apart
+scx_move_task() invocations for racing migration to the root cgroup and an
+autogroup migration.
 
-However, the intel_iommu_drain_pasid_prq() helper does not correctly
-handle faults for RID. This leads to faults potentially remaining pending
-in the iommu hardware queue even after the domain is detached, thereby
-violating the aforementioned assumption.
+This led to scx_move_task() incorrectly ignoring a migration from non-root
+cgroup to an autogroup of the root cgroup triggering the following warning:
 
-Fix this issue by extending intel_iommu_drain_pasid_prq() to cover faults
-for RID.
+  WARNING: CPU: 7 PID: 1 at kernel/sched/ext.c:3725 scx_cgroup_can_attach+0x196/0x340
+  ...
+  Call Trace:
+  <TASK>
+    cgroup_migrate_execute+0x5b1/0x700
+    cgroup_attach_task+0x296/0x400
+    __cgroup_procs_write+0x128/0x140
+    cgroup_procs_write+0x17/0x30
+    kernfs_fop_write_iter+0x141/0x1f0
+    vfs_write+0x31d/0x4a0
+    __x64_sys_write+0x72/0xf0
+    do_syscall_64+0x82/0x160
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 9f831c16c69e ("iommu/vt-d: Remove the pasid present check in prq_event_thread")
-Cc: stable@vger.kernel.org
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20250121023150.815972-1-baolu.lu@linux.intel.com
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20250211005512.985563-2-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fix it by adding an argument to sched_move_task() that indicates whether the
+moving is for a cgroup or autogroup migration. After the change,
+scx_move_task() is called only for cgroup migrations and renamed to
+scx_cgroup_move_task().
+
+Link: https://github.com/sched-ext/scx/issues/370
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/prq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/sched/autogroup.c |    4 ++--
+ kernel/sched/core.c      |    7 ++++---
+ kernel/sched/ext.c       |   15 +--------------
+ kernel/sched/ext.h       |    4 ++--
+ kernel/sched/sched.h     |    2 +-
+ 5 files changed, 10 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iommu/intel/prq.c b/drivers/iommu/intel/prq.c
-index c2d792db52c3..064194399b38 100644
---- a/drivers/iommu/intel/prq.c
-+++ b/drivers/iommu/intel/prq.c
-@@ -87,7 +87,9 @@ prq_retry:
- 		struct page_req_dsc *req;
+--- a/kernel/sched/autogroup.c
++++ b/kernel/sched/autogroup.c
+@@ -150,7 +150,7 @@ void sched_autogroup_exit_task(struct ta
+ 	 * see this thread after that: we can no longer use signal->autogroup.
+ 	 * See the PF_EXITING check in task_wants_autogroup().
+ 	 */
+-	sched_move_task(p);
++	sched_move_task(p, true);
+ }
  
- 		req = &iommu->prq[head / sizeof(*req)];
--		if (!req->pasid_present || req->pasid != pasid) {
-+		if (req->rid != sid ||
-+		    (req->pasid_present && pasid != req->pasid) ||
-+		    (!req->pasid_present && pasid != IOMMU_NO_PASID)) {
- 			head = (head + sizeof(*req)) & PRQ_RING_MASK;
- 			continue;
- 		}
--- 
-2.48.1
-
+ static void
+@@ -182,7 +182,7 @@ autogroup_move_group(struct task_struct
+ 	 * sched_autogroup_exit_task().
+ 	 */
+ 	for_each_thread(p, t)
+-		sched_move_task(t);
++		sched_move_task(t, true);
+ 
+ 	unlock_task_sighand(p, &flags);
+ 	autogroup_kref_put(prev);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9044,7 +9044,7 @@ static void sched_change_group(struct ta
+  * now. This function just updates tsk->se.cfs_rq and tsk->se.parent to reflect
+  * its new group.
+  */
+-void sched_move_task(struct task_struct *tsk)
++void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+ {
+ 	int queued, running, queue_flags =
+ 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+@@ -9073,7 +9073,8 @@ void sched_move_task(struct task_struct
+ 		put_prev_task(rq, tsk);
+ 
+ 	sched_change_group(tsk, group);
+-	scx_move_task(tsk);
++	if (!for_autogroup)
++		scx_cgroup_move_task(tsk);
+ 
+ 	if (queued)
+ 		enqueue_task(rq, tsk, queue_flags);
+@@ -9174,7 +9175,7 @@ static void cpu_cgroup_attach(struct cgr
+ 	struct cgroup_subsys_state *css;
+ 
+ 	cgroup_taskset_for_each(task, css, tset)
+-		sched_move_task(task);
++		sched_move_task(task, false);
+ 
+ 	scx_cgroup_finish_attach();
+ }
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4327,25 +4327,12 @@ err:
+ 	return ops_sanitize_err("cgroup_prep_move", ret);
+ }
+ 
+-void scx_move_task(struct task_struct *p)
++void scx_cgroup_move_task(struct task_struct *p)
+ {
+ 	if (!scx_cgroup_enabled)
+ 		return;
+ 
+ 	/*
+-	 * We're called from sched_move_task() which handles both cgroup and
+-	 * autogroup moves. Ignore the latter.
+-	 *
+-	 * Also ignore exiting tasks, because in the exit path tasks transition
+-	 * from the autogroup to the root group, so task_group_is_autogroup()
+-	 * alone isn't able to catch exiting autogroup tasks. This is safe for
+-	 * cgroup_move(), because cgroup migrations never happen for PF_EXITING
+-	 * tasks.
+-	 */
+-	if (task_group_is_autogroup(task_group(p)) || (p->flags & PF_EXITING))
+-		return;
+-
+-	/*
+ 	 * @p must have ops.cgroup_prep_move() called on it and thus
+ 	 * cgrp_moving_from set.
+ 	 */
+--- a/kernel/sched/ext.h
++++ b/kernel/sched/ext.h
+@@ -73,7 +73,7 @@ static inline void scx_update_idle(struc
+ int scx_tg_online(struct task_group *tg);
+ void scx_tg_offline(struct task_group *tg);
+ int scx_cgroup_can_attach(struct cgroup_taskset *tset);
+-void scx_move_task(struct task_struct *p);
++void scx_cgroup_move_task(struct task_struct *p);
+ void scx_cgroup_finish_attach(void);
+ void scx_cgroup_cancel_attach(struct cgroup_taskset *tset);
+ void scx_group_set_weight(struct task_group *tg, unsigned long cgrp_weight);
+@@ -82,7 +82,7 @@ void scx_group_set_idle(struct task_grou
+ static inline int scx_tg_online(struct task_group *tg) { return 0; }
+ static inline void scx_tg_offline(struct task_group *tg) {}
+ static inline int scx_cgroup_can_attach(struct cgroup_taskset *tset) { return 0; }
+-static inline void scx_move_task(struct task_struct *p) {}
++static inline void scx_cgroup_move_task(struct task_struct *p) {}
+ static inline void scx_cgroup_finish_attach(void) {}
+ static inline void scx_cgroup_cancel_attach(struct cgroup_taskset *tset) {}
+ static inline void scx_group_set_weight(struct task_group *tg, unsigned long cgrp_weight) {}
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -572,7 +572,7 @@ extern void sched_online_group(struct ta
+ extern void sched_destroy_group(struct task_group *tg);
+ extern void sched_release_group(struct task_group *tg);
+ 
+-extern void sched_move_task(struct task_struct *tsk);
++extern void sched_move_task(struct task_struct *tsk, bool for_autogroup);
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ extern int sched_group_set_shares(struct task_group *tg, unsigned long shares);
 
 
 
