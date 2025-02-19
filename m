@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-118071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E6FA3B990
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423ECA3B75A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3C281888CF6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BAB83BDF73
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2EE1DE2C0;
-	Wed, 19 Feb 2025 09:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9801CAA68;
+	Wed, 19 Feb 2025 08:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNNeyLmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIm9OYoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8161DDC3A;
-	Wed, 19 Feb 2025 09:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D21C1DE2CD;
+	Wed, 19 Feb 2025 08:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957152; cv=none; b=g2ZwpAwS6b4f1eHPjsLz+tEKsQtkV7HuRejThnZMdFUb1ftOVWPxFNYhsJd/MdKAdlpf/406hUKD7YaciA9rbVtclELDLuD0fVORXW2gUMrBx7UkED7iyo+6Pb3yEsx5bx8sSj9/iVvVHHalSlfUmLJQlrvkVDtM+oC1JS6sJxA=
+	t=1739955474; cv=none; b=nxast6fnh1kMDNZ3M22NpuTyXHS19kuSHG8+d58wUCAYJH4Fu8TqFfW4+ikrP8KTtAwaE4R/jhx/y+jH5J2YJy3suNP0O160YqtOw7KIZ8QtE8TaaZGGfkO9kt3OxveC2bzha6etja1w0MBL9YVOeUQ/S1ZvpW23kgrNI9nxPYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957152; c=relaxed/simple;
-	bh=PEOvbbccucG4HpeZA0e1zi9u3ND/Zt71zZQy6HK4MPE=;
+	s=arc-20240116; t=1739955474; c=relaxed/simple;
+	bh=7JtxiPMD6O0KrcsrqDoPW1IJ1uKNRxI59Mg+U0diYoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+p+nVG22QVJDrEQKJ0yXKb3EI1hVQN6PPPYTm7BRWiIys+nxTqzpxI/qlzXEFRKhBSUl7zW2QaQRot0ouggAPTYGau7uqLBSUNfEjPNPk7mcSSjysnwibbJCDnWWC7RxRxVUBn44eZRfH4GXZCzilL8Mnj79ZVtBEVvpX8FeM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNNeyLmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A6CC4CEE6;
-	Wed, 19 Feb 2025 09:25:51 +0000 (UTC)
+	 MIME-Version; b=cPu4jLBpQRewea1tSvhchWB+m7MfP08uoZ1srlbU7Oz3cpYsMbroGmDaEexUjvt9nwVQi+5vdL+e46q6vrw23JnxLYO0yHOVRggX+F26fJDqffj+71fMA8rinhg2zfFA8n3E6GIAXaxm4DWEcGC1l2ICXmNU/nc3kChiZvyfHqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIm9OYoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBB4C4CED1;
+	Wed, 19 Feb 2025 08:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957152;
-	bh=PEOvbbccucG4HpeZA0e1zi9u3ND/Zt71zZQy6HK4MPE=;
+	s=korg; t=1739955474;
+	bh=7JtxiPMD6O0KrcsrqDoPW1IJ1uKNRxI59Mg+U0diYoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNNeyLmYKAjhoJAhJcKopZNKRaz+mO7PnXAXNccd0i8EtWA4S8i2slTqLi0bZPcRp
-	 FxE9SOVn6BJS2CzUqbzSe/++IRr0VsUbUVbEH2zV0LMaJHj5CedCCFwLynYYfUoEi5
-	 QspzBpoqx2tb68c1l8vZ66BFrxbmIEyObQNmh4R8=
+	b=TIm9OYoI/XKE246AccK/aE/1zP6CgfYn7cFVvwMgbwlXK0dr7BgS2Ol1dTr+4ygnt
+	 G5m5oY2GAEEBTbG9oM81xdCMUStTjARTgEGoR+g6OQinF8tNcLjHcsukaS/13IaANR
+	 lOP+iqTAapgYew3qnXS5cVXwsuLFogfsOeeZwe2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Mark Tinguely <mark.tinguely@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 427/578] ocfs2: handle a symlink read error correctly
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 018/152] gpio: bcm-kona: Make sure GPIO bits are unlocked when requesting IRQ
 Date: Wed, 19 Feb 2025 09:27:11 +0100
-Message-ID: <20250219082709.812228495@linuxfoundation.org>
+Message-ID: <20250219082550.749508789@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +65,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-commit 2b4c2094da6d84e69b843dd3317902e977bf64bd upstream.
+[ Upstream commit 57f5db77a915cc29461a679a6bcae7097967be1a ]
 
-Patch series "Convert ocfs2 to use folios".
+The settings for all GPIOs are locked by default in bcm_kona_gpio_reset.
+The settings for a GPIO are unlocked when requesting it as a GPIO, but
+not when requesting it as an interrupt, causing the IRQ settings to not
+get applied.
 
-Mark did a conversion of ocfs2 to use folios and sent it to me as a
-giant patch for review ;-)
+Fix this by making sure to unlock the right bits when an IRQ is requested.
+To avoid a situation where an IRQ being released causes a lock despite
+the same GPIO being used by a GPIO request or vice versa, add an unlock
+counter and only lock if it reaches 0.
 
-So I've redone it as individual patches, and credited Mark for the patches
-where his code is substantially the same.  It's not a bad way to do it;
-his patch had some bugs and my patches had some bugs.  Hopefully all our
-bugs were different from each other.  And hopefully Mark likes all the
-changes I made to his code!
-
-
-This patch (of 23):
-
-If we can't read the buffer, be sure to unlock the page before returning.
-
-Link: https://lkml.kernel.org/r/20241205171653.3179945-1-willy@infradead.org
-Link: https://lkml.kernel.org/r/20241205171653.3179945-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Mark Tinguely <mark.tinguely@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 757651e3d60e ("gpio: bcm281xx: Add GPIO driver")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Markus Mayer <mmayer@broadcom.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-2-409135eab780@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/symlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-bcm-kona.c | 67 +++++++++++++++++++++++++++++-------
+ 1 file changed, 55 insertions(+), 12 deletions(-)
 
---- a/fs/ocfs2/symlink.c
-+++ b/fs/ocfs2/symlink.c
-@@ -65,7 +65,7 @@ static int ocfs2_fast_symlink_read_folio
+diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+index 77bd4ec93a231..17f3f210fee9d 100644
+--- a/drivers/gpio/gpio-bcm-kona.c
++++ b/drivers/gpio/gpio-bcm-kona.c
+@@ -69,6 +69,22 @@ struct bcm_kona_gpio {
+ struct bcm_kona_gpio_bank {
+ 	int id;
+ 	int irq;
++	/*
++	 * Used to keep track of lock/unlock operations for each GPIO in the
++	 * bank.
++	 *
++	 * All GPIOs are locked by default (see bcm_kona_gpio_reset), and the
++	 * unlock count for all GPIOs is 0 by default. Each unlock increments
++	 * the counter, and each lock decrements the counter.
++	 *
++	 * The lock function only locks the GPIO once its unlock counter is
++	 * down to 0. This is necessary because the GPIO is unlocked in two
++	 * places in this driver: once for requested GPIOs, and once for
++	 * requested IRQs. Since it is possible for a GPIO to be requested
++	 * as both a GPIO and an IRQ, we need to ensure that we don't lock it
++	 * too early.
++	 */
++	u8 gpio_unlock_count[GPIO_PER_BANK];
+ 	/* Used in the interrupt handler */
+ 	struct bcm_kona_gpio *kona_gpio;
+ };
+@@ -87,14 +103,23 @@ static void bcm_kona_gpio_lock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
+ 	int bit = GPIO_BIT(gpio);
++	struct bcm_kona_gpio_bank *bank = &kona_gpio->banks[bank_id];
  
- 	if (status < 0) {
- 		mlog_errno(status);
--		return status;
-+		goto out;
- 	}
+-	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
++	if (bank->gpio_unlock_count[bit] == 0) {
++		dev_err(kona_gpio->gpio_chip.parent,
++			"Unbalanced locks for GPIO %u\n", gpio);
++		return;
++	}
  
- 	fe = (struct ocfs2_dinode *) bh->b_data;
-@@ -76,9 +76,10 @@ static int ocfs2_fast_symlink_read_folio
- 	memcpy(kaddr, link, len + 1);
- 	kunmap_atomic(kaddr);
- 	SetPageUptodate(page);
-+out:
- 	unlock_page(page);
- 	brelse(bh);
--	return 0;
-+	return status;
+-	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val |= BIT(bit);
+-	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
++	if (--bank->gpio_unlock_count[bit] == 0) {
++		raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+-	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++		val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
++		val |= BIT(bit);
++		bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
++
++		raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++	}
  }
  
- const struct address_space_operations ocfs2_fast_symlink_aops = {
+ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+@@ -104,14 +129,19 @@ static void bcm_kona_gpio_unlock_gpio(struct bcm_kona_gpio *kona_gpio,
+ 	unsigned long flags;
+ 	int bank_id = GPIO_BANK(gpio);
+ 	int bit = GPIO_BIT(gpio);
++	struct bcm_kona_gpio_bank *bank = &kona_gpio->banks[bank_id];
+ 
+-	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
++	if (bank->gpio_unlock_count[bit] == 0) {
++		raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+-	val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
+-	val &= ~BIT(bit);
+-	bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
++		val = readl(kona_gpio->reg_base + GPIO_PWD_STATUS(bank_id));
++		val &= ~BIT(bit);
++		bcm_kona_gpio_write_lock_regs(kona_gpio->reg_base, bank_id, val);
+ 
+-	raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++		raw_spin_unlock_irqrestore(&kona_gpio->lock, flags);
++	}
++
++	++bank->gpio_unlock_count[bit];
+ }
+ 
+ static int bcm_kona_gpio_get_dir(struct gpio_chip *chip, unsigned gpio)
+@@ -362,6 +392,7 @@ static void bcm_kona_gpio_irq_mask(struct irq_data *d)
+ 
+ 	kona_gpio = irq_data_get_irq_chip_data(d);
+ 	reg_base = kona_gpio->reg_base;
++
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(reg_base + GPIO_INT_MASK(bank_id));
+@@ -384,6 +415,7 @@ static void bcm_kona_gpio_irq_unmask(struct irq_data *d)
+ 
+ 	kona_gpio = irq_data_get_irq_chip_data(d);
+ 	reg_base = kona_gpio->reg_base;
++
+ 	raw_spin_lock_irqsave(&kona_gpio->lock, flags);
+ 
+ 	val = readl(reg_base + GPIO_INT_MSKCLR(bank_id));
+@@ -479,15 +511,26 @@ static void bcm_kona_gpio_irq_handler(struct irq_desc *desc)
+ static int bcm_kona_gpio_irq_reqres(struct irq_data *d)
+ {
+ 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
++	unsigned int gpio = d->hwirq;
++
++	/*
++	 * We need to unlock the GPIO before any other operations are performed
++	 * on the relevant GPIO configuration registers
++	 */
++	bcm_kona_gpio_unlock_gpio(kona_gpio, gpio);
+ 
+-	return gpiochip_reqres_irq(&kona_gpio->gpio_chip, d->hwirq);
++	return gpiochip_reqres_irq(&kona_gpio->gpio_chip, gpio);
+ }
+ 
+ static void bcm_kona_gpio_irq_relres(struct irq_data *d)
+ {
+ 	struct bcm_kona_gpio *kona_gpio = irq_data_get_irq_chip_data(d);
++	unsigned int gpio = d->hwirq;
++
++	/* Once we no longer use it, lock the GPIO again */
++	bcm_kona_gpio_lock_gpio(kona_gpio, gpio);
+ 
+-	gpiochip_relres_irq(&kona_gpio->gpio_chip, d->hwirq);
++	gpiochip_relres_irq(&kona_gpio->gpio_chip, gpio);
+ }
+ 
+ static struct irq_chip bcm_gpio_irq_chip = {
+-- 
+2.39.5
+
 
 
 
