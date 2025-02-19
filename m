@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-117565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECE3A3B70E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B625A3B7A2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30C20189EEBF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E733BE20A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F26D1E0E08;
-	Wed, 19 Feb 2025 09:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086DA1E2607;
+	Wed, 19 Feb 2025 09:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tv2pMjFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mLjyBrV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ED61C760D;
-	Wed, 19 Feb 2025 09:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7711E25EB;
+	Wed, 19 Feb 2025 09:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955679; cv=none; b=r65c4O2jGF7CqNE7jFP5haI7mYhhPBfKBYLyVd6Fxb6GkI0HiPklU+tFnVkYriONmjaIe446SGw+7EAgvNS0OQ+OZjc7X3Wb2C1Giz/cnPrd0hXVxv6LG3IL5kh1rurAM8xdmh0s6M3Bpte89mwgBzNlLbO7Y7IRsNkoeSL/QQI=
+	t=1739955713; cv=none; b=IjV2izo7L11CKDhmrp0LIew8Djjc6fHmCplVLFZD+YwOZoWCvwMPcJu9oHV98sF+6sFyzXMEi8o0h15qLAV0xC9fGg1Df3InAd79Dd3UMWydeqRZR2o431RMs1pwr9rg7nVp0v/l2NiSTIiOYYrB3Kyj5TMDRUKKnM5K6jqzK3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955679; c=relaxed/simple;
-	bh=WjRtVvQJdPNjJpbj5ffkimr9NLiGiS/jpdZ4pay4dko=;
+	s=arc-20240116; t=1739955713; c=relaxed/simple;
+	bh=WjPpR+Hnt6/oMvAbclM0gEKFtmbcOIVUl34jimOBViw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZy/uDERwoByCnrLgZo1YF7RHewLOW4ax18sQM32m26oV7uMIrSRrcydb2kiv3xOlUTcVQH6keRDswVJ3UOxXGMM1umK+eQAlEssXJ060B43TaLphSYONTqzL86XLCcvyhJbCaP8kaBF8P6xamoLXB9a+u+lG+AAyi6eH47d5hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tv2pMjFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F9C4CEE6;
-	Wed, 19 Feb 2025 09:01:19 +0000 (UTC)
+	 MIME-Version; b=MkaxWdox8E5znGFuESaglJhRxqzR+8mzh+4LQ9qUq4z1S+URNaCQ7NDwk8c64BTp4M74UfO6ox7g1RRX0l/WauQ7ev/XrlhABdOEeus5jQxjFGjW5Hv/qIPsCt554GQAJ7oEym6y8v01b8JDiUMpAAHmQHsY2i2C/Cw+k3qndqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mLjyBrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1F5C4CED1;
+	Wed, 19 Feb 2025 09:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955679;
-	bh=WjRtVvQJdPNjJpbj5ffkimr9NLiGiS/jpdZ4pay4dko=;
+	s=korg; t=1739955713;
+	bh=WjPpR+Hnt6/oMvAbclM0gEKFtmbcOIVUl34jimOBViw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tv2pMjFWmiKmHcDq/0ZSVPnHG4ezWRtiegAAQ7A6bp1iArdaUiWrmf1e4CbqbkHwN
-	 UIpZpef4WIWY0GMwwncUXhmzlo7+uVwHJNMg8i4APKDEsCHKx9qeAOAjW4NJZmFhxa
-	 H0gITYJYmKZaKLJBCHyhwvGeQG0pXhOYlYMlGpPU=
+	b=1mLjyBrVR1EBWOSNqf0DCghrhNzRjZRO4JQUMp/7VeAQhrNlw8hmNCl8viiAL2z+g
+	 hJseQZyWOMfMBHm25lktNE5B4p4AdBLIQtAmYniWLHgvkE7l0d6ROZERdD8aG9w/rX
+	 J0RlwQK+fMOQJC7GFdUI4tuj7//Mea8bwGH0X5pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 063/152] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
-Date: Wed, 19 Feb 2025 09:27:56 +0100
-Message-ID: <20250219082552.538094884@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Forest <forestix@nom.one>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 064/152] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+Date: Wed, 19 Feb 2025 09:27:57 +0100
+Message-ID: <20250219082552.579316605@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
 References: <20250219082550.014812078@linuxfoundation.org>
@@ -65,17 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
+commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
 
-Teclast disk used on Huawei hisi platforms doesn't work well,
-losing connectivity intermittently if LPM is enabled.
-Add quirk disable LPM to resolve the issue.
+The fastboot tool for communicating with Android bootloaders does not
+work reliably with this device if USB 2 Link Power Management (LPM)
+is enabled.
 
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Various fastboot commands are affected, including the
+following, which usually reproduces the problem within two tries:
+
+  fastboot getvar kernel
+  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+
+This issue was hidden on many systems up until commit 63a1f8454962
+("xhci: stored cached port capability values in one place") as the xhci
+driver failed to detect USB 2 LPM support if USB 3 ports were listed
+before USB 2 ports in the "supported protocol capabilities".
+
+Adding the quirk resolves the issue. No drawbacks are expected since
+the device uses different USB product IDs outside of fastboot mode, and
+since fastboot commands worked before, until LPM was enabled on the
+tested system by the aforementioned commit.
+
+Based on a patch from Forest <forestix@nom.one> from which most of the
+code and commit message is taken.
+
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
+Reported-by: Forest <forestix@nom.one>
+Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
+Tested-by: Forest <forestix@nom.one>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/usb/core/quirks.c |    3 +++
@@ -83,16 +106,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/core/quirks.c
 +++ b/drivers/usb/core/quirks.c
-@@ -522,6 +522,9 @@ static const struct usb_device_id usb_qu
- 	/* Blackmagic Design UltraStudio SDI */
- 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
+@@ -432,6 +432,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
+ 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
  
-+	/* Teclast disk */
-+	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
++	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
++	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
 +
- 	/* Hauppauge HVR-950q */
- 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+ 	/* Action Semiconductor flash disk */
+ 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
+ 			USB_QUIRK_STRING_FETCH_255 },
 
 
 
