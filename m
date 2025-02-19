@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-117229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3696A3B562
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C102A3B59B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF1701897A4A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD090178F13
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A481E0E0D;
-	Wed, 19 Feb 2025 08:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021B91E1A2B;
+	Wed, 19 Feb 2025 08:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dcpQ3pW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ7Td/f6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323DA1C548C;
-	Wed, 19 Feb 2025 08:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A1B1DE4D7;
+	Wed, 19 Feb 2025 08:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954611; cv=none; b=Vv4vjiSj5Y9jLcm7i6SYqyjWhVLQvniN5DFSHsIacN4E9sRJ6Ue+GnFdsWCtPP3ElZ05a0UwMdVYsyzdMHy9YeQWgg1n67SU7IQd7jY2ioYtIsC+Tw5hzNALDxjAMZDIFoLv6DRFc0sXx15jBTcA9obJbP/UpbYM2BLnzsdMKHE=
+	t=1739954617; cv=none; b=pLYGtkuJr5lOxRZXiFXAf1OOR99iLkkFLhpKNss9sZvpLfMX/u5KkFog/vTNdm2x1x034ryxh5RAVUXuKbPaofAzOuA+TBUjWq/pCuWMqgpAoDKigVhrRFeTKisbtSj+kULsJYeSdkiACjYwajXd4fljOrDUNNWStih5s5n+/5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954611; c=relaxed/simple;
-	bh=7QgqcQdtcLKkM+OD6/CVt2O3/AsSdNBtQqW4S8KKPL4=;
+	s=arc-20240116; t=1739954617; c=relaxed/simple;
+	bh=2xh6Y2mmmRxkObgjHOgAaNMYVuzoUjT8u9uKUXld3xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qA/Mv2+m9mMmjRXSLQxJocpGEqKdEmMZ1njdHEYMQsexaXINkr+ukwoUog0Z6QBefoJmAM5VdI/X2mmE8V3vEsC0jbD6aQLqFm5o4Ef+hqNaI9i2D8dgX1bbz8sKsrl+LhM8HEZ+QyQu8Y94qRH1oy+RoAjTqXFR8Fp1yLT4/3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dcpQ3pW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B24C4CED1;
-	Wed, 19 Feb 2025 08:43:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dbp5S0M8YMHbuz3CBBdEJSJU3OISJNmjRwPvWt+KblVudbpAq282FlTRhEe5SS1jz09agf11NMsOJBFhY+o2e7EZPjZ8Xa0pC4O+OnWCYHp8hXL23+Mh4+DmD9R4OCwhX6R5xyAtV2Xjc+HGlXIF7A6Jh/nI1f5PXExlMTnJuu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ7Td/f6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD94C4CED1;
+	Wed, 19 Feb 2025 08:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954611;
-	bh=7QgqcQdtcLKkM+OD6/CVt2O3/AsSdNBtQqW4S8KKPL4=;
+	s=korg; t=1739954617;
+	bh=2xh6Y2mmmRxkObgjHOgAaNMYVuzoUjT8u9uKUXld3xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dcpQ3pWB6CmtYF6KSDvbBAUViwtLMpMbcyTCIbBe+6qByq4PECwjrIeii/DGHizm
-	 IvIzHf/6K0a0pC7wiTLLwe9//IPyf73CsbQihDMfKJW46id6GmIYX0P30msnwPwMgN
-	 dFueEL6r+wNkAoUSOHPKafoJALM3Jm3m+nVBphX8=
+	b=WQ7Td/f6mdY1nfvgEOsL+1TjfQKPjSY6MarCPFC05a/uMpihTKylb2cvrbr0OWRGR
+	 iS6RBsars7Y48GTzhq64esNvKCBBeZxln8OkUumGSc8npEp0jimpKij1s5aYt9no7x
+	 hhSBTKmKLCcvoxogdA+5gLbLFMF3cg6CaOY/ZDjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonard Lausen <leonard@lausen.nl>,
-	=?UTF-8?q?Gy=C3=B6rgy=20Kurucz?= <me@kuruczgy.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>
-Subject: [PATCH 6.13 258/274] drm/msm/dpu1: dont choke on disabling the writeback connector
-Date: Wed, 19 Feb 2025 09:28:32 +0100
-Message-ID: <20250219082619.679843492@linuxfoundation.org>
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.13 259/274] drm/v3d: Stop active perfmon if it is being destroyed
+Date: Wed, 19 Feb 2025 09:28:33 +0100
+Message-ID: <20250219082619.722845232@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -70,57 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Christian Gmeiner <cgmeiner@igalia.com>
 
-commit d9f55e2abfb933818c772eba659a9b7ab28a44d0 upstream.
+commit 21f1435b1e6b012a07c42f36b206d2b66fc8f13b upstream.
 
-During suspend/resume process all connectors are explicitly disabled and
-then reenabled. However resume fails because of the connector_status check:
+If the active performance monitor (`v3d->active_perfmon`) is being
+destroyed, stop it first. Currently, the active perfmon is not
+stopped during destruction, leaving the `v3d->active_perfmon` pointer
+stale. This can lead to undefined behavior and instability.
 
-[dpu error]connector not connected 3
-[drm:drm_mode_config_helper_resume [drm_kms_helper]] *ERROR* Failed to resume (-22)
+This patch ensures that the active perfmon is stopped before being
+destroyed, aligning with the behavior introduced in commit
+7d1fd3638ee3 ("drm/v3d: Stop the active perfmon before being destroyed").
 
-It doesn't make sense to check for the Writeback connected status (and
-other drivers don't perform such check), so drop the check.
-
-It wasn't a problem before the commit 71174f362d67 ("drm/msm/dpu: move
-writeback's atomic_check to dpu_writeback.c"), since encoder's
-atomic_check() is called under a different conditions that the
-connector's atomic_check() (e.g. it is not called if there is no
-connected CRTC or if the corresponding connector is not a part of the
-new state).
-
-Fixes: 71174f362d67 ("drm/msm/dpu: move writeback's atomic_check to dpu_writeback.c")
-Cc: stable@vger.kernel.org
-Reported-by: Leonard Lausen <leonard@lausen.nl>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/57
-Tested-by: Leonard Lausen <leonard@lausen.nl> # on sc7180 lazor
-Tested-by: György Kurucz <me@kuruczgy.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # Trogdor (sc7180)
-Patchwork: https://patchwork.freedesktop.org/patch/627828/
-Link: https://lore.kernel.org/r/20241209-dpu-fix-wb-v4-1-7fe93059f9e0@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: stable@vger.kernel.org # v5.15+
+Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
+Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241118221948.1758130-1-christian.gmeiner@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/v3d/v3d_perfmon.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback.c
-@@ -42,9 +42,6 @@ static int dpu_wb_conn_atomic_check(stru
- 	if (!conn_state || !conn_state->connector) {
- 		DPU_ERROR("invalid connector state\n");
- 		return -EINVAL;
--	} else if (conn_state->connector->status != connector_status_connected) {
--		DPU_ERROR("connector not connected %d\n", conn_state->connector->status);
--		return -EINVAL;
- 	}
+--- a/drivers/gpu/drm/v3d/v3d_perfmon.c
++++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
+@@ -384,6 +384,7 @@ int v3d_perfmon_destroy_ioctl(struct drm
+ {
+ 	struct v3d_file_priv *v3d_priv = file_priv->driver_priv;
+ 	struct drm_v3d_perfmon_destroy *req = data;
++	struct v3d_dev *v3d = v3d_priv->v3d;
+ 	struct v3d_perfmon *perfmon;
  
- 	crtc = conn_state->crtc;
+ 	mutex_lock(&v3d_priv->perfmon.lock);
+@@ -393,6 +394,10 @@ int v3d_perfmon_destroy_ioctl(struct drm
+ 	if (!perfmon)
+ 		return -EINVAL;
+ 
++	/* If the active perfmon is being destroyed, stop it first */
++	if (perfmon == v3d->active_perfmon)
++		v3d_perfmon_stop(v3d, perfmon, false);
++
+ 	v3d_perfmon_put(perfmon);
+ 
+ 	return 0;
 
 
 
