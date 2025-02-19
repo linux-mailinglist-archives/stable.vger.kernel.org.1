@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A17A3BA04
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC780A3B6E6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24C817A7D31
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CECA7A7635
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E1B1DED68;
-	Wed, 19 Feb 2025 09:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144FD1CCEE7;
+	Wed, 19 Feb 2025 09:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="og/qujKW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2X5AcHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333141BD9C6;
-	Wed, 19 Feb 2025 09:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C386D1C5F0C;
+	Wed, 19 Feb 2025 09:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957500; cv=none; b=KK/aKm0e11GLFhUqVqlqutwc52T8SMLhjrP8kCCzoo9hVZGmyK3RWYMFpYcHGrFniXu/16mEKJ/xbE1+T81rKzIUB7cA+RPLxfpxPdqJ7g+2dawhNKtEPSoyjE24H6zqaZROnZTf/HahDs2Vuo2UMaVshCV0Zw/Wm0h3ZJUFr/U=
+	t=1739955925; cv=none; b=rYw7vBYpT7BeM9fJzP0SnwBW7v770irFPvzi7JZ/t6VGQpI2Is4qRCkHPHZ42k8NfrIqpjKUQo1oifeNYZ/uPV31f4IH9PYK8aaN9jP0Sv7UT9kkjh/HSwEdpYXwBn+nJxpgtqxbqUYPT34APY0yLEVwSv2XBk+KXYtxFsxHgZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957500; c=relaxed/simple;
-	bh=xXJYytYvp+hNZuO3qk34j4PkmjZJChpopLJLG8CKepY=;
+	s=arc-20240116; t=1739955925; c=relaxed/simple;
+	bh=WYV4mEHEhHBlcWG6GeihYOtnhFndqxuReuybcn/qI0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sD6MgUL60pLYT9l1/tbPqAJRxb9RhLtmVGzvTet5xa/Ft+bhaAhb5TDLOYGHXlwAfsZBscsstLO+foDTjWtX9V2013jzl5JwOJxPxQC6iFSMzI+va1/Fr5E/QLpKKKcwaGSSBSVLqGzmrUCYrZX3xPN/gzwptJ9RCWhVXYqefFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=og/qujKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5937EC4CED1;
-	Wed, 19 Feb 2025 09:31:39 +0000 (UTC)
+	 MIME-Version; b=AO7U1DoYOKEsRhAQktCegEnS/IYwRTv68r+i6kUmotYvF/hDONCMgHKfn3POy5PfnNjdbwsqR2LTtE2cVfzMYRzSXbFEk7nZntTeGnj+ufenhdclbZKgUBIK90EcsmyEKRWv6cC0nW2ji7nQA65JBIFL8zVSe2S3hrjX+5Lm2Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2X5AcHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467E8C4CED1;
+	Wed, 19 Feb 2025 09:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957499;
-	bh=xXJYytYvp+hNZuO3qk34j4PkmjZJChpopLJLG8CKepY=;
+	s=korg; t=1739955925;
+	bh=WYV4mEHEhHBlcWG6GeihYOtnhFndqxuReuybcn/qI0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=og/qujKWZ894MBRbeytZGcGDECGpglFY4osqXWg2CcW2bBkiiQBHbakkKbsG8on9d
-	 hwVJ/9R6v7MjlGWkqzdJ1TAH9V4LUpWsfNNurkLYSxlywO9YgPMUwPudORmf6tsvJN
-	 a7eY6s1OIMWdzCSqXxCpRP3g24Aedq00M9dtPmmE=
+	b=j2X5AcHDe9hXhrtGXfu54bhW7dy6W3doIVUjPZjVkP/4X7wxOs1RML+2h87V/u0dw
+	 3dznmGUK+Ju7OnoePX9O2zLOHQmY2bH9J8Zl9HC23LwfE51TGBHL01Q2p+5gsabZuG
+	 7r/gCvR9vjEoUFt+lS49BzwfN6OOeOPoN6C1xmQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 547/578] flow_dissector: use RCU protection to fetch dev_net()
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>
+Subject: [PATCH 6.6 138/152] md/raid5: recheck if reshape has finished with device_lock held
 Date: Wed, 19 Feb 2025 09:29:11 +0100
-Message-ID: <20250219082714.483504907@linuxfoundation.org>
+Message-ID: <20250219082555.504840734@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit afec62cd0a4191cde6dd3a75382be4d51a38ce9b ]
+commit 25b3a8237a03ec0b67b965b52d74862e77ef7115 upstream.
 
-__skb_flow_dissect() can be called from arbitrary contexts.
+When handling an IO request, MD checks if a reshape is currently
+happening, and if so, where the IO sector is in relation to the reshape
+progress. MD uses conf->reshape_progress for both of these tasks.  When
+the reshape finishes, conf->reshape_progress is set to MaxSector.  If
+this occurs after MD checks if the reshape is currently happening but
+before it calls ahead_of_reshape(), then ahead_of_reshape() will end up
+comparing the IO sector against MaxSector. During a backwards reshape,
+this will make MD think the IO sector is in the area not yet reshaped,
+causing it to use the previous configuration, and map the IO to the
+sector where that data was before the reshape.
 
-It must extend its RCU protection section to include
-the call to dev_net(), which can become dev_net_rcu().
+This bug can be triggered by running the lvm2
+lvconvert-raid-reshape-linear_to_raid6-single-type.sh test in a loop,
+although it's very hard to reproduce.
 
-This makes sure the net structure can not disappear under us.
+Fix this by factoring the code that checks where the IO sector is in
+relation to the reshape out to a helper called get_reshape_loc(),
+which reads reshape_progress and reshape_safe while holding the
+device_lock, and then rechecks if the reshape has finished before
+calling ahead_of_reshape with the saved values.
 
-Fixes: 9b52e3f267a6 ("flow_dissector: handle no-skb use case")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-10-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also use the helper during the REQ_NOWAIT check to see if the location
+is inside of the reshape region.
+
+Fixes: fef9c61fdfabf ("md/raid5: change reshape-progress measurement to cope with reshaping backwards.")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240702151802.1632010-1-bmarzins@redhat.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/flow_dissector.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/md/raid5.c |   64 +++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 41 insertions(+), 23 deletions(-)
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index fba8eb1bb2815..de17f13232381 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1004,10 +1004,12 @@ bool __skb_flow_dissect(const struct net *net,
- 					      FLOW_DISSECTOR_KEY_BASIC,
- 					      target_container);
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5972,6 +5972,39 @@ static bool reshape_disabled(struct mdde
+ 	return is_md_suspended(mddev) || !md_is_rdwr(mddev);
+ }
  
-+	rcu_read_lock();
++enum reshape_loc {
++	LOC_NO_RESHAPE,
++	LOC_AHEAD_OF_RESHAPE,
++	LOC_INSIDE_RESHAPE,
++	LOC_BEHIND_RESHAPE,
++};
 +
- 	if (skb) {
- 		if (!net) {
- 			if (skb->dev)
--				net = dev_net(skb->dev);
-+				net = dev_net_rcu(skb->dev);
- 			else if (skb->sk)
- 				net = sock_net(skb->sk);
- 		}
-@@ -1018,7 +1020,6 @@ bool __skb_flow_dissect(const struct net *net,
- 		enum netns_bpf_attach_type type = NETNS_BPF_FLOW_DISSECTOR;
- 		struct bpf_prog_array *run_array;
++static enum reshape_loc get_reshape_loc(struct mddev *mddev,
++		struct r5conf *conf, sector_t logical_sector)
++{
++	sector_t reshape_progress, reshape_safe;
++	/*
++	 * Spinlock is needed as reshape_progress may be
++	 * 64bit on a 32bit platform, and so it might be
++	 * possible to see a half-updated value
++	 * Of course reshape_progress could change after
++	 * the lock is dropped, so once we get a reference
++	 * to the stripe that we think it is, we will have
++	 * to check again.
++	 */
++	spin_lock_irq(&conf->device_lock);
++	reshape_progress = conf->reshape_progress;
++	reshape_safe = conf->reshape_safe;
++	spin_unlock_irq(&conf->device_lock);
++	if (reshape_progress == MaxSector)
++		return LOC_NO_RESHAPE;
++	if (ahead_of_reshape(mddev, logical_sector, reshape_progress))
++		return LOC_AHEAD_OF_RESHAPE;
++	if (ahead_of_reshape(mddev, logical_sector, reshape_safe))
++		return LOC_INSIDE_RESHAPE;
++	return LOC_BEHIND_RESHAPE;
++}
++
+ static enum stripe_result make_stripe_request(struct mddev *mddev,
+ 		struct r5conf *conf, struct stripe_request_ctx *ctx,
+ 		sector_t logical_sector, struct bio *bi)
+@@ -5986,28 +6019,14 @@ static enum stripe_result make_stripe_re
+ 	seq = read_seqcount_begin(&conf->gen_lock);
  
--		rcu_read_lock();
- 		run_array = rcu_dereference(init_net.bpf.run_array[type]);
- 		if (!run_array)
- 			run_array = rcu_dereference(net->bpf.run_array[type]);
-@@ -1046,17 +1047,17 @@ bool __skb_flow_dissect(const struct net *net,
- 			prog = READ_ONCE(run_array->items[0].prog);
- 			result = bpf_flow_dissect(prog, &ctx, n_proto, nhoff,
- 						  hlen, flags);
--			if (result == BPF_FLOW_DISSECTOR_CONTINUE)
--				goto dissect_continue;
--			__skb_flow_bpf_to_target(&flow_keys, flow_dissector,
--						 target_container);
--			rcu_read_unlock();
--			return result == BPF_OK;
-+			if (result != BPF_FLOW_DISSECTOR_CONTINUE) {
-+				__skb_flow_bpf_to_target(&flow_keys, flow_dissector,
-+							 target_container);
-+				rcu_read_unlock();
-+				return result == BPF_OK;
-+			}
+ 	if (unlikely(conf->reshape_progress != MaxSector)) {
+-		/*
+-		 * Spinlock is needed as reshape_progress may be
+-		 * 64bit on a 32bit platform, and so it might be
+-		 * possible to see a half-updated value
+-		 * Of course reshape_progress could change after
+-		 * the lock is dropped, so once we get a reference
+-		 * to the stripe that we think it is, we will have
+-		 * to check again.
+-		 */
+-		spin_lock_irq(&conf->device_lock);
+-		if (ahead_of_reshape(mddev, logical_sector,
+-				     conf->reshape_progress)) {
+-			previous = 1;
+-		} else {
+-			if (ahead_of_reshape(mddev, logical_sector,
+-					     conf->reshape_safe)) {
+-				spin_unlock_irq(&conf->device_lock);
+-				ret = STRIPE_SCHEDULE_AND_RETRY;
+-				goto out;
+-			}
++		enum reshape_loc loc = get_reshape_loc(mddev, conf,
++						       logical_sector);
++		if (loc == LOC_INSIDE_RESHAPE) {
++			ret = STRIPE_SCHEDULE_AND_RETRY;
++			goto out;
  		}
--dissect_continue:
--		rcu_read_unlock();
+-		spin_unlock_irq(&conf->device_lock);
++		if (loc == LOC_AHEAD_OF_RESHAPE)
++			previous = 1;
  	}
  
-+	rcu_read_unlock();
-+
- 	if (dissector_uses_key(flow_dissector,
- 			       FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
- 		struct ethhdr *eth = eth_hdr(skb);
--- 
-2.39.5
-
+ 	new_sector = raid5_compute_sector(conf, logical_sector, previous,
+@@ -6189,8 +6208,7 @@ static bool raid5_make_request(struct md
+ 	/* Bail out if conflicts with reshape and REQ_NOWAIT is set */
+ 	if ((bi->bi_opf & REQ_NOWAIT) &&
+ 	    (conf->reshape_progress != MaxSector) &&
+-	    !ahead_of_reshape(mddev, logical_sector, conf->reshape_progress) &&
+-	    ahead_of_reshape(mddev, logical_sector, conf->reshape_safe)) {
++	    get_reshape_loc(mddev, conf, logical_sector) == LOC_INSIDE_RESHAPE) {
+ 		bio_wouldblock_error(bi);
+ 		if (rw == WRITE)
+ 			md_write_end(mddev);
 
 
 
