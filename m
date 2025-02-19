@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-117068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4994AA3B495
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED223A3B49F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDEC188F07D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAA8C1898768
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FF61DEFD8;
-	Wed, 19 Feb 2025 08:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1F81DF269;
+	Wed, 19 Feb 2025 08:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAu9G/Fi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W35ncMA6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CED41C5F18;
-	Wed, 19 Feb 2025 08:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1501CB9F0;
+	Wed, 19 Feb 2025 08:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954106; cv=none; b=sleU8hfRagU49EcXNW5wjqnJgSGO3xwP5cXKNNAJu+QadTnoxh6lfma/iAcELthyuPDN++gKnQP2xd36GVSYGw5ckWm/VbJmxLsYQogPmwMN79MCShB3vxzMBOqlrByJMKxp0a/SGpj3tKm3pKe2eNv7AOqaD1IPtnz4ccDJuMs=
+	t=1739954122; cv=none; b=LQGz8OFWRoJtO5QBBmhi1KNpk5s2+buS4SqPdWalBOkAlSxG00uSZiTsZptXSLMxB78wBxEzUiq6AUcB//tat4T30IzpvOpjCPFcg5Uazk6unAeKn1j+kelgTOgDIl0TJrHkWNNWSKMsEnrUU+wIaZwTtQnsoCLQp7T+4eIgf2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954106; c=relaxed/simple;
-	bh=FCup1DIH89ejJ2vRM0cnWRalBv7rwJIyWxdfMMVjaMo=;
+	s=arc-20240116; t=1739954122; c=relaxed/simple;
+	bh=+zCNMrzA3P/EMn0iZdYJh/dM5bE/xx6zg2M+vQSHdUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEcr/mvdXVKWS/GdJO/BlbfBzzptw2QTFlrPdKs3Wsu1191ZplJtoXsUQ8hCApSRVqU+8tpgu+kEaPPRUevKo1qLlb2FIxM16oM+6qV52ZU4FE5WzravWQf9fyD+Vpm1JGvFpd8tcexEQLeLViYof2IUwiuwt/mJ9BZVTSVh0jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAu9G/Fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FFDC4CED1;
-	Wed, 19 Feb 2025 08:35:05 +0000 (UTC)
+	 MIME-Version; b=GGoo/f2V1vb19HisEOtV09i+3W+z8AYG6yqF+ChYEn0CthtLRe1PhMhzAK7GAKX6C2M6625fyM4wvVsrXvK3/s3lxSZonlylFFvwwVaJMm2lkZpopIokJYY0YlUfTM5rGgMQ+o0QIKOMRW4cz4yDUAdcAYxuNJIkMPKuGGp5mM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W35ncMA6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA12C4CED1;
+	Wed, 19 Feb 2025 08:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954106;
-	bh=FCup1DIH89ejJ2vRM0cnWRalBv7rwJIyWxdfMMVjaMo=;
+	s=korg; t=1739954121;
+	bh=+zCNMrzA3P/EMn0iZdYJh/dM5bE/xx6zg2M+vQSHdUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAu9G/FiQZV6OQeJXE/0n7VQ97Jmsw659iGSfiikCwogqtNMKc75gbMGJ5R+9t6lS
-	 dqVN+vXXvN7hQO3UtAbq7a1p/5ILsTkEag9BHu1CB89xkJzCbnVFodobOX/n9tLNPO
-	 OY8Syn06vKWGR4+eaRfszT1B/3EVP/vuKwRuTOMs=
+	b=W35ncMA6MunEZuyP6Ly8ocMsusQeIaVW1Rn+nlaHZO0p9jhfbF/8+NFCEKQb4sdQ5
+	 qCswJuAb6BUHx0wXhWtcaQlliPKmSyMIL1zM/b3+Sa0e7nVldqijYwE2Xx+Lc2INTV
+	 Y9mIJbLW4rreSUUg0X+6M6BYtlyEjQEC7qx7EmTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varadarajan Narayanan <quic_varada@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 071/274] soc: qcom: llcc: Update configuration data for IPQ5424
-Date: Wed, 19 Feb 2025 09:25:25 +0100
-Message-ID: <20250219082612.399608235@linuxfoundation.org>
+Subject: [PATCH 6.13 072/274] fbdev: omap: use threaded IRQ for LCD DMA
+Date: Wed, 19 Feb 2025 09:25:26 +0100
+Message-ID: <20250219082612.437750518@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -68,128 +67,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Varadarajan Narayanan <quic_varada@quicinc.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-[ Upstream commit c88c323b610a6048b87c5d9fff69659678f69924 ]
+[ Upstream commit e4b6b665df815b4841e71b72f06446884e8aad40 ]
 
-The 'broadcast' register space is present only in chipsets that
-have multiple instances of LLCC IP. Since IPQ5424 has only one
-instance, both the LLCC and LLCC_BROADCAST points to the same
-register space.
+When using touchscreen and framebuffer, Nokia 770 crashes easily with:
 
-Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241121051935.1055222-3-quic_varada@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+    BUG: scheduling while atomic: irq/144-ads7846/82/0x00010000
+    Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite configfs omap_udc ohci_omap ohci_hcd
+    CPU: 0 UID: 0 PID: 82 Comm: irq/144-ads7846 Not tainted 6.12.7-770 #2
+    Hardware name: Nokia 770
+    Call trace:
+     unwind_backtrace from show_stack+0x10/0x14
+     show_stack from dump_stack_lvl+0x54/0x5c
+     dump_stack_lvl from __schedule_bug+0x50/0x70
+     __schedule_bug from __schedule+0x4d4/0x5bc
+     __schedule from schedule+0x34/0xa0
+     schedule from schedule_preempt_disabled+0xc/0x10
+     schedule_preempt_disabled from __mutex_lock.constprop.0+0x218/0x3b4
+     __mutex_lock.constprop.0 from clk_prepare_lock+0x38/0xe4
+     clk_prepare_lock from clk_set_rate+0x18/0x154
+     clk_set_rate from sossi_read_data+0x4c/0x168
+     sossi_read_data from hwa742_read_reg+0x5c/0x8c
+     hwa742_read_reg from send_frame_handler+0xfc/0x300
+     send_frame_handler from process_pending_requests+0x74/0xd0
+     process_pending_requests from lcd_dma_irq_handler+0x50/0x74
+     lcd_dma_irq_handler from __handle_irq_event_percpu+0x44/0x130
+     __handle_irq_event_percpu from handle_irq_event+0x28/0x68
+     handle_irq_event from handle_level_irq+0x9c/0x170
+     handle_level_irq from generic_handle_domain_irq+0x2c/0x3c
+     generic_handle_domain_irq from omap1_handle_irq+0x40/0x8c
+     omap1_handle_irq from generic_handle_arch_irq+0x28/0x3c
+     generic_handle_arch_irq from call_with_stack+0x1c/0x24
+     call_with_stack from __irq_svc+0x94/0xa8
+    Exception stack(0xc5255da0 to 0xc5255de8)
+    5da0: 00000001 c22fc620 00000000 00000000 c08384a8 c106fc00 00000000 c240c248
+    5dc0: c113a600 c3f6ec30 00000001 00000000 c22fc620 c5255df0 c22fc620 c0279a94
+    5de0: 60000013 ffffffff
+     __irq_svc from clk_prepare_lock+0x4c/0xe4
+     clk_prepare_lock from clk_get_rate+0x10/0x74
+     clk_get_rate from uwire_setup_transfer+0x40/0x180
+     uwire_setup_transfer from spi_bitbang_transfer_one+0x2c/0x9c
+     spi_bitbang_transfer_one from spi_transfer_one_message+0x2d0/0x664
+     spi_transfer_one_message from __spi_pump_transfer_message+0x29c/0x498
+     __spi_pump_transfer_message from __spi_sync+0x1f8/0x2e8
+     __spi_sync from spi_sync+0x24/0x40
+     spi_sync from ads7846_halfd_read_state+0x5c/0x1c0
+     ads7846_halfd_read_state from ads7846_irq+0x58/0x348
+     ads7846_irq from irq_thread_fn+0x1c/0x78
+     irq_thread_fn from irq_thread+0x120/0x228
+     irq_thread from kthread+0xc8/0xe8
+     kthread from ret_from_fork+0x14/0x28
+
+As a quick fix, switch to a threaded IRQ which provides a stable system.
+
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 57 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/omap/lcd_dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index 1560db00a0124..56823b6a2facc 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -142,6 +142,7 @@ struct qcom_llcc_config {
- 	bool skip_llcc_cfg;
- 	bool no_edac;
- 	bool irq_configured;
-+	bool no_broadcast_register;
- };
+diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
+index f85817635a8c2..0da23c57e4757 100644
+--- a/drivers/video/fbdev/omap/lcd_dma.c
++++ b/drivers/video/fbdev/omap/lcd_dma.c
+@@ -432,8 +432,8 @@ static int __init omap_init_lcd_dma(void)
  
- struct qcom_sct_config {
-@@ -154,6 +155,38 @@ enum llcc_reg_offset {
- 	LLCC_COMMON_STATUS0,
- };
+ 	spin_lock_init(&lcd_dma.lock);
  
-+static const struct llcc_slice_config ipq5424_data[] =  {
-+	{
-+		.usecase_id = LLCC_CPUSS,
-+		.slice_id = 1,
-+		.max_cap = 768,
-+		.priority = 1,
-+		.bonus_ways = 0xFFFF,
-+		.retain_on_pc = true,
-+		.activate_on_init = true,
-+		.write_scid_cacheable_en = true,
-+		.stale_en = true,
-+		.stale_cap_en = true,
-+		.alloc_oneway_en = true,
-+		.ovcap_en = true,
-+		.ovcap_prio = true,
-+		.vict_prio = true,
-+	},
-+	{
-+		.usecase_id = LLCC_VIDSC0,
-+		.slice_id = 2,
-+		.max_cap = 256,
-+		.priority = 2,
-+		.fixed_size = true,
-+		.bonus_ways = 0xF000,
-+		.retain_on_pc = true,
-+		.activate_on_init = true,
-+		.write_scid_cacheable_en = true,
-+		.stale_en = true,
-+		.stale_cap_en = true,
-+	},
-+};
-+
- static const struct llcc_slice_config sa8775p_data[] =  {
- 	{
- 		.usecase_id = LLCC_CPUSS,
-@@ -3186,6 +3219,16 @@ static const struct qcom_llcc_config qdu1000_cfg[] = {
- 	},
- };
+-	r = request_irq(INT_DMA_LCD, lcd_dma_irq_handler, 0,
+-			"LCD DMA", NULL);
++	r = request_threaded_irq(INT_DMA_LCD, NULL, lcd_dma_irq_handler,
++				 IRQF_ONESHOT, "LCD DMA", NULL);
+ 	if (r != 0)
+ 		pr_err("unable to request IRQ for LCD DMA (error %d)\n", r);
  
-+static const struct qcom_llcc_config ipq5424_cfg[] = {
-+	{
-+		.sct_data       = ipq5424_data,
-+		.size           = ARRAY_SIZE(ipq5424_data),
-+		.reg_offset     = llcc_v2_1_reg_offset,
-+		.edac_reg_offset = &llcc_v2_1_edac_reg_offset,
-+		.no_broadcast_register = true,
-+	},
-+};
-+
- static const struct qcom_llcc_config sa8775p_cfg[] = {
- 	{
- 		.sct_data	= sa8775p_data,
-@@ -3361,6 +3404,11 @@ static const struct qcom_sct_config qdu1000_cfgs = {
- 	.num_config	= ARRAY_SIZE(qdu1000_cfg),
- };
- 
-+static const struct qcom_sct_config ipq5424_cfgs = {
-+	.llcc_config	= ipq5424_cfg,
-+	.num_config	= ARRAY_SIZE(ipq5424_cfg),
-+};
-+
- static const struct qcom_sct_config sa8775p_cfgs = {
- 	.llcc_config	= sa8775p_cfg,
- 	.num_config	= ARRAY_SIZE(sa8775p_cfg),
-@@ -3958,8 +4006,12 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- 
- 	drv_data->bcast_regmap = qcom_llcc_init_mmio(pdev, i, "llcc_broadcast_base");
- 	if (IS_ERR(drv_data->bcast_regmap)) {
--		ret = PTR_ERR(drv_data->bcast_regmap);
--		goto err;
-+		if (cfg->no_broadcast_register) {
-+			drv_data->bcast_regmap = regmap;
-+		} else {
-+			ret = PTR_ERR(drv_data->bcast_regmap);
-+			goto err;
-+		}
- 	}
- 
- 	/* Extract version of the IP */
-@@ -4030,6 +4082,7 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- }
- 
- static const struct of_device_id qcom_llcc_of_match[] = {
-+	{ .compatible = "qcom,ipq5424-llcc", .data = &ipq5424_cfgs},
- 	{ .compatible = "qcom,qcs615-llcc", .data = &qcs615_cfgs},
- 	{ .compatible = "qcom,qcs8300-llcc", .data = &qcs8300_cfgs},
- 	{ .compatible = "qcom,qdu1000-llcc", .data = &qdu1000_cfgs},
 -- 
 2.39.5
 
