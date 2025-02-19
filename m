@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-117649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A50A3B6F3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3036FA3B720
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 788B07A7706
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D18BB7A7502
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A30F1DEFCD;
-	Wed, 19 Feb 2025 09:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C0D1C760D;
+	Wed, 19 Feb 2025 09:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUMay1zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bblEoKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391E51A314B;
-	Wed, 19 Feb 2025 09:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A611DFD8B;
+	Wed, 19 Feb 2025 09:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955943; cv=none; b=Wy0NWZxKaBH99fXJ5HQqJTkmwfMLALHPIUeoJjMk50TKZFXD0lyDKrrATEIAEJomiJUg27nTanfefyLh/jVFhH+p52KrTiJh7KAf/UVF/6t5YjKnnVs+uqCjqwsN3B3p3y7vUaYlN5FKWYfNUaR8MNQfj9YHN1crRN28myItwMA=
+	t=1739956044; cv=none; b=PxUGWOmPs8fF0KguVFIV/Yu1mbYlUhiwBbzQNeyUF3En6cxZXZW/NjL26b5cw5ndAlhRl5bB5ZAmzM/+O0RwNqFw3UYtDSrPVlUqP+Xb6b3lfE7kEbRdx29GIz+5IbW6LmciUdW2CBRzEEVVjpPt9aWvvYFojq+kF1qmmiEGlqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955943; c=relaxed/simple;
-	bh=r7FhFREqFlhTUa/D2YBhaP9hWtKbGkkO9VH2R0dUfLU=;
+	s=arc-20240116; t=1739956044; c=relaxed/simple;
+	bh=6e0i495z23p5taCVdYsDjjwLusXGbXsdPhtLGOUjcl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGUzSGsZqCDtTLwMN5c75JtMNf/2gTBI7TEblg+f8E1I/TCT012h9g0YzZjzqcq3r1S8HM13b/vjQFghTvVHUx82uURTYzfrD9P++e3+Ll/hIRN3UHBinlZJbBSHhKxI23A1YLFH+Cv8DMxzOX5TQFlxFJzhN7d9t8PTWB1pYEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUMay1zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3626C4CEE6;
-	Wed, 19 Feb 2025 09:05:42 +0000 (UTC)
+	 MIME-Version; b=kHgqkaZv/Ae5g2aZJaYz9JTe7/p+YjGn7MP18KGX/5msUxbC7w7WCRhvRrA16mSbpsUMRwW2ptbQMzVKTomiUkZiVltnTM/1NaE7U7bL/iJ0TXhYeTQ4RF33AzkN4esv3LGZKP0ZRoYQdiZ7kNT6MI20N+ymFWP09gIqnwHYEj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bblEoKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF4DC4CED1;
+	Wed, 19 Feb 2025 09:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955943;
-	bh=r7FhFREqFlhTUa/D2YBhaP9hWtKbGkkO9VH2R0dUfLU=;
+	s=korg; t=1739956043;
+	bh=6e0i495z23p5taCVdYsDjjwLusXGbXsdPhtLGOUjcl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUMay1zcaFKfx0jz3sJECExNThFS3l1c1wnhKsOjElUGb/JIZ+Cl7JYSAwYXcnZUP
-	 TgS08utat8/moco3cwp0bjWFeTfIvbSyhStXMmQzIv05VNcYTjrP1axAArMVk7nUyX
-	 U1g4yfPFGJ1un1vJe7bipDbfYm5eHoh2mq5Ron0o=
+	b=2bblEoKlbBr5Nr2MPd4TgnT09A1LP2GzAF+forIIeMCvqM4gmsMeQ7tf4WtThYsy9
+	 C+0tuq/QicevRB4THTyZ/A89HhoG8Td5tuWFdIFRXEe7E/MJatuTmtMLuqzNlm5ToF
+	 axvw9nqY1JnIZ+EnEQxze9lCAKprjAXhCemN4M00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/578] fs: fix proc_handler for sysctl_nr_open
-Date: Wed, 19 Feb 2025 09:20:08 +0100
-Message-ID: <20250219082653.072916792@linuxfoundation.org>
+Subject: [PATCH 6.1 005/578] block: retry call probe after request_module in blk_request_module
+Date: Wed, 19 Feb 2025 09:20:09 +0100
+Message-ID: <20250219082653.111191153@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,35 +67,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@gmail.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit d727935cad9f6f52c8d184968f9720fdc966c669 ]
+[ Upstream commit 457ef47c08d2979f3e59ce66267485c3faed70c8 ]
 
-Use proc_douintvec_minmax() instead of proc_dointvec_minmax() to handle
-sysctl_nr_open, because its data type is unsigned int, not int.
+Set kernel config:
 
-Fixes: 9b80a184eaad ("fs/file: more unsigned file descriptors")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Link: https://lore.kernel.org/r/20241124034636.325337-1-alexjlzheng@tencent.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+ CONFIG_BLK_DEV_LOOP=m
+ CONFIG_BLK_DEV_LOOP_MIN_COUNT=0
+
+Do latter:
+
+ mknod loop0 b 7 0
+ exec 4<> loop0
+
+Before commit e418de3abcda ("block: switch gendisk lookup to a simple
+xarray"), lookup_gendisk will first use base_probe to load module loop,
+and then the retry will call loop_probe to prepare the loop disk. Finally
+open for this disk will success. However, after this commit, we lose the
+retry logic, and open will fail with ENXIO. Block device autoloading is
+deprecated and will be removed soon, but maybe we should keep open success
+until we really remove it. So, give a retry to fix it.
+
+Fixes: e418de3abcda ("block: switch gendisk lookup to a simple xarray")
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241209110435.3670985-1-yangerkun@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file_table.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/genhd.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/fs/file_table.c b/fs/file_table.c
-index dd88701e54a93..cecc866871bc1 100644
---- a/fs/file_table.c
-+++ b/fs/file_table.c
-@@ -110,7 +110,7 @@ static struct ctl_table fs_stat_sysctls[] = {
- 		.data		= &sysctl_nr_open,
- 		.maxlen		= sizeof(unsigned int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec_minmax,
-+		.proc_handler	= proc_douintvec_minmax,
- 		.extra1		= &sysctl_nr_open_min,
- 		.extra2		= &sysctl_nr_open_max,
- 	},
+diff --git a/block/genhd.c b/block/genhd.c
+index 8256e11f85b7d..1cb517969607c 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -738,7 +738,7 @@ static ssize_t disk_badblocks_store(struct device *dev,
+ }
+ 
+ #ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
+-void blk_request_module(dev_t devt)
++static bool blk_probe_dev(dev_t devt)
+ {
+ 	unsigned int major = MAJOR(devt);
+ 	struct blk_major_name **n;
+@@ -748,14 +748,26 @@ void blk_request_module(dev_t devt)
+ 		if ((*n)->major == major && (*n)->probe) {
+ 			(*n)->probe(devt);
+ 			mutex_unlock(&major_names_lock);
+-			return;
++			return true;
+ 		}
+ 	}
+ 	mutex_unlock(&major_names_lock);
++	return false;
++}
++
++void blk_request_module(dev_t devt)
++{
++	int error;
++
++	if (blk_probe_dev(devt))
++		return;
+ 
+-	if (request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt)) > 0)
+-		/* Make old-style 2.4 aliases work */
+-		request_module("block-major-%d", MAJOR(devt));
++	error = request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt));
++	/* Make old-style 2.4 aliases work */
++	if (error > 0)
++		error = request_module("block-major-%d", MAJOR(devt));
++	if (!error)
++		blk_probe_dev(devt);
+ }
+ #endif /* CONFIG_BLOCK_LEGACY_AUTOLOAD */
+ 
 -- 
 2.39.5
 
