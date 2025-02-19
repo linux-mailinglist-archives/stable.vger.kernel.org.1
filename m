@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D155A3B5C7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CBCA3B585
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F2107A243C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 820E23B3C21
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8241EA7F0;
-	Wed, 19 Feb 2025 08:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1531B1E1023;
+	Wed, 19 Feb 2025 08:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3GXEF+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7j5I1s1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB291EA7EA;
-	Wed, 19 Feb 2025 08:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B941E0E1A;
+	Wed, 19 Feb 2025 08:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955288; cv=none; b=VVsDReYKCOEuNs1vCLJnPbJi3q7Owscg/lF15JhCUm653Yn1+dO53dNNEneOfaJ9g8vShUpKXwRjM/GGYVHtLfIOzBGGaWeH264tVq+1jHUqwWrABKIBikCqa2cC3t/Dc4DJGxLK7nVs5Sa9851XodGiZGMgSAMcoXK1PAOe52I=
+	t=1739954595; cv=none; b=XFc/TKTDx925qZ77hvGAcPdHBgzjdHsotlhq1F8zwxs/qyu+JkQ5XHl75i32pM/5TM74tTkzbWeFrBUaI7RSB+iQIHdNX9D0hGVH2jeRlRtQgzbQqAWKAYNi3x1vwvYri4CGatdP6hGJf1irxqayeT1g/ARIHN3Fn6Ze89i2Vis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955288; c=relaxed/simple;
-	bh=i31ocSO4eHwhh4Y1l8cE4ScF14pgh67fVY4T+r8j78I=;
+	s=arc-20240116; t=1739954595; c=relaxed/simple;
+	bh=tqmETMwfvdz13DCQIimpH8b4sUnW+FnFOOWKEEzoX5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKYm++114F8HEjiz3qiK++VYU957fuOXvTGe9Od0pkTAlJ/hLKOy3SkaPMeSNrok/0MxbFPCJPgfGhxyuSkVN4YzWLvNn/3IEba91FSQ9gdruk0xnJV5H4/fsRcSnSkuySrqLdryeC8hlINOxCP+aimaMoHrBUvnig30my0L/dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3GXEF+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1769C4CEE6;
-	Wed, 19 Feb 2025 08:54:47 +0000 (UTC)
+	 MIME-Version; b=eM7tB0BLx9mH1QWSrWO+IgKN9Fr/xcu6MGVWdKu6Kt/eBJKEfpSxw+RC+6c1fVaodA5K4djXMtejACuWEhhf6q/ej+42G9qVhRj7ahco/bAOualZBHgMZhniMgEcRSVLZC+RpQorBIsimDwrd5FOr/5F8ST0DOnSAfMFMPlOmck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7j5I1s1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44554C4CED1;
+	Wed, 19 Feb 2025 08:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955288;
-	bh=i31ocSO4eHwhh4Y1l8cE4ScF14pgh67fVY4T+r8j78I=;
+	s=korg; t=1739954595;
+	bh=tqmETMwfvdz13DCQIimpH8b4sUnW+FnFOOWKEEzoX5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3GXEF+cKsmrW2Y0ZDtzKDgsOSZ2JGEed42BoC4ndbYZe9TcCz6f7FxTahFNGeHOU
-	 puN1MgqtFNbWsDYxWRnL9YMs6u13KM2mDxNYIY+Pq4pOpKT9N0bUtENnc6GJQxjTxG
-	 Z9mm4ALhN6aLXghiCe4tXzW/52P+MR3zI+PzRcRU=
+	b=Z7j5I1s1LD5toS8WgTIk/4F4M0F0ZphH1rn5zYoySl+KFqD2mXT14zD5Di6Vc1eef
+	 JK3NTfNeFm0jItG37hmD8lNjVPQgUBqsstLylZtx5vMqNYC9PKhMURWYppeNJ84oTd
+	 xG2s34BOjyGvEewjveB09/MmndGPVH1PAaoC9ulc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 190/230] ipv4: icmp: convert to dev_net_rcu()
+	Devarsh Thakkar <devarsht@ti.com>,
+	Jonathan Cormier <jcormier@criticallink.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.13 253/274] drm/tidss: Fix race condition while handling interrupt registers
 Date: Wed, 19 Feb 2025 09:28:27 +0100
-Message-ID: <20250219082609.133615716@linuxfoundation.org>
+Message-ID: <20250219082619.481963519@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-[ Upstream commit 4b8474a0951e605d2a27a2c483da4eb4b8c63760 ]
+commit a9a73f2661e6f625d306c9b0ef082e4593f45a21 upstream.
 
-__icmp_send() must ensure rcu_read_lock() is held, as spotted
-by Jakub.
+The driver has a spinlock for protecting the irq_masks field and irq
+enable registers. However, the driver misses protecting the irq status
+registers which can lead to races.
 
-Other ICMP uses of dev_net() seem safe, change them to dev_net_rcu()
-to get LOCKDEP support.
+Take the spinlock when accessing irqstatus too.
 
-Fixes: dde1bc0e6f86 ("[NETNS]: Add namespace for ICMP replying code.")
-Closes: https://lore.kernel.org/netdev/20250203153633.46ce0337@kernel.org/
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250205155120.1676781-9-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+[Tomi: updated the desc]
+Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
+Tested-by: Jonathan Cormier <jcormier@criticallink.com>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-6-82ddaec94e4a@ideasonboard.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/icmp.c | 31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c |    4 ++++
+ drivers/gpu/drm/tidss/tidss_irq.c   |    2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 932bd775fc268..f45bc187a92a7 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -399,10 +399,10 @@ static void icmp_push_reply(struct sock *sk,
- 
- static void icmp_reply(struct icmp_bxm *icmp_param, struct sk_buff *skb)
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2763,8 +2763,12 @@ static void dispc_init_errata(struct dis
+  */
+ static void dispc_softreset_k2g(struct dispc_device *dispc)
  {
--	struct ipcm_cookie ipc;
- 	struct rtable *rt = skb_rtable(skb);
--	struct net *net = dev_net(rt->dst.dev);
-+	struct net *net = dev_net_rcu(rt->dst.dev);
- 	bool apply_ratelimit = false;
-+	struct ipcm_cookie ipc;
- 	struct flowi4 fl4;
- 	struct sock *sk;
- 	struct inet_sock *inet;
-@@ -610,12 +610,14 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
- 	struct sock *sk;
- 
- 	if (!rt)
--		goto out;
-+		return;
++	unsigned long flags;
 +
-+	rcu_read_lock();
++	spin_lock_irqsave(&dispc->tidss->wait_lock, flags);
+ 	dispc_set_irqenable(dispc, 0);
+ 	dispc_read_and_clear_irqstatus(dispc);
++	spin_unlock_irqrestore(&dispc->tidss->wait_lock, flags);
  
- 	if (rt->dst.dev)
--		net = dev_net(rt->dst.dev);
-+		net = dev_net_rcu(rt->dst.dev);
- 	else if (skb_in->dev)
--		net = dev_net(skb_in->dev);
-+		net = dev_net_rcu(skb_in->dev);
- 	else
- 		goto out;
+ 	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
+ 		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
+--- a/drivers/gpu/drm/tidss/tidss_irq.c
++++ b/drivers/gpu/drm/tidss/tidss_irq.c
+@@ -60,7 +60,9 @@ static irqreturn_t tidss_irq_handler(int
+ 	unsigned int id;
+ 	dispc_irq_t irqstatus;
  
-@@ -786,7 +788,8 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
- 	icmp_xmit_unlock(sk);
- out_bh_enable:
- 	local_bh_enable();
--out:;
-+out:
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL(__icmp_send);
++	spin_lock(&tidss->wait_lock);
+ 	irqstatus = dispc_read_and_clear_irqstatus(tidss->dispc);
++	spin_unlock(&tidss->wait_lock);
  
-@@ -835,7 +838,7 @@ static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
- 	 * avoid additional coding at protocol handlers.
- 	 */
- 	if (!pskb_may_pull(skb, iph->ihl * 4 + 8)) {
--		__ICMP_INC_STATS(dev_net(skb->dev), ICMP_MIB_INERRORS);
-+		__ICMP_INC_STATS(dev_net_rcu(skb->dev), ICMP_MIB_INERRORS);
- 		return;
- 	}
- 
-@@ -869,7 +872,7 @@ static enum skb_drop_reason icmp_unreach(struct sk_buff *skb)
- 	struct net *net;
- 	u32 info = 0;
- 
--	net = dev_net(skb_dst(skb)->dev);
-+	net = dev_net_rcu(skb_dst(skb)->dev);
- 
- 	/*
- 	 *	Incomplete header ?
-@@ -980,7 +983,7 @@ static enum skb_drop_reason icmp_unreach(struct sk_buff *skb)
- static enum skb_drop_reason icmp_redirect(struct sk_buff *skb)
- {
- 	if (skb->len < sizeof(struct iphdr)) {
--		__ICMP_INC_STATS(dev_net(skb->dev), ICMP_MIB_INERRORS);
-+		__ICMP_INC_STATS(dev_net_rcu(skb->dev), ICMP_MIB_INERRORS);
- 		return SKB_DROP_REASON_PKT_TOO_SMALL;
- 	}
- 
-@@ -1012,7 +1015,7 @@ static enum skb_drop_reason icmp_echo(struct sk_buff *skb)
- 	struct icmp_bxm icmp_param;
- 	struct net *net;
- 
--	net = dev_net(skb_dst(skb)->dev);
-+	net = dev_net_rcu(skb_dst(skb)->dev);
- 	/* should there be an ICMP stat for ignored echos? */
- 	if (READ_ONCE(net->ipv4.sysctl_icmp_echo_ignore_all))
- 		return SKB_NOT_DROPPED_YET;
-@@ -1041,9 +1044,9 @@ static enum skb_drop_reason icmp_echo(struct sk_buff *skb)
- 
- bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
- {
-+	struct net *net = dev_net_rcu(skb->dev);
- 	struct icmp_ext_hdr *ext_hdr, _ext_hdr;
- 	struct icmp_ext_echo_iio *iio, _iio;
--	struct net *net = dev_net(skb->dev);
- 	struct inet6_dev *in6_dev;
- 	struct in_device *in_dev;
- 	struct net_device *dev;
-@@ -1182,7 +1185,7 @@ static enum skb_drop_reason icmp_timestamp(struct sk_buff *skb)
- 	return SKB_NOT_DROPPED_YET;
- 
- out_err:
--	__ICMP_INC_STATS(dev_net(skb_dst(skb)->dev), ICMP_MIB_INERRORS);
-+	__ICMP_INC_STATS(dev_net_rcu(skb_dst(skb)->dev), ICMP_MIB_INERRORS);
- 	return SKB_DROP_REASON_PKT_TOO_SMALL;
- }
- 
-@@ -1199,7 +1202,7 @@ int icmp_rcv(struct sk_buff *skb)
- {
- 	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	struct rtable *rt = skb_rtable(skb);
--	struct net *net = dev_net(rt->dst.dev);
-+	struct net *net = dev_net_rcu(rt->dst.dev);
- 	struct icmphdr *icmph;
- 
- 	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb)) {
-@@ -1372,9 +1375,9 @@ int icmp_err(struct sk_buff *skb, u32 info)
- 	struct iphdr *iph = (struct iphdr *)skb->data;
- 	int offset = iph->ihl<<2;
- 	struct icmphdr *icmph = (struct icmphdr *)(skb->data + offset);
-+	struct net *net = dev_net_rcu(skb->dev);
- 	int type = icmp_hdr(skb)->type;
- 	int code = icmp_hdr(skb)->code;
--	struct net *net = dev_net(skb->dev);
- 
- 	/*
- 	 * Use ping_err to handle all icmp errors except those
--- 
-2.39.5
-
+ 	for (id = 0; id < tidss->num_crtcs; id++) {
+ 		struct drm_crtc *crtc = tidss->crtcs[id];
 
 
 
