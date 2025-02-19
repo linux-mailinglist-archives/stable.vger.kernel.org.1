@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07292A3B6D1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D55A3B9D7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4BCD189DD1F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BE943B793F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090251DF259;
-	Wed, 19 Feb 2025 08:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23781DED5A;
+	Wed, 19 Feb 2025 09:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDBAMrrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmfQx1S9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F301DE3AE;
-	Wed, 19 Feb 2025 08:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3A71DED45;
+	Wed, 19 Feb 2025 09:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955541; cv=none; b=AzEG7J0csREV6UBTDA1JhITwUqsLJIWi4I3fIE6PuxtJYVeC22IE5eux9KuNZCkZcqpLuZkX55h4HoYcdawWzgPRMPG6M8Jgjjg4HFNtoyhZl/V1IctevceyFkJqvOop75W2i2AnDeSDfAA0j6DqSZqZ2aKHBERH3lF6NUaNzHw=
+	t=1739957215; cv=none; b=bSqG3OfmtBkWg26Q3yZy6kJwajV+cx+rmMMGyv0qD5arWFZAzBw35lLrIjQnBPi6+M2GEjILXrrNImbM9nX+aToWbSS+jUO+pQjHiemloi6HMmQVoXTQl9/eDOgJsSJBDxMEDRzKONcIkpYg3EHuh7FDT5/AphC39oxGvuukvbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955541; c=relaxed/simple;
-	bh=PHH3TKWF3RLHG3SgfCKX6bCCp/vmvMan43V0nfsFcjc=;
+	s=arc-20240116; t=1739957215; c=relaxed/simple;
+	bh=ACaNM2QJPRrTcVKG5TNilJwSfs3tYbx3b8eUcD6DKQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e86+E6ctfE8ynHhB5HWhoSdUJRiWTnPB5fypLvGH0chG+gGXfdu3v1KbI/uk4D3t3Utu11A5TN+LHg5s6KnW9623ZZkYpxd24DodCy3B+bNiWzKStROQ3tzzBf7uNs98LPt9KEyUPh2vz454a2XuchLNcGcTF6UT2lkS1k214uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDBAMrrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D073FC4CED1;
-	Wed, 19 Feb 2025 08:59:00 +0000 (UTC)
+	 MIME-Version; b=V3QeLU57Jthe3HMsb5lZYpm5a7IEnIJUj1hQ3QmkLTKLNCWJhHt1btDCJboihR+ECKwwq5kPnPKInbWpVh/nEMcCW/hm9SPuWM7LTFrEQ2cufOn5PZY0u0A6cQ+o7x3kijokK+dGn0f3Fv+0gtPCdVEOotBWNtysvov0yP1ii1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmfQx1S9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FDAC4CEE8;
+	Wed, 19 Feb 2025 09:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955541;
-	bh=PHH3TKWF3RLHG3SgfCKX6bCCp/vmvMan43V0nfsFcjc=;
+	s=korg; t=1739957215;
+	bh=ACaNM2QJPRrTcVKG5TNilJwSfs3tYbx3b8eUcD6DKQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDBAMrrEfGkWvr91b7jjrR6CgY7rj+ApouZIVyhDkzzmHsw5nV3dGxv+GvV0bc5Cv
-	 1KP2VFnzUBQ4SXk+Res9938MfLQQrAuvFnFTnPeMbRkC6zfy1td7L71UwRdHDaZVXf
-	 J43+GOr8C6Sz8lxihhhEs+A11hHnUkwOXbWUgEEs=
+	b=SmfQx1S9Vj5BNQea+rFga3e6R73e0M2rUZa9bdlk/TRtMuGZUP3bNnfXU0t9h7bAW
+	 SiL9tCl138WwoQ2SAFI48oi2VxLZkIIEtQHz0m0l59ZdnNVG8T5Czs7hAv+lXsfMDg
+	 HYv/oZzx6hwHVHBZC7NQMxkjHGX3G8rgyvfp0Wng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/152] scsi: ufs: bsg: Set bsg_queue to NULL after removal
+	Muhammad Ramdhan <ramdhan@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	Jacob Soo <jacob.soo@starlabs.sg>,
+	Pavel Begunkov <asml.silence@gmail.com>
+Subject: [PATCH 6.1 447/578] io_uring: fix io_req_prep_async with provided buffers
 Date: Wed, 19 Feb 2025 09:27:31 +0100
-Message-ID: <20250219082551.544333548@linuxfoundation.org>
+Message-ID: <20250219082710.579320710@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 1e95c798d8a7f70965f0f88d4657b682ff0ec75f ]
+io_req_prep_async() can import provided buffers, commit the ring state
+by giving up on that before, it'll be reimported later if needed.
 
-Currently, this does not cause any issues, but I believe it is necessary to
-set bsg_queue to NULL after removing it to prevent potential use-after-free
-(UAF) access.
-
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241218014214.64533-3-kanie@linux.alibaba.com
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Reported-by: Jacob Soo <jacob.soo@starlabs.sg>
+Fixes: c7fb19428d67d ("io_uring: add support for ring mapped supplied buffers")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufs_bsg.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io_uring.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
-index f21423a7a6d7d..8fbd46cd8c2b8 100644
---- a/drivers/ufs/core/ufs_bsg.c
-+++ b/drivers/ufs/core/ufs_bsg.c
-@@ -216,6 +216,7 @@ void ufs_bsg_remove(struct ufs_hba *hba)
- 		return;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1624,6 +1624,7 @@ bool io_alloc_async_data(struct io_kiocb
+ int io_req_prep_async(struct io_kiocb *req)
+ {
+ 	const struct io_op_def *def = &io_op_defs[req->opcode];
++	int ret;
  
- 	bsg_remove_queue(hba->bsg_queue);
-+	hba->bsg_queue = NULL;
+ 	/* assign early for deferred execution for non-fixed file */
+ 	if (def->needs_file && !(req->flags & REQ_F_FIXED_FILE) && !req->file)
+@@ -1636,7 +1637,9 @@ int io_req_prep_async(struct io_kiocb *r
+ 		if (io_alloc_async_data(req))
+ 			return -EAGAIN;
+ 	}
+-	return def->prep_async(req);
++	ret = def->prep_async(req);
++	io_kbuf_recycle(req, 0);
++	return ret;
+ }
  
- 	device_del(bsg_dev);
- 	put_device(bsg_dev);
--- 
-2.39.5
-
+ static u32 io_get_sequence(struct io_kiocb *req)
 
 
 
