@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-118161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03FD3A3BA4A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1F7A3B6B3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0EF422E21
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46F8A17AE12
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0001DE8A0;
-	Wed, 19 Feb 2025 09:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794691D6DBC;
+	Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ckq5GEQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ8NL+jX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896091C6FFC;
-	Wed, 19 Feb 2025 09:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA21CAA66;
+	Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957410; cv=none; b=bo2s4L3irT/b0SwHBdQ1Dq7Y8aL7k/PQbCGiFVAXS/W1Sr0ImSLNyJIBE2j1GSVktHUUz5xhdJJnhD+YIxArUpMOemMfCOW2cN2ffFCiJ9DC8rt7UznFUnFvv4CRfnAnF8IUy7jF4PzAncpWFGRHOaYEoylg96+3Hob2Llgws+8=
+	t=1739955431; cv=none; b=sxwp6lAelwxxrY4uthB8hLyPlINpqm5i/TbvaeCpHkJPbkmXMCas5AzUz9WeCgOkpnkYNIBfCU8l+mdIxqg21a9eY6faZjFjAZtyP2m9Lhef6eXr7wpK0h7wtKxlB7qSjKkFFezdTsLoHpLAUA2KEtLFgmxROOttlS2o1E7uo1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957410; c=relaxed/simple;
-	bh=azgihGF5YrntKsim4c9Cd4YdbCP05bgVMgIaIRSpYpg=;
+	s=arc-20240116; t=1739955431; c=relaxed/simple;
+	bh=M2o0H/4yOf/xDFKHJb/DElf8860PFMZB5R6Sfaq329Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FfM4VPKR7vzj89z8m8Hv7u0c8pFtLc4J18uaCN5dIVcIGvIK8WUMSLYET3lN2GO5zQ0UqS/107bczNQK4Ek7lUi/ZlxeIJ8dZ+Q8DwpAbyxmMsTNnfpZDyHmMkNBclL5GJt2PP3FkQ0PEAcDmAn+a7BbNyhkvQe8Xl3Jqa93jeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ckq5GEQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103D4C4CED1;
-	Wed, 19 Feb 2025 09:30:09 +0000 (UTC)
+	 MIME-Version; b=SIY5RwggzlEp7/8gSTvGt2hak0vmZu0/RElEaonKxZv0IBoojl4MKxWXco7opaXQUXbSH5AMCHjtfm2/Red99cZFIYyJBjZzp78dGLXtFKUb9oZXZWSMAbx5JtmL9wQFPHfZAZmEAhUDsFFLoXgE1Q6nfCGHJvFTLfdYlhpa8u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ8NL+jX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CC4C4CEE6;
+	Wed, 19 Feb 2025 08:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957410;
-	bh=azgihGF5YrntKsim4c9Cd4YdbCP05bgVMgIaIRSpYpg=;
+	s=korg; t=1739955431;
+	bh=M2o0H/4yOf/xDFKHJb/DElf8860PFMZB5R6Sfaq329Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ckq5GEQ+d77nf7du63dLDGKXnPKzjENHok+ftv9mFwOEGeGawWqXNBz6IvSBifuzx
-	 SVQV17s1b8JM0UTQagC4XAJJHAJqPsPsqsZywf5+sBgtrHPayzj9mWIy8jfw+bZmNQ
-	 VApbntXAqFkAVzWPc66Mfw4W+Om4XJPLr2WTtFlk=
+	b=dQ8NL+jX8fr5xCKIBZ1PQvVwWkyeSOHiglMZpKP1RU5BD9KkBILbvD39S7pa5693r
+	 MGbWKRlDz0AeF/aRmnt3y5HheXmxHafCMdO0L/VUgGMoVLew451YWreRlN33lRQHBf
+	 jNSnsDpXAvqxfIx/QVThFPG3ZkTWSV2BRn3zz8Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.1 515/578] usb: cdc-acm: Fix handling of oversized fragments
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 202/230] btrfs: rename __get_extent_map() and pass btrfs_inode
 Date: Wed, 19 Feb 2025 09:28:39 +0100
-Message-ID: <20250219082713.239467799@linuxfoundation.org>
+Message-ID: <20250219082609.596747273@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: David Sterba <dsterba@suse.com>
 
-commit 12e712964f41d05ae034989892de445781c46730 upstream.
+[ Upstream commit 06de96faf795b5c276a3be612da6b08c6112e747 ]
 
-If we receive an initial fragment of size 8 bytes which specifies a wLength
-of 1 byte (so the reassembled message is supposed to be 9 bytes long), and
-we then receive a second fragment of size 9 bytes (which is not supposed to
-happen), we currently wrongly bypass the fragment reassembly code but still
-pass the pointer to the acm->notification_buffer to
-acm_process_notification().
+The double underscore naming scheme does not apply here, there's only
+only get_extent_map(). As the definition is changed also pass the struct
+btrfs_inode.
 
-Make this less wrong by always going through fragment reassembly when we
-expect more fragments.
-
-Before this patch, receiving an overlong fragment could lead to `newctrl`
-in acm_process_notification() being uninitialized data (instead of data
-coming from the device).
-
-Cc: stable <stable@kernel.org>
-Fixes: ea2583529cd1 ("cdc-acm: reassemble fragmented notifications")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: acc18e1c1d8c ("btrfs: fix stale page cache after race between readahead and direct IO write")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent_io.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -405,7 +405,7 @@ static void acm_ctrl_irq(struct urb *urb
- 	expected_size = sizeof(struct usb_cdc_notification) +
- 					le16_to_cpu(dr->wLength);
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 42c9899d9241c..e6e6c4dc53c48 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -901,9 +901,9 @@ void clear_folio_extent_mapped(struct folio *folio)
+ 	folio_detach_private(folio);
+ }
  
--	if (current_size < expected_size) {
-+	if (acm->nb_index != 0 || current_size < expected_size) {
- 		/* notification is transmitted fragmented, reassemble */
- 		if (acm->nb_size < expected_size) {
- 			u8 *new_buffer;
+-static struct extent_map *__get_extent_map(struct inode *inode,
+-					   struct folio *folio, u64 start,
+-					   u64 len, struct extent_map **em_cached)
++static struct extent_map *get_extent_map(struct btrfs_inode *inode,
++					 struct folio *folio, u64 start,
++					 u64 len, struct extent_map **em_cached)
+ {
+ 	struct extent_map *em;
+ 	struct extent_state *cached_state = NULL;
+@@ -922,14 +922,14 @@ static struct extent_map *__get_extent_map(struct inode *inode,
+ 		*em_cached = NULL;
+ 	}
+ 
+-	btrfs_lock_and_flush_ordered_range(BTRFS_I(inode), start, start + len - 1, &cached_state);
+-	em = btrfs_get_extent(BTRFS_I(inode), folio, start, len);
++	btrfs_lock_and_flush_ordered_range(inode, start, start + len - 1, &cached_state);
++	em = btrfs_get_extent(inode, folio, start, len);
+ 	if (!IS_ERR(em)) {
+ 		BUG_ON(*em_cached);
+ 		refcount_inc(&em->refs);
+ 		*em_cached = em;
+ 	}
+-	unlock_extent(&BTRFS_I(inode)->io_tree, start, start + len - 1, &cached_state);
++	unlock_extent(&inode->io_tree, start, start + len - 1, &cached_state);
+ 
+ 	return em;
+ }
+@@ -985,8 +985,7 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+ 			end_folio_read(folio, true, cur, iosize);
+ 			break;
+ 		}
+-		em = __get_extent_map(inode, folio, cur, end - cur + 1,
+-				      em_cached);
++		em = get_extent_map(BTRFS_I(inode), folio, cur, end - cur + 1, em_cached);
+ 		if (IS_ERR(em)) {
+ 			end_folio_read(folio, false, cur, end + 1 - cur);
+ 			return PTR_ERR(em);
+-- 
+2.39.5
+
 
 
 
