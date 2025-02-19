@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-117182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADE9A3B55E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D32A3B525
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08B093BA24C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9754F3B5FB7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B721DF25A;
-	Wed, 19 Feb 2025 08:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CDF1D88DB;
+	Wed, 19 Feb 2025 08:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hj85Slv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSLsOEE4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59171DEFF3;
-	Wed, 19 Feb 2025 08:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A0F1CEEBE;
+	Wed, 19 Feb 2025 08:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954458; cv=none; b=kJmPYvIMNwabD+JDkEwZuJ7kSI7lrhXkM1YInJnQkX5szuXRP+HbnJwNRVwubzS1uPAtyO0FnV5VfHeH8TNbyZIcz2PjheUcpgZgP5LBMdI1T5eqittgpHJvVuOF1LNIlouCseaPHXGExJ73KvMK2AuELPPSITLgRlMvE9bTrpA=
+	t=1739954362; cv=none; b=Izwgl9ivJuwysMHO1HFqixNrE8AlwInkjDFI9uasyna9uUMmPEACvwLtsUO/XTAJi3O0oGBnM4zSCsiJ+J6kWu1paH2RBOKNpZYEasuQR8uCRQB5bLoYTEgMXG/O6mDhA3ZMKy5/E1jS3sB65VkINwa1/nQKXIsRS+5f90BwZZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954458; c=relaxed/simple;
-	bh=zgagEb7q2Uaj4IS2FjGgy66CvYdzfcbyMkX0S2GvSZw=;
+	s=arc-20240116; t=1739954362; c=relaxed/simple;
+	bh=E/cABL6ZEtwJS34dBTtsSEpyU8jddf2l2sdhYLKr35c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1a17xGjuTX1v1XBRSoI7S1TTLxlNhV5oxIReueM5tOYbdHqhEvS+F839FuNZ4uwJRvI9ucggQ0FFRsW8VdxBJyCtNYNJZQQubvOealxNhpEEjkUyO10Ja1M4vJ7G2SCzy8s3nWc4di5ncP2VqhiDKdO5t5ohZqthF7fSvHyhvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hj85Slv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE9EC4CED1;
-	Wed, 19 Feb 2025 08:40:57 +0000 (UTC)
+	 MIME-Version; b=V4Vni7zj9gYCb48cITx4XwlmiBLcUwlU2KL95SGBHfxNvzbNVbypCNkhjIGHzE8ZAno5Vj7BrwL2eb3o0DEj/XG1CkL/fubZHjg8V5DKzkJEBriGomg7vpVSFJqTq6e0/ueaQtrmIB4v15izXHfek2fiBaA6S3Hio3cEjmtfuow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSLsOEE4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FB4C4CED1;
+	Wed, 19 Feb 2025 08:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954458;
-	bh=zgagEb7q2Uaj4IS2FjGgy66CvYdzfcbyMkX0S2GvSZw=;
+	s=korg; t=1739954362;
+	bh=E/cABL6ZEtwJS34dBTtsSEpyU8jddf2l2sdhYLKr35c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hj85Slvtu4yS6ZQ+CPZdxotO4ZArAgYCsjj6YA04XKG5OC8U3ejRzY73lOiwC5XD
-	 92pLgw5KQlbF/y2wAKWCmh0MobiTtFQ+IMZNHHCauWUMvwmCQSSpjDtUnZUw4YTQbF
-	 sIXSO11sKgfq+FeW+9y1wOJcmvvCgaMCOEOzRGe0=
+	b=LSLsOEE4Xywlca9A3MZ+xnDiW0DjfK65Q5qi0gYCqS1NsXVs/MUCr1AxG2uxiiC3W
+	 eWL0sB46vUEauIc/Ndu9IU8G3fJBIrHRXewnZ8rhb1x3L8H32Vvg6w+yxoP6HHWY/Z
+	 Wo78KV/Pwo1XyCF9HUdho/A+80Cc5VXw4NltZnz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 180/274] regmap-irq: Add missing kfree()
-Date: Wed, 19 Feb 2025 09:27:14 +0100
-Message-ID: <20250219082616.630011298@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.13 181/274] arm64: Handle .ARM.attributes section in linker scripts
+Date: Wed, 19 Feb 2025 09:27:15 +0100
+Message-ID: <20250219082616.669117763@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -65,41 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 32ffed055dcee17f6705f545b069e44a66067808 upstream.
+commit ca0f4fe7cf7183bfbdc67ca2de56ae1fc3a8db2b upstream.
 
-Add kfree() for "d->main_status_buf" to the error-handling path to prevent
-a memory leak.
+A recent LLVM commit [1] started generating an .ARM.attributes section
+similar to the one that exists for 32-bit, which results in orphan
+section warnings (or errors if CONFIG_WERROR is enabled) from the linker
+because it is not handled in the arm64 linker scripts.
 
-Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
-Cc: stable@vger.kernel.org  # v5.1+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20250205004343.14413-1-jiashengjiangcool@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+
+  ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+
+Discard the new sections in the necessary linker scripts to resolve the
+warnings, as the kernel and vDSO do not need to retain it, similar to
+the .note.gnu.property section.
+
+Cc: stable@vger.kernel.org
+Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
+Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250206-arm64-handle-arm-attributes-in-linker-script-v3-1-d53d169913eb@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap-irq.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/vdso/vdso.lds.S |    1 +
+ arch/arm64/kernel/vmlinux.lds.S   |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -906,6 +906,7 @@ err_alloc:
- 	kfree(d->wake_buf);
- 	kfree(d->mask_buf_def);
- 	kfree(d->mask_buf);
-+	kfree(d->main_status_buf);
- 	kfree(d->status_buf);
- 	kfree(d->status_reg_buf);
- 	if (d->config_buf) {
-@@ -981,6 +982,7 @@ void regmap_del_irq_chip(int irq, struct
- 	kfree(d->wake_buf);
- 	kfree(d->mask_buf_def);
- 	kfree(d->mask_buf);
-+	kfree(d->main_status_buf);
- 	kfree(d->status_reg_buf);
- 	kfree(d->status_buf);
- 	if (d->config_buf) {
+--- a/arch/arm64/kernel/vdso/vdso.lds.S
++++ b/arch/arm64/kernel/vdso/vdso.lds.S
+@@ -41,6 +41,7 @@ SECTIONS
+ 	 */
+ 	/DISCARD/	: {
+ 		*(.note.GNU-stack .note.gnu.property)
++		*(.ARM.attributes)
+ 	}
+ 	.note		: { *(.note.*) }		:text	:note
+ 
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -162,6 +162,7 @@ SECTIONS
+ 	/DISCARD/ : {
+ 		*(.interp .dynamic)
+ 		*(.dynsym .dynstr .hash .gnu.hash)
++		*(.ARM.attributes)
+ 	}
+ 
+ 	. = KIMAGE_VADDR;
 
 
 
