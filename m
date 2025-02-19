@@ -1,35 +1,35 @@
-Return-Path: <stable+bounces-118326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B792CA3C832
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 20:03:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790D6A3C835
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 20:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 740FE3B7170
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 19:03:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1310C189617B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 19:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2E01D90C5;
-	Wed, 19 Feb 2025 19:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F3F2135A5;
+	Wed, 19 Feb 2025 19:04:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC72419D882;
-	Wed, 19 Feb 2025 19:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868B11C3F02;
+	Wed, 19 Feb 2025 19:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739991830; cv=none; b=U5QJkCWvhGfgMfKuJGI8ATBrzwDO59BciBdVtfkk5gcetfSjop5Iqxtz9k+z4NF0dZ8WaxF2pOCX+692J1bdGySQiqgKh6O0eqE3BJqKYQA8NYq5DY5nMoCzOIecXcGLLE9qe7oB1u6z/6GFLOOGrM2lt0LmoCZc9ihgv4+plNM=
+	t=1739991855; cv=none; b=rUnHHKb0JA0n5ed1sRcepoS9WQ15X9XHsLMELtyvNsuVp2P+wlrmNPkuwORcW5CQMs2e9Fa32F5R7fcz6kYAohxS/oQyQHXfRJobbyQnghCfhKmRA5YGtOgAWq4oAbVc2wAkC6450kYVu913bpqdaphKQ17VB62iUva9OEdCE4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739991830; c=relaxed/simple;
-	bh=hV9RkYt4igjtnbWj+6XyMa9R2wiMLiWet1Pt7YOzH00=;
+	s=arc-20240116; t=1739991855; c=relaxed/simple;
+	bh=TR4fWPqzQadJ/W0eppkMviJUDNSORR6geJs++8Vt76A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GR0FWV8NA1krmnLkI44n0yjdacyu+GV2KkfbBe6UUjWXr6HRfUX4mhTJ4ACPgxNL/7tXg9S7MjYTB6Vs4d75wwLwcmGUpeerpc+c8knjSQ4yrZapL1NyA+ayNVpfc+rlgF+sbg9Q2AG15H0vGMZSis/ieasg0o8+RDPcouJ6Vqg=
+	 Content-Type:Content-Disposition:In-Reply-To; b=izLrmBiT0k4b1ehXflRFk0EYFUGOo64TrznSJTgHFGvbEfkEf42lVZqPAI1V45HIyUcaCAA8ffVpiTZibws+bR1rNNkB+bqrNIxzLG6gFfQ35uv+YRyXvF1Lk1HhwzWYl62PGYqJ7A6Ya3wtGJhSTTgoQlRPbXIkPZ/+1im90RQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13436C4CED1;
-	Wed, 19 Feb 2025 19:03:43 +0000 (UTC)
-Date: Wed, 19 Feb 2025 19:03:41 +0000
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9C8C4CED1;
+	Wed, 19 Feb 2025 19:04:08 +0000 (UTC)
+Date: Wed, 19 Feb 2025 19:04:06 +0000
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Ryan Roberts <ryan.roberts@arm.com>
 Cc: Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
@@ -65,11 +65,11 @@ Cc: Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
 	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] arm64: hugetlb: Fix huge_ptep_get_and_clear() for
- non-present ptes
-Message-ID: <Z7YrDQry8zo2jS53@arm.com>
+Subject: Re: [PATCH v2 3/4] arm64: hugetlb: Fix flush_hugetlb_tlb_range()
+ invalidation level
+Message-ID: <Z7YrJqRPaqcd2au7@arm.com>
 References: <20250217140419.1702389-1-ryan.roberts@arm.com>
- <20250217140419.1702389-3-ryan.roberts@arm.com>
+ <20250217140419.1702389-4-ryan.roberts@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,42 +78,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250217140419.1702389-3-ryan.roberts@arm.com>
+In-Reply-To: <20250217140419.1702389-4-ryan.roberts@arm.com>
 
-On Mon, Feb 17, 2025 at 02:04:15PM +0000, Ryan Roberts wrote:
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 06db4649af91..614b2feddba2 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -163,24 +163,23 @@ static pte_t get_clear_contig(struct mm_struct *mm,
->  			     unsigned long pgsize,
->  			     unsigned long ncontig)
->  {
-> -	pte_t orig_pte = __ptep_get(ptep);
-> -	unsigned long i;
-> -
-> -	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
-> -		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
-> -
-> -		/*
-> -		 * If HW_AFDBM is enabled, then the HW could turn on
-> -		 * the dirty or accessed bit for any page in the set,
-> -		 * so check them all.
-> -		 */
-> -		if (pte_dirty(pte))
-> -			orig_pte = pte_mkdirty(orig_pte);
-> -
-> -		if (pte_young(pte))
-> -			orig_pte = pte_mkyoung(orig_pte);
-> +	pte_t pte, tmp_pte;
-> +	bool present;
-> +
-> +	pte = __ptep_get_and_clear(mm, addr, ptep);
-> +	present = pte_present(pte);
-> +	while (--ncontig) {
-
-A 'for' loop may be more consistent with the rest of the file but I
-really don't mind the 'while' loop.
+On Mon, Feb 17, 2025 at 02:04:16PM +0000, Ryan Roberts wrote:
+> commit c910f2b65518 ("arm64/mm: Update tlb invalidation routines for
+> FEAT_LPA2") changed the "invalidation level unknown" hint from 0 to
+> TLBI_TTL_UNKNOWN (INT_MAX). But the fallback "unknown level" path in
+> flush_hugetlb_tlb_range() was not updated. So as it stands, when trying
+> to invalidate CONT_PMD_SIZE or CONT_PTE_SIZE hugetlb mappings, we will
+> spuriously try to invalidate at level 0 on LPA2-enabled systems.
+> 
+> Fix this so that the fallback passes TLBI_TTL_UNKNOWN, and while we are
+> at it, explicitly use the correct stride and level for CONT_PMD_SIZE and
+> CONT_PTE_SIZE, which should provide a minor optimization.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: c910f2b65518 ("arm64/mm: Update tlb invalidation routines for FEAT_LPA2")
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
 Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
