@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0551A3B9DC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86397A3B773
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 930ED7A8104
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E47A3BBDE7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7691DF257;
-	Wed, 19 Feb 2025 09:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F711E0E16;
+	Wed, 19 Feb 2025 09:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0rgIyV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d86g/KxH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F081DED7D;
-	Wed, 19 Feb 2025 09:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571661E0E0F;
+	Wed, 19 Feb 2025 09:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957427; cv=none; b=E/B+VQiaz4bkW7lu2xSknWV0pSuVPrwjOoyhBKCqvZBEQDQVNjq7+i5ohgULqQvNasQw373G9FjmDUC18LQkuybQVe+7F1ghiMbqHay5V8KvcG6e8XKRKa4ha2TLnkrPn4m3nQZnLtxvHZ+6Kt5QfIx2652RJwH3nEanHZQ/uPs=
+	t=1739955686; cv=none; b=dW62NG+iEYYWzN8P+mXwx3xOTlV9ZwNA7Y8g+oMglEjd61+uUuc/WoYmGgD2rH1J29jdae5eTtztmEcRjceqJbzrlB8J6X3U+lxG/FcbBb+eEP9IhWdLR0MOd+qHiTYVGzdhA4ZfA9ocEhOLWFf3ig/2Ivg7WohzpRSakbCfICI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957427; c=relaxed/simple;
-	bh=i/AdP5S+Vi3ZQkdIicn+wkySkGrYWdRg14fscyI6dwc=;
+	s=arc-20240116; t=1739955686; c=relaxed/simple;
+	bh=+Yuqq0XsKT4iHrWEjxyl1e2awTCsG4/ck21lhmmyizI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyiL1Kr/+b5IUMqQ59XWAiPCod6r3R2/E8KEvtfQ7KcgR8zjEuRjB3HFasF0pSdiyXNJ0Ei7Wuni48JkrltEI54cE1/tz5JUpVFNgA8EmHaPn3TX2VzuoLmXTSrOA+GXN9PwEh+isMWzQXTvRJCDjck+HdRm/hKNbeonBw1nzi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0rgIyV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529FCC4CED1;
-	Wed, 19 Feb 2025 09:30:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cCLHprOu//bMP0VAQ65Iguz3NVNMYXBXNWp1py9LmZvaBbkbFDybQFLWdSi1k4IM1J3bY7duiQ1dYV5pzpo+ST8xNkSw1sn4t3gXwXSRHX7nxE/sAJrtMBB6uEY/HJMDRdb7j0S/IHQUrOQU9QzOaC10AUjhjPPqhTnbQq6Lxdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d86g/KxH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D11C4CED1;
+	Wed, 19 Feb 2025 09:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957427;
-	bh=i/AdP5S+Vi3ZQkdIicn+wkySkGrYWdRg14fscyI6dwc=;
+	s=korg; t=1739955685;
+	bh=+Yuqq0XsKT4iHrWEjxyl1e2awTCsG4/ck21lhmmyizI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0rgIyV+BX0NOhxCrwD+s+1LNn5/6lxJlSk1lzRDDcoEB3m+Ah/ywh0qFXkyxzgOx
-	 u+f41PzF0nOCwgvEvlwBfBcseIieoW1DABWWog+woWKL6Jd0J6tjKgo+OJpF/6F1wR
-	 QaJqv/0MKO5yR5FnSAfDSvZYnGdUQgTGjN4CCYN0=
+	b=d86g/KxHMTIk+MwW10Pr2gEzVBJCRCeRboQxHiMsK5vYrnonDkdrIkSJlIYj+2bWA
+	 RHWqIZ0STdX6ouWGcB8pWU++0VrEGgpCHmQFzTM/jGZBldZuyYRQeOYGQhinDOa3Zq
+	 slr+r9SIs45loEUEXusoauL3ljoXtujvXYJ1ylOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maksym Planeta <maksym@exostellar.io>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 491/578] Grab mm lock before grabbing pt lock
+	Tejun Heo <tj@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Subject: [PATCH 6.6 082/152] cgroup: fix race between fork and cgroup.kill
 Date: Wed, 19 Feb 2025 09:28:15 +0100
-Message-ID: <20250219082712.310848385@linuxfoundation.org>
+Message-ID: <20250219082553.292682735@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,163 +60,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maksym Planeta <maksym@exostellar.io>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-[ Upstream commit 6d002348789bc16e9203e9818b7a3688787e3b29 ]
+commit b69bb476dee99d564d65d418e9a20acca6f32c3f upstream.
 
-Function xen_pin_page calls xen_pte_lock, which in turn grab page
-table lock (ptlock). When locking, xen_pte_lock expect mm->page_table_lock
-to be held before grabbing ptlock, but this does not happen when pinning
-is caused by xen_mm_pin_all.
+Tejun reported the following race between fork() and cgroup.kill at [1].
 
-This commit addresses lockdep warning below, which shows up when
-suspending a Xen VM.
+Tejun:
+  I was looking at cgroup.kill implementation and wondering whether there
+  could be a race window. So, __cgroup_kill() does the following:
 
-[ 3680.658422] Freezing user space processes
-[ 3680.660156] Freezing user space processes completed (elapsed 0.001 seconds)
-[ 3680.660182] OOM killer disabled.
-[ 3680.660192] Freezing remaining freezable tasks
-[ 3680.661485] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[ 3680.685254]
-[ 3680.685265] ==================================
-[ 3680.685269] WARNING: Nested lock was not taken
-[ 3680.685274] 6.12.0+ #16 Tainted: G        W
-[ 3680.685279] ----------------------------------
-[ 3680.685283] migration/0/19 is trying to lock:
-[ 3680.685288] ffff88800bac33c0 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: xen_pin_page+0x175/0x1d0
-[ 3680.685303]
-[ 3680.685303] but this task is not holding:
-[ 3680.685308] init_mm.page_table_lock
-[ 3680.685311]
-[ 3680.685311] stack backtrace:
-[ 3680.685316] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
-[ 3680.685324] Tainted: [W]=WARN
-[ 3680.685328] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
-[ 3680.685339] Call Trace:
-[ 3680.685344]  <TASK>
-[ 3680.685347]  dump_stack_lvl+0x77/0xb0
-[ 3680.685356]  __lock_acquire+0x917/0x2310
-[ 3680.685364]  lock_acquire+0xce/0x2c0
-[ 3680.685369]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685373]  _raw_spin_lock_nest_lock+0x2f/0x70
-[ 3680.685381]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685386]  xen_pin_page+0x175/0x1d0
-[ 3680.685390]  ? __pfx_xen_pin_page+0x10/0x10
-[ 3680.685394]  __xen_pgd_walk+0x233/0x2c0
-[ 3680.685401]  ? stop_one_cpu+0x91/0x100
-[ 3680.685405]  __xen_pgd_pin+0x5d/0x250
-[ 3680.685410]  xen_mm_pin_all+0x70/0xa0
-[ 3680.685415]  xen_pv_pre_suspend+0xf/0x280
-[ 3680.685420]  xen_suspend+0x57/0x1a0
-[ 3680.685428]  multi_cpu_stop+0x6b/0x120
-[ 3680.685432]  ? update_cpumasks_hier+0x7c/0xa60
-[ 3680.685439]  ? __pfx_multi_cpu_stop+0x10/0x10
-[ 3680.685443]  cpu_stopper_thread+0x8c/0x140
-[ 3680.685448]  ? smpboot_thread_fn+0x20/0x1f0
-[ 3680.685454]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 3680.685458]  smpboot_thread_fn+0xed/0x1f0
-[ 3680.685462]  kthread+0xde/0x110
-[ 3680.685467]  ? __pfx_kthread+0x10/0x10
-[ 3680.685471]  ret_from_fork+0x2f/0x50
-[ 3680.685478]  ? __pfx_kthread+0x10/0x10
-[ 3680.685482]  ret_from_fork_asm+0x1a/0x30
-[ 3680.685489]  </TASK>
-[ 3680.685491]
-[ 3680.685491] other info that might help us debug this:
-[ 3680.685497] 1 lock held by migration/0/19:
-[ 3680.685500]  #0: ffffffff8284df38 (pgd_lock){+.+.}-{3:3}, at: xen_mm_pin_all+0x14/0xa0
-[ 3680.685512]
-[ 3680.685512] stack backtrace:
-[ 3680.685518] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
-[ 3680.685528] Tainted: [W]=WARN
-[ 3680.685531] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
-[ 3680.685538] Call Trace:
-[ 3680.685541]  <TASK>
-[ 3680.685544]  dump_stack_lvl+0x77/0xb0
-[ 3680.685549]  __lock_acquire+0x93c/0x2310
-[ 3680.685554]  lock_acquire+0xce/0x2c0
-[ 3680.685558]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685562]  _raw_spin_lock_nest_lock+0x2f/0x70
-[ 3680.685568]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685572]  xen_pin_page+0x175/0x1d0
-[ 3680.685578]  ? __pfx_xen_pin_page+0x10/0x10
-[ 3680.685582]  __xen_pgd_walk+0x233/0x2c0
-[ 3680.685588]  ? stop_one_cpu+0x91/0x100
-[ 3680.685592]  __xen_pgd_pin+0x5d/0x250
-[ 3680.685596]  xen_mm_pin_all+0x70/0xa0
-[ 3680.685600]  xen_pv_pre_suspend+0xf/0x280
-[ 3680.685607]  xen_suspend+0x57/0x1a0
-[ 3680.685611]  multi_cpu_stop+0x6b/0x120
-[ 3680.685615]  ? update_cpumasks_hier+0x7c/0xa60
-[ 3680.685620]  ? __pfx_multi_cpu_stop+0x10/0x10
-[ 3680.685625]  cpu_stopper_thread+0x8c/0x140
-[ 3680.685629]  ? smpboot_thread_fn+0x20/0x1f0
-[ 3680.685634]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 3680.685638]  smpboot_thread_fn+0xed/0x1f0
-[ 3680.685642]  kthread+0xde/0x110
-[ 3680.685645]  ? __pfx_kthread+0x10/0x10
-[ 3680.685649]  ret_from_fork+0x2f/0x50
-[ 3680.685654]  ? __pfx_kthread+0x10/0x10
-[ 3680.685657]  ret_from_fork_asm+0x1a/0x30
-[ 3680.685662]  </TASK>
-[ 3680.685267] xen:grant_table: Grant tables using version 1 layout
-[ 3680.685921] OOM killer enabled.
-[ 3680.685934] Restarting tasks ... done.
+   k1. Set CGRP_KILL.
+   k2. Iterate tasks and deliver SIGKILL.
+   k3. Clear CGRP_KILL.
 
-Signed-off-by: Maksym Planeta <maksym@exostellar.io>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241204103516.3309112-1-maksym@exostellar.io>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  The copy_process() does the following:
+
+   c1. Copy a bunch of stuff.
+   c2. Grab siglock.
+   c3. Check fatal_signal_pending().
+   c4. Commit to forking.
+   c5. Release siglock.
+   c6. Call cgroup_post_fork() which puts the task on the css_set and tests
+       CGRP_KILL.
+
+  The intention seems to be that either a forking task gets SIGKILL and
+  terminates on c3 or it sees CGRP_KILL on c6 and kills the child. However, I
+  don't see what guarantees that k3 can't happen before c6. ie. After a
+  forking task passes c5, k2 can take place and then before the forking task
+  reaches c6, k3 can happen. Then, nobody would send SIGKILL to the child.
+  What am I missing?
+
+This is indeed a race. One way to fix this race is by taking
+cgroup_threadgroup_rwsem in write mode in __cgroup_kill() as the fork()
+side takes cgroup_threadgroup_rwsem in read mode from cgroup_can_fork()
+to cgroup_post_fork(). However that would be heavy handed as this adds
+one more potential stall scenario for cgroup.kill which is usually
+called under extreme situation like memory pressure.
+
+To fix this race, let's maintain a sequence number per cgroup which gets
+incremented on __cgroup_kill() call. On the fork() side, the
+cgroup_can_fork() will cache the sequence number locally and recheck it
+against the cgroup's sequence number at cgroup_post_fork() site. If the
+sequence numbers mismatch, it means __cgroup_kill() can been called and
+we should send SIGKILL to the newly created task.
+
+Reported-by: Tejun Heo <tj@kernel.org>
+Closes: https://lore.kernel.org/all/Z5QHE2Qn-QZ6M-KW@slm.duckdns.org/ [1]
+Fixes: 661ee6280931 ("cgroup: introduce cgroup.kill")
+Cc: stable@vger.kernel.org # v5.14+
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/mmu_pv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/cgroup-defs.h |    6 +++---
+ include/linux/sched/task.h  |    1 +
+ kernel/cgroup/cgroup.c      |   20 ++++++++++++--------
+ 3 files changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 6abce0816ca39..7dabdb9995659 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -811,6 +811,7 @@ void xen_mm_pin_all(void)
- {
- 	struct page *page;
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -71,9 +71,6 @@ enum {
  
-+	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
+ 	/* Cgroup is frozen. */
+ 	CGRP_FROZEN,
+-
+-	/* Control group has to be killed. */
+-	CGRP_KILL,
+ };
  
- 	list_for_each_entry(page, &pgd_list, lru) {
-@@ -821,6 +822,7 @@ void xen_mm_pin_all(void)
+ /* cgroup_root->flags */
+@@ -438,6 +435,9 @@ struct cgroup {
+ 
+ 	int nr_threaded_children;	/* # of live threaded child cgroups */
+ 
++	/* sequence number for cgroup.kill, serialized by css_set_lock. */
++	unsigned int kill_seq;
++
+ 	struct kernfs_node *kn;		/* cgroup kernfs entry */
+ 	struct cgroup_file procs_file;	/* handle for "cgroup.procs" */
+ 	struct cgroup_file events_file;	/* handle for "cgroup.events" */
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -41,6 +41,7 @@ struct kernel_clone_args {
+ 	void *fn_arg;
+ 	struct cgroup *cgrp;
+ 	struct css_set *cset;
++	unsigned int kill_seq;
+ };
+ 
+ /*
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3941,7 +3941,7 @@ static void __cgroup_kill(struct cgroup
+ 	lockdep_assert_held(&cgroup_mutex);
+ 
+ 	spin_lock_irq(&css_set_lock);
+-	set_bit(CGRP_KILL, &cgrp->flags);
++	cgrp->kill_seq++;
+ 	spin_unlock_irq(&css_set_lock);
+ 
+ 	css_task_iter_start(&cgrp->self, CSS_TASK_ITER_PROCS | CSS_TASK_ITER_THREADED, &it);
+@@ -3957,10 +3957,6 @@ static void __cgroup_kill(struct cgroup
+ 		send_sig(SIGKILL, task, 0);
  	}
- 
- 	spin_unlock(&pgd_lock);
-+	spin_unlock(&init_mm.page_table_lock);
+ 	css_task_iter_end(&it);
+-
+-	spin_lock_irq(&css_set_lock);
+-	clear_bit(CGRP_KILL, &cgrp->flags);
+-	spin_unlock_irq(&css_set_lock);
  }
  
- static void __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
-@@ -920,6 +922,7 @@ void xen_mm_unpin_all(void)
+ static void cgroup_kill(struct cgroup *cgrp)
+@@ -6399,6 +6395,10 @@ static int cgroup_css_set_fork(struct ke
+ 	spin_lock_irq(&css_set_lock);
+ 	cset = task_css_set(current);
+ 	get_css_set(cset);
++	if (kargs->cgrp)
++		kargs->kill_seq = kargs->cgrp->kill_seq;
++	else
++		kargs->kill_seq = cset->dfl_cgrp->kill_seq;
+ 	spin_unlock_irq(&css_set_lock);
+ 
+ 	if (!(kargs->flags & CLONE_INTO_CGROUP)) {
+@@ -6582,6 +6582,7 @@ void cgroup_post_fork(struct task_struct
+ 		      struct kernel_clone_args *kargs)
+ 	__releases(&cgroup_threadgroup_rwsem) __releases(&cgroup_mutex)
  {
- 	struct page *page;
++	unsigned int cgrp_kill_seq = 0;
+ 	unsigned long cgrp_flags = 0;
+ 	bool kill = false;
+ 	struct cgroup_subsys *ss;
+@@ -6595,10 +6596,13 @@ void cgroup_post_fork(struct task_struct
  
-+	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
+ 	/* init tasks are special, only link regular threads */
+ 	if (likely(child->pid)) {
+-		if (kargs->cgrp)
++		if (kargs->cgrp) {
+ 			cgrp_flags = kargs->cgrp->flags;
+-		else
++			cgrp_kill_seq = kargs->cgrp->kill_seq;
++		} else {
+ 			cgrp_flags = cset->dfl_cgrp->flags;
++			cgrp_kill_seq = cset->dfl_cgrp->kill_seq;
++		}
  
- 	list_for_each_entry(page, &pgd_list, lru) {
-@@ -931,6 +934,7 @@ void xen_mm_unpin_all(void)
+ 		WARN_ON_ONCE(!list_empty(&child->cg_list));
+ 		cset->nr_tasks++;
+@@ -6633,7 +6637,7 @@ void cgroup_post_fork(struct task_struct
+ 		 * child down right after we finished preparing it for
+ 		 * userspace.
+ 		 */
+-		kill = test_bit(CGRP_KILL, &cgrp_flags);
++		kill = kargs->kill_seq != cgrp_kill_seq;
  	}
  
- 	spin_unlock(&pgd_lock);
-+	spin_unlock(&init_mm.page_table_lock);
- }
- 
- static void xen_activate_mm(struct mm_struct *prev, struct mm_struct *next)
--- 
-2.39.5
-
+ 	spin_unlock_irq(&css_set_lock);
 
 
 
