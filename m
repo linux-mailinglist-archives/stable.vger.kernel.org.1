@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-117662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB16A3B70A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE1EA3B713
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 164F37A78F8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A62F47A6E6B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626071DF980;
-	Wed, 19 Feb 2025 09:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD491DE4CD;
+	Wed, 19 Feb 2025 09:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScUQi5BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCYXnt9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169FF1DF97F;
-	Wed, 19 Feb 2025 09:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2131CAA86;
+	Wed, 19 Feb 2025 09:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955981; cv=none; b=ESNd0XfCzMCGhUGzxV648B/DgZtqJcU8UVznsHgAkuFz4lYpj0zLKTsiXEdbEqqBYvSFnw2weFpMcmyqI/c+RuuThpJe3ePqcJT6jYopZv43rmNOk8bx9POjYFtpVEqfEQKAKm4X04gFn5YoIWLlpGeqXipyet4jbTAolci6UmY=
+	t=1739956012; cv=none; b=XM6ms5tH0Z0yZ3oErr8HpVxzLYuYgW+HPoQRRgwh/8/M5a7C0P+JMHkBVegbVmDUqjGk7qLEl9+qZXjvrb1b1gb9dXK4sAoiJgx0Gb2BQsmE3SYrv+4HjZjTlVo6vp+MJdXNl06+Ey2HMVNbO2taZASFZR0MIErb9w2ijtiw+EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955981; c=relaxed/simple;
-	bh=QTP0QjzmHCv79IJiQQcdaWWyR62VWVEQqRPazjQNsIM=;
+	s=arc-20240116; t=1739956012; c=relaxed/simple;
+	bh=wetrCDqJGvIH92Pvp8JjuaGrJyHanP/jlxl573ziXoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCPUf50DP+ANvOUgIFl2mmfXLL55G2pXN4xFkIc/7L+AJySmM+yqwqLMA4D/z7B75A9E5ttbHUyxHi7M6zeKZJ028YTgGYbFPJXS7baC6qoMr/FP+ZcbN1fTTxdIK1TmbmGjzljhQu8JeluAa+kM4C5PB81/IO7pFiWeDby+lJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScUQi5BN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7F0C4CED1;
-	Wed, 19 Feb 2025 09:06:19 +0000 (UTC)
+	 MIME-Version; b=EarGCxGPVnwOuKETN1U4HyS83QKnlhyV2Nw/ljAb5t7dGTxBQx+A6mVSPtGvFFINzA7xK8zWD4tdb5ERkmaxhydfaIPaYd4BdlA0U1IC5DZ8h4TDGOFyR0e3fVvt8ATpxi/sk5Va2KQXFZDSTNJZ544YsKN7mWajmdqzf9PmgQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCYXnt9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32F8C4CED1;
+	Wed, 19 Feb 2025 09:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955980;
-	bh=QTP0QjzmHCv79IJiQQcdaWWyR62VWVEQqRPazjQNsIM=;
+	s=korg; t=1739956012;
+	bh=wetrCDqJGvIH92Pvp8JjuaGrJyHanP/jlxl573ziXoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ScUQi5BNOsjFSK7be6tEbAqXxAm+Dc4ocUiYV1GGPF0ahoIBJPggOUN4+YLRCHzpw
-	 x1HNyPSKdmn6CkUx50vTlYeqB+BZgv0193R7Y4fzyDo7dFjf8s/w55+Ajm8RHGSKnU
-	 mfUzJVDnswW7QfYBDoOWHwVQECX4lsuKIzTCrfec=
+	b=VCYXnt9yqbHbsRwXRP4d+DBDlwvM11+DulczKJHOZnrFFuzJLUoNZ+D8aB/WOEZH5
+	 KsjcQSenCXaSuIpLSS93PJwfuafIO1fvpcSAPT0jqissw2Epo2kToh7kPhDcrEwgcw
+	 DAIPQd+DH1aMEXy7a8oyobl6wx9ZvA/j8m4++7p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Kees Cook <kees@kernel.org>,
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/578] pstore/blk: trivial typo fixes
-Date: Wed, 19 Feb 2025 09:20:11 +0100
-Message-ID: <20250219082653.187152189@linuxfoundation.org>
+Subject: [PATCH 6.1 008/578] nvme: Add error check for xa_store in nvme_get_effects_log
+Date: Wed, 19 Feb 2025 09:20:12 +0100
+Message-ID: <20250219082653.224654434@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,44 +68,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@linaro.org>
+From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
 
-[ Upstream commit 542243af7182efaeaf6d0f4643f7de437541a9af ]
+[ Upstream commit ac32057acc7f3d7a238dafaa9b2aa2bc9750080e ]
 
-Fix trivial typos in comments.
+The xa_store() may fail due to memory allocation failure because there
+is no guarantee that the index csi is already used. This fix adds an
+error check of the return value of xa_store() in nvme_get_effects_log().
 
-Fixes: 2a03ddbde1e1 ("pstore/blk: Move verify_size() macro out of function")
-Fixes: 17639f67c1d6 ("pstore/blk: Introduce backend for block devices")
-Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-Link: https://lore.kernel.org/r/20250101111921.850406-1-eugen.hristev@linaro.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 1cf7a12e09aa ("nvme: use an xarray to lookup the Commands Supported and Effects log")
+Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/blk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/blk.c b/fs/pstore/blk.c
-index 4ae0cfcd15f20..c6911c9997628 100644
---- a/fs/pstore/blk.c
-+++ b/fs/pstore/blk.c
-@@ -89,7 +89,7 @@ static struct pstore_device_info *pstore_device_info;
- 		_##name_ = check_size(name, alignsize);		\
- 	else							\
- 		_##name_ = 0;					\
--	/* Synchronize module parameters with resuls. */	\
-+	/* Synchronize module parameters with results. */	\
- 	name = _##name_ / 1024;					\
- 	dev->zone.name = _##name_;				\
- }
-@@ -121,7 +121,7 @@ static int __register_pstore_device(struct pstore_device_info *dev)
- 	if (pstore_device_info)
- 		return -EBUSY;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 92ffeb6605618..abca395385b2e 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3099,7 +3099,7 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
+ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
+ 				struct nvme_effects_log **log)
+ {
+-	struct nvme_effects_log	*cel = xa_load(&ctrl->cels, csi);
++	struct nvme_effects_log *old, *cel = xa_load(&ctrl->cels, csi);
+ 	int ret;
  
--	/* zero means not limit on which backends to attempt to store. */
-+	/* zero means no limit on which backends attempt to store. */
- 	if (!dev->flags)
- 		dev->flags = UINT_MAX;
+ 	if (cel)
+@@ -3116,7 +3116,11 @@ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
+ 		return ret;
+ 	}
  
+-	xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
++	old = xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
++	if (xa_is_err(old)) {
++		kfree(cel);
++		return xa_err(old);
++	}
+ out:
+ 	*log = cel;
+ 	return 0;
 -- 
 2.39.5
 
