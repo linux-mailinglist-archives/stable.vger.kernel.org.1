@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D75A3B459
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:41:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7787DA3B612
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C18E87A1CFC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344EF3B8C3B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD1B1DFE31;
-	Wed, 19 Feb 2025 08:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0671F584A;
+	Wed, 19 Feb 2025 08:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOgLj9QB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFh6oNdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA701DFE29;
-	Wed, 19 Feb 2025 08:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0781EF082;
+	Wed, 19 Feb 2025 08:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954169; cv=none; b=iqSd8acvaxWgm0kvFxiAuJ0xxJwa21XWwXKlAMUqPHIz0GOA2gvIBNfGiVvQutLdmoN302rjoHk8MWbxFQ4UVeMkSXSD+TlNguC6CTwzJ28TClvDlrZpg+MkJzn1T5wi5+RNEpOmR0O00rKxadN2nA9d9t1bivCo7lm9CNIy4Pk=
+	t=1739954858; cv=none; b=OkkPpvZpT17MCGry2ZW5ATvcilfx8c9ZCYE+OgiqflXzIJrcJBcDSP54nURg73aOR6ARmCMtn/7OiNbAvv39gA/LxrN2Ykgt1nRz0qsIo0ZqqNIAbaAGOgMiXXSuWbtd4Y/ggVu7xUo03LbBDQiHyFpNvS2W/+PqByv6TFvjlCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954169; c=relaxed/simple;
-	bh=nq020ENWWpC3iqJs3MJLtgfxqqSVDYK5UF8PyFIdNHY=;
+	s=arc-20240116; t=1739954858; c=relaxed/simple;
+	bh=P0xdb9MTAvZgcj3gcL00UMwrmv9IjV5DwaOT9wbPtzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3+p63DfY2NZL+6mA3Qe4VqtQi/UdnRQ+MjD44Y3Ofd98/7/QZdrpHgBiK/9ZKf9ZHZtbSI9w3Hxyd41Lr0T985jL52V9qNb1Pv6QDL3lAGeuEZK51AajLOsinm7YaWe954x6BF1/Lpr8uTY4Oi1CeG+lLcX1pEoGrq0Get3G8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOgLj9QB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61931C4CED1;
-	Wed, 19 Feb 2025 08:36:08 +0000 (UTC)
+	 MIME-Version; b=sho5XdkuXybgeTCpuRDj/fUciD+WsIZTKeR7RCYtXGsK9oKejxPx6CKFDDLtphFxleNUs9HwoTJ5kAGi6VLoxE4isRlEk30TZJlPOHkJI0wqwclLzVXTq6vlyV7BhzlYzbKdhBzTNHFrrSWX0w+S5JCU/lcm56YIEBtlQaPTZa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFh6oNdg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EABC4CED1;
+	Wed, 19 Feb 2025 08:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954168;
-	bh=nq020ENWWpC3iqJs3MJLtgfxqqSVDYK5UF8PyFIdNHY=;
+	s=korg; t=1739954858;
+	bh=P0xdb9MTAvZgcj3gcL00UMwrmv9IjV5DwaOT9wbPtzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOgLj9QBMGmO/+O7XptnrJFOvACuyAVmZUAb/zZFIEGF8CQ8iFuqBRSYaeXnfPLQM
-	 TSQks0xBcSuW6YqyXodq0i/N/NgxgQnWY3HtfitGClDsAl/x7/pFb2Ck2cPN0J1KEc
-	 cU44vwoee23snGKoYmAuDrO+bHOF2JDV4SCxyyVg=
+	b=BFh6oNdgEjOmz0x6gK6/Z0rOo++3rsMohydxKcZAXdi4o13BKFxX0kplfoWLXkYex
+	 HQkmo9bbZXjuX4kNi/WTU7590R5PSc/wyHrMPO84Dg53MbPHSuKbGQ4Gz7rOJi3ioF
+	 0UM8QmyGmuFcsWDSeH167MH3+CZQ38faFug4a2Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongjie Zou <zoudongjie@huawei.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.13 119/274] KVM: x86: Reject Hyper-Vs SEND_IPI hypercalls if local APIC isnt in-kernel
-Date: Wed, 19 Feb 2025 09:26:13 +0100
-Message-ID: <20250219082614.278153012@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 057/230] tools: fix annoying "mkdir -p ..." logs when building tools in parallel
+Date: Wed, 19 Feb 2025 09:26:14 +0100
+Message-ID: <20250219082603.946669484@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit a8de7f100bb5989d9c3627d3a223ee1c863f3b69 upstream.
+[ Upstream commit d1d0963121769d8d16150b913fe886e48efefa51 ]
 
-Advertise support for Hyper-V's SEND_IPI and SEND_IPI_EX hypercalls if and
-only if the local API is emulated/virtualized by KVM, and explicitly reject
-said hypercalls if the local APIC is emulated in userspace, i.e. don't rely
-on userspace to opt-in to KVM_CAP_HYPERV_ENFORCE_CPUID.
+When CONFIG_OBJTOOL=y or CONFIG_DEBUG_INFO_BTF=y, parallel builds
+show awkward "mkdir -p ..." logs.
 
-Rejecting SEND_IPI and SEND_IPI_EX fixes a NULL-pointer dereference if
-Hyper-V enlightenments are exposed to the guest without an in-kernel local
-APIC:
+  $ make -j16
+    [ snip ]
+  mkdir -p /home/masahiro/ref/linux/tools/objtool && make O=/home/masahiro/ref/linux subdir=tools/objtool --no-print-directory -C objtool
+  mkdir -p /home/masahiro/ref/linux/tools/bpf/resolve_btfids && make O=/home/masahiro/ref/linux subdir=tools/bpf/resolve_btfids --no-print-directory -C bpf/resolve_btfids
 
-  dump_stack+0xbe/0xfd
-  __kasan_report.cold+0x34/0x84
-  kasan_report+0x3a/0x50
-  __apic_accept_irq+0x3a/0x5c0
-  kvm_hv_send_ipi.isra.0+0x34e/0x820
-  kvm_hv_hypercall+0x8d9/0x9d0
-  kvm_emulate_hypercall+0x506/0x7e0
-  __vmx_handle_exit+0x283/0xb60
-  vmx_handle_exit+0x1d/0xd0
-  vcpu_enter_guest+0x16b0/0x24c0
-  vcpu_run+0xc0/0x550
-  kvm_arch_vcpu_ioctl_run+0x170/0x6d0
-  kvm_vcpu_ioctl+0x413/0xb20
-  __se_sys_ioctl+0x111/0x160
-  do_syscal1_64+0x30/0x40
-  entry_SYSCALL_64_after_hwframe+0x67/0xd1
+Defining MAKEFLAGS=<value> on the command line wipes out command line
+switches from the resultant MAKEFLAGS definition, even though the command
+line switches are active. [1]
 
-Note, checking the sending vCPU is sufficient, as the per-VM irqchip_mode
-can't be modified after vCPUs are created, i.e. if one vCPU has an
-in-kernel local APIC, then all vCPUs have an in-kernel local APIC.
+MAKEFLAGS puts all single-letter options into the first word, and that
+word will be empty if no single-letter options were given. [2]
+However, this breaks if MAKEFLAGS=<value> is given on the command line.
 
-Reported-by: Dongjie Zou <zoudongjie@huawei.com>
-Fixes: 214ff83d4473 ("KVM: x86: hyperv: implement PV IPI send hypercalls")
-Fixes: 2bc39970e932 ("x86/kvm/hyper-v: Introduce KVM_GET_SUPPORTED_HV_CPUID")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20250118003454.2619573-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The tools/ and tools/% targets set MAKEFLAGS=<value> on the command
+line, which breaks the following code in tools/scripts/Makefile.include:
+
+    short-opts := $(firstword -$(MAKEFLAGS))
+
+If MAKEFLAGS really needs modification, it should be done through the
+environment variable, as follows:
+
+    MAKEFLAGS=<value> $(MAKE) ...
+
+That said, I question whether modifying MAKEFLAGS is necessary here.
+The only flag we might want to exclude is --no-print-directory, as the
+tools build system changes the working directory. However, people might
+find the "Entering/Leaving directory" logs annoying.
+
+I simply removed the offending MAKEFLAGS=<value>.
+
+[1]: https://savannah.gnu.org/bugs/?62469
+[2]: https://www.gnu.org/software/make/manual/make.html#Testing-Flags
+
+Fixes: ea01fa9f63ae ("tools: Connect to the kernel build system")
+Fixes: a50e43332756 ("perf tools: Honor parallel jobs")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: Daniel Xu <dxu@dxuuu.xyz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/hyperv.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ Makefile | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2226,6 +2226,9 @@ static u64 kvm_hv_send_ipi(struct kvm_vc
- 	u32 vector;
- 	bool all_cpus;
+diff --git a/Makefile b/Makefile
+index 26a471dbed62a..40c97774c4e4b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1357,18 +1357,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
  
-+	if (!lapic_in_kernel(vcpu))
-+		return HV_STATUS_INVALID_HYPERCALL_INPUT;
-+
- 	if (hc->code == HVCALL_SEND_IPI) {
- 		if (!hc->fast) {
- 			if (unlikely(kvm_read_guest(kvm, hc->ingpa, &send_ipi,
-@@ -2852,7 +2855,8 @@ int kvm_get_hv_cpuid(struct kvm_vcpu *vc
- 			ent->eax |= HV_X64_REMOTE_TLB_FLUSH_RECOMMENDED;
- 			ent->eax |= HV_X64_APIC_ACCESS_RECOMMENDED;
- 			ent->eax |= HV_X64_RELAXED_TIMING_RECOMMENDED;
--			ent->eax |= HV_X64_CLUSTER_IPI_RECOMMENDED;
-+			if (!vcpu || lapic_in_kernel(vcpu))
-+				ent->eax |= HV_X64_CLUSTER_IPI_RECOMMENDED;
- 			ent->eax |= HV_X64_EX_PROCESSOR_MASKS_RECOMMENDED;
- 			if (evmcs_ver)
- 				ent->eax |= HV_X64_ENLIGHTENED_VMCS_RECOMMENDED;
+-# Clear a bunch of variables before executing the submake
+-ifeq ($(quiet),silent_)
+-tools_silent=s
+-endif
+-
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
++	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+ 
+ tools/%: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
++	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
+ 
+ # ---------------------------------------------------------------------------
+ # Kernel selftest
+-- 
+2.39.5
+
 
 
 
