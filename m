@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-117290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A65A3B61E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5D3A3B981
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 887BA3BDD4D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C19493BD37C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873B51F3BB7;
-	Wed, 19 Feb 2025 08:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BCF1C3F0A;
+	Wed, 19 Feb 2025 09:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgJhMqse"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxf/vN4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C171DF253;
-	Wed, 19 Feb 2025 08:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B1F18FC86;
+	Wed, 19 Feb 2025 09:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954807; cv=none; b=VkMHIb9x/ksc4vLlMUmXMdPIxDegPGrBxB2aY3Gg8x1hnSdEzYbDyADGMq7qIZkkSFXOzC6Q58Sbqdk05Ha2JLa3+9bzpN7S8QHvmNbVaFDrY/r+mTTx+KxssOwmd8etoLkrXolNAvQ4f1XgtMt4/QH9vHAJSG5q8qPMqc0v9bI=
+	t=1739956901; cv=none; b=oS/JuGZbQ5Fk5MFyJDR/Uw1HM41NdS18biHq94iZAmt2xxtFin0BMoFdmEHNlrhE0G9Ruhci8jneWYRszXYBPQxUqIPRi8+i6tsoWXRCPetM46rZ44T9B+2EgP7Uzo1Da29TaQ47zhrfmzFl6d8RMQ+DAs1Rbzk6+rkvxbOVw3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954807; c=relaxed/simple;
-	bh=5EDJaJkfI4TNUC8zo1cppL2RG8PB+T61qz2rTTVJtS4=;
+	s=arc-20240116; t=1739956901; c=relaxed/simple;
+	bh=HmRe9pCP5iktbKCdWg1cMPQMASWkghDPKE3c2Dx8t9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PflbTBNrygsqYMih8sWVFy3xEEhFi2BNdmR2k0if2XdgcxeJYhYngsdD6O4H7IZTaefQl4tRHLF2RCUr+PW2kEcr5N/f8dbUp38WFRhGLzzI2cDyXIxqacIyb/l0KM231GVxzs2WaPF6jsX4fEPw5SDE7iwh6Wu+yXuQVBgVSIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgJhMqse; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B901BC4CEE6;
-	Wed, 19 Feb 2025 08:46:46 +0000 (UTC)
+	 MIME-Version; b=kmxy3KeVT/1vfKeb8uljb+f6W0aDL3Y/iRtevRUnL4760cQfz5j1anoIek5P9NQqdnuLxB5DOPY/MuHSc1cxSB3rRpZuXgXJMt2c0/hWuQ2uXG2/cZ53aHwOc7mo7Y3tb75lG8+1eXUVl2w6+/jdWiE1FRHTFoViSmorQfIIr0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxf/vN4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516CFC4CED1;
+	Wed, 19 Feb 2025 09:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954807;
-	bh=5EDJaJkfI4TNUC8zo1cppL2RG8PB+T61qz2rTTVJtS4=;
+	s=korg; t=1739956901;
+	bh=HmRe9pCP5iktbKCdWg1cMPQMASWkghDPKE3c2Dx8t9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgJhMqseS4w0+fYyJVa0mFlapteUN0GL/WFMP6fs5Dy301IchBA7h5Uhz/5EE9UDl
-	 wMzLgqJS7lZ1bAEhHUl/4YTYFbQdhMmzySg11KZFkeeqAn7XgD98qKmDo1+QECSwz/
-	 FghiVcIec/yTTFb9bTXw+8WVO0pUOf9ySwrOYFsU=
+	b=yxf/vN4rliGx7mnHEU7bH2DZcgjujhPTRPfGeWXbAhBv+DNylJcjXtpwDbbNGfaUM
+	 soklLq5Hvo6tpeYgQF+N/LQO2fU/J9033R82K1VnI0rK3PSo6ay3dwM+UVkUhwxRVM
+	 zPWxB6SZwYvqKeGnXWjwYs6WAZ4ARhIBZtu1s9OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Roopa Prabhu <roopa@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/230] vxlan: check vxlan_vnigroup_init() return value
-Date: Wed, 19 Feb 2025 09:25:42 +0100
-Message-ID: <20250219082602.691636600@linuxfoundation.org>
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 339/578] smb: client: change lease epoch type from unsigned int to __u16
+Date: Wed, 19 Feb 2025 09:25:43 +0100
+Message-ID: <20250219082706.353933593@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +62,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-[ Upstream commit 5805402dcc56241987bca674a1b4da79a249bab7 ]
+commit 57e4a9bd61c308f607bc3e55e8fa02257b06b552 upstream.
 
-vxlan_init() must check vxlan_vnigroup_init() success
-otherwise a crash happens later, spotted by syzbot.
+MS-SMB2 section 2.2.13.2.10 specifies that 'epoch' should be a 16-bit
+unsigned integer used to track lease state changes. Change the data
+type of all instances of 'epoch' from unsigned int to __u16. This
+simplifies the epoch change comparisons and makes the code more
+compliant with the protocol spec.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000002c: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000160-0x0000000000000167]
-CPU: 0 UID: 0 PID: 7313 Comm: syz-executor147 Not tainted 6.14.0-rc1-syzkaller-00276-g69b54314c975 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:vxlan_vnigroup_uninit+0x89/0x500 drivers/net/vxlan/vxlan_vnifilter.c:912
-Code: 00 48 8b 44 24 08 4c 8b b0 98 41 00 00 49 8d 86 60 01 00 00 48 89 c2 48 89 44 24 10 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 4d 04 00 00 49 8b 86 60 01 00 00 48 ba 00 00 00
-RSP: 0018:ffffc9000cc1eea8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000001 RCX: ffffffff8672effb
-RDX: 000000000000002c RSI: ffffffff8672ecb9 RDI: ffff8880461b4f18
-RBP: ffff8880461b4ef4 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000020000
-R13: ffff8880461b0d80 R14: 0000000000000000 R15: dffffc0000000000
-FS:  00007fecfa95d6c0(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fecfa95cfb8 CR3: 000000004472c000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  vxlan_uninit+0x1ab/0x200 drivers/net/vxlan/vxlan_core.c:2942
-  unregister_netdevice_many_notify+0x12d6/0x1f30 net/core/dev.c:11824
-  unregister_netdevice_many net/core/dev.c:11866 [inline]
-  unregister_netdevice_queue+0x307/0x3f0 net/core/dev.c:11736
-  register_netdevice+0x1829/0x1eb0 net/core/dev.c:10901
-  __vxlan_dev_create+0x7c6/0xa30 drivers/net/vxlan/vxlan_core.c:3981
-  vxlan_newlink+0xd1/0x130 drivers/net/vxlan/vxlan_core.c:4407
-  rtnl_newlink_create net/core/rtnetlink.c:3795 [inline]
-  __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Reported-by: syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67a9d9b4.050a0220.110943.002d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Roopa Prabhu <roopa@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250210105242.883482-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsglob.h  |   14 +++++++-------
+ fs/smb/client/smb1ops.c   |    2 +-
+ fs/smb/client/smb2ops.c   |   18 +++++++++---------
+ fs/smb/client/smb2pdu.c   |    2 +-
+ fs/smb/client/smb2proto.h |    2 +-
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 6e9a3795846aa..5e7cdd1b806fb 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2871,8 +2871,11 @@ static int vxlan_init(struct net_device *dev)
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	int err;
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -286,7 +286,7 @@ struct smb_version_operations {
+ 	int (*handle_cancelled_mid)(struct mid_q_entry *, struct TCP_Server_Info *);
+ 	void (*downgrade_oplock)(struct TCP_Server_Info *server,
+ 				 struct cifsInodeInfo *cinode, __u32 oplock,
+-				 unsigned int epoch, bool *purge_cache);
++				 __u16 epoch, bool *purge_cache);
+ 	/* process transaction2 response */
+ 	bool (*check_trans2)(struct mid_q_entry *, struct TCP_Server_Info *,
+ 			     char *, int);
+@@ -466,12 +466,12 @@ struct smb_version_operations {
+ 	/* if we can do cache read operations */
+ 	bool (*is_read_op)(__u32);
+ 	/* set oplock level for the inode */
+-	void (*set_oplock_level)(struct cifsInodeInfo *, __u32, unsigned int,
+-				 bool *);
++	void (*set_oplock_level)(struct cifsInodeInfo *cinode, __u32 oplock, __u16 epoch,
++				 bool *purge_cache);
+ 	/* create lease context buffer for CREATE request */
+ 	char * (*create_lease_buf)(u8 *lease_key, u8 oplock);
+ 	/* parse lease context buffer and return oplock/epoch info */
+-	__u8 (*parse_lease_buf)(void *buf, unsigned int *epoch, char *lkey);
++	__u8 (*parse_lease_buf)(void *buf, __u16 *epoch, char *lkey);
+ 	ssize_t (*copychunk_range)(const unsigned int,
+ 			struct cifsFileInfo *src_file,
+ 			struct cifsFileInfo *target_file,
+@@ -1328,7 +1328,7 @@ struct cifs_fid {
+ 	__u8 create_guid[16];
+ 	__u32 access;
+ 	struct cifs_pending_open *pending_open;
+-	unsigned int epoch;
++	__u16 epoch;
+ #ifdef CONFIG_CIFS_DEBUG2
+ 	__u64 mid;
+ #endif /* CIFS_DEBUG2 */
+@@ -1360,7 +1360,7 @@ struct cifsFileInfo {
+ 	bool swapfile:1;
+ 	bool oplock_break_cancelled:1;
+ 	bool offload:1; /* offload final part of _put to a wq */
+-	unsigned int oplock_epoch; /* epoch from the lease break */
++	__u16 oplock_epoch; /* epoch from the lease break */
+ 	__u32 oplock_level; /* oplock/lease level from the lease break */
+ 	int count;
+ 	spinlock_t file_info_lock; /* protects four flag/count fields above */
+@@ -1510,7 +1510,7 @@ struct cifsInodeInfo {
+ 	spinlock_t	open_file_lock;	/* protects openFileList */
+ 	__u32 cifsAttrs; /* e.g. DOS archive bit, sparse, compressed, system */
+ 	unsigned int oplock;		/* oplock/lease level we have */
+-	unsigned int epoch;		/* used to track lease state changes */
++	__u16 epoch;		/* used to track lease state changes */
+ #define CIFS_INODE_PENDING_OPLOCK_BREAK   (0) /* oplock break in progress */
+ #define CIFS_INODE_PENDING_WRITERS	  (1) /* Writes in progress */
+ #define CIFS_INODE_FLAG_UNUSED		  (2) /* Unused flag */
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -377,7 +377,7 @@ coalesce_t2(char *second_buf, struct smb
+ static void
+ cifs_downgrade_oplock(struct TCP_Server_Info *server,
+ 		      struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	cifs_set_oplock_level(cinode, oplock);
+ }
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4111,22 +4111,22 @@ static long smb3_fallocate(struct file *
+ static void
+ smb2_downgrade_oplock(struct TCP_Server_Info *server,
+ 		      struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	server->ops->set_oplock_level(cinode, oplock, 0, NULL);
+ }
  
--	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER)
--		vxlan_vnigroup_init(vxlan);
-+	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER) {
-+		err = vxlan_vnigroup_init(vxlan);
-+		if (err)
-+			return err;
-+	}
+ static void
+ smb21_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		       unsigned int epoch, bool *purge_cache);
++		       __u16 epoch, bool *purge_cache);
  
- 	err = gro_cells_init(&vxlan->gro_cells, dev);
- 	if (err)
--- 
-2.39.5
-
+ static void
+ smb3_downgrade_oplock(struct TCP_Server_Info *server,
+ 		       struct cifsInodeInfo *cinode, __u32 oplock,
+-		       unsigned int epoch, bool *purge_cache)
++		       __u16 epoch, bool *purge_cache)
+ {
+ 	unsigned int old_state = cinode->oplock;
+-	unsigned int old_epoch = cinode->epoch;
++	__u16 old_epoch = cinode->epoch;
+ 	unsigned int new_state;
+ 
+ 	if (epoch > old_epoch) {
+@@ -4146,7 +4146,7 @@ smb3_downgrade_oplock(struct TCP_Server_
+ 
+ static void
+ smb2_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	oplock &= 0xFF;
+ 	cinode->lease_granted = false;
+@@ -4170,7 +4170,7 @@ smb2_set_oplock_level(struct cifsInodeIn
+ 
+ static void
+ smb21_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		       unsigned int epoch, bool *purge_cache)
++		       __u16 epoch, bool *purge_cache)
+ {
+ 	char message[5] = {0};
+ 	unsigned int new_oplock = 0;
+@@ -4207,7 +4207,7 @@ smb21_set_oplock_level(struct cifsInodeI
+ 
+ static void
+ smb3_set_oplock_level(struct cifsInodeInfo *cinode, __u32 oplock,
+-		      unsigned int epoch, bool *purge_cache)
++		      __u16 epoch, bool *purge_cache)
+ {
+ 	unsigned int old_oplock = cinode->oplock;
+ 
+@@ -4321,7 +4321,7 @@ smb3_create_lease_buf(u8 *lease_key, u8
+ }
+ 
+ static __u8
+-smb2_parse_lease_buf(void *buf, unsigned int *epoch, char *lease_key)
++smb2_parse_lease_buf(void *buf, __u16 *epoch, char *lease_key)
+ {
+ 	struct create_lease *lc = (struct create_lease *)buf;
+ 
+@@ -4332,7 +4332,7 @@ smb2_parse_lease_buf(void *buf, unsigned
+ }
+ 
+ static __u8
+-smb3_parse_lease_buf(void *buf, unsigned int *epoch, char *lease_key)
++smb3_parse_lease_buf(void *buf, __u16 *epoch, char *lease_key)
+ {
+ 	struct create_lease_v2 *lc = (struct create_lease_v2 *)buf;
+ 
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2158,7 +2158,7 @@ parse_posix_ctxt(struct create_context *
+ 
+ int smb2_parse_contexts(struct TCP_Server_Info *server,
+ 			struct kvec *rsp_iov,
+-			unsigned int *epoch,
++			__u16 *epoch,
+ 			char *lease_key, __u8 *oplock,
+ 			struct smb2_file_all_info *buf,
+ 			struct create_posix_rsp *posix)
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -251,7 +251,7 @@ extern enum securityEnum smb2_select_sec
+ 					enum securityEnum);
+ int smb2_parse_contexts(struct TCP_Server_Info *server,
+ 			struct kvec *rsp_iov,
+-			unsigned int *epoch,
++			__u16 *epoch,
+ 			char *lease_key, __u8 *oplock,
+ 			struct smb2_file_all_info *buf,
+ 			struct create_posix_rsp *posix);
 
 
 
