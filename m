@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E684A3B6C1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470B3A3B62D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D152A3B6B8A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE6E179AEE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9B01C3F0A;
-	Wed, 19 Feb 2025 08:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABC81DED78;
+	Wed, 19 Feb 2025 08:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3STIGHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/8VzTTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298ED1CAA68;
-	Wed, 19 Feb 2025 08:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187A41DED5E;
+	Wed, 19 Feb 2025 08:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955465; cv=none; b=py4BsTktFDevcv0WNmre1DEY1KRNuMx2DvZ0hdqQg9fqz2wd0E0gMbknQPdvXx4VRYCCI2G0FxZ7+Xn5Xr2fG4kONvppx187xjcIPsA1KjwuxCU02u405FnWDXAVDUxANM/q+VdlCHI326OcHWqkuCI/6qUxKt0Hi5uVCfS+Fsk=
+	t=1739955034; cv=none; b=LI6fmiXOKjhU4J28QiftRLBnMLgIO4B5aaK04g9v6FDSTxxTWGqeTpgqoZtlmxK1XdZ4Gv2lCFDiqOE5IMfdRkE2zC/KcVxIzfJcJxU5P343JxTltD8cdncNosmVsVZKmBiZQ99gF+lZYkUS+oAYe/I5Ai37bif8IvDG/hOujT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955465; c=relaxed/simple;
-	bh=1Qsr1RJz9J1ed0RKo//WWSLJvRCmoF+2XwZxPJZYHCc=;
+	s=arc-20240116; t=1739955034; c=relaxed/simple;
+	bh=O6X0KTDwfrvRAUgRpBzdeGCJo73s8IGoqlIUsUJBYts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R6Ojx/zg4RakAMrsf5zpHbR6MNqRLg4FD2X4YlzdMnItdHePhPfpJN9OmjF4BdF2zCI+KXV+/GXUNO81wr+QBp/nuf41WE7+dwLh3uXtl7nNi/4cS+9vMRylI1M6obm4httbLEGKF5Sa6aqTy0pReyEvPIjfP+qpUZZyTlK/tII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3STIGHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F42C4CED1;
-	Wed, 19 Feb 2025 08:57:44 +0000 (UTC)
+	 MIME-Version; b=Gd260hhgu4rc5mgXTZe2UybKK2m0avbnZ63qIwa2d/HsWlTaRpRqmy4iYx7PThlU2prccPGXpkHhB7c3/Nof+7MTlTnoav7rQiqMyH/YBPatB+1VfXGTYA/5Uu8UCo0uXy183/wskdt7bCSjJwDUBbcPV7YmFJ43SJtslFJx1Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/8VzTTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B68C4CEE6;
+	Wed, 19 Feb 2025 08:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955465;
-	bh=1Qsr1RJz9J1ed0RKo//WWSLJvRCmoF+2XwZxPJZYHCc=;
+	s=korg; t=1739955034;
+	bh=O6X0KTDwfrvRAUgRpBzdeGCJo73s8IGoqlIUsUJBYts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3STIGHcUjinq68Niu1YwFPgbUOepLucNBdqXoSn1rV/oGravrMYO/mbFaF/o4u3Y
-	 bG7bPt0hbgTEY0pLtK1Ux8Ha44tgo4E2KeEScwKN9d4N3OSnSV3j8c4DFQ5SV1eFP4
-	 wtbHiCJCMskF8E2NRfssZPVsJvcVAykxeVoohJF0=
+	b=B/8VzTTD+0mjR2ZTyf8W8Bmk/bm0kBq1PvgRzI28lMN5F9NV9xckmG97vrBs476A+
+	 0CIQb/u1A5Dib2Ox+gqwXmgYuTtei1bHjIXAPBdTFdY37lL6UdzAme0EMKyf/qefyS
+	 g8l5aAzZzSVUkLEDyjj7sKIwUnZfXTWd5Yfbubf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Busch <axel.busch@ibm.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Muhammad Adeel <muhammad.adeel@ibm.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/152] cgroup: Remove steal time from usage_usec
+	stable <stable@kernel.org>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 111/230] usb: roles: set switch registered flag early on
 Date: Wed, 19 Feb 2025 09:27:08 +0100
-Message-ID: <20250219082550.629968056@linuxfoundation.org>
+Message-ID: <20250219082606.032869341@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Adeel <Muhammad.Adeel@ibm.com>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-[ Upstream commit db5fd3cf8bf41b84b577b8ad5234ea95f327c9be ]
+commit 634775a752a86784511018a108f3b530cc3399a7 upstream.
 
-The CPU usage time is the time when user, system or both are using the CPU.
-Steal time is the time when CPU is waiting to be run by the Hypervisor. It
-should not be added to the CPU usage time, hence removing it from the
-usage_usec entry.
+The role switch registration and set_role() can happen in parallel as they
+are invoked independent of each other. There is a possibility that a driver
+might spend significant amount of time in usb_role_switch_register() API
+due to the presence of time intensive operations like component_add()
+which operate under common mutex. This leads to a time window after
+allocating the switch and before setting the registered flag where the set
+role notifications are dropped. Below timeline summarizes this behavior
 
-Fixes: 936f2a70f2077 ("cgroup: add cpu.stat file to root cgroup")
-Acked-by: Axel Busch <axel.busch@ibm.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Muhammad Adeel <muhammad.adeel@ibm.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thread1				|	Thread2
+usb_role_switch_register()	|
+	|			|
+	---> allocate switch	|
+	|			|
+	---> component_add()	|	usb_role_switch_set_role()
+	|			|	|
+	|			|	--> Drop role notifications
+	|			|	    since sw->registered
+	|			|	    flag is not set.
+	|			|
+	--->Set registered flag.|
+
+To avoid this, set the registered flag early on in the switch register
+API.
+
+Fixes: b787a3e78175 ("usb: roles: don't get/set_role() when usb_role_switch is unregistered")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206193950.22421-1-quic_eserrao@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/rstat.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/roles/class.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index d80d7a6081412..c32439b855f5d 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -469,7 +469,6 @@ static void root_cgroup_cputime(struct cgroup_base_stat *bstat)
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -387,8 +387,11 @@ usb_role_switch_register(struct device *
+ 	dev_set_name(&sw->dev, "%s-role-switch",
+ 		     desc->name ? desc->name : dev_name(parent));
  
- 		cputime->sum_exec_runtime += user;
- 		cputime->sum_exec_runtime += sys;
--		cputime->sum_exec_runtime += cpustat[CPUTIME_STEAL];
++	sw->registered = true;
++
+ 	ret = device_register(&sw->dev);
+ 	if (ret) {
++		sw->registered = false;
+ 		put_device(&sw->dev);
+ 		return ERR_PTR(ret);
+ 	}
+@@ -399,8 +402,6 @@ usb_role_switch_register(struct device *
+ 			dev_warn(&sw->dev, "failed to add component\n");
+ 	}
  
- #ifdef CONFIG_SCHED_CORE
- 		bstat->forceidle_sum += cpustat[CPUTIME_FORCEIDLE];
--- 
-2.39.5
-
+-	sw->registered = true;
+-
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
 
 
 
