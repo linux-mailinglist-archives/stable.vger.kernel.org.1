@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C063A3B9AB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44ABCA3B685
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 964B07A75CD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55145188B5BA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C791DFD85;
-	Wed, 19 Feb 2025 09:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9A71EB1B7;
+	Wed, 19 Feb 2025 08:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbF8/RU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taTygzTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F80228629E;
-	Wed, 19 Feb 2025 09:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAC01EB187;
+	Wed, 19 Feb 2025 08:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957311; cv=none; b=Fq2Gp45Sj8FceziUrn9O/U0s83qpBAykCEOsDL3z4Gh+V5Wvqe0xEDClsPH3PdZ6SNDosmkIsvmlCfAvnXevsqGA5E+n4k9ysxw3u3GPCf9oc3Lv0B4V9boCCouh/+qNz7MGyP3/DGCJCcMWDmKtJcsY/WYiF+hHebcubkzObmk=
+	t=1739955319; cv=none; b=A9jgIfcu6Y/NzAJDzs+mYOAqb2c8N7VOD32Gs+qCZfzCrXHJVmLGkXcu/DzZk8Y+fz+v+FSnXqLClsoI7fKhkAMzQwEISo9bKfsC0Nvz2vYDjOz1JUiUD9LKYQQ5mAXA1WxESc/PhyLo5spdKqokxS9DmitHLv/1s+dABg4TdY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957311; c=relaxed/simple;
-	bh=F0RLOH2szCByh8LWZEZhlss0sjp+Qfb0aZIxdC3AnkY=;
+	s=arc-20240116; t=1739955319; c=relaxed/simple;
+	bh=CZLqP8qwJJnzsueLLnn1WiirwbzAok9slcVlykDKV0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIICAgK40iw+b2pwYyEelpULSbsYRLgCJDr0JdmIJ85V4YqbFYuuBi8pVE5/6uOlvA9eZph3fE43P/8pwHsjo2c0+nfEuyrUgye+QN/0jIknuIFbf9BAGzHto/gbCP+VGlwhGCIs5Vx6QwXL5+boqbngnB5BIsfhlyHlLNsY8Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbF8/RU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3ABC4CED1;
-	Wed, 19 Feb 2025 09:28:30 +0000 (UTC)
+	 MIME-Version; b=uA+Tf6an4Xr9ZuRSHADwEIhOhXueipS+FKXSDgTAHruZeNflBZE7nqFTRgA6keqmX1d0QPYU5lA2aCeJMXc3eyet4Tw+d/sbmyAuaFCvGs+9Erlf5ZTBP/gTtU7TBF65qafBPYlpFUC1POwVCSpV/aU0oREZIScZtRkJbzALnh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taTygzTa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF18C4CED1;
+	Wed, 19 Feb 2025 08:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957310;
-	bh=F0RLOH2szCByh8LWZEZhlss0sjp+Qfb0aZIxdC3AnkY=;
+	s=korg; t=1739955319;
+	bh=CZLqP8qwJJnzsueLLnn1WiirwbzAok9slcVlykDKV0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbF8/RU5IdmaP/PVg4EFJ6mWBFUW/KfGzRId0/hlxKBjFUAj0Bg4QVYAtWF18ZF+y
-	 QrGrmo293wASaKsl5TRTuFmNvvPf6cChXC+X8uGtEJqIxtAKKhcaABe8cIBD9TJbJz
-	 DuwePLc2njBkmONacus5tfVN74SmgHCScTgD0h6M=
+	b=taTygzTa+nFfIA05HKW3ITFWl/sWThT/s1bCC/7XJYuiKnRMfPkDMz6W90psAP58M
+	 2/62+am5aF96gozHr90T5J8hadPxBlewAy6KrV4eRp1k1S6lsH4yG1AxYpiiaBS91O
+	 Wrh7xMLNHQZdZQ+f9wvDtPIVSOkW5j+8sk0OHMmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Alan Robinson <Alan.Robinson@fujitsu.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 480/578] x86/xen: allow larger contiguous memory regions in PV guests
+Subject: [PATCH 6.12 167/230] net: ipv6: fix dst ref loops in rpl, seg6 and ioam6 lwtunnels
 Date: Wed, 19 Feb 2025 09:28:04 +0100
-Message-ID: <20250219082711.885600214@linuxfoundation.org>
+Message-ID: <20250219082608.232582909@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e93ec87286bd1fd30b7389e7a387cfb259f297e3 ]
+[ Upstream commit 92191dd1073088753821b862b791dcc83e558e07 ]
 
-Today a PV guest (including dom0) can create 2MB contiguous memory
-regions for DMA buffers at max. This has led to problems at least
-with the megaraid_sas driver, which wants to allocate a 2.3MB DMA
-buffer.
+Some lwtunnels have a dst cache for post-transformation dst.
+If the packet destination did not change we may end up recording
+a reference to the lwtunnel in its own cache, and the lwtunnel
+state will never be freed.
 
-The limiting factor is the frame array used to do the hypercall for
-making the memory contiguous, which has 512 entries and is just a
-static array in mmu_pv.c.
+Discovered by the ioam6.sh test, kmemleak was recently fixed
+to catch per-cpu memory leaks. I'm not sure if rpl and seg6
+can actually hit this, but in principle I don't see why not.
 
-In order to not waste memory for non-PV guests, put the initial
-frame array into .init.data section and dynamically allocate an array
-from the .init_after_bootmem hook of PV guests.
-
-In case a contiguous memory area larger than the initially supported
-2MB is requested, allocate a larger buffer for the frame list. Note
-that such an allocation is tried only after memory management has been
-initialized properly, which is tested via a flag being set in the
-.init_after_bootmem hook.
-
-Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Alan Robinson <Alan.Robinson@fujitsu.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250130031519.2716843-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/mmu_pv.c | 71 +++++++++++++++++++++++++++++++++++++------
- 1 file changed, 62 insertions(+), 9 deletions(-)
+ net/ipv6/ioam6_iptunnel.c | 9 ++++++---
+ net/ipv6/rpl_iptunnel.c   | 9 ++++++---
+ net/ipv6/seg6_iptunnel.c  | 9 ++++++---
+ 3 files changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 22b619f89a1d7..6abce0816ca39 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -97,6 +97,51 @@ static pud_t level3_user_vsyscall[PTRS_PER_PUD] __page_aligned_bss;
-  */
- static DEFINE_SPINLOCK(xen_reservation_lock);
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index e81b45b1f6555..fb6cb540cd1bc 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -413,9 +413,12 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
-+/* Protected by xen_reservation_lock. */
-+#define MIN_CONTIG_ORDER 9 /* 2MB */
-+static unsigned int discontig_frames_order = MIN_CONTIG_ORDER;
-+static unsigned long discontig_frames_early[1UL << MIN_CONTIG_ORDER] __initdata;
-+static unsigned long *discontig_frames __refdata = discontig_frames_early;
-+static bool discontig_frames_dyn;
-+
-+static int alloc_discontig_frames(unsigned int order)
-+{
-+	unsigned long *new_array, *old_array;
-+	unsigned int old_order;
-+	unsigned long flags;
-+
-+	BUG_ON(order < MIN_CONTIG_ORDER);
-+	BUILD_BUG_ON(sizeof(discontig_frames_early) != PAGE_SIZE);
-+
-+	new_array = (unsigned long *)__get_free_pages(GFP_KERNEL,
-+						      order - MIN_CONTIG_ORDER);
-+	if (!new_array)
-+		return -ENOMEM;
-+
-+	spin_lock_irqsave(&xen_reservation_lock, flags);
-+
-+	old_order = discontig_frames_order;
-+
-+	if (order > discontig_frames_order || !discontig_frames_dyn) {
-+		if (!discontig_frames_dyn)
-+			old_array = NULL;
-+		else
-+			old_array = discontig_frames;
-+
-+		discontig_frames = new_array;
-+		discontig_frames_order = order;
-+		discontig_frames_dyn = true;
-+	} else {
-+		old_array = new_array;
-+	}
-+
-+	spin_unlock_irqrestore(&xen_reservation_lock, flags);
-+
-+	free_pages((unsigned long)old_array, old_order - MIN_CONTIG_ORDER);
-+
-+	return 0;
-+}
-+
- /*
-  * Note about cr3 (pagetable base) values:
-  *
-@@ -797,6 +842,9 @@ static void __init xen_after_bootmem(void)
- 	SetPagePinned(virt_to_page(level3_user_vsyscall));
- #endif
- 	xen_pgd_walk(&init_mm, xen_mark_pinned, FIXADDR_TOP);
-+
-+	if (alloc_discontig_frames(MIN_CONTIG_ORDER))
-+		BUG();
- }
+-		local_bh_disable();
+-		dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
+-		local_bh_enable();
++		/* cache only if we don't create a dst reference loop */
++		if (dst->lwtstate != cache_dst->lwtstate) {
++			local_bh_disable();
++			dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
++			local_bh_enable();
++		}
  
- static void xen_unpin_page(struct mm_struct *mm, struct page *page,
-@@ -2177,10 +2225,6 @@ void __init xen_init_mmu_ops(void)
- 	memset(dummy_mapping, 0xff, PAGE_SIZE);
- }
+ 		err = skb_cow_head(skb, LL_RESERVED_SPACE(cache_dst->dev));
+ 		if (unlikely(err))
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index 7ba22d2f2bfef..be084089ec783 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -236,9 +236,12 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
--/* Protected by xen_reservation_lock. */
--#define MAX_CONTIG_ORDER 9 /* 2MB */
--static unsigned long discontig_frames[1<<MAX_CONTIG_ORDER];
--
- #define VOID_PTE (mfn_pte(0, __pgprot(0)))
- static void xen_zap_pfn_range(unsigned long vaddr, unsigned int order,
- 				unsigned long *in_frames,
-@@ -2297,18 +2341,25 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
- 				 unsigned int address_bits,
- 				 dma_addr_t *dma_handle)
- {
--	unsigned long *in_frames = discontig_frames, out_frame;
-+	unsigned long *in_frames, out_frame;
- 	unsigned long  flags;
- 	int            success;
- 	unsigned long vstart = (unsigned long)phys_to_virt(pstart);
+-		local_bh_disable();
+-		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+-		local_bh_enable();
++		/* cache only if we don't create a dst reference loop */
++		if (orig_dst->lwtstate != dst->lwtstate) {
++			local_bh_disable();
++			dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
++			local_bh_enable();
++		}
  
--	if (unlikely(order > MAX_CONTIG_ORDER))
--		return -ENOMEM;
-+	if (unlikely(order > discontig_frames_order)) {
-+		if (!discontig_frames_dyn)
-+			return -ENOMEM;
-+
-+		if (alloc_discontig_frames(order))
-+			return -ENOMEM;
-+	}
+ 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 		if (unlikely(err))
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 4bf937bfc2633..316dbc2694f2a 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -575,9 +575,12 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 			goto drop;
+ 		}
  
- 	memset((void *) vstart, 0, PAGE_SIZE << order);
+-		local_bh_disable();
+-		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
+-		local_bh_enable();
++		/* cache only if we don't create a dst reference loop */
++		if (orig_dst->lwtstate != dst->lwtstate) {
++			local_bh_disable();
++			dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
++			local_bh_enable();
++		}
  
- 	spin_lock_irqsave(&xen_reservation_lock, flags);
- 
-+	in_frames = discontig_frames;
-+
- 	/* 1. Zap current PTEs, remembering MFNs. */
- 	xen_zap_pfn_range(vstart, order, in_frames, NULL);
- 
-@@ -2332,12 +2383,12 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
- 
- void xen_destroy_contiguous_region(phys_addr_t pstart, unsigned int order)
- {
--	unsigned long *out_frames = discontig_frames, in_frame;
-+	unsigned long *out_frames, in_frame;
- 	unsigned long  flags;
- 	int success;
- 	unsigned long vstart;
- 
--	if (unlikely(order > MAX_CONTIG_ORDER))
-+	if (unlikely(order > discontig_frames_order))
- 		return;
- 
- 	vstart = (unsigned long)phys_to_virt(pstart);
-@@ -2345,6 +2396,8 @@ void xen_destroy_contiguous_region(phys_addr_t pstart, unsigned int order)
- 
- 	spin_lock_irqsave(&xen_reservation_lock, flags);
- 
-+	out_frames = discontig_frames;
-+
- 	/* 1. Find start MFN of contiguous extent. */
- 	in_frame = virt_to_mfn(vstart);
- 
+ 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 		if (unlikely(err))
 -- 
 2.39.5
 
