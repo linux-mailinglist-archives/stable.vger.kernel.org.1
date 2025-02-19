@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-117639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC99AA3B6E3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97672A3BA6A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51BC47A75BA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0993B84D6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F671DED64;
-	Wed, 19 Feb 2025 09:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CE21E51F8;
+	Wed, 19 Feb 2025 09:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16Wn0LiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CU/uQogs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F991DE8A6;
-	Wed, 19 Feb 2025 09:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DE31E47A5;
+	Wed, 19 Feb 2025 09:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955913; cv=none; b=Njcguny8+vOuXOd00EflMwKpOunntVc1B8TfHiVZMe/LoTDUAJ6gBcfHoiy9ktxOsWSZOkbH8w6PoWEJggCvJFNwTbbeBmn+C6L5iyiihFIWrMhRddhYVzPd8S20wtjCNehi4e2mJkYJrI71s+aHmxweQ0LX1+hI5eBteM8UT9o=
+	t=1739957488; cv=none; b=RD2udxrhet7mO9knNYM9oJr8dxBGpbO8ZFjs0rqUBvtLmHf51zmrujPMVt3bHW1muKOM57sYsPB0UiTk5hDc1DVh9UGPXpfITJJRRk+xuzg5mPWe4XT9v2q+aryUgszZdGXGChgJcwDkIN4nIadTLi5PENKgvoCaBN/x9uilZKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955913; c=relaxed/simple;
-	bh=QtbILcJcFVDEyclW0/wcSBPgzT+exelXpZREZF+kB4Q=;
+	s=arc-20240116; t=1739957488; c=relaxed/simple;
+	bh=nKv56Ils0Y9/D85hEa+B3jlOUWLCtS+koJ99d5uwe8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhdGj35c7UwZ4inHGSQyj+SjXN4b6VGldM7iEqGYLjaFHh1SfUyZ7xTXGvsiSO1vRT9M8AdfGzhCSbuvRrf/wYapL7OEwO88jXyxAHEzPC83Rr6VO2jzdYCPeJ0OLGEEkesdUmUC58T9J/h2QKCUoG4WR9C53utdPfP8qFl8whA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16Wn0LiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067D1C4CED1;
-	Wed, 19 Feb 2025 09:05:13 +0000 (UTC)
+	 MIME-Version; b=W8zl7eWE3vZY5okIKLc8p+S79MUUluO9bYYkhATedEZJOKVTQEiBP5p/nFRq9vvmfv6KaX6bGPOz6zbpLwaHCduOPGZfvwJrnx0FX5alHvx+MU8oCoeY9Yj34n77PYR8VLneClDzpqJ8q94VakucIdCtRUACXqO2AZ8FdYdKDzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CU/uQogs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D921BC4CED1;
+	Wed, 19 Feb 2025 09:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955913;
-	bh=QtbILcJcFVDEyclW0/wcSBPgzT+exelXpZREZF+kB4Q=;
+	s=korg; t=1739957488;
+	bh=nKv56Ils0Y9/D85hEa+B3jlOUWLCtS+koJ99d5uwe8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16Wn0LiAK24VUu7Q+gxONdDrwEMbH9Hp84MKXGCQTJiLLwoXujJnq3WCh/2KA4tMJ
-	 byAGNigewDmRDEPWRTLLhcova0jlqoI9OBTboaVhkEA8Q1GruS01F1yoIxWZTZWEk7
-	 NkonAMkHGbUbIQp1d+lXgAIgSLCfcX+ww0YsnHVk=
+	b=CU/uQogstSEM0bIrAh3digX0q+3re4g2fqU0uyodbO9JI6h6Sxs4w5ApnFsSAoz2t
+	 ZM4qBWTtG5a/kuc6KxRguEyCauclV7pm6CxHZqhkXzxwNUkvwNGnwpmh68YSsfBdJm
+	 6BHcXwUu5OmZX7OzwX4aUAVhRLPFDEGVTbQeM6J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 134/152] drm/amd/display: Add null check for head_pipe in dcn201_acquire_free_pipe_for_layer
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 543/578] ipv4: use RCU protection in inet_select_addr()
 Date: Wed, 19 Feb 2025 09:29:07 +0100
-Message-ID: <20250219082555.346825702@linuxfoundation.org>
+Message-ID: <20250219082714.329470880@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,60 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f22f4754aaa47d8c59f166ba3042182859e5dff7 upstream.
+[ Upstream commit 719817cd293e4fa389e1f69c396f3f816ed5aa41 ]
 
-This commit addresses a potential null pointer dereference issue in the
-`dcn201_acquire_free_pipe_for_layer` function. The issue could occur
-when `head_pipe` is null.
+inet_select_addr() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-The fix adds a check to ensure `head_pipe` is not null before asserting
-it. If `head_pipe` is null, the function returns NULL to prevent a
-potential null pointer dereference.
-
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn201/dcn201_resource.c:1016 dcn201_acquire_free_pipe_for_layer() error: we previously assumed 'head_pipe' could be null (see line 1010)
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ dcn201 was moved from drivers/gpu/drm/amd/display/dc to
-  drivers/gpu/drm/amd/display/dc/resource since commit
-  8b8eed05a1c6 ("drm/amd/display: Refactor resource into component directory").
-  The path is changed accordingly to apply the patch on 6.6.y. ]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c4544c724322 ("[NETNS]: Process inet_select_addr inside a namespace.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn201/dcn201_resource.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/devinet.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn201/dcn201_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn201/dcn201_resource.c
-@@ -1002,8 +1002,10 @@ static struct pipe_ctx *dcn201_acquire_f
- 	struct pipe_ctx *head_pipe = resource_get_otg_master_for_stream(res_ctx, opp_head_pipe->stream);
- 	struct pipe_ctx *idle_pipe = resource_find_free_secondary_pipe_legacy(res_ctx, pool, head_pipe);
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 430ca93ba939d..1738cc2bfc7f0 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -1320,10 +1320,11 @@ __be32 inet_select_addr(const struct net_device *dev, __be32 dst, int scope)
+ 	__be32 addr = 0;
+ 	unsigned char localnet_scope = RT_SCOPE_HOST;
+ 	struct in_device *in_dev;
+-	struct net *net = dev_net(dev);
++	struct net *net;
+ 	int master_idx;
  
--	if (!head_pipe)
-+	if (!head_pipe) {
- 		ASSERT(0);
-+		return NULL;
-+	}
- 
- 	if (!idle_pipe)
- 		return NULL;
+ 	rcu_read_lock();
++	net = dev_net_rcu(dev);
+ 	in_dev = __in_dev_get_rcu(dev);
+ 	if (!in_dev)
+ 		goto no_in_dev;
+-- 
+2.39.5
+
 
 
 
