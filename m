@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2ABA3B6AE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676D7A3B68C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B33188AA8E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50CA67A6D58
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA461CDA14;
-	Wed, 19 Feb 2025 08:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1D91DF253;
+	Wed, 19 Feb 2025 09:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kimhi+VH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oObURpUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6C31C4609;
-	Wed, 19 Feb 2025 08:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2921C173F;
+	Wed, 19 Feb 2025 09:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955440; cv=none; b=defBiDKIb+20RT0lLokP6Dy1QnLIGxg5qQojPZpRtCzf2cX5PfQl0ILN1EMwT2Ho+Yi7B2d62Qhl2UZXJczPKI/ZDniiSLKKatEPQB6egIfjoqoMbbunkKGwE7HXb00DaMAi//U3nFDfDMxWV+K2cWwbluUV1JUWmGUsva97fto=
+	t=1739955774; cv=none; b=GCfF5TwHpfkEa5zou+lLA2qRRD8ivQtrOZd9OlDWN1vykD6BM02INTNW4QSl1GUr4d6KcsD8no6VYWA9tLxPPrT120COZpPWXL1Np4kEtPcdlz9n6azoailggT1uNigFs5E+oZloaDMIJF9wXjUqTIlnQ6vTh1Zm/1OA2Gk376o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955440; c=relaxed/simple;
-	bh=7j7RkosGgiI+H2TjiuhDDll6ecUtqQc+IdUJk3a2fbQ=;
+	s=arc-20240116; t=1739955774; c=relaxed/simple;
+	bh=JjliWF8VDxqFCoEJEArIteFdS5qoAYVnVFknLUVfSfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cs/weSiZlyt9RGS/N3pX+2LVGw+Qw6iT75eC7SupzO9e1iSozxrelpxrRsd3r++UQkv4Ppuf4xOHaVM5J0kfVdY/jtgihzP3AzktkfYw0/tnMgIEQnv86aOSkGvQSwUJqQSYRK8+/IOr7VjrDFOV5suR4ROwBsc0/tv6+HzGTd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kimhi+VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3097C4CED1;
-	Wed, 19 Feb 2025 08:57:19 +0000 (UTC)
+	 MIME-Version; b=c+xoXRStnQip1rt9F2FnlPzGK6YLM2U7sTn6GhJ/m2JqEvaNrBtEKuAfvtopH9B+VoHaOzyyv9/tVr0fEo4Zw+9jNDvl4FAc4vkInQm0s2khDR/6h42HAaxcDNyB69q6P7x5cE7Q7taV6tarXNI5Ob8fPSeL3/ZD6MZX6YdBKv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oObURpUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A8DC4CED1;
+	Wed, 19 Feb 2025 09:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955440;
-	bh=7j7RkosGgiI+H2TjiuhDDll6ecUtqQc+IdUJk3a2fbQ=;
+	s=korg; t=1739955774;
+	bh=JjliWF8VDxqFCoEJEArIteFdS5qoAYVnVFknLUVfSfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kimhi+VHu63gO801KkY2Myjk99d329pF2OeDS16HO0YZq0hT+KAHrgRjMpbB1v048
-	 5L+dUbBxohy8ZkWcU8E4L+C9LQFTbNxARA+sHcbJqDB/X1QJUHtsEPHaa3C24e2XA7
-	 Pxgz1t6ovS6cJVgjlBMoQXwztxdfJmnbYUndTWl0=
+	b=oObURpUC9xsQAphE1xID4uLm2ro8BECdi5Zals8HL/tkDFNG3YF05IxRcFwKuw8Pv
+	 np/ezMlhZfc1h83Yl/3y2B2sMvC9/17wFAEw18rcQdWhU6ehl06ct2DSvexnfS1UuM
+	 Vbw1suUPCh8yFJQl8ueCZSYL1e0oonIY5glzA7E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.12 205/230] drm/tidss: Fix issue in irq handling causing irq-flood issue
-Date: Wed, 19 Feb 2025 09:28:42 +0100
-Message-ID: <20250219082609.712224311@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 110/152] ipv6: icmp: convert to dev_net_rcu()
+Date: Wed, 19 Feb 2025 09:28:43 +0100
+Message-ID: <20250219082554.410331264@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 44b6730ab53ef04944fbaf6da0e77397531517b7 upstream.
+[ Upstream commit 34aef2b0ce3aa4eb4ef2e1f5cad3738d527032f5 ]
 
-It has been observed that sometimes DSS will trigger an interrupt and
-the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
-VID level interrupt-statuses are zero.
+icmp6_send() must acquire rcu_read_lock() sooner to ensure
+the dev_net() call done from a safe context.
 
-As the top level irqstatus is supposed to tell whether we have VP/VID
-interrupts, the thinking of the driver authors was that this particular
-case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
-bits which has corresponding interrupts in VP/VID status. So when this
-issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
-interrupt flood.
+Other ICMPv6 uses of dev_net() seem safe, change them to
+dev_net_rcu() to get LOCKDEP support to catch bugs.
 
-It is unclear why the issue happens. It could be a race issue in the
-driver, but no such race has been found. It could also be an issue with
-the HW. However a similar case can be easily triggered by manually
-writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
-DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
-the bit, we get an interrupt flood.
-
-To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
-solution is that if the top level irqstatus is the one that triggers the
-interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
-unhandled if VP/VID interrupt statuses have bits set. However, testing
-shows that if any of the irqstatuses is set (i.e. even if
-DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
-interrupt.
-
-Co-developed-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a43b709a230 ("[NETNS][IPV6] icmp6 - make icmpv6_socket per namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250205155120.1676781-12-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/ipv6/icmp.c | 42 +++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -780,24 +780,20 @@ static
- void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 35df405ce1f75..fd91fd139d76c 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -76,7 +76,7 @@ static int icmpv6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
  {
- 	unsigned int i;
--	u32 top_clear = 0;
+ 	/* icmpv6_notify checks 8 bytes can be pulled, icmp6hdr is 8 bytes */
+ 	struct icmp6hdr *icmp6 = (struct icmp6hdr *) (skb->data + offset);
+-	struct net *net = dev_net(skb->dev);
++	struct net *net = dev_net_rcu(skb->dev);
  
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
--		if (clearmask & DSS_IRQ_VP_MASK(i)) {
-+		if (clearmask & DSS_IRQ_VP_MASK(i))
- 			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(i);
--		}
- 	}
- 	for (i = 0; i < dispc->feat->num_planes; ++i) {
--		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
-+		if (clearmask & DSS_IRQ_PLANE_MASK(i))
- 			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(4 + i);
--		}
- 	}
- 	if (dispc->feat->subrev == DISPC_K2G)
+ 	if (type == ICMPV6_PKT_TOOBIG)
+ 		ip6_update_pmtu(skb, net, info, skb->dev->ifindex, 0, sock_net_uid(net, NULL));
+@@ -473,7 +473,10 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 
+ 	if (!skb->dev)
  		return;
+-	net = dev_net(skb->dev);
++
++	rcu_read_lock();
++
++	net = dev_net_rcu(skb->dev);
+ 	mark = IP6_REPLY_MARK(net, skb->mark);
+ 	/*
+ 	 *	Make sure we respect the rules
+@@ -496,7 +499,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 		    !(type == ICMPV6_PARAMPROB &&
+ 		      code == ICMPV6_UNK_OPTION &&
+ 		      (opt_unrec(skb, info))))
+-			return;
++			goto out;
  
--	dispc_write(dispc, DISPC_IRQSTATUS, top_clear);
-+	/* always clear the top level irqstatus */
-+	dispc_write(dispc, DISPC_IRQSTATUS, dispc_read(dispc, DISPC_IRQSTATUS));
+ 		saddr = NULL;
+ 	}
+@@ -526,7 +529,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 	if ((addr_type == IPV6_ADDR_ANY) || (addr_type & IPV6_ADDR_MULTICAST)) {
+ 		net_dbg_ratelimited("icmp6_send: addr_any/mcast source [%pI6c > %pI6c]\n",
+ 				    &hdr->saddr, &hdr->daddr);
+-		return;
++		goto out;
+ 	}
  
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQSTATUS);
+ 	/*
+@@ -535,7 +538,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 	if (is_ineligible(skb)) {
+ 		net_dbg_ratelimited("icmp6_send: no reply to icmp error [%pI6c > %pI6c]\n",
+ 				    &hdr->saddr, &hdr->daddr);
+-		return;
++		goto out;
+ 	}
+ 
+ 	/* Needed by both icmpv6_global_allow and icmpv6_xmit_lock */
+@@ -582,7 +585,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 	np = inet6_sk(sk);
+ 
+ 	if (!icmpv6_xrlim_allow(sk, type, &fl6, apply_ratelimit))
+-		goto out;
++		goto out_unlock;
+ 
+ 	tmp_hdr.icmp6_type = type;
+ 	tmp_hdr.icmp6_code = code;
+@@ -600,7 +603,7 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 
+ 	dst = icmpv6_route_lookup(net, skb, sk, &fl6);
+ 	if (IS_ERR(dst))
+-		goto out;
++		goto out_unlock;
+ 
+ 	ipc6.hlimit = ip6_sk_dst_hoplimit(np, &fl6, dst);
+ 
+@@ -616,7 +619,6 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 		goto out_dst_release;
+ 	}
+ 
+-	rcu_read_lock();
+ 	idev = __in6_dev_get(skb->dev);
+ 
+ 	if (ip6_append_data(sk, icmpv6_getfrag, &msg,
+@@ -630,13 +632,15 @@ void icmp6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info,
+ 		icmpv6_push_pending_frames(sk, &fl6, &tmp_hdr,
+ 					   len + sizeof(struct icmp6hdr));
+ 	}
+-	rcu_read_unlock();
++
+ out_dst_release:
+ 	dst_release(dst);
+-out:
++out_unlock:
+ 	icmpv6_xmit_unlock(sk);
+ out_bh_enable:
+ 	local_bh_enable();
++out:
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL(icmp6_send);
+ 
+@@ -679,8 +683,8 @@ int ip6_err_gen_icmpv6_unreach(struct sk_buff *skb, int nhs, int type,
+ 	skb_pull(skb2, nhs);
+ 	skb_reset_network_header(skb2);
+ 
+-	rt = rt6_lookup(dev_net(skb->dev), &ipv6_hdr(skb2)->saddr, NULL, 0,
+-			skb, 0);
++	rt = rt6_lookup(dev_net_rcu(skb->dev), &ipv6_hdr(skb2)->saddr,
++			NULL, 0, skb, 0);
+ 
+ 	if (rt && rt->dst.dev)
+ 		skb2->dev = rt->dst.dev;
+@@ -717,7 +721,7 @@ EXPORT_SYMBOL(ip6_err_gen_icmpv6_unreach);
+ 
+ static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+ {
+-	struct net *net = dev_net(skb->dev);
++	struct net *net = dev_net_rcu(skb->dev);
+ 	struct sock *sk;
+ 	struct inet6_dev *idev;
+ 	struct ipv6_pinfo *np;
+@@ -832,7 +836,7 @@ enum skb_drop_reason icmpv6_notify(struct sk_buff *skb, u8 type,
+ 				   u8 code, __be32 info)
+ {
+ 	struct inet6_skb_parm *opt = IP6CB(skb);
+-	struct net *net = dev_net(skb->dev);
++	struct net *net = dev_net_rcu(skb->dev);
+ 	const struct inet6_protocol *ipprot;
+ 	enum skb_drop_reason reason;
+ 	int inner_offset;
+@@ -889,7 +893,7 @@ enum skb_drop_reason icmpv6_notify(struct sk_buff *skb, u8 type,
+ static int icmpv6_rcv(struct sk_buff *skb)
+ {
+ 	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
+-	struct net *net = dev_net(skb->dev);
++	struct net *net = dev_net_rcu(skb->dev);
+ 	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+ 	const struct in6_addr *saddr, *daddr;
+@@ -921,7 +925,7 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 		skb_set_network_header(skb, nh);
+ 	}
+ 
+-	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INMSGS);
++	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
+ 
+ 	saddr = &ipv6_hdr(skb)->saddr;
+ 	daddr = &ipv6_hdr(skb)->daddr;
+@@ -939,7 +943,7 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ 	type = hdr->icmp6_type;
+ 
+-	ICMP6MSGIN_INC_STATS(dev_net(dev), idev, type);
++	ICMP6MSGIN_INC_STATS(dev_net_rcu(dev), idev, type);
+ 
+ 	switch (type) {
+ 	case ICMPV6_ECHO_REQUEST:
+@@ -1034,9 +1038,9 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ csum_error:
+ 	reason = SKB_DROP_REASON_ICMP_CSUM;
+-	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_CSUMERRORS);
++	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_CSUMERRORS);
+ discard_it:
+-	__ICMP6_INC_STATS(dev_net(dev), idev, ICMP6_MIB_INERRORS);
++	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INERRORS);
+ drop_no_count:
+ 	kfree_skb_reason(skb, reason);
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
