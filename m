@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AC2A3C80B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 19:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A62BA3C809
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 19:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39F3177F09
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:56:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ACC5177F00
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 18:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF9F214A96;
-	Wed, 19 Feb 2025 18:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77053214A7F;
+	Wed, 19 Feb 2025 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="TfN/yhsV"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="htH3ICmW"
 X-Original-To: stable@vger.kernel.org
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A8B1E4AB
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 18:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86FD1E4AB
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 18:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739991369; cv=none; b=pcPjDlnMwAiqNPpSCjsGOe9cIlL5xO988LSKHoibGLBjiO6EvI6Bo9ZgeUUmYl483RSx7VHwG/+Mn0uxFsGkc6hIqWf9WqzOQ6AFQKjo9gRLRI0/zBf07iLb239fx1Qu1awJWReGl7xiE8OsGbhFgKY4BVv/+xCZKpQxsyp92hc=
+	t=1739991338; cv=none; b=TzKH2/bjr/cy3l7o9b6Y2dCxBpR3oRSYnovOg/f71ApcogCn9K0VPvloS7viGfUt5zCikKaZZAshHSzy3mqK4kY484K/IwME4hRAe1CDAsFyGCYwYeY0VOxIiZGvvPs7sAd/QC7fg/abDaJQ+QIG6xVQyCFsp8D8FQlxON5Yb0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739991369; c=relaxed/simple;
-	bh=R0pJRv8Y3NNPdEoB02aPXS6NoIQxDsZg5r5rkW3yJPI=;
+	s=arc-20240116; t=1739991338; c=relaxed/simple;
+	bh=DjGi9xU+SlcrCCiYt1eFuU26AbeIjiKSJJeG+mIZJS4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rzSJdjmKIjvoQOdmW3LElVYeqDRKAzWWgVXfz2uwOz22NyADBjxuN9bBGooLw598udFmC3ur3wQanu9eFauOdwLU0Z2ytBNy4gfnp+ee2K6q71y3tbV5w7Mzgy4VlGn42ZCLfJ7UeNql1vXicN1IkLlOtG/+W5Av6SK/ZjDOMAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=TfN/yhsV; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version; b=o3qtaPqySsgxHIrG/Fa+tbNdKl9wm2NzNpCGGMPn/1VYFYRd11trQHZFIVGglr2btGdmwtC0duSdSvJnF+SwrAdfGo07GUpalx6oSp33AouLRc18ruSoFPrhS51snPNUVX4YH66FCCLPB18eGr53jNvyOh4b6sTuduhv6oi/Wf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=htH3ICmW; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1739990984;
+	s=20121; t=1739991332;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y5atmT4Hk74zf8egci27Cjs3agvasyE4jnZRp7mFoes=;
-	b=TfN/yhsV9iZvLRgY5rrQz1XprFXd3zkmrFMEZkSEkjQs0SMoqqcqrbbCMaEcTLcyAWXKKl
-	3MM/R4khhq5UnnHwz+e3zhIIuaKPZgaw/Osm7+E8u9MM2IryfAhIxi6yIVep3/CAEADorO
-	YqG7HkQLYLKy964SrbYMmHZrWfPZTCo=
+	bh=nkSDYqbsDjMBOdsSitOx2gZBd1JcCdfz0D+iWZI5Vh0=;
+	b=htH3ICmWTOsdtzCyTCxI2rOFpn1X2xQMDw3f6filMhSLIc7P7bxnVwL/z8RZ/12tg75XXp
+	w0xZr+TXi7CN6vEUIOTPwwYd7llJ1cyoDy0XnZEOKrmNhUx7ov1wu+VxTrroBYj+nq699b
+	2QKlNCQMWL/e9xgs9KcJClUh3FyP8NI=
 From: Sven Eckelmann <sven@narfation.org>
 To: stable@vger.kernel.org
 Cc: Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.15.y] batman-adv: Drop unmanaged ELP metric worker
-Date: Wed, 19 Feb 2025 19:49:05 +0100
-Message-Id: <20250219184905.814343-1-sven@narfation.org>
+Subject: [PATCH 5.10.y] batman-adv: Drop unmanaged ELP metric worker
+Date: Wed, 19 Feb 2025 19:55:19 +0100
+Message-Id: <20250219185519.840435-1-sven@narfation.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025021839-primal-stiffen-ba9e@gregkh>
-References: <2025021839-primal-stiffen-ba9e@gregkh>
+In-Reply-To: <2025021841-atrium-settle-8b58@gregkh>
+References: <2025021841-atrium-settle-8b58@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,10 +112,10 @@ Signed-off-by: Sven Eckelmann <sven@narfation.org>
  4 files changed, 50 insertions(+), 31 deletions(-)
 
 diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index 54e41fc709c3..651e01b86141 100644
+index 0ecaf1bb0068..7e985f827a94 100644
 --- a/net/batman-adv/bat_v.c
 +++ b/net/batman-adv/bat_v.c
-@@ -113,8 +113,6 @@ static void
+@@ -115,8 +115,6 @@ static void
  batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
  {
  	ewma_throughput_init(&hardif_neigh->bat_v.throughput);
@@ -123,9 +123,9 @@ index 54e41fc709c3..651e01b86141 100644
 -		  batadv_v_elp_throughput_metric_update);
  }
  
- /**
+ #ifdef CONFIG_BATMAN_ADV_DEBUGFS
 diff --git a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c
-index 956c4e799a69..85467a06f9c2 100644
+index 980badecf251..f4aa0964961b 100644
 --- a/net/batman-adv/bat_v_elp.c
 +++ b/net/batman-adv/bat_v_elp.c
 @@ -18,6 +18,7 @@
@@ -133,10 +133,10 @@ index 956c4e799a69..85467a06f9c2 100644
  #include <linux/kernel.h>
  #include <linux/kref.h>
 +#include <linux/list.h>
- #include <linux/minmax.h>
  #include <linux/netdevice.h>
  #include <linux/nl80211.h>
-@@ -27,6 +28,7 @@
+ #include <linux/prandom.h>
+@@ -26,6 +27,7 @@
  #include <linux/rcupdate.h>
  #include <linux/rtnetlink.h>
  #include <linux/skbuff.h>
@@ -144,7 +144,7 @@ index 956c4e799a69..85467a06f9c2 100644
  #include <linux/stddef.h>
  #include <linux/string.h>
  #include <linux/types.h>
-@@ -42,6 +44,18 @@
+@@ -41,6 +43,18 @@
  #include "routing.h"
  #include "send.h"
  
@@ -163,7 +163,7 @@ index 956c4e799a69..85467a06f9c2 100644
  /**
   * batadv_v_elp_start_timer() - restart timer for ELP periodic work
   * @hard_iface: the interface for which the timer has to be reset
-@@ -138,11 +152,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+@@ -137,11 +151,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
  		goto default_throughput;
  	}
  
@@ -185,7 +185,7 @@ index 956c4e799a69..85467a06f9c2 100644
  	ret = __ethtool_get_link_ksettings(hard_iface->net_dev, &link_settings);
  	rtnl_unlock();
  	if (ret == 0) {
-@@ -177,31 +199,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+@@ -176,31 +198,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
  /**
   * batadv_v_elp_throughput_metric_update() - worker updating the throughput
   *  metric of a single hop neighbour
@@ -221,7 +221,7 @@ index 956c4e799a69..85467a06f9c2 100644
  }
  
  /**
-@@ -275,14 +285,16 @@ batadv_v_elp_wifi_neigh_probe(struct batadv_hardif_neigh_node *neigh)
+@@ -274,14 +284,16 @@ batadv_v_elp_wifi_neigh_probe(struct batadv_hardif_neigh_node *neigh)
   */
  static void batadv_v_elp_periodic_work(struct work_struct *work)
  {
@@ -239,7 +239,7 @@ index 956c4e799a69..85467a06f9c2 100644
  
  	bat_v = container_of(work, struct batadv_hard_iface_bat_v, elp_wq.work);
  	hard_iface = container_of(bat_v, struct batadv_hard_iface, bat_v);
-@@ -318,6 +330,8 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
+@@ -317,6 +329,8 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
  
  	atomic_inc(&hard_iface->bat_v.elp_seqno);
  
@@ -248,7 +248,7 @@ index 956c4e799a69..85467a06f9c2 100644
  	/* The throughput metric is updated on each sent packet. This way, if a
  	 * node is dead and no longer sends packets, batman-adv is still able to
  	 * react timely to its death.
-@@ -342,16 +356,28 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
+@@ -341,16 +355,28 @@ static void batadv_v_elp_periodic_work(struct work_struct *work)
  
  		/* Reading the estimated throughput from cfg80211 is a task that
  		 * may sleep and that is not allowed in an rcu protected
@@ -283,7 +283,7 @@ index 956c4e799a69..85467a06f9c2 100644
  	batadv_v_elp_start_timer(hard_iface);
  out:
 diff --git a/net/batman-adv/bat_v_elp.h b/net/batman-adv/bat_v_elp.h
-index 9e2740195fa2..c9cb0a307100 100644
+index 4358d436be2a..f814f87f3a6a 100644
 --- a/net/batman-adv/bat_v_elp.h
 +++ b/net/batman-adv/bat_v_elp.h
 @@ -10,7 +10,6 @@
@@ -302,10 +302,10 @@ index 9e2740195fa2..c9cb0a307100 100644
  
  #endif /* _NET_BATMAN_ADV_BAT_V_ELP_H_ */
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 2635763bbd67..e659623b7a33 100644
+index 7d47fe7534c1..cc3334afbdd0 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -596,9 +596,6 @@ struct batadv_hardif_neigh_node_bat_v {
+@@ -606,9 +606,6 @@ struct batadv_hardif_neigh_node_bat_v {
  	 *  neighbor
  	 */
  	unsigned long last_unicast_tx;
