@@ -1,192 +1,199 @@
-Return-Path: <stable+bounces-118365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81BDA3CD7D
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 00:28:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D165AA3CD87
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 00:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D98CF189B339
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 23:28:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7968F177FCD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 23:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37F925E453;
-	Wed, 19 Feb 2025 23:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D39260A55;
+	Wed, 19 Feb 2025 23:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Eu5g9Mec"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eizMWr9S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2081.outbound.protection.outlook.com [40.107.93.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6044A1D7E30;
-	Wed, 19 Feb 2025 23:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740007682; cv=none; b=bEUuBuo+fZPWvRDr2UJ0QM/A+m0d3yIm5TUQo7g4eQbklzbyzmj5MhE8HWXmDi1hq3OwJjH+8E27hS2lLxJcGizL+Jci3LJzZ8Mo73e9xWu+H8AqzpXM6kLDbnQWgIS38KVEFwp9RtVW+XOAjZFcC8xYKIfTRNOAFfW1E9DYqIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740007682; c=relaxed/simple;
-	bh=iGI9XFpGJ+DOM31pAarTDjvshjQGUBKEThXpRdT3zKg=;
-	h=Date:To:From:Subject:Message-Id; b=DwqvkADFp3JL2JzoZ2mX2NJgXkb1j/Fajv1eJmKF/87/TLyLwRlwNw8KN7k8/bTRF3h3NruEaUf1sHwzXbyaEJztXeKYGM9ItAqJgzMyxLOarBU3IvnjNFDDft7WDGNfe5aUYmzGN3xlDBdiykOIvLtEgpk92lecHgeqr67rYlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Eu5g9Mec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB234C4CED1;
-	Wed, 19 Feb 2025 23:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1740007681;
-	bh=iGI9XFpGJ+DOM31pAarTDjvshjQGUBKEThXpRdT3zKg=;
-	h=Date:To:From:Subject:From;
-	b=Eu5g9Mec4FlQP3NNvHjKNoOmm1MpFpXDsLVYCoZ4oIe37SLSAzOuZ+sdT4KEtu4pw
-	 l78yE80m8GdBSyUyCRqKdUG8g8H3dHqU4/MBFPxE20dCVU9SX1t96YggrLj0I677FO
-	 PqucIFO+UNe/IVSPVb50QdMYa5DEnfWegtRD1zWM=
-Date: Wed, 19 Feb 2025 15:28:01 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,baolin.wang@linux.alibaba.com,21cnbao@gmail.com,yangge1116@126.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-wait-for-hugetlb-folios-to-be-freed.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250219232801.BB234C4CED1@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAF525EFB2;
+	Wed, 19 Feb 2025 23:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740007770; cv=fail; b=fEhWT2wovlnF0U5SQBuqxgkByYchWuhvAySukSv2iJS1r37RztMmWWa8O931OD0A/2eJtSwnLdCHYdmiDlRrXTRdtJ3/MH2tiGMQWuQhIYmdMQe/WcdEy7LzbSL37suueZLkyO5kbGo+StAuo1CwpVNaMcLcnK1dyYpCSoeAEAo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740007770; c=relaxed/simple;
+	bh=POyZu5E74kLhZhjxSfJ/WgO57FkFxc9sRSQgCZ0+XEw=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=OVoakVW36Y13Hd93a54y54p3ZHZhIQBuMsthHW9U6lgOaarWDWU/a4/Y2lnOpOLmPQ6ziu6E3vPfFEhQhfoOGBTOQPZmb7LX/puLUXR3BSwSfcFUsrDBv045MdJBKxAgRlniyyzF8/sOOI6uHqpzU1hwupL1UaHgPbB4zgpNwzk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eizMWr9S; arc=fail smtp.client-ip=40.107.93.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xEhrKhrZT2r0hmsiLSuuEaKPan8ZEjTTsQ41fls5VImGWdk8ArTFYESeoSew9D2vVV200+b0H7AyPv1XhxZn8E1am2uNuwp/bZ08jiUP8rfEEjF/jef/EUatU2b23XZ6jzs7iTaMzAyntjs2sfRMnMl3NKgjzZFi5jeStfYdpT5XHNFHmub1/9zLnVIbhHW7Ukw2KJpdhaFU2Rxt0b35QOs7Tj+ad9/KmgJYQMKFNkx/7Us4DXuG+5xAqAMF1JwaRBjPT7a9cs7OQYEisCT9YuMglXITpEYKpAxfKp7hC5aNwm+nWcaLW/NUCucW7KJl1y5sF91H9Ybg1N+tULsG3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NUlBjhS/dr7fgcuE6r+3alO+AsiUuBApgnO/I+hG2E4=;
+ b=xiZGvtK6tXk08fvRzHj8ZsRgaqQPyqecbxCpWOwf1kQJ0V3qHFYt+VGMEFXvzloF5n+Z89lloPlreS5T2fH0C41OTem5UtNn4TblqC6efxCFLdPV8Guojfqsg4dgkitV4QKHyeHptEpusjUopWK1eno9Tb1jqX+jizP3gJldlzWjtUrpLWc7BWwcCd7RcSK8xUxFjfGtAZu1ITGQ6n6HRCuYCy+KqJE5e0V9PH08r2z137B4trEoalfb41/1baUWTwFr7QpUYQdPe3kI+fOvmmdUo2OSW7g4dopD4tmKBL2e2lyDJPnm1Uxbsq1uhC6SQGLlb71hREvMPwsY2gw+Eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NUlBjhS/dr7fgcuE6r+3alO+AsiUuBApgnO/I+hG2E4=;
+ b=eizMWr9ShtuDoza9FS9Q/7KFbX9NIkkxHD7uESnhadCc33VqDFQEEWgg78Mwn8KOyytLF57jQ8HS0FtrO8HhF7oi3imWGQnTrxZOYmnm3/LKWO2W80gsgUCpUdGXVmCv7llhiLHDuyUpPydwXH6Ya7Cdr10kDuSheDwkBfX9kVWsQJrFhsSLRw8naVW5mShkNywmk+aqeul0nrm4spJruqXPEKeC7U8MV2O11PK+BvJfNVE9wnlgKVKGa1LDH2MTzyaYevnjoVpsmqqvgc6uJ0EUzm3uqZLw/mZMnECygH7jIBIYf4WeI7RDjBVTmvbrvi4rqLF9VCkcqe0JYvaZ3w==
+Received: from CY8PR12CA0008.namprd12.prod.outlook.com (2603:10b6:930:4e::12)
+ by PH7PR12MB7795.namprd12.prod.outlook.com (2603:10b6:510:278::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Wed, 19 Feb
+ 2025 23:29:23 +0000
+Received: from CY4PEPF0000EE30.namprd05.prod.outlook.com
+ (2603:10b6:930:4e:cafe::d8) by CY8PR12CA0008.outlook.office365.com
+ (2603:10b6:930:4e::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.15 via Frontend Transport; Wed,
+ 19 Feb 2025 23:29:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CY4PEPF0000EE30.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8466.11 via Frontend Transport; Wed, 19 Feb 2025 23:29:23 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 19 Feb
+ 2025 15:29:14 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 19 Feb 2025 15:29:14 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Wed, 19 Feb 2025 15:29:14 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1 000/578] 6.1.129-rc1 review
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <ba978f1f-f3df-4a8a-a618-004c7abbafb9@drhqmail202.nvidia.com>
+Date: Wed, 19 Feb 2025 15:29:14 -0800
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|PH7PR12MB7795:EE_
+X-MS-Office365-Filtering-Correlation-Id: a28b6c00-9186-415a-01cf-08dd513d3e56
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?clVuVHJPR1lyWEJ3K3NBWmNReVlGaCtKNUhEMU1sU1dMRGJuSVhBZkZ4NFBm?=
+ =?utf-8?B?RSs3WVI2Y1JsYXRYS2RMdllydE9IaEM2cFF1ci9wTDFHZzlHSVVKNXMwVGQ1?=
+ =?utf-8?B?ek41dGdkMXdqVEUwNHpVQ1VaZFFtS0pYM1dEQ2hqb3dFbWltdGZTUFVnbzBx?=
+ =?utf-8?B?ZXRyUzNXSHdZZkZjTzVTUE1JcDFPbTdDai9pc25HUnd1THFIYmtoKzI1b0Fr?=
+ =?utf-8?B?YjdpWFB0Z0Rma1YrUTV5MUxUaTcwakJBYjVXZloxTFBQSFJPa0VKcG1jZHZ3?=
+ =?utf-8?B?NG5pZHY3cElGZ3JyTDNkOFo3cjZyUmZYM1NxM09zTi9mazdUZjJPYy8zLy81?=
+ =?utf-8?B?QVFtN0ZRMnErSXVOcis5NUQ4UWw5MTJqUm8xZGdYZDcyKzBiNytxTy9NK0Zo?=
+ =?utf-8?B?TzFrUENjYVo1S1A1K1FMUDhUUkFhMjZrMm9aMUltSGpCV0RLQXZiNzVGeGgx?=
+ =?utf-8?B?ZEdvQ2FNVVU2ZWRTOHMzRDJNUkU2K3g1NExkMklCeGJhdXhwZnpJQmp6bEFh?=
+ =?utf-8?B?SUxlOGlveUZXR2N2eXpyaWFZNXA5ZjVud1d5RTRabGE1dEloS096T1ZBZVcz?=
+ =?utf-8?B?VFdFQ1M2R0ZFZmlTaEdLeFJHMUVIRHovMnNqd1FEY1N6cnpyMTV3Q2tMSFNY?=
+ =?utf-8?B?UjNOa1lraG9sU25vYzY5b25SVFU1T3lFd2RzT3FYQk4xMXF1dHFrUWJVS3VR?=
+ =?utf-8?B?MlBzbTJLUkdVWUUydzg0dU9mOHJMaW1UeUNxUDZDQjRseE8raW5qbFVQMDRz?=
+ =?utf-8?B?SEU4UXpJN2xTZU9iUTVsZFpTUHhvWmJObDZJdlVkZUwrRlFZVG16ZkZIZ2FT?=
+ =?utf-8?B?SzgvWnFGcnRzSGFmejk5RUhRRHFqNlNEMkdRNnVkVzdJUlRjRnI1WXBOYXVj?=
+ =?utf-8?B?UkRtL2ZGTm0xOS9NZUxZajdUNXdTWlAreW5TSG1keFVFOEwwVjNWOE5CWVdu?=
+ =?utf-8?B?cWg0MHFzcGxpSmRwdW9HSGFud09FZUh2d0VvN2E2cXpDbVAyRnJpdEVqcTho?=
+ =?utf-8?B?Sk1QZ1l5SDZ2SVB3N1djUExyMnFaV3QxTkVJVjhmSG9vblBabTFyb1cyRkYv?=
+ =?utf-8?B?WksyWGNCZkxtWXp1d3JWMEJWcWd1YW0rVUlFdGlLZnR3L1pxWkpsY0hGS3pI?=
+ =?utf-8?B?N1JmYys4dHBvbis5NlFTd01XYnhPS1h0RGNTWWQ3M0d2Y3pqTGNGZytxYmJn?=
+ =?utf-8?B?WHMzdlFZUEZlOUI5c2kvbnJaLzdrZVVXblhFV0VnYnMralBjbmhOcWVqdlZk?=
+ =?utf-8?B?L0JXK095bGpCZWg2OGFXcXJBSXUva0FKbTZScFFua3dhNHZwV010Rm9VT28w?=
+ =?utf-8?B?a2Q5MmtIZ0ErL3B0Mmh1ZzMzVFg0ZDlKMkpCMHUrYmZTYm9QKy9OQlBrcFFr?=
+ =?utf-8?B?Y1RBczJUTEloTjRaWFNnZ2J5NzhUeWhxamtkSm9ZeWh2ZXhoNkIvYlJSQWtG?=
+ =?utf-8?B?KzB0dUNMQm8rQWxGcE1yOXNuWnRJeXIxbFM4WXk3a01jU2dydXMyRmJvVjN1?=
+ =?utf-8?B?ZGxkMHdNa2NHN01kREpGT1lpVkVoWW9zaEdPUEpoRGdxOU9oV1ZxUEg3VUx1?=
+ =?utf-8?B?a1dxT3ZDVW10M2RYTVUvRVUvMktwNklONFpYWE5qWjZmam41K0hKQ3BCVWYx?=
+ =?utf-8?B?RXZFWHFwdU9YV1pWdmdjaHFtZEgzZkgyeTVQNDlVUjUvYlBQVG9vQXRIMjhM?=
+ =?utf-8?B?QTNPWGFlMDMwcE9ienhOVzc2dFRid2FCZXF0c3YyeEE0Y003Y0ZZWFZ2eUls?=
+ =?utf-8?B?aldkRUdNWW41TDlNMHllUDN0Z2F0eDBUNUtVYzVYWVdBSUg5VHBRRTliSXdH?=
+ =?utf-8?B?UFRwRnU1d2xWNXZ4UmkveTIzL2ZjR2tGRnZpRGtTZEY1a1ByQnhmNlE1MEls?=
+ =?utf-8?B?VldMQlc1NDFKb2k5QU4yL3k1SkVnQllXYThJaXRkakk5QlU4cTNaVEJXaWM3?=
+ =?utf-8?B?d1F1U0hTM2NWdXdNU3ltWWhkb0VPTWpoVXpudk9Ka0puSlg5OTVQVC9uendQ?=
+ =?utf-8?Q?IlAtRlXkyeLm3knK4ds60JJ+levPhY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 23:29:23.6063
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a28b6c00-9186-415a-01cf-08dd513d3e56
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE30.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7795
 
+On Wed, 19 Feb 2025 09:20:04 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.129 release.
+> There are 578 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 21 Feb 2025 08:25:11 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.129-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: mm/hugetlb: wait for hugetlb folios to be freed
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-wait-for-hugetlb-folios-to-be-freed.patch
+All tests passing for Tegra ...
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-wait-for-hugetlb-folios-to-be-freed.patch
+Test results for stable-v6.1:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    115 tests:	115 pass, 0 fail
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Linux version:	6.1.129-rc1-ga377a8af64e7
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ge Yang <yangge1116@126.com>
-Subject: mm/hugetlb: wait for hugetlb folios to be freed
-Date: Wed, 19 Feb 2025 11:46:44 +0800
-
-Since the introduction of commit c77c0a8ac4c52 ("mm/hugetlb: defer freeing
-of huge pages if in non-task context"), which supports deferring the
-freeing of hugetlb pages, the allocation of contiguous memory through
-cma_alloc() may fail probabilistically.
-
-In the CMA allocation process, if it is found that the CMA area is
-occupied by in-use hugetlb folios, these in-use hugetlb folios need to be
-migrated to another location.  When there are no available hugetlb folios
-in the free hugetlb pool during the migration of in-use hugetlb folios,
-new folios are allocated from the buddy system.  A temporary state is set
-on the newly allocated folio.  Upon completion of the hugetlb folio
-migration, the temporary state is transferred from the new folios to the
-old folios.  Normally, when the old folios with the temporary state are
-freed, it is directly released back to the buddy system.  However, due to
-the deferred freeing of hugetlb pages, the PageBuddy() check fails,
-ultimately leading to the failure of cma_alloc().
-
-Here is a simplified call trace illustrating the process:
-cma_alloc()
-    ->__alloc_contig_migrate_range() // Migrate in-use hugetlb folios
-        ->unmap_and_move_huge_page()
-            ->folio_putback_hugetlb() // Free old folios
-    ->test_pages_isolated()
-        ->__test_page_isolated_in_pageblock()
-             ->PageBuddy(page) // Check if the page is in buddy
-
-To resolve this issue, we have implemented a function named
-wait_for_freed_hugetlb_folios().  This function ensures that the hugetlb
-folios are properly released back to the buddy system after their
-migration is completed.  By invoking wait_for_freed_hugetlb_folios()
-before calling PageBuddy(), we ensure that PageBuddy() will succeed.
-
-Link: https://lkml.kernel.org/r/1739936804-18199-1-git-send-email-yangge1116@126.com
-Fixes: c77c0a8ac4c52 ("mm/hugetlb: defer freeing of huge pages if in non-task context")
-Signed-off-by: Ge Yang <yangge1116@126.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/hugetlb.h |    5 +++++
- mm/hugetlb.c            |    8 ++++++++
- mm/page_isolation.c     |   10 ++++++++++
- 3 files changed, 23 insertions(+)
-
---- a/include/linux/hugetlb.h~mm-hugetlb-wait-for-hugetlb-folios-to-be-freed
-+++ a/include/linux/hugetlb.h
-@@ -682,6 +682,7 @@ struct huge_bootmem_page {
- 
- int isolate_or_dissolve_huge_page(struct page *page, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
-+void wait_for_freed_hugetlb_folios(void);
- struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 				unsigned long addr, bool cow_from_owner);
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
-@@ -1066,6 +1067,10 @@ static inline int replace_free_hugepage_
- 	return 0;
- }
- 
-+static inline void wait_for_freed_hugetlb_folios(void)
-+{
-+}
-+
- static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 					   unsigned long addr,
- 					   bool cow_from_owner)
---- a/mm/hugetlb.c~mm-hugetlb-wait-for-hugetlb-folios-to-be-freed
-+++ a/mm/hugetlb.c
-@@ -2943,6 +2943,14 @@ int replace_free_hugepage_folios(unsigne
- 	return ret;
- }
- 
-+void wait_for_freed_hugetlb_folios(void)
-+{
-+	if (llist_empty(&hpage_freelist))
-+		return;
-+
-+	flush_work(&free_hpage_work);
-+}
-+
- typedef enum {
- 	/*
- 	 * For either 0/1: we checked the per-vma resv map, and one resv
---- a/mm/page_isolation.c~mm-hugetlb-wait-for-hugetlb-folios-to-be-freed
-+++ a/mm/page_isolation.c
-@@ -608,6 +608,16 @@ int test_pages_isolated(unsigned long st
- 	int ret;
- 
- 	/*
-+	 * Due to the deferred freeing of hugetlb folios, the hugepage folios may
-+	 * not immediately release to the buddy system. This can cause PageBuddy()
-+	 * to fail in __test_page_isolated_in_pageblock(). To ensure that the
-+	 * hugetlb folios are properly released back to the buddy system, we
-+	 * invoke the wait_for_freed_hugetlb_folios() function to wait for the
-+	 * release to complete.
-+	 */
-+	wait_for_freed_hugetlb_folios();
-+
-+	/*
- 	 * Note: pageblock_nr_pages != MAX_PAGE_ORDER. Then, chunks of free
- 	 * pages are not aligned to pageblock_nr_pages.
- 	 * Then we just check migratetype first.
-_
-
-Patches currently in -mm which might be from yangge1116@126.com are
-
-mm-hugetlb-wait-for-hugetlb-folios-to-be-freed.patch
-
+Jon
 
