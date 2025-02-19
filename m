@@ -1,207 +1,131 @@
-Return-Path: <stable+bounces-118350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8CEA3CC04
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 23:07:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5EAFA3CC1D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 23:12:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DD8B179076
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 22:07:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D49EE189D6E8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 22:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C723221481E;
-	Wed, 19 Feb 2025 22:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC0C2586E9;
+	Wed, 19 Feb 2025 22:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nafVRmno"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8x6bK7B"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC4C1B87D3
-	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 22:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3362586DF
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 22:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740002876; cv=none; b=PqG7h5HBrf1pK3n3CFq9jRXKggN3DmORp2Tmept2373J7UPwX4pqxJlySunb4oFtXH0B/ichMy93Fs9l/umWjMPOKKT8kZl+e6aFiSjxGHKW4SHxcAYIuER7707/KH2+0ZxiGBkbPwtxQhAjS0L9ygDbpfpd4sqVnovqTcOnkwI=
+	t=1740002998; cv=none; b=qkZOBjp77ZppSNoqnOlggPqJho+wLQyDTCjgx1G+YFS63/fvKXhjtFtC3drlqBWTclbb8Y0fMx1/LbCwxCKvIIQUajY1UytQmhSUC2WCvtm8AYROpRlA7riYdW7oGJ8Yy6e4DXnLMzfUoeooR4NzQ748LyvNJHrUmqeheiP4OeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740002876; c=relaxed/simple;
-	bh=hEITRrgieNv/Ub1OlYS/X9nUC2LTusnvXfgFsRzkzgM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLnF1tS8b1JGYu9k5Nw/Wxr4+HmxPKy40g56/x+QXJim6qy3X0a3YX1Ul5WpeYITGwB7/aHlyvHTHVAN5Zv5Y64ZWZu/BJ+9lmhieAO26JN8KWOUQnlRgba0SG4pj4fanSsQz+iV7MBqX0jIE8zK2XTy+DuXh1B1czZ5x2nuiyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nafVRmno; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740002867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ow+fKK+YhM2bEIFRB+vXisHYGskL142HuAanS/Q7uf0=;
-	b=nafVRmnoCkdVZuoVmj57PK3/KOT07X29H8wWFSKJMtCbrpCHqXarwzPzZhO0j3WwszTPxI
-	q3r6BhbJYJvfHlS8dfoVqMqKn0Jc+FsgF4/ENVFRKI8S63k9nsZoDD+V8FCFzf8vRPkfUw
-	1peQ34oS9FXwkxGJWv9HhLCYoxeN3M4=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev
-Cc: Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	stable@vger.kernel.org,
-	Vladimir Murzin <vladimir.murzin@arm.com>
-Subject: [PATCH] KVM: arm64: Ensure a VMID is allocated before programming VTTBR_EL2
-Date: Wed, 19 Feb 2025 14:07:37 -0800
-Message-Id: <20250219220737.130842-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1740002998; c=relaxed/simple;
+	bh=ExEpV3RZwgjJyUeXf7gQh9qtflzi7TRfY4mQTYp47Kw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EIULy8iIiozFRB9g309Rs0Z3flJ8Y6Pigs4t9pJL1+P0VR9W0OvrErMkaAo1pEgp2egdRnW4ASxVsdHr2TvinhEvCzMs4EwTCpAzhFd0NvkbczRqZVobpdTDKLyCC8538gjvJRHIQXeyGyopweGGdzH3Tw4zj0+EnE0pNIIRpH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8x6bK7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C614C4CED1;
+	Wed, 19 Feb 2025 22:09:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740002997;
+	bh=ExEpV3RZwgjJyUeXf7gQh9qtflzi7TRfY4mQTYp47Kw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T8x6bK7BqOPe4bwoZUd/kojMW1Op2YlptM/t4B1x1nsOfNq98dLtUA7BQnxQGg6Lr
+	 K9ck9rFr+oKWzbmYtpmoCqgN6IxRCqAPh4GPvQDanYsDXYy8jYniQVZ3ug2N1pdSn3
+	 QZHCb63sXo3FwQG9Zd+jWlWLJ6PPDVaE66Xp9JjUN3zqNSzKeCsUjBUJg50WO1YxbG
+	 6eyHokM6Ph09J29Dbp78Uw133rqux6J6plPJHHL0p1R8SBFWzyj+3z9eCMiNF9iGCK
+	 j6xMnLBs2Y+5MpQoxVej3gRS7pKcgz9f8efUL23MkTDKiQEUCWwp9e6NKOQkJOqkRe
+	 I/2DJX30iUadw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	sven@narfation.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] batman-adv: Drop unmanaged ELP metric worker
+Date: Wed, 19 Feb 2025 17:09:53 -0500
+Message-Id: <20250219165451-d7aeabb8444db978@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250219184905.814343-1-sven@narfation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Vladimir reports that a race condition to attach a VMID to a stage-2 MMU
-sometimes results in a vCPU entering the guest with a VMID of 0:
+[ Sasha's backport helper bot ]
 
-| CPU1                                            |   CPU2
-|                                                 |
-|                                                 | kvm_arch_vcpu_ioctl_run
-|                                                 |   vcpu_load             <= load VTTBR_EL2
-|                                                 |                            kvm_vmid->id = 0
-|                                                 |
-| kvm_arch_vcpu_ioctl_run                         |
-|   vcpu_load             <= load VTTBR_EL2       |
-|                            with kvm_vmid->id = 0|
-|   kvm_arm_vmid_update   <= allocates fresh      |
-|                            kvm_vmid->id and     |
-|                            reload VTTBR_EL2     |
-|                                                 |
-|                                                 |   kvm_arm_vmid_update <= observes that kvm_vmid->id
-|                                                 |                          already allocated,
-|                                                 |                          skips reload VTTBR_EL2
+Hi,
 
-Oh yeah, it's as bad as it looks. Remember that VHE loads the stage-2
-MMU eagerly but a VMID only gets attached to the MMU later on in the
-KVM_RUN loop.
+Summary of potential issues:
+❌ Build failures detected
 
-Even in the "best case" where VTTBR_EL2 correctly gets reprogrammed
-before entering the EL1&0 regime, there is a period of time where
-hardware is configured with VMID 0. That's completely insane. So, rather
-than decorating the 'late' binding with another hack, just allocate the
-damn thing up front.
+The upstream commit SHA1 provided is correct: 8c8ecc98f5c65947b0070a24bac11e12e47cc65d
 
-Attaching a VMID from vcpu_load() is still rollover safe since
-(surprise!) it'll always get called after a vCPU was preempted.
 
-Excuse me while I go find a brown paper bag.
+Status in newer kernel trees:
+6.13.y | Present (different SHA1: 7350aafa40a7)
+6.12.y | Present (different SHA1: c09f874f226b)
+6.6.y | Present (different SHA1: c8db60b2a7fd)
+6.1.y | Present (different SHA1: 831dda93b13c)
+5.4.y | Not found
 
-Cc: stable@vger.kernel.org
-Fixes: 934bf871f011 ("KVM: arm64: Load the stage-2 MMU context in kvm_vcpu_load_vhe()")
-Reported-by: Vladimir Murzin <vladimir.murzin@arm.com>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Note: The patch differs from the upstream commit:
 ---
- arch/arm64/include/asm/kvm_host.h |  2 +-
- arch/arm64/kvm/arm.c              | 22 ++++++++++------------
- arch/arm64/kvm/vmid.c             | 11 +++--------
- 3 files changed, 14 insertions(+), 21 deletions(-)
+Failed to apply patch cleanly.
+---
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 7cfa024de4e3..e6e8b8970caa 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1271,7 +1271,7 @@ int kvm_arm_pvtime_has_attr(struct kvm_vcpu *vcpu,
- extern unsigned int __ro_after_init kvm_arm_vmid_bits;
- int __init kvm_arm_vmid_alloc_init(void);
- void __init kvm_arm_vmid_alloc_free(void);
--bool kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid);
-+void kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid);
- void kvm_arm_vmid_clear_active(void);
- 
- static inline void kvm_arm_pvtime_vcpu_init(struct kvm_vcpu_arch *vcpu_arch)
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 646e806c6ca6..fafe42755031 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -559,6 +559,16 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	mmu = vcpu->arch.hw_mmu;
- 	last_ran = this_cpu_ptr(mmu->last_vcpu_ran);
- 
-+	/*
-+	 * Ensure a VMID is allocated for the MMU before programming VTTBR_EL2,
-+	 * which happens eagerly in VHE.
-+	 *
-+	 * Also, the VMID allocator only preserves VMIDs that are active at the
-+	 * time of rollover, so KVM might need to grab a new VMID for the MMU if
-+	 * this is called from kvm_sched_in().
-+	 */
-+	kvm_arm_vmid_update(&mmu->vmid);
-+
- 	/*
- 	 * We guarantee that both TLBs and I-cache are private to each
- 	 * vcpu. If detecting that a vcpu from the same VM has
-@@ -1138,18 +1148,6 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 		 */
- 		preempt_disable();
- 
--		/*
--		 * The VMID allocator only tracks active VMIDs per
--		 * physical CPU, and therefore the VMID allocated may not be
--		 * preserved on VMID roll-over if the task was preempted,
--		 * making a thread's VMID inactive. So we need to call
--		 * kvm_arm_vmid_update() in non-premptible context.
--		 */
--		if (kvm_arm_vmid_update(&vcpu->arch.hw_mmu->vmid) &&
--		    has_vhe())
--			__load_stage2(vcpu->arch.hw_mmu,
--				      vcpu->arch.hw_mmu->arch);
--
- 		kvm_pmu_flush_hwstate(vcpu);
- 
- 		local_irq_disable();
-diff --git a/arch/arm64/kvm/vmid.c b/arch/arm64/kvm/vmid.c
-index 806223b7022a..7fe8ba1a2851 100644
---- a/arch/arm64/kvm/vmid.c
-+++ b/arch/arm64/kvm/vmid.c
-@@ -135,11 +135,10 @@ void kvm_arm_vmid_clear_active(void)
- 	atomic64_set(this_cpu_ptr(&active_vmids), VMID_ACTIVE_INVALID);
- }
- 
--bool kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
-+void kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Failed     |  N/A       |
+
+Build Errors:
+Patch failed to apply on stable/linux-5.15.y. Reject:
+
+diff a/net/batman-adv/bat_v_elp.c b/net/batman-adv/bat_v_elp.c	(rejected hunks)
+@@ -177,31 +199,19 @@ static bool batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh,
+ /**
+  * batadv_v_elp_throughput_metric_update() - worker updating the throughput
+  *  metric of a single hop neighbour
+- * @work: the work queue item
++ * @neigh: the neighbour to probe
+  */
+-void batadv_v_elp_throughput_metric_update(struct work_struct *work)
++static void
++batadv_v_elp_throughput_metric_update(struct batadv_hardif_neigh_node *neigh)
  {
- 	unsigned long flags;
- 	u64 vmid, old_active_vmid;
--	bool updated = false;
+-	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
+-	struct batadv_hardif_neigh_node *neigh;
+ 	u32 throughput;
+ 	bool valid;
  
- 	vmid = atomic64_read(&kvm_vmid->id);
- 
-@@ -157,21 +156,17 @@ bool kvm_arm_vmid_update(struct kvm_vmid *kvm_vmid)
- 	if (old_active_vmid != 0 && vmid_gen_match(vmid) &&
- 	    0 != atomic64_cmpxchg_relaxed(this_cpu_ptr(&active_vmids),
- 					  old_active_vmid, vmid))
--		return false;
+-	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
+-				   metric_work);
+-	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
+-			     bat_v);
+-
+ 	valid = batadv_v_elp_get_throughput(neigh, &throughput);
+ 	if (!valid)
+-		goto put_neigh;
 +		return;
  
- 	raw_spin_lock_irqsave(&cpu_vmid_lock, flags);
- 
- 	/* Check that our VMID belongs to the current generation. */
- 	vmid = atomic64_read(&kvm_vmid->id);
--	if (!vmid_gen_match(vmid)) {
-+	if (!vmid_gen_match(vmid))
- 		vmid = new_vmid(kvm_vmid);
--		updated = true;
--	}
- 
- 	atomic64_set(this_cpu_ptr(&active_vmids), vmid);
- 	raw_spin_unlock_irqrestore(&cpu_vmid_lock, flags);
+ 	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
 -
--	return updated;
+-put_neigh:
+-	/* decrement refcounter to balance increment performed before scheduling
+-	 * this task
+-	 */
+-	batadv_hardif_neigh_put(neigh);
  }
  
- /*
-
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
--- 
-2.39.5
-
+ /**
 
