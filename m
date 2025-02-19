@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-117999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC327A3B946
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:31:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF96CA3B98F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40DD189F21B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:26:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6AA421206
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA92E1DBB3A;
-	Wed, 19 Feb 2025 09:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855771DEFF1;
+	Wed, 19 Feb 2025 09:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zquhRveu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8nPUdaE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E21B4F0C;
-	Wed, 19 Feb 2025 09:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4268B1DEFE9;
+	Wed, 19 Feb 2025 09:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956950; cv=none; b=fj2p0y+wzp69f+Qszey+PYD7WqyEOmMGafG7IDA1wqWXXdmG+KzswvQcW6HhMfVLS8OT88A7L2fSnH1R1GXDQaYUMuNqNHOoEgtk+ywPIZRdGLVXyykwXGsM4TAtXhKN9u9JVbRUQGdeBqQ0oFiBkf26X1tsCJsXfTo7cJ/EpQE=
+	t=1739956982; cv=none; b=VEVAU/3bNZrhn36hauo/T5I7tQR9ydkSV15neJ5XquzLId1HPJIYuaNCpGMBSK/kBrFOxaQz761TOhezc3qaXFMVK6HKjDOyvi/LSHjvMz/XZcFwtZI/hSkiOnq8D1Nad0WXdtkCVninItMaTTAfQcm99FdBzINqR8vBSS8kyBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956950; c=relaxed/simple;
-	bh=KSlQdBnpqZRC5Wo6XDwYFQ6ZWPErHPha7RKAvnFgM5s=;
+	s=arc-20240116; t=1739956982; c=relaxed/simple;
+	bh=1cS+/uktUWUByPkNXPLnVGAYBJkhsp6RIPubh/v8YLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNEDc9jjNSInnmnTA8GY1T3/7QwX2/VPWWhCepfCkKDGzE2jZLzEngk3ejnHNphUmm+nM3fByCrG/t+AWJo2hCDkScnwVrFbLceKdVjr7IEWK9CTI59n7GyhYpCdbr8vCUd7LOr/yei0RVxiwhEjjO/dsAe5PgOKarcRYHcWlhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zquhRveu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CDFC4CED1;
-	Wed, 19 Feb 2025 09:22:29 +0000 (UTC)
+	 MIME-Version; b=Am6M8NZxV17UR5iZ6N5Zev0CSdXr90A7b3MgSFCrfaHDDa/g9xJmEgqxDEp9mGLuXNVctCKJbFEfLCbmUE1ZnAmg09No6tilmDnD2h3FxtFF6hnHi0GDJVUPCytzB3i7DlGH7cieOjRw41ZoGqfz6r+r1oKLD4QyyJyhwE9H/JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8nPUdaE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C139EC4CED1;
+	Wed, 19 Feb 2025 09:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956950;
-	bh=KSlQdBnpqZRC5Wo6XDwYFQ6ZWPErHPha7RKAvnFgM5s=;
+	s=korg; t=1739956982;
+	bh=1cS+/uktUWUByPkNXPLnVGAYBJkhsp6RIPubh/v8YLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zquhRveuhmuOmJdG/QnaCTF3FM8TiwUMLTes+qpgzhlAXNje/60K7m4uarJWWTzf+
-	 z3VY3jPl04TJm0OvD95G2WVt26qO2n/cNOKWD3DgLR77QeWBEliHA+akel8QHy9/SO
-	 H0WB2lT1t9xmWctsGKpuPwldkmiwLNQQKlR02asY=
+	b=k8nPUdaEjLTmwst2Je/oHJYsiIPah47JSWSfmYqLRO7yhhQsHMNaJm3w8bTlusLOR
+	 ODSBsLb/N+T4lawm4S2DnshCehzSgdKzaGz+C7u+t28ekX6UXkb0queFGI54RQuKQl
+	 GWS6V1FCPBDrTu700/U6T5n1Rs1wp98EHijVqNS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 349/578] drm/amd/pm: Mark MM activity as unsupported
-Date: Wed, 19 Feb 2025 09:25:53 +0100
-Message-ID: <20250219082706.746059571@linuxfoundation.org>
+Subject: [PATCH 6.1 350/578] Revert "drm/amd/display: Use HW lock mgr for PSR1"
+Date: Wed, 19 Feb 2025 09:25:54 +0100
+Message-ID: <20250219082706.789516167@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,32 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit 819bf6662b93a5a8b0c396d2c7e7fab6264c9808 upstream.
+commit f245b400a223a71d6d5f4c72a2cb9b573a7fc2b6 upstream.
 
-Aldebaran doesn't support querying MM activity percentage. Keep the
-field as 0xFFs to mark it as unsupported.
+This reverts commit
+a2b5a9956269 ("drm/amd/display: Use HW lock mgr for PSR1")
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Because it may cause system hang while connect with two edp panel.
+
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -1759,7 +1759,6 @@ static ssize_t aldebaran_get_gpu_metrics
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+@@ -65,8 +65,7 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct
  
- 	gpu_metrics->average_gfx_activity = metrics.AverageGfxActivity;
- 	gpu_metrics->average_umc_activity = metrics.AverageUclkActivity;
--	gpu_metrics->average_mm_activity = 0;
- 
- 	/* Valid power data is available only from primary die */
- 	if (aldebaran_is_primary(smu)) {
+ bool should_use_dmub_lock(struct dc_link *link)
+ {
+-	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
+-	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
++	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
+ 		return true;
+ 	return false;
+ }
 
 
 
