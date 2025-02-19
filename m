@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-117061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293CCA3B46B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01760A3B5E3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBCD73A2939
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54FA188F936
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D31B1DED66;
-	Wed, 19 Feb 2025 08:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1071CD208;
+	Wed, 19 Feb 2025 08:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtJKyXbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1cFCMSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7901C7019;
-	Wed, 19 Feb 2025 08:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A8B1CAA6F;
+	Wed, 19 Feb 2025 08:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954084; cv=none; b=WcJ0yl0VRwbCBPoiSgTG7HSBj0RDEsog0wrRkN/+70sMPkmDjfl9AAymt1iT4lOXd4IZsCGVMBVTMZ+G7TfXJe3LsDcVM+wCuIxeSGmxaQc4OLD+BDbspen58a1OGeFsXV38vxqff7RTey0jkwCq+k5LXfUKFp3dCpMzGna7UxI=
+	t=1739954864; cv=none; b=NQ1lNoNdAeruG1InXiZf5TTh7QhrdJ6tDyQuRqzhgvifd4Tmh2Dp3C4G+P+RhUTqOiD/FagYL12GmzR1QlREpe/FXi8Ulov63PLEYU+HbCQsAZ+TOlWj/eLfBMngYp4HKkVYC8gJWPty5yGwu3t2zdAzJwn8g3Bq7fXYvc10pMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954084; c=relaxed/simple;
-	bh=FmUD+TNZB+FlCv5LYvF2oN4n6QOj8+5r2YM5lBCzlkQ=;
+	s=arc-20240116; t=1739954864; c=relaxed/simple;
+	bh=MjdayjylWhOzW7jbx1QOZ78BJwpeOKtMilu/1O3dfjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQw1d5FkNxqkZXjsoNbXb123k94wSsejdgXGcqL8uCy7W+zns2s+YZ4peTyeqi1L102Ue5kBlqwrplda5OVxB23W1ed6Y6CoRn74sqCPs3iGVO8JEPfrjpoJczEVqQ2NPvxGsl/wrHG+EhcOV6UWlMEVzbyW1/T3NZrHmsX+huA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtJKyXbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC68C4CED1;
-	Wed, 19 Feb 2025 08:34:43 +0000 (UTC)
+	 MIME-Version; b=cRZdm4tYDVzSpyV3OYJIj03LjfM7ZwiScc4OgO2snRDSu6Qt99mbHta4rMiXxfyL0vx5g4bPKc62Rkd2/XN9nkv6xdm8SQ7/s94tDwmT67SgyqM+KA0V5q0PD3HAZotynIkHKoFcGQ7rJxQICzdOTEvRF7zPPkKjW9Q195IJ9lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1cFCMSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C71C4CED1;
+	Wed, 19 Feb 2025 08:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954084;
-	bh=FmUD+TNZB+FlCv5LYvF2oN4n6QOj8+5r2YM5lBCzlkQ=;
+	s=korg; t=1739954864;
+	bh=MjdayjylWhOzW7jbx1QOZ78BJwpeOKtMilu/1O3dfjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtJKyXbTg4D30h3lRn5Wd/svjLOIb2CneSas+1UUA4C/0fFyny6qX/FBJHtj+SqCo
-	 SnyJbt8paKran420zdNZxk1eBe79e5nfICMYF1ax8hhr9IJHYWGmFQEERhpt43tSxq
-	 K+lBLAvm3mjLfboqxUbB7Y+JeXRdoZ6ggXXeUwAg=
+	b=N1cFCMSIDTatAQ2sgIQb/ToIExdhhYmKgGXz8p97I2bNrDccUXbQVqxFTJTtmPYEw
+	 XTTwUkpZtpNDrtZxviUC5Xe88Dy8oGRIpp9fKoKQDyag14INz/ZWwiI4wgvZe5+p2R
+	 eGCBtDCAzcq9CgAeUrN/mMLnwWdc3ac/XyB0Z4pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 091/274] rtla/timerlat_top: Abort event processing on second signal
+Subject: [PATCH 6.12 028/230] LoongArch: KVM: Fix typo issue about GCFG feature detection
 Date: Wed, 19 Feb 2025 09:25:45 +0100
-Message-ID: <20250219082613.186866953@linuxfoundation.org>
+Message-ID: <20250219082602.807256878@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 80967b354a76b360943af384c10d807d98bea5c4 ]
+[ Upstream commit bdb13252e5d1518823b81f458d9975c85d5240c2 ]
 
-If either SIGINT is received twice, or after a SIGALRM (that is, after
-timerlat was supposed to stop), abort processing events currently left
-in the tracefs buffer and exit immediately.
+This is typo issue and misusage about GCFG feature macro. The code
+is wrong, only that it does not cause obvious problem since GCFG is
+set again on vCPU context switch.
 
-This allows the user to exit rtla without waiting for processing all
-events, should that take longer than wanted, at the cost of not
-processing all samples.
-
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/20250116144931.649593-6-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 0d0df3c99d4f ("LoongArch: KVM: Implement kvm hardware enable, disable interface")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/loongarch/kvm/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index 139eb58336c36..f387597d3ac22 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -906,6 +906,14 @@ static int stop_tracing;
- static struct trace_instance *top_inst = NULL;
- static void stop_top(int sig)
- {
-+	if (stop_tracing) {
-+		/*
-+		 * Stop requested twice in a row; abort event processing and
-+		 * exit immediately
-+		 */
-+		tracefs_iterate_stop(top_inst->inst);
-+		return;
-+	}
- 	stop_tracing = 1;
- 	if (top_inst)
- 		trace_instance_stop(top_inst);
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 27e9b94c0a0b6..7e8f5d6829ef0 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -283,9 +283,9 @@ int kvm_arch_enable_virtualization_cpu(void)
+ 	 * TOE=0:       Trap on Exception.
+ 	 * TIT=0:       Trap on Timer.
+ 	 */
+-	if (env & CSR_GCFG_GCIP_ALL)
++	if (env & CSR_GCFG_GCIP_SECURE)
+ 		gcfg |= CSR_GCFG_GCI_SECURE;
+-	if (env & CSR_GCFG_MATC_ROOT)
++	if (env & CSR_GCFG_MATP_ROOT)
+ 		gcfg |= CSR_GCFG_MATC_ROOT;
+ 
+ 	write_csr_gcfg(gcfg);
 -- 
 2.39.5
 
