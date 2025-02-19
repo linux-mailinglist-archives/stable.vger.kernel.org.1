@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3004A3B6FC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD43A3BA6E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655DE17595E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1C1580212F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76971F17EB;
-	Wed, 19 Feb 2025 08:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEC11DE2C5;
+	Wed, 19 Feb 2025 09:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+PbXs2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geW6nx4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DD71E3DC6;
-	Wed, 19 Feb 2025 08:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5DE2AE74;
+	Wed, 19 Feb 2025 09:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955406; cv=none; b=cpPjpi6yjOZfWQNQ516wwC4Uf7FTIbj1vcX07FtJ381DWH3miITNyW1DGkHtUblM2w+YW9qtS2whnwUNEDz/3TgTyyrAqwOaCkENpM0zwYnRr/1L66BCqMLUcEIo3coy9TzmwImVln73hSb+GxE5D+KPpk7pnQO6UKVhNpuWaWw=
+	t=1739957399; cv=none; b=kIVsmBKVPjeDGtAOr1VcTALT0dtoKzdkRYLA01BWFIIu8gkd5pq1EZ3z8uxM6jzgCtHZCrjuwWGlBQYZMqeyMFD12W8QrO4CU5oRpXPecHOBcK4YT3LbJc76X9al6rjl8THq+UNNieYtnKvuBnh1YtsFoUvrmtRCCqixSWY9BA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955406; c=relaxed/simple;
-	bh=GzQmepPTzCXF2v1xd6soZbe9VKLtbjQgVO/gOpMpfWo=;
+	s=arc-20240116; t=1739957399; c=relaxed/simple;
+	bh=edsErOkSz9M6s2fnbYn+kEZ1PIA/7O+n4RpFlBIhNKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imCzCqc44sHyvH7OhzYMhpwIhdu3IpJ9hKPq5oK2sw+ZLvsOXowf/GJ6vZJK1/Xq69JCLrfTtX+swrxA/54Gg1B6QP6ikrvoEkmGWFvmhkxNKfroVCjPgaB+6lWUFoT3FSil0PSRwqmakIA85OuRq2d1JYFmXE9XFv7InKhC778=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+PbXs2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04595C4CED1;
-	Wed, 19 Feb 2025 08:56:45 +0000 (UTC)
+	 MIME-Version; b=Bxv/QbVwekw9m64SE1mqm8C1vtBWdWlQdAya8rBPmmdmp8wtsjXDd+IDmV5ezTxFvezM8IUqhrO/Egjlk2/dnDUQq1978ZMkhFzVCq+RVjTk2DNY4RgRHrzvPGQccIuSwY8D0djmIbo64sw0HZgc0rsfweJnABIKn5J1Y+9M/Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geW6nx4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4005C4CEE6;
+	Wed, 19 Feb 2025 09:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955406;
-	bh=GzQmepPTzCXF2v1xd6soZbe9VKLtbjQgVO/gOpMpfWo=;
+	s=korg; t=1739957399;
+	bh=edsErOkSz9M6s2fnbYn+kEZ1PIA/7O+n4RpFlBIhNKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+PbXs2Q7+VW1+4HmMDbvdIsZ+yyjwCLsDzirgKUDepXp+wd/kbH3vR4guH/IC1H2
-	 KKTAfHDmUDSRw1Lleq1XVwL/ty7CAdxj+FSU6BZ2MRoDgG+4RD2jN6lOYppzWmThny
-	 ffwPfPbkaFrmVZLvFITFcEuWVv8hYLT9EtN9uk0M=
+	b=geW6nx4C94qm29u28bzjROO9Q5R7CoybgoTqfi57n7IHFuLNQ9keYzlvet9N2GBSJ
+	 hOimNkCrtbOsmhPpjbFIh5IqbCkbDFzdXVZrX1edfIKyo4+OtHHL/bwdjRmkSQjQ9M
+	 +ikHwTXIsNa3Tojya/9/lfOQAxHCVe6ccdAdnmtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/230] openvswitch: use RCU protection in ovs_vport_cmd_fill_info()
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Robert Morris <rtm@csail.mit.edu>
+Subject: [PATCH 6.1 512/578] USB: hub: Ignore non-compliant devices with too many configs or interfaces
 Date: Wed, 19 Feb 2025 09:28:36 +0100
-Message-ID: <20250219082609.480351530@linuxfoundation.org>
+Message-ID: <20250219082713.124187160@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 90b2f49a502fa71090d9f4fe29a2f51fe5dff76d ]
+commit 2240fed37afbcdb5e8b627bc7ad986891100e05d upstream.
 
-ovs_vport_cmd_fill_info() can be called without RTNL or RCU.
+Robert Morris created a test program which can cause
+usb_hub_to_struct_hub() to dereference a NULL or inappropriate
+pointer:
 
-Use RCU protection and dev_net_rcu() to avoid potential UAF.
+Oops: general protection fault, probably for non-canonical address
+0xcccccccccccccccc: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
+CPU: 7 UID: 0 PID: 117 Comm: kworker/7:1 Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #14
+Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:usb_hub_adjust_deviceremovable+0x78/0x110
+...
+Call Trace:
+ <TASK>
+ ? die_addr+0x31/0x80
+ ? exc_general_protection+0x1b4/0x3c0
+ ? asm_exc_general_protection+0x26/0x30
+ ? usb_hub_adjust_deviceremovable+0x78/0x110
+ hub_probe+0x7c7/0xab0
+ usb_probe_interface+0x14b/0x350
+ really_probe+0xd0/0x2d0
+ ? __pfx___device_attach_driver+0x10/0x10
+ __driver_probe_device+0x6e/0x110
+ driver_probe_device+0x1a/0x90
+ __device_attach_driver+0x7e/0xc0
+ bus_for_each_drv+0x7f/0xd0
+ __device_attach+0xaa/0x1a0
+ bus_probe_device+0x8b/0xa0
+ device_add+0x62e/0x810
+ usb_set_configuration+0x65d/0x990
+ usb_generic_driver_probe+0x4b/0x70
+ usb_probe_device+0x36/0xd0
 
-Fixes: 9354d4520342 ("openvswitch: reliable interface indentification in port dumps")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The cause of this error is that the device has two interfaces, and the
+hub driver binds to interface 1 instead of interface 0, which is where
+usb_hub_to_struct_hub() looks.
+
+We can prevent the problem from occurring by refusing to accept hub
+devices that violate the USB spec by having more than one
+configuration or interface.
+
+Reported-and-tested-by: Robert Morris <rtm@csail.mit.edu>
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/95564.1737394039@localhost/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/c27f3bf4-63d8-4fb5-ac82-09e3cd19f61c@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/datapath.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/usb/core/hub.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index 78d9961fcd446..8d3c01f0e2aa1 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -2102,6 +2102,7 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- {
- 	struct ovs_header *ovs_header;
- 	struct ovs_vport_stats vport_stats;
-+	struct net *net_vport;
- 	int err;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -1819,6 +1819,17 @@ static int hub_probe(struct usb_interfac
+ 	hdev = interface_to_usbdev(intf);
  
- 	ovs_header = genlmsg_put(skb, portid, seq, &dp_vport_genl_family,
-@@ -2118,12 +2119,15 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
- 		goto nla_put_failure;
- 
--	if (!net_eq(net, dev_net(vport->dev))) {
--		int id = peernet2id_alloc(net, dev_net(vport->dev), gfp);
-+	rcu_read_lock();
-+	net_vport = dev_net_rcu(vport->dev);
-+	if (!net_eq(net, net_vport)) {
-+		int id = peernet2id_alloc(net, net_vport, GFP_ATOMIC);
- 
- 		if (nla_put_s32(skb, OVS_VPORT_ATTR_NETNSID, id))
--			goto nla_put_failure;
-+			goto nla_put_failure_unlock;
- 	}
-+	rcu_read_unlock();
- 
- 	ovs_vport_get_stats(vport, &vport_stats);
- 	if (nla_put_64bit(skb, OVS_VPORT_ATTR_STATS,
-@@ -2144,6 +2148,8 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	genlmsg_end(skb, ovs_header);
- 	return 0;
- 
-+nla_put_failure_unlock:
-+	rcu_read_unlock();
- nla_put_failure:
- 	err = -EMSGSIZE;
- error:
--- 
-2.39.5
-
+ 	/*
++	 * The USB 2.0 spec prohibits hubs from having more than one
++	 * configuration or interface, and we rely on this prohibition.
++	 * Refuse to accept a device that violates it.
++	 */
++	if (hdev->descriptor.bNumConfigurations > 1 ||
++			hdev->actconfig->desc.bNumInterfaces > 1) {
++		dev_err(&intf->dev, "Invalid hub with more than one config or interface\n");
++		return -EINVAL;
++	}
++
++	/*
+ 	 * Set default autosuspend delay as 0 to speedup bus suspend,
+ 	 * based on the below considerations:
+ 	 *
 
 
 
