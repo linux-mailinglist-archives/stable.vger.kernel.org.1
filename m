@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-118038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3013EA3B9BF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245EEA3B6A7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E05991757A0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94E373B928D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CB01DFE29;
-	Wed, 19 Feb 2025 09:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817E01FC10F;
+	Wed, 19 Feb 2025 08:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2f2teIDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whX9cgi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBAA1DFE14;
-	Wed, 19 Feb 2025 09:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD7A1DE2CD;
+	Wed, 19 Feb 2025 08:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957061; cv=none; b=EHqDz0OsqxA0MxpFBMfoEyNoYXynAIuGMmsFHfkpK+d8OSl8wou7wpWrzrIxqL2xRXCf2RvYDp5FhdOLsoZunWrZrOxHcgHyS51srg/+jygMseomu8/CeIvoBe2Top297KCW2dmZEuSYbU50Ad3Fj4xI8WE5S258qlpv3lQU36k=
+	t=1739954941; cv=none; b=jU1GQQfx2COy89Ezff22whC1/liaAWKsoDzMYwSEUHkZYJiYGmAJqkD7f30XKZ9v18ByT1XZNu/kipH9MlkJI8oSZ6WS/vRiPi0+hyQWhLpB9sA5G0rhCwM5O/Flzq/+k8hL2EcxfjXzZTA5EYDG92WmWIMrph+Ljr1cdqeSKCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957061; c=relaxed/simple;
-	bh=2aH7fhHMWpMgc9lwCb5UVW8aufeJf5zGhMG6AQaMMQo=;
+	s=arc-20240116; t=1739954941; c=relaxed/simple;
+	bh=1MUgg7JV7bIVJl6Ev3Qb5nOl8838Sxwc/JtRjl+QcJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnRWzHfR54ioqDH45IiNnXmOcT8qSKplujPeHyVnM3d3N37x/vDRRlz3tdl6jtulsOz55nZ0d06XT9DO1KiNxldrmT8bA8LyrnlS85obLfnsJtAGPiHkqXOXLwli+Y8DHeh34AuYaGhY9ykW91BxLgsH9zHCMH2d0o8XHr1ISw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2f2teIDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83558C4CED1;
-	Wed, 19 Feb 2025 09:24:20 +0000 (UTC)
+	 MIME-Version; b=aWMrQqmhj9dLOlkk6L1lv3r6YPjcHYTcu/7GJfevtffW8DlSecxVTeTbD3Ly9V50/N6IHG74Oi4YEAXrfrE3YhO+C9o0seCEV5Ge+6AYoykSkSOLne0MGAIFDwnaIBlKlPuk+BGbJmTTlvTlHdOySoOTAOzdA9WL6wCydsNQHzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whX9cgi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08C4C4CEE8;
+	Wed, 19 Feb 2025 08:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957060;
-	bh=2aH7fhHMWpMgc9lwCb5UVW8aufeJf5zGhMG6AQaMMQo=;
+	s=korg; t=1739954941;
+	bh=1MUgg7JV7bIVJl6Ev3Qb5nOl8838Sxwc/JtRjl+QcJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2f2teIDphEEVDZkGTHg7gBjKq6ER6z/iaJVsvYrhQ+tUdRlNtRQZhcygeVxXty/07
-	 0tINP1ns3JQDA2bBmmkKJDAdcV2dBCw+38ocAJLuOXmefDvKh62Fn4U2Ark/2KvF99
-	 I+3+WhgSHSrgN91jmmjBh/iKyiS15yYeLyE2uHt4=
+	b=whX9cgi+9D/Qn6Zvy/wT3uhPyjvNHPz2tRl7txjvqK/MibqGW5sdeaK1kVu44b6pe
+	 v/AXMRk8+IbsxrRYPdYrYYBnDI7AVpCidEOXRxSTu6xaENvtpjM0rvDzXPogQTWzBk
+	 3JzG232v1GBZ9X3DTBZpn7bHM6RQXYRQio5x0zuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 395/578] kbuild: Move -Wenum-enum-conversion to W=2
-Date: Wed, 19 Feb 2025 09:26:39 +0100
-Message-ID: <20250219082708.564302392@linuxfoundation.org>
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 083/230] vfio/nvgrace-gpu: Read dvsec register to determine need for uncached resmem
+Date: Wed, 19 Feb 2025 09:26:40 +0100
+Message-ID: <20250219082604.947853951@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ankit Agrawal <ankita@nvidia.com>
 
-commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
+[ Upstream commit bd53764a60ad586ad5b6ed339423ad5e67824464 ]
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+NVIDIA's recently introduced Grace Blackwell (GB) Superchip is a
+continuation with the Grace Hopper (GH) superchip that provides a
+cache coherent access to CPU and GPU to each other's memory with
+an internal proprietary chip-to-chip cache coherent interconnect.
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
+There is a HW defect on GH systems to support the Multi-Instance
+GPU (MIG) feature [1] that necessiated the presence of a 1G region
+with uncached mapping carved out from the device memory. The 1G
+region is shown as a fake BAR (comprising region 2 and 3) to
+workaround the issue. This is fixed on the GB systems.
 
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+The presence of the fix for the HW defect is communicated by the
+device firmware through the DVSEC PCI config register with ID 3.
+The module reads this to take a different codepath on GB vs GH.
 
-Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Scan through the DVSEC registers to identify the correct one and use
+it to determine the presence of the fix. Save the value in the device's
+nvgrace_gpu_pci_core_device structure.
+
+Link: https://www.nvidia.com/en-in/technologies/multi-instance-gpu/ [1]
+
+CC: Jason Gunthorpe <jgg@nvidia.com>
+CC: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+Link: https://lore.kernel.org/r/20250124183102.3976-2-ankita@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/nvgrace-gpu/main.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -38,6 +38,10 @@ KBUILD_CFLAGS += -Wno-sign-compare
- KBUILD_CFLAGS += -Wno-type-limits
- KBUILD_CFLAGS += -Wno-shift-negative-value
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index a7fd018aa5483..178ee4180d5c4 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -23,6 +23,11 @@
+ /* A hardwired and constant ABI value between the GPU FW and VFIO driver. */
+ #define MEMBLK_SIZE SZ_512M
  
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
++#define DVSEC_BITMAP_OFFSET 0xA
++#define MIG_SUPPORTED_WITH_CACHED_RESMEM BIT(0)
 +
- KBUILD_CPPFLAGS += -DKBUILD_EXTRA_WARN1
++#define GPU_CAP_DVSEC_REGISTER 3
++
+ /*
+  * The state of the two device memory region - resmem and usemem - is
+  * saved as struct mem_region.
+@@ -46,6 +51,7 @@ struct nvgrace_gpu_pci_core_device {
+ 	struct mem_region resmem;
+ 	/* Lock to control device memory kernel mapping */
+ 	struct mutex remap_lock;
++	bool has_mig_hw_bug;
+ };
  
- else
-@@ -66,7 +70,6 @@ KBUILD_CFLAGS += -Wno-tautological-const
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
+ static void nvgrace_gpu_init_fake_bar_emu_regs(struct vfio_device *core_vdev)
+@@ -812,6 +818,26 @@ nvgrace_gpu_init_nvdev_struct(struct pci_dev *pdev,
+ 	return ret;
+ }
  
- endif
++static bool nvgrace_gpu_has_mig_hw_bug(struct pci_dev *pdev)
++{
++	int pcie_dvsec;
++	u16 dvsec_ctrl16;
++
++	pcie_dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_NVIDIA,
++					       GPU_CAP_DVSEC_REGISTER);
++
++	if (pcie_dvsec) {
++		pci_read_config_word(pdev,
++				     pcie_dvsec + DVSEC_BITMAP_OFFSET,
++				     &dvsec_ctrl16);
++
++		if (dvsec_ctrl16 & MIG_SUPPORTED_WITH_CACHED_RESMEM)
++			return false;
++	}
++
++	return true;
++}
++
+ static int nvgrace_gpu_probe(struct pci_dev *pdev,
+ 			     const struct pci_device_id *id)
+ {
+@@ -832,6 +858,8 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
+ 	dev_set_drvdata(&pdev->dev, &nvdev->core_device);
+ 
+ 	if (ops == &nvgrace_gpu_pci_ops) {
++		nvdev->has_mig_hw_bug = nvgrace_gpu_has_mig_hw_bug(pdev);
++
+ 		/*
+ 		 * Device memory properties are identified in the host ACPI
+ 		 * table. Set the nvgrace_gpu_pci_core_device structure.
+-- 
+2.39.5
+
 
 
 
