@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-117156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E667A3B538
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:55:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5EA6A3B5A6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FBE017B8BE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:48:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05BDF7A5D7F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0726D1DE2D7;
-	Wed, 19 Feb 2025 08:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDC31DF991;
+	Wed, 19 Feb 2025 08:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZw5/aWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq74OyqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D111DE2C5;
-	Wed, 19 Feb 2025 08:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6301DF987;
+	Wed, 19 Feb 2025 08:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954377; cv=none; b=ZQtm7o2mML/3rkwdb/6kFFiullgeqKtpg+Kyq9VDf3OJejwbLqp1tE04rmJFg7DZUs4Fmh05E+Rbmx9sh5MOv6+DbUVwx7HCsS3pBRRZsBRq+Gezxei42E5ELU6L/Y8uwB1bpyDGqNmGHjR0P5KoW47YHXnj4uow6qWQ3FOCEO4=
+	t=1739955077; cv=none; b=p5wiholsj0ZwTpxPZlwuJY6lzwpyjBocby9c+aniv6VUvvr0MFhoXz4hHuyUfBwhE7JPTC47T2EVDAVIV0Z4jdJjOz9j/r7QDM82M40HCaO2g+jqHt2c37IzRb8GBzysw0AePhc1NXkpTSIRgTBEFZQU5pAU9IdBXZ0LAm4D1sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954377; c=relaxed/simple;
-	bh=h4umBKjNZRrJYrmbrO4TbhEv6kqppccUt+VZsuvxuzk=;
+	s=arc-20240116; t=1739955077; c=relaxed/simple;
+	bh=F545RWDLfU9HU3ZjvmNhQWlLV76ANNn5d8g2cTFquZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oUtdGtRbVhv1FBuf2iomvnAtshcDA+ugQc4osYkO+4q6ETVzutTRe9gMGeoFcdp70L0RQfDn6ajQwv2TvLfagSAo88w9HatAXi2vl7BHc62PcFbjqwMRdYqnR8ZmGVWfigob1xlE6o27TtjIbeYRvaI+opybGsVd4dP4c2zmSJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZw5/aWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D08C4CED1;
-	Wed, 19 Feb 2025 08:39:37 +0000 (UTC)
+	 MIME-Version; b=jp10h7/YRyzwMW1O9u5/zCyH4o5UgTB3wGvJchXPJyyts+3Ms4p7Fr6IPtX6/j0iJ+8TeNJdYOiCLREKk8JFZfpqUg7sbrrLB+5vAg/zLjVSQCkeSI3jmj2bt2deW1wJVj3uocMZguP8xfsP4JhQmtd5L2EkBI39HqX3t3L9KDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq74OyqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB09C4CED1;
+	Wed, 19 Feb 2025 08:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954377;
-	bh=h4umBKjNZRrJYrmbrO4TbhEv6kqppccUt+VZsuvxuzk=;
+	s=korg; t=1739955077;
+	bh=F545RWDLfU9HU3ZjvmNhQWlLV76ANNn5d8g2cTFquZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZw5/aWJs+emPSuumB9H5+/1HK4H1J/zVSpCo7F1fvzyLroC65jWucO50aAT9Rva9
-	 Fc0xQXWzR3TRWrX23Ag9i0DdIJUw3JMRubMmmgka7ZKilCRXerUPLTwc+D9w/D/EJ9
-	 g3w7MhsmuShqIedcUu60EmSF8VNWFa0l57uRMeqA=
+	b=fq74OyqMmwjFv60nU9eYvyP+e7HZ7zg1cTMXNiLq4/zJdcv3Q2IWP3R8wKrTOjsUj
+	 BRAly+pl7Ni3mSXmczcvTqcApxu/CffrQ/Mh5vKWnM3+QcIdWjV3DdYMtrTCRN0GOE
+	 AxsoKv1iO3F/aHHfkkT5OkjMeNI2XnBcH4yeq5lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 186/274] ptp: vmclock: Set driver data before its usage
+	stable <stable@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.12 123/230] usb: cdc-acm: Fix handling of oversized fragments
 Date: Wed, 19 Feb 2025 09:27:20 +0100
-Message-ID: <20250219082616.864535832@linuxfoundation.org>
+Message-ID: <20250219082606.498920079@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Jann Horn <jannh@google.com>
 
-commit f7d07cd4f77d77f366c8ffbb8ba8b61f614e5fce upstream.
+commit 12e712964f41d05ae034989892de445781c46730 upstream.
 
-If vmclock_ptp_register() fails during probing, vmclock_remove() is
-called to clean up the ptp clock and misc device.
-It uses dev_get_drvdata() to access the vmclock state.
-However the driver data is not yet set at this point.
+If we receive an initial fragment of size 8 bytes which specifies a wLength
+of 1 byte (so the reassembled message is supposed to be 9 bytes long), and
+we then receive a second fragment of size 9 bytes (which is not supposed to
+happen), we currently wrongly bypass the fragment reassembly code but still
+pass the pointer to the acm->notification_buffer to
+acm_process_notification().
 
-Assign the driver data earlier.
+Make this less wrong by always going through fragment reassembly when we
+expect more fragments.
 
-Fixes: 205032724226 ("ptp: Add support for the AMZNC10C 'vmclock' device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Before this patch, receiving an overlong fragment could lead to `newctrl`
+in acm_process_notification() being uninitialized data (instead of data
+coming from the device).
+
+Cc: stable <stable@kernel.org>
+Fixes: ea2583529cd1 ("cdc-acm: reassemble fragmented notifications")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_vmclock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/class/cdc-acm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ptp/ptp_vmclock.c
-+++ b/drivers/ptp/ptp_vmclock.c
-@@ -525,6 +525,8 @@ static int vmclock_probe(struct platform
- 		goto out;
- 	}
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -416,7 +416,7 @@ static void acm_ctrl_irq(struct urb *urb
+ 	expected_size = sizeof(struct usb_cdc_notification) +
+ 					le16_to_cpu(dr->wLength);
  
-+	dev_set_drvdata(dev, st);
-+
- 	if (le32_to_cpu(st->clk->magic) != VMCLOCK_MAGIC ||
- 	    le32_to_cpu(st->clk->size) > resource_size(&st->res) ||
- 	    le16_to_cpu(st->clk->version) != 1) {
-@@ -589,8 +591,6 @@ static int vmclock_probe(struct platform
- 		 (st->miscdev.minor && st->ptp_clock) ? ", " : "",
- 		 st->ptp_clock ? "PTP" : "");
- 
--	dev_set_drvdata(dev, st);
--
-  out:
- 	return ret;
- }
+-	if (current_size < expected_size) {
++	if (acm->nb_index != 0 || current_size < expected_size) {
+ 		/* notification is transmitted fragmented, reassemble */
+ 		if (acm->nb_size < expected_size) {
+ 			u8 *new_buffer;
 
 
 
