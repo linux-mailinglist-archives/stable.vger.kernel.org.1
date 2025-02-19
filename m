@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-118156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91631A3BA22
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6295EA3B7C2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB5F81892069
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4E0D3BC43D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FC61C760D;
-	Wed, 19 Feb 2025 09:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29511DE2C6;
+	Wed, 19 Feb 2025 09:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEZZZQno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTw/WHgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DA72AE74;
-	Wed, 19 Feb 2025 09:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10771CAA8E;
+	Wed, 19 Feb 2025 09:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957396; cv=none; b=D6oTl3PZmi6ri6WhqS8T0hatuZVQW/2vdGmdFWiWCWjth/Wskyiya4/XxUt8OOYTmjRx4MIA4aENAX8qbz8P2LRPSD5J4Gl9zeGRteiERp7dOEnz+FlNIMnnaPWeepsb4DGTpiX9+3TawSB4LxjHPAIO12eRl7h5TON05skohVo=
+	t=1739955848; cv=none; b=hjoxyd+3JmCWxE7E0KqcPfCTnqyS6dZhAovJAXVpS4D//+FvLRP80u0wlFp9zsSguLF9enQ9WjfAWckAsQ+tFeu9lLO/Lj5a/K/olyKeBw4QJ3U/8b4sgLrRxRYClF671KPxPGkI+6nEi6TPzFHNHhb0wtMPQuSg/NEIfc0S0o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957396; c=relaxed/simple;
-	bh=8hakwSRMZ6Vi6Zr2a+GJ7lgXS8ypx9uKSp3t+HCjmpo=;
+	s=arc-20240116; t=1739955848; c=relaxed/simple;
+	bh=cVtC4dihLgK0nl9aj02bZvwtn0XuM9z8j8lL60p+Jyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1mvs0aNlytHCGTXrx+2D2eUqOV9YOpSIWw3eedNtw6hSIlfmlKqAo91yIphojSvHAcjSHYzYsn9fY7XNj1z9nNwzWfCPr/1cDI6yg7VDp28Fs1GBigCIoFv4ooVkSngROSsdJKVMrTG4c2HqGlKXuNjkgm2cFCJ1AV/1Y/cozM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEZZZQno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C92C4CEE7;
-	Wed, 19 Feb 2025 09:29:55 +0000 (UTC)
+	 MIME-Version; b=ppc9PtEtQCxMukdlK9SsC98HaY1a7M5f2bSY6z9QZPRLrMPYd6/CtDLPKbyOpHv6t9uMKsxOsIXdqR4nPPLDqtGVghPbaAxou5vKe/suNO0eyRdIVGQgvhQLQ2m9slWULwvtk7CcxGMKSt2enrSXAhdmhj/+99/vEeD0754Ujp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTw/WHgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E8DC4CED1;
+	Wed, 19 Feb 2025 09:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957396;
-	bh=8hakwSRMZ6Vi6Zr2a+GJ7lgXS8ypx9uKSp3t+HCjmpo=;
+	s=korg; t=1739955848;
+	bh=cVtC4dihLgK0nl9aj02bZvwtn0XuM9z8j8lL60p+Jyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEZZZQnocFI+rwMiD0aAyMYmPF2dQHOktHPdU3Kv9kGtmTEwAzO05kNSOGJJG0hVJ
-	 no/yuxYNFNrLlFSNc6NQylhyfYlzUDmxb8XGS0zuvPLsXhgyKknMvLH+O2Ihk3pmNT
-	 1gMJBcc1VV8+QUFvrFRDUc277VmMx25mO4r/sr+I=
+	b=uTw/WHgwhHdalx6m0U2qsgS5+PX/PtyEHgjqyLQZJ8Dy9Y0gMPXI2QzFH71gRHECi
+	 crmtn5ljOpQuvPEW68ud8djAo0zoZHakRrfZaP98vkpZovRuyFUyN8Dop1USjsc9qW
+	 dpWc/zE2MyJjbOpLpyVokg84fO7UfFvjAf1zlNIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 511/578] usb: gadget: f_midi: fix MIDI Streaming descriptor lengths
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 102/152] ipv4: use RCU protection in ipv4_default_advmss()
 Date: Wed, 19 Feb 2025 09:28:35 +0100
-Message-ID: <20250219082713.085273523@linuxfoundation.org>
+Message-ID: <20250219082554.094610438@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit da1668997052ed1cb00322e1f3b63702615c9429 upstream.
+[ Upstream commit 71b8471c93fa0bcab911fcb65da1eb6c4f5f735f ]
 
-While the MIDI jacks are configured correctly, and the MIDIStreaming
-endpoint descriptors are filled with the correct information,
-bNumEmbMIDIJack and bLength are set incorrectly in these descriptors.
+ipv4_default_advmss() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-This does not matter when the numbers of in and out ports are equal, but
-when they differ the host will receive broken descriptors with
-uninitialized stack memory leaking into the descriptor for whichever
-value is smaller.
-
-The precise meaning of "in" and "out" in the port counts is not clearly
-defined and can be confusing.  But elsewhere the driver consistently
-uses this to match the USB meaning of IN and OUT viewed from the host,
-so that "in" ports send data to the host and "out" ports receive data
-from it.
-
-Cc: stable <stable@kernel.org>
-Fixes: c8933c3f79568 ("USB: gadget: f_midi: allow a dynamic number of input and output ports")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20250130195035.3883857-1-jkeeping@inmusicbrands.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2e9589ff809e ("ipv4: Namespaceify min_adv_mss sysctl knob")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/route.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -999,11 +999,11 @@ static int f_midi_bind(struct usb_config
- 	}
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 61fc2166a870e..15cf2949ce951 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1306,10 +1306,15 @@ static void set_class_tag(struct rtable *rt, u32 tag)
  
- 	/* configure the endpoint descriptors ... */
--	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
--	ms_out_desc.bNumEmbMIDIJack = midi->in_ports;
-+	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
-+	ms_out_desc.bNumEmbMIDIJack = midi->out_ports;
+ static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
+ {
+-	struct net *net = dev_net(dst->dev);
+ 	unsigned int header_size = sizeof(struct tcphdr) + sizeof(struct iphdr);
+-	unsigned int advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
+-				    net->ipv4.ip_rt_min_advmss);
++	unsigned int advmss;
++	struct net *net;
++
++	rcu_read_lock();
++	net = dev_net_rcu(dst->dev);
++	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
++				   net->ipv4.ip_rt_min_advmss);
++	rcu_read_unlock();
  
--	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
--	ms_in_desc.bNumEmbMIDIJack = midi->out_ports;
-+	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
-+	ms_in_desc.bNumEmbMIDIJack = midi->in_ports;
- 
- 	/* ... and add them to the list */
- 	endpoint_descriptor_index = i;
+ 	return min(advmss, IPV4_MAX_PMTU - header_size);
+ }
+-- 
+2.39.5
+
 
 
 
