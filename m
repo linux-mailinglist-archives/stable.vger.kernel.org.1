@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00931A3B6AD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224A3A3BA4F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BBCF7A6C05
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABE553BFC6B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E681DDC35;
-	Wed, 19 Feb 2025 09:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACC01E32DD;
+	Wed, 19 Feb 2025 09:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNXMsyEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWuZHqN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C7F1C4609;
-	Wed, 19 Feb 2025 09:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598101E1A3B;
+	Wed, 19 Feb 2025 09:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955836; cv=none; b=VNZWrz0nydmA3O7KsPaMj+nYzFwWBPMBdTOxkuGNQB1+QFTxwsn13YtlFBBK5/44OtU8Yv3bM7jt2wiMgegNVN9KzSb21vzj8tfiWap/NkFh60wszZfHw4YRhHFkB9Rx/AmJKjnxOI18EM8KM/8whvHFHyDvlZr+yjGtLtgzPf8=
+	t=1739957468; cv=none; b=H8dP9bPv7IcxUDY4EQBr2jrU3QMCasgVtjTOFDvKTdyXWzrmir9y3dOFFIRWkd9mG8wcl/eqlj4AzF7Lm1vt8QIPdqkEswWWfgUBeBX04DnrehJkal9H5EWz7Z0xT47eKCzZk2unHI0nAez/vC5IHTqglpewfGtz0YDnSKZ5UO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955836; c=relaxed/simple;
-	bh=i/fcuriQHCd8EOrYC52cFerL5X4QJHAvzjmbu3YY5ek=;
+	s=arc-20240116; t=1739957468; c=relaxed/simple;
+	bh=cVaIVKPemQp15vEozkgVJjF+zLm3xmphku/siyuJe/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/9AQ9QDQFlVyehU4N7VxLXqJ+FzYRY6zQYMM4XP4US+8QU0di1E8hvhHXCollAs0t1AI2tcdJscX+aGWkBFpp8hRucHUiNG0+k3w4VurkDt+9Ltk/Dng5EMMbChOsLGnrG8448Sx521ZZPNUzFsqVQY6j7grUYOGBXvCg7tnHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNXMsyEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC672C4CED1;
-	Wed, 19 Feb 2025 09:03:55 +0000 (UTC)
+	 MIME-Version; b=sWv7exUU8gzftZoaWD5DNGADIQRJCxQsFXx5CEWBIejCHiO0m2OzZamB9qtTWcl3VIl6FtTcDxyJ+rzZnjGE3uEvhal3zidWVRAp44fgs3f3CcIq9JB2bNA5ZIT4+1PDeGd1tebG8PsQDtDAgTr+vTe6WYePwhFPGAymu6nk0vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWuZHqN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4344C4CED1;
+	Wed, 19 Feb 2025 09:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955836;
-	bh=i/fcuriQHCd8EOrYC52cFerL5X4QJHAvzjmbu3YY5ek=;
+	s=korg; t=1739957468;
+	bh=cVaIVKPemQp15vEozkgVJjF+zLm3xmphku/siyuJe/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNXMsyEBRL8p8OhAFdYasU1KmZgQpjQM1kEBhlGuo37qS0uSc/zEaVReK/UF9L7e8
-	 qdLJYRGmhrynZYJjfnCOodSFv9tgwuU15gHdOXg4h8Piu2uYs5WZtYFxJh26JEDeki
-	 m699enogjzH6czUt/KyMpu6ebMawl35bE2si9nhI=
+	b=yWuZHqN66YCfzQSjjIivg/B2XYDYkp575MQNEtr/ZlzrTAc+mJCLCwCz9qPYlb7w/
+	 uVK+hllP+SxYj43qAtkI3ZKJ+CQ/bS1GwGHTXkaJ42XqwMgUaFchNRVT+yMEV5hOZG
+	 JYcJjWYeh6UpFv20gduSXuBRJh8ykuKX1qibk2+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/152] ipv6: mcast: add RCU protection to mld_newpack()
+Subject: [PATCH 6.1 537/578] clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context
 Date: Wed, 19 Feb 2025 09:29:01 +0100
-Message-ID: <20250219082555.113713519@linuxfoundation.org>
+Message-ID: <20250219082714.098560734@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit a527750d877fd334de87eef81f1cb5f0f0ca3373 ]
+[ Upstream commit 6bb05a33337b2c842373857b63de5c9bf1ae2a09 ]
 
-mld_newpack() can be called without RTNL or RCU being held.
+The following bug report happened with a PREEMPT_RT kernel:
 
-Note that we no longer can use sock_alloc_send_skb() because
-ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2012, name: kwatchdog
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  get_random_u32+0x4f/0x110
+  clocksource_verify_choose_cpus+0xab/0x1a0
+  clocksource_verify_percpu.part.0+0x6b/0x330
+  clocksource_watchdog_kthread+0x193/0x1a0
 
-Instead use alloc_skb() and charge the net->ipv6.igmp_sk
-socket under RCU protection.
+It is due to the fact that clocksource_verify_choose_cpus() is invoked with
+preemption disabled.  This function invokes get_random_u32() to obtain
+random numbers for choosing CPUs.  The batched_entropy_32 local lock and/or
+the base_crng.lock spinlock in driver/char/random.c will be acquired during
+the call. In PREEMPT_RT kernel, they are both sleeping locks and so cannot
+be acquired in atomic context.
 
-Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250212141021.1663666-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this problem by using migrate_disable() to allow smp_processor_id() to
+be reliably used without introducing atomic context. preempt_disable() is
+then called after clocksource_verify_choose_cpus() but before the
+clocksource measurement is being run to avoid introducing unexpected
+latency.
+
+Fixes: 7560c02bdffb ("clocksource: Check per-CPU clock synchronization when marked unstable")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/all/20250131173323.891943-2-longman@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ kernel/time/clocksource.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index a502669b2b28a..9bb246c09fcee 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -1729,21 +1729,19 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
- 	struct net_device *dev = idev->dev;
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	struct net *net = dev_net(dev);
- 	const struct in6_addr *saddr;
- 	struct in6_addr addr_buf;
- 	struct mld2_report *pmr;
- 	struct sk_buff *skb;
- 	unsigned int size;
- 	struct sock *sk;
--	int err;
-+	struct net *net;
- 
--	sk = net->ipv6.igmp_sk;
- 	/* we assume size > sizeof(ra) here
- 	 * Also try to not allocate high-order pages for big MTU
- 	 */
- 	size = min_t(int, mtu, PAGE_SIZE / 2) + hlen + tlen;
--	skb = sock_alloc_send_skb(sk, size, 1, &err);
-+	skb = alloc_skb(size, GFP_KERNEL);
- 	if (!skb)
- 		return NULL;
- 
-@@ -1751,6 +1749,12 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
- 	skb_reserve(skb, hlen);
- 	skb_tailroom_reserve(skb, mtu, tlen);
- 
-+	rcu_read_lock();
-+
-+	net = dev_net_rcu(dev);
-+	sk = net->ipv6.igmp_sk;
-+	skb_set_owner_w(skb, sk);
-+
- 	if (ipv6_get_lladdr(dev, &addr_buf, IFA_F_TENTATIVE)) {
- 		/* <draft-ietf-magma-mld-source-05.txt>:
- 		 * use unspecified address as the source address
-@@ -1762,6 +1766,8 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
- 
- 	ip6_mc_hdr(sk, skb, dev, saddr, &mld2_all_mcr, NEXTHDR_HOP, 0);
- 
-+	rcu_read_unlock();
-+
- 	skb_put_data(skb, ra, sizeof(ra));
- 
- 	skb_set_transport_header(skb, skb_tail_pointer(skb) - skb->data);
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 51afd4cc2d004..9e221a97d2274 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -348,10 +348,10 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 	cpumask_clear(&cpus_ahead);
+ 	cpumask_clear(&cpus_behind);
+ 	cpus_read_lock();
+-	preempt_disable();
++	migrate_disable();
+ 	clocksource_verify_choose_cpus();
+ 	if (cpumask_empty(&cpus_chosen)) {
+-		preempt_enable();
++		migrate_enable();
+ 		cpus_read_unlock();
+ 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
+ 		return;
+@@ -359,6 +359,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 	testcpu = smp_processor_id();
+ 	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
+ 		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
++	preempt_disable();
+ 	for_each_cpu(cpu, &cpus_chosen) {
+ 		if (cpu == testcpu)
+ 			continue;
+@@ -378,6 +379,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 			cs_nsec_min = cs_nsec;
+ 	}
+ 	preempt_enable();
++	migrate_enable();
+ 	cpus_read_unlock();
+ 	if (!cpumask_empty(&cpus_ahead))
+ 		pr_warn("        CPUs %*pbl ahead of CPU %d for clocksource %s.\n",
 -- 
 2.39.5
 
