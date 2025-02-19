@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C817A3B627
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA3EA3B6EE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F08F318841D7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A80D217C734
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C311DF986;
-	Wed, 19 Feb 2025 08:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D939C1D7E54;
+	Wed, 19 Feb 2025 08:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKdoDQPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqvv2ydg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A7C1B6D0A;
-	Wed, 19 Feb 2025 08:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2FD1D63E8;
+	Wed, 19 Feb 2025 08:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955089; cv=none; b=WFQ8CpGfI8J6wjSlflTxUyaI2QyJ/bBMsdfBqMgnwVufgnyrS2jtsgvoavjpO4JwGobcyMjdcVP1grWJOd3J5UAbQjUWHLTxl2GW8zD6vOoi+vfU3i57vl1Mx8Jf5L8Awl1wh7IRQA9o1efdRyfz+K4Zo1piu7V08AEwQmrIT6U=
+	t=1739955446; cv=none; b=TIt0L7ooIZbHs1aC14NoUl/A/YzItybqkKlfU3FuBiaZAKM67ubEhS9/GRD6E4+CgP9QldX5u1mmQXpAhV3B2fCgZaJzWU+Vg4ij6rdJh7jhqTQiddzgHqaJpJNHyNvTSDgXgryEB1vrBbHuvwvRcDawtU8Y80q84/wdYCEKq9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955089; c=relaxed/simple;
-	bh=summufS84jqjVB77ewAkGlzpdFR5wXBoR4IElQAjDuc=;
+	s=arc-20240116; t=1739955446; c=relaxed/simple;
+	bh=lZxn5q7kb6aVLvt+t3M2q0+5NBmw6Yfo0RTDVpaOhMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/5RAbv0HWqSl3TVOUf/o1oU+TCNjt1KRCXlkme/JDzVYfSxb62fiKT8tqX/UlW4d7HN3726sNhzmjEwrSxfJufOBf76+XUhgWc/MHwRi6AfYnQkEiuaOSwwULE2DW/povJ2JjOb/sPc0auq8hKTORkdmyvjjwUHjVy/BqeS4RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKdoDQPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65EDC4CED1;
-	Wed, 19 Feb 2025 08:51:28 +0000 (UTC)
+	 MIME-Version; b=uCaMq/9DG3lXrK7tEoJVH6nApRNJSuHIVZuKxKBxZ2ASqQgjlcaNXS3+DtFZEBFshGCMWtSo9wQz8rB2Y6b+Pk1SipmNGIGzwlFPp31DfWz5J/VWX1x7hQmLgUdDHYTE0Tuu4ePCt0yC9NXvxjhOqupC4FGN0v8/PVzPjtW0iZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqvv2ydg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B462C4CED1;
+	Wed, 19 Feb 2025 08:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955089;
-	bh=summufS84jqjVB77ewAkGlzpdFR5wXBoR4IElQAjDuc=;
+	s=korg; t=1739955446;
+	bh=lZxn5q7kb6aVLvt+t3M2q0+5NBmw6Yfo0RTDVpaOhMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKdoDQPKxZxJgvXL04MIZtJG+sVHNCwKNzat6/LvK0+cgy8Zb0TLJjVNF6Ixeg3gr
-	 PUJ/W+EtdsHdKMIyfyfXGBL+dbuxytTCX229wJhEDcB2VkAvE7+Z8FZUXBcNExiQHy
-	 V3rLTSYZEc8FEE0gE/3qix+c4wxqlq1y+PR00QSg=
+	b=Vqvv2ydgkX3ZTWQ7xYhyg34xfN0fKLd7Ac5RQG2LWAK/d7mIgfsEuEUbLArlvUuFU
+	 nfh2+dX3FQZITuPpvS29CUPdEIFZqOI4WE3Am5sZN32o3IZe1xTYqjbZkdWbgLs9UW
+	 eHoEdjgLfW5dh6QBe7kAb1GGMa14GlHtj9R1s4Fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.12 096/230] batman-adv: Drop unmanaged ELP metric worker
-Date: Wed, 19 Feb 2025 09:26:53 +0100
-Message-ID: <20250219082605.451307554@linuxfoundation.org>
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Rick Macklem <rmacklem@uoguelph.ca>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 001/152] nfsd: clear acl_access/acl_default after releasing them
+Date: Wed, 19 Feb 2025 09:26:54 +0100
+Message-ID: <20250219082550.078346694@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,257 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 8c8ecc98f5c65947b0070a24bac11e12e47cc65d upstream.
+commit 7faf14a7b0366f153284db0ad3347c457ea70136 upstream.
 
-The ELP worker needs to calculate new metric values for all neighbors
-"reachable" over an interface. Some of the used metric sources require
-locks which might need to sleep. This sleep is incompatible with the RCU
-list iterator used for the recorded neighbors. The initial approach to work
-around of this problem was to queue another work item per neighbor and then
-run this in a new context.
+If getting acl_default fails, acl_access and acl_default will be released
+simultaneously. However, acl_access will still retain a pointer pointing
+to the released posix_acl, which will trigger a WARNING in
+nfs3svc_release_getacl like this:
 
-Even when this solved the RCU vs might_sleep() conflict, it has a major
-problems: Nothing was stopping the work item in case it is not needed
-anymore - for example because one of the related interfaces was removed or
-the batman-adv module was unloaded - resulting in potential invalid memory
-accesses.
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 26 PID: 3199 at lib/refcount.c:28
+refcount_warn_saturate+0xb5/0x170
+Modules linked in:
+CPU: 26 UID: 0 PID: 3199 Comm: nfsd Not tainted
+6.12.0-rc6-00079-g04ae226af01f-dirty #8
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xb5/0x170
+Code: cc cc 0f b6 1d b3 20 a5 03 80 fb 01 0f 87 65 48 d8 00 83 e3 01 75
+e4 48 c7 c7 c0 3b 9b 85 c6 05 97 20 a5 03 01 e8 fb 3e 30 ff <0f> 0b eb
+cd 0f b6 1d 8a3
+RSP: 0018:ffffc90008637cd8 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83904fde
+RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff88871ed36380
+RBP: ffff888158beeb40 R08: 0000000000000001 R09: fffff520010c6f56
+R10: ffffc90008637ab7 R11: 0000000000000001 R12: 0000000000000001
+R13: ffff888140e77400 R14: ffff888140e77408 R15: ffffffff858b42c0
+FS:  0000000000000000(0000) GS:ffff88871ed00000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000562384d32158 CR3: 000000055cc6a000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? refcount_warn_saturate+0xb5/0x170
+ ? __warn+0xa5/0x140
+ ? refcount_warn_saturate+0xb5/0x170
+ ? report_bug+0x1b1/0x1e0
+ ? handle_bug+0x53/0xa0
+ ? exc_invalid_op+0x17/0x40
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? tick_nohz_tick_stopped+0x1e/0x40
+ ? refcount_warn_saturate+0xb5/0x170
+ ? refcount_warn_saturate+0xb5/0x170
+ nfs3svc_release_getacl+0xc9/0xe0
+ svc_process_common+0x5db/0xb60
+ ? __pfx_svc_process_common+0x10/0x10
+ ? __rcu_read_unlock+0x69/0xa0
+ ? __pfx_nfsd_dispatch+0x10/0x10
+ ? svc_xprt_received+0xa1/0x120
+ ? xdr_init_decode+0x11d/0x190
+ svc_process+0x2a7/0x330
+ svc_handle_xprt+0x69d/0x940
+ svc_recv+0x180/0x2d0
+ nfsd+0x168/0x200
+ ? __pfx_nfsd+0x10/0x10
+ kthread+0x1a2/0x1e0
+ ? kthread+0xf4/0x1e0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x60
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-Directly canceling the metric worker also has various problems:
+Clear acl_access/acl_default after posix_acl_release is called to prevent
+UAF from being triggered.
 
-* cancel_work_sync for a to-be-deactivated interface is called with
-  rtnl_lock held. But the code in the ELP metric worker also tries to use
-  rtnl_lock() - which will never return in this case. This also means that
-  cancel_work_sync would never return because it is waiting for the worker
-  to finish.
-* iterating over the neighbor list for the to-be-deactivated interface is
-  currently done using the RCU specific methods. Which means that it is
-  possible to miss items when iterating over it without the associated
-  spinlock - a behaviour which is acceptable for a periodic metric check
-  but not for a cleanup routine (which must "stop" all still running
-  workers)
-
-The better approch is to get rid of the per interface neighbor metric
-worker and handle everything in the interface worker. The original problems
-are solved by:
-
-* creating a list of neighbors which require new metric information inside
-  the RCU protected context, gathering the metric according to the new list
-  outside the RCU protected context
-* only use rcu_trylock inside metric gathering code to avoid a deadlock
-  when the cancel_delayed_work_sync is called in the interface removal code
-  (which is called with the rtnl_lock held)
-
+Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
 Cc: stable@vger.kernel.org
-Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Link: https://lore.kernel.org/all/20241107014705.2509463-1-lilingfeng@huaweicloud.com/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Rick Macklem <rmacklem@uoguelph.ca>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v.c     |    2 -
- net/batman-adv/bat_v_elp.c |   71 ++++++++++++++++++++++++++++++---------------
- net/batman-adv/bat_v_elp.h |    2 -
- net/batman-adv/types.h     |    3 -
- 4 files changed, 48 insertions(+), 30 deletions(-)
+ fs/nfsd/nfs2acl.c |    2 ++
+ fs/nfsd/nfs3acl.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -113,8 +113,6 @@ static void
- batadv_v_hardif_neigh_init(struct batadv_hardif_neigh_node *hardif_neigh)
- {
- 	ewma_throughput_init(&hardif_neigh->bat_v.throughput);
--	INIT_WORK(&hardif_neigh->bat_v.metric_work,
--		  batadv_v_elp_throughput_metric_update);
+--- a/fs/nfsd/nfs2acl.c
++++ b/fs/nfsd/nfs2acl.c
+@@ -84,6 +84,8 @@ out:
+ fail:
+ 	posix_acl_release(resp->acl_access);
+ 	posix_acl_release(resp->acl_default);
++	resp->acl_access = NULL;
++	resp->acl_default = NULL;
+ 	goto out;
  }
  
- /**
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -18,6 +18,7 @@
- #include <linux/if_ether.h>
- #include <linux/jiffies.h>
- #include <linux/kref.h>
-+#include <linux/list.h>
- #include <linux/minmax.h>
- #include <linux/netdevice.h>
- #include <linux/nl80211.h>
-@@ -26,6 +27,7 @@
- #include <linux/rcupdate.h>
- #include <linux/rtnetlink.h>
- #include <linux/skbuff.h>
-+#include <linux/slab.h>
- #include <linux/stddef.h>
- #include <linux/string.h>
- #include <linux/types.h>
-@@ -42,6 +44,18 @@
- #include "send.h"
- 
- /**
-+ * struct batadv_v_metric_queue_entry - list of hardif neighbors which require
-+ *  and metric update
-+ */
-+struct batadv_v_metric_queue_entry {
-+	/** @hardif_neigh: hardif neighbor scheduled for metric update */
-+	struct batadv_hardif_neigh_node *hardif_neigh;
-+
-+	/** @list: list node for metric_queue */
-+	struct list_head list;
-+};
-+
-+/**
-  * batadv_v_elp_start_timer() - restart timer for ELP periodic work
-  * @hard_iface: the interface for which the timer has to be reset
-  */
-@@ -137,10 +151,17 @@ static bool batadv_v_elp_get_throughput(
- 		goto default_throughput;
- 	}
- 
-+	/* only use rtnl_trylock because the elp worker will be cancelled while
-+	 * the rntl_lock is held. the cancel_delayed_work_sync() would otherwise
-+	 * wait forever when the elp work_item was started and it is then also
-+	 * trying to rtnl_lock
-+	 */
-+	if (!rtnl_trylock())
-+		return false;
-+
- 	/* if not a wifi interface, check if this device provides data via
- 	 * ethtool (e.g. an Ethernet adapter)
- 	 */
--	rtnl_lock();
- 	ret = __ethtool_get_link_ksettings(hard_iface->net_dev, &link_settings);
- 	rtnl_unlock();
- 	if (ret == 0) {
-@@ -175,31 +196,19 @@ default_throughput:
- /**
-  * batadv_v_elp_throughput_metric_update() - worker updating the throughput
-  *  metric of a single hop neighbour
-- * @work: the work queue item
-+ * @neigh: the neighbour to probe
-  */
--void batadv_v_elp_throughput_metric_update(struct work_struct *work)
-+static void
-+batadv_v_elp_throughput_metric_update(struct batadv_hardif_neigh_node *neigh)
- {
--	struct batadv_hardif_neigh_node_bat_v *neigh_bat_v;
--	struct batadv_hardif_neigh_node *neigh;
- 	u32 throughput;
- 	bool valid;
- 
--	neigh_bat_v = container_of(work, struct batadv_hardif_neigh_node_bat_v,
--				   metric_work);
--	neigh = container_of(neigh_bat_v, struct batadv_hardif_neigh_node,
--			     bat_v);
--
- 	valid = batadv_v_elp_get_throughput(neigh, &throughput);
- 	if (!valid)
--		goto put_neigh;
-+		return;
- 
- 	ewma_throughput_add(&neigh->bat_v.throughput, throughput);
--
--put_neigh:
--	/* decrement refcounter to balance increment performed before scheduling
--	 * this task
--	 */
--	batadv_hardif_neigh_put(neigh);
+--- a/fs/nfsd/nfs3acl.c
++++ b/fs/nfsd/nfs3acl.c
+@@ -76,6 +76,8 @@ out:
+ fail:
+ 	posix_acl_release(resp->acl_access);
+ 	posix_acl_release(resp->acl_default);
++	resp->acl_access = NULL;
++	resp->acl_default = NULL;
+ 	goto out;
  }
  
- /**
-@@ -273,14 +282,16 @@ batadv_v_elp_wifi_neigh_probe(struct bat
-  */
- static void batadv_v_elp_periodic_work(struct work_struct *work)
- {
-+	struct batadv_v_metric_queue_entry *metric_entry;
-+	struct batadv_v_metric_queue_entry *metric_safe;
- 	struct batadv_hardif_neigh_node *hardif_neigh;
- 	struct batadv_hard_iface *hard_iface;
- 	struct batadv_hard_iface_bat_v *bat_v;
- 	struct batadv_elp_packet *elp_packet;
-+	struct list_head metric_queue;
- 	struct batadv_priv *bat_priv;
- 	struct sk_buff *skb;
- 	u32 elp_interval;
--	bool ret;
- 
- 	bat_v = container_of(work, struct batadv_hard_iface_bat_v, elp_wq.work);
- 	hard_iface = container_of(bat_v, struct batadv_hard_iface, bat_v);
-@@ -316,6 +327,8 @@ static void batadv_v_elp_periodic_work(s
- 
- 	atomic_inc(&hard_iface->bat_v.elp_seqno);
- 
-+	INIT_LIST_HEAD(&metric_queue);
-+
- 	/* The throughput metric is updated on each sent packet. This way, if a
- 	 * node is dead and no longer sends packets, batman-adv is still able to
- 	 * react timely to its death.
-@@ -340,16 +353,28 @@ static void batadv_v_elp_periodic_work(s
- 
- 		/* Reading the estimated throughput from cfg80211 is a task that
- 		 * may sleep and that is not allowed in an rcu protected
--		 * context. Therefore schedule a task for that.
-+		 * context. Therefore add it to metric_queue and process it
-+		 * outside rcu protected context.
- 		 */
--		ret = queue_work(batadv_event_workqueue,
--				 &hardif_neigh->bat_v.metric_work);
--
--		if (!ret)
-+		metric_entry = kzalloc(sizeof(*metric_entry), GFP_ATOMIC);
-+		if (!metric_entry) {
- 			batadv_hardif_neigh_put(hardif_neigh);
-+			continue;
-+		}
-+
-+		metric_entry->hardif_neigh = hardif_neigh;
-+		list_add(&metric_entry->list, &metric_queue);
- 	}
- 	rcu_read_unlock();
- 
-+	list_for_each_entry_safe(metric_entry, metric_safe, &metric_queue, list) {
-+		batadv_v_elp_throughput_metric_update(metric_entry->hardif_neigh);
-+
-+		batadv_hardif_neigh_put(metric_entry->hardif_neigh);
-+		list_del(&metric_entry->list);
-+		kfree(metric_entry);
-+	}
-+
- restart_timer:
- 	batadv_v_elp_start_timer(hard_iface);
- out:
---- a/net/batman-adv/bat_v_elp.h
-+++ b/net/batman-adv/bat_v_elp.h
-@@ -10,7 +10,6 @@
- #include "main.h"
- 
- #include <linux/skbuff.h>
--#include <linux/workqueue.h>
- 
- int batadv_v_elp_iface_enable(struct batadv_hard_iface *hard_iface);
- void batadv_v_elp_iface_disable(struct batadv_hard_iface *hard_iface);
-@@ -19,6 +18,5 @@ void batadv_v_elp_iface_activate(struct
- void batadv_v_elp_primary_iface_set(struct batadv_hard_iface *primary_iface);
- int batadv_v_elp_packet_recv(struct sk_buff *skb,
- 			     struct batadv_hard_iface *if_incoming);
--void batadv_v_elp_throughput_metric_update(struct work_struct *work);
- 
- #endif /* _NET_BATMAN_ADV_BAT_V_ELP_H_ */
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -596,9 +596,6 @@ struct batadv_hardif_neigh_node_bat_v {
- 	 *  neighbor
- 	 */
- 	unsigned long last_unicast_tx;
--
--	/** @metric_work: work queue callback item for metric update */
--	struct work_struct metric_work;
- };
- 
- /**
 
 
 
