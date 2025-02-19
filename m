@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-118061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1186A3B9B6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6366A3B9FF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66B3A4218E1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819FE420BD2
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889B31E25F2;
-	Wed, 19 Feb 2025 09:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8251EFFB3;
+	Wed, 19 Feb 2025 09:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQlF4Sw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOfqrJVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441D71E102E;
-	Wed, 19 Feb 2025 09:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A51D1DF25D;
+	Wed, 19 Feb 2025 09:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957124; cv=none; b=jKTg/Ck8kcW5ikPWz3AUQEecLrGIpxFIR27cUz979d5e7iorktBly15fnggvVKX9aCVoMkrXdp260A9Prqc0wLzsFoBpKrSmZqO4ihkWskSKbolUU3NRxkghbOon8v69KZHhbowOVP+b+AK9cJLR0I+Ez1WSCPPp4mxumwvugkk=
+	t=1739957241; cv=none; b=XFLEXCTEi9Ce2ApaKYc0Rc4Wv7/yQ8AsCpAvUBULV6GmIzpayyfuPAES/tolblSjLy0hIIiEMSDDtSjeobg961up39ENH/f6ib++FZNGiDEnhro1TEsrXFlYQSHfhqn4epWCwYvkwNabYhXf6xzIEm0ogBdbSPli38Xye0EBFV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957124; c=relaxed/simple;
-	bh=e53JNnSl41JNYrc2zMjIADYLsmlm8NzpcybzG6L0FQ0=;
+	s=arc-20240116; t=1739957241; c=relaxed/simple;
+	bh=O6qKr1O0mPYtjZ0gfRq9heDmobWhU5nzqjkF0Z02zuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e81MIvNWCN+EueaqKXzPNcsEskO7ridrZsGcdJBxQcVA5IOarxzbO8aeHTT9FeZel+a4S+emmPxdydkYr1MX021xAq10mBfBKYRfwd4/+sKuI61XXf4I5T1AxgBrAfedDg23oHNclOyAhY8aZUfPUFDM8al5RHos2JTzRq4uixU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQlF4Sw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4195CC4CED1;
-	Wed, 19 Feb 2025 09:25:23 +0000 (UTC)
+	 MIME-Version; b=Q/BzBM2K0F2NWSQd+G0LhYJM6cTcOyl72/gVSf3WsJX5uT11B9Q2sGn0VE/rCTr6HeVS8H/LSEfFHeC+HMRrI78mMahDZ/KMUKYdYwwH406f/Z4As5sQFHQ6b99NQ7xfOf7gxvhDK3misQB5jP9D3/iaiIYhPKyBdKiwPKLzxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOfqrJVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A37C4CED1;
+	Wed, 19 Feb 2025 09:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957123;
-	bh=e53JNnSl41JNYrc2zMjIADYLsmlm8NzpcybzG6L0FQ0=;
+	s=korg; t=1739957241;
+	bh=O6qKr1O0mPYtjZ0gfRq9heDmobWhU5nzqjkF0Z02zuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQlF4Sw1KP7lUnnxFdiA/Y53Dji3dFwNzuI4rEGj6+/bOvb7XwwFMDJtKLtkCkaIb
-	 Xnxayc0FfiIR9c5Fb0o1AB8zgy8awgJuhKDELRR5fv8Fa5Galicwdb23zVJsEOf7cY
-	 t/2ASBdzuZop8BqihbQrqSOqoU3SJRhq48NXc+tg=
+	b=nOfqrJVYDXE7xQ3fo9wWxz2fF/DYQI/caf+fL62Y+R4rz/bevX3uStgJeJUlaUYuF
+	 RpjYCez2I/wqNQlcbTfMkn1W5cyshrShK6X5OI7+PqgRMurx5m+sfmbGYYDWbqxbJK
+	 0OVDphFRZIDs1SWPKERooruO+bg1/HD/KYcrvLWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1 415/578] media: uvcvideo: Remove redundant NULL assignment
-Date: Wed, 19 Feb 2025 09:26:59 +0100
-Message-ID: <20250219082709.344403241@linuxfoundation.org>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Patrick Wang <patrick.wang.shcn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 416/578] mm: kmemleak: fix upper boundary check for physical address objects
+Date: Wed, 19 Feb 2025 09:27:00 +0100
+Message-ID: <20250219082709.382941580@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,41 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit 04d3398f66d2d31c4b8caea88f051a4257b7a161 upstream.
+commit 488b5b9eca68497b533ced059be5eff19578bbca upstream.
 
-ctrl->handle will only be different than NULL for controls that have
-mappings. This is because that assignment is only done inside
-uvc_ctrl_set() for mapped controls.
+Memblock allocations are registered by kmemleak separately, based on their
+physical address.  During the scanning stage, it checks whether an object
+is within the min_low_pfn and max_low_pfn boundaries and ignores it
+otherwise.
 
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-2-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+With the recent addition of __percpu pointer leak detection (commit
+6c99d4eb7c5e ("kmemleak: enable tracking for percpu pointers")), kmemleak
+started reporting leaks in setup_zone_pageset() and
+setup_per_cpu_pageset().  These were caused by the node_data[0] object
+(initialised in alloc_node_data()) ending on the PFN_PHYS(max_low_pfn)
+boundary.  The non-strict upper boundary check introduced by commit
+84c326299191 ("mm: kmemleak: check physical address when scan") causes the
+pg_data_t object to be ignored (not scanned) and the __percpu pointers it
+contains to be reported as leaks.
+
+Make the max_low_pfn upper boundary check strict when deciding whether to
+ignore a physical address object and not scan it.
+
+Link: https://lkml.kernel.org/r/20250127184233.2974311-1-catalin.marinas@arm.com
+Fixes: 84c326299191 ("mm: kmemleak: check physical address when scan")
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Patrick Wang <patrick.wang.shcn@gmail.com>
+Cc: <stable@vger.kernel.org>	[6.0.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ mm/kmemleak.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1531,10 +1531,8 @@ bool uvc_ctrl_status_event_async(struct
- 	struct uvc_device *dev = chain->dev;
- 	struct uvc_ctrl_work *w = &dev->async_ctrl;
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1520,7 +1520,7 @@ static void kmemleak_scan(void)
+ 			unsigned long phys = object->pointer;
  
--	if (list_empty(&ctrl->info.mappings)) {
--		ctrl->handle = NULL;
-+	if (list_empty(&ctrl->info.mappings))
- 		return false;
--	}
+ 			if (PHYS_PFN(phys) < min_low_pfn ||
+-			    PHYS_PFN(phys + object->size) >= max_low_pfn)
++			    PHYS_PFN(phys + object->size) > max_low_pfn)
+ 				__paint_it(object, KMEMLEAK_BLACK);
+ 		}
  
- 	w->data = data;
- 	w->urb = urb;
 
 
 
