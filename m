@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C557AA3B769
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAEAA3B75C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5660A3B6425
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8DD917E931
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6093C1EFF9B;
-	Wed, 19 Feb 2025 08:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75ECE1D6DBC;
+	Wed, 19 Feb 2025 09:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oO1ax86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voA9HLRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6921CAA65;
-	Wed, 19 Feb 2025 08:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257F51C701E;
+	Wed, 19 Feb 2025 09:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955391; cv=none; b=bxXjpTHch/VH48JgJnu8r9r4wFn+41bY1A2xk7epV/YJ7Woc4Qi9yKxZmt1E4OzfF5CHS+RmxAf2GDQOgc7ec5wADQy+F6xfI1hbB0QdZducvpu9Wa3ougYqChkZSi3gTJl/SoczBwYN/V7fUOJ8VWQBcW6eaCEUtUMjXDwVNEk=
+	t=1739955824; cv=none; b=gtfoerWyHErkshz7MzXcJJybnYMXuojNJpFxLjh5paBy/roMJLFd3Mxc1AS2jxLB5MUDGP7cksUKR5gxdOnFlpsP+4+k0ZUccn5Z1E4G4MOu6DNyCJlg6qwoD2Tc7ULHNMqSEgEI89CqZdx8iFlV1KCG1zi+zDcDiWM8aKEOgJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955391; c=relaxed/simple;
-	bh=+wF3/Ds3iOSewy0F66KWJY2XG6pSO8Osr5LM6IbYnt4=;
+	s=arc-20240116; t=1739955824; c=relaxed/simple;
+	bh=fmHdfjlYuYmgoYjKX4JYwg0Ou8EpKThH2XI2/7m+h7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3zEaEDt81Vf2nMdnAITFYqHmqEVeaSCxqwCREX+1iJJmFgyDWiwQ263INnqddMetfWIonTsypXyrSYRAmypoYIXkIRqgQtHEhhoBrHfZe/uOimSdqK6pXSF+sKshAXGvkYbsNLVcvpqC2gBESjsYBdjkS9NNBoGN0ePcy+quH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oO1ax86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A70C4CED1;
-	Wed, 19 Feb 2025 08:56:30 +0000 (UTC)
+	 MIME-Version; b=COG0VDDprC6uBHedbXB0vbm5dTuEYeFSCDFwph/LR/4mjQdlEwDV8O5b9Y81D3blvAPBkV4VS+mclrmX4JINMvThsLNV/mppBMuQGZ6LRscXXZSiLWrdSmNfsuZMO/cR6Xq3KlrMQZ9zuSDQDRCDpCK+SIb26MId5QbHU29q2Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voA9HLRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B666C4CEE8;
+	Wed, 19 Feb 2025 09:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955391;
-	bh=+wF3/Ds3iOSewy0F66KWJY2XG6pSO8Osr5LM6IbYnt4=;
+	s=korg; t=1739955824;
+	bh=fmHdfjlYuYmgoYjKX4JYwg0Ou8EpKThH2XI2/7m+h7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1oO1ax86CYDGRWfuMCS9Dsj2dM0CHjxlHIX/fGYJOn/QYDq5zORqr3Rt+D4CPffq5
-	 PlNotGSMYMZ63ed5zX0yII1vr6RO+WrT8ILeogOxFB+NEGtc1DLdx3f9kl8FBkNm7Z
-	 a+4vx/+64Rm0n+NJGB/R7eAFedsrUEBa7SAcVWqI=
+	b=voA9HLRJGeo8cDdUa449g4Ty8c+jCzjpNxJ0I7id1r3RBfR1ce9pX40UodC5GrmGl
+	 Fzchsyua4dRKH5YNCZbgUmPtEOf4Y2jS6ZlpB+L6DHiAiWRaSBmyG0LPMiMZaDoeIF
+	 SlsG52frpb8uxro98cIrijVeSS4IuZ8vJWSxdFx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH 6.12 221/230] bpf: handle implicit declaration of function gettid in bpf_iter.c
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 125/152] openvswitch: use RCU protection in ovs_vport_cmd_fill_info()
 Date: Wed, 19 Feb 2025 09:28:58 +0100
-Message-ID: <20250219082610.335736714@linuxfoundation.org>
+Message-ID: <20250219082554.994906482@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 42602e3a06f8e5b9a059344e305c9bee2dcc87c8 upstream.
+[ Upstream commit 90b2f49a502fa71090d9f4fe29a2f51fe5dff76d ]
 
-As we can see from the title, when I compiled the selftests/bpf, I
-saw the error:
-implicit declaration of function ‘gettid’ ; did you mean ‘getgid’? [-Werror=implicit-function-declaration]
-  skel->bss->tid = gettid();
-                   ^~~~~~
-                   getgid
+ovs_vport_cmd_fill_info() can be called without RTNL or RCU.
 
-Directly call the syscall solves this issue.
+Use RCU protection and dev_net_rcu() to avoid potential UAF.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
-Tested-by: Alan Maguire <alan.maguire@oracle.com>
-Link: https://lore.kernel.org/r/20241029074627.80289-1-kerneljasonxing@gmail.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Cc: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9354d4520342 ("openvswitch: reliable interface indentification in port dumps")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_iter.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/openvswitch/datapath.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-@@ -226,7 +226,7 @@ static void test_task_common_nocheck(str
- 	ASSERT_OK(pthread_create(&thread_id, NULL, &do_nothing_wait, NULL),
- 		  "pthread_create");
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index b7232142c13f8..cb52fac7caa3c 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2103,6 +2103,7 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ {
+ 	struct ovs_header *ovs_header;
+ 	struct ovs_vport_stats vport_stats;
++	struct net *net_vport;
+ 	int err;
  
--	skel->bss->tid = gettid();
-+	skel->bss->tid = syscall(SYS_gettid);
+ 	ovs_header = genlmsg_put(skb, portid, seq, &dp_vport_genl_family,
+@@ -2119,12 +2120,15 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
+ 		goto nla_put_failure;
  
- 	do_dummy_read_opts(skel->progs.dump_task, opts);
+-	if (!net_eq(net, dev_net(vport->dev))) {
+-		int id = peernet2id_alloc(net, dev_net(vport->dev), gfp);
++	rcu_read_lock();
++	net_vport = dev_net_rcu(vport->dev);
++	if (!net_eq(net, net_vport)) {
++		int id = peernet2id_alloc(net, net_vport, GFP_ATOMIC);
  
-@@ -255,10 +255,10 @@ static void *run_test_task_tid(void *arg
- 	union bpf_iter_link_info linfo;
- 	int num_unknown_tid, num_known_tid;
+ 		if (nla_put_s32(skb, OVS_VPORT_ATTR_NETNSID, id))
+-			goto nla_put_failure;
++			goto nla_put_failure_unlock;
+ 	}
++	rcu_read_unlock();
  
--	ASSERT_NEQ(getpid(), gettid(), "check_new_thread_id");
-+	ASSERT_NEQ(getpid(), syscall(SYS_gettid), "check_new_thread_id");
+ 	ovs_vport_get_stats(vport, &vport_stats);
+ 	if (nla_put_64bit(skb, OVS_VPORT_ATTR_STATS,
+@@ -2145,6 +2149,8 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	genlmsg_end(skb, ovs_header);
+ 	return 0;
  
- 	memset(&linfo, 0, sizeof(linfo));
--	linfo.task.tid = gettid();
-+	linfo.task.tid = syscall(SYS_gettid);
- 	opts.link_info = &linfo;
- 	opts.link_info_len = sizeof(linfo);
- 	test_task_common(&opts, 0, 1);
++nla_put_failure_unlock:
++	rcu_read_unlock();
+ nla_put_failure:
+ 	err = -EMSGSIZE;
+ error:
+-- 
+2.39.5
+
 
 
 
