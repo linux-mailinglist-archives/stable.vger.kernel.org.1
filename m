@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D79A3B6F9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBE6A3BA23
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07AED3A6272
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2608B1746E1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D5D1E25F1;
-	Wed, 19 Feb 2025 08:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A021DED4A;
+	Wed, 19 Feb 2025 09:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV6V7v7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBmoOHoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C751E25E1;
-	Wed, 19 Feb 2025 08:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272611DE4EF;
+	Wed, 19 Feb 2025 09:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955216; cv=none; b=KQqJKiGqZf20hPgMJnmnWynLXIkOMn0pL2MLhcbeQjicg/COc1rJxg0HUPMVShA1OZjHi5vweDKNFSkpU/SQw7jjPwhTUXm7e+rE5yrKZIE5IvHQj25GxO8qtg8K9sU1YLQVcEf9eXrkQHGpRF30Ml+rVVoHkXrQWZ6FltI1QVs=
+	t=1739957221; cv=none; b=SzbdvfRkcP4lReE8LL5fiA9S3euI595+qTVI7EbjTJ85ZsMyjHLRQJVQNqoz2vd5VShyaVYgwjnl5ke3wBKxmHYnFqvSuik2ADlXzGiX2GLUja8s03dXhxW/t+IK+mJPWc2tRMRtYwh/Vr2nR8bnnIdpsq8DvMo8j9HUQ3DKkYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955216; c=relaxed/simple;
-	bh=qZjPbH3YUZ6ZoUUwHGqsK+nhrng1ksYPipAAwSqv4N0=;
+	s=arc-20240116; t=1739957221; c=relaxed/simple;
+	bh=IB3q8em+o3sqWRIXKs1Tw1CpdaKqxTNTfjyqSlFZOaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDhxQMLESs3FnDHq7hiNuqYfbDn4Li8wNOuUYQ/z3vI2ewx42NngzPQHus84DtR9wIHPqyvZv8vTKOfTknvjMFpEnomb6puRflqdP8//pvjq+0FZia9SctF0NnkCFYCbHtKkoDu7aPWneBvTyRd20/UBcljSimJWC9URelXppf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV6V7v7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0E5C4CED1;
-	Wed, 19 Feb 2025 08:53:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vAvXmn2e74z1wILWsy2i5kS+pVaKe1L58D7EEJFNZunaDbr8kWRr0VP+D0rPENl690V+a5GijcUUxSSRj+2ONoF9TIVsmBRaEMw4EUo6vtZq2TXvjxXZJl1h42+gDpG/aEr3wzieXp3mgx057YQfdpq62k+pxnRspiaDEq9s0Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBmoOHoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3729C4CED1;
+	Wed, 19 Feb 2025 09:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955216;
-	bh=qZjPbH3YUZ6ZoUUwHGqsK+nhrng1ksYPipAAwSqv4N0=;
+	s=korg; t=1739957221;
+	bh=IB3q8em+o3sqWRIXKs1Tw1CpdaKqxTNTfjyqSlFZOaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZV6V7v7WctfVIyOz6GldP0a5f7/wF6hcrOi+C0w+ElJOLujMnyKYIiMECkm52dDrl
-	 jTyjye4LYmCo7Lu939W9fRGYINSkP7rA+fetJoXgsDyklDk20GXib9+Ve1C/7TeZMN
-	 +OTTm6N5LGUpXuC7/vkSre921+DiBuoeC9RfXIQc=
+	b=aBmoOHoN8tm8J8zfoiTM+UfzMcYE1PNRXOvlchGmbu2lNqscspqh3f/dwJyJVk3oe
+	 fVmfDIUQtUQQLHrTwJM2HCmtV11mN44/mNiiExdmFx45yw9VntPz0oBXKrcpRx7XeB
+	 +5biNjIvYVlHvnq7OateLwYGY3+gaLNmUw5l5J/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 135/230] wifi: ath12k: fix handling of 6 GHz rules
-Date: Wed, 19 Feb 2025 09:27:32 +0100
-Message-ID: <20250219082606.965865791@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 449/578] MIPS: ftrace: Declare ftrace_get_parent_ra_addr() as static
+Date: Wed, 19 Feb 2025 09:27:33 +0100
+Message-ID: <20250219082710.658862292@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,152 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 64a1ba4072b34af1b76bf15fca5c2075b8cc4d64 upstream.
+commit ddd068d81445b17ac0bed084dfeb9e58b4df3ddd upstream.
 
-In the US country code, to avoid including 6 GHz rules in the 5 GHz rules
-list, the number of 5 GHz rules is set to a default constant value of 4
-(REG_US_5G_NUM_REG_RULES). However, if there are more than 4 valid 5 GHz
-rules, the current logic will bypass the legitimate 6 GHz rules.
+Declare ftrace_get_parent_ra_addr() as static to suppress clang
+compiler warning that 'no previous prototype'. This function is
+not intended to be called from other parts.
 
-For example, if there are 5 valid 5 GHz rules and 1 valid 6 GHz rule, the
-current logic will only consider 4 of the 5 GHz rules, treating the last
-valid rule as a 6 GHz rule. Consequently, the actual 6 GHz rule is never
-processed, leading to the eventual disabling of 6 GHz channels.
+Fix follow error with clang-19:
 
-To fix this issue, instead of hardcoding the value to 4, use a helper
-function to determine the number of 6 GHz rules present in the 5 GHz rules
-list and ignore only those rules.
+arch/mips/kernel/ftrace.c:251:15: error: no previous prototype for function 'ftrace_get_parent_ra_addr' [-Werror,-Wmissing-prototypes]
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      |               ^
+arch/mips/kernel/ftrace.c:251:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  251 | unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+      | ^
+      | static
+1 error generated.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Cc: stable@vger.kernel.org
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250123-fix_6ghz_rules_handling-v1-1-d734bfa58ff4@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c |   61 +++++++++++++++++++++++++---------
- drivers/net/wireless/ath/ath12k/wmi.h |    1 
- 2 files changed, 45 insertions(+), 17 deletions(-)
+ arch/mips/kernel/ftrace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -4681,6 +4681,22 @@ static struct ath12k_reg_rule
- 	return reg_rule_ptr;
- }
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -248,7 +248,7 @@ int ftrace_disable_ftrace_graph_caller(v
+ #define S_R_SP	(0xafb0 << 16)	/* s{d,w} R, offset(sp) */
+ #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
  
-+static u8 ath12k_wmi_ignore_num_extra_rules(struct ath12k_wmi_reg_rule_ext_params *rule,
-+					    u32 num_reg_rules)
-+{
-+	u8 num_invalid_5ghz_rules = 0;
-+	u32 count, start_freq;
-+
-+	for (count = 0; count < num_reg_rules; count++) {
-+		start_freq = le32_get_bits(rule[count].freq_info, REG_RULE_START_FREQ);
-+
-+		if (start_freq >= ATH12K_MIN_6G_FREQ)
-+			num_invalid_5ghz_rules++;
-+	}
-+
-+	return num_invalid_5ghz_rules;
-+}
-+
- static int ath12k_pull_reg_chan_list_ext_update_ev(struct ath12k_base *ab,
- 						   struct sk_buff *skb,
- 						   struct ath12k_reg_info *reg_info)
-@@ -4691,6 +4707,7 @@ static int ath12k_pull_reg_chan_list_ext
- 	u32 num_2g_reg_rules, num_5g_reg_rules;
- 	u32 num_6g_reg_rules_ap[WMI_REG_CURRENT_MAX_AP_TYPE];
- 	u32 num_6g_reg_rules_cl[WMI_REG_CURRENT_MAX_AP_TYPE][WMI_REG_MAX_CLIENT_TYPE];
-+	u8 num_invalid_5ghz_ext_rules;
- 	u32 total_reg_rules = 0;
- 	int ret, i, j;
- 
-@@ -4784,20 +4801,6 @@ static int ath12k_pull_reg_chan_list_ext
- 
- 	memcpy(reg_info->alpha2, &ev->alpha2, REG_ALPHA2_LEN);
- 
--	/* FIXME: Currently FW includes 6G reg rule also in 5G rule
--	 * list for country US.
--	 * Having same 6G reg rule in 5G and 6G rules list causes
--	 * intersect check to be true, and same rules will be shown
--	 * multiple times in iw cmd. So added hack below to avoid
--	 * parsing 6G rule from 5G reg rule list, and this can be
--	 * removed later, after FW updates to remove 6G reg rule
--	 * from 5G rules list.
--	 */
--	if (memcmp(reg_info->alpha2, "US", 2) == 0) {
--		reg_info->num_5g_reg_rules = REG_US_5G_NUM_REG_RULES;
--		num_5g_reg_rules = reg_info->num_5g_reg_rules;
--	}
--
- 	reg_info->dfs_region = le32_to_cpu(ev->dfs_region);
- 	reg_info->phybitmap = le32_to_cpu(ev->phybitmap);
- 	reg_info->num_phy = le32_to_cpu(ev->num_phy);
-@@ -4900,8 +4903,29 @@ static int ath12k_pull_reg_chan_list_ext
- 		}
- 	}
- 
-+	ext_wmi_reg_rule += num_2g_reg_rules;
-+
-+	/* Firmware might include 6 GHz reg rule in 5 GHz rule list
-+	 * for few countries along with separate 6 GHz rule.
-+	 * Having same 6 GHz reg rule in 5 GHz and 6 GHz rules list
-+	 * causes intersect check to be true, and same rules will be
-+	 * shown multiple times in iw cmd.
-+	 * Hence, avoid parsing 6 GHz rule from 5 GHz reg rule list
-+	 */
-+	num_invalid_5ghz_ext_rules = ath12k_wmi_ignore_num_extra_rules(ext_wmi_reg_rule,
-+								       num_5g_reg_rules);
-+
-+	if (num_invalid_5ghz_ext_rules) {
-+		ath12k_dbg(ab, ATH12K_DBG_WMI,
-+			   "CC: %s 5 GHz reg rules number %d from fw, %d number of invalid 5 GHz rules",
-+			   reg_info->alpha2, reg_info->num_5g_reg_rules,
-+			   num_invalid_5ghz_ext_rules);
-+
-+		num_5g_reg_rules = num_5g_reg_rules - num_invalid_5ghz_ext_rules;
-+		reg_info->num_5g_reg_rules = num_5g_reg_rules;
-+	}
-+
- 	if (num_5g_reg_rules) {
--		ext_wmi_reg_rule += num_2g_reg_rules;
- 		reg_info->reg_rules_5g_ptr =
- 			create_ext_reg_rules_from_wmi(num_5g_reg_rules,
- 						      ext_wmi_reg_rule);
-@@ -4913,7 +4937,12 @@ static int ath12k_pull_reg_chan_list_ext
- 		}
- 	}
- 
--	ext_wmi_reg_rule += num_5g_reg_rules;
-+	/* We have adjusted the number of 5 GHz reg rules above. But still those
-+	 * many rules needs to be adjusted in ext_wmi_reg_rule.
-+	 *
-+	 * NOTE: num_invalid_5ghz_ext_rules will be 0 for rest other cases.
-+	 */
-+	ext_wmi_reg_rule += (num_5g_reg_rules + num_invalid_5ghz_ext_rules);
- 
- 	for (i = 0; i < WMI_REG_CURRENT_MAX_AP_TYPE; i++) {
- 		reg_info->reg_rules_6g_ap_ptr[i] =
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -3943,7 +3943,6 @@ struct ath12k_wmi_eht_rate_set_params {
- #define MAX_REG_RULES 10
- #define REG_ALPHA2_LEN 2
- #define MAX_6G_REG_RULES 5
--#define REG_US_5G_NUM_REG_RULES 4
- 
- enum wmi_start_event_param {
- 	WMI_VDEV_START_RESP_EVENT = 0,
+-unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
++static unsigned long ftrace_get_parent_ra_addr(unsigned long self_ra, unsigned long
+ 		old_parent_ra, unsigned long parent_ra_addr, unsigned long fp)
+ {
+ 	unsigned long sp, ip, tmp;
 
 
 
