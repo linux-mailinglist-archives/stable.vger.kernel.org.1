@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-117818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F74EA3B86A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:24:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB17A3B905
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3028F4200C4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:17:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3BC717B1B6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAB41B6D0F;
-	Wed, 19 Feb 2025 09:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BAB1DFE29;
+	Wed, 19 Feb 2025 09:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/SDGaQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fITFn9QG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F821DE887;
-	Wed, 19 Feb 2025 09:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC32158862;
+	Wed, 19 Feb 2025 09:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956429; cv=none; b=jRqu/tCnPVZCBu6w82tNAh65oTgsF5kcVlDdHxL4XQKKx2OYTOKxLpswe8yeQk/tUTr1RfV30GcrO5dK7q2HkRSOgBB8I3Ka75vGu+pqSV6vIxr6FSMdFtRc026v5258d782X5sPui6sOMjIcflGtiuuZoHv81pgMH5RvXijrtk=
+	t=1739956554; cv=none; b=bqRmk0itAhd6PkbuOxXWTrkNkAEBph62nzQLW52ZdzFZ296qBY10Q4Ip8RwX1NesnWLHz+ryXflRpbsMLXJOyQEDcN8YckhKwuLWYbAjdXgpjHsS0J2hAx8DJsQbM8G2IT/Y1iBhYzYg1sCRhXFG9bcPS76/rQPSPFpqdPsuNqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956429; c=relaxed/simple;
-	bh=LUiqnjsHwLAY5So9jl1QI23OFpc6mEWLZxqaVNAtqds=;
+	s=arc-20240116; t=1739956554; c=relaxed/simple;
+	bh=akZyqXAKMK8i7G8KEQQT6jSeYdPRa5FkLXEEuCdqWSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bo8DG9wn5YhcjCcQosWSrOekE/onANnYINrVBaVF6cgwDX4qe4hHyLSAOdVAybsiwHrrp5UT91+qo7+xRD9kzTWRRlOPVsaAxH/Z06Q8IesRDembpovJMgYcDTBfgJh4q8aQqOGuIWGyLyFoBFlDVO4itJ2P9aFjfgGSRwvI06k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/SDGaQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD75C4CED1;
-	Wed, 19 Feb 2025 09:13:48 +0000 (UTC)
+	 MIME-Version; b=TnVEU0p+krdsbeDckxL4r3OUM7adNVL2peuMYDdvDQ4EvnRLeNnEpGlQxeXa7aUmddIe2s3XlhKBeDRcvEaDQcUyM36WzECe4zQ7W8RlDa9SxTCxhx53rGJ5ELvypM1Kg5CCxmtjPmDhVeYZi3ppnqWpjJNoworekpIWybQWQWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fITFn9QG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E70C4CEE6;
+	Wed, 19 Feb 2025 09:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956429;
-	bh=LUiqnjsHwLAY5So9jl1QI23OFpc6mEWLZxqaVNAtqds=;
+	s=korg; t=1739956554;
+	bh=akZyqXAKMK8i7G8KEQQT6jSeYdPRa5FkLXEEuCdqWSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/SDGaQWC3IJSvmsKNOV2d+Z1BCLSwkOREljHj9/RCoaothPO7VvunE2/Fjoy74XL
-	 tztpr1YAckCaeAASRBTCxjTjfN5K5QQdX1GJQdc6JeFssaERHxSUFBzSwuaKrf/aXP
-	 +vqrOqiF/9FlTPRNf0nCA1T08pS+kcp8c4oCqLZA=
+	b=fITFn9QGlYwKFaMFGXgUh5La4sTQb5lil8IkrZxtyyb41vWTaU508lD90ITM0IIcm
+	 tAfQS2dviUhbNJ62zjctYrPlqSHBZt/EqOEi6e7/A8nv+eC7EsyyGtOT2RR3GuzA6U
+	 6DkPP9qikvffIFSuFO9AvkXfDsH9MoSDR4noywBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/578] arm64: dts: qcom: sc7180-trogdor-pompom: rename 5v-choke thermal zone
-Date: Wed, 19 Feb 2025 09:22:59 +0100
-Message-ID: <20250219082659.850777015@linuxfoundation.org>
+Subject: [PATCH 6.1 176/578] arm64: dts: qcom: sm8150-microsoft-surface-duo: fix typos in da7280 properties
+Date: Wed, 19 Feb 2025 09:23:00 +0100
+Message-ID: <20250219082659.890898304@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -70,42 +69,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 9180b38d706c29ed212181a77999c35ae9ff6879 ]
+[ Upstream commit 9875adffb87da5c40f4013e55104f5e2fc071c2a ]
 
-Rename the 5v-choke thermal zone to satisfy the bindings.
+The dlg,const-op-mode & dlg,periodic-op-mode were mis-names with twice
+the "dlg," prefix, drop one to match the bindings.
 
 This fixes:
-sc7180-trogdor-pompom-r2-lte.dts: thermal-zones: '5v-choke-thermal' does not match any of the regexes: '^[a-zA-Z][a-zA-Z0-9\\-]{1,10}-thermal$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/thermal/thermal-zones.yaml#
+sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,const-op-mode' is a required property
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+m8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,periodic-op-mode' is a required property
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,dlg,const-op-mode', 'dlg,dlg,periodic-op-mode' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+With the dlg,da7280.yaml converted from dlg,da7280.txt at [1].
+
+[1] https://lore.kernel.org/all/20241206-topic-misc-da7280-convert-v2-1-1c3539f75604@linaro.org/
+
+Fixes: d1f781db47a8 ("arm64: dts: qcom: add initial device-tree for Microsoft Surface Duo")
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-4-1e6880e9dda3@linaro.org
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-6-1e6880e9dda3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi | 4 ++--
+ arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-index d363a8b6906aa..31f91f4e97360 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-@@ -12,11 +12,11 @@
+diff --git a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
+index 5397fba9417bb..51ddbac3cfe56 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
++++ b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
+@@ -376,8 +376,8 @@
+ 		pinctrl-0 = <&da7280_intr_default>;
  
- / {
- 	thermal-zones {
--		5v-choke-thermal {
-+		choke-5v-thermal {
- 			thermal-sensors = <&pm6150_adc_tm 1>;
- 
- 			trips {
--				5v-choke-crit {
-+				choke-5v-crit {
- 					temperature = <125000>;
- 					hysteresis = <1000>;
- 					type = "critical";
+ 		dlg,actuator-type = "LRA";
+-		dlg,dlg,const-op-mode = <1>;
+-		dlg,dlg,periodic-op-mode = <1>;
++		dlg,const-op-mode = <1>;
++		dlg,periodic-op-mode = <1>;
+ 		dlg,nom-microvolt = <2000000>;
+ 		dlg,abs-max-microvolt = <2000000>;
+ 		dlg,imax-microamp = <129000>;
 -- 
 2.39.5
 
