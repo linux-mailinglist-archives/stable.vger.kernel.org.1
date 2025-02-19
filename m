@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-117421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18635A3B5BA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:01:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF02A3B588
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97E687A3743
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5594D3A19BB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5584A1E32B3;
-	Wed, 19 Feb 2025 08:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F0D1E0B77;
+	Wed, 19 Feb 2025 08:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCOQE/UW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0crD4mB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF0C1E285A;
-	Wed, 19 Feb 2025 08:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A051AF0C8;
+	Wed, 19 Feb 2025 08:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955233; cv=none; b=pt9OpKvSoaq59cXhwDPVVAYIxoetETwvA4d3jtwEB15BDtS6ZfGqAX4D2DFjV9cm/ESHL8vyThYdqp4ruhCgKUHXjPt1xq5NL/ucn69NV8LlDGd64FdxZ0rcL6sUVPbdswPIM/ZLzLCKz+Lni8jfPSPn3RplITUVnkL1H7vCT2M=
+	t=1739954552; cv=none; b=LIdLBVjcAaX3hfGKKqGTS2MHAtX1ZUdy50J/r+Vjb5dJDhPOW273L/VwoWf+y8w/sYX0WhlnfO5pIgk1XitrrEK63MhJiLybE2+8V2Z2XnfMgk9Ndyror1OaUFMlVxqOkO44K0JvslXhmgYu7JSMxcVAIlEKIefqu9Wu4EYCvlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955233; c=relaxed/simple;
-	bh=htiIlhbj0TWA63IhJjQnKpy6lL8vJV040l699orvEgg=;
+	s=arc-20240116; t=1739954552; c=relaxed/simple;
+	bh=12kWgU/FEbvFRHLQQ+v0t1yblNF7UDF5kl01giYLas4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsA1mPKgrsXoWGibGeGS77iHSnH7JecmUUDayKfSKTIETlx8C9sGBVYyscx8+f/gwRcE+oUpI5cokBhAuwS5LgSxR6mzSAuEhDy+UA7rVrAw5+LdW+qqKbaREw9cDgYR0z6dfKP1vT9AJjTH6ZJMZlSDEUSUHumYNL1JefnmqtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCOQE/UW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F533C4CED1;
-	Wed, 19 Feb 2025 08:53:52 +0000 (UTC)
+	 MIME-Version; b=Lp+DAItFUTYea4/ZNgpuYyjXzsOKCsz9oVTsL1YVqEqeqZHCKKnItvByXAJTPBt7O/j92od9UmPd75lZnPLbeU/wKlWQUoQwQi3RTnkbhPnHbQPJIIErqio+spw5KZ6d4XJOEEtlp7almV7/okF2SjjPzOo+VJ/X+2uhAzjMJJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0crD4mB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B866BC4CED1;
+	Wed, 19 Feb 2025 08:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955232;
-	bh=htiIlhbj0TWA63IhJjQnKpy6lL8vJV040l699orvEgg=;
+	s=korg; t=1739954552;
+	bh=12kWgU/FEbvFRHLQQ+v0t1yblNF7UDF5kl01giYLas4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCOQE/UWoZ1ZJFdkVuZLA2ux2yfWHu1G5KeGDTpdx5bEKX6muTCIdZcBfqZA8rFRy
-	 jfoX4twb9U7KNnN0kfYwkbKxh6zYV62VghwjvXOPjmYVdNmHEKjcW3tEoJcK9CZP++
-	 /YrewZxT029FFMSfJMzIg1WbU5Kej2npaneUXKx4=
+	b=0crD4mB3Gxp7mUeTivHB2ulGQHBEUUMq38xuT/xmQ+haR+Y1b5bRellak001OsN54
+	 Bfe958sp4F+8GrN+7alPulE6uAwhgbFRjF2VpNvpR0P0TeibMJrUqEvnhn4Zy0gx0P
+	 LqMwiv2Qu7ndtOkkEM6de1vdFlY5Rgm4ekRVRYEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/230] scsi: ufs: Fix toggling of clk_gating.state when clock gating is not allowed
-Date: Wed, 19 Feb 2025 09:28:10 +0100
-Message-ID: <20250219082608.472613977@linuxfoundation.org>
+Subject: [PATCH 6.13 237/274] neighbour: use RCU protection in __neigh_notify()
+Date: Wed, 19 Feb 2025 09:28:11 +0100
+Message-ID: <20250219082618.855763114@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 839a74b5649c9f41d939a05059b5ca6b17156d03 ]
+[ Upstream commit becbd5850c03ed33b232083dd66c6e38c0c0e569 ]
 
-This commit addresses an issue where clk_gating.state is being toggled in
-ufshcd_setup_clocks() even if clock gating is not allowed.
+__neigh_notify() can be called without RTNL or RCU protection.
 
-The fix is to add a check for hba->clk_gating.is_initialized before toggling
-clk_gating.state in ufshcd_setup_clocks().
+Use RCU protection to avoid potential UAF.
 
-Since clk_gating.lock is now initialized unconditionally, it can no longer
-lead to the spinlock being used before it is properly initialized, but
-instead it is mostly for documentation purposes.
-
-Fixes: 1ab27c9cf8b6 ("ufs: Add support for clock gating")
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20250128071207.75494-3-avri.altman@wdc.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 426b5303eb43 ("[NETNS]: Modify the neighbour table code so it handles multiple network namespaces")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/neighbour.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 5682fdcbf2da5..a73fffd6c3de4 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -9240,7 +9240,7 @@ static int ufshcd_setup_clocks(struct ufs_hba *hba, bool on)
- 			if (!IS_ERR_OR_NULL(clki->clk) && clki->enabled)
- 				clk_disable_unprepare(clki->clk);
- 		}
--	} else if (!ret && on) {
-+	} else if (!ret && on && hba->clk_gating.is_initialized) {
- 		scoped_guard(spinlock_irqsave, &hba->clk_gating.lock)
- 			hba->clk_gating.state = CLKS_ON;
- 		trace_ufshcd_clk_gating(dev_name(hba->dev),
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 89656d180bc60..bd0251bd74a1f 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3447,10 +3447,12 @@ static const struct seq_operations neigh_stat_seq_ops = {
+ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid)
+ {
+-	struct net *net = dev_net(n->dev);
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
++	struct net *net;
+ 
++	rcu_read_lock();
++	net = dev_net_rcu(n->dev);
+ 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
+ 	if (skb == NULL)
+ 		goto errout;
+@@ -3463,9 +3465,11 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 		goto errout;
+ 	}
+ 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
+-	return;
++	goto out;
+ errout:
+ 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
++out:
++	rcu_read_unlock();
+ }
+ 
+ void neigh_app_ns(struct neighbour *n)
 -- 
 2.39.5
 
