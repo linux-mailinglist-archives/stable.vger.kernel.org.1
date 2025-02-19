@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1392DA3B6F7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6CAA3B63F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F149C1789F8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EA1517C5CD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160321CAA8E;
-	Wed, 19 Feb 2025 08:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4322C1DEFEA;
+	Wed, 19 Feb 2025 08:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHHNOxCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKOdl4N7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E61BD9DE;
-	Wed, 19 Feb 2025 08:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011B61DEFE7;
+	Wed, 19 Feb 2025 08:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955486; cv=none; b=I+0qWefzS9ZXKkfEzHrGo/gOg586modmXstzj0jPibw7Q7sOtgZWG3+aLBgtHIXMj7SIniRQX5w7HC12hbH6row3Z0A3xKB0PQOyxcjZQzcYSFiCz9fNL8L+n+GAYGt6m3YV/4+z/CJ0MUyNgdh1epHsySYfKFWEYwmHVnCe8iI=
+	t=1739955059; cv=none; b=JNi0aiw3ifogMR5zeOAkCy/MGhiR5xXBghJQfZchghGq1uMDHL/E8lFL/+EQRyQnvNn1m5ioAC8R3CbfpkTLxArsKh7/fUwvnLycyZKuBEr4uoa9U69X3dTFNlDynANzfG3xa+AiaIiLPiHUUi89nRbXIByYmcspe79U0Dz+4ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955486; c=relaxed/simple;
-	bh=9i6s23YXfV4AQRcn/GUoqSzpPuXlMNgF8wuJ9HPrO9Q=;
+	s=arc-20240116; t=1739955059; c=relaxed/simple;
+	bh=vVroh0RwOmikYuEgS7V91W/SPskDGb/1UZamyEo9/Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ocnf9m3VQ0UFBLML3NZAhrU30EYLJ9uaGyu6O2wsFRE6gJNQUQ26ZDABVSJiU4nVBQJBAAc1FtfBS9wUtbdTpoUP6ly37WwE4DCW/Kvovkwl+iEU7FXxgZg9kf4G27B7wPgCq3wJRG8ooDnUFHbriZ7MPQmgedleVGdSy/1Wwbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHHNOxCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AB9C4CED1;
-	Wed, 19 Feb 2025 08:58:06 +0000 (UTC)
+	 MIME-Version; b=CZAbHiXZb+wow6roKNNwM77y/k+9NE3O1gkkbwxfViuQHJCdX5SUfBhY7MloUBgTq+s8VkLezBl5t5C+fk6syYn/y3/617O9j1Le+CGgwoWwaZqtYP0GrGkhwJhroo0uvgJoHeAjBTpplVAdgL3iFerMZ6uRALoARLwMqbgZz+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKOdl4N7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E33FC4CEE6;
+	Wed, 19 Feb 2025 08:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955486;
-	bh=9i6s23YXfV4AQRcn/GUoqSzpPuXlMNgF8wuJ9HPrO9Q=;
+	s=korg; t=1739955058;
+	bh=vVroh0RwOmikYuEgS7V91W/SPskDGb/1UZamyEo9/Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHHNOxCpFxUTR1nQCxNunZ/bvuaLafOl9FJQsMe9OevEgV74qlOVHR5EkBivwxN8Z
-	 jwfh/knwPe2JFRZo89teB7JACO6s7dbKoZRprlGbh9H0QW7mt8ni0rdK7xNq0jwnwK
-	 DCckibU5ufPD++KNF/54jjVxBLUb/mCmVm8gOtR0=
+	b=rKOdl4N7cxb0A7R5Ug0p0QLWor0q9HG7YOOUJDU5YpxAYqeumXDhq9Dp6XOmEF7yl
+	 KvGcahgOjdQdAxGOTqyefHAx4P9TxQDSykvvdtYy2YfxvJsQ8kjt+3QAQLBXQIP6an
+	 Ix3axZ+Gv9DbLzeqvHRdADbxMEhnP+9Bm125fQnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/152] xen/swiotlb: relax alignment requirements
-Date: Wed, 19 Feb 2025 09:27:14 +0100
-Message-ID: <20250219082550.870961669@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Forest <forestix@nom.one>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 118/230] USB: Add USB_QUIRK_NO_LPM quirk for sony xperia xz1 smartphone
+Date: Wed, 19 Feb 2025 09:27:15 +0100
+Message-ID: <20250219082606.306070994@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 85fcb57c983f423180ba6ec5d0034242da05cc54 ]
+commit 159daf1258227f44b26b5d38f4aa8f37b8cca663 upstream.
 
-When mapping a buffer for DMA via .map_page or .map_sg DMA operations,
-there is no need to check the machine frames to be aligned according
-to the mapped areas size. All what is needed in these cases is that the
-buffer is contiguous at machine level.
+The fastboot tool for communicating with Android bootloaders does not
+work reliably with this device if USB 2 Link Power Management (LPM)
+is enabled.
 
-So carve out the alignment check from range_straddles_page_boundary()
-and move it to a helper called by xen_swiotlb_alloc_coherent() and
-xen_swiotlb_free_coherent() directly.
+Various fastboot commands are affected, including the
+following, which usually reproduces the problem within two tries:
 
-Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
-Reported-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
-Tested-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  fastboot getvar kernel
+  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+
+This issue was hidden on many systems up until commit 63a1f8454962
+("xhci: stored cached port capability values in one place") as the xhci
+driver failed to detect USB 2 LPM support if USB 3 ports were listed
+before USB 2 ports in the "supported protocol capabilities".
+
+Adding the quirk resolves the issue. No drawbacks are expected since
+the device uses different USB product IDs outside of fastboot mode, and
+since fastboot commands worked before, until LPM was enabled on the
+tested system by the aforementioned commit.
+
+Based on a patch from Forest <forestix@nom.one> from which most of the
+code and commit message is taken.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Forest <forestix@nom.one>
+Closes: https://lore.kernel.org/hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net
+Tested-by: Forest <forestix@nom.one>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250206151836.51742-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/swiotlb-xen.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index 6d0d1c8a508bf..b6e54ab3b6f3b 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -74,19 +74,21 @@ static inline phys_addr_t xen_dma_to_phys(struct device *dev,
- 	return xen_bus_to_phys(dev, dma_to_phys(dev, dma_addr));
- }
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -432,6 +432,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0c45, 0x7056), .driver_info =
+ 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
  
-+static inline bool range_requires_alignment(phys_addr_t p, size_t size)
-+{
-+	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
-+	phys_addr_t bus_addr = pfn_to_bfn(XEN_PFN_DOWN(p)) << XEN_PAGE_SHIFT;
++	/* Sony Xperia XZ1 Compact (lilac) smartphone in fastboot mode */
++	{ USB_DEVICE(0x0fce, 0x0dde), .driver_info = USB_QUIRK_NO_LPM },
 +
-+	return IS_ALIGNED(p, algn) && !IS_ALIGNED(bus_addr, algn);
-+}
-+
- static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
- {
- 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
- 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
--	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
- 
- 	next_bfn = pfn_to_bfn(xen_pfn);
- 
--	/* If buffer is physically aligned, ensure DMA alignment. */
--	if (IS_ALIGNED(p, algn) &&
--	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
--		return 1;
--
- 	for (i = 1; i < nr_pages; i++)
- 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
- 			return 1;
-@@ -155,7 +157,8 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
- 
- 	*dma_handle = xen_phys_to_dma(dev, phys);
- 	if (*dma_handle + size - 1 > dma_mask ||
--	    range_straddles_page_boundary(phys, size)) {
-+	    range_straddles_page_boundary(phys, size) ||
-+	    range_requires_alignment(phys, size)) {
- 		if (xen_create_contiguous_region(phys, order, fls64(dma_mask),
- 				dma_handle) != 0)
- 			goto out_free_pages;
-@@ -181,7 +184,8 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	size = ALIGN(size, XEN_PAGE_SIZE);
- 
- 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
--	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))
-+	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size) ||
-+			 range_requires_alignment(phys, size)))
- 	    	return;
- 
- 	if (TestClearPageXenRemapped(virt_to_page(vaddr)))
--- 
-2.39.5
-
+ 	/* Action Semiconductor flash disk */
+ 	{ USB_DEVICE(0x10d6, 0x2200), .driver_info =
+ 			USB_QUIRK_STRING_FETCH_255 },
 
 
 
