@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-117615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FF1A3B757
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9ADCA3B9F1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9265188C42A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C60B07A4E1D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B62F1D63E8;
-	Wed, 19 Feb 2025 09:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821591E32D7;
+	Wed, 19 Feb 2025 09:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBp12ZbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELCNViN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6601BEF77;
-	Wed, 19 Feb 2025 09:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D4D1E3DC9;
+	Wed, 19 Feb 2025 09:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955840; cv=none; b=LgLiv7UtVLYXIs4XXmB6CfS7/qtuP9U8b5Rr9TgZwnjNBgGMjVJMNe6L1hWaKiqJp4tEgppXa1M2sC+IelJnoPDA7rcmJVN5WrdWOllBUeE4bQkVhLQIblaSl1KUD2tEkB+UPL4a8PqnD8trLSeOuFgrbnSTjC2OOKlzIZcras4=
+	t=1739957471; cv=none; b=cwBLC7eE3uqsvPLnZdYmj8J2ew8txALkYLDh2B/rIrWQC6zM2l1o8MijSp38+gUHUqLT/OIVVfwJ6fZFSIbq4/qz4ftk7Nnl4qD3ENh2hMwZVvog29eE7p2lfYUiA/1bX8XzU8Weyup3VNC71BeHS4142gKZM+HRDR2rVEhZb5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955840; c=relaxed/simple;
-	bh=KnsDV+bj75YZKyzgWVS4AX5UHboDRkhxNwakLHJkVlg=;
+	s=arc-20240116; t=1739957471; c=relaxed/simple;
+	bh=iMpOL0yrcnbCxP8f6psYBT6FsQ0R0ZRzj2CooLDq5uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNpv6Os4hyVDs+vAMD7SyRBTnL2uVT8TPEd/9qnk9RxB5FuftfsmYYYLo+j3FCOxEF8YH8QLfPiOjetHxML9jMv+mVD4l6Q1xAoLCJSM7gMl6da793/LT5FOTMfDExndJSImBpCkNuAIVSQgZE+Ilga/LE0BrKWWJdYWec70QNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBp12ZbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E906CC4CED1;
-	Wed, 19 Feb 2025 09:03:58 +0000 (UTC)
+	 MIME-Version; b=V6CYPd6pzQ+pAIxw5mLDkuV7PMjrCKEQl72lOf/1WVA3PZOCkU9YzDuJKWmoBGpiWjVDh/ZZUJMFFj1RD/WGB1D/9MOZqDhbi7xLJ1XYnT0m+w1Y1GGBv0lGDgQwH4AAOXrEvGo/aKB1ydMg1Fu4e53zXfGf+dee2k3BbaF2GDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELCNViN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF49DC4CED1;
+	Wed, 19 Feb 2025 09:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955839;
-	bh=KnsDV+bj75YZKyzgWVS4AX5UHboDRkhxNwakLHJkVlg=;
+	s=korg; t=1739957471;
+	bh=iMpOL0yrcnbCxP8f6psYBT6FsQ0R0ZRzj2CooLDq5uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBp12ZbH6Si1qBvsxG9YEOEFeVUvABMNvIWUAoSEeCcLM0MS8cHCrzltg40ODS36e
-	 v4tGNh9/92yLLQRYn2HC+bT8MN3FudcvfoGVBXCni8ntm6ZiGIjF62MCo/7u9HVZad
-	 O07sAGtuTKPIUwxxddInOnfm9FsW9NXEYXg9OCLM=
+	b=ELCNViN4NFMV5Rif6Su4dmPBtunnG6eOkVZuqzt6mBfSbagfKhQ3DG3lXoAi79HfO
+	 CrjxAiM4KvC2VRw9PbVX9FENsOGN30QRvnJsQqyaG0AaR/3Q5qgxO5bjOmUR5Ugdwo
+	 uo5wJ+vyEXUWn1aEk0yBhdVOxYkNGu4aIqAIrzv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.6 129/152] drm/tidss: Fix issue in irq handling causing irq-flood issue
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 538/578] ipv4: add RCU protection to ip4_dst_hoplimit()
 Date: Wed, 19 Feb 2025 09:29:02 +0100
-Message-ID: <20250219082555.153774188@linuxfoundation.org>
+Message-ID: <20250219082714.137165302@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 44b6730ab53ef04944fbaf6da0e77397531517b7 upstream.
+[ Upstream commit 469308552ca4560176cfc100e7ca84add1bebd7c ]
 
-It has been observed that sometimes DSS will trigger an interrupt and
-the top level interrupt (DISPC_IRQSTATUS) is not zero, but the VP and
-VID level interrupt-statuses are zero.
+ip4_dst_hoplimit() must use RCU protection to make
+sure the net structure it reads does not disappear.
 
-As the top level irqstatus is supposed to tell whether we have VP/VID
-interrupts, the thinking of the driver authors was that this particular
-case could never happen. Thus the driver only clears the DISPC_IRQSTATUS
-bits which has corresponding interrupts in VP/VID status. So when this
-issue happens, the driver will not clear DISPC_IRQSTATUS, and we get an
-interrupt flood.
-
-It is unclear why the issue happens. It could be a race issue in the
-driver, but no such race has been found. It could also be an issue with
-the HW. However a similar case can be easily triggered by manually
-writing to DISPC_IRQSTATUS_RAW. This will forcibly set a bit in the
-DISPC_IRQSTATUS and trigger an interrupt, and as the driver never clears
-the bit, we get an interrupt flood.
-
-To fix the issue, always clear DISPC_IRQSTATUS. The concern with this
-solution is that if the top level irqstatus is the one that triggers the
-interrupt, always clearing DISPC_IRQSTATUS might leave some interrupts
-unhandled if VP/VID interrupt statuses have bits set. However, testing
-shows that if any of the irqstatuses is set (i.e. even if
-DISPC_IRQSTATUS == 0, but a VID irqstatus has a bit set), we will get an
-interrupt.
-
-Co-developed-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bin Liu <b-liu@ti.com>
-Co-developed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-Co-developed-by: Jonathan Cormier <jcormier@criticallink.com>
-Signed-off-by: Jonathan Cormier <jcormier@criticallink.com>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-1-82ddaec94e4a@ideasonboard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fa50d974d104 ("ipv4: Namespaceify ip_default_ttl sysctl knob")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250205155120.1676781-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ include/net/route.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -726,24 +726,20 @@ static
- void dispc_k3_clear_irqstatus(struct dispc_device *dispc, dispc_irq_t clearmask)
+diff --git a/include/net/route.h b/include/net/route.h
+index af8431b25f800..f396176022377 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -362,10 +362,15 @@ static inline int inet_iif(const struct sk_buff *skb)
+ static inline int ip4_dst_hoplimit(const struct dst_entry *dst)
  {
- 	unsigned int i;
--	u32 top_clear = 0;
+ 	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
+-	struct net *net = dev_net(dst->dev);
  
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
--		if (clearmask & DSS_IRQ_VP_MASK(i)) {
-+		if (clearmask & DSS_IRQ_VP_MASK(i))
- 			dispc_k3_vp_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(i);
--		}
- 	}
- 	for (i = 0; i < dispc->feat->num_planes; ++i) {
--		if (clearmask & DSS_IRQ_PLANE_MASK(i)) {
-+		if (clearmask & DSS_IRQ_PLANE_MASK(i))
- 			dispc_k3_vid_write_irqstatus(dispc, i, clearmask);
--			top_clear |= BIT(4 + i);
--		}
- 	}
- 	if (dispc->feat->subrev == DISPC_K2G)
- 		return;
+-	if (hoplimit == 0)
++	if (hoplimit == 0) {
++		const struct net *net;
++
++		rcu_read_lock();
++		net = dev_net_rcu(dst->dev);
+ 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
++		rcu_read_unlock();
++	}
+ 	return hoplimit;
+ }
  
--	dispc_write(dispc, DISPC_IRQSTATUS, top_clear);
-+	/* always clear the top level irqstatus */
-+	dispc_write(dispc, DISPC_IRQSTATUS, dispc_read(dispc, DISPC_IRQSTATUS));
- 
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQSTATUS);
+-- 
+2.39.5
+
 
 
 
