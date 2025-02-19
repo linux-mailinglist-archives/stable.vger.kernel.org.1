@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-117343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632D7A3B648
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC34A3B96F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED8F3BE2BB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F6F189FD7A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6EE1CAA8E;
-	Wed, 19 Feb 2025 08:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B411DFD9E;
+	Wed, 19 Feb 2025 09:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eq3o3vin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBi/FMfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC881C5F30;
-	Wed, 19 Feb 2025 08:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DF9158862;
+	Wed, 19 Feb 2025 09:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954978; cv=none; b=CFJH8ujhITew624rEABwldJj9h2oXiW/V9E7BQsdQY2oV0Nd139/jySVDR7zIcBysXGt4vB5Av5Q9x/Mpd09LYljqLypSe90DJCeROxo5ZT62SNxaVOzHfz77+QvUTJ05QzUpWPZdB7MuKkMoHNDFVa96Ufo9Me+Qawj7kIzSAQ=
+	t=1739957011; cv=none; b=GXeb5/gghhh29hTwP13gvqb0ivz0UtONuxwEVxDVUcCf1icBZfH/cFgLA9MOQTZ5bAWpcQ8S5jUFCpN5BoXBx2lyvnwPAzrZUXTU02vira4EZjLBep7Rjy4LLfIJrvJUkJNQj/LofkmWEKLpuqH8FyPkSWeoXIXKERGKW2mmmnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954978; c=relaxed/simple;
-	bh=XE7+7mE0BPiYJOZ33OESXjKLao0EivXuPO6/EFx9CAI=;
+	s=arc-20240116; t=1739957011; c=relaxed/simple;
+	bh=iNRgzNlN1AZIxABZwHO6ZCTaIIh10yWTv63OsePK3mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErkFzVNaXcL8KgBd/Ss73SVOgFvAseoSk2Us0RHT7AZqIc5xb3/mmTi6gWk8GWpAduzo1xz4pUMkqavaWH7MaQx8F0JPDjub3uOBkWwZQbBN09PHsTpsmhN16qm/jaJRuFGhudopF7tbWmlzcif3XbidgolT/nQsozWYUg7WuTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq3o3vin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602D4C4CED1;
-	Wed, 19 Feb 2025 08:49:37 +0000 (UTC)
+	 MIME-Version; b=Wnf22rLnWMitXdnBNiWNiSmK3luoQzFOCcea0+QtCLWVseye6r0JWQnPUJHUtSzw154AnJ/6QuFnMDAOJxcFy4zJ34beuWEgdHLt+vbW+cunJAvZNJeQLLap4mSR7MLjU3TCS9mRWSHsIjz1MZkZ3QwUFOeWgD/jPl7wl9JhPBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBi/FMfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBC3C4CED1;
+	Wed, 19 Feb 2025 09:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954977;
-	bh=XE7+7mE0BPiYJOZ33OESXjKLao0EivXuPO6/EFx9CAI=;
+	s=korg; t=1739957011;
+	bh=iNRgzNlN1AZIxABZwHO6ZCTaIIh10yWTv63OsePK3mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eq3o3vin936B5P4UFCfLz1f0USRtUbonCN0aDZB0OHIKQTope5nPqF8I/f0yirPW6
-	 k2/ZofWS7pGgpB9wMzTxkKldPZnnPjxkVN9judpIFczOWurosJpwwndPy/7uJ5FwoP
-	 jX/eoinOETbW6uSTJBNokFJfBbv0IXB4oJqXDYLA=
+	b=aBi/FMfLl3jwmqBYueVks1PFZYdq5vZGt+NGAWNEdXpsH3iKGZKVvQH45RVVZ1o5q
+	 BuAie2m57WeV9LQenqC8Y923iKyz+mRt2EYOHQXJ7kYJ5uThTzHDDOoxfZFjsWn2p3
+	 sDhoTOb2i/w7GuSuP0jW1S2g+T97GRAdOoSU7xYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/230] media: cxd2841er: fix 64-bit division on gcc-9
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 377/578] soc: qcom: socinfo: Avoid out of bounds read of serial number
 Date: Wed, 19 Feb 2025 09:26:21 +0100
-Message-ID: <20250219082604.215651044@linuxfoundation.org>
+Message-ID: <20250219082707.848015205@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
+commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
 
-It appears that do_div() once more gets confused by a complex
-expression that ends up not quite being constant despite
-__builtin_constant_p() thinking it is:
+On MSM8916 devices, the serial number exposed in sysfs is constant and does
+not change across individual devices. It's always:
 
-ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
+  db410c:/sys/devices/soc0$ cat serial_number
+  2644893864
 
-Use div_u64() instead, forcing the expression to be evaluated
-first, and making it a bit more readable.
+The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
+have support for the serial_num field in the socinfo struct. There is an
+existing check to avoid exposing the serial number in that case, but it's
+not correct: When checking the item_size returned by SMEM, we need to make
+sure the *end* of the serial_num is within bounds, instead of comparing
+with the *start* offset. The serial_number currently exposed on MSM8916
+devices is just an out of bounds read of whatever comes after the socinfo
+struct in SMEM.
 
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: added Closes tags]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by changing offsetof() to offsetofend(), so that the size of the
+field is also taken into account.
+
+Cc: stable@vger.kernel.org
+Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/soc/qcom/socinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
-index d925ca24183b5..415f1f91cc307 100644
---- a/drivers/media/dvb-frontends/cxd2841er.c
-+++ b/drivers/media/dvb-frontends/cxd2841er.c
-@@ -311,12 +311,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -652,7 +652,7 @@ static int qcom_socinfo_probe(struct pla
+ 	if (!qs->attr.soc_id || !qs->attr.revision)
+ 		return -ENOMEM;
  
- static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
- {
--	u64 tmp;
--
--	tmp = (u64) ifhz * 16777216;
--	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
--
--	return (u32) tmp;
-+	return div_u64(ifhz * 16777216ull,
-+		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
- }
- 
- static u32 cxd2841er_calc_iffreq(u32 ifhz)
--- 
-2.39.5
-
+-	if (offsetof(struct socinfo, serial_num) <= item_size) {
++	if (offsetofend(struct socinfo, serial_num) <= item_size) {
+ 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"%u",
+ 							le32_to_cpu(info->serial_num));
 
 
 
