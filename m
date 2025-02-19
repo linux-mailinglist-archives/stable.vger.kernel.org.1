@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42043A3B679
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C449FA3B9BE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAA533BE4A4
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46CFA1787F4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A308D1DEFE7;
-	Wed, 19 Feb 2025 08:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB171CCB4B;
+	Wed, 19 Feb 2025 09:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0urdhYc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iP3r1RcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0461CAA9C;
-	Wed, 19 Feb 2025 08:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC070188CCA;
+	Wed, 19 Feb 2025 09:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955062; cv=none; b=Mu/t69zoQOCPFzx9EXFjikTv8b+TPI8FzCEIfe54bVhPKpvd3sKiAA6Nw6uP7JXgUwMva8f+iCoZplfspE+rxDaQOaUsq/nJxZ+a62bH8ysycY71LTs6K9QN3i2ThC9bMgmXcZtaXO5PFL+3zBWR6PuZ/nsacm3bYl0+XHpFXrk=
+	t=1739957169; cv=none; b=IWYzXYTVQpPjA6VlTliFCgG6u4pCW2fOhzdRAAkOBEDKpBH/qdFOTc8OVzRvJYUlo0CJL/IhqY0tu1dYHq1PtYYtN3dCg1f74qjVoErBtmxQ0xJUeAr2ncNjt6grqzs3Tewmsdh2QPZb0xvsDHw69j1JbY10UdnBU8fZTo/SGtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955062; c=relaxed/simple;
-	bh=lCW+nug5sLl9/LyHdbeHFXh0nAJLmJDyWyuMhlNtrlQ=;
+	s=arc-20240116; t=1739957169; c=relaxed/simple;
+	bh=SUPR+0puziScBKScoxuP2k9GYRD8/Drz4lilGJZs42k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PA4AvRLYhmAwGERRLPhIXt8IuWxofMUq1WB2Qh9a7rAfGNQyREuvOy4M1qijagb+QdzwNe+3+parTmsSoXNvjq9sx9QqretqW/OWFcWsGh7NG+fFif1B6Z2QrpOUb8SboVhkm21HWdO9+F3ZpvFVb9EnGhcGF/jKbl3ssVoQ4TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0urdhYc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69505C4CEE8;
-	Wed, 19 Feb 2025 08:51:01 +0000 (UTC)
+	 MIME-Version; b=S3I8Lh9xgqQOBKg566MzINKyzncpSYd9F6sUCajNpmnM4eUDJLg7le62d704KbqgYadt5LFhYd4KOPhdJS0wqcaOCKacAADpd0IppAheKJ7KMzRg8gG7UJpoz45cvajkVhSyiijmU8ti/K9Lb56JsLoRNZR7qgL0/MOqZBw9Ylw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iP3r1RcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35524C4CED1;
+	Wed, 19 Feb 2025 09:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955061;
-	bh=lCW+nug5sLl9/LyHdbeHFXh0nAJLmJDyWyuMhlNtrlQ=;
+	s=korg; t=1739957169;
+	bh=SUPR+0puziScBKScoxuP2k9GYRD8/Drz4lilGJZs42k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0urdhYc1+klEGzLlcmJa7N4oAviSSZuO6qQ5TdAhejMp/9Mo8y2HCzKXUpZqWCokL
-	 nAZedLwkSFYuM2sTqjHwR2SW23Q33q97vi+JUjknOKBqkuyie1GNgSc2L5UOngqm3i
-	 hCGSj3uT+twFsWrcFfD9FRbYnuU9iPWp+Yy4ueWM=
+	b=iP3r1RcZTRskUyql9V0MrO9mKlbVep1zkEvaH0Auwv/43S/gbMQL8Yad9D/SX3Aiy
+	 ZSH9bclsJ4Lr80yAONhgZcemp2S3/thUbf5azuVQvyOXjp24+Nv63f091LnP5rU/b+
+	 iNp8Aj5hZlFMclvRCDVXsHr8On4uy7plsC9ObxnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 119/230] usb: gadget: f_midi: fix MIDI Streaming descriptor lengths
-Date: Wed, 19 Feb 2025 09:27:16 +0100
-Message-ID: <20250219082606.343348091@linuxfoundation.org>
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 433/578] mtd: onenand: Fix uninitialized retlen in do_otp_read()
+Date: Wed, 19 Feb 2025 09:27:17 +0100
+Message-ID: <20250219082710.044810671@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-commit da1668997052ed1cb00322e1f3b63702615c9429 upstream.
+commit 70a71f8151b9879b0950668ce3ad76263261fee0 upstream.
 
-While the MIDI jacks are configured correctly, and the MIDIStreaming
-endpoint descriptors are filled with the correct information,
-bNumEmbMIDIJack and bLength are set incorrectly in these descriptors.
+The function do_otp_read() does not set the output parameter *retlen,
+which is expected to contain the number of bytes actually read.
+As a result, in onenand_otp_walk(), the tmp_retlen variable remains
+uninitialized after calling do_otp_walk() and used to change
+the values of the buf, len and retlen variables.
 
-This does not matter when the numbers of in and out ports are equal, but
-when they differ the host will receive broken descriptors with
-uninitialized stack memory leaking into the descriptor for whichever
-value is smaller.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The precise meaning of "in" and "out" in the port counts is not clearly
-defined and can be confusing.  But elsewhere the driver consistently
-uses this to match the USB meaning of IN and OUT viewed from the host,
-so that "in" ports send data to the host and "out" ports receive data
-from it.
-
-Cc: stable <stable@kernel.org>
-Fixes: c8933c3f79568 ("USB: gadget: f_midi: allow a dynamic number of input and output ports")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20250130195035.3883857-1-jkeeping@inmusicbrands.com
+Fixes: 49dc08eeda70 ("[MTD] [OneNAND] fix numerous races")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_midi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/onenand/onenand_base.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -1009,11 +1009,11 @@ static int f_midi_bind(struct usb_config
- 	}
+--- a/drivers/mtd/nand/onenand/onenand_base.c
++++ b/drivers/mtd/nand/onenand/onenand_base.c
+@@ -2923,6 +2923,7 @@ static int do_otp_read(struct mtd_info *
+ 	ret = ONENAND_IS_4KB_PAGE(this) ?
+ 		onenand_mlc_read_ops_nolock(mtd, from, &ops) :
+ 		onenand_read_ops_nolock(mtd, from, &ops);
++	*retlen = ops.retlen;
  
- 	/* configure the endpoint descriptors ... */
--	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
--	ms_out_desc.bNumEmbMIDIJack = midi->in_ports;
-+	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
-+	ms_out_desc.bNumEmbMIDIJack = midi->out_ports;
- 
--	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
--	ms_in_desc.bNumEmbMIDIJack = midi->out_ports;
-+	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
-+	ms_in_desc.bNumEmbMIDIJack = midi->in_ports;
- 
- 	/* ... and add them to the list */
- 	endpoint_descriptor_index = i;
+ 	/* Exit OTP access mode */
+ 	this->command(mtd, ONENAND_CMD_RESET, 0, 0);
 
 
 
