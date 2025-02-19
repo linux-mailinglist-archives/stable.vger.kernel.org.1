@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB17A3B905
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:29:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCF6A3B865
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3BC717B1B6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:20:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74B821886F3C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BAB1DFE29;
-	Wed, 19 Feb 2025 09:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA26A1DE2C2;
+	Wed, 19 Feb 2025 09:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fITFn9QG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fcm0von9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC32158862;
-	Wed, 19 Feb 2025 09:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889C71C7019;
+	Wed, 19 Feb 2025 09:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956554; cv=none; b=bqRmk0itAhd6PkbuOxXWTrkNkAEBph62nzQLW52ZdzFZ296qBY10Q4Ip8RwX1NesnWLHz+ryXflRpbsMLXJOyQEDcN8YckhKwuLWYbAjdXgpjHsS0J2hAx8DJsQbM8G2IT/Y1iBhYzYg1sCRhXFG9bcPS76/rQPSPFpqdPsuNqI=
+	t=1739956457; cv=none; b=B6/NU0L+EacAB/B9+grIvn03RImNxzgt94+QUDTU5g+QIqWAy68Mh/xj/MQbOGe1Z1U29sS4PZ9vkW93A+QFJgoRtlOk4ndcV32h74c03G1GgkW3Y+fHpf7C2sa2IrLUsdeOO+XIZSm/41fyoIYCZ5PGFICWl1hSqg0/fr8madw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956554; c=relaxed/simple;
-	bh=akZyqXAKMK8i7G8KEQQT6jSeYdPRa5FkLXEEuCdqWSc=;
+	s=arc-20240116; t=1739956457; c=relaxed/simple;
+	bh=qkcrz2yFAdITE+MLMCPdgtfAwPG68vCedTiD8Xyz7TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnVEU0p+krdsbeDckxL4r3OUM7adNVL2peuMYDdvDQ4EvnRLeNnEpGlQxeXa7aUmddIe2s3XlhKBeDRcvEaDQcUyM36WzECe4zQ7W8RlDa9SxTCxhx53rGJ5ELvypM1Kg5CCxmtjPmDhVeYZi3ppnqWpjJNoworekpIWybQWQWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fITFn9QG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E70C4CEE6;
-	Wed, 19 Feb 2025 09:15:53 +0000 (UTC)
+	 MIME-Version; b=lHTtb5upqFbm1qsjE0BZO/phH5NJlTLmvpZ85Bsnuu4D3sUE6NCGTDcOtMf8/Yb+VZy4MRMbwpVItD+h3rgZQt6VA9O1RnJxyr5RXFBQm59UcVhCMdabgZ6buaUG1x0YI8afmgvZ/u2nl1jqDtU1wphpKU+wR3hBqj8vKIAy2Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fcm0von9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C92C4CED1;
+	Wed, 19 Feb 2025 09:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956554;
-	bh=akZyqXAKMK8i7G8KEQQT6jSeYdPRa5FkLXEEuCdqWSc=;
+	s=korg; t=1739956457;
+	bh=qkcrz2yFAdITE+MLMCPdgtfAwPG68vCedTiD8Xyz7TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fITFn9QGlYwKFaMFGXgUh5La4sTQb5lil8IkrZxtyyb41vWTaU508lD90ITM0IIcm
-	 tAfQS2dviUhbNJ62zjctYrPlqSHBZt/EqOEi6e7/A8nv+eC7EsyyGtOT2RR3GuzA6U
-	 6DkPP9qikvffIFSuFO9AvkXfDsH9MoSDR4noywBo=
+	b=Fcm0von99xiyvKdNnaJwDP+OlGBL6IjP2TTcLBccffze8t1U8dYZyiW+hpinBYh5A
+	 cIzMpKtQBTL3Zu7tFo1nNe3597NQoeekV/7oYeZ+uFpbxvNZpqS6honYEfeME/WfQM
+	 5AN7bJlXqzTTNk0Z6WAymDG1BInYxt4uewMoCW0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/578] arm64: dts: qcom: sm8150-microsoft-surface-duo: fix typos in da7280 properties
-Date: Wed, 19 Feb 2025 09:23:00 +0100
-Message-ID: <20250219082659.890898304@linuxfoundation.org>
+Subject: [PATCH 6.1 177/578] arm64: dts: qcom: sc8280xp: Fix up remoteproc register space sizes
+Date: Wed, 19 Feb 2025 09:23:01 +0100
+Message-ID: <20250219082659.930084739@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,50 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 9875adffb87da5c40f4013e55104f5e2fc071c2a ]
+[ Upstream commit 7ec7e327286182c65d0b5b81dff498d620fe9e8c ]
 
-The dlg,const-op-mode & dlg,periodic-op-mode were mis-names with twice
-the "dlg," prefix, drop one to match the bindings.
+Make sure the remoteproc reg ranges reflect the entire register space
+they refer to.
 
-This fixes:
-sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,const-op-mode' is a required property
-	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
-m8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,periodic-op-mode' is a required property
-	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
-sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,dlg,const-op-mode', 'dlg,dlg,periodic-op-mode' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+Since they're unused by the driver, there's no functional change.
 
-With the dlg,da7280.yaml converted from dlg,da7280.txt at [1].
-
-[1] https://lore.kernel.org/all/20241206-topic-misc-da7280-convert-v2-1-1c3539f75604@linaro.org/
-
-Fixes: d1f781db47a8 ("arm64: dts: qcom: add initial device-tree for Microsoft Surface Duo")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-6-1e6880e9dda3@linaro.org
+Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20241212-topic-8280_rproc_reg-v1-1-bd1c696e91b0@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
-index 5397fba9417bb..51ddbac3cfe56 100644
---- a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
-@@ -376,8 +376,8 @@
- 		pinctrl-0 = <&da7280_intr_default>;
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index 7e3aaf5de3f5c..6b0d4bc6c5419 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -1119,7 +1119,7 @@
  
- 		dlg,actuator-type = "LRA";
--		dlg,dlg,const-op-mode = <1>;
--		dlg,dlg,periodic-op-mode = <1>;
-+		dlg,const-op-mode = <1>;
-+		dlg,periodic-op-mode = <1>;
- 		dlg,nom-microvolt = <2000000>;
- 		dlg,abs-max-microvolt = <2000000>;
- 		dlg,imax-microamp = <129000>;
+ 		remoteproc_adsp: remoteproc@3000000 {
+ 			compatible = "qcom,sc8280xp-adsp-pas";
+-			reg = <0 0x03000000 0 0x100>;
++			reg = <0 0x03000000 0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+@@ -1806,7 +1806,7 @@
+ 
+ 		remoteproc_nsp0: remoteproc@1b300000 {
+ 			compatible = "qcom,sc8280xp-nsp0-pas";
+-			reg = <0 0x1b300000 0 0x100>;
++			reg = <0 0x1b300000 0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_nsp0_in 0 IRQ_TYPE_EDGE_RISING>,
+@@ -1937,7 +1937,7 @@
+ 
+ 		remoteproc_nsp1: remoteproc@21300000 {
+ 			compatible = "qcom,sc8280xp-nsp1-pas";
+-			reg = <0 0x21300000 0 0x100>;
++			reg = <0 0x21300000 0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 887 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_nsp1_in 0 IRQ_TYPE_EDGE_RISING>,
 -- 
 2.39.5
 
