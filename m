@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-117951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF5DA3B8DE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:28:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFCAA3B91B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BD8D1888765
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:23:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB0E172807
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA9C1DF252;
-	Wed, 19 Feb 2025 09:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92501DF97F;
+	Wed, 19 Feb 2025 09:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5Voctg/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYuKH3Ii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D252517A2FE;
-	Wed, 19 Feb 2025 09:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862081DEFDC;
+	Wed, 19 Feb 2025 09:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956811; cv=none; b=cDfSeMQV2K6gGb6eLArXDuN3a/dMvS67HlEQeer80m4nfZ8vkm3JlDE6ycCzihgHlGAgYE4X7BGnYfDGMAAcbKYI8uJNnYUDID/DWXTTJeK6t6Lag849Ba5weulJ6ORzCmyLIYcnaYYK/NnK99Mt7ueWKJrPjNqVHqQX5uADAoM=
+	t=1739956817; cv=none; b=jXocvmnkxZ/3gELDj2rtgQHzVOLVGB0XmswnKUjQTn8S4PrdTqhpo6IVm+V5gUE1v2o1gmz+DTvRMUa1D4rX57XqxtHiwZtf+V2a43lnnvS9zQN6jIonjdCdckvD1N1fv5+3N3Y9rd8iE8eV1H3gl2ibnmdbxTJuGBG4q9e741M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956811; c=relaxed/simple;
-	bh=r1StxcG3jceSxv3RTS8jNs6TIdnuDg42pKXHGttlKaU=;
+	s=arc-20240116; t=1739956817; c=relaxed/simple;
+	bh=OnhdB2zQ/UFeOhfrX3LVgDi2QP21Mcvg9WqSKlp20B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i93l4kb6NzpwGGmSNdK22ZxLs8N5nfUuSJjx0JqTXv/o52Bvdpq936lqH79jBG5qwUL8XMpIgmNxP4tjtrWymcoHHrGUJs8II+jby4Ug9K6F7J44M053z/t72OqvhyiZmBvbltQ/yuNBWaEMJtPIvvU+Q1SndLP8M2QAaGuqrIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5Voctg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CADC4CED1;
-	Wed, 19 Feb 2025 09:20:11 +0000 (UTC)
+	 MIME-Version; b=J6spo/IM2ke1BpRHjtKTA33A+iXDeP5Z379EpG8iyOT8HEspJg/zQUMJEMx2g1/f0qPHTOGM/YX/nrY2aY3e/1HPmCYAKWiczsdo7alc7K0fmEpsoKib043FxQFXQvTQo6EyrW4x08OMwzbKfrLmi1cgSqUApblnYS3B6IjJvWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYuKH3Ii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF25C4CED1;
+	Wed, 19 Feb 2025 09:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956811;
-	bh=r1StxcG3jceSxv3RTS8jNs6TIdnuDg42pKXHGttlKaU=;
+	s=korg; t=1739956817;
+	bh=OnhdB2zQ/UFeOhfrX3LVgDi2QP21Mcvg9WqSKlp20B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5Voctg/xFCIxetMr6hQxTRKLURj8hP5n+f8XkWNIgumqzLds7GlCv3H3uKChcxtC
-	 bxtIy+3ftVZUS8HJvx0iacXseQWVlnwrj0+X1yKbl4a1qI8e9VbONajnM+aeL39Ujb
-	 DqYHIm6fFs+ZB4DVQQXPexPAVQ8CmmrbEe9nxuX8=
+	b=tYuKH3IiC0bhqzZ8dEhbod8cSZm0hrE111YW4mHK/8C+XbzsgRMDJtkZZVW1ohXe8
+	 u/6GesJu4eQzW0L58Yglh3lCdXF3DymGqsJ21TLq+qMbJ939GTElpMGitcsvqqxKdM
+	 Q8Vr1wfAN1EX2/mxk6h2kNyjMGq+GId8eZtwxzpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farhan Anwar <farhan.anwar8@gmail.com>,
-	Rayan Margham <rayanmargham4@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 308/578] platform/x86: acer-wmi: Ignore AC events
-Date: Wed, 19 Feb 2025 09:25:12 +0100
-Message-ID: <20250219082705.132690485@linuxfoundation.org>
+Subject: [PATCH 6.1 309/578] KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()
+Date: Wed, 19 Feb 2025 09:25:13 +0100
+Message-ID: <20250219082705.170943376@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -62,55 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit f6bfa25c6665f8721421ea94fe506cc22f1d4b43 ]
+[ Upstream commit c9be85dabb376299504e0d391d15662c0edf8273 ]
 
-On the Acer Swift SFG14-41, the events 8 - 1 and 8 - 0 are printed on
-AC connect/disconnect. Ignore those events to avoid spamming the
-kernel log with error messages.
+Mark the underlying page as dirty in kvmppc_e500_ref_setup()'s sole
+caller, kvmppc_e500_shadow_map(), which will allow converting e500 to
+__kvm_faultin_pfn() + kvm_release_faultin_page() without having to do
+a weird dance between ref_setup() and shadow_map().
 
-Reported-by: Farhan Anwar <farhan.anwar8@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/2ffb529d-e7c8-4026-a3b8-120c8e7afec8@gmail.com
-Tested-by: Rayan Margham <rayanmargham4@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250119201723.11102-2-W_Armin@gmx.de
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Opportunistically drop the redundant kvm_set_pfn_accessed(), as
+shadow_map() puts the page via kvm_release_pfn_clean().
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20241010182427.1434605-53-seanjc@google.com>
+Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/acer-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kvm/e500_mmu_host.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index ee67efdd54995..da765a7dedbc4 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -88,6 +88,7 @@ enum acer_wmi_event_ids {
- 	WMID_HOTKEY_EVENT = 0x1,
- 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
- 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
-+	WMID_AC_EVENT = 0x8,
- };
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index 05668e9641406..4a086724db8c4 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struct kvm_book3e_206_tlb_entry *tlbe)
+ 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
+ }
  
- static const struct key_entry acer_wmi_keymap[] __initconst = {
-@@ -1999,6 +2000,9 @@ static void acer_wmi_notify(u32 value, void *context)
- 		if (return_value.key_num == 0x4)
- 			acer_toggle_turbo();
- 		break;
-+	case WMID_AC_EVENT:
-+		/* We ignore AC events here */
-+		break;
- 	default:
- 		pr_warn("Unknown function number - %d - %d\n",
- 			return_value.function, return_value.key_num);
+-static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
++static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
+ 					 struct kvm_book3e_206_tlb_entry *gtlbe,
+ 					 kvm_pfn_t pfn, unsigned int wimg)
+ {
+@@ -252,11 +252,7 @@ static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
+ 	/* Use guest supplied MAS2_G and MAS2_E */
+ 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
+ 
+-	/* Mark the page accessed */
+-	kvm_set_pfn_accessed(pfn);
+-
+-	if (tlbe_is_writable(gtlbe))
+-		kvm_set_pfn_dirty(pfn);
++	return tlbe_is_writable(gtlbe);
+ }
+ 
+ static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
+@@ -337,6 +333,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 	unsigned int wimg = 0;
+ 	pgd_t *pgdir;
+ 	unsigned long flags;
++	bool writable = false;
+ 
+ 	/* used to check for invalidations in progress */
+ 	mmu_seq = kvm->mmu_invalidate_seq;
+@@ -490,7 +487,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 			goto out;
+ 		}
+ 	}
+-	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
++	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
++	if (writable)
++		kvm_set_pfn_dirty(pfn);
+ 
+ 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
+ 				ref, gvaddr, stlbe);
 -- 
 2.39.5
 
