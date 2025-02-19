@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FC5A3BA38
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2518BA3B777
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EDA2178AD8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767053BE64F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E30E1DE3BB;
-	Wed, 19 Feb 2025 09:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB1C1E32B9;
+	Wed, 19 Feb 2025 09:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxtPBG4S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3tn1fH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08C1DE2DE;
-	Wed, 19 Feb 2025 09:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1BB1E32A0;
+	Wed, 19 Feb 2025 09:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957368; cv=none; b=aa88EFSwsc4pCP1/FlUR7OKb8et1sGJ5Kj58dzVGjb/G0vFcBIFbphqwF0SMeAFaZZHMM/yCrF13X/1lZfEppW5+p3qixt8WXrVB4h0lOKw7IntkziSDnmtjQvO63OcZ17sG3juXr5yHhWOm1nuTVmIr6+F3aCJJIwEGCJBmFnU=
+	t=1739955723; cv=none; b=DM+4jmgNwbcYZZ48TwRyolxTMNwy14wmQfZZ4xN/qQjCOmdKhay3M2aHwK+UMRSzQk8bRHHUw3fSL0RHgOz52/Xgl+FYUySGYg73QipOdN+avUc4D9vn8x8+/kiC7ThxpWRmRRWt53dXWm+2vR61q1Zo4HSY18P0MYr/5vg54b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957368; c=relaxed/simple;
-	bh=zy+GKTGiY+/hcdgj4WxboflP/XVoQ/eV0BMgLWs4NuI=;
+	s=arc-20240116; t=1739955723; c=relaxed/simple;
+	bh=dCtXuKb+XLSugYxFrFA3d8gUL7VhgNJIBRWSoV/R3Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXXwUIb//+NxxGcQaY6Yx/kKr2A+3qbmziG44+K5ms2s6SMTS0VvH3iyHjxt5W0q4kj15k4PD8ofaYagyPN8yN6qW16/9eIRFDwBAsAQQokMpR+qKVIjqyLsf3nlbK+qyHy5TDOuC8D2dFgCEQN0/9PU5UVjq2TLlJu5I0fSGkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxtPBG4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90601C4CEE6;
-	Wed, 19 Feb 2025 09:29:27 +0000 (UTC)
+	 MIME-Version; b=sWiwu8KT6teM2bBfcbiuIaqfzJ+/IFTyRcYdWoZyfZ+ngZeYC/mPcptG364gtvwcP2rXEBrfLmdtlfOY7NA1CzDjfEscgfz3EY3k8T7mbrCmyeif1eKMw1ocRVLM+8FykZBDh0Zr4O/fZhHomWyU3DksADofqBdJI/ZAlPhDlHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3tn1fH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C75AC4CED1;
+	Wed, 19 Feb 2025 09:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957367;
-	bh=zy+GKTGiY+/hcdgj4WxboflP/XVoQ/eV0BMgLWs4NuI=;
+	s=korg; t=1739955723;
+	bh=dCtXuKb+XLSugYxFrFA3d8gUL7VhgNJIBRWSoV/R3Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxtPBG4SUCYaPbyu6v+/TOR7wyg1slrgmwCY3FuxaC+x/f5QTwFoRXd1WY+s1Az0B
-	 i7lj8dydiHDtWcHtn8WN65Qg8tJwV62K8s+X/oPofzFD1HX+l4hO43aYmrajAoFReC
-	 POtAbg/Ap1EOPiXfq+VHvDkP5/9wDXx1U2cYvlkY=
+	b=s3tn1fH68NQ7C88lfGwCfC2nAoqgP1U/2d6sJau9iWdske5YHeIJYNs0nI7e7fF2H
+	 N+PSX14QiNpK4RBVDKV/2wPo9G94+IA0SVL5olRWcBXhBqJetc3chCXzEySLaV/n2k
+	 l/kIPJf7aOYl1KHj/jPAhp4hd7+zQs3wyhasLAz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 502/578] perf/x86/intel: Ensure LBRs are disabled when a CPU is starting
+	Andy-ld Lu <andy-ld.lu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 093/152] mmc: mtk-sd: Fix register settings for hs400(es) mode
 Date: Wed, 19 Feb 2025 09:28:26 +0100
-Message-ID: <20250219082712.735170052@linuxfoundation.org>
+Message-ID: <20250219082553.732576773@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
 
-commit c631a2de7ae48d50434bdc205d901423f8577c65 upstream.
+commit 3e68abf2b9cebe76c6cd4b1aca8e95cd671035a3 upstream.
 
-Explicitly clear DEBUGCTL.LBR when a CPU is starting, prior to purging the
-LBR MSRs themselves, as at least one system has been found to transfer
-control to the kernel with LBRs enabled (it's unclear whether it's a BIOS
-flaw or a CPU goof).  Because the kernel preserves the original DEBUGCTL,
-even when toggling LBRs, leaving DEBUGCTL.LBR as is results in running
-with LBRs enabled at all times.
+For hs400(es) mode, the 'hs400-ds-delay' is typically configured in the
+dts. However, some projects may only define 'mediatek,hs400-ds-dly3',
+which can lead to initialization failures in hs400es mode. CMD13 reported
+response crc error in the mmc_switch_status() just after switching to
+hs400es mode.
 
-Closes: https://lore.kernel.org/all/c9d8269bff69f6359731d758e3b1135dedd7cc61.camel@redhat.com
-Reported-by: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+[    1.914038][   T82] mmc0: mmc_select_hs400es failed, error -84
+[    1.914954][   T82] mmc0: error -84 whilst initialising MMC card
+
+Currently, the hs400_ds_dly3 value is set within the tuning function. This
+means that the PAD_DS_DLY3 field is not configured before tuning process,
+which is the reason for the above-mentioned CMD13 response crc error.
+
+Move the PAD_DS_DLY3 field configuration into msdc_prepare_hs400_tuning(),
+and add a value check of hs400_ds_delay to prevent overwriting by zero when
+the 'hs400-ds-delay' is not set in the dts. In addition, since hs400(es)
+only tune the PAD_DS_DLY1, the PAD_DS_DLY2_SEL bit should be cleared to
+bypass it.
+
+Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250131010721.470503-1-seanjc@google.com
+Link: https://lore.kernel.org/r/20250123092644.7359-1-andy-ld.lu@mediatek.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c     |    5 ++++-
- arch/x86/include/asm/msr-index.h |    3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/mmc/host/mtk-sd.c |   31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4582,8 +4582,11 @@ static void intel_pmu_cpu_starting(int c
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -260,6 +260,7 @@
+ #define MSDC_PAD_TUNE_CMD_SEL	  BIT(21)   /* RW */
  
- 	init_debug_store_on_cpu(cpu);
- 	/*
--	 * Deal with CPUs that don't clear their LBRs on power-up.
-+	 * Deal with CPUs that don't clear their LBRs on power-up, and that may
-+	 * even boot with LBRs enabled.
- 	 */
-+	if (!static_cpu_has(X86_FEATURE_ARCH_LBR) && x86_pmu.lbr_nr)
-+		msr_clear_bit(MSR_IA32_DEBUGCTLMSR, DEBUGCTLMSR_LBR_BIT);
- 	intel_pmu_lbr_reset();
+ #define PAD_DS_TUNE_DLY_SEL       BIT(0)	  /* RW */
++#define PAD_DS_TUNE_DLY2_SEL      BIT(1)	  /* RW */
+ #define PAD_DS_TUNE_DLY1	  GENMASK(6, 2)   /* RW */
+ #define PAD_DS_TUNE_DLY2	  GENMASK(11, 7)  /* RW */
+ #define PAD_DS_TUNE_DLY3	  GENMASK(16, 12) /* RW */
+@@ -305,6 +306,7 @@
  
- 	cpuc->lbr_sel = NULL;
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -357,7 +357,8 @@
- #define MSR_IA32_PASID_VALID		BIT_ULL(31)
+ /* EMMC50_PAD_DS_TUNE mask */
+ #define PAD_DS_DLY_SEL		BIT(16)	/* RW */
++#define PAD_DS_DLY2_SEL		BIT(15)	/* RW */
+ #define PAD_DS_DLY1		GENMASK(14, 10)	/* RW */
+ #define PAD_DS_DLY3		GENMASK(4, 0)	/* RW */
  
- /* DEBUGCTLMSR bits (others vary by model): */
--#define DEBUGCTLMSR_LBR			(1UL <<  0) /* last branch recording */
-+#define DEBUGCTLMSR_LBR_BIT		0	     /* last branch recording */
-+#define DEBUGCTLMSR_LBR			(1UL <<  DEBUGCTLMSR_LBR_BIT)
- #define DEBUGCTLMSR_BTF_SHIFT		1
- #define DEBUGCTLMSR_BTF			(1UL <<  1) /* single-step on branches */
- #define DEBUGCTLMSR_BUS_LOCK_DETECT	(1UL <<  2)
+@@ -2309,13 +2311,23 @@ tune_done:
+ static int msdc_prepare_hs400_tuning(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
+ 	struct msdc_host *host = mmc_priv(mmc);
++
+ 	host->hs400_mode = true;
+ 
+-	if (host->top_base)
+-		writel(host->hs400_ds_delay,
+-		       host->top_base + EMMC50_PAD_DS_TUNE);
+-	else
+-		writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
++	if (host->top_base) {
++		if (host->hs400_ds_dly3)
++			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
++				      PAD_DS_DLY3, host->hs400_ds_dly3);
++		if (host->hs400_ds_delay)
++			writel(host->hs400_ds_delay,
++			       host->top_base + EMMC50_PAD_DS_TUNE);
++	} else {
++		if (host->hs400_ds_dly3)
++			sdr_set_field(host->base + PAD_DS_TUNE,
++				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
++		if (host->hs400_ds_delay)
++			writel(host->hs400_ds_delay, host->base + PAD_DS_TUNE);
++	}
+ 	/* hs400 mode must set it to 0 */
+ 	sdr_clr_bits(host->base + MSDC_PATCH_BIT2, MSDC_PATCH_BIT2_CFGCRCSTS);
+ 	/* to improve read performance, set outstanding to 2 */
+@@ -2335,14 +2347,11 @@ static int msdc_execute_hs400_tuning(str
+ 	if (host->top_base) {
+ 		sdr_set_bits(host->top_base + EMMC50_PAD_DS_TUNE,
+ 			     PAD_DS_DLY_SEL);
+-		if (host->hs400_ds_dly3)
+-			sdr_set_field(host->top_base + EMMC50_PAD_DS_TUNE,
+-				      PAD_DS_DLY3, host->hs400_ds_dly3);
++		sdr_clr_bits(host->top_base + EMMC50_PAD_DS_TUNE,
++			     PAD_DS_DLY2_SEL);
+ 	} else {
+ 		sdr_set_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY_SEL);
+-		if (host->hs400_ds_dly3)
+-			sdr_set_field(host->base + PAD_DS_TUNE,
+-				      PAD_DS_TUNE_DLY3, host->hs400_ds_dly3);
++		sdr_clr_bits(host->base + PAD_DS_TUNE, PAD_DS_TUNE_DLY2_SEL);
+ 	}
+ 
+ 	host->hs400_tuning = true;
 
 
 
