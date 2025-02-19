@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E36A3B698
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00931A3B6AD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23A316354A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BBCF7A6C05
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41EB1EFFA7;
-	Wed, 19 Feb 2025 08:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E681DDC35;
+	Wed, 19 Feb 2025 09:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gkp50NJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNXMsyEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCD91C701E;
-	Wed, 19 Feb 2025 08:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C7F1C4609;
+	Wed, 19 Feb 2025 09:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955400; cv=none; b=lZH8hXp1z3ABLPjX83wvBoEidSKfcFOnjnl7MJD4AtmBTdMYqsWCBT9yLWtRv7/JgE53W8gutvf/KtH1DYc2uDTeyiMncOjoz2GZWRmudC21v+XY0SfI8UXd9HQKhsroupg4PhXzbahGNFoy5uWREjh5/Imorh5ey6q4qtf3Bn4=
+	t=1739955836; cv=none; b=VNZWrz0nydmA3O7KsPaMj+nYzFwWBPMBdTOxkuGNQB1+QFTxwsn13YtlFBBK5/44OtU8Yv3bM7jt2wiMgegNVN9KzSb21vzj8tfiWap/NkFh60wszZfHw4YRhHFkB9Rx/AmJKjnxOI18EM8KM/8whvHFHyDvlZr+yjGtLtgzPf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955400; c=relaxed/simple;
-	bh=ngeCIVUCeox26oKewiYDU5I1LwnZM4ZIB99L8SCje70=;
+	s=arc-20240116; t=1739955836; c=relaxed/simple;
+	bh=i/fcuriQHCd8EOrYC52cFerL5X4QJHAvzjmbu3YY5ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nasBLUit3uwD4j5azsiwLS1CxhjFdNZk/vPavCJThoDf4EpY6KRaDHiMdhUHrqwBE5KN/PY/OcQdaofrojIC0owR6QC7YftK/Q7jTKLgcoQHh8iIThTVBG5bdmeRz3wLbkNfyKuPoQF7Y1wvCOK5zDu2XIseDRIVShCO10Emuf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gkp50NJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99ADC4CED1;
-	Wed, 19 Feb 2025 08:56:39 +0000 (UTC)
+	 MIME-Version; b=q/9AQ9QDQFlVyehU4N7VxLXqJ+FzYRY6zQYMM4XP4US+8QU0di1E8hvhHXCollAs0t1AI2tcdJscX+aGWkBFpp8hRucHUiNG0+k3w4VurkDt+9Ltk/Dng5EMMbChOsLGnrG8448Sx521ZZPNUzFsqVQY6j7grUYOGBXvCg7tnHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNXMsyEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC672C4CED1;
+	Wed, 19 Feb 2025 09:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955400;
-	bh=ngeCIVUCeox26oKewiYDU5I1LwnZM4ZIB99L8SCje70=;
+	s=korg; t=1739955836;
+	bh=i/fcuriQHCd8EOrYC52cFerL5X4QJHAvzjmbu3YY5ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gkp50NJKOAOiNfIk5kKWOXfBx+FRxrYjHGgZLS4xhtxcnSZXPrpQ7CQk8Zz61tGH
-	 sAlyNX7PyI8Qjq5igWJuMYRwyplThc3cOPTgMrq9+auc3VBi7qMJ0xjWznl0YPP42k
-	 hK0DAiH+6MfiZuZzAiKZNN2VHik6Qwulo+6qX3Cc=
+	b=BNXMsyEBRL8p8OhAFdYasU1KmZgQpjQM1kEBhlGuo37qS0uSc/zEaVReK/UF9L7e8
+	 qdLJYRGmhrynZYJjfnCOodSFv9tgwuU15gHdOXg4h8Piu2uYs5WZtYFxJh26JEDeki
+	 m699enogjzH6czUt/KyMpu6ebMawl35bE2si9nhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.12 224/230] cpufreq/amd-pstate: Remove the goto label in amd_pstate_update_limits
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 128/152] ipv6: mcast: add RCU protection to mld_newpack()
 Date: Wed, 19 Feb 2025 09:29:01 +0100
-Message-ID: <20250219082610.451028234@linuxfoundation.org>
+Message-ID: <20250219082555.113713519@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d364eee14c682b141f4667efc3c65191339d88bd upstream.
+[ Upstream commit a527750d877fd334de87eef81f1cb5f0f0ca3373 ]
 
-Scope based guard/cleanup macros should not be used together with goto
-labels. Hence, remove the goto label.
+mld_newpack() can be called without RTNL or RCU being held.
 
-Fixes: 6c093d5a5b73 ("cpufreq/amd-pstate: convert mutex use to guard()")
-Signed-off-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250205112523.201101-2-dhananjay.ugwekar@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that we no longer can use sock_alloc_send_skb() because
+ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
+
+Instead use alloc_skb() and charge the net->ipv6.igmp_sk
+socket under RCU protection.
+
+Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250212141021.1663666-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv6/mcast.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -796,8 +796,10 @@ static void amd_pstate_update_limits(uns
- 	guard(mutex)(&amd_pstate_driver_lock);
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index a502669b2b28a..9bb246c09fcee 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1729,21 +1729,19 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
+ 	struct net_device *dev = idev->dev;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	struct net *net = dev_net(dev);
+ 	const struct in6_addr *saddr;
+ 	struct in6_addr addr_buf;
+ 	struct mld2_report *pmr;
+ 	struct sk_buff *skb;
+ 	unsigned int size;
+ 	struct sock *sk;
+-	int err;
++	struct net *net;
  
- 	ret = amd_get_highest_perf(cpu, &cur_high);
--	if (ret)
--		goto free_cpufreq_put;
-+	if (ret) {
-+		cpufreq_cpu_put(policy);
-+		return;
-+	}
+-	sk = net->ipv6.igmp_sk;
+ 	/* we assume size > sizeof(ra) here
+ 	 * Also try to not allocate high-order pages for big MTU
+ 	 */
+ 	size = min_t(int, mtu, PAGE_SIZE / 2) + hlen + tlen;
+-	skb = sock_alloc_send_skb(sk, size, 1, &err);
++	skb = alloc_skb(size, GFP_KERNEL);
+ 	if (!skb)
+ 		return NULL;
  
- 	prev_high = READ_ONCE(cpudata->prefcore_ranking);
- 	highest_perf_changed = (prev_high != cur_high);
-@@ -807,8 +809,6 @@ static void amd_pstate_update_limits(uns
- 		if (cur_high < CPPC_MAX_PERF)
- 			sched_set_itmt_core_prio((int)cur_high, cpu);
- 	}
--
--free_cpufreq_put:
- 	cpufreq_cpu_put(policy);
+@@ -1751,6 +1749,12 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
+ 	skb_reserve(skb, hlen);
+ 	skb_tailroom_reserve(skb, mtu, tlen);
  
- 	if (!highest_perf_changed)
++	rcu_read_lock();
++
++	net = dev_net_rcu(dev);
++	sk = net->ipv6.igmp_sk;
++	skb_set_owner_w(skb, sk);
++
+ 	if (ipv6_get_lladdr(dev, &addr_buf, IFA_F_TENTATIVE)) {
+ 		/* <draft-ietf-magma-mld-source-05.txt>:
+ 		 * use unspecified address as the source address
+@@ -1762,6 +1766,8 @@ static struct sk_buff *mld_newpack(struct inet6_dev *idev, unsigned int mtu)
+ 
+ 	ip6_mc_hdr(sk, skb, dev, saddr, &mld2_all_mcr, NEXTHDR_HOP, 0);
+ 
++	rcu_read_unlock();
++
+ 	skb_put_data(skb, ra, sizeof(ra));
+ 
+ 	skb_set_transport_header(skb, skb_tail_pointer(skb) - skb->data);
+-- 
+2.39.5
+
 
 
 
