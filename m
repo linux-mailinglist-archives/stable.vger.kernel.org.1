@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77889A3B477
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27754A3B5A1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EC1D189B402
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA233BB5FF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6BE1DDA0E;
-	Wed, 19 Feb 2025 08:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3C31ADC84;
+	Wed, 19 Feb 2025 08:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyGS14Bn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZA2Gatga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657E21D9A50;
-	Wed, 19 Feb 2025 08:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4945E1E3769;
+	Wed, 19 Feb 2025 08:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954004; cv=none; b=odCCw+5MFZfuPcrAD5LyqPIrtuiQbWbGiRoxx+jO1tEAI3bLzs7vX8rnSbdVnLPOfEPMEY9djocwsiMFsMbtNFhvWRQfD29cIW3j7VOAzPxLrlsSrhv2M3X4lU7gr6sl7AcOfcc1/KN8yhenbNqitda9HbnECj+FlR2PgHI05oc=
+	t=1739954691; cv=none; b=Jen1qSAMKL2aehfYuvYcybSPp8/mo9i3NQfcRG4UWUEHgeMFFcGOEiq5EVATQ5e8niJc2NPuK2o5hKrtoR3jfKMu8Qef8bbtTm0aHlpIFYKCBpiIUT8GTT/dHzdga6uwQx3AdsiipE/Utt/nnuOOU+bAcTMM03xxHi7hZaBLGt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954004; c=relaxed/simple;
-	bh=VC84BO/vcrlJwSS1ibpLXAwWvF4gPcBo7qtdCaylbNs=;
+	s=arc-20240116; t=1739954691; c=relaxed/simple;
+	bh=to6UIp43okHZLM+Opaejy8LBdi+iersxCP7Fg7jd/QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EprwR9iLN7eX6v9+MBhaLFzl+gJVnagto+Rw2Z/ClSrpsIPjZuJntRLq2bnZZ9pO0fm55pUv246kPh6281io8SaLeJIDLwXVXT+V40cOaqxculA8+YSLzb0ysF7QaznaDx+4nvbqocPpS0VuKo5tTXOPRiLTzbye3SCLBJmMrZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyGS14Bn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2A6C4CEE6;
-	Wed, 19 Feb 2025 08:33:23 +0000 (UTC)
+	 MIME-Version; b=oUDSPwG9fy+ePmzYsGWFE2cX5sa79ul0o8tTflrN9mLTGHy86GJDlvjuTA1YwXKZ1GuYK95LFm/ahgg04Rxd5n/EF55mEXsWroCdTzFIGy9OMwFMWHnKBQM1x7283avaweA40bc/ZLUUNykAQ+PB6nBmoMwoS7ohSZuyj40F2zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZA2Gatga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE12C4CEE6;
+	Wed, 19 Feb 2025 08:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954004;
-	bh=VC84BO/vcrlJwSS1ibpLXAwWvF4gPcBo7qtdCaylbNs=;
+	s=korg; t=1739954691;
+	bh=to6UIp43okHZLM+Opaejy8LBdi+iersxCP7Fg7jd/QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyGS14Bn6RXOxZasAyovoGlTjtO2QQQMhH5wofvcpS3did0SEzDfR9OYOPLINz9OH
-	 C35mqNzNUipGoZHbUZ1AoCcT0tYnSbGCavKvo5IqCtM8omfw4bj9+BveV6JZKt7rC5
-	 CHh5F+2iaNZlpC+e/iXPwa0ZeB9Ixj+M8KBsenqs=
+	b=ZA2GatgaPjwJ6z2fWS2wRm2e2kCFEiOBvwzNv66TMlUm3lwfl2pjcTBNNtSigqIsH
+	 5CVA6BSu7/3l88R0vuoNqi+nSUqZ7Q1xxTC+uryXPsz1h6qoYp5treyb5H4wGe8bD0
+	 T6yrYRpn3HJ0DR7DpVmmmf+ILqOBo9Whrr/qC0ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuyi Zhou <zhouchuyi@bytedance.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 064/274] sched_ext: Fix the incorrect bpf_list kfunc API in common.bpf.h.
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Rick Macklem <rmacklem@uoguelph.ca>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 001/230] nfsd: clear acl_access/acl_default after releasing them
 Date: Wed, 19 Feb 2025 09:25:18 +0100
-Message-ID: <20250219082612.128534729@linuxfoundation.org>
+Message-ID: <20250219082601.745671364@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuyi Zhou <zhouchuyi@bytedance.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 2e2006c91c842c551521434466f9b4324719c9a7 ]
+commit 7faf14a7b0366f153284db0ad3347c457ea70136 upstream.
 
-Now BPF only supports bpf_list_push_{front,back}_impl kfunc, not bpf_list_
-push_{front,back}.
+If getting acl_default fails, acl_access and acl_default will be released
+simultaneously. However, acl_access will still retain a pointer pointing
+to the released posix_acl, which will trigger a WARNING in
+nfs3svc_release_getacl like this:
 
-This patch fix this issue. Without this patch, if we use bpf_list kfunc
-in scx, the BPF verifier would complain:
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 26 PID: 3199 at lib/refcount.c:28
+refcount_warn_saturate+0xb5/0x170
+Modules linked in:
+CPU: 26 UID: 0 PID: 3199 Comm: nfsd Not tainted
+6.12.0-rc6-00079-g04ae226af01f-dirty #8
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xb5/0x170
+Code: cc cc 0f b6 1d b3 20 a5 03 80 fb 01 0f 87 65 48 d8 00 83 e3 01 75
+e4 48 c7 c7 c0 3b 9b 85 c6 05 97 20 a5 03 01 e8 fb 3e 30 ff <0f> 0b eb
+cd 0f b6 1d 8a3
+RSP: 0018:ffffc90008637cd8 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83904fde
+RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff88871ed36380
+RBP: ffff888158beeb40 R08: 0000000000000001 R09: fffff520010c6f56
+R10: ffffc90008637ab7 R11: 0000000000000001 R12: 0000000000000001
+R13: ffff888140e77400 R14: ffff888140e77408 R15: ffffffff858b42c0
+FS:  0000000000000000(0000) GS:ffff88871ed00000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000562384d32158 CR3: 000000055cc6a000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? refcount_warn_saturate+0xb5/0x170
+ ? __warn+0xa5/0x140
+ ? refcount_warn_saturate+0xb5/0x170
+ ? report_bug+0x1b1/0x1e0
+ ? handle_bug+0x53/0xa0
+ ? exc_invalid_op+0x17/0x40
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? tick_nohz_tick_stopped+0x1e/0x40
+ ? refcount_warn_saturate+0xb5/0x170
+ ? refcount_warn_saturate+0xb5/0x170
+ nfs3svc_release_getacl+0xc9/0xe0
+ svc_process_common+0x5db/0xb60
+ ? __pfx_svc_process_common+0x10/0x10
+ ? __rcu_read_unlock+0x69/0xa0
+ ? __pfx_nfsd_dispatch+0x10/0x10
+ ? svc_xprt_received+0xa1/0x120
+ ? xdr_init_decode+0x11d/0x190
+ svc_process+0x2a7/0x330
+ svc_handle_xprt+0x69d/0x940
+ svc_recv+0x180/0x2d0
+ nfsd+0x168/0x200
+ ? __pfx_nfsd+0x10/0x10
+ kthread+0x1a2/0x1e0
+ ? kthread+0xf4/0x1e0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x60
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-libbpf: extern (func ksym) 'bpf_list_push_back': not found in kernel or
-module BTFs
-libbpf: failed to load object 'scx_foo'
-libbpf: failed to load BPF skeleton 'scx_foo': -EINVAL
+Clear acl_access/acl_default after posix_acl_release is called to prevent
+UAF from being triggered.
 
-With this patch, the bpf list kfunc will work as expected.
-
-Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
-Fixes: 2a52ca7c98960 ("sched_ext: Add scx_simple and scx_example_qmap example schedulers")
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241107014705.2509463-1-lilingfeng@huaweicloud.com/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Rick Macklem <rmacklem@uoguelph.ca>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/sched_ext/include/scx/common.bpf.h | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs2acl.c |    2 ++
+ fs/nfsd/nfs3acl.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/tools/sched_ext/include/scx/common.bpf.h b/tools/sched_ext/include/scx/common.bpf.h
-index 625f5b046776c..9fa64b053ba91 100644
---- a/tools/sched_ext/include/scx/common.bpf.h
-+++ b/tools/sched_ext/include/scx/common.bpf.h
-@@ -251,8 +251,16 @@ void bpf_obj_drop_impl(void *kptr, void *meta) __ksym;
- #define bpf_obj_new(type) ((type *)bpf_obj_new_impl(bpf_core_type_id_local(type), NULL))
- #define bpf_obj_drop(kptr) bpf_obj_drop_impl(kptr, NULL)
+--- a/fs/nfsd/nfs2acl.c
++++ b/fs/nfsd/nfs2acl.c
+@@ -84,6 +84,8 @@ out:
+ fail:
+ 	posix_acl_release(resp->acl_access);
+ 	posix_acl_release(resp->acl_default);
++	resp->acl_access = NULL;
++	resp->acl_default = NULL;
+ 	goto out;
+ }
  
--void bpf_list_push_front(struct bpf_list_head *head, struct bpf_list_node *node) __ksym;
--void bpf_list_push_back(struct bpf_list_head *head, struct bpf_list_node *node) __ksym;
-+int bpf_list_push_front_impl(struct bpf_list_head *head,
-+				    struct bpf_list_node *node,
-+				    void *meta, __u64 off) __ksym;
-+#define bpf_list_push_front(head, node) bpf_list_push_front_impl(head, node, NULL, 0)
-+
-+int bpf_list_push_back_impl(struct bpf_list_head *head,
-+				   struct bpf_list_node *node,
-+				   void *meta, __u64 off) __ksym;
-+#define bpf_list_push_back(head, node) bpf_list_push_back_impl(head, node, NULL, 0)
-+
- struct bpf_list_node *bpf_list_pop_front(struct bpf_list_head *head) __ksym;
- struct bpf_list_node *bpf_list_pop_back(struct bpf_list_head *head) __ksym;
- struct bpf_rb_node *bpf_rbtree_remove(struct bpf_rb_root *root,
--- 
-2.39.5
-
+--- a/fs/nfsd/nfs3acl.c
++++ b/fs/nfsd/nfs3acl.c
+@@ -76,6 +76,8 @@ out:
+ fail:
+ 	posix_acl_release(resp->acl_access);
+ 	posix_acl_release(resp->acl_default);
++	resp->acl_access = NULL;
++	resp->acl_default = NULL;
+ 	goto out;
+ }
+ 
 
 
 
