@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EE7A3B61F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A8FA3B973
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C513B865F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F55517E7B5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34061F9A85;
-	Wed, 19 Feb 2025 08:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A110A1DF251;
+	Wed, 19 Feb 2025 09:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6gJfdX+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm0sxrv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A202A1EDA3C;
-	Wed, 19 Feb 2025 08:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602731DE2B5;
+	Wed, 19 Feb 2025 09:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954855; cv=none; b=j9PlLl6/J1FowXV83oMnuSrabbY5I1emxE97ed0ugsP68suTiFNKz4k/5PURXr20aahkAVsFH9nU9jD4eAWoTs0EzBUW/NbIwt9bJEj/a7rS4w2BEOtkYnKx+OjsFORGpkUzF7HImLAMioZ7SLhnxbD/KQohmd9pu4ca2CuXc5E=
+	t=1739956988; cv=none; b=l0TGAKYRSQnYFyGiC1Wuag41F8g4FZBmowrBBNZlzi8KbiZCw66dWYK+nuJy17dZNqDDea3R7yXLA9Y9nVAilJhy7QDx96KlePFk+nBfL0B0tSvZZl6uYUG3c39N9EFlGTdJOkHqLhpZ+mF3j2gSx1cGWo0ebQV9bwvenbzDdLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954855; c=relaxed/simple;
-	bh=UV9JC6c97OEML8A/p3rg0AEH4jrj+/vaxI/DtBmj7ls=;
+	s=arc-20240116; t=1739956988; c=relaxed/simple;
+	bh=bQduW6vRlo05Z3c+IqD0DLPKyPnP1sv15fcR/+3OUz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXndNmLfoML7u7o2ezZldx8bmIq5EMKbVI1JiwHQl3rqKDHa+4GPPQoWvXMVc3b/IgmHfzOgBUTF7xsLoC4fy4Gh3UZUTHD6TkgV2psXANEXutPD/dBwkGjdejQpbxGTrtQjIXV0ztKIlXLez9+gpBE3dGd6DH6/owutDRtdEKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6gJfdX+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7595C4CED1;
-	Wed, 19 Feb 2025 08:47:34 +0000 (UTC)
+	 MIME-Version; b=TfY52aQK4i83afF8eXvNKE/pd3Z8gW22l0mmQGr7sXFb+UBDRVwmCMI5D4FfV2aQd9qlPR7OvKYmgNEatTHTDAldinoH/ReO1Xd5RB3YOcN5/hBW4cMtp9hOd+FWy0TMtR43MoWHlxDDZbf9U1fPY3IMxXC6fjpT5wZexS06zw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm0sxrv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768CCC4CED1;
+	Wed, 19 Feb 2025 09:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954855;
-	bh=UV9JC6c97OEML8A/p3rg0AEH4jrj+/vaxI/DtBmj7ls=;
+	s=korg; t=1739956987;
+	bh=bQduW6vRlo05Z3c+IqD0DLPKyPnP1sv15fcR/+3OUz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6gJfdX+nxH9ni3z2l2EEssLjcUfAqqM35A+RLWEpVt6A5nMd02NB4fU8Pp35g4mU
-	 egFR5/nCRw8L7k4j53fyn2VlkrMEWHKxOznUALt6Fpsa2bpj9B3dw+qRpVnDtCWdY2
-	 Vl2hc2KRQ6jVJtuhbuQXqiFEM/8Gwt2qVIJHWRZY=
+	b=bm0sxrv4E8ZNfEkkyhG4WZUlRX/U+DVR+bEouipurb4uZQSr0WFr1PDriCl1B42k8
+	 PtiNOeN9FN1pcE7o985uwdM3RyydTEjqJnMfmMxYpB6LpmEjoYwLtbOabbmUhzqZs1
+	 FcaiIfwVhxi9JS+StPDMTRr8GgMWyHrGdriLGZ7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish McIntyre-Bhatty <kernel-bugzilla@regd.hamishmb.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/230] iommu/amd: Expicitly enable CNTRL.EPHEn bit in resume path
+	Heiko Stuebner <heiko@sntech.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 369/578] HID: hid-sensor-hub: dont use stale platform-data on remove
 Date: Wed, 19 Feb 2025 09:26:13 +0100
-Message-ID: <20250219082603.906913113@linuxfoundation.org>
+Message-ID: <20250219082707.532682619@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit ef75966abf950c0539534effa4960caa29fb7167 ]
+commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
 
-With recent kernel, AMDGPU failed to resume after suspend on certain laptop.
+The hid-sensor-hub creates the individual device structs and transfers them
+to the created mfd platform-devices via the platform_data in the mfd_cell.
 
-Sample log:
------------
-Nov 14 11:52:19 Thinkbook kernel: iommu ivhd0: AMD-Vi: Event logged [ILLEGAL_DEV_TABLE_ENTRY device=0000:06:00.0 pasid=0x00000 address=0x135300000 flags=0x0080]
-Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[0]: 7d90000000000003
-Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[1]: 0000100103fc0009
-Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[2]: 2000000117840013
-Nov 14 11:52:19 Thinkbook kernel: AMD-Vi: DTE[3]: 0000000000000000
+Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+the sensor-hub was managing access centrally, with one "completion" in the
+hub's data structure, which needed to be finished on removal at the latest.
 
-This is because in resume path, CNTRL[EPHEn] is not set. Fix this by
-setting CNTRL[EPHEn] to 1 in resume path if EFR[EPHSUP] is set.
+The mentioned commit then moved this central management to each hid sensor
+device, resulting on a completion in each struct hid_sensor_hub_device.
+The remove procedure was adapted to go through all sensor devices and
+finish any pending "completion".
 
-Note
-  May be better approach is to save the control register in suspend path
-  and restore it in resume path instead of trying to set indivisual
-  bits. We will have separate patch for that.
+What this didn't take into account was, platform_device_add_data() that is
+used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
+platform-data. So the data the platform-device gets is a copy of the
+original data, meaning that the device worked on a different completion
+than what sensor_hub_remove() currently wants to access.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219499
-Fixes: c4cb23111103 ("iommu/amd: Add support for enable/disable IOPF")
-Tested-by: Hamish McIntyre-Bhatty <kernel-bugzilla@regd.hamishmb.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20250127094411.5931-1-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix that, use device_for_each_child() to go through each child-device
+similar to how mfd_remove_devices() unregisters the devices later and
+with that get the live platform_data to finalize the correct completion.
+
+Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/amd_iommu_types.h | 1 +
- drivers/iommu/amd/init.c            | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 601fb4ee69009..6fb2f2919ab1f 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -175,6 +175,7 @@
- #define CONTROL_GAM_EN		25
- #define CONTROL_GALOG_EN	28
- #define CONTROL_GAINT_EN	29
-+#define CONTROL_EPH_EN		45
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
- #define CONTROL_IRTCACHEDIS	59
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 43131c3a21726..dbe2d13972fef 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -2647,6 +2647,10 @@ static void iommu_init_flags(struct amd_iommu *iommu)
- 
- 	/* Set IOTLB invalidation timeout to 1s */
- 	iommu_set_inv_tlb_timeout(iommu, CTRL_INV_TO_1S);
-+
-+	/* Enable Enhanced Peripheral Page Request Handling */
-+	if (check_feature(FEATURE_EPHSUP))
-+		iommu_feature_enable(iommu, CONTROL_EPH_EN);
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -728,23 +728,30 @@ err_stop_hw:
+ 	return ret;
  }
  
- static void iommu_apply_resume_quirks(struct amd_iommu *iommu)
--- 
-2.39.5
-
++static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
++{
++	struct hid_sensor_hub_device *hsdev = dev->platform_data;
++
++	if (hsdev->pending.status)
++		complete(&hsdev->pending.ready);
++
++	return 0;
++}
++
+ static void sensor_hub_remove(struct hid_device *hdev)
+ {
+ 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
+ 	unsigned long flags;
+-	int i;
+ 
+ 	hid_dbg(hdev, " hardware removed\n");
+ 	hid_hw_close(hdev);
+ 	hid_hw_stop(hdev);
++
+ 	spin_lock_irqsave(&data->lock, flags);
+-	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
+-		struct hid_sensor_hub_device *hsdev =
+-			data->hid_sensor_hub_client_devs[i].platform_data;
+-		if (hsdev->pending.status)
+-			complete(&hsdev->pending.ready);
+-	}
++	device_for_each_child(&hdev->dev, NULL,
++			      sensor_hub_finalize_pending_fn);
+ 	spin_unlock_irqrestore(&data->lock, flags);
++
+ 	mfd_remove_devices(&hdev->dev);
+ 	mutex_destroy(&data->mutex);
+ }
 
 
 
