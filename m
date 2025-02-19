@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-117345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B04EA3B68D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B36A3B994
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 590143B9640
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD993BBB24
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444661DE8A8;
-	Wed, 19 Feb 2025 08:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C301CAA65;
+	Wed, 19 Feb 2025 09:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoLchjlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiRJaBIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013FE1C5F30;
-	Wed, 19 Feb 2025 08:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D1F17A2FE;
+	Wed, 19 Feb 2025 09:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954984; cv=none; b=ExwQYg0tv1MmY1VxuI4i+1XLOPSI3ITkHSYczjsfzKo1b8n/lBHUvepSQcg05NOHgKYYmL1MDie+uPY9269f+c8q5AYKTyy4NVbVvOLrmasVrdYNq39W45QZ/56WpEVMKwxnVFFH7td8NHP7BMcVwJqR3fBio30xBj4M05Wv6sc=
+	t=1739957022; cv=none; b=rwUS/SchbqPG4jpQEIXKhF1EjRmQgFx0uHd3eTsgml3oHcYaiQq40fLVBHJZHopGnk93/ANlX9oHXrlpJnQ9VES0oX5rJRkGaeYaDUiwEflHjfbGrq9EllOWh6Q9vUvun8gUH5tpZQ2EPC3/PR4arJjtt173lAwOCKsYS2XmxBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954984; c=relaxed/simple;
-	bh=X6+Yaa7MV30HKXWsIhji+80KmrGFJHo6nup/CpDcL5g=;
+	s=arc-20240116; t=1739957022; c=relaxed/simple;
+	bh=ObR/3C5NUDCAsE4kNiXKBmIIYgeNCsFEyn2UzHGYsgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf+hSUbrEVIB7V9r0+mKOZ3blxKZRxV5x2gQl2+AKFTUySw9Pw4eE2BKUAPp6jvPviEH+3XYJ+BX2FfrtpDOIfZOj1QkenMxHNU2c1WHNbIHyYQDUKfsS+SB4RjSSqgrg6SQ/QOTgwEAxBPYpkGNRONzUf+qJFON8TzvD+zI7fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoLchjlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7866DC4CED1;
-	Wed, 19 Feb 2025 08:49:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CJZkIJNnvytiit++kKPgrFiygN2wx3K+7aJBbHoFXh98mD0RnMtJ8a2Kjy+PDmHuuH3bw4+43wtVhDIxWzsHdbi0eJ/2pw6EVRhPPkCQ3RkiRfzrp3yTWwnGmv6x7f3g4u45r6jU02qYhmCpNWKNpYnf6X1i2uRft8naevqAJMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiRJaBIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6DBC4CED1;
+	Wed, 19 Feb 2025 09:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954983;
-	bh=X6+Yaa7MV30HKXWsIhji+80KmrGFJHo6nup/CpDcL5g=;
+	s=korg; t=1739957022;
+	bh=ObR/3C5NUDCAsE4kNiXKBmIIYgeNCsFEyn2UzHGYsgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoLchjlOoRaQy64DVF4SW69sGSwwTjvbduhZg3qawRMMKkLMzVAK2HJ8ePMleC6i4
-	 hhBvVMfABohkWGl1hzK0M2+4G1SDFYsp6Lv+JdGqMZuSzw5VC3HIK7bUkJCLWSo9md
-	 DlkUBnvzz2ZYOEtjR1oxlXfGnKW1Mhqr7VgubjQI=
+	b=QiRJaBIFC59Z9Ep7CHgXjR58HqBgozZeQENkGmLzEJWK8xoSKx/hZt/9yy254zayP
+	 +921GFIW1z7E4Fpb81s9OX2/fUl34Ohh+bm5KkjePNuBQi/S9/W9RavfFfbOm+Io9i
+	 w5KI/q5hwwtbmuobyMp3heP+cvcLPUlpyP9KUMMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/230] media: i2c: ds90ub953: Add error handling for i2c reads/writes
-Date: Wed, 19 Feb 2025 09:26:23 +0100
-Message-ID: <20250219082604.293400918@linuxfoundation.org>
+	Mingcong Bai <jeffbai@aosc.io>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 380/578] MIPS: Loongson64: remove ROM Size unit in boardinfo
+Date: Wed, 19 Feb 2025 09:26:24 +0100
+Message-ID: <20250219082707.964418228@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Kexy Biscuit <kexybiscuit@aosc.io>
 
-[ Upstream commit 0794c43ea1e451007e80246e1288ebbf44139397 ]
+commit bd2212d658d7659b9d83c7e2f3a06789d4db1e90 upstream.
 
-Add error handling for i2c reads/writes in various places.
+Per Appendix A.7 in Q/LS 0013-2014 (龙芯CPU开发系统固件与内核接口规范 V2.2,
+lit. Loongson DevSys Firmware Kernel Interface Specification V2.2),
+interface_info.size is size of this interface, not size of the LEFI BIOS
+ROM.
 
-Reported-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Closes: https://lore.kernel.org/all/Zv40EQSR__JDN_0M@kekkonen.localdomain/
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In any case, the BIOS ROM Size just cannot be several kilobytes (KB) on
+Loongson64 LEFI platforms.
+
+Reported-by: Mingcong Bai <jeffbai@aosc.io>
+Suggested-by: Icenowy Zheng <uwu@icenowy.me>
+Fixes: 6c1bfbd9df8c ("MIPS: Loongson64: Add /sys/firmware/lefi/boardinfo")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ds90ub953.c | 46 ++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 14 deletions(-)
+ arch/mips/loongson64/boardinfo.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
-index 10daecf6f4579..f0bad3e64f23d 100644
---- a/drivers/media/i2c/ds90ub953.c
-+++ b/drivers/media/i2c/ds90ub953.c
-@@ -398,8 +398,13 @@ static int ub953_gpiochip_probe(struct ub953_data *priv)
- 	int ret;
- 
- 	/* Set all GPIOs to local input mode */
--	ub953_write(priv, UB953_REG_LOCAL_GPIO_DATA, 0);
--	ub953_write(priv, UB953_REG_GPIO_INPUT_CTRL, 0xf);
-+	ret = ub953_write(priv, UB953_REG_LOCAL_GPIO_DATA, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = ub953_write(priv, UB953_REG_GPIO_INPUT_CTRL, 0xf);
-+	if (ret)
-+		return ret;
- 
- 	gc->label = dev_name(dev);
- 	gc->parent = dev;
-@@ -961,10 +966,11 @@ static void ub953_calc_clkout_params(struct ub953_data *priv,
- 	clkout_data->rate = clkout_rate;
+--- a/arch/mips/loongson64/boardinfo.c
++++ b/arch/mips/loongson64/boardinfo.c
+@@ -21,13 +21,11 @@ static ssize_t boardinfo_show(struct kob
+ 		       "BIOS Info\n"
+ 		       "Vendor\t\t\t: %s\n"
+ 		       "Version\t\t\t: %s\n"
+-		       "ROM Size\t\t: %d KB\n"
+ 		       "Release Date\t\t: %s\n",
+ 		       strsep(&tmp_board_manufacturer, "-"),
+ 		       eboard->name,
+ 		       strsep(&tmp_bios_vendor, "-"),
+ 		       einter->description,
+-		       einter->size,
+ 		       especial->special_name);
  }
- 
--static void ub953_write_clkout_regs(struct ub953_data *priv,
--				    const struct ub953_clkout_data *clkout_data)
-+static int ub953_write_clkout_regs(struct ub953_data *priv,
-+				   const struct ub953_clkout_data *clkout_data)
- {
- 	u8 clkout_ctrl0, clkout_ctrl1;
-+	int ret;
- 
- 	if (priv->hw_data->is_ub971)
- 		clkout_ctrl0 = clkout_data->m;
-@@ -974,8 +980,15 @@ static void ub953_write_clkout_regs(struct ub953_data *priv,
- 
- 	clkout_ctrl1 = clkout_data->n;
- 
--	ub953_write(priv, UB953_REG_CLKOUT_CTRL0, clkout_ctrl0);
--	ub953_write(priv, UB953_REG_CLKOUT_CTRL1, clkout_ctrl1);
-+	ret = ub953_write(priv, UB953_REG_CLKOUT_CTRL0, clkout_ctrl0);
-+	if (ret)
-+		return ret;
-+
-+	ret = ub953_write(priv, UB953_REG_CLKOUT_CTRL1, clkout_ctrl1);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- 
- static unsigned long ub953_clkout_recalc_rate(struct clk_hw *hw,
-@@ -1055,9 +1068,7 @@ static int ub953_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
- 	dev_dbg(&priv->client->dev, "%s %lu (requested %lu)\n", __func__,
- 		clkout_data.rate, rate);
- 
--	ub953_write_clkout_regs(priv, &clkout_data);
--
--	return 0;
-+	return ub953_write_clkout_regs(priv, &clkout_data);
- }
- 
- static const struct clk_ops ub953_clkout_ops = {
-@@ -1082,7 +1093,9 @@ static int ub953_register_clkout(struct ub953_data *priv)
- 
- 	/* Initialize clkout to 25MHz by default */
- 	ub953_calc_clkout_params(priv, UB953_DEFAULT_CLKOUT_RATE, &clkout_data);
--	ub953_write_clkout_regs(priv, &clkout_data);
-+	ret = ub953_write_clkout_regs(priv, &clkout_data);
-+	if (ret)
-+		return ret;
- 
- 	priv->clkout_clk_hw.init = &init;
- 
-@@ -1229,10 +1242,15 @@ static int ub953_hw_init(struct ub953_data *priv)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "i2c init failed\n");
- 
--	ub953_write(priv, UB953_REG_GENERAL_CFG,
--		    (priv->non_continous_clk ? 0 : UB953_REG_GENERAL_CFG_CONT_CLK) |
--		    ((priv->num_data_lanes - 1) << UB953_REG_GENERAL_CFG_CSI_LANE_SEL_SHIFT) |
--		    UB953_REG_GENERAL_CFG_CRC_TX_GEN_ENABLE);
-+	v = 0;
-+	v |= priv->non_continous_clk ? 0 : UB953_REG_GENERAL_CFG_CONT_CLK;
-+	v |= (priv->num_data_lanes - 1) <<
-+		UB953_REG_GENERAL_CFG_CSI_LANE_SEL_SHIFT;
-+	v |= UB953_REG_GENERAL_CFG_CRC_TX_GEN_ENABLE;
-+
-+	ret = ub953_write(priv, UB953_REG_GENERAL_CFG, v);
-+	if (ret)
-+		return ret;
- 
- 	return 0;
- }
--- 
-2.39.5
-
+ static struct kobj_attribute boardinfo_attr = __ATTR(boardinfo, 0444,
 
 
 
