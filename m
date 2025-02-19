@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE852A3B744
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07072A3B67A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7658117C70C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD9616FDF3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498721DF26F;
-	Wed, 19 Feb 2025 08:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4A71DFE3D;
+	Wed, 19 Feb 2025 08:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e23mX6+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFleBANy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7A91DE2C2;
-	Wed, 19 Feb 2025 08:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDF11DFE36;
+	Wed, 19 Feb 2025 08:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955561; cv=none; b=XMk5ze2+ZsB31ybt7mz+M7cosU/LetRy6cyXOvBWlsQGdvSIg8jxCwM9S9IjLyXmwjZD/iZuXMGhnN27qaiVlRN7cbGmaawu3ibiFVyVPj3nTtyPCYhCVwwqMX+W05Io/1b6RXWTrbv4oWQJzADAw3LTsjBoZzV5xbzgUpGkam4=
+	t=1739955124; cv=none; b=Mx/Eegjk7sHEUPa/jBRMJcwztL8f9JLtRRxJ6IhcbvoMD9ONofrlT2F9SEgteGPOl97GCQSN4bdI/sUUiDBsJESjLvQsicCJBX4VBDeJNkoGJ0xwg/ycfni9CZd0j78NhnS5+5DtTi1kUwKUjwJjsCAOqN4RXL2v20S/M+WRc9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955561; c=relaxed/simple;
-	bh=XdS5GrskjMFlIGSFDnlwUxKknI8QAYkenbIYXadQFVM=;
+	s=arc-20240116; t=1739955124; c=relaxed/simple;
+	bh=dGKO9lmtUK+t3OBap3R0ZsmUcIsM+EOabMkIZhHLzcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiIUHrY15jjRHOH6Qb9ppAWVXG750AHYawUuZaUTyoj+vmarxjZ/8AZ4Ie8/o8mO7B2AJen7jGr0BkX7RosnioHYwZULYlxxM5LJKBdcJ4rxaDgtZZ7+/AHZTm7tts6uVeyT0QkJUix44N90hiyEVJASYhzi1xfwQFe0R/1u95A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e23mX6+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70398C4CED1;
-	Wed, 19 Feb 2025 08:59:20 +0000 (UTC)
+	 MIME-Version; b=qn3fShe31GbCz2LbeHjjLWBiSdccJ0JkJwdBtnTyoLBsXNt6aUrOAa9Chsl+TKjs+LF7sJObSo1wLYmY/JjNCjlGpsGDORjbXYgIUHYFRYzJWB5GT2ywTeurIGMuNQFymGATq3sD3c0QlmOomELMwERMrU1G7fnlCsuV+ss95ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFleBANy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FBAC4CEE6;
+	Wed, 19 Feb 2025 08:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955560;
-	bh=XdS5GrskjMFlIGSFDnlwUxKknI8QAYkenbIYXadQFVM=;
+	s=korg; t=1739955123;
+	bh=dGKO9lmtUK+t3OBap3R0ZsmUcIsM+EOabMkIZhHLzcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e23mX6+ZX8OXamSgFV1x575M+VwLsdgthX23CdTgD6p0Lk6wzVHX7r9u2k+RlPNhr
-	 bPnTMrfE+XS8Fnx51/0tfT5OBdpv5H3SpJPp3PrfvVNo/BLnt/bKrahFoMqHMYUmTr
-	 Vgf47dvIPWVd5V79ItPxLPPIXb6EUCiDIKaMWeWQ=
+	b=kFleBANyJz5h0+Se8eUm5GmnoMhZJk47sCua4xwwZ+quQfHv905BXbwpgLOKpluzj
+	 qlKLdMh5a08CAetbdmwthQuviP679GybkGnfxp1kXCdVWKWNWM3DXeJQmdlnWC7rGe
+	 LymPBk4BsGbTFWpZw2XUU2TIHJWWhQV1WMZ9fcio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/152] selftests: gpio: gpio-sim: Fix missing chip disablements
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 140/230] objtool/rust: add one more `noreturn` Rust function
 Date: Wed, 19 Feb 2025 09:27:37 +0100
-Message-ID: <20250219082551.787507387@linuxfoundation.org>
+Message-ID: <20250219082607.163091287@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,208 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit f8524ac33cd452aef5384504b3264db6039a455e ]
+commit cee6f9a9c87b6ecfb51845950c28216b231c3610 upstream.
 
-Since upstream commit 8bd76b3d3f3a ("gpio: sim: lock up configfs that an
-instantiated device depends on"), rmdir for an active virtual devices
-been prohibited.
+Starting with Rust 1.85.0 (currently in beta, to be released 2025-02-20),
+under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
+one may trigger a new `objtool` warning:
 
-Update gpio-sim selftest to align with the change.
+    rust/kernel.o: warning: objtool: _R...securityNtB2_11SecurityCtx8as_bytes()
+    falls through to next function _R...core3ops4drop4Drop4drop()
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202501221006.a1ca5dfa-lkp@intel.com
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Link: https://lore.kernel.org/r/20250122043309.304621-1-koichiro.den@canonical.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+due to a call to the `noreturn` symbol:
+
+    core::panicking::assert_failed::<usize, usize>
+
+Thus add it to the list so that `objtool` knows it is actually `noreturn`.
+Do so matching with `strstr` since it is a generic.
+
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20250112143951.751139-1-ojeda@kernel.org
+[ Updated Cc: stable@ to include 6.13.y. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/gpio/gpio-sim.sh | 31 +++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ tools/objtool/check.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/gpio/gpio-sim.sh b/tools/testing/selftests/gpio/gpio-sim.sh
-index 6fb66a687f173..bbc29ed9c60a9 100755
---- a/tools/testing/selftests/gpio/gpio-sim.sh
-+++ b/tools/testing/selftests/gpio/gpio-sim.sh
-@@ -46,12 +46,6 @@ remove_chip() {
- 	rmdir $CONFIGFS_DIR/$CHIP || fail "Unable to remove the chip"
- }
- 
--configfs_cleanup() {
--	for CHIP in `ls $CONFIGFS_DIR/`; do
--		remove_chip $CHIP
--	done
--}
--
- create_chip() {
- 	local CHIP=$1
- 
-@@ -105,6 +99,13 @@ disable_chip() {
- 	echo 0 > $CONFIGFS_DIR/$CHIP/live || fail "Unable to disable the chip"
- }
- 
-+configfs_cleanup() {
-+	for CHIP in `ls $CONFIGFS_DIR/`; do
-+		disable_chip $CHIP
-+		remove_chip $CHIP
-+	done
-+}
-+
- configfs_chip_name() {
- 	local CHIP=$1
- 	local BANK=$2
-@@ -181,6 +182,7 @@ create_chip chip
- create_bank chip bank
- enable_chip chip
- test -n `cat $CONFIGFS_DIR/chip/bank/chip_name` || fail "chip_name doesn't work"
-+disable_chip chip
- remove_chip chip
- 
- echo "1.2. chip_name returns 'none' if the chip is still pending"
-@@ -195,6 +197,7 @@ create_chip chip
- create_bank chip bank
- enable_chip chip
- test -n `cat $CONFIGFS_DIR/chip/dev_name` || fail "dev_name doesn't work"
-+disable_chip chip
- remove_chip chip
- 
- echo "2. Creating and configuring simulated chips"
-@@ -204,6 +207,7 @@ create_chip chip
- create_bank chip bank
- enable_chip chip
- test "`get_chip_num_lines chip bank`" = "1" || fail "default number of lines is not 1"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.2. Number of lines can be specified"
-@@ -212,6 +216,7 @@ create_bank chip bank
- set_num_lines chip bank 16
- enable_chip chip
- test "`get_chip_num_lines chip bank`" = "16" || fail "number of lines is not 16"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.3. Label can be set"
-@@ -220,6 +225,7 @@ create_bank chip bank
- set_label chip bank foobar
- enable_chip chip
- test "`get_chip_label chip bank`" = "foobar" || fail "label is incorrect"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.4. Label can be left empty"
-@@ -227,6 +233,7 @@ create_chip chip
- create_bank chip bank
- enable_chip chip
- test -z "`cat $CONFIGFS_DIR/chip/bank/label`" || fail "label is not empty"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.5. Line names can be configured"
-@@ -238,6 +245,7 @@ set_line_name chip bank 2 bar
- enable_chip chip
- test "`get_line_name chip bank 0`" = "foo" || fail "line name is incorrect"
- test "`get_line_name chip bank 2`" = "bar" || fail "line name is incorrect"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.6. Line config can remain unused if offset is greater than number of lines"
-@@ -248,6 +256,7 @@ set_line_name chip bank 5 foobar
- enable_chip chip
- test "`get_line_name chip bank 0`" = "" || fail "line name is incorrect"
- test "`get_line_name chip bank 1`" = "" || fail "line name is incorrect"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.7. Line configfs directory names are sanitized"
-@@ -267,6 +276,7 @@ for CHIP in $CHIPS; do
- 	enable_chip $CHIP
- done
- for CHIP in $CHIPS; do
-+  disable_chip $CHIP
- 	remove_chip $CHIP
- done
- 
-@@ -278,6 +288,7 @@ echo foobar > $CONFIGFS_DIR/chip/bank/label 2> /dev/null && \
- 	fail "Setting label of a live chip should fail"
- echo 8 > $CONFIGFS_DIR/chip/bank/num_lines 2> /dev/null && \
- 	fail "Setting number of lines of a live chip should fail"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.10. Can't create line items when chip is live"
-@@ -285,6 +296,7 @@ create_chip chip
- create_bank chip bank
- enable_chip chip
- mkdir $CONFIGFS_DIR/chip/bank/line0 2> /dev/null && fail "Creating line item should fail"
-+disable_chip chip
- remove_chip chip
- 
- echo "2.11. Probe errors are propagated to user-space"
-@@ -316,6 +328,7 @@ mkdir -p $CONFIGFS_DIR/chip/bank/line4/hog
- enable_chip chip
- $BASE_DIR/gpio-mockup-cdev -s 1 /dev/`configfs_chip_name chip bank` 4 2> /dev/null && \
- 	fail "Setting the value of a hogged line shouldn't succeed"
-+disable_chip chip
- remove_chip chip
- 
- echo "3. Controlling simulated chips"
-@@ -331,6 +344,7 @@ test "$?" = "1" || fail "pull set incorrectly"
- sysfs_set_pull chip bank 0 pull-down
- $BASE_DIR/gpio-mockup-cdev /dev/`configfs_chip_name chip bank` 1
- test "$?" = "0" || fail "pull set incorrectly"
-+disable_chip chip
- remove_chip chip
- 
- echo "3.2. Pull can be read from sysfs"
-@@ -344,6 +358,7 @@ SYSFS_PATH=/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/pull
- test `cat $SYSFS_PATH` = "pull-down" || fail "reading the pull failed"
- sysfs_set_pull chip bank 0 pull-up
- test `cat $SYSFS_PATH` = "pull-up" || fail "reading the pull failed"
-+disable_chip chip
- remove_chip chip
- 
- echo "3.3. Incorrect input in sysfs is rejected"
-@@ -355,6 +370,7 @@ DEVNAME=`configfs_dev_name chip`
- CHIPNAME=`configfs_chip_name chip bank`
- SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/pull"
- echo foobar > $SYSFS_PATH 2> /dev/null && fail "invalid input not detected"
-+disable_chip chip
- remove_chip chip
- 
- echo "3.4. Can't write to value"
-@@ -365,6 +381,7 @@ DEVNAME=`configfs_dev_name chip`
- CHIPNAME=`configfs_chip_name chip bank`
- SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/value"
- echo 1 > $SYSFS_PATH 2> /dev/null && fail "writing to 'value' succeeded unexpectedly"
-+disable_chip chip
- remove_chip chip
- 
- echo "4. Simulated GPIO chips are functional"
-@@ -382,6 +399,7 @@ $BASE_DIR/gpio-mockup-cdev -s 1 /dev/`configfs_chip_name chip bank` 0 &
- sleep 0.1 # FIXME Any better way?
- test `cat $SYSFS_PATH` = "1" || fail "incorrect value read from sysfs"
- kill $!
-+disable_chip chip
- remove_chip chip
- 
- echo "4.2. Bias settings work correctly"
-@@ -394,6 +412,7 @@ CHIPNAME=`configfs_chip_name chip bank`
- SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/value"
- $BASE_DIR/gpio-mockup-cdev -b pull-up /dev/`configfs_chip_name chip bank` 0
- test `cat $SYSFS_PATH` = "1" || fail "bias setting does not work"
-+disable_chip chip
- remove_chip chip
- 
- echo "GPIO $MODULE test PASS"
--- 
-2.39.5
-
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -218,6 +218,7 @@ static bool is_rust_noreturn(const struc
+ 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
+ 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
+ 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
++	       strstr(func->name, "_4core9panicking13assert_failed")					||
+ 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
+ 	       (strstr(func->name, "_4core5slice5index24slice_") &&
+ 		str_ends_with(func->name, "_fail"));
 
 
 
