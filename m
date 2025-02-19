@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-117493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B29A3B5F8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58162A3B5F4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BDC07A3F37
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D95D17C69B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C821F30BE;
-	Wed, 19 Feb 2025 08:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484F31DE3D6;
+	Wed, 19 Feb 2025 08:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVF5L53N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llfXnbX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1079E1F30AD;
-	Wed, 19 Feb 2025 08:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B40188CCA;
+	Wed, 19 Feb 2025 08:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955459; cv=none; b=M5TYLgJIJ5jDTXDcYss2YCasaK0UnZ3Mt8kHUQSTMNwitbX0JlA7EUSBPZBIjmK36HU9h1GgkJsITBD0/N/+BcV9KAn8WLJb4Z2uf7J61YpaRUpKYT0mWCToYLRa4PWBvrxq6MTAXDMjW3u/IQjOQR5+Xw72FFtMenTb8cnlfwo=
+	t=1739955023; cv=none; b=kjJz4mNT47QYEeFhJreIkxDhwx15tep8wJbYwDZGpljAtLyDNw0Zngn3fCr/vQ9F+H8MJ0eODlgCZw2mHCNSCQqUToVJQmFITgLjusNQce1Z71ccawvnhRrHn4FKNvDQz+cJj+oKe0VJRmkF94Kc6RVVGOa6UuJp921AzNrjCh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955459; c=relaxed/simple;
-	bh=cn8xe8H6AkPtlE9c8RQj9mhEbXUU+85x5i29oA/kjCA=;
+	s=arc-20240116; t=1739955023; c=relaxed/simple;
+	bh=YSh8F0L2zwPNHCNoeDg6xTt6OVRhZa+zapV6Dzjth3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1scQcTL78VJYBFFPJWGuza57fZ5UX0OhDE+53hZuAQPLCKFmdB9sNY8jfSh5vWDU1khzy4ko/gDnf4BhaJg2M0hGTXAIM04QyZhBE8oo3EZvzR/uYykBIxGpyPrZ9Weqk77VPgKXKg99MMAgIg4hLvyICmLFX1yjPRoLAv6CTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVF5L53N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82373C4CED1;
-	Wed, 19 Feb 2025 08:57:38 +0000 (UTC)
+	 MIME-Version; b=jxHvo4nhfYeXL5C5elY254B+kNVuovfvP1wQCAcVpktIrGgO6DPYpK14gUXjZxO4djpecCrOZgvyXkjIJkCjvouFfvkDI1T+gA8LxJ0+jzkqH6jP9ZtjCr1nQfITPKIn6FRBzXxnSe0RfNLz7H6IIq8RECF1Ljncr7sjIA6xjJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llfXnbX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795F6C4CEE7;
+	Wed, 19 Feb 2025 08:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955458;
-	bh=cn8xe8H6AkPtlE9c8RQj9mhEbXUU+85x5i29oA/kjCA=;
+	s=korg; t=1739955022;
+	bh=YSh8F0L2zwPNHCNoeDg6xTt6OVRhZa+zapV6Dzjth3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVF5L53NSlokt+KWaVFIwgOWiuByvgNwB5McTmodNyoeqHknOjRdo2XnsmhTC9WSc
-	 MblpA8RoUNT0X7BG9dBkkOhFSW9tLWI1kbuczEavdoYaMdt5Dzwh2xJpRfQ/c9neL0
-	 A45veIp5jWhzuSLKmgLKA4kWzs0McLifQ6hcWGsk=
+	b=llfXnbX6viabmjBa8KIs3uMscA8V03JeRyhsFzYmPWMYljLuK7ucAcUSX2CaKIGrl
+	 53YKWL6MVMn/Hy9YO7rzgMDWOIDRtS+4oXR87JVE4gsYAvNletwKZZKjre3PsRyEEa
+	 dUhKaWC5JB11s8nKpbKYi286Nuc1KlQ5pnsJZ324=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/152] team: better TEAM_OPTION_TYPE_STRING validation
+	Selvarasu Ganesan <selvarasu.g@samsung.com>
+Subject: [PATCH 6.12 109/230] usb: gadget: f_midi: Fixing wMaxPacketSize exceeded issue during MIDI bind retries
 Date: Wed, 19 Feb 2025 09:27:06 +0100
-Message-ID: <20250219082550.553773342@linuxfoundation.org>
+Message-ID: <20250219082605.954882809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
+commit 9e8b21410f310c50733f6e1730bae5a8e30d3570 upstream.
 
-syzbot reported following splat [1]
+The current implementation sets the wMaxPacketSize of bulk in/out
+endpoints to 1024 bytes at the end of the f_midi_bind function. However,
+in cases where there is a failure in the first midi bind attempt,
+consider rebinding. This scenario may encounter an f_midi_bind issue due
+to the previous bind setting the bulk endpoint's wMaxPacketSize to 1024
+bytes, which exceeds the ep->maxpacket_limit where configured dwc3 TX/RX
+FIFO's maxpacket size of 512 bytes for IN/OUT endpoints in support HS
+speed only.
 
-Make sure user-provided data contains one nul byte.
+Here the term "rebind" in this context refers to attempting to bind the
+MIDI function a second time in certain scenarios. The situations where
+rebinding is considered include:
 
-[1]
- BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
- BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
-  string_nocheck lib/vsprintf.c:633 [inline]
-  string+0x3ec/0x5f0 lib/vsprintf.c:714
-  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
-  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
-  team_mode_get drivers/net/team/team_core.c:480 [inline]
-  team_change_mode drivers/net/team/team_core.c:607 [inline]
-  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
-  team_option_set drivers/net/team/team_core.c:375 [inline]
-  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
-  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
-  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
-  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
-  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
-  sock_sendmsg_nosec net/socket.c:718 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:733
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
-  __sys_sendmsg net/socket.c:2659 [inline]
-  __do_sys_sendmsg net/socket.c:2664 [inline]
-  __se_sys_sendmsg net/socket.c:2662 [inline]
-  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
-  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ * When there is a failure in the first UDC write attempt, which may be
+   caused by other functions bind along with MIDI.
+ * Runtime composition change : Example : MIDI,ADB to MIDI. Or MIDI to
+   MIDI,ADB.
 
-Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
-Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit addresses this issue by resetting the wMaxPacketSize before
+endpoint claim. And here there is no need to reset all values in the usb
+endpoint descriptor structure, as all members except wMaxPacketSize and
+bEndpointAddress have predefined values.
+
+This ensures that restores the endpoint to its expected configuration,
+and preventing conflicts with value of ep->maxpacket_limit. It also
+aligns with the approach used in other function drivers, which treat
+endpoint descriptors as if they were full speed before endpoint claim.
+
+Fixes: 46decc82ffd5 ("usb: gadget: unconditionally allocate hs/ss descriptor in bind operation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Link: https://lore.kernel.org/r/20250118060134.927-1-selvarasu.g@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/team/team.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_midi.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 46a7c9fb6300e..1ce3bccd4ebd4 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2657,7 +2657,9 @@ static int team_nl_cmd_options_set(struct sk_buff *skb, struct genl_info *info)
- 				ctx.data.u32_val = nla_get_u32(attr_data);
- 				break;
- 			case TEAM_OPTION_TYPE_STRING:
--				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
-+				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
-+				    !memchr(nla_data(attr_data), '\0',
-+					    nla_len(attr_data))) {
- 					err = -EINVAL;
- 					goto team_put;
- 				}
--- 
-2.39.5
-
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -907,6 +907,15 @@ static int f_midi_bind(struct usb_config
+ 
+ 	status = -ENODEV;
+ 
++	/*
++	 * Reset wMaxPacketSize with maximum packet size of FS bulk transfer before
++	 * endpoint claim. This ensures that the wMaxPacketSize does not exceed the
++	 * limit during bind retries where configured dwc3 TX/RX FIFO's maxpacket
++	 * size of 512 bytes for IN/OUT endpoints in support HS speed only.
++	 */
++	bulk_in_desc.wMaxPacketSize = cpu_to_le16(64);
++	bulk_out_desc.wMaxPacketSize = cpu_to_le16(64);
++
+ 	/* allocate instance-specific endpoints */
+ 	midi->in_ep = usb_ep_autoconfig(cdev->gadget, &bulk_in_desc);
+ 	if (!midi->in_ep)
 
 
 
