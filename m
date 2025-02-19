@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D65A3B9BD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E61AA3B788
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 680DC167B15
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367CF3B7A2D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBBF1DE3BE;
-	Wed, 19 Feb 2025 09:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805CA1DE892;
+	Wed, 19 Feb 2025 08:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6FXY1LB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuT8D5hA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB7C1CC8B0;
-	Wed, 19 Feb 2025 09:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3433D1A841F;
+	Wed, 19 Feb 2025 08:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957172; cv=none; b=ROo42/eC6WkOWVSzfrBYHU4uN1slwZ49Rj1uRfOaeU2ylV9y3GG9uKJmQCo7sQnZ/ddLAATiV9NadQ4H675UXoRSv3iVKRH2FN7PGneZ3ba71dp2CGCapk8Iq95Pg0bDwk35R2/1XbIuOISCaUbFn7fI4LbmtiJsfC1nZ/td8wA=
+	t=1739955499; cv=none; b=EjPCyTTY03aYlT+MIITQ1cWQ+EPRsEqk07mLWPo/yX/IIFZlYsFr6mF5wJa1AoEinbCHJ9ayx41rBhKGkNGEIsbzgnHifaUqrsjSp0ovb8j/E5BQQnvOsedHpcEKCfDyZUUdbI8C0inSL1V6mpQLwgMyZC2U4n/zdUlMPu+u2mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957172; c=relaxed/simple;
-	bh=OoIRtXZDJrgax9ynYiDrODbUYfkqZwqNbI/ezlgxFsM=;
+	s=arc-20240116; t=1739955499; c=relaxed/simple;
+	bh=KE9Vjn9kR9/8331Rm8HcHClKvXHCIiHs5JTcwpZz+O8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unSNxnXQu3xgZYosGRLxPnlPBnpoT8ZgH1l/HvQH0JonO36hn+Xm7l58OxgaZpM3YRCKm19FL/+S3c7Jnadv0cmi+BYx0QG7gS6lEKuJCEqFQ80jDm4owD9AkVMD9ofEVNUsqhtC2hBEUoIETtkCL//yCr2JkdqkksOVJtOiqsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6FXY1LB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A03C4CED1;
-	Wed, 19 Feb 2025 09:26:11 +0000 (UTC)
+	 MIME-Version; b=JDoNpHZCsvvL4Xlmi4Qc3Hdqn1HzyOKMLZz2W9LMszSPv+Mh6i3ORiGprbl7RobtE/pqZM2NWK8k1NCy4aUeM7FFMj1+E7lCNR0w7+BlnNVvn9J3Qu9/XpqnYHQGVaghKVaMM8RdYCSvdrge0A8A8MO0BpZ50ZSXPU7iT4WjDXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuT8D5hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9571C4CED1;
+	Wed, 19 Feb 2025 08:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957172;
-	bh=OoIRtXZDJrgax9ynYiDrODbUYfkqZwqNbI/ezlgxFsM=;
+	s=korg; t=1739955499;
+	bh=KE9Vjn9kR9/8331Rm8HcHClKvXHCIiHs5JTcwpZz+O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6FXY1LBdE3at5eBBsXgiyKq0z+AoW7gMC6rAIkea4m/6xoPovmMktW6gb258Gt8W
-	 g8J//COsg5lRyGu1yxpzGPjRs3IBIzRGgqg5Tc6ouXbHg9TibiRvkUdWQKvM902pZW
-	 IhjkVbEkQU6v7bBsdRgzFlpuxGLdZjOE+R1+2UEg=
+	b=UuT8D5hA2VG+FVMY1xQJHKLj9f8s4E0nldvPfc1/HaNTLgRtWeIxkK8DR6ygYb7lv
+	 ouIgeP6yWGQYV5lWtvRHyBdSMHF73TfPo69wOOpO/1Xv6j6zwHdzzpvVCFXClp6+FO
+	 U+MQeltPeMUAIlk4m64B78R/b8Og+bjM71Hoqyko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Anandu Krishnan E <quic_anane@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 434/578] misc: fastrpc: Deregister device nodes properly in error scenarios
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 025/152] tools: fix annoying "mkdir -p ..." logs when building tools in parallel
 Date: Wed, 19 Feb 2025 09:27:18 +0100
-Message-ID: <20250219082710.082758493@linuxfoundation.org>
+Message-ID: <20250219082551.032571237@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anandu Krishnan E <quic_anane@quicinc.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 637c20002dc8c347001292664055bfbf56544ec6 upstream.
+[ Upstream commit d1d0963121769d8d16150b913fe886e48efefa51 ]
 
-During fastrpc_rpmsg_probe, if secure device node registration
-succeeds but non-secure device node registration fails, the secure
-device node deregister is not called during error cleanup. Add proper
-exit paths to ensure proper cleanup in case of error.
+When CONFIG_OBJTOOL=y or CONFIG_DEBUG_INFO_BTF=y, parallel builds
+show awkward "mkdir -p ..." logs.
 
-Fixes: 3abe3ab3cdab ("misc: fastrpc: add secure domain support")
-Cc: stable@kernel.org
-Signed-off-by: Anandu Krishnan E <quic_anane@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250110134239.123603-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ make -j16
+    [ snip ]
+  mkdir -p /home/masahiro/ref/linux/tools/objtool && make O=/home/masahiro/ref/linux subdir=tools/objtool --no-print-directory -C objtool
+  mkdir -p /home/masahiro/ref/linux/tools/bpf/resolve_btfids && make O=/home/masahiro/ref/linux subdir=tools/bpf/resolve_btfids --no-print-directory -C bpf/resolve_btfids
+
+Defining MAKEFLAGS=<value> on the command line wipes out command line
+switches from the resultant MAKEFLAGS definition, even though the command
+line switches are active. [1]
+
+MAKEFLAGS puts all single-letter options into the first word, and that
+word will be empty if no single-letter options were given. [2]
+However, this breaks if MAKEFLAGS=<value> is given on the command line.
+
+The tools/ and tools/% targets set MAKEFLAGS=<value> on the command
+line, which breaks the following code in tools/scripts/Makefile.include:
+
+    short-opts := $(firstword -$(MAKEFLAGS))
+
+If MAKEFLAGS really needs modification, it should be done through the
+environment variable, as follows:
+
+    MAKEFLAGS=<value> $(MAKE) ...
+
+That said, I question whether modifying MAKEFLAGS is necessary here.
+The only flag we might want to exclude is --no-print-directory, as the
+tools build system changes the working directory. However, people might
+find the "Entering/Leaving directory" logs annoying.
+
+I simply removed the offending MAKEFLAGS=<value>.
+
+[1]: https://savannah.gnu.org/bugs/?62469
+[2]: https://www.gnu.org/software/make/manual/make.html#Testing-Flags
+
+Fixes: ea01fa9f63ae ("tools: Connect to the kernel build system")
+Fixes: a50e43332756 ("perf tools: Honor parallel jobs")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: Daniel Xu <dxu@dxuuu.xyz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2119,7 +2119,7 @@ static int fastrpc_rpmsg_probe(struct rp
+diff --git a/Makefile b/Makefile
+index 1d777c3eb7fb9..cbd091c511d82 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1348,18 +1348,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
  
- 		err = fastrpc_device_register(rdev, data, false, domains[domain_id]);
- 		if (err)
--			goto fdev_error;
-+			goto populate_error;
- 		break;
- 	default:
- 		err = -EINVAL;
+-# Clear a bunch of variables before executing the submake
+-ifeq ($(quiet),silent_)
+-tools_silent=s
+-endif
+-
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
++	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+ 
+ tools/%: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+-	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
++	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
+ 
+ # ---------------------------------------------------------------------------
+ # Kernel selftest
+-- 
+2.39.5
+
 
 
 
