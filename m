@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-118165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB4AA3BAB2
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:45:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A9AA3B66A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17062800118
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA01E189EFC0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D63A1DED70;
-	Wed, 19 Feb 2025 09:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F811E32CF;
+	Wed, 19 Feb 2025 08:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TP9KiZC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkqy4g4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0911D1C548C;
-	Wed, 19 Feb 2025 09:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E451E285A;
+	Wed, 19 Feb 2025 08:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957422; cv=none; b=hSThuhXBeFKiBe1BQPBmsLmNWIMBA1BrTzX6N+BVmtzd5dKhZTfPEL3omxsh/GmRCPoR5rru+Q7jTg8ZYZZElEBwSaAJaH7S18D9rwF4mL83TvqES0mujEKXqaTKZrw+X8/eTY8BaptM3dwdWK1913+V29RGCkx9vJrq9pq9bac=
+	t=1739955245; cv=none; b=E4rDSKBEi+0HpbpcVYN9tMll3iJ7jeTAyAuHA/dBFjA+whQh+eBso858hQp/C5fs5PbKJs1ZaIRob5LNhuQ2iz9McFc1F36ZWAZ1DD7aWGJctpZN7fXnM9UbjtGySNPZBIkYISEZqmgWX4ctLgE+XFkPKgN/4JUBf7vNZAIDcmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957422; c=relaxed/simple;
-	bh=RpKCXN5YB0ENWMOBging079qXw8UizvkvUWKYxFnV2k=;
+	s=arc-20240116; t=1739955245; c=relaxed/simple;
+	bh=VP0boResydDu6xJOcyqaTpB765h7d1nzRMB7hgmGLFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxO5abmc/VaE+yKVxfBZUFqsPUKLqrt3ES4x8EZbJExAWze/EWvzgAfM4IkHhgpDmmefugsHMVWkeR0cL9H25yEqH5NN8EDsmbeVVzzO9IOAt48KdneDuaLctOtr8QV/MctqwI94i3pVXFzWKXNLaC5aIh6y6/Ct+CgupFie8ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TP9KiZC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F3CC4CED1;
-	Wed, 19 Feb 2025 09:30:21 +0000 (UTC)
+	 MIME-Version; b=NXgZS4wvqofkztiY+YTbGmmbcZF0nRzi5aMJCNc1DgaTqfgMcnuTN2So4eMCUhyKIYd1fqbQt9IQbdcFBCAdG22qHjcSBoS6P60ElD2z8DqrQYPpEw21aBvR0Zqm6BoaUvtoS7niBAF3rsqc3/2tMS6g8paL6AeBtg/JmQU6S10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkqy4g4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9918DC4CED1;
+	Wed, 19 Feb 2025 08:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957421;
-	bh=RpKCXN5YB0ENWMOBging079qXw8UizvkvUWKYxFnV2k=;
+	s=korg; t=1739955245;
+	bh=VP0boResydDu6xJOcyqaTpB765h7d1nzRMB7hgmGLFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TP9KiZC+LCmek5PZveYT2FgZTdU9hJKNlY2c1vdtF8gxiWyoSpjEtgzn5+rTlItth
-	 97aM/SlJ+H/J3ou1W8ntsUJIRtai/ErQ3QYSeY48k1bj6g0jTuaGMARVwIGsvAxTOM
-	 WeGkR98Y4dpeNpq2N3ISEzVAMB5s/Ii5BV1j7g9w=
+	b=kkqy4g4AMVMhOyJdSMqhbayZ42sax0axR1pfrAPnuhp6HGREWa093cvi+/02zCmw8
+	 EN4rvJ54X5zogmkhd80TX0GW/HbALMNoVK0EV/896vVmmy5E6xCPBJGIi0VEiKyYuw
+	 8qGgmLl13NmDWv2zI/qu6DV1vfK1dtx4oQU8uj4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 489/578] rtla/timerlat_top: Abort event processing on second signal
-Date: Wed, 19 Feb 2025 09:28:13 +0100
-Message-ID: <20250219082712.233794138@linuxfoundation.org>
+Subject: [PATCH 6.12 177/230] cpufreq/amd-pstate: Refactor amd_pstate_epp_reenable() and amd_pstate_epp_offline()
+Date: Wed, 19 Feb 2025 09:28:14 +0100
+Message-ID: <20250219082608.630150372@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit 80967b354a76b360943af384c10d807d98bea5c4 ]
+[ Upstream commit b1089e0c8817fda93d474eaa82ad86386887aefe ]
 
-If either SIGINT is received twice, or after a SIGALRM (that is, after
-timerlat was supposed to stop), abort processing events currently left
-in the tracefs buffer and exit immediately.
+Replace similar code chunks with amd_pstate_update_perf() and
+amd_pstate_set_epp() function calls.
 
-This allows the user to exit rtla without waiting for processing all
-events, should that take longer than wanted, at the cost of not
-processing all samples.
-
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/20250116144931.649593-6-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://lore.kernel.org/r/20241204144842.164178-4-Dhananjay.Ugwekar@amd.com
+[ML: Fix LKP reported error about unused variable]
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Stable-dep-of: 3ace20038e19 ("cpufreq/amd-pstate: Fix cpufreq_policy ref counting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/cpufreq/amd-pstate.c | 38 +++++++-----------------------------
+ 1 file changed, 7 insertions(+), 31 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index 08e940ecdc966..46c3405a356f5 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -578,6 +578,14 @@ static int stop_tracing;
- static struct trace_instance *top_inst = NULL;
- static void stop_top(int sig)
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 895d108428b40..19906141ef7fe 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1579,25 +1579,17 @@ static int amd_pstate_epp_set_policy(struct cpufreq_policy *policy)
+ 
+ static void amd_pstate_epp_reenable(struct amd_cpudata *cpudata)
  {
-+	if (stop_tracing) {
-+		/*
-+		 * Stop requested twice in a row; abort event processing and
-+		 * exit immediately
-+		 */
-+		tracefs_iterate_stop(top_inst->inst);
-+		return;
-+	}
- 	stop_tracing = 1;
- 	if (top_inst)
- 		trace_instance_stop(top_inst);
+-	struct cppc_perf_ctrls perf_ctrls;
+-	u64 value, max_perf;
++	u64 max_perf;
+ 	int ret;
+ 
+ 	ret = amd_pstate_enable(true);
+ 	if (ret)
+ 		pr_err("failed to enable amd pstate during resume, return %d\n", ret);
+ 
+-	value = READ_ONCE(cpudata->cppc_req_cached);
+ 	max_perf = READ_ONCE(cpudata->highest_perf);
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
+-		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
+-	} else {
+-		perf_ctrls.max_perf = max_perf;
+-		cppc_set_perf(cpudata->cpu, &perf_ctrls);
+-		perf_ctrls.energy_perf = AMD_CPPC_ENERGY_PERF_PREF(cpudata->epp_cached);
+-		cppc_set_epp_perf(cpudata->cpu, &perf_ctrls, 1);
+-	}
++	amd_pstate_update_perf(cpudata, 0, 0, max_perf, false);
++	amd_pstate_set_epp(cpudata, cpudata->epp_cached);
+ }
+ 
+ static int amd_pstate_epp_cpu_online(struct cpufreq_policy *policy)
+@@ -1617,31 +1609,15 @@ static int amd_pstate_epp_cpu_online(struct cpufreq_policy *policy)
+ static void amd_pstate_epp_offline(struct cpufreq_policy *policy)
+ {
+ 	struct amd_cpudata *cpudata = policy->driver_data;
+-	struct cppc_perf_ctrls perf_ctrls;
+ 	int min_perf;
+-	u64 value;
+ 
+ 	min_perf = READ_ONCE(cpudata->lowest_perf);
+-	value = READ_ONCE(cpudata->cppc_req_cached);
+ 
+ 	mutex_lock(&amd_pstate_limits_lock);
+-	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
+-		cpudata->epp_policy = CPUFREQ_POLICY_UNKNOWN;
+-
+-		/* Set max perf same as min perf */
+-		value &= ~AMD_CPPC_MAX_PERF(~0L);
+-		value |= AMD_CPPC_MAX_PERF(min_perf);
+-		value &= ~AMD_CPPC_MIN_PERF(~0L);
+-		value |= AMD_CPPC_MIN_PERF(min_perf);
+-		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
+-	} else {
+-		perf_ctrls.desired_perf = 0;
+-		perf_ctrls.min_perf = min_perf;
+-		perf_ctrls.max_perf = min_perf;
+-		cppc_set_perf(cpudata->cpu, &perf_ctrls);
+-		perf_ctrls.energy_perf = AMD_CPPC_ENERGY_PERF_PREF(HWP_EPP_BALANCE_POWERSAVE);
+-		cppc_set_epp_perf(cpudata->cpu, &perf_ctrls, 1);
+-	}
++
++	amd_pstate_update_perf(cpudata, min_perf, 0, min_perf, false);
++	amd_pstate_set_epp(cpudata, AMD_CPPC_EPP_BALANCE_POWERSAVE);
++
+ 	mutex_unlock(&amd_pstate_limits_lock);
+ }
+ 
 -- 
 2.39.5
 
