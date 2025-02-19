@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881DEA3B4A7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:45:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C517A3B5E7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC1E1899194
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6E3C17B4F1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27C61DF968;
-	Wed, 19 Feb 2025 08:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D601EB1AC;
+	Wed, 19 Feb 2025 08:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BK4cYw92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv1PGMgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01B71CBA18;
-	Wed, 19 Feb 2025 08:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621E61F4180;
+	Wed, 19 Feb 2025 08:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954140; cv=none; b=I8k9pGO23HEePIz6l6wX28ehkmrQteQchf7HdApY8QJ58Yp5O7HXFw9BwlhYD0qRU5T2zNn2QVKT+N9I0G2Nh71lkczW0O9HvXzVOBftPqHPbl6Ma4KTlRP6Nwe+5KGorVSOhJK5q8Ihw1TasetG+o6L78JWBwq8hXwHS1hP5as=
+	t=1739954755; cv=none; b=GGa7Utf3vSoevj468b+sHBQubnH5NldYvPuB9x9L2f934boUYD6m/1l6YjJ0a+UbwmIqKPXJHnk2GdjWh8YD+OjEXiJL76udnV2jecUYesvLwL5o2xNMPsPQyYZMjawOoOF61cpAhYlIsxjC86HnhiYj01t/hbq1mGg//dMUpwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954140; c=relaxed/simple;
-	bh=AZZYlbxOoR2tjW0JK+31SjsEr1VjmCcqm/AHNINgIGw=;
+	s=arc-20240116; t=1739954755; c=relaxed/simple;
+	bh=pn/YfHLqq9oL96NazJAYa11ZL4cbva1wY8g3t2CCKcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejL+2XWVNxKrAsxJIpUn7JKFv8at1dU82Jkk2U193ocJSLWciYm3st4dkTqsotvJ0g1CboJ66PUK0Lq4ah5O0JQOnDEjSmGm71DzYyJnv/8Oi2E1t66evqWMN8kQRgTHBQbOjkTRZR3fu8Ln7xszCWDhWR6ga7mDJJo+HsKN/+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BK4cYw92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E73C4CED1;
-	Wed, 19 Feb 2025 08:35:39 +0000 (UTC)
+	 MIME-Version; b=WGImU8kA4NMMpClbEF27Rf0GtGL7tWcGZHwb/7lnGD1ZUylv2jJCJXEzC8p7qY6+6QfLa/eqhwDvoeW6U3YCC5w7nhB+2ucGYnAIO9DlS/N23LMLOkfEKCRwWbs1DrcQhxhUVH71D5y/SZ6zKlOww5oJE0EpV/M5uGCql8wCh9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv1PGMgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD92C4CEE8;
+	Wed, 19 Feb 2025 08:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954140;
-	bh=AZZYlbxOoR2tjW0JK+31SjsEr1VjmCcqm/AHNINgIGw=;
+	s=korg; t=1739954754;
+	bh=pn/YfHLqq9oL96NazJAYa11ZL4cbva1wY8g3t2CCKcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BK4cYw92itOdz1KY+OB7qjNaYBZcCmJrYzjgSeMbwKBXurFmOTCtg0hr7m14kcyPZ
-	 6FsobvCSv+FI8tSSe8k3nVslMSBTk2W/7yznKSp+KqIXpagah/Br4Fq73JKSbIeRMy
-	 sF/e1THwGDIhcpLNC6bhFvS6TzMd/T3nSEPNjuPs=
+	b=cv1PGMgEJZ0uXK/d7/0UvK2jhpPpjE7KHBzsaF8fZ97g0l4902LBSts5wP+W2esny
+	 5hQRKCGt2U61vY+L3RWmk7ySmtQErT2+1MN5/H47u6nb51ZJeD9PQTBIBUCnHtEjGW
+	 dScD6twNps2IBb3HcyP85+UtK5OfcHRh0pNgpkK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 068/274] tools: fix annoying "mkdir -p ..." logs when building tools in parallel
+Subject: [PATCH 6.12 005/230] pinctrl: cy8c95x0: Avoid accessing reserved registers
 Date: Wed, 19 Feb 2025 09:25:22 +0100
-Message-ID: <20250219082612.283669400@linuxfoundation.org>
+Message-ID: <20250219082601.905607653@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d1d0963121769d8d16150b913fe886e48efefa51 ]
+[ Upstream commit 3fbe3fe28764455e4fc3578afb9765f46f9ce93d ]
 
-When CONFIG_OBJTOOL=y or CONFIG_DEBUG_INFO_BTF=y, parallel builds
-show awkward "mkdir -p ..." logs.
+The checks for vrtual registers in the cy8c95x0_readable_register()
+and cy8c95x0_writeable_register() are not aligned and broken.
 
-  $ make -j16
-    [ snip ]
-  mkdir -p /home/masahiro/ref/linux/tools/objtool && make O=/home/masahiro/ref/linux subdir=tools/objtool --no-print-directory -C objtool
-  mkdir -p /home/masahiro/ref/linux/tools/bpf/resolve_btfids && make O=/home/masahiro/ref/linux subdir=tools/bpf/resolve_btfids --no-print-directory -C bpf/resolve_btfids
+Fix that by explicitly avoiding reserved registers to be accessed.
 
-Defining MAKEFLAGS=<value> on the command line wipes out command line
-switches from the resultant MAKEFLAGS definition, even though the command
-line switches are active. [1]
-
-MAKEFLAGS puts all single-letter options into the first word, and that
-word will be empty if no single-letter options were given. [2]
-However, this breaks if MAKEFLAGS=<value> is given on the command line.
-
-The tools/ and tools/% targets set MAKEFLAGS=<value> on the command
-line, which breaks the following code in tools/scripts/Makefile.include:
-
-    short-opts := $(firstword -$(MAKEFLAGS))
-
-If MAKEFLAGS really needs modification, it should be done through the
-environment variable, as follows:
-
-    MAKEFLAGS=<value> $(MAKE) ...
-
-That said, I question whether modifying MAKEFLAGS is necessary here.
-The only flag we might want to exclude is --no-print-directory, as the
-tools build system changes the working directory. However, people might
-find the "Entering/Leaving directory" logs annoying.
-
-I simply removed the offending MAKEFLAGS=<value>.
-
-[1]: https://savannah.gnu.org/bugs/?62469
-[2]: https://www.gnu.org/software/make/manual/make.html#Testing-Flags
-
-Fixes: ea01fa9f63ae ("tools: Connect to the kernel build system")
-Fixes: a50e43332756 ("perf tools: Honor parallel jobs")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: Daniel Xu <dxu@dxuuu.xyz>
+Fixes: 71e4001a0455 ("pinctrl: pinctrl-cy8c95x0: Fix regcache")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250203131506.3318201-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 423d087afad2d..5a6d2646b1e55 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1416,18 +1416,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 5096ccdd459ea..05224808d92be 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -330,14 +330,14 @@ static int cypress_get_pin_mask(struct cy8c95x0_pinctrl *chip, unsigned int pin)
+ static bool cy8c95x0_readable_register(struct device *dev, unsigned int reg)
+ {
+ 	/*
+-	 * Only 12 registers are present per port (see Table 6 in the
+-	 * datasheet).
++	 * Only 12 registers are present per port (see Table 6 in the datasheet).
+ 	 */
+-	if (reg >= CY8C95X0_VIRTUAL && (reg % MUXED_STRIDE) < 12)
+-		return true;
++	if (reg >= CY8C95X0_VIRTUAL && (reg % MUXED_STRIDE) >= 12)
++		return false;
  
--# Clear a bunch of variables before executing the submake
--ifeq ($(quiet),silent_)
--tools_silent=s
--endif
--
- tools/: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
-+	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+ 	switch (reg) {
+ 	case 0x24 ... 0x27:
++	case 0x31 ... 0x3f:
+ 		return false;
+ 	default:
+ 		return true;
+@@ -346,8 +346,11 @@ static bool cy8c95x0_readable_register(struct device *dev, unsigned int reg)
  
- tools/%: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
-+	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
+ static bool cy8c95x0_writeable_register(struct device *dev, unsigned int reg)
+ {
+-	if (reg >= CY8C95X0_VIRTUAL)
+-		return true;
++	/*
++	 * Only 12 registers are present per port (see Table 6 in the datasheet).
++	 */
++	if (reg >= CY8C95X0_VIRTUAL && (reg % MUXED_STRIDE) >= 12)
++		return false;
  
- # ---------------------------------------------------------------------------
- # Kernel selftest
+ 	switch (reg) {
+ 	case CY8C95X0_INPUT_(0) ... CY8C95X0_INPUT_(7):
+@@ -355,6 +358,7 @@ static bool cy8c95x0_writeable_register(struct device *dev, unsigned int reg)
+ 	case CY8C95X0_DEVID:
+ 		return false;
+ 	case 0x24 ... 0x27:
++	case 0x31 ... 0x3f:
+ 		return false;
+ 	default:
+ 		return true;
 -- 
 2.39.5
 
