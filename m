@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE19A3BA20
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1B9A3B76A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18CDA7A77CB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:35:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4B71892011
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EC21DE3BC;
-	Wed, 19 Feb 2025 09:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9FB1DED44;
+	Wed, 19 Feb 2025 09:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbpKagsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3OD8ius"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E53B1D90D9;
-	Wed, 19 Feb 2025 09:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01361DE8BE;
+	Wed, 19 Feb 2025 09:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957592; cv=none; b=ZVzaFCxuYAn3J0B0SV63aMQEHF/dLnoEOoXH5KHn64+vbcdO/u5RKmus2Q6I3b19Zr6ApoCjBVaMIkFCd6J7WileLOMFIPLK8VcyAHyUTzf64RfGngbZL4ZOG8Sf6ShWgqIwuPr1tHeKwwLghrcFPbvARG++k3+uaU5tEQ/z7M4=
+	t=1739955891; cv=none; b=BjGYA1L/HkaVDC+M/A2wNxGiO2Fs4IQdTx12spDD+ma4ZF/X1IBOSDZdnMBEsdERGJkECkzJfagpYJ9nooP+8IY3tPNaFfcbXaTiVMmPRNhWGrq9BHo82Du78tuhoH5HExaVyEc47iTZRoqiL6bsLw3ZdewlZ9s9rg52QoQvs2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957592; c=relaxed/simple;
-	bh=MTOXqmggtxfR3mrIR98l31kfQR0f5MFkt5LLE6sk8LY=;
+	s=arc-20240116; t=1739955891; c=relaxed/simple;
+	bh=Tk4i5ULN77lerpbqngSwsf5NM9hZOuQg76LqlvEH2hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYrwbiJUooVcIliVtEKT/I9m25nGQ7+/LlLxJIYrNvqfmLWzlT7Cj6fi8VmUo5Ic5PK+TjsoEx27bttKjR3QM2rE3tUy0TbWbGd7Kske8IBG0oKOFGUM/ezTXFDy0rxf19Q1F7N3xDGDdUAjLF0YFPU88+k7CpBF4paruYSaWe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbpKagsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEB9C4CEE6;
-	Wed, 19 Feb 2025 09:33:11 +0000 (UTC)
+	 MIME-Version; b=dPOy2wtglEsaeyl7YlUXahe/KUOZLQPPbnB6i2t3Jj4uxD/9jZZzYdL/BdLYNAsshGiZzf5lo6wGlSddbBc8xx9+Vup2zERxQ5HCIwBtMFaIKLiD1J9XAXao7gz+0UfzAX/ChCCEiiPe9Bghdlf28Djq0cPePRxcjJqyhLAvJxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3OD8ius; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41E7C4CED1;
+	Wed, 19 Feb 2025 09:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957592;
-	bh=MTOXqmggtxfR3mrIR98l31kfQR0f5MFkt5LLE6sk8LY=;
+	s=korg; t=1739955891;
+	bh=Tk4i5ULN77lerpbqngSwsf5NM9hZOuQg76LqlvEH2hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbpKagsyN6CCFJkbmZhd5XOtuVc+ZszN7bszvB6LZ4tEr1bDs1DZscN/Pv9icBYN+
-	 7Ke1oz6GVyVviiNJOGOEjhlpYNMdZ7vTEXUqyfVq5sBaE2asdJrm1v324ZfVrr5Rz+
-	 DoqDKo8u8Pomz72n058FZH2Sg4XqKeTgqOFK3gA4=
+	b=L3OD8iusZ9xf3QWuSSh4C1+VhhfcREr1jq3YVJlAZFpGrd2KL7HkueAqyH8wuPlGB
+	 ff3u7RIrYFRyYEEwmLgNPy2b+xSQ9bBKxwkT5swxRCsgXC+c6XYJS7XHXyKHFGolPv
+	 oNCfLKSt+wMgxsbKvBvmPN6/rjTBbRLHierAPiXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.1 557/578] drm/tidss: Clear the interrupt status for interrupts being disabled
+	Pumpkin Chang <pumpkin@devco.re>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 148/152] io_uring/kbuf: reallocate buf lists on upgrade
 Date: Wed, 19 Feb 2025 09:29:21 +0100
-Message-ID: <20250219082714.866086296@linuxfoundation.org>
+Message-ID: <20250219082555.902385898@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devarsh Thakkar <devarsht@ti.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 361a2ebb5cad211732ec3c5d962de49b21895590 upstream.
+commit 8802766324e1f5d414a81ac43365c20142e85603 upstream.
 
-The driver does not touch the irqstatus register when it is disabling
-interrupts.  This might cause an interrupt to trigger for an interrupt
-that was just disabled.
+IORING_REGISTER_PBUF_RING can reuse an old struct io_buffer_list if it
+was created for legacy selected buffer and has been emptied. It violates
+the requirement that most of the field should stay stable after publish.
+Always reallocate it instead.
 
-To fix the issue, clear the irqstatus registers right after disabling
-the interrupts.
-
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
 Cc: stable@vger.kernel.org
-Reported-by: Jonathan Cormier <jcormier@criticallink.com>
-Closes: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1394222/am625-issue-about-tidss-rcu_preempt-self-detected-stall-on-cpu/5424479#5424479
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-[Tomi: mostly rewrote the patch]
-Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-5-82ddaec94e4a@ideasonboard.com
+Reported-by: Pumpkin Chang <pumpkin@devco.re>
+Fixes: 2fcabce2d7d34 ("io_uring: disallow mixed provided buffer group registrations")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ io_uring/kbuf.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -599,7 +599,7 @@ void dispc_k2g_set_irqenable(struct disp
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -301,6 +301,12 @@ void io_destroy_buffers(struct io_ring_c
+ 	}
+ }
+ 
++static void io_destroy_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
++{
++	xa_erase(&ctx->io_bl_xa, bl->bgid);
++	io_put_bl(ctx, bl);
++}
++
+ int io_remove_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
  {
- 	dispc_irq_t old_mask = dispc_k2g_read_irqenable(dispc);
+ 	struct io_provide_buf *p = io_kiocb_to_cmd(req, struct io_provide_buf);
+@@ -642,12 +648,13 @@ int io_register_pbuf_ring(struct io_ring
+ 		/* if mapped buffer ring OR classic exists, don't allow */
+ 		if (bl->is_mapped || !list_empty(&bl->buf_list))
+ 			return -EEXIST;
+-	} else {
+-		free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
+-		if (!bl)
+-			return -ENOMEM;
++		io_destroy_bl(ctx, bl);
+ 	}
  
--	/* clear the irqstatus for newly enabled irqs */
-+	/* clear the irqstatus for irqs that will be enabled */
- 	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & mask);
- 
- 	dispc_k2g_vp_set_irqenable(dispc, 0, mask);
-@@ -607,6 +607,9 @@ void dispc_k2g_set_irqenable(struct disp
- 
- 	dispc_write(dispc, DISPC_IRQENABLE_SET, (1 << 0) | (1 << 7));
- 
-+	/* clear the irqstatus for irqs that were disabled */
-+	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & old_mask);
++	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
++	if (!bl)
++		return -ENOMEM;
 +
- 	/* flush posted write */
- 	dispc_k2g_read_irqenable(dispc);
- }
-@@ -738,7 +741,7 @@ static void dispc_k3_set_irqenable(struc
- 
- 	old_mask = dispc_k3_read_irqenable(dispc);
- 
--	/* clear the irqstatus for newly enabled irqs */
-+	/* clear the irqstatus for irqs that will be enabled */
- 	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & mask);
- 
- 	for (i = 0; i < dispc->feat->num_vps; ++i) {
-@@ -763,6 +766,9 @@ static void dispc_k3_set_irqenable(struc
- 	if (main_disable)
- 		dispc_write(dispc, DISPC_IRQENABLE_CLR, main_disable);
- 
-+	/* clear the irqstatus for irqs that were disabled */
-+	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & old_mask);
-+
- 	/* Flush posted writes */
- 	dispc_read(dispc, DISPC_IRQENABLE_SET);
- }
+ 	if (!(reg.flags & IOU_PBUF_RING_MMAP))
+ 		ret = io_pin_pbuf_ring(&reg, bl);
+ 	else
 
 
 
