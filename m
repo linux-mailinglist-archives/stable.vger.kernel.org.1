@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-118160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85725A3B9D0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:36:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D90A3B760
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E0DF7A7FAE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A700E3BD59B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127241DE883;
-	Wed, 19 Feb 2025 09:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCE3155753;
+	Wed, 19 Feb 2025 09:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJqKGFXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dncSTL7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AE1CAA93;
-	Wed, 19 Feb 2025 09:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7711C760D;
+	Wed, 19 Feb 2025 09:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957407; cv=none; b=I+7ON/OiBdpwXK8aJNs0qIg5YwdoRPl9mYKWLC8DWqMZzKEhCrViKwNRbZbXR9xLPAuY/dGUplWTxkOdhPYM28Htw4DK0AhuIoEv34PtFfO3TMiKvlA+eC0jMyXmgSDXAbHHD3h/BVj+znxjBZ046BwIFcjhevNL5pwyCAz/9tA=
+	t=1739955676; cv=none; b=PtxTuUOy+kCrFrkxyfKo5/8pSy1ZOG6pL+D49GByfHb2nw3aizPXLoNsu/r1b/EEbIttYyujmMOkZl6zxO9x6+KTMvXbYL45rXOrIh2HI2fGFt7DIXRmEYfXBcbXUGiyLwNy56vrEhp58xD7d6flfWBHpyk1PMzAjMs3cw+DviU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957407; c=relaxed/simple;
-	bh=8/pYyoP1XpZoJAV/9/mpPKOTrLaHHE01X+f0khalOAY=;
+	s=arc-20240116; t=1739955676; c=relaxed/simple;
+	bh=FFKjC5hbGLQDeF58G0MTd4tjOlfLfQ8qcHRtspST07g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2egetdBZzD0HAfUYiF9Un4S3h7l9JeAY7esrPrRTGH1FBIbbM0IkRQbh1JQWOUW2EzVzRekFDnepigSuu9ObckzQevgvI/RgVOMLc8HQ+7HkHgIt9cNmN+0GFgD5HwWxwpmYwJPpiPxLdiMjbjgknP24duLSTN/gOR9GqKeQRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJqKGFXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B360C4CED1;
-	Wed, 19 Feb 2025 09:30:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P9YPbxXMYQjJ5bK0xipKfsqjLWwvc62aJKV0mRY9eB54G+gJbV7nvfukfpnXqAZ8fEMjCB8z2xEu9Pyy0Dw6KeQYHoiTQ3fi8nApx+Qoq0OK0HGMxb9xwYHPfQE+ehZg9dZAOrkBhH24meABOxP3QIRSQSeJ9kuQGsidA91A+uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dncSTL7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F4BC4CEE6;
+	Wed, 19 Feb 2025 09:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957407;
-	bh=8/pYyoP1XpZoJAV/9/mpPKOTrLaHHE01X+f0khalOAY=;
+	s=korg; t=1739955676;
+	bh=FFKjC5hbGLQDeF58G0MTd4tjOlfLfQ8qcHRtspST07g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJqKGFXqC4oU118rbOgBdSdcvbMKtPLE6792lU7bSvUcn/w2DEmu5sJnh9MpJvlI4
-	 I69HCqrLAWviQILWTNVGeexUmckgZ1zWJ3RZo0JAA+plStTw/7YrC6twcX+yrW/Awm
-	 RfvQ7KWULTq2IvBJaTHMiyffUku71KmJg4XtdWME=
+	b=dncSTL7w2GzfKWNOn51dpdly8RuKwonjSpLbMD059q1ULHv+88yqweFD8lfX3wSt7
+	 p9fW2FqPlXIGe6xlGZ8B7wm5cKvOnazxj7rHsruBqWPlaMjvIwBWKqbGRtzFZ3elMx
+	 ZKgB6u/6rLCa3tt7BpzBZsml8SLeSida73+G4DdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 488/578] rtla/timerlat_hist: Abort event processing on second signal
-Date: Wed, 19 Feb 2025 09:28:12 +0100
-Message-ID: <20250219082712.196422660@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.6 080/152] kbuild: userprogs: fix bitsize and target detection on clang
+Date: Wed, 19 Feb 2025 09:28:13 +0100
+Message-ID: <20250219082553.210968486@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit d6899e560366e10141189697502bc5521940c588 ]
+commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
 
-If either SIGINT is received twice, or after a SIGALRM (that is, after
-timerlat was supposed to stop), abort processing events currently left
-in the tracefs buffer and exit immediately.
+scripts/Makefile.clang was changed in the linked commit to move --target from
+KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
+However that variable is not inspected by the userprogs logic,
+breaking cross compilation on clang.
 
-This allows the user to exit rtla without waiting for processing all
-events, should that take longer than wanted, at the cost of not
-processing all samples.
+Use both variables to detect bitsize and target arguments for userprogs.
 
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/20250116144931.649593-5-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/timerlat_hist.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index 83cc7ef3d36b3..b7a7dcd68b570 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -786,6 +786,14 @@ static int stop_tracing;
- static struct trace_instance *hist_inst = NULL;
- static void stop_hist(int sig)
- {
-+	if (stop_tracing) {
-+		/*
-+		 * Stop requested twice in a row; abort event processing and
-+		 * exit immediately
-+		 */
-+		tracefs_iterate_stop(hist_inst->inst);
-+		return;
-+	}
- 	stop_tracing = 1;
- 	if (hist_inst)
- 		trace_instance_stop(hist_inst);
--- 
-2.39.5
-
+--- a/Makefile
++++ b/Makefile
+@@ -1054,8 +1054,8 @@ LDFLAGS_vmlinux += --orphan-handling=$(C
+ endif
+ 
+ # Align the bit size of userspace programs with the kernel
+-KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
+-KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
++KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
++KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+ 
+ # make the checker run with the right architecture
+ CHECKFLAGS += --arch=$(ARCH)
 
 
 
