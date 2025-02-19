@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-117357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33B1A3B602
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF391A3B521
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 571EE17CD99
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2F21886C5E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E5C1DED6C;
-	Wed, 19 Feb 2025 08:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924571DE3BE;
+	Wed, 19 Feb 2025 08:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEA1Uc3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyd0U6fS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E73A1DED68;
-	Wed, 19 Feb 2025 08:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470801C175A;
+	Wed, 19 Feb 2025 08:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955031; cv=none; b=oBrOecy6OOwGHqGGc/9wq5BQ76/a5vAWmCp0g2noX43O0cOXk29HaZMUU7cTfDHmmPu8DgWft4iH74I5JS3dLkUaGaz4/F10GomhoG7JMJKH3Zt8lyDSRtIQ4HLo+OtpX8oEagOAPc7f1pRI7nOfM7UsBWE7avbEv9qStNGsa3s=
+	t=1739954393; cv=none; b=EW97teEIPkKEIRHbDJ5NIw7h0XyEBgCW9nwmhqx5hsOKeAiUfmZcWpAqCMXVzkSWVRMmVLJ70I6NcojATVuQJFnMkT7srSbLDmzR0u28BjfpsPi/NTxJicG/aj/gd//1Ul7oyx84/ZhbDbdk+5ml+zBt5NvznpkQ7DdcWszISeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955031; c=relaxed/simple;
-	bh=XCE9mRWbZCxCV+lpCk3zYGa5QbfbR1Nzb5FNViqkdZk=;
+	s=arc-20240116; t=1739954393; c=relaxed/simple;
+	bh=puzIMDXTavOezkedo5DBiKw9kgw3Dcsg2dDqRLk9BaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jh9pt46/bS/Wc/BgdRRyNVJ/UUAHAevMSfVSc8RyeCG6k8mQS34J3PHlh2hAwn5wHBPT4VcO2smVEQ0o16PfUXlt8DgnOE5KIncyiMYKDaCa/n/xa4hpxN59gnpRiM5etTB6wKPpztQBQjTmvXWspEm+b/ZoyVzhCKM6FHmrZpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEA1Uc3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DB6C4CEE7;
-	Wed, 19 Feb 2025 08:50:30 +0000 (UTC)
+	 MIME-Version; b=Q2d/BY1EA/3FcHGGHZBXLDnXf/g8Q8BmTd82apBRUAw+pne2TFACG3UexjpCNlW3xfxbRKWTnvxtQ+UkuNtqtZ/bLRkJgiIroLlV5HQf94i680Fk1ukBXBRVg8u58bDBoGPcNvSK97yyBHyGUTSBrI4HEVBIp9tMt5vfCUCsRcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyd0U6fS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC097C4CEE6;
+	Wed, 19 Feb 2025 08:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955031;
-	bh=XCE9mRWbZCxCV+lpCk3zYGa5QbfbR1Nzb5FNViqkdZk=;
+	s=korg; t=1739954393;
+	bh=puzIMDXTavOezkedo5DBiKw9kgw3Dcsg2dDqRLk9BaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEA1Uc3MH5zI/vXsI+GyTVWUPV2dCGwIftdIyxK9zsH4GPl2dT20TixjXmSzi98o8
-	 kpBasyqWe8Lm/+2XMONEuo0B8Y4N/5JPBGJWQqDf9I01l/yl7IxytAwBQD/WOpMOlX
-	 N+EuxJkV6lIxHvTw6oUGHJbu76WObBQQoLSi0Mv8=
+	b=hyd0U6fSZPEhvUymUdaE2jlasm4MPJJkFIKhgsLU79c1kRCQ3VZK4iGswqLfl+Ldg
+	 mCUUK01oXdaP3cFpFjqV2GbXODGOZVY90CNKRd+Pv9D85BqeoAbVHRy4zJvQ38EV22
+	 fhsR2AExjBKA58iiR4y9xIa0c21Mw/PdTFmmnP3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 110/230] usb: dwc3: Fix timeout issue during controller enter/exit from halt state
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.13 173/274] gpio: stmpe: Check return value of stmpe_reg_read in stmpe_gpio_irq_sync_unlock
 Date: Wed, 19 Feb 2025 09:27:07 +0100
-Message-ID: <20250219082605.993279069@linuxfoundation.org>
+Message-ID: <20250219082616.359769036@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +59,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit d3a8c28426fc1fb3252753a9f1db0d691ffc21b0 upstream.
+commit b9644fbfbcab13da7f8b37bef7c51e5b8407d031 upstream.
 
-There is a frequent timeout during controller enter/exit from halt state
-after toggling the run_stop bit by SW. This timeout occurs when
-performing frequent role switches between host and device, causing
-device enumeration issues due to the timeout. This issue was not present
-when USB2 suspend PHY was disabled by passing the SNPS quirks
-(snps,dis_u2_susphy_quirk and snps,dis_enblslpm_quirk) from the DTS.
-However, there is a requirement to enable USB2 suspend PHY by setting of
-GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY bits when controller starts
-in gadget or host mode results in the timeout issue.
+The stmpe_reg_read function can fail, but its return value is not checked
+in stmpe_gpio_irq_sync_unlock. This can lead to silent failures and
+incorrect behavior if the hardware access fails.
 
-This commit addresses this timeout issue by ensuring that the bits
-GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
-the dwc3_gadget_run_stop sequence and restoring them after the
-dwc3_gadget_run_stop sequence is completed.
+This patch adds checks for the return value of stmpe_reg_read. If the
+function fails, an error message is logged and the function returns
+early to avoid further issues.
 
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250201163903.459-1-selvarasu.g@samsung.com
+Fixes: b888fb6f2a27 ("gpio: stmpe: i2c transfer are forbiden in atomic context")
+Cc: stable@vger.kernel.org # 4.16+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250212021849.275-1-vulab@iscas.ac.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |   34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ drivers/gpio/gpio-stmpe.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2618,10 +2618,38 @@ static int dwc3_gadget_run_stop(struct d
- {
- 	u32			reg;
- 	u32			timeout = 2000;
-+	u32			saved_config = 0;
+--- a/drivers/gpio/gpio-stmpe.c
++++ b/drivers/gpio/gpio-stmpe.c
+@@ -191,7 +191,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		[REG_IE][CSB] = STMPE_IDX_IEGPIOR_CSB,
+ 		[REG_IE][MSB] = STMPE_IDX_IEGPIOR_MSB,
+ 	};
+-	int i, j;
++	int ret, i, j;
  
- 	if (pm_runtime_suspended(dwc->dev))
- 		return 0;
+ 	/*
+ 	 * STMPE1600: to be able to get IRQ from pins,
+@@ -199,8 +199,16 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 	 * GPSR or GPCR registers
+ 	 */
+ 	if (stmpe->partnum == STMPE1600) {
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_LSB: %d\n", ret);
++			goto err;
++		}
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_CSB: %d\n", ret);
++			goto err;
++		}
+ 	}
  
-+	/*
-+	 * When operating in USB 2.0 speeds (HS/FS), ensure that
-+	 * GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
-+	 * or stopping the controller. This resolves timeout issues that occur
-+	 * during frequent role switches between host and device modes.
-+	 *
-+	 * Save and clear these settings, then restore them after completing the
-+	 * controller start or stop sequence.
-+	 *
-+	 * This solution was discovered through experimentation as it is not
-+	 * mentioned in the dwc3 programming guide. It has been tested on an
-+	 * Exynos platforms.
-+	 */
-+	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+	if (reg & DWC3_GUSB2PHYCFG_SUSPHY) {
-+		saved_config |= DWC3_GUSB2PHYCFG_SUSPHY;
-+		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
-+	}
-+
-+	if (reg & DWC3_GUSB2PHYCFG_ENBLSLPM) {
-+		saved_config |= DWC3_GUSB2PHYCFG_ENBLSLPM;
-+		reg &= ~DWC3_GUSB2PHYCFG_ENBLSLPM;
-+	}
-+
-+	if (saved_config)
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
-+
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	if (is_on) {
- 		if (DWC3_VER_IS_WITHIN(DWC3, ANY, 187A)) {
-@@ -2649,6 +2677,12 @@ static int dwc3_gadget_run_stop(struct d
- 		reg &= DWC3_DSTS_DEVCTRLHLT;
- 	} while (--timeout && !(!is_on ^ !reg));
+ 	for (i = 0; i < CACHE_NR_REGS; i++) {
+@@ -222,6 +230,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		}
+ 	}
  
-+	if (saved_config) {
-+		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+		reg |= saved_config;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
-+	}
-+
- 	if (!timeout)
- 		return -ETIMEDOUT;
++err:
+ 	mutex_unlock(&stmpe_gpio->irq_lock);
+ }
  
 
 
