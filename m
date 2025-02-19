@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-118015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE38A3B9E8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:37:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2FFA3B65A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F342D3B41B9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD6D7177B25
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6E01DF24F;
-	Wed, 19 Feb 2025 09:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921441C5F18;
+	Wed, 19 Feb 2025 08:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0J2NixW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/lz625E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB2F1B85EC;
-	Wed, 19 Feb 2025 09:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5106F1C175A;
+	Wed, 19 Feb 2025 08:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956993; cv=none; b=aKbKi3CJBrpCsIAlKYrthwSnlJfnCZIX077XdLMcKInuDSiUDvkCPhmgtwATJSN19dgoFi9sNooYNxqzxB2eRYQdz+IosDo0kcZV+n4LEYHo6bX1un8MJFmOxDu/ZKohzHLpHRWPt9JtuZ/WpxG8v0vydG2ayMArWAsWQEja47Q=
+	t=1739954990; cv=none; b=SGKevH4OICxEA9HNi38YIqd35ZwAEWqqcsEdx3xf5MIN9yJbYg9qC55bA4ibIukck7xA3tshF+faczp3E2+IWJEp5bfQJW5+GRROXkNfEJ0OVIYaDt22inSC4tNjHLFYYBpMUfxE8I7y0LhJFBgxi4Xkevwr/hnQqBy1RkrutoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956993; c=relaxed/simple;
-	bh=CuWIpAnFj5kXj8+ij7pJxmIhRwD8hIEvjIh0JJWwoEA=;
+	s=arc-20240116; t=1739954990; c=relaxed/simple;
+	bh=caKbFOY+G4+kSE/QkvrOpadtpN8EX88aJVD/A4b6MvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZhDCf9ooIrhGkGJuurjZD4awLv3mP6Sh2dJulPoGZg75uhywkOWShUyuBP3aovCbgpAe6bPdXtqa9WFLL162GcWX5uq/h/TlkzK/OTfTSsBOF+ONHaMu0WAzEc+g2WK1UcLdn4SC0p7ouOQ5GNYTSc1UoDpsl5Xhfq1vnYL/rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0J2NixW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAACC4CED1;
-	Wed, 19 Feb 2025 09:23:12 +0000 (UTC)
+	 MIME-Version; b=QMGyBlguRgOZ5Vx3Pjgx0wmXIJmyoSN019aJhzi/IVhOEIgW71LVbKCFyPKMLBBFfMEtJzURtnAIjhRg9AOU4gXaNs2ot3VuEW41kdB296XuZrpfBRHYVwpWua+qX0h25nbdyjvTP+3u87UuRVs0KbfBl2WN3zmXB79fYoD1U/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/lz625E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C265AC4CED1;
+	Wed, 19 Feb 2025 08:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956993;
-	bh=CuWIpAnFj5kXj8+ij7pJxmIhRwD8hIEvjIh0JJWwoEA=;
+	s=korg; t=1739954990;
+	bh=caKbFOY+G4+kSE/QkvrOpadtpN8EX88aJVD/A4b6MvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0J2NixWt2/USmCseQr3A913/z9/3Oj/QwZSIiJiLuOwrut71cCQayu7HquFDaZ4d
-	 YCKtz4gk9VBmPt4uLuZx8+i7BuDw9zsf0SEWmEwjOED+jQ6CcJOSlt3eqDasIxeRXT
-	 qA2RDcPJKMUFgnoHLHxrgnJvJFA60Zxrobijt0zI=
+	b=r/lz625EoBqkKHfYTiyvXWdFqFNhr3gwSRsoQ2VwyVW6AsYydPZ+rYSyIM7Zrew8f
+	 CLrvCAY+BK0qyz607StmpBEjT4FL4bychUHvuDsnjaWV/aITa313yecNF++TQIQ9St
+	 Gg2pSufkFaJhyTBlZKbtDyIqYq2VuzZJv5a6JGrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Hamer <marcel.hamer@windriver.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 371/578] wifi: brcmfmac: fix NULL pointer dereference in brcmf_txfinalize()
+	Firas Jahjah <firasj@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 058/230] RDMA/efa: Reset device on probe failure
 Date: Wed, 19 Feb 2025 09:26:15 +0100
-Message-ID: <20250219082707.613347293@linuxfoundation.org>
+Message-ID: <20250219082603.984726707@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Hamer <marcel.hamer@windriver.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-commit 68abd0c4ebf24cd499841a488b97a6873d5efabb upstream.
+[ Upstream commit 123c13f10ed3627ba112172d8bd122a72cae226d ]
 
-On removal of the device or unloading of the kernel module a potential NULL
-pointer dereference occurs.
+Make sure the device is being reset on driver exit whatever the reason
+is, to keep the device aligned and allow it to close shared resources
+(e.g. admin queue).
 
-The following sequence deletes the interface:
-
-  brcmf_detach()
-    brcmf_remove_interface()
-      brcmf_del_if()
-
-Inside the brcmf_del_if() function the drvr->if2bss[ifidx] is updated to
-BRCMF_BSSIDX_INVALID (-1) if the bsscfgidx matches.
-
-After brcmf_remove_interface() call the brcmf_proto_detach() function is
-called providing the following sequence:
-
-  brcmf_detach()
-    brcmf_proto_detach()
-      brcmf_proto_msgbuf_detach()
-        brcmf_flowring_detach()
-          brcmf_msgbuf_delete_flowring()
-            brcmf_msgbuf_remove_flowring()
-              brcmf_flowring_delete()
-                brcmf_get_ifp()
-                brcmf_txfinalize()
-
-Since brcmf_get_ip() can and actually will return NULL in this case the
-call to brcmf_txfinalize() will result in a NULL pointer dereference inside
-brcmf_txfinalize() when trying to update ifp->ndev->stats.tx_errors.
-
-This will only happen if a flowring still has an skb.
-
-Although the NULL pointer dereference has only been seen when trying to
-update the tx statistic, all other uses of the ifp pointer have been
-guarded as well with an early return if ifp is NULL.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-Link: https://lore.kernel.org/all/b519e746-ddfd-421f-d897-7620d229e4b2@gmail.com/
-Acked-by: Arend van Spriel  <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20250116132240.731039-1-marcel.hamer@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Link: https://patch.msgid.link/20241225131548.15155-1-mrgolin@amazon.com
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/efa/efa_main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -539,6 +539,11 @@ void brcmf_txfinalize(struct brcmf_if *i
- 	struct ethhdr *eh;
- 	u16 type;
+diff --git a/drivers/infiniband/hw/efa/efa_main.c b/drivers/infiniband/hw/efa/efa_main.c
+index ad225823e6f2f..45a4564c670c0 100644
+--- a/drivers/infiniband/hw/efa/efa_main.c
++++ b/drivers/infiniband/hw/efa/efa_main.c
+@@ -470,7 +470,6 @@ static void efa_ib_device_remove(struct efa_dev *dev)
+ 	ibdev_info(&dev->ibdev, "Unregister ib device\n");
+ 	ib_unregister_device(&dev->ibdev);
+ 	efa_destroy_eqs(dev);
+-	efa_com_dev_reset(&dev->edev, EFA_REGS_RESET_NORMAL);
+ 	efa_release_doorbell_bar(dev);
+ }
  
-+	if (!ifp) {
-+		brcmu_pkt_buf_free_skb(txp);
-+		return;
-+	}
-+
- 	eh = (struct ethhdr *)(txp->data);
- 	type = ntohs(eh->h_proto);
+@@ -643,12 +642,14 @@ static struct efa_dev *efa_probe_device(struct pci_dev *pdev)
+ 	return ERR_PTR(err);
+ }
  
+-static void efa_remove_device(struct pci_dev *pdev)
++static void efa_remove_device(struct pci_dev *pdev,
++			      enum efa_regs_reset_reason_types reset_reason)
+ {
+ 	struct efa_dev *dev = pci_get_drvdata(pdev);
+ 	struct efa_com_dev *edev;
+ 
+ 	edev = &dev->edev;
++	efa_com_dev_reset(edev, reset_reason);
+ 	efa_com_admin_destroy(edev);
+ 	efa_free_irq(dev, &dev->admin_irq);
+ 	efa_disable_msix(dev);
+@@ -676,7 +677,7 @@ static int efa_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	return 0;
+ 
+ err_remove_device:
+-	efa_remove_device(pdev);
++	efa_remove_device(pdev, EFA_REGS_RESET_INIT_ERR);
+ 	return err;
+ }
+ 
+@@ -685,7 +686,7 @@ static void efa_remove(struct pci_dev *pdev)
+ 	struct efa_dev *dev = pci_get_drvdata(pdev);
+ 
+ 	efa_ib_device_remove(dev);
+-	efa_remove_device(pdev);
++	efa_remove_device(pdev, EFA_REGS_RESET_NORMAL);
+ }
+ 
+ static void efa_shutdown(struct pci_dev *pdev)
+-- 
+2.39.5
+
 
 
 
