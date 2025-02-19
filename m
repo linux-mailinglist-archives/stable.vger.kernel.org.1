@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-117417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3268CA3B6BE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBADA3B7B1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B8AC3BEABB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA743B7BF0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C12E1E260D;
-	Wed, 19 Feb 2025 08:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BD91DF747;
+	Wed, 19 Feb 2025 08:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0eWAvni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acc+g7eJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E421E25E1;
-	Wed, 19 Feb 2025 08:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908331DF25C;
+	Wed, 19 Feb 2025 08:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955221; cv=none; b=iHreAao/rPJvWr9Ce+jROsv50aJTPo8yDaAkJLN/l/67SJ/0qZkNtkUpyJwdBbQhAM0RLQNNFktalLe59hWOLnC4UVzXC17v3NSlEGwSdH9auZNgvZreMRhGihwTDjNDVc+ysE1X+AljfuNreX7zNTrG4nVz3JI2Vx7XZ4LVErc=
+	t=1739955550; cv=none; b=HAos7lTM5uK/w2rttHfp5/7QmipAfWxosQ6jOMufVYl5USKO6FdmIn8PAI7+xeNW+wdvdUWFrEIBpaLXpWYB10ThsikPCNHdWhHf2A5WaDBfaJUQwylMXxcRMFkkmMS9qhvSs3I9UrY63omj+ZaWivKq5bikJj3ISfyXnh9NAeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955221; c=relaxed/simple;
-	bh=OzbU07ygxXki/qblaaU1SvrZ2/ZZRncXB/IwgZ44VrI=;
+	s=arc-20240116; t=1739955550; c=relaxed/simple;
+	bh=mihxnd7ByLBiLPFDBKCfSlM3ih0yxqBR0AqYL9m5jDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=btgN7cUm/8N0ezdhEVAojR9fZ7JDdVU0+3TaPsdctJjuBzqfa8DmfQjEwoio6f34nC51KRXlY1Vy5xaIGWOfO2+/8wHigtXcAQ5rlk+iUsyswfdFpSso0FUn/2bnRcoRnhOCMRITlwV3NcmYEni4O6Kd8G2/6Nqu6HulywSPYDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0eWAvni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABA4C4CED1;
-	Wed, 19 Feb 2025 08:53:39 +0000 (UTC)
+	 MIME-Version; b=SmyBiiwgBtQvLsP0uNMdOR2KCc7F6YfFUf7oasUZvh6kCWoCTNBF3Pm34N1saTinNndmCVH0dXZ9zNwo0O2pvg/TSZkumuNCgJ1swICpk8bJx4EpjUoAxkjbFYkeruocQygvM+V6sRwM3tDIdQPS4txZef0/XPoZcPPM6GTFXZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acc+g7eJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C58C4CEEF;
+	Wed, 19 Feb 2025 08:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955220;
-	bh=OzbU07ygxXki/qblaaU1SvrZ2/ZZRncXB/IwgZ44VrI=;
+	s=korg; t=1739955550;
+	bh=mihxnd7ByLBiLPFDBKCfSlM3ih0yxqBR0AqYL9m5jDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0eWAvniJbugqFeDbuuhGhEI5i4pIY1+SEjq2OhFgaxGhB5HNgHrGHrdurEcp7JD1
-	 3sE5UEPn6c1ZMHJmXJQ5tyGFU8e3wEzCKZDFaSeDE1+iI+A/uBp65+ksg6t2aLJJem
-	 r7gtOSbhVSeE1pbThYIxJMnG2bgrlnas5ueq/mi0=
+	b=acc+g7eJ05240B6LLSpGdVf5zpfAEFAgvRIc3VCsoZn09raFZU4qx3cxHoSyJ0/qG
+	 Ty1lXPfFhmINvd+afPbIRKEvXwMh6QTpAiRXqJQpRySXVWvCMiK132qbIKz+eKQJPe
+	 mffwupf/s3Wj/Lj7Qbrkk10mGqoOIPM/4IA1q64c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-Subject: [PATCH 6.12 136/230] PCI: Avoid FLR for Mediatek MT7922 WiFi
-Date: Wed, 19 Feb 2025 09:27:33 +0100
-Message-ID: <20250219082607.005130575@linuxfoundation.org>
+	Ramesh Thomas <ramesh.thomas@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 041/152] vfio/pci: Enable iowrite64 and ioread64 for vfio pci
+Date: Wed, 19 Feb 2025 09:27:34 +0100
+Message-ID: <20250219082551.667077930@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Ramesh Thomas <ramesh.thomas@intel.com>
 
-commit 81f64e925c29fe6e99f04b131fac1935ac931e81 upstream.
+[ Upstream commit 2b938e3db335e3670475e31a722c2bee34748c5a ]
 
-The Mediatek MT7922 WiFi device advertises FLR support, but it apparently
-does not work, and all subsequent config reads return ~0:
+Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
+pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
+They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
+linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
+when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
+generic implementation in lib/iomap.c. The generic implementation does
+64 bit rw if readq/writeq is defined for the architecture, otherwise it
+would do 32 bit back to back rw.
 
-  pci 0000:01:00.0: [14c3:0616] type 00 class 0x028000 PCIe Endpoint
-  pciback 0000:01:00.0: not ready 65535ms after FLR; giving up
+Note that there are two versions of the generic implementation that
+differs in the order the 32 bit words are written if 64 bit support is
+not present. This is not the little/big endian ordering, which is
+handled separately. This patch uses the lo followed by hi word ordering
+which is consistent with current back to back implementation in the
+vfio/pci code.
 
-After an FLR, pci_dev_wait() waits for the device to become ready.  Prior
-to d591f6804e7e ("PCI: Wait for device readiness with Configuration RRS"),
-it polls PCI_COMMAND until it is something other that PCI_POSSIBLE_ERROR
-(~0).  If it times out, pci_dev_wait() returns -ENOTTY and
-__pci_reset_function_locked() tries the next available reset method.
-Typically this is Secondary Bus Reset, which does work, so the MT7922 is
-eventually usable.
-
-After d591f6804e7e, if Configuration Request Retry Status Software
-Visibility (RRS SV) is enabled, pci_dev_wait() polls PCI_VENDOR_ID until it
-is something other than the special 0x0001 Vendor ID that indicates a
-completion with RRS status.
-
-When RRS SV is enabled, reads of PCI_VENDOR_ID should return either 0x0001,
-i.e., the config read was completed with RRS, or a valid Vendor ID.  On the
-MT7922, it seems that all config reads after FLR return ~0 indefinitely.
-When pci_dev_wait() reads PCI_VENDOR_ID and gets 0xffff, it assumes that's
-a valid Vendor ID and the device is now ready, so it returns with success.
-
-After pci_dev_wait() returns success, we restore config space and continue.
-Since the MT7922 is not actually ready after the FLR, the restore fails and
-the device is unusable.
-
-We considered changing pci_dev_wait() to continue polling if a
-PCI_VENDOR_ID read returns either 0x0001 or 0xffff.  This "works" as it did
-before d591f6804e7e, although we have to wait for the timeout and then fall
-back to SBR.  But it doesn't work for SR-IOV VFs, which *always* return
-0xffff as the Vendor ID.
-
-Mark Mediatek MT7922 WiFi devices to avoid the use of FLR completely.  This
-will cause fallback to another reset method, such as SBR.
-
-Link: https://lore.kernel.org/r/20250212193516.88741-1-helgaas@kernel.org
-Fixes: d591f6804e7e ("PCI: Wait for device readiness with Configuration RRS")
-Link: https://github.com/QubesOS/qubes-issues/issues/9689#issuecomment-2582927149
-Link: https://lore.kernel.org/r/Z4pHll_6GX7OUBzQ@mail-itl
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_rdwr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5522,7 +5522,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IN
-  * AMD Matisse USB 3.0 Host Controller 0x149c
-  * Intel 82579LM Gigabit Ethernet Controller 0x1502
-  * Intel 82579V Gigabit Ethernet Controller 0x1503
-- *
-+ * Mediatek MT7922 802.11ax PCI Express Wireless Network Adapter
-  */
- static void quirk_no_flr(struct pci_dev *dev)
- {
-@@ -5534,6 +5534,7 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AM
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_AMD, 0x7901, quirk_no_flr);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1502, quirk_no_flr);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1503, quirk_no_flr);
-+DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_MEDIATEK, 0x0616, quirk_no_flr);
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index e27de61ac9fe7..8191c8fcfb256 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -16,6 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/vfio.h>
+ #include <linux/vgaarb.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
  
- /* FLR may cause the SolidRun SNET DPU (rev 0x1) to hang */
- static void quirk_no_flr_snet(struct pci_dev *dev)
+ #include "vfio_pci_priv.h"
+ 
+-- 
+2.39.5
+
 
 
 
