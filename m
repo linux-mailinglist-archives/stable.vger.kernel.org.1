@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-117206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2FB0A3B568
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A60A3B54C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 482A71789AF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4147E188FA74
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217EB1E0B66;
-	Wed, 19 Feb 2025 08:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6073C1E0B80;
+	Wed, 19 Feb 2025 08:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NT6fVGTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGxEtmVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFCC1D61B5;
-	Wed, 19 Feb 2025 08:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B941D61B5;
+	Wed, 19 Feb 2025 08:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954539; cv=none; b=YtOAgLRkpNzW9jvX5AVlW5bk8uvlUg6eSPyjOOOnbsykr/H9cckF5I/NmUTSyVxTf5A1RzYpbf5B9DfW+OD+XgMapAInoIoaWT3PlYaug1YW5UoDv2FGXX+QdOx1STcvqkOyNO7RZiznamvphl+JZn2uOmXD+76q3x1h8vqfj5U=
+	t=1739954546; cv=none; b=UcOw36TSvFf109bxB6arVCmW4FAdSTCy5VRsg6dn46opMqeOLyiwAB9A8ffO+VQO2C9/fxpGCZiDtnWBlJDWBzud7ZeLmmzxCvj2yR2yIsskDUpchopYhHFJpsBBku2hmPvW85Bq82romqacaJo6TvjYoxg2LQa/NxcsMnG8sls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954539; c=relaxed/simple;
-	bh=iFvyO7hn/9d/di+32csyAWkw5kxy8VdD9X5GWOpYQsU=;
+	s=arc-20240116; t=1739954546; c=relaxed/simple;
+	bh=Ek4RahccHqYqhbP1np9LYBFo3hF+EojmvqSrzRMQd+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bt8llWX5FM/24sIpa+aRlvi1k2Bfl4xA4gdaWYfJO1WJntPqFq+s8vvmKkljbgsQ+OJbzzP0nd6fMaCvzu9pT0XKxZNqmkLsNAjUo9lY9mz4pzo1FxzffkLaBNEFUyqs4OdVFLLLk+7xXHIrJ9lP3ePV1yZr9JInCqfOIXA+3EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT6fVGTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBC5C4CED1;
-	Wed, 19 Feb 2025 08:42:19 +0000 (UTC)
+	 MIME-Version; b=gAhqEeYDQvC7kV8ohoLjgfG+79U+DX1T2mH25sFNBtJ+hT3cmQbGzD9zKGMCc9vVJgKGHj+W7oLcD9qkd2eMF6VKNYfqOTrqeivID99vtzKnCRLrQKivrr+nZCmGK0EUwQtqTvrU2tWpM9MbwIOyGtzYTelzCCuq+w6FCBHF70Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGxEtmVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82150C4CEE6;
+	Wed, 19 Feb 2025 08:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954539;
-	bh=iFvyO7hn/9d/di+32csyAWkw5kxy8VdD9X5GWOpYQsU=;
+	s=korg; t=1739954545;
+	bh=Ek4RahccHqYqhbP1np9LYBFo3hF+EojmvqSrzRMQd+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NT6fVGTXFoNLfpKUwUnWulXOh+zG/VrHT6+SAnlukQdp34/r0mkh0gPXT2gvw4FSO
-	 BbzfMbUY6NhVaHOQIjaVHZsc7jXJYhD3gGyuU8AK2liXMunAaNVsvXEipZ+OOlj381
-	 XKREal8aEAZAHYia4HPFxPfSJgh64AyOCshpl1wM=
+	b=hGxEtmVhJp0MEjLGOx6b08SFQxQKQiZOY0tfHK3Lf/vh88TphJIFfwI7/x6p2bzlc
+	 QAgAuh05w6j8H74eDV+VklnzZYRLmmRS6x+7VDg9NK0vPF01RBbSuEU1Vw7of6Ks2w
+	 AMhvVDw6PE69wAQYzWdDt8adBMkP0A/14rYcZkjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <jdamato@fastly.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 234/274] net: protect netdev->napi_list with netdev_lock()
-Date: Wed, 19 Feb 2025 09:28:08 +0100
-Message-ID: <20250219082618.736918558@linuxfoundation.org>
+Subject: [PATCH 6.13 235/274] Revert "net: skb: introduce and use a single page frag cache"
+Date: Wed, 19 Feb 2025 09:28:09 +0100
+Message-ID: <20250219082618.775483707@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -68,211 +67,230 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 1b23cdbd2bbc4b40e21c12ae86c2781e347ff0f8 ]
+[ Upstream commit 011b0335903832facca86cd8ed05d7d8d94c9c76 ]
 
-Hold netdev->lock when NAPIs are getting added or removed.
-This will allow safe access to NAPI instances of a net_device
-without rtnl_lock.
+This reverts commit dbae2b062824 ("net: skb: introduce and use a single
+page frag cache"). The intended goal of such change was to counter a
+performance regression introduced by commit 3226b158e67c ("net: avoid
+32 x truesize under-estimation for tiny skbs").
 
-Create a family of helpers which assume the lock is already taken.
-Switch iavf to them, as it makes extensive use of netdev->lock,
-already.
+Unfortunately, the blamed commit introduces another regression for the
+virtio_net driver. Such a driver calls napi_alloc_skb() with a tiny
+size, so that the whole head frag could fit a 512-byte block.
 
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250115035319.559603-6-kuba@kernel.org
+The single page frag cache uses a 1K fragment for such allocation, and
+the additional overhead, under small UDP packets flood, makes the page
+allocator a bottleneck.
+
+Thanks to commit bf9f1baa279f ("net: add dedicated kmem_cache for
+typical/small skb->head"), this revert does not re-introduce the
+original regression. Actually, in the relevant test on top of this
+revert, I measure a small but noticeable positive delta, just above
+noise level.
+
+The revert itself required some additional mangling due to the
+introduction of the SKB_HEAD_ALIGN() helper and local lock infra in the
+affected code.
+
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: dbae2b062824 ("net: skb: introduce and use a single page frag cache")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/e649212fde9f0fdee23909ca0d14158d32bb7425.1738877290.git.pabeni@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 011b03359038 ("Revert "net: skb: introduce and use a single page frag cache"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c |  6 +--
- include/linux/netdevice.h                   | 54 ++++++++++++++++++---
- net/core/dev.c                              | 15 ++++--
- 3 files changed, 60 insertions(+), 15 deletions(-)
+ include/linux/netdevice.h |   1 -
+ net/core/dev.c            |  17 +++++++
+ net/core/skbuff.c         | 103 ++------------------------------------
+ 3 files changed, 22 insertions(+), 99 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 72314b0a1b25b..4639f55a17be1 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1815,8 +1815,8 @@ static int iavf_alloc_q_vectors(struct iavf_adapter *adapter)
- 		q_vector->v_idx = q_idx;
- 		q_vector->reg_idx = q_idx;
- 		cpumask_copy(&q_vector->affinity_mask, cpu_possible_mask);
--		netif_napi_add(adapter->netdev, &q_vector->napi,
--			       iavf_napi_poll);
-+		netif_napi_add_locked(adapter->netdev, &q_vector->napi,
-+				      iavf_napi_poll);
- 	}
- 
- 	return 0;
-@@ -1842,7 +1842,7 @@ static void iavf_free_q_vectors(struct iavf_adapter *adapter)
- 	for (q_idx = 0; q_idx < num_q_vectors; q_idx++) {
- 		struct iavf_q_vector *q_vector = &adapter->q_vectors[q_idx];
- 
--		netif_napi_del(&q_vector->napi);
-+		netif_napi_del_locked(&q_vector->napi);
- 	}
- 	kfree(adapter->q_vectors);
- 	adapter->q_vectors = NULL;
 diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 64013fd389f28..7966a3d0e5bbc 100644
+index 7966a3d0e5bbc..4cb08af483438 100644
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -2454,7 +2454,7 @@ struct net_device {
- 	 * Drivers are free to use it for other protection.
- 	 *
- 	 * Protects:
--	 *	@net_shaper_hierarchy, @reg_state
-+	 *	@napi_list, @net_shaper_hierarchy, @reg_state
- 	 *
- 	 * Partially protects (writers must hold both @lock and rtnl_lock):
- 	 *	@up
-@@ -2714,8 +2714,19 @@ static inline void netif_napi_set_irq(struct napi_struct *napi, int irq)
-  */
- #define NAPI_POLL_WEIGHT 64
+@@ -4048,7 +4048,6 @@ void netif_receive_skb_list(struct list_head *head);
+ gro_result_t napi_gro_receive(struct napi_struct *napi, struct sk_buff *skb);
+ void napi_gro_flush(struct napi_struct *napi, bool flush_old);
+ struct sk_buff *napi_get_frags(struct napi_struct *napi);
+-void napi_get_frags_check(struct napi_struct *napi);
+ gro_result_t napi_gro_frags(struct napi_struct *napi);
  
--void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
--			   int (*poll)(struct napi_struct *, int), int weight);
-+void netif_napi_add_weight_locked(struct net_device *dev,
-+				  struct napi_struct *napi,
-+				  int (*poll)(struct napi_struct *, int),
-+				  int weight);
-+
-+static inline void
-+netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
-+		      int (*poll)(struct napi_struct *, int), int weight)
-+{
-+	netdev_lock(dev);
-+	netif_napi_add_weight_locked(dev, napi, poll, weight);
-+	netdev_unlock(dev);
-+}
- 
- /**
-  * netif_napi_add() - initialize a NAPI context
-@@ -2733,6 +2744,13 @@ netif_napi_add(struct net_device *dev, struct napi_struct *napi,
- 	netif_napi_add_weight(dev, napi, poll, NAPI_POLL_WEIGHT);
- }
- 
-+static inline void
-+netif_napi_add_locked(struct net_device *dev, struct napi_struct *napi,
-+		      int (*poll)(struct napi_struct *, int))
-+{
-+	netif_napi_add_weight_locked(dev, napi, poll, NAPI_POLL_WEIGHT);
-+}
-+
- static inline void
- netif_napi_add_tx_weight(struct net_device *dev,
- 			 struct napi_struct *napi,
-@@ -2743,6 +2761,15 @@ netif_napi_add_tx_weight(struct net_device *dev,
- 	netif_napi_add_weight(dev, napi, poll, weight);
- }
- 
-+static inline void
-+netif_napi_add_config_locked(struct net_device *dev, struct napi_struct *napi,
-+			     int (*poll)(struct napi_struct *, int), int index)
-+{
-+	napi->index = index;
-+	napi->config = &dev->napi_config[index];
-+	netif_napi_add_weight_locked(dev, napi, poll, NAPI_POLL_WEIGHT);
-+}
-+
- /**
-  * netif_napi_add_config - initialize a NAPI context with persistent config
-  * @dev: network device
-@@ -2754,9 +2781,9 @@ static inline void
- netif_napi_add_config(struct net_device *dev, struct napi_struct *napi,
- 		      int (*poll)(struct napi_struct *, int), int index)
- {
--	napi->index = index;
--	napi->config = &dev->napi_config[index];
--	netif_napi_add_weight(dev, napi, poll, NAPI_POLL_WEIGHT);
-+	netdev_lock(dev);
-+	netif_napi_add_config_locked(dev, napi, poll, index);
-+	netdev_unlock(dev);
- }
- 
- /**
-@@ -2776,6 +2803,8 @@ static inline void netif_napi_add_tx(struct net_device *dev,
- 	netif_napi_add_tx_weight(dev, napi, poll, NAPI_POLL_WEIGHT);
- }
- 
-+void __netif_napi_del_locked(struct napi_struct *napi);
-+
- /**
-  *  __netif_napi_del - remove a NAPI context
-  *  @napi: NAPI context
-@@ -2784,7 +2813,18 @@ static inline void netif_napi_add_tx(struct net_device *dev,
-  * containing @napi. Drivers might want to call this helper to combine
-  * all the needed RCU grace periods into a single one.
-  */
--void __netif_napi_del(struct napi_struct *napi);
-+static inline void __netif_napi_del(struct napi_struct *napi)
-+{
-+	netdev_lock(napi->dev);
-+	__netif_napi_del_locked(napi);
-+	netdev_unlock(napi->dev);
-+}
-+
-+static inline void netif_napi_del_locked(struct napi_struct *napi)
-+{
-+	__netif_napi_del_locked(napi);
-+	synchronize_net();
-+}
- 
- /**
-  *  netif_napi_del - remove a NAPI context
+ static inline void napi_free_frags(struct napi_struct *napi)
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 67f2bb84db543..26cce0504f105 100644
+index 26cce0504f105..571d38ca2bee7 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -6783,9 +6783,12 @@ netif_napi_dev_list_add(struct net_device *dev, struct napi_struct *napi)
+@@ -6783,6 +6783,23 @@ netif_napi_dev_list_add(struct net_device *dev, struct napi_struct *napi)
  	list_add_rcu(&napi->dev_list, higher); /* adds after higher */
  }
  
--void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
--			   int (*poll)(struct napi_struct *, int), int weight)
-+void netif_napi_add_weight_locked(struct net_device *dev,
-+				  struct napi_struct *napi,
-+				  int (*poll)(struct napi_struct *, int),
-+				  int weight)
- {
-+	netdev_assert_locked(dev);
- 	if (WARN_ON(test_and_set_bit(NAPI_STATE_LISTED, &napi->state)))
- 		return;
- 
-@@ -6826,7 +6829,7 @@ void netif_napi_add_weight(struct net_device *dev, struct napi_struct *napi,
- 		dev->threaded = false;
- 	netif_napi_set_irq(napi, -1);
- }
--EXPORT_SYMBOL(netif_napi_add_weight);
-+EXPORT_SYMBOL(netif_napi_add_weight_locked);
- 
- void napi_disable(struct napi_struct *n)
- {
-@@ -6897,8 +6900,10 @@ static void flush_gro_hash(struct napi_struct *napi)
- }
- 
- /* Must be called in process context */
--void __netif_napi_del(struct napi_struct *napi)
-+void __netif_napi_del_locked(struct napi_struct *napi)
- {
-+	netdev_assert_locked(napi->dev);
++/* Double check that napi_get_frags() allocates skbs with
++ * skb->head being backed by slab, not a page fragment.
++ * This is to make sure bug fixed in 3226b158e67c
++ * ("net: avoid 32 x truesize under-estimation for tiny skbs")
++ * does not accidentally come back.
++ */
++static void napi_get_frags_check(struct napi_struct *napi)
++{
++	struct sk_buff *skb;
 +
- 	if (!test_and_clear_bit(NAPI_STATE_LISTED, &napi->state))
- 		return;
++	local_bh_disable();
++	skb = napi_get_frags(napi);
++	WARN_ON_ONCE(skb && skb->head_frag);
++	napi_free_frags(napi);
++	local_bh_enable();
++}
++
+ void netif_napi_add_weight_locked(struct net_device *dev,
+ 				  struct napi_struct *napi,
+ 				  int (*poll)(struct napi_struct *, int),
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 6841e61a6bd0b..b32d4e1fa4428 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -220,67 +220,9 @@ static void skb_under_panic(struct sk_buff *skb, unsigned int sz, void *addr)
+ #define NAPI_SKB_CACHE_BULK	16
+ #define NAPI_SKB_CACHE_HALF	(NAPI_SKB_CACHE_SIZE / 2)
  
-@@ -6918,7 +6923,7 @@ void __netif_napi_del(struct napi_struct *napi)
- 		napi->thread = NULL;
- 	}
- }
--EXPORT_SYMBOL(__netif_napi_del);
-+EXPORT_SYMBOL(__netif_napi_del_locked);
+-#if PAGE_SIZE == SZ_4K
+-
+-#define NAPI_HAS_SMALL_PAGE_FRAG	1
+-#define NAPI_SMALL_PAGE_PFMEMALLOC(nc)	((nc).pfmemalloc)
+-
+-/* specialized page frag allocator using a single order 0 page
+- * and slicing it into 1K sized fragment. Constrained to systems
+- * with a very limited amount of 1K fragments fitting a single
+- * page - to avoid excessive truesize underestimation
+- */
+-
+-struct page_frag_1k {
+-	void *va;
+-	u16 offset;
+-	bool pfmemalloc;
+-};
+-
+-static void *page_frag_alloc_1k(struct page_frag_1k *nc, gfp_t gfp)
+-{
+-	struct page *page;
+-	int offset;
+-
+-	offset = nc->offset - SZ_1K;
+-	if (likely(offset >= 0))
+-		goto use_frag;
+-
+-	page = alloc_pages_node(NUMA_NO_NODE, gfp, 0);
+-	if (!page)
+-		return NULL;
+-
+-	nc->va = page_address(page);
+-	nc->pfmemalloc = page_is_pfmemalloc(page);
+-	offset = PAGE_SIZE - SZ_1K;
+-	page_ref_add(page, offset / SZ_1K);
+-
+-use_frag:
+-	nc->offset = offset;
+-	return nc->va + offset;
+-}
+-#else
+-
+-/* the small page is actually unused in this build; add dummy helpers
+- * to please the compiler and avoid later preprocessor's conditionals
+- */
+-#define NAPI_HAS_SMALL_PAGE_FRAG	0
+-#define NAPI_SMALL_PAGE_PFMEMALLOC(nc)	false
+-
+-struct page_frag_1k {
+-};
+-
+-static void *page_frag_alloc_1k(struct page_frag_1k *nc, gfp_t gfp_mask)
+-{
+-	return NULL;
+-}
+-
+-#endif
+-
+ struct napi_alloc_cache {
+ 	local_lock_t bh_lock;
+ 	struct page_frag_cache page;
+-	struct page_frag_1k page_small;
+ 	unsigned int skb_count;
+ 	void *skb_cache[NAPI_SKB_CACHE_SIZE];
+ };
+@@ -290,23 +232,6 @@ static DEFINE_PER_CPU(struct napi_alloc_cache, napi_alloc_cache) = {
+ 	.bh_lock = INIT_LOCAL_LOCK(bh_lock),
+ };
  
- static int __napi_poll(struct napi_struct *n, bool *repoll)
+-/* Double check that napi_get_frags() allocates skbs with
+- * skb->head being backed by slab, not a page fragment.
+- * This is to make sure bug fixed in 3226b158e67c
+- * ("net: avoid 32 x truesize under-estimation for tiny skbs")
+- * does not accidentally come back.
+- */
+-void napi_get_frags_check(struct napi_struct *napi)
+-{
+-	struct sk_buff *skb;
+-
+-	local_bh_disable();
+-	skb = napi_get_frags(napi);
+-	WARN_ON_ONCE(!NAPI_HAS_SMALL_PAGE_FRAG && skb && skb->head_frag);
+-	napi_free_frags(napi);
+-	local_bh_enable();
+-}
+-
+ void *__napi_alloc_frag_align(unsigned int fragsz, unsigned int align_mask)
  {
+ 	struct napi_alloc_cache *nc = this_cpu_ptr(&napi_alloc_cache);
+@@ -813,10 +738,8 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
+ 
+ 	/* If requested length is either too small or too big,
+ 	 * we use kmalloc() for skb->head allocation.
+-	 * When the small frag allocator is available, prefer it over kmalloc
+-	 * for small fragments
+ 	 */
+-	if ((!NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) ||
++	if (len <= SKB_WITH_OVERHEAD(1024) ||
+ 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
+ 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
+ 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX | SKB_ALLOC_NAPI,
+@@ -826,32 +749,16 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
+ 		goto skb_success;
+ 	}
+ 
++	len = SKB_HEAD_ALIGN(len);
++
+ 	if (sk_memalloc_socks())
+ 		gfp_mask |= __GFP_MEMALLOC;
+ 
+ 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
+ 	nc = this_cpu_ptr(&napi_alloc_cache);
+-	if (NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) {
+-		/* we are artificially inflating the allocation size, but
+-		 * that is not as bad as it may look like, as:
+-		 * - 'len' less than GRO_MAX_HEAD makes little sense
+-		 * - On most systems, larger 'len' values lead to fragment
+-		 *   size above 512 bytes
+-		 * - kmalloc would use the kmalloc-1k slab for such values
+-		 * - Builds with smaller GRO_MAX_HEAD will very likely do
+-		 *   little networking, as that implies no WiFi and no
+-		 *   tunnels support, and 32 bits arches.
+-		 */
+-		len = SZ_1K;
+ 
+-		data = page_frag_alloc_1k(&nc->page_small, gfp_mask);
+-		pfmemalloc = NAPI_SMALL_PAGE_PFMEMALLOC(nc->page_small);
+-	} else {
+-		len = SKB_HEAD_ALIGN(len);
+-
+-		data = page_frag_alloc(&nc->page, len, gfp_mask);
+-		pfmemalloc = page_frag_cache_is_pfmemalloc(&nc->page);
+-	}
++	data = page_frag_alloc(&nc->page, len, gfp_mask);
++	pfmemalloc = page_frag_cache_is_pfmemalloc(&nc->page);
+ 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
+ 
+ 	if (unlikely(!data))
 -- 
 2.39.5
 
