@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA8CA3B72C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588FFA3B681
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED06F1886318
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0A4B18869C9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA5A1E0DD9;
-	Wed, 19 Feb 2025 09:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCE21EB1BD;
+	Wed, 19 Feb 2025 08:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0rbEpHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nM99JAHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDD81E0B7D;
-	Wed, 19 Feb 2025 09:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD82A1E8855;
+	Wed, 19 Feb 2025 08:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955655; cv=none; b=kCF6s41HcBKTd5PyYsLKiCdMmyXY+dRPbdzAHaI8AOHR/wCwoBfZKzzqkCCWZy8NItN6X2r9QhP/CocHveUbIumU6DYJf8ZcjY5vMId5HX2hxFp2EkpwtWm/H5BCB+GQEArYvo77oEP0e1nVr69jNoytttsAUk4vu5+F4+CwO80=
+	t=1739955326; cv=none; b=OmJu3yKeRQxGQTlJ81o/XFGKU0yy/JdV00ddHmknydZhnrLFE9OORcTiUTeLrV1A8B2B6mNosF2IQMQ52Me8uvWCCX5bF1iMPZwSJt2nC10j/vvcRSGMSycAAoPPl53hwxOye94VwnzSIeSS5dSyLyr3dFci4vkdlfCLS1NY9bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955655; c=relaxed/simple;
-	bh=owX2Exm4ue4r3Rb9WqbpLhept78gYJ5sWqaXh+l1RQI=;
+	s=arc-20240116; t=1739955326; c=relaxed/simple;
+	bh=lf8/MmaA/y/ZdV1LNHISSKEWyknWyRoheftqYiK+cf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k17Jt2U7shECGSKGBuknCaSIE6aqr6zk9PKSDFoOrLShcTk2aTLjDOaN0RVnIco2CKZV1gckwXueMh9ZL2J2uZO/w8JbPCpElBBO33/BjPr4UC+920GkIFt9vLORnsyUqbyBCLj8wmWnPtVsDlxX95welZLdspDaTBVS0BuOpUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0rbEpHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63425C4CEE6;
-	Wed, 19 Feb 2025 09:00:54 +0000 (UTC)
+	 MIME-Version; b=Ivxr0ml0MLTECMjACo2L7C6V/ZzE3BN2wxGE2ImP8gGWoSpHmUgXJEv+GfD5zxTNVL2SCy2GOyzj2SIj0ZzwML5O/0Silcly3D4XuhaRmsXF3NvCB1QoSBEqyQhhO5J85hb/41lqz7JbHffDU9idJsllGL0dICUw1gZ3DNGuhkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nM99JAHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614FFC4CED1;
+	Wed, 19 Feb 2025 08:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955654;
-	bh=owX2Exm4ue4r3Rb9WqbpLhept78gYJ5sWqaXh+l1RQI=;
+	s=korg; t=1739955325;
+	bh=lf8/MmaA/y/ZdV1LNHISSKEWyknWyRoheftqYiK+cf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0rbEpHePRiW8C512hau8BY2gN7xV6cIfD2ERaxXKK6nXGfbP2/bzHFApICv93udM
-	 PQB8+ZksM5EosPXt/6DtgaB+pMYkYiW4W6l1OwobD38qJtmCYq+Uk2kjLv95X/ouwD
-	 5BFSfWEzg5aQ1DqwMsZnuXAGACCZvv+rb4f/i1C0=
+	b=nM99JAHkHSZlU81t0BGTPZhZ/6+yjXoLVq4PpPF7TIByeesZhogaaEzcvOlGE8znm
+	 /JMnjiw+mZsJgbWdvg4Osk8YYO/C7bS3s/iGShM0gJq7hzpvSOmyuAKfBaAsQF9nlb
+	 j75K4u88zbLA++V5/TL1bzyh/lMsjf4uTvMkp0X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 073/152] USB: serial: option: drop MeiG Smart defines
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 169/230] clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context
 Date: Wed, 19 Feb 2025 09:28:06 +0100
-Message-ID: <20250219082552.937222909@linuxfoundation.org>
+Message-ID: <20250219082608.313062915@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-commit 6aa8a63c471eb6756aabd03f880feffe6a7af6c9 upstream.
+[ Upstream commit 6bb05a33337b2c842373857b63de5c9bf1ae2a09 ]
 
-Several MeiG Smart modems apparently use the same product id, making the
-defines even less useful.
+The following bug report happened with a PREEMPT_RT kernel:
 
-Drop them in favour of using comments consistently to make the id table
-slightly less unwieldy.
+  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2012, name: kwatchdog
+  preempt_count: 1, expected: 0
+  RCU nest depth: 0, expected: 0
+  get_random_u32+0x4f/0x110
+  clocksource_verify_choose_cpus+0xab/0x1a0
+  clocksource_verify_percpu.part.0+0x6b/0x330
+  clocksource_watchdog_kthread+0x193/0x1a0
 
-Cc: stable@vger.kernel.org
-Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is due to the fact that clocksource_verify_choose_cpus() is invoked with
+preemption disabled.  This function invokes get_random_u32() to obtain
+random numbers for choosing CPUs.  The batched_entropy_32 local lock and/or
+the base_crng.lock spinlock in driver/char/random.c will be acquired during
+the call. In PREEMPT_RT kernel, they are both sleeping locks and so cannot
+be acquired in atomic context.
+
+Fix this problem by using migrate_disable() to allow smp_processor_id() to
+be reliably used without introducing atomic context. preempt_disable() is
+then called after clocksource_verify_choose_cpus() but before the
+clocksource measurement is being run to avoid introducing unexpected
+latency.
+
+Fixes: 7560c02bdffb ("clocksource: Check per-CPU clock synchronization when marked unstable")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/all/20250131173323.891943-2-longman@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+ kernel/time/clocksource.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -619,18 +619,6 @@ static void option_instat_callback(struc
- /* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
- #define LUAT_PRODUCT_AIR720U			0x4e00
- 
--/* MeiG Smart Technology products */
--#define MEIGSMART_VENDOR_ID			0x2dee
--/*
-- * MeiG Smart SLM828, SRM815, and SRM825L use the same product ID. SLM828 is
-- * based on Qualcomm SDX12. SRM815 and SRM825L are based on Qualcomm 315.
-- */
--#define MEIGSMART_PRODUCT_SRM825L		0x4d22
--/* MeiG Smart SLM320 based on UNISOC UIS8910 */
--#define MEIGSMART_PRODUCT_SLM320		0x4d41
--/* MeiG Smart SLM770A based on ASR1803 */
--#define MEIGSMART_PRODUCT_SLM770A		0x4d57
--
- /* Device flags */
- 
- /* Highest interface number which can be used with NCTRL() and RSVD() */
-@@ -2366,6 +2354,14 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a05, 0xff) },			/* Fibocom FM650-CN (NCM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a06, 0xff) },			/* Fibocom FM650-CN (RNDIS mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0a07, 0xff) },			/* Fibocom FM650-CN (MBIM mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d41, 0xff, 0, 0) },		/* MeiG Smart SLM320 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d57, 0xff, 0, 0) },		/* MeiG Smart SLM770A */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0, 0) },		/* MeiG Smart SRM815 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d22, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
-@@ -2422,14 +2418,6 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },	/* MeiG Smart SRM815 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x02) },	/* MeiG Smart SLM828 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0x10, 0x03) },	/* MeiG Smart SLM828 */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM815 and SRM825L */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825L */
--	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825L */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
- 	  .driver_info = NCTRL(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index c4e6b5e6af88c..58fb7280cabbe 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -365,10 +365,10 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 	cpumask_clear(&cpus_ahead);
+ 	cpumask_clear(&cpus_behind);
+ 	cpus_read_lock();
+-	preempt_disable();
++	migrate_disable();
+ 	clocksource_verify_choose_cpus();
+ 	if (cpumask_empty(&cpus_chosen)) {
+-		preempt_enable();
++		migrate_enable();
+ 		cpus_read_unlock();
+ 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
+ 		return;
+@@ -376,6 +376,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 	testcpu = smp_processor_id();
+ 	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
+ 		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
++	preempt_disable();
+ 	for_each_cpu(cpu, &cpus_chosen) {
+ 		if (cpu == testcpu)
+ 			continue;
+@@ -395,6 +396,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
+ 			cs_nsec_min = cs_nsec;
+ 	}
+ 	preempt_enable();
++	migrate_enable();
+ 	cpus_read_unlock();
+ 	if (!cpumask_empty(&cpus_ahead))
+ 		pr_warn("        CPUs %*pbl ahead of CPU %d for clocksource %s.\n",
+-- 
+2.39.5
+
 
 
 
