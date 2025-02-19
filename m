@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E847CA3B63A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E072A3B8DC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4B6C3B7A3D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 766577A4BDA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADFE1F63E4;
-	Wed, 19 Feb 2025 08:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533F41D515B;
+	Wed, 19 Feb 2025 09:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHMCHnFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i41HLHan"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC991EEA54;
-	Wed, 19 Feb 2025 08:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EC728629E;
+	Wed, 19 Feb 2025 09:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954798; cv=none; b=qcXx2KCQHjr6qb6iRxXblK8gKqjQKishoYusGQldEavW4BZutD4uYdO46WqTlZyAh7S1Nlak4snfdnSjwGHj5RhDMCetP7r8dIldQv25rU9u2kH+yIp5fI7/QPtzjMFnB64Hwxp3sH/06C+UKUGkMeP80EqKZPE+wLolbJu2N6Y=
+	t=1739957035; cv=none; b=GmPlcmaa70J1BkhEvTI/JqGnk5dviivpxGK+TUAKdHst5KIoJYO9V9ZtRMGIG7dEVBUUMznqGkfrv03umDWm4xoRdK674G8QAcwdTYarhjKDes5gp2nbHcuokoa36LX7II4uHKUH2LvDjF7aWbCGjbza+TEqqYHcUYOPdS43hdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954798; c=relaxed/simple;
-	bh=Ku8sNTQu217ROkcVFR7okDcdeghudvs65SpYgWaxqOQ=;
+	s=arc-20240116; t=1739957035; c=relaxed/simple;
+	bh=XLWALA2u6SG7harMb6EltYnM3geXn/NvgvzJu+18DXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0vB/BypCG6HqIW5xcSgqu5MW9ojzwcnOs3hs3l2A3L3Au4hMKHnQTTM3fJw5I8aXcKKPa7rz7NJFRi2l4ICHa32RYcmX9qVGA+9OrlcZr3Squ5UbuT5IrD7/PWcqGdn3YEA1Esjpb6/ns2Ceh7Sdr6qI+8d9U8qgJllbkyTmpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHMCHnFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D00C4CEE6;
-	Wed, 19 Feb 2025 08:46:37 +0000 (UTC)
+	 MIME-Version; b=iV0YLX5zmPEM9V57QZXXX3ylwAdi1lXw8J2lQncsHqzU8geAxaLuu3SO1aB3mgerESnqkMRKTa4AxE+3aK/CRDPPsG4ss0z+PRZq9sAdRW3x7TLei4WXBfD+Gy2TTIK7xtdTyVkSTyxjbV5p2TN/v/GvZoL4IqXSTzi9CaQ3n7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i41HLHan; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919BAC4CEE6;
+	Wed, 19 Feb 2025 09:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954798;
-	bh=Ku8sNTQu217ROkcVFR7okDcdeghudvs65SpYgWaxqOQ=;
+	s=korg; t=1739957034;
+	bh=XLWALA2u6SG7harMb6EltYnM3geXn/NvgvzJu+18DXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHMCHnFJ2lBSu7hLZn3cfwiR34xorg0r5B1ikgMEs0lO6YVpiAfIBZ4oGYs9WVKs9
-	 +ytvxSYgmPkYJ8IR3uMz10bUljEbPxV2JUgIpM7kFlqaZdfOXj6VT0PyO4k5ZtVi+i
-	 X7Ff9lquK98bj0RBcJIMI9Rz1rmqbEAEK9w2o2ZE=
+	b=i41HLHanGZ9bnqWMc3IL4/Kj3YyDUm6ovbOHnie+W6SAw9itqILCvl8Xy5JfPJ/aq
+	 i8FF8slUoYTwMg5IIBPTi2nJjEyCyJWe28nGUN+KvXDrJyDAsPzv3g3BQziFLeSs2L
+	 P+pzZv6pZ9yN6oCKnEXJaC87sjC6G7qB4ZGNtwYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/230] drm/xe/client: bo->client does not need bos_lock
-Date: Wed, 19 Feb 2025 09:25:57 +0100
-Message-ID: <20250219082603.279261276@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 354/578] Bluetooth: L2CAP: handle NULL sock pointer in l2cap_sock_alloc
+Date: Wed, 19 Feb 2025 09:25:58 +0100
+Message-ID: <20250219082706.948535392@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit fc876c9524e2a9f816f51d533ed31df789cff65a ]
+commit 5f397409f8ee5bc82901eeaf799e1cbc4f8edcf1 upstream.
 
-bos_lock is to protect list of bos used by client, it is
-not required to protect bo->client so bring it outside of
-bos_lock.
+A NULL sock pointer is passed into l2cap_sock_alloc() when it is called
+from l2cap_sock_new_connection_cb() and the error handling paths should
+also be aware of it.
 
-Fixes: b27970f3e11c ("drm/xe: Add tracking support for bos per client")
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250205051042.1991192-1-tejas.upadhyay@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit f74fd53ba34551b7626193fb70c17226f06e9bf1)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Seemingly a more elegant solution would be to swap bt_sock_alloc() and
+l2cap_chan_create() calls since they are not interdependent to that moment
+but then l2cap_chan_create() adds the soon to be deallocated and still
+dummy-initialized channel to the global list accessible by many L2CAP
+paths. The channel would be removed from the list in short period of time
+but be a bit more straight-forward here and just check for NULL instead of
+changing the order of function calls.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Fixes: 7c4f78cdb8e7 ("Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_drm_client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
-index fb52a23e28f84..a89fbfbdab329 100644
---- a/drivers/gpu/drm/xe/xe_drm_client.c
-+++ b/drivers/gpu/drm/xe/xe_drm_client.c
-@@ -135,8 +135,8 @@ void xe_drm_client_add_bo(struct xe_drm_client *client,
- 	XE_WARN_ON(bo->client);
- 	XE_WARN_ON(!list_empty(&bo->client_link));
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1920,7 +1920,8 @@ static struct sock *l2cap_sock_alloc(str
+ 	chan = l2cap_chan_create();
+ 	if (!chan) {
+ 		sk_free(sk);
+-		sock->sk = NULL;
++		if (sock)
++			sock->sk = NULL;
+ 		return NULL;
+ 	}
  
--	spin_lock(&client->bos_lock);
- 	bo->client = xe_drm_client_get(client);
-+	spin_lock(&client->bos_lock);
- 	list_add_tail(&bo->client_link, &client->bos_list);
- 	spin_unlock(&client->bos_lock);
- }
--- 
-2.39.5
-
 
 
 
