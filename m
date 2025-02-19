@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61BFA3B616
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B513CA3B535
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6923F189A71D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 005761887077
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47761DEFD6;
-	Wed, 19 Feb 2025 08:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB421DF24B;
+	Wed, 19 Feb 2025 08:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsAwjarr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hDsPStf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21A01DE3BB;
-	Wed, 19 Feb 2025 08:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776FF1DEFEE;
+	Wed, 19 Feb 2025 08:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955046; cv=none; b=A7HlZ5I+pOB5IgTI69fBoMI/TGc5xYTQ+brp7XdvZqiAg73kh37qavufZ7FHnNoSs9yTJG0YDCs/T+ZJ0vBs1mIrDLZ9uUvEmfxwbICnQMxERklhzRAk//E2cHGWYc03IBb+UuZ5A46x6dRwB8lZhsizsS8kpJrd0GHBuvNYH6M=
+	t=1739954449; cv=none; b=oWb7iojIJCciNXujfSeTSuG+PCs0MU4Oa1Qy1Ya74UYumHEHDSNBArQH9YsvbipWm9nrQ4GSCASI2eHHa1dBweZah4AV5uLBHWQsn9u2LajxNFfih12E9dyHpINs4SE4seN8WG3qeVniwn3nt/mdLwDgUNU4jsjCu9rS0jA1jVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955046; c=relaxed/simple;
-	bh=QMAQqeVzfXgk1SGkyKnKAEjm46pGI1QkalfbO7yX8z0=;
+	s=arc-20240116; t=1739954449; c=relaxed/simple;
+	bh=UMrvIM/6lptAWvc0HUFd6h9ispo/mIB2i8eUoq5cJ1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jep/j8alxJYeAKifdH9RCb+BQOPry1/xRjO1Oh6pN1Aks6QkjMGgto/WMq5aXUeUp8iev9HqwWhDFhaiHFyhbLL4L+k5K1vIt1yy/JyIdzVRF8kJfU8k6SX/iIR+7CuQP3cmNxshu5x8yCQbiqYCmHU+AhNRdw6lTnBw+aDRet0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsAwjarr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AA5C4CEE6;
-	Wed, 19 Feb 2025 08:50:45 +0000 (UTC)
+	 MIME-Version; b=Ufk2rYK8SoqRAM/SalWupPXCc+B2OsL9eElg8kM0ZWSX8qbzbFN57FrFtzxxFe2K+8P1ms7MH1OJ5B6fzT6BjfcMmlzzHHviyakUr2dPFF/HJRKkA240ogB57ZPGhSs74cjODTgRrwdARPhLOpJIM42B/pOgfqdWvXnwwNHiIhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hDsPStf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8503BC4CED1;
+	Wed, 19 Feb 2025 08:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955046;
-	bh=QMAQqeVzfXgk1SGkyKnKAEjm46pGI1QkalfbO7yX8z0=;
+	s=korg; t=1739954448;
+	bh=UMrvIM/6lptAWvc0HUFd6h9ispo/mIB2i8eUoq5cJ1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsAwjarrWQ6EmGG8QDRJBvFBEGZAS0D4hJal+hD4esPgC40BXPMwtYDqyIG/u1Kcy
-	 cMpKDfPTV/O0Af11CoJlhCRkSYyLj2Fa5APj2cq1fdyFog7Fs1RPYTOgqiyml1vi6J
-	 xcGktUFoqVFvkT5WbL7daZwDUIHvUfs/ZLNPkckQ=
+	b=2hDsPStfLZlljqyoE9NsvXmBAZ/9JGURMArhpxbMM76f6M84n7UmOXlljSCxkufee
+	 K9FgguRbIiKwKuCtNgIEXlsB28MkxAl9pIxPy3SKyDFSiVyR75A+oDYA1DwXqo+VoR
+	 lyO5K2zwkOPc8bGVXj3lVVtwZtxtE+nlWZlkhor0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH 6.12 114/230] usb: xhci: Restore xhci_pci support for Renesas HCs
+	Rob Herring <robh@kernel.org>,
+	Varadarajan Narayanan <quic_varada@quicinc.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 177/274] regulator: qcom_smd: Add l2, l5 sub-node to mp5496 regulator
 Date: Wed, 19 Feb 2025 09:27:11 +0100
-Message-ID: <20250219082606.148082092@linuxfoundation.org>
+Message-ID: <20250219082616.516370478@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-commit c81d9fcd5b9402166048f377d4e5e0ee6f9ef26d upstream.
+commit b0eddc21900fb44f8c5db95710479865e3700fbd upstream.
 
-Some Renesas HCs require firmware upload to work, this is handled by the
-xhci_pci_renesas driver. Other variants of those chips load firmware from
-a SPI flash and are ready to work with xhci_pci alone.
+Adding l2, l5 sub-node entry to mp5496 regulator node.
 
-A refactor merged in v6.12 broke the latter configuration so that users
-are finding their hardware ignored by the normal driver and are forced to
-enable the firmware loader which isn't really necessary on their systems.
-
-Let xhci_pci work with those chips as before when the firmware loader is
-disabled by kernel configuration.
-
-Fixes: 25f51b76f90f ("xhci-pci: Make xhci-pci-renesas a proper modular driver")
-Cc: stable <stable@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219616
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219726
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://lore.kernel.org/r/20250128104529.58a79bfc@foxbook
+Cc: stable@vger.kernel.org
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Link: https://patch.msgid.link/20250205074657.4142365-2-quic_varada@quicinc.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -656,8 +656,8 @@ put_runtime_pm:
- }
- EXPORT_SYMBOL_NS_GPL(xhci_pci_common_probe, xhci);
+--- a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
++++ b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
+@@ -22,7 +22,7 @@ description:
+   Each sub-node is identified using the node's name, with valid values listed
+   for each of the pmics below.
  
--static const struct pci_device_id pci_ids_reject[] = {
--	/* handled by xhci-pci-renesas */
-+/* handled by xhci-pci-renesas if enabled */
-+static const struct pci_device_id pci_ids_renesas[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
- 	{ /* end: all zeroes */ }
-@@ -665,7 +665,8 @@ static const struct pci_device_id pci_id
+-  For mp5496, s1, s2
++  For mp5496, s1, s2, l2, l5
  
- static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
--	if (pci_match_id(pci_ids_reject, dev))
-+	if (IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS) &&
-+			pci_match_id(pci_ids_renesas, dev))
- 		return -ENODEV;
- 
- 	return xhci_pci_common_probe(dev, id);
+   For pm2250, s1, s2, s3, s4, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11,
+   l12, l13, l14, l15, l16, l17, l18, l19, l20, l21, l22
 
 
 
