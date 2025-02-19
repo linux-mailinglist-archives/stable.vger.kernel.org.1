@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-116958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFADBA3B0CA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 06:12:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7828BA3B0C1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 06:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8777F1899916
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 05:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67993A4FB1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 05:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85911B2194;
-	Wed, 19 Feb 2025 05:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF351A9B27;
+	Wed, 19 Feb 2025 05:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/cei//h"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHJ2dQhg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DC01A9B27;
-	Wed, 19 Feb 2025 05:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0464419DF99;
+	Wed, 19 Feb 2025 05:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739941750; cv=none; b=YP83wG92TcXUvO4E+EjB2NxJFn5LonjIhjkJFRSqiUL4z9LEiMcnODd5L6/XTY98bsM4bQ9ThbAdMKo6qWY6/DiDBDC2tGPEVWjtw1iDwIGwzekli2iNujSt4wqyUqJW2hA3+h/T3dVJNNxTwZzeKFsYRQ0vNX53qlIr2uP8c88=
+	t=1739941846; cv=none; b=hxgHLRHUkUuF4COwewVI6wQP11y/IxL5ouZ2iQgUYHUz0XECO+wFf2oA4ZirKbDPkLuoY60AUCALWDsD60e46lwhEwyrPgGXPbbUhMDlBF1m/a5nDKCdBgMkSUKDbUQD5pfwxnCaPVJ/aRkN0eoCbCjey5FezICEHxp0CVCGE9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739941750; c=relaxed/simple;
-	bh=6h8ecIB9RE8NEbkQcevOEnAlX8Vq8sQghBewctetbT8=;
+	s=arc-20240116; t=1739941846; c=relaxed/simple;
+	bh=qxphvqi7G/P4h2lBp66CeMOj+EvTR2VDJKFiAP9MOjg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FFK6MVVFuuFmBHNqJTqxGPUCV8fpBjjqrsztBwBYL7Wwm+UVyMhZcyifkDxOCuh93tPtYGIlSJ7VZmUyZTNJ4JOTzyy/mmO/900uwzVf8JeU6+ohxq7WYKICWQSCUOpEAX2asnO7bCT8UCQgDfS6VmB/N+ij6Cn6NKRKA83MUhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/cei//h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F9BC4CED1;
-	Wed, 19 Feb 2025 05:09:09 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yy3OUpvqWqJOWC1FOilz/HHpweoPY/LQXE+vXRJcU6f1gRvWfdq1dLHWt3nXGwrO/cXBOHGucfcCIpOYpGNl8NdP/3Ey3/jNZFczewK/JwLZV9j8LL8I0kqET5YJTP6utRz2HWTJKAvVQSd/q5osCgjIU24E1ojcNx6Q5oVo5WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHJ2dQhg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA51DC4CED1;
+	Wed, 19 Feb 2025 05:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739941749;
-	bh=6h8ecIB9RE8NEbkQcevOEnAlX8Vq8sQghBewctetbT8=;
+	s=korg; t=1739941845;
+	bh=qxphvqi7G/P4h2lBp66CeMOj+EvTR2VDJKFiAP9MOjg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1/cei//hPMxHqiGfMQsCIA1WAdFeWmLId42G5QRlkcGD06Wu3GP4q5F8IwWrX/K14
-	 4Ih+EFNXu2kpfU7tGWjzWXBgk5pyRkbuRxxuujV9lT0FQNyLkR94UQIYRGKHygdkBs
-	 jfOXdgQJakaJtw2enzxTVPTd5pmOsNbj4VaOaFDg=
-Date: Wed, 19 Feb 2025 06:09:07 +0100
+	b=JHJ2dQhgEGEU9XHZRYdpJh9ouXvg+EK03p6FxYi4Es8RtII/fARmJDvW9r2lADXlv
+	 NWlLS5XQ6rq+k84lrtV9ZhIJY+F374YFqdrJtySwbkszTomR7ofaRQQBBHPwLixvHu
+	 Kx/Rrqr77KRT51765LSBPmomgVc4/L7w68rP5w0Y=
+Date: Wed, 19 Feb 2025 06:10:42 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: "shuah@kernel.org" <shuah@kernel.org>,
-	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: Re: [External] : Re: [PATCH v2 Linux-6.12.y Linux-6.13.y 1/1]
- selftests/mm: build with -O2
-Message-ID: <2025021935-blandness-celibacy-5fea@gregkh>
-References: <20250204214723.1991309-1-yifei.l.liu@oracle.com>
- <2025020544-preview-worshiper-8539@gregkh>
- <C8A5840D-B312-40DC-A75D-3BA14614F8C4@oracle.com>
- <2025021143-limes-babble-e137@gregkh>
- <1D84255C-D49A-4056-9299-B1E6099154DE@oracle.com>
- <4FF4FFA8-1385-452D-9B44-D791B664D4E8@oracle.com>
+To: 2025021350-geometry-appear-9d84@gregkh.smtp.subspace.kernel.org
+Cc: shaggy@kernel.org, zhaomengmeng@kylinos.cn, llfamsec@gmail.com,
+	ancowi69@gmail.com, jfs-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] jfs: fix slab-out-of-bounds read in ea_get()
+Message-ID: <2025021902-overspend-buckwheat-e5c3@gregkh>
+References: <Z7UoUyuHzGWwvBOK@qasdev.system>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,52 +58,134 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4FF4FFA8-1385-452D-9B44-D791B664D4E8@oracle.com>
+In-Reply-To: <Z7UoUyuHzGWwvBOK@qasdev.system>
 
-On Wed, Feb 19, 2025 at 02:13:29AM +0000, Yifei Liu wrote:
+On Wed, Feb 19, 2025 at 12:39:47AM +0000, Qasim Ijaz wrote:
+> On Thu, Feb 13, 2025 at 11:07:07AM +0100, Greg KH wrote:
+> > On Thu, Feb 13, 2025 at 12:20:25AM +0000, Qasim Ijaz wrote:
+> > > During the "size_check" label in ea_get(), the code checks if the extended 
+> > > attribute list (xattr) size matches ea_size. If not, it logs 
+> > > "ea_get: invalid extended attribute" and calls print_hex_dump().
+> > > 
+> > > Here, EALIST_SIZE(ea_buf->xattr) returns 4110417968, which exceeds 
+> > > INT_MAX (2,147,483,647). Then ea_size is clamped:
+> > > 
+> > > 	int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+> > > 
+> > > Although clamp_t aims to bound ea_size between 0 and 4110417968, the upper 
+> > > limit is treated as an int, causing an overflow above 2^31 - 1. This leads 
+> > > "size" to wrap around and become negative (-184549328).
+> > > 
+> > > The "size" is then passed to print_hex_dump() (called "len" in 
+> > > print_hex_dump()), it is passed as type size_t (an unsigned 
+> > > type), this is then stored inside a variable called 
+> > > "int remaining", which is then assigned to "int linelen" which 
+> > > is then passed to hex_dump_to_buffer(). In print_hex_dump() 
+> > > the for loop, iterates through 0 to len-1, where len is 
+> > > 18446744073525002176, calling hex_dump_to_buffer() 
+> > > on each iteration:
+> > > 
+> > > 	for (i = 0; i < len; i += rowsize) {
+> > > 		linelen = min(remaining, rowsize);
+> > > 		remaining -= rowsize;
+> > > 
+> > > 		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
+> > > 				   linebuf, sizeof(linebuf), ascii);
+> > > 	
+> > > 		...
+> > > 	}
+> > > 	
+> > > The expected stopping condition (i < len) is effectively broken 
+> > > since len is corrupted and very large. This eventually leads to 
+> > > the "ptr+i" being passed to hex_dump_to_buffer() to get closer 
+> > > to the end of the actual bounds of "ptr", eventually an out of 
+> > > bounds access is done in hex_dump_to_buffer() in the following 
+> > > for loop:
+> > > 
+> > > 	for (j = 0; j < len; j++) {
+> > > 			if (linebuflen < lx + 2)
+> > > 				goto overflow2;
+> > > 			ch = ptr[j];
+> > > 		...
+> > > 	}
+> > > 
+> > > To fix this we should validate "EALIST_SIZE(ea_buf->xattr)" 
+> > > before it is utilised.
+> > > 
+> > > Reported-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
+> > > Tested-by: syzbot <syzbot+4e6e7e4279d046613bc5@syzkaller.appspotmail.com>
+> > > Closes: https://syzkaller.appspot.com/bug?extid=4e6e7e4279d046613bc5
+> > > Fixes: d9f9d96136cb ("jfs: xattr: check invalid xattr size more strictly")
+> > > Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+> > > ---
+> > >  fs/jfs/xattr.c | 15 ++++++++++-----
+> > >  1 file changed, 10 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
+> > > index 24afbae87225..7575c51cce9b 100644
+> > > --- a/fs/jfs/xattr.c
+> > > +++ b/fs/jfs/xattr.c
+> > > @@ -559,11 +555,16 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
+> > >  
+> > >        size_check:
+> > >  	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
+> > > -		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+> > > -
+> > > -		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+> > > -		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+> > > -				     ea_buf->xattr, size, 1);
+> > > +		if (unlikely(EALIST_SIZE(ea_buf->xattr) > INT_MAX)) {
+> > > +			printk(KERN_ERR "ea_get: extended attribute size too large: %u > INT_MAX\n",
+> > > +			       EALIST_SIZE(ea_buf->xattr));
+> > > +		} else {
+> > > +			int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+> > > +
+> > > +			printk(KERN_ERR "ea_get: invalid extended attribute\n");
+> > > +			print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+> > > +				       ea_buf->xattr, size, 1);
+> > > +		}
+> > >  		ea_release(inode, ea_buf);
+> > >  		rc = -EIO;
+> > >  		goto clean_up;
+> > > -- 
+> > > 2.39.5
+> > > 
+> > 
+> > Hi,
+> > 
+> > This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+> > a patch that has triggered this response.  He used to manually respond
+> > to these common problems, but in order to save his sanity (he kept
+> > writing the same thing over and over, yet to different people), I was
+> > created.  Hopefully you will not take offence and will fix the problem
+> > in your patch and resubmit it so that it can be accepted into the Linux
+> > kernel tree.
+> > 
+> > You are receiving this message because of the following common error(s)
+> > as indicated below:
+> > 
+> > - You have marked a patch with a "Fixes:" tag for a commit that is in an
+> >   older released kernel, yet you do not have a cc: stable line in the
+> >   signed-off-by area at all, which means that the patch will not be
+> >   applied to any older kernel releases.  To properly fix this, please
+> >   follow the documented rules in the
+> >   Documentation/process/stable-kernel-rules.rst file for how to resolve
+> >   this.
+> > 
+> > If you wish to discuss this problem further, or you have questions about
+> > how to resolve this issue, please feel free to respond to this email and
+> > Greg will reply once he has dug out from the pending patches received
+> > from other developers.
+> >
+> Hi Greg,
 > 
+> Just following up on this patch. I’ve sent v2 with the added CC stable tag. Here’s the link:
+> https://lore.kernel.org/all/20250213210553.28613-1-qasdev00@gmail.com/
 > 
-> > On Feb 11, 2025, at 4:33 PM, Yifei Liu <yifei.l.liu@oracle.com> wrote:
-> > 
-> > 
-> > 
-> >> On Feb 10, 2025, at 10:24 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
-> >> 
-> >> A: https://urldefense.com/v3/__http://en.wikipedia.org/wiki/Top_post__;!!ACWV5N9M2RV99hQ!I6O0EcBYMun5zy7pK39ZG9aJYrbv3Uy7IaJYl-fKOXJfmImBbzfXDFfOWeYY2o1JutHPBoAoI_b7xJQyjQ5nnfgv$ 
-> >> Q: Were do I find info about this thing called top-posting?
-> >> A: Because it messes up the order in which people normally read text.
-> >> Q: Why is top-posting such a bad thing?
-> >> A: Top-posting.
-> >> Q: What is the most annoying thing in e-mail?
-> >> 
-> >> A: No.
-> >> Q: Should I include quotations after my reply?
-> >> 
-> > Hi Greg,
-> > Sorry for the top-posting. I will not do that any more. 
-> >> https://urldefense.com/v3/__http://daringfireball.net/2007/07/on_top__;!!ACWV5N9M2RV99hQ!I6O0EcBYMun5zy7pK39ZG9aJYrbv3Uy7IaJYl-fKOXJfmImBbzfXDFfOWeYY2o1JutHPBoAoI_b7xJQyjanSNOhz$
-> >> 
-> >> On Mon, Feb 10, 2025 at 06:43:49PM +0000, Yifei Liu wrote:
-> >>> Hi Greg, 
-> >>> Yes, looks we only need this for linux-6.12.y. Maybe we could use the v1 version which does not include the linux-6.13.y tag. Or I can send a v3 with the linux-6.12.y only.
-> >> 
-> >> As you know, we can't take patches for only older kernels and not newer
-> >> ones.  Please submit them for all relevant branches, AND test your
-> >> patches before you submit them so that they don't fail on our side, as
-> >> that just wastes our energy :(
-> > For this patch, I believe it failed to apply to linux-6.13 due to another same patch applied before it. Commit d9eb5a1e76f5 ("selftests/mm: build with -O2”) goes into linux-6.13 with tag v6.13.2, last week’s tag. I checked the queue-6.12 and do not see this patch yet for v6.12. I think we still need this for v6.12. About the patch, it fixes a build issue for selftest/mm, which is bacported to v6.12. Thus this patch should only be backported to v6.12.
-> > 
-> > I tested it on my device and it works fine and solved the failure of selftest.
-> > 
-> Hi Greg, 
-> 
-> I checked the v6.12.16 tag released last Friday. It does not contain this patch. It looks we will not see the same situation we have for v6.13 like I mentioned above and it’s safe to include this in v6.12. 
+> Let me know if any further changes are needed.
 
-I don't know what "this patch" is here, sorry, I have no context.
-
-> I could resend a v3 with all the linux-6.13.y tags removed if you want. 
-
-Whatever needs to be applied, yes, please resend it properly.
+It's been less than one week, for a filesystem that is not actively
+maintained and no one should be using anymore, so please be patient.
 
 thanks,
 
