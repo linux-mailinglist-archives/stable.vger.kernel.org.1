@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-118226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174EDA3BA86
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:43:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B44A3B6DE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 910873BEB52
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E4D07A6A52
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBA11DE89B;
-	Wed, 19 Feb 2025 09:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6451DED5E;
+	Wed, 19 Feb 2025 09:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jo8ujuDW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dU4TKMQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C6D1DE8B0;
-	Wed, 19 Feb 2025 09:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9168A1DE3AE;
+	Wed, 19 Feb 2025 09:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957600; cv=none; b=Zo+jNjrDwi/pLOxTYTkIDbfB4KnsCk42Aeem9IXDr8LJZAcS7NEl/yaFr2ttU7e7SSIlXwM0zwEKmIMGgR+kuI4t4JBbrPH3VBOzqikrqDG5QY+2/MuUXX0xuVbFOY6TTjWMJW0IafGYEqOthOvjX18ePuBYbYFqao2QHAjfpbA=
+	t=1739955904; cv=none; b=ceWShIf2dJow3axRJbr1y+bXB2F5aq4f3IjGRVQecRzwevVc8RDNUKKEfyviV58w9BMQ7XfQbuiV9zEadLufC+dZvDwitpRfZ/TX2C0Dtzi51CuPM10iHjtajO8bQBR/aK6vbOG90M9CXbQSYXwVn3DAqODGcyimi0qK1/YeUjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957600; c=relaxed/simple;
-	bh=THdSF2SX+lzr54sO+bveNOek/GfRMn9wn8e2NfgV0Xc=;
+	s=arc-20240116; t=1739955904; c=relaxed/simple;
+	bh=KqV1jh75NvL3XcaKBSpWRLEazfijzrY3T2aIYxyZq/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqmpN9Svww4/DMzpRaSkbYUgkRBYXqj0SAovG2SVhQuZ5sqGP8YXWfWhwyqQ1ciFTdL88EyB799Y4XpKlGta0j+1BqIqdI+MY9dpFBw0J9n2DH0Qg363QTrpc8gzu6/uYoeUjRNM/6xIsuiS2ntQDkRgS3BDoR0EFEiapd5gM3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jo8ujuDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D46CC4CED1;
-	Wed, 19 Feb 2025 09:33:17 +0000 (UTC)
+	 MIME-Version; b=NxOBAdPQiJp2hHRoxCtCZvBZ4EM5x6hPTAvoTMFVx3kPbjbgytBqUUG0fvheetwXmiX0Khefkz8cGZ35EYlqIRk0D7BMpaMdhPLLjRbP1FxrnwO8kiHiX3PkCm9Aa9tT2axQbQyX3c68uKSKBmCyaY6/uLeZccMzQKXpW5d5E4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dU4TKMQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F95C4CEE7;
+	Wed, 19 Feb 2025 09:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957597;
-	bh=THdSF2SX+lzr54sO+bveNOek/GfRMn9wn8e2NfgV0Xc=;
+	s=korg; t=1739955904;
+	bh=KqV1jh75NvL3XcaKBSpWRLEazfijzrY3T2aIYxyZq/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jo8ujuDWX6XMPmniA0fyQtnOP+H0eT0dJjhA5J+RR886LlHPVGV05LBTVC8l9MS81
-	 AfQsf9UW5vXr5GshJRmFoGa1wOGZqcxqMt15z7w1BqANWJ34jiczy9zbBSjnIZdZJ5
-	 n4AXqFFuzcetWjl20SVVJkMaPrLpbMIOd/FIKKaM=
+	b=dU4TKMQDMME1/p62JV9oUAcBGUOpoJMZBozhXnu6Y3YHINWmQhpG6JqnA2NeL6nBT
+	 l7EQV8ZgytZkAFQlqa7q7Xkh6UA81/+ZRfIkD/ZgC74cgDubqksWDEs3KKfDSwQj5K
+	 R/D6Pu5JnWUm1BB1AdjF/dHkbeSsg8aQsrjnQa2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Brian Norris <briannorris@chromium.org>
-Subject: [PATCH 6.1 559/578] kdb: Do not assume write() callback available
-Date: Wed, 19 Feb 2025 09:29:23 +0100
-Message-ID: <20250219082714.945543689@linuxfoundation.org>
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michael Kelley <mhkelley@outlook.com>
+Subject: [PATCH 6.6 151/152] x86/i8253: Disable PIT timer 0 when not in use
+Date: Wed, 19 Feb 2025 09:29:24 +0100
+Message-ID: <20250219082556.019564336@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 6d3e0d8cc63221dec670d0ee92ac57961581e975 upstream.
+commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60 upstream.
 
-It is allowed for consoles to not provide a write() callback. For
-example ttynull does this.
+Leaving the PIT interrupt running can cause noticeable steal time for
+virtual guests. The VMM generally has a timer which toggles the IRQ input
+to the PIC and I/O APIC, which takes CPU time away from the guest. Even
+on real hardware, running the counter may use power needlessly (albeit
+not much).
 
-Check if a write() callback is available before using it.
+Make sure it's turned off if it isn't going to be used.
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230717194607.145135-2-john.ogness@linutronix.de
-Cc: Brian Norris <briannorris@chromium.org>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Michael Kelley <mhkelley@outlook.com>
+Link: https://lore.kernel.org/all/20240802135555.564941-1-dwmw2@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/kdb/kdb_io.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/i8253.c     |   11 +++++++++--
+ drivers/clocksource/i8253.c |   13 +++++++++----
+ include/linux/i8253.h       |    1 +
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -576,6 +576,8 @@ static void kdb_msg_write(const char *ms
- 			continue;
- 		if (c == dbg_io_ops->cons)
- 			continue;
-+		if (!c->write)
-+			continue;
- 		/*
- 		 * Set oops_in_progress to encourage the console drivers to
- 		 * disregard their internal spin locks: in the current calling
+--- a/arch/x86/kernel/i8253.c
++++ b/arch/x86/kernel/i8253.c
+@@ -8,6 +8,7 @@
+ #include <linux/timex.h>
+ #include <linux/i8253.h>
+ 
++#include <asm/hypervisor.h>
+ #include <asm/apic.h>
+ #include <asm/hpet.h>
+ #include <asm/time.h>
+@@ -39,9 +40,15 @@ static bool __init use_pit(void)
+ 
+ bool __init pit_timer_init(void)
+ {
+-	if (!use_pit())
++	if (!use_pit()) {
++		/*
++		 * Don't just ignore the PIT. Ensure it's stopped, because
++		 * VMMs otherwise steal CPU time just to pointlessly waggle
++		 * the (masked) IRQ.
++		 */
++		clockevent_i8253_disable();
+ 		return false;
+-
++	}
+ 	clockevent_i8253_init(true);
+ 	global_clock_event = &i8253_clockevent;
+ 	return true;
+--- a/drivers/clocksource/i8253.c
++++ b/drivers/clocksource/i8253.c
+@@ -108,11 +108,8 @@ int __init clocksource_i8253_init(void)
+ #endif
+ 
+ #ifdef CONFIG_CLKEVT_I8253
+-static int pit_shutdown(struct clock_event_device *evt)
++void clockevent_i8253_disable(void)
+ {
+-	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
+-		return 0;
+-
+ 	raw_spin_lock(&i8253_lock);
+ 
+ 	outb_p(0x30, PIT_MODE);
+@@ -123,6 +120,14 @@ static int pit_shutdown(struct clock_eve
+ 	}
+ 
+ 	raw_spin_unlock(&i8253_lock);
++}
++
++static int pit_shutdown(struct clock_event_device *evt)
++{
++	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
++		return 0;
++
++	clockevent_i8253_disable();
+ 	return 0;
+ }
+ 
+--- a/include/linux/i8253.h
++++ b/include/linux/i8253.h
+@@ -24,6 +24,7 @@ extern raw_spinlock_t i8253_lock;
+ extern bool i8253_clear_counter_on_shutdown;
+ extern struct clock_event_device i8253_clockevent;
+ extern void clockevent_i8253_init(bool oneshot);
++extern void clockevent_i8253_disable(void);
+ 
+ extern void setup_pit_timer(void);
+ 
 
 
 
