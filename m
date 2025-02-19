@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-118011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF96CA3B98F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF47BA3B8D1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6AA421206
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 701FA7A30E6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855771DEFF1;
-	Wed, 19 Feb 2025 09:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4249D1DFDA2;
+	Wed, 19 Feb 2025 09:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8nPUdaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpKbKGXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4268B1DEFE9;
-	Wed, 19 Feb 2025 09:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007991DFD80;
+	Wed, 19 Feb 2025 09:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956982; cv=none; b=VEVAU/3bNZrhn36hauo/T5I7tQR9ydkSV15neJ5XquzLId1HPJIYuaNCpGMBSK/kBrFOxaQz761TOhezc3qaXFMVK6HKjDOyvi/LSHjvMz/XZcFwtZI/hSkiOnq8D1Nad0WXdtkCVninItMaTTAfQcm99FdBzINqR8vBSS8kyBc=
+	t=1739957014; cv=none; b=ApeIe4f9Q3wqdxPr1d9qPGKDSymxkuKI+nKWQQgZGB/wJtaFdF84yZ8g8NGL2KPUkGfRPMIjCZdZ/gACH0WtLB9T7XHyw9NEwbK/kjvJzL+zBKSbbwmpyBNyyEPjHIc98c+v3O6HsAjT5x9CrmtDbNXyhxfJKbsDj6FWf+jGZik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956982; c=relaxed/simple;
-	bh=1cS+/uktUWUByPkNXPLnVGAYBJkhsp6RIPubh/v8YLk=;
+	s=arc-20240116; t=1739957014; c=relaxed/simple;
+	bh=UQzChL/mTVGyn5j7AE1f+l2lKKyaMtKu4iVCwquD86o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Am6M8NZxV17UR5iZ6N5Zev0CSdXr90A7b3MgSFCrfaHDDa/g9xJmEgqxDEp9mGLuXNVctCKJbFEfLCbmUE1ZnAmg09No6tilmDnD2h3FxtFF6hnHi0GDJVUPCytzB3i7DlGH7cieOjRw41ZoGqfz6r+r1oKLD4QyyJyhwE9H/JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8nPUdaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C139EC4CED1;
-	Wed, 19 Feb 2025 09:23:01 +0000 (UTC)
+	 MIME-Version; b=BkoHiDOq0E8/sFSrwuXSSttmh1ITLYJoRgy8My0sHp6TkKyrce7/JNY8GDh6eN7dx5EZ1BxtUE4hnAekhnH6e087wWbk+OpQKhswQWeHhWWId5VbJbIxTrGZYeG9Q65dTUIfOj16GOBofDyj+HzSdCzpXbNYJLAxhFiFv9qMCe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpKbKGXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE73C4CEE6;
+	Wed, 19 Feb 2025 09:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956982;
-	bh=1cS+/uktUWUByPkNXPLnVGAYBJkhsp6RIPubh/v8YLk=;
+	s=korg; t=1739957013;
+	bh=UQzChL/mTVGyn5j7AE1f+l2lKKyaMtKu4iVCwquD86o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8nPUdaEjLTmwst2Je/oHJYsiIPah47JSWSfmYqLRO7yhhQsHMNaJm3w8bTlusLOR
-	 ODSBsLb/N+T4lawm4S2DnshCehzSgdKzaGz+C7u+t28ekX6UXkb0queFGI54RQuKQl
-	 GWS6V1FCPBDrTu700/U6T5n1Rs1wp98EHijVqNS0=
+	b=mpKbKGXGlQkRiSzZDHwF+/Wo4q1Kej11s5fFwY/qvTRRhNQLADAn4W6k+i40OXu4L
+	 w/iA0V5T970V5N2IczZoPMV9apDy7tKzSO6ZKceABlvsM+9Xm+rpSacmhBGzohQE2G
+	 l4aGF2RDPHe+l5I9ngSiKmM/0c45WjpYLRqDc9uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <wayne.lin@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 350/578] Revert "drm/amd/display: Use HW lock mgr for PSR1"
-Date: Wed, 19 Feb 2025 09:25:54 +0100
-Message-ID: <20250219082706.789516167@linuxfoundation.org>
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.1 351/578] drm/i915/guc: Debug print LRC state entries only if the context is pinned
+Date: Wed, 19 Feb 2025 09:25:55 +0100
+Message-ID: <20250219082706.828361155@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,35 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-commit f245b400a223a71d6d5f4c72a2cb9b573a7fc2b6 upstream.
+commit 57965269896313e1629a518d3971ad55f599b792 upstream.
 
-This reverts commit
-a2b5a9956269 ("drm/amd/display: Use HW lock mgr for PSR1")
+After the context is unpinned the backing memory can also be unpinned,
+so any accesses via the lrc_reg_state pointer can end up in unmapped
+memory. To avoid that, make sure to only access that memory if the
+context is pinned when printing its info.
 
-Because it may cause system hang while connect with two edp panel.
+v2: fix newline alignment
 
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 28ff6520a34d ("drm/i915/guc: Update GuC debugfs to support new GuC")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v5.15+
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250115001334.3875347-1-daniele.ceraolospurio@intel.com
+(cherry picked from commit 5bea40687c5cf2a33bf04e9110eb2e2b80222ef5)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -65,8 +65,7 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct
- 
- bool should_use_dmub_lock(struct dc_link *link)
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+@@ -4764,12 +4764,20 @@ static inline void guc_log_context(struc
  {
--	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
--	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
- 		return true;
- 	return false;
- }
+ 	drm_printf(p, "GuC lrc descriptor %u:\n", ce->guc_id.id);
+ 	drm_printf(p, "\tHW Context Desc: 0x%08x\n", ce->lrc.lrca);
+-	drm_printf(p, "\t\tLRC Head: Internal %u, Memory %u\n",
+-		   ce->ring->head,
+-		   ce->lrc_reg_state[CTX_RING_HEAD]);
+-	drm_printf(p, "\t\tLRC Tail: Internal %u, Memory %u\n",
+-		   ce->ring->tail,
+-		   ce->lrc_reg_state[CTX_RING_TAIL]);
++	if (intel_context_pin_if_active(ce)) {
++		drm_printf(p, "\t\tLRC Head: Internal %u, Memory %u\n",
++			   ce->ring->head,
++			   ce->lrc_reg_state[CTX_RING_HEAD]);
++		drm_printf(p, "\t\tLRC Tail: Internal %u, Memory %u\n",
++			   ce->ring->tail,
++			   ce->lrc_reg_state[CTX_RING_TAIL]);
++		intel_context_unpin(ce);
++	} else {
++		drm_printf(p, "\t\tLRC Head: Internal %u, Memory not pinned\n",
++			   ce->ring->head);
++		drm_printf(p, "\t\tLRC Tail: Internal %u, Memory not pinned\n",
++			   ce->ring->tail);
++	}
+ 	drm_printf(p, "\t\tContext Pin Count: %u\n",
+ 		   atomic_read(&ce->pin_count));
+ 	drm_printf(p, "\t\tGuC ID Ref Count: %u\n",
 
 
 
