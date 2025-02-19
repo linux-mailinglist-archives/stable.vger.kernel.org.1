@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF64A3B6BD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC810A3BA7B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71EE17EB9A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E6D8022C6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F5E1EB5C1;
-	Wed, 19 Feb 2025 08:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D793F1DF731;
+	Wed, 19 Feb 2025 09:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7TJK97Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT69F5XV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FB81BEF71;
-	Wed, 19 Feb 2025 08:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949171DF277;
+	Wed, 19 Feb 2025 09:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955332; cv=none; b=UGVk3wghh1MAuf6z9glZd19CO/AYoIMZBmn6k3f6P/wSIIbkwLJV345zHdzjNPK4WvRYkzOnpGl9HgF419wghPlGAQwjYU3zdC8MVFnLgyialbK6G/iWTKOQck1QlNLb6rVjyxViXQVqaYey5wRC5ps4MKyZV2cbT2SBaHxDwLY=
+	t=1739957439; cv=none; b=bBtBtmv6ep8O2MduSmfum3ML3yFHSvxswKKn/t3iHKRfjdQTh15ZqUeOAvjuGHBPT5P/zXVwZLK88tS5CCjPCH4iyotKnJajPrKbVHzKvbXlSPCWPMTrqIiPBvevcQPPnFcPY4bUTgJ2SQ1fCD8GgDQbLNCKHtYd8xbd5TiAHUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955332; c=relaxed/simple;
-	bh=0RjgU5EOVxbv9Qxt4yoTKPM2ZjXrG9D+eKGtocrSk0E=;
+	s=arc-20240116; t=1739957439; c=relaxed/simple;
+	bh=b/8/GqFzR0aIaA3BV7kzlR7ffuZGcqbZ5rfEZG9OpcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eo5BYWV3TTFTq+8BOLamVsvnG/hI6wnr+Ug26JfKcCWlkd1FwEsUJs5IAral310DAhjBDgmHSjurDxZ/6YGn5fD6Df/PzARgtyrN2Jx8doNACTs3NLfO+eMaJm77N0LqsDlO6wjdEgQCkMIeraDvOzTk9MZx4fuwGjuGx5ETJi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7TJK97Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA05C4CEE8;
-	Wed, 19 Feb 2025 08:55:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a8xbTuTGhkwYmnEfgIXZKc7sD6Kmj8XPmOAnZQ5oAvzDfJ2yCW2DgkbAxdEnawi1yv6ckG3RAfHqd361uFkTyjkPi85W4x1k3RnXQ9n7IILXjoH9t5nqL4BfvSjqiAVD7BOhOtHqp/dmkX6RxH3drgEsyiUSde8h84NeCZ+Y5T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT69F5XV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BD0C4CED1;
+	Wed, 19 Feb 2025 09:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955332;
-	bh=0RjgU5EOVxbv9Qxt4yoTKPM2ZjXrG9D+eKGtocrSk0E=;
+	s=korg; t=1739957439;
+	bh=b/8/GqFzR0aIaA3BV7kzlR7ffuZGcqbZ5rfEZG9OpcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7TJK97ZaTfQIPU2Nuub9T0GvC3HkY2dQPx8Dyg61IVIU6F1OMPBuWHynVH4UWwX6
-	 diAnvHcwFEYZCPnAxAFyBTZlf9w/W5Sn3K9bzw5TdBC6uk4mneXxBfw6fzVy9COhrr
-	 CdY1DyuInZaZIUiEah7ua54ugaEl0eRVpI8OJm6A=
+	b=OT69F5XVFAWGgCD43DqxoUpFgULXxOy2/wgjIQ+S0RLqODBbV1hEnA/zw7P+nYpME
+	 OjiqDisB02qTgexpbuuqzpSZGPkxx12N9Dh37ZiX33o+cr/vCRuMXZftlnsLaaVPQD
+	 exYPis354hSLG5ya2sTz8TK+wE/Eb0kMWXBewPXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/230] scsi: ufs: core: Prepare to introduce a new clock_gating lock
-Date: Wed, 19 Feb 2025 09:28:08 +0100
-Message-ID: <20250219082608.392696187@linuxfoundation.org>
+Subject: [PATCH 6.1 485/578] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
+Date: Wed, 19 Feb 2025 09:28:09 +0100
+Message-ID: <20250219082712.079848919@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 7869c6521f5715688b3d1f1c897374a68544eef0 ]
+[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
 
-Remove hba->clk_gating.active_reqs check from ufshcd_is_ufs_dev_busy()
-function to separate clock gating logic from general device busy checks.
+Apparently the Raptor Lake-P reference firmware configures the PIO log size
+correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
+Zenbook UX3402VA_UX3402VA, do not.
 
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20241124070808.194860-3-avri.altman@wdc.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 839a74b5649c ("scsi: ufs: Fix toggling of clk_gating.state when clock gating is not allowed")
+Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
+
+  DPC: RP PIO log size 0 is invalid
+
+and also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
+
+Note that the bug report also mentions 8086:a76e, which has been already
+added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
+Root Ports").
+
+Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/pci/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 94d7992457a3b..217619d64940e 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -266,8 +266,7 @@ static bool ufshcd_has_pending_tasks(struct ufs_hba *hba)
- 
- static bool ufshcd_is_ufs_dev_busy(struct ufs_hba *hba)
- {
--	return hba->clk_gating.active_reqs || hba->outstanding_reqs ||
--	       ufshcd_has_pending_tasks(hba);
-+	return hba->outstanding_reqs || ufshcd_has_pending_tasks(hba);
- }
- 
- static const struct ufs_dev_quirk ufs_fixups[] = {
-@@ -1973,7 +1972,9 @@ static void ufshcd_gate_work(struct work_struct *work)
- 		goto rel_lock;
- 	}
- 
--	if (ufshcd_is_ufs_dev_busy(hba) || hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL)
-+	if (ufshcd_is_ufs_dev_busy(hba) ||
-+	    hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL ||
-+	    hba->clk_gating.active_reqs)
- 		goto rel_lock;
- 
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
-@@ -8272,7 +8273,9 @@ static void ufshcd_rtc_work(struct work_struct *work)
- 	hba = container_of(to_delayed_work(work), struct ufs_hba, ufs_rtc_update_work);
- 
- 	 /* Update RTC only when there are no requests in progress and UFSHCI is operational */
--	if (!ufshcd_is_ufs_dev_busy(hba) && hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL)
-+	if (!ufshcd_is_ufs_dev_busy(hba) &&
-+	    hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL &&
-+	    !hba->clk_gating.active_reqs)
- 		ufshcd_update_rtc(hba);
- 
- 	if (ufshcd_is_ufs_dev_active(hba) && hba->dev_info.rtc_update_period)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 2b3df65005ca8..c16c8507d048e 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6139,6 +6139,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
 -- 
 2.39.5
 
