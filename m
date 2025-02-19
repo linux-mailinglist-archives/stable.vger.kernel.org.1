@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-117003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FDBA3B3EF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3C2A3B474
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8552172BC3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4E88174470
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E8A1C68B6;
-	Wed, 19 Feb 2025 08:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A6E1DE3D6;
+	Wed, 19 Feb 2025 08:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+qIr2Do"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kq6nwkti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58BB1AF0C8;
-	Wed, 19 Feb 2025 08:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BB51DE2B7;
+	Wed, 19 Feb 2025 08:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953904; cv=none; b=UhwJ04YTJS5aLM9YXyv34PmQ3WUZOPFsm5YSmOPi/7LziSz3d/SM21t5Rw0l52lG1qf+4yADgUE/nG0N9C/h34i1UckasHo6cjlcE+GvYsO97s7hmUQDf/TDx0UHi9iNDAaB7HMv2KvVNB1D01nraelQ3wZd3e43DIkkbQrFNd8=
+	t=1739954035; cv=none; b=eWaEN3F2hVF0rnN/E36xTuJ3rQfZRa2DbYGKew7+Gp8/M3CqJx+C2VJFYBZFuF05uU0hFHSTguMWk5yYXBdp2OScDuV9byGCtqEF5+ZkciZgtzJcws+SKfVOHW09nSFSldGDjBecSAjah1+jfN/4uOSLb8jPa1jhe0hTEmVm6lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953904; c=relaxed/simple;
-	bh=/JZ4h2bV4j9rvJ74SbHmLqQjqIAMH542/EAsdFMdqGw=;
+	s=arc-20240116; t=1739954035; c=relaxed/simple;
+	bh=gaG1zQD8h0ll6+xT9ZALVO0MBqgX11Xkn+WxpX4OtL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WjoMK66shMobL0EuoQqD1RcSR1t72Y/aBGWiLyaWiLWiJ4qGB/ltroOqJzP5XFYnmtvLCxHsCoKFwuNPW3wTGnnVdNGfiWN52PKGSb5Q+JDs3lLYe5sWQGiMQrEA6Psf15Ivyp4ilFqZcOyWpQ44aHZk5iQ7mKWu3YBJucFWqI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+qIr2Do; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F5FC4CED1;
-	Wed, 19 Feb 2025 08:31:43 +0000 (UTC)
+	 MIME-Version; b=LKuuCJVRJ/oXs4bNeFYi6NJ8wIH6VeVgMxhBGzS6t3qT2iljfdgQf4h6xEnDruv+w2xeFWASwKN8wbBLMoM7MQ0jYJWXP3MgXnDgMY1SGSsp7mIaiEQHOreXv4Nypl91hopN4su2OGuzAlOTaH3Nv44ob9yYPjRkwMRrnCR/vRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq6nwkti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8ABC4CED1;
+	Wed, 19 Feb 2025 08:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739953903;
-	bh=/JZ4h2bV4j9rvJ74SbHmLqQjqIAMH542/EAsdFMdqGw=;
+	s=korg; t=1739954035;
+	bh=gaG1zQD8h0ll6+xT9ZALVO0MBqgX11Xkn+WxpX4OtL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+qIr2DoaV9CI/RRkb6h8g2yB4k41js/GJ9Z4VdXW7XVNzRUOBUFbEazvwB0HhaoA
-	 tc/OUUEPasdxA+EATS/FYFQ8Z9aDGlaNYtTT10JcgG7+u7eKz9bbzoZ3V5CLyK/IFY
-	 KhOkt9IkhwvJC4nPviiBF2zkRRAV59Jq72kaLQKw=
+	b=Kq6nwktiO4hJMLR/oY9tQFm7PkU8NFdWvmCrw9C/rwII/yHWSJr6RecWYwCc0wBfA
+	 BmhFixUe8JWBTMXng+FetRZbZsxgp89AXFOcNxgRiSc9o1I6eCSGiub7c8IElbJVcd
+	 d5c7N2M5pNYD2kHy/iCWdkvuV6Fv36nnykehqdNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 032/274] LoongArch: KVM: Fix typo issue about GCFG feature detection
-Date: Wed, 19 Feb 2025 09:24:46 +0100
-Message-ID: <20250219082610.788623878@linuxfoundation.org>
+Subject: [PATCH 6.13 033/274] net: ethernet: ti: am65-cpsw: fix memleak in certain XDP cases
+Date: Wed, 19 Feb 2025 09:24:47 +0100
+Message-ID: <20250219082610.826980528@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -66,38 +66,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit bdb13252e5d1518823b81f458d9975c85d5240c2 ]
+[ Upstream commit 5db843258de1e4e6b1ef1cbd1797923c9e3de548 ]
 
-This is typo issue and misusage about GCFG feature macro. The code
-is wrong, only that it does not cause obvious problem since GCFG is
-set again on vCPU context switch.
+If the XDP program doesn't result in XDP_PASS then we leak the
+memory allocated by am65_cpsw_build_skb().
 
-Fixes: 0d0df3c99d4f ("LoongArch: KVM: Implement kvm hardware enable, disable interface")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+It is pointless to allocate SKB memory before running the XDP
+program as we would be wasting CPU cycles for cases other than XDP_PASS.
+Move the SKB allocation after evaluating the XDP program result.
+
+This fixes the memleak. A performance boost is seen for XDP_DROP test.
+
+XDP_DROP test:
+Before: 460256 rx/s                  0 err/s
+After:  784130 rx/s                  0 err/s
+
+Fixes: 8acacc40f733 ("net: ethernet: ti: am65-cpsw: Add minimal XDP support")
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Link: https://patch.msgid.link/20250210-am65-cpsw-xdp-fixes-v1-1-ec6b1f7f1aca@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 26 ++++++++++++------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-index 396fed2665a51..034402e0948c9 100644
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -285,9 +285,9 @@ int kvm_arch_enable_virtualization_cpu(void)
- 	 * TOE=0:       Trap on Exception.
- 	 * TIT=0:       Trap on Timer.
- 	 */
--	if (env & CSR_GCFG_GCIP_ALL)
-+	if (env & CSR_GCFG_GCIP_SECURE)
- 		gcfg |= CSR_GCFG_GCI_SECURE;
--	if (env & CSR_GCFG_MATC_ROOT)
-+	if (env & CSR_GCFG_MATP_ROOT)
- 		gcfg |= CSR_GCFG_MATC_ROOT;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 2be2889d0646b..0bbbd4cb6fb5c 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -698,7 +698,8 @@ static void am65_cpsw_nuss_tx_cleanup(void *data, dma_addr_t desc_dma)
  
- 	write_csr_gcfg(gcfg);
+ static struct sk_buff *am65_cpsw_build_skb(void *page_addr,
+ 					   struct net_device *ndev,
+-					   unsigned int len)
++					   unsigned int len,
++					   unsigned int headroom)
+ {
+ 	struct sk_buff *skb;
+ 
+@@ -708,7 +709,7 @@ static struct sk_buff *am65_cpsw_build_skb(void *page_addr,
+ 	if (unlikely(!skb))
+ 		return NULL;
+ 
+-	skb_reserve(skb, AM65_CPSW_HEADROOM);
++	skb_reserve(skb, headroom);
+ 	skb->dev = ndev;
+ 
+ 	return skb;
+@@ -1279,16 +1280,8 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
+ 	dev_dbg(dev, "%s rx csum_info:%#x\n", __func__, csum_info);
+ 
+ 	dma_unmap_single(rx_chn->dma_dev, buf_dma, buf_dma_len, DMA_FROM_DEVICE);
+-
+ 	k3_cppi_desc_pool_free(rx_chn->desc_pool, desc_rx);
+ 
+-	skb = am65_cpsw_build_skb(page_addr, ndev,
+-				  AM65_CPSW_MAX_PACKET_SIZE);
+-	if (unlikely(!skb)) {
+-		new_page = page;
+-		goto requeue;
+-	}
+-
+ 	if (port->xdp_prog) {
+ 		xdp_init_buff(&xdp, PAGE_SIZE, &port->xdp_rxq[flow->id]);
+ 		xdp_prepare_buff(&xdp, page_addr, AM65_CPSW_HEADROOM,
+@@ -1298,9 +1291,16 @@ static int am65_cpsw_nuss_rx_packets(struct am65_cpsw_rx_flow *flow,
+ 		if (*xdp_state != AM65_CPSW_XDP_PASS)
+ 			goto allocate;
+ 
+-		/* Compute additional headroom to be reserved */
+-		headroom = (xdp.data - xdp.data_hard_start) - skb_headroom(skb);
+-		skb_reserve(skb, headroom);
++		headroom = xdp.data - xdp.data_hard_start;
++	} else {
++		headroom = AM65_CPSW_HEADROOM;
++	}
++
++	skb = am65_cpsw_build_skb(page_addr, ndev,
++				  AM65_CPSW_MAX_PACKET_SIZE, headroom);
++	if (unlikely(!skb)) {
++		new_page = page;
++		goto requeue;
+ 	}
+ 
+ 	ndev_priv = netdev_priv(ndev);
 -- 
 2.39.5
 
