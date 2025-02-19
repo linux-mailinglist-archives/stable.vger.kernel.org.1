@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-117492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCDAA3B705
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD70A3BA5D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15FE17E217
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F868015AC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDC21EB5FD;
-	Wed, 19 Feb 2025 08:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F391EEA34;
+	Wed, 19 Feb 2025 09:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPIbJFVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF6J4tnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798F81DE4CE;
-	Wed, 19 Feb 2025 08:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268651D5175;
+	Wed, 19 Feb 2025 09:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955456; cv=none; b=eIJuG4tRm7u7yhjmngSFoS800GOWhpfRr/fO87CaDgFSARezhC7AgCdN4GV9k0PfgWi4DV74bYRDxPGVHz7ZLdXZkH0SN+AVHaJjBDqOFAImhk4eB+dh57P4kdjAWxWQW+pDac14aeR+Hl2n4ZQe3RdHQfKPLvw8mVJHSxBoeWs=
+	t=1739957230; cv=none; b=UPh8QOPunU+O9EThz0/RX19ShXNJN7RZCMV/PkxWF/QeIvQph89yZsyLfKcDP++gaAGR4GfRQolqkCwnD0ioW4/ueqxRxJoG3sLX6GDdKCGAbgaWeCNx9wSzJud+7rnBTS7EB3slNIk7fTqgJnw/MgvfwwCMcfmttmqgnhHDiKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955456; c=relaxed/simple;
-	bh=ZGAMowGKLey3pboM4nozFNxlabxdQVRYLM86Hs8LRvY=;
+	s=arc-20240116; t=1739957230; c=relaxed/simple;
+	bh=guFFBN6DbYYXrM4QWf5pAlwkmfPt15JXYwXz4vNK/Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUOoOUdnalarSWC8kBhwV+B2K/lZHvKb+zidPlALWmoYgq/hAhvFS5p6WnqgRr8qmBtDJKJJPvrfG18oS/dxTJCe8r3RtlZpcHFBU/51BxTpmI1fKa4o1vCrxs9ShQuQTZ+iw+kz1UBqTrGjVcPNKtQdAvfmi+W0IzmaSucJHfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPIbJFVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F93C4CED1;
-	Wed, 19 Feb 2025 08:57:35 +0000 (UTC)
+	 MIME-Version; b=ahfggLDhEb6zx7I1LAmkgAQqg+9sDI1Qv5OqR9Aj2QzdmyTVH/i1HbWl1LCbjbtZNjhiAWyTC+GLbDTQwqbqbjOExixwFCAVnFtELzp2l9l5dVhDNsZ0yv5EZl7iBaPjO/TmIOttkUWSPSGjJDlE2ez2ZEVvJkFaPBsQHK3LHcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF6J4tnP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B26C4CEEB;
+	Wed, 19 Feb 2025 09:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955455;
-	bh=ZGAMowGKLey3pboM4nozFNxlabxdQVRYLM86Hs8LRvY=;
+	s=korg; t=1739957229;
+	bh=guFFBN6DbYYXrM4QWf5pAlwkmfPt15JXYwXz4vNK/Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPIbJFVJvMfTLSgG6jkCJL22Rk5PuTl9wEFPmHq/76BBO1HgUEu54bvmuZ6YAOR8v
-	 3nM5Ok3WXc0rfoHgPV0cCnnEvQcO6xp3LSokiH4SlS7VTDEvdUyMfB7XyLaEap01KL
-	 2XPleXvPMFfLGTIE1Jfxr2nrUcWW0LwLgddhDJX0=
+	b=YF6J4tnPY1e+bLjI73SNELI+Eh+7CG3dKxWQbC5fCvcgSeY1SB3AXdyAcLx6vM57z
+	 yUHS/Z1QDrCxMJafOs2B+191+0JQIMVQvntMB9Cq64I2er56/nHsKi2hSTXVEeSDQ+
+	 Im5S2sU22T8c/is3AreckecvEenrxBxtcIHwaj6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/152] LoongArch: csum: Fix OoB access in IP checksum code for negative lengths
-Date: Wed, 19 Feb 2025 09:27:05 +0100
-Message-ID: <20250219082550.514739235@linuxfoundation.org>
+	Sergey Galas <ssgalas@cloud.ru>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 422/578] io_uring/net: dont retry connect operation on EPOLLERR
+Date: Wed, 19 Feb 2025 09:27:06 +0100
+Message-ID: <20250219082709.617465244@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 6287f1a8c16138c2ec750953e35039634018c84a ]
+commit 8c8492ca64e79c6e0f433e8c9d2bcbd039ef83d0 upstream.
 
-Commit 69e3a6aa6be2 ("LoongArch: Add checksum optimization for 64-bit
-system") would cause an undefined shift and an out-of-bounds read.
+If a socket is shutdown before the connection completes, POLLERR is set
+in the poll mask. However, connect ignores this as it doesn't know, and
+attempts the connection again. This may lead to a bogus -ETIMEDOUT
+result, where it should have noticed the POLLERR and just returned
+-ECONNRESET instead.
 
-Commit 8bd795fedb84 ("arm64: csum: Fix OoB access in IP checksum code
-for negative lengths") fixes the same issue on ARM64.
+Have the poll logic check for whether or not POLLERR is set in the mask,
+and if so, mark the request as failed. Then connect can appropriately
+fail the request rather than retry it.
 
-Fixes: 69e3a6aa6be2 ("LoongArch: Add checksum optimization for 64-bit system")
-Co-developed-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Sergey Galas <ssgalas@cloud.ru>
+Cc: stable@vger.kernel.org
+Link: https://github.com/axboe/liburing/discussions/1335
+Fixes: 3fb1bd688172 ("io_uring/net: handle -EINPROGRESS correct for IORING_OP_CONNECT")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/lib/csum.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/net.c  |    5 +++++
+ io_uring/poll.c |    2 ++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/loongarch/lib/csum.c b/arch/loongarch/lib/csum.c
-index a5e84b403c3b3..df309ae4045de 100644
---- a/arch/loongarch/lib/csum.c
-+++ b/arch/loongarch/lib/csum.c
-@@ -25,7 +25,7 @@ unsigned int __no_sanitize_address do_csum(const unsigned char *buff, int len)
- 	const u64 *ptr;
- 	u64 data, sum64 = 0;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1486,6 +1486,11 @@ int io_connect(struct io_kiocb *req, uns
+ 		io = &__io;
+ 	}
  
--	if (unlikely(len == 0))
-+	if (unlikely(len <= 0))
- 		return 0;
++	if (unlikely(req->flags & REQ_F_FAIL)) {
++		ret = -ECONNRESET;
++		goto out;
++	}
++
+ 	file_flags = force_nonblock ? O_NONBLOCK : 0;
  
- 	offset = (unsigned long)buff & 7;
--- 
-2.39.5
-
+ 	ret = __sys_connect_file(req->file, &io->address,
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -288,6 +288,8 @@ static int io_poll_check_events(struct i
+ 				return IOU_POLL_REISSUE;
+ 			}
+ 		}
++		if (unlikely(req->cqe.res & EPOLLERR))
++			req_set_fail(req);
+ 		if (req->apoll_events & EPOLLONESHOT)
+ 			return IOU_POLL_DONE;
+ 		if (io_is_uring_fops(req->file))
 
 
 
