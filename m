@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-117802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A7AA3B85B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:23:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD55A3B81B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FB963B631C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:17:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77D1A7A7D59
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F8E1DDC11;
-	Wed, 19 Feb 2025 09:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE4B1DE4FF;
+	Wed, 19 Feb 2025 09:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iREDuSGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hTiTjPW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C861DE2CE;
-	Wed, 19 Feb 2025 09:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6BC1B6D0F;
+	Wed, 19 Feb 2025 09:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956383; cv=none; b=H4ydUYH1tTYTMw04uEcylkvytf7In+gyEMBHqa1664k7WO+0P/7/ZLfiSCqvTDFbIySZWL2sIFwOMIIPDEvj3Fx6njYLlwHqune2slfalgg6I8STIBEyXLyVphC7lT2lSCHgkxqrNXHJXbXJqp9eCt8/+cKSzM1Hjd7RKlOGVss=
+	t=1739956416; cv=none; b=H6XqvnDIzqMGWNW6CRWjKhZpl3EWCuKDsShyogdhDkex7DRUWxQTeiP4dK60Hs8IKIucENiJ3u9E6qW3b+tN7ycyDs0UD1dY+9Pc7UBvAxPHwPGrdSqn7MfP2NgNfkdrASqhNROILd+qBZoFK5K5/1ga8L4yt4dPzejzuOjwnA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956383; c=relaxed/simple;
-	bh=oBANmfEI9w3uR9pJ8Q392T8Pxae4BPpEMxn2PdkhRho=;
+	s=arc-20240116; t=1739956416; c=relaxed/simple;
+	bh=4VPXf+9RwtNL5bpgy/o0iZct5yFCM0ICl6F3Wqm4HJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCJ/o3TrpIbSd2EGUUbeRgywJZdjkPkTRTC+F/4H10DN+x/WDeGTLUZoTTw16+ZFAC/T3LYPh07TPBZ/G1Uz45nskiQsCT8+OWJMVhpnMG5pLO12CjJKEfpWuSt2Bh8WOyuxuIdPpsGaIyJbfSt0gjr4XOE0DZO622YbYf0QBQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iREDuSGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37C1C4CED1;
-	Wed, 19 Feb 2025 09:13:02 +0000 (UTC)
+	 MIME-Version; b=LONDN6rPhXVsaa6pb0QyPV/avJMSI96AxektMIGexBw40zgBnB5EEO/wkRAIDs8jToHZcncHoMRlfC5hB0mwWXFNsMbd7zy+hNfY0oXi8riIpAK5q4Dql3gNiN3iWa8RaeHyl9j5UkKn+csRV+xcRYDMAZ0SqUyEwiohMVGo8CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hTiTjPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC7AC4CED1;
+	Wed, 19 Feb 2025 09:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956383;
-	bh=oBANmfEI9w3uR9pJ8Q392T8Pxae4BPpEMxn2PdkhRho=;
+	s=korg; t=1739956414;
+	bh=4VPXf+9RwtNL5bpgy/o0iZct5yFCM0ICl6F3Wqm4HJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iREDuSGvA+AjJm+zob87p/ry70RGtaOXHCdh0cjPoko4xOBLws6acAugaDULizSJL
-	 5ZHaEjaYqBQNmX8L0Xko5zUzQ218K9IZE/S2yXtVCQrSSd6mgArR3to8AzPDrQ3at3
-	 JuPXFwGTlzS5N6mThR5r8azEy7BXRgQzObtoIX9o=
+	b=0hTiTjPW87f5QAuKV4lFf2Bkhb7cOebpoL1+PoRLohToSuglpXEY1mu0VyWfRu8yT
+	 7ZQ+kCujo8vD0X/p3VqkLzb/2ir5qLM2b4D6cIbQ9IcHpvgo/e4B6R3Qc+6fHdX7H9
+	 /FFMjA6+hoUWlrg9hocIWWBAENT0m9Of5yx9P0nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/578] arm64: dts: mediatek: mt8192-asurada: Drop regulator-compatible property
-Date: Wed, 19 Feb 2025 09:22:27 +0100
-Message-ID: <20250219082658.608137496@linuxfoundation.org>
+Subject: [PATCH 6.1 144/578] arm64: dts: mediatek: mt8195-cherry: Drop regulator-compatible property
+Date: Wed, 19 Feb 2025 09:22:28 +0100
+Message-ID: <20250219082658.646335627@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit d1fb968551c8688652b8b817bb081fdc9c25cd48 ]
+[ Upstream commit 4dbaa5d5def2c49e44efaa5e796c23d9b904be09 ]
 
 The "regulator-compatible" property has been deprecated since 2012 in
 commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
@@ -80,21 +80,21 @@ Drop the "regulator-compatible" property from the board dts. The
 property values are the same as the node name, so everything should
 continue to work.
 
-Fixes: 3183cb62b033 ("arm64: dts: mediatek: asurada: Add SPMI regulators")
+Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
 Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-5-wenst@chromium.org
+Link: https://lore.kernel.org/r/20241211052427.4178367-6-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-index 0814ed6a7272d..7e5230581a1c7 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-@@ -901,7 +901,6 @@
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+index 0243da99d9c69..e4861c6cd78e1 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -843,7 +843,6 @@
  
  		regulators {
  			mt6315_6_vbuck1: vbuck1 {
@@ -102,22 +102,14 @@ index 0814ed6a7272d..7e5230581a1c7 100644
  				regulator-name = "Vbcpu";
  				regulator-min-microvolt = <400000>;
  				regulator-max-microvolt = <1193750>;
-@@ -911,7 +910,6 @@
- 			};
- 
- 			mt6315_6_vbuck3: vbuck3 {
--				regulator-compatible = "vbuck3";
- 				regulator-name = "Vlcpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
-@@ -928,7 +926,6 @@
+@@ -861,7 +860,6 @@
  
  		regulators {
  			mt6315_7_vbuck1: vbuck1 {
 -				regulator-compatible = "vbuck1";
  				regulator-name = "Vgpu";
  				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <800000>;
+ 				regulator-max-microvolt = <1193750>;
 -- 
 2.39.5
 
