@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-118113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD208A3BA0F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1AAA3B7A3
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DF83AF4A0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642313BE1A4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE5D1CDA14;
-	Wed, 19 Feb 2025 09:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51491C4A20;
+	Wed, 19 Feb 2025 09:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmNciYGK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKeQeDHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B15E1DF74C;
-	Wed, 19 Feb 2025 09:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921FA1B4F21;
+	Wed, 19 Feb 2025 09:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957272; cv=none; b=CItx4ytUYdUmMMDnk5T3NYSnPjH4HgW6b7L8CbR32RsYwoOKDvur7Er6sRgYWgnOMkvT86MBOOBjhSG0SrKHfAGXC92Nlt1+NoIjVn25Nuyemb6WFAFCFmcd201xVsAOpGPxrfFKkPFM96wjxIflcYqK8UA8K5+TsvZPgDNDS6s=
+	t=1739955616; cv=none; b=XRLLXwIlzftT3uHthdwyBmrWHaU+u1m7sf+tnRiiEf9g0nKNR/XtNkTdhCBe+Ys+w1n1ZAaudDlZaS+ZyBEU4r7a+mEWTzsLzRNafV+SQMSeFW80q8xXnht7i6s58SBMUuGAiPRWTunYStolGKXZjJwJrHBcTYq5/n9Ef5B3hhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957272; c=relaxed/simple;
-	bh=Up6mrYyStS+fV2kaFrtsagoZqFk8UbgMikbN8Q4QMRU=;
+	s=arc-20240116; t=1739955616; c=relaxed/simple;
+	bh=djB94WU2n0ifvJ1hG18QoDDVCx/ucPMEefk3xbeqIxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASbCSngWZ95WpazU4xUd+UNkduCB7EICpHD6bN6gQ+MVjSAUbq6o7SbDIQJPetj1KSMk0hx0TreARRvm97I8sDBqUnlhj1aiBhICpy7YWw0rubhkp8LB6RUmLmNKIkAwyYaZSnlX+BjoSqmiIyK/PbxjIlSQgyn16YeCiIYuybk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmNciYGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032FCC4CED1;
-	Wed, 19 Feb 2025 09:27:51 +0000 (UTC)
+	 MIME-Version; b=m0ZJJHLu3t6lm+1FNEagJyZ7m/qCJSJrE8HHT5oblYkDiO0llcj9lvIvAVGhMO4wxplEqkEhmLOmT0DEm1yj8KwNZaYzY0G1Sk+ZUjLoocPbLzMS+ycpLsf+7gQKKfe1gkNhGoIvV3GvIeuZGqyoSZTFpkLm0JR7HGjppREplJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKeQeDHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10987C4CED1;
+	Wed, 19 Feb 2025 09:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957272;
-	bh=Up6mrYyStS+fV2kaFrtsagoZqFk8UbgMikbN8Q4QMRU=;
+	s=korg; t=1739955616;
+	bh=djB94WU2n0ifvJ1hG18QoDDVCx/ucPMEefk3xbeqIxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmNciYGKM6gZydmRsup6Xg6iu98kNoUyrRiatWFtRVR1XDV55BFodAvz3NHTAQBwE
-	 sHZn+Zr6TItQWedN5uQ+MwLel2gsJi74xXZ1HbmTBA8PGBumMd9s6Rb+9UC5MAJqMV
-	 uCrw/dg48tdUTOTX1TLeb77txj3c7ZsDXXCyqUNY=
+	b=nKeQeDHMREHlOVuoL9ktibaSy8aOvNwYyJsKL+eW/nip4Fi1Bl5elOIQz6Uq+yReN
+	 Bnmu9/JePqJiH0Usa2usJODqEbB/UCBZK8pz+usc+XhVUpXuBGECo3SI27hKzFXSDj
+	 e+/BMXIa/CYOxakQh5K1CRqtuFAIVEN8u0v/cD1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 469/578] vrf: use RCU protection in l3mdev_l3_out()
+	stable <stable@kernel.org>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Subject: [PATCH 6.6 060/152] usb: dwc2: gadget: remove of_node reference upon udc_stop
 Date: Wed, 19 Feb 2025 09:27:53 +0100
-Message-ID: <20250219082711.455604084@linuxfoundation.org>
+Message-ID: <20250219082552.419218607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit 6d0ce46a93135d96b7fa075a94a88fe0da8e8773 ]
+commit 58cd423820d5b5610977e55e4acdd06628829ede upstream.
 
-l3mdev_l3_out() can be called without RCU being held:
+In dwc2_hsotg_udc_start(), e.g. when binding composite driver, "of_node"
+is set to hsotg->dev->of_node.
 
-raw_sendmsg()
- ip_push_pending_frames()
-  ip_send_skb()
-   ip_local_out()
-    __ip_local_out()
-     l3mdev_ip_out()
+It causes errors when binding the gadget driver several times, on
+stm32mp157c-ev1 board. Below error is seen:
+"pin PA10 already requested by 49000000.usb-otg; cannot claim for gadget.0"
 
-Add rcu_read_lock() / rcu_read_unlock() pair to avoid
-a potential UAF.
+The first time, no issue is seen as when registering the driver, of_node
+isn't NULL:
+-> gadget_dev_desc_UDC_store
+  -> usb_gadget_register_driver_owner
+    -> driver_register
+    ...
+      -> really_probe -> pinctrl_bind_pins (no effect)
 
-Fixes: a8e3e1a9f020 ("net: l3mdev: Add hook to output path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Then dwc2_hsotg_udc_start() sets of_node.
+
+The second time (stop the gadget, reconfigure it, then start it again),
+of_node has been set, so the probing code tries to acquire pins for the
+gadget. These pins are hold by the controller, hence the error.
+
+So clear gadget.dev.of_node in udc_stop() routine to avoid the issue.
+
+Fixes: 7d7b22928b90 ("usb: gadget: s3c-hsotg: Propagate devicetree to gadget drivers")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20250124173325.2747710-1-fabrice.gasnier@foss.st.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/l3mdev.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc2/gadget.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/l3mdev.h b/include/net/l3mdev.h
-index 031c661aa14df..bdfa9d414360c 100644
---- a/include/net/l3mdev.h
-+++ b/include/net/l3mdev.h
-@@ -198,10 +198,12 @@ struct sk_buff *l3mdev_l3_out(struct sock *sk, struct sk_buff *skb, u16 proto)
- 	if (netif_is_l3_slave(dev)) {
- 		struct net_device *master;
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -4612,6 +4612,7 @@ static int dwc2_hsotg_udc_stop(struct us
+ 	spin_lock_irqsave(&hsotg->lock, flags);
  
-+		rcu_read_lock();
- 		master = netdev_master_upper_dev_get_rcu(dev);
- 		if (master && master->l3mdev_ops->l3mdev_l3_out)
- 			skb = master->l3mdev_ops->l3mdev_l3_out(master, sk,
- 								skb, proto);
-+		rcu_read_unlock();
- 	}
+ 	hsotg->driver = NULL;
++	hsotg->gadget.dev.of_node = NULL;
+ 	hsotg->gadget.speed = USB_SPEED_UNKNOWN;
+ 	hsotg->enabled = 0;
  
- 	return skb;
--- 
-2.39.5
-
 
 
 
