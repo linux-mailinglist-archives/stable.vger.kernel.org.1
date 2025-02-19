@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-117353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D6AA3B606
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898F4A3B510
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:53:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7E2189C5D0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9265172ED0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD8D1DED51;
-	Wed, 19 Feb 2025 08:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA65E1F8671;
+	Wed, 19 Feb 2025 08:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nPtQDEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eavFzjKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DF51DE3AE;
-	Wed, 19 Feb 2025 08:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CF91F76C2;
+	Wed, 19 Feb 2025 08:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955014; cv=none; b=g9B+yplDrIfCvejb92quSwpODBDU3TIF2M6js3wIudLuBz6m8oQawlZhgwc8aZNL/ZiBBBFNP8j2JWNeeT3IXQAeG8GSRNGIfWyhOewf1SgRAHZR+gW0r0biLtZ175lCCpe7SgDipY4cALzlz8MrahwmjtEOW/0DbLdNd5dXQNY=
+	t=1739954331; cv=none; b=eDkR1iMDYgPQL7Ra4D7hNLQFA0KxBcddckoCKrpJ2VIAs7QRyE3lfwxp+jUPZVfI6PP2v80/+55Zcc4Q2afKxUpZlpia6TPEx+9QNy2AWb5BCO4wtQV7GEsSQOm0jeyE+MHC/DgR9IwmvWS/Z30NCf4Cz1wIlarUOs3qQjeA0RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955014; c=relaxed/simple;
-	bh=41TV3SlWA/kHhKT3O//368+iIgGQmzLt4bW9ZLnuZtI=;
+	s=arc-20240116; t=1739954331; c=relaxed/simple;
+	bh=0FUOdo2V9xb91DDqB6RljfprGMFf8vO6HkFXPGAtjog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QuQmgLlwC+dl0gvgvcMplhqxd0nsiid1F7BXDkcBZKU1THp7z1NuI/ZdbyPdO0NGhcTONrk4t+Kuqg2TN0p3il0n0Po/7TgxV82VIpUin3Ov0cpVN04ZSensxHnukfckjeVCZ4H0sjiCOkLYJvLHYgfcEiUvGJg+K1bhgVr6Tds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nPtQDEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6295AC4CED1;
-	Wed, 19 Feb 2025 08:50:13 +0000 (UTC)
+	 MIME-Version; b=FrDb048y/XlNU7B6oM7bLG8hih0uBvvV/uPTRekSga5CJp0LlkGWqmYoFzWXhrmR1LjvBxc7WCcRFWCWYeeB4nbeYJveZflfiLrzf9dxZLTXVox6FkDgw1Sywp6vGyf2nUzDuS/Sp56R8lLOZcEYzbksZKMRXa++johO9wMee8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eavFzjKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A58C4CEE6;
+	Wed, 19 Feb 2025 08:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955013;
-	bh=41TV3SlWA/kHhKT3O//368+iIgGQmzLt4bW9ZLnuZtI=;
+	s=korg; t=1739954331;
+	bh=0FUOdo2V9xb91DDqB6RljfprGMFf8vO6HkFXPGAtjog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1nPtQDEmxvLXCio2QWOkODvgoMGeMENq456suVjwk5xpAeAZgvTa3DCfaMfmwPjSJ
-	 kmRJWWX1NjHxyp0xP6pyRldGuF3dHhhEwAG3YSr/Ubb/9W5fLyyZMbLXvNfQiyr0r9
-	 XdmfL49riv8NyWafaZP3Bw/CZLVrD1AJbmyROPWs=
+	b=eavFzjKSmwXaC/vEr76WKNlEtmB8Tk3gjBb/p8W4jbeZekKKsTjJuZxoVsty/EX3l
+	 IJu3vR21Ed/6BYxfsvGVaw5TuzuovclFcv82G23NEkKEQN63SP+LzFRDksYKdK6Mm6
+	 FChIc/7YcFil5G5TNxlXB9SSLKUem0tdLk7OkNM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 106/230] tracing: Do not allow mmap() of persistent ring buffer
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 6.13 169/274] alpha: align stack for page fault and user unaligned trap handlers
 Date: Wed, 19 Feb 2025 09:27:03 +0100
-Message-ID: <20250219082605.838807364@linuxfoundation.org>
+Message-ID: <20250219082616.206000377@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-commit 129fe718819cc5e24ea2f489db9ccd4371f0c6f6 upstream.
+commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
 
-When trying to mmap a trace instance buffer that is attached to
-reserve_mem, it would crash:
-
- BUG: unable to handle page fault for address: ffffe97bd00025c8
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 2862f3067 P4D 2862f3067 PUD 0
- Oops: Oops: 0000 [#1] PREEMPT_RT SMP PTI
- CPU: 4 UID: 0 PID: 981 Comm: mmap-rb Not tainted 6.14.0-rc2-test-00003-g7f1a5e3fbf9e-dirty #233
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- RIP: 0010:validate_page_before_insert+0x5/0xb0
- Code: e2 01 89 d0 c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 <48> 8b 46 08 a8 01 75 67 66 90 48 89 f0 8b 50 34 85 d2 74 76 48 89
- RSP: 0018:ffffb148c2f3f968 EFLAGS: 00010246
- RAX: ffff9fa5d3322000 RBX: ffff9fa5ccff9c08 RCX: 00000000b879ed29
- RDX: ffffe97bd00025c0 RSI: ffffe97bd00025c0 RDI: ffff9fa5ccff9c08
- RBP: ffffb148c2f3f9f0 R08: 0000000000000004 R09: 0000000000000004
- R10: 0000000000000000 R11: 0000000000000200 R12: 0000000000000000
- R13: 00007f16a18d5000 R14: ffff9fa5c48db6a8 R15: 0000000000000000
- FS:  00007f16a1b54740(0000) GS:ffff9fa73df00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: ffffe97bd00025c8 CR3: 00000001048c6006 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  ? __die_body.cold+0x19/0x1f
-  ? __die+0x2e/0x40
-  ? page_fault_oops+0x157/0x2b0
-  ? search_module_extables+0x53/0x80
-  ? validate_page_before_insert+0x5/0xb0
-  ? kernelmode_fixup_or_oops.isra.0+0x5f/0x70
-  ? __bad_area_nosemaphore+0x16e/0x1b0
-  ? bad_area_nosemaphore+0x16/0x20
-  ? do_kern_addr_fault+0x77/0x90
-  ? exc_page_fault+0x22b/0x230
-  ? asm_exc_page_fault+0x2b/0x30
-  ? validate_page_before_insert+0x5/0xb0
-  ? vm_insert_pages+0x151/0x400
-  __rb_map_vma+0x21f/0x3f0
-  ring_buffer_map+0x21b/0x2f0
-  tracing_buffers_mmap+0x70/0xd0
-  __mmap_region+0x6f0/0xbd0
-  mmap_region+0x7f/0x130
-  do_mmap+0x475/0x610
-  vm_mmap_pgoff+0xf2/0x1d0
-  ksys_mmap_pgoff+0x166/0x200
-  __x64_sys_mmap+0x37/0x50
-  x64_sys_call+0x1670/0x1d70
-  do_syscall_64+0xbb/0x1d0
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The reason was that the code that maps the ring buffer pages to user space
-has:
-
-	page = virt_to_page((void *)cpu_buffer->subbuf_ids[s]);
-
-And uses that in:
-
-	vm_insert_pages(vma, vma->vm_start, pages, &nr_pages);
-
-But virt_to_page() does not work with vmap()'d memory which is what the
-persistent ring buffer has. It is rather trivial to allow this, but for
-now just disable mmap() of instances that have their ring buffer from the
-reserve_mem option.
-
-If an mmap() is performed on a persistent buffer it will return -ENODEV
-just like it would if the .mmap field wasn't defined in the
-file_operations structure.
+do_page_fault() and do_entUna() are special because they use
+non-standard stack frame layout. Fix them manually.
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Link: https://lore.kernel.org/20250214115547.0d7287d3@gandalf.local.home
-Fixes: 9b7bdf6f6ece6 ("tracing: Have trace_printk not use binary prints if boot buffer")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/alpha/kernel/entry.S |   20 ++++++++++----------
+ arch/alpha/kernel/traps.c |    2 +-
+ arch/alpha/mm/fault.c     |    4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -8364,6 +8364,10 @@ static int tracing_buffers_mmap(struct f
- 	struct trace_iterator *iter = &info->iter;
- 	int ret = 0;
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -194,8 +194,8 @@ CFI_END_OSF_FRAME entArith
+ CFI_START_OSF_FRAME entMM
+ 	SAVE_ALL
+ /* save $9 - $15 so the inline exception code can manipulate them.  */
+-	subq	$sp, 56, $sp
+-	.cfi_adjust_cfa_offset	56
++	subq	$sp, 64, $sp
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -210,7 +210,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_rel_offset	$13, 32
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ /* handle the fault */
+ 	lda	$8, 0x3fff
+ 	bic	$sp, $8, $8
+@@ -223,7 +223,7 @@ CFI_START_OSF_FRAME entMM
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	addq	$sp, 56, $sp
++	addq	$sp, 64, $sp
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -231,7 +231,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ /* finish up the syscall as normal.  */
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entMM
+@@ -378,8 +378,8 @@ entUnaUser:
+ 	.cfi_restore	$0
+ 	.cfi_adjust_cfa_offset	-256
+ 	SAVE_ALL		/* setup normal kernel stack */
+-	lda	$sp, -56($sp)
+-	.cfi_adjust_cfa_offset	56
++	lda	$sp, -64($sp)
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -395,7 +395,7 @@ entUnaUser:
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+ 	lda	$8, 0x3fff
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ 	bic	$sp, $8, $8
+ 	jsr	$26, do_entUnaUser
+ 	ldq	$9, 0($sp)
+@@ -405,7 +405,7 @@ entUnaUser:
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	lda	$sp, 56($sp)
++	lda	$sp, 64($sp)
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -413,7 +413,7 @@ entUnaUser:
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entUna
  
-+	/* Currently the boot mapped buffer is not supported for mmap */
-+	if (iter->tr->flags & TRACE_ARRAY_FL_BOOT)
-+		return -ENODEV;
-+
- 	ret = get_snapshot_map(iter->tr);
- 	if (ret)
- 		return ret;
+--- a/arch/alpha/kernel/traps.c
++++ b/arch/alpha/kernel/traps.c
+@@ -649,7 +649,7 @@ s_reg_to_mem (unsigned long s_reg)
+ static int unauser_reg_offsets[32] = {
+ 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
+ 	/* r9 ... r15 are stored in front of regs.  */
+-	-56, -48, -40, -32, -24, -16, -8,
++	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
+ 	R(r16), R(r17), R(r18),
+ 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
+ 	R(r27), R(r28), R(gp),
+--- a/arch/alpha/mm/fault.c
++++ b/arch/alpha/mm/fault.c
+@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *
+ 
+ /* Macro for exception fixup code to access integer registers.  */
+ #define dpf_reg(r)							\
+-	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
+-				 (r) <= 18 ? (r)+10 : (r)-10])
++	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
++				 (r) <= 18 ? (r)+11 : (r)-10])
+ 
+ asmlinkage void
+ do_page_fault(unsigned long address, unsigned long mmcsr,
 
 
 
