@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-118115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4466FA3BA70
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5B8A3B67C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BDDA422AB8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7726E17E06E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE545158862;
-	Wed, 19 Feb 2025 09:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898651E0E05;
+	Wed, 19 Feb 2025 08:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXxmHtcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g19Soog/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BD31C2DC8;
-	Wed, 19 Feb 2025 09:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C291E0DFE;
+	Wed, 19 Feb 2025 08:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957279; cv=none; b=p6xwPwXhT0jK0IGDHj4DmjdKQdg8tUDsRaWL7Il2ecmoaCkYWgDrpiQvNasZcf96v1MRzE73ww6pgoUD2819pC8eikgzNUScBVAS7Y8d22o18Yphe08BSNPaOvFZFwrsNigIUNyzTgyk0zgkMkeZZgEgPBhv7b0r+1den7D8Uk0=
+	t=1739955183; cv=none; b=OQBX/dp4aXksV1uzHwlmJB4tjTeUk2vce5vDfAdLovGKKHC5AU0cnMB0FO87xSnOC0cJp/Qndl7Lr0igZdCkVod0jneRlbrEMM1oQHYLfFe4v10zwgvsvZsZj7nBiKTZOSp+lPSVtunTDxq6wnGpBHPXxyI2KTNDWpW+r/YBtvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957279; c=relaxed/simple;
-	bh=cRMtff7lNowMNLBmxwKdyt2EWw6GYLYqwd22b6Cc46o=;
+	s=arc-20240116; t=1739955183; c=relaxed/simple;
+	bh=VrGsTDJCBpxRU/ngtXcnVwt/XRFkHc8Dlr+ySmF4yeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUqAQWmhOkXmS4Q6WK7+vwBR0kLouN4RJ8sQ4PsrWCqCy8aOFgjj8eVwNaqGIlRipTweOpFz8rwzVYwkwr722S06XuKCP94+ASiZ7NdmnNHpdjjbPH6V++zJN9RtdtveIqtu1GvMBRADmAIYl8MnNm7bWyYwZ4EuG9SP3WJvsXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXxmHtcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF88C4CED1;
-	Wed, 19 Feb 2025 09:27:58 +0000 (UTC)
+	 MIME-Version; b=Fhd8c2DkSKSwAVn70ghNzTrNfRrGeFU5ODtf/fZznClSSPI0yJH2pCHLb7KQfVOu5obe8HBSsLKGmvOK4/a5sGvvUyCxpNaY/AuoXl0u37z6Tjru5ahwL/BmkY7Kyo64ml95/UWaODPdyoT/Lk1Ut99Rc05oMBbdz/sz8/BYmkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g19Soog/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB70DC4CED1;
+	Wed, 19 Feb 2025 08:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957279;
-	bh=cRMtff7lNowMNLBmxwKdyt2EWw6GYLYqwd22b6Cc46o=;
+	s=korg; t=1739955183;
+	bh=VrGsTDJCBpxRU/ngtXcnVwt/XRFkHc8Dlr+ySmF4yeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXxmHtcKtmMCnvW8e1aQXhqMP0SYLvmpCw7NdzAaaJXnOe6wtdN0LXJodmCFCMacX
-	 3mBj8LyJ54RNxbCbEJ7P48DMR2UnTRMysu7AilkMZT+Ci4v/rduuGD9f+6QwfDdCvR
-	 /EpQAhkdj5vEJJc+jmqGelY/6/nMihQADy8yB2Aw=
+	b=g19Soog/BBeNLANaMvrdJZTXbJ5U6cjCc7ZDJrgOUcR+NIujp1PVNbgWaBjg/7084
+	 hxBfiLfK2aPOmdgCAxdM4ZRtlmYkI7eJce9HkY2Me9vsY40Zc1ReaMiJE5LUJzIJEZ
+	 KEJpZPVFCcgtTEszMRJvC67Ddbp2KfuVMNZc8Z24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Roopa Prabhu <roopa@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 470/578] vxlan: check vxlan_vnigroup_init() return value
+	Nathan Chancellor <nathan@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 157/230] arm64: Handle .ARM.attributes section in linker scripts
 Date: Wed, 19 Feb 2025 09:27:54 +0100
-Message-ID: <20250219082711.499137531@linuxfoundation.org>
+Message-ID: <20250219082607.836795394@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 5805402dcc56241987bca674a1b4da79a249bab7 ]
+commit ca0f4fe7cf7183bfbdc67ca2de56ae1fc3a8db2b upstream.
 
-vxlan_init() must check vxlan_vnigroup_init() success
-otherwise a crash happens later, spotted by syzbot.
+A recent LLVM commit [1] started generating an .ARM.attributes section
+similar to the one that exists for 32-bit, which results in orphan
+section warnings (or errors if CONFIG_WERROR is enabled) from the linker
+because it is not handled in the arm64 linker scripts.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000002c: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000160-0x0000000000000167]
-CPU: 0 UID: 0 PID: 7313 Comm: syz-executor147 Not tainted 6.14.0-rc1-syzkaller-00276-g69b54314c975 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:vxlan_vnigroup_uninit+0x89/0x500 drivers/net/vxlan/vxlan_vnifilter.c:912
-Code: 00 48 8b 44 24 08 4c 8b b0 98 41 00 00 49 8d 86 60 01 00 00 48 89 c2 48 89 44 24 10 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 4d 04 00 00 49 8b 86 60 01 00 00 48 ba 00 00 00
-RSP: 0018:ffffc9000cc1eea8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000001 RCX: ffffffff8672effb
-RDX: 000000000000002c RSI: ffffffff8672ecb9 RDI: ffff8880461b4f18
-RBP: ffff8880461b4ef4 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000020000
-R13: ffff8880461b0d80 R14: 0000000000000000 R15: dffffc0000000000
-FS:  00007fecfa95d6c0(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fecfa95cfb8 CR3: 000000004472c000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  vxlan_uninit+0x1ab/0x200 drivers/net/vxlan/vxlan_core.c:2942
-  unregister_netdevice_many_notify+0x12d6/0x1f30 net/core/dev.c:11824
-  unregister_netdevice_many net/core/dev.c:11866 [inline]
-  unregister_netdevice_queue+0x307/0x3f0 net/core/dev.c:11736
-  register_netdevice+0x1829/0x1eb0 net/core/dev.c:10901
-  __vxlan_dev_create+0x7c6/0xa30 drivers/net/vxlan/vxlan_core.c:3981
-  vxlan_newlink+0xd1/0x130 drivers/net/vxlan/vxlan_core.c:4407
-  rtnl_newlink_create net/core/rtnetlink.c:3795 [inline]
-  __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+  ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
 
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Reported-by: syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67a9d9b4.050a0220.110943.002d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Roopa Prabhu <roopa@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250210105242.883482-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+  ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+
+Discard the new sections in the necessary linker scripts to resolve the
+warnings, as the kernel and vDSO do not need to retain it, similar to
+the .note.gnu.property section.
+
+Cc: stable@vger.kernel.org
+Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
+Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250206-arm64-handle-arm-attributes-in-linker-script-v3-1-d53d169913eb@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/vdso/vdso.lds.S |    1 +
+ arch/arm64/kernel/vmlinux.lds.S   |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 155d335c80a7e..50be5a3c47795 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2982,8 +2982,11 @@ static int vxlan_init(struct net_device *dev)
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	int err;
+--- a/arch/arm64/kernel/vdso/vdso.lds.S
++++ b/arch/arm64/kernel/vdso/vdso.lds.S
+@@ -41,6 +41,7 @@ SECTIONS
+ 	 */
+ 	/DISCARD/	: {
+ 		*(.note.GNU-stack .note.gnu.property)
++		*(.ARM.attributes)
+ 	}
+ 	.note		: { *(.note.*) }		:text	:note
  
--	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER)
--		vxlan_vnigroup_init(vxlan);
-+	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER) {
-+		err = vxlan_vnigroup_init(vxlan);
-+		if (err)
-+			return err;
-+	}
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -162,6 +162,7 @@ SECTIONS
+ 	/DISCARD/ : {
+ 		*(.interp .dynamic)
+ 		*(.dynsym .dynstr .hash .gnu.hash)
++		*(.ARM.attributes)
+ 	}
  
- 	dev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
- 	if (!dev->tstats) {
--- 
-2.39.5
-
+ 	. = KIMAGE_VADDR;
 
 
 
