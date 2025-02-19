@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-118025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B36A3B994
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:34:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1C7A3B651
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD993BBB24
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 663501779AB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C301CAA65;
-	Wed, 19 Feb 2025 09:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8095A1DE8B4;
+	Wed, 19 Feb 2025 08:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiRJaBIF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7fu7+6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D1F17A2FE;
-	Wed, 19 Feb 2025 09:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1001DE8AE;
+	Wed, 19 Feb 2025 08:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957022; cv=none; b=rwUS/SchbqPG4jpQEIXKhF1EjRmQgFx0uHd3eTsgml3oHcYaiQq40fLVBHJZHopGnk93/ANlX9oHXrlpJnQ9VES0oX5rJRkGaeYaDUiwEflHjfbGrq9EllOWh6Q9vUvun8gUH5tpZQ2EPC3/PR4arJjtt173lAwOCKsYS2XmxBA=
+	t=1739954987; cv=none; b=QKe9GpgDe6qk3zzegERxet/3fDalA28oRD0HFJ2bwe1XWHYnJ78VoVLb8YziB9/dqURH41LPTm1KOcvvXV31oQZwiSc9eZwMHVoYMIWi2hLqXUtxqvi6zs5QeVmcH7/fk8dmPIItQ6bwTljCwCKTdqzeIeBZ1rXeFjt27v98QMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957022; c=relaxed/simple;
-	bh=ObR/3C5NUDCAsE4kNiXKBmIIYgeNCsFEyn2UzHGYsgs=;
+	s=arc-20240116; t=1739954987; c=relaxed/simple;
+	bh=gXZqU8Dte7ANQ1pveeI4crInpVbP5HSihwansS+cUJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CJZkIJNnvytiit++kKPgrFiygN2wx3K+7aJBbHoFXh98mD0RnMtJ8a2Kjy+PDmHuuH3bw4+43wtVhDIxWzsHdbi0eJ/2pw6EVRhPPkCQ3RkiRfzrp3yTWwnGmv6x7f3g4u45r6jU02qYhmCpNWKNpYnf6X1i2uRft8naevqAJMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiRJaBIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6DBC4CED1;
-	Wed, 19 Feb 2025 09:23:41 +0000 (UTC)
+	 MIME-Version; b=LEvA55jDMApUrVkEWKnbZyjDdhVxeHgkQLiyXK35/4bRseYkCF0mxQ8tK5nxXlMR8KT6AihqFuaPu88JwJy/FYf7hmLcZ2t0t1d3v6v0TdvdjM3VNd2QKE//BM5EhLGVz6qkYZdgDmPzH6CfDd4KYamTcVmCfZey5TyVvrlY1Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7fu7+6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842A0C4CED1;
+	Wed, 19 Feb 2025 08:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957022;
-	bh=ObR/3C5NUDCAsE4kNiXKBmIIYgeNCsFEyn2UzHGYsgs=;
+	s=korg; t=1739954987;
+	bh=gXZqU8Dte7ANQ1pveeI4crInpVbP5HSihwansS+cUJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiRJaBIFC59Z9Ep7CHgXjR58HqBgozZeQENkGmLzEJWK8xoSKx/hZt/9yy254zayP
-	 +921GFIW1z7E4Fpb81s9OX2/fUl34Ohh+bm5KkjePNuBQi/S9/W9RavfFfbOm+Io9i
-	 w5KI/q5hwwtbmuobyMp3heP+cvcLPUlpyP9KUMMw=
+	b=P7fu7+6qSxlzdEaiwu0gVA9UMr6ssqNfWfANTx4ZyW7yMxe2C2qPcE4c/48K8MJd5
+	 2a7YbhSxTKhzYNW+gkc3TnFSU9xcOltqVsJ9Gp7AasFZq4D4/gXSU2Bmd8knsiDqhj
+	 HjGewAd7qRMa4CHGA38wwezJOoZUttK+C84yF54A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 380/578] MIPS: Loongson64: remove ROM Size unit in boardinfo
+	Naushir Patuck <naush@raspberrypi.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 067/230] media: bcm2835-unicam: Disable trigger mode operation
 Date: Wed, 19 Feb 2025 09:26:24 +0100
-Message-ID: <20250219082707.964418228@linuxfoundation.org>
+Message-ID: <20250219082604.331066423@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kexy Biscuit <kexybiscuit@aosc.io>
+From: Naushir Patuck <naush@raspberrypi.com>
 
-commit bd2212d658d7659b9d83c7e2f3a06789d4db1e90 upstream.
+[ Upstream commit 697a252bb2ea414cc1c0b4cf4e3d94a879eaf162 ]
 
-Per Appendix A.7 in Q/LS 0013-2014 (龙芯CPU开发系统固件与内核接口规范 V2.2,
-lit. Loongson DevSys Firmware Kernel Interface Specification V2.2),
-interface_info.size is size of this interface, not size of the LEFI BIOS
-ROM.
+The imx219/imx708 sensors frequently generate a single corrupt frame
+(image or embedded data) when the sensor first starts. This can either
+be a missing line, or invalid samples within the line. This only occurrs
+using the upstream Unicam kernel driver.
 
-In any case, the BIOS ROM Size just cannot be several kilobytes (KB) on
-Loongson64 LEFI platforms.
+Disabling trigger mode elimiates this corruption. Since trigger mode is
+a legacy feature copied from the firmware driver and not expected to be
+needed, remove it. Tested on the Raspberry Pi cameras and shows no ill
+effects.
 
-Reported-by: Mingcong Bai <jeffbai@aosc.io>
-Suggested-by: Icenowy Zheng <uwu@icenowy.me>
-Fixes: 6c1bfbd9df8c ("MIPS: Loongson64: Add /sys/firmware/lefi/boardinfo")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/loongson64/boardinfo.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/platform/broadcom/bcm2835-unicam.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/arch/mips/loongson64/boardinfo.c
-+++ b/arch/mips/loongson64/boardinfo.c
-@@ -21,13 +21,11 @@ static ssize_t boardinfo_show(struct kob
- 		       "BIOS Info\n"
- 		       "Vendor\t\t\t: %s\n"
- 		       "Version\t\t\t: %s\n"
--		       "ROM Size\t\t: %d KB\n"
- 		       "Release Date\t\t: %s\n",
- 		       strsep(&tmp_board_manufacturer, "-"),
- 		       eboard->name,
- 		       strsep(&tmp_bios_vendor, "-"),
- 		       einter->description,
--		       einter->size,
- 		       especial->special_name);
+diff --git a/drivers/media/platform/broadcom/bcm2835-unicam.c b/drivers/media/platform/broadcom/bcm2835-unicam.c
+index a1d93c14553d8..9f81e1582a300 100644
+--- a/drivers/media/platform/broadcom/bcm2835-unicam.c
++++ b/drivers/media/platform/broadcom/bcm2835-unicam.c
+@@ -816,11 +816,6 @@ static irqreturn_t unicam_isr(int irq, void *dev)
+ 		}
+ 	}
+ 
+-	if (unicam_reg_read(unicam, UNICAM_ICTL) & UNICAM_FCM) {
+-		/* Switch out of trigger mode if selected */
+-		unicam_reg_write_field(unicam, UNICAM_ICTL, 1, UNICAM_TFC);
+-		unicam_reg_write_field(unicam, UNICAM_ICTL, 0, UNICAM_FCM);
+-	}
+ 	return IRQ_HANDLED;
  }
- static struct kobj_attribute boardinfo_attr = __ATTR(boardinfo, 0444,
+ 
+@@ -984,8 +979,7 @@ static void unicam_start_rx(struct unicam_device *unicam,
+ 
+ 	unicam_reg_write_field(unicam, UNICAM_ANA, 0, UNICAM_DDL);
+ 
+-	/* Always start in trigger frame capture mode (UNICAM_FCM set) */
+-	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_FCM | UNICAM_IBOB;
++	val = UNICAM_FSIE | UNICAM_FEIE | UNICAM_IBOB;
+ 	line_int_freq = max(fmt->height >> 2, 128);
+ 	unicam_set_field(&val, line_int_freq, UNICAM_LCIE_MASK);
+ 	unicam_reg_write(unicam, UNICAM_ICTL, val);
+-- 
+2.39.5
+
 
 
 
