@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80A5A3B65E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1188AA3B9DF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A56F917CB3B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8450D17FFE7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964C91DFD98;
-	Wed, 19 Feb 2025 08:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742F01F17E9;
+	Wed, 19 Feb 2025 09:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZNGHM2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opy4Speg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DB61DFE18;
-	Wed, 19 Feb 2025 08:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7991F1538;
+	Wed, 19 Feb 2025 09:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955114; cv=none; b=fG/HGxunC4xBg38n8quXLDjeqKAfbT7rP/RJybk1QmPt/207pa9vK3SXEM2BL/+EQdS8KD0N3zbvwcpBpK4FSwNrLAJcyb7sAUfFgepebBtHzQ8MI0WAwI/ZQWAn38XfGf9myip2zQ1YEBQpHtkSovZTixs231BRemI1NW/breA=
+	t=1739957244; cv=none; b=gQZnH+V8Fuy+jVbW9mikEqiSsUhVcZTbI14+nZtTg6vtyJ7dFK66xydUD8erMexapov5GeIDo9vidRtVqH89BFb+FRMFSPfWShIVDxhSt2tqRzrMutbPsuQ4fbLzuRSAbv6dKm7zDYxScpHIszpQJh5QIqC929AmdrX5fR74rjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955114; c=relaxed/simple;
-	bh=7EqswwIOoxgaKwQvO/AZ7yQPeRXyXDBCHOUv7fFW+bA=;
+	s=arc-20240116; t=1739957244; c=relaxed/simple;
+	bh=ljtprST/1otnMIiHk/ykZlLY5g/BzauPJ6A52KrreM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SLPod0+vH/Y9I1AmKdDf0+4v+Z9mD9koOCXaCexBtPIphKNtkmADtFlP5QxmIN3vHOY0nCxorLLYp4V0HYisyK+VF3spk9V1l+8InSRa3gIs3j9sbl6g7YCRZmQ082kcHBTy2UWJqDO+yYKyjcd1ElXnHExVLcW7YbKTNbH4y2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZNGHM2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EE1C4CEE6;
-	Wed, 19 Feb 2025 08:51:53 +0000 (UTC)
+	 MIME-Version; b=g7Y0dwS4wGAtSzGCxl881buC5Z/m/chUngk4PV26GR4lJzLq791VlacbjdtFn6BFuD5nF+KvS/Ww4m0Y506gwftSJRsMGCoJJT8ZEDSQ9/Ciskl4+AkxQhOnMycgEaXQ9XHRFCn92Zc4eNl845wQirXqihbJOi28pcLM29B3d5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opy4Speg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FBEC4CED1;
+	Wed, 19 Feb 2025 09:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955114;
-	bh=7EqswwIOoxgaKwQvO/AZ7yQPeRXyXDBCHOUv7fFW+bA=;
+	s=korg; t=1739957244;
+	bh=ljtprST/1otnMIiHk/ykZlLY5g/BzauPJ6A52KrreM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZNGHM2VO20RT8RxyuwLSvdXPTwJVhg/9K3q0DLLKQqcxN4v7k0wB239zKWcQZk2I
-	 +w/Dv6AKAyRmONstws+W8RpNpXxwQu9/Ot4GH7F8O0B6xWSFrZ8hIJihgXurN273y/
-	 H6USH3Tn2rbOI+aCY4gJp099um0ofQrU2h8GvzwE=
+	b=opy4Spegbj/RX7Anq8eH3T+8oCTDx2aFNzzZh6a6u5VaYKHZAsOo/oc21qoPDveUN
+	 PKwoJTX+JFAXiRgKpoWaAObhGj6A6DxcTkPkOMpXqqa88XcEU3DsHsm8CA97SlchwS
+	 UHnpoXQZ5Q5lqZALVzj4AuA4vMoQMLPHV9Jr3+iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.12 137/230] kbuild: userprogs: fix bitsize and target detection on clang
-Date: Wed, 19 Feb 2025 09:27:34 +0100
-Message-ID: <20250219082607.044422929@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 6.1 451/578] gpio: xilinx: remove excess kernel doc
+Date: Wed, 19 Feb 2025 09:27:35 +0100
+Message-ID: <20250219082710.734111263@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
+commit 4c7fcbf5077532b80bc233c83d56e09a6bfa16b0 upstream.
 
-scripts/Makefile.clang was changed in the linked commit to move --target from
-KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
-However that variable is not inspected by the userprogs logic,
-breaking cross compilation on clang.
+The irqchip field has been removed from struct xgpio_instance so remove
+the doc as well.
 
-Use both variables to detect bitsize and target arguments for userprogs.
-
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: b4510f8fd5d0 ("gpio: xilinx: Convert to immutable irq_chip")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312150239.IyuTVvrL-lkp@intel.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-xilinx.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1057,8 +1057,8 @@ LDFLAGS_vmlinux += --orphan-handling=$(C
- endif
- 
- # Align the bit size of userspace programs with the kernel
--KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
--KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-+KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
-+KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
- 
- # make the checker run with the right architecture
- CHECKFLAGS += --arch=$(ARCH)
+--- a/drivers/gpio/gpio-xilinx.c
++++ b/drivers/gpio/gpio-xilinx.c
+@@ -52,7 +52,6 @@
+  * @dir: GPIO direction shadow register
+  * @gpio_lock: Lock used for synchronization
+  * @irq: IRQ used by GPIO device
+- * @irqchip: IRQ chip
+  * @enable: GPIO IRQ enable/disable bitfield
+  * @rising_edge: GPIO IRQ rising edge enable/disable bitfield
+  * @falling_edge: GPIO IRQ falling edge enable/disable bitfield
 
 
 
