@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEBBA3B4CF
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:47:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F8A3B5CD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E21B3AFDB9
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F34818861BD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CAA1E3796;
-	Wed, 19 Feb 2025 08:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4341EEA54;
+	Wed, 19 Feb 2025 08:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjF9Rt9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVqIs4m8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166E81E3769;
-	Wed, 19 Feb 2025 08:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4041F63F5;
+	Wed, 19 Feb 2025 08:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954235; cv=none; b=DOo1XcWl7dEWS1Utocel3qh21UyJdUS8QpKA9je1qA1ZfHdbtHwQTwiajSdxeH4HOUWLe4BL/lU16nNL8xlx1dCK4HwyyRoSjBTHhpUGaVIfaCg9m/UiRq0Sx37E4mUOK62OryBG7+UHL+eqmtY1wnllW8uUZ46gL8czD85I1UQ=
+	t=1739954816; cv=none; b=rxNlsdxxiub7VJLkR/rJY5cs+Mjh4UedLIbc5oO/jTgfWs8KQwI4qJfXPW/CILXj6zingPe6R1T42zuDtbZsNRBmNyz3KdqvrrGBz2HbfrayT08GrsVspdQmtj0snDqePSLp619Rnx0xiOCfn4iTa3dZ6fswNN6gPlc03FwuZ+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954235; c=relaxed/simple;
-	bh=GS+axC9nxHIT6Kz5s4ElP1t5QhIRxesjvA+ldZKlw8E=;
+	s=arc-20240116; t=1739954816; c=relaxed/simple;
+	bh=lclQWHCZBJ3UybZgS1hPeZqj78qqV1ruaaW4A0RNCEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFcPJhcy2V80sE8bUpIvPZ4lfsnq0Loi125jEb59tByxExQadHCt9NcFDnzPYbcrz1Jt7KoFazae5aPTTXOBkYdaSuUXwqtPl6f636XFiYrGyf15aDbIpYCguLZUg+xwqYb9Mm66AAzA8ngVGtN6TCbD0N46e2h3vpwWVkDTP18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjF9Rt9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34297C4CED1;
-	Wed, 19 Feb 2025 08:37:14 +0000 (UTC)
+	 MIME-Version; b=B8/hECvb+kvhVbBBEz7i6P6A1++Q/kDr/fUtkyhyDfUE/ywwtrKONupXL1LAgsXUPXKKJSeXv1xpYpEL6uBVj/8ahB3YAgd0ze3B/XRSNQSvvZGlGhBsWn3rc3x8MZm/qhjRdtIBD09ojt4/UTl1FRC44eyDRJNVQGkLLTFDe8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVqIs4m8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA9C4CEE6;
+	Wed, 19 Feb 2025 08:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954234;
-	bh=GS+axC9nxHIT6Kz5s4ElP1t5QhIRxesjvA+ldZKlw8E=;
+	s=korg; t=1739954816;
+	bh=lclQWHCZBJ3UybZgS1hPeZqj78qqV1ruaaW4A0RNCEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KjF9Rt9ANuAV0eX8KU228kcWnpj/k7Ikjt+mQnPUWLXeNl1NS266SRh4Eh8zBBAm4
-	 I9aetVEcDuQ1aAFypocDS6e6VJkAHE2i1Qt25KbOWBfEoKA8XT3H0nYQQEkKxxSvcy
-	 5aVKxWp9lQEPZHOuexKAu/E+YkI/sxZi4VGxkC5s=
+	b=dVqIs4m8sSjcUfmSiWWmcfZhhnJDLMrzla1vJuVqZacRolL9Gn89CAlcNojP+sono
+	 GIZepIdRM014b63GcGcCaWSrC8cv/+Lxy9mvfuK2DynfL0pa3S1n/kmjAcjltLHb7a
+	 E+LFJlf/ymEEpnoyGAfpZznVqbGfj29P5b7Iiepk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leon@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 107/274] kbuild: suppress stdout from merge_config for silent builds
-Date: Wed, 19 Feb 2025 09:26:01 +0100
-Message-ID: <20250219082613.804295705@linuxfoundation.org>
+Subject: [PATCH 6.12 045/230] io_uring/waitid: dont abuse io_tw_state
+Date: Wed, 19 Feb 2025 09:26:02 +0100
+Message-ID: <20250219082603.473344414@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 1f937a4bcb0472015818f30f4d3c5546d3f09933 ]
+[ Upstream commit 06521ac0485effdcc9c792cb0b40ed8e6f2f5fb8 ]
 
-merge_config does not respect the Make's -s (--silent) option.
+struct io_tw_state is managed by core io_uring, and opcode handling code
+must never try to cheat and create their own instances, it's plain
+incorrect.
 
-Let's sink the stdout from merge_config for silent builds.
+io_waitid_complete() attempts exactly that outside of the task work
+context, and even though the ring is locked, there would be no one to
+reap the requests from the defer completion list. It only works now
+because luckily it's called before io_uring_try_cancel_uring_cmd(),
+which flushes completions.
 
-This commit does not cater to the direct invocation of merge_config.sh
-(e.g. arch/mips/Makefile).
-
-Reported-by: Leon Romanovsky <leon@kernel.org>
-Closes: https://lore.kernel.org/all/e534ce33b0e1060eb85ece8429810f087b034c88.1733234008.git.leonro@nvidia.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: Leon Romanovsky <leon@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: f31ecf671ddc4 ("io_uring: add IORING_OP_WAITID support")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.defconf | 13 +++++++------
- scripts/kconfig/Makefile |  4 +++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ io_uring/waitid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
-index 226ea3df3b4b4..a44307f08e9d6 100644
---- a/scripts/Makefile.defconf
-+++ b/scripts/Makefile.defconf
-@@ -1,6 +1,11 @@
- # SPDX-License-Identifier: GPL-2.0
- # Configuration heplers
+diff --git a/io_uring/waitid.c b/io_uring/waitid.c
+index 6362ec20abc0c..2f7b5eeab845e 100644
+--- a/io_uring/waitid.c
++++ b/io_uring/waitid.c
+@@ -118,7 +118,6 @@ static int io_waitid_finish(struct io_kiocb *req, int ret)
+ static void io_waitid_complete(struct io_kiocb *req, int ret)
+ {
+ 	struct io_waitid *iw = io_kiocb_to_cmd(req, struct io_waitid);
+-	struct io_tw_state ts = {};
  
-+cmd_merge_fragments = \
-+	$(srctree)/scripts/kconfig/merge_config.sh \
-+	$4 -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$2 \
-+	$(foreach config,$3,$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+
- # Creates 'merged defconfigs'
- # ---------------------------------------------------------------------------
- # Usage:
-@@ -8,9 +13,7 @@
- #
- # Input config fragments without '.config' suffix
- define merge_into_defconfig
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+	$(call cmd,merge_fragments,$1,$2)
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
+ 	/* anyone completing better be holding a reference */
+ 	WARN_ON_ONCE(!(atomic_read(&iw->refs) & IO_WAITID_REF_MASK));
+@@ -131,7 +130,6 @@ static void io_waitid_complete(struct io_kiocb *req, int ret)
+ 	if (ret < 0)
+ 		req_set_fail(req);
+ 	io_req_set_res(req, ret, 0);
+-	io_req_task_complete(req, &ts);
+ }
  
-@@ -22,8 +25,6 @@ endef
- #
- # Input config fragments without '.config' suffix
- define merge_into_defconfig_override
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-Q -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+	$(call cmd,merge_fragments,$1,$2,-Q)
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
-diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-index a0a0be38cbdc1..fb50bd4f4103f 100644
---- a/scripts/kconfig/Makefile
-+++ b/scripts/kconfig/Makefile
-@@ -105,9 +105,11 @@ configfiles = $(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARC
- all-config-fragments = $(call configfiles,*.config)
- config-fragments = $(call configfiles,$@)
+ static bool __io_waitid_cancel(struct io_ring_ctx *ctx, struct io_kiocb *req)
+@@ -153,6 +151,7 @@ static bool __io_waitid_cancel(struct io_ring_ctx *ctx, struct io_kiocb *req)
+ 	list_del_init(&iwa->wo.child_wait.entry);
+ 	spin_unlock_irq(&iw->head->lock);
+ 	io_waitid_complete(req, -ECANCELED);
++	io_req_queue_tw_complete(req, -ECANCELED);
+ 	return true;
+ }
  
-+cmd_merge_fragments = $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
-+
- %.config: $(obj)/conf
- 	$(if $(config-fragments),, $(error $@ fragment does not exists on this architecture))
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
-+	$(call cmd,merge_fragments)
- 	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+@@ -258,6 +257,7 @@ static void io_waitid_cb(struct io_kiocb *req, struct io_tw_state *ts)
+ 	}
  
- PHONY += tinyconfig
+ 	io_waitid_complete(req, ret);
++	io_req_task_complete(req, ts);
+ }
+ 
+ static int io_waitid_wait(struct wait_queue_entry *wait, unsigned mode,
 -- 
 2.39.5
 
