@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-117827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCF6A3B865
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:24:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58BEA3B870
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74B821886F3C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:18:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A275F189DD11
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA26A1DE2C2;
-	Wed, 19 Feb 2025 09:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A57C1B415A;
+	Wed, 19 Feb 2025 09:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fcm0von9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQLeypjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889C71C7019;
-	Wed, 19 Feb 2025 09:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8AD1B4F21;
+	Wed, 19 Feb 2025 09:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956457; cv=none; b=B6/NU0L+EacAB/B9+grIvn03RImNxzgt94+QUDTU5g+QIqWAy68Mh/xj/MQbOGe1Z1U29sS4PZ9vkW93A+QFJgoRtlOk4ndcV32h74c03G1GgkW3Y+fHpf7C2sa2IrLUsdeOO+XIZSm/41fyoIYCZ5PGFICWl1hSqg0/fr8madw=
+	t=1739956489; cv=none; b=g8AT78NzKVqkFmYo1yX2a0BKVkG2aa8md06UZT6EcTJHOoDzVez+yjbrYjJq9rLaUmE2PpQQTbRrUlOijFTB0SYFB6EaqUT4Puwz7V+41LzILWtAAqdcdul/TZ5v6IdvVPpSkmrV1r8kDBJJG1/1i77yTpwxvGja67CxaLYpOeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956457; c=relaxed/simple;
-	bh=qkcrz2yFAdITE+MLMCPdgtfAwPG68vCedTiD8Xyz7TU=;
+	s=arc-20240116; t=1739956489; c=relaxed/simple;
+	bh=bNXq2+vzF83eG/w/8rSbr2DwAUdipB+8tPAPfBSsofs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHTtb5upqFbm1qsjE0BZO/phH5NJlTLmvpZ85Bsnuu4D3sUE6NCGTDcOtMf8/Yb+VZy4MRMbwpVItD+h3rgZQt6VA9O1RnJxyr5RXFBQm59UcVhCMdabgZ6buaUG1x0YI8afmgvZ/u2nl1jqDtU1wphpKU+wR3hBqj8vKIAy2Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fcm0von9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C92C4CED1;
-	Wed, 19 Feb 2025 09:14:16 +0000 (UTC)
+	 MIME-Version; b=etYa74J31B+fozLa4vxQiexGHnX1Gsi7V2Xe3zCLRHWFfVwc4CoNz49fo9at4nUtGALCcvJqOjR80Co0X94fSh9O3B6mHIqJjtDOBTzdqM7MFQT5oLu38K8O8Q+fJzp9pMAi+4LDfSya4FuG9hR3S/vUsfG5FAOYR29d3HtvymY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQLeypjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62549C4CED1;
+	Wed, 19 Feb 2025 09:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956457;
-	bh=qkcrz2yFAdITE+MLMCPdgtfAwPG68vCedTiD8Xyz7TU=;
+	s=korg; t=1739956488;
+	bh=bNXq2+vzF83eG/w/8rSbr2DwAUdipB+8tPAPfBSsofs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fcm0von99xiyvKdNnaJwDP+OlGBL6IjP2TTcLBccffze8t1U8dYZyiW+hpinBYh5A
-	 cIzMpKtQBTL3Zu7tFo1nNe3597NQoeekV/7oYeZ+uFpbxvNZpqS6honYEfeME/WfQM
-	 5AN7bJlXqzTTNk0Z6WAymDG1BInYxt4uewMoCW0Q=
+	b=UQLeypjK8iJ+s8EfsrYXeMmqmAy5LM+MqLMtwFJ9VQhy4q/0GEjl/1oat03TlBuJy
+	 m7JA92cefbpJ9FEo329BopjkT9O0UZsrKS6GIN34UChUXaLJvpH1EMLcXyE1Q0Gjtv
+	 mknwXftksgC2KPSrzOSEm5uuzV1Nncm6LefRHkcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/578] arm64: dts: qcom: sc8280xp: Fix up remoteproc register space sizes
-Date: Wed, 19 Feb 2025 09:23:01 +0100
-Message-ID: <20250219082659.930084739@linuxfoundation.org>
+Subject: [PATCH 6.1 178/578] dts: arm64: mediatek: mt8195: Remove MT8183 compatible for OVL
+Date: Wed, 19 Feb 2025 09:23:02 +0100
+Message-ID: <20250219082659.968295870@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,56 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 7ec7e327286182c65d0b5b81dff498d620fe9e8c ]
+[ Upstream commit ce3dbc46d7e30a84b8e99c730e3172dd5efbf094 ]
 
-Make sure the remoteproc reg ranges reflect the entire register space
-they refer to.
+The OVL hardware capabilities have changed starting from MT8195,
+making the MT8183 compatible no longer applicable.
+Therefore, it is necessary to remove the MT8183 compatible for OVL.
 
-Since they're unused by the driver, there's no functional change.
-
-Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20241212-topic-8280_rproc_reg-v1-1-bd1c696e91b0@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Fixes: b852ee68fd72 ("arm64: dts: mt8195: Add display node for vdosys0")
+Link: https://lore.kernel.org/r/20241219181531.4282-5-jason-jh.lin@mediatek.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index 7e3aaf5de3f5c..6b0d4bc6c5419 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -1119,7 +1119,7 @@
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index aa8fbaf15e629..274edce5d5e6e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -2000,7 +2000,7 @@
+ 		};
  
- 		remoteproc_adsp: remoteproc@3000000 {
- 			compatible = "qcom,sc8280xp-adsp-pas";
--			reg = <0 0x03000000 0 0x100>;
-+			reg = <0 0x03000000 0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
-@@ -1806,7 +1806,7 @@
- 
- 		remoteproc_nsp0: remoteproc@1b300000 {
- 			compatible = "qcom,sc8280xp-nsp0-pas";
--			reg = <0 0x1b300000 0 0x100>;
-+			reg = <0 0x1b300000 0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&smp2p_nsp0_in 0 IRQ_TYPE_EDGE_RISING>,
-@@ -1937,7 +1937,7 @@
- 
- 		remoteproc_nsp1: remoteproc@21300000 {
- 			compatible = "qcom,sc8280xp-nsp1-pas";
--			reg = <0 0x21300000 0 0x100>;
-+			reg = <0 0x21300000 0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 887 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&smp2p_nsp1_in 0 IRQ_TYPE_EDGE_RISING>,
+ 		ovl0: ovl@1c000000 {
+-			compatible = "mediatek,mt8195-disp-ovl", "mediatek,mt8183-disp-ovl";
++			compatible = "mediatek,mt8195-disp-ovl";
+ 			reg = <0 0x1c000000 0 0x1000>;
+ 			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH 0>;
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS0>;
 -- 
 2.39.5
 
