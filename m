@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-118100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D2EA3BA40
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E684A3B6C1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E61A801720
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D152A3B6B8A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CD21EFFA2;
-	Wed, 19 Feb 2025 09:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9B01C3F0A;
+	Wed, 19 Feb 2025 08:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4m3CFNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3STIGHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87951EFFA9;
-	Wed, 19 Feb 2025 09:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298ED1CAA68;
+	Wed, 19 Feb 2025 08:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957237; cv=none; b=FdFK+3DBZeMT5r0fthzfxeUZxy6FwtPnIYaU1c+g8oKjI0uSjbvSe+e3SLgIOeOLYaIGgdtzubqkfQYaZmoUH41N16u0zCahPC8Y+LZpEhwck1/zJAuwcxNHPoiDrP8X6tBVhAr2oe5NOxY2QCUyHrYiGN1MIhg8avCxNCANYuU=
+	t=1739955465; cv=none; b=py4BsTktFDevcv0WNmre1DEY1KRNuMx2DvZ0hdqQg9fqz2wd0E0gMbknQPdvXx4VRYCCI2G0FxZ7+Xn5Xr2fG4kONvppx187xjcIPsA1KjwuxCU02u405FnWDXAVDUxANM/q+VdlCHI326OcHWqkuCI/6qUxKt0Hi5uVCfS+Fsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957237; c=relaxed/simple;
-	bh=OxORLF/CzPuThe5U38EhYVbB2WVuRROlCEX1PlzK69Y=;
+	s=arc-20240116; t=1739955465; c=relaxed/simple;
+	bh=1Qsr1RJz9J1ed0RKo//WWSLJvRCmoF+2XwZxPJZYHCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdurGAkxfXj4mowcUwkEwWnWDP3vjd5Ry8w00FQ3W+Ursq7csQDCW4sLUj8FPX/hg/mQ6A7j9ehdbeomDadQEBdTFhhUPGEk6N9RdN5bZnflu1NDLq1t06f+FMX5GKbB2glcE3ibqUYnC6nQmQrP1WSAMgN0vYd67+FwdYttc/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4m3CFNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0710BC4CED1;
-	Wed, 19 Feb 2025 09:27:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R6Ojx/zg4RakAMrsf5zpHbR6MNqRLg4FD2X4YlzdMnItdHePhPfpJN9OmjF4BdF2zCI+KXV+/GXUNO81wr+QBp/nuf41WE7+dwLh3uXtl7nNi/4cS+9vMRylI1M6obm4httbLEGKF5Sa6aqTy0pReyEvPIjfP+qpUZZyTlK/tII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3STIGHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F42C4CED1;
+	Wed, 19 Feb 2025 08:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957235;
-	bh=OxORLF/CzPuThe5U38EhYVbB2WVuRROlCEX1PlzK69Y=;
+	s=korg; t=1739955465;
+	bh=1Qsr1RJz9J1ed0RKo//WWSLJvRCmoF+2XwZxPJZYHCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4m3CFNLY4h/BhkjUGmXCQT9b/ikm68oDSd47/fiwatGg1gEpK6gPTKtx1ftcXGCx
-	 ffykbA1TUnviAVCVFaql5uhYXH8Uv2CnBzSeWQZ3xSB+pBqNDSKKp8UTI8LxNviZSx
-	 5q4D2vFAprXYowRyL7ad72uXoILW+i4BTV/vl0sk=
+	b=M3STIGHcUjinq68Niu1YwFPgbUOepLucNBdqXoSn1rV/oGravrMYO/mbFaF/o4u3Y
+	 bG7bPt0hbgTEY0pLtK1Ux8Ha44tgo4E2KeEScwKN9d4N3OSnSV3j8c4DFQ5SV1eFP4
+	 wtbHiCJCMskF8E2NRfssZPVsJvcVAykxeVoohJF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 424/578] selftests: mptcp: connect: -f: no reconnect
+	Axel Busch <axel.busch@ibm.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Muhammad Adeel <muhammad.adeel@ibm.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 015/152] cgroup: Remove steal time from usage_usec
 Date: Wed, 19 Feb 2025 09:27:08 +0100
-Message-ID: <20250219082709.696039082@linuxfoundation.org>
+Message-ID: <20250219082550.629968056@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Muhammad Adeel <Muhammad.Adeel@ibm.com>
 
-commit 5368a67307b3b2c347dc8965ac55b888be665934 upstream.
+[ Upstream commit db5fd3cf8bf41b84b577b8ad5234ea95f327c9be ]
 
-The '-f' parameter is there to force the kernel to emit MPTCP FASTCLOSE
-by closing the connection with unread bytes in the receive queue.
+The CPU usage time is the time when user, system or both are using the CPU.
+Steal time is the time when CPU is waiting to be run by the Hypervisor. It
+should not be added to the CPU usage time, hence removing it from the
+usage_usec entry.
 
-The xdisconnect() helper was used to stop the connection, but it does
-more than that: it will shut it down, then wait before reconnecting to
-the same address. This causes the mptcp_join's "fastclose test" to fail
-all the time.
-
-This failure is due to a recent change, with commit 218cc166321f
-("selftests: mptcp: avoid spurious errors on disconnect"), but that went
-unnoticed because the test is currently ignored. The recent modification
-only shown an existing issue: xdisconnect() doesn't need to be used
-here, only the shutdown() part is needed.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 936f2a70f2077 ("cgroup: add cpu.stat file to root cgroup")
+Acked-by: Axel Busch <axel.busch@ibm.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Muhammad Adeel <muhammad.adeel@ibm.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/rstat.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1216,7 +1216,7 @@ again:
- 		return ret;
+diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
+index d80d7a6081412..c32439b855f5d 100644
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -469,7 +469,6 @@ static void root_cgroup_cputime(struct cgroup_base_stat *bstat)
  
- 	if (cfg_truncate > 0) {
--		xdisconnect(fd);
-+		shutdown(fd, SHUT_WR);
- 	} else if (--cfg_repeat > 0) {
- 		xdisconnect(fd);
+ 		cputime->sum_exec_runtime += user;
+ 		cputime->sum_exec_runtime += sys;
+-		cputime->sum_exec_runtime += cpustat[CPUTIME_STEAL];
  
+ #ifdef CONFIG_SCHED_CORE
+ 		bstat->forceidle_sum += cpustat[CPUTIME_FORCEIDLE];
+-- 
+2.39.5
+
 
 
 
