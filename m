@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC810A3BA7B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:42:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D62A3B727
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E6D8022C6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AADB41890E2E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D793F1DF731;
-	Wed, 19 Feb 2025 09:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17C71E0DE6;
+	Wed, 19 Feb 2025 09:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT69F5XV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMedM9eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949171DF277;
-	Wed, 19 Feb 2025 09:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6641E0DE2;
+	Wed, 19 Feb 2025 09:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957439; cv=none; b=bBtBtmv6ep8O2MduSmfum3ML3yFHSvxswKKn/t3iHKRfjdQTh15ZqUeOAvjuGHBPT5P/zXVwZLK88tS5CCjPCH4iyotKnJajPrKbVHzKvbXlSPCWPMTrqIiPBvevcQPPnFcPY4bUTgJ2SQ1fCD8GgDQbLNCKHtYd8xbd5TiAHUs=
+	t=1739955664; cv=none; b=CPriTR6fCZiGkSC2N09TXbMMIQhLZ31MIJNViLrNpAt31Xu1KbIPx2FRNojgbwAoD06bH4GRVK+IkSrE3KGEXTXKsDHpWOMIzwUzL3mSzzNxl1Z0XgQYnqfQcp9EuLFmyThnHGTfCYgW2iuqNlYyNY/tt7Kja0/NK1o+CnXinTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957439; c=relaxed/simple;
-	bh=b/8/GqFzR0aIaA3BV7kzlR7ffuZGcqbZ5rfEZG9OpcY=;
+	s=arc-20240116; t=1739955664; c=relaxed/simple;
+	bh=unRwYXT0XR5lHS2vv2vv45SuNainJ/BU1rVNM1BGxKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a8xbTuTGhkwYmnEfgIXZKc7sD6Kmj8XPmOAnZQ5oAvzDfJ2yCW2DgkbAxdEnawi1yv6ckG3RAfHqd361uFkTyjkPi85W4x1k3RnXQ9n7IILXjoH9t5nqL4BfvSjqiAVD7BOhOtHqp/dmkX6RxH3drgEsyiUSde8h84NeCZ+Y5T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT69F5XV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BD0C4CED1;
-	Wed, 19 Feb 2025 09:30:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rGNNomSp4+9Tr6uidb2aRYGwFPSYZX/3GnczSLLj79MBghU6AX2YCxt3f0QDumOGX+fP6Su3rSz42Ttrca9oQJdFu3MjpMOsQloHr3tvoourarULCMrdOY13J9goTlvXCmYsTLk9n3IGh2qQbnawWfFPpy9LQucCWBU/Xk3LIJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMedM9eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42B6C4CED1;
+	Wed, 19 Feb 2025 09:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957439;
-	bh=b/8/GqFzR0aIaA3BV7kzlR7ffuZGcqbZ5rfEZG9OpcY=;
+	s=korg; t=1739955664;
+	bh=unRwYXT0XR5lHS2vv2vv45SuNainJ/BU1rVNM1BGxKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OT69F5XVFAWGgCD43DqxoUpFgULXxOy2/wgjIQ+S0RLqODBbV1hEnA/zw7P+nYpME
-	 OjiqDisB02qTgexpbuuqzpSZGPkxx12N9Dh37ZiX33o+cr/vCRuMXZftlnsLaaVPQD
-	 exYPis354hSLG5ya2sTz8TK+wE/Eb0kMWXBewPXI=
+	b=lMedM9eqs7TxiqCrT0tfh2b5roIDrdlv5yBev7ndijJ7rnZ07tO7St3+wfuw320B7
+	 eO4Nhvh61yBaYMiP37mpQfvgIMMvvnMPUnEllTEQiwJzxL7NpNgYHlPh54blH4uk2d
+	 PCM41b6y+Ah4U1sJ3pC6Ff8PzQkDbF6AvjUvJ+dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 485/578] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 076/152] can: j1939: j1939_sk_send_loop(): fix unable to send messages with data length zero
 Date: Wed, 19 Feb 2025 09:28:09 +0100
-Message-ID: <20250219082712.079848919@linuxfoundation.org>
+Message-ID: <20250219082553.054542085@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alexander Hölzl <alexander.hoelzl@gmx.net>
 
-[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
+commit 44de577e61ed239db09f0da9d436866bef9b77dd upstream.
 
-Apparently the Raptor Lake-P reference firmware configures the PIO log size
-correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
-Zenbook UX3402VA_UX3402VA, do not.
+The J1939 standard requires the transmission of messages of length 0.
 
-Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
+For example proprietary messages are specified with a data length of 0
+to 1785. The transmission of such messages is not possible. Sending
+results in no error being returned but no corresponding can frame
+being generated.
 
-  DPC: RP PIO log size 0 is invalid
+Enable the transmission of zero length J1939 messages. In order to
+facilitate this two changes are necessary:
 
-and also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
+1) If the transmission of a new message is requested from user space
+the message is segmented in j1939_sk_send_loop(). Let the segmentation
+take into account zero length messages, do not terminate immediately,
+queue the corresponding skb.
 
-Note that the bug report also mentions 8086:a76e, which has been already
-added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
-Root Ports").
+2) j1939_session_skb_get_by_offset() selects the next skb to transmit
+for a session. Take into account that there might be zero length skbs
+in the queue.
 
-Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250205174651.103238-1-alexander.hoelzl@gmx.net
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Cc: stable@vger.kernel.org
+[mkl: commit message rephrased]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/can/j1939/socket.c    |    4 ++--
+ net/can/j1939/transport.c |    5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 2b3df65005ca8..c16c8507d048e 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6139,6 +6139,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- #endif
--- 
-2.39.5
-
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -1132,7 +1132,7 @@ static int j1939_sk_send_loop(struct j19
+ 
+ 	todo_size = size;
+ 
+-	while (todo_size) {
++	do {
+ 		struct j1939_sk_buff_cb *skcb;
+ 
+ 		segment_size = min_t(size_t, J1939_MAX_TP_PACKET_SIZE,
+@@ -1177,7 +1177,7 @@ static int j1939_sk_send_loop(struct j19
+ 
+ 		todo_size -= segment_size;
+ 		session->total_queued_size += segment_size;
+-	}
++	} while (todo_size);
+ 
+ 	switch (ret) {
+ 	case 0: /* OK */
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -382,8 +382,9 @@ sk_buff *j1939_session_skb_get_by_offset
+ 	skb_queue_walk(&session->skb_queue, do_skb) {
+ 		do_skcb = j1939_skb_to_cb(do_skb);
+ 
+-		if (offset_start >= do_skcb->offset &&
+-		    offset_start < (do_skcb->offset + do_skb->len)) {
++		if ((offset_start >= do_skcb->offset &&
++		     offset_start < (do_skcb->offset + do_skb->len)) ||
++		     (offset_start == 0 && do_skcb->offset == 0 && do_skb->len == 0)) {
+ 			skb = do_skb;
+ 		}
+ 	}
 
 
 
