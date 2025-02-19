@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-117254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2698A3B56C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FD3A3B5DD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1B021898D51
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44C3F7A4006
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EEC1E0084;
-	Wed, 19 Feb 2025 08:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F281C7013;
+	Wed, 19 Feb 2025 08:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwHRr+yX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbWoJLw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373311E377E;
-	Wed, 19 Feb 2025 08:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1346E1EEA54;
+	Wed, 19 Feb 2025 08:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954688; cv=none; b=F4YukpJiowD9mTWslEmU7Avz17bfINfyWwpZ9ZcB0eFyuotb1KCQqUu18cdpyUk8ZrZzwlyXKSbN0MvKrVjEio7pic5I1Wqi9fEDZMnkds7iKQD9pQ7VejZW1ILSaY+licZh/7KnV2dbHG7DM42dGc8LK3M9UICfbv7s19v41Ok=
+	t=1739955388; cv=none; b=V/ZUbOgse+6yzAP9IS6NOD8DduVJKJt8Ua4POZ4RPKm0vxTWYQDTioEqnDwFhNPc3h/RI9uVFMquElNtv3NKopgVAV88jbbNjnQrmWB9zvdgrC5IWqpGXqGqSbA7m+yUfXmZyz+wpZy8y3OSpovN6vAu00FCN1vNYnNpfTR/JvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954688; c=relaxed/simple;
-	bh=aH7U1r/lRRb77se5XmzS4WvvCwnTzDh7LMB/FowWVo8=;
+	s=arc-20240116; t=1739955388; c=relaxed/simple;
+	bh=OkaIchXxmQUCl38TcdI50OnHkwBuhM3ilyXzXjVz3gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tuMmmvKWkNpjEkqd4MqXOMmQYlnb78hskVjIm4lgyc75U1PJ3bjx5MlZKkSvl5KCXqn6xfOqLNmYbUTNIgREAkO+o0F2PU6w8Z6B6r06eIFldpnBaQOKTYqo8YZCefooKM1h+SajkKZIl+uS2KbETz+X2qA4TTXn7E5Q0h4ULQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwHRr+yX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8743C4CED1;
-	Wed, 19 Feb 2025 08:44:47 +0000 (UTC)
+	 MIME-Version; b=b2SUZUtYqmRRwibR1XsHGwSxH2fVzf+dwY0kSbjtx7xNDZn9Fk/2bq9ADpPT6eyGIfjHID3X2p397pFzsCHyFnA4LTZBnmDQYZoOvzcmf6pCNA7uRa81e0XIzMsp+GioOhyQ/bl3PnHPLihZkfeubN8+ufMEgdvs0qSplsWnISg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbWoJLw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1F9C4CED1;
+	Wed, 19 Feb 2025 08:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954688;
-	bh=aH7U1r/lRRb77se5XmzS4WvvCwnTzDh7LMB/FowWVo8=;
+	s=korg; t=1739955388;
+	bh=OkaIchXxmQUCl38TcdI50OnHkwBuhM3ilyXzXjVz3gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwHRr+yX5Wuh2FPoAJPVlaL86wZTmIHXlycV2RoszWDFMMuvJBUvf9lwmQ1Z/vc9E
-	 75MOagSrozxRbkEg54aQuP1Eo7tsWaBJ7lZi248vCpcZ0N2f7o+1ItWSN6mWAk9Sx0
-	 5OtkLqTy10ZmNeZslAL8Pl5x9wdUy/PgFq0mZSwA=
+	b=wbWoJLw1+2Iw/fUHI1zPVlvQQ8NvgHHbNnnBLRvu5NwHeO5NkC8K/Z05knsUOJZeW
+	 +eW958TSYdkNJn8byRU6yN3bfLYU7DGeRo/c35SLLHh/23lnGvQD6irEzbTs4ebpnk
+	 OySCz7uxrdzj69t5M+RHHTKrqKrt65s/csHUwxC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20N=C3=BCrnberger?= <stefan.nuernberger@cyberus-technology.de>
-Subject: [PATCH 6.13 274/274] Revert "vfio/platform: check the bounds of read/write syscalls"
-Date: Wed, 19 Feb 2025 09:28:48 +0100
-Message-ID: <20250219082620.309114787@linuxfoundation.org>
+	Alex Zenla <alex@edera.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 220/230] x86/static-call: Remove early_boot_irqs_disabled check to fix Xen PVH dom0
+Date: Wed, 19 Feb 2025 09:28:57 +0100
+Message-ID: <20250219082610.297477064@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-This reverts commit 198090eb6f5f094cf3a268c3c30ef1e9c84a6dbe.
+commit 5cc2db37124bb33914996d6fdbb2ddb3811f2945 upstream.
 
-It had been committed multiple times to the tree, and isn't needed
-again.
+__static_call_update_early() has a check for early_boot_irqs_disabled, but
+is used before early_boot_irqs_disabled is set up in start_kernel().
 
-Link: https://lore.kernel.org/r/a082db2605514513a0a8568382d5bd2b6f1877a0.camel@cyberus-technology.de
-Reported-by: Stefan Nürnberger <stefan.nuernberger@cyberus-technology.de>
+Xen PV has always special cased early_boot_irqs_disabled, but Xen PVH does
+not and falls over the BUG when booting as dom0.
+
+It is very suspect that early_boot_irqs_disabled starts as 0, becomes 1 for
+a time, then becomes 0 again, but as this needs backporting to fix a
+breakage in a security fix, dropping the BUG_ON() is the far safer option.
+
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219620
+Reported-by: Alex Zenla <alex@edera.dev>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Alex Zenla <alex@edera.dev>
+Link: https://lore.kernel.org/r/20241221211046.6475-1-andrew.cooper3@citrix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/kernel/static_call.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -393,11 +393,6 @@ static ssize_t vfio_platform_read_mmio(s
- 
- 	count = min_t(size_t, count, reg->size - off);
- 
--	if (off >= reg->size)
--		return -EINVAL;
--
--	count = min_t(size_t, count, reg->size - off);
--
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -479,11 +474,6 @@ static ssize_t vfio_platform_write_mmio(
- 
- 	if (off >= reg->size)
- 		return -EINVAL;
--
--	count = min_t(size_t, count, reg->size - off);
--
--	if (off >= reg->size)
--		return -EINVAL;
- 
- 	count = min_t(size_t, count, reg->size - off);
- 
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -175,7 +175,6 @@ EXPORT_SYMBOL_GPL(arch_static_call_trans
+ noinstr void __static_call_update_early(void *tramp, void *func)
+ {
+ 	BUG_ON(system_state != SYSTEM_BOOTING);
+-	BUG_ON(!early_boot_irqs_disabled);
+ 	BUG_ON(static_call_initialized);
+ 	__text_gen_insn(tramp, JMP32_INSN_OPCODE, tramp, func, JMP32_INSN_SIZE);
+ 	sync_core();
 
 
 
