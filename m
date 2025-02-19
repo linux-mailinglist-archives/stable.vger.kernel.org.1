@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-118147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38FDA3BA1C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA420A3B7A0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 811C11890F8F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD1833B8BD8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319961CCEF0;
-	Wed, 19 Feb 2025 09:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A151E32B3;
+	Wed, 19 Feb 2025 09:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6Vdz0xy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn5qW0BP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ED51B6D0A;
-	Wed, 19 Feb 2025 09:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FE21E1A17;
+	Wed, 19 Feb 2025 09:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957371; cv=none; b=MPAsLKICjStFiupWwMNkyoE8lcncd6Ae8YIbzLQE9O2BiXulKQQ63YlWthRKNsoBS15+TJaDKXp4bT0BJ72wDDWOLhmVn3KMTbYa/XMjvqSIfYO9giZ1YBVSEZNAWuHdSqdRzUF3I/NLk1tiSekjZ28CHqu8M1qmrMWZ/PBwjQg=
+	t=1739955726; cv=none; b=m3Vtn8Ga9d0vqIW1MAlL9Dd5lTI8jrr6w8h8ZWqFlZUBOlxVWyDmGXZgscsxvjtb7ErRi8bC0xL5OGSNZz3xLpfrCJs7BlsBiWGCOF+SPPjgXfj0n2KNoP/+0TGesmqKlOvXvFo5YDX6ZeJqWCY6V7FVcmeh7jh1pBM+gqSP0hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957371; c=relaxed/simple;
-	bh=MjkEeaTLgBytNfwqIUjH+w2P0hukfBMsAzOcnzDnWiM=;
+	s=arc-20240116; t=1739955726; c=relaxed/simple;
+	bh=6tBX5leAn2DpGoa6+oGeLjCEq3Frf6e0IJfEPdlNRas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IfmbwB/zojB5+SPpz37wZ1PuoBNabtJSWsCODSMHjR84jH1v6YUojNRCTGdme3QmQQlOTicV/NXvFUUhdVR7vN4wPaGVddK6OewefYHDpDl5ORGqFItbi21ipXUUwwCtAtBEagl/Obf/u2Tm16u5ibdlAuRf6ZVfVpNaARPpi9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6Vdz0xy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62178C4CED1;
-	Wed, 19 Feb 2025 09:29:30 +0000 (UTC)
+	 MIME-Version; b=SPkfVjBIVr388McB2VDJXSexXyrGllYVp1QaXpwSnxSPFNVCayMbqgMN9NcsRCINES+o0b0HFJ0Q+5JKB9stoE8+p151oQpc2ddgiV/bRI0DKb63n84Zr9X6weUEODARMZB65M6Lvtq9N/HO6HSLnHIBl3aY5+T1jNPK1XvICLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn5qW0BP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9831C4CED1;
+	Wed, 19 Feb 2025 09:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957370;
-	bh=MjkEeaTLgBytNfwqIUjH+w2P0hukfBMsAzOcnzDnWiM=;
+	s=korg; t=1739955726;
+	bh=6tBX5leAn2DpGoa6+oGeLjCEq3Frf6e0IJfEPdlNRas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6Vdz0xyBLjrirRT7NmEzitNtsO4oManT+99+MCrbl8DrOQLM8ZIZM2nYMQp/r1px
-	 hvy01Uv/sxUut21XNVzOorGTUCA4/059Gg6xwRwQhJLqvicUqxaZEih1yY1yvkTC7N
-	 Shy6cDuZwKHJCtFUjTNdht46KB+zQch71DNR2WU4=
+	b=vn5qW0BPEtV8ivUNO5DpyMb49XWcrn3jXIkkGcGGlZjsDrufhPtREMpJLI19TJd1Y
+	 82AMtUFsRajngWKofBZt4dYEu/KiiAT1v2I4dIklPBADLKSXgQOc2RWf71TWdyE5T0
+	 ppiwXSFyPc6QrKmP/uWLeNHd/aE64KDfXfPHE+9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Selvarasu Ganesan <selvarasu.g@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 503/578] usb: dwc3: Fix timeout issue during controller enter/exit from halt state
+	Song Yoong Siang <yoong.siang.song@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 094/152] igc: Set buffer type for empty frames in igc_init_empty_frame
 Date: Wed, 19 Feb 2025 09:28:27 +0100
-Message-ID: <20250219082712.773761921@linuxfoundation.org>
+Message-ID: <20250219082553.772985971@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +62,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+From: Song Yoong Siang <yoong.siang.song@intel.com>
 
-commit d3a8c28426fc1fb3252753a9f1db0d691ffc21b0 upstream.
+commit 63f20f00d23d569e4e67859b4e8dcc9de79221cb upstream.
 
-There is a frequent timeout during controller enter/exit from halt state
-after toggling the run_stop bit by SW. This timeout occurs when
-performing frequent role switches between host and device, causing
-device enumeration issues due to the timeout. This issue was not present
-when USB2 suspend PHY was disabled by passing the SNPS quirks
-(snps,dis_u2_susphy_quirk and snps,dis_enblslpm_quirk) from the DTS.
-However, there is a requirement to enable USB2 suspend PHY by setting of
-GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY bits when controller starts
-in gadget or host mode results in the timeout issue.
+Set the buffer type to IGC_TX_BUFFER_TYPE_SKB for empty frame in the
+igc_init_empty_frame function. This ensures that the buffer type is
+correctly identified and handled during Tx ring cleanup.
 
-This commit addresses this timeout issue by ensuring that the bits
-GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
-the dwc3_gadget_run_stop sequence and restoring them after the
-dwc3_gadget_run_stop sequence is completed.
-
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250201163903.459-1-selvarasu.g@samsung.com
+Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+Cc: stable@vger.kernel.org # 6.2+
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |   34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2485,10 +2485,38 @@ static int dwc3_gadget_run_stop(struct d
- {
- 	u32			reg;
- 	u32			timeout = 2000;
-+	u32			saved_config = 0;
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1096,6 +1096,7 @@ static int igc_init_empty_frame(struct i
+ 		return -ENOMEM;
+ 	}
  
- 	if (pm_runtime_suspended(dwc->dev))
- 		return 0;
- 
-+	/*
-+	 * When operating in USB 2.0 speeds (HS/FS), ensure that
-+	 * GUSB2PHYCFG.ENBLSLPM and GUSB2PHYCFG.SUSPHY are cleared before starting
-+	 * or stopping the controller. This resolves timeout issues that occur
-+	 * during frequent role switches between host and device modes.
-+	 *
-+	 * Save and clear these settings, then restore them after completing the
-+	 * controller start or stop sequence.
-+	 *
-+	 * This solution was discovered through experimentation as it is not
-+	 * mentioned in the dwc3 programming guide. It has been tested on an
-+	 * Exynos platforms.
-+	 */
-+	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+	if (reg & DWC3_GUSB2PHYCFG_SUSPHY) {
-+		saved_config |= DWC3_GUSB2PHYCFG_SUSPHY;
-+		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
-+	}
-+
-+	if (reg & DWC3_GUSB2PHYCFG_ENBLSLPM) {
-+		saved_config |= DWC3_GUSB2PHYCFG_ENBLSLPM;
-+		reg &= ~DWC3_GUSB2PHYCFG_ENBLSLPM;
-+	}
-+
-+	if (saved_config)
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
-+
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	if (is_on) {
- 		if (DWC3_VER_IS_WITHIN(DWC3, ANY, 187A)) {
-@@ -2516,6 +2544,12 @@ static int dwc3_gadget_run_stop(struct d
- 		reg &= DWC3_DSTS_DEVCTRLHLT;
- 	} while (--timeout && !(!is_on ^ !reg));
- 
-+	if (saved_config) {
-+		reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+		reg |= saved_config;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
-+	}
-+
- 	if (!timeout)
- 		return -ETIMEDOUT;
- 
++	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
+ 	buffer->skb = skb;
+ 	buffer->protocol = 0;
+ 	buffer->bytecount = skb->len;
 
 
 
