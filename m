@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-117401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4496A3B6C6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C787A3BA36
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD47F3BC927
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 431864229F7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592051BC062;
-	Wed, 19 Feb 2025 08:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F951DF97F;
+	Wed, 19 Feb 2025 09:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIK85NFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg+AN9x+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161AF1E0084;
-	Wed, 19 Feb 2025 08:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2951DF96E;
+	Wed, 19 Feb 2025 09:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955164; cv=none; b=s1uNHoCzIUzuOQndQvsaSbuSazgE4YL28F1Kc4oNMwg9ALBRqerV8HXXO/oeHbR6Fn0MHj6lu8ten63zYhrPnT5jr9rka2NWrxlDG/3ZpU2PJXNqN7eCNwAwNtIUqrSy5p7PY5+uKub+svWdC7qY0b2sbT8WWIyaYLnNCPQCVB0=
+	t=1739957261; cv=none; b=VMjVE0IhHt3riaOLXhGnT2OrRBlT0KA0iNIyM3gAqp+d6g6rzMsKwvi1xStMNNbYUSiX9pPguSTf/ImDvNoWuIq6lKIoYQ3wdWTtqBj3YZzQYDokKEs/J4khWcO0pGu78sw5U9LA0elUfyuvETTHav2Sxxz48FBd12yHm2aR7R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955164; c=relaxed/simple;
-	bh=IT4BtNPIm+6ckCXYDlamMnr1cmD8P2rltC1EzK+xTBc=;
+	s=arc-20240116; t=1739957261; c=relaxed/simple;
+	bh=Hcfp9n4jcutUrA4REW6NPt7B8AJuxTdCYYdCkqtkucA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsMj9wqk7UxM4qtR9wV+NaHhh28tspTaUlKPB8WDLdjz93llmBYLTqu0mril9YUkq518PlGyB/fh3SA4g6u+3sFoSPZYQRdbIjcgseWHOMQnGkIvSPrBxBvv8mL4+aK/EYZ+kIEu8gB3MYfZKYcFMF1Pehskoa5YUWWp9uBophA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIK85NFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E734C4CED1;
-	Wed, 19 Feb 2025 08:52:42 +0000 (UTC)
+	 MIME-Version; b=Wz1dXjoSP2V1/2NpJ9dhotR1ludrEEXARQFDUZVEEIym1FGQCntkg3IrRsjF7CTo/+IavYQvUaJ9rgZTX4fzMybwK+PbzAf+kIFpsSj5TXlmIpOEEwJAzQeK4DQbzlpxcs+OtGKxpVPIeDWjfneYyxObDBCneHRQwxf8Yw8XZoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg+AN9x+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8658C4CED1;
+	Wed, 19 Feb 2025 09:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955163;
-	bh=IT4BtNPIm+6ckCXYDlamMnr1cmD8P2rltC1EzK+xTBc=;
+	s=korg; t=1739957261;
+	bh=Hcfp9n4jcutUrA4REW6NPt7B8AJuxTdCYYdCkqtkucA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIK85NFcK+BJ8T2pZOs2tadlKgDUs5gZSerzoZv+RJQIh8r/+214YOAqb/BuWOmuM
-	 2BOmisTTqa99NU7MRJcr5+Yt9m+HxcDEuFz/Si/geYhJWGNn6P+sEPPKRVWdar7PhC
-	 gAHXv7GKL/wDfn+QQqwsDGDUXh0qwFnhMz9Z9itk=
+	b=rg+AN9x+gIN28syxcjDBtJ0ZdXYO5TWLSKPM7dQMTqm8n8nI270//JzsIqhxSMy9S
+	 eHBks7EQiaMIprZ26UHxIBA29aqK1Xf8NQVwFv9R0KsznAEdVnztJ6K3r5tAhGmCOc
+	 F2tcP+9x9iqEGrAGYa/U6yvj7YJk4eBoTVcKaylU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 152/230] partitions: mac: fix handling of bogus partition table
+	Charles Han <hanchunchao@inspur.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 465/578] HID: multitouch: Add NULL check in mt_input_configured
 Date: Wed, 19 Feb 2025 09:27:49 +0100
-Message-ID: <20250219082607.635575493@linuxfoundation.org>
+Message-ID: <20250219082711.298659216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-commit 80e648042e512d5a767da251d44132553fe04ae0 upstream.
+[ Upstream commit 9b8e2220d3a052a690b1d1b23019673e612494c5 ]
 
-Fix several issues in partition probing:
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in mt_input_configured() is not checked.
+Add NULL check in mt_input_configured(), to handle kernel NULL
+pointer dereference error.
 
- - The bailout for a bad partoffset must use put_dev_sector(), since the
-   preceding read_part_sector() succeeded.
- - If the partition table claims a silly sector size like 0xfff bytes
-   (which results in partition table entries straddling sector boundaries),
-   bail out instead of accessing out-of-bounds memory.
- - We must not assume that the partition table contains proper NUL
-   termination - use strnlen() and strncmp() instead of strlen() and
-   strcmp().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20250214-partition-mac-v1-1-c1c626dffbd5@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 479439463529 ("HID: multitouch: Correct devm device reference for hidinput input_dev name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/mac.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/block/partitions/mac.c
-+++ b/block/partitions/mac.c
-@@ -53,13 +53,25 @@ int mac_partition(struct parsed_partitio
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 5ad871a7d1a44..6386043aab0bb 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1668,9 +1668,12 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ 		break;
  	}
- 	secsize = be16_to_cpu(md->block_size);
- 	put_dev_sector(sect);
-+
-+	/*
-+	 * If the "block size" is not a power of 2, things get weird - we might
-+	 * end up with a partition straddling a sector boundary, so we wouldn't
-+	 * be able to read a partition entry with read_part_sector().
-+	 * Real block sizes are probably (?) powers of two, so just require
-+	 * that.
-+	 */
-+	if (!is_power_of_2(secsize))
-+		return -1;
- 	datasize = round_down(secsize, 512);
- 	data = read_part_sector(state, datasize / 512, &sect);
- 	if (!data)
- 		return -1;
- 	partoffset = secsize % 512;
--	if (partoffset + sizeof(*part) > datasize)
-+	if (partoffset + sizeof(*part) > datasize) {
-+		put_dev_sector(sect);
- 		return -1;
-+	}
- 	part = (struct mac_partition *) (data + partoffset);
- 	if (be16_to_cpu(part->signature) != MAC_PARTITION_MAGIC) {
- 		put_dev_sector(sect);
-@@ -112,8 +124,8 @@ int mac_partition(struct parsed_partitio
- 				int i, l;
  
- 				goodness++;
--				l = strlen(part->name);
--				if (strcmp(part->name, "/") == 0)
-+				l = strnlen(part->name, sizeof(part->name));
-+				if (strncmp(part->name, "/", sizeof(part->name)) == 0)
- 					goodness++;
- 				for (i = 0; i <= l - 4; ++i) {
- 					if (strncasecmp(part->name + i, "root",
+-	if (suffix)
++	if (suffix) {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
++		if (!hi->input->name)
++			return -ENOMEM;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
