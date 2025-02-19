@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-118017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9E3A3B97F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC4BA3B66F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB35B3A92AC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:27:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D88E23B9368
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5221DF968;
-	Wed, 19 Feb 2025 09:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C681DE892;
+	Wed, 19 Feb 2025 08:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBo6yuvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYpeDvYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2B81DF74F;
-	Wed, 19 Feb 2025 09:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F281DE3AF;
+	Wed, 19 Feb 2025 08:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956999; cv=none; b=cMfJotO2IzO4B72tVUtN/jp3jX1AMVP8ygywdkPypwU7Qg7uNzWzRD6KmHA3yua6U3WLfIKE3rJPHjEEjEw0rrI076gN6qsQR5V885adRytuPyZcYlexzZDTcYCE16p7CPJWGbrxYUwDAXaOc4XJZZcwBJybV2rX+L07whr9498=
+	t=1739954956; cv=none; b=inE0pU4AtqupVsFwa5/CyMVdOBZLCOr+8GSaVCE336f/JUt2itSCDrzbVs64qr8ksEzWSaoKvYoc/wBPgNadKw+cgBvX/xqiSKNkUqAYQu21vPRR/9AOrv/i3siXYZbu2T1Tpqn8fV7A0UX3ivB8jI08IgIp8jfQ9iUSeuKmzSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956999; c=relaxed/simple;
-	bh=n4/giDNQMEDAERYSmMciVMUslC2lhE+R3rYtM09C94Q=;
+	s=arc-20240116; t=1739954956; c=relaxed/simple;
+	bh=0YMd8nVhTIL6b8c+MUlzw5V12Tn0QGn8cfrAHmaYnVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cm4aoRU4OwoprWJPQc8lOXz0Uate5pTW5hYPOl4itgmBeysW9oK+2OZQWLQaxbz4bdXOmVzcDLoXDg1h1Wgjvs/gr1CGu5nKqAyn6CaVexTVQLLPtoQQZgDNmix1rHWssUhkGTcWe9Bd+Q6iCwYuT6/rmoaRO8Kn/IYaSTyQRZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBo6yuvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2FDC4CED1;
-	Wed, 19 Feb 2025 09:23:18 +0000 (UTC)
+	 MIME-Version; b=cZJamkn+xqtpo/vYFQ0h5hJAoRB0HQI1Gh9UCk0rtb9SnmUcH9GqFBay6bMRp0xEqEP1n8OE8PVLKHJxS8bvdoicrsDp0rtlgx6OXA9a4yNUlzfTkx3G8DyDJsVPPuEyzrgO8UGlwSnH2bo1Hf6x4Y90k335c7UKMK99i9p50LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYpeDvYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB97C4CEE7;
+	Wed, 19 Feb 2025 08:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956999;
-	bh=n4/giDNQMEDAERYSmMciVMUslC2lhE+R3rYtM09C94Q=;
+	s=korg; t=1739954956;
+	bh=0YMd8nVhTIL6b8c+MUlzw5V12Tn0QGn8cfrAHmaYnVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBo6yuvpLc85guxW6nfgDahG2o12xUdEJkxcIF0mGaDsRGTJr2PejRDk98VNWHDaL
-	 wLtIDnKtPJSie7TQw9sB9qpekZW7HyXa/SSkeOc38ddGafhjINK/VAK7F4jPobjL8R
-	 SewDipAT8spqwoXSC5eq8vJXVA5HDNo19OAdpFwQ=
+	b=gYpeDvYL8hP5cA00YJOcEA0QIRBTYxR/3Xo1Xvbwdiymn0PaLzjBrPXALUeo0O9X4
+	 K0QKU3m40nqkXSA984KqQUKgbjMi6d7PYTIZpXHiSzJGLm/dVtuuZUP3hX/UT8YIMw
+	 gvBuh+6k0qA9ej1s3G9Dq/QbKMdKAfbSAKdCfGGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 373/578] usb: gadget: f_tcm: Decrement command ref count on cleanup
-Date: Wed, 19 Feb 2025 09:26:17 +0100
-Message-ID: <20250219082707.689256579@linuxfoundation.org>
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 061/230] soc/tegra: fuse: Update Tegra234 nvmem keepout list
+Date: Wed, 19 Feb 2025 09:26:18 +0100
+Message-ID: <20250219082604.100880981@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-commit 3b2a52e88ab0c9469eaadd4d4c8f57d072477820 upstream.
+[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
 
-We submitted the command with TARGET_SCF_ACK_KREF, which requires
-acknowledgment of command completion. If the command fails, make sure to
-decrement the ref count.
+Various Nvidia userspace applications and tests access following fuse
+via Fuse nvmem interface:
 
-Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/3c667b4d9c8b0b580346a69ff53616b6a74cfea2.1733876548.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	* odmid
+	* odminfo
+	* boot_security_info
+	* public_key_hash
+	* reserved_odm0
+	* reserved_odm1
+	* reserved_odm2
+	* reserved_odm3
+	* reserved_odm4
+	* reserved_odm5
+	* reserved_odm6
+	* reserved_odm7
+	* odm_lock
+	* pk_h1
+	* pk_h2
+	* revoke_pk_h0
+	* revoke_pk_h1
+	* security_mode
+	* system_fw_field_ratchet0
+	* system_fw_field_ratchet1
+	* system_fw_field_ratchet2
+	* system_fw_field_ratchet3
+	* optin_enable
+
+Update tegra234_fuse_keepouts list to allow reading these fuse from
+nvmem sysfs interface.
+
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -973,6 +973,7 @@ static void usbg_data_write_cmpl(struct
- 	return;
+diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
+index eb14e5ff5a0aa..e24ab5f7d2bf1 100644
+--- a/drivers/soc/tegra/fuse/fuse-tegra30.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
+@@ -647,15 +647,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
+ };
  
- cleanup:
-+	target_put_sess_cmd(se_cmd);
- 	transport_generic_free_cmd(&cmd->se_cmd, 0);
- }
- 
+ static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
+-	{ .start = 0x01c, .end = 0x0c8 },
+-	{ .start = 0x12c, .end = 0x184 },
++	{ .start = 0x01c, .end = 0x064 },
++	{ .start = 0x084, .end = 0x0a0 },
++	{ .start = 0x0a4, .end = 0x0c8 },
++	{ .start = 0x12c, .end = 0x164 },
++	{ .start = 0x16c, .end = 0x184 },
+ 	{ .start = 0x190, .end = 0x198 },
+ 	{ .start = 0x1a0, .end = 0x204 },
+-	{ .start = 0x21c, .end = 0x250 },
+-	{ .start = 0x25c, .end = 0x2f0 },
++	{ .start = 0x21c, .end = 0x2f0 },
+ 	{ .start = 0x310, .end = 0x3d8 },
+-	{ .start = 0x400, .end = 0x4f0 },
+-	{ .start = 0x4f8, .end = 0x7e8 },
++	{ .start = 0x400, .end = 0x420 },
++	{ .start = 0x444, .end = 0x490 },
++	{ .start = 0x4bc, .end = 0x4f0 },
++	{ .start = 0x4f8, .end = 0x54c },
++	{ .start = 0x57c, .end = 0x7e8 },
+ 	{ .start = 0x8d0, .end = 0x8d8 },
+ 	{ .start = 0xacc, .end = 0xf00 }
+ };
+-- 
+2.39.5
+
 
 
 
