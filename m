@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BADA3B582
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DC2A3B490
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 268527A569E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429877A6A49
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35A11DE898;
-	Wed, 19 Feb 2025 08:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA21B1E9901;
+	Wed, 19 Feb 2025 08:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0z3kXvYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZUxnbpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33F21DE894;
-	Wed, 19 Feb 2025 08:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53E31CAA7D;
+	Wed, 19 Feb 2025 08:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954959; cv=none; b=pg3TgzsjcEnXF9/fS7dcRQI7npITpDbFQnxxWhX09ZmxW0absSlibJ7zNYTUwM+OhdXvKqZTm1D/BeQlq3JXNSmjwA0NHP3tApkh71nvAcqnFLTu0Rn5LBZ+SrU5eaNndF/MnYBm7parniwWvMSMAjgOk23L8fbHqHTyDPKIRwQ=
+	t=1739954269; cv=none; b=ukjD37IGnH2WAlFtRyfipZZlnQinKn4XK8jszoC2Jgjugt97PA/QwoH6TWtu9jHi15t9I+IDDr7rE35GltlUNw8B/VDgcnuunT2jMpKZFipGfWWMttel8vR3ViQsd0fEFzm1UPdQ3JODmGwwL+DoLdOGBZn7mbzsTceibhJWmHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954959; c=relaxed/simple;
-	bh=Dsy4rUe0dheYVmmdKvXypjVkI/ABehVSn19zTjN0YMk=;
+	s=arc-20240116; t=1739954269; c=relaxed/simple;
+	bh=yiLXbXxymNpwEgPw5Xi8gyTJVs65o7QxJCUgzYl4Mg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8VkV1qxm3sfUMTd0C+J+nkmbqKPxgY49aYbpSZZ5kMFxBnb3LDDIQCUecb7o05vwa9n5sIbSWFRDnFoQvEiXkHXJG/zW3voN7NrCwpc+5CHen2QI6iVcF/A4LB6+Wtb/5m/qax5To/bvNKu7D1xOPES8DjiPZ4v2hdNu4eU6qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0z3kXvYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D49C4CEE8;
-	Wed, 19 Feb 2025 08:49:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CPBYPoRzgLpsP6VolkRYkn31d5XGkRh/DVrd0/tu4qkTVjGTr2Zx0z0zuvDw134169ovkPiW/Ze7TZRO/8rWYKTvW5mqQzqDz+knMdgpfgYnfUkqdK7ZEYd0C6F2/aZtqguUGk8HfFnTJE8f6EpgaSv26aKefsIrdssMAP1AYw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZUxnbpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4608C4CEEC;
+	Wed, 19 Feb 2025 08:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954959;
-	bh=Dsy4rUe0dheYVmmdKvXypjVkI/ABehVSn19zTjN0YMk=;
+	s=korg; t=1739954269;
+	bh=yiLXbXxymNpwEgPw5Xi8gyTJVs65o7QxJCUgzYl4Mg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0z3kXvYMwEZZtz/I+VnmqwDR7GHE0klCj9CtVizx0Xjo03pGIdILXyz44hltAJdMQ
-	 idf1bq9ebKpEqgt8RtOUGa/lwiyjcREzAVc3EEz4RMg2PKWjRn7BrA24Hh0qTnXG5k
-	 laLgMDFahgiwhfUOUKguFG5vUPljvyxdi0I3tWkc=
+	b=AZUxnbpTB3ycVVzsDccHoG5mwt97NiSsGwdiPmDE6hmSqWxxiNuamYwMWhTQKcz82
+	 awYN9fF4cfx/x6hTjFxgApbbew/XIw4yKaKvWQWeEkC0fT6AXwm6i39ZAEqJLvHtNd
+	 UPYXys+EQ13EzpwCHnq1SNNpsszu6rC2J23dUqFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/230] ACPI: x86: Add skip i2c clients quirk for Vexia EDU ATLA 10 tablet 5V
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.13 151/274] can: j1939: j1939_sk_send_loop(): fix unable to send messages with data length zero
 Date: Wed, 19 Feb 2025 09:26:45 +0100
-Message-ID: <20250219082605.142688972@linuxfoundation.org>
+Message-ID: <20250219082615.508975833@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alexander Hölzl <alexander.hoelzl@gmx.net>
 
-[ Upstream commit 8f62ca9c338aae4f73e9ce0221c3d4668359ddd8 ]
+commit 44de577e61ed239db09f0da9d436866bef9b77dd upstream.
 
-The Vexia EDU ATLA 10 tablet comes in 2 different versions with
-significantly different mainboards. The only outward difference is that
-the charging barrel on one is marked 5V and the other is marked 9V.
+The J1939 standard requires the transmission of messages of length 0.
 
-Both ship with Android 4.4 as factory OS and have the usual broken DSDT
-issues for x86 Android tablets.
+For example proprietary messages are specified with a data length of 0
+to 1785. The transmission of such messages is not possible. Sending
+results in no error being returned but no corresponding can frame
+being generated.
 
-Add a quirk to skip ACPI I2C client enumeration for the 5V version to
-complement the existing quirk for the 9V version.
+Enable the transmission of zero length J1939 messages. In order to
+facilitate this two changes are necessary:
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250123132202.18209-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) If the transmission of a new message is requested from user space
+the message is segmented in j1939_sk_send_loop(). Let the segmentation
+take into account zero length messages, do not terminate immediately,
+queue the corresponding skb.
+
+2) j1939_session_skb_get_by_offset() selects the next skb to transmit
+for a session. Take into account that there might be zero length skbs
+in the queue.
+
+Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250205174651.103238-1-alexander.hoelzl@gmx.net
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Cc: stable@vger.kernel.org
+[mkl: commit message rephrased]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/x86/utils.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/can/j1939/socket.c    |    4 ++--
+ net/can/j1939/transport.c |    5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index cb45ef5240dab..068c1612660bc 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -407,6 +407,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
-+	{
-+		/* Vexia Edu Atla 10 tablet 5V version */
-+		.matches = {
-+			/* Having all 3 of these not set is somewhat unique */
-+			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
-+		},
-+		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
-+	},
- 	{
- 		/* Vexia Edu Atla 10 tablet 9V version */
- 		.matches = {
--- 
-2.39.5
-
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -1132,7 +1132,7 @@ static int j1939_sk_send_loop(struct j19
+ 
+ 	todo_size = size;
+ 
+-	while (todo_size) {
++	do {
+ 		struct j1939_sk_buff_cb *skcb;
+ 
+ 		segment_size = min_t(size_t, J1939_MAX_TP_PACKET_SIZE,
+@@ -1177,7 +1177,7 @@ static int j1939_sk_send_loop(struct j19
+ 
+ 		todo_size -= segment_size;
+ 		session->total_queued_size += segment_size;
+-	}
++	} while (todo_size);
+ 
+ 	switch (ret) {
+ 	case 0: /* OK */
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -382,8 +382,9 @@ sk_buff *j1939_session_skb_get_by_offset
+ 	skb_queue_walk(&session->skb_queue, do_skb) {
+ 		do_skcb = j1939_skb_to_cb(do_skb);
+ 
+-		if (offset_start >= do_skcb->offset &&
+-		    offset_start < (do_skcb->offset + do_skb->len)) {
++		if ((offset_start >= do_skcb->offset &&
++		     offset_start < (do_skcb->offset + do_skb->len)) ||
++		     (offset_start == 0 && do_skcb->offset == 0 && do_skb->len == 0)) {
+ 			skb = do_skb;
+ 		}
+ 	}
 
 
 
