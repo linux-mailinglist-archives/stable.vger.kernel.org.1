@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-118140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F55BA3BA3C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB0A3B73E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63AF317C200
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51BFB189D4F7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1E41CBA18;
-	Wed, 19 Feb 2025 09:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818BF1E25E3;
+	Wed, 19 Feb 2025 09:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To1TGSc/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOmUlp8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B01A28629E;
-	Wed, 19 Feb 2025 09:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5881E1A17;
+	Wed, 19 Feb 2025 09:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957351; cv=none; b=gIscQF1HQu9HgXBYCZi9k8kq6SuzezDpIGEisr3Wt/fryiKwtiQ0ldJsMErItKRaKl9d7KxGbU4sxCYhuWYPzlbbQRQQsZNbBsfRbzXJ5jRb+GhZLjmmV4fsCOTeq9yuB5CqOKEaRAUAVw1yTAodH8wBxrbwK6S4qS5tzfMJjGM=
+	t=1739955701; cv=none; b=j0AbVyYscNs1dbX6BDP59TMLnMC3htG/Ywi6Do7Z4SwZjrqv6YyhJJoz6aZvh6Pi5J0MaFbIz3tAcagstiGGcrw3GuGsJpWwGJUYRXKSm1H/kEUipg5+bEAFFKY6O/uX9SwwzdTqpuZ0QzrRgu2XNATBZap1WzQLh9UPtGxxOtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957351; c=relaxed/simple;
-	bh=L/TterFDqxNkS8qOQ3qXmcdLOK2bqzzU+gsiNXj7F1U=;
+	s=arc-20240116; t=1739955701; c=relaxed/simple;
+	bh=NzRvGVp77xyXXM/t+aXs57pq/Xwoc+6YxOJj3X3U8aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9VXrbckF7HZiMSFguIP8eUWlTAIUAGEEZS4TAEGbw93aB2EFxigXySNUX+XnK6sMAGN2SQf8XqCsJu3PjclPWqw4wz+uL70zJAkWejTs/hueG1Gef4YbB9K6IcZaRn/dTS3vB6m1DNwNzVGMVACn3L2lQgGqhhcOT9X8q2yv+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To1TGSc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953BCC4CED1;
-	Wed, 19 Feb 2025 09:29:10 +0000 (UTC)
+	 MIME-Version; b=ATHT/nVNpsn2CwRGXWJEUUaVl1DAffmQJwmSaSpHtumoFX6YIzGJEJvRraNz3a1bzUxMatuPHwG8sGWUus0/dR7NDpw8QJCTL3VuEnhrUnjv0COjU4CElmT6nSKeMV6NpY/8cimvCjwvPcORPvlCXY/exiiO4mz2oDevYJ5q5Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOmUlp8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B6EC4CED1;
+	Wed, 19 Feb 2025 09:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957351;
-	bh=L/TterFDqxNkS8qOQ3qXmcdLOK2bqzzU+gsiNXj7F1U=;
+	s=korg; t=1739955701;
+	bh=NzRvGVp77xyXXM/t+aXs57pq/Xwoc+6YxOJj3X3U8aA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To1TGSc/q/rK6Yl1cQKlbK1wwL1ZSQcQm9zgtna9jIF1gouVIpK0cpJrRBIXh9pph
-	 Rnh4foys/pzTGw4tOYXARf/yUWBeGtGyJuGw9+dsBwe101fevlV3enS1xA5psnZOl6
-	 bgDHNrLPgLtAbwMWWHphEPRGZQsRAGhwNd0drNCc=
+	b=KOmUlp8unf1hGPiKoVvzqjD73A6LMmShQMNczvLvcvkFCmewW3N6ywrwVqfKNif91
+	 BeeOKLQGimZtCdWffZNnOGv+m3oCS9X61mt7rWHper/1RE2uizeKHt1o+EQA+KivoI
+	 uvVsztKxBy+CUVEh3uoyDS81DRjPA8pGZg6cgcbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Strohman <andrew@andrewstrohman.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.1 496/578] batman-adv: fix panic during interface removal
+	Delgan <delgan.py@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 087/152] gpiolib: acpi: Add a quirk for Acer Nitro ANV14
 Date: Wed, 19 Feb 2025 09:28:20 +0100
-Message-ID: <20250219082712.503304512@linuxfoundation.org>
+Message-ID: <20250219082553.497377543@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Strohman <andrew@andrewstrohman.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ccb7276a6d26d6f8416e315b43b45e15ee7f29e2 upstream.
+commit 8743d66979e494c5378563e6b5a32e913380abd8 upstream.
 
-Reference counting is used to ensure that
-batadv_hardif_neigh_node and batadv_hard_iface
-are not freed before/during
-batadv_v_elp_throughput_metric_update work is
-finished.
+Spurious immediate wake up events are reported on Acer Nitro ANV14. GPIO 11 is
+specified as an edge triggered input and also a wake source but this pin is
+supposed to be an output pin for an LED, so it's effectively floating.
 
-But there isn't a guarantee that the hard if will
-remain associated with a soft interface up until
-the work is finished.
-
-This fixes a crash triggered by reboot that looks
-like this:
-
-Call trace:
- batadv_v_mesh_free+0xd0/0x4dc [batman_adv]
- batadv_v_elp_throughput_metric_update+0x1c/0xa4
- process_one_work+0x178/0x398
- worker_thread+0x2e8/0x4d0
- kthread+0xd8/0xdc
- ret_from_fork+0x10/0x20
-
-(the batadv_v_mesh_free call is misleading,
-and does not actually happen)
-
-I was able to make the issue happen more reliably
-by changing hardif_neigh->bat_v.metric_work work
-to be delayed work. This allowed me to track down
-and confirm the fix.
+Block the interrupt from getting set up for this GPIO on this device.
 
 Cc: stable@vger.kernel.org
-Fixes: c833484e5f38 ("batman-adv: ELP - compute the metric based on the estimated throughput")
-Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
-[sven@narfation.org: prevent entering batadv_v_elp_get_throughput without
- soft_iface]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Reported-by: Delgan <delgan.py@gmail.com>
+Tested-by: Delgan <delgan.py@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3954
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Mika Westerberg <westeri@kernel.org>
+Link: https://lore.kernel.org/r/20250211203222.761206-1-superm1@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_elp.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -67,12 +67,19 @@ static void batadv_v_elp_start_timer(str
- static u32 batadv_v_elp_get_throughput(struct batadv_hardif_neigh_node *neigh)
- {
- 	struct batadv_hard_iface *hard_iface = neigh->if_incoming;
-+	struct net_device *soft_iface = hard_iface->soft_iface;
- 	struct ethtool_link_ksettings link_settings;
- 	struct net_device *real_netdev;
- 	struct station_info sinfo;
- 	u32 throughput;
- 	int ret;
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1706,6 +1706,20 @@ static const struct dmi_system_id gpioli
+ 			.ignore_wake = "PNP0C50:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from GPIO 11
++		 * Found in BIOS 1.04
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3954
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 14"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "AMDI0030:00@11",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
-+	/* don't query throughput when no longer associated with any
-+	 * batman-adv interface
-+	 */
-+	if (!soft_iface)
-+		return BATADV_THROUGHPUT_DEFAULT_VALUE;
-+
- 	/* if the user specified a customised value for this interface, then
- 	 * return it directly
- 	 */
-@@ -142,7 +149,7 @@ static u32 batadv_v_elp_get_throughput(s
- 
- default_throughput:
- 	if (!(hard_iface->bat_v.flags & BATADV_WARNING_DEFAULT)) {
--		batadv_info(hard_iface->soft_iface,
-+		batadv_info(soft_iface,
- 			    "WiFi driver or ethtool info does not provide information about link speeds on interface %s, therefore defaulting to hardcoded throughput values of %u.%1u Mbps. Consider overriding the throughput manually or checking your driver.\n",
- 			    hard_iface->net_dev->name,
- 			    BATADV_THROUGHPUT_DEFAULT_VALUE / 10,
 
 
 
