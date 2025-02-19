@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44ABCA3B685
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62B7A3B78F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:16:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55145188B5BA
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2903B8ADE
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9A71EB1B7;
-	Wed, 19 Feb 2025 08:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271331E0DCD;
+	Wed, 19 Feb 2025 09:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taTygzTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3cQDxXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAC01EB187;
-	Wed, 19 Feb 2025 08:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E471E0DB5;
+	Wed, 19 Feb 2025 09:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955319; cv=none; b=A9jgIfcu6Y/NzAJDzs+mYOAqb2c8N7VOD32Gs+qCZfzCrXHJVmLGkXcu/DzZk8Y+fz+v+FSnXqLClsoI7fKhkAMzQwEISo9bKfsC0Nvz2vYDjOz1JUiUD9LKYQQ5mAXA1WxESc/PhyLo5spdKqokxS9DmitHLv/1s+dABg4TdY0=
+	t=1739955648; cv=none; b=W30eGxGf4ZzF8CkhpYt18lpJv2x0aWzB4B7CMIzBp7nVwfljmQ6i3opNrCUdSe4fSKenNyOnyMIIHN7p9NIvJb0wIA1g/xh3jQq2ynjpwgKOGEDJiPIAwh4sNY7JWtuTRAX2TBSzHIZddLDglGUkKci1GpvE3iJ3Ag6Msu61I04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955319; c=relaxed/simple;
-	bh=CZLqP8qwJJnzsueLLnn1WiirwbzAok9slcVlykDKV0E=;
+	s=arc-20240116; t=1739955648; c=relaxed/simple;
+	bh=lPU2o/YN/OsSx3yn8dXCiuDu/mURN0g4VfHHE+rRp/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uA+Tf6an4Xr9ZuRSHADwEIhOhXueipS+FKXSDgTAHruZeNflBZE7nqFTRgA6keqmX1d0QPYU5lA2aCeJMXc3eyet4Tw+d/sbmyAuaFCvGs+9Erlf5ZTBP/gTtU7TBF65qafBPYlpFUC1POwVCSpV/aU0oREZIScZtRkJbzALnh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taTygzTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF18C4CED1;
-	Wed, 19 Feb 2025 08:55:18 +0000 (UTC)
+	 MIME-Version; b=NxLj5ar6vZSyYkqLtRajCvIGKp+8W3su3FFxg6EKGMn2TCn1HvVHtBQN1gzNLETGoknX2DeG2OJRoj3/dp7SuzW+VqKD7ASkf7Uk8W7LC3iPFENsCiul/2flPoXkXolLiN0PF7kQKs+ILPn1b/C6j6IxeOECSb63IwuGrX2Pi9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3cQDxXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C561C4CEE6;
+	Wed, 19 Feb 2025 09:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955319;
-	bh=CZLqP8qwJJnzsueLLnn1WiirwbzAok9slcVlykDKV0E=;
+	s=korg; t=1739955648;
+	bh=lPU2o/YN/OsSx3yn8dXCiuDu/mURN0g4VfHHE+rRp/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taTygzTa+nFfIA05HKW3ITFWl/sWThT/s1bCC/7XJYuiKnRMfPkDMz6W90psAP58M
-	 2/62+am5aF96gozHr90T5J8hadPxBlewAy6KrV4eRp1k1S6lsH4yG1AxYpiiaBS91O
-	 Wrh7xMLNHQZdZQ+f9wvDtPIVSOkW5j+8sk0OHMmE=
+	b=i3cQDxXOqfFdSdiDf07O90rt4Eo6uwITSiNUnHGPhbjy/YaszFM2h8qpL9btjiFsO
+	 /8a/m265/xrHhd5Nq0pOPn+ck8/vnmCXgc8EGJw3U2S+AXJRuwn0NLqKJakU0Kk94A
+	 GFe0wFyMAFbmv6ko7bgq60qLEJLCAamXhCBdiNr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/230] net: ipv6: fix dst ref loops in rpl, seg6 and ioam6 lwtunnels
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 071/152] USB: serial: option: add Telit Cinterion FN990B compositions
 Date: Wed, 19 Feb 2025 09:28:04 +0100
-Message-ID: <20250219082608.232582909@linuxfoundation.org>
+Message-ID: <20250219082552.856082486@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit 92191dd1073088753821b862b791dcc83e558e07 ]
+commit c979fb5ece2dc11cc9cc3d5c66f750e210bfdee2 upstream.
 
-Some lwtunnels have a dst cache for post-transformation dst.
-If the packet destination did not change we may end up recording
-a reference to the lwtunnel in its own cache, and the lwtunnel
-state will never be freed.
+Add the following Telit Cinterion FN990B40 compositions:
 
-Discovered by the ioam6.sh test, kmemleak was recently fixed
-to catch per-cpu memory leaks. I'm not sure if rpl and seg6
-can actually hit this, but in principle I don't see why not.
+0x10d0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
-Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250130031519.2716843-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x10d1: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 16 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d1 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10d2: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 18 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d2 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10d3: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 20 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10d3 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN990
+S:  SerialNumber=43b38f19
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ioam6_iptunnel.c | 9 ++++++---
- net/ipv6/rpl_iptunnel.c   | 9 ++++++---
- net/ipv6/seg6_iptunnel.c  | 9 ++++++---
- 3 files changed, 18 insertions(+), 9 deletions(-)
+ drivers/usb/serial/option.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index e81b45b1f6555..fb6cb540cd1bc 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -413,9 +413,12 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
- 
--		local_bh_disable();
--		dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
--		local_bh_enable();
-+		/* cache only if we don't create a dst reference loop */
-+		if (dst->lwtstate != cache_dst->lwtstate) {
-+			local_bh_disable();
-+			dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 
- 		err = skb_cow_head(skb, LL_RESERVED_SPACE(cache_dst->dev));
- 		if (unlikely(err))
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index 7ba22d2f2bfef..be084089ec783 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -236,9 +236,12 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
- 
--		local_bh_disable();
--		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
--		local_bh_enable();
-+		/* cache only if we don't create a dst reference loop */
-+		if (orig_dst->lwtstate != dst->lwtstate) {
-+			local_bh_disable();
-+			dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 
- 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 		if (unlikely(err))
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 4bf937bfc2633..316dbc2694f2a 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -575,9 +575,12 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 			goto drop;
- 		}
- 
--		local_bh_disable();
--		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
--		local_bh_enable();
-+		/* cache only if we don't create a dst reference loop */
-+		if (orig_dst->lwtstate != dst->lwtstate) {
-+			local_bh_disable();
-+			dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 
- 		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 		if (unlikely(err))
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1406,6 +1406,22 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
++	  .driver_info = NCTRL(5) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
++	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
++	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
++	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
 
 
 
