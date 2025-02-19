@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-117057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFDCA3B47F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AB3A3B5B7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:00:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6369217787D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31644175A5F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C341CAA95;
-	Wed, 19 Feb 2025 08:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668F31F4634;
+	Wed, 19 Feb 2025 08:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5qHEEYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6yoKDJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757B11C7B62;
-	Wed, 19 Feb 2025 08:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151271F3BBC;
+	Wed, 19 Feb 2025 08:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954072; cv=none; b=vF3qgXjy4mmdGZfNSWVHnhMv4TmupyxnKE8ovsf/SN01zYUxPMUZfJS1MH+vX3YiHfXFL1IsmM9g0w64f3PpRD3s5f7t+jMcV8dFlPgI9HYLoYrNjLvpDlAQJ0/TJgIcFHKp7Ppwt0/U8jNRoMjW0l+srU5QuedOM39Zedi+Bs4=
+	t=1739954761; cv=none; b=cYbCiAJtAt5QUP09ML5gfzW9Lb0hhs9buWmo1SUe9swjSJeAAW5iu61STI6ggpB8lZVsTRYn72RSPGWET9CKMpE3360sa4LMcm/42d7Dr6v3DhVgXLfSlw1EouFo/lqzkA+IWSQDP1wkWqgB1uqdVeEHv2Q+1svyVguDx2YeEWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954072; c=relaxed/simple;
-	bh=ZvwgoZVosaW7gxjEZt0PPwiHTHmXYw/zMv4ulsuZ1CA=;
+	s=arc-20240116; t=1739954761; c=relaxed/simple;
+	bh=bQld2ARdwHF7rKI/KIukyXNKFQXse0RhC+wPrT3YbNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBoNtjTb7eyozrk/h02HJlzHVOwhklzsX0vCNDieztyJeGUnlq9HL6BR8YNDNI38Wb4QhRB4qYkXVYvabNSsWujiD56rPnGcZ6MU80ualoP+UJLzqu2PGDP5E2YfVYv1/yR3Ymm2dnCk/wATVenz/06/F8X46O1olnGA2ORNnnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5qHEEYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC00EC4CED1;
-	Wed, 19 Feb 2025 08:34:31 +0000 (UTC)
+	 MIME-Version; b=d/yvlvVLeKR0DmLt+IEfJkOhI/DMNQtbRg9mHSpVD6heRUioUjXcwEuD6Sk94S+1r14m9CK0d21py891JsQad/g6DFojYSaZ6dahmAAYvPx+TtodpktzJHAD5Xr3NL4e7A5/z9xdXhwaXkqoIuU5gVj/PFVDKZDLErfLs0/hmdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6yoKDJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C10C4CED1;
+	Wed, 19 Feb 2025 08:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954072;
-	bh=ZvwgoZVosaW7gxjEZt0PPwiHTHmXYw/zMv4ulsuZ1CA=;
+	s=korg; t=1739954761;
+	bh=bQld2ARdwHF7rKI/KIukyXNKFQXse0RhC+wPrT3YbNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5qHEEYY8QmkUoI1Jj02Yf5r/OEi9xgWgWtanJ2NGKTQNFKifhfpdvwZi40WhbeaJ
-	 he+C5RjqT2k6M0S1Lp26/pAfaSV4s9b5TUOGXj2qaLl9I2r2mkZ/jC1EY518geRRs3
-	 OcxAruDc8LnhK7LfLFZesx4kMhy1zqJdzdtIK60g=
+	b=q6yoKDJkBawKa4N3NYcn1R6XLZEDwqSQQ8kuV/0jJWAdiZYGlIZ9c2fM4vi8GWPsO
+	 QjPRNfFDYuRxXE1hgH7EpfgN+RhaC1R3TLaDU6vsnYkWTZoiU3tjA1VMkiHjHerdv0
+	 KBeSeEoVlKPUCNioDeyzJRm1hlFVuQ1M7nynfheo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 070/274] firmware: qcom: scm: smc: Handle missing SCM device
+Subject: [PATCH 6.12 007/230] pinctrl: cy8c95x0: Rename PWMSEL to SELPWM
 Date: Wed, 19 Feb 2025 09:25:24 +0100
-Message-ID: <20250219082612.360682169@linuxfoundation.org>
+Message-ID: <20250219082601.984115932@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 94f48ecf0a538019ca2025e0b0da391f8e7cc58c ]
+[ Upstream commit 0a7404fc5399e1100b14e7e2a4af2e4fd5e3b602 ]
 
-Commit ca61d6836e6f ("firmware: qcom: scm: fix a NULL-pointer
-dereference") makes it explicit that qcom_scm_get_tzmem_pool() can
-return NULL, therefore its users should handle this.
+There are two registers in the hardware, one, "Select PWM",
+is per-port configuration enabling PWM function instead of GPIO.
+The other one is "PWM Select" is per-PWM selector to configure
+PWM itself. Original code uses abbreviation of the latter
+to describe the former. Rename it to follow the datasheet.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-5-9061013c8d92@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250203131506.3318201-5-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm-smc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/qcom/qcom_scm-smc.c b/drivers/firmware/qcom/qcom_scm-smc.c
-index 2b4c2826f5725..3f10b23ec941b 100644
---- a/drivers/firmware/qcom/qcom_scm-smc.c
-+++ b/drivers/firmware/qcom/qcom_scm-smc.c
-@@ -173,6 +173,9 @@ int __scm_smc_call(struct device *dev, const struct qcom_scm_desc *desc,
- 		smc.args[i + SCM_SMC_FIRST_REG_IDX] = desc->args[i];
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index c0f094f51da84..8e65797192abc 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -42,7 +42,7 @@
+ #define CY8C95X0_PORTSEL	0x18
+ /* Port settings, write PORTSEL first */
+ #define CY8C95X0_INTMASK	0x19
+-#define CY8C95X0_PWMSEL		0x1A
++#define CY8C95X0_SELPWM		0x1A
+ #define CY8C95X0_INVERT		0x1B
+ #define CY8C95X0_DIRECTION	0x1C
+ /* Drive mode register change state on writing '1' */
+@@ -371,8 +371,8 @@ static bool cy8c95x0_volatile_register(struct device *dev, unsigned int reg)
+ 	case CY8C95X0_INPUT_(0) ... CY8C95X0_INPUT_(7):
+ 	case CY8C95X0_INTSTATUS_(0) ... CY8C95X0_INTSTATUS_(7):
+ 	case CY8C95X0_INTMASK:
++	case CY8C95X0_SELPWM:
+ 	case CY8C95X0_INVERT:
+-	case CY8C95X0_PWMSEL:
+ 	case CY8C95X0_DIRECTION:
+ 	case CY8C95X0_DRV_PU:
+ 	case CY8C95X0_DRV_PD:
+@@ -401,7 +401,7 @@ static bool cy8c95x0_muxed_register(unsigned int reg)
+ {
+ 	switch (reg) {
+ 	case CY8C95X0_INTMASK:
+-	case CY8C95X0_PWMSEL:
++	case CY8C95X0_SELPWM:
+ 	case CY8C95X0_INVERT:
+ 	case CY8C95X0_DIRECTION:
+ 	case CY8C95X0_DRV_PU:
+@@ -807,7 +807,7 @@ static int cy8c95x0_gpio_get_pincfg(struct cy8c95x0_pinctrl *chip,
+ 		reg = CY8C95X0_DIRECTION;
+ 		break;
+ 	case PIN_CONFIG_MODE_PWM:
+-		reg = CY8C95X0_PWMSEL;
++		reg = CY8C95X0_SELPWM;
+ 		break;
+ 	case PIN_CONFIG_OUTPUT:
+ 		reg = CY8C95X0_OUTPUT;
+@@ -889,7 +889,7 @@ static int cy8c95x0_gpio_set_pincfg(struct cy8c95x0_pinctrl *chip,
+ 		reg = CY8C95X0_DRV_PP_FAST;
+ 		break;
+ 	case PIN_CONFIG_MODE_PWM:
+-		reg = CY8C95X0_PWMSEL;
++		reg = CY8C95X0_SELPWM;
+ 		break;
+ 	case PIN_CONFIG_OUTPUT_ENABLE:
+ 		ret = cy8c95x0_pinmux_direction(chip, off, !arg);
+@@ -1179,7 +1179,7 @@ static void cy8c95x0_pin_dbg_show(struct pinctrl_dev *pctldev, struct seq_file *
+ 	bitmap_zero(mask, MAX_LINE);
+ 	__set_bit(pin, mask);
  
- 	if (unlikely(arglen > SCM_SMC_N_REG_ARGS)) {
-+		if (!mempool)
-+			return -EINVAL;
-+
- 		args_virt = qcom_tzmem_alloc(mempool,
- 					     SCM_SMC_N_EXT_ARGS * sizeof(u64),
- 					     flag);
+-	if (cy8c95x0_read_regs_mask(chip, CY8C95X0_PWMSEL, pwm, mask)) {
++	if (cy8c95x0_read_regs_mask(chip, CY8C95X0_SELPWM, pwm, mask)) {
+ 		seq_puts(s, "not available");
+ 		return;
+ 	}
+@@ -1224,7 +1224,7 @@ static int cy8c95x0_set_mode(struct cy8c95x0_pinctrl *chip, unsigned int off, bo
+ 	u8 port = cypress_get_port(chip, off);
+ 	u8 bit = cypress_get_pin_mask(chip, off);
+ 
+-	return cy8c95x0_regmap_write_bits(chip, CY8C95X0_PWMSEL, port, bit, mode ? bit : 0);
++	return cy8c95x0_regmap_write_bits(chip, CY8C95X0_SELPWM, port, bit, mode ? bit : 0);
+ }
+ 
+ static int cy8c95x0_pinmux_mode(struct cy8c95x0_pinctrl *chip,
 -- 
 2.39.5
 
