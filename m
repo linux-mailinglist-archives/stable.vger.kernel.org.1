@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-117373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5EA6A3B5A6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:59:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70291A3B52C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05BDF7A5D7F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:58:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5954C175543
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDC31DF991;
-	Wed, 19 Feb 2025 08:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221DE1DE2C0;
+	Wed, 19 Feb 2025 08:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq74OyqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6oelxr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6301DF987;
-	Wed, 19 Feb 2025 08:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D191DE3AC;
+	Wed, 19 Feb 2025 08:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955077; cv=none; b=p5wiholsj0ZwTpxPZlwuJY6lzwpyjBocby9c+aniv6VUvvr0MFhoXz4hHuyUfBwhE7JPTC47T2EVDAVIV0Z4jdJjOz9j/r7QDM82M40HCaO2g+jqHt2c37IzRb8GBzysw0AePhc1NXkpTSIRgTBEFZQU5pAU9IdBXZ0LAm4D1sA=
+	t=1739954380; cv=none; b=XB8Z62N60aWVjAUIYA2hqj5+9joSeic/4AxEeY/R05/RvuAa+ncX1qt3ZSXHzWMWLNSjlJsJeTW6sZ4vOgkrYHPWvfcPXBHx7GVbEr8x9EvkgxicP7NuJsouryypw18Arv+6gJOHcW47ab2CtEeH22/QDU3YdA/Xm/8UovdzN58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955077; c=relaxed/simple;
-	bh=F545RWDLfU9HU3ZjvmNhQWlLV76ANNn5d8g2cTFquZU=;
+	s=arc-20240116; t=1739954380; c=relaxed/simple;
+	bh=BQsCmrwuGPiu3JARsYPnOCrNqRj3QNBA55iLrvNSfWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jp10h7/YRyzwMW1O9u5/zCyH4o5UgTB3wGvJchXPJyyts+3Ms4p7Fr6IPtX6/j0iJ+8TeNJdYOiCLREKk8JFZfpqUg7sbrrLB+5vAg/zLjVSQCkeSI3jmj2bt2deW1wJVj3uocMZguP8xfsP4JhQmtd5L2EkBI39HqX3t3L9KDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq74OyqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB09C4CED1;
-	Wed, 19 Feb 2025 08:51:16 +0000 (UTC)
+	 MIME-Version; b=daJ8XSGCOUAcd2ZnE5ogzlWaNLypYd6vKcPR41GxK3Yds0QLZWSJkyMflAmRRi4QVZC3FT3R0oJhcfqo4FVmNQkMN/3Qin/LzjtaipPpAiuAWMJbMakD+gWb/rQALTLuobtoFaTbx/0jRGvMy7o7HM6VVjSdC0Tr+GDBFShgLf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6oelxr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F63C4CED1;
+	Wed, 19 Feb 2025 08:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955077;
-	bh=F545RWDLfU9HU3ZjvmNhQWlLV76ANNn5d8g2cTFquZU=;
+	s=korg; t=1739954380;
+	bh=BQsCmrwuGPiu3JARsYPnOCrNqRj3QNBA55iLrvNSfWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fq74OyqMmwjFv60nU9eYvyP+e7HZ7zg1cTMXNiLq4/zJdcv3Q2IWP3R8wKrTOjsUj
-	 BRAly+pl7Ni3mSXmczcvTqcApxu/CffrQ/Mh5vKWnM3+QcIdWjV3DdYMtrTCRN0GOE
-	 AxsoKv1iO3F/aHHfkkT5OkjMeNI2XnBcH4yeq5lw=
+	b=Q6oelxr2JfrvNWCmkNnG5YUGzGzuuzIiua5mY9CQZ5s91dxiqHrbc6WWv1z2sRmok
+	 6BPkzMvj3GH0ExJDXAsde0oEmlNioSdF9Mt7bVMr5+Udx7kO/Rab90Ig58UtCwlDOV
+	 WDO3f1ascOrpvVQm9WcXLvCSTRar1UYgIDSoveuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.12 123/230] usb: cdc-acm: Fix handling of oversized fragments
-Date: Wed, 19 Feb 2025 09:27:20 +0100
-Message-ID: <20250219082606.498920079@linuxfoundation.org>
+	Song Yoong Siang <yoong.siang.song@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.13 187/274] igc: Set buffer type for empty frames in igc_init_empty_frame
+Date: Wed, 19 Feb 2025 09:27:21 +0100
+Message-ID: <20250219082616.903457309@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Song Yoong Siang <yoong.siang.song@intel.com>
 
-commit 12e712964f41d05ae034989892de445781c46730 upstream.
+commit 63f20f00d23d569e4e67859b4e8dcc9de79221cb upstream.
 
-If we receive an initial fragment of size 8 bytes which specifies a wLength
-of 1 byte (so the reassembled message is supposed to be 9 bytes long), and
-we then receive a second fragment of size 9 bytes (which is not supposed to
-happen), we currently wrongly bypass the fragment reassembly code but still
-pass the pointer to the acm->notification_buffer to
-acm_process_notification().
+Set the buffer type to IGC_TX_BUFFER_TYPE_SKB for empty frame in the
+igc_init_empty_frame function. This ensures that the buffer type is
+correctly identified and handled during Tx ring cleanup.
 
-Make this less wrong by always going through fragment reassembly when we
-expect more fragments.
-
-Before this patch, receiving an overlong fragment could lead to `newctrl`
-in acm_process_notification() being uninitialized data (instead of data
-coming from the device).
-
-Cc: stable <stable@kernel.org>
-Fixes: ea2583529cd1 ("cdc-acm: reassemble fragmented notifications")
-Signed-off-by: Jann Horn <jannh@google.com>
+Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+Cc: stable@vger.kernel.org # 6.2+
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -416,7 +416,7 @@ static void acm_ctrl_irq(struct urb *urb
- 	expected_size = sizeof(struct usb_cdc_notification) +
- 					le16_to_cpu(dr->wLength);
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1096,6 +1096,7 @@ static int igc_init_empty_frame(struct i
+ 		return -ENOMEM;
+ 	}
  
--	if (current_size < expected_size) {
-+	if (acm->nb_index != 0 || current_size < expected_size) {
- 		/* notification is transmitted fragmented, reassemble */
- 		if (acm->nb_size < expected_size) {
- 			u8 *new_buffer;
++	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
+ 	buffer->skb = skb;
+ 	buffer->protocol = 0;
+ 	buffer->bytecount = skb->len;
 
 
 
