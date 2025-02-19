@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-117854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF52A3B888
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:25:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379E0A3B919
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33D59189E918
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A128178D0D
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2E717A2FE;
-	Wed, 19 Feb 2025 09:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2AF1DE2BD;
+	Wed, 19 Feb 2025 09:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToMlWkcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfoHnfhv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D1E1DFE0A;
-	Wed, 19 Feb 2025 09:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676CB1DDA20;
+	Wed, 19 Feb 2025 09:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956534; cv=none; b=LjGcjv1SndWzlQoYbSpRGyjvhisno0NZ0stYGqzB8jqJMo+LR5xNEY0fb696d083myau0RZGmWt2Nd0bizY5iT7T10jAAW9/W51bD933Lhpo1ZYL/XBy+MCqQHaCMxbBviE/31AXhNm74TDHbL3cVro1bqxeaGlPSU5Z7MAhwKU=
+	t=1739956651; cv=none; b=NB32KWDw05fTcJ1BFPulxUXSMOYl3WCg1LuOgHhWn98gSxI4XQVa/ljBV1HyarlsBepGUuK7H2C23XtSLuQqlg7oh+zVO9iI+Q3Zx87cJ5JQPj5m6qoLyb8jwdBv9RlzQnEDieCqjE512ct/r/yIEqBGEnSKUnOPq3a0cQSsqVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956534; c=relaxed/simple;
-	bh=RjHmGUHN6e14y1xbzSuZewDn+x4fY6AeJjGP5uwKpDE=;
+	s=arc-20240116; t=1739956651; c=relaxed/simple;
+	bh=GOVBkhckR9o4IqibJVhtMCsw7ipEldDMshHPPaod3p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8xv1mp5ixUctQ1vlFgjnyhLh8DoPFKbuk2fAhqeI7QS3Q7ecFvkodtkzAZxQUMKiohUqM4ZwDjbnbsuWjB/I87tq4O7Sb0UIPjUifX3FBzRlLHYXYQm0XWCqkELAAzVHxalOZlu5kOTiVx89dToupjyBUzPfP379jCZjYxoxj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToMlWkcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB212C4CEEB;
-	Wed, 19 Feb 2025 09:15:33 +0000 (UTC)
+	 MIME-Version; b=H+EjCDH6KkuiAqoVqxiRKvz4lPzsipBLk60iwHtXxRcdqxAbPUmVCLjeMGhicOade0vB6grcLO8canbu8hvUUdhct1MlbDNLp1bNmVujxGXe2Naxhm+DNJQDyqIpFoNPKCrINh8mA/6w87W+19gZ4sdAcrF16hZYv+zW/YxApTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfoHnfhv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F80C4CED1;
+	Wed, 19 Feb 2025 09:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956534;
-	bh=RjHmGUHN6e14y1xbzSuZewDn+x4fY6AeJjGP5uwKpDE=;
+	s=korg; t=1739956651;
+	bh=GOVBkhckR9o4IqibJVhtMCsw7ipEldDMshHPPaod3p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToMlWkcmA8jfT5X35lBdTp0CDpZgghfdOJrewwKbz6hX8wQYgDVwHt4UbAtMYd4wq
-	 83MjXdyjwDwdlIozw6fpK08Db0lvM0J+Y7XyfcqoIFx5ftJiQm5b9mtxKVXtTIl9db
-	 5sxTDeZZ9I4ndydOIsd0wSegGquRSVwo7KzbN30U=
+	b=sfoHnfhvyOZj2z87LR/MkI2MEsXTLvP7XXvgsqqRuoH3lkk9PB7eTg5NIgShi5Luv
+	 fx9On5BjzCaZPkYWMBxhgNGSwLOCb/+kapn2vgtlMJvsOEsLxd97h3IBIcMjhJcGDj
+	 DwniH/KhqbpQ4GIcAXSHbYmci/mVp3mReSG9rXZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Luo Yifan <luoyifan@cmss.chinamobile.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/578] NFSv4.2: mark OFFLOAD_CANCEL MOVEABLE
-Date: Wed, 19 Feb 2025 09:23:34 +0100
-Message-ID: <20250219082701.320429807@linuxfoundation.org>
+Subject: [PATCH 6.1 211/578] tools/bootconfig: Fix the wrong format specifier
+Date: Wed, 19 Feb 2025 09:23:35 +0100
+Message-ID: <20250219082701.358243290@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -66,34 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Luo Yifan <luoyifan@cmss.chinamobile.com>
 
-[ Upstream commit 668135b9348c53fd205f5e07d11e82b10f31b55b ]
+[ Upstream commit f6ab7384d554ba80ff4793259d75535874b366f5 ]
 
-OFFLOAD_CANCEL should be marked MOVEABLE for when we need to move
-tasks off a non-functional transport.
+Use '%u' instead of '%d' for unsigned int.
 
-Fixes: c975c2092657 ("NFS send OFFLOAD_CANCEL when COPY killed")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Link: https://lore.kernel.org/all/20241105011048.201629-1-luoyifan@cmss.chinamobile.com/
+
+Fixes: 973780011106 ("tools/bootconfig: Suppress non-error messages")
+Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42proc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/bootconfig/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index 89c32a963dd15..923ccd3b540f5 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -551,7 +551,7 @@ static int nfs42_do_offload_cancel_async(struct file *dst,
- 		.rpc_message = &msg,
- 		.callback_ops = &nfs42_offload_cancel_ops,
- 		.workqueue = nfsiod_workqueue,
--		.flags = RPC_TASK_ASYNC,
-+		.flags = RPC_TASK_ASYNC | RPC_TASK_MOVEABLE,
- 	};
- 	int status;
+diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+index 156b62a163c5a..8a48cc2536f56 100644
+--- a/tools/bootconfig/main.c
++++ b/tools/bootconfig/main.c
+@@ -226,7 +226,7 @@ static int load_xbc_from_initrd(int fd, char **buf)
+ 	/* Wrong Checksum */
+ 	rcsum = xbc_calc_checksum(*buf, size);
+ 	if (csum != rcsum) {
+-		pr_err("checksum error: %d != %d\n", csum, rcsum);
++		pr_err("checksum error: %u != %u\n", csum, rcsum);
+ 		return -EINVAL;
+ 	}
  
+@@ -395,7 +395,7 @@ static int apply_xbc(const char *path, const char *xbc_path)
+ 	xbc_get_info(&ret, NULL);
+ 	printf("\tNumber of nodes: %d\n", ret);
+ 	printf("\tSize: %u bytes\n", (unsigned int)size);
+-	printf("\tChecksum: %d\n", (unsigned int)csum);
++	printf("\tChecksum: %u\n", (unsigned int)csum);
+ 
+ 	/* TODO: Check the options by schema */
+ 	xbc_exit();
 -- 
 2.39.5
 
