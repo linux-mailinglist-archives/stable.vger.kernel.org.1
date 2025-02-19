@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7787DA3B612
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17E6A3B48A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344EF3B8C3B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:56:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 822C83B73DB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0671F584A;
-	Wed, 19 Feb 2025 08:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20D71E0487;
+	Wed, 19 Feb 2025 08:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFh6oNdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjAnEQnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0781EF082;
-	Wed, 19 Feb 2025 08:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8F11E008E;
+	Wed, 19 Feb 2025 08:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954858; cv=none; b=OkkPpvZpT17MCGry2ZW5ATvcilfx8c9ZCYE+OgiqflXzIJrcJBcDSP54nURg73aOR6ARmCMtn/7OiNbAvv39gA/LxrN2Ykgt1nRz0qsIo0ZqqNIAbaAGOgMiXXSuWbtd4Y/ggVu7xUo03LbBDQiHyFpNvS2W/+PqByv6TFvjlCE=
+	t=1739954172; cv=none; b=q+MJbyQAUVMiSA3xSPbdhMNs4DruyMxdq/WHXH21GBCJ83bwAAdfOPelq5vBx6WMhw35xQvOz+J/yL6XPJ8yUGR2mpo4F01vlCOB+uZR1JMZktYPjDiX7Et4jbNSjaOTHEs6J9stGwjoAwRM84RtgYqi56w1vv9atT7CXxcM+Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954858; c=relaxed/simple;
-	bh=P0xdb9MTAvZgcj3gcL00UMwrmv9IjV5DwaOT9wbPtzU=;
+	s=arc-20240116; t=1739954172; c=relaxed/simple;
+	bh=0t3CbF3dsxAqRzpoQLW5J8/muNzuIf43r+sNfmqUdYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sho5XdkuXybgeTCpuRDj/fUciD+WsIZTKeR7RCYtXGsK9oKejxPx6CKFDDLtphFxleNUs9HwoTJ5kAGi6VLoxE4isRlEk30TZJlPOHkJI0wqwclLzVXTq6vlyV7BhzlYzbKdhBzTNHFrrSWX0w+S5JCU/lcm56YIEBtlQaPTZa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFh6oNdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EABC4CED1;
-	Wed, 19 Feb 2025 08:47:37 +0000 (UTC)
+	 MIME-Version; b=kTkzf8XGVQL+wnIzGzHYtATeMaqUUkfSXwran7bFvO1jxyK5w1iQqXpRb+T3B+6gs4HP7A3d4I/QCvg+pr8AgCONbj3linQs4IhfrB0fo7kGNNXZ8vKohAKGzlTt4NcfP4dXtPkmJAdAJx/cYDdO87rOQQl4uYNmFN3z4nloFL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjAnEQnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE57C4CEE6;
+	Wed, 19 Feb 2025 08:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954858;
-	bh=P0xdb9MTAvZgcj3gcL00UMwrmv9IjV5DwaOT9wbPtzU=;
+	s=korg; t=1739954171;
+	bh=0t3CbF3dsxAqRzpoQLW5J8/muNzuIf43r+sNfmqUdYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BFh6oNdgEjOmz0x6gK6/Z0rOo++3rsMohydxKcZAXdi4o13BKFxX0kplfoWLXkYex
-	 HQkmo9bbZXjuX4kNi/WTU7590R5PSc/wyHrMPO84Dg53MbPHSuKbGQ4Gz7rOJi3ioF
-	 0UM8QmyGmuFcsWDSeH167MH3+CZQ38faFug4a2Eo=
+	b=KjAnEQnTPgP/Dx8j6Eu97v7tl3ItlbYWirxiOuTutDGXO3H7hXfbQxPZcHumklxhB
+	 9/7Snsp2Yfc1nhJgispwmVcaZ3/gAME3FlkZmLGCMSQoUlCFSFBwHujTw8cJbvJW+A
+	 qDiydUfwSrLkX1dqpCeP9DcTNiVIR/Pp2hOGGUn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/230] tools: fix annoying "mkdir -p ..." logs when building tools in parallel
+	John Stultz <jstultz@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.13 120/274] KVM: x86: Load DR6 with guest value only before entering .vcpu_run() loop
 Date: Wed, 19 Feb 2025 09:26:14 +0100
-Message-ID: <20250219082603.946669484@linuxfoundation.org>
+Message-ID: <20250219082614.316574662@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
+References: <20250219082609.533585153@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,245 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit d1d0963121769d8d16150b913fe886e48efefa51 ]
+commit c2fee09fc167c74a64adb08656cb993ea475197e upstream.
 
-When CONFIG_OBJTOOL=y or CONFIG_DEBUG_INFO_BTF=y, parallel builds
-show awkward "mkdir -p ..." logs.
+Move the conditional loading of hardware DR6 with the guest's DR6 value
+out of the core .vcpu_run() loop to fix a bug where KVM can load hardware
+with a stale vcpu->arch.dr6.
 
-  $ make -j16
-    [ snip ]
-  mkdir -p /home/masahiro/ref/linux/tools/objtool && make O=/home/masahiro/ref/linux subdir=tools/objtool --no-print-directory -C objtool
-  mkdir -p /home/masahiro/ref/linux/tools/bpf/resolve_btfids && make O=/home/masahiro/ref/linux subdir=tools/bpf/resolve_btfids --no-print-directory -C bpf/resolve_btfids
+When the guest accesses a DR and host userspace isn't debugging the guest,
+KVM disables DR interception and loads the guest's values into hardware on
+VM-Enter and saves them on VM-Exit.  This allows the guest to access DRs
+at will, e.g. so that a sequence of DR accesses to configure a breakpoint
+only generates one VM-Exit.
 
-Defining MAKEFLAGS=<value> on the command line wipes out command line
-switches from the resultant MAKEFLAGS definition, even though the command
-line switches are active. [1]
+For DR0-DR3, the logic/behavior is identical between VMX and SVM, and also
+identical between KVM_DEBUGREG_BP_ENABLED (userspace debugging the guest)
+and KVM_DEBUGREG_WONT_EXIT (guest using DRs), and so KVM handles loading
+DR0-DR3 in common code, _outside_ of the core kvm_x86_ops.vcpu_run() loop.
 
-MAKEFLAGS puts all single-letter options into the first word, and that
-word will be empty if no single-letter options were given. [2]
-However, this breaks if MAKEFLAGS=<value> is given on the command line.
+But for DR6, the guest's value doesn't need to be loaded into hardware for
+KVM_DEBUGREG_BP_ENABLED, and SVM provides a dedicated VMCB field whereas
+VMX requires software to manually load the guest value, and so loading the
+guest's value into DR6 is handled by {svm,vmx}_vcpu_run(), i.e. is done
+_inside_ the core run loop.
 
-The tools/ and tools/% targets set MAKEFLAGS=<value> on the command
-line, which breaks the following code in tools/scripts/Makefile.include:
+Unfortunately, saving the guest values on VM-Exit is initiated by common
+x86, again outside of the core run loop.  If the guest modifies DR6 (in
+hardware, when DR interception is disabled), and then the next VM-Exit is
+a fastpath VM-Exit, KVM will reload hardware DR6 with vcpu->arch.dr6 and
+clobber the guest's actual value.
 
-    short-opts := $(firstword -$(MAKEFLAGS))
+The bug shows up primarily with nested VMX because KVM handles the VMX
+preemption timer in the fastpath, and the window between hardware DR6
+being modified (in guest context) and DR6 being read by guest software is
+orders of magnitude larger in a nested setup.  E.g. in non-nested, the
+VMX preemption timer would need to fire precisely between #DB injection
+and the #DB handler's read of DR6, whereas with a KVM-on-KVM setup, the
+window where hardware DR6 is "dirty" extends all the way from L1 writing
+DR6 to VMRESUME (in L1).
 
-If MAKEFLAGS really needs modification, it should be done through the
-environment variable, as follows:
+    L1's view:
+    ==========
+    <L1 disables DR interception>
+           CPU 0/KVM-7289    [023] d....  2925.640961: kvm_entry: vcpu 0
+ A:  L1 Writes DR6
+           CPU 0/KVM-7289    [023] d....  2925.640963: <hack>: Set DRs, DR6 = 0xffff0ff1
 
-    MAKEFLAGS=<value> $(MAKE) ...
+ B:        CPU 0/KVM-7289    [023] d....  2925.640967: kvm_exit: vcpu 0 reason EXTERNAL_INTERRUPT intr_info 0x800000ec
 
-That said, I question whether modifying MAKEFLAGS is necessary here.
-The only flag we might want to exclude is --no-print-directory, as the
-tools build system changes the working directory. However, people might
-find the "Entering/Leaving directory" logs annoying.
+ D: L1 reads DR6, arch.dr6 = 0
+           CPU 0/KVM-7289    [023] d....  2925.640969: <hack>: Sync DRs, DR6 = 0xffff0ff0
 
-I simply removed the offending MAKEFLAGS=<value>.
+           CPU 0/KVM-7289    [023] d....  2925.640976: kvm_entry: vcpu 0
+    L2 reads DR6, L1 disables DR interception
+           CPU 0/KVM-7289    [023] d....  2925.640980: kvm_exit: vcpu 0 reason DR_ACCESS info1 0x0000000000000216
+           CPU 0/KVM-7289    [023] d....  2925.640983: kvm_entry: vcpu 0
 
-[1]: https://savannah.gnu.org/bugs/?62469
-[2]: https://www.gnu.org/software/make/manual/make.html#Testing-Flags
+           CPU 0/KVM-7289    [023] d....  2925.640983: <hack>: Set DRs, DR6 = 0xffff0ff0
 
-Fixes: ea01fa9f63ae ("tools: Connect to the kernel build system")
-Fixes: a50e43332756 ("perf tools: Honor parallel jobs")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: Daniel Xu <dxu@dxuuu.xyz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    L2 detects failure
+           CPU 0/KVM-7289    [023] d....  2925.640987: kvm_exit: vcpu 0 reason HLT
+    L1 reads DR6 (confirms failure)
+           CPU 0/KVM-7289    [023] d....  2925.640990: <hack>: Sync DRs, DR6 = 0xffff0ff0
+
+    L0's view:
+    ==========
+    L2 reads DR6, arch.dr6 = 0
+          CPU 23/KVM-5046    [001] d....  3410.005610: kvm_exit: vcpu 23 reason DR_ACCESS info1 0x0000000000000216
+          CPU 23/KVM-5046    [001] .....  3410.005610: kvm_nested_vmexit: vcpu 23 reason DR_ACCESS info1 0x0000000000000216
+
+    L2 => L1 nested VM-Exit
+          CPU 23/KVM-5046    [001] .....  3410.005610: kvm_nested_vmexit_inject: reason: DR_ACCESS ext_inf1: 0x0000000000000216
+
+          CPU 23/KVM-5046    [001] d....  3410.005610: kvm_entry: vcpu 23
+          CPU 23/KVM-5046    [001] d....  3410.005611: kvm_exit: vcpu 23 reason VMREAD
+          CPU 23/KVM-5046    [001] d....  3410.005611: kvm_entry: vcpu 23
+          CPU 23/KVM-5046    [001] d....  3410.005612: kvm_exit: vcpu 23 reason VMREAD
+          CPU 23/KVM-5046    [001] d....  3410.005612: kvm_entry: vcpu 23
+
+    L1 writes DR7, L0 disables DR interception
+          CPU 23/KVM-5046    [001] d....  3410.005612: kvm_exit: vcpu 23 reason DR_ACCESS info1 0x0000000000000007
+          CPU 23/KVM-5046    [001] d....  3410.005613: kvm_entry: vcpu 23
+
+    L0 writes DR6 = 0 (arch.dr6)
+          CPU 23/KVM-5046    [001] d....  3410.005613: <hack>: Set DRs, DR6 = 0xffff0ff0
+
+ A: <L1 writes DR6 = 1, no interception, arch.dr6 is still '0'>
+
+ B:       CPU 23/KVM-5046    [001] d....  3410.005614: kvm_exit: vcpu 23 reason PREEMPTION_TIMER
+          CPU 23/KVM-5046    [001] d....  3410.005614: kvm_entry: vcpu 23
+
+ C: L0 writes DR6 = 0 (arch.dr6)
+          CPU 23/KVM-5046    [001] d....  3410.005614: <hack>: Set DRs, DR6 = 0xffff0ff0
+
+    L1 => L2 nested VM-Enter
+          CPU 23/KVM-5046    [001] d....  3410.005616: kvm_exit: vcpu 23 reason VMRESUME
+
+    L0 reads DR6, arch.dr6 = 0
+
+Reported-by: John Stultz <jstultz@google.com>
+Closes: https://lkml.kernel.org/r/CANDhNCq5_F3HfFYABqFGCA1bPd_%2BxgNj-iDQhH4tDk%2Bwi8iZZg%40mail.gmail.com
+Fixes: 375e28ffc0cf ("KVM: X86: Set host DR6 only on VMX and for KVM_DEBUGREG_WONT_EXIT")
+Fixes: d67668e9dd76 ("KVM: x86, SVM: isolate vcpu->arch.dr6 from vmcb->save.dr6")
+Cc: stable@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Tested-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/r/20250125011833.3644371-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |    1 +
+ arch/x86/include/asm/kvm_host.h    |    1 +
+ arch/x86/kvm/svm/svm.c             |   13 ++++++-------
+ arch/x86/kvm/vmx/main.c            |    1 +
+ arch/x86/kvm/vmx/vmx.c             |   10 ++++++----
+ arch/x86/kvm/vmx/x86_ops.h         |    1 +
+ arch/x86/kvm/x86.c                 |    3 +++
+ 7 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 26a471dbed62a..40c97774c4e4b 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1357,18 +1357,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -48,6 +48,7 @@ KVM_X86_OP(set_idt)
+ KVM_X86_OP(get_gdt)
+ KVM_X86_OP(set_gdt)
+ KVM_X86_OP(sync_dirty_debug_regs)
++KVM_X86_OP(set_dr6)
+ KVM_X86_OP(set_dr7)
+ KVM_X86_OP(cache_reg)
+ KVM_X86_OP(get_rflags)
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1674,6 +1674,7 @@ struct kvm_x86_ops {
+ 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
++	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
+ 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1995,11 +1995,11 @@ static void new_asid(struct vcpu_svm *sv
+ 	svm->asid = sd->next_asid++;
+ }
  
--# Clear a bunch of variables before executing the submake
--ifeq ($(quiet),silent_)
--tools_silent=s
--endif
+-static void svm_set_dr6(struct vcpu_svm *svm, unsigned long value)
++static void svm_set_dr6(struct kvm_vcpu *vcpu, unsigned long value)
+ {
+-	struct vmcb *vmcb = svm->vmcb;
++	struct vmcb *vmcb = to_svm(vcpu)->vmcb;
+ 
+-	if (svm->vcpu.arch.guest_state_protected)
++	if (vcpu->arch.guest_state_protected)
+ 		return;
+ 
+ 	if (unlikely(value != vmcb->save.dr6)) {
+@@ -4236,10 +4236,8 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+ 	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
+ 	 * of a #DB.
+ 	 */
+-	if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+-		svm_set_dr6(svm, vcpu->arch.dr6);
+-	else
+-		svm_set_dr6(svm, DR6_ACTIVE_LOW);
++	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
++		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
+ 
+ 	clgi();
+ 	kvm_load_guest_xsave_state(vcpu);
+@@ -5036,6 +5034,7 @@ static struct kvm_x86_ops svm_x86_ops __
+ 	.set_idt = svm_set_idt,
+ 	.get_gdt = svm_get_gdt,
+ 	.set_gdt = svm_set_gdt,
++	.set_dr6 = svm_set_dr6,
+ 	.set_dr7 = svm_set_dr7,
+ 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
+ 	.cache_reg = svm_cache_reg,
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -61,6 +61,7 @@ struct kvm_x86_ops vt_x86_ops __initdata
+ 	.set_idt = vmx_set_idt,
+ 	.get_gdt = vmx_get_gdt,
+ 	.set_gdt = vmx_set_gdt,
++	.set_dr6 = vmx_set_dr6,
+ 	.set_dr7 = vmx_set_dr7,
+ 	.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
+ 	.cache_reg = vmx_cache_reg,
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5644,6 +5644,12 @@ void vmx_sync_dirty_debug_regs(struct kv
+ 	set_debugreg(DR6_RESERVED, 6);
+ }
+ 
++void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
++{
++	lockdep_assert_irqs_disabled();
++	set_debugreg(vcpu->arch.dr6, 6);
++}
++
+ void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
+ {
+ 	vmcs_writel(GUEST_DR7, val);
+@@ -7428,10 +7434,6 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu
+ 		vmx->loaded_vmcs->host_state.cr4 = cr4;
+ 	}
+ 
+-	/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
+-	if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+-		set_debugreg(vcpu->arch.dr6, 6);
 -
- tools/: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
-+	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
- 
- tools/%: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(tools_silent) $(filter --j% -j,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
-+	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
- 
- # ---------------------------------------------------------------------------
- # Kernel selftest
--- 
-2.39.5
-
+ 	/* When single-stepping over STI and MOV SS, we must clear the
+ 	 * corresponding interruptibility bits in the guest state. Otherwise
+ 	 * vmentry fails as it then expects bit 14 (BS) in pending debug
+--- a/arch/x86/kvm/vmx/x86_ops.h
++++ b/arch/x86/kvm/vmx/x86_ops.h
+@@ -74,6 +74,7 @@ void vmx_get_idt(struct kvm_vcpu *vcpu,
+ void vmx_set_idt(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ void vmx_get_gdt(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ void vmx_set_gdt(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
++void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val);
+ void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val);
+ void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu);
+ void vmx_cache_reg(struct kvm_vcpu *vcpu, enum kvm_reg reg);
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10953,6 +10953,9 @@ static int vcpu_enter_guest(struct kvm_v
+ 		set_debugreg(vcpu->arch.eff_db[1], 1);
+ 		set_debugreg(vcpu->arch.eff_db[2], 2);
+ 		set_debugreg(vcpu->arch.eff_db[3], 3);
++		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
++		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
++			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
+ 	} else if (unlikely(hw_breakpoint_active())) {
+ 		set_debugreg(0, 7);
+ 	}
 
 
 
