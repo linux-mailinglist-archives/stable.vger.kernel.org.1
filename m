@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89586A3B470
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96F8A3B5F6
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8400B3B63A5
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB779163909
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BD11DED7B;
-	Wed, 19 Feb 2025 08:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769CF1D432D;
+	Wed, 19 Feb 2025 08:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJwiKE5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAGJKfkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6711DED6F;
-	Wed, 19 Feb 2025 08:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B9B1CAA6C;
+	Wed, 19 Feb 2025 08:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954097; cv=none; b=JiBglnWy+IJflEJqgSWLRN5MWyR0FqlyHT8KRLAW86QPxauf7Sbl6xLc6Cf98qrLa1iX8h1r1zi+urNsoG4AsXbYIAzbOssGt3cbQDVpGAHftMPYSsVv7hqTmzqRtwguYpCSUS4Chzjci2mJKuFROaav+MMKxrr2kTbRxSQxH7k=
+	t=1739954877; cv=none; b=gNJMrJQ5ewyiftt28OhzkoUnbZKCw8UTgWGWprTPEBjJ5jRLZqjS+rzi1K3ALe8DpaaFBVmyxDM8xiMoYJQ3tdr9ZGQpz9NckIck3ca6/0hgCGC4iFf+Eky4kQqs4uiFVSjs3X+5VXCyaK2cARy6db4fNEgO01CE+3HfNCh2oDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954097; c=relaxed/simple;
-	bh=XAJ1IlWvtrjJyT4SBQQ6GkROPlcGbyTJ1jQIe+umNd8=;
+	s=arc-20240116; t=1739954877; c=relaxed/simple;
+	bh=j4hHWGSp+eVPqe1KWP6si0EbkxMLSmRzmxxiHr1vUpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g3U/lM4rZBCGFAes679mRpjuOapAgx5knM1UqioqAtpdnz02dVw+YEv74kG0bX52RJnM+H5n9QIaZ+qKq0SRWk/IBEb+2Vnr9ZkxIqAEDJuCaqYStMh9B8NRS2buSl5dum3+TsvXtvmvBXbZmy9/VZ9PggEvaPIGeHPhvf7A0xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJwiKE5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2347C4CED1;
-	Wed, 19 Feb 2025 08:34:56 +0000 (UTC)
+	 MIME-Version; b=KC0ahwdHjTyGc8dYuGhx3/ZCsR9W05tR7X0nGBUxidEqHWb6vmx6uu/4G8VPz64rCy3LykIcnP0dgc8EGN4DbeHcTf9Cu3tyogPcyuR+l/XbTbvOq8SCGF6L7Eqjy79tIHMkhgVV07Nt2BgdiXxl6sY6iVPEOi/vtzOG+Zb5WOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAGJKfkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E15EC4CEE8;
+	Wed, 19 Feb 2025 08:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954097;
-	bh=XAJ1IlWvtrjJyT4SBQQ6GkROPlcGbyTJ1jQIe+umNd8=;
+	s=korg; t=1739954876;
+	bh=j4hHWGSp+eVPqe1KWP6si0EbkxMLSmRzmxxiHr1vUpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJwiKE5UysgQzSDz0E5NRpxjUNzjRJ+FQ1Et7/w/HhwfbBVWMz12uTyVus/cqeEKG
-	 Q1jrFowJiRfj3pi+QEALaiG/6fcqryGEn3qS8SyPCSBGQGB8sYzNgairqNUV/cpK2I
-	 f72zpx3ZctfrluEZLSvFim+/oJ0x5I6DX6dQrPJI=
+	b=eAGJKfkWm3zJhiK+AqAi+LtVtE8FJKROty6aoVgbJcMrjRdwaKnIJ/Mw2rjwzr3n8
+	 UT7nEwEG5xqgec2KLymtBhSCe+cLi2MYZn7c3b/JR/Sh2ElpPedWWy0Qtbu1dz7F/8
+	 qBqD4MxSQnWPqCGsimecl5rs6NnkdGKbTAKp5ZFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Brian Norris <briannorris@chromium.org>,
-	David Gow <davidgow@google.com>,
+	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 095/274] kunit: platform: Resolve struct completion warning
+Subject: [PATCH 6.12 032/230] team: better TEAM_OPTION_TYPE_STRING validation
 Date: Wed, 19 Feb 2025 09:25:49 +0100
-Message-ID: <20250219082613.342924828@linuxfoundation.org>
+Message-ID: <20250219082602.965086341@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Norris <briannorris@chromium.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7687c66c18c66d4ccd9949c6f641c0e7b5773483 ]
+[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
 
-If the <kunit/platform_device.h> header is included in a test without
-certain other headers, it produces compiler warnings like:
+syzbot reported following splat [1]
 
-In file included from [...]
-../include/kunit/platform_device.h:15:57: warning: ‘struct completion’
-declared inside parameter list will not be visible outside of this
-definition or declaration
-   15 |                                                  struct completion *x);
-      |                                                         ^~~~~~~~~~
+Make sure user-provided data contains one nul byte.
 
-Add a 'struct completion' forward declaration to resolve this.
+[1]
+ BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
+ BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
+  string_nocheck lib/vsprintf.c:633 [inline]
+  string+0x3ec/0x5f0 lib/vsprintf.c:714
+  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
+  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
+  team_mode_get drivers/net/team/team_core.c:480 [inline]
+  team_change_mode drivers/net/team/team_core.c:607 [inline]
+  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
+  team_option_set drivers/net/team/team_core.c:375 [inline]
+  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
+  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
+  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
+  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
+  sock_sendmsg_nosec net/socket.c:718 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:733
+  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
+  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
+  __sys_sendmsg net/socket.c:2659 [inline]
+  __do_sys_sendmsg net/socket.c:2664 [inline]
+  __se_sys_sendmsg net/socket.c:2662 [inline]
+  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
+  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412241958.dbAImJsA-lkp@intel.com/
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: David Gow <davidgow@google.com>
-Link: https://lore.kernel.org/r/20241213180841.3023843-1-briannorris@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
+Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/kunit/platform_device.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/team/team_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/kunit/platform_device.h b/include/kunit/platform_device.h
-index 0fc0999d2420a..f8236a8536f7e 100644
---- a/include/kunit/platform_device.h
-+++ b/include/kunit/platform_device.h
-@@ -2,6 +2,7 @@
- #ifndef _KUNIT_PLATFORM_DRIVER_H
- #define _KUNIT_PLATFORM_DRIVER_H
- 
-+struct completion;
- struct kunit;
- struct platform_device;
- struct platform_driver;
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 7f4ef219eee44..6cfafaac1b4fb 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -2640,7 +2640,9 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 				ctx.data.u32_val = nla_get_u32(attr_data);
+ 				break;
+ 			case TEAM_OPTION_TYPE_STRING:
+-				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
++				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
++				    !memchr(nla_data(attr_data), '\0',
++					    nla_len(attr_data))) {
+ 					err = -EINVAL;
+ 					goto team_put;
+ 				}
 -- 
 2.39.5
 
