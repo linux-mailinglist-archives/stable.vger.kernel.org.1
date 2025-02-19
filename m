@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-117077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BD8A3B492
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:44:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD33A3B570
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:57:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE32178870
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DD94189912C
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744881DF725;
-	Wed, 19 Feb 2025 08:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784A21E377E;
+	Wed, 19 Feb 2025 08:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2bez/pM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqxFtofM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220F81CBA18;
-	Wed, 19 Feb 2025 08:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CC11C3BE9;
+	Wed, 19 Feb 2025 08:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954134; cv=none; b=uIK//BeS9sB19KGvjGt4VHr5lnib+uVb/1m7zXm2xgtObLVPcNpw/jnoe83/6JikQHsF7HYdLJY/V2/t9lhzcIpLQHJCyc17jGnK1RrtbKSgn+T3u1pIqQUZpJNLIbeA/LtbRUhchMSWiJrDwTy+96QCON5OlAFLY9NdUSt8Jz8=
+	t=1739954709; cv=none; b=Ez3sgvqQGDG591RkJzOuE5Bd9+O0SgMvDzd/ZvezJ15ibI/QgHVynjHtLvszA/dIdEKcr3se90J5dXOkxfPGRANzXDaNe7fiRUqdifgeVroG+1H+mjLhToroRR002SFYsddAFNImTdXtGiJzgsz0aBxd9JkjOPoP4CXUv0LLaIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954134; c=relaxed/simple;
-	bh=OWm5fa0d0z32QH9wYTuxttyYdXXucRsc5Qb7Qxt1UMQ=;
+	s=arc-20240116; t=1739954709; c=relaxed/simple;
+	bh=wnMmWrt61OWjcpYgQMGMKaROdNWBOIyqbARXPZBxn1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8iuPyN/o0liSDp2g6HNOhkfXFmkdDTSfkqGkq4JCvSqvZt1uz49Uc2Q0HNA4L4G1maeGE860BL09/3MUBmdY4YYkIjUS26DJCyupop3ELc4tpBUzy1rrBfbFgTtYuNE7LJzmYYQX/71TI3LW9EGRVSN4eUrKT3lKNk+Ak1qFl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2bez/pM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7223DC4CEE6;
-	Wed, 19 Feb 2025 08:35:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GGdrP8+wt6PHpuphdIQK0m4s3mJ3fFkkiMkWANv08OQdwKUJG8C/n5pzhIGwwINXVar40JH1SvJF+cxKwblyoW9oTWAtoU7eZhaeuRmvpnsLOqVyCZ9Cl0mDmMGr8mymOB/kzu2JlEgwoAnxIbl6OCI6dVP1K9N3KWdNdW/ydaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqxFtofM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A773AC4CED1;
+	Wed, 19 Feb 2025 08:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954133;
-	bh=OWm5fa0d0z32QH9wYTuxttyYdXXucRsc5Qb7Qxt1UMQ=;
+	s=korg; t=1739954709;
+	bh=wnMmWrt61OWjcpYgQMGMKaROdNWBOIyqbARXPZBxn1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2bez/pMWX9rDgcID0nzi4P0s6JxzV44Gg60XVgkiAyCreSAILeymdXhtV5H2phZz
-	 wyH5L6ADiFkRb6LBQ5H5T38MeSd+pB5L/rHZIDudCF3OBwzo37LE+ZUzU6Z5YWGcw7
-	 4AjDHtNI/SDp981Y0XuEjEc40U+9s8/vR/3m14fc=
+	b=gqxFtofMYHPIHMyOgkvFbuZEhb+FmjRtp9+E653RE/Ex76xglqpItln6t2wiohvyJ
+	 rdoKv4zQbPtYOhAYeAc4p+nj7BVMc4lsoGTR0/f4SzwsNzbDObl2v9ehF+X80InRBd
+	 s15ao4Gdd4a96z9tUZ+XR2IM2+zzWs0xoLTkdOv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzbot+9c9179ac46169c56c1ad@syzkaller.appspotmail.com,
+	=?UTF-8?q?T=C3=BAlio=20Fernandes?= <tuliomf09@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 076/274] media: cxd2841er: fix 64-bit division on gcc-9
+Subject: [PATCH 6.12 013/230] HID: hid-thrustmaster: fix stack-out-of-bounds read in usb_check_int_endpoints()
 Date: Wed, 19 Feb 2025 09:25:30 +0100
-Message-ID: <20250219082612.600107921@linuxfoundation.org>
+Message-ID: <20250219082602.219392742@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Tulio Fernandes <tuliomf09@gmail.com>
 
-[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
+[ Upstream commit 0b43d98ff29be3144e86294486b1373b5df74c0e ]
 
-It appears that do_div() once more gets confused by a complex
-expression that ends up not quite being constant despite
-__builtin_constant_p() thinking it is:
+Syzbot[1] has detected a stack-out-of-bounds read of the ep_addr array from
+hid-thrustmaster driver. This array is passed to usb_check_int_endpoints
+function from usb.c core driver, which executes a for loop that iterates
+over the elements of the passed array. Not finding a null element at the end of
+the array, it tries to read the next, non-existent element, crashing the kernel.
 
-ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
+To fix this, a 0 element was added at the end of the array to break the for
+loop.
 
-Use div_u64() instead, forcing the expression to be evaluated
-first, and making it a bit more readable.
+[1] https://syzkaller.appspot.com/bug?extid=9c9179ac46169c56c1ad
 
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: added Closes tags]
+Reported-by: syzbot+9c9179ac46169c56c1ad@syzkaller.appspotmail.com
+Fixes: 50420d7c79c3 ("HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check")
+Signed-off-by: Túlio Fernandes <tuliomf09@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/hid/hid-thrustmaster.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
-index d925ca24183b5..415f1f91cc307 100644
---- a/drivers/media/dvb-frontends/cxd2841er.c
-+++ b/drivers/media/dvb-frontends/cxd2841er.c
-@@ -311,12 +311,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
+diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
+index 6c3e758bbb09e..3b81468a1df29 100644
+--- a/drivers/hid/hid-thrustmaster.c
++++ b/drivers/hid/hid-thrustmaster.c
+@@ -171,7 +171,7 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
+ 	b_ep = ep->desc.bEndpointAddress;
  
- static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
- {
--	u64 tmp;
--
--	tmp = (u64) ifhz * 16777216;
--	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
--
--	return (u32) tmp;
-+	return div_u64(ifhz * 16777216ull,
-+		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
- }
+ 	/* Are the expected endpoints present? */
+-	u8 ep_addr[1] = {b_ep};
++	u8 ep_addr[2] = {b_ep, 0};
  
- static u32 cxd2841er_calc_iffreq(u32 ifhz)
+ 	if (!usb_check_int_endpoints(usbif, ep_addr)) {
+ 		hid_err(hdev, "Unexpected non-int endpoint\n");
 -- 
 2.39.5
 
