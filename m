@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-117628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E2BA3B7D0
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:18:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90056A3BA5A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6310F3AB023
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25DBC18861EC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0FD1DE4F6;
-	Wed, 19 Feb 2025 09:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31491CC8B0;
+	Wed, 19 Feb 2025 09:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7mJvVtY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DR3Q/WQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9FA188CCA;
-	Wed, 19 Feb 2025 09:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E726176ADE;
+	Wed, 19 Feb 2025 09:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955879; cv=none; b=eJ/vCmbC5yTzGAm/yv5CL/JI6izqvqp0AAundXnEpoKlaWt/zaLhJRe+utJv92VCgRuLQyD0uyCohXNMlq6Ayh6H4WBKBP8dylDxAMWR0LbHXpFpsy+MVAwDZd2zedD1IQ7g8k85KMRKrkNBqXFdLx66CLfqV0DgiD6Axj+Em04=
+	t=1739957612; cv=none; b=pyntatNhtrHd54soiHfXrY0p/pJyG3lJ67mzC5K9OcS6Z5SgJJfbxWiLYZFdHg3Ptk5Ym2MCSXHKZdWgFsEBlHYoonFZksMCF6gELVJ6q8mczkmEf+za0vj/uR5Zj3AAqIm+j1Tqpr096jPoHSOH5ZjLxwfZJivOCp6HNjZmZ4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955879; c=relaxed/simple;
-	bh=2VB54XQmzkrSziZR4x+V3IlXHsYtsjHeuE4bKxgx2L4=;
+	s=arc-20240116; t=1739957612; c=relaxed/simple;
+	bh=xM2vahn39Xj45CRU0NU0tO7u3q65tBoraA6hOEKFziU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHmyvPFQCat5rcalUlxHN8AFeF9Zn8xhqMg4K/ZnS68DaQCfDX5WqGdr5dv0VTvwIB1o6sl7dMBbcd7evPRGKr2hBEa7YWuPM973NgTps8krP1iqUr9gunwlkOiTM4db9rSMwUYZ38KTdVqw5Xw4BFFQdL7jvDOTRl2Hbd9BV60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7mJvVtY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A69FC4CED1;
-	Wed, 19 Feb 2025 09:04:38 +0000 (UTC)
+	 MIME-Version; b=Y+iU2Rps62hBRtZxBkERca58jx8h+sXzN4wAx31TtRg6+GZEPYSy0ShVdgAErOpUrBdcZ+qY09iJXvQ9E4g6aFb5t7ea9KoLPI8yQXClxj+XiqudZi9VNK5xNyPNDP4kyVgdcM5fUnY4aOKGGQ9X/OpTHQpDHPELhhZVFVrd8Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DR3Q/WQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2D0C4CED1;
+	Wed, 19 Feb 2025 09:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955879;
-	bh=2VB54XQmzkrSziZR4x+V3IlXHsYtsjHeuE4bKxgx2L4=;
+	s=korg; t=1739957612;
+	bh=xM2vahn39Xj45CRU0NU0tO7u3q65tBoraA6hOEKFziU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7mJvVtYjJwuTN26gPwVgQ1L/UQ5NjXKGvMsoGrzTKbRqYz38dOu1gKMyqDW1qj1X
-	 djqrftM8n9sYnrOGVGbU6UoUHnslRqO/c3iOoeml5GlSbnHE0Y7gGTpk+zdrz1zJnH
-	 nw/bqLaOPiuIE+Q2K95rCyfOX+7Pt5EM93q4v7Qc=
+	b=DR3Q/WQQABoI3nI4IFSH3MwMs8wQJnl9JpCcGVNE2UipoSeC+ZNY9nRINb9qQ1y9c
+	 oAFJoDIVOogbGl9noA43hjaNM2mVNFV005xt01RdNfetrHLyqgtA0bozEYuIVgZH7I
+	 pO/t7iM5LVo1WTVNgVpXMhl7Nlpo01m292ME1gpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.6 144/152] arm64: Filter out SVE hwcaps when FEAT_SVE isnt implemented
-Date: Wed, 19 Feb 2025 09:29:17 +0100
-Message-ID: <20250219082555.746688971@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 554/578] ndisc: extend RCU protection in ndisc_send_skb()
+Date: Wed, 19 Feb 2025 09:29:18 +0100
+Message-ID: <20250219082714.750853587@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,196 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 064737920bdbca86df91b96aed256e88018fef3a upstream.
+[ Upstream commit ed6ae1f325d3c43966ec1b62ac1459e2b8e45640 ]
 
-The hwcaps code that exposes SVE features to userspace only
-considers ID_AA64ZFR0_EL1, while this is only valid when
-ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+ndisc_send_skb() can be called without RTNL or RCU held.
 
-The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+Acquire rcu_read_lock() earlier, so that we can use dev_net_rcu()
+and avoid a potential UAF.
 
-Things become a bit more interesting if the HW implements SME.
-In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-features. And these fields overlap with their SVE interpretations.
-But the architecture says that the SME and SVE feature sets must
-match, so we're still hunky-dory.
-
-This goes wrong if the HW implements SME, but not SVE. In this
-case, we end-up advertising some SVE features to userspace, even
-if the HW has none. That's because we never consider whether SVE
-is actually implemented. Oh well.
-
-Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-being non-zero. The HWCAPS documentation is amended to reflect the
-actually checks performed by the kernel.
-
-Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
-Reported-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250107-arm64-2024-dpisa-v5-1-7578da51fc3d@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1762f7e88eb3 ("[NETNS][IPV6] ndisc - make socket control per namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arch/arm64/elf_hwcaps.rst |   36 ++++++++++++++++++++----------
- arch/arm64/kernel/cpufeature.c          |   38 +++++++++++++++++++++-----------
- 2 files changed, 50 insertions(+), 24 deletions(-)
+ net/ipv6/ndisc.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/Documentation/arch/arm64/elf_hwcaps.rst
-+++ b/Documentation/arch/arm64/elf_hwcaps.rst
-@@ -174,22 +174,28 @@ HWCAP2_DCPODP
-     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 2e8e0847631e3..1a6408a24d21c 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -471,16 +471,20 @@ static void ip6_nd_hdr(struct sk_buff *skb,
+ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
+ 		    const struct in6_addr *saddr)
+ {
++	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net *net = dev_net(skb->dev);
+-	struct sock *sk = net->ipv6.ndisc_sk;
+ 	struct inet6_dev *idev;
++	struct net *net;
++	struct sock *sk;
+ 	int err;
+-	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
+ 	u8 type;
  
- HWCAP2_SVE2
--    Functionality implied by ID_AA64ZFR0_EL1.SVEVer == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0001.
+ 	type = icmp6h->icmp6_type;
  
- HWCAP2_SVEAES
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0001.
- 
- HWCAP2_SVEPMULL
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0010.
- 
- HWCAP2_SVEBITPERM
--    Functionality implied by ID_AA64ZFR0_EL1.BitPerm == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BitPerm == 0b0001.
- 
- HWCAP2_SVESHA3
--    Functionality implied by ID_AA64ZFR0_EL1.SHA3 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SHA3 == 0b0001.
- 
- HWCAP2_SVESM4
--    Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SM4 == 0b0001.
- 
- HWCAP2_FLAGM2
-     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0010.
-@@ -198,16 +204,20 @@ HWCAP2_FRINT
-     Functionality implied by ID_AA64ISAR1_EL1.FRINTTS == 0b0001.
- 
- HWCAP2_SVEI8MM
--    Functionality implied by ID_AA64ZFR0_EL1.I8MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.I8MM == 0b0001.
- 
- HWCAP2_SVEF32MM
--    Functionality implied by ID_AA64ZFR0_EL1.F32MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F32MM == 0b0001.
- 
- HWCAP2_SVEF64MM
--    Functionality implied by ID_AA64ZFR0_EL1.F64MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F64MM == 0b0001.
- 
- HWCAP2_SVEBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0001.
- 
- HWCAP2_I8MM
-     Functionality implied by ID_AA64ISAR1_EL1.I8MM == 0b0001.
-@@ -273,7 +283,8 @@ HWCAP2_EBF16
-     Functionality implied by ID_AA64ISAR1_EL1.BF16 == 0b0010.
- 
- HWCAP2_SVE_EBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0010.
- 
- HWCAP2_CSSC
-     Functionality implied by ID_AA64ISAR2_EL1.CSSC == 0b0001.
-@@ -282,7 +293,8 @@ HWCAP2_RPRFM
-     Functionality implied by ID_AA64ISAR2_EL1.RPRFM == 0b0001.
- 
- HWCAP2_SVE2P1
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0010.
- 
- HWCAP2_SME2
-     Functionality implied by ID_AA64SMFR0_EL1.SMEver == 0b0001.
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2762,6 +2762,13 @@ static const struct arm64_cpu_capabiliti
- 		.matches = match,						\
- 	}
- 
-+#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
-+	{									\
-+		__HWCAP_CAP(#cap, cap_type, cap)				\
-+		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
-+		.matches = match,						\
-+	}
++	rcu_read_lock();
 +
- #ifdef CONFIG_ARM64_PTR_AUTH
- static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
- 	{
-@@ -2790,6 +2797,13 @@ static const struct arm64_cpu_capabiliti
- };
- #endif
++	net = dev_net_rcu(skb->dev);
++	sk = net->ipv6.ndisc_sk;
+ 	if (!dst) {
+ 		struct flowi6 fl6;
+ 		int oif = skb->dev->ifindex;
+@@ -488,6 +492,7 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
+ 		icmpv6_flow_init(sk, &fl6, type, saddr, daddr, oif);
+ 		dst = icmp6_dst_alloc(skb->dev, &fl6);
+ 		if (IS_ERR(dst)) {
++			rcu_read_unlock();
+ 			kfree_skb(skb);
+ 			return;
+ 		}
+@@ -502,7 +507,6 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
  
-+#ifdef CONFIG_ARM64_SVE
-+static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
-+
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -2827,18 +2841,18 @@ static const struct arm64_cpu_capabiliti
- 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
- #ifdef CONFIG_ARM64_SVE
- 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
- #endif
- 	HWCAP_CAP(ID_AA64PFR1_EL1, SSBS, SSBS2, CAP_HWCAP, KERNEL_HWCAP_SSBS),
- #ifdef CONFIG_ARM64_BTI
+ 	ip6_nd_hdr(skb, saddr, daddr, inet6_sk(sk)->hop_limit, skb->len);
+ 
+-	rcu_read_lock();
+ 	idev = __in6_dev_get(dst->dev);
+ 	IP6_UPD_PO_STATS(net, idev, IPSTATS_MIB_OUT, skb->len);
+ 
+-- 
+2.39.5
+
 
 
 
