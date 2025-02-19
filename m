@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3284A3B738
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:13:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF64A3B6BD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B6353BDD37
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:06:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71EE17EB9A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CE11E0DD0;
-	Wed, 19 Feb 2025 09:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F5E1EB5C1;
+	Wed, 19 Feb 2025 08:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7lpPqUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7TJK97Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0F1CB518;
-	Wed, 19 Feb 2025 09:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FB81BEF71;
+	Wed, 19 Feb 2025 08:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955661; cv=none; b=CAizTPeJa/p4BauljaPvA1kPZ074U+BjDxuVyqRqtPx62ZbFetjgtiIBsT52FDT+z66EGxpzGnPgVVNKdHo6SoMROcDVeqnnaOQ8YmoklKlqsTOqv03j+BirDYRlZP8n6TzCC+T9N3qV1e8Rh3bpomjFkS6sVzONVbs/T7Nt/A4=
+	t=1739955332; cv=none; b=UGVk3wghh1MAuf6z9glZd19CO/AYoIMZBmn6k3f6P/wSIIbkwLJV345zHdzjNPK4WvRYkzOnpGl9HgF419wghPlGAQwjYU3zdC8MVFnLgyialbK6G/iWTKOQck1QlNLb6rVjyxViXQVqaYey5wRC5ps4MKyZV2cbT2SBaHxDwLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955661; c=relaxed/simple;
-	bh=ZX5qTkj/InfS4A1BKQyusFmXAmwtDYxisOekn/5ShCg=;
+	s=arc-20240116; t=1739955332; c=relaxed/simple;
+	bh=0RjgU5EOVxbv9Qxt4yoTKPM2ZjXrG9D+eKGtocrSk0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YOmulMLwUq0TCjbedi+Mc7WdWn2X+bn/3wHYPvEkyKMp0BFlmGT9fo/wK9qJW9Y9Drx8yAIoFg99StqNF4l4LBjjWT32sALlzASNRsV4fUeYaKMxBlEtm301+OoVArMFoPYIBfWHdFaTkC9G+kC6wEcvOeu/Mv6ZX0tN+0Im8vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7lpPqUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4295C4CEE7;
-	Wed, 19 Feb 2025 09:01:00 +0000 (UTC)
+	 MIME-Version; b=Eo5BYWV3TTFTq+8BOLamVsvnG/hI6wnr+Ug26JfKcCWlkd1FwEsUJs5IAral310DAhjBDgmHSjurDxZ/6YGn5fD6Df/PzARgtyrN2Jx8doNACTs3NLfO+eMaJm77N0LqsDlO6wjdEgQCkMIeraDvOzTk9MZx4fuwGjuGx5ETJi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7TJK97Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA05C4CEE8;
+	Wed, 19 Feb 2025 08:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955661;
-	bh=ZX5qTkj/InfS4A1BKQyusFmXAmwtDYxisOekn/5ShCg=;
+	s=korg; t=1739955332;
+	bh=0RjgU5EOVxbv9Qxt4yoTKPM2ZjXrG9D+eKGtocrSk0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a7lpPqUr2Ze3MWsVVw2BKSUr/JAEev0cDr5b82HP319+DMxlY50EmfbYFfhy0w/4J
-	 LyPvPYRd0jf/boV1i1eX0/h7K/izFNRLzRBi4fnG4crKfolpjqbgIzZqrWAcNoCYL7
-	 8DFoW1arEvZmFFaueATT/NBjC/iIJHY+NW28I/VI=
+	b=U7TJK97ZaTfQIPU2Nuub9T0GvC3HkY2dQPx8Dyg61IVIU6F1OMPBuWHynVH4UWwX6
+	 diAnvHcwFEYZCPnAxAFyBTZlf9w/W5Sn3K9bzw5TdBC6uk4mneXxBfw6fzVy9COhrr
+	 CdY1DyuInZaZIUiEah7ua54ugaEl0eRVpI8OJm6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 075/152] can: c_can: fix unbalanced runtime PM disable in error path
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 171/230] scsi: ufs: core: Prepare to introduce a new clock_gating lock
 Date: Wed, 19 Feb 2025 09:28:08 +0100
-Message-ID: <20250219082553.015204602@linuxfoundation.org>
+Message-ID: <20250219082608.392696187@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Avri Altman <avri.altman@wdc.com>
 
-commit 257a2cd3eb578ee63d6bf90475dc4f4b16984139 upstream.
+[ Upstream commit 7869c6521f5715688b3d1f1c897374a68544eef0 ]
 
-Runtime PM is enabled as one of the last steps of probe(), so all
-earlier gotos to "exit_free_device" label were not correct and were
-leading to unbalanced runtime PM disable depth.
+Remove hba->clk_gating.active_reqs check from ufshcd_is_ufs_dev_busy()
+function to separate clock gating logic from general device busy checks.
 
-Fixes: 6e2fe01dd6f9 ("can: c_can: move runtime PM enable/disable to c_can_platform")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250112-syscon-phandle-args-can-v1-1-314d9549906f@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20241124070808.194860-3-avri.altman@wdc.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 839a74b5649c ("scsi: ufs: Fix toggling of clk_gating.state when clock gating is not allowed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_platform.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -394,15 +394,16 @@ static int c_can_plat_probe(struct platf
- 	if (ret) {
- 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
- 			KBUILD_MODNAME, ret);
--		goto exit_free_device;
-+		goto exit_pm_runtime;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 94d7992457a3b..217619d64940e 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -266,8 +266,7 @@ static bool ufshcd_has_pending_tasks(struct ufs_hba *hba)
+ 
+ static bool ufshcd_is_ufs_dev_busy(struct ufs_hba *hba)
+ {
+-	return hba->clk_gating.active_reqs || hba->outstanding_reqs ||
+-	       ufshcd_has_pending_tasks(hba);
++	return hba->outstanding_reqs || ufshcd_has_pending_tasks(hba);
+ }
+ 
+ static const struct ufs_dev_quirk ufs_fixups[] = {
+@@ -1973,7 +1972,9 @@ static void ufshcd_gate_work(struct work_struct *work)
+ 		goto rel_lock;
  	}
  
- 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
- 		 KBUILD_MODNAME, priv->base, dev->irq);
- 	return 0;
+-	if (ufshcd_is_ufs_dev_busy(hba) || hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL)
++	if (ufshcd_is_ufs_dev_busy(hba) ||
++	    hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL ||
++	    hba->clk_gating.active_reqs)
+ 		goto rel_lock;
  
--exit_free_device:
-+exit_pm_runtime:
- 	pm_runtime_disable(priv->device);
-+exit_free_device:
- 	free_c_can_dev(dev);
- exit:
- 	dev_err(&pdev->dev, "probe failed\n");
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
+@@ -8272,7 +8273,9 @@ static void ufshcd_rtc_work(struct work_struct *work)
+ 	hba = container_of(to_delayed_work(work), struct ufs_hba, ufs_rtc_update_work);
+ 
+ 	 /* Update RTC only when there are no requests in progress and UFSHCI is operational */
+-	if (!ufshcd_is_ufs_dev_busy(hba) && hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL)
++	if (!ufshcd_is_ufs_dev_busy(hba) &&
++	    hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL &&
++	    !hba->clk_gating.active_reqs)
+ 		ufshcd_update_rtc(hba);
+ 
+ 	if (ufshcd_is_ufs_dev_active(hba) && hba->dev_info.rtc_update_period)
+-- 
+2.39.5
+
 
 
 
