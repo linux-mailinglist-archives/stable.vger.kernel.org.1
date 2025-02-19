@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD85A3B463
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:42:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D34DA3B5D1
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96BE13B0ED7
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:39:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F39C03B04FC
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5501DE4E6;
-	Wed, 19 Feb 2025 08:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EEE1EE033;
+	Wed, 19 Feb 2025 08:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRJ4NoXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaFW8KWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3701C3C1E;
-	Wed, 19 Feb 2025 08:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46FC1EB1AC;
+	Wed, 19 Feb 2025 08:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954060; cv=none; b=uOyYqKNeXDnjq3J7PCGWvgcNKTok2d71YDVN1dtWsLulcGI5uVJCBiYwmSdnqlBfyJ8NHxVbuSWaZhZWqac8NTIQtrW1w3y+MBdp1CYvGJrIKtyNJE87S2iOOpkGVhgU6IvUc5ViJMVwiZD0DmWfT3i6/Fxx45xlzEh+Bg5L2bU=
+	t=1739954746; cv=none; b=h1rhHN+KLoRpDA/op8E9/SnOqczDGhXqesqtOt4GtcPatfO1uvsmkl3v8bJkAN7QOrjQxi4adV/k7UtyJpZrw+B3toqbf1BOw9jPeOSKbLlE84T2Tmo0kFRpr8V0DM6FlFbqDqVyX80cfKWrVal9VbjQ6zyUHW/60TCU5n7Q0ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954060; c=relaxed/simple;
-	bh=I/9EQcnV/MN/VlkF66xgMYWXdUJZeeholsOioFXYsxY=;
+	s=arc-20240116; t=1739954746; c=relaxed/simple;
+	bh=cUr4jc6fufB1sZX0qUvCnwzmzOnz9HE1z4WB/7YQxqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKEFTjkKWGaTER2kgk3nqgysaA6bkJaOfUgRqFteEg0RHtIYntqTk8zdf4GqoG/HZE8uuez55JgMwQlN/bYwREux7QNkIJ4UeuVg8kqvgidmDZKt5NvrNEewoIl4t33PczT6SwUrKQrOv5RMqx6DEdIAAUi6mjLovtIDz1j2JLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRJ4NoXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67056C4CEE7;
-	Wed, 19 Feb 2025 08:34:19 +0000 (UTC)
+	 MIME-Version; b=rA3gYc56SN6zawrMIuuUZNjZMVcCkLWAirok1kBlCILIq/QHCgF/B6cCBDq+fQomhSO8QQncgCojrHuMiDiuZ1Kd8Z004Sh/xMVn6eFHsRMh0AK7WTJxqmZktgfmPkM1LlKfdQFOKFpUmWQ4/FSjHnF7j+4OZ1ym3jFGkBJIpRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaFW8KWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6EEC4CED1;
+	Wed, 19 Feb 2025 08:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954059;
-	bh=I/9EQcnV/MN/VlkF66xgMYWXdUJZeeholsOioFXYsxY=;
+	s=korg; t=1739954745;
+	bh=cUr4jc6fufB1sZX0qUvCnwzmzOnz9HE1z4WB/7YQxqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRJ4NoXn+DNyXldi+aHICngJQQH4AlqKEPA7Tqu0iypPd9B79QLHlawADGo2zM455
-	 hHbI5Kwv1Y7BxQP24DmudDCWlbiR8HD7yw5NvXnTva/9aalt4KB8x0ATIzh/FzcihG
-	 IxorivKDRhl+wDaib/LY2Z2TywhVjqKxPJYvovZo=
+	b=BaFW8KWsq5KDVqiT8dbhrwCz5DJuFB3XvwjdJ1Jip2/ewsusil9rmEQ3MhYFWeLYt
+	 AdMlQ5lfk1E8c1EWdvQ1z6FqqNRSpHpUFU1ow4Pm3CK75djCIDnlj2dJL2h9MycL3l
+	 Sg+KPqUM1PSHhAkG1pTshMSa2Aa3yRGLQ4ZvQQYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 084/274] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
-Date: Wed, 19 Feb 2025 09:25:38 +0100
-Message-ID: <20250219082612.910541121@linuxfoundation.org>
+Subject: [PATCH 6.12 022/230] idpf: record rx queue in skb for RSC packets
+Date: Wed, 19 Feb 2025 09:25:39 +0100
+Message-ID: <20250219082602.574189134@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Sridhar Samudrala <sridhar.samudrala@intel.com>
 
-[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
+[ Upstream commit 2ff66c2f9ea4e9311e9a00004348b6c465bd5d3b ]
 
-syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
+Move the call to skb_record_rx_queue in idpf_rx_process_skb_fields()
+so that RX queue is recorded for RSC packets too.
 
-If dvb->mux is not initialized successfully by vidtv_mux_init() in the
-vidtv_start_streaming(), it will trigger null pointer dereference about mux
-in vidtv_mux_stop_thread().
-
-Adjust the timing of streaming initialization and check it before
-stopping it.
-
-[1]
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
-Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
-RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
-RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
-RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
-R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
-FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
- vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
- dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
- dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
- dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
- dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
- dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
- __fput+0x3f8/0xb60 fs/file_table.c:450
- task_work_run+0x14e/0x250 kernel/task_work.c:239
- get_signal+0x1d3/0x2610 kernel/signal.c:2790
- arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 90912f9f4f2d ("idpf: convert header split mode to libeth + napi_build_skb()")
+Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-index e1dd8adeba469..438483c62facc 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -191,10 +191,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index cd7c297059aed..1e0d1f9b07fbc 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3070,6 +3070,7 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 	idpf_rx_hash(rxq, skb, rx_desc, decoded);
  
- 	mux_args.mux_buf_sz  = mux_buf_sz;
+ 	skb->protocol = eth_type_trans(skb, rxq->netdev);
++	skb_record_rx_queue(skb, rxq->idx);
  
--	dvb->streaming = true;
- 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
- 	if (!dvb->mux)
- 		return -ENOMEM;
-+
-+	dvb->streaming = true;
- 	vidtv_mux_start_thread(dvb->mux);
+ 	if (le16_get_bits(rx_desc->hdrlen_flags,
+ 			  VIRTCHNL2_RX_FLEX_DESC_ADV_RSC_M))
+@@ -3078,8 +3079,6 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 	csum_bits = idpf_rx_splitq_extract_csum_bits(rx_desc);
+ 	idpf_rx_csum(rxq, skb, csum_bits, decoded);
  
- 	dev_dbg_ratelimited(dev, "Started streaming\n");
-@@ -205,6 +206,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
- {
- 	struct device *dev = &dvb->pdev->dev;
+-	skb_record_rx_queue(skb, rxq->idx);
+-
+ 	return 0;
+ }
  
-+	if (!dvb->streaming) {
-+		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
-+		return 0;
-+	}
-+
- 	dvb->streaming = false;
- 	vidtv_mux_stop_thread(dvb->mux);
- 	vidtv_mux_destroy(dvb->mux);
 -- 
 2.39.5
 
