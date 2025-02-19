@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-117731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70584A3B821
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:21:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F184DA3B7E8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95BA317AEBD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B8D1889CF0
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4BA1DED70;
-	Wed, 19 Feb 2025 09:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878601DED7C;
+	Wed, 19 Feb 2025 09:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgQ4oFKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8st4Bdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887C71D61B5;
-	Wed, 19 Feb 2025 09:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FD11DE4D7;
+	Wed, 19 Feb 2025 09:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956178; cv=none; b=XbMQaFZ+QZw2kr2i6aeRTXOxgEtBZxN8Cd+yXeZYb1BRRSNeu1DNPgKXLLFcS4/aExPQScbW5n8K/vLDatmUUIU0nU/6WsoMfk5+Q7l0+XFTYMixg4xpImAasw1b4CJjGvtcoSq2SHt9bm/qG0cLsBEH3Csys5QgL3jKHLgP6RU=
+	t=1739956184; cv=none; b=proaZLehnGUS1N3cWfix7HEzA5GYBtB95oRY5Xmt373T2AugdcG3nwUMONKx5hupwbDSRc3uIIUn9/uNm56zNEoQv39/JxAgdnn9ftMIRE0xnNG9KVQQXsGdOW4i5K3LI6mf/F2+/41PiUmYaM7IpmNrIFRUFYSuNVS/bFCI5CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956178; c=relaxed/simple;
-	bh=35rE8HXnt7MCL3j38+qb0zdgX0zOa7d1VO3fWy9hOug=;
+	s=arc-20240116; t=1739956184; c=relaxed/simple;
+	bh=0fzxeKSMcFM/ip9RHDJhnw5KT/Vz3OhXtlC6IoPVvCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=irrVki/JQ7PsIS/Td23VN+eXaSWbG8pBhaNtM/m7uBfaGwFd7FIBmTZL7XnXIw0vBxN0S6HozPQPnzIBjKGQFXJ9lx02tcWzVTbjzH+hlsLAUuTWLfLMRaEZ3mDTeCskGCBxhlYJM2Z06hyCPdqig+hUljJrYSAYlepdPKQ6ILk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgQ4oFKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1300EC4CED1;
-	Wed, 19 Feb 2025 09:09:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K9RkXAPWFAFbOSaxmy2MFpMaGrZidwPFVfdQVzRmwi6/mOu4vqXx+CPpTUt8F0TEV4VIcp8dat44xfRyMC60qyUY9VW6EEs0N5ku/9TP5OL1HCrYa6AesWlQrVO9eaeHq16+HAU1DxqTwF+KxtGDycNJMFc0Bq9kiSBa1K/bL9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8st4Bdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38AFC4CED1;
+	Wed, 19 Feb 2025 09:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956178;
-	bh=35rE8HXnt7MCL3j38+qb0zdgX0zOa7d1VO3fWy9hOug=;
+	s=korg; t=1739956184;
+	bh=0fzxeKSMcFM/ip9RHDJhnw5KT/Vz3OhXtlC6IoPVvCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PgQ4oFKpq/YiX4izmQj2iCTVJPovUpcWko4me52UADm93lg6cmBx1MhUT9+ZeciWQ
-	 nlgsmg2LYBxCGTJ3eyKKrFgCmxZ1gsyAJK0twm4x92sxIN3phI4I90gI5uXMlGruA1
-	 HMHOi0/w1KrfCfDXneOvTtbq2fWum1u3JKt0B40Y=
+	b=h8st4BdvFSJ+bkOQJtCsQq/6VV6/BMlpDh5gpiHDn6hXJWFVwo0DvmIZV2D3tXSxI
+	 oozfPy+YM/HP0V+ARqiaaoQrPqGetEonnVvsTFQZQlNokWKeef+JwMCsQkUmVZgPXm
+	 JydXWiRBaH3dIhWU16U3yp98szVEDVcTtfl8QIyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/578] pwm: stm32: Add check for clk_enable()
-Date: Wed, 19 Feb 2025 09:21:36 +0100
-Message-ID: <20250219082656.579180505@linuxfoundation.org>
+Subject: [PATCH 6.1 093/578] selftests/landlock: Fix error message
+Date: Wed, 19 Feb 2025 09:21:37 +0100
+Message-ID: <20250219082656.617536185@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -68,41 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit e8c59791ebb60790c74b2c3ab520f04a8a57219a ]
+[ Upstream commit 2107c35128ad751b201eb92fe91443450d9e5c37 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+The global variable errno may not be set in test_execute().  Do not use
+it in related error message.
 
-Fixes: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241215224752.220318-1-zmw12306@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
+Link: https://lore.kernel.org/r/20250108154338.1129069-21-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/landlock/fs_test.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 2070d107c6328..fda7d76f08b1b 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -631,8 +631,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
+diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
+index f2c3bffa6ea51..864309ebb0b4c 100644
+--- a/tools/testing/selftests/landlock/fs_test.c
++++ b/tools/testing/selftests/landlock/fs_test.c
+@@ -1775,8 +1775,7 @@ static void test_execute(struct __test_metadata *const _metadata, const int err,
+ 	ASSERT_EQ(1, WIFEXITED(status));
+ 	ASSERT_EQ(err ? 2 : 0, WEXITSTATUS(status))
+ 	{
+-		TH_LOG("Unexpected return code for \"%s\": %s", path,
+-		       strerror(errno));
++		TH_LOG("Unexpected return code for \"%s\"", path);
+ 	};
+ }
  
- 	/* Initialize clock refcount to number of enabled PWM channels. */
--	for (i = 0; i < num_enabled; i++)
--		clk_enable(priv->clk);
-+	for (i = 0; i < num_enabled; i++) {
-+		ret = clk_enable(priv->clk);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ret = pwmchip_add(&priv->chip);
- 	if (ret < 0)
 -- 
 2.39.5
 
