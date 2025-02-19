@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-117617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B612FA3B745
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859CAA3B692
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A93C1888224
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:08:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FA3C188C53E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A101D8A0D;
-	Wed, 19 Feb 2025 09:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35D11E51F2;
+	Wed, 19 Feb 2025 08:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHnvCeFA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0fuXFMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D05A1C701E;
-	Wed, 19 Feb 2025 09:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708761C7013;
+	Wed, 19 Feb 2025 08:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955845; cv=none; b=sqedjEHLDF4YM1DpBI1B68UskZtJZrK509slWbIrO1Ku/5R9RQfY0ZCnBTrugALgwXEB1/Y8KaJpGHlQvQjUXFA6k1QBPlWZwvGEevUXsvoK2a4oNhk5CJaRMN9gstN1oudbcW4z0EGOp+fJaH3cfkljiyn/fTPaG/B2vu2AHf8=
+	t=1739955372; cv=none; b=c1ExdLphX+gJC8tJH4S+ndnx1cBgPFSOl8lGp3o1bSog5y5HWv29SvLVICd5d+W0ENBMQYOGEpEmos4WoFhsmt6engpmF+ORZr4qKtEi/631DJKEpe/5yIff/aBy8hbF16UE4iHFn/dF2eLjhMZjqrLHnLjU4+lsP+Z83atlvos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955845; c=relaxed/simple;
-	bh=mJcBgy63Z1X/vF6rYz+qkzZ2YPwKhJEN7ZPxnheDqqY=;
+	s=arc-20240116; t=1739955372; c=relaxed/simple;
+	bh=lmmtaURWVhGfgTbkDl+uXA+V9pdUlY8mT6tm4RzuKyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHvzBGCqMd4yo24Vb0HHBGJzdEZJNVZUHdviW71Lu4TZ0ERYPPu91K0R9pcwrA0zmRMOQNPVYWjuOU1+iuBig+KCJlyJ9zXsYfd3xf6sK+P3mUok2jGgijzPx6MAt2pO5RMtIuPA6zxWC8OG1FxUppNI3vYkfnutDSRYxq3ntPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHnvCeFA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E92EC4CED1;
-	Wed, 19 Feb 2025 09:04:04 +0000 (UTC)
+	 MIME-Version; b=nGD6V30kZ7QkQTQ/iQSBWx4T7TDD8QW4JZIa2uS8evwHoyZrIJRA1FCKAARbll7xRDIwuxt8qmlvBhqmH6kUf6g9IISPPDF6AvqTwzMw2W9GRj4AQ9bEFizU3hRtNLh8GBzLRxGfMrIbhmKu742FuTU3vpwn8F+K53J/G6ybFxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0fuXFMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6832C4CED1;
+	Wed, 19 Feb 2025 08:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955845;
-	bh=mJcBgy63Z1X/vF6rYz+qkzZ2YPwKhJEN7ZPxnheDqqY=;
+	s=korg; t=1739955372;
+	bh=lmmtaURWVhGfgTbkDl+uXA+V9pdUlY8mT6tm4RzuKyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHnvCeFA3bWDhyTotnZ8ui/TqFUj0iBBjD/5bD0Cq6jgWrcc26LNInTrx2lIEFpAy
-	 /jmTKJ40kpzeae5ppPn5J85XBEfjbQL8CiwHD8fZ/uSsswVAhtrrwMdO8FMfi5OYTh
-	 Ar5eSZEWfM1gKCtAk0YCHrf9k/hGbi+tvhWYnEbI=
+	b=F0fuXFMU9UXqHwFgayLp17yDidu882G453XXutGFYeqrmhrG+L1bfSLjjSWaOghVY
+	 CuN+/t0I4CaIWBAZ5npXwCHas7fLv/Lommvg5FCanhDwdlJ+k/svw0XPnGRTciLrA/
+	 3cSNcpYE+CeobrkEqjH3uHUKdUf4fKQxLgpNFVgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/152] net: add dev_net_rcu() helper
-Date: Wed, 19 Feb 2025 09:28:34 +0100
-Message-ID: <20250219082554.054298041@linuxfoundation.org>
+Subject: [PATCH 6.12 198/230] arp: use RCU protection in arp_xmit()
+Date: Wed, 19 Feb 2025 09:28:35 +0100
+Message-ID: <20250219082609.441406064@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 482ad2a4ace2740ca0ff1cbc8f3c7f862f3ab507 ]
+[ Upstream commit a42b69f692165ec39db42d595f4f65a4c8f42e44 ]
 
-dev->nd_net can change, readers should either
-use rcu_read_lock() or RTNL.
+arp_xmit() can be called without RTNL or RCU protection.
 
-We currently use a generic helper, dev_net() with
-no debugging support. We probably have many hidden bugs.
+Use RCU protection to avoid potential UAF.
 
-Add dev_net_rcu() helper for callers using rcu_read_lock()
-protection.
-
+Fixes: 29a26a568038 ("netfilter: Pass struct net into the netfilter hooks")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250205155120.1676781-2-edumazet@google.com
+Link: https://patch.msgid.link/20250207135841.1948589-5-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 71b8471c93fa ("ipv4: use RCU protection in ipv4_default_advmss()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h   | 6 ++++++
- include/net/net_namespace.h | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/arp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 8b5121eb8757e..95ee88dfe0b9c 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2593,6 +2593,12 @@ struct net *dev_net(const struct net_device *dev)
- 	return read_pnet(&dev->nd_net);
- }
- 
-+static inline
-+struct net *dev_net_rcu(const struct net_device *dev)
-+{
-+	return read_pnet_rcu(&dev->nd_net);
-+}
-+
- static inline
- void dev_net_set(struct net_device *dev, struct net *net)
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 11c1519b36993..59ffaa89d7b05 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -659,10 +659,12 @@ static int arp_xmit_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+  */
+ void arp_xmit(struct sk_buff *skb)
  {
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index b767bdcd9e122..ce3f84c6eb8eb 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -389,7 +389,7 @@ static inline struct net *read_pnet(const possible_net_t *pnet)
- #endif
++	rcu_read_lock();
+ 	/* Send it off, maybe filter it using firewalling first.  */
+ 	NF_HOOK(NFPROTO_ARP, NF_ARP_OUT,
+-		dev_net(skb->dev), NULL, skb, NULL, skb->dev,
++		dev_net_rcu(skb->dev), NULL, skb, NULL, skb->dev,
+ 		arp_xmit_finish);
++	rcu_read_unlock();
  }
+ EXPORT_SYMBOL(arp_xmit);
  
--static inline struct net *read_pnet_rcu(possible_net_t *pnet)
-+static inline struct net *read_pnet_rcu(const possible_net_t *pnet)
- {
- #ifdef CONFIG_NET_NS
- 	return rcu_dereference(pnet->net);
 -- 
 2.39.5
 
