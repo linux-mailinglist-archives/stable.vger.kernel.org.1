@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-117482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7648DA3B6AC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4186A3BA84
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF24F17C177
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D198A3BFC09
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3F1EDA3C;
-	Wed, 19 Feb 2025 08:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDE41DE4D0;
+	Wed, 19 Feb 2025 09:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBp+PbG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yy/iOWc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64D51D54E9;
-	Wed, 19 Feb 2025 08:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097391DE4C6;
+	Wed, 19 Feb 2025 09:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955424; cv=none; b=cr0/T2O9BaIO3RQh1oazH5EwhqGWSe98rl0PKhk0gCpThfjUj/R2R7HQW+V+N3JkRIHXo3mQi6xsKX2vgAZLs0QPnEqrVml4y35Dvl5xHIv9phbRu94I2QlL9kyDEFQy1zM8TCyJP4AXTb2DiUUTndyKbO9dHNMxydLRqNjrQEQ=
+	t=1739957402; cv=none; b=BPsKvo/Itb4vMA7Ve2Jyz5hlW2kcTbpMG3pD/8NZ7Nmn20ywvFtcOHG8cWbL6nS9AKwtkyWWPnl0oR8ri9FxT/aHkmCVs2f+VtpkwnTUoLSQ1aek5IrVkU0fv4SzOOQKjL2f4JASh4Kr64Ofj7ntQKooTreHmfKHPPsoCz7llfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955424; c=relaxed/simple;
-	bh=3SrB2qTeNqX940EiYnN6MsoYMToD+wA3CVYBBFe9LQo=;
+	s=arc-20240116; t=1739957402; c=relaxed/simple;
+	bh=WqQhFOBkmUL/RYUXFySoNVL5s6StdFQwtmsPbaAnVhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bw4j7L4el0HvZ/dG1EA/FTSjBUHTo+eu0AtaOMM47XuPRdWKXyxYMPfKXhLsrzyuV9eErTV44/xAP07jpZJt4hdDRirGAw0Jjx5BLmtTp5d7qljsmz6ms9vEiK/7VbnLVsK3iwE4NCCqijssnjMa0zBQjBgaAgmiU5l0hvL9J8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBp+PbG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F11C4CED1;
-	Wed, 19 Feb 2025 08:57:03 +0000 (UTC)
+	 MIME-Version; b=dZcHzwSaE7z4ZyrqDpmVhOnofZsP9yK/v1MVFgmW+I21pH19F1iUg9KYC2Az0eVSCAnRdjPDJGI9My+PIe/W1nVetQlEdSpf0mV0bFHdJScj8JmyKp0vijIMvrQ6iCzc9OJI4iBJm8/sd2N0RmqVY0EARvYuz2beoPbs+pfK9i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yy/iOWc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B74C4CED1;
+	Wed, 19 Feb 2025 09:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955424;
-	bh=3SrB2qTeNqX940EiYnN6MsoYMToD+wA3CVYBBFe9LQo=;
+	s=korg; t=1739957401;
+	bh=WqQhFOBkmUL/RYUXFySoNVL5s6StdFQwtmsPbaAnVhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBp+PbG6GDW8rHpP7UPHjlv7iPc1omcVOkzgrwrg8HhiBHi4w+gNdSNEOTf0bTyBN
-	 OOxy83u7IciHlwS/nUAVsx69vpTDSjCcHI8Bij1khSxiEERZ+8FNA8x6ObQFKfi+uy
-	 yIHcY+3mgfJN4raQigBSR/N4BfQs5OYBipw9deHI=
+	b=yy/iOWc0EuO4u72lwiqPig3GJcDriirbrRs7bGyQBiXBI3C3ZUvpKBHQecQxCc6sf
+	 dDJ2hxZRSurwTxeN8iFgwGyUWzck22B7T5+qycUgV/WqpGG5i0xLvtFL6fKO02G586
+	 s33lsQG7+fvmNJbGoCGIYTZABsi973uHf5KnbK5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/230] ndisc: extend RCU protection in ndisc_send_skb()
+	stable <stable@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 6.1 513/578] USB: cdc-acm: Fill in Renesas R-Car D3 USB Download mode quirk
 Date: Wed, 19 Feb 2025 09:28:37 +0100
-Message-ID: <20250219082609.518652700@linuxfoundation.org>
+Message-ID: <20250219082713.163666352@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit ed6ae1f325d3c43966ec1b62ac1459e2b8e45640 ]
+commit 7284922f3e4fa285dff1b8bb593aa9a0b8458f30 upstream.
 
-ndisc_send_skb() can be called without RTNL or RCU held.
+Add Renesas R-Car D3 USB Download mode quirk and update comments
+on all the other Renesas R-Car USB Download mode quirks to discern
+them from each other. This follows R-Car Series, 3rd Generation
+reference manual Rev.2.00 chapter 19.2.8 USB download mode .
 
-Acquire rcu_read_lock() earlier, so that we can use dev_net_rcu()
-and avoid a potential UAF.
-
-Fixes: 1762f7e88eb3 ("[NETNS][IPV6] ndisc - make socket control per namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6d853c9e4104 ("usb: cdc-acm: Add DISABLE_ECHO for Renesas USB Download mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250209145708.106914-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ndisc.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/usb/class/cdc-acm.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 90f8aa2d7af2e..8699d1a188dc4 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -471,16 +471,20 @@ static void ip6_nd_hdr(struct sk_buff *skb,
- void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
- 		    const struct in6_addr *saddr)
- {
-+	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
- 	struct dst_entry *dst = skb_dst(skb);
--	struct net *net = dev_net(skb->dev);
--	struct sock *sk = net->ipv6.ndisc_sk;
- 	struct inet6_dev *idev;
-+	struct net *net;
-+	struct sock *sk;
- 	int err;
--	struct icmp6hdr *icmp6h = icmp6_hdr(skb);
- 	u8 type;
- 
- 	type = icmp6h->icmp6_type;
- 
-+	rcu_read_lock();
-+
-+	net = dev_net_rcu(skb->dev);
-+	sk = net->ipv6.ndisc_sk;
- 	if (!dst) {
- 		struct flowi6 fl6;
- 		int oif = skb->dev->ifindex;
-@@ -488,6 +492,7 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
- 		icmpv6_flow_init(sk, &fl6, type, saddr, daddr, oif);
- 		dst = icmp6_dst_alloc(skb->dev, &fl6);
- 		if (IS_ERR(dst)) {
-+			rcu_read_unlock();
- 			kfree_skb(skb);
- 			return;
- 		}
-@@ -502,7 +507,6 @@ void ndisc_send_skb(struct sk_buff *skb, const struct in6_addr *daddr,
- 
- 	ip6_nd_hdr(skb, saddr, daddr, READ_ONCE(inet6_sk(sk)->hop_limit), skb->len);
- 
--	rcu_read_lock();
- 	idev = __in6_dev_get(dst->dev);
- 	IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTREQUESTS);
- 
--- 
-2.39.5
-
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1703,13 +1703,16 @@ static const struct usb_device_id acm_id
+ 	{ USB_DEVICE(0x0870, 0x0001), /* Metricom GS Modem */
+ 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x023c),	/* Renesas R-Car H3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x0247),	/* Renesas R-Car D3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+-	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas USB Download mode */
++	{ USB_DEVICE(0x045b, 0x0248),	/* Renesas R-Car M3-N USB Download mode */
++	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
++	},
++	{ USB_DEVICE(0x045b, 0x024D),	/* Renesas R-Car E3 USB Download mode */
+ 	.driver_info = DISABLE_ECHO,	/* Don't echo banner */
+ 	},
+ 	{ USB_DEVICE(0x0e8d, 0x0003), /* FIREFLY, MediaTek Inc; andrey.arapov@gmail.com */
 
 
 
