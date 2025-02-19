@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB26A3BA8F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:43:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9D6A3B69B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C59080189A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F631792DD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE1B1DF75C;
-	Wed, 19 Feb 2025 09:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9771E0080;
+	Wed, 19 Feb 2025 08:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="or+5m2d6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvTlNBvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE961DF744;
-	Wed, 19 Feb 2025 09:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591511B415A;
+	Wed, 19 Feb 2025 08:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957252; cv=none; b=Jcv8wFhMzaHOF7FP4H6xPZrAqrT6u6uQHTs8RBDpvXUfKzu/ow04P5NX3tmD4DJgjbBVaNfEK1TUP1LtwE3J5YIHyYJWU05AzHlAOnxj81FGzCcN37tPwzKlo3fSUIaFajBHPrNbCWmc6YFlsnp5TWikTPbQYLwt79pRX6uKdmQ=
+	t=1739955154; cv=none; b=VGcp6bZzUPrfP/KT7LsAO1oR736j7S81g/LtTGuJ4YdoF3Js5ZcSyUrgbF0UypUQPCVSUJVAwbCxSdR3Vlz8gGFgYuNee0sT7RufPD1wU315fDc1ApobB0Mb5lCXEPoJEqQD8qkBDCdY8ur/iTT9WWRjNMAWr9IAdz6K/HR7QVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957252; c=relaxed/simple;
-	bh=NdcEfB6deIPl8fQPQMU8v8EMA98Y6YjPWtiuj5Thc7U=;
+	s=arc-20240116; t=1739955154; c=relaxed/simple;
+	bh=7J2qYcIiIugEavWwNtiUYJsexWRuQ1z8CSm7uc8IkaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzYP/1ImZDAXvpeqX5LhFcIiah9Yv2IPzklbN/4D2YB0ddM6UEWbNAA+QSG0Y/0k0j66/RExxVtZSRMLtPCHrUqCQ3T5WqaJeFVUIX+Yz9dxpyZ8XmVEPVyDHLoUoJHHAHf7wkfoE0MEqhXlhaZ08f+aiD3ZT9BVhUNLZ7/jycY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=or+5m2d6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E09C4CED1;
-	Wed, 19 Feb 2025 09:27:31 +0000 (UTC)
+	 MIME-Version; b=VZAvdZBS9xfoPQshD4fb+xPMHTAEX/RE2RLNrYwbdaww0+OIV1LpIVPfQMtSDjymZ8+CZStwD4Kp6396Y2D4b9VhxF+M5Ww+n/qBRdMdnvz8bczi1f8NvVuAhiL0kxLybXDkRb0Z8ErqxtF1MjJ74irizsXPirORIEmenQ0cgNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvTlNBvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEA2C4CED1;
+	Wed, 19 Feb 2025 08:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957252;
-	bh=NdcEfB6deIPl8fQPQMU8v8EMA98Y6YjPWtiuj5Thc7U=;
+	s=korg; t=1739955154;
+	bh=7J2qYcIiIugEavWwNtiUYJsexWRuQ1z8CSm7uc8IkaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=or+5m2d6+b4mPCucGcIs9zCrcgyza1j6mkdp86qO/F9Mv8cMdzdnk9E8DbK3UBnk0
-	 DMlZtRYlUKH++dWjyk3ycVlwPm5nchHbfbX5yClRB/xI+d79RidHhJ/QTApZTryDF8
-	 C8nYgi9cAsbfJXm6CCTm0ZOMoor4p5Ozn+IuvBJw=
+	b=TvTlNBvNPLHuy0f4HoOljLyHut9VlRuJftbxPcb2qCP6iOts4raROE/vczG7Qm/cq
+	 ojD7lm+HDbPbWfoLeJcVSbqcUCL8lP2TQr5ublGie2UMEZuuQQPif/6avWQSUeQTon
+	 cOnxfNU8Y8MibjLCVAyLneXYcZOiPogFoLzoByNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Rick Macklem <rmacklem@uoguelph.ca>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 462/578] nfsd: clear acl_access/acl_default after releasing them
+	Halil Pasic <pasic@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.12 149/230] s390/pci: Fix handling of isolated VFs
 Date: Wed, 19 Feb 2025 09:27:46 +0100
-Message-ID: <20250219082711.182527483@linuxfoundation.org>
+Message-ID: <20250219082607.516375419@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit 7faf14a7b0366f153284db0ad3347c457ea70136 upstream.
+commit 2844ddbd540fc84d7571cca65d6c43088e4d6952 upstream.
 
-If getting acl_default fails, acl_access and acl_default will be released
-simultaneously. However, acl_access will still retain a pointer pointing
-to the released posix_acl, which will trigger a WARNING in
-nfs3svc_release_getacl like this:
+In contrast to the commit message of the fixed commit VFs whose parent
+PF is not configured are not always isolated, that is put on their own
+PCI domain. This is because for VFs to be added to an existing PCI
+domain it is enough for that PCI domain to share the same topology ID or
+PCHID. Such a matching PCI domain without a parent PF may exist when
+a PF from the same PCI card created the domain with the VF being a child
+of a different, non accessible, PF. While not causing technical issues
+it makes the rules which VFs are isolated inconsistent.
 
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 26 PID: 3199 at lib/refcount.c:28
-refcount_warn_saturate+0xb5/0x170
-Modules linked in:
-CPU: 26 UID: 0 PID: 3199 Comm: nfsd Not tainted
-6.12.0-rc6-00079-g04ae226af01f-dirty #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb5/0x170
-Code: cc cc 0f b6 1d b3 20 a5 03 80 fb 01 0f 87 65 48 d8 00 83 e3 01 75
-e4 48 c7 c7 c0 3b 9b 85 c6 05 97 20 a5 03 01 e8 fb 3e 30 ff <0f> 0b eb
-cd 0f b6 1d 8a3
-RSP: 0018:ffffc90008637cd8 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83904fde
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff88871ed36380
-RBP: ffff888158beeb40 R08: 0000000000000001 R09: fffff520010c6f56
-R10: ffffc90008637ab7 R11: 0000000000000001 R12: 0000000000000001
-R13: ffff888140e77400 R14: ffff888140e77408 R15: ffffffff858b42c0
-FS:  0000000000000000(0000) GS:ffff88871ed00000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000562384d32158 CR3: 000000055cc6a000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? refcount_warn_saturate+0xb5/0x170
- ? __warn+0xa5/0x140
- ? refcount_warn_saturate+0xb5/0x170
- ? report_bug+0x1b1/0x1e0
- ? handle_bug+0x53/0xa0
- ? exc_invalid_op+0x17/0x40
- ? asm_exc_invalid_op+0x1a/0x20
- ? tick_nohz_tick_stopped+0x1e/0x40
- ? refcount_warn_saturate+0xb5/0x170
- ? refcount_warn_saturate+0xb5/0x170
- nfs3svc_release_getacl+0xc9/0xe0
- svc_process_common+0x5db/0xb60
- ? __pfx_svc_process_common+0x10/0x10
- ? __rcu_read_unlock+0x69/0xa0
- ? __pfx_nfsd_dispatch+0x10/0x10
- ? svc_xprt_received+0xa1/0x120
- ? xdr_init_decode+0x11d/0x190
- svc_process+0x2a7/0x330
- svc_handle_xprt+0x69d/0x940
- svc_recv+0x180/0x2d0
- nfsd+0x168/0x200
- ? __pfx_nfsd+0x10/0x10
- kthread+0x1a2/0x1e0
- ? kthread+0xf4/0x1e0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x60
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-Kernel panic - not syncing: kernel: panic_on_warn set ...
+Fix this by explicitly checking that the parent PF exists on the PCI
+domain determined by the topology ID or PCHID before registering the VF.
+This works because a parent PF which is under control of this Linux
+instance must be enabled and configured at the point where its child VFs
+appear because otherwise SR-IOV could not have been enabled on the
+parent.
 
-Clear acl_access/acl_default after posix_acl_release is called to prevent
-UAF from being triggered.
-
-Fixes: a257cdd0e217 ("[PATCH] NFSD: Add server support for NFSv3 ACLs.")
+Fixes: 25f39d3dcb48 ("s390/pci: Ignore RID for isolated VFs")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241107014705.2509463-1-lilingfeng@huaweicloud.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Rick Macklem <rmacklem@uoguelph.ca>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs2acl.c |    2 ++
- fs/nfsd/nfs3acl.c |    2 ++
- 2 files changed, 4 insertions(+)
+ arch/s390/pci/pci_bus.c |   20 ++++++++++++++++++++
+ arch/s390/pci/pci_iov.c |    2 +-
+ arch/s390/pci/pci_iov.h |    7 +++++++
+ 3 files changed, 28 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -84,6 +84,8 @@ out:
- fail:
- 	posix_acl_release(resp->acl_access);
- 	posix_acl_release(resp->acl_default);
-+	resp->acl_access = NULL;
-+	resp->acl_default = NULL;
- 	goto out;
+--- a/arch/s390/pci/pci_bus.c
++++ b/arch/s390/pci/pci_bus.c
+@@ -331,6 +331,17 @@ error:
+ 	return rc;
  }
  
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -76,6 +76,8 @@ out:
- fail:
- 	posix_acl_release(resp->acl_access);
- 	posix_acl_release(resp->acl_default);
-+	resp->acl_access = NULL;
-+	resp->acl_default = NULL;
- 	goto out;
- }
++static bool zpci_bus_is_isolated_vf(struct zpci_bus *zbus, struct zpci_dev *zdev)
++{
++	struct pci_dev *pdev;
++
++	pdev = zpci_iov_find_parent_pf(zbus, zdev);
++	if (!pdev)
++		return true;
++	pci_dev_put(pdev);
++	return false;
++}
++
+ int zpci_bus_device_register(struct zpci_dev *zdev, struct pci_ops *ops)
+ {
+ 	bool topo_is_tid = zdev->tid_avail;
+@@ -345,6 +356,15 @@ int zpci_bus_device_register(struct zpci
  
+ 	topo = topo_is_tid ? zdev->tid : zdev->pchid;
+ 	zbus = zpci_bus_get(topo, topo_is_tid);
++	/*
++	 * An isolated VF gets its own domain/bus even if there exists
++	 * a matching domain/bus already
++	 */
++	if (zbus && zpci_bus_is_isolated_vf(zbus, zdev)) {
++		zpci_bus_put(zbus);
++		zbus = NULL;
++	}
++
+ 	if (!zbus) {
+ 		zbus = zpci_bus_alloc(topo, topo_is_tid);
+ 		if (!zbus)
+--- a/arch/s390/pci/pci_iov.c
++++ b/arch/s390/pci/pci_iov.c
+@@ -74,7 +74,7 @@ static int zpci_iov_link_virtfn(struct p
+  * found. If the function is not a VF or has no RequesterID information,
+  * NULL is returned as well.
+  */
+-static struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev)
++struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev)
+ {
+ 	int i, vfid, devfn, cand_devfn;
+ 	struct pci_dev *pdev;
+--- a/arch/s390/pci/pci_iov.h
++++ b/arch/s390/pci/pci_iov.h
+@@ -17,6 +17,8 @@ void zpci_iov_map_resources(struct pci_d
+ 
+ int zpci_iov_setup_virtfn(struct zpci_bus *zbus, struct pci_dev *virtfn, int vfn);
+ 
++struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev);
++
+ #else /* CONFIG_PCI_IOV */
+ static inline void zpci_iov_remove_virtfn(struct pci_dev *pdev, int vfn) {}
+ 
+@@ -26,5 +28,10 @@ static inline int zpci_iov_setup_virtfn(
+ {
+ 	return 0;
+ }
++
++static inline struct pci_dev *zpci_iov_find_parent_pf(struct zpci_bus *zbus, struct zpci_dev *zdev)
++{
++	return NULL;
++}
+ #endif /* CONFIG_PCI_IOV */
+ #endif /* __S390_PCI_IOV_h */
 
 
 
