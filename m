@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-117598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04BEA3B75F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:14:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593B2A3BA46
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7E4017AA98
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAC41188AC23
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29FA1E521B;
-	Wed, 19 Feb 2025 09:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927D31EA7C4;
+	Wed, 19 Feb 2025 09:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elffxsid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+0BdRjw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8E81E3DC6;
-	Wed, 19 Feb 2025 09:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3EA1C5485;
+	Wed, 19 Feb 2025 09:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955786; cv=none; b=QA8tnTrnKJFO8WF0IhDbVaz980tAsh3QKob9ee8iZLAK/QygvUDsgEwjom60tb6u6VkZyXylk015vtbAipiL0f6bhXzdOY0qlE9qyWBcnI23yKvH9QkcCIRcxa+D0xUeKVcstzmp4yKczFFGZBAsKTtspElHhOFmTm0oyquFQ6I=
+	t=1739957523; cv=none; b=ZEAePM9KH2RoY4baok/f5+PTYX2divcQRw8bGbb9Rw0Kg+9bjVV8xWI9dvVEQEdpauwPqrXpa5/EVWCbK4c/sorHSt9d4K0zMFvTwioxvsApX9pYD49ZkFv9pxSWaESbQUX2syYEu5FVeFSyWqv+zDv/ECOQW78bD/kWXwAFfKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955786; c=relaxed/simple;
-	bh=GEFhbIOmB4Zp0DXEUb1whc038tqO1RcHLcirnfq3Urk=;
+	s=arc-20240116; t=1739957523; c=relaxed/simple;
+	bh=z40TIGt7+0GVcgvAYqtfnhCBpGbSISAp9+LvOKRCBdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1Q92zHht7pAMyh96VffXt0UZpj8ByFslZa1vFm3ptzHMu+dA/3X9zJ4fJYl9VVr6A+Yf1VkrRYVZ7+ORb14OQm4CnkW0EVhZKDEdpBBmJscK+xWNXWTTC/u0q8d2Q21HS14DAHZEtU/sWpDR0gcJWEgohLh/24z9ObpGF9pfxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elffxsid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18694C4CED1;
-	Wed, 19 Feb 2025 09:03:05 +0000 (UTC)
+	 MIME-Version; b=FV58VZoYsBEZjJSg0SxLajx4a7EJ/QEu73IMMHNp5iNibKOWGa2STXSlS/Bn3+cj+3ynQbJ+fFIqZIpGIYx7vsAGF0N15XJKPJZAoa4nNm8ChT1taCMAuik6ZU63XQZbsccVUya0EteGTx+l6s/6k+Zol7V/qCERn6F4TLtq2E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+0BdRjw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD532C4CED1;
+	Wed, 19 Feb 2025 09:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955786;
-	bh=GEFhbIOmB4Zp0DXEUb1whc038tqO1RcHLcirnfq3Urk=;
+	s=korg; t=1739957523;
+	bh=z40TIGt7+0GVcgvAYqtfnhCBpGbSISAp9+LvOKRCBdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elffxsid+atWYsJh9E335ktaY55pYGNr1epkfvBDhrBuj0cLPy4TGXJsQNpc7DUFO
-	 xL/ov/kMgmZDqLDKRTmT7s50FVHLMy0R3tQnc7xFi9k/uplX/0RbHQPhZEIlNro8PA
-	 ls7PZSFgncMnh5t5SszH9RjeoOR5x05WqUVMSh8w=
+	b=H+0BdRjwwZL53prrHhJNCmYsjPqgxXkIkNKEzS9aV0mo7V5HypAxQ7VEIdBckO9Jp
+	 gGlYdb17dnRpr5rlXhOAqIu48KlmostJfDx/OX6p/qZWgqr9EFTjM83SIKTlUJVi5/
+	 I5l9alhPPBiZgjmYsjNgXOiWKFs5DHZkAIFQwSpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/152] HID: hid-steam: Update list of identifiers from SDL
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 6.1 523/578] alpha: make stack 16-byte aligned (most cases)
 Date: Wed, 19 Feb 2025 09:28:47 +0100
-Message-ID: <20250219082554.567896070@linuxfoundation.org>
+Message-ID: <20250219082713.547579142@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,415 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-[ Upstream commit 4f9a5a9769cc77075e606537e15747e8b8e9c7c9 ]
+commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
 
-SDL includes a list of settings (formerly called registers in this driver),
-reports (formerly cmds), and various other identifiers that were provided by
-Valve. This commit imports a significant chunk of that list as well as
-replacing most of the guessed names and a handful of magic constants. It also
-replaces bitmask definitions that used hex with the BIT macro.
+The problem is that GCC expects 16-byte alignment of the incoming stack
+since early 2004, as Maciej found out [1]:
+  Having actually dug speculatively I can see that the psABI was changed in
+ GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
+ improperly aligned)") back in Mar 2004, when the stack pointer alignment
+ was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
+ various suspicious stack pointer adjustments, starting with SP_OFF which
+ is not a whole multiple of 16.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Stable-dep-of: 79504249d7e2 ("HID: hid-steam: Move hidraw input (un)registering to work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
+ D.3.1 Stack Alignment
+  This standard requires that stacks be octaword aligned at the time a
+  new procedure is invoked.
+
+However:
+- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
+  the odd number of 64-bit words in 'struct pt_regs', which is the very
+  first thing pushed onto the kernel thread stack;
+- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
+  stack depending on numerous factors.
+
+Somehow we got away with it until recently, when we ended up with
+a stack corruption in kernel/smp.c:smp_call_function_single() due to
+its use of 32-byte aligned local data and the compiler doing clever
+things allocating it on the stack.
+
+This adds padding between the PAL-saved and kernel-saved registers
+so that 'struct pt_regs' have an even number of 64-bit words.
+This makes the stack properly aligned for most of the kernel
+code, except two handlers which need special threatment.
+
+Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
+but let's put this off until later.
+
+Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
+Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
+
+Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-steam.c | 286 +++++++++++++++++++++++++++++++---------
- 1 file changed, 221 insertions(+), 65 deletions(-)
+ arch/alpha/include/uapi/asm/ptrace.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 57cb58941c9fc..991db5acf5ddb 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -71,51 +71,207 @@ static LIST_HEAD(steam_devices);
- 
- /*
-  * Commands that can be sent in a feature report.
-- * Thanks to Valve for some valuable hints.
-+ * Thanks to Valve and SDL for the names.
-  */
--#define STEAM_CMD_SET_MAPPINGS		0x80
--#define STEAM_CMD_CLEAR_MAPPINGS	0x81
--#define STEAM_CMD_GET_MAPPINGS		0x82
--#define STEAM_CMD_GET_ATTRIB		0x83
--#define STEAM_CMD_GET_ATTRIB_LABEL	0x84
--#define STEAM_CMD_DEFAULT_MAPPINGS	0x85
--#define STEAM_CMD_FACTORY_RESET		0x86
--#define STEAM_CMD_WRITE_REGISTER	0x87
--#define STEAM_CMD_CLEAR_REGISTER	0x88
--#define STEAM_CMD_READ_REGISTER		0x89
--#define STEAM_CMD_GET_REGISTER_LABEL	0x8a
--#define STEAM_CMD_GET_REGISTER_MAX	0x8b
--#define STEAM_CMD_GET_REGISTER_DEFAULT	0x8c
--#define STEAM_CMD_SET_MODE		0x8d
--#define STEAM_CMD_DEFAULT_MOUSE		0x8e
--#define STEAM_CMD_FORCEFEEDBAK		0x8f
--#define STEAM_CMD_REQUEST_COMM_STATUS	0xb4
--#define STEAM_CMD_GET_SERIAL		0xae
--#define STEAM_CMD_HAPTIC_RUMBLE		0xeb
--
--/* Some useful register ids */
--#define STEAM_REG_LPAD_MODE		0x07
--#define STEAM_REG_RPAD_MODE		0x08
--#define STEAM_REG_RPAD_MARGIN		0x18
--#define STEAM_REG_LED			0x2d
--#define STEAM_REG_GYRO_MODE		0x30
--#define STEAM_REG_LPAD_CLICK_PRESSURE	0x34
--#define STEAM_REG_RPAD_CLICK_PRESSURE	0x35
--#define STEAM_REG_WATCHDOG_ENABLE		0x47
--
--/* Raw event identifiers */
--#define STEAM_EV_INPUT_DATA		0x01
--#define STEAM_EV_CONNECT		0x03
--#define STEAM_EV_BATTERY		0x04
--#define STEAM_EV_DECK_INPUT_DATA	0x09
-+enum {
-+	ID_SET_DIGITAL_MAPPINGS		= 0x80,
-+	ID_CLEAR_DIGITAL_MAPPINGS	= 0x81,
-+	ID_GET_DIGITAL_MAPPINGS		= 0x82,
-+	ID_GET_ATTRIBUTES_VALUES	= 0x83,
-+	ID_GET_ATTRIBUTE_LABEL		= 0x84,
-+	ID_SET_DEFAULT_DIGITAL_MAPPINGS	= 0x85,
-+	ID_FACTORY_RESET		= 0x86,
-+	ID_SET_SETTINGS_VALUES		= 0x87,
-+	ID_CLEAR_SETTINGS_VALUES	= 0x88,
-+	ID_GET_SETTINGS_VALUES		= 0x89,
-+	ID_GET_SETTING_LABEL		= 0x8A,
-+	ID_GET_SETTINGS_MAXS		= 0x8B,
-+	ID_GET_SETTINGS_DEFAULTS	= 0x8C,
-+	ID_SET_CONTROLLER_MODE		= 0x8D,
-+	ID_LOAD_DEFAULT_SETTINGS	= 0x8E,
-+	ID_TRIGGER_HAPTIC_PULSE		= 0x8F,
-+	ID_TURN_OFF_CONTROLLER		= 0x9F,
-+
-+	ID_GET_DEVICE_INFO		= 0xA1,
-+
-+	ID_CALIBRATE_TRACKPADS		= 0xA7,
-+	ID_RESERVED_0			= 0xA8,
-+	ID_SET_SERIAL_NUMBER		= 0xA9,
-+	ID_GET_TRACKPAD_CALIBRATION	= 0xAA,
-+	ID_GET_TRACKPAD_FACTORY_CALIBRATION = 0xAB,
-+	ID_GET_TRACKPAD_RAW_DATA	= 0xAC,
-+	ID_ENABLE_PAIRING		= 0xAD,
-+	ID_GET_STRING_ATTRIBUTE		= 0xAE,
-+	ID_RADIO_ERASE_RECORDS		= 0xAF,
-+	ID_RADIO_WRITE_RECORD		= 0xB0,
-+	ID_SET_DONGLE_SETTING		= 0xB1,
-+	ID_DONGLE_DISCONNECT_DEVICE	= 0xB2,
-+	ID_DONGLE_COMMIT_DEVICE		= 0xB3,
-+	ID_DONGLE_GET_WIRELESS_STATE	= 0xB4,
-+	ID_CALIBRATE_GYRO		= 0xB5,
-+	ID_PLAY_AUDIO			= 0xB6,
-+	ID_AUDIO_UPDATE_START		= 0xB7,
-+	ID_AUDIO_UPDATE_DATA		= 0xB8,
-+	ID_AUDIO_UPDATE_COMPLETE	= 0xB9,
-+	ID_GET_CHIPID			= 0xBA,
-+
-+	ID_CALIBRATE_JOYSTICK		= 0xBF,
-+	ID_CALIBRATE_ANALOG_TRIGGERS	= 0xC0,
-+	ID_SET_AUDIO_MAPPING		= 0xC1,
-+	ID_CHECK_GYRO_FW_LOAD		= 0xC2,
-+	ID_CALIBRATE_ANALOG		= 0xC3,
-+	ID_DONGLE_GET_CONNECTED_SLOTS	= 0xC4,
-+
-+	ID_RESET_IMU			= 0xCE,
-+
-+	ID_TRIGGER_HAPTIC_CMD		= 0xEA,
-+	ID_TRIGGER_RUMBLE_CMD		= 0xEB,
-+};
-+
-+/* Settings IDs */
-+enum {
-+	/* 0 */
-+	SETTING_MOUSE_SENSITIVITY,
-+	SETTING_MOUSE_ACCELERATION,
-+	SETTING_TRACKBALL_ROTATION_ANGLE,
-+	SETTING_HAPTIC_INTENSITY_UNUSED,
-+	SETTING_LEFT_GAMEPAD_STICK_ENABLED,
-+	SETTING_RIGHT_GAMEPAD_STICK_ENABLED,
-+	SETTING_USB_DEBUG_MODE,
-+	SETTING_LEFT_TRACKPAD_MODE,
-+	SETTING_RIGHT_TRACKPAD_MODE,
-+	SETTING_MOUSE_POINTER_ENABLED,
-+
-+	/* 10 */
-+	SETTING_DPAD_DEADZONE,
-+	SETTING_MINIMUM_MOMENTUM_VEL,
-+	SETTING_MOMENTUM_DECAY_AMMOUNT,
-+	SETTING_TRACKPAD_RELATIVE_MODE_TICKS_PER_PIXEL,
-+	SETTING_HAPTIC_INCREMENT,
-+	SETTING_DPAD_ANGLE_SIN,
-+	SETTING_DPAD_ANGLE_COS,
-+	SETTING_MOMENTUM_VERTICAL_DIVISOR,
-+	SETTING_MOMENTUM_MAXIMUM_VELOCITY,
-+	SETTING_TRACKPAD_Z_ON,
-+
-+	/* 20 */
-+	SETTING_TRACKPAD_Z_OFF,
-+	SETTING_SENSITIVY_SCALE_AMMOUNT,
-+	SETTING_LEFT_TRACKPAD_SECONDARY_MODE,
-+	SETTING_RIGHT_TRACKPAD_SECONDARY_MODE,
-+	SETTING_SMOOTH_ABSOLUTE_MOUSE,
-+	SETTING_STEAMBUTTON_POWEROFF_TIME,
-+	SETTING_UNUSED_1,
-+	SETTING_TRACKPAD_OUTER_RADIUS,
-+	SETTING_TRACKPAD_Z_ON_LEFT,
-+	SETTING_TRACKPAD_Z_OFF_LEFT,
-+
-+	/* 30 */
-+	SETTING_TRACKPAD_OUTER_SPIN_VEL,
-+	SETTING_TRACKPAD_OUTER_SPIN_RADIUS,
-+	SETTING_TRACKPAD_OUTER_SPIN_HORIZONTAL_ONLY,
-+	SETTING_TRACKPAD_RELATIVE_MODE_DEADZONE,
-+	SETTING_TRACKPAD_RELATIVE_MODE_MAX_VEL,
-+	SETTING_TRACKPAD_RELATIVE_MODE_INVERT_Y,
-+	SETTING_TRACKPAD_DOUBLE_TAP_BEEP_ENABLED,
-+	SETTING_TRACKPAD_DOUBLE_TAP_BEEP_PERIOD,
-+	SETTING_TRACKPAD_DOUBLE_TAP_BEEP_COUNT,
-+	SETTING_TRACKPAD_OUTER_RADIUS_RELEASE_ON_TRANSITION,
-+
-+	/* 40 */
-+	SETTING_RADIAL_MODE_ANGLE,
-+	SETTING_HAPTIC_INTENSITY_MOUSE_MODE,
-+	SETTING_LEFT_DPAD_REQUIRES_CLICK,
-+	SETTING_RIGHT_DPAD_REQUIRES_CLICK,
-+	SETTING_LED_BASELINE_BRIGHTNESS,
-+	SETTING_LED_USER_BRIGHTNESS,
-+	SETTING_ENABLE_RAW_JOYSTICK,
-+	SETTING_ENABLE_FAST_SCAN,
-+	SETTING_IMU_MODE,
-+	SETTING_WIRELESS_PACKET_VERSION,
-+
-+	/* 50 */
-+	SETTING_SLEEP_INACTIVITY_TIMEOUT,
-+	SETTING_TRACKPAD_NOISE_THRESHOLD,
-+	SETTING_LEFT_TRACKPAD_CLICK_PRESSURE,
-+	SETTING_RIGHT_TRACKPAD_CLICK_PRESSURE,
-+	SETTING_LEFT_BUMPER_CLICK_PRESSURE,
-+	SETTING_RIGHT_BUMPER_CLICK_PRESSURE,
-+	SETTING_LEFT_GRIP_CLICK_PRESSURE,
-+	SETTING_RIGHT_GRIP_CLICK_PRESSURE,
-+	SETTING_LEFT_GRIP2_CLICK_PRESSURE,
-+	SETTING_RIGHT_GRIP2_CLICK_PRESSURE,
-+
-+	/* 60 */
-+	SETTING_PRESSURE_MODE,
-+	SETTING_CONTROLLER_TEST_MODE,
-+	SETTING_TRIGGER_MODE,
-+	SETTING_TRACKPAD_Z_THRESHOLD,
-+	SETTING_FRAME_RATE,
-+	SETTING_TRACKPAD_FILT_CTRL,
-+	SETTING_TRACKPAD_CLIP,
-+	SETTING_DEBUG_OUTPUT_SELECT,
-+	SETTING_TRIGGER_THRESHOLD_PERCENT,
-+	SETTING_TRACKPAD_FREQUENCY_HOPPING,
-+
-+	/* 70 */
-+	SETTING_HAPTICS_ENABLED,
-+	SETTING_STEAM_WATCHDOG_ENABLE,
-+	SETTING_TIMP_TOUCH_THRESHOLD_ON,
-+	SETTING_TIMP_TOUCH_THRESHOLD_OFF,
-+	SETTING_FREQ_HOPPING,
-+	SETTING_TEST_CONTROL,
-+	SETTING_HAPTIC_MASTER_GAIN_DB,
-+	SETTING_THUMB_TOUCH_THRESH,
-+	SETTING_DEVICE_POWER_STATUS,
-+	SETTING_HAPTIC_INTENSITY,
-+
-+	/* 80 */
-+	SETTING_STABILIZER_ENABLED,
-+	SETTING_TIMP_MODE_MTE,
-+};
-+
-+/* Input report identifiers */
-+enum
-+{
-+	ID_CONTROLLER_STATE = 1,
-+	ID_CONTROLLER_DEBUG = 2,
-+	ID_CONTROLLER_WIRELESS = 3,
-+	ID_CONTROLLER_STATUS = 4,
-+	ID_CONTROLLER_DEBUG2 = 5,
-+	ID_CONTROLLER_SECONDARY_STATE = 6,
-+	ID_CONTROLLER_BLE_STATE = 7,
-+	ID_CONTROLLER_DECK_STATE = 9
-+};
-+
-+/* String attribute idenitifiers */
-+enum {
-+	ATTRIB_STR_BOARD_SERIAL,
-+	ATTRIB_STR_UNIT_SERIAL,
-+};
- 
- /* Values for GYRO_MODE (bitmask) */
--#define STEAM_GYRO_MODE_OFF		0x0000
--#define STEAM_GYRO_MODE_STEERING	0x0001
--#define STEAM_GYRO_MODE_TILT		0x0002
--#define STEAM_GYRO_MODE_SEND_ORIENTATION	0x0004
--#define STEAM_GYRO_MODE_SEND_RAW_ACCEL		0x0008
--#define STEAM_GYRO_MODE_SEND_RAW_GYRO		0x0010
-+enum {
-+	SETTING_GYRO_MODE_OFF			= 0,
-+	SETTING_GYRO_MODE_STEERING		= BIT(0),
-+	SETTING_GYRO_MODE_TILT			= BIT(1),
-+	SETTING_GYRO_MODE_SEND_ORIENTATION	= BIT(2),
-+	SETTING_GYRO_MODE_SEND_RAW_ACCEL	= BIT(3),
-+	SETTING_GYRO_MODE_SEND_RAW_GYRO		= BIT(4),
-+};
-+
-+/* Trackpad modes */
-+enum {
-+	TRACKPAD_ABSOLUTE_MOUSE,
-+	TRACKPAD_RELATIVE_MOUSE,
-+	TRACKPAD_DPAD_FOUR_WAY_DISCRETE,
-+	TRACKPAD_DPAD_FOUR_WAY_OVERLAP,
-+	TRACKPAD_DPAD_EIGHT_WAY,
-+	TRACKPAD_RADIAL_MODE,
-+	TRACKPAD_ABSOLUTE_DPAD,
-+	TRACKPAD_NONE,
-+	TRACKPAD_GESTURE_KEYBOARD,
-+};
- 
- /* Other random constants */
- #define STEAM_SERIAL_LEN 10
-@@ -226,13 +382,13 @@ static inline int steam_send_report_byte(struct steam_device *steam, u8 cmd)
- 	return steam_send_report(steam, &cmd, 1);
- }
- 
--static int steam_write_registers(struct steam_device *steam,
-+static int steam_write_settings(struct steam_device *steam,
- 		/* u8 reg, u16 val */...)
- {
- 	/* Send: 0x87 len (reg valLo valHi)* */
- 	u8 reg;
- 	u16 val;
--	u8 cmd[64] = {STEAM_CMD_WRITE_REGISTER, 0x00};
-+	u8 cmd[64] = {ID_SET_SETTINGS_VALUES, 0x00};
- 	int ret;
- 	va_list args;
- 
-@@ -268,7 +424,7 @@ static int steam_get_serial(struct steam_device *steam)
- 	 * Recv: 0xae 0x15 0x01 serialnumber (10 chars)
- 	 */
- 	int ret = 0;
--	u8 cmd[] = {STEAM_CMD_GET_SERIAL, 0x15, 0x01};
-+	u8 cmd[] = {ID_GET_STRING_ATTRIBUTE, 0x15, ATTRIB_STR_UNIT_SERIAL};
- 	u8 reply[3 + STEAM_SERIAL_LEN + 1];
- 
- 	mutex_lock(&steam->report_mutex);
-@@ -278,7 +434,7 @@ static int steam_get_serial(struct steam_device *steam)
- 	ret = steam_recv_report(steam, reply, sizeof(reply));
- 	if (ret < 0)
- 		goto out;
--	if (reply[0] != 0xae || reply[1] != 0x15 || reply[2] != 0x01) {
-+	if (reply[0] != ID_GET_STRING_ATTRIBUTE || reply[1] != 0x15 || reply[2] != ATTRIB_STR_UNIT_SERIAL) {
- 		ret = -EIO;
- 		goto out;
- 	}
-@@ -298,7 +454,7 @@ static inline int steam_request_conn_status(struct steam_device *steam)
- {
- 	int ret;
- 	mutex_lock(&steam->report_mutex);
--	ret = steam_send_report_byte(steam, STEAM_CMD_REQUEST_COMM_STATUS);
-+	ret = steam_send_report_byte(steam, ID_DONGLE_GET_WIRELESS_STATE);
- 	mutex_unlock(&steam->report_mutex);
- 	return ret;
- }
-@@ -308,7 +464,7 @@ static inline int steam_haptic_rumble(struct steam_device *steam,
- 				u8 left_gain, u8 right_gain)
- {
- 	int ret;
--	u8 report[11] = {STEAM_CMD_HAPTIC_RUMBLE, 9};
-+	u8 report[11] = {ID_TRIGGER_RUMBLE_CMD, 9};
- 
- 	report[3] = intensity & 0xFF;
- 	report[4] = intensity >> 8;
-@@ -351,28 +507,28 @@ static void steam_set_lizard_mode(struct steam_device *steam, bool enable)
- 	if (enable) {
- 		mutex_lock(&steam->report_mutex);
- 		/* enable esc, enter, cursors */
--		steam_send_report_byte(steam, STEAM_CMD_DEFAULT_MAPPINGS);
--		/* enable mouse */
--		steam_send_report_byte(steam, STEAM_CMD_DEFAULT_MOUSE);
-+		steam_send_report_byte(steam, ID_SET_DEFAULT_DIGITAL_MAPPINGS);
-+		/* reset settings */
-+		steam_send_report_byte(steam, ID_LOAD_DEFAULT_SETTINGS);
- 		mutex_unlock(&steam->report_mutex);
- 	} else {
- 		mutex_lock(&steam->report_mutex);
- 		/* disable esc, enter, cursor */
--		steam_send_report_byte(steam, STEAM_CMD_CLEAR_MAPPINGS);
-+		steam_send_report_byte(steam, ID_CLEAR_DIGITAL_MAPPINGS);
- 
- 		if (steam->quirks & STEAM_QUIRK_DECK) {
--			steam_write_registers(steam,
--				STEAM_REG_LPAD_MODE, 0x07, /* disable mouse */
--				STEAM_REG_RPAD_MODE, 0x07, /* disable mouse */
--				STEAM_REG_LPAD_CLICK_PRESSURE, 0xFFFF, /* disable clicky pad */
--				STEAM_REG_RPAD_CLICK_PRESSURE, 0xFFFF, /* disable clicky pad */
--				STEAM_REG_WATCHDOG_ENABLE, 0, /* disable watchdog that tests if Steam is active */
-+			steam_write_settings(steam,
-+				SETTING_LEFT_TRACKPAD_MODE, TRACKPAD_NONE, /* disable mouse */
-+				SETTING_RIGHT_TRACKPAD_MODE, TRACKPAD_NONE, /* disable mouse */
-+				SETTING_LEFT_TRACKPAD_CLICK_PRESSURE, 0xFFFF, /* disable haptic click */
-+				SETTING_RIGHT_TRACKPAD_CLICK_PRESSURE, 0xFFFF, /* disable haptic click */
-+				SETTING_STEAM_WATCHDOG_ENABLE, 0, /* disable watchdog that tests if Steam is active */
- 				0);
- 			mutex_unlock(&steam->report_mutex);
- 		} else {
--			steam_write_registers(steam,
--				STEAM_REG_LPAD_MODE, 0x07, /* disable mouse */
--				STEAM_REG_RPAD_MODE, 0x07, /* disable mouse */
-+			steam_write_settings(steam,
-+				SETTING_LEFT_TRACKPAD_MODE, TRACKPAD_NONE, /* disable mouse */
-+				SETTING_RIGHT_TRACKPAD_MODE, TRACKPAD_NONE, /* disable mouse */
- 				0);
- 			mutex_unlock(&steam->report_mutex);
- 		}
-@@ -1362,7 +1518,7 @@ static int steam_raw_event(struct hid_device *hdev,
- 		return 0;
- 
- 	switch (data[2]) {
--	case STEAM_EV_INPUT_DATA:
-+	case ID_CONTROLLER_STATE:
- 		if (steam->client_opened)
- 			return 0;
- 		rcu_read_lock();
-@@ -1371,7 +1527,7 @@ static int steam_raw_event(struct hid_device *hdev,
- 			steam_do_input_event(steam, input, data);
- 		rcu_read_unlock();
- 		break;
--	case STEAM_EV_DECK_INPUT_DATA:
-+	case ID_CONTROLLER_DECK_STATE:
- 		if (steam->client_opened)
- 			return 0;
- 		rcu_read_lock();
-@@ -1380,7 +1536,7 @@ static int steam_raw_event(struct hid_device *hdev,
- 			steam_do_deck_input_event(steam, input, data);
- 		rcu_read_unlock();
- 		break;
--	case STEAM_EV_CONNECT:
-+	case ID_CONTROLLER_WIRELESS:
- 		/*
- 		 * The payload of this event is a single byte:
- 		 *  0x01: disconnected.
-@@ -1395,7 +1551,7 @@ static int steam_raw_event(struct hid_device *hdev,
- 			break;
- 		}
- 		break;
--	case STEAM_EV_BATTERY:
-+	case ID_CONTROLLER_STATUS:
- 		if (steam->quirks & STEAM_QUIRK_WIRELESS) {
- 			rcu_read_lock();
- 			battery = rcu_dereference(steam->battery);
--- 
-2.39.5
-
+--- a/arch/alpha/include/uapi/asm/ptrace.h
++++ b/arch/alpha/include/uapi/asm/ptrace.h
+@@ -42,6 +42,8 @@ struct pt_regs {
+ 	unsigned long trap_a0;
+ 	unsigned long trap_a1;
+ 	unsigned long trap_a2;
++/* This makes the stack 16-byte aligned as GCC expects */
++	unsigned long __pad0;
+ /* These are saved by PAL-code: */
+ 	unsigned long ps;
+ 	unsigned long pc;
 
 
 
