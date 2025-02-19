@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-117116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1BAA3B4CE
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:47:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E32FA3B5FA
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93585189B252
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C18918988E7
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313861E51EA;
-	Wed, 19 Feb 2025 08:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20AF1DE887;
+	Wed, 19 Feb 2025 08:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpuAiekE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHveNFGV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27911E5203;
-	Wed, 19 Feb 2025 08:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0721DE3BE;
+	Wed, 19 Feb 2025 08:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954257; cv=none; b=aLTw2BNKLpnPB49S12KSDmI2rIBG9CJkeiyygrqNe6LDJFY0Vidnr2+7QI9d234dpvuW99OcbDuqBDq5IXjOYS8BIkOgJ0bjcHRTWK+erHSBz15TfhXUNC2WqnJjOPV9OkPOPm///nlzuHqE6OHrIyQ2HflWINI2lwgFokiVriI=
+	t=1739954947; cv=none; b=m+5tQw01a+O9ao2kONnD/1KpldGd18D/gQmDg6yLTDQU/JaR1SxqX8/G4VEF0x6KwBe/HAAy2e9/KZf90B5I9WeEli9PZy/yDo0p6C5y4D/BCcCarLGlhECZcSqbCTMXb0T2qRwbEXpMqgq3NwyqQ1Mou/NTKkKyxlmHv8tdUD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954257; c=relaxed/simple;
-	bh=ajCksjW2+/LjhVeR2kbRdqnjfepRTHU7qJrHYO6rZS8=;
+	s=arc-20240116; t=1739954947; c=relaxed/simple;
+	bh=4guqVsx8NksCE1CHiVKwP0mZAXuavuC066R7+xa77sY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsLZY1e7Fu8Z+eKIZo/6uldJ/Wo/kJ+zC6oe4yifFc4BWL/SNPKSS5C4KHqk6XO3CgOITKoggZm4o6KsZj5ZHsl4ZlZvvSRWH1sNbeL2s97CC/Nzw4Ic77D9i43duijjT72dDgSMkibNF8sWVuREFgG+oW8YXnSj1ie/e5/2VjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpuAiekE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF70C4CED1;
-	Wed, 19 Feb 2025 08:37:35 +0000 (UTC)
+	 MIME-Version; b=jCwpQWliYJytHm1jYxDzYiUAYcMfeWS27J3QAsqNXENZDH/dSbJEjmcq37+nT0jBJFmTcqP72BkeVq9I1HY7eBgrrCeZ6e0wHoCPjTAPQHYiFwsqkxlPZqdLBm+Vg1VikrcfRa5183babxU2NoZRDZeV70QVjxXInaCeWV3snW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHveNFGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CBDC4CED1;
+	Wed, 19 Feb 2025 08:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954256;
-	bh=ajCksjW2+/LjhVeR2kbRdqnjfepRTHU7qJrHYO6rZS8=;
+	s=korg; t=1739954947;
+	bh=4guqVsx8NksCE1CHiVKwP0mZAXuavuC066R7+xa77sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UpuAiekEAWJXoRa5U08KjUFBINe81Vrk61crh0Htd5Xz6ZP+j0rXvLReA3kexMUJ/
-	 3lCJgHhZUKtzQIbgH2j3xQ7sSPdq6B+8NdETR6OallwUaEgeY4V9h8F4UrTopRVi1M
-	 hhFNeaW3VhSURURNKhCXbenxPpL/2+GE+wL3xmuA=
+	b=wHveNFGVAAPy4ERowbbqpsmuL3Ww+G2JWfSCeWFLHxVzqawItk7GbYkk4/YWEUzpK
+	 6Y1e89QwzFLsS5leSMeZzbSTmSsxSCm3yygwafJbsermNzppBNjIunqfYVy7nJIssM
+	 q+q5j+jbdByGNZRm8WSO6LMqK3Kr5loQxfgj+yhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.13 147/274] USB: serial: option: fix Telit Cinterion FN990A name
-Date: Wed, 19 Feb 2025 09:26:41 +0100
-Message-ID: <20250219082615.353204217@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 085/230] fs/ntfs3: Unify inode corruption marking with _ntfs_bad_inode()
+Date: Wed, 19 Feb 2025 09:26:42 +0100
+Message-ID: <20250219082605.025193447@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
-References: <20250219082609.533585153@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 12606fe73f33647c5e79bf666833bf0b225e649d upstream.
+[ Upstream commit 55ad333de0f80bc0caee10c6c27196cdcf8891bb ]
 
-The correct name for FN990 is FN990A so use it in order to avoid
-confusion with FN990B.
+Also reworked error handling in a couple of places.
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ntfs3/attrib.c  |  4 ++--
+ fs/ntfs3/dir.c     |  2 +-
+ fs/ntfs3/frecord.c | 12 +++++++-----
+ fs/ntfs3/fsntfs.c  |  6 +++++-
+ fs/ntfs3/index.c   |  6 ++----
+ fs/ntfs3/inode.c   |  3 +++
+ 6 files changed, 20 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1370,15 +1370,15 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1063, 0xff),	/* Telit LN920 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990 (PCIe) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 8d789b017fa9b..da1a9312e61a0 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -1406,7 +1406,7 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 	 */
+ 	if (!attr->non_res) {
+ 		if (vbo[1] + bytes_per_off > le32_to_cpu(attr->res.data_size)) {
+-			ntfs_inode_err(&ni->vfs_inode, "is corrupted");
++			_ntfs_bad_inode(&ni->vfs_inode);
+ 			return -EINVAL;
+ 		}
+ 		addr = resident_data(attr);
+@@ -2587,7 +2587,7 @@ int attr_force_nonresident(struct ntfs_inode *ni)
+ 
+ 	attr = ni_find_attr(ni, NULL, &le, ATTR_DATA, NULL, 0, NULL, &mi);
+ 	if (!attr) {
+-		ntfs_bad_inode(&ni->vfs_inode, "no data attribute");
++		_ntfs_bad_inode(&ni->vfs_inode);
+ 		return -ENOENT;
+ 	}
+ 
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index fc6a8aa29e3af..b6da80c69ca63 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -512,7 +512,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
+ 		ctx->pos = pos;
+ 	} else if (err < 0) {
+ 		if (err == -EINVAL)
+-			ntfs_inode_err(dir, "directory corrupted");
++			_ntfs_bad_inode(dir);
+ 		ctx->pos = eod;
+ 	}
+ 
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index c33e818b3164c..175662acd5eaf 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -148,8 +148,10 @@ int ni_load_mi_ex(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
+ 		goto out;
+ 
+ 	err = mi_get(ni->mi.sbi, rno, &r);
+-	if (err)
++	if (err) {
++		_ntfs_bad_inode(&ni->vfs_inode);
+ 		return err;
++	}
+ 
+ 	ni_add_mi(ni, r);
+ 
+@@ -238,8 +240,7 @@ struct ATTRIB *ni_find_attr(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 	return attr;
+ 
+ out:
+-	ntfs_inode_err(&ni->vfs_inode, "failed to parse mft record");
+-	ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++	_ntfs_bad_inode(&ni->vfs_inode);
+ 	return NULL;
+ }
+ 
+@@ -330,6 +331,7 @@ struct ATTRIB *ni_load_attr(struct ntfs_inode *ni, enum ATTR_TYPE type,
+ 	    vcn <= le64_to_cpu(attr->nres.evcn))
+ 		return attr;
+ 
++	_ntfs_bad_inode(&ni->vfs_inode);
+ 	return NULL;
+ }
+ 
+@@ -1604,8 +1606,8 @@ int ni_delete_all(struct ntfs_inode *ni)
+ 		roff = le16_to_cpu(attr->nres.run_off);
+ 
+ 		if (roff > asize) {
+-			_ntfs_bad_inode(&ni->vfs_inode);
+-			return -EINVAL;
++			/* ni_enum_attr_ex checks this case. */
++			continue;
+ 		}
+ 
+ 		/* run==1 means unpack and deallocate. */
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 0fa636038b4e4..6c73e93afb478 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -908,7 +908,11 @@ void ntfs_bad_inode(struct inode *inode, const char *hint)
+ 
+ 	ntfs_inode_err(inode, "%s", hint);
+ 	make_bad_inode(inode);
+-	ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
++	/* Avoid recursion if bad inode is $Volume. */
++	if (inode->i_ino != MFT_REC_VOL &&
++	    !(sbi->flags & NTFS_FLAGS_LOG_REPLAYING)) {
++		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
++	}
+ }
+ 
+ /*
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 9089c58a005ce..7eb9fae22f8da 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1094,8 +1094,7 @@ int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
+ 
+ ok:
+ 	if (!index_buf_check(ib, bytes, &vbn)) {
+-		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
+-		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++		_ntfs_bad_inode(&ni->vfs_inode);
+ 		err = -EINVAL;
+ 		goto out;
+ 	}
+@@ -1117,8 +1116,7 @@ int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
+ 
+ out:
+ 	if (err == -E_NTFS_CORRUPT) {
+-		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
+-		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++		_ntfs_bad_inode(&ni->vfs_inode);
+ 		err = -EINVAL;
+ 	}
+ 
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index be04d2845bb7b..a1e11228dafd0 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -410,6 +410,9 @@ static struct inode *ntfs_read_mft(struct inode *inode,
+ 	if (!std5)
+ 		goto out;
+ 
++	if (is_bad_inode(inode))
++		goto out;
++
+ 	if (!is_match && name) {
+ 		err = -ENOENT;
+ 		goto out;
+-- 
+2.39.5
+
 
 
 
