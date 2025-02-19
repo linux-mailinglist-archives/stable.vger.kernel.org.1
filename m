@@ -1,147 +1,147 @@
-Return-Path: <stable+bounces-116941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD93A3AE71
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 02:04:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DB6A3AEDB
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 02:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7932F3B5D28
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 01:01:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3081708D4
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 01:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F091C1BBBDC;
-	Wed, 19 Feb 2025 00:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358E676025;
+	Wed, 19 Feb 2025 01:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kMJg/nWV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W5aHjZJt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4BA33991;
-	Wed, 19 Feb 2025 00:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B8A1EA80
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 01:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739926640; cv=none; b=UZ+c98x2ogwhjKvL8W1HeBmxCziwVm2K6kl4Yt+ElkpUlg+pj+4TmIZV9FhSL0Z8Ag3klUlmS4Ys+hGemhGE7t8+7IW2ATlLP59QdpndnLOnj8Y7Y+nN9+rKp6HsZJMLTkZBe79VPW3EOBQayfplsaNoQpcJRIeeehOcNPRyYxk=
+	t=1739928349; cv=none; b=YH3ddI7z/XX1KsvS0ppKZDY07MEFLQZYfmD+XdP4qjtiyu9bfyali1Ujn1iX1/qeeuJYMFNuNUPXiPwWS3QcTOLQXgITmxRMcChQdGpSpm+HDYiyhYpBGx5OhKkLKmaiMTcfknpxcV7schOqNkRRNj3BZIJSsg+iTPRFExRQ9Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739926640; c=relaxed/simple;
-	bh=O476KadsknrNOtGe0FYpBki4MawyLZYBAEC/CL/ml6s=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=QiMv+NKZAEHvhtrAJNMVKrWlRzhwL9yOgq4e9JmM6CDNNyUuZp761cdsPgeBqbPlvuyaiFnM7FGH5SocvMNJoEFnijSFl3RAtVfh05V7ge2P8mnlQ9Dc0yHk62tIFi/F8AA6C2VpT/lMpE2lRmbP0TW265hyfIW1oOBoL8pwjow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kMJg/nWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A100C4CEE2;
-	Wed, 19 Feb 2025 00:57:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739926640;
-	bh=O476KadsknrNOtGe0FYpBki4MawyLZYBAEC/CL/ml6s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kMJg/nWVU8MRPLWQYfQIUgjymhjVfibF7HurwZJG07cOBW5Vc4WYiP3zkDjYujn8d
-	 vnWkS8QEg/C1K9j7UBpn46fGW9LHIAvbtpLMzyFD7N6z9BcDQMQvL67fhNNiOl0zX8
-	 4VVUxk95RDViI9a+cxl6w/f3PkW42LX0Go8X9M4V6TIqnkrjzUC2IKUTQOX6fdqc3U
-	 FUVBx2Qkfu2R0deh/+xmWKlnQMlarX5xqWotNW370glSXoNmTDwVxXpHwj4lefSVHz
-	 /bGzkxdO/isTaI0znfnJoStb+UZjzsJAy5pdmoxaGH35tXpGswouhncNopexLBt2Dj
-	 JDE9RwCcLMB7g==
-Date: Wed, 19 Feb 2025 09:57:15 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Masami
- Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton
- <akpm@linux-foundation.org>, Heiko Carstens <hca@linux.ibm.com>, Sven
- Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 4/5] fprobe: Always unregister fgraph function from ops
-Message-Id: <20250219095715.26c7b7811b05d3952c7bfa56@kernel.org>
-In-Reply-To: <20250218193126.785837383@goodmis.org>
-References: <20250218193033.338823920@goodmis.org>
-	<20250218193126.785837383@goodmis.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1739928349; c=relaxed/simple;
+	bh=ZaL608RmExYRYmWAQbbVWRdII1oyaT3orbA/4msVZ70=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=L4oy3lLo6A+n4VBDQy1aoVU8IH3Dhna6LkbYPlnF6gSbtiyh3wUEQHMUEToo/wSpzCqEuonK+QAt4d/PPGKKcObKh1O8PPVH1J5jHLJwCYQc2HuLFeFygYJJI7mSDp3lVYTJJWN5nrOTl7rOOjLvsDfYj25Yc4dsm3pyCdDKGCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W5aHjZJt; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4397dff185fso28987465e9.2
+        for <stable@vger.kernel.org>; Tue, 18 Feb 2025 17:25:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739928345; x=1740533145; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o7CLLK88pA4CuKkXfbBmj/CUAX50RvOsqLUJHaTl0lo=;
+        b=W5aHjZJts14EWfTB48mWCl3EOH5DQHCuqMEx7xVOU3UQH2wYPBGqE06yvP2mlZJBM7
+         bOhc8VjSxYHCpkeqtb0Qb0Sn1W8KAuiYdGrD8caLCByn6zIAQo6Mn+hsSKEs6pzeI41V
+         H9mWI1mLFFcfe9EN7a+MKCmizGNHN3csyyUSgoQsVOEsTng8fhhWAUq3Di4FsKU8U+Ad
+         lj88xIoUksQLT71sx1mOHBZdQrcP4MSeNIG1dapBk5DhXo4SSOBSjdKawSxHP/tsCTCk
+         J8izQG3QOHck3n6lQY1APtxjHOQ4QrwLXFKoGyQXrmTPSziU5bX7Pi7KV7mBU3tAOX/Y
+         FEBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739928345; x=1740533145;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o7CLLK88pA4CuKkXfbBmj/CUAX50RvOsqLUJHaTl0lo=;
+        b=uHBGCFPsFUAY8094g1JqirZgrc1vi1x8Nqj/0VZRxXSL3daZK5TFrlmJtlwBO31A0q
+         c+vAC23wbAXNxJoF2ImN2XqG5vBwwpSJmDDhyVchXwD246bOgmee9U//t70MlvyR82w+
+         iGhDB/vIYXVEQi79+WMCPQNhrliY6m8PvLd4ifeTo16tfq0E1FudamadlCye/vcGp8UQ
+         5wxuy5/yrzNGGTqPvyqcrGkAGnbURaHXpufV4ahJXuwsrtuuuDhvkeR5tDtixo5OZ7w5
+         5/O6nM9lbtCOafdXDi0pOKL419HQZfeu33k0/XPjs2mElmJux2HWPUgd/uMFUsnbKtyq
+         JuKw==
+X-Gm-Message-State: AOJu0YzZ0SO49X8QjPyvris+nFq1jF1KPJVJpdoRb1GTqw+5XQVFa1ww
+	iUR7TOCwDmYPApfy2WxJmK/pZaHsZCrDjMriCLD3QkkS0Cpudz9XFqQkiw==
+X-Gm-Gg: ASbGncstCcGjCtmS/0zdILS8pjMLM8fAxMwln8TZ4Aj4+zS5Gej/XEUybAjGK1XAYZ2
+	yC9rymFlwv40zHOnorwc0J7CBspgZXllJnAApokiKb72q2nR8Ycxkb25A9vHdgFngN/VjwRKh8t
+	qnrwcnZzjzOmsR4uLo0VaoVAOQnqw1iw6j0nAcID1CaX1NhlMdbSolFBliz9ot6sR+YtUQl4tBC
+	KhVrt5SRdl/YRr9hV+VGytdiJ8dG4i9wy6BQ160RHutT2+ELJQum54qqn1h4O3FD+v+BWR43KZs
+	IbW7tkitrfAkll/inZ7RDq76olQt
+X-Google-Smtp-Source: AGHT+IEmH6+oInsL8UkcRx71DgdO5gZV3T4FBxTeNNF0gdC7nQJIM6dkfVtELS1RDlGtMSyKlgJStA==
+X-Received: by 2002:a05:600c:1c8f:b0:439:6925:4d42 with SMTP id 5b1f17b1804b1-43999d72a62mr16986125e9.5.1739928344337;
+        Tue, 18 Feb 2025 17:25:44 -0800 (PST)
+Received: from 127.0.0.1localhost ([185.69.145.170])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258fc7ecsm16218464f8f.49.2025.02.18.17.25.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 17:25:42 -0800 (PST)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: stable@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Pumpkin Chang <pumpkin@devco.re>
+Subject: [PATCH 6.6.y] io_uring/kbuf: reallocate buf lists on upgrade
+Date: Wed, 19 Feb 2025 01:26:36 +0000
+Message-ID: <03083d05f5d3f86b749f0adb15629270139b1e08.1739927943.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025021855-fancy-trough-87ae@gregkh>
+References: <2025021855-fancy-trough-87ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 18 Feb 2025 14:30:37 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
+[ upstream commit 8802766324e1f5d414a81ac43365c20142e85603 ]
 
-> From: Steven Rostedt <rostedt@goodmis.org>
-> 
-> When the last fprobe is removed, it calls unregister_ftrace_graph() to
-> remove the graph_ops from function graph. The issue is when it does so, it
-> calls return before removing the function from its graph ops via
-> ftrace_set_filter_ips(). This leaves the last function lingering in the
-> fprobe's fgraph ops and if a probe is added it also enables that last
-> function (even though the callback will just drop it, it does add unneeded
-> overhead to make that call).
-> 
->   # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
->   # cat /sys/kernel/tracing/enabled_functions
-> kernel_clone (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> 
->   # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
->   # cat /sys/kernel/tracing/enabled_functions
-> kernel_clone (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> schedule_timeout (1)           	tramp: 0xffffffffc02f3000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> 
->   # > /sys/kernel/tracing/dynamic_events
->   # cat /sys/kernel/tracing/enabled_functions
-> 
->   # echo "f:myevent3 kmem_cache_free" >> /sys/kernel/tracing/dynamic_events
->   # cat /sys/kernel/tracing/enabled_functions
-> kmem_cache_free (1)           	tramp: 0xffffffffc0219000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> schedule_timeout (1)           	tramp: 0xffffffffc0219000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> 
-> The above enabled a fprobe on kernel_clone, and then on schedule_timeout.
-> The content of the enabled_functions shows the functions that have a
-> callback attached to them. The fprobe attached to those functions
-> properly. Then the fprobes were cleared, and enabled_functions was empty
-> after that. But after adding a fprobe on kmem_cache_free, the
-> enabled_functions shows that the schedule_timeout was attached again. This
-> is because it was still left in the fprobe ops that is used to tell
-> function graph what functions it wants callbacks from.
-> 
+IORING_REGISTER_PBUF_RING can reuse an old struct io_buffer_list if it
+was created for legacy selected buffer and has been emptied. It violates
+the requirement that most of the field should stay stable after publish.
+Always reallocate it instead.
 
-Good catch! I forgot to remove the filter in this case.
-Is there anyway to be sure the filter is empty or clear it if
-fprobe_graph_active == 0?
+Cc: stable@vger.kernel.org
+Reported-by: Pumpkin Chang <pumpkin@devco.re>
+Fixes: 2fcabce2d7d34 ("io_uring: disallow mixed provided buffer group registrations")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ io_uring/kbuf.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Thank you,
-
-> Cc: stable@vger.kernel.org
-> Fixes: 4346ba1604093 ("fprobe: Rewrite fprobe on function-graph tracer")
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> ---
->  kernel/trace/fprobe.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-> index 90241091ca61..886090845b1a 100644
-> --- a/kernel/trace/fprobe.c
-> +++ b/kernel/trace/fprobe.c
-> @@ -403,11 +403,9 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
->  	lockdep_assert_held(&fprobe_mutex);
->  
->  	fprobe_graph_active--;
-> -	if (!fprobe_graph_active) {
-> -		/* Q: should we unregister it ? */
-> +	/* Q: should we unregister it ? */
-> +	if (!fprobe_graph_active)
->  		unregister_ftrace_graph(&fprobe_graph_ops);
-> -		return;
-> -	}
->  
->  	ftrace_set_filter_ips(&fprobe_graph_ops.ops, addrs, num, 1, 0);
->  }
-> -- 
-> 2.47.2
-> 
-> 
-
-
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 702c08c26cd4..b6fbae874f27 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -301,6 +301,12 @@ void io_destroy_buffers(struct io_ring_ctx *ctx)
+ 	}
+ }
+ 
++static void io_destroy_bl(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
++{
++	xa_erase(&ctx->io_bl_xa, bl->bgid);
++	io_put_bl(ctx, bl);
++}
++
+ int io_remove_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_provide_buf *p = io_kiocb_to_cmd(req, struct io_provide_buf);
+@@ -642,12 +648,13 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+ 		/* if mapped buffer ring OR classic exists, don't allow */
+ 		if (bl->is_mapped || !list_empty(&bl->buf_list))
+ 			return -EEXIST;
+-	} else {
+-		free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
+-		if (!bl)
+-			return -ENOMEM;
++		io_destroy_bl(ctx, bl);
+ 	}
+ 
++	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
++	if (!bl)
++		return -ENOMEM;
++
+ 	if (!(reg.flags & IOU_PBUF_RING_MMAP))
+ 		ret = io_pin_pbuf_ring(&reg, bl);
+ 	else
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.48.1
+
 
