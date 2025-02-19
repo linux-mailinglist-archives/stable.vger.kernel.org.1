@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-117409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE62A3B64B
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EECE3A3B70E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE2C9189ED03
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30C20189EEBF
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DC11E0E0F;
-	Wed, 19 Feb 2025 08:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F26D1E0E08;
+	Wed, 19 Feb 2025 09:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JunNfMk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tv2pMjFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755C51E0DD1;
-	Wed, 19 Feb 2025 08:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ED61C760D;
+	Wed, 19 Feb 2025 09:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955189; cv=none; b=ZuJYZCOYGZhXqIGS9K76VbYM5ko6jZT7r8/v8q6/steOLA4CK8CheSYMIFCwyrjR1vwf4uglCtZviM+UyqKV8XLtD9mZFCC4Q7fzqKBVWMnNA1eOCiV0dmXKWoIWcQGQWFeZHQ95NfR8qRpkwyHwN+HIGa6mI0ATI/6N0ut+WRg=
+	t=1739955679; cv=none; b=r65c4O2jGF7CqNE7jFP5haI7mYhhPBfKBYLyVd6Fxb6GkI0HiPklU+tFnVkYriONmjaIe446SGw+7EAgvNS0OQ+OZjc7X3Wb2C1Giz/cnPrd0hXVxv6LG3IL5kh1rurAM8xdmh0s6M3Bpte89mwgBzNlLbO7Y7IRsNkoeSL/QQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955189; c=relaxed/simple;
-	bh=UtIPeY9gtH/UH7JGAXI2J5/eAKZ208nKftJSxxOczdM=;
+	s=arc-20240116; t=1739955679; c=relaxed/simple;
+	bh=WjRtVvQJdPNjJpbj5ffkimr9NLiGiS/jpdZ4pay4dko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMoxDRBSXAiNzHl3x8O1daEirBv1FUjoVvSjN1jpBwtqpjgTjVdrUJe2DC3ilaobs7AOrThY3pzD/YrbmYrE3jtYBHJg0/XwooNe4ibhsmRsMfp4KAKsKAoP8Bkexq70Nae1QduqWX7gAxiykZQ2rrM27wrGVwhl+yG/IX1jwks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JunNfMk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D2FC4CEE6;
-	Wed, 19 Feb 2025 08:53:08 +0000 (UTC)
+	 MIME-Version; b=SZy/uDERwoByCnrLgZo1YF7RHewLOW4ax18sQM32m26oV7uMIrSRrcydb2kiv3xOlUTcVQH6keRDswVJ3UOxXGMM1umK+eQAlEssXJ060B43TaLphSYONTqzL86XLCcvyhJbCaP8kaBF8P6xamoLXB9a+u+lG+AAyi6eH47d5hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tv2pMjFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F9C4CEE6;
+	Wed, 19 Feb 2025 09:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955189;
-	bh=UtIPeY9gtH/UH7JGAXI2J5/eAKZ208nKftJSxxOczdM=;
+	s=korg; t=1739955679;
+	bh=WjRtVvQJdPNjJpbj5ffkimr9NLiGiS/jpdZ4pay4dko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JunNfMk/5GhXL4tYI4g2bLU9vNtUANbvB46/UnS566z/0RvBtASFiXhyPbGUio2/l
-	 YkSj2Xfrsp002cYRLfMMW3we3ctOdyuauFEN9it1BmvI9Ks0NGdRUgWqbP5nelabdE
-	 Ku53q0zgNJvULkbUybZYArGld+7FX3meBJ+yNYWM=
+	b=tv2pMjFWmiKmHcDq/0ZSVPnHG4ezWRtiegAAQ7A6bp1iArdaUiWrmf1e4CbqbkHwN
+	 UIpZpef4WIWY0GMwwncUXhmzlo7+uVwHJNMg8i4APKDEsCHKx9qeAOAjW4NJZmFhxa
+	 H0gITYJYmKZaKLJBCHyhwvGeQG0pXhOYlYMlGpPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12 159/230] igc: Set buffer type for empty frames in igc_init_empty_frame
+	Lei Huang <huanglei@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 063/152] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
 Date: Wed, 19 Feb 2025 09:27:56 +0100
-Message-ID: <20250219082607.914473789@linuxfoundation.org>
+Message-ID: <20250219082552.538094884@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Yoong Siang <yoong.siang.song@intel.com>
+From: Lei Huang <huanglei@kylinos.cn>
 
-commit 63f20f00d23d569e4e67859b4e8dcc9de79221cb upstream.
+commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
 
-Set the buffer type to IGC_TX_BUFFER_TYPE_SKB for empty frame in the
-igc_init_empty_frame function. This ensures that the buffer type is
-correctly identified and handled during Tx ring cleanup.
+Teclast disk used on Huawei hisi platforms doesn't work well,
+losing connectivity intermittently if LPM is enabled.
+Add quirk disable LPM to resolve the issue.
 
-Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
-Cc: stable@vger.kernel.org # 6.2+
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -1096,6 +1096,7 @@ static int igc_init_empty_frame(struct i
- 		return -ENOMEM;
- 	}
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -522,6 +522,9 @@ static const struct usb_device_id usb_qu
+ 	/* Blackmagic Design UltraStudio SDI */
+ 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
  
-+	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
- 	buffer->skb = skb;
- 	buffer->protocol = 0;
- 	buffer->bytecount = skb->len;
++	/* Teclast disk */
++	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Hauppauge HVR-950q */
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
