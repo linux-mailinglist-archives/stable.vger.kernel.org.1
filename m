@@ -1,128 +1,170 @@
-Return-Path: <stable+bounces-117783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF132A3B85A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF80A3B860
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B6F93B57E1
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:16:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71CB1189997E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2231E8840;
-	Wed, 19 Feb 2025 09:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285641E2607;
+	Wed, 19 Feb 2025 09:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NTItAjl2"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="li+8NoWl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C091E8329;
-	Wed, 19 Feb 2025 09:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA801DE8A9
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 09:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956328; cv=none; b=ekTjBVxtQN0n7FcTVVo7Xck//qkYJ5fel3LEDpsuXL2ZX1PamffyGjqr2yPttH/WSAOUIG7kCUvueJ2YAP1oNPia4MqxoVlidLjlP009Iq7IpNJ0HqdgURUkHubUvEhBDYroB7vJoPcwbuOAMNaaKTS9Pny1bdi/qZHNOQ7af08=
+	t=1739956444; cv=none; b=Pa58y7d/oMwzBynVuQ4GS1Cn0VGMO2DItHA0yVriuFgQmUhcWujqFADkQbYC+qo3GVvKDQn/h85hzh6DMR2+/+kO2NCmDRFJy8uZorY+M9wGGONJClwJfhsCPIhUPrf9OX3zXsw+ziWDEtu7FG2kqliJaMZ+/wre3txaE+79o8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956328; c=relaxed/simple;
-	bh=1mDmGlQiTjrTM9JA4bPSMWae34JasEkJOVEndkM6ZvY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mid40fwRGob01G4FpUZKZVxjBxmnujzk033bx9DkS8MAC8COZKyQcNaKVbIN+OkLI6pVerzUd3h60zQ3HbhPe59KDIA8RIDi6H1kYflqP0uL1hgbpUmRJHXtCsmBV5lLZXv+g/Hpu3j1O6quS2rqbVbBByxFeJZBDR+xQGI+W14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NTItAjl2; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abb90c20baeso448906666b.1;
-        Wed, 19 Feb 2025 01:12:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739956323; x=1740561123; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dBlQIQZTyl+c9YJhOesoDPaG6Lk+JATvxoUqF2ZkP5g=;
-        b=NTItAjl2TB1JZkFE5RZJHn4pbmcPMxA0pX8ybuSsSaIW4sRw16kd2zR6tgTzq3rBHu
-         wdDFdmURY4kJPLa//Ab014fOhW+ts62QB2ZFUKOCD9RiBybqI6yc2nwtj4fCn64l3NHe
-         roT9UgajHM1g+f6xnn3XqWOv9u0ix/3Qf0NUNKyX68Qfn+WDHuWHNgs6Kl7bOyX/kn9F
-         rTW16XqTtaFUFmdh8agVICIc+mWnuve11bTPDexikN1eUsDeCBzva5OZwq605o1IItya
-         uC/GlNsJR1jllrksaZo/wPXtDKVx785uHTWeP02fi3FQu7NxAwHJj18hocF0pQOkB0g2
-         UKzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739956323; x=1740561123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dBlQIQZTyl+c9YJhOesoDPaG6Lk+JATvxoUqF2ZkP5g=;
-        b=SI4rknlM7nVG0aq84932FPPYNEmtPIS6rmMZ2rhgO82Fj6M0Q2JGVeW6GQm4r2JC9D
-         YMPTJQqLI6Ly/n7ik9Rp29S1lstFPNysx3oUNE7vNz5K/ImISlKWIakXpYcBpazJuhOP
-         cJyyB7I4iaNoYSDl7spePE0fBl0GpYA5OTNIY/PqWpNpbaac0ZziKkMmcE2vIqO+hwL9
-         LPnD3RPfcIEqmUoDZnfvjie0PWw7XiIdqQBR2yqMhAzPEoMRtQ5zWIeS4q98ykxlF3Ll
-         xRaJGplohHNBz/+9b8DL47MBM8hJ4AmH5tg+T6GomeNVRTwQk3FfuSbO67E02OxbsF+S
-         gSTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuf/cBMdcvSpKlKhVE9P1PPtiemUBozGbNhrUhUwwUbQzeLxJVQnCtndRl1n71ujxwMRbYoM+T@vger.kernel.org, AJvYcCWMnOI+MdrVleJA07jPqhhDd9Nrgh3ah1Dx8I2FUhZAo1ZhWii+PPkIY5JgjbdBd5ZbrrY8Lka0QrE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDTU2FUYrRA6gzIMi9SLQEWsZ+IyNDZmvZB21gdSaK9QIguB19
-	g4MKpRgN+WcimJda7XvD3N8T9nnOY7GksPlqkvGSe35bmNGdSBTL2BIR6fALFid84LzWDkm4Ig+
-	p0RCg6Mqa9GzfKKiNWIAQ/JLvuRc=
-X-Gm-Gg: ASbGncvGNBN9T5KeL8QJOfw3RBAY0i0o/QL9B0vxEd3ZoeOM4jSr3ZZd8pMkbie9zrn
-	I5ClGmH5lqEC5nUbjs+3xxzeY01ixecjRW3w9KjNXaP+5+K/H7wxa9FsShRuDeyvayXLlc+rU
-X-Google-Smtp-Source: AGHT+IGuIK/CQy8bOdyilmjVVAnjbdAlGWgVtHcOdZyL7b2VSZoGr3Oqwi/oJeLhkyY9/0jyPhsCU2sPtKBUq41RyoM=
-X-Received: by 2002:a17:907:7fac:b0:ab7:cc00:4d4a with SMTP id
- a640c23a62f3a-abb70d95cb3mr1810038166b.35.1739956323370; Wed, 19 Feb 2025
- 01:12:03 -0800 (PST)
+	s=arc-20240116; t=1739956444; c=relaxed/simple;
+	bh=hfPGZ3Dap2mjHnHYqaIYjn4x4mHV0gTgyjvUgpZ5tCQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=IPU4VGbcLb58bUuELfMO+hCyLpK2xJkpdQAGGLMqkf5eK+KcByuBd4OEJRGZvwKXeI4pJjw292cS1htG7j6AERtPfELSat74x4363YIHZ340NfT6JEBH49ZhoLjQRXAsSl4TuqV2VtuditMYhhLp7szHXcGb0W3mViTwBTTcJTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=li+8NoWl; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250219091400euoutp029a3bedcecfdc51c662e1eaa9140cb388~lkSoIYfDP2867828678euoutp02q
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 09:14:00 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250219091400euoutp029a3bedcecfdc51c662e1eaa9140cb388~lkSoIYfDP2867828678euoutp02q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1739956440;
+	bh=U1O2CzMZsngaaF6NWYKS5yHzociycXu2ZdQzH8NxVOQ=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=li+8NoWli97LuAHh5SRn8fEjFnQKyquw4Vb7H/hIVr1mXAePOg4/+vlbtvbmTwPNi
+	 djP171ny9R1XH2XASrtRNvmc6x8IJ1C+r7Zkntu1yD9UIXidAOXRflG6k49/3T9Jmw
+	 Ke6uCP57xsGBH9vcnKZ9nat/PN7VVEt50zLGm4Lk=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20250219091400eucas1p2f4afda91b9ebdb209ef8307c2128d080~lkSn4Q0dG0350703507eucas1p2_;
+	Wed, 19 Feb 2025 09:14:00 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges3new.samsung.com (EUCPMTA) with SMTP id AF.94.20397.8D0A5B76; Wed, 19
+	Feb 2025 09:14:00 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250219091400eucas1p27e7f9afa5d0ed1823151173c4c8c0d27~lkSniW9r50572105721eucas1p2f;
+	Wed, 19 Feb 2025 09:14:00 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20250219091400eusmtrp1bc7aff07edc243959bf762e40b9671c1~lkSnhwL7_0523705237eusmtrp1O;
+	Wed, 19 Feb 2025 09:14:00 +0000 (GMT)
+X-AuditID: cbfec7f5-e59c770000004fad-e5-67b5a0d8e8e4
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 08.84.19920.8D0A5B76; Wed, 19
+	Feb 2025 09:14:00 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250219091359eusmtip293bd338859a8098ea1d7d4d6f8bf1093~lkSmnVweG2537225372eusmtip2H;
+	Wed, 19 Feb 2025 09:13:59 +0000 (GMT)
+Message-ID: <7c045d13-146f-448c-ad73-60069059b242@samsung.com>
+Date: Wed, 19 Feb 2025 10:13:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219020809.3568972-1-zhoubinbin@loongson.cn>
-In-Reply-To: <20250219020809.3568972-1-zhoubinbin@loongson.cn>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 19 Feb 2025 11:11:26 +0200
-X-Gm-Features: AWEUYZndSh3zP-0TVudcjduNMhtOO5FnyJN-FotaI3FwFJihJXCAoNLkXbk2NmE
-Message-ID: <CAHp75VdSqFhEp_Xt=qtBNDDz984N97pZmS684oS137dFi0o_pw@mail.gmail.com>
-Subject: Re: [PATCH v2] i2c: ls2x: Fix frequency division register access
-To: Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang <wsa@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, linux-i2c@vger.kernel.org, 
-	Huacai Chen <chenhuacai@kernel.org>, Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, 
-	stable@vger.kernel.org, Hongliang Wang <wanghongliang@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] gpiolib: check the return value of
+ gpio_chip::get_direction()
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Bartosz Golaszewski
+	<bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAMRc=MduJK0_gat2aVQbR9udYNj9oDcoN=me0wa4K6L8dX_52Q@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42LZduznOd0bC7amG9zpkLRY8W0Nk8WuB9vY
+	LKb8Wc5ksXn+H0aLy7vmsFks2PiI0YHNY/G126wed67tYfP4vEkugDmKyyYlNSezLLVI3y6B
+	K+Pb62PsBfP5Kvpe9LA2MF7k7mLk5JAQMJFYdGQvYxcjF4eQwApGiVVvFzOCJIQEvjBKbNif
+	BpH4zCix7Pw1RpiOeZunM0EkljNKXDj4G6r9I6PE0hdtYFW8AnYSVx5vBrNZBFQlGn/NYoOI
+	C0qcnPmEBcQWFZCXuH9rBnsXIweHsECExP3WepCwiIC6xIJ198AWMAvsYJS4+beDHSTBLCAu
+	cevJfCYQm03AUKLrbRfYTE6BQImtF7axQtTISzRvnc0M0iwhcIJDov/HDKizXST6p1+CsoUl
+	Xh3fwg5hy0icntzDAtHQziix4Pd9JghnAqNEw/NbUB3WEnfO/WIDOZVZQFNi/S59iLCjxM0V
+	H5lBwhICfBI33gpCHMEnMWnbdKgwr0RHmxBEtZrErOPr4NYevHCJeQKj0iykYJmF5M1ZSN6Z
+	hbB3ASPLKkbx1NLi3PTUYuO81HK94sTc4tK8dL3k/NxNjMA0c/rf8a87GFe8+qh3iJGJg/EQ
+	owQHs5IIb1v9lnQh3pTEyqrUovz4otKc1OJDjNIcLErivIv2t6YLCaQnlqRmp6YWpBbBZJk4
+	OKUamKIW2kpxvWZzNo6RTDCV3hrGx5Vk0+Wx+HLFuu6sDVKeLnzaLuUvTB69PpAdLj5XW5ol
+	6LxD8IaJD+IcCqexndWb/ai4xfb8EofPTH1890Mqtb/whJgGZLzLzbK8bLFC5NPyq8XW+46k
+	6H1lnuz86MtqRZM9c17q7gkpSvy+oPuT+KzYP7GxBYE71UvTN+pxLjlu7jP7iUzBIfsTmSts
+	ItkLpq1WCT61SVjEZMexR5fvv2NlOi/eNU8pa/2Ff12L9zr/m31msY31m+9Hf8iLT4voCEra
+	Y191bulid7sHvTmGC34t3lZQo3j8XdyUKq2bh2Xdud3NnvVWq/w/Iv0yiGvLlwRe5/A1xlfn
+	GH2co8RSnJFoqMVcVJwIAImf3NCiAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIIsWRmVeSWpSXmKPExsVy+t/xe7o3FmxNN1h6j9lixbc1TBa7Hmxj
+	s5jyZzmTxeb5fxgtLu+aw2axYOMjRgc2j8XXbrN63Lm2h83j8ya5AOYoPZui/NKSVIWM/OIS
+	W6VoQwsjPUNLCz0jE0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYxvr4+xF8znq+h70cPawHiR
+	u4uRk0NCwERi3ubpTF2MXBxCAksZJVovrmOHSMhInJzWwAphC0v8udbFBlH0nlHizecpYEW8
+	AnYSVx5vZgSxWQRUJRp/zWKDiAtKnJz5hAXEFhWQl7h/awZQPQeHsECExP3WepCwiIC6xIJ1
+	95hAbGaBHYwSC9qlIebfZJJYMnszC0RCXOLWk/lgRWwChhJdb7vA5nMKBEpsvbCNFaLGTKJr
+	axcjhC0v0bx1NvMERqFZSM6YhWTULCQts5C0LGBkWcUoklpanJueW2yoV5yYW1yal66XnJ+7
+	iREYV9uO/dy8g3Heq496hxiZOBgPMUpwMCuJ8LbVb0kX4k1JrKxKLcqPLyrNSS0+xGgKDIuJ
+	zFKiyfnAyM4riTc0MzA1NDGzNDC1NDNWEud1u3w+TUggPbEkNTs1tSC1CKaPiYNTqoGpePex
+	Hu9Ag9SV+td1OTiuN3edb0/sjdLk+vaauzz33reJbm6btl18HD1NpFlrY+6jyTysLFM+/y9x
+	Crax5dO4t2rmco/dgs/uSKx8YeoctY2rc8G0X3sl90xjktuoHPZ6+8FD08v65C+eetWUK994
+	m+N97NaN7btubu44U8HtwSC0WHNbVKXhb6uPTfmu88JDzX48+nv3e+K7Yv1LV1+71gTHinV0
+	eL1+/aJ7QrWeR6C1xt6pV+I0vmz4WsuTVPTVofCC7Zs3Nw70zZuiXSKxegoXr8B1z8YDYpn3
+	gn7MW1u2ecVpj07jbK8baekLVpsWaBzY22B463rkZw294nO/5x/y8t7It3O2d6fBqtYoJZbi
+	jERDLeai4kQALlauiDQDAAA=
+X-CMS-MailID: 20250219091400eucas1p27e7f9afa5d0ed1823151173c4c8c0d27
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254
+References: <20250210-gpio-sanitize-retvals-v1-0-12ea88506cb2@linaro.org>
+	<CGME20250219083836eucas1p1b7ecc6e5fdc34d66ef7565bfcf399254@eucas1p1.samsung.com>
+	<20250210-gpio-sanitize-retvals-v1-1-12ea88506cb2@linaro.org>
+	<dfe03f88-407e-4ef1-ad30-42db53bbd4e4@samsung.com>
+	<CAMRc=MduJK0_gat2aVQbR9udYNj9oDcoN=me0wa4K6L8dX_52Q@mail.gmail.com>
 
-On Wed, Feb 19, 2025 at 4:08=E2=80=AFAM Binbin Zhou <zhoubinbin@loongson.cn=
-> wrote:
->
-> According to the chip manual, the I2C register access type of
-> Loongson-2K2000/LS7A is "B", so we can only access registers in byte
-> form (readb/writeb).
+On 19.02.2025 09:50, Bartosz Golaszewski wrote:
+> On Wed, Feb 19, 2025 at 9:38 AM Marek Szyprowski
+> <m.szyprowski@samsung.com> wrote:
+>> On 10.02.2025 11:51, Bartosz Golaszewski wrote:
+>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>
+>>> As per the API contract - gpio_chip::get_direction() may fail and return
+>>> a negative error number. However, we treat it as if it always returned 0
+>>> or 1. Check the return value of the callback and propagate the error
+>>> number up the stack.
+>>>
+>> This change breaks bcm2835 pincontrol/gpio driver (and probably others)
+>> in next-20250218. The problem is that some gpio lines are initially
+>> configured as alternate function (i.e. uart) and .get_direction returns
+>> -EINVAL for them, what in turn causes the whole gpio chip fail to
+>> register. Here is the log with WARN_ON() added to line
+>> drivers/pinctrl/bcm/pinctrl-bcm2835.c:350 from Raspberry Pi 4B:
+>>
+>> Any suggestions how to fix this issue? Should we add
+>> GPIO_LINE_DIRECTION_UNKNOWN?
+>>
+> That would be quite an intrusive change and not something for the
+> middle of the release cycle. I think we need to revert to the previous
+> behavior for this particular use-case: check ret for EINVAL and assume
+> it means input as it's the "safe" setting. Now the question is - can
+> this only happen during the chip registration or should we filter out
+> EINVAL at each gpiod_get_direction() call?
 
-readb()/writeb()
+IMHO it will be enough to use that workaround only in the 
+gpiochip_add_data_with_key() function. The other functions modified by 
+the $subject patch are strictly related to input or output gpio mode of 
+operation, so having the line set to proper input/output state seems to 
+be justified.
 
->
-> Although Loongson-2K0500/Loongson-2K1000 do not have similar
-> constraints, register accesses in byte form also behave correctly.
->
-> Also, in hardware, the frequency division registers are defined as two
-> separate registers (high 8-bit and low 8-bit), so we just access them
-> directly as bytes.
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
-...
-
-> +       /*
-> +        * According to the chip manual, we can only access the registers=
- as bytes,
-> +        * otherwise the high bits will be truncated.
-> +        * So set the I2C frequency with a sequential writeb instead of w=
-ritew.
-
-writeb()
-writew()
-
-> +        */
-
---=20
-With Best Regards,
-Andy Shevchenko
 
