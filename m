@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-117494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE0CA3B707
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:12:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E20FA3BA7E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:43:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 551B51652E8
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 191033B9990
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEFC1EF087;
-	Wed, 19 Feb 2025 08:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516A41EFF81;
+	Wed, 19 Feb 2025 09:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPeTQ7Au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puH9TGzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDE81DE4F9;
-	Wed, 19 Feb 2025 08:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047DA1EF087;
+	Wed, 19 Feb 2025 09:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955462; cv=none; b=PWK4DPbv63KPW/6EhyyE3sl999nok5ReAJFr/8TSr4+EBj8omVv1NqxRgAqOrGcAvc011S7nqLAbQbG3+f9ZWK9j+0MTw2qro0CXf9nR+t/gN/pUQtikER+bYtf+fgZLKbFoqYSiFWQbkmGbFHQ2vH/nrF8n8lVGFRDJh+LtKaQ=
+	t=1739957233; cv=none; b=aSay1OoWSsGbGAMaw8weXL6vYozq/ileJP0o7uHJKIYnstXTX3bxapHNMLo5cj8v2l9zOhCFJTrFAjuzsLAGi/ZDBsyWMFMAZLeb87MhjEfvhG8iECex3eAuUgxxafSdvCSmHZgEDHoHMjV/YHdNpeosULWeof1vv4vZiSS2nJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955462; c=relaxed/simple;
-	bh=lXXA6hvJlqSYXi8rQ6MY1TOphmtaeaKJYGIKXCF0mqA=;
+	s=arc-20240116; t=1739957233; c=relaxed/simple;
+	bh=OHa69RYqT5hWWA85sHrUl+1DkTbNNoypHQnxCbBoP8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7X+U13MaejDUqMhGQSjZ/1DMLGkuO60x3/Ub8bT8p5EYs6K8NNmD1lHFrDUr2KShQqKjBIR2PbvI0Rh50lbAo0wmlDFSuYfkD0oA74kx5ASzhYuWpqxOz+EIedhPH3v9tEf486zf0zow/pYX8zvaTgSnFZbeSpd0ORjGz8afY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPeTQ7Au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99287C4CED1;
-	Wed, 19 Feb 2025 08:57:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gJ3sNwevegErPPtUQRAIV5sSwjwvbHq5RXZAisYQ9Q9EiFDl0xTSd1hMuT+mVdBr5BJ0E9/ggC2CuL+5n9TmenkDX2kCVvkXJnw9HzD+Z3nlPXsrIGKRsmQSSJ70xyFEhC9grw8MDBQOSmpDusMTT1Y3+kQo7CTdAJqlrJQ0ZvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puH9TGzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD00C4CEE8;
+	Wed, 19 Feb 2025 09:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955462;
-	bh=lXXA6hvJlqSYXi8rQ6MY1TOphmtaeaKJYGIKXCF0mqA=;
+	s=korg; t=1739957232;
+	bh=OHa69RYqT5hWWA85sHrUl+1DkTbNNoypHQnxCbBoP8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPeTQ7AuIiZOQ3B4up8fYEKO36F3AuykSwoTYflFqz4AeyywU/YJYkapDCqBobAnJ
-	 FSFvInRom5DyU1DaGwloWZpPaxienzngFeZ0Om0kMJBq7FWkMaL1Ot5KfAArJ+hV4P
-	 C1AJ7hM5fNMhOvjWkV0Ut46X7aeIKMEzeIUS7ATQ=
+	b=puH9TGzw62PSk9yJ9g4MQvisS8Goump9xIKmhhtAr+/FgawfWZNRGkAEvC/dOmspF
+	 JYL8qQYb0woOLds5oKMHaudZRwSEyGrgw+NMvUTzp3+Yg52sOpKiKmjZdmQu42st+g
+	 o+iiYiQts0flAySb5gXEimRgngQrcC2JQTHjfyZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radu Rendec <rrendec@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/152] arm64: cacheinfo: Avoid out-of-bounds write to cacheinfo array
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 6.1 423/578] vfio/platform: check the bounds of read/write syscalls
 Date: Wed, 19 Feb 2025 09:27:07 +0100
-Message-ID: <20250219082550.592525070@linuxfoundation.org>
+Message-ID: <20250219082709.655807534@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radu Rendec <rrendec@redhat.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 875d742cf5327c93cba1f11e12b08d3cce7a88d2 ]
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-The loop that detects/populates cache information already has a bounds
-check on the array size but does not account for cache levels with
-separate data/instructions cache. Fix this by incrementing the index
-for any populated leaf (instead of any populated level).
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-Fixes: 5d425c186537 ("arm64: kernel: add support for cpu cache information")
-
-Signed-off-by: Radu Rendec <rrendec@redhat.com>
-Link: https://lore.kernel.org/r/20250206174420.2178724-1-rrendec@redhat.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/cacheinfo.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/kernel/cacheinfo.c b/arch/arm64/kernel/cacheinfo.c
-index d9c9218fa1fdd..309942b06c5bc 100644
---- a/arch/arm64/kernel/cacheinfo.c
-+++ b/arch/arm64/kernel/cacheinfo.c
-@@ -101,16 +101,18 @@ int populate_cache_leaves(unsigned int cpu)
- 	unsigned int level, idx;
- 	enum cache_type type;
- 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
--	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
-+	struct cacheinfo *infos = this_cpu_ci->info_list;
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -396,6 +396,11 @@ static ssize_t vfio_platform_read_mmio(s
  
- 	for (idx = 0, level = 1; level <= this_cpu_ci->num_levels &&
--	     idx < this_cpu_ci->num_leaves; idx++, level++) {
-+	     idx < this_cpu_ci->num_leaves; level++) {
- 		type = get_cache_type(level);
- 		if (type == CACHE_TYPE_SEPARATE) {
--			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
--			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
-+			if (idx + 1 >= this_cpu_ci->num_leaves)
-+				break;
-+			ci_leaf_init(&infos[idx++], CACHE_TYPE_DATA, level);
-+			ci_leaf_init(&infos[idx++], CACHE_TYPE_INST, level);
- 		} else {
--			ci_leaf_init(this_leaf++, type, level);
-+			ci_leaf_init(&infos[idx++], type, level);
- 		}
- 	}
- 	return 0;
--- 
-2.39.5
-
+ 	count = min_t(size_t, count, reg->size - off);
+ 
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -477,6 +482,11 @@ static ssize_t vfio_platform_write_mmio(
+ 
+ 	if (off >= reg->size)
+ 		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
++	if (off >= reg->size)
++		return -EINVAL;
+ 
+ 	count = min_t(size_t, count, reg->size - off);
+ 
 
 
 
