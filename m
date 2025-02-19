@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-116998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB16A3B3E6
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:31:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6EFA3B3F5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ABD816721A
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32264188D87F
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB671C68A6;
-	Wed, 19 Feb 2025 08:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEF71C5F30;
+	Wed, 19 Feb 2025 08:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUmwkQhr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wM0DP98J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12C11C3BF1;
-	Wed, 19 Feb 2025 08:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE7C1AF0C8;
+	Wed, 19 Feb 2025 08:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953891; cv=none; b=FPA8yzl+ZGcIJPTv9CkHdsPnORyi2M7P4c/7cn7PCSmGyzw26Mg6uDJCKaNNpO831302bJ7rua+Kkii6KjUf7RZuwYt8n/AlBNwRgq22nb0tI/FfCHzUTaoByqPC3amZ0GwNw4JDyxTy8/MK/eg1iPQbaEgf294Y3l1gjkV4Sao=
+	t=1739953897; cv=none; b=gyKOjxi9Kh8iuCCO/m+Iwb1Gr0r2TyYK8T/amneDa24xdGt0q4gc24IeKfRChlPQT0+qG87WrZ7stHXoAP4fg8Y4DjPhoUnCeVHIjlcHFNG3OSd9Jz9MpyBxAdue0ggXDR2FXF/fnfcfxIr0iQaiLch7p1zQ5RmJbMxiOZnoJ1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953891; c=relaxed/simple;
-	bh=W1Ye5HSQfLD/b4yePV3c8fYlDYbwW4B5wHYxKkkzSIE=;
+	s=arc-20240116; t=1739953897; c=relaxed/simple;
+	bh=/q8pT/sueomoMnUqDxXTowa04esvBQ0kh8wFhi3ddBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtsnHw15l05p6w6HSquz4veZ0lsdoLJpuyc+FeHZB5PZpzu7GRUa51yXzuQXT0S72WZ9Kvl/Nlc/n8jyxD+vqYpdkATekWBuAhEaW41MDO7A0ttZT9EvHJkyV1ZwnU9RhMG+WUHluqkhua6lvCYRAnR0Wc5EIZza0VtLQw7KAY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUmwkQhr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52724C4CED1;
-	Wed, 19 Feb 2025 08:31:31 +0000 (UTC)
+	 MIME-Version; b=rFUO0myPjuqUOTgCwq7N51+46UYOPJG2k3SSxn3vrxe3SH5m6voMOa0fvemL5u9nW68TJb+t/4KVl6H2yttVH7jCA0aYC0D/DaTkLsa+9xjWQ8lqWtx13rjO9mYipAjAMcfR0+8SexY5JxfSJQmJ+KIuTbfJxzISwpniY11gdVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wM0DP98J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8AEC4CED1;
+	Wed, 19 Feb 2025 08:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739953891;
-	bh=W1Ye5HSQfLD/b4yePV3c8fYlDYbwW4B5wHYxKkkzSIE=;
+	s=korg; t=1739953897;
+	bh=/q8pT/sueomoMnUqDxXTowa04esvBQ0kh8wFhi3ddBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUmwkQhr5lgiFrlWRdTtltHxBZ12uR3NiDRmLhIPvZ0Zd8OTZdU9QfZQB2m1IGeKK
-	 iy6Om/ZqwjDo3TisWSb98kny8MzPUjh8rordq8euT/e9SKIRXNiE7dMymXY+J6B97+
-	 KLUTWdh90wS9l1RMRMKC/pt4sKGNff//s6hqJAkE=
+	b=wM0DP98JJBHUDdSJO05e7o3EybItsjbj8lB3j1brIrpNEVZS/17y1bWKOi8AARqjJ
+	 Y0bRZToDbY5VqEzzF9sfQmPWSNq4TXRcYmJ3QE0uGv3EMHsJ6M68dUUz7TiWrOT708
+	 J0YgoT2JzOakv1S4B+wwskwI32lTNMkz0U4YpJWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Roopa Prabhu <roopa@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 029/274] vxlan: check vxlan_vnigroup_init() return value
-Date: Wed, 19 Feb 2025 09:24:43 +0100
-Message-ID: <20250219082610.675468944@linuxfoundation.org>
+Subject: [PATCH 6.13 030/274] LoongArch: Fix idle VS timer enqueue
+Date: Wed, 19 Feb 2025 09:24:44 +0100
+Message-ID: <20250219082610.713150919@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082609.533585153@linuxfoundation.org>
 References: <20250219082609.533585153@linuxfoundation.org>
@@ -69,73 +68,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
 
-[ Upstream commit 5805402dcc56241987bca674a1b4da79a249bab7 ]
+[ Upstream commit edb1942542bc538707cea221e9c7923a6270465f ]
 
-vxlan_init() must check vxlan_vnigroup_init() success
-otherwise a crash happens later, spotted by syzbot.
+LoongArch re-enables interrupts on its idle routine and performs a
+TIF_NEED_RESCHED check afterwards before putting the CPU to sleep.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000002c: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000160-0x0000000000000167]
-CPU: 0 UID: 0 PID: 7313 Comm: syz-executor147 Not tainted 6.14.0-rc1-syzkaller-00276-g69b54314c975 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
- RIP: 0010:vxlan_vnigroup_uninit+0x89/0x500 drivers/net/vxlan/vxlan_vnifilter.c:912
-Code: 00 48 8b 44 24 08 4c 8b b0 98 41 00 00 49 8d 86 60 01 00 00 48 89 c2 48 89 44 24 10 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 4d 04 00 00 49 8b 86 60 01 00 00 48 ba 00 00 00
-RSP: 0018:ffffc9000cc1eea8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000001 RCX: ffffffff8672effb
-RDX: 000000000000002c RSI: ffffffff8672ecb9 RDI: ffff8880461b4f18
-RBP: ffff8880461b4ef4 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000020000
-R13: ffff8880461b0d80 R14: 0000000000000000 R15: dffffc0000000000
-FS:  00007fecfa95d6c0(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fecfa95cfb8 CR3: 000000004472c000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  vxlan_uninit+0x1ab/0x200 drivers/net/vxlan/vxlan_core.c:2942
-  unregister_netdevice_many_notify+0x12d6/0x1f30 net/core/dev.c:11824
-  unregister_netdevice_many net/core/dev.c:11866 [inline]
-  unregister_netdevice_queue+0x307/0x3f0 net/core/dev.c:11736
-  register_netdevice+0x1829/0x1eb0 net/core/dev.c:10901
-  __vxlan_dev_create+0x7c6/0xa30 drivers/net/vxlan/vxlan_core.c:3981
-  vxlan_newlink+0xd1/0x130 drivers/net/vxlan/vxlan_core.c:4407
-  rtnl_newlink_create net/core/rtnetlink.c:3795 [inline]
-  __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+The IRQs firing between the check and the idle instruction may set the
+TIF_NEED_RESCHED flag. In order to deal with such a race, IRQs
+interrupting __arch_cpu_idle() rollback their return address to the
+beginning of __arch_cpu_idle() so that TIF_NEED_RESCHED is checked
+again before going back to sleep.
 
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Reported-by: syzbot+6a9624592218c2c5e7aa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67a9d9b4.050a0220.110943.002d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Roopa Prabhu <roopa@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250210105242.883482-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However idle IRQs can also queue timers that may require a tick
+reprogramming through a new generic idle loop iteration but those timers
+would go unnoticed here because __arch_cpu_idle() only checks
+TIF_NEED_RESCHED. It doesn't check for pending timers.
+
+Fix this with fast-forwarding idle IRQs return address to the end of the
+idle routine instead of the beginning, so that the generic idle loop can
+handle both TIF_NEED_RESCHED and pending timers.
+
+Fixes: 0603839b18f4 ("LoongArch: Add exception/interrupt handling")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/genex.S | 28 +++++++++++++++-------------
+ arch/loongarch/kernel/idle.c  |  3 +--
+ arch/loongarch/kernel/reset.c |  6 +++---
+ 3 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 9ea63059d52d7..cbe0f191a116b 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2904,8 +2904,11 @@ static int vxlan_init(struct net_device *dev)
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	int err;
+diff --git a/arch/loongarch/kernel/genex.S b/arch/loongarch/kernel/genex.S
+index 86d5d90ebefe5..4f09121417818 100644
+--- a/arch/loongarch/kernel/genex.S
++++ b/arch/loongarch/kernel/genex.S
+@@ -18,16 +18,19 @@
  
--	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER)
--		vxlan_vnigroup_init(vxlan);
-+	if (vxlan->cfg.flags & VXLAN_F_VNIFILTER) {
-+		err = vxlan_vnigroup_init(vxlan);
-+		if (err)
-+			return err;
-+	}
+ 	.align	5
+ SYM_FUNC_START(__arch_cpu_idle)
+-	/* start of rollback region */
+-	LONG_L	t0, tp, TI_FLAGS
+-	nop
+-	andi	t0, t0, _TIF_NEED_RESCHED
+-	bnez	t0, 1f
+-	nop
+-	nop
+-	nop
++	/* start of idle interrupt region */
++	ori	t0, zero, CSR_CRMD_IE
++	/* idle instruction needs irq enabled */
++	csrxchg	t0, t0, LOONGARCH_CSR_CRMD
++	/*
++	 * If an interrupt lands here; between enabling interrupts above and
++	 * going idle on the next instruction, we must *NOT* go idle since the
++	 * interrupt could have set TIF_NEED_RESCHED or caused an timer to need
++	 * reprogramming. Fall through -- see handle_vint() below -- and have
++	 * the idle loop take care of things.
++	 */
+ 	idle	0
+-	/* end of rollback region */
++	/* end of idle interrupt region */
+ 1:	jr	ra
+ SYM_FUNC_END(__arch_cpu_idle)
  
- 	err = gro_cells_init(&vxlan->gro_cells, dev);
- 	if (err)
+@@ -35,11 +38,10 @@ SYM_CODE_START(handle_vint)
+ 	UNWIND_HINT_UNDEFINED
+ 	BACKUP_T0T1
+ 	SAVE_ALL
+-	la_abs	t1, __arch_cpu_idle
++	la_abs	t1, 1b
+ 	LONG_L	t0, sp, PT_ERA
+-	/* 32 byte rollback region */
+-	ori	t0, t0, 0x1f
+-	xori	t0, t0, 0x1f
++	/* 3 instructions idle interrupt region */
++	ori	t0, t0, 0b1100
+ 	bne	t0, t1, 1f
+ 	LONG_S	t0, sp, PT_ERA
+ 1:	move	a0, sp
+diff --git a/arch/loongarch/kernel/idle.c b/arch/loongarch/kernel/idle.c
+index 0b5dd2faeb90b..54b247d8cdb69 100644
+--- a/arch/loongarch/kernel/idle.c
++++ b/arch/loongarch/kernel/idle.c
+@@ -11,7 +11,6 @@
+ 
+ void __cpuidle arch_cpu_idle(void)
+ {
+-	raw_local_irq_enable();
+-	__arch_cpu_idle(); /* idle instruction needs irq enabled */
++	__arch_cpu_idle();
+ 	raw_local_irq_disable();
+ }
+diff --git a/arch/loongarch/kernel/reset.c b/arch/loongarch/kernel/reset.c
+index 1ef8c63835351..de8fa5a8a825c 100644
+--- a/arch/loongarch/kernel/reset.c
++++ b/arch/loongarch/kernel/reset.c
+@@ -33,7 +33,7 @@ void machine_halt(void)
+ 	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+ 
+ 	while (true) {
+-		__arch_cpu_idle();
++		__asm__ __volatile__("idle 0" : : : "memory");
+ 	}
+ }
+ 
+@@ -53,7 +53,7 @@ void machine_power_off(void)
+ #endif
+ 
+ 	while (true) {
+-		__arch_cpu_idle();
++		__asm__ __volatile__("idle 0" : : : "memory");
+ 	}
+ }
+ 
+@@ -74,6 +74,6 @@ void machine_restart(char *command)
+ 		acpi_reboot();
+ 
+ 	while (true) {
+-		__arch_cpu_idle();
++		__asm__ __volatile__("idle 0" : : : "memory");
+ 	}
+ }
 -- 
 2.39.5
 
