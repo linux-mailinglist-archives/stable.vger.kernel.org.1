@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-117315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5A6A3B620
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:05:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BAB4A3B925
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24CBA178897
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:57:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B0877A6378
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648DD1CF284;
-	Wed, 19 Feb 2025 08:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2311C3F0A;
+	Wed, 19 Feb 2025 09:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf/bz0Sp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wELKlUkk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7FC1CDA14;
-	Wed, 19 Feb 2025 08:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD31BEF77;
+	Wed, 19 Feb 2025 09:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954891; cv=none; b=Hcc8q2SE8gXRUmv+vC6zbQKdmXbIP0iKA2jZZqU5THkTHEhXD+vKZ1N2ifL/13dMp03wbVCSgvLb2aRNklHkbxGK2t1DR4nqRXI9u40xKgSt71y4EFpFWqFZ+0dAaJwv2R2vflembweHgbdlRupP1DHeXlCQRuQb735ATtEpwJA=
+	t=1739957144; cv=none; b=tnL8Po5skhbdFXerCdORirMnXjVGaN6nm+AAEelPMGLfQO5r9eR5+1lJ1ZKVisBzHLIArekcVVDd293mi8AsZn/b8rhTmpAMJEELar0pTzE4hlpzbK2DD89mOy9Z4Z6py63+PAUD/ozcyr6UydekT5QOXsWOd16SWjZp2H6x6eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954891; c=relaxed/simple;
-	bh=y/dW4tlpsKfvXqntTYhCf5CzFYPhP/Lci8B08Ra97EY=;
+	s=arc-20240116; t=1739957144; c=relaxed/simple;
+	bh=6NiSsHeo+xskx4Xw/qByjcG6ylA1zU1ECLnSKJQmdf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyJLIb0v9yMbI5Nica4nLda+QPRj/t+AIRrFzvU6Ysgi5lRRcajT7F+9dTI7jVkSQtfFel1dWiy+NQFd5b6568b4Mf03GvzKvoxoAx/acag3vwP8Hz9+v0U+F/5JL0xFMSzFSpnqIWsYhbW2IsY83c7EhrxvBMANL0l3U7ZAILY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf/bz0Sp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC76C4CEE6;
-	Wed, 19 Feb 2025 08:48:10 +0000 (UTC)
+	 MIME-Version; b=h/+a/sBTn23PMNOKp8jm6Qz+NSvFxHQOCQFlTbr8U4ZNxrbRgmtIZoQnabLfBRftayFriNKznli1x+DX464Eup5K/OliJzyyC8OjQLoBdM5UsdsJa4m7uoNQwkWEtIpNhPpmxyljRCmOLQ7+6MEGsoHfBkk+YzgBSJ9+I9lTn+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wELKlUkk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C222C4CED1;
+	Wed, 19 Feb 2025 09:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739954891;
-	bh=y/dW4tlpsKfvXqntTYhCf5CzFYPhP/Lci8B08Ra97EY=;
+	s=korg; t=1739957143;
+	bh=6NiSsHeo+xskx4Xw/qByjcG6ylA1zU1ECLnSKJQmdf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qf/bz0SpTNoschSo3W6jmBbw4Ve8Pv6704Om28CjrzZTx419VJDxWaEXblQ8We+0N
-	 bKeIMC8uu8H5l/S+CaXe/TFijUp/AMEGjSuYC2N6/oVIcXVdFr75EXk1h5tPuNd9hb
-	 W5SfeoFtC7H0P/C+KPgOKA/BZ/U8YFTHx4HKD9oE=
+	b=wELKlUkkGt86ZO9XrG1BpBtz6HUrmtYTquaJvukWofXVbX/SqsoVLCndXe3IFwBxO
+	 61AvYQYthPBYE9u6OKOEizrPfNUMJdwnHUCPBR0BKCTls/zqQYSIPIXe/+4gIu3sZH
+	 6LD9Wg18MOjNKHYwURvL9BztqghbtUtAqStHzL5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/230] media: uvcvideo: Implement dual stream quirk to fix loss of usb packets
-Date: Wed, 19 Feb 2025 09:26:25 +0100
-Message-ID: <20250219082604.369496794@linuxfoundation.org>
+	Hou Tao <houtao1@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 382/578] dm-crypt: dont update io->sector after kcryptd_crypt_write_io_submit()
+Date: Wed, 19 Feb 2025 09:26:26 +0100
+Message-ID: <20250219082708.043741951@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
-References: <20250219082601.683263930@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit c2eda35e675b6ea4a0a21a4b1167b121571a9036 ]
+commit 9fdbbdbbc92b1474a87b89f8b964892a63734492 upstream.
 
-Some cameras, such as the Sonix Technology Co. 292A, exhibit issues when
-running two parallel streams, causing USB packets to be dropped when an
-H.264 stream posts a keyframe while an MJPEG stream is running
-simultaneously. This occasionally causes the driver to erroneously
-output two consecutive JPEG images as a single frame.
+The updates of io->sector are the leftovers when dm-crypt allocated
+pages for partial write request. However, since commit cf2f1abfbd0db
+("dm crypt: don't allocate pages for a partial request"), there is no
+partial request anymore.
 
-To fix this, we inspect the buffer, and trigger a new frame when we
-find an SOI.
+After the introduction of write request rb-tree, the updates of
+io->sectors may interfere the insertion procedure, because ->sectors of
+these write requests which have already been added in the rb-tree may be
+changed during the insertion of new write request.
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241128145144.61475-2-isaac.scott@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by removing these buggy updates of io->sectors. Considering these
+updates only effect the write request rb-tree, the commit which
+introduces the write request rb-tree is used as the fix tag.
+
+Fixes: b3c5fd305249 ("dm crypt: sort writes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 27 ++++++++++++++++++++++++++-
- drivers/media/usb/uvc/uvcvideo.h  |  1 +
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ drivers/md/dm-crypt.c |   14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index d2fe01bcd209e..eab7b8f557305 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -20,6 +20,7 @@
- #include <linux/atomic.h>
- #include <linux/unaligned.h>
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -2029,7 +2029,6 @@ static void kcryptd_crypt_write_continue
+ 	struct crypt_config *cc = io->cc;
+ 	struct convert_context *ctx = &io->ctx;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
  
-+#include <media/jpeg.h>
- #include <media/v4l2-common.h>
- 
- #include "uvcvideo.h"
-@@ -1137,6 +1138,7 @@ static void uvc_video_stats_stop(struct uvc_streaming *stream)
- static int uvc_video_decode_start(struct uvc_streaming *stream,
- 		struct uvc_buffer *buf, const u8 *data, int len)
- {
-+	u8 header_len;
- 	u8 fid;
- 
- 	/*
-@@ -1150,6 +1152,7 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
- 		return -EINVAL;
+ 	wait_for_completion(&ctx->restart);
+@@ -2046,10 +2045,8 @@ static void kcryptd_crypt_write_continue
  	}
  
-+	header_len = data[0];
- 	fid = data[1] & UVC_STREAM_FID;
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
  
- 	/*
-@@ -1231,9 +1234,31 @@ static int uvc_video_decode_start(struct uvc_streaming *stream,
- 		return -EAGAIN;
- 	}
- 
-+	/*
-+	 * Some cameras, when running two parallel streams (one MJPEG alongside
-+	 * another non-MJPEG stream), are known to lose the EOF packet for a frame.
-+	 * We can detect the end of a frame by checking for a new SOI marker, as
-+	 * the SOI always lies on the packet boundary between two frames for
-+	 * these devices.
-+	 */
-+	if (stream->dev->quirks & UVC_QUIRK_MJPEG_NO_EOF &&
-+	    (stream->cur_format->fcc == V4L2_PIX_FMT_MJPEG ||
-+	    stream->cur_format->fcc == V4L2_PIX_FMT_JPEG)) {
-+		const u8 *packet = data + header_len;
-+
-+		if (len >= header_len + 2 &&
-+		    packet[0] == 0xff && packet[1] == JPEG_MARKER_SOI &&
-+		    buf->bytesused != 0) {
-+			buf->state = UVC_BUF_STATE_READY;
-+			buf->error = 1;
-+			stream->last_fid ^= UVC_STREAM_FID;
-+			return -EAGAIN;
-+		}
-+	}
-+
- 	stream->last_fid = fid;
- 
--	return data[0];
-+	return header_len;
+ 	crypt_dec_pending(io);
  }
+@@ -2060,14 +2057,13 @@ static void kcryptd_crypt_write_convert(
+ 	struct convert_context *ctx = &io->ctx;
+ 	struct bio *clone;
+ 	int crypt_finished;
+-	sector_t sector = io->sector;
+ 	blk_status_t r;
  
- static inline enum dma_data_direction uvc_stream_dir(
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 272dc9cf01ee7..74ac2106f08e2 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -76,6 +76,7 @@
- #define UVC_QUIRK_NO_RESET_RESUME	0x00004000
- #define UVC_QUIRK_DISABLE_AUTOSUSPEND	0x00008000
- #define UVC_QUIRK_INVALID_DEVICE_SOF	0x00010000
-+#define UVC_QUIRK_MJPEG_NO_EOF		0x00020000
+ 	/*
+ 	 * Prevent io from disappearing until this function completes.
+ 	 */
+ 	crypt_inc_pending(io);
+-	crypt_convert_init(cc, ctx, NULL, io->base_bio, sector);
++	crypt_convert_init(cc, ctx, NULL, io->base_bio, io->sector);
  
- /* Format flags */
- #define UVC_FMT_FLAG_COMPRESSED		0x00000001
--- 
-2.39.5
-
+ 	clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
+ 	if (unlikely(!clone)) {
+@@ -2084,8 +2080,6 @@ static void kcryptd_crypt_write_convert(
+ 		io->ctx.iter_in = clone->bi_iter;
+ 	}
+ 
+-	sector += bio_sectors(clone);
+-
+ 	crypt_inc_pending(io);
+ 	r = crypt_convert(cc, ctx,
+ 			  test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags), true);
+@@ -2109,10 +2103,8 @@ static void kcryptd_crypt_write_convert(
+ 	}
+ 
+ 	/* Encryption was already finished, submit io now */
+-	if (crypt_finished) {
++	if (crypt_finished)
+ 		kcryptd_crypt_write_io_submit(io, 0);
+-		io->sector = sector;
+-	}
+ 
+ dec:
+ 	crypt_dec_pending(io);
 
 
 
