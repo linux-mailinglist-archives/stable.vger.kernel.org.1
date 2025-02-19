@@ -1,160 +1,261 @@
-Return-Path: <stable+bounces-118286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEB6A3C1DD
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 15:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B288A3C1D9
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 15:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F188E3A9F87
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2128E3A7CCD
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 14:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC72E1FDE01;
-	Wed, 19 Feb 2025 14:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97311F30A9;
+	Wed, 19 Feb 2025 14:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSsjidcM"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2+NLQTUM";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="R8r0Ax+L";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2+NLQTUM";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="R8r0Ax+L"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3011D1F30A9;
-	Wed, 19 Feb 2025 14:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5447C1F1522
+	for <stable@vger.kernel.org>; Wed, 19 Feb 2025 14:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739974197; cv=none; b=l005Ln3ybregdTmUpAf1tidEfpJCYDFKp19oEWfhQvwNN1RXH+hjG4Obn/yY50bFvL29IFh/F5KD03t9FA6aSq2TNXecnwkz31WigGgTchVB2mE8kyl9JQYgPyI/p3L7vvFR57SADmDlY1JfGd8ueavWpC4SMKpOnj+5hUKR8Fc=
+	t=1739974210; cv=none; b=i40VBnuhvjCE62UuuACZRqAkWr3ysxGVVpMMu76kFBgLggU1/dp6O0X/bLmyOLaBM3qAgM/YfgcYS1ECM6a1PwMaOA3BDZQupWMNlyo87OLIVfZtqbfV8quP26fxRJsiYFt4atTEklcJNq6kKM8BEKg8n3LpjsvqplR9D/SVth8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739974197; c=relaxed/simple;
-	bh=FmNh8i/+NBQdKhSxJQWTczf6sC4JYYzdaKEbQ/SujWk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J5DIQ4NHpsu83y1FyujdNu7GNWMBJ5zI1Wf3gz2BZS0CMkNQqlSrU9j5QSpiSBTA/DUFTb/qBHvk9ym2ERYJKiDpWSn74zUy6zEiYKO9CJUlBSM8TGDqVxjkgN5FhnH9pDbkXW79DYtbOWffFbIGtokOnw9EJskbU2SxN12jojE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSsjidcM; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739974196; x=1771510196;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FmNh8i/+NBQdKhSxJQWTczf6sC4JYYzdaKEbQ/SujWk=;
-  b=SSsjidcMyZQcdGiy48krTE/TXJSb9Xt+ZrL248UBopobKcjA7bO5CFC/
-   vWgTUYYxFO90jDB10vzRZ9mg26KBWSYSiBy6+LoRNIYaPDk33JYOMzPq1
-   Tw4kqzEB99ChQzMBwr5RfJNdYQElrzMQRFMvuB9EyrPDw1AH3dga2Qr1/
-   H3tBTw14qImCEYsD7ZtwFA87FoGKwZ0sD7ZuIOo+V7HY+HcRq52ZE9fw/
-   uiw/Y3H+PweDyqA2KxQ5h14QUnnwvFr6/PF+yGCHoIUo8RYMZGXxyZoRR
-   IHaMraVHth2ag38kJkRk8WHCbsMZ3HTqf2rIJG0TYlyH9PAmBts9baxzW
-   g==;
-X-CSE-ConnectionGUID: kXmosbpmS+uWfQaqo/6oWQ==
-X-CSE-MsgGUID: zOmLAjNnQDWlgVy+XJD1mQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="51351222"
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="51351222"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 06:09:55 -0800
-X-CSE-ConnectionGUID: FHBLuRzJSRSY2NCfTF611Q==
-X-CSE-MsgGUID: Y9EvvsvVS0O0u6GzPtvajg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="118860004"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by fmviesa003.fm.intel.com with ESMTP; 19 Feb 2025 06:09:55 -0800
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	linux-kernel@vger.kernel.org
-Cc: ak@linux.intel.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Amiri Khalil <amiri.khalil@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86/intel: Fix event constraints for LNC
-Date: Wed, 19 Feb 2025 06:10:05 -0800
-Message-Id: <20250219141005.2446823-1-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
+	s=arc-20240116; t=1739974210; c=relaxed/simple;
+	bh=ftdCmDrYrqznox9ADQ4gf+hDnwH6vudTD6dzNIMQxbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HADYts3CJ/ksuq/jBkPehqOAM05LQ7XA+tf/G0mJ6KKmN79xYh7A0o4FeK+NV5+8WepbBIdkJ/wol5Y9DqO62TPFhBii5fKbn00IqKfz3wfhW+lSch2ko0Z/162s1up25064c95+1k96XKRG+TLNxLlk385wfgze0+bdbOKcifo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2+NLQTUM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=R8r0Ax+L; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2+NLQTUM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=R8r0Ax+L; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 79275216E6;
+	Wed, 19 Feb 2025 14:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1739974206; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
+	b=2+NLQTUM01xofWCr15NmORqyOX215/vzarmlAKGe1ka94Nc/Kct1uSb9ok6CtuUWQstnhF
+	lKh66iO3AdKVFUMbm3wSK/dBLm5JzJG3y/WMEsGsB+EjsC72i5ScKQqNmDntO/JSD7UXJ/
+	37yBUCDXJLCoSCOcLn5X0puWuAkKFiM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1739974206;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
+	b=R8r0Ax+LaUrZP3ReaJlNwEtlm4J7t7O/NTrEy2g0u+Sga0+lHr40eR5gklYrG+8gour/pj
+	GnrJOO4EAfD/dPCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1739974206; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
+	b=2+NLQTUM01xofWCr15NmORqyOX215/vzarmlAKGe1ka94Nc/Kct1uSb9ok6CtuUWQstnhF
+	lKh66iO3AdKVFUMbm3wSK/dBLm5JzJG3y/WMEsGsB+EjsC72i5ScKQqNmDntO/JSD7UXJ/
+	37yBUCDXJLCoSCOcLn5X0puWuAkKFiM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1739974206;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=j0qvW9Ted+2fuZYC8Zw4Q6pvkin9Y9rXhmhvHhpbsXs=;
+	b=R8r0Ax+LaUrZP3ReaJlNwEtlm4J7t7O/NTrEy2g0u+Sga0+lHr40eR5gklYrG+8gour/pj
+	GnrJOO4EAfD/dPCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 526C813715;
+	Wed, 19 Feb 2025 14:10:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Q0LXEz7mtWdCFwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 19 Feb 2025 14:10:06 +0000
+Message-ID: <9155f04f-74d9-41a3-9690-2ba38b3d79f0@suse.cz>
+Date: Wed, 19 Feb 2025 15:10:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: How does swsusp work with randomization features?
+Content-Language: en-US
+To: Huacai Chen <chenhuacai@kernel.org>,
+ "Harry (Hyeonggon) Yoo" <42.hyeyoo@gmail.com>
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ linux-pm@vger.kernel.org, GONG Ruiqi <gongruiqi@huaweicloud.com>,
+ Xiu Jianfeng <xiujianfeng@huawei.com>, stable@vger.kernel.org,
+ Yuli Wang <wangyuli@uniontech.com>, Christoph Lameter <cl@linux.com>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Pekka Enberg
+ <penberg@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Kees Cook <kees@kernel.org>, GONG Ruiqi <gongruiqi1@huawei.com>
+References: <20250212141648.599661-1-chenhuacai@loongson.cn>
+ <CAB=+i9QoegJsP2KTQqrUM75=T4-EgGDU6Ow5jmFDJ+p6srFfEw@mail.gmail.com>
+ <CAAhV-H7i=WJmdFCCtY5DgE2eN657ddJwJwHGK1jgLKRte+VnEg@mail.gmail.com>
+ <Z68N4lTIIwudzcLY@MacBook-Air-5.local>
+ <CAAhV-H5sFkdcLbvqYBGV2PM1+MOF5NMxwt+pCF9K6MhUu+R63Q@mail.gmail.com>
+ <Z686y7g9OZ0DhT7Q@MacBook-Air-5.local>
+ <CAAhV-H4BSWC+K=qQfmHfdXuDqUgGcBLZ7Ftb6VEKs1QYVd6wxg@mail.gmail.com>
+ <Z7CfLlEw9vtbFJwI@MacBook-Air-5.local>
+ <CAAhV-H40eTo+tUx8b8=j4_9sfq7i9wo-LSO9pHKmRU7=wDDdbw@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <CAAhV-H40eTo+tUx8b8=j4_9sfq7i9wo-LSO9pHKmRU7=wDDdbw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.80
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TAGGED_RCPT(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Kan Liang <kan.liang@linux.intel.com>
+On 2/16/25 06:08, Huacai Chen wrote:
+> On Sat, Feb 15, 2025 at 10:05 PM Harry (Hyeonggon) Yoo
+> <42.hyeyoo@gmail.com> wrote:
+>>
+>>
+>> You mean when SLAB_FREELIST_RANDOM enabled?
+>> Assuming that...
+> Yes.
+> 
+>>
+>> > the CPU1's idle task stack from
+>> > the booting kernel may be the CPU2's idle task stack from the target
+>> > kernel, and CPU2's idle task stack from the booting kernel may be the
+>> > CPU1's idle task stack from the target kernel
+>>
 
-According to the latest event list, update the event constraint tables
-for Lion Cove core.
+The freelist can have more objects than the number of cpus and then it's not
+just exchanging stacks between cpus but also with whatever else allocates
+from the same slab.
 
-The general rule (the event codes < 0x90 are restricted to counters
-0-3.) has been removed. There is no restriction for most of the
-performance monitoring events.
+>> What happens if it's not the case?
+> SLAB means "objects with the same type", right? So it is probably the
 
-Fixes: a932aa0e868f ("perf/x86: Add Lunar Lake and Arrow Lake support")
-Reported-by: Amiri Khalil <amiri.khalil@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/intel/core.c | 20 +++++++-------------
- arch/x86/events/intel/ds.c   |  2 +-
- 2 files changed, 8 insertions(+), 14 deletions(-)
+kmalloc() is not objects of the same type, just size
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index da70526194b0..051a5bea0568 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -397,34 +397,28 @@ static struct event_constraint intel_lnc_event_constraints[] = {
- 	METRIC_EVENT_CONSTRAINT(INTEL_TD_METRIC_FETCH_LAT, 6),
- 	METRIC_EVENT_CONSTRAINT(INTEL_TD_METRIC_MEM_BOUND, 7),
- 
-+	INTEL_EVENT_CONSTRAINT(0x20, 0xf),
-+
-+	INTEL_UEVENT_CONSTRAINT(0x012a, 0xf),
-+	INTEL_UEVENT_CONSTRAINT(0x012b, 0xf),
- 	INTEL_UEVENT_CONSTRAINT(0x0148, 0x4),
- 	INTEL_UEVENT_CONSTRAINT(0x0175, 0x4),
- 
- 	INTEL_EVENT_CONSTRAINT(0x2e, 0x3ff),
- 	INTEL_EVENT_CONSTRAINT(0x3c, 0x3ff),
--	/*
--	 * Generally event codes < 0x90 are restricted to counters 0-3.
--	 * The 0x2E and 0x3C are exception, which has no restriction.
--	 */
--	INTEL_EVENT_CONSTRAINT_RANGE(0x01, 0x8f, 0xf),
- 
--	INTEL_UEVENT_CONSTRAINT(0x01a3, 0xf),
--	INTEL_UEVENT_CONSTRAINT(0x02a3, 0xf),
- 	INTEL_UEVENT_CONSTRAINT(0x08a3, 0x4),
- 	INTEL_UEVENT_CONSTRAINT(0x0ca3, 0x4),
- 	INTEL_UEVENT_CONSTRAINT(0x04a4, 0x1),
- 	INTEL_UEVENT_CONSTRAINT(0x08a4, 0x1),
- 	INTEL_UEVENT_CONSTRAINT(0x10a4, 0x1),
- 	INTEL_UEVENT_CONSTRAINT(0x01b1, 0x8),
-+	INTEL_UEVENT_CONSTRAINT(0x01cd, 0x3fc),
- 	INTEL_UEVENT_CONSTRAINT(0x02cd, 0x3),
--	INTEL_EVENT_CONSTRAINT(0xce, 0x1),
- 
- 	INTEL_EVENT_CONSTRAINT_RANGE(0xd0, 0xdf, 0xf),
--	/*
--	 * Generally event codes >= 0x90 are likely to have no restrictions.
--	 * The exception are defined as above.
--	 */
--	INTEL_EVENT_CONSTRAINT_RANGE(0x90, 0xfe, 0x3ff),
-+
-+	INTEL_UEVENT_CONSTRAINT(0x00e0, 0xf),
- 
- 	EVENT_CONSTRAINT_END
- };
-diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
-index df9499d6e4dc..a04618c47f05 100644
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1199,7 +1199,7 @@ struct event_constraint intel_lnc_pebs_event_constraints[] = {
- 	INTEL_FLAGS_UEVENT_CONSTRAINT(0x100, 0x100000000ULL),	/* INST_RETIRED.PREC_DIST */
- 	INTEL_FLAGS_UEVENT_CONSTRAINT(0x0400, 0x800000000ULL),
- 
--	INTEL_HYBRID_LDLAT_CONSTRAINT(0x1cd, 0x3ff),
-+	INTEL_HYBRID_LDLAT_CONSTRAINT(0x1cd, 0x3fc),
- 	INTEL_HYBRID_STLAT_CONSTRAINT(0x2cd, 0x3),
- 	INTEL_FLAGS_UEVENT_CONSTRAINT_DATALA_LD(0x11d0, 0xf),	/* MEM_INST_RETIRED.STLB_MISS_LOADS */
- 	INTEL_FLAGS_UEVENT_CONSTRAINT_DATALA_ST(0x12d0, 0xf),	/* MEM_INST_RETIRED.STLB_MISS_STORES */
--- 
-2.38.1
+> case. Yes, there is a very very low possibility that not the case,
+> but...
+> 
+> In theory x86_64 also has a low possibility that the idle task's stack
+> or other metadata be overwritten, then should we also disable random
+> kmalloc for x86_64?
+
+Does x86 really have such possibility? Can you explain in more detail?
+
+> On the other hand, if we really need to handle this theoretic
+> possibility about SLAB_FREELIST_RANDOM now, we can simply move
+> init_freelist_randomization() after all initcalls, too.
+
+I think a more robust approach would be to make sure any allocations
+critical for hibernation/resume are static? Are there really multiple CPU's
+idle task stacks involved? Aren't the critical paths single cpu only? I'd
+assume when multiple cpus might be running at that phase, all bets about
+determinism are off? So there could be a statically allocated stack for the
+single cpu?
+
+Note I don't know much about how hibernation works. But it seems fragile to
+rely on rather complex allocators (slab over page allocators) to give me
+exactly the same addresses accross boots, and hack around their
+randomization features to help with that, if there's an alternative to use
+static allocations for the critical pieces of the hibernation/resume code.
+
+> Huacai
+> 
+>>
+>> > but idle task's stack
+>> > from the booting kernel won't be other things from the target kernel
+>> > (and won't be overwritten by switching kernel).
+>>
+>> What guarantees that it won't be overwritten?
+>> To me it seems to be a fragile assumption that could be broken.
+>>
+>> Am I missing something?
+>>
+>> --
+>> Harry
+> 
 
 
