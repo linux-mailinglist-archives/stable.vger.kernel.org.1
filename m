@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-118172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D51A3BA5C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC08CA3B6F8
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E78F3B7CF3
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B46233B6E87
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60701E0DCB;
-	Wed, 19 Feb 2025 09:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F0C1EB9FF;
+	Wed, 19 Feb 2025 08:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qx6lzgqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkdrKCx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7CF1E0B80;
-	Wed, 19 Feb 2025 09:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32C41BEF71;
+	Wed, 19 Feb 2025 08:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957442; cv=none; b=VhRxZ22kMby8KpeFwZXNH9s8krw90cTtLpTvOkZJ+EdOeLIrzEhX6zHc7E7Zi5kpVj6oGKThYaivdttpHKR9dZAGubwHSzHReHjt4A1s01UEOq475nCXY+NoYRwZHxkpjB3nGqFOKvEggdeO3lAlyxCveQsWQfUk/WfF6ML902A=
+	t=1739955345; cv=none; b=e1K4Uq4pyE+tXi4+ztnjG0cUehixkpcnd9jHAwjKwHt1nymv/vsDa0b84C3a5Vh9kTu/S2mtshBuQQ7nujxiotvUY/UIWR9k4mKmJqJ46jpbnP5zRajnbbCetb+yT6elXz0A/lp2hm5/aTBPYJFN+8quGyClcMpWbZvtroiV03c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957442; c=relaxed/simple;
-	bh=oTKxrx7iydYZiFB66ttmt4p/MGJcThyOGwoFRxKKx7c=;
+	s=arc-20240116; t=1739955345; c=relaxed/simple;
+	bh=+FmMO/MG27VG0Rzwvnuxd2hpRn0vi9nsMgsNiwHfq7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICG4/PVt6bsjBP7xUhwuCNqCpwAX2WUkb1PreK2uHC20Gq/Wt6Qd+cfxCqUbJ8LjjFv86TFrgvujkpoQNketGfDjIrTx7AXYMi/sSIb7od08ehWHhG42Z8lzoH6lJta6Rwb25zmZ5caX3TxH143ww355Nr5NHI+2y7jCQTnzWe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qx6lzgqD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82D0C4CED1;
-	Wed, 19 Feb 2025 09:30:41 +0000 (UTC)
+	 MIME-Version; b=JrptZryyr+ZnuQCW2HrPP61/IbS6DfMfdp1Nj+NZ94U5meBDOFH33EXwiCJHcUv2uknix6qlrNvJXcYdDI+AEHQY/GClnLdsLCEb/WtkYJSKrmLyT9JwOMZ6/X8LRaWvGxCKXU2kw4QaqJ1ta5EYjWYtIDLtMdpjafzrZH81qpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkdrKCx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02407C4CED1;
+	Wed, 19 Feb 2025 08:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957442;
-	bh=oTKxrx7iydYZiFB66ttmt4p/MGJcThyOGwoFRxKKx7c=;
+	s=korg; t=1739955344;
+	bh=+FmMO/MG27VG0Rzwvnuxd2hpRn0vi9nsMgsNiwHfq7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qx6lzgqDJ+Pz6RCP5cDFt8qM6QjJcpxZ4wMlCA6eoefWl2MNz4Zxp7Ehs7WijUVnI
-	 3l4+e/55PhtFckTX6/hzPBiJs8nHYkTapAAgbYSvadJ873zWV7/W3gbMqcP3iNYscz
-	 5wphBVnolBQ+8GAkpH3ir7ThEyoFaLpBh3EvNSk8=
+	b=KkdrKCx7gGZLxfE3J3IZLJjyzulBSQ9GidKPrJc1/UqjcxccZIskJPCjyHT86jmSs
+	 D/w6fNnpJbh/Nr0Kxvj+/X67ysN4yEa1R6GBXR1X7Yvre+b3WzOdQVonRSmC+vMjVs
+	 FyYqv2mQEjHnTe6MTxYBQGPHVheWQPIccrMwsess=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Pavel Pisa <pisa@cmp.felk.cvut.cz>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 520/578] can: ctucanfd: handle skb allocation failure
+	Jonathan Cormier <jcormier@criticallink.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.12 207/230] drm/tidss: Clear the interrupt status for interrupts being disabled
 Date: Wed, 19 Feb 2025 09:28:44 +0100
-Message-ID: <20250219082713.431220870@linuxfoundation.org>
+Message-ID: <20250219082609.792668488@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-commit 9bd24927e3eeb85642c7baa3b28be8bea6c2a078 upstream.
+commit 361a2ebb5cad211732ec3c5d962de49b21895590 upstream.
 
-If skb allocation fails, the pointer to struct can_frame is NULL. This
-is actually handled everywhere inside ctucan_err_interrupt() except for
-the only place.
+The driver does not touch the irqstatus register when it is disabling
+interrupts.  This might cause an interrupt to trigger for an interrupt
+that was just disabled.
 
-Add the missed NULL check.
+To fix the issue, clear the irqstatus registers right after disabling
+the interrupts.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-source IP core - bus independent part.")
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250114152138.139580-1-pchelkin@ispras.ru
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reported-by: Jonathan Cormier <jcormier@criticallink.com>
+Closes: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1394222/am625-issue-about-tidss-rcu_preempt-self-detected-stall-on-cpu/5424479#5424479
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+[Tomi: mostly rewrote the patch]
+Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
+Tested-by: Jonathan Cormier <jcormier@criticallink.com>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-5-82ddaec94e4a@ideasonboard.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/ctucanfd/ctucanfd_base.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/ctucanfd/ctucanfd_base.c
-+++ b/drivers/net/can/ctucanfd/ctucanfd_base.c
-@@ -867,10 +867,12 @@ static void ctucan_err_interrupt(struct
- 			}
- 			break;
- 		case CAN_STATE_ERROR_ACTIVE:
--			cf->can_id |= CAN_ERR_CNT;
--			cf->data[1] = CAN_ERR_CRTL_ACTIVE;
--			cf->data[6] = bec.txerr;
--			cf->data[7] = bec.rxerr;
-+			if (skb) {
-+				cf->can_id |= CAN_ERR_CNT;
-+				cf->data[1] = CAN_ERR_CRTL_ACTIVE;
-+				cf->data[6] = bec.txerr;
-+				cf->data[7] = bec.rxerr;
-+			}
- 			break;
- 		default:
- 			netdev_warn(ndev, "unhandled error state (%d:%s)!\n",
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -700,7 +700,7 @@ void dispc_k2g_set_irqenable(struct disp
+ {
+ 	dispc_irq_t old_mask = dispc_k2g_read_irqenable(dispc);
+ 
+-	/* clear the irqstatus for newly enabled irqs */
++	/* clear the irqstatus for irqs that will be enabled */
+ 	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & mask);
+ 
+ 	dispc_k2g_vp_set_irqenable(dispc, 0, mask);
+@@ -708,6 +708,9 @@ void dispc_k2g_set_irqenable(struct disp
+ 
+ 	dispc_write(dispc, DISPC_IRQENABLE_SET, (1 << 0) | (1 << 7));
+ 
++	/* clear the irqstatus for irqs that were disabled */
++	dispc_k2g_clear_irqstatus(dispc, (mask ^ old_mask) & old_mask);
++
+ 	/* flush posted write */
+ 	dispc_k2g_read_irqenable(dispc);
+ }
+@@ -839,7 +842,7 @@ static void dispc_k3_set_irqenable(struc
+ 
+ 	old_mask = dispc_k3_read_irqenable(dispc);
+ 
+-	/* clear the irqstatus for newly enabled irqs */
++	/* clear the irqstatus for irqs that will be enabled */
+ 	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & mask);
+ 
+ 	for (i = 0; i < dispc->feat->num_vps; ++i) {
+@@ -864,6 +867,9 @@ static void dispc_k3_set_irqenable(struc
+ 	if (main_disable)
+ 		dispc_write(dispc, DISPC_IRQENABLE_CLR, main_disable);
+ 
++	/* clear the irqstatus for irqs that were disabled */
++	dispc_k3_clear_irqstatus(dispc, (old_mask ^ mask) & old_mask);
++
+ 	/* Flush posted writes */
+ 	dispc_read(dispc, DISPC_IRQENABLE_SET);
+ }
 
 
 
