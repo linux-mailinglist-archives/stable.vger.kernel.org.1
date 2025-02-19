@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-117998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20A3A3B975
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:33:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C77A3B924
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1468617F23D
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DB593A623A
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADE41CCEE7;
-	Wed, 19 Feb 2025 09:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC561CAA65;
+	Wed, 19 Feb 2025 09:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM0KyhmM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQMcS5fK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDEE1C5F0C;
-	Wed, 19 Feb 2025 09:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3EA1805B;
+	Wed, 19 Feb 2025 09:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956947; cv=none; b=L+RbGgbj3zs/hYPDmmZRFrGQLs0s1KmhKVx1viaQwXTJQpWRc1k5LEZwcxlzk/jRRECDqHtEbSO1T8ViIhPvlWhyhyEB/V1oWydyZ1r2YRcKZ9UAJHqjSMaTBx1pbCkQ3DYTaXKQ8bz4Qlw3OdsoG6W+yebRVtH7KgA3KtH4nc0=
+	t=1739956852; cv=none; b=W43nEzZgXfUwqWwgGin3w/mNve+tSkfoEOW2GfBOshREj9yJoj52m9YOqr7F4wU7orgu1aJc0nKQODxx7G8WTz7I9uya0BL1HFN9/hbVEBRVEwrAeQ5yU2Cw60dYP3ARgJTKzGDkd9xrLWdtG+k5934SRwBtOUznHx0J1VMErHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956947; c=relaxed/simple;
-	bh=R8twkDqWYpJnWLo2dE7wOff1ki4wRb06e8jh9lPPCRo=;
+	s=arc-20240116; t=1739956852; c=relaxed/simple;
+	bh=rGGiPVLWjhKreuVjCHKDFU3UG8KMU7QX3WQc7/j7AeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIEcOeco8WRp056dGQL5cpj1u7uh4cArD5Fp3UXXdqg61JamXNPkiNf5yV2ieNDqYwmBeCnv15OnL3N5Z383FRGchJQ2SW9oK5Ck65UY9gAjl6mo7xfN2YGAU8JZJRH8cyi2lvmC9f18J9/gFwUxt9B4GIrHbPgNbteLgnczhes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM0KyhmM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441B2C4CED1;
-	Wed, 19 Feb 2025 09:22:27 +0000 (UTC)
+	 MIME-Version; b=ULi7hXPhMygeVQ18nkU7s4S/v38vR1RqSK3hVQH5yYQ9RXzqiMzPeKop0klJqaPhzkDrk3f1lUInoEyZZlC9qNtKSvrnoGmyWIbwqTFwLqKWxiqZAJ5oOU8wnBPU/HY+HUO+n/TRzNw/t0qtCEMziX6JNXWZ8g1mGiBGvpPdzTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQMcS5fK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA8DC4CED1;
+	Wed, 19 Feb 2025 09:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739956947;
-	bh=R8twkDqWYpJnWLo2dE7wOff1ki4wRb06e8jh9lPPCRo=;
+	s=korg; t=1739956851;
+	bh=rGGiPVLWjhKreuVjCHKDFU3UG8KMU7QX3WQc7/j7AeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DM0KyhmMX3KrOPewzkHslzg1lnS2AIKgdbHCSXGGHW08ruOrqpaDkociF+uZZq/md
-	 3yJcVh8v1CnfSWt5Ocp7bEdP8/arn0K2REJ4K1KXDYnF/CgIwVAerUjN0QjLNgblDZ
-	 glMJTTP5My9RQmqCAMSL4jVQA669Fvd0ToS4jjwU=
+	b=IQMcS5fK6B+zwLNRqpE74UK8uavElB1UiYKS2d2giXHqNiqbcnWpTH7CP957EuA5m
+	 aZO0DGln2ebNsjNrxtLrctrYVeVWzJ1rEsuGW5gPxXT5h9uF+pwajqQVxgs7tz5xk6
+	 Csc/fzlUul9I2JseUpyEpFg5xJaZomgdi68zhp6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Peter Chen <peter.chen@kernel.org>,
+	Peter Delevoryas <peter@pjd.dev>,
+	Patrick Williams <patrick@stwcx.xyz>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 314/578] usb: chipidea: ci_hdrc_imx: decrement devices refcount in .remove() and in the error path of .probe()
-Date: Wed, 19 Feb 2025 09:25:18 +0100
-Message-ID: <20250219082705.368338261@linuxfoundation.org>
+Subject: [PATCH 6.1 315/578] net/ncsi: Add NC-SI 1.2 Get MC MAC Address command
+Date: Wed, 19 Feb 2025 09:25:19 +0100
+Message-ID: <20250219082705.406856390@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
 References: <20250219082652.891560343@linuxfoundation.org>
@@ -67,112 +67,171 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Peter Delevoryas <peter@pjd.dev>
 
-[ Upstream commit 74adad500346fb07d69af2c79acbff4adb061134 ]
+[ Upstream commit b8291cf3d1180b5b61299922f17c9441616a805a ]
 
-Current implementation of ci_hdrc_imx_driver does not decrement the
-refcount of the device obtained in usbmisc_get_init_data(). Add a
-put_device() call in .remove() and in .probe() before returning an
-error.
+This change adds support for the NC-SI 1.2 Get MC MAC Address command,
+specified here:
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+https://www.dmtf.org/sites/default/files/standards/documents/DSP0222_1.2.0.pdf
 
-Cc: stable <stable@kernel.org>
-Fixes: f40017e0f332 ("chipidea: usbmisc_imx: Add USB support for VF610 SoCs")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20241216015539.352579-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It serves the exact same function as the existing OEM Get MAC Address
+commands, so if a channel reports that it supports NC-SI 1.2, we prefer
+to use the standard command rather than the OEM command.
+
+Verified with an invalid MAC address and 2 valid ones:
+
+[   55.137072] ftgmac100 1e690000.ftgmac eth0: NCSI: Received 3 provisioned MAC addresses
+[   55.137614] ftgmac100 1e690000.ftgmac eth0: NCSI: MAC address 0: 00:00:00:00:00:00
+[   55.138026] ftgmac100 1e690000.ftgmac eth0: NCSI: MAC address 1: fa:ce:b0:0c:20:22
+[   55.138528] ftgmac100 1e690000.ftgmac eth0: NCSI: MAC address 2: fa:ce:b0:0c:20:23
+[   55.139241] ftgmac100 1e690000.ftgmac eth0: NCSI: Unable to assign 00:00:00:00:00:00 to device
+[   55.140098] ftgmac100 1e690000.ftgmac eth0: NCSI: Set MAC address to fa:ce:b0:0c:20:22
+
+Signed-off-by: Peter Delevoryas <peter@pjd.dev>
+Signed-off-by: Patrick Williams <patrick@stwcx.xyz>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 9e2bbab94b88 ("net/ncsi: fix locking in Get MAC Address handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ net/ncsi/ncsi-cmd.c    |  3 ++-
+ net/ncsi/ncsi-manage.c |  9 +++++++--
+ net/ncsi/ncsi-pkt.h    | 10 ++++++++++
+ net/ncsi/ncsi-rsp.c    | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 59 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 362dcb2374bb7..07872440a8d96 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -357,25 +357,29 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 		data->pinctrl = devm_pinctrl_get(dev);
- 		if (PTR_ERR(data->pinctrl) == -ENODEV)
- 			data->pinctrl = NULL;
--		else if (IS_ERR(data->pinctrl))
--			return dev_err_probe(dev, PTR_ERR(data->pinctrl),
-+		else if (IS_ERR(data->pinctrl)) {
-+			ret = dev_err_probe(dev, PTR_ERR(data->pinctrl),
- 					     "pinctrl get failed\n");
-+			goto err_put;
+diff --git a/net/ncsi/ncsi-cmd.c b/net/ncsi/ncsi-cmd.c
+index dda8b76b77988..7be177f551731 100644
+--- a/net/ncsi/ncsi-cmd.c
++++ b/net/ncsi/ncsi-cmd.c
+@@ -269,7 +269,8 @@ static struct ncsi_cmd_handler {
+ 	{ NCSI_PKT_CMD_GPS,    0, ncsi_cmd_handler_default },
+ 	{ NCSI_PKT_CMD_OEM,   -1, ncsi_cmd_handler_oem     },
+ 	{ NCSI_PKT_CMD_PLDM,   0, NULL                     },
+-	{ NCSI_PKT_CMD_GPUUID, 0, ncsi_cmd_handler_default }
++	{ NCSI_PKT_CMD_GPUUID, 0, ncsi_cmd_handler_default },
++	{ NCSI_PKT_CMD_GMCMA,  0, ncsi_cmd_handler_default }
+ };
+ 
+ static struct ncsi_request *ncsi_alloc_command(struct ncsi_cmd_arg *nca)
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 760b33fa03a8b..4583b29971933 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1040,11 +1040,16 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 	case ncsi_dev_state_config_oem_gma:
+ 		nd->state = ncsi_dev_state_config_clear_vids;
+ 
+-		nca.type = NCSI_PKT_CMD_OEM;
+ 		nca.package = np->id;
+ 		nca.channel = nc->id;
+ 		ndp->pending_req_num = 1;
+-		ret = ncsi_gma_handler(&nca, nc->version.mf_id);
++		if (nc->version.major >= 1 && nc->version.minor >= 2) {
++			nca.type = NCSI_PKT_CMD_GMCMA;
++			ret = ncsi_xmit_cmd(&nca);
++		} else {
++			nca.type = NCSI_PKT_CMD_OEM;
++			ret = ncsi_gma_handler(&nca, nc->version.mf_id);
 +		}
+ 		if (ret < 0)
+ 			schedule_work(&ndp->work);
  
- 		data->hsic_pad_regulator =
- 				devm_regulator_get_optional(dev, "hsic");
- 		if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
- 			/* no pad regualator is needed */
- 			data->hsic_pad_regulator = NULL;
--		} else if (IS_ERR(data->hsic_pad_regulator))
--			return dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
-+		} else if (IS_ERR(data->hsic_pad_regulator)) {
-+			ret = dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
- 					     "Get HSIC pad regulator error\n");
-+			goto err_put;
-+		}
+diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
+index c9d1da34dc4dc..f2f3b5c1b9412 100644
+--- a/net/ncsi/ncsi-pkt.h
++++ b/net/ncsi/ncsi-pkt.h
+@@ -338,6 +338,14 @@ struct ncsi_rsp_gpuuid_pkt {
+ 	__be32                  checksum;
+ };
  
- 		if (data->hsic_pad_regulator) {
- 			ret = regulator_enable(data->hsic_pad_regulator);
- 			if (ret) {
- 				dev_err(dev,
- 					"Failed to enable HSIC pad regulator\n");
--				return ret;
-+				goto err_put;
- 			}
- 		}
- 	}
-@@ -389,13 +393,14 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 			dev_err(dev,
- 				"pinctrl_hsic_idle lookup failed, err=%ld\n",
- 					PTR_ERR(pinctrl_hsic_idle));
--			return PTR_ERR(pinctrl_hsic_idle);
-+			ret = PTR_ERR(pinctrl_hsic_idle);
-+			goto err_put;
- 		}
++/* Get MC MAC Address */
++struct ncsi_rsp_gmcma_pkt {
++	struct ncsi_rsp_pkt_hdr rsp;
++	unsigned char           address_count;
++	unsigned char           reserved[3];
++	unsigned char           addresses[][ETH_ALEN];
++};
++
+ /* AEN: Link State Change */
+ struct ncsi_aen_lsc_pkt {
+ 	struct ncsi_aen_pkt_hdr aen;        /* AEN header      */
+@@ -398,6 +406,7 @@ struct ncsi_aen_hncdsc_pkt {
+ #define NCSI_PKT_CMD_GPUUID	0x52 /* Get package UUID                 */
+ #define NCSI_PKT_CMD_QPNPR	0x56 /* Query Pending NC PLDM request */
+ #define NCSI_PKT_CMD_SNPR	0x57 /* Send NC PLDM Reply  */
++#define NCSI_PKT_CMD_GMCMA	0x58 /* Get MC MAC Address */
  
- 		ret = pinctrl_select_state(data->pinctrl, pinctrl_hsic_idle);
- 		if (ret) {
- 			dev_err(dev, "hsic_idle select failed, err=%d\n", ret);
--			return ret;
-+			goto err_put;
- 		}
  
- 		data->pinctrl_hsic_active = pinctrl_lookup_state(data->pinctrl,
-@@ -404,7 +409,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 			dev_err(dev,
- 				"pinctrl_hsic_active lookup failed, err=%ld\n",
- 					PTR_ERR(data->pinctrl_hsic_active));
--			return PTR_ERR(data->pinctrl_hsic_active);
-+			ret = PTR_ERR(data->pinctrl_hsic_active);
-+			goto err_put;
- 		}
- 	}
+ /* NCSI packet responses */
+@@ -433,6 +442,7 @@ struct ncsi_aen_hncdsc_pkt {
+ #define NCSI_PKT_RSP_GPUUID	(NCSI_PKT_CMD_GPUUID + 0x80)
+ #define NCSI_PKT_RSP_QPNPR	(NCSI_PKT_CMD_QPNPR   + 0x80)
+ #define NCSI_PKT_RSP_SNPR	(NCSI_PKT_CMD_SNPR   + 0x80)
++#define NCSI_PKT_RSP_GMCMA	(NCSI_PKT_CMD_GMCMA  + 0x80)
  
-@@ -504,6 +510,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	if (pdata.flags & CI_HDRC_PMQOS)
- 		cpu_latency_qos_remove_request(&data->pm_qos_req);
- 	data->ci_pdev = NULL;
-+err_put:
-+	put_device(data->usbmisc_data->dev);
+ /* NCSI response code/reason */
+ #define NCSI_PKT_RSP_C_COMPLETED	0x0000 /* Command Completed        */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index f22d67cb04d37..e28be33bdf2c4 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1093,6 +1093,44 @@ static int ncsi_rsp_handler_netlink(struct ncsi_request *nr)
  	return ret;
  }
  
-@@ -527,6 +535,7 @@ static void ci_hdrc_imx_remove(struct platform_device *pdev)
- 		if (data->hsic_pad_regulator)
- 			regulator_disable(data->hsic_pad_regulator);
- 	}
-+	put_device(data->usbmisc_data->dev);
- }
++static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
++{
++	struct ncsi_dev_priv *ndp = nr->ndp;
++	struct net_device *ndev = ndp->ndev.dev;
++	struct ncsi_rsp_gmcma_pkt *rsp;
++	struct sockaddr saddr;
++	int ret = -1;
++	int i;
++
++	rsp = (struct ncsi_rsp_gmcma_pkt *)skb_network_header(nr->rsp);
++	saddr.sa_family = ndev->type;
++	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
++
++	netdev_info(ndev, "NCSI: Received %d provisioned MAC addresses\n",
++		    rsp->address_count);
++	for (i = 0; i < rsp->address_count; i++) {
++		netdev_info(ndev, "NCSI: MAC address %d: %02x:%02x:%02x:%02x:%02x:%02x\n",
++			    i, rsp->addresses[i][0], rsp->addresses[i][1],
++			    rsp->addresses[i][2], rsp->addresses[i][3],
++			    rsp->addresses[i][4], rsp->addresses[i][5]);
++	}
++
++	for (i = 0; i < rsp->address_count; i++) {
++		memcpy(saddr.sa_data, &rsp->addresses[i], ETH_ALEN);
++		ret = ndev->netdev_ops->ndo_set_mac_address(ndev, &saddr);
++		if (ret < 0) {
++			netdev_warn(ndev, "NCSI: Unable to assign %pM to device\n",
++				    saddr.sa_data);
++			continue;
++		}
++		netdev_warn(ndev, "NCSI: Set MAC address to %pM\n", saddr.sa_data);
++		break;
++	}
++
++	ndp->gma_flag = ret == 0;
++	return ret;
++}
++
+ static struct ncsi_rsp_handler {
+ 	unsigned char	type;
+ 	int             payload;
+@@ -1129,7 +1167,8 @@ static struct ncsi_rsp_handler {
+ 	{ NCSI_PKT_RSP_PLDM,   -1, ncsi_rsp_handler_pldm    },
+ 	{ NCSI_PKT_RSP_GPUUID, 20, ncsi_rsp_handler_gpuuid  },
+ 	{ NCSI_PKT_RSP_QPNPR,  -1, ncsi_rsp_handler_pldm    },
+-	{ NCSI_PKT_RSP_SNPR,   -1, ncsi_rsp_handler_pldm    }
++	{ NCSI_PKT_RSP_SNPR,   -1, ncsi_rsp_handler_pldm    },
++	{ NCSI_PKT_RSP_GMCMA,  -1, ncsi_rsp_handler_gmcma   },
+ };
  
- static void ci_hdrc_imx_shutdown(struct platform_device *pdev)
+ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
 -- 
 2.39.5
 
