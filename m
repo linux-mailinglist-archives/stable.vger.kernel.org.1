@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-117526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69958A3B7BC
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:17:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAA1A3BA12
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 587363BA12E
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B817161843
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4E81DF257;
-	Wed, 19 Feb 2025 08:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376741C3C00;
+	Wed, 19 Feb 2025 09:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDRP+/Y8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDjyNrBE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B11A1CAA9C;
-	Wed, 19 Feb 2025 08:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D571C7013;
+	Wed, 19 Feb 2025 09:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739955558; cv=none; b=MicMig9NACFCws/qG3rS3rSmuli1ZKklZ82rycP3M0ERYX9aeguHGK6urGymIrbKgEMe7co0gESGlapCfnrUvHrhxzLanPhls4WdiEbSfmgOAPLE8ls7zl9kWyr4axI7GekTAIeNCxYthjTkht93vNVG0CTQ+QVijx14j80FIh0=
+	t=1739957276; cv=none; b=bvH8Uub9sBXI5IwZ3HwtZ4EYF8n/zhAaJ94/5QCqeiwfu3NaFTe/XYoXwg1BwM61Y8BSaTvwKbllFmyJFE3HP0MTKqo+MmAWP8EWCOpUMRvfy0XPKIwin8hPuZG8XRU7gCODhvufWLugf7978xjcsGjUhpm3XQksHY87b9KqOHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739955558; c=relaxed/simple;
-	bh=oX5CLAjJ2+5/E6LWmP8KXiEhThUEPl6gpTDKpzi63uY=;
+	s=arc-20240116; t=1739957276; c=relaxed/simple;
+	bh=NFIY0CH/4KSXfc8nb5tztqHmev4l+45BcovcPYHVl58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rkh3nIRuMmhhuHmu4FY3fVIdneMFDwnA5O/px/6AxiBurOfp2kqkEy8YA5O88dfo041mhSCwNKeRcdMQMBuqCuTY4b2ZpVS0+gSn5Uy6BDrUD9bNSjsgpQQdbvhjE8z4n0REx94CJdcUUsO0Qm4DIlByLv2vTqbrCz8b2DEMHd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDRP+/Y8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D40C4CEE6;
-	Wed, 19 Feb 2025 08:59:17 +0000 (UTC)
+	 MIME-Version; b=DG1Q/2cJi68ZdNjjVoI5hMCNDxeXOB4f4g1+e3PsgWryHx1Z94pkou+32wgN4M4wzkWMF8IUw3NUsFV/lkQp6HMIxslnNBAqgs1gfwnRn8APkD0WcMiG0RF4SSK1gPfWka3f3HWnx1BtSTRCb7aX/aNIwQW+O9je7XoyN9Mlc+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDjyNrBE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CFBC4CED1;
+	Wed, 19 Feb 2025 09:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739955557;
-	bh=oX5CLAjJ2+5/E6LWmP8KXiEhThUEPl6gpTDKpzi63uY=;
+	s=korg; t=1739957275;
+	bh=NFIY0CH/4KSXfc8nb5tztqHmev4l+45BcovcPYHVl58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDRP+/Y8VKOcXUmF9HxRvyuhnnLVoVvFNPCdpei39c8iYj4com5f0qIU89HLVJ9wo
-	 Za3kJpJRXCUI3ORJ9iqIF0We9Fo7ZtsiuQEcfu43dzRY5dRNCR+dQmYnJ+IMFZWkqe
-	 Q44iWDOms6WSBm04J4UGtxkatpBawIPMeVk5JY2Y=
+	b=IDjyNrBEftATl8PhFys2pAh468mIbP/3rhORrdh4mlrmSDHUdZcHSyxq74IIahvvT
+	 u2y1I1z27DrWXnItq1rwfdkA6l1lTMyo+xWAjYDLvC6zqpLymj7d19rk4KtmmjLVim
+	 Bc1keO1YZly2AAXK3+YXCDFx3z2xwltxenbjNGQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maksym Planeta <maksym@exostellar.io>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/152] Grab mm lock before grabbing pt lock
+	Jiacheng Xu <stitch@zju.edu.cn>,
+	syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com,
+	Su Yue <glass.su@suse.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 452/578] ocfs2: check dir i_size in ocfs2_find_entry
 Date: Wed, 19 Feb 2025 09:27:36 +0100
-Message-ID: <20250219082551.746680652@linuxfoundation.org>
+Message-ID: <20250219082710.772742711@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +70,222 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maksym Planeta <maksym@exostellar.io>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit 6d002348789bc16e9203e9818b7a3688787e3b29 ]
+commit b0fce54b8c0d8e5f2b4c243c803c5996e73baee8 upstream.
 
-Function xen_pin_page calls xen_pte_lock, which in turn grab page
-table lock (ptlock). When locking, xen_pte_lock expect mm->page_table_lock
-to be held before grabbing ptlock, but this does not happen when pinning
-is caused by xen_mm_pin_all.
+syz reports an out of bounds read:
 
-This commit addresses lockdep warning below, which shows up when
-suspending a Xen VM.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in ocfs2_match fs/ocfs2/dir.c:334
+[inline]
+BUG: KASAN: slab-out-of-bounds in ocfs2_search_dirblock+0x283/0x6e0
+fs/ocfs2/dir.c:367
+Read of size 1 at addr ffff88804d8b9982 by task syz-executor.2/14802
 
-[ 3680.658422] Freezing user space processes
-[ 3680.660156] Freezing user space processes completed (elapsed 0.001 seconds)
-[ 3680.660182] OOM killer disabled.
-[ 3680.660192] Freezing remaining freezable tasks
-[ 3680.661485] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[ 3680.685254]
-[ 3680.685265] ==================================
-[ 3680.685269] WARNING: Nested lock was not taken
-[ 3680.685274] 6.12.0+ #16 Tainted: G        W
-[ 3680.685279] ----------------------------------
-[ 3680.685283] migration/0/19 is trying to lock:
-[ 3680.685288] ffff88800bac33c0 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: xen_pin_page+0x175/0x1d0
-[ 3680.685303]
-[ 3680.685303] but this task is not holding:
-[ 3680.685308] init_mm.page_table_lock
-[ 3680.685311]
-[ 3680.685311] stack backtrace:
-[ 3680.685316] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
-[ 3680.685324] Tainted: [W]=WARN
-[ 3680.685328] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
-[ 3680.685339] Call Trace:
-[ 3680.685344]  <TASK>
-[ 3680.685347]  dump_stack_lvl+0x77/0xb0
-[ 3680.685356]  __lock_acquire+0x917/0x2310
-[ 3680.685364]  lock_acquire+0xce/0x2c0
-[ 3680.685369]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685373]  _raw_spin_lock_nest_lock+0x2f/0x70
-[ 3680.685381]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685386]  xen_pin_page+0x175/0x1d0
-[ 3680.685390]  ? __pfx_xen_pin_page+0x10/0x10
-[ 3680.685394]  __xen_pgd_walk+0x233/0x2c0
-[ 3680.685401]  ? stop_one_cpu+0x91/0x100
-[ 3680.685405]  __xen_pgd_pin+0x5d/0x250
-[ 3680.685410]  xen_mm_pin_all+0x70/0xa0
-[ 3680.685415]  xen_pv_pre_suspend+0xf/0x280
-[ 3680.685420]  xen_suspend+0x57/0x1a0
-[ 3680.685428]  multi_cpu_stop+0x6b/0x120
-[ 3680.685432]  ? update_cpumasks_hier+0x7c/0xa60
-[ 3680.685439]  ? __pfx_multi_cpu_stop+0x10/0x10
-[ 3680.685443]  cpu_stopper_thread+0x8c/0x140
-[ 3680.685448]  ? smpboot_thread_fn+0x20/0x1f0
-[ 3680.685454]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 3680.685458]  smpboot_thread_fn+0xed/0x1f0
-[ 3680.685462]  kthread+0xde/0x110
-[ 3680.685467]  ? __pfx_kthread+0x10/0x10
-[ 3680.685471]  ret_from_fork+0x2f/0x50
-[ 3680.685478]  ? __pfx_kthread+0x10/0x10
-[ 3680.685482]  ret_from_fork_asm+0x1a/0x30
-[ 3680.685489]  </TASK>
-[ 3680.685491]
-[ 3680.685491] other info that might help us debug this:
-[ 3680.685497] 1 lock held by migration/0/19:
-[ 3680.685500]  #0: ffffffff8284df38 (pgd_lock){+.+.}-{3:3}, at: xen_mm_pin_all+0x14/0xa0
-[ 3680.685512]
-[ 3680.685512] stack backtrace:
-[ 3680.685518] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
-[ 3680.685528] Tainted: [W]=WARN
-[ 3680.685531] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
-[ 3680.685538] Call Trace:
-[ 3680.685541]  <TASK>
-[ 3680.685544]  dump_stack_lvl+0x77/0xb0
-[ 3680.685549]  __lock_acquire+0x93c/0x2310
-[ 3680.685554]  lock_acquire+0xce/0x2c0
-[ 3680.685558]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685562]  _raw_spin_lock_nest_lock+0x2f/0x70
-[ 3680.685568]  ? xen_pin_page+0x175/0x1d0
-[ 3680.685572]  xen_pin_page+0x175/0x1d0
-[ 3680.685578]  ? __pfx_xen_pin_page+0x10/0x10
-[ 3680.685582]  __xen_pgd_walk+0x233/0x2c0
-[ 3680.685588]  ? stop_one_cpu+0x91/0x100
-[ 3680.685592]  __xen_pgd_pin+0x5d/0x250
-[ 3680.685596]  xen_mm_pin_all+0x70/0xa0
-[ 3680.685600]  xen_pv_pre_suspend+0xf/0x280
-[ 3680.685607]  xen_suspend+0x57/0x1a0
-[ 3680.685611]  multi_cpu_stop+0x6b/0x120
-[ 3680.685615]  ? update_cpumasks_hier+0x7c/0xa60
-[ 3680.685620]  ? __pfx_multi_cpu_stop+0x10/0x10
-[ 3680.685625]  cpu_stopper_thread+0x8c/0x140
-[ 3680.685629]  ? smpboot_thread_fn+0x20/0x1f0
-[ 3680.685634]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 3680.685638]  smpboot_thread_fn+0xed/0x1f0
-[ 3680.685642]  kthread+0xde/0x110
-[ 3680.685645]  ? __pfx_kthread+0x10/0x10
-[ 3680.685649]  ret_from_fork+0x2f/0x50
-[ 3680.685654]  ? __pfx_kthread+0x10/0x10
-[ 3680.685657]  ret_from_fork_asm+0x1a/0x30
-[ 3680.685662]  </TASK>
-[ 3680.685267] xen:grant_table: Grant tables using version 1 layout
-[ 3680.685921] OOM killer enabled.
-[ 3680.685934] Restarting tasks ... done.
+CPU: 0 UID: 0 PID: 14802 Comm: syz-executor.2 Not tainted 6.13.0-rc4 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
+04/01/2014
+Sched_ext: serialise (enabled+all), task: runnable_at=-10ms
+Call Trace:
+<TASK>
+__dump_stack lib/dump_stack.c:94 [inline]
+dump_stack_lvl+0x229/0x350 lib/dump_stack.c:120
+print_address_description mm/kasan/report.c:378 [inline]
+print_report+0x164/0x530 mm/kasan/report.c:489
+kasan_report+0x147/0x180 mm/kasan/report.c:602
+ocfs2_match fs/ocfs2/dir.c:334 [inline]
+ocfs2_search_dirblock+0x283/0x6e0 fs/ocfs2/dir.c:367
+ocfs2_find_entry_id fs/ocfs2/dir.c:414 [inline]
+ocfs2_find_entry+0x1143/0x2db0 fs/ocfs2/dir.c:1078
+ocfs2_find_files_on_disk+0x18e/0x530 fs/ocfs2/dir.c:1981
+ocfs2_lookup_ino_from_name+0xb6/0x110 fs/ocfs2/dir.c:2003
+ocfs2_lookup+0x30a/0xd40 fs/ocfs2/namei.c:122
+lookup_open fs/namei.c:3627 [inline]
+open_last_lookups fs/namei.c:3748 [inline]
+path_openat+0x145a/0x3870 fs/namei.c:3984
+do_filp_open+0xe9/0x1c0 fs/namei.c:4014
+do_sys_openat2+0x135/0x1d0 fs/open.c:1402
+do_sys_open fs/open.c:1417 [inline]
+__do_sys_openat fs/open.c:1433 [inline]
+__se_sys_openat fs/open.c:1428 [inline]
+__x64_sys_openat+0x15d/0x1c0 fs/open.c:1428
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xf6/0x210 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f01076903ad
+Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89
+f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f01084acfc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+RAX: ffffffffffffffda RBX: 00007f01077cbf80 RCX: 00007f01076903ad
+RDX: 0000000000105042 RSI: 0000000020000080 RDI: ffffffffffffff9c
+RBP: 00007f01077cbf80 R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000000001ff R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f01077cbf80 R14: 00007f010764fc90 R15: 00007f010848d000
+</TASK>
+==================================================================
 
-Signed-off-by: Maksym Planeta <maksym@exostellar.io>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241204103516.3309112-1-maksym@exostellar.io>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And a general protection fault in ocfs2_prepare_dir_for_insert:
+
+==================================================================
+loop0: detected capacity change from 0 to 32768
+JBD2: Ignoring recovery information on journal
+ocfs2: Mounting device (7,0) on (node local, slot 0) with ordered data
+mode.
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 5096 Comm: syz-executor792 Not tainted
+6.11.0-rc4-syzkaller-00002-gb0da640826ba #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:ocfs2_find_dir_space_id fs/ocfs2/dir.c:3406 [inline]
+RIP: 0010:ocfs2_prepare_dir_for_insert+0x3309/0x5c70 fs/ocfs2/dir.c:4280
+Code: 00 00 e8 2a 25 13 fe e9 ba 06 00 00 e8 20 25 13 fe e9 4f 01 00 00
+e8 16 25 13 fe 49 8d 7f 08 49 8d 5f 09 48 89 f8 48 c1 e8 03 <42> 0f b6
+04 20 84 c0 0f 85 bd 23 00 00 48 89 d8 48 c1 e8 03 42 0f
+RSP: 0018:ffffc9000af9f020 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000009 RCX: ffff88801e27a440
+RDX: 0000000000000000 RSI: 0000000000000400 RDI: 0000000000000008
+RBP: ffffc9000af9f830 R08: ffffffff8380395b R09: ffffffff838090a7
+R10: 0000000000000002 R11: ffff88801e27a440 R12: dffffc0000000000
+R13: ffff88803c660878 R14: f700000000000088 R15: 0000000000000000
+FS:  000055555a677380(0000) GS:ffff888020800000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000560bce569178 CR3: 000000001de5a000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+ocfs2_mknod+0xcaf/0x2b40 fs/ocfs2/namei.c:292
+vfs_mknod+0x36d/0x3b0 fs/namei.c:4088
+do_mknodat+0x3ec/0x5b0
+__do_sys_mknodat fs/namei.c:4166 [inline]
+__se_sys_mknodat fs/namei.c:4163 [inline]
+__x64_sys_mknodat+0xa7/0xc0 fs/namei.c:4163
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2dafda3a99
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 17 00 00 90 48 89
+f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08
+0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8
+64 89 01 48
+RSP: 002b:00007ffe336a6658 EFLAGS: 00000246 ORIG_RAX:
+0000000000000103
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX:
+00007f2dafda3a99
+RDX: 00000000000021c0 RSI: 0000000020000040 RDI:
+00000000ffffff9c
+RBP: 00007f2dafe1b5f0 R08: 0000000000004480 R09:
+000055555a6784c0
+R10: 0000000000000103 R11: 0000000000000246 R12:
+00007ffe336a6680
+R13: 00007ffe336a68a8 R14: 431bde82d7b634db R15:
+00007f2dafdec03b
+</TASK>
+==================================================================
+
+The two reports are all caused invalid negative i_size of dir inode.  For
+ocfs2, dir_inode can't be negative or zero.
+
+Here add a check in which is called by ocfs2_check_dir_for_entry().  It
+fixes the second report as ocfs2_check_dir_for_entry() must be called
+before ocfs2_prepare_dir_for_insert().  Also set a up limit for dir with
+OCFS2_INLINE_DATA_FL.  The i_size can't be great than blocksize.
+
+Link: https://lkml.kernel.org/r/20250106140640.92260-1-glass.su@suse.com
+Reported-by: Jiacheng Xu <stitch@zju.edu.cn>
+Link: https://lore.kernel.org/ocfs2-devel/17a04f01.1ae74.19436d003fc.Coremail.stitch@zju.edu.cn/T/#u
+Reported-by: syzbot+5a64828fcc4c2ad9b04f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/0000000000005894f3062018caf1@google.com/T/
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/mmu_pv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ocfs2/dir.c |   25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 2db46626acea2..88a722954f3f7 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -827,6 +827,7 @@ void xen_mm_pin_all(void)
+--- a/fs/ocfs2/dir.c
++++ b/fs/ocfs2/dir.c
+@@ -1065,26 +1065,39 @@ int ocfs2_find_entry(const char *name, i
  {
- 	struct page *page;
+ 	struct buffer_head *bh;
+ 	struct ocfs2_dir_entry *res_dir = NULL;
++	int ret = 0;
  
-+	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
+ 	if (ocfs2_dir_indexed(dir))
+ 		return ocfs2_find_entry_dx(name, namelen, dir, lookup);
  
- 	list_for_each_entry(page, &pgd_list, lru) {
-@@ -837,6 +838,7 @@ void xen_mm_pin_all(void)
- 	}
++	if (unlikely(i_size_read(dir) <= 0)) {
++		ret = -EFSCORRUPTED;
++		mlog_errno(ret);
++		goto out;
++	}
+ 	/*
+ 	 * The unindexed dir code only uses part of the lookup
+ 	 * structure, so there's no reason to push it down further
+ 	 * than this.
+ 	 */
+-	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL)
++	if (OCFS2_I(dir)->ip_dyn_features & OCFS2_INLINE_DATA_FL) {
++		if (unlikely(i_size_read(dir) > dir->i_sb->s_blocksize)) {
++			ret = -EFSCORRUPTED;
++			mlog_errno(ret);
++			goto out;
++		}
+ 		bh = ocfs2_find_entry_id(name, namelen, dir, &res_dir);
+-	else
++	} else {
+ 		bh = ocfs2_find_entry_el(name, namelen, dir, &res_dir);
++	}
  
- 	spin_unlock(&pgd_lock);
-+	spin_unlock(&init_mm.page_table_lock);
+ 	if (bh == NULL)
+ 		return -ENOENT;
+ 
+ 	lookup->dl_leaf_bh = bh;
+ 	lookup->dl_entry = res_dir;
+-	return 0;
++out:
++	return ret;
  }
  
- static void __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
-@@ -936,6 +938,7 @@ void xen_mm_unpin_all(void)
- {
- 	struct page *page;
+ /*
+@@ -2011,6 +2024,7 @@ int ocfs2_lookup_ino_from_name(struct in
+  *
+  * Return 0 if the name does not exist
+  * Return -EEXIST if the directory contains the name
++ * Return -EFSCORRUPTED if found corruption
+  *
+  * Callers should have i_rwsem + a cluster lock on dir
+  */
+@@ -2024,9 +2038,12 @@ int ocfs2_check_dir_for_entry(struct ino
+ 	trace_ocfs2_check_dir_for_entry(
+ 		(unsigned long long)OCFS2_I(dir)->ip_blkno, namelen, name);
  
-+	spin_lock(&init_mm.page_table_lock);
- 	spin_lock(&pgd_lock);
- 
- 	list_for_each_entry(page, &pgd_list, lru) {
-@@ -947,6 +950,7 @@ void xen_mm_unpin_all(void)
+-	if (ocfs2_find_entry(name, namelen, dir, &lookup) == 0) {
++	ret = ocfs2_find_entry(name, namelen, dir, &lookup);
++	if (ret == 0) {
+ 		ret = -EEXIST;
+ 		mlog_errno(ret);
++	} else if (ret == -ENOENT) {
++		ret = 0;
  	}
  
- 	spin_unlock(&pgd_lock);
-+	spin_unlock(&init_mm.page_table_lock);
- }
- 
- static void xen_enter_mmap(struct mm_struct *mm)
--- 
-2.39.5
-
+ 	ocfs2_free_dir_lookup_result(&lookup);
 
 
 
