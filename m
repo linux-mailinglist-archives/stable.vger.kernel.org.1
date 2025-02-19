@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-118137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11355A3B9BB
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:35:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80A5A3B65E
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7D6A7A7E75
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:32:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A56F917CB3B
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 08:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54FD1E04BF;
-	Wed, 19 Feb 2025 09:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964C91DFD98;
+	Wed, 19 Feb 2025 08:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AznXJufc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZNGHM2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710421E048F;
-	Wed, 19 Feb 2025 09:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DB61DFE18;
+	Wed, 19 Feb 2025 08:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957342; cv=none; b=QLTWlA7MWSHjYmH70/rqzdhlk61txrrAJPeOCEysCEgxSLnsJkJaw1ztqBTaiaxtUEKFrOOh+4ATHEwAXRbV615XNFzc++3w4TXGK/S8OyqVZ6/0zFfEzRwWP36WImJzFJMzU7kf+kAX9oQgeuE9ehFwiNn+zRb8SQrBOzvg+WE=
+	t=1739955114; cv=none; b=fG/HGxunC4xBg38n8quXLDjeqKAfbT7rP/RJybk1QmPt/207pa9vK3SXEM2BL/+EQdS8KD0N3zbvwcpBpK4FSwNrLAJcyb7sAUfFgepebBtHzQ8MI0WAwI/ZQWAn38XfGf9myip2zQ1YEBQpHtkSovZTixs231BRemI1NW/breA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957342; c=relaxed/simple;
-	bh=h99fds2MaTiwVgc4ocVn+fbgyNdB+VFdJT6loanjCj8=;
+	s=arc-20240116; t=1739955114; c=relaxed/simple;
+	bh=7EqswwIOoxgaKwQvO/AZ7yQPeRXyXDBCHOUv7fFW+bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvi8aUKQyeYMupq+7I+NIgHp4h7CvV3dNDBx+aPMLOpFieCiaWajkZm+PWr0CbbJK+tuODhkGSVw5PHIYTDgmHsVxIG5VJg/1FEs+djg+9SsXiOWo3pKMlUTI6FaEfSbmT+6ohIWc2Kr0mx3hdnsm27lRKSN8oazHbASAewHR0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AznXJufc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF45DC4CED1;
-	Wed, 19 Feb 2025 09:29:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SLPod0+vH/Y9I1AmKdDf0+4v+Z9mD9koOCXaCexBtPIphKNtkmADtFlP5QxmIN3vHOY0nCxorLLYp4V0HYisyK+VF3spk9V1l+8InSRa3gIs3j9sbl6g7YCRZmQ082kcHBTy2UWJqDO+yYKyjcd1ElXnHExVLcW7YbKTNbH4y2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZNGHM2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EE1C4CEE6;
+	Wed, 19 Feb 2025 08:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957342;
-	bh=h99fds2MaTiwVgc4ocVn+fbgyNdB+VFdJT6loanjCj8=;
+	s=korg; t=1739955114;
+	bh=7EqswwIOoxgaKwQvO/AZ7yQPeRXyXDBCHOUv7fFW+bA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AznXJufcIEAivHMArxskWa7IAIBKFqsPBtZvEX901Zq+rZDxlW3MjDGSLUF4flzv4
-	 raQ8k4MiKvLXkXxKKCaqbS/c7M2YXOoTIbQ06oQ1XfTD6DENDZbaXfrkwsmAMSDGsf
-	 5gGjnVKS2Kez3G3tnwtGqeYZFCq33yYb1j2D83mI=
+	b=mZNGHM2VO20RT8RxyuwLSvdXPTwJVhg/9K3q0DLLKQqcxN4v7k0wB239zKWcQZk2I
+	 +w/Dv6AKAyRmONstws+W8RpNpXxwQu9/Ot4GH7F8O0B6xWSFrZ8hIJihgXurN273y/
+	 H6USH3Tn2rbOI+aCY4gJp099um0ofQrU2h8GvzwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 450/578] net/ncsi: use dev_set_mac_address() for Get MC MAC Address handling
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.12 137/230] kbuild: userprogs: fix bitsize and target detection on clang
 Date: Wed, 19 Feb 2025 09:27:34 +0100
-Message-ID: <20250219082710.696175549@linuxfoundation.org>
+Message-ID: <20250219082607.044422929@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082601.683263930@linuxfoundation.org>
+References: <20250219082601.683263930@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 05d91cdb1f9108426b14975ef4eeddf15875ca05 upstream.
+commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
 
-Copy of the rationale from 790071347a0a1a89e618eedcd51c687ea783aeb3:
+scripts/Makefile.clang was changed in the linked commit to move --target from
+KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
+However that variable is not inspected by the userprogs logic,
+breaking cross compilation on clang.
 
-Change ndo_set_mac_address to dev_set_mac_address because
-dev_set_mac_address provides a way to notify network layer about MAC
-change. In other case, services may not aware about MAC change and keep
-using old one which set from network adapter driver.
+Use both variables to detect bitsize and target arguments for userprogs.
 
-As example, DHCP client from systemd do not update MAC address without
-notification from net subsystem which leads to the problem with acquiring
-the right address from DHCP server.
-
-Since dev_set_mac_address requires RTNL lock the operation can not be
-performed directly in the response handler, see
-9e2bbab94b88295dcc57c7580393c9ee08d7314d.
-
-The way of selecting the first suitable MAC address from the list is
-changed, instead of having the driver check it this patch just assumes
-any valid MAC should be good.
-
-Fixes: b8291cf3d118 ("net/ncsi: Add NC-SI 1.2 Get MC MAC Address command")
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-rsp.c |   18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1089,14 +1089,12 @@ static int ncsi_rsp_handler_netlink(stru
- static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
-+	struct sockaddr *saddr = &ndp->pending_mac;
- 	struct net_device *ndev = ndp->ndev.dev;
- 	struct ncsi_rsp_gmcma_pkt *rsp;
--	struct sockaddr saddr;
--	int ret = -1;
- 	int i;
+--- a/Makefile
++++ b/Makefile
+@@ -1057,8 +1057,8 @@ LDFLAGS_vmlinux += --orphan-handling=$(C
+ endif
  
- 	rsp = (struct ncsi_rsp_gmcma_pkt *)skb_network_header(nr->rsp);
--	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ # Align the bit size of userspace programs with the kernel
+-KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
+-KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
++KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
++KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- 	netdev_info(ndev, "NCSI: Received %d provisioned MAC addresses\n",
-@@ -1108,20 +1106,20 @@ static int ncsi_rsp_handler_gmcma(struct
- 			    rsp->addresses[i][4], rsp->addresses[i][5]);
- 	}
- 
-+	saddr->sa_family = ndev->type;
- 	for (i = 0; i < rsp->address_count; i++) {
--		memcpy(saddr.sa_data, &rsp->addresses[i], ETH_ALEN);
--		ret = ndev->netdev_ops->ndo_set_mac_address(ndev, &saddr);
--		if (ret < 0) {
-+		if (!is_valid_ether_addr(rsp->addresses[i])) {
- 			netdev_warn(ndev, "NCSI: Unable to assign %pM to device\n",
--				    saddr.sa_data);
-+				    rsp->addresses[i]);
- 			continue;
- 		}
--		netdev_warn(ndev, "NCSI: Set MAC address to %pM\n", saddr.sa_data);
-+		memcpy(saddr->sa_data, rsp->addresses[i], ETH_ALEN);
-+		netdev_warn(ndev, "NCSI: Will set MAC address to %pM\n", saddr->sa_data);
- 		break;
- 	}
- 
--	ndp->gma_flag = ret == 0;
--	return ret;
-+	ndp->gma_flag = 1;
-+	return 0;
- }
- 
- static struct ncsi_rsp_handler {
+ # make the checker run with the right architecture
+ CHECKFLAGS += --arch=$(ARCH)
 
 
 
