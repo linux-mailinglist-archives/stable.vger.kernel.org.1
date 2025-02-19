@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-118094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-117521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328F6A3BA2C
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:40:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84965A3B6C5
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 10:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEAC416E39F
-	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16DE3189DD55
+	for <lists+stable@lfdr.de>; Wed, 19 Feb 2025 09:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908191DED45;
-	Wed, 19 Feb 2025 09:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4E31DF251;
+	Wed, 19 Feb 2025 08:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFoQuVu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkQE0z1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E04B1B415A;
-	Wed, 19 Feb 2025 09:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06321DE3AE;
+	Wed, 19 Feb 2025 08:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957218; cv=none; b=DuHfQXinxnVCaPGUiBmmQ2X7NQtMr2x0g05slyGCjLzxsssa5ISU2wAcWc0DX30drJdmFPAL6IoyGb5P5gkS8joJPpomXZDTPio65aUQru6+iziXiHnDzya5gNuDsmtBXQlBb+20uFcbkKJk9/KtZd005WpTFkcMl7cDOZhJIL4=
+	t=1739955544; cv=none; b=ZFE7s8SuTRH62hYR8N5nVr+AZ4/gl7IOWX9iOONHXJaAAg6q/z9rEOXaxoT9Hh46EUsFCYf/xJ4Pc2qkaRa0J0wKwY7TQdmOuchajIAWZO1/UR7ta5vJQ1YoAkNhx9SISIxccS4toYXLVLfT3Q51wPX2nhk5+1sKnnrS7VPEt8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957218; c=relaxed/simple;
-	bh=bKrFTuoRmZVkgtGKFCmnqi5222hgGyZj222XUBMBtuc=;
+	s=arc-20240116; t=1739955544; c=relaxed/simple;
+	bh=8CQnFZwSMdELtx9GyLT49YeJ/K4lYEHL1H80JrLqHqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnGQKqymFbxkYMwZEk5+QXxyV8LJRTdeLIpbt2jMf8vZ9AcUqNYMMUuO3dSmPp2DNL+GFSyZUNa9bdqPl/Svoxa1oulXJ6xVfoqAMM9LErE3s0ZaBdYWbAO94bR6OBn32cU5reX1ReEaWXbumx9qx6m0uKWq8a3mXuzu5ab8fTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFoQuVu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EBDC4CED1;
-	Wed, 19 Feb 2025 09:26:57 +0000 (UTC)
+	 MIME-Version; b=N4tCfnPbbyB1l3Qqt1Rp4GcyTF1kGPmustS5XLt7vRjIBcmGO24tAGjZF3UZG2rjYEh+Tjaz4ql2I9zDoFzqsOmaROt9Aa2GnURiZqwNj9aHbyFL8vDP97HVf/y54FKK/h9uxnZuBYv6edOjtCCWsP3LT1i4amAYgjTylUYki9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkQE0z1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1160C4CED1;
+	Wed, 19 Feb 2025 08:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739957218;
-	bh=bKrFTuoRmZVkgtGKFCmnqi5222hgGyZj222XUBMBtuc=;
+	s=korg; t=1739955544;
+	bh=8CQnFZwSMdELtx9GyLT49YeJ/K4lYEHL1H80JrLqHqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFoQuVu7YwCp8ZlQlG8FYEyztxbDvn+n1mi7XWjedItdGXhss9FyRXa7nNluJAi0n
-	 YBi4F1ZTYiBujMbXC1NUzAOPQRq26uReBEw+RGMCqQaW7wgGUCWdB4pbBlrdJUPwhj
-	 Pzq8C2QzJjfKNGI3UyRpRAkXqDTgZE8qGulaHhHU=
+	b=wkQE0z1zqU5Kc1sA5/dlIURRG2MlSpEZSA23lGQJZDIJrXFf/h6XUNHDVdDggZu3D
+	 pI2d/Istncd848qMrQrvU3QlAlwdaRrn+thQft6EVTJeFHbGNvTSCKYhHY7Qk0dWon
+	 5eud6KY1rdqNmepg8QVpZaLkn4Qc1PjcGrHTvJDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Ramdhan <ramdhan@starlabs.sg>,
-	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-	Jacob Soo <jacob.soo@starlabs.sg>,
-	Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH 6.1 448/578] io_uring/rw: commit provided buffer state on async
+	John Kacur <jkacur@redhat.com>,
+	Luis Goncalves <lgoncalv@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 039/152] rtla/timerlat_hist: Abort event processing on second signal
 Date: Wed, 19 Feb 2025 09:27:32 +0100
-Message-ID: <20250219082710.620057185@linuxfoundation.org>
+Message-ID: <20250219082551.588362572@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
-References: <20250219082652.891560343@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+References: <20250219082550.014812078@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-When we get -EIOCBQUEUED, we need to ensure that the buffer is consumed
-from the provided buffer ring, which can be done with io_kbuf_recycle()
-+ REQ_F_PARTIAL_IO.
+[ Upstream commit d6899e560366e10141189697502bc5521940c588 ]
 
-Reported-by: Muhammad Ramdhan <ramdhan@starlabs.sg>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Reported-by: Jacob Soo <jacob.soo@starlabs.sg>
-Fixes: c7fb19428d67d ("io_uring: add support for ring mapped supplied buffers")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If either SIGINT is received twice, or after a SIGALRM (that is, after
+timerlat was supposed to stop), abort processing events currently left
+in the tracefs buffer and exit immediately.
+
+This allows the user to exit rtla without waiting for processing all
+events, should that take longer than wanted, at the cost of not
+processing all samples.
+
+Cc: John Kacur <jkacur@redhat.com>
+Cc: Luis Goncalves <lgoncalv@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/20250116144931.649593-5-tglozar@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tools/tracing/rtla/src/timerlat_hist.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -772,6 +772,8 @@ static int __io_read(struct io_kiocb *re
- 			goto done;
- 		ret = 0;
- 	} else if (ret == -EIOCBQUEUED) {
-+		req->flags |= REQ_F_PARTIAL_IO;
-+		io_kbuf_recycle(req, issue_flags);
- 		if (iovec)
- 			kfree(iovec);
- 		return IOU_ISSUE_SKIP_COMPLETE;
-@@ -795,6 +797,9 @@ static int __io_read(struct io_kiocb *re
- 		goto done;
- 	}
- 
-+	req->flags |= REQ_F_PARTIAL_IO;
-+	io_kbuf_recycle(req, issue_flags);
-+
- 	io = req->async_data;
- 	s = &io->s;
- 	/*
-@@ -935,6 +940,11 @@ int io_write(struct io_kiocb *req, unsig
- 	else
- 		ret2 = -EINVAL;
- 
-+	if (ret2 == -EIOCBQUEUED) {
-+		req->flags |= REQ_F_PARTIAL_IO;
-+		io_kbuf_recycle(req, issue_flags);
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 1525e88c6cf96..a985e57954820 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -952,6 +952,14 @@ static int stop_tracing;
+ static struct trace_instance *hist_inst = NULL;
+ static void stop_hist(int sig)
+ {
++	if (stop_tracing) {
++		/*
++		 * Stop requested twice in a row; abort event processing and
++		 * exit immediately
++		 */
++		tracefs_iterate_stop(hist_inst->inst);
++		return;
 +	}
-+
- 	if (req->flags & REQ_F_REISSUE) {
- 		req->flags &= ~REQ_F_REISSUE;
- 		ret2 = -EAGAIN;
+ 	stop_tracing = 1;
+ 	if (hist_inst)
+ 		trace_instance_stop(hist_inst);
+-- 
+2.39.5
+
 
 
 
