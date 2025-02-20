@@ -1,122 +1,148 @@
-Return-Path: <stable+bounces-118455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0431BA3DE7C
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:28:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1E4A3DE8A
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:30:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 259ED3BEDBF
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 15:24:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1CC63A2473
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 15:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405621FCFF9;
-	Thu, 20 Feb 2025 15:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3DE1FECAD;
+	Thu, 20 Feb 2025 15:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="e2O79qjA"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="E4RJ4BhS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982071D5CFB
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 15:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B4461FCE;
+	Thu, 20 Feb 2025 15:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740065100; cv=none; b=Tx9NuPfY+KgFsWwjRrw9CE7VTHqj67AQm3zzqmoVVQnrBAgro0QsA+MMHYif2H/l8jYHNEVxgbKIVUPqtfj3sY3FUVH5YQ42T48/BRNKfXpZ/dWT6SdKEUQIL/Xv2Gfe5P+pmhuTxUf0Epi4wjlWafZgWOgXMfCF/a8xuZYO1DA=
+	t=1740065151; cv=none; b=OLxYydejTROlmYoll7N47HRtdyRMXdol8BUVxAMNkYOYywm7K/jJ9vAgv+WgVqj/jeQGwU7H1msNvgjuEwARgXyHRHTN/86f/RP2B+uvYHhJYguSN4gAtnS/RpI81TwNuyU4aUOcoPW8WvCw7aQrgte/6UoJZQdOzlUIIgF3n9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740065100; c=relaxed/simple;
-	bh=GHKtQKfRX625ruMmSBwhohcDd+91MZuTfcrrZYKfjbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BjWNevqdmHHakIu9vDVoK97cQ34PxZ64F5+skb8NZrj2pttIpJQk/9AH4E1MKm6qAsS62Evf1Nt5T6u1vvxnpI927IGrpjMMZOE+Utu9Fft9I8RKQSoUAtcOom+ZqcseceikPKzDXRmXuimHC+qgF6XDZPvOyPB9YH8S0Lmohdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=e2O79qjA; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abb79af88afso210768666b.1
-        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 07:24:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1740065095; x=1740669895; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y956Nga+wi17KckdN9/Mw3XRjcXaF3kNwC0PxZ5/5C8=;
-        b=e2O79qjAkEerP3tvld2a1wczWsVMeF/NWcmqhRFwwwKbRNl88p/wd/PtHCiZuguqls
-         w9BSdfYZslQhBF18tWlQioqiCkrikva6wV/cFAWlNV4EwsaCYRs4Dy5jZauBTBp8stDR
-         ZVOOGQGWoarGVLkPyihKtHmn72G7a2tDov3JfTRYuyoWTBjouB1J76pNufuF3eS2z1qK
-         1B3rKxzq8Cj3GBadjzcPb5JwYuiKnNk0jgAe6InPgsGVXnOmOJdZSlcw+70V0bM1pKMV
-         AehqUyrcMdEUTePUumdG/FoOFjfpy2Sa00BtfOVwjfTH76LsmlVKfreprfz3QaeVegoD
-         SbNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740065095; x=1740669895;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y956Nga+wi17KckdN9/Mw3XRjcXaF3kNwC0PxZ5/5C8=;
-        b=TA0zNW7dhAayX7WYY2/jg1QihI/EWVPIVYTF/dRwvLyIgwBxqnneydPDFdLdDMDL+s
-         F4fPlQjziIVMppSTj9tFNXPQ7cIfpowSoHGWMvY3PK0X9mzqYbDhNyGPXriWex34rLCl
-         22TU//VNScR6maWaViZwRW0/LxRgEDWrsSHlZT+btKWjkOf55K+48/xNm58/a4wCyPu5
-         LWYZFWfc0/IE+beETfHNUrD59FWFz1WRtamAofyfehgcabCduprljaTHnS2xxhdIvOPA
-         G73XBLsPdkSIXZwYhXitzCkDAE2PAo2jcyL0hOU4jTYDvDfkwvRW0li7VNiEBYBAEvlZ
-         x6bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVtA9iV0oqAHjH/nHN8/vOi3WwwDXYN1E7oLljKNA08u/P7gOh3B3N08TSYKQSFwKuGDeF2ssk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPPlLC8iFAh14T8wqlPxO5TdHyQpybZ10Kpshh1M4jKyxJKu7q
-	J20gct3Ny2x4+uhkpaBITBss++EGbr/cSXeikbmuHkSaBAOi9TZkOvQiFLpLPF4=
-X-Gm-Gg: ASbGncsMfOSzr8NhwJdqkj2C+aCDkL9xyLXNW/AbGZ1JoG916EwetGDwrzJ5GaCRB6d
-	ZjDDsJdoHmkUGN1PL+5ZeCVIix+wLWvRqUYhENyvULu2dj7k8Uh25tpHmArFxXqSCwE1n26ckpf
-	H57P9dNepTjhbF1jg6WdP+9E8/yQGFHiE/rPw67Cf0qekzkDzrjjd93xmiSyxaFbxG5RKh+NZ4S
-	sGf+lV2YcZePvharYtD0ZhxN7cp98Gw/XZ65SIjxgpSDiTQfw1C2eloC/cHUexwcmA+4axXf2wF
-	b42uM4rMany1EPcLYAWh+peTxHF6FQpaYKVm9fTnezoyVD2KsN0NYtIjQaZjt/oSZcTkd8EP0ii
-	jLuM+hbOgzvrgpzM=
-X-Google-Smtp-Source: AGHT+IGpFy9Nqr+lyOCNzWNyFcfvqTsorGUY2iR8cFQABQ8lCUVSSIHVamd16JAap5iL/T/ZJ53L+w==
-X-Received: by 2002:a17:906:d554:b0:ab7:ef38:1277 with SMTP id a640c23a62f3a-abbf3885ecamr256927166b.26.1740065094910;
-        Thu, 20 Feb 2025 07:24:54 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f007700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f00:7700:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9f3a695dsm751274266b.2.2025.02.20.07.24.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 07:24:54 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] fs/netfs/read_collect: add to next->prev_donated
-Date: Thu, 20 Feb 2025 16:24:50 +0100
-Message-ID: <20250220152450.1075727-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1740065151; c=relaxed/simple;
+	bh=aUV7XJHURqIqXA9IYJs/KCb516w8a2NMURdCektzsOc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=upsgzPtSVuCAyFiUNMsE5ZkZWftvcSJnKAPmmeh/Rx5cPV4XP0iWesjxx0w7AsfjZUKuOtUSS8QBVKuwHqYC8RBYfI1Evan9kIzIRD2lwE4vXCKMbnRR17eu9gaPljg21BQN751nftHOFYOAlT514jjCMQXxQkO2PTVi9VwSnB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=E4RJ4BhS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51K6opK7015969;
+	Thu, 20 Feb 2025 15:25:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fz4PC2JqTy47/xiLWsMkpo8LYjL/Gtss7Ry2BGuMDuQ=; b=E4RJ4BhS3XaD/3r+
+	IXQP14w2Bf9YAyaQrh7F54u+8rt+ncSf3ulMlObCKFrclaJXzshqNJKCUVfqy3db
+	cq0mniBh6f0ijR5su2IJCJO2R1jOp68aTIEWhoT3fjKPXPSPjzNi0+H1dN08g+Gr
+	rjgV2ndf/nEaslqCiStmloH5e69UT3wU4saKnOPIAkHaWsi4EB1hU7Ddn0mP2By8
+	Akt9xsEqUo91/boti9dMxd9/8+ElYfjqmxjfsMXckMBX0vE+AA3+2xjPTV5GC+tN
+	vni8ghawmQ46WAhlb0sRb3uDjKRctKYrz+9Jv+8ykbnSIorJwMWnFG/RLT9UizyA
+	fD+kFw==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy4ejub-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 15:25:44 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51KFPhCZ008943
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 15:25:43 GMT
+Received: from [10.216.21.168] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 20 Feb
+ 2025 07:25:39 -0800
+Message-ID: <f5d5f17d-3059-8f3b-1258-1c21c934952a@quicinc.com>
+Date: Thu, 20 Feb 2025 20:55:35 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 1/4] media: venus: hfi_parser: add check to avoid out
+ of bound access
+Content-Language: en-US
+To: Hans Verkuil <hverkuil@xs4all.nl>,
+        Stanimir Varbanov
+	<stanimir.k.varbanov@gmail.com>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Hans Verkuil <hans.verkuil@cisco.com>
+CC: Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Mauro Carvalho Chehab
+	<mchehab+samsung@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20250207-venus_oob_2-v4-0-522da0b68b22@quicinc.com>
+ <20250207-venus_oob_2-v4-1-522da0b68b22@quicinc.com>
+ <41e9f6a8-1f72-465e-b6c4-0bebdc462d31@xs4all.nl>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <41e9f6a8-1f72-465e-b6c4-0bebdc462d31@xs4all.nl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DQUG7MeI492akoUHSJSIjld0krpIOjRP
+X-Proofpoint-ORIG-GUID: DQUG7MeI492akoUHSJSIjld0krpIOjRP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-20_06,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=999 spamscore=0 adultscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502200110
 
-If multiple subrequests donate data to the same "next" request
-(depending on the subrequest completion order), each of them would
-overwrite the `prev_donated` field, causing data corruption and a
-BUG() crash ("Can't donate prior to front").
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://lore.kernel.org/netfs/CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
----
- fs/netfs/read_collect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 8878b46589ff..cafadfe8e858 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -284,7 +284,7 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
- 				   netfs_trace_donate_to_deferred_next);
- 	} else {
- 		next = list_next_entry(subreq, rreq_link);
--		WRITE_ONCE(next->prev_donated, excess);
-+		WRITE_ONCE(next->prev_donated, next->prev_donated + excess);
- 		trace_netfs_donate(rreq, subreq, next, excess,
- 				   netfs_trace_donate_to_next);
- 	}
--- 
-2.47.2
-
+On 2/20/2025 8:46 PM, Hans Verkuil wrote:
+> On 2/7/25 09:24, Vikash Garodia wrote:
+>> There is a possibility that init_codecs is invoked multiple times during
+>> manipulated payload from video firmware. In such case, if codecs_count
+>> can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+>> access. Reset the count so that it always starts from beginning.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+>> ---
+>>  drivers/media/platform/qcom/venus/hfi_parser.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+>> index 3df241dc3a118bcdeb2c28a6ffdb907b644d5653..1cc17f3dc8948160ea6c3015d2c03e475b8aa29e 100644
+>> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
+>> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+>> @@ -17,6 +17,7 @@ typedef void (*func)(struct hfi_plat_caps *cap, const void *data,
+>>  static void init_codecs(struct venus_core *core)
+>>  {
+>>  	struct hfi_plat_caps *caps = core->caps, *cap;
+>> +	core->codecs_count = 0;
+> 
+> This really should be moved down to before the 'if'. There is no reason to mix the assignment
+> with variable declarations.
+Thats correct, will move it below.
+> 
+>>  	unsigned long bit;
+>>  
+>>  	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+>>
+> 
+> Regards,
+> 
+> 	Hans
+Regards,
+Vikash
 
