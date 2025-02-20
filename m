@@ -1,113 +1,127 @@
-Return-Path: <stable+bounces-118485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B89CA3E170
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 17:53:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FBBA3E16B
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 17:53:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D77E19C4ACC
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:51:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F383B19C3CD0
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794F921518C;
-	Thu, 20 Feb 2025 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B0A211A04;
+	Thu, 20 Feb 2025 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GknnQj6k"
+	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="H/Y5QNnQ";
+	dkim=pass (2048-bit key) header.d=sladewatkins.net header.i=@sladewatkins.net header.b="UOOWd59+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D6F215191;
-	Thu, 20 Feb 2025 16:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7174120F062
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 16:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740070105; cv=none; b=rG4kJqRnoEteCtAJ+5N9XvtaF4qGd/8WxPpbwglGwVk3YS8eGYTtYDlTNPHPSiUnr5hiOw1WY5Zjy/Hi/gSAJUXY4kpfDW2nGWXP5CeTuY8qKFgK/4P1+2NvXsSJD5DHw7TlryS66zeylw/pjNtC5pXUWW5uHcUinOooSQQjiiA=
+	t=1740070093; cv=none; b=CFCK+IYebheIUTHVU34fJi+ulm3gD0+LqU04eOYB1/XbqY4qvJXRJqbE2anpo9l1wrHBWJ/NjngxKi3yCaeZJdpcwjgq9jvJzb9Ki9oEWA5OXd8NJtoM/gWpypDs/jy2UhpMUZTj9GMUmnBEPCuk+rKjjMl/e4wmnVWnSvFlIh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740070105; c=relaxed/simple;
-	bh=jEKXyJsq815S7Qv/o6aF3HGgxLaohHFwHlAqbySCAjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H1UJCJ20pz787JG/+MKAeArVF4DXEiNZPzguNIyD2381+8CBSL1mOpuIN+76Zdy+tR82hUwEJ8OvvHG/BarqUu4fvD9jGZEiyvRUhaKGHOdIK+22Wh35DTo2mSN1OPnA21hZ9PAI/DAqgSvBTGVXhoArPc/MgeqtfWH15vR3A7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=GknnQj6k; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E583440E01A1;
-	Thu, 20 Feb 2025 16:48:19 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id X9RZHqK9RFS0; Thu, 20 Feb 2025 16:48:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1740070096; bh=vWx4o7S0RRKESClOuZ3E/T2A4yda+ROzseKFSp9zPNU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GknnQj6keN3uGkbr5LNNENH/Wk+wv7igFroifGq/MdJkja5ZU+njbSG4eSRc2EsTx
-	 B+kZytVU3pnXd+p/A5ZMSK/84KFqPLloVkbmPS2JoxmSM1+aPUCqhk8wIBE+qFt3NY
-	 PFfsghIriihNzC2MmeZ+RwgaxvTDrK9iiPNx4kENrkJTVSKxq5hCjTkNNkYCpSvUmM
-	 cHV8qq9ODQEnKcQk+spKZN7hrRwEEzfaY2xJ+J4r3FkRRedg3EL2vqElHXNNUpzJlG
-	 EgeOwoMRgq5JdgQpwjTGJQbE6ksBgL2APX75rr92FqCJkAPssm5Fea5l/5aG+KxzYf
-	 shEj49fkRQpOxnozpq58UjNKlaPlwrzeuno6fEL+1a++Bpk3kGKaT+6kDTGvIfU5z2
-	 rCYd5kXYHPPSBFUMnA7eihWa8JP+s0kiJThpKzAXL20abjkQ46gbw7bUUFyXWDvbov
-	 B4uLpZhG1yqKxOmiyOQYS4d27UmeAjPbC4tchWM5AX3sGzb9YFRYuVJ/bz8uWlpR9a
-	 E8rY/zuIwOByye3l8WshcY5YYrNQUXfEEke7nZRDwMh8pXYjOY+BhcePWTQlnteDpB
-	 mCaBWsOiA/t7DWAW36UAX0VudrXIYM4TGFZOBNCWvock1nx10Lc0/dZ0c0NmRH0SmN
-	 ugCx0HxKC1uT3cdNPHoDy69w=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	s=arc-20240116; t=1740070093; c=relaxed/simple;
+	bh=pbdR7nxvueo2TLaKE5sF10t2b+oN0pSH5FKcIBPg2yE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c8ago8pRuWnPu2QfKG/RJbEUEEDZqBxZOTU44+2X4vfNOOPet4r4C09z7u0tmjruHuJ+NLeHbXKDLi+gh3+ToUwIiVpQTMUhU1EMEOahmWmN0vIwvlkJ/EMDXoOUxf0b+qyLagEUvTCp0LHDhuj7UjjltQZ3IxLvtCCxXybE6ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sladewatkins.net; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=H/Y5QNnQ; dkim=pass (2048-bit key) header.d=sladewatkins.net header.i=@sladewatkins.net header.b=UOOWd59+; arc=none smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sladewatkins.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sladewatkins.com;
+ h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
+ s=selector-1739986532; bh=UtFu/7rrHv4X5KOTvsXatoIKvP38Td4ByIZSHbNhxXM=;
+ b=H/Y5QNnQSdKVkGKUBSTSBmttqgIjVEe22rsEDSKU8dDUSQA2Ftiza2zkwLPXL9vktGDaC2LrNl0/ph5AA31veXHm+rggUejAGdgcaxpupxnQimmgcg7b3da/nbKqbPcum2N8H+90iLmZyIqdQOWwQ3cNzzjleRgSi6F/2jU9DD8YEiSnxVS+8teeOG9aAZPmDofL2hk2yjPMcPAbylFakkwLqX1pgqMFyKgzjGViZnQtTTxv9cnMqkswVBQBfxN9m7hofdqlu7veQeunjTBF86TdA2Y0RgRHylX1Ib6O6dLIwycum0Qgvhvva3ilj1DMp3u3zbmsWsTGCcVDNmznWA==
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A6E1140E0177;
-	Thu, 20 Feb 2025 16:47:51 +0000 (UTC)
-Date: Thu, 20 Feb 2025 17:47:45 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dionna Glaze <dionnaglaze@google.com>, linux-kernel@vger.kernel.org,
-	x86@kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	John Allen <john.allen@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Tianfei zhang <tianfei.zhang@intel.com>, stable@vger.kernel.org,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH v6 4/8] crypto: ccp: Fix uapi definitions of PSP errors
-Message-ID: <20250220164745.GGZ7dcsXRG2hFOphRz@fat_crate.local>
-References: <20241112232253.3379178-1-dionnaglaze@google.com>
- <20241112232253.3379178-5-dionnaglaze@google.com>
- <d6ad4239-eb8a-9618-5be4-226dcf3e946c@amd.com>
- <d72dbe54-2d50-9859-7004-03daf419be86@amd.com>
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 3FD6D3C0064
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 16:48:09 +0000 (UTC)
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38f2726c0faso1480298f8f.0
+        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 08:48:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sladewatkins.net; s=google; t=1740070088; x=1740674888; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UtFu/7rrHv4X5KOTvsXatoIKvP38Td4ByIZSHbNhxXM=;
+        b=UOOWd59+P3yQtU+IYbKge1b0W5670XnbgMRo7+aS3eA8mwSS04yH+s6Dp2BTas/Pv9
+         c7+SvQPz3n2KaGpJU8SVusdPt+P/nUT5CWucYrWwJ6DDHW1chWXolpOsS915CLHvVXCi
+         oZorGvH7q/sWZvtoDGXuuFOFfSRfMoQZMuXm9AIYuCkTt8Gse7dPXnoKAzl78Z3e71SG
+         bt4u2sztPbrbwQ6bR1/6igOTVCT1hTgBTkaneIiIIKNPaAJ+pZbwbZ7RMIBzia9LRX2O
+         cGoyA5eD/6K5F/MQnW8O+bHWsNzJq2cwSe2p6FqMOfHKf3iuhhLWfcq0O5Hmmztw38lX
+         sgsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740070088; x=1740674888;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UtFu/7rrHv4X5KOTvsXatoIKvP38Td4ByIZSHbNhxXM=;
+        b=Fl8RwFj48Eg2Rl1m2UrdKr+r2nu2tnv6n3eO3MOfBKG6DuP9Ny1QovITfgw/KpkePE
+         n5lPqlsyh0g6Ks4ScYT0Wf1avuHtSWfH3/JSlsWsOI5FysNXA2kZa9olfscU4o39gCOC
+         i/PUaWMQW3btLhIz6escCXalip3BiEPPzMAX6k76ezyWMErNVZULzjrAel96CX/7J0KP
+         LX08SBKETRenyOND86KQKs67HG+cJ4HsXAZRv9pZlpWI5hOivzdFLZ2zhCPuG0GEzEWq
+         u4VbtsIdjgbg5vW/ggelkqxRLNFYC6WP3gL0fb2MMJCci2lNUQnk32qH1bl4OJTGbsin
+         dhEg==
+X-Gm-Message-State: AOJu0YwA5f9rODqhS1Kl96nVixTKChAWkGmmOMFnBVieZ+bpvLM5QBwe
+	JxJG7Xodh6dejUsQogaoB5QSeIcI74T76bEEPR8rz67yoWeuLkwMbYdr8hSYKFkrgmIELohbHc5
+	u9AtOSuWbiE+F68GBPy+0CdXFwefRTez7AU1Pl1r8hiLTUKHIAsQKIZGnYo61SnepDKvf6YTYZ2
+	fJfahskmJfBNGDacI3k70QrlMP8jJHpZPmPO9c2m9yV858CiGxnQ==
+X-Gm-Gg: ASbGncvSFiIfsZLrmsWZwgCHBTgpslEuk6fMOdUYjvwQAfWafFm0T4phequ1WnY7DTN
+	Kb2suCNQjwQS4BHcsfaeiK3bptMQ3BNdQt/VQr3pNchzLiZ31223KDRiw5+3wYQ==
+X-Received: by 2002:adf:fa08:0:b0:38f:2a99:b377 with SMTP id ffacd0b85a97d-38f33f57459mr20939194f8f.53.1740070087963;
+        Thu, 20 Feb 2025 08:48:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFFt+whvKVaXX4I4RkLMql6Zr2BmHhgEb6V9Rei8o5LVi/60bat3GQTyh1ZxROF61Yi6yE/rBBG1TCfUYx/5lc=
+X-Received: by 2002:adf:fa08:0:b0:38f:2a99:b377 with SMTP id
+ ffacd0b85a97d-38f33f57459mr20939161f8f.53.1740070087628; Thu, 20 Feb 2025
+ 08:48:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d72dbe54-2d50-9859-7004-03daf419be86@amd.com>
+References: <20250219082550.014812078@linuxfoundation.org>
+In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
+From: Slade Watkins <srw@sladewatkins.net>
+Date: Thu, 20 Feb 2025 11:47:55 -0500
+X-Gm-Features: AWEUYZm2jJ2bUAqU74OstkcJ9PoKvhhiK-1kP45Z94_5LauCnETdKls3QCUt_rY
+Message-ID: <CA+pv=HM3XK=ceOVcTQJPQp2SH0KhU9pT0LwrWBwjobeq36B3NA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/152] 6.6.79-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-MDID: 1740070090-ffBUylP7-uO5
+X-MDID-O:
+ us5;at1;1740070090;ffBUylP7-uO5;<slade@sladewatkins.com>;3898a0dee3d557fa468e7fbfdd1a7683
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On Thu, Feb 20, 2025 at 10:34:51AM -0600, Tom Lendacky wrote:
-> @Boris or @Herbert, can we pick up this fix separate from this series?
-> It can probably go through either the tip tree or crypto tree.
+On Wed, Feb 19, 2025 at 3:58=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.79 release.
+> There are 152 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This usually goes through the crypto tree. Unless Herbert really wants me to
-pick it up...
+Hi Greg,
+No regressions or any sort of issues to speak of. Builds fine on my
+x86_64 test machine.
 
--- 
-Regards/Gruss,
-    Boris.
+Tested-by: Slade Watkins <srw@sladewatkins.net>
 
-https://people.kernel.org/tglx/notes-about-netiquette
+All the best,
+Slade
 
