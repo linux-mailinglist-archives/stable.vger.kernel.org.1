@@ -1,291 +1,138 @@
-Return-Path: <stable+bounces-118375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081F1A3D16F
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 07:38:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FBAA3D18B
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 07:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30D453BAC32
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 06:37:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0732817AA6C
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 06:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A66E1E0E15;
-	Thu, 20 Feb 2025 06:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D246F1E47C7;
+	Thu, 20 Feb 2025 06:49:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF50D18C322;
-	Thu, 20 Feb 2025 06:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13E41E2858;
+	Thu, 20 Feb 2025 06:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740033482; cv=none; b=VPe9/CSnTkf+gOunB6QrJi1cbFdcOns9WNAukVnoax84Dt75DxUzURHDzqqrVxI7lZbh283mI9X4u/qHz/uTTJCLhF1xWWl8lB5ZLB2voMZUMmWtdHSgXOQPf5njFPKYYO7hs1AOx32SuYPcMIFddb0WAlMKWnHHWycvgVDxoyw=
+	t=1740034145; cv=none; b=dS9iSN8/uUT4P5pF+WaFZM3jYf46Y45E8x7GoH/ALnoVYupk4XBKJYdhb0r+3dGWkmXTWVGz8hD0lpgpPGMUqsBiSrGPHPzRTA8lj7ALQ1w97+rWYsOCro7I+qq3HvHaE9ujE9X/szpdP5eS3h0FFlzW5wZPZDMX1/8o9ehqnzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740033482; c=relaxed/simple;
-	bh=5P/NTNSv/R2aP04bJprG/OCuWTP8sVyWpcqLOD5cSXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pSgVHbf5O6zvNeNSgJ+Tm1qlCJKZBbp2OjhLrO1+sALGyeN7IaexAjckHGVjx97lefFBMGoi+XyIvyh96/kBRQa47ISaSDgp1wEWqA/ZHHWKEwmxbzCKF/aGiXLQY/WwHZ6T40ry8hRRzo71W24dLW6nxcjhO70A2qVf+l4XebI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 020DE2A2A;
-	Wed, 19 Feb 2025 22:38:16 -0800 (PST)
-Received: from [10.163.38.27] (unknown [10.163.38.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8BF183F5A1;
-	Wed, 19 Feb 2025 22:37:39 -0800 (PST)
-Message-ID: <50f48574-241d-42d8-b811-3e422c41e21a@arm.com>
-Date: Thu, 20 Feb 2025 12:07:35 +0530
+	s=arc-20240116; t=1740034145; c=relaxed/simple;
+	bh=25+m9o4S3tncqQbB8LTBqRgUFhC6vA/f8a4nvugY5EM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g3ejmQ+g1LAOK0k4QZv3BZqQNdqzqRryqwDV1USJH9eCiJKlUTY5wCQwQ3zWIVVOHywpYrDkNb5nB+yjfsNT+YDzmWceSolIheVmXfXDUstlIXUjceVKUnhSpO5BFbdjGEAp/rxPdaMkZElVn7L3oSKUTw0KlhQJvudZ1slIC+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowABXPTCCzrZnmmLTDg--.47725S2;
+	Thu, 20 Feb 2025 14:41:10 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/radeon: Add error handlings for r420 cp errata initiation
+Date: Thu, 20 Feb 2025 14:40:49 +0800
+Message-ID: <20250220064050.686-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] arm64: hugetlb: Fix huge_ptep_get_and_clear() for
- non-present ptes
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- David Hildenbrand <david@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Dev Jain <dev.jain@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250217140419.1702389-1-ryan.roberts@arm.com>
- <20250217140419.1702389-3-ryan.roberts@arm.com>
- <e26a59a1-ff9a-49c7-b10a-c3f5c096a2c4@arm.com>
- <5477d161-12e7-4475-a6e9-ff3921989673@arm.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <5477d161-12e7-4475-a6e9-ff3921989673@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABXPTCCzrZnmmLTDg--.47725S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJrW3KrWUKFyktryUWFW5Awb_yoW5Jr45pa
+	1kKa90yrZrKayIyr9rGay7J3W5Cw48Ka17Wry7Gw1Fkw1rJFs8JFyfGryUGrykGrZ2k3Wj
+	yryvk3ykuw4vv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUP214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ec7CjxVAajcxG14v26r1j6r4UMcIj6I8E87Iv67AKxV
+	WUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS
+	5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIec
+	xEwVAFwVW8AwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+	ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUjOJ
+	57UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRATA2e2jPzMJgAAsC
 
-On 2/19/25 14:28, Ryan Roberts wrote:
-> On 19/02/2025 08:45, Anshuman Khandual wrote:
->>
->>
->> On 2/17/25 19:34, Ryan Roberts wrote:
->>> arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
->>> a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
->>> are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
->>> CONT_PMD_SIZE). So the function has to figure out the size from the
->>> huge_pte pointer. This was previously done by walking the pgtable to
->>> determine the level and by using the PTE_CONT bit to determine the
->>> number of ptes at the level.
->>>
->>> But the PTE_CONT bit is only valid when the pte is present. For
->>> non-present pte values (e.g. markers, migration entries), the previous
->>> implementation was therefore erroniously determining the size. There is
+In r420_cp_errata_init(), the RESYNC information is stored even
+when the Scratch register is not correctly allocated.
 
-typo - s/erroniously/erroneously   ^^^^^^
+Change the return type of r420_cp_errata_init() from void to int
+to propagate errors to the caller. Add error checking after
+radeon_scratch_get() to ensure RESYNC information is stored
+to an allocated address. Log an error message and return the
+error code immediately when radeon_scratch_get() fails.
+Additionally, handle the return value of r420_cp_errata_init() in
+r420_startup() to log an appropriate error message and propagate
+the error if initialization fails.
 
->>> at least one known caller in core-mm, move_huge_pte(), which may call
->>> huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
->>> this case. Additionally the "regular" ptep_get_and_clear() is robust to
->>> being called for non-present ptes so it makes sense to follow the
->>> behaviour.
->>>
->>> Fix this by using the new sz parameter which is now provided to the
->>> function. Additionally when clearing each pte in a contig range, don't
->>> gather the access and dirty bits if the pte is not present.
->>>
->>> An alternative approach that would not require API changes would be to
->>> store the PTE_CONT bit in a spare bit in the swap entry pte for the
->>> non-present case. But it felt cleaner to follow other APIs' lead and
->>> just pass in the size.
->>>
->>> As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
->>> entry offset field (layout of non-present pte). Since hugetlb is never
->>> swapped to disk, this field will only be populated for markers, which
->>> always set this bit to 0 and hwpoison swap entries, which set the offset
->>> field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
->>> memory in that high half was poisoned (I think!). So in practice, this
->>> bit would almost always be zero for non-present ptes and we would only
->>> clear the first entry if it was actually a contiguous block. That's
->>> probably a less severe symptom than if it was always interpretted as 1
+Fixes: 62cdc0c20663 ("drm/radeon/kms: Workaround RV410/R420 CP errata (V3)")
+Cc: stable@vger.kernel.org # 2.6.33+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/gpu/drm/radeon/r420.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-typo - s/interpretted/interpreted			    ^^^^^^
+diff --git a/drivers/gpu/drm/radeon/r420.c b/drivers/gpu/drm/radeon/r420.c
+index 9a31cdec6415..67c55153cba8 100644
+--- a/drivers/gpu/drm/radeon/r420.c
++++ b/drivers/gpu/drm/radeon/r420.c
+@@ -204,7 +204,7 @@ static void r420_clock_resume(struct radeon_device *rdev)
+ 	WREG32_PLL(R_00000D_SCLK_CNTL, sclk_cntl);
+ }
+ 
+-static void r420_cp_errata_init(struct radeon_device *rdev)
++static int r420_cp_errata_init(struct radeon_device *rdev)
+ {
+ 	int r;
+ 	struct radeon_ring *ring = &rdev->ring[RADEON_RING_TYPE_GFX_INDEX];
+@@ -215,7 +215,11 @@ static void r420_cp_errata_init(struct radeon_device *rdev)
+ 	 * The proper workaround is to queue a RESYNC at the beginning
+ 	 * of the CP init, apparently.
+ 	 */
+-	radeon_scratch_get(rdev, &rdev->config.r300.resync_scratch);
++	r = radeon_scratch_get(rdev, &rdev->config.r300.resync_scratch);
++	if (r) {
++		DRM_ERROR("failed to get scratch reg (%d).\n", r);
++		return r;
++	}
+ 	r = radeon_ring_lock(rdev, ring, 8);
+ 	WARN_ON(r);
+ 	radeon_ring_write(ring, PACKET0(R300_CP_RESYNC_ADDR, 1));
+@@ -290,8 +294,11 @@ static int r420_startup(struct radeon_device *rdev)
+ 		dev_err(rdev->dev, "failed initializing CP (%d).\n", r);
+ 		return r;
+ 	}
+-	r420_cp_errata_init(rdev);
+-
++	r = r420_cp_errata_init(rdev);
++	if (r) {
++		dev_err(rdev->dev, "failed initializing CP errata workaround (%d).\n", r);
++		return r;
++	}
+ 	r = radeon_ib_pool_init(rdev);
+ 	if (r) {
+ 		dev_err(rdev->dev, "IB initialization failed (%d).\n", r);
+-- 
+2.42.0.windows.2
 
-
->>> and cleared out potentially-present neighboring PTEs.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
->>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->>> ---
->>>  arch/arm64/mm/hugetlbpage.c | 40 ++++++++++++++++---------------------
->>>  1 file changed, 17 insertions(+), 23 deletions(-)
->>>
->>> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
->>> index 06db4649af91..614b2feddba2 100644
->>> --- a/arch/arm64/mm/hugetlbpage.c
->>> +++ b/arch/arm64/mm/hugetlbpage.c
->>> @@ -163,24 +163,23 @@ static pte_t get_clear_contig(struct mm_struct *mm,
->>>  			     unsigned long pgsize,
->>>  			     unsigned long ncontig)
->>>  {
->>> -	pte_t orig_pte = __ptep_get(ptep);
->>> -	unsigned long i;
->>> -
->>> -	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
->>> -		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
->>> -
->>> -		/*
->>> -		 * If HW_AFDBM is enabled, then the HW could turn on
->>> -		 * the dirty or accessed bit for any page in the set,
->>> -		 * so check them all.
->>> -		 */
->>> -		if (pte_dirty(pte))
->>> -			orig_pte = pte_mkdirty(orig_pte);
->>> -
->>> -		if (pte_young(pte))
->>> -			orig_pte = pte_mkyoung(orig_pte);
->>> +	pte_t pte, tmp_pte;
->>> +	bool present;
->>> +
->>> +	pte = __ptep_get_and_clear(mm, addr, ptep);
->>> +	present = pte_present(pte);
->>
->> pte_present() may not be evaluated for standard huge pages at [PMD|PUD]_SIZE
->> e.g when ncontig = 1 in the argument.
-> 
-> Sorry I'm not quite sure what you're suggesting here? Are you proposing that
-> pte_present() should be moved into the loop so that we only actually call it
-> when we are going to consume it? I'm happy to do that if it's the preference,
-
-Right, pte_present() is only required for the cont huge pages but not for the
-normal huge pages. 
-
-> but I thought it was neater to hoist it out of the loop.
-
-Agreed, but when possible pte_present() cost should be avoided for the normal
-huge pages where it is not required.
-
-> 
->>
->>> +	while (--ncontig) {
->>
->> Should this be converted into a for loop instead just to be in sync with other
->> similar iterators in this file.
->>
->> for (i = 1; i < ncontig; i++, addr += pgsize, ptep++)
->> {
->> 	tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
->> 	if (present) {
->> 		if (pte_dirty(tmp_pte))
->> 			pte = pte_mkdirty(pte);
->> 		if (pte_young(tmp_pte))
->> 			pte = pte_mkyoung(pte);
->> 	}
->> }
-> 
-> I think the way you have written this it's incorrect. Let's say we have 16 ptes
-> in the block. We want to iterate over the last 15 of them (we have already read
-> pte 0). But you're iterating over the first 15 because you don't increment addr
-> and ptep until after you've been around the loop the first time. So we would
-> need to explicitly increment those 2 before entering the loop. But that is only
-> neccessary if ncontig > 1. Personally I think my approach is neater...
-
-Thinking about this again. Just wondering should not a pte_present()
-check on each entries being cleared along with (ncontig > 1) in this
-existing loop before transferring over the dirty and accessed bits -
-also work as intended with less code churn ?
-
-static pte_t get_clear_contig(struct mm_struct *mm,
-                             unsigned long addr,
-                             pte_t *ptep,
-                             unsigned long pgsize,
-                             unsigned long ncontig)
-{
-       pte_t orig_pte = __ptep_get(ptep);
-       unsigned long i;
-
-        for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
-                pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
-		
-		if (ncontig > 1 && !pte_present(pte))
-                        continue;
-
-                /*
-                 * If HW_AFDBM is enabled, then the HW could turn on
-                 * the dirty or accessed bit for any page in the set,
-                 * so check them all.
-                 */
-                if (pte_dirty(pte))
-                        orig_pte = pte_mkdirty(orig_pte);
-
-                if (pte_young(pte))
-                        orig_pte = pte_mkyoung(orig_pte);
-        }
-        return orig_pte;
-}
-
-* Normal huge pages
-
-	- enters the for loop just once
-	- clears the single entry
-	- always transfers dirty and access bits
-		- pte_present() does not matter as ncontig = 1
-
-* Contig huge pages
-
-	- enters the for loop ncontig times - for each sub page
-	- clears all sub page entries
-	- transfers dirty and access bits only when pte_present()
-		- pte_present() is relevant as ncontig > 1
-
-> 
->>
->>> +		ptep++;
->>> +		addr += pgsize;
->>> +		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
->>> +		if (present) {
->>> +			if (pte_dirty(tmp_pte))
->>> +				pte = pte_mkdirty(pte);
->>> +			if (pte_young(tmp_pte))
->>> +				pte = pte_mkyoung(pte);
->>> +		}
->>>  	}
->>> -	return orig_pte;
->>> +	return pte;
->>>  }
->>>  
->>>  static pte_t get_clear_contig_flush(struct mm_struct *mm,
->>> @@ -401,13 +400,8 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
->>>  {
->>>  	int ncontig;
->>>  	size_t pgsize;
->>> -	pte_t orig_pte = __ptep_get(ptep);
->>> -
->>> -	if (!pte_cont(orig_pte))
->>> -		return __ptep_get_and_clear(mm, addr, ptep);
->>> -
->>> -	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>>  
->>> +	ncontig = num_contig_ptes(sz, &pgsize);
->>>  	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
->>>  }
->>>  
-> 
 
