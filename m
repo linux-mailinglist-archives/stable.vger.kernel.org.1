@@ -1,194 +1,74 @@
-Return-Path: <stable+bounces-118413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9F4A3D6B9
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 11:32:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5153CA3D6D4
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 11:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02E48189EF1C
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:31:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 760F13A2529
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1D31F1303;
-	Thu, 20 Feb 2025 10:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F861F03DA;
+	Thu, 20 Feb 2025 10:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oajjSPzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNM9aKpf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7521EE035
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 10:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EE21D8A0B;
+	Thu, 20 Feb 2025 10:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740047476; cv=none; b=oLmME5j4hD0fDTwEU6x+/fSz2ZUJ2R9VOTHyDUHmLZps6sjX2H3XaDssEUTLh9xnYDfQfmaZ13D0Kw/3jLHkSCU1XH5Qj7cOn3zQXAwPLGEPi0bAzltoA0AHAkmvAee1hH7qFkG+kyozoIMGEjZRaFcGt/59dY1PPWSIKAQtApU=
+	t=1740047506; cv=none; b=jSD5D1BQy4vM7rD0QVPxi73HggIj95tnFMgNXn5u+yOgQb57m9EGsy2wRqgmjHfaHG3FSxrUFvt+g7PhnS3V+kZN4dbSbXU5f+nj3fpFX70VT3iuDRr31PB3fzss/FI123PIRA5X3khkBQ3hC7ivLmhs8M83gOGRSH03BgLWgl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740047476; c=relaxed/simple;
-	bh=7atARvokLY07mqgnr8qm+w1Plqn46HRkXLWGb+WjuPU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TZZvMrRa4lrid4FM6mVFve2zb9+MfaW4A8ZRfCi18PTBXzApWndY7Wm2OtrBZwldyQVrjcdKPDAFb7OX3E2ixfkgd9UzICZdOWvsDXfxjtwMK80FVeRz1bWCa6I4ErJYwxTeTUBlxDRT+MCG3rCUhYUxlsQo5HznTDjjw9UWYmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oajjSPzM; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abb8d63b447so107865366b.0
-        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 02:31:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740047472; x=1740652272; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i8pZn6/QFo8TbDdZwnXuIATxRnl2SnecFyZcNTZXt6k=;
-        b=oajjSPzMCQ0Q0JyepqfS6giDdmcRHHXBJjdPKPtL1M84DE2LdZuQ0PdHW1Lcmvbth+
-         9aIJDAQZpmiTOHpDyyAlcLk90Jw5fg1wtRrY2gMlQBAsZVdrk2Ziw7ClaGKsMhDargoe
-         inKVHa6zEEt0RiVj2G7e0JFP4ubHoCNvsGqbnpYSbEIH58OLvN4JhK20wy6Q2ozZ6tyO
-         WYLG5SlBzpJaMw9goBsK3FnGReXOtED6FE2Xk/xn/9coH7MRJSXD3H2aT0Nru+lKCHVF
-         zt+0choJcOsNRYB9PUSB8shTegNyl8csbXfK60p/XGWdjIeFPyP5VFzpHyycAlTEgkjk
-         Sf+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740047472; x=1740652272;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i8pZn6/QFo8TbDdZwnXuIATxRnl2SnecFyZcNTZXt6k=;
-        b=rH+42Q5i6e7m12Ni9uPo3Hn0evS+geodcQQgBKpCpXZTDtgwX3gPPVfGQ6jL7ZfS9M
-         NKR2Ebo4SKN+OHPB56+rvXHvylqzFAmrIVTEkdvbXc1D/kn9eZSIPomEQFhcdC+ViBjr
-         qD95sAgf+ScMw7zqjpx/2fy9mBGsXpwp5hqQbSDrdlHlp8waOApUUJ+tSiIvrqvcaCWP
-         GQz3FMuZQI+U0GNPGAlnnZYfHMVZ+qE5ypy9Wb9svYpXoBl0kogG0AJc+M3SpJ7w8HbZ
-         yViUH+owTiWvJJttwG8+rJdlHrjWMZzhlsnE/7N81UhlcoKQ18cZTn4I55i/vXhsgJNg
-         E1OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcP6tqioqiGGHRccZ4aoq2atiD1G9ilhmJZDcm/PREAfqIi19UZaP+1g+i1xTwe84mN48bp44=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpsfYqjwfmowwvznDSJ05YWt7ja+eaWcwuzG1pye3N/vhjgMFc
-	bEE0AFa0tQwkAnwOx8JTncRB+QpQlg/7Jw96I3ZPv8cXU+jJOWpr/VZCQEALH80=
-X-Gm-Gg: ASbGncsFsB/HPxK3ytcDsVWlWgUvW/RRnqC9FADP/graZEMOgj4Dv002T3E8cd8j9CQ
-	88+c8gxycbHqPBboVDn7cEIyaPs1bRbkGTk40Wfndui56RDCRcojqkTno6HRLtiqp7eN1vEnUUB
-	3T3uN0McpuqTmd71BZLNHsHX1N69Uk8yBowaSrpzwSzeBtFwkIp0V5Z6lyR/4BUR7RlvA9gxtjQ
-	FYAdRKUq4/yvhxgXdy1km/IlcTWTYqq19dLe7Wx1QkKNTX+0z4PwFOQZt5bD0DhBJ7E5ns7v8Th
-	4+EkKmugK9D5qA==
-X-Google-Smtp-Source: AGHT+IGkLjx1lyMFl288723pjRQskad0IrpyzmWLZ2jkcgybDcgcD4iSXpmxCzpSlh3nibMQ8BJ3eA==
-X-Received: by 2002:a17:907:6ea9:b0:abb:b294:6a2d with SMTP id a640c23a62f3a-abbcd0b9393mr650036766b.53.1740047472270;
-        Thu, 20 Feb 2025 02:31:12 -0800 (PST)
-Received: from [127.0.1.1] ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb94e4d0adsm823778366b.56.2025.02.20.02.31.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 02:31:11 -0800 (PST)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Thu, 20 Feb 2025 12:31:00 +0200
-Subject: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
- PWMs
+	s=arc-20240116; t=1740047506; c=relaxed/simple;
+	bh=0gGUjcCcjD2H9qdzcj34mjqEXMPeXP6ZWHyZiV1zUD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W3mmSfAhSkUjtRlG+4MFfqPLOP17jbcD0BUeFXibianiUxgYvrEYG08YGZu7Sd8TzCFJS4597EKn9muZp2N7uVfQCOBdGYFBZVOs6jMcgF1B7xUZcEo1ZylW0peGjU6kpm2CdY42r8b9GpY1xwXJeboMDFfb+FS3+7pyjCtuCkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNM9aKpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C49C4CED1;
+	Thu, 20 Feb 2025 10:31:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740047505;
+	bh=0gGUjcCcjD2H9qdzcj34mjqEXMPeXP6ZWHyZiV1zUD0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MNM9aKpfjOvOYQvliGldkVbqoeYgsmCTJZ+oc9JVqALkcT3Eb9+i5wsZjp9pErpBR
+	 0TPlnMEPBguZ0eGIXaxCyLoYyQra9tIG8G6Mpld0V0kEM20NqagQE8kxiIdLBhgOMR
+	 smEd5Ao5flRCNzEA/edC8PxRW5GHJKz/TTeatvIQ=
+Date: Thu, 20 Feb 2025 11:31:42 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.13 230/274] eth: iavf: extend the netdev_lock usage
+Message-ID: <2025022029-confirm-vaporizer-5a86@gregkh>
+References: <20250219082609.533585153@linuxfoundation.org>
+ <20250219082618.582615972@linuxfoundation.org>
+ <20250219133453.0550fb92@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAGQEt2cC/x2NzQrCMBAGX6Xs2Q/igqb6KuIhtmu70PyYhVoof
- XeDx4FhZieTqmJ073aqsqppTg3Op46GOaRJoGNjYscXx+ywyGj4DDliKRPeuiGGDeUbkRNmRRW
- Du3rpfc/B317USqVKE/+Xx/M4fl1ktPR1AAAA
-X-Change-ID: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Anjelique Melendez <quic_amelende@quicinc.com>
-Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, 
- Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
- linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3026; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=7atARvokLY07mqgnr8qm+w1Plqn46HRkXLWGb+WjuPU=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBntwRt/BF7ZpH3h7g59Ow1VFkipWuLmBqZ784Q8
- oRHeGAyp56JAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ7cEbQAKCRAbX0TJAJUV
- VpaWD/9MMLieWxuLt7ssUG3zSaev0aST6HosKPbBuUaxfGPTPkHOugXWpzmSdtm9MIvkl52wwPF
- QOVPNOXf0IAWuIeX+F0pv9s6FujWjAc35gi72l3JRgpST+TOAQJlXUeOWYLp/SZBwiRe0YsbeoQ
- opoR044nYTtkzjb27oPPorkFnNAl0N1IKIDa+NoBYcLHw0LvESgOSHgReOyKjAsopGWlpuqz0Fu
- UgKIOric3Exzzdm8h1VZDn4IW6HJ7LCgBZCCdDUkusN7PEHmWZ01uIP5GbPYGlHM1eRR3Wt6TcS
- gNDVAWbjLXPUD4fgDBVSypnbJVUlMjxdEb+RO7pg9Qt1s69WclpMX2pqIXdZkJREKQwXmqgMr09
- iFXTqtvnfCOERxIlYL9wEw1z7dQC3hugrU8SsvaTQJZoE8RgzqMF8t5Kbrf9bIec1vWB1wP8bsm
- L60yfnR8OlUbXsB3NILUCEQ0F+g2Bukq1OkE94VUSE/MnLZH+zJrNGK7DSbAGAl8mxa9LvjJhJL
- +e0k+3GhN3Gnkb1RrIdJB4pD4EZhUdJhZpw5Tf/KZX2FSPIzOtuh/JanIjEVtjf7TfJN5a9Z5ye
- ft8l1XhGDhs644s5ZbwCsH2Utj6JzN07JZvL/OG3WGPL6MMFBe1KC5wVE7syn2cEmBrEh+DTUwa
- rw7s4JyW6yh0/QA==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250219133453.0550fb92@kernel.org>
 
-Currently, for the high resolution PWMs, the resolution, clock,
-pre-divider and exponent are being selected based on period. Basically,
-the implementation loops over each one of these and tries to find the
-closest (higher) period based on the following formula:
+On Wed, Feb 19, 2025 at 01:34:53PM -0800, Jakub Kicinski wrote:
+> On Wed, 19 Feb 2025 09:28:04 +0100 Greg Kroah-Hartman wrote:
+> > iavf uses the netdev->lock already to protect shapers.
+> > In an upcoming series we'll try to protect NAPI instances
+> > with netdev->lock.
+> 
+> Please drop from all branches, waaay too risky
+> 
 
-                          period * refclk
-prediv_exp = log2 -------------------------------------
-                    NSEC_PER_SEC * pre_div * resolution
+All of these are now dropped, thanks so much for the review and letting
+us know.
 
-Since the resolution is power of 2, the actual period resulting is
-usually higher than what the resolution allows. That's why the duty
-cycle requested needs to be capped to the maximum value allowed by the
-resolution (known as PWM size).
-
-Here is an example of how this can happen:
-
-For a requested period of 5000000, the best clock is 19.2MHz, the best
-prediv is 5, the best exponent is 6 and the best resolution is 256.
-
-Then, the pwm value is determined based on requested period and duty
-cycle, best prediv, best exponent and best clock, using the following
-formula:
-
-                            duty * refclk
-pwm_value = ----------------------------------------------
-                NSEC_PER_SEC * prediv * (1 << prediv_exp)
-
-So in this specific scenario:
-
-(5000000 * 19200000) / (1000000000 * 5 * (1 << 64)) = 300
-
-With a resolution of 8 bits, this pwm value obviously goes over.
-
-Therefore, the max pwm value allowed needs to be 255.
-
-If not, the PMIC internal logic will only value that is under the set PWM
-size, resulting in a wrapped around PWM value.
-
-This has been observed on Lenovo Thinkpad T14s Gen6 (LCD panel version)
-which uses one of the PMK8550 to control the LCD backlight.
-
-Fix the value of the PWM by capping to a max based on the chosen
-resolution (PWM size).
-
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
-Note: This fix is blocking backlight support on Lenovo Thinkpad T14s
-Gen6 (LCD version), for which I have patches ready to send once this
-patch is agreed on (review) and merged.
----
- drivers/leds/rgb/leds-qcom-lpg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index f3c9ef2bfa572f9ee86c8b8aa37deb8231965490..146cd9b447787bf170310321e939022dfb176e9f 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -529,7 +529,7 @@ static void lpg_calc_duty(struct lpg_channel *chan, uint64_t duty)
- 	unsigned int clk_rate;
- 
- 	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
--		max = LPG_RESOLUTION_15BIT - 1;
-+		max = BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
- 		clk_rate = lpg_clk_rates_hi_res[chan->clk_sel];
- 	} else {
- 		max = LPG_RESOLUTION_9BIT - 1;
-
----
-base-commit: 50a0c754714aa3ea0b0e62f3765eb666a1579f24
-change-id: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
-
-Best regards,
--- 
-Abel Vesa <abel.vesa@linaro.org>
-
+greg k-h
 
