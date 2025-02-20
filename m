@@ -1,91 +1,126 @@
-Return-Path: <stable+bounces-118479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28199A3E102
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 17:40:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B8FA3E115
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 17:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D99417A8A62
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:38:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06ADE7A95C7
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC40B20B812;
-	Thu, 20 Feb 2025 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460AC20B211;
+	Thu, 20 Feb 2025 16:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7ldMznp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJNJYCpa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6982020487F
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 16:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC63D13A87C;
+	Thu, 20 Feb 2025 16:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740069546; cv=none; b=QTxYLC8nFlsLVMF41y6HAUhPsIUYZ7gnfWtcSTr9izbRsnXqgZ9zUrM2A3kJ/gv5ioVb5zBQDydnOYtmuzd2FsGva+oSrqy+UGkterckZcCYTKx/AvDRn6n+LE1YHfAF43LyYbaWf3x4fRn4DuvM7p1GJIhJNWH4mu7C226fU7E=
+	t=1740069705; cv=none; b=C9PRK7qtOSAfEGV/KAn9rnCbVXtaulZ4qLauSO/31E0LpT1CWxaBvNZPaTrgnL/22UUwBFj+M2vyj7b8EIhohNmxLt1cIoFJ/VWcxu8qfRg7gY4ErAm7L/6a2nUMKYnCpShu9m+yW+ITkG9wQdX19RginuqDGTfiOtdn/Ml0pqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740069546; c=relaxed/simple;
-	bh=+/hLHzsl3KWd3MX8t+C1gUkYV8W/2ef/3T7qqFADfXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SzFtw/lhlKsVkMK/sBNyTd45JaKfoMbPrx+MKYcD4eHgxgCZz/ghMX3jw1jYR0IoX8JXt+K/zXhrMvR4WoINy7V/4f2vjBgXr/tdhwz1vs27zg9NB0QSs44hkWIQP6alwJd+d7UILfnWWqnXnbdk3rpOk2PQGXww3GexQ4lqXe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7ldMznp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D61AC4CED1;
-	Thu, 20 Feb 2025 16:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740069545;
-	bh=+/hLHzsl3KWd3MX8t+C1gUkYV8W/2ef/3T7qqFADfXM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o7ldMznpQqRefCBSpZpbPCouwjlXt6hJUac3qswIQeCPtRXdgaaBYK+zvn9wz+veS
-	 btr+ItnfB8ErDZ7+bRJQTVowo5bBlhMj5G9RS9n6Zx4XniYtoxgjAqHnyZ01B5vozF
-	 pHti8ahaybOm/XNFW4u9HSFmA3hkcsPSGWMta3Vw=
-Date: Thu, 20 Feb 2025 17:39:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: stable@vger.kernel.org, yang@os.amperecomputing.com,
-	Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: [PATCH stable 5.10.y-6.12.y] arm64: mte: Do not allow PROT_MTE
- on MAP_HUGETLB user mappings
-Message-ID: <2025022050-gopher-sizable-8657@gregkh>
-References: <20250220155801.1731061-1-catalin.marinas@arm.com>
+	s=arc-20240116; t=1740069705; c=relaxed/simple;
+	bh=HyXshobuVqA0RqPRtuVurArIvohbfETQanVpkFcibTg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QW+X3UYnjvMG1YnYnhXKYKLFpWYAYJukEnOHym72Bt7YO8hST9Rvruz4amOehGAad21s/JjiG1q4GY9oI+Oh6ctUaocahz0eQleOvDOpdKM9o3S3tIxzD2NIIMNmUJbkx7ZL9eoe832eLdsMskl4Y04G/N3U9U5e3a681gRR1sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJNJYCpa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F95C4CED1;
+	Thu, 20 Feb 2025 16:41:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740069704;
+	bh=HyXshobuVqA0RqPRtuVurArIvohbfETQanVpkFcibTg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NJNJYCpaUum1F7pXgvxKAzTey+/y/cSpzoDM/1W7Qu5koLF4xu5BI9n4sa6HJrJ2p
+	 gTuBaxgIbeEIo4Iw53vdKou1gUzUOt7Pi8aPAvlifYsVd4zFObR5+XPDUi+e5Gke7y
+	 f7lqiUbf6rjVoBOlQvZxwRXgoWv1FobuJruVyuN+NSNAx62rUj0LWxpiy9mOZ7Do/h
+	 MFM4NdiPOX3m0jOTCqbL8SxY45FE/byY60Y5VWf7/lzFYQIILdEk0nG05icel81aWu
+	 ak0P+K0yHJt+VNYirpTV1eKknp3F9X3zw9nwgs0cn4sqJbEIuMxAlFieytPCCiq77q
+	 iOjR9ZiBdHF6A==
+Received: by wens.tw (Postfix, from userid 1000)
+	id 984635FB8F; Fri, 21 Feb 2025 00:41:41 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Cc: Chen-Yu Tsai <wens@csie.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND net-next] net: stmmac: dwmac-rk: Provide FIFO sizes for DWMAC 1000
+Date: Fri, 21 Feb 2025 00:40:31 +0800
+Message-Id: <20250220164031.1886057-1-wens@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220155801.1731061-1-catalin.marinas@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 20, 2025 at 03:58:01PM +0000, Catalin Marinas wrote:
-> PROT_MTE (memory tagging extensions) is not supported on all user mmap()
-> types for various reasons (memory attributes, backing storage, CoW
-> handling). The arm64 arch_validate_flags() function checks whether the
-> VM_MTE_ALLOWED flag has been set for a vma during mmap(), usually by
-> arch_calc_vm_flag_bits().
-> 
-> Linux prior to 6.13 does not support PROT_MTE hugetlb mappings. This was
-> added by commit 25c17c4b55de ("hugetlb: arm64: add mte support").
-> However, earlier kernels inadvertently set VM_MTE_ALLOWED on
-> (MAP_ANONYMOUS | MAP_HUGETLB) mappings by only checking for
-> MAP_ANONYMOUS.
-> 
-> Explicitly check MAP_HUGETLB in arch_calc_vm_flag_bits() and avoid
-> setting VM_MTE_ALLOWED for such mappings.
-> 
-> Fixes: 9f3419315f3c ("arm64: mte: Add PROT_MTE support to mmap() and mprotect()")
-> Cc: <stable@vger.kernel.org> # 5.10.x-6.12.x
-> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> ---
-> 
-> Hi Greg,
-> 
-> This patch applies cleanly on top of the stable-rc/linux-6.12.y to
-> 5.10.y LTS, so I'm only sending it once. It's not for 6.13 onwards since
-> those kernels support hugetlbfs with MTE.
+From: Chen-Yu Tsai <wens@csie.org>
 
-Thanks for this, I'll queue it up after the next round of releases.
+The DWMAC 1000 DMA capabilities register does not provide actual
+FIFO sizes, nor does the driver really care. If they are not
+provided via some other means, the driver will work fine, only
+disallowing changing the MTU setting.
 
-greg k-h
+The recent commit 8865d22656b4 ("net: stmmac: Specify hardware
+capability value when FIFO size isn't specified") changed this by
+requiring the FIFO sizes to be provided, breaking devices that were
+working just fine.
+
+Provide the FIFO sizes through the driver's platform data, to not
+only fix the breakage, but also enable MTU changes. The FIFO sizes
+are confirmed to be the same across RK3288, RK3328, RK3399 and PX30,
+based on their respective manuals. It is likely that Rockchip
+synthesized their DWMAC 1000 with the same parameters on all their
+chips that have it.
+
+Fixes: eaf4fac47807 ("net: stmmac: Do not accept invalid MTU values")
+Fixes: 8865d22656b4 ("net: stmmac: Specify hardware capability value when FIFO size isn't specified")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+(Resending to net-next instead of netdev.)
+
+The commit that broke things has already been reverted in netdev.
+
+The reason for stable inclusion is not to fix the device breakage
+(which only broke in v6.14-rc1), but to provide the values so that MTU
+changes can work in older kernels.
+
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index a4dc89e23a68..71a4c4967467 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1966,8 +1966,11 @@ static int rk_gmac_probe(struct platform_device *pdev)
+ 	/* If the stmmac is not already selected as gmac4,
+ 	 * then make sure we fallback to gmac.
+ 	 */
+-	if (!plat_dat->has_gmac4)
++	if (!plat_dat->has_gmac4) {
+ 		plat_dat->has_gmac = true;
++		plat_dat->rx_fifo_size = 4096;
++		plat_dat->tx_fifo_size = 2048;
++	}
+ 	plat_dat->fix_mac_speed = rk_fix_speed;
+ 
+ 	plat_dat->bsp_priv = rk_gmac_setup(pdev, plat_dat, data);
+-- 
+2.39.5
+
 
