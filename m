@@ -1,203 +1,270 @@
-Return-Path: <stable+bounces-118436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67FCA3DAAA
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 14:02:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C63DA3DADE
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 14:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB613170835
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 13:01:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9EC189EF46
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 13:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B201F55E0;
-	Thu, 20 Feb 2025 13:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FwtxARk9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3870B1F8917;
+	Thu, 20 Feb 2025 13:06:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2077.outbound.protection.outlook.com [40.107.241.77])
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63808224F6;
-	Thu, 20 Feb 2025 13:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740056490; cv=fail; b=l1RyOPmbNKHu5b8QNfQy3F+RFMBBkCeQDyypeTO0NnQAqFWqJ14Fr/jcl70s15a2uMLmNKxlbibjbKozG8lWgz1gcqVg5kufLu5mS8pkloo5/fvqROjm/b/QY4obXgGhX6koYzrXQaVyW21xXIPlDdg17OHS/BHRvRw4XI4PEs0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740056490; c=relaxed/simple;
-	bh=sx3joi43Z7ro/Uz++eNn0LYDnoy6dBqFMZpeypLxoIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qTN+dyk2qxvdalHiuxVehojdQbJkgf1VycscTmtHMsA9oKjOoeoR1IznHLZ+GbPqS18VlMoZSjztybNTkycDWB8OPF/gRPqSEB2I0/NSwrn2JVEgH9dGEfs5bbsg5dcNbLqzKFNyx/4R1FFFkOrRI+EiHFh5v179lw2HvDVWe/0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FwtxARk9; arc=fail smtp.client-ip=40.107.241.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pIjmb+Kk7XadSLz2ulo4+y4C9gwezgNSiNkS1rzDDI+ZyX//VsJ+we2KrX1PbzQXfchZI/4Gdw33vQyOZp84TCEvvFdJTrm5VoQ/JkUssM6g42oj0mNXGptLsqfrphycfIBnnEd/rzGmcyuJSR3iLugPsJW8JqB3828GGkJdmK0A4YzLTlEew5Uw/87DRoYf2qjrqqy3LOOXqhCx46Fb/Z7j7tCBcPY0fhI6ix1w/65OLe6m93j4QQQRRQHAb4d/jiw2IsDZAGQhOwrCH+1y1zzBDICMK8c6yquJRBlLZh/274O+XaJtCYT9QJlHG0pdP1FRhrOCQUYTyE1zb1glOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+mOIpL+BTRMqaUMD0f8BNVLjUeRUjfXHJ46BlkYQLeU=;
- b=kJj+Fgd6eoMh8i2rFHVHGKzJoaPyDlaHl6VQvrE1HNLsg3ockvhPHRcHgu0Ur3GnB2/i1NQUMIlQgQ9d2kwPnh3wI1KimpqraGWg3ECuBjy3sLo60jJrZDcGMK/4lzRnkHvhVSiHKxn+SV4z6h6kNQK/EdWu3iKiz8ZCaD8nnVfQ1GopY4vUI5Z0l30NXEjPQVq+++X1cm7kXoW6ptJMAIU2Wu9zDc9aOvgT868AgG4zyF/VGxB7LQeaWrbRdsHyK6aA2xIEuzXYd5p6lTOHAT/viLnUykuALJseersg2J9bjeKbx+xcb+Q2NmrshiXPX2A+IRMTNH4+uFTMcqcOaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+mOIpL+BTRMqaUMD0f8BNVLjUeRUjfXHJ46BlkYQLeU=;
- b=FwtxARk94PJQlu6LYHm8jhXtZNBgD8b3XWzQa878UsxCGDMqpuJut9csZC8DhnqHSJK+BF7Q1PoEgVKSVK8hPmKB6gaUbdf3T/l/iBylXN69Nq6IDcM1yIOHPYTyShGWCrhD6rM4lCqeroV5LEh4BQkqYbbbUcn89IlatV36Kl7QaWJpJw/mH+N6k81ViB9Q2FEd7zjn2dJjH1yxHi/t0Swc5/IqM10oZL3fKPkRBLS/kZAkKUF7Vlw4fGEMm8KLu+5hwU7CgX2hdI/eIzd7qdST3OL+L1uEnskUudFOt81BSYtSpYeLBEGbMdAQNVNeo7180msc7HcFBr1AD7/zRw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by AS8PR04MB8738.eurprd04.prod.outlook.com (2603:10a6:20b:42b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.17; Thu, 20 Feb
- 2025 13:01:24 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8466.015; Thu, 20 Feb 2025
- 13:01:24 +0000
-Date: Thu, 20 Feb 2025 15:01:21 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, ioana.ciornei@nxp.com, yangbo.lu@nxp.com,
-	michal.swiatkowski@linux.intel.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 net 1/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_buffs()
-Message-ID: <20250220130121.fq3irlaunowyvfc4@skbuf>
-References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-2-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250219054247.733243-2-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1P195CA0046.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:5a::35) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC771F584A;
+	Thu, 20 Feb 2025 13:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740056815; cv=none; b=Jg8v5lmp2DW1g4cnxbus5D51wNfWk43tBPhArGlmlsE14glsyaiIrL6cXOq8fsZjcWsq31kME4hmzzXKmiafgXvB0epd3cmil0YDKvs+B/UzRzuyuY9hjFIKPh7MggC21sK7nwwU6vu+TOZpMERBBS98A1Rq2lvvtkiBuU5Dd+o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740056815; c=relaxed/simple;
+	bh=WCZJrQimBDJD6iuV+oyaGhnj6QAoxK0ucp+seR2Z6ZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GEAHwdpAExUfwVuXY8tWcsON6nJLZ497AyScjJnhy1J+SUmLm6rhrAcsE8dw0Yn6QpQ5T98g+zEBZV2+MF6hN9dS1qzEu2M7dYxROQtEvqD2EqHqd5GpLqWDJofVzqPWANtdHzXw1ZbtRacJtXZpGTR2rbUAVVjFQ3gTrODvbQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 60BA324BA2;
+	Thu, 20 Feb 2025 16:01:06 +0300 (MSK)
+Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail03.astralinux.ru [10.177.185.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Thu, 20 Feb 2025 16:01:02 +0300 (MSK)
+Received: from localhost.localdomain (unknown [10.177.20.111])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4YzD0F3VTxz1h0Mx;
+	Thu, 20 Feb 2025 16:01:01 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.10/5.15] smb: client: fix UAF in async decryption
+Date: Thu, 20 Feb 2025 16:00:52 +0300
+Message-ID: <20250220130054.9478-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AS8PR04MB8738:EE_
-X-MS-Office365-Filtering-Correlation-Id: be2e1ff6-d294-4fe5-3dc9-08dd51aeadda
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iepRGVURrwuQI4vybmve03urEGZg1aJx5Z22t6I8oOEzqZQ6TRstCjF7sc/1?=
- =?us-ascii?Q?9ezIF6+9T+fU5bMskghEnaD61sggeYeHyvvzYjGA1M0Jxxlr08Sf39kV7Qzn?=
- =?us-ascii?Q?8aRahLQGYirxs8UiW3FrWeA2A7+8n26z8z5+pkZGry3DsGuremgJpnwpp9q+?=
- =?us-ascii?Q?1pRd93LxUtB6Wiq6md36L0bnV0Sje4eIlHm6tWBuQGSkK8wKd0lA1AXqQ2Z2?=
- =?us-ascii?Q?kctc697UUJPGsYkqj9vY5KWZG3DlaxUDqdk2cvrRXYFUWd5PWA0MOW2NDB/h?=
- =?us-ascii?Q?qa0pLVuoC0nC4CzqB7gRVt94J1i7MGDDYu4+ymmXz0V8UijJlbuHdBlDSvgd?=
- =?us-ascii?Q?CjaidlY1BXMHNT8AqqMPAKvgg0RIQy6YBnBeGfsZiZ0D68PydE73fzrW0t6H?=
- =?us-ascii?Q?yh6FZgdhCNfJrTT/ys4Xm/2nDRYbjN16k93V8L0s134Ve/+tqP4I9wqBlYIJ?=
- =?us-ascii?Q?LQlS7QTFCpEX140X5E1TdkTCF3KmQzM7GXwROUcRSQgCxenhBTmtPR6bq177?=
- =?us-ascii?Q?ecEzj/8mEC7dOPnQkHjmg/fH+p/wiCuR5EM5ru8FGxmZHPAmumdbEgpoAbv9?=
- =?us-ascii?Q?B08CAtifh+C65RLypM6Gbz+5M1Swwp00q74BGM8TG23VwoazZXtosAFtcbvy?=
- =?us-ascii?Q?N857ikhkZYcosohdKO7YoxSuHC9MxVeuyoUQXHCJvB4mJ1bVsWqu4svXDaw+?=
- =?us-ascii?Q?NqH7tmlMFNRTkZTwX96MRmXUa0QtDHXyr/E/yjU2FU0xh/bSuC+GKdjQpNQr?=
- =?us-ascii?Q?z8pwsEEIsQbVOkMHA3h4v2IYhOaPuIoruI58zKgW2LxfZTTs0HdCXxDhTkmF?=
- =?us-ascii?Q?qw5gbqmmO/ekzoLq5MkzIgl66eghNWE/CyNcyFsLvn/AOX7g21VQ6P/wNEWT?=
- =?us-ascii?Q?sazwsvk6SldOB94ECFx7s6bkcCllQ08rZ+4X1iMlWzZ+YghzyA5B8sJjErAG?=
- =?us-ascii?Q?oj8O8SGwN6FLWll4Qw/fQDBRKjJRnIijJeg3mrf8NbCy/gXOWDBsG2oM2YLC?=
- =?us-ascii?Q?+yl5OaAV8jCM4Gki7+ndRNIcynkdzE/ZDWVHIzpaT5yCSDcB4YlmThGiNuWX?=
- =?us-ascii?Q?MC7ssDpek1Jtf9bVe4Q+Gv6f5iFRCu3MOGxDiOZ5518NhqW/5X+P/dUTwYIy?=
- =?us-ascii?Q?38TK6rKZxwJ2fyurVNTLn+WO2NxillXalwOP2XRBJF+KY4dWoJ1ZANx1jmW9?=
- =?us-ascii?Q?3Ev7oKfDEZZW/32DwZaFXGtyue6Bbds/BA2Rroyml9k2ZP52Gvwq6HYbU5a3?=
- =?us-ascii?Q?t0TsbGP92TDuMvb53sROTbCi/0UPWzx/UJdatEQsLSp3KlIVngl1Ln1jY+VF?=
- =?us-ascii?Q?q3Xp3bO28RARZheGl00sO64N3lWa265gacXVAYltelG3xYHQdvAVRWICy90G?=
- =?us-ascii?Q?fqhnabjcZkGJ5D6Pa7e0c/4qSp5o?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K2Cd0ttZcc/s5CXZ5afQOSpQEy23UfCdaxcmhUwQ2KZURxdTRCOL7A6AhWcm?=
- =?us-ascii?Q?aZhXF61EJYqKkpi4BkE2GuKPnz+PxeSEM5pUqIOF6weinFWn0tzO4Rx9zYCd?=
- =?us-ascii?Q?MXrMSN3/0sQ51ebkcKTNQkyAWyag82w2ZN3UF+ZVcaToqyOVCrmJUR6KzbQb?=
- =?us-ascii?Q?X+9F5SQepon5iOaQ4e0Q+2ADQw87cQYC1oCRJZ7jAIgMFDiQA5GBquHNlG0f?=
- =?us-ascii?Q?QHz4//TT7irK03mGy2BB0Vce0VdWsiNkZWfF24Brs82y+jkvhEHR3zDENY98?=
- =?us-ascii?Q?s7+pgRkqX978YopAvZQfk2/ZVfx80lLS/rcoiVMv8+zPpE129F+bl3IPWonO?=
- =?us-ascii?Q?ru76Qm5iVgEmidsbfvlqmZ4Ai8SkxpXTakVUjFzbOGznIeQnqTzM64jxVdOm?=
- =?us-ascii?Q?nww6fCEOhmdWH+GdamHcH4Gt0t4R5TUVNnHlmMVug2YXqvVKm1tMeiMN5cHE?=
- =?us-ascii?Q?PKbGtoTertjBULTAO7uN0J7LdEf2TMNJB4mEdtBTp7XiBZ63bwlTnlE/ML3C?=
- =?us-ascii?Q?xrOAJPlIlj3oyCFxfb5hPSzlY2iBwy1i2NeAY++fs9c6IfN5damJF9WIvepu?=
- =?us-ascii?Q?Yx2Rtb+JjyO7kh4jQxVxUduY8NDWteW9MGvEHjNSFGV9NpF2o6TCtIqDCXox?=
- =?us-ascii?Q?lAMTtbhOI8mEtLT4yy2W7BLSYKE0LckRLhzBCZfyvSHQaVhQ0VaZ3R4/Hkv4?=
- =?us-ascii?Q?sH2R1znBaB0lv9pZMADPKPOSBDzscpC6qb9WJAj7GKXq9KqUz6iDDCaUjKel?=
- =?us-ascii?Q?VoPyZ1HD9bbDQ9BFqsTBkqFsnjyA8iFv4MnOCPggd/vONtErp5IaJr+ekjIi?=
- =?us-ascii?Q?qXX9Mqk4+hMP9dFHvDxMfPixSqv6NJkeaeZbc1mGjq+0EBsKCLkntV1FnFC4?=
- =?us-ascii?Q?uho5C8iKK98dSGLlDEw+xv/FhNteczaC9up3dw2q7ktSH2K/9QC0PRJk0nL8?=
- =?us-ascii?Q?TQbjiSqegRJtsQ8vTyNOqwsl+pH/vLnuDCzKmxZWO16x2fPnBZHmaAZYjkwd?=
- =?us-ascii?Q?OIdCPSum0b86oWT7Jmjrri9qPWRYS1DfEO2fH0GKCSkg43YKLQzYRxyCyRqp?=
- =?us-ascii?Q?j4rO4gEmyuwKX4UFihisbXRybsXhJxEUY73p3cbaJ+1a97HANWMbZYaQ5fo/?=
- =?us-ascii?Q?v7HaahkAwMhRRFaMFxWC26DgIPS+ekVjbIEDGv2Srs25QZfKd0JvFJZ3yPaY?=
- =?us-ascii?Q?UUacRq+9eaKNH2wGtJGyvkKE32vD4wsVXrgl3s7AoOrM8gSXt9cz5Wo3w/EH?=
- =?us-ascii?Q?VKbmhoQN8plHrBF9An+D1wQiiRtUTYS+NJzEq1X9O5a7RodMgeMVcJbN4kEs?=
- =?us-ascii?Q?Cx/szZsMm3RuABKly/RxIkYYhhZhZ2hyqa4TjDxZaH2x5L9HGJJGBGk9RUSv?=
- =?us-ascii?Q?/wfnCIy891qup+VIZSLx8hmyMPo0TOhLRwsqy0gSY2DB0JyZnuoeISbIHGoL?=
- =?us-ascii?Q?/ET48TQYdfg+n45LkRnC50QvOOVzl1rH9KUiHbDKoP02RuwvADCJf58hjAFo?=
- =?us-ascii?Q?b5X77fedmvimKBsWcdc+SFgTVUU/5hexYlPMpfRupVfa8m0Xn1/5PEGTQtaA?=
- =?us-ascii?Q?k5OQb57jAgscuutQoywSV0+/EW8blY9KBjCn/3pHfd03InoqLyy3o4u2yhmH?=
- =?us-ascii?Q?iA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be2e1ff6-d294-4fe5-3dc9-08dd51aeadda
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 13:01:24.1447
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SVx0308eYbB1YJO3uR1Tc1xqP01MAthKdbQdevd3dnUVVPlzL8k0CI0UbseTwZozEitOIrb4N/4C1NWA80mJ2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8738
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {Tracking_from_domain_doesnt_match_to}, new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 191143 [Feb 20 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/02/20 08:57:00 #27373308
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-On Wed, Feb 19, 2025 at 01:42:39PM +0800, Wei Fang wrote:
-> When a DMA mapping error occurs while processing skb frags, it will free
-> one more tx_swbd than expected, so fix this off-by-one issue.
-> 
-> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-After running with some test data, I agree that the bug exists and that
-the fix is correct.
+commit b0abcd65ec545701b8793e12bc27dc98042b151a upstream.
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Doing an async decryption (large read) crashes with a
+slab-use-after-free way down in the crypto API.
 
-It's just that there's yet one more (correct) dma_err snippet in
-enetc_lso_hw_offload() which achieves the same thing, but expressed
-differently, added by you in December 2024.
+Reproducer:
+    # mount.cifs -o ...,seal,esize=1 //srv/share /mnt
+    # dd if=/mnt/largefile of=/dev/null
+    ...
+    [  194.196391] ==================================================================
+    [  194.196844] BUG: KASAN: slab-use-after-free in gf128mul_4k_lle+0xc1/0x110
+    [  194.197269] Read of size 8 at addr ffff888112bd0448 by task kworker/u77:2/899
+    [  194.197707]
+    [  194.197818] CPU: 12 UID: 0 PID: 899 Comm: kworker/u77:2 Not tainted 6.11.0-lku-00028-gfca3ca14a17a-dirty #43
+    [  194.198400] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
+    [  194.199046] Workqueue: smb3decryptd smb2_decrypt_offload [cifs]
+    [  194.200032] Call Trace:
+    [  194.200191]  <TASK>
+    [  194.200327]  dump_stack_lvl+0x4e/0x70
+    [  194.200558]  ? gf128mul_4k_lle+0xc1/0x110
+    [  194.200809]  print_report+0x174/0x505
+    [  194.201040]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+    [  194.201352]  ? srso_return_thunk+0x5/0x5f
+    [  194.201604]  ? __virt_addr_valid+0xdf/0x1c0
+    [  194.201868]  ? gf128mul_4k_lle+0xc1/0x110
+    [  194.202128]  kasan_report+0xc8/0x150
+    [  194.202361]  ? gf128mul_4k_lle+0xc1/0x110
+    [  194.202616]  gf128mul_4k_lle+0xc1/0x110
+    [  194.202863]  ghash_update+0x184/0x210
+    [  194.203103]  shash_ahash_update+0x184/0x2a0
+    [  194.203377]  ? __pfx_shash_ahash_update+0x10/0x10
+    [  194.203651]  ? srso_return_thunk+0x5/0x5f
+    [  194.203877]  ? crypto_gcm_init_common+0x1ba/0x340
+    [  194.204142]  gcm_hash_assoc_remain_continue+0x10a/0x140
+    [  194.204434]  crypt_message+0xec1/0x10a0 [cifs]
+    [  194.206489]  ? __pfx_crypt_message+0x10/0x10 [cifs]
+    [  194.208507]  ? srso_return_thunk+0x5/0x5f
+    [  194.209205]  ? srso_return_thunk+0x5/0x5f
+    [  194.209925]  ? srso_return_thunk+0x5/0x5f
+    [  194.210443]  ? srso_return_thunk+0x5/0x5f
+    [  194.211037]  decrypt_raw_data+0x15f/0x250 [cifs]
+    [  194.212906]  ? __pfx_decrypt_raw_data+0x10/0x10 [cifs]
+    [  194.214670]  ? srso_return_thunk+0x5/0x5f
+    [  194.215193]  smb2_decrypt_offload+0x12a/0x6c0 [cifs]
 
-For fixing a bug from 2019, I agree that you've made the right choice in
-not creating a dependency on that later code. But I like slightly less
-the fact that it leaves 2 slightly different, both non-obvious, code
-paths for unmapping DMA buffers. You could have at least copied the
-dma_err handling from enetc_lso_hw_offload(), to make it obvious that
-one is correct and the other is not, and not complicate things with yet
-a 3rd implementation.
+This is because TFM is being used in parallel.
 
-You don't need to change this unless there's some other reason to resend
-the patch set, but at least, once "net" merges back into "net-next",
-could you please make a mental note to consolidate the 2 code snippets
-into a single function?
+Fix this by allocating a new AEAD TFM for async decryption, but keep
+the existing one for synchronous READ cases (similar to what is done
+in smb3_calc_signature()).
 
-Also, the first dma_mapping_error() from enetc_map_tx_buffs() does not
-need to "goto dma_err". It would be dead code. Maybe you could simplify
-that as well. In general, the convention of naming error path labels is
-to name them after what they do, rather than after the function that
-failed when you jump to them. It's easier to manually verify correctness
-this way.
+Also remove the calls to aead_request_set_callback() and
+crypto_wait_req() since it's always going to be a synchronous operation.
 
-Also, the dev_err(tx_ring->dev, "DMA map error"); message should be rate
-limited, since it's called from a fast path and can kill the console if
-the error is persistent.
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+[ Anastasia: ]
+---
+Backport fix for CVE-2024-50047
+ fs/cifs/smb2ops.c | 48 +++++++++++++++++++++++++++--------------------
+ fs/cifs/smb2pdu.c |  6 ++++++
+ 2 files changed, 34 insertions(+), 20 deletions(-)
 
-A lot of things to improve still, thanks for doing this :)
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index 68f93de2b152..8cfce01cf699 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -4291,7 +4291,7 @@ smb2_get_enc_key(struct TCP_Server_Info *server, __u64 ses_id, int enc, u8 *key)
+  */
+ static int
+ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+-	      struct smb_rqst *rqst, int enc)
++	      struct smb_rqst *rqst, int enc, struct crypto_aead *tfm)
+ {
+ 	struct smb2_transform_hdr *tr_hdr =
+ 		(struct smb2_transform_hdr *)rqst[0].rq_iov[0].iov_base;
+@@ -4302,8 +4302,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+ 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
+ 	struct aead_request *req;
+ 	u8 *iv;
+-	DECLARE_CRYPTO_WAIT(wait);
+-	struct crypto_aead *tfm;
+ 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
+ 	void *creq;
+ 
+@@ -4314,15 +4312,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+ 		return rc;
+ 	}
+ 
+-	rc = smb3_crypto_aead_allocate(server);
+-	if (rc) {
+-		cifs_server_dbg(VFS, "%s: crypto alloc failed\n", __func__);
+-		return rc;
+-	}
+-
+-	tfm = enc ? server->secmech.ccmaesencrypt :
+-						server->secmech.ccmaesdecrypt;
+-
+ 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
+ 		(server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
+ 		rc = crypto_aead_setkey(tfm, key, SMB3_GCM256_CRYPTKEY_SIZE);
+@@ -4361,11 +4350,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
+ 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
+ 	aead_request_set_ad(req, assoc_data_len);
+ 
+-	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+-				  crypto_req_done, &wait);
+-
+-	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
+-				: crypto_aead_decrypt(req), &wait);
++	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
+ 
+ 	if (!rc && enc)
+ 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
+@@ -4454,7 +4439,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
+ 	/* fill the 1st iov with a transform header */
+ 	fill_transform_hdr(tr_hdr, orig_len, old_rq, server->cipher_type);
+ 
+-	rc = crypt_message(server, num_rqst, new_rq, 1);
++	rc = crypt_message(server, num_rqst, new_rq, 1, server->secmech.ccmaesencrypt);
+ 	cifs_dbg(FYI, "Encrypt message returned %d\n", rc);
+ 	if (rc)
+ 		goto err_free;
+@@ -4480,8 +4465,9 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
+ 		 unsigned int npages, unsigned int page_data_size,
+ 		 bool is_offloaded)
+ {
+-	struct kvec iov[2];
++	struct crypto_aead *tfm;
+ 	struct smb_rqst rqst = {NULL};
++	struct kvec iov[2];
+ 	int rc;
+ 
+ 	iov[0].iov_base = buf;
+@@ -4496,9 +4482,31 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
+ 	rqst.rq_pagesz = PAGE_SIZE;
+ 	rqst.rq_tailsz = (page_data_size % PAGE_SIZE) ? : PAGE_SIZE;
+ 
+-	rc = crypt_message(server, 1, &rqst, 0);
++	if (is_offloaded) {
++		if ((server->cipher_type == SMB2_ENCRYPTION_AES128_GCM) ||
++		    (server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
++			tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
++		else
++			tfm = crypto_alloc_aead("ccm(aes)", 0, 0);
++		if (IS_ERR(tfm)) {
++			rc = PTR_ERR(tfm);
++			cifs_server_dbg(VFS, "%s: Failed alloc decrypt TFM, rc=%d\n", __func__, rc);
++
++			return rc;
++		}
++	} else {
++		if (unlikely(!server->secmech.ccmaesdecrypt))
++			return -EIO;
++
++		tfm = server->secmech.ccmaesdecrypt;
++	}
++
++	rc = crypt_message(server, 1, &rqst, 0, tfm);
+ 	cifs_dbg(FYI, "Decrypt message returned %d\n", rc);
+ 
++	if (is_offloaded)
++		crypto_free_aead(tfm);
++
+ 	if (rc)
+ 		return rc;
+ 
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index 03651cc6b7a5..245e2dd5a194 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -998,6 +998,12 @@ SMB2_negotiate(const unsigned int xid, struct cifs_ses *ses)
+ 		else
+ 			cifs_server_dbg(VFS, "Missing expected negotiate contexts\n");
+ 	}
++
++	if (server->cipher_type && !rc) {
++		rc = smb3_crypto_aead_allocate(server);
++		if (rc)
++			cifs_server_dbg(VFS, "%s: crypto alloc failed, rc=%d\n", __func__, rc);
++	}
+ neg_exit:
+ 	free_rsp_buf(resp_buftype, rsp);
+ 	return rc;
+-- 
+2.43.0
+
 
