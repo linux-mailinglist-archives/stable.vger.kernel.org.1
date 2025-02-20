@@ -1,114 +1,92 @@
-Return-Path: <stable+bounces-118509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C77A3E56F
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 21:00:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39978A3E58C
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 21:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DB2C42431B
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 19:58:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED6223B512F
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 20:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20345213E99;
-	Thu, 20 Feb 2025 19:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="SAPd+HgN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D53214A8B;
+	Thu, 20 Feb 2025 20:05:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5425C213E80;
-	Thu, 20 Feb 2025 19:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D1C1E5B6C;
+	Thu, 20 Feb 2025 20:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740081522; cv=none; b=bb2ffPAnYOdu2vh1EgFeTRtmVzmTfvGL9z8ERtH+LR3tEzK+UCjj5nIpDYRhdUfqEcfgnfsjUnVyBAusmjDh0T3ry3yut4Qv6R+NZ5ByQXW3T1rTvUW2KVT8qOCRwrj6BrV4GHB1fIbuTRqAx7xhYmk0z7+TT/BqDqxD5arvClw=
+	t=1740081937; cv=none; b=c5/7452p3XVsHBHeaN0uo+PQL2sSqVxRbk7LsaV56zP6h+0vfNRWTXUr5LkRxJ1AhEKNFJZOEx4WW3LARcAVKlFKs88pnhp1LvWjLK55GuAFr6X6061TsBgl+mUkBmrnLIVqgOWT26rf/Ma/+7x5muV5hc5Pz9K27X1aot2zBKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740081522; c=relaxed/simple;
-	bh=TlcvZn5XC5I4nPPa90kPdD34vCu9DivAg2T/YIvbv8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHQDyuJoHk33x9aJNpl1hM0G5apGyZSWOjxhbs6mwoSwPTOBnt/8v8Ilb5hRhQ0xtzhlezbZc46VavTPLPhYrE0CmtF+T7bYWJTH4ImCjeKktCaG66ibb+jai9Jvs/lbr3XoEYlmHYbIIbOLR36W81SP6yVJj52MLdDEaIV1Klc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=SAPd+HgN; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 541CC10382D3C;
-	Thu, 20 Feb 2025 20:58:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740081519;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W5zb7f8fNkeR0C3ZgFUNMaPL929Yx+Ynb8OoginAe70=;
-	b=SAPd+HgNPqX4iV++eUiB5pR0m0CGaqrIfRnFXE8IP5mKROTe83wXsO19cVxJPv7dEuTsGA
-	mmhTtuCIWkHUyQucy+tTMKZ2JdY17NFia1ERv2+IpX7kHh1Z7sQPJ95C/NT7Et0zINEkdy
-	YxnQBljeHRFvIK/KrNy7wmHLdAO+xzqz+RFx8mUoIbDTLEemHE6hTfHjr48miJe0zKZF1P
-	Q5UKmJsctfUqaBjHMzNFItPo2wttLZ2iIRP+DQqoufBMkQXHYqzQUdTY8A7MLNRQX23Z0s
-	MBKItbEzSiF7tO9/NwzGywIM0ssKzsAzLNnTq5HvN4Q7p0VccqUyVFsug9/txw==
-Date: Thu, 20 Feb 2025 20:58:31 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.13 000/258] 6.13.4-rc2 review
-Message-ID: <Z7eJZxx+1zpeROvm@duo.ucw.cz>
-References: <20250220104500.178420129@linuxfoundation.org>
+	s=arc-20240116; t=1740081937; c=relaxed/simple;
+	bh=F/fXjgv4BeGF5FPVqy9+hUF14lIoncGGnoL86e/4Yuo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EGIXs/dFR7aewswnsNsohrT71vSpNcIRk8flsodPB4jgz7HZjTsF0R+4wot+ii9GTBLbChheXnKDhiTb0tIyKRdqJvsR2enNJOCghMcdDyw1/oRQugoTqZmlInU4HjoToe+SjkwrdA9GVZ+/Ux2vpj15pAIjITbo8RzzcjtQY7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29759C4CED1;
+	Thu, 20 Feb 2025 20:05:36 +0000 (UTC)
+Date: Thu, 20 Feb 2025 15:06:02 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Mark
+ Rutland <mark.rutland@arm.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Heiko Carstens <hca@linux.ibm.com>, Sven
+ Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] ftrace: Fix accounting of adding subops to a
+ manager ops
+Message-ID: <20250220150602.25163ea9@gandalf.local.home>
+In-Reply-To: <20250220155858.8a99ab5dae52b875fdbab1d6@kernel.org>
+References: <20250219220436.498041541@goodmis.org>
+	<20250219220510.888959028@goodmis.org>
+	<20250220155858.8a99ab5dae52b875fdbab1d6@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="U6URlS9z6NO3JthT"
-Content-Disposition: inline
-In-Reply-To: <20250220104500.178420129@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+On Thu, 20 Feb 2025 15:58:58 +0900
+Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
+
+> On Wed, 19 Feb 2025 17:04:37 -0500
+> Steven Rostedt <rostedt@goodmis.org> wrote:
+> 
+> > @@ -3292,16 +3299,18 @@ static int intersect_hash(struct ftrace_hash **hash, struct ftrace_hash *new_has
+> >  /* Return a new hash that has a union of all @ops->filter_hash entries */
+> >  static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
+> >  {
+> > -	struct ftrace_hash *new_hash;
+> > +	struct ftrace_hash *new_hash = NULL;  
+> 
+> Isn't this "= EMPTY_HASH"?
+> 
+
+No it has to be NULL. As the change log stated:
+
+   Fix this by initializing the new hash to NULL and if the hash is NULL do
+   not treat it as an empty hash but instead allocate by copying the content
+   of the first sub ops. Then on subsequent iterations, the new hash will not
+   be NULL, but the content of the previous subops. If that first subops
+   attached to all functions, then new hash may assume that the manager ops
+   also needs to attach to all functions.
 
 
---U6URlS9z6NO3JthT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hmm, but we should return EMPTY_HASH if new_hash is still NULL after the
+update. Otherwise the caller may confuse this as a failed allocation.
 
-Hi!
+I'll send a v3.
 
-> This is the start of the stable review cycle for the 6.13.4 release.
-> There are 258 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Thanks,
 
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.13.y
-
-6.12 passes our testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---U6URlS9z6NO3JthT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ7eJZwAKCRAw5/Bqldv6
-8ie5AJsEYnjiuYadC49y74j8h76534ov9QCghnkdX14ga5lKn6d1A2AW7ULj3C0=
-=WWlf
------END PGP SIGNATURE-----
-
---U6URlS9z6NO3JthT--
+-- Steve
 
