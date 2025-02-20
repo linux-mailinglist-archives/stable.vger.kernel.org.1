@@ -1,80 +1,64 @@
-Return-Path: <stable+bounces-118400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D388AA3D4D3
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:32:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AABEBA3D53A
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:48:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0097F188EE48
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D9317E0C3
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992F71E04AE;
-	Thu, 20 Feb 2025 09:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D181F0E3A;
+	Thu, 20 Feb 2025 09:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="oNGhOWdS"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="LxQLSg+p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039EB1AF4E9
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 09:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.190.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C1B1B87EE;
+	Thu, 20 Feb 2025 09:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740043943; cv=none; b=Zxntqhp0LKxh97R0cucTy9EGeX6B3qU/GQFe5bQP1l9YvG6Y9deI3wxlXJ+1Za1fWLkQzd/p14uM7tx4gah1E+RqsXK+Al7x9p0flcbxFYBQDBlJ756gGZkbt8puiMFAOfNaXKh58S2J2sqXJvTXqZicBFrA4R1z6lptg/1oQds=
+	t=1740044689; cv=none; b=LNrGadGlqALuxeGHlCVUi9Q7+SBc7YoueEX+MjNvEDzWYEi32QQff0OlwbdZlKfiOKVnBOlvvVcHegxX+HzsACPgApdiJMqx2MWl2NQmXYo372HBPFInEuiaNgZQ/YLlCR34wqng+zPPvtUsBwwyeRZJrOYzyn/kIljnzUvGhsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740043943; c=relaxed/simple;
-	bh=G/NpxWFnGuuVYOPgtzAud7ObNtveoqAoyfEHgE0Lblo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n9scplhfidvteBK2IKEb/yqu5t4t6CFab7lkfV5BxepPXneFirqS9PniAZhKPB7HLi4l40Ex2a3aVPoOF02kkrHiazT41SuaZYfSTUhbI+bRW5S7I9ZW6eXijKAXBKemlG+MY6t5dwYalNyJH2P7bH/fMn9pt9LtA7hbbBaq6E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=oNGhOWdS; arc=none smtp.client-ip=207.171.190.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1740043942; x=1771579942;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KhOAwu5x55FT3q2ps5ltDsRHzYr9CkV4P5yNC9l1hMM=;
-  b=oNGhOWdS2Cs2kDKghc3MztAMKgqvHVzegzyoNajkVb0fIx5YqyTC7Y1W
-   kuWqJ7ruvEGz9vGHHPJ75+dnZRwWXNYRRTmHSh41sLazAmxCjkiIn/f++
-   iA/Zu/a3UwjkyG71in8FinF7yzGr9GD5dTp+8eBYhn+rIC3C7y9YnJn0S
-   E=;
-X-IronPort-AV: E=Sophos;i="6.13,301,1732579200"; 
-   d="scan'208";a="410164144"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 09:32:21 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:23710]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.115:2525] with esmtp (Farcaster)
- id d39a1876-e05b-4e87-a0b2-d95a28efd138; Thu, 20 Feb 2025 09:32:20 +0000 (UTC)
-X-Farcaster-Flow-ID: d39a1876-e05b-4e87-a0b2-d95a28efd138
-Received: from EX19D004UWB004.ant.amazon.com (10.13.138.108) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Thu, 20 Feb 2025 09:32:17 +0000
-Received: from EX19MTAUEA002.ant.amazon.com (10.252.134.9) by
- EX19D004UWB004.ant.amazon.com (10.13.138.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Thu, 20 Feb 2025 09:32:16 +0000
-Received: from email-imr-corp-prod-iad-all-1b-8410187a.us-east-1.amazon.com
- (10.43.8.2) by mail-relay.amazon.com (10.252.134.34) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.39 via Frontend Transport; Thu, 20 Feb 2025 09:32:16 +0000
-Received: from dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com [10.189.199.127])
-	by email-imr-corp-prod-iad-all-1b-8410187a.us-east-1.amazon.com (Postfix) with ESMTP id A5A9040884;
-	Thu, 20 Feb 2025 09:32:16 +0000 (UTC)
-Received: by dev-dsk-wanjay-2c-b9f4719a.us-west-2.amazon.com (Postfix, from userid 30684173)
-	id 69E92504F; Thu, 20 Feb 2025 09:32:16 +0000 (UTC)
-From: Jay Wang <wanjay@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Greg KH <gregkh@linuxfoundation.org>, Jay Wang <wanjay@amazon.com>
-Subject: [PATCH v1 v5.10/v5.15/v6.1/v6.6] Please also incorporate this patch into 6.6.y
-Date: Thu, 20 Feb 2025 09:32:11 +0000
-Message-ID: <20250220093215.15211-1-wanjay@amazon.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <2025021959-headfirst-dayroom-c1bc@gregkh>
-References: <2025021959-headfirst-dayroom-c1bc@gregkh>
+	s=arc-20240116; t=1740044689; c=relaxed/simple;
+	bh=O+NWxy4b1KytTcS0ZHrugC8vxmfgabRh5HNWwRO/Ks8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bANa6q0KlUg1P5WcJs9+Yy0pBuKHddboKBIAf/MR3fmfoJbor02dloK4z5OY9rpHmhYJ5UUZpblSvH3tniJBWSOwBDaLiEo5Rmp2cL+3BvJfqXMvY4b+X5VLMZSHSPy65U8LtFAQJRptRcLoyWvdMT04expkB/FWC5gX0692tGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=LxQLSg+p; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fedora.intra.ispras.ru (unknown [10.10.165.14])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 788AD407853D;
+	Thu, 20 Feb 2025 09:44:44 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 788AD407853D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1740044684;
+	bh=VSyXhzk/oou5dN2ui5up8lh68VSTsNSjPW0MQf8saxc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LxQLSg+pO5Zrb++WnEfFMOLfDZlylCRorRX+hy2M9oknFiuIyqIHGquos+7adQrwl
+	 GZI7LQHFDCnKBBhOjeyUStOZWPzlz6g14FBc5mv9BAY7C04Ly/sxONUGRozxwZKcvl
+	 1KKN5d5kdwuClDc0TQXyWy6rauU5cRtimHlKGk9c=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	mpi3mr-linuxdrv.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: mpi3mr: fix invalid 64-bit phy bitmask calculation
+Date: Thu, 20 Feb 2025 12:44:31 +0300
+Message-ID: <20250220094431.38185-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,19 +66,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-commit 70e6b7d9ae3c63df90a7bba7700e8d5c300c3c60 upstream
+ffs() operates on arguments of type 'int', not generally considered to be
+64-bit values.
 
-Jay Wang (1):
-  x86/i8253: Disable PIT timer 0 when not in use
+Shifts like (1 << i) can also only be helpful for calculations that are
+expected to have a range equal to the width of type 'int'. When the left
+operand is of type 'int', valid values of the shift argument should not
+exceed the width of this type (almost always 32 bits), otherwise it is
+considered as undefined behavior.
 
- arch/x86/kernel/i8253.c     | 11 +++++++++--
- drivers/clocksource/i8253.c | 13 +++++++++----
- include/linux/i8253.h       |  1 +
- 3 files changed, 19 insertions(+), 6 deletions(-)
+Since there is a need for manipulating the phy mask bits higher than that,
+perform the calculations directly in 64 bits.
 
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: cb5b60894602 ("scsi: mpi3mr: Increase maximum number of PHYs to 64 from 32")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ drivers/scsi/mpi3mr/mpi3mr_transport.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+index 0ba9e6a6a13c..f0da8c0dc55d 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+@@ -7,6 +7,7 @@
+  *
+  */
+ 
++#include <linux/bits.h>
+ #include <linux/vmalloc.h>
+ 
+ #include "mpi3mr.h"
+@@ -608,10 +609,12 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
+ 	mr_sas_port->num_phys--;
+ 
+ 	if (host_node) {
+-		mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
++		mr_sas_port->phy_mask &= ~BIT_ULL(mr_sas_phy->phy_id);
+ 
+-		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
+-			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id &&
++		    mr_sas_port->phy_mask)
++			mr_sas_port->lowest_phy =
++				__ffs64(mr_sas_port->phy_mask) - 1;
+ 	}
+ 	sas_port_delete_phy(mr_sas_port->port, mr_sas_phy->phy);
+ 	mr_sas_phy->phy_belongs_to_port = 0;
+@@ -639,10 +642,11 @@ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
+ 	list_add_tail(&mr_sas_phy->port_siblings, &mr_sas_port->phy_list);
+ 	mr_sas_port->num_phys++;
+ 	if (host_node) {
+-		mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
++		mr_sas_port->phy_mask |= BIT_ULL(mr_sas_phy->phy_id);
+ 
+ 		if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
+-			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++			mr_sas_port->lowest_phy =
++				__ffs64(mr_sas_port->phy_mask) - 1;
+ 	}
+ 	sas_port_add_phy(mr_sas_port->port, mr_sas_phy->phy);
+ 	mr_sas_phy->phy_belongs_to_port = 1;
+@@ -1396,7 +1400,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 		    &mr_sas_port->phy_list);
+ 		mr_sas_port->num_phys++;
+ 		if (mr_sas_node->host_node)
+-			mr_sas_port->phy_mask |= (1 << i);
++			mr_sas_port->phy_mask |= BIT_ULL(i);
+ 	}
+ 
+ 	if (!mr_sas_port->num_phys) {
+@@ -1406,7 +1410,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 	}
+ 
+ 	if (mr_sas_node->host_node)
+-		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++		mr_sas_port->lowest_phy = __ffs64(mr_sas_port->phy_mask) - 1;
+ 
+ 	if (mr_sas_port->remote_identify.device_type == SAS_END_DEVICE) {
+ 		tgtdev = mpi3mr_get_tgtdev_by_addr(mrioc,
+@@ -1738,7 +1742,7 @@ mpi3mr_refresh_sas_ports(struct mpi3mr_ioc *mrioc)
+ 		found = 0;
+ 		for (j = 0; j < host_port_count; j++) {
+ 			if (h_port[j].handle == attached_handle) {
+-				h_port[j].phy_mask |= (1 << i);
++				h_port[j].phy_mask |= BIT_ULL(i);
+ 				found = 1;
+ 				break;
+ 			}
+@@ -1765,7 +1769,7 @@ mpi3mr_refresh_sas_ports(struct mpi3mr_ioc *mrioc)
+ 		port_idx = host_port_count;
+ 		h_port[port_idx].sas_address = le64_to_cpu(sasinf->sas_address);
+ 		h_port[port_idx].handle = attached_handle;
+-		h_port[port_idx].phy_mask = (1 << i);
++		h_port[port_idx].phy_mask = BIT_ULL(i);
+ 		h_port[port_idx].iounit_port_id = sas_io_unit_pg0->phy_data[i].io_unit_port;
+ 		h_port[port_idx].lowest_phy = sasinf->phy_num;
+ 		h_port[port_idx].used = 0;
 -- 
-2.47.1
+2.48.1
 
 
