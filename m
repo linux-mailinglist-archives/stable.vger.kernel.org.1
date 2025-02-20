@@ -1,220 +1,158 @@
-Return-Path: <stable+bounces-118530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0617CA3E8A9
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 00:39:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ED3A3E8EC
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 00:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2753BC4B1
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 23:39:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EE2019C5B28
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 23:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B892676F7;
-	Thu, 20 Feb 2025 23:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CDD267B03;
+	Thu, 20 Feb 2025 23:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdX+hPRU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MT2iuLyb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B1F266EF8;
-	Thu, 20 Feb 2025 23:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E8A1E2611
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 23:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740094791; cv=none; b=uLnjzdKwXn9la7U1U5IgGJT+MmhI3BUpJ7aF8l9AiIHyGJHTAeiSkp2mGyXcOBN4WwQafKqVpy0LIE5645SOOdv/Ja+i8pvcYNAeo9GVbu5D+zcbM/zHNrPt4LQGc5lnV9eV6RKsgWvItU2WpgAXwYuqOzhDxX6VHYVzTqPbfUw=
+	t=1740095478; cv=none; b=i3GoHt6l+76IsA3IO8atq/JBxWbjEOngovFTjMG9+XlUhBezBWE3Op7fnvZGzM9bh2d8obx33ewuxGaUD/brwiDs5/HGK6HbLt7+2lheclsHbbo0YmZKqQLTFU0HCHRsZKTnQ2NEuRi02GlOVGNlzxja9r1YaVklaykZaO8PytI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740094791; c=relaxed/simple;
-	bh=a+ewDhWyQHdcj13JBzjWs2K8bIJieZ0GId/WQZ9C2s4=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Dqiw3DxgsDOniRCpimFnLhcfWv6G6DlBCprcRW5gQi5b7Q0i3iioa4pK/62p/9wWl9XeMO3ieUEdUQ7+bAQn53e49f5alIIlFQn1xeA5BpRRqXtNWNwxwqG/q1SmFR0ZP2Un0xEYsdehPQpu+7C2JTCfihoCUrl7whFFWUvvYBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdX+hPRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BC4C4CED1;
-	Thu, 20 Feb 2025 23:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740094791;
-	bh=a+ewDhWyQHdcj13JBzjWs2K8bIJieZ0GId/WQZ9C2s4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IdX+hPRUg8L6jGDvbir/xmIYvttvKycBjY5Tb6n6vh1si2XrPpfkHGSGNNL+iJbMd
-	 biu6St1nK/HpjapPIDNJ3+aw6reEvRcNnmiJhhdM8UTQBANrzds0jQFPRjiJkcLG3P
-	 rmdEn2otRaBMRxwa/6NgidHTXNdVNTm0KAYU622NaABSozmBISY1TmIyICdEmSetkB
-	 mu7aaS9hdtzoWo/yO+x4aUUHJhG51x7cc3Egopl2iqUFfPLgb83EEgQkSfza9Foszt
-	 s90O82eSCBNwNNtN41Balo1biyTuzl6hWqjSwTnEafQbpB73a+mh1T+//WsCxIMfuK
-	 VNKaH2c0wuf3g==
-Date: Fri, 21 Feb 2025 08:39:46 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Masami
- Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton
- <akpm@linux-foundation.org>, Heiko Carstens <hca@linux.ibm.com>, Sven
- Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] ftrace: Fix accounting of adding subops to a
- manager ops
-Message-Id: <20250221083946.ad92f6914b7bc6fe7bcf0423@kernel.org>
-In-Reply-To: <20250220202055.060300046@goodmis.org>
-References: <20250220202009.689253424@goodmis.org>
-	<20250220202055.060300046@goodmis.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740095478; c=relaxed/simple;
+	bh=UdWhNOUBSdT4syJ+kosIuq0AfZUSJ0WGNQkI3p+ncvM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mzqu8CivKkmpc1dkdl3K1R59fKUApnipHd/34knLxXQVmbbucaat1y+DsQKDgQ7QWpsILUB8pI6I6KLbfAM8J03BDEKUWwRi3VR9G6KCkJZZu6Y5+4jdHSKWMl2A1tK5xw48apH/RgHYwl2er/XyAle6+hN6OLePedcsbWbnAxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MT2iuLyb; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5461a3a03bdso1387e87.1
+        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 15:51:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740095472; x=1740700272; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cF2FkYUFOzGpOUac93fgsUwfXQ+Ch5dCBcOjNCGwr4o=;
+        b=MT2iuLybTjyviqAzrvIxqmMiPLvbkXrk4N1oUEoOL+Fyei3TQgLYJ9YqJqRbghecvQ
+         phc+E+JImkcDnPP61dOv8zfPAYIjgsb++QvEC9kSkMQeO1cxWoIgSL/oQAmHTNvdfT8X
+         TMPYlyCFItXE8+1CLJkZPFOkYXje+KY/FbZJMysx0Y3XuptfO4RfjsPvSIsgqHI45ZUJ
+         pCnmZ16xxJqb+MG9BCPeqVNlNqWQC5rxeQOIG26hlaapubtoth6ItPskeeObEYwOaNm2
+         Pb/Fs1aPCldgm9kJd1qMd7JZc8lokCYBXn3Eg18Sz204kS689YWr8HeUpd/rSUXPPb54
+         NWBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740095472; x=1740700272;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cF2FkYUFOzGpOUac93fgsUwfXQ+Ch5dCBcOjNCGwr4o=;
+        b=w8lIGGfd0rYop2bRbd5WRV7AIvpjcU8bKEaQML7KTVL4UYWQTx7s/Jz8BMcw3TlfnV
+         g658pRb1TGCJOmnzlRulPzY+z110wdvArGQ0PR9A85HY3ysfhB9yPl+hina49gJs1s7p
+         d8qtgvQvvlybMVaciwPl9Sf2xBrJ6iatbWUWlWQwFcII+ZR3Ei4NGmLUWeqHZZRVQhzS
+         dkSd2jEqTKC4HoHRhuqdGXpMTf5Y7uke0ScbXLYtradyHZM7TaVESXgf2fPIaEmV//xF
+         P8g9LAH96LYiyTtH1W7qNIHAxQABHb7TjOU/Il97O6X32++Pv7NWFVOs0Efx/ljlDgQg
+         CZGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiOgT9SsdtPy3qAAcMty5msTPtmsY+104n0j5OgqDtGxaGqj736hPhH/uynU0FEOWGKVUl7ek=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEMm4lZuRt5Bx7pEM99nSRHJMMjN5vT0K0kxA9OweD3N58FjeN
+	HFNGdMvLL/X6hcFadOZRxpejyymUy5muA+JwMs72DNttYBiM9TiCFHI2T+xxfnkncmDhKZiuVkQ
+	VU8I6PpJEhPCRZ8qs+sb1/0D6jyD1/G2jbhWw
+X-Gm-Gg: ASbGncvsha5XmChyASjfKq025H9oL8we5PcbCZ1X5oqI4d8VU1B/UgA4K2ottYAXWNq
+	p5kYvu+vilMfV9R23lVzetC4lUzQ9opA7sf+HZenBE1MG37kEVjXrI7yXwRGJ+8g4BTsXllqas8
+	jOdWkz+Sma0Cn3Fn6jKdxkE75l8eeD
+X-Google-Smtp-Source: AGHT+IHNrahV1BDNb6HGmIpADFoAfSxQLvTQMK+ss0Zxtwi9sdNu6MrrXOWs+BR87xWGqTxyWHbSATFC1ErU9+Atf8g=
+X-Received: by 2002:a05:6512:eaa:b0:543:e5ac:8ba9 with SMTP id
+ 2adb3069b0e04-5483912c478mr118346e87.6.1740095472207; Thu, 20 Feb 2025
+ 15:51:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250220211628.1832258-1-vannapurve@google.com>
+ <20250220211628.1832258-3-vannapurve@google.com> <9053a4ef-2de6-47b4-a2f7-62d3ded24cfa@intel.com>
+In-Reply-To: <9053a4ef-2de6-47b4-a2f7-62d3ded24cfa@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 20 Feb 2025 15:51:00 -0800
+X-Gm-Features: AWEUYZnHtnB_aHba-KEBGxrwDPSTc-BtBIYPfsyILXR2O2qhE2mk2NxqrmEtVUY
+Message-ID: <CAGtprH_z=4nsDj2GSnCrhwQkKESBqLTcUK3aNZO+2BzMc7P00g@mail.gmail.com>
+Subject: Re: [PATCH V5 2/4] x86/tdx: Route safe halt execution via tdx_safe_halt()
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	virtualization@lists.linux.dev, pbonzini@redhat.com, seanjc@google.com, 
+	erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, kirill@shutemov.name, 
+	dave.hansen@linux.intel.com, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	jgross@suse.com, ajay.kaher@broadcom.com, alexey.amakhalov@broadcom.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 20 Feb 2025 15:20:10 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Thu, Feb 20, 2025 at 3:00=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 2/20/25 13:16, Vishal Annapurve wrote:
+> > Direct HLT instruction execution causes #VEs for TDX VMs which is route=
+d
+> > to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shado=
+w
+> > so IRQs need to remain disabled until the TDCALL to ensure that pending
+> > IRQs are correctly treated as wake events.
+>
+> This isn't quite true. There's only one paravirt safe_halt() and it
+> doesn't do HLT or STI.
 
-> From: Steven Rostedt <rostedt@goodmis.org>
-> 
-> Function graph uses a subops and manager ops mechanism to attach to
-> ftrace.  The manager ops connects to ftrace and the functions it connects
-> to is defined by a list of subops that it manages.
-> 
-> The function hash that defines what the above ops attaches to limits the
-> functions to attach if the hash has any content. If the hash is empty, it
-> means to trace all functions.
-> 
-> The creation of the manager ops hash is done by iterating over all the
-> subops hashes. If any of the subops hashes is empty, it means that the
-> manager ops hash must trace all functions as well.
-> 
-> The issue is in the creation of the manager ops. When a second subops is
-> attached, a new hash is created by starting it as NULL and adding the
-> subops one at a time. But the NULL ops is mistaken as an empty hash, and
-> once an empty hash is found, it stops the loop of subops and just enables
-> all functions.
-> 
->   # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
->   # cat /sys/kernel/tracing/enabled_functions
-> kernel_clone (1)           	tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> 
->   # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
->   # cat /sys/kernel/tracing/enabled_functions
-> trace_initcall_start_cb (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> run_init_process (1)            tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> try_to_run_init_process (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> x86_pmu_show_pmu_cap (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> cleanup_rapl_pmus (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> uncore_free_pcibus_map (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> uncore_types_exit (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> uncore_pci_exit.part.0 (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> kvm_shutdown (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> vmx_dump_msrs (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> vmx_cleanup_l1d_flush (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-> [..]
-> 
-> Fix this by initializing the new hash to NULL and if the hash is NULL do
-> not treat it as an empty hash but instead allocate by copying the content
-> of the first sub ops. Then on subsequent iterations, the new hash will not
-> be NULL, but the content of the previous subops. If that first subops
-> attached to all functions, then new hash may assume that the manager ops
-> also needs to attach to all functions.
-> 
+pv_native_safe_halt() -> native_safe_halt() -> "sti; hlt".
 
-Looks good to me.
+>
+> I think it's more true to say that "safe" halts are entered with IRQs
+> disabled. They logically do the halt operation and then enable
+> interrupts before returning.
+>
+> > So "sti;hlt" sequence needs to be replaced for TDX VMs with "TDCALL;
+> > *_irq_enable()" to keep interrupts disabled during TDCALL execution.
+> But this isn't new. TDX already tried to avoid "sti;hlt". It just
+> screwed up the implementation.
+>
+> > Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+> > prevented the idle routines from using "sti;hlt". But it missed the
+> > paravirt routine which can be reached like this as an example:
+> >         acpi_safe_halt() =3D>
+> >         raw_safe_halt()  =3D>
+> >         arch_safe_halt() =3D>
+> >         irq.safe_halt()  =3D>
+> >         pv_native_safe_halt()
+>
+> This, on the other hand, *is* important.
+>
+> > Modify tdx_safe_halt() to implement the sequence "TDCALL;
+> > raw_local_irq_enable()" and invoke tdx_halt() from idle routine which j=
+ust
+> > executes TDCALL without toggling interrupt state. Introduce dependency
+> > on CONFIG_PARAVIRT and override paravirt halt()/safe_halt() routines fo=
+r
+> > TDX VMs.
+>
+> This changelog glosses over one of the key points: Why *MUST* TDX use
+> paravirt? It further confuses the reasoning by alluding to the idea that
+> "Direct HLT instruction execution ... is routed to hypervisor via TDCALL"=
+.
+>
+> It gives background and a solution, but it's not obvious what the
+> problem is or how the solution _fixes_ the problem.
+>
+> What must TDX now depend on PARAVIRT?
+>
+> Why not just route the HLT to a TDXCALL via the #VE code?
+>
+>
 
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-Thanks,
-
-> Cc: stable@vger.kernel.org
-> Fixes: 5fccc7552ccbc ("ftrace: Add subops logic to allow one ops to manage many")
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> ---
-> Changes since v2: https://lore.kernel.org/20250219220510.888959028@goodmis.org
-> 
-> - Have append_hashes() return EMPTY_HASH and not NULL if the resulting
->   new hash is empty.
-> 
->  kernel/trace/ftrace.c | 33 ++++++++++++++++++++++-----------
->  1 file changed, 22 insertions(+), 11 deletions(-)
-> 
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 728ecda6e8d4..bec54dc27204 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -3220,15 +3220,22 @@ static struct ftrace_hash *copy_hash(struct ftrace_hash *src)
->   *  The filter_hash updates uses just the append_hash() function
->   *  and the notrace_hash does not.
->   */
-> -static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash)
-> +static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash,
-> +		       int size_bits)
->  {
->  	struct ftrace_func_entry *entry;
->  	int size;
->  	int i;
->  
-> -	/* An empty hash does everything */
-> -	if (ftrace_hash_empty(*hash))
-> -		return 0;
-> +	if (*hash) {
-> +		/* An empty hash does everything */
-> +		if (ftrace_hash_empty(*hash))
-> +			return 0;
-> +	} else {
-> +		*hash = alloc_ftrace_hash(size_bits);
-> +		if (!*hash)
-> +			return -ENOMEM;
-> +	}
->  
->  	/* If new_hash has everything make hash have everything */
->  	if (ftrace_hash_empty(new_hash)) {
-> @@ -3292,16 +3299,18 @@ static int intersect_hash(struct ftrace_hash **hash, struct ftrace_hash *new_has
->  /* Return a new hash that has a union of all @ops->filter_hash entries */
->  static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
->  {
-> -	struct ftrace_hash *new_hash;
-> +	struct ftrace_hash *new_hash = NULL;
->  	struct ftrace_ops *subops;
-> +	int size_bits;
->  	int ret;
->  
-> -	new_hash = alloc_ftrace_hash(ops->func_hash->filter_hash->size_bits);
-> -	if (!new_hash)
-> -		return NULL;
-> +	if (ops->func_hash->filter_hash)
-> +		size_bits = ops->func_hash->filter_hash->size_bits;
-> +	else
-> +		size_bits = FTRACE_HASH_DEFAULT_BITS;
->  
->  	list_for_each_entry(subops, &ops->subop_list, list) {
-> -		ret = append_hash(&new_hash, subops->func_hash->filter_hash);
-> +		ret = append_hash(&new_hash, subops->func_hash->filter_hash, size_bits);
->  		if (ret < 0) {
->  			free_ftrace_hash(new_hash);
->  			return NULL;
-> @@ -3310,7 +3319,8 @@ static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
->  		if (ftrace_hash_empty(new_hash))
->  			break;
->  	}
-> -	return new_hash;
-> +	/* Can't return NULL as that means this failed */
-> +	return new_hash ? : EMPTY_HASH;
->  }
->  
->  /* Make @ops trace evenything except what all its subops do not trace */
-> @@ -3505,7 +3515,8 @@ int ftrace_startup_subops(struct ftrace_ops *ops, struct ftrace_ops *subops, int
->  		filter_hash = alloc_and_copy_ftrace_hash(size_bits, ops->func_hash->filter_hash);
->  		if (!filter_hash)
->  			return -ENOMEM;
-> -		ret = append_hash(&filter_hash, subops->func_hash->filter_hash);
-> +		ret = append_hash(&filter_hash, subops->func_hash->filter_hash,
-> +				  size_bits);
->  		if (ret < 0) {
->  			free_ftrace_hash(filter_hash);
->  			return ret;
-> -- 
-> 2.47.2
-> 
-> 
-
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Makes sense, I will update the commit message in the next version to
+clearly answer these questions and address the above comments.
 
