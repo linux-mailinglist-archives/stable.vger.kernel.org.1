@@ -1,686 +1,239 @@
-Return-Path: <stable+bounces-118398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A30FA3D483
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:21:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DE4A3D4C6
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B346189BEE0
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A7B417B183
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBC91EEA42;
-	Thu, 20 Feb 2025 09:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE6C1F03D1;
+	Thu, 20 Feb 2025 09:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdM2zNSR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dpOSpuNv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50111EEA37;
-	Thu, 20 Feb 2025 09:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740043281; cv=none; b=A0Gcrrpft4jDWClDTloSci/2gcuL+X5whNBcgrLm3dDLC564z3lZkGzPf/r/EpkZAdmEntI2GQD4VvWm38dE7ZyTIUtTjUFk0tBmMxe3omiPribP1r9GcPuUFJI0O8vahhag/nyXgN6IwA7MCl+d6s6s5HAbC1esWnUqpXmz/yM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740043281; c=relaxed/simple;
-	bh=/CnayuElWydL64LDvp0I4+aGDAfTeGnZH2zSPTilrNw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FAJ8HCD+z6qg9wOJ/Hn/BsOwDgXu5hVLG/x1jvY2l8cW1chusOb5bKy5GCGpPVEWYXYFnLlid80HP6OX7MpG2IU9e8FUUHmKydAlgJVDKhG6njoWbW82GgPLfN+7QIE2xBFydHHQLb6lArYyzjFZRwJ6iMkF0e2B7HVho+CKY3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdM2zNSR; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220e6028214so13188085ad.0;
-        Thu, 20 Feb 2025 01:21:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740043277; x=1740648077; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mXKQs0HS0Ab03s7Br1OjuSWjhLULAq0fHhkaSj44tjc=;
-        b=OdM2zNSR6Tr7CXbE5XeSEWrB8yppPxyQnKKEWh5JfiPpHHurDmnqSHqipkBelz/IQq
-         iFKnDxrpR2fOQ3tY0LyfI4R7P25IB5JwS/WNLmUCaFQ8xzo5enTBgo59BjugTnFGHcBv
-         dyg7LhhLoeu7+PM3rjj5sTkDEMDa6b9z6IMcg6UanNDx7hFuNetRlXRNuGbfze0XUlEz
-         PZ+aN6GoikPAaV6wjrmtOXyOU56Gpxj9+5RNoDBPQ0qmeUFMCHO7M0kKcdwv5rrlqimL
-         MPmnblDa04H4pd/WiYIczfeCxkMXwlN7Mm7O/0RGysuKrIUl2J8f6FQQD255lfetMKrq
-         k45A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740043277; x=1740648077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mXKQs0HS0Ab03s7Br1OjuSWjhLULAq0fHhkaSj44tjc=;
-        b=sbMnbaB3Dk1P8di6ZcLVmNct8dIvdSqZo+flxWD3MVQQFVwP5VaVHsQv7WWDqk0XgY
-         /gLyGbxj/Oc/F6uUEHP+oUElK8169whMBhxUDpgMls6JC4pveBSNcta3o3aGUTl5kR6F
-         FrUFRTZA3+NglpmwcI8mLAxhwYO7CUY+crHuP23I1jbO7rn1jq3caxFjSnqd1qU6u6kx
-         7isn2TzNYhG71Ka3yIp55IregbC8jeglcRkJmQbbklH5fZ8GBf3nyZUqJDSpmHZuurFH
-         TKO5Lh/MS0XW9GaQ5OmqP6X3mT6PJoNUePSjBu4M3byAm4aERj3rw+P0YwFWB4S1A7nF
-         mHmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWeGY9MDpiGSXSDuEMmlFl9LiHUozVaN8fD+OO31i3O8TTNaPtBWqNzJ/X8pP4ZWKlRaSYHvUoe@vger.kernel.org, AJvYcCXuD4oVgIdaEydxXn5wzg1Gn1rUORsIpY88oyw6vSMa9RTzF0muMRIe8spVa0JfovfPMtZXrE+SW9r0Zys=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL+40psgb0AceUGNjH2WMT9ZP4b5uxTznjQTh+Z60d+/mf+r/5
-	x5o4lmu7NOJmw6jbAdse101el3Myo82PhfGSsJc97/zurz0KcJfx
-X-Gm-Gg: ASbGncvlBYx9OdVgFJMn51PSVs3QLBFwSCwMQ2tsG/EeBgUPY7OBj01+IDnJMsD4ZPd
-	g3dELVoTclMGX3sXPozAlNBpO99EQF8mgyckAEjzXlPfhEfITkjLQbk3wGGgPbP0d5ZZdUsFL/q
-	qtCc/WjXBggP6rGoITYQg4c3QAQU2+fUFf0MKyAKxSxwTWBkoEAW6ByOeeb2GR5tNMhWiDH7Ake
-	dw3Elq0gEn0HfU1SoTudnUcbda0WXaPccvSJBOoOSQc28yqilAcxqCs02yB9wn+ShbT3DJl64R8
-	QNfvPwxtD++mtyKbYHD8QNxgHTS1y1pC
-X-Google-Smtp-Source: AGHT+IH1386EnW196MK2ktkUJvTHr/mgWmdE0+4dFSk9ZQxxfmnpDaqHODsj5EAn23kFY8N1gXApYg==
-X-Received: by 2002:a05:6a21:394c:b0:1ee:c390:58a4 with SMTP id adf61e73a8af0-1eee5c26645mr3433445637.2.1740043276747;
-        Thu, 20 Feb 2025 01:21:16 -0800 (PST)
-Received: from Barrys-MBP.hub ([118.92.30.135])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73265678abasm9549232b3a.27.2025.02.20.01.21.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 20 Feb 2025 01:21:16 -0800 (PST)
-From: Barry Song <21cnbao@gmail.com>
-To: david@redhat.com
-Cc: 21cnbao@gmail.com,
-	Liam.Howlett@oracle.com,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	bgeffon@google.com,
-	brauner@kernel.org,
-	hughd@google.com,
-	jannh@google.com,
-	kaleshsingh@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lokeshgidra@google.com,
-	mhocko@suse.com,
-	ngeoffray@google.com,
-	peterx@redhat.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shuah@kernel.org,
-	surenb@google.com,
-	v-songbaohua@oppo.com,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org,
-	zhangpeng362@huawei.com,
-	zhengtangquan@oppo.com,
-	yuzhao@google.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RFC] mm: Fix kernel BUG when userfaultfd_move encounters swapcache
-Date: Thu, 20 Feb 2025 22:21:01 +1300
-Message-Id: <20250220092101.71966-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <69dbca2b-cf67-4fd8-ba22-7e6211b3e7c4@redhat.com>
-References: <69dbca2b-cf67-4fd8-ba22-7e6211b3e7c4@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391F81EF0B6
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 09:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740043840; cv=fail; b=NKJz6RTklAj0xY3SWcISY5FBz8xCkWXi7lLwEG/nunFWTiy0FRgRedZBx97DjBF4ieCZoc7yb04semoxGIpZ/vxBkxr3vr6/kamB2G0jnEDoczbf9VfON2YB5hVek5B1XJFseHhIvS5rxIeBbNiBO/TQMYQ7F9cOwLsJIJvX120=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740043840; c=relaxed/simple;
+	bh=ANKlR8ttb6YCHXU0wpIV1Zuo65AZUwTeh3lAvWP1YYs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uMG+pDBn8N0u95XBlV1z5iMiT0pTd0IFd+y58QxU3vUBt4hbKkRsrOFFre33cn9RBajmcLhthi+y7T9o0odoanPidLhv/xPsmOyvc45PRx7/Yo5nLoZiRJJmlnb5Zqw61Pf8+6sQNru+8T7G4UgCfLX9topEiYChlJS0/DkSuU8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dpOSpuNv; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740043837; x=1771579837;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=ANKlR8ttb6YCHXU0wpIV1Zuo65AZUwTeh3lAvWP1YYs=;
+  b=dpOSpuNvTOt5jCuTNtqavTRNp5eoTWEZjp7Gole8/tdiQ2hvRJrRl56Q
+   FO+I3Z1T37uim5zSFTG76zD3ztrSbpPyCc4gudjXMO3BVmUdM2jW8qyCU
+   z+MsmNuxDccmkPJmIKQ7vl+LkQT1PjQnGMIEet9/lES1Jlk+lHUx2R1ni
+   GGKB+ZsjTLIBxDwTGRHbC88imtr/ySSqe15cMxBq8XvsKBMfKnXJaapJl
+   dHrZ+UKsL1sj8Iw/qmbpp9UwFpvDJqJV0sxYOGAfbVrV3Lco0hBMQTGKd
+   pEHLcHbiP3jQzRwBwxGQkloB0d+o/HdRDotkZJ4qy5j8FGYgfDaIPg0l4
+   g==;
+X-CSE-ConnectionGUID: hFfWW73+ThW7lWzuHrGK7g==
+X-CSE-MsgGUID: 2T4Fu4zAQsKNIbTfEaqWiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="43644309"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="43644309"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 01:30:36 -0800
+X-CSE-ConnectionGUID: 9PyxX5QcQz+C64ajfwaVnw==
+X-CSE-MsgGUID: UHOnTMACT7GC8xauegYJ0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="119925676"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Feb 2025 01:30:36 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 20 Feb 2025 01:30:35 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 20 Feb 2025 01:30:35 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 20 Feb 2025 01:30:34 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lo2g4Eb1rhtS3/4vAdXlqi+roNE2GZiWITtgQLN7vAqkvPcegE/vIsfkkDC+AlyYh4kmay/zBGlAkXkk5zMaNX4yu2q2P7jZOavFotC6830j7D9+6XE8Zh21RYcaNzu38mPCgbymi9tg0WWvzstJSuXHdr7jZFPnSE397983pStaiFwsmshqpAb4gEBarSgr84JlsQF9BYHIUVXA1e+o/hfWAneBNz9LGgljc56Vxg1oGG73hT9E1mDKF5sxGRo2NSedYO0hcZp9V4sGiIXyhCQ0Ajy/3YhuwJHLOyCpBf4OxXmV1KwEcF2z+tI0xFMAMWR0U+giPwoVj4wiLpIkQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ANKlR8ttb6YCHXU0wpIV1Zuo65AZUwTeh3lAvWP1YYs=;
+ b=GAsdVbLAeeSXcotL5ZnrSwdY43suite15wiAUB3gEdNWNwPbbGUx0G+xS+z/2CfY4TrZNnebkPWUbx+gslYnchZXjrVvwYoWaZtNvYQ/VXCStCRJcMs9Y5z/VSltPAWF1gL5eU4RZftYUve9vQqsiNlV8Q18gJ5s8gt66aWhfUZ/rNXG2TcZmqkeFEhEDFNHyj7pdMTnu/q9xWAJSiQnmNwJPaQ7xgWHljdRqFwcEAmE0Tsc9Nkb9gWD5E9g7Qi4im6pHHRF3sZfLb2wn+uLNAh5iWrMncxwCwOTqhkddcSNWhsPTPWYneDjXWkz4uO1zWBlktWZMtfDxwe8Qv+bIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6019.namprd11.prod.outlook.com (2603:10b6:8:60::5) by
+ CY5PR11MB6415.namprd11.prod.outlook.com (2603:10b6:930:35::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8466.15; Thu, 20 Feb 2025 09:30:01 +0000
+Received: from DM4PR11MB6019.namprd11.prod.outlook.com
+ ([fe80::fc1:e80f:134c:5ed2]) by DM4PR11MB6019.namprd11.prod.outlook.com
+ ([fe80::fc1:e80f:134c:5ed2%6]) with mapi id 15.20.8445.017; Thu, 20 Feb 2025
+ 09:30:01 +0000
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+CC: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/3] drm/i915: Fix scanline_offset for LNL+ and BMG+
+Thread-Topic: [PATCH 1/3] drm/i915: Fix scanline_offset for LNL+ and BMG+
+Thread-Index: AQHbearzRiRaxVyb4E686J4fuA1zzbNQALAA
+Date: Thu, 20 Feb 2025 09:30:01 +0000
+Message-ID: <1143dadb36dc3d3572e4e4b2daca73497589db04.camel@intel.com>
+References: <20250207215406.19348-1-ville.syrjala@linux.intel.com>
+	 <20250207215406.19348-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20250207215406.19348-2-ville.syrjala@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6019:EE_|CY5PR11MB6415:EE_
+x-ms-office365-filtering-correlation-id: 2c5c37f6-ed26-4af4-ea8f-08dd519126b7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?TFk5U1BYS2xzUkJhbXYxUjh5TUJyd096QmJQVEY3VjNxM0YzN3hQeURaYitE?=
+ =?utf-8?B?RW1GQThja0RFM295RE10b0ZaSnQ2UzJ6TjB6NVprQjE0eE01UHZpVFZINVJW?=
+ =?utf-8?B?d2JNdkc0bzNPWnI2bmdEOHIrN3VMelBQQjhvYnd3cDZWR21mRjhaazVjcytm?=
+ =?utf-8?B?dnhvbTBuL0VhNjRBWTA3dHRWUDRkcUltM1o1T1pnRU5xTjhnZ0xhTlVxekFI?=
+ =?utf-8?B?MExINWFJc05NSmNXVzEzNmFYbk12TW13ZitIL1FaUGJUUkZaRzVZZ1BWelhR?=
+ =?utf-8?B?VWFyMmJkUFF4b0VsYWxQT3o3QU9EQTh4UVVOZnFNUjFTVmFQQXlxNU5rNmNl?=
+ =?utf-8?B?czNmY1NCR3F6azlvU0ZQempIcjB3djZDalpYS3RNZWVsdmswd0gzcjIxSFFm?=
+ =?utf-8?B?SWk5NzVWTmJSWmJWSkwzSVJMajIwWG52M0V4Tm5RY0dDcDJRbGg4TEVGWlhG?=
+ =?utf-8?B?OUJsejZETGM1SU9XRmNxN1BiQndkWEI3cStZOVlrcGZXU0xJTUtmM0M0N0d4?=
+ =?utf-8?B?UkNuclo3M3Vub2o0NVk1cm53YjZRYkpHY2ZxL2E3TTNBbzNJTXZNOTNlUnRq?=
+ =?utf-8?B?UHcrRklzU09Sa20ySitrd2lDbzNQL0grU3hyVTVlcE10b1hNbEdETVQycnJN?=
+ =?utf-8?B?Q2pjcnpvUW9VQTFPeXlzV3FuN2I2SllRVXdtTkhtZlJ2WlJLaVdrS0w5TmVW?=
+ =?utf-8?B?VWlHcjBLTGcrQ09VMjBXL1dFME44d25lNlFCQzRzZHM0dlBLMmRZVTRyTUht?=
+ =?utf-8?B?WnNxbmc4dlUrRkozYXp6V0VLekVNS2x5Q010bWlCdUFsV0Izdy8rZFpnZDZG?=
+ =?utf-8?B?T05qZnhUUFErbVhvclZGMWFaL0JlZDRVRGRDd2FSZ2tjY253VS85elNZMkZ1?=
+ =?utf-8?B?NVFvRFhsckR1RFN5aFJpZTlsQjA2QkprVHJPMmVrRkozTWI1TlhtWFFNblcv?=
+ =?utf-8?B?b0o0SVhobFlab3owTjVLSnBFUGRwNm1CbnJmMGFNcTN2Z0xwU3h5cnFia1Yr?=
+ =?utf-8?B?OVg2enBzMG9qMlJIVEhoR21Pd2VqNm5KS2tpdVU5dHBuMlY1UmJBd2kvTkxK?=
+ =?utf-8?B?Q003RWw3QzdUazJEclFVME0rTVBoTHVHYk9nTG9LdUF6QUZXbzBReHdCUkVk?=
+ =?utf-8?B?MHY0MndTcFdpdkVsMXFBeXFlTFB0UlI1ZWNNM1Z2UXY0NEgxNHhXa2l2alZI?=
+ =?utf-8?B?WU9PcDFtWDF1c2RXa3pwT2hXZy9oS0NFQTRVMXhXck10MmlyZFo3di95Q3Bl?=
+ =?utf-8?B?ZWNnS0NQMjdSSUlGT0FjWVkxeFpQblZzK3FRQVBDLzVab0hLVEs3QnVodkRS?=
+ =?utf-8?B?bk1rQTZCOS9sNHhkbDdoV0UvZ1AyNEtGWGR1d2dJK21ENmFYSm52Rm5MUGJy?=
+ =?utf-8?B?cUh4d1lkMjRLMFNUN21IOExFSW1BSmxkWTlYeWVuMGlsUFBiWmZmSGl2S0dk?=
+ =?utf-8?B?NDVBMUtFTWF4T3NGOHFCSTBjMXpySWNsNWw3ZzlxK0dySE42YWNjcXRZNjhO?=
+ =?utf-8?B?MGFsc0VQSDg0U1laWTgyaC9oR3NCajNtdEpoVGU0dUdVMlZVdUg0dVIreWhq?=
+ =?utf-8?B?d21LSGMycm4wNEM2ay9kR2RMa0VVQUhOU0ptbldNZkcvaWVkei9PR1crRmxt?=
+ =?utf-8?B?aDR1Q2xhQkg1dzVqbkErUXVDdys2QVk1Wlo1Y0pXaHlmN0RtaktMaU92OHNt?=
+ =?utf-8?B?VzgrNFc3YXlZOG03WGZzOU1lQnQ1ZjFWcGFXdDMzZTJIVkpyeldvZGJPMlBn?=
+ =?utf-8?B?dnU2d1JTRnlPUG5HdmxmQlByc2IxTElkOXZTdVN3QVRud045dzlsWnlBbG1w?=
+ =?utf-8?B?SHNZcTRSa1Uzdm1FNE5ZSnN6SFB4RVlzU2NMenhMRU1PZjBhdmpnNFc1QlV5?=
+ =?utf-8?B?OW95eUdkcjhnQUVCNnl3Rll6UTBBaVIzbDQ2UEdxVUxuTzVzdjhsVzNLVXF3?=
+ =?utf-8?Q?CnCRQheYA2JXgZo8DGTkXb98WkQJ8Ap3?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6019.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WU5Yb3BVNlRscmNQdmJ3bnBPZTBqV1VzdFltNWVaenBiUnF3TDk1SGZMN3Y3?=
+ =?utf-8?B?WUR4K2JydDhZNFNnSG5sWi9tSDIwTVgyQzBxUS9Ja0NxVjY5OWp2UUFZQWp0?=
+ =?utf-8?B?RGJyU3RRaFU0bGhoNnBtTkJoVGh3YTNYRnY3dzlHR05odGFEelV3WTh6akh5?=
+ =?utf-8?B?QUVUUEN0Z2JQYmRSM09uQjc3MWsxeTZBcTg3MFdabGVRelhrYUM2RnZ1Z3Y0?=
+ =?utf-8?B?VGFpcVJ2NzNEWDFYd3hoY0dsUlIwVWxrYXFSdysxLy84NHZ6aXZsbTF6aVQw?=
+ =?utf-8?B?TCt6TlZSVXpVOGs2eTh2R3lHRS84bGdOek5KOUdwMlVINmJta0pnYXdTOFRO?=
+ =?utf-8?B?WWYxSDFZeFRxOEZxOWdhUUVtdVhyNzZPMWpNZEw3NnR3S2wxSGFERWlqRlRC?=
+ =?utf-8?B?d2dOeVNMcG5wemZnOGluWWZ4S3RwTkhuQ1pxNFluckdRdmFZTGlDSW9ob3RU?=
+ =?utf-8?B?VU5MeGp1ekpJVmtzakIwTGp1MkJuKzhRZkUxQWRpZHBvdWdtOUx2RlhZY21o?=
+ =?utf-8?B?SWpxK2pLYmR3QW5OaGFySDlXNVJHSFQveVBteVJ4a0RFVDV0UU5ML0pGOERL?=
+ =?utf-8?B?cmU4clpBUC9VNzZYVlY2THJHeHVTSENxZnp6N29iak8vTU56T09IWE5Hck5F?=
+ =?utf-8?B?b3k3ajg2Umt1bXRNYlBDei9rR0tRNFhJQ2NSbHNzTWJFdHNRWjRhalJkeXBT?=
+ =?utf-8?B?cFVkMk5USlRoam4vb2JoNlYzd0U3K2xGWTNpWDh3TkZzQzJac0x4QVlUd1VU?=
+ =?utf-8?B?RStMUTVXcVdjMUF0aE9aOHlrbnVGTEhpZGRxczBkdHV4YzIvWGwrcGdDUEJI?=
+ =?utf-8?B?ME8vRHdKaEVETlkzTThJcnlMNTFFUi84bWlqM0U1VElhcHQ0dHdzSStvL2U0?=
+ =?utf-8?B?M2orWWpUVzR6RStOWjlRUFRKdEh2N3E1TU9uVllQT2M3eGZMam05UUFwdmhL?=
+ =?utf-8?B?cUwrU3lrYXRaZS9tMlRUZ3dpcTlkQ3lJYURmazUwYTREdTkxMjkrQTBHZ2Rh?=
+ =?utf-8?B?dzA3bnhTVkNxVHJVMTdZTDFEdXVjbXJjdEJtMngyTjRSNmF4SHRaQmJEY3Mx?=
+ =?utf-8?B?aDVEd2RXSUZvV1ZjbnQwa3ljSnpJQ1kzalhQem4xYWY5a0tHSnBKdWo1ekJk?=
+ =?utf-8?B?U2E3cVZSN3c0aWtBbWt0UGhpK2R2U0c3ZDJhODF2bmlpbzFzRFM3SFNmRDhF?=
+ =?utf-8?B?VUJUSG0yMjZzVU9NcC9zb09WLy9qQXpzYWFGVFdYdXNId3hoWGhhRWtQZ1hl?=
+ =?utf-8?B?QzlMc25qbEhycEtNQWxHRTdNcUN6bkE2RlB0cG9oNHdWZXpPUkFjNDRpUzBz?=
+ =?utf-8?B?VUFCTU5obCsreXhxUHQ5UnlBRzgxdEUzbmFBam9ySW9PYVpScmxRUE5HRkVu?=
+ =?utf-8?B?ZlVlSk9CT0lYVXE3TG4raUFqbUoxYloyQkJKOUNBbmk2RlFXdlloWkZDNHJ4?=
+ =?utf-8?B?ZGFNMjRjMGFDSnBLdWM2VlRpaEJEWVZ5ZlVJVjhjbTlFclpTTnh6VDEzeGZS?=
+ =?utf-8?B?T28rVU9jSHdCcWlhQ0JMWnFOQlIvdktDcjRVM1EvZDArbDdWRFhMQUV1dERx?=
+ =?utf-8?B?NVkvemx0L0lhNm16anFjSWdYNjJIaUU5ajhSODQ1MXc3ZGZ4TUNPanM2dnF0?=
+ =?utf-8?B?M1kwVFAzZUVZaVRseG1kbVl1c3MrZmt2SVRTVDdwTFR1VUM2d29YTDRNSSsv?=
+ =?utf-8?B?TXdaY1pmWnd1QzFFL0h3dTN5cmZjczZvMVZ3bUE4dzN3VUJYVGM1NE14Z1Uz?=
+ =?utf-8?B?eWpLb0ppS0kwTzBSbHYrNTExcURoQmI1dTRNOTFXQ3Zxd0RLRTJGODNRTEZG?=
+ =?utf-8?B?UjV2bU9CNHZrZ29vUGcvZzlFS1JlRWtrYkt3Vk9OYjVwY3lYYnp3dU5tNnJT?=
+ =?utf-8?B?T1B3OUpMSkg5RWxsRm1JVlJZM2k0b1pkd2Z3eHJtVEFtRTMwVTRiUG9XOHF1?=
+ =?utf-8?B?UXdzc3FWUFNVQm1IcXJLcU5mRlZ0UG5ZSkwvbUNGTmkxMGhzZy95L2JwSnRz?=
+ =?utf-8?B?MG1ZcERFbmlHelZiTFhWNUJxNVloY1pyQlMrQXR1d1Y1MjdoUlFtUzBjNWNX?=
+ =?utf-8?B?ZTdQRTM3WEJrZFdiaTRrVFVnOC9ZNUtqRTVFZi8yb2lEaEFhUWgzSG45ejl2?=
+ =?utf-8?B?UzNaai80TmdWRW1Sa1NzYktSdVAyOU92TmNQTWNnWEpNT0tOYTBkTUZMMVFV?=
+ =?utf-8?B?NE5OWnM5dVpqb014dDdGN0pPaWtycFNKTzRRL09ZRC84UG1HdmpaMTJTemFy?=
+ =?utf-8?B?TlJGSXN2cHMrOU1xZ0hmZ3VyWmd3PT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FAC9987145C2074196B0EA19A178D86A@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6019.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c5c37f6-ed26-4af4-ea8f-08dd519126b7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2025 09:30:01.7949
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dPeqt6ONpTPaZabS+k2BO2TCgNyjykU4Y7w3BSI0KhNrlQxzQr71VKRn7hixSxLHHrLxMSCR/9He+YVY+fPIDc37yOFOhOlE3gP9S/sY9RM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6415
+X-OriginatorOrg: intel.com
 
-On Thu, Feb 20, 2025 at 9:40 PM David Hildenbrand <david@redhat.com> wrote:
->
-> On 19.02.25 19:58, Suren Baghdasaryan wrote:
-> > On Wed, Feb 19, 2025 at 10:30 AM David Hildenbrand <david@redhat.com> wrote:
-> >>
-> >> On 19.02.25 19:26, Suren Baghdasaryan wrote:
-> >>> On Wed, Feb 19, 2025 at 3:25 AM Barry Song <21cnbao@gmail.com> wrote:
-> >>>>
-> >>>> From: Barry Song <v-songbaohua@oppo.com>
-> >>>>
-> >>>> userfaultfd_move() checks whether the PTE entry is present or a
-> >>>> swap entry.
-> >>>>
-> >>>> - If the PTE entry is present, move_present_pte() handles folio
-> >>>>     migration by setting:
-> >>>>
-> >>>>     src_folio->index = linear_page_index(dst_vma, dst_addr);
-> >>>>
-> >>>> - If the PTE entry is a swap entry, move_swap_pte() simply copies
-> >>>>     the PTE to the new dst_addr.
-> >>>>
-> >>>> This approach is incorrect because even if the PTE is a swap
-> >>>> entry, it can still reference a folio that remains in the swap
-> >>>> cache.
-> >>>>
-> >>>> If do_swap_page() is triggered, it may locate the folio in the
-> >>>> swap cache. However, during add_rmap operations, a kernel panic
-> >>>> can occur due to:
-> >>>>    page_pgoff(folio, page) != linear_page_index(vma, address)
-> >>>
-> >>> Thanks for the report and reproducer!
-> >>>
-> >>>>
-> >>>> $./a.out > /dev/null
-> >>>> [   13.336953] page: refcount:6 mapcount:1 mapping:00000000f43db19c index:0xffffaf150 pfn:0x4667c
-> >>>> [   13.337520] head: order:2 mapcount:1 entire_mapcount:0 nr_pages_mapped:1 pincount:0
-> >>>> [   13.337716] memcg:ffff00000405f000
-> >>>> [   13.337849] anon flags: 0x3fffc0000020459(locked|uptodate|dirty|owner_priv_1|head|swapbacked|node=0|zone=0|lastcpupid=0xffff)
-> >>>> [   13.338630] raw: 03fffc0000020459 ffff80008507b538 ffff80008507b538 ffff000006260361
-> >>>> [   13.338831] raw: 0000000ffffaf150 0000000000004000 0000000600000000 ffff00000405f000
-> >>>> [   13.339031] head: 03fffc0000020459 ffff80008507b538 ffff80008507b538 ffff000006260361
-> >>>> [   13.339204] head: 0000000ffffaf150 0000000000004000 0000000600000000 ffff00000405f000
-> >>>> [   13.339375] head: 03fffc0000000202 fffffdffc0199f01 ffffffff00000000 0000000000000001
-> >>>> [   13.339546] head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
-> >>>> [   13.339736] page dumped because: VM_BUG_ON_PAGE(page_pgoff(folio, page) != linear_page_index(vma, address))
-> >>>> [   13.340190] ------------[ cut here ]------------
-> >>>> [   13.340316] kernel BUG at mm/rmap.c:1380!
-> >>>> [   13.340683] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-> >>>> [   13.340969] Modules linked in:
-> >>>> [   13.341257] CPU: 1 UID: 0 PID: 107 Comm: a.out Not tainted 6.14.0-rc3-gcf42737e247a-dirty #299
-> >>>> [   13.341470] Hardware name: linux,dummy-virt (DT)
-> >>>> [   13.341671] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> >>>> [   13.341815] pc : __page_check_anon_rmap+0xa0/0xb0
-> >>>> [   13.341920] lr : __page_check_anon_rmap+0xa0/0xb0
-> >>>> [   13.342018] sp : ffff80008752bb20
-> >>>> [   13.342093] x29: ffff80008752bb20 x28: fffffdffc0199f00 x27: 0000000000000001
-> >>>> [   13.342404] x26: 0000000000000000 x25: 0000000000000001 x24: 0000000000000001
-> >>>> [   13.342575] x23: 0000ffffaf0d0000 x22: 0000ffffaf0d0000 x21: fffffdffc0199f00
-> >>>> [   13.342731] x20: fffffdffc0199f00 x19: ffff000006210700 x18: 00000000ffffffff
-> >>>> [   13.342881] x17: 6c203d2120296567 x16: 6170202c6f696c6f x15: 662866666f67705f
-> >>>> [   13.343033] x14: 6567617028454741 x13: 2929737365726464 x12: ffff800083728ab0
-> >>>> [   13.343183] x11: ffff800082996bf8 x10: 0000000000000fd7 x9 : ffff80008011bc40
-> >>>> [   13.343351] x8 : 0000000000017fe8 x7 : 00000000fffff000 x6 : ffff8000829eebf8
-> >>>> [   13.343498] x5 : c0000000fffff000 x4 : 0000000000000000 x3 : 0000000000000000
-> >>>> [   13.343645] x2 : 0000000000000000 x1 : ffff0000062db980 x0 : 000000000000005f
-> >>>> [   13.343876] Call trace:
-> >>>> [   13.344045]  __page_check_anon_rmap+0xa0/0xb0 (P)
-> >>>> [   13.344234]  folio_add_anon_rmap_ptes+0x22c/0x320
-> >>>> [   13.344333]  do_swap_page+0x1060/0x1400
-> >>>> [   13.344417]  __handle_mm_fault+0x61c/0xbc8
-> >>>> [   13.344504]  handle_mm_fault+0xd8/0x2e8
-> >>>> [   13.344586]  do_page_fault+0x20c/0x770
-> >>>> [   13.344673]  do_translation_fault+0xb4/0xf0
-> >>>> [   13.344759]  do_mem_abort+0x48/0xa0
-> >>>> [   13.344842]  el0_da+0x58/0x130
-> >>>> [   13.344914]  el0t_64_sync_handler+0xc4/0x138
-> >>>> [   13.345002]  el0t_64_sync+0x1ac/0x1b0
-> >>>> [   13.345208] Code: aa1503e0 f000f801 910f6021 97ff5779 (d4210000)
-> >>>> [   13.345504] ---[ end trace 0000000000000000 ]---
-> >>>> [   13.345715] note: a.out[107] exited with irqs disabled
-> >>>> [   13.345954] note: a.out[107] exited with preempt_count 2
-> >>>>
-> >>>> Fully fixing it would be quite complex, requiring similar handling
-> >>>> of folios as done in move_present_pte.
-> >>>
-> >>> How complex would that be? Is it a matter of adding
-> >>> folio_maybe_dma_pinned() checks, doing folio_move_anon_rmap() and
-> >>> folio->index = linear_page_index like in move_present_pte() or
-> >>> something more?
-> >>
-> >> If the entry is pte_swp_exclusive(), and the folio is order-0, it cannot
-> >> be pinned and we may be able to move it I think.
-> >>
-> >> So all that's required is to check pte_swp_exclusive() and the folio size.
-> >>
-> >> ... in theory :) Not sure about the swap details.
-> >
-> > Looking some more into it, I think we would have to perform all the
-> > folio and anon_vma locking and pinning that we do for present pages in
-> > move_pages_pte(). If that's correct then maybe treating swapcache
-> > pages like a present page inside move_pages_pte() would be simpler?
->
-> I'd be more in favor of not doing that. Maybe there are parts we can
-> move out into helper functions instead, so we can reuse them?
-
-I actually have a v2 ready. Maybe we can discuss if some of the code can be
-extracted as a helper based on the below before I send it formally?
-
-I’d say there are many parts that can be shared with present PTE, but there
-are two major differences:
-
-1. Page exclusivity – swapcache doesn’t require it (try_to_unmap_one has remove
-Exclusive flag;)
-2. src_anon_vma and its lock – swapcache doesn’t require it（folio is not mapped）
-
-
-Subject: [PATCH v2 Discussing with David] mm: Fix kernel crash when userfaultfd_move encounters
- swapcache
-
-userfaultfd_move() checks whether the PTE entry is present or a
-swap entry.
-
-- If the PTE entry is present, move_present_pte() handles folio
-  migration by setting:
-
-  src_folio->index = linear_page_index(dst_vma, dst_addr);
-
-- If the PTE entry is a swap entry, move_swap_pte() simply copies
-  the PTE to the new dst_addr.
-
-This approach is incorrect because, even if the PTE is a swap entry,
-it can still reference a folio that remains in the swap cache.
-
-This exposes a race condition between steps 2 and 4:
- 1. add_to_swap: The folio is added to the swapcache.
- 2. try_to_unmap: PTEs are converted to swap entries.
- 3. pageout: The folio is written back.
- 4. Swapcache is cleared.
-If userfaultfd_move() happens in the window between step 2 and step 4,
-after the swap PTE is moved to the destination, accessing the destination
-triggers do_swap_page(), which may locate the folio in the swap cache.
-However, during add_rmap operations, a kernel panic can occur due to:
-
-page_pgoff(folio, page) != linear_page_index(vma, address)
-
-This happens because move_swap_pte() has never updated the index to
-match dst_vma and dst_addr.
-
-$./a.out > /dev/null
-[   13.336953] page: refcount:6 mapcount:1 mapping:00000000f43db19c index:0xffffaf150 pfn:0x4667c
-[   13.337520] head: order:2 mapcount:1 entire_mapcount:0 nr_pages_mapped:1 pincount:0
-[   13.337716] memcg:ffff00000405f000
-[   13.337849] anon flags: 0x3fffc0000020459(locked|uptodate|dirty|owner_priv_1|head|swapbacked|node=0|zone=0|lastcpupid=0xffff)
-[   13.338630] raw: 03fffc0000020459 ffff80008507b538 ffff80008507b538 ffff000006260361
-[   13.338831] raw: 0000000ffffaf150 0000000000004000 0000000600000000 ffff00000405f000
-[   13.339031] head: 03fffc0000020459 ffff80008507b538 ffff80008507b538 ffff000006260361
-[   13.339204] head: 0000000ffffaf150 0000000000004000 0000000600000000 ffff00000405f000
-[   13.339375] head: 03fffc0000000202 fffffdffc0199f01 ffffffff00000000 0000000000000001
-[   13.339546] head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
-[   13.339736] page dumped because: VM_BUG_ON_PAGE(page_pgoff(folio, page) != linear_page_index(vma, address))
-[   13.340190] ------------[ cut here ]------------
-[   13.340316] kernel BUG at mm/rmap.c:1380!
-[   13.340683] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-[   13.340969] Modules linked in:
-[   13.341257] CPU: 1 UID: 0 PID: 107 Comm: a.out Not tainted 6.14.0-rc3-gcf42737e247a-dirty #299
-[   13.341470] Hardware name: linux,dummy-virt (DT)
-[   13.341671] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   13.341815] pc : __page_check_anon_rmap+0xa0/0xb0
-[   13.341920] lr : __page_check_anon_rmap+0xa0/0xb0
-[   13.342018] sp : ffff80008752bb20
-[   13.342093] x29: ffff80008752bb20 x28: fffffdffc0199f00 x27: 0000000000000001
-[   13.342404] x26: 0000000000000000 x25: 0000000000000001 x24: 0000000000000001
-[   13.342575] x23: 0000ffffaf0d0000 x22: 0000ffffaf0d0000 x21: fffffdffc0199f00
-[   13.342731] x20: fffffdffc0199f00 x19: ffff000006210700 x18: 00000000ffffffff
-[   13.342881] x17: 6c203d2120296567 x16: 6170202c6f696c6f x15: 662866666f67705f
-[   13.343033] x14: 6567617028454741 x13: 2929737365726464 x12: ffff800083728ab0
-[   13.343183] x11: ffff800082996bf8 x10: 0000000000000fd7 x9 : ffff80008011bc40
-[   13.343351] x8 : 0000000000017fe8 x7 : 00000000fffff000 x6 : ffff8000829eebf8
-[   13.343498] x5 : c0000000fffff000 x4 : 0000000000000000 x3 : 0000000000000000
-[   13.343645] x2 : 0000000000000000 x1 : ffff0000062db980 x0 : 000000000000005f
-[   13.343876] Call trace:
-[   13.344045]  __page_check_anon_rmap+0xa0/0xb0 (P)
-[   13.344234]  folio_add_anon_rmap_ptes+0x22c/0x320
-[   13.344333]  do_swap_page+0x1060/0x1400
-[   13.344417]  __handle_mm_fault+0x61c/0xbc8
-[   13.344504]  handle_mm_fault+0xd8/0x2e8
-[   13.344586]  do_page_fault+0x20c/0x770
-[   13.344673]  do_translation_fault+0xb4/0xf0
-[   13.344759]  do_mem_abort+0x48/0xa0
-[   13.344842]  el0_da+0x58/0x130
-[   13.344914]  el0t_64_sync_handler+0xc4/0x138
-[   13.345002]  el0t_64_sync+0x1ac/0x1b0
-[   13.345208] Code: aa1503e0 f000f801 910f6021 97ff5779 (d4210000)
-[   13.345504] ---[ end trace 0000000000000000 ]---
-[   13.345715] note: a.out[107] exited with irqs disabled
-[   13.345954] note: a.out[107] exited with preempt_count 2
-
-This patch also checks the swapcache when handling swap entries. If a
-match is found in the swapcache, it processes it similarly to a present
-PTE.
-However, there are some differences. For example, the folio is no longer
-exclusive because folio_try_share_anon_rmap_pte() is performed during
-unmapping.
-Furthermore, in the case of swapcache, the folio has already been
-unmapped, eliminating the risk of concurrent rmap walks and removing the
-need to acquire src_folio's anon_vma or lock.
-
-Note that for large folios, in the swapcache handling path, we still
-frequently encounter -EBUSY returns because split_folio() returns
--EBUSY when the folio is under writeback.
-That is not an urgent fix, so a following patch will address it.
-
-Fixes: adef440691bab ("userfaultfd: UFFDIO_MOVE uABI")
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: ZhangPeng <zhangpeng362@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
----
- mm/userfaultfd.c | 228 +++++++++++++++++++++++++++--------------------
- 1 file changed, 133 insertions(+), 95 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 867898c4e30b..e5718835a964 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -18,6 +18,7 @@
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
- #include "internal.h"
-+#include "swap.h"
- 
- static __always_inline
- bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
-@@ -1025,7 +1026,7 @@ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
- 	       pmd_same(dst_pmdval, pmdp_get_lockless(dst_pmd));
- }
- 
--static int move_present_pte(struct mm_struct *mm,
-+static int move_pte_and_folio(struct mm_struct *mm,
- 			    struct vm_area_struct *dst_vma,
- 			    struct vm_area_struct *src_vma,
- 			    unsigned long dst_addr, unsigned long src_addr,
-@@ -1046,7 +1047,7 @@ static int move_present_pte(struct mm_struct *mm,
- 	}
- 	if (folio_test_large(src_folio) ||
- 	    folio_maybe_dma_pinned(src_folio) ||
--	    !PageAnonExclusive(&src_folio->page)) {
-+	    (pte_present(orig_src_pte) && !PageAnonExclusive(&src_folio->page))) {
- 		err = -EBUSY;
- 		goto out;
- 	}
-@@ -1062,10 +1063,13 @@ static int move_present_pte(struct mm_struct *mm,
- 	folio_move_anon_rmap(src_folio, dst_vma);
- 	src_folio->index = linear_page_index(dst_vma, dst_addr);
- 
--	orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
--	/* Follow mremap() behavior and treat the entry dirty after the move */
--	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
--
-+	if (pte_present(orig_src_pte)) {
-+		orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
-+		/* Follow mremap() behavior and treat the entry dirty after the move */
-+		orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
-+	} else { /* swap entry */
-+		orig_dst_pte = orig_src_pte;
-+	}
- 	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
- out:
- 	double_pt_unlock(dst_ptl, src_ptl);
-@@ -1079,9 +1083,6 @@ static int move_swap_pte(struct mm_struct *mm,
- 			 pmd_t *dst_pmd, pmd_t dst_pmdval,
- 			 spinlock_t *dst_ptl, spinlock_t *src_ptl)
- {
--	if (!pte_swp_exclusive(orig_src_pte))
--		return -EBUSY;
--
- 	double_pt_lock(dst_ptl, src_ptl);
- 
- 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
-@@ -1137,6 +1138,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 			  __u64 mode)
- {
- 	swp_entry_t entry;
-+	struct swap_info_struct *si = NULL;
- 	pte_t orig_src_pte, orig_dst_pte;
- 	pte_t src_folio_pte;
- 	spinlock_t *src_ptl, *dst_ptl;
-@@ -1220,122 +1222,156 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 		goto out;
- 	}
- 
--	if (pte_present(orig_src_pte)) {
--		if (is_zero_pfn(pte_pfn(orig_src_pte))) {
--			err = move_zeropage_pte(mm, dst_vma, src_vma,
--					       dst_addr, src_addr, dst_pte, src_pte,
--					       orig_dst_pte, orig_src_pte,
--					       dst_pmd, dst_pmdval, dst_ptl, src_ptl);
-+	if (!pte_present(orig_src_pte)) {
-+		entry = pte_to_swp_entry(orig_src_pte);
-+		if (is_migration_entry(entry)) {
-+			pte_unmap(&orig_src_pte);
-+			pte_unmap(&orig_dst_pte);
-+			src_pte = dst_pte = NULL;
-+			migration_entry_wait(mm, src_pmd, src_addr);
-+			err = -EAGAIN;
-+			goto out;
-+		}
-+
-+		if (non_swap_entry(entry)) {
-+			err = -EFAULT;
-+			goto out;
-+		}
-+
-+		if (!pte_swp_exclusive(orig_src_pte)) {
-+			err = -EBUSY;
-+			goto out;
-+		}
-+		/* Prevent swapoff from happening to us. */
-+		if (!si)
-+			si = get_swap_device(entry);
-+		if (unlikely(!si)) {
-+			err = -EAGAIN;
- 			goto out;
- 		}
-+	}
-+
-+	if (pte_present(orig_src_pte) && is_zero_pfn(pte_pfn(orig_src_pte))) {
-+		err = move_zeropage_pte(mm, dst_vma, src_vma,
-+				dst_addr, src_addr, dst_pte, src_pte,
-+				orig_dst_pte, orig_src_pte,
-+				dst_pmd, dst_pmdval, dst_ptl, src_ptl);
-+		goto out;
-+	}
-+
-+	/*
-+	 * Pin and lock both source folio and anon_vma. Since we are in
-+	 * RCU read section, we can't block, so on contention have to
-+	 * unmap the ptes, obtain the lock and retry.
-+	 */
-+	if (!src_folio) {
-+		struct folio *folio;
- 
- 		/*
--		 * Pin and lock both source folio and anon_vma. Since we are in
--		 * RCU read section, we can't block, so on contention have to
--		 * unmap the ptes, obtain the lock and retry.
-+		 * Pin the page while holding the lock to be sure the
-+		 * page isn't freed under us
- 		 */
--		if (!src_folio) {
--			struct folio *folio;
-+		spin_lock(src_ptl);
-+		if (!pte_same(orig_src_pte, ptep_get(src_pte))) {
-+			spin_unlock(src_ptl);
-+			err = -EAGAIN;
-+			goto out;
-+		}
- 
--			/*
--			 * Pin the page while holding the lock to be sure the
--			 * page isn't freed under us
--			 */
--			spin_lock(src_ptl);
--			if (!pte_same(orig_src_pte, ptep_get(src_pte))) {
-+		if (pte_present(orig_src_pte)) {
-+			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
-+			if (!folio) {
- 				spin_unlock(src_ptl);
--				err = -EAGAIN;
-+				err = -EBUSY;
- 				goto out;
- 			}
--
--			folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
--			if (!folio || !PageAnonExclusive(&folio->page)) {
-+			if (!PageAnonExclusive(&folio->page)) {
- 				spin_unlock(src_ptl);
- 				err = -EBUSY;
- 				goto out;
- 			}
--
- 			folio_get(folio);
--			src_folio = folio;
--			src_folio_pte = orig_src_pte;
--			spin_unlock(src_ptl);
--
--			if (!folio_trylock(src_folio)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
--				src_pte = dst_pte = NULL;
--				/* now we can block and wait */
--				folio_lock(src_folio);
--				goto retry;
--			}
--
--			if (WARN_ON_ONCE(!folio_test_anon(src_folio))) {
--				err = -EBUSY;
-+		} else {
-+			/*
-+			 * Check if swapcache exists.
-+			 * If it does, we need to move the folio
-+			 * even if the PTE is a swap entry.
-+			 */
-+			folio = filemap_get_folio(swap_address_space(entry),
-+					swap_cache_index(entry));
-+			if (IS_ERR(folio)) {
-+				spin_unlock(src_ptl);
-+				err = move_swap_pte(mm, dst_addr, src_addr, dst_pte, src_pte,
-+						orig_dst_pte, orig_src_pte, dst_pmd,
-+						dst_pmdval, dst_ptl, src_ptl);
- 				goto out;
- 			}
- 		}
- 
--		/* at this point we have src_folio locked */
--		if (folio_test_large(src_folio)) {
--			/* split_folio() can block */
-+		src_folio = folio;
-+		src_folio_pte = orig_src_pte;
-+		spin_unlock(src_ptl);
-+
-+		if (!folio_trylock(src_folio)) {
- 			pte_unmap(&orig_src_pte);
- 			pte_unmap(&orig_dst_pte);
- 			src_pte = dst_pte = NULL;
--			err = split_folio(src_folio);
--			if (err)
--				goto out;
--			/* have to reacquire the folio after it got split */
--			folio_unlock(src_folio);
--			folio_put(src_folio);
--			src_folio = NULL;
-+			/* now we can block and wait */
-+			folio_lock(src_folio);
- 			goto retry;
- 		}
- 
--		if (!src_anon_vma) {
--			/*
--			 * folio_referenced walks the anon_vma chain
--			 * without the folio lock. Serialize against it with
--			 * the anon_vma lock, the folio lock is not enough.
--			 */
--			src_anon_vma = folio_get_anon_vma(src_folio);
--			if (!src_anon_vma) {
--				/* page was unmapped from under us */
--				err = -EAGAIN;
--				goto out;
--			}
--			if (!anon_vma_trylock_write(src_anon_vma)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
--				src_pte = dst_pte = NULL;
--				/* now we can block and wait */
--				anon_vma_lock_write(src_anon_vma);
--				goto retry;
--			}
-+		if (WARN_ON_ONCE(!folio_test_anon(src_folio))) {
-+			err = -EBUSY;
-+			goto out;
- 		}
-+	}
- 
--		err = move_present_pte(mm,  dst_vma, src_vma,
--				       dst_addr, src_addr, dst_pte, src_pte,
--				       orig_dst_pte, orig_src_pte, dst_pmd,
--				       dst_pmdval, dst_ptl, src_ptl, src_folio);
--	} else {
--		entry = pte_to_swp_entry(orig_src_pte);
--		if (non_swap_entry(entry)) {
--			if (is_migration_entry(entry)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
--				src_pte = dst_pte = NULL;
--				migration_entry_wait(mm, src_pmd, src_addr);
--				err = -EAGAIN;
--			} else
--				err = -EFAULT;
-+	/* at this point we have src_folio locked */
-+	if (folio_test_large(src_folio)) {
-+		/* split_folio() can block */
-+		pte_unmap(&orig_src_pte);
-+		pte_unmap(&orig_dst_pte);
-+		src_pte = dst_pte = NULL;
-+		err = split_folio(src_folio);
-+		if (err)
- 			goto out;
--		}
-+		/* have to reacquire the folio after it got split */
-+		folio_unlock(src_folio);
-+		folio_put(src_folio);
-+		src_folio = NULL;
-+		goto retry;
-+	}
- 
--		err = move_swap_pte(mm, dst_addr, src_addr, dst_pte, src_pte,
--				    orig_dst_pte, orig_src_pte, dst_pmd,
--				    dst_pmdval, dst_ptl, src_ptl);
-+	if (!src_anon_vma && pte_present(orig_src_pte)) {
-+		/*
-+		 * folio_referenced walks the anon_vma chain
-+		 * without the folio lock. Serialize against it with
-+		 * the anon_vma lock, the folio lock is not enough.
-+		 * In the swapcache case, the folio has been unmapped,
-+		 * so there is no concurrent rmap walk.
-+		 */
-+		src_anon_vma = folio_get_anon_vma(src_folio);
-+		if (!src_anon_vma) {
-+			/* page was unmapped from under us */
-+			err = -EAGAIN;
-+			goto out;
-+		}
-+		if (!anon_vma_trylock_write(src_anon_vma)) {
-+			pte_unmap(&orig_src_pte);
-+			pte_unmap(&orig_dst_pte);
-+			src_pte = dst_pte = NULL;
-+			/* now we can block and wait */
-+			anon_vma_lock_write(src_anon_vma);
-+			goto retry;
-+		}
- 	}
- 
-+	err = move_pte_and_folio(mm,  dst_vma, src_vma,
-+			dst_addr, src_addr, dst_pte, src_pte,
-+			orig_dst_pte, orig_src_pte, dst_pmd,
-+			dst_pmdval, dst_ptl, src_ptl, src_folio);
-+
- out:
- 	if (src_anon_vma) {
- 		anon_vma_unlock_write(src_anon_vma);
-@@ -1351,6 +1387,8 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 		pte_unmap(src_pte);
- 	mmu_notifier_invalidate_range_end(&range);
- 
-+	if (si)
-+		put_swap_device(si);
- 	return err;
- }
- 
--- 
-2.39.3 (Apple Git-146)
-
-
->
-> --
-> Cheers,
->
-> David / dhildenb
->
+T24gRnJpLCAyMDI1LTAyLTA3IGF0IDIzOjU0ICswMjAwLCBWaWxsZSBTeXJqYWxhIHdyb3RlOg0K
+PiBGcm9tOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0K
+PiANCj4gVHVybnMgb3V0IExOTCsgYW5kIEJNRysgbm8gbG9uZ2VyIGhhdmUgdGhlIHdlaXJkIGV4
+dHJhIHNjYW5saW5lDQo+IG9mZnNldCBmb3IgSERNSSBvdXRwdXRzLiBGaXggaW50ZWxfY3J0Y19z
+Y2FubGluZV9vZmZzZXQoKQ0KPiBhY2NvcmRpbmdseSBzbyB0aGF0IHNjYW5saW5lIGV2YXNpb24v
+ZXRjLiB3b3JrcyBjb3JyZWN0bHkgb24NCj4gSERNSSBvdXRwdXRzIG9uIHRoZXNlIG5ldyBwbGF0
+Zm9ybXMuDQo+IA0KPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTaWduZWQtb2ZmLWJ5
+OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPiAtLS0N
+Cj4gwqBkcml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5L2ludGVsX3ZibGFuay5jIHwgNCArKyst
+DQo+IMKgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiAN
+Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9pOTE1L2Rpc3BsYXkvaW50ZWxfdmJsYW5r
+LmMNCj4gYi9kcml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5L2ludGVsX3ZibGFuay5jDQo+IGlu
+ZGV4IDRlZmQ0ZjdkNDk3YS4uN2IyNDBjZTY4MWEwIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2dw
+dS9kcm0vaTkxNS9kaXNwbGF5L2ludGVsX3ZibGFuay5jDQo+ICsrKyBiL2RyaXZlcnMvZ3B1L2Ry
+bS9pOTE1L2Rpc3BsYXkvaW50ZWxfdmJsYW5rLmMNCj4gQEAgLTIyMiw3ICsyMjIsOSBAQCBpbnQg
+aW50ZWxfY3J0Y19zY2FubGluZV9vZmZzZXQoY29uc3Qgc3RydWN0DQo+IGludGVsX2NydGNfc3Rh
+dGUgKmNydGNfc3RhdGUpDQo+IMKgCSAqIEhvd2V2ZXIgaWYgcXVlcmllZCBqdXN0IGJlZm9yZSB0
+aGUgc3RhcnQgb2YgdmJsYW5rIHdlJ2xsDQo+IGdldCBhbg0KPiDCoAkgKiBhbnN3ZXIgdGhhdCdz
+IHNsaWdodGx5IGluIHRoZSBmdXR1cmUuDQo+IMKgCSAqLw0KPiAtCWlmIChESVNQTEFZX1ZFUihk
+aXNwbGF5KSA9PSAyKQ0KPiArCWlmIChESVNQTEFZX1ZFUihkaXNwbGF5KSA+PSAyMCB8fCBkaXNw
+bGF5LQ0KPiA+cGxhdGZvcm0uYmF0dGxlbWFnZSkNCg0KQmFzZWQgb24gd2hhdCBNYXR0IFJvcGVy
+IHdyb3RlIGluIHJlc3BvbnNlIHRvIGNvdmVyIGxldHRlciB5b3UgY291bGQNCmNvbnNpZGVyIGNo
+YW5naW5nIHRoaXMgdG86DQoNCmlmIChESVNQTEFZX1ZFUngxMDAoZGlzcGxheSkgPj0gMTQwMSkN
+Cg0KV2hhdCBkbyB5b3UgdGhpbms/DQoNCkJSLA0KDQpKb3VuaSBIw7ZnYW5kZXINCg0KPiArCQly
+ZXR1cm4gMTsNCj4gKwllbHNlIGlmIChESVNQTEFZX1ZFUihkaXNwbGF5KSA9PSAyKQ0KPiDCoAkJ
+cmV0dXJuIC0xOw0KPiDCoAllbHNlIGlmIChIQVNfRERJKGRpc3BsYXkpICYmIGludGVsX2NydGNf
+aGFzX3R5cGUoY3J0Y19zdGF0ZSwNCj4gSU5URUxfT1VUUFVUX0hETUkpKQ0KPiDCoAkJcmV0dXJu
+IDI7DQoNCg==
 
