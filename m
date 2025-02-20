@@ -1,142 +1,97 @@
-Return-Path: <stable+bounces-118368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA6AA3CEA3
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 02:25:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEBBA3CEB5
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 02:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5BC43BC6F3
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 01:23:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 339B51897BAD
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 01:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898DD194C6A;
-	Thu, 20 Feb 2025 01:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849D2192B82;
+	Thu, 20 Feb 2025 01:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="cP6GnRiD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MMESd3X2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ECC3C0C;
-	Thu, 20 Feb 2025 01:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E19015624D
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 01:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740014579; cv=none; b=EdnC466MsXIAx5HqcLNlOSQDO1pHcGDty4TnH9xqHfPvuXB7dMU40htXRSl0EFk0hn0aP+0GLYX9CLDpWcF2b+RWIFhXTIP4qBOCP6t4gfumMGFL06PdnikjJhwLTFAU4jeSjN083jjT1GEZOqqwEo1Uhc95XRKF9bTJLiTvPWw=
+	t=1740014941; cv=none; b=asalqheIXv23Cic7LuI8+BVHMED9k2ddA8KruHjXPZaMph7WKsajBWRcUtb6R6MwTF7tewvnQJO2SD2KtUvAO3+sDmSrNMOZTxYQ/3bn4wzjR0rCDGuIM67/QIxgiJsScS0jKlHjpsYvaJHxy89XlV6J4gvzpRO6JrQSRrlHir0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740014579; c=relaxed/simple;
-	bh=F8pOXCmMq8U/32hHJyoHy6pH+LT4dwl0p0EPIInztVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AdseDYpwD8lsVbMfz5RPgRYdX67Xxez9cNLdHNSGn8iCd1aHN6xh2E1ZrpqH7qlzxR8dMb4PuyFX9KvbaUSRDZUSVlqOyEEQFx4eT9KJpoeo8lsHW1pCwUTR4T1x43D1YEXY+/sZOi2PlGsbWivNN7ZBns/+j7klRm6SoqcKkQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=cP6GnRiD; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51JMZiPP024432;
-	Thu, 20 Feb 2025 01:22:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=sVO3dN/k8Gv/mIaOGPguZlutQG60w
-	YLU5gwhTiEZqB0=; b=cP6GnRiDgFOYzycfzYHRomfcSE2vXTftUzbXN07npwHNo
-	Q5BZZ/JDYiTR5iUu3sZNfMaVbyJW+XieJDjLLlFAQmVzMjPJ0b8wBhf9Mnw3E4hz
-	K9h8ZCeJxlxsouZHQ/lSmxZ9FUFeQCNVoiU58WV9dk82sgS4ZflYoGiuAAyQ94Ab
-	SSDA7InU7KxKILaDZ9Y/UZmWoOqTDQo5Hjomx+56cm1lVwycPLVAEl4/IfF4jmMT
-	ppsMhXkbQk6/8V10c4JKjfHTxatHechj4oulcab7G12k2KEtiPGGmJAbSHDpBpRU
-	04zE1CxBE3wENUzInU3iVHymbls08RzbLeKdDB4XQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44w00nk3em-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Feb 2025 01:22:51 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 51JNb9oU009776;
-	Thu, 20 Feb 2025 01:22:51 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44w09d8wsf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Feb 2025 01:22:51 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51K1MoTD012639;
-	Thu, 20 Feb 2025 01:22:50 GMT
-Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44w09d8wsb-1;
-	Thu, 20 Feb 2025 01:22:50 +0000
-From: Yifei Liu <yifei.l.liu@oracle.com>
-To: shuah@kernel.org, kevin.brodsky@arm.com
-Cc: yifei.l.liu@oracle.com, stable@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-Subject: [PATCH v3 Linux-6.12.y 1/1] selftests/mm: build with -O2
-Date: Wed, 19 Feb 2025 17:22:17 -0800
-Message-ID: <20250220012217.1091146-1-yifei.l.liu@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1740014941; c=relaxed/simple;
+	bh=LJdxENxZpd6woHMrpY+JCXncfXl+eonrCnkoYGj7Hes=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LI0L0auGclcH+xamx8x9kQkpCgHUoS6tnFY5yq5cXk7M6j/HN9H4s77syu96lGfbuWhEOvJyrhqWNOqjA+Ef6NjO4hW/Rc0YP4vqJQ8qRk5o37Y7rSd0GpsQ9SViv3qNVE0hyZmJ6a3J8BMWYa3RpPyQeODl0moU/ihlreGwi3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MMESd3X2; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <25782504-2d3c-4666-b72d-343371fe037c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740014927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YqvqbehjGrCNe1roBGtpI6CdjxU06tpCNUUgl7lLOFI=;
+	b=MMESd3X2iQtkaGVQRwL3xhqstdJuuAjyumoxl6XNw7VGJk7xkwNcaEtaXZK+0UsfydBE1+
+	Yx3XyQjS5f50oUCs6UwuGBWAmmqY1ceR3a6B8FZ9RNRRwiyBfvxqBJgxoLykA/6Q0UCEp6
+	A3k7AJIPZQHC/shqdMvbQutshltteto=
+Date: Thu, 20 Feb 2025 09:28:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH net V3] net: stmmac: dwmac-loongson: Add fix_soc_reset()
+ callback
+To: Qunqin Zhao <zhaoqunqin@loongson.cn>, kuba@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com
+Cc: chenhuacai@kernel.org, fancer.lancer@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Huacai Chen <chenhuacai@loongson.cn>
+References: <20250219020701.15139-1-zhaoqunqin@loongson.cn>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yanteng Si <si.yanteng@linux.dev>
+In-Reply-To: <20250219020701.15139-1-zhaoqunqin@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-19_11,2025-02-19_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- bulkscore=0 suspectscore=0 spamscore=0 adultscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2502100000 definitions=main-2502200008
-X-Proofpoint-ORIG-GUID: oOk66EPKErYLLs5mzIB7vaIBcqpsu7xJ
-X-Proofpoint-GUID: oOk66EPKErYLLs5mzIB7vaIBcqpsu7xJ
+X-Migadu-Flow: FLOW_OUT
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
 
-[ Upstream commit 46036188ea1f5266df23a6149dea0df1c77cd1c7 ]
+在 2/19/25 10:07 AM, Qunqin Zhao 写道:
+> Loongson's DWMAC device may take nearly two seconds to complete DMA reset,
+> however, the default waiting time for reset is 200 milliseconds.
+> Therefore, the following error message may appear:
+>
+> [14.427169] dwmac-loongson-pci 0000:00:03.2: Failed to reset the dma
+>
+> Fixes: 803fc61df261 ("net: stmmac: dwmac-loongson: Add Loongson Multi-channels GMAC support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qunqin Zhao <zhaoqunqin@loongson.cn>
+> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
 
-The mm kselftests are currently built with no optimisation (-O0).  It's
-unclear why, and besides being obviously suboptimal, this also prevents
-the pkeys tests from working as intended.  Let's build all the tests with
--O2.
+Acked-by: Yanteng Si <si.yanteng@linux.dev>
 
-[kevin.brodsky@arm.com: silence unused-result warnings]
-  Link: https://lkml.kernel.org/r/20250107170110.2819685-1-kevin.brodsky@arm.com
-Link: https://lkml.kernel.org/r/20241209095019.1732120-6-kevin.brodsky@arm.com
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: Keith Lucas <keith.lucas@oracle.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 46036188ea1f5266df23a6149dea0df1c77cd1c7)
-[Yifei: This commit also fix the failure of pkey_sighandler_tests_64,
-which is also in linux-6.12.y, thus backport this commit. It is already
-backported to linux-6.13.y by commit d9eb5a1e76f56]
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
----
- tools/testing/selftests/mm/Makefile | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 02e1204971b0..c0138cb19705 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -33,9 +33,16 @@ endif
- # LDLIBS.
- MAKEFLAGS += --no-builtin-rules
- 
--CFLAGS = -Wall -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
-+CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
- LDLIBS = -lrt -lpthread -lm
- 
-+# Some distributions (such as Ubuntu) configure GCC so that _FORTIFY_SOURCE is
-+# automatically enabled at -O1 or above. This triggers various unused-result
-+# warnings where functions such as read() or write() are called and their
-+# return value is not checked. Disable _FORTIFY_SOURCE to silence those
-+# warnings.
-+CFLAGS += -U_FORTIFY_SOURCE
-+
- TEST_GEN_FILES = cow
- TEST_GEN_FILES += compaction_test
- TEST_GEN_FILES += gup_longterm
--- 
-2.46.0
+Thanks,
 
+Yanteng
+
+> ---
+> v3: Added "Cc: stable@vger.kernel.org" tag.
+>      Added error message to commit message.
+>
+> v2: Added comments. Changed callback name to loongson_dwmac_fix_reset.
+>
+>   .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
 
