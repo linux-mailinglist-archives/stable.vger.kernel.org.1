@@ -1,181 +1,198 @@
-Return-Path: <stable+bounces-118511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033FBA3E5AE
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 21:19:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97DEA3E5B4
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 21:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55A513A798A
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 20:16:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6C4177734
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 20:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630D91DDC14;
-	Thu, 20 Feb 2025 20:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kIvWi5Pd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA55264611;
+	Thu, 20 Feb 2025 20:20:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4881D5160
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 20:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351FA263C91;
+	Thu, 20 Feb 2025 20:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740082617; cv=none; b=dHAIYOUsVNwyGNxmnsw7bE8myAqAVPCBA5/9CqCkb5ue6TMquGLLAWu3LTsG+l4ltiWnra/CmQD4B0IDEgGC2fN2QX+z6N5P5rOIUfn0eOFhm3jEcA+hBDwgo1bdx1Ue8PGYpmtl6C+7YhVoH35x0+3WXb/Dp608BF+s2OBYNpk=
+	t=1740082828; cv=none; b=nMPZ/2KA2i/dN3/vBi9PffQzKoi9GNt34YGU0rPxvE6DgCQjFOGAW359NeZqTtX/nRbckvhVgOuTeE9Ecd3mtMaMk0YFeyIp2MFzm92eTac4ZY9I+vjd56ArZI7JtFS0sgfuDwiTssu8kFe3siBCewbTtDDcwLL1FK1ZMJZ2CJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740082617; c=relaxed/simple;
-	bh=JopwU1tRzm/OLHD7ECLfVZYglL1z+L9dpaJpCGJU0E4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kBKiYoW0IAzxd9cfPEszxJnM+5z0FllFn/3Pa6aM8PoiH1EWc4FUbj9neAT1QVmm3j7mkG3/sxlBuW3RedDTQMmLz3AvjmIO9tfDs9fKVZ3mBtkYRKrnLmeHw18xZaDEO3dPRHlmMzYNprJo8JerRHl4FQFAFgDCGTVcZ+0F1x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kIvWi5Pd; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740082615; x=1771618615;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JopwU1tRzm/OLHD7ECLfVZYglL1z+L9dpaJpCGJU0E4=;
-  b=kIvWi5PdZqcC5U5hcWEzn6BmuKFPhgzamV9wPzeDhZTmfC6nSxd3SqjT
-   u8FNnoJaGrhg+ub+YWB0t5zCSClasVaClPP1zWx7YXH+dwJouo22y2G6Z
-   KtwTn748Mb6R6CmnszuCFUfYzIg3OzXT7dLQJv4yKLfSgtxkA8jsYg2SU
-   8qcYWDJhsSbFopD40iArI3w7yRS7xVoJqCVVqc2lOBif6+ik5f7Y36xyu
-   2pwmMkzCmt1t1Ljf4VRy4dX3vzhDHM+uvySnfqq+ckcOpdX9Rl4xgM/rX
-   hzIENEvirDbT26tNNHL+/2P8Jry0AYebthAweiDsuTJYeiEpI8AcoHXUU
-   A==;
-X-CSE-ConnectionGUID: zqUP3iloSECCN1L4B+cniw==
-X-CSE-MsgGUID: CzA/AtaBR+yhhnjH9YoYjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="58430560"
-X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
-   d="scan'208";a="58430560"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 12:16:54 -0800
-X-CSE-ConnectionGUID: U9oXL2eeSJaYSkAKqoenEg==
-X-CSE-MsgGUID: f9hbXyH2S5WYCQpvqDjZ8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="115009262"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa010.jf.intel.com with ESMTP; 20 Feb 2025 12:16:53 -0800
-From: Kan Liang <kan.liang@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.6.y] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
-Date: Thu, 20 Feb 2025 12:17:11 -0800
-Message-Id: <20250220201711.3030856-1-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <2025021817-pull-grievance-de31@gregkh>
-References: <2025021817-pull-grievance-de31@gregkh>
+	s=arc-20240116; t=1740082828; c=relaxed/simple;
+	bh=dM6dxwW9oxxt/IqEqbgNISiBMYoBatiOHbCtlpdPUio=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=iLEH8MvxqGx8D02oKG/GxYTU6GXmP2ouK3h5MA8zc/mOvkSRNVKo/XiuT1uTV3tAipK3Y+7IcW9VTqg/agiYL5Z7EooLfFBJuJlGXn/WcZksVbbUNyz5ghF48DEM5gIvhCz5gzm27ZfBZjiUTa8gtKoIuvXNipPU0br9SDuepSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8281C4CEE4;
+	Thu, 20 Feb 2025 20:20:27 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1tlD2V-00000005fWo-0rdz;
+	Thu, 20 Feb 2025 15:20:55 -0500
+Message-ID: <20250220202055.060300046@goodmis.org>
+User-Agent: quilt/0.68
+Date: Thu, 20 Feb 2025 15:20:10 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ stable@vger.kernel.org
+Subject: [PATCH v3 1/5] ftrace: Fix accounting of adding subops to a manager ops
+References: <20250220202009.689253424@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 
-[ Upstream commit 47a973fd75639fe80d59f9e1860113bb2a0b112b ]
+From: Steven Rostedt <rostedt@goodmis.org>
 
-(The patch is not exactly the same as the upstream patch. Because in the
-6.6 stable kernel, the umask2/eq enumeration is not supported. The
-number of counters is used rather than the counter mask. But the change
-is straightforward, which utilizes the structured union to replace the
-macros when parsing the CPUID enumeration. It also fixed a wrong
-macros.)
+Function graph uses a subops and manager ops mechanism to attach to
+ftrace.  The manager ops connects to ftrace and the functions it connects
+to is defined by a list of subops that it manages.
 
-The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
-To tell the availability of the sub-leaf 1 (enumerate the counter mask),
-perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
+The function hash that defines what the above ops attaches to limits the
+functions to attach if the hash has any content. If the hash is empty, it
+means to trace all functions.
 
-The error is not user-visible on bare metal. Because the sub-leaf 0 and
-the sub-leaf 1 are always available. However, it may bring issues in a
-virtualization environment when a VMM only enumerates the sub-leaf 0.
+The creation of the manager ops hash is done by iterating over all the
+subops hashes. If any of the subops hashes is empty, it means that the
+manager ops hash must trace all functions as well.
 
-Introduce the cpuid35_e?x to replace the macros, which makes the
-implementation style consistent.
+The issue is in the creation of the manager ops. When a second subops is
+attached, a new hash is created by starting it as NULL and adding the
+subops one at a time. But the NULL ops is mistaken as an empty hash, and
+once an empty hash is found, it stops the loop of subops and just enables
+all functions.
 
-Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+  # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+kernel_clone (1)           	tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+
+  # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
+  # cat /sys/kernel/tracing/enabled_functions
+trace_initcall_start_cb (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+run_init_process (1)            tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+try_to_run_init_process (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+x86_pmu_show_pmu_cap (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+cleanup_rapl_pmus (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+uncore_free_pcibus_map (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+uncore_types_exit (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+uncore_pci_exit.part.0 (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+kvm_shutdown (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+vmx_dump_msrs (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+vmx_cleanup_l1d_flush (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+[..]
+
+Fix this by initializing the new hash to NULL and if the hash is NULL do
+not treat it as an empty hash but instead allocate by copying the content
+of the first sub ops. Then on subsequent iterations, the new hash will not
+be NULL, but the content of the previous subops. If that first subops
+attached to all functions, then new hash may assume that the manager ops
+also needs to attach to all functions.
+
 Cc: stable@vger.kernel.org
+Fixes: 5fccc7552ccbc ("ftrace: Add subops logic to allow one ops to manage many")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- arch/x86/events/intel/core.c      | 17 ++++++++++-------
- arch/x86/include/asm/perf_event.h | 26 +++++++++++++++++++++++++-
- 2 files changed, 35 insertions(+), 8 deletions(-)
+Changes since v2: https://lore.kernel.org/20250219220510.888959028@goodmis.org
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 37c8badd2701..52f2ca214617 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
- 
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+- Have append_hashes() return EMPTY_HASH and not NULL if the resulting
+  new hash is empty.
+
+ kernel/trace/ftrace.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
+
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 728ecda6e8d4..bec54dc27204 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3220,15 +3220,22 @@ static struct ftrace_hash *copy_hash(struct ftrace_hash *src)
+  *  The filter_hash updates uses just the append_hash() function
+  *  and the notrace_hash does not.
+  */
+-static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash)
++static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash,
++		       int size_bits)
  {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
+ 	struct ftrace_func_entry *entry;
+ 	int size;
+ 	int i;
  
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
+-	/* An empty hash does everything */
+-	if (ftrace_hash_empty(*hash))
+-		return 0;
++	if (*hash) {
++		/* An empty hash does everything */
++		if (ftrace_hash_empty(*hash))
++			return 0;
++	} else {
++		*hash = alloc_ftrace_hash(size_bits);
++		if (!*hash)
++			return -ENOMEM;
++	}
+ 
+ 	/* If new_hash has everything make hash have everything */
+ 	if (ftrace_hash_empty(new_hash)) {
+@@ -3292,16 +3299,18 @@ static int intersect_hash(struct ftrace_hash **hash, struct ftrace_hash *new_has
+ /* Return a new hash that has a union of all @ops->filter_hash entries */
+ static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
+ {
+-	struct ftrace_hash *new_hash;
++	struct ftrace_hash *new_hash = NULL;
+ 	struct ftrace_ops *subops;
++	int size_bits;
+ 	int ret;
+ 
+-	new_hash = alloc_ftrace_hash(ops->func_hash->filter_hash->size_bits);
+-	if (!new_hash)
+-		return NULL;
++	if (ops->func_hash->filter_hash)
++		size_bits = ops->func_hash->filter_hash->size_bits;
++	else
++		size_bits = FTRACE_HASH_DEFAULT_BITS;
+ 
+ 	list_for_each_entry(subops, &ops->subop_list, list) {
+-		ret = append_hash(&new_hash, subops->func_hash->filter_hash);
++		ret = append_hash(&new_hash, subops->func_hash->filter_hash, size_bits);
+ 		if (ret < 0) {
+ 			free_ftrace_hash(new_hash);
+ 			return NULL;
+@@ -3310,7 +3319,8 @@ static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
+ 		if (ftrace_hash_empty(new_hash))
+ 			break;
  	}
+-	return new_hash;
++	/* Can't return NULL as that means this failed */
++	return new_hash ? : EMPTY_HASH;
  }
  
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 85a9fd5a3ec3..384e8a7db482 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
+ /* Make @ops trace evenything except what all its subops do not trace */
+@@ -3505,7 +3515,8 @@ int ftrace_startup_subops(struct ftrace_ops *ops, struct ftrace_ops *subops, int
+ 		filter_hash = alloc_and_copy_ftrace_hash(size_bits, ops->func_hash->filter_hash);
+ 		if (!filter_hash)
+ 			return -ENOMEM;
+-		ret = append_hash(&filter_hash, subops->func_hash->filter_hash);
++		ret = append_hash(&filter_hash, subops->func_hash->filter_hash,
++				  size_bits);
+ 		if (ret < 0) {
+ 			free_ftrace_hash(filter_hash);
+ 			return ret;
 -- 
-2.38.1
+2.47.2
+
 
 
