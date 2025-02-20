@@ -1,167 +1,202 @@
-Return-Path: <stable+bounces-118506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75309A3E513
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 20:31:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05318A3E538
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 20:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B387421EE7
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 19:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B351A3BE4B2
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 19:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9927B2641E3;
-	Thu, 20 Feb 2025 19:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B873E263F25;
+	Thu, 20 Feb 2025 19:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IaHRufLS"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TrATA7tw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2082.outbound.protection.outlook.com [40.107.243.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EF92116F6
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 19:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740079897; cv=none; b=qg8YlmLwZO6iLyS/Pfrl1DiQakUKj9n5T/r65uRQXHDE1JAT5KJgRqqZstYxD2P5FLSdXV4z1S88Cw7R5jHeglUQW/tLSp7B91FbcnaWqGfPKj3NqWqFLrX+APk+CRH/mU+P+D6eRoOgHRrLHXirsJzosWqHYSKqk2N2lmmgkvw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740079897; c=relaxed/simple;
-	bh=MVq0rSd2W/rQ4EG/nAQY+fo+iAlMg/MrYiWZeK0fCbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NspO7jNXqr5W/2pDRnpst4YqhEdSk0h+AjEu5J/kC3swqpqAuyy1WFkONx4xXiM+ingXeqYSop9oMRhnhkvWZcvjFMThAfpdGvpR+RuGT27O65NACuOvWH4pUO+NMN7cpHpZd/b7y/Qvvtf7q5J+HstgFFDHtI3yyFJ4M7EUPo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IaHRufLS; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22114b800f7so25532645ad.2
-        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 11:31:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740079894; x=1740684694; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oNqMwP45iYYk0uj0DcAs+5VuYjHL2HKpybnKvS9Q0Q8=;
-        b=IaHRufLSvQZngqQVwGbV25xIjHyZZLiFvtUFLBLJadlw9vGU6dZydzT+myueiN4GJt
-         8woU0VnpwUs2vAQOM8QUB5XTC6Nahh1rbiWia12oKzDVG3jzeJ4N80pAL7kOgR4CA1dl
-         +3fJNxWtmpkPG/cMcguZCKfwATQNiqCJ9KueVF45xt9WyzTqeSxOBAz0ulKDAsl2tuKq
-         pfCW3N6X8B9lgWss4+buWuOT61r7j4I0XIwKPANQ5ylyJRq7iZtX50+5jfYUGj8LxkGI
-         HDV1e7ZPt8n1hEVXNiBJuQsXqs1uTbUQk+vryHy3zk5R6J2iAk1GSPbUYetNL7O5dfXy
-         boag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740079894; x=1740684694;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oNqMwP45iYYk0uj0DcAs+5VuYjHL2HKpybnKvS9Q0Q8=;
-        b=VeJMQx9KZ+/3qDqRzjXUb0dqsLuso6ov4t1npGhB4F5QeX+uhN8uyC/7WbdI0uFG89
-         5m9phoIIvoyJuFSw2AoaoYZ+ilMQaDvcX596tu0i2jaAnVXpZMIrkoKrqKVLsN4ygnsz
-         w8ONVbiTaRRut9gh5lHNuuLkH4XEDpkMZ2edh07wUcfPCdI/PDoGnONq2YcWVeYTrF8F
-         sXuoSUtsJRXZjiXxReowBcxIY4HrVb+DUp9KmTVPYwjB/74+gZdpNyBpjs2fdXNJwSvy
-         oPu55sBwGOEXvQZm8Jo6aUgAm7ABk5SB9eOMmaCSCsU/O70HBU6RB7JaxGv/0fvHpEqT
-         UxXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwQnpE5N4GWv5Z8JntyayVV+S0HwFmrJEStKL/VRI3L2v64cjIOVBXzD3RWix0Vw5Ic4tHOIM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkPoJl/McQxlFH9+vGhFSi8ZH73epPznA3fvbvvfEyzV2Xuzau
-	9IAVoqBaJ6XEqytl16hASLuuF1iqsk7+i8688IRiacPHalo/vAO6kjRYs3ymdA==
-X-Gm-Gg: ASbGnctZlo+NNnw4VxPeev1tbbjxXlAplLCaBWlFLpS1kzdcZIOVuIkC0RKSJ2BJ7os
-	/9yK8ewd6bMoJx5Ijbjay/U18oFM6BnUlD0yocyC5QoHwhnJ1QKlqsKjJnY1m54e5zhuW9VTola
-	p2rS6EsprfBBXQN+sfB7jxUegmyKfHAkk+sVpz9v/awkA1Y22fRHDoTL9AROeXfRnGh0De2BlpE
-	xJacAmZ3bgjzO9k+uRDpAX8/Muhj9HT9Ho6TsNUXkBXs5Q1pOHbfLTbQcPlotv09TryBSj+pRJt
-	l/2icfRfUNw6FM5Ex41LyLHj2ouuZ3k4PQWhIDE08RrYA9VWuhGlLeDo
-X-Google-Smtp-Source: AGHT+IGm0mMkDx5+higAvQTvJgGM6Q5QWoVBcT94T2De4H3OUSImBFKF4r5go8AQeAfrxEm5a+S3bw==
-X-Received: by 2002:a17:903:230f:b0:216:4883:fb43 with SMTP id d9443c01a7336-2219ffd2718mr6024575ad.32.1740079892529;
-        Thu, 20 Feb 2025 11:31:32 -0800 (PST)
-Received: from google.com (139.11.82.34.bc.googleusercontent.com. [34.82.11.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fc13ba5f27sm14323197a91.43.2025.02.20.11.31.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 11:31:31 -0800 (PST)
-Date: Thu, 20 Feb 2025 11:31:27 -0800
-From: William McVicker <willmcvicker@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Prashanth K <prashanth.k@oss.qualcomm.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, andre.draszik@linaro.org,
-	kernel-team@android.com
-Subject: Re: [PATCH v2] usb: gadget: Set self-powered based on MaxPower and
- bmAttributes
-Message-ID: <Z7eDD1PsBYVIYWMY@google.com>
-References: <20250217120328.2446639-1-prashanth.k@oss.qualcomm.com>
- <Z7dv4rEILkC9yRwX@google.com>
- <2025022032-cruelness-framing-2a10@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67682135BB;
+	Thu, 20 Feb 2025 19:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740080412; cv=fail; b=m8yDMrZFcGzfUtLXQoHKa/DVhTsIeLe4F+7S2h6UQYon4w15n6Q9YxNx6Ru5Rw9rZVUo0yBGSiO772TdbJ0fIRyNyBtIgOY/aifHz1gd0l/fgunKV3HUyN6oWCxovhwOKLVVYsB976HrFE2XVzk2ziGib4Jf2S1EYvQ9lyI7yps=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740080412; c=relaxed/simple;
+	bh=CBqm1Fqk8jMIKNdea7uYXMQmcKuEctyOHf36PORjkpI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cFjKNuGvO9LcB7GkXoiCAcmK3pSCE1kFngTWLzWg240xrryKMuXaog83T6pH0okC1WN/u0tWeIVTCdC7ta3V5ap4NOEvcxM8n3kWlC/QpEU2jzFtdEyXAl0cum4U3VjIzo3CZZreJNyytaOfb2FI5EakEqYa8RZQHb+OM/Sly0Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TrATA7tw; arc=fail smtp.client-ip=40.107.243.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TiOQ517m9lfDQPXE/9WycyZhtBSmNqtqDkcp6QfHRi2u8x5uDTNW7yix3zR8CUfMgliX/69drXLAgFvS5HvVZeRdxD3q8VxxQlBBMmvcaddIeM7dCddOpuI9wlXtS7+dCYgGUMAvZAOo7c+JV5mk1844gkzC7xFnTBbZkbTBBEtPdCaI9s79GJPrKqhBjdy1C8Gp0drpaedrVNNHrhQlh0quGMwUTQ/JQTenFezG584PVlPYoo4MVhIwlbJjFxRscpZLaKCksmFJVPJhomD/XmXOvrZPj2BHP9cDenC2abOjfidWsiUQnxSn62Qjpmn88NDV+pk3C69htux072kezQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lUVRy7wyUKTn/gJhDGGEBDKzDKhUk889JAGtm9Zd2bU=;
+ b=GBjiKPUAF+6ecmJ/DAwkV0iydHxIeSUDttWVRK3G3/18zdGiupC3g4BjIHklGv3Rp4Dplj/DYy/9p1EvqkP5foXtmlESUwlCX5SkmPl820Q9qqlOumFUL9uP5g3BdQCo4deYD90X1W0OxR6/wa+WiX+7BGUOxRSwxHY6Y0+DCaUsLEULK1VBmNb9Dywmx7htBliXT4RdXDkbuEt8RUf3F7gR0LgTzSDuNCpfn2CYR+6ZBPpNLXYzHWxu8WIfZv4fs9/s9PK5M9JDNEY5XJ46O7DSJ+3hIAp0kiYm1Pa97Q5nt5/PgSVAwzB9NbZGaw2OFi2EBF7gL8GbB3h6uD7c3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lUVRy7wyUKTn/gJhDGGEBDKzDKhUk889JAGtm9Zd2bU=;
+ b=TrATA7twCrzFI1MLyQ00Y57ZKxsaoB2AosqPnh2tl/0eFu5txXzEJqVerTKKT4sOKoDH1Pj9BEYuOgd0RZZengAgjjlVHicUQsrh3wFQKflfCROS1iQzWrDqvmSXjD9b34BFWxkkANlkl4zC43epKxdLBK8Z+sDCZbEIyaWqqxDjiNKFzPYiU+/nor+nCO/3VsOWTToR5MJcrE015Jxcvu/v/N5a8GZWNMYHzW6hiu+0E6CEX4Dk40IFkWwbywBMi73oZ2QdCDeWoIKcDcHbK2RqdTTswhK+C/K5T/PsOgdRKzfd9KZjYbDuwDoyV06X6srvpqKOBAwaARwm6/gUEw==
+Received: from SJ0PR03CA0073.namprd03.prod.outlook.com (2603:10b6:a03:331::18)
+ by PH7PR12MB6444.namprd12.prod.outlook.com (2603:10b6:510:1f8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Thu, 20 Feb
+ 2025 19:40:04 +0000
+Received: from SJ1PEPF000026C7.namprd04.prod.outlook.com
+ (2603:10b6:a03:331:cafe::c9) by SJ0PR03CA0073.outlook.office365.com
+ (2603:10b6:a03:331::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.15 via Frontend Transport; Thu,
+ 20 Feb 2025 19:40:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ SJ1PEPF000026C7.mail.protection.outlook.com (10.167.244.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8466.11 via Frontend Transport; Thu, 20 Feb 2025 19:40:03 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 20 Feb
+ 2025 11:39:56 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 20 Feb 2025 11:39:56 -0800
+Received: from c-237-113-200-209.mtl.labs.mlnx (10.127.8.14) by
+ mail.nvidia.com (10.126.190.180) with Microsoft SMTP Server id 15.2.1544.14
+ via Frontend Transport; Thu, 20 Feb 2025 11:39:53 -0800
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>, <virtualization@lists.linux.dev>
+CC: Dragos Tatulea <dtatulea@nvidia.com>, Jason Wang <jasowang@redhat.com>,
+	Eugenio Perez Martin <eperezma@redhat.com>, Si-Wei Liu
+	<si-wei.liu@oracle.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, <stable@vger.kernel.org>, Cong Meng
+	<cong.meng@oracle.com>
+Subject: [PATCH vhost v2] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+Date: Thu, 20 Feb 2025 21:37:33 +0200
+Message-ID: <20250220193732.521462-2-dtatulea@nvidia.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025022032-cruelness-framing-2a10@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C7:EE_|PH7PR12MB6444:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef044da4-09b1-4e11-70ba-08dd51e65f38
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UDc5VGZ5dTQ2dFVwemlnQ3ZnZ3M4czFidnVZZXpGNjQ0aGhVeFBHU0cySTkw?=
+ =?utf-8?B?QzAxYkNPcE9oRnZqcjhjbGU3TGFFOS91V1ZxRWdPSlFmMFBXTnhIK29mNytY?=
+ =?utf-8?B?NXRjWVFhaHN0Vi9ISzgxWWo2VWxlMmo4bUNMWUorSEhoRzlaa1JvWTJRV0NH?=
+ =?utf-8?B?V1VTOVAyZThESS9LN1UyeU9xYlhpUE1kcTNkeHl0UjVKcTA3MlYzanhxQjQ5?=
+ =?utf-8?B?L3NvVVhrZFBsUVNDQVE0SXdnUzFnWlNZaE02WC9KOFFXUExoV2lidHQ4bTRz?=
+ =?utf-8?B?RjRvY2JycnpLV3JIaHNhdm1RUk9ZYm5WcnIydmFSNVJEcnBDNFVVRk5IdXd0?=
+ =?utf-8?B?RTIvdXpFNGFSS1FNMHVXd3oveXFaaWNmaU8vbmQ0TU9TNDNpQlg0cFVkUTBu?=
+ =?utf-8?B?cndjdzlETjZiT2dSenhqWW5qVFA3SnF3WVNzcm9XaWpwUmZZN3o2S1JGbTFR?=
+ =?utf-8?B?SC80aGtIWGxMSExveXM3cURXS0dNUWJTMXE0WU1YOXVJSmZnN3lrb1NWeGdM?=
+ =?utf-8?B?Y1JLOHFWaTlZRmV4aE0zOVNVUCtMQUdYdG5vTjNvcXJ5M3NvTTRCMEgrMGUw?=
+ =?utf-8?B?N1BzajJ6U0JhaXM4UmJqQTd6eWsrRFhxdTlXMDM4aCtlaURrM3NvRmFxQjVu?=
+ =?utf-8?B?bzJwM1V4UlRSdWx0bnRvNElqVTFqWFJzSG0xUlJmNDdzUnYyV1JBdGJ3dVVJ?=
+ =?utf-8?B?dEE5ODR1WWZraTVHSGM3RVBwQUhDdURoeE5hMUNoenVsSzlsN01FWXlzbVcy?=
+ =?utf-8?B?bSt2UkszK0ZiYWNPQ1ppNmNrNDZYaHdMTVdETklCWi9YVVRiNXIzVkxpdzdB?=
+ =?utf-8?B?UEJPU3M1Z1RjS3VzOUZYWm5tUVFSK0tXclhDYjNWOFhCNUdxTkgxQ1RTWTR4?=
+ =?utf-8?B?c2lVSFVETEFnSDZwOThPTHgrdG4wSGJDby9BVEtOUkQzN1BBUXdiZ1dvVkVr?=
+ =?utf-8?B?M2ZPV28yQ3oySXJJeCtMSVdIbVJlTEhRSG5IWTdBMTRBaU81eUs3MERWaDlB?=
+ =?utf-8?B?TndtTElscVRXa2YzWTRUc2RnaTF3d0MvaGhld2F0RXJRdzNXZ2lWZTZaMWUx?=
+ =?utf-8?B?d1FuZmJyRC9UUWltQlJybWIrMDMxejdWOTY5MEgyeDNOa0s1Wkh3TFMyWC9j?=
+ =?utf-8?B?NW1ETTZHSXd3RmNPUXB3dWNMM0VDU3k0Z0xTQzAwZmpSMTdyS1B2TDBVRDVr?=
+ =?utf-8?B?dnc2YVdjVWZoQndvWE8raEtrZC9KQkhHdTE1SmtEdHhwajhFR2F3OXNuMUdj?=
+ =?utf-8?B?aitpeDlrR0xJSzdqZ0M4ZHNuOUVwdHZvOHUyc01CSGh4Rzg2L2tITk0wTklX?=
+ =?utf-8?B?ZEZISk9MckNaaHJoRUV4cnRWNUhmK1hFYmt6N3UwcW1KcFdKUlpOdkVnSm5W?=
+ =?utf-8?B?WkoySTUrNlc4aWY1VWtHNnlmeUZyaDZvWkljaXRma0FOREZyNmtZSHFsZmxY?=
+ =?utf-8?B?UDN5eTkyVzlSRHRyRHA0Vmx1T1Nwam9EendqdHBQTzY4NHNDU0d5cGVKSC95?=
+ =?utf-8?B?S0lFVUdHRFl0cjVxeTA3eGVjRGpMNE5UemFkdTVoMHY1Q2hhbEdneHBJejRw?=
+ =?utf-8?B?WW9CWW1DbW1NR2FlWVBhanJ5ckpPL3ZuOWcxcDUwTGdUa2hhL3NSeXhUK25u?=
+ =?utf-8?B?Sno5WjhxWjJQOU9WN1VaM3RqTGZIaDFMTDQ2NlgzWjFZdDQ5djJud3ppbDdG?=
+ =?utf-8?B?NVU0REdoUUQyaWxKbDF3RTVqYzZoeDdJYVlEcXNFUHBKWHRFUHdXSytqTkdE?=
+ =?utf-8?B?ODBBalhaL25oZFptSkszK0g1cHdPQURkOEVvd09POVltTUY4WEc4K2lFK1k5?=
+ =?utf-8?B?emsrK2JtVEFxdy9pYTBwbFB4NXBVU3VUdWtlV092R0JYUHoxZ0RjalJSN0dO?=
+ =?utf-8?B?VVpRUk40MHh3K0ZlamxiUzBoSEdDeEJhRG5kb2dLcEhHK0RXa2IrenVpQXFV?=
+ =?utf-8?B?OUpMV2QxanJzZVI1NXhxMnFLNGRrcUY5aVN1eVo2eG8vd2cveU1oNGpPNkUw?=
+ =?utf-8?Q?80TnAw0IWLv0rayuN2Qj1BRbmz9XDU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 19:40:03.7871
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef044da4-09b1-4e11-70ba-08dd51e65f38
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000026C7.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6444
 
-On 02/20/2025, Greg Kroah-Hartman wrote:
-> On Thu, Feb 20, 2025 at 10:09:38AM -0800, William McVicker wrote:
-> > Hi Prashanth,
-> > 
-> > On 02/17/2025, Prashanth K wrote:
-> > > Currently the USB gadget will be set as bus-powered based solely
-> > > on whether its bMaxPower is greater than 100mA, but this may miss
-> > > devices that may legitimately draw less than 100mA but still want
-> > > to report as bus-powered. Similarly during suspend & resume, USB
-> > > gadget is incorrectly marked as bus/self powered without checking
-> > > the bmAttributes field. Fix these by configuring the USB gadget
-> > > as self or bus powered based on bmAttributes, and explicitly set
-> > > it as bus-powered if it draws more than 100mA.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 5e5caf4fa8d3 ("usb: gadget: composite: Inform controller driver of self-powered")
-> > > Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-> > > ---
-> > > Changes in v2:
-> > > - Didn't change anything from RFC.
-> > > - Link to RFC: https://lore.kernel.org/all/20250204105908.2255686-1-prashanth.k@oss.qualcomm.com/
-> > > 
-> > >  drivers/usb/gadget/composite.c | 16 +++++++++++-----
-> > >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-> > > index bdda8c74602d..1fb28bbf6c45 100644
-> > > --- a/drivers/usb/gadget/composite.c
-> > > +++ b/drivers/usb/gadget/composite.c
-> > > @@ -1050,10 +1050,11 @@ static int set_config(struct usb_composite_dev *cdev,
-> > >  	else
-> > >  		usb_gadget_set_remote_wakeup(gadget, 0);
-> > >  done:
-> > > -	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
-> > > -		usb_gadget_set_selfpowered(gadget);
-> > > -	else
-> > > +	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-> > > +	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
-> > >  		usb_gadget_clear_selfpowered(gadget);
-> > > +	else
-> > > +		usb_gadget_set_selfpowered(gadget);
-> > >  
-> > >  	usb_gadget_vbus_draw(gadget, power);
-> > >  	if (result >= 0 && cdev->delayed_status)
-> > > @@ -2615,7 +2616,9 @@ void composite_suspend(struct usb_gadget *gadget)
-> > >  
-> > >  	cdev->suspended = 1;
-> > >  
-> > > -	usb_gadget_set_selfpowered(gadget);
-> > > +	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-> > > +		usb_gadget_set_selfpowered(gadget);
-> > 
-> > I'm hitting a null pointer derefence here on my Pixel 6 device on suspend.  I
-> > haven't dug deep into it how we get here, but in my case `cdev->config` is
-> > NULL. This happens immediate after booting my device. I verified that just
-> > adding a NULL check fixes the issue and dwc3 gadget can successfully suspend.
-> 
-> This was just fixed in my tree today with this commit:
-> 	https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
-> 
-> Hope this helps,
-> 
-> greg k-h
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-Yup, works for me. Thanks!
+create_user_mr() has correct code to count the number of null keys
+used to fill in a hole for the memory map. However, fill_indir()
+does not follow the same to cap the range up to the 1GB limit
+correspondingly. Fill in more null keys for the gaps in between,
+so that null keys are correctly populated.
 
---Will
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Cc: stable@vger.kernel.org
+Reported-by: Cong Meng <cong.meng@oracle.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+---
+Changes in v2:
+- Added Reported-by tag.
+- Fixed typo found during review.
+---
+ drivers/vdpa/mlx5/core/mr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index 8455f08f5d40..61424342c096 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -190,9 +190,12 @@ static void fill_indir(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mkey, v
+ 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
+ 			preve = dmr->end;
+ 		} else {
++			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
++
+ 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
+-			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
+-			preve = dmr->start;
++			klm->bcount = cpu_to_be32(klm_bcount(bcount));
++			preve += bcount;
++
+ 			goto again;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
