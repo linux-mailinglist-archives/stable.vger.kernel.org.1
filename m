@@ -1,229 +1,299 @@
-Return-Path: <stable+bounces-118420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835C6A3D8E8
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 12:38:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC33A3D8F0
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 12:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED6A16B3F8
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 11:37:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF5B3A5239
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 11:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1F91F2B82;
-	Thu, 20 Feb 2025 11:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D671F4178;
+	Thu, 20 Feb 2025 11:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JPu99uq4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hp/94yaa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FC71F1908
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 11:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021561F3FE2;
+	Thu, 20 Feb 2025 11:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740051448; cv=none; b=Mun3A0XWQ9zpH7Suw8oMyRDyetHE1iUAK1i7vRl5bF5CLycJnKACkIdQupTVwyBk4oBayKXXFQ2S1SpGOAf8DFDNP957sa4eBJPdoGEXhS52Uum7wUO82b1XALTwUUEHAIhT/3O1rHGkKJXgomb/QCG7MAwpX/uUs9zYT0JaIpA=
+	t=1740051507; cv=none; b=LbR5lZQUN+M5H545ejW39rIZMqDQQSbq3WjDEMUZOsK5zp+I4gdZW2Jqy1vVpXgcFHK+YoqG8d4Qbtb4oniOalGFaWqd+M+81iDztbQpB8J8vmFmUNMwKdkWrDGuDHfwjCN22Ak7vE4UkOL5n7zafeYEB+Tk+iINhT9skN/P9JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740051448; c=relaxed/simple;
-	bh=88G0YOIoPPOL/EjQy1wtDWVST89b/CpWuK/PGMVcl54=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aLbFrEKMIR852glngsboLLkKOnvu25F+YHHzW2H8za17IRH/E38agiNKs152EuEZ8cZ+6u43Yipu+Ay61uV+O8hvgw+LT9PtWZ5UCQipUHO8Fd7RI48yMPoyf830Jy/xqblz6NU2VuyvZFOxyngglNH3NsszZ5y2S7I8qyvchOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JPu99uq4; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-51eb1823a8eso236685e0c.3
-        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 03:37:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740051445; x=1740656245; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IuzVq9OkutvCNEzS5JGhlxT8oPc0+NNNyZEuizMTif8=;
-        b=JPu99uq4joWinTrzx9qtuLlX2QJsyJVIrn5YDfMne7gvtINGm3hbST6WGvMRsijYy4
-         aD7m14WQ7GJ6ZlOXM+7S/EXBLJtgOpM1VKn8O2uOR0fyF+245HnlyswNEGWw84UK1o9l
-         VRUfq08FG4tDyaXs+Nbl187RCEDWub2EBMqxjY8Gm3966xP3STFG3I46RPsBt974KvYf
-         8C01XM/JXZqoQcl2rQc6CVMoAIwqcTjp/8j0PJIXfRf18Gl9DeTWf5pN7eCc3ftSBnYP
-         hGsi+6Bh1dSLShqhv2XXHoDuu5y+09PwulSPD8h73LeD9H/08v1Qq2nBhyuO2GIr15xB
-         2xug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740051445; x=1740656245;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IuzVq9OkutvCNEzS5JGhlxT8oPc0+NNNyZEuizMTif8=;
-        b=faRFGl3RxPAiIcDNv3kcw+ZyirPhmRhOBuPOcLivmod/PToKhyZr+UgIoTlxLBhWQe
-         rbpTPI69Wd+y/SAQUuWyAZQ/GtAsSZn8NehGmTzJF5bZLAvhgB9YrOCFauTo+FcohQ3k
-         EwNBgnsUVvjL+CEFen4JHTmjAwHFcfNCnDmuX/BnsvRgKgbSpEGfQdKMHakNytlDOPLO
-         D071Pp7O+Jitnyt3S/mQrn8Yt45Rbzaoa3pQwADZOpZ35YzV7wbtE7qakpbe/er1XXI3
-         kfhkLjQcLpfR37ezpBlTvt/ZqqJX4aHXHCOc1N0qiZLEdHH9CPz/QC6qZjKNg/HDm5xs
-         uOSw==
-X-Gm-Message-State: AOJu0YwKPfgagUlsSeZa+XjdrIZzKfZpkwzwYwSeM0mK9vWBAVzS02vs
-	/XrFnthl/spAh84f+HZBUKPal91nsMHz9QQqgdTCs5kpwTWWoStFEDcXyMjF59oaMqgCtShEBY3
-	6qLBRVJgg8GOUt3uwXPAV0oF1TkkxOkh6TVYUhw==
-X-Gm-Gg: ASbGnctz+zZtyg4YAj0kTy11+qkY+dCMuBJ8Q7Dw5yhgAZEceqRAEtzIcEd1PqzVZ0p
-	wO5x1V8wx4VJaoUmcMhGqzf3GdgrwJgUyiagv7B99BX7MZ1iZ2jE1OnTbdH2bY0pI3raGYz4OjD
-	4ub3Oe1imoLT/etl7l2r6e2QCFysSq
-X-Google-Smtp-Source: AGHT+IHzJnQ8UdPjYSfM/OBiu2LSuTlvIs57FBk1cINHCNnyxHhaqri2pojhFlOAyHI/OO7q6pneJlQKoZbBkFzte7w=
-X-Received: by 2002:a05:6122:506:b0:50a:c70b:9453 with SMTP id
- 71dfb90a1353d-5209de6718cmr9371127e0c.10.1740051445536; Thu, 20 Feb 2025
- 03:37:25 -0800 (PST)
+	s=arc-20240116; t=1740051507; c=relaxed/simple;
+	bh=OW4tV7XHQY75duXBFKoVLdDiJWkwE9tK7bUXvwMMnfc=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Kik4hhAeYTYHa6z/15BaBECP6DjB16eavBhy7EDbBSfHwwaFPRERohbP8KVtWovBC4v161BoKaCmWbLGEvb59BstaWODt/4lKfzG5H/LHkv5lv6VpDvHtza1p5ijDn7Ok3LjzZBEaVorRHTX4v1KuBkPwxo3BH0tQ/9R1DMoIxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hp/94yaa; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740051505; x=1771587505;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OW4tV7XHQY75duXBFKoVLdDiJWkwE9tK7bUXvwMMnfc=;
+  b=hp/94yaaTJVa7hRR31/isyBnLIskP5vrRjrjB8gbyWNKdhEYHJ5KzzyO
+   +FC/KQSrTS2fsQtLa3cYvTV2cwYnh6uvyh0pRv4xYSdi26BM03nQVcT4v
+   VgULu9vdFQLlG06rBxTc0x8d7kYnj+Zlrq7SVSic7FrrzAZslqCMMk11I
+   EZ4oVUtcH0hS4s9kpkxIhcHN9xbEi/08C7N53n+IcQGOd/V3wMNHVgLND
+   b79cYGTlcuT8S8tajIgyAgFQKeEbGfBoRnFFwoOgtugYZpVWA18+W/j0+
+   MXABuLDz6H0cSxt6OyYvJlWkxcy70D4Vm51Gog22Zs+YICPHsrNkDoFMd
+   g==;
+X-CSE-ConnectionGUID: uE+oW1e/RXqO61icG8nyEQ==
+X-CSE-MsgGUID: QD9MMweOSdC6tqP+VDfluA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40681134"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="40681134"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:38:24 -0800
+X-CSE-ConnectionGUID: ImoEWPGUT1O38l92vqulmA==
+X-CSE-MsgGUID: JBerQi//ThaorSclckLfxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="138216925"
+Received: from lzhu41-mobl3.ccr.corp.intel.com (HELO [10.124.240.48]) ([10.124.240.48])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 03:38:22 -0800
+Message-ID: <7d58c0bd-2828-4adc-8c57-8b359c9f0b9f@linux.intel.com>
+Date: Thu, 20 Feb 2025 19:38:19 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219082550.014812078@linuxfoundation.org>
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 20 Feb 2025 17:07:14 +0530
-X-Gm-Features: AWEUYZnQO4inOznO9_79aYbIKplawCDHNLm1B1JD3EKc_OH-xNl-HvFQIbOwsf8
-Message-ID: <CA+G9fYv7WoDA1OC9VtQ6qAqwoaJA5+mpWMahE+7j+vwp1dTS6g@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/152] 6.6.79-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Ido Schimmel <idosch@idosch.org>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/1] iommu/vt-d: Fix suspicious RCU usage
+To: "Tian, Kevin" <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+References: <20250218022422.2315082-1-baolu.lu@linux.intel.com>
+ <BN9PR11MB5276EEC28691FD6C77EC493A8CC42@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB5276EEC28691FD6C77EC493A8CC42@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 19 Feb 2025 at 14:28, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.79 release.
-> There are 152 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 21 Feb 2025 08:25:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.79-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 2025/2/20 15:21, Tian, Kevin wrote:
+>> From: Lu Baolu<baolu.lu@linux.intel.com>
+>> Sent: Tuesday, February 18, 2025 10:24 AM
+>>
+>> Commit <d74169ceb0d2> ("iommu/vt-d: Allocate DMAR fault interrupts
+>> locally") moved the call to enable_drhd_fault_handling() to a code
+>> path that does not hold any lock while traversing the drhd list. Fix
+>> it by ensuring the dmar_global_lock lock is held when traversing the
+>> drhd list.
+>>
+>> Without this fix, the following warning is triggered:
+>>   =============================
+>>   WARNING: suspicious RCU usage
+>>   6.14.0-rc3 #55 Not tainted
+>>   -----------------------------
+>>   drivers/iommu/intel/dmar.c:2046 RCU-list traversed in non-reader section!!
+>>                 other info that might help us debug this:
+>>                 rcu_scheduler_active = 1, debug_locks = 1
+>>   2 locks held by cpuhp/1/23:
+>>   #0: ffffffff84a67c50 (cpu_hotplug_lock){++++}-{0:0}, at:
+>> cpuhp_thread_fun+0x87/0x2c0
+>>   #1: ffffffff84a6a380 (cpuhp_state-up){+.+.}-{0:0}, at:
+>> cpuhp_thread_fun+0x87/0x2c0
+>>   stack backtrace:
+>>   CPU: 1 UID: 0 PID: 23 Comm: cpuhp/1 Not tainted 6.14.0-rc3 #55
+>>   Call Trace:
+>>    <TASK>
+>>    dump_stack_lvl+0xb7/0xd0
+>>    lockdep_rcu_suspicious+0x159/0x1f0
+>>    ? __pfx_enable_drhd_fault_handling+0x10/0x10
+>>    enable_drhd_fault_handling+0x151/0x180
+>>    cpuhp_invoke_callback+0x1df/0x990
+>>    cpuhp_thread_fun+0x1ea/0x2c0
+>>    smpboot_thread_fn+0x1f5/0x2e0
+>>    ? __pfx_smpboot_thread_fn+0x10/0x10
+>>    kthread+0x12a/0x2d0
+>>    ? __pfx_kthread+0x10/0x10
+>>    ret_from_fork+0x4a/0x60
+>>    ? __pfx_kthread+0x10/0x10
+>>    ret_from_fork_asm+0x1a/0x30
+>>    </TASK>
+>>
+>> Simply holding the lock in enable_drhd_fault_handling() will trigger a
+>> lock order splat. Avoid holding the dmar_global_lock when calling
+>> iommu_device_register(), which starts the device probe process.
+> Can you elaborate the splat issue? It's not intuitive to me with a quick
+> read of the code and iommu_device_register() is not occurred in above
+> calling stack.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+The lockdep splat looks like below:
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.14.0-rc3-00002-g8e4617b46db1 #57 Not tainted
+  ------------------------------------------------------
+  swapper/0/1 is trying to acquire lock:
+  ffffffffa2a67c50 (cpu_hotplug_lock){++++}-{0:0}, at: 
+iova_domain_init_rcaches.part.0+0x1d3/0x210
 
-## Build
-* kernel: 6.6.79-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: de6988e4026e1da2b3653e74a33e46860cb3f717
-* git describe: v6.6.78-153-gde6988e4026e
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.7=
-8-153-gde6988e4026e
+  but task is already holding lock:
+  ffff9f4a87b171c8 (&domain->iova_cookie->mutex){+.+.}-{4:4}, at: 
+iommu_dma_init_domain+0x122/0x2e0
 
-## Test Regressions (compared to v6.6.77-274-ge4f2e2ad0f5f)
+  which lock already depends on the new lock.
 
-## Metric Regressions (compared to v6.6.77-274-ge4f2e2ad0f5f)
 
-## Test Fixes (compared to v6.6.77-274-ge4f2e2ad0f5f)
+  the existing dependency chain (in reverse order) is:
 
-## Metric Fixes (compared to v6.6.77-274-ge4f2e2ad0f5f)
+  -> #4 (&domain->iova_cookie->mutex){+.+.}-{4:4}:
+         __lock_acquire+0x4a0/0xb50
+         lock_acquire+0xd1/0x2e0
+         __mutex_lock+0xa5/0xce0
+         iommu_dma_init_domain+0x122/0x2e0
+         iommu_setup_dma_ops+0x65/0xe0
+         bus_iommu_probe+0x100/0x1d0
+         iommu_device_register+0xd6/0x130
+         intel_iommu_init+0x527/0x870
+         pci_iommu_init+0x17/0x60
+         do_one_initcall+0x7c/0x390
+         do_initcalls+0xe8/0x1e0
+         kernel_init_freeable+0x313/0x490
+         kernel_init+0x24/0x240
+         ret_from_fork+0x4a/0x60
+         ret_from_fork_asm+0x1a/0x30
 
-## Test result summary
-total: 67097, pass: 53621, fail: 1765, skip: 11452, xfail: 259
+  -> #3 (&group->mutex){+.+.}-{4:4}:
+         __lock_acquire+0x4a0/0xb50
+         lock_acquire+0xd1/0x2e0
+         __mutex_lock+0xa5/0xce0
+         bus_iommu_probe+0x95/0x1d0
+         iommu_device_register+0xd6/0x130
+         intel_iommu_init+0x527/0x870
+         pci_iommu_init+0x17/0x60
+         do_one_initcall+0x7c/0x390
+         do_initcalls+0xe8/0x1e0
+         kernel_init_freeable+0x313/0x490
+         kernel_init+0x24/0x240
+         ret_from_fork+0x4a/0x60
+         ret_from_fork_asm+0x1a/0x30
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 127 total, 127 passed, 0 failed
-* arm64: 39 total, 39 passed, 0 failed
-* i386: 26 total, 22 passed, 4 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 30 total, 30 passed, 0 failed
-* riscv: 18 total, 18 passed, 0 failed
-* s390: 13 total, 12 passed, 1 failed
-* sh: 12 total, 10 passed, 2 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 32 total, 32 passed, 0 failed
+-> #2 (dmar_global_lock){++++}-{4:4}:
+        __lock_acquire+0x4a0/0xb50
+        lock_acquire+0xd1/0x2e0
+        down_read+0x31/0x170
+        enable_drhd_fault_handling+0x27/0x1a0
+        cpuhp_invoke_callback+0x1e2/0x990
+        cpuhp_issue_call+0xac/0x2c0
+        __cpuhp_setup_state_cpuslocked+0x229/0x430
+        __cpuhp_setup_state+0xc3/0x260
+        irq_remap_enable_fault_handling+0x52/0x80
+        apic_intr_mode_init+0x59/0xf0
+        x86_late_time_init+0x29/0x50
+        start_kernel+0x642/0x7f0
+        x86_64_start_reservations+0x18/0x30
+        x86_64_start_kernel+0x91/0xa0
+        common_startup_64+0x13e/0x148
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
+-> #1 (cpuhp_state_mutex){+.+.}-{4:4}:
+        __lock_acquire+0x4a0/0xb50
+        lock_acquire+0xd1/0x2e0
+        __mutex_lock+0xa5/0xce0
+        __cpuhp_setup_state_cpuslocked+0x81/0x430
+        __cpuhp_setup_state+0xc3/0x260
+        page_alloc_init_cpuhp+0x2d/0x40
+        mm_core_init+0x1e/0x3a0
+        start_kernel+0x277/0x7f0
+        x86_64_start_reservations+0x18/0x30
+        x86_64_start_kernel+0x91/0xa0
+        common_startup_64+0x13e/0x148
 
---
-Linaro LKFT
-https://lkft.linaro.org
+-> #0 (cpu_hotplug_lock){++++}-{0:0}:
+        check_prev_add+0xe2/0xc50
+        validate_chain+0x57c/0x800
+        __lock_acquire+0x4a0/0xb50
+        lock_acquire+0xd1/0x2e0
+        __cpuhp_state_add_instance+0x40/0x250
+        iova_domain_init_rcaches.part.0+0x1d3/0x210
+        iova_domain_init_rcaches+0x41/0x60
+        iommu_dma_init_domain+0x1af/0x2e0
+        iommu_setup_dma_ops+0x65/0xe0
+        bus_iommu_probe+0x100/0x1d0
+        iommu_device_register+0xd6/0x130
+        intel_iommu_init+0x527/0x870
+        pci_iommu_init+0x17/0x60
+        do_one_initcall+0x7c/0x390
+        do_initcalls+0xe8/0x1e0
+        kernel_init_freeable+0x313/0x490
+        kernel_init+0x24/0x240
+        ret_from_fork+0x4a/0x60
+        ret_from_fork_asm+0x1a/0x30
+
+  other info that might help us debug this:
+
+  Chain exists of:
+    cpu_hotplug_lock --> &group->mutex --> &domain->iova_cookie->mutex
+
+   Possible unsafe locking scenario:
+
+         CPU0                    CPU1
+         ----                    ----
+    lock(&domain->iova_cookie->mutex);
+                                 lock(&group->mutex);
+                                 lock(&domain->iova_cookie->mutex);
+    rlock(cpu_hotplug_lock);
+
+   *** DEADLOCK ***
+
+  3 locks held by swapper/0/1:
+   #0: ffffffffa6442ab0 (dmar_global_lock){++++}-{4:4}, at: 
+intel_iommu_init+0x42c/0x87
+   #1: ffff9f4a87b11310 (&group->mutex){+.+.}-{4:4}, at: 
+bus_iommu_probe+0x95/0x1d0
+   #2: ffff9f4a87b171c8 (&domain->iova_cookie->mutex){+.+.}-{4:4}, at: 
+iommu_dma_init_d
+
+  stack backtrace:
+  CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
+6.14.0-rc3-00002-g8e4617b46db1 #57
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x93/0xd0
+   print_circular_bug+0x133/0x1c0
+   check_noncircular+0x12c/0x150
+   check_prev_add+0xe2/0xc50
+   ? add_chain_cache+0x108/0x460
+   validate_chain+0x57c/0x800
+   __lock_acquire+0x4a0/0xb50
+   lock_acquire+0xd1/0x2e0
+   ? iova_domain_init_rcaches.part.0+0x1d3/0x210
+   ? rcu_is_watching+0x11/0x50
+   __cpuhp_state_add_instance+0x40/0x250
+   ? iova_domain_init_rcaches.part.0+0x1d3/0x210
+   iova_domain_init_rcaches.part.0+0x1d3/0x210
+   iova_domain_init_rcaches+0x41/0x60
+   iommu_dma_init_domain+0x1af/0x2e0
+   iommu_setup_dma_ops+0x65/0xe0
+   bus_iommu_probe+0x100/0x1d0
+   iommu_device_register+0xd6/0x130
+   intel_iommu_init+0x527/0x870
+   ? __pfx_pci_iommu_init+0x10/0x10
+   pci_iommu_init+0x17/0x60
+   do_one_initcall+0x7c/0x390
+   do_initcalls+0xe8/0x1e0
+   kernel_init_freeable+0x313/0x490
+   ? __pfx_kernel_init+0x10/0x10
+   kernel_init+0x24/0x240
+   ? _raw_spin_unlock_irq+0x33/0x50
+   ret_from_fork+0x4a/0x60
+   ? __pfx_kernel_init+0x10/0x10
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+
+Thanks,
+baolu
 
