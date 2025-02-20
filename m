@@ -1,193 +1,127 @@
-Return-Path: <stable+bounces-118442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA05BA3DBFF
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 15:02:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF3CA3DC0D
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 15:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4764318988E7
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 14:02:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF017A04C
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 14:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05023EA83;
-	Thu, 20 Feb 2025 14:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125A11F63F0;
+	Thu, 20 Feb 2025 14:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=adtran.com header.i=@adtran.com header.b="hPYEkM3F"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=morinfr.org header.i=@morinfr.org header.b="Avk9qhtF"
 X-Original-To: stable@vger.kernel.org
-Received: from FR6P281CU001.outbound.protection.outlook.com (mail-germanywestcentralazon11020078.outbound.protection.outlook.com [52.101.171.78])
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF230282F5
-	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 14:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.171.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740060129; cv=fail; b=L2ZxKRu+d+w83+UwZRUR1JB5zuYEosAiD5PoQGfg+i+ul2347RZ35vCRnUOy/4MwL4/ZqB4G3+4x8RY+OVKBF4p8hLg/ulPk2SdkA+nw0visD+epfrH8pNHx4RX60AUgfKSNtl0RjAPxM6Undutn1J2mH+QvvNYNG/NpitUOyok=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740060129; c=relaxed/simple;
-	bh=Asto1aliJnhSL3kEm357P3pLlaWi+52O37TQB7rZjIo=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=J4ysL+ULpevE+7NdcfXYDklsz5L81trMWb639VfSWUH1ZbdyenDueAN6wusIBhqlaOLVSC4eKyQIakg20ZeoaYC2Om+pLMguNVEUTjQwWQiQQF1gahvCAfWyi/36eD2HSZkBEMh3OzkNte2KCsRFjcaD9SL+5N+VdCBrpDWFzQQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=adtran.com; spf=pass smtp.mailfrom=adtran.com; dkim=pass (1024-bit key) header.d=adtran.com header.i=@adtran.com header.b=hPYEkM3F; arc=fail smtp.client-ip=52.101.171.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=adtran.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=adtran.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nqevOk7fMV22hzUqXzCvTbX5ucqINhqRLmgxddoO6lCnBdAKBxMZKwyFNBOXgUeCjvVn1VmvfjF0wXEGPUUH9CC7Tm31nefuvoZAgAHTiL0iSu05VVUhtCyiHqhxzGsrzBCrez3nXoAQIuMzL99H3STyuoks88tXCC2it8JFiPy5gdV7GV1O1daDjF8JE3UVC7P4ImLhZYi7rZmSPow+3ddzWsKVrb8GU8/dm57w5LBRHm/eRUFh4lONm/K+UVuCmOtlxwC7XFXRdmFTtn1yyJOaEieRLoQ6yPJTFaucVzA1lOahkImb/FMY3wlCIzgjdBdOhuP951gfdY0UQaaEsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Asto1aliJnhSL3kEm357P3pLlaWi+52O37TQB7rZjIo=;
- b=BdOKNQZhCL6KW2sKdnCgbaLq6VnGszUj7rO8tLsyjMj6QOsT6VN9DoQGpNrz8hWalg0gbMVp0Id5RCOcUiQdW1t3tDaTnsoUSQYOBA3IPGqAnpPKp9gUhm3OYHBVXLv1i7X7BtFuIBIKuKdEUS8qzArAozP+eIgFQxqcnBKR9UWq+6PS9qWD/TCAzcsPhQ8TTEayVkke5tWo5be3kB+eIRk1+iLdln5V0jdqg90jdLXChCfbtK6aH8cicy8/JldCrmtqHuyFjm3ZxgiJiaLKBVXECLOlfta9jh/vToFzqy2x775GbQ5KBh0yTEY4Nz2pYr2+3KjHSDlYV5fsPef3sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=adtran.com; dmarc=pass action=none header.from=adtran.com;
- dkim=pass header.d=adtran.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=adtran.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Asto1aliJnhSL3kEm357P3pLlaWi+52O37TQB7rZjIo=;
- b=hPYEkM3FjSILJDfu0+fZkbefwftiMXGm6duQwKYnFalsPb9555TzU81ytOdpfiPZTCuQdtf9oV197TZ0GEe5ba5TmfpQ0BAbhHhzUqR4/VOkkcD4PiEBJpPDk11CR/IWmOKCzItXcL75Hlo8ISo33sr/wQ89B2A5oMPM7SAEpmU=
-Received: from BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:2e::12)
- by FR2P281MB1767.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:8e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Thu, 20 Feb
- 2025 14:02:03 +0000
-Received: from BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM
- ([fe80::db36:9894:a488:d087]) by BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM
- ([fe80::db36:9894:a488:d087%4]) with mapi id 15.20.8466.015; Thu, 20 Feb 2025
- 14:02:03 +0000
-From: Kamila Sionek <kamila.sionek@adtran.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Backporting patches to resolve rsa-caam self-test issues in kernel
- 5.10.231
-Thread-Topic: Backporting patches to resolve rsa-caam self-test issues in
- kernel 5.10.231
-Thread-Index: AduDn+bwcW8o9omYQASgAFJdOGbhKw==
-Date: Thu, 20 Feb 2025 14:02:03 +0000
-Message-ID:
- <BEZP281MB3029E2F4767A20F1571F7E0B81C42@BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM>
-Accept-Language: pl-PL, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_ActionId=708f9bd8-e057-42c1-b4b1-d2ef7298cf16;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_ContentBits=0;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_Enabled=true;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_Method=Standard;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_Name=General
- Buisness;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_SetDate=2025-02-20T13:55:21Z;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_SiteId=423946e4-28c0-4deb-904c-a4a4b174fb3f;MSIP_Label_efd483ac-a851-46ce-a312-07532d9c36b0_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=adtran.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BEZP281MB3029:EE_|FR2P281MB1767:EE_
-x-ms-office365-filtering-correlation-id: 48935234-c2f2-42c2-c2ff-08dd51b726fd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?aXDJ1wyxxgB3ZBLaQQCVB6JTPLi5lVt+qXq9xgqMQW9pIsxGQCShMySUHKdA?=
- =?us-ascii?Q?oHZfiqP05vNGlsti+zK1Z34Vgv/B9hNMN5deXRnK7bjz7mvTDcs99HG6txjO?=
- =?us-ascii?Q?IHWcLa/14IsJkXqfpLSGWKdGN1P8FEZHxIsvj9AQjIFihBHe1HNvVTmIJm9l?=
- =?us-ascii?Q?Ax/jgL5wi6OKi0loT5qbSyKiVsNuNqQjHiXCEp+5ao09cAlcgLm7Ruos5RrL?=
- =?us-ascii?Q?2BOnc2ZskZpl1hU+ddBCUv/4zN+C5MFwcOtGsroxyMqP9E8E7EjBfpoPco4P?=
- =?us-ascii?Q?CXdTSYnQBXkH8r1iQEa9rz11auaIuVsxpv8AGgKOuEGsucVjWy3e0IL1abY7?=
- =?us-ascii?Q?5y2N9efaTUS2WwJWKNnf3S4rw9Wy6zzps0Z+WbeZU91hIBwt57gUOa+Nqgdm?=
- =?us-ascii?Q?HZCS+c+ucpcXgB3bk3WX/P4vPblG65PhSslzR4ItUsu/BhbiOgGSj3qaqKdW?=
- =?us-ascii?Q?uQYmwVaBtagGUmTv2dW5odaIkrOzaVQb9E3gYM3PBwwP0BelNQiagbK3jyyK?=
- =?us-ascii?Q?zqOYyP/sLaK0ON0bFSLnRWJEK9E+EHsxfsanASJaOQOWfJdJmtyDWAU+IDjb?=
- =?us-ascii?Q?A9WF+L4oeajMhCwEB+CzKxqZBuNNjGbStdjh4mSl5MUR4lyAKXvPm0Zo0Igc?=
- =?us-ascii?Q?G8PJKlac881tgaXIE2gCQv9l54t62FW0vudJpZcOoQyQ7iRdz6rKxB/4hdFz?=
- =?us-ascii?Q?51LWtbwhK0apuxJut4jjAcjp8G58eD8cMbWaSb1HhQ8zzgN+bxAl2Po1g8de?=
- =?us-ascii?Q?SefA6bPzwUXloGxJ09OlL0sm7byndQtrIvlSA73dobXxiZHliBMGffPMnEJq?=
- =?us-ascii?Q?puxV1qwL677uYYB5cBkvI9jSUZIPmr157jSC1SL/Zl1uhtO8ylOTGCipblXd?=
- =?us-ascii?Q?aQF9dikPwp3HmaG9ZNQj+6A1WxN4QXvdMxr0l0knmRjer+WU9DTNxCgt52LN?=
- =?us-ascii?Q?X2cAdFq1ryYqV/9dAENaLtVMM6T373gHRBmUMfHasMj6Xjqr3sAAHTqH4DLn?=
- =?us-ascii?Q?dRQWN0qVEmELk2lDDTgPPb9zi3pkrtNyPgc1CDfjEIVjlpE1LcKnsBttcMMX?=
- =?us-ascii?Q?BQLCUDjbYNWLxTDq9q87jDcW8zFim5DO50Cxc/NwWMpC2QVlHeJsQNJ7hXSM?=
- =?us-ascii?Q?u4u+25wicmcOEXs7L7DUn5lCynr3RKTnrbquiVRKTUd+zgerGNCyU84pp6Sq?=
- =?us-ascii?Q?cD9YB5BnoF6VH9Y1Zc+LViv4XmvjTYHNYAtLRfEgjRKoRAcyhDjMMw7FAl05?=
- =?us-ascii?Q?ZNZB7khznOsT6/CvjQ+2hJLS7W9sdssE9Y8p6jGVkHHaKDBdZO1UuLRkaE37?=
- =?us-ascii?Q?jp3Bkqd05HItvJJfrZF4H2z5oSrkEjRMSbMGH3nL4ZSi2JTIiBEYznSImd4y?=
- =?us-ascii?Q?7ltxZLV5K7n6aZexLklig+37loPEHlCykzE1kmnyDQnzxbFWSHeadA82FZQr?=
- =?us-ascii?Q?1bU1QJCtWam0VznO1h28Bz3eGPWUsZ1s?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?gTeqiAv/i5NxKoqQzubfJyBSl/7erIHOvyHNG5GLOkP97YCzOpUVrykbD+7H?=
- =?us-ascii?Q?v7SH/+U6CPMTBx795ZzaGLWOKlapRboQZjQOXsbxplwHZrwwz27eHgGnOlDV?=
- =?us-ascii?Q?UaLG6b6V5Xtst+3hGoBqMzKmq/i+8rUp6dNvS5CN/UCKhTY9B3x5QMRUFTqh?=
- =?us-ascii?Q?hk3zbKBt5qKkx97I6OdeGXhWGGa0+JGpNGCBBkL/GFWOfpL27hsUQZRxQGtE?=
- =?us-ascii?Q?g61lVQbFiNUbr3s3Ea2PGEU6Dq2BtdIeoPDSycznAaAeyUe4aAwUeBRTp7on?=
- =?us-ascii?Q?oLS1nu1/whoINfnIgrJNeUgXzIHExDZ5BcwZPwSjllzByK+yZ3FZP53kNYdw?=
- =?us-ascii?Q?XvakYP6meVygOAjzV6MCUTiNJEg9fPT4vT6lfU7CGubTeZwWo+/ShY1J0kV1?=
- =?us-ascii?Q?epKmsMMz1mbHKPD9WRb88oEgPtBA18pRf1Lqbnjk4+6nOe6TFz5nhQQU7b/P?=
- =?us-ascii?Q?frnX7N/KUh87YiCydtog6MsQ0shlRyr7mCKThngwYbGBvl8SRATKCNVesvQr?=
- =?us-ascii?Q?HR5O67th7T9TO2L0uE3AvmqSsLYxuaV73GzwE3hKi1c5t9C6PonwutXOovsz?=
- =?us-ascii?Q?axMSwPTHcPehAkFk4lapZGe7XwZj5i8IyPiFUl7tQDy97XGg5leGKlZ4B7lC?=
- =?us-ascii?Q?29ss3pI3wEF4piGgLugQDCPnBk2hpYzWkHwW6U/91+vHZrh4Dph/VQtXwkYz?=
- =?us-ascii?Q?GSg4zfqhyOZ9SXZ++QtI2iRDjc7aPhj9nC90+680IA8S577ZxCznMqpbs6Fa?=
- =?us-ascii?Q?R6j61h1r29+oBtT+aYG3W9pHORdR4ISBwVGXXxm+itkZ260oRKUOU/GJ9rB6?=
- =?us-ascii?Q?8izdGK4x5ouJAi3NBB874kInFPp5V1SiLm+PbhnVABUU2rdwWnrSF+8pYUp3?=
- =?us-ascii?Q?XE02y5famG/WFA6tVqv01hjoKt+kyT0+2UMp0FgSL3K8wa8M7iYRdNdQt0/o?=
- =?us-ascii?Q?wcr/DxJzTbVKqpE1KWhkqLBSaeaI6RTgmK2c2uFetl/tK3XDGpxzib3U/SM7?=
- =?us-ascii?Q?P8p28qS3qE9JtgjeoAFkxsmrUwC06mkje6esYdQBbBSwK0gkplO9Ozyo1U98?=
- =?us-ascii?Q?ozyqYCriRAm14/fdBP4XeW/VM3v3l9JO1QXlhBO60Rg0gHJLmDYgIq0PYbQs?=
- =?us-ascii?Q?jyh/d3Z1In+Z5PDjYHnAiye80MO67KoiOhWgKCT3oGE/JMzvCKzFC2mLEzvD?=
- =?us-ascii?Q?jbL8XmqLKtG7VVUUMokikdP3PrdwEyvB2T6R/nhY8Pp5XxkzuUpUGiHnE4Dn?=
- =?us-ascii?Q?2WRZ4uJuEjtTeOAuYTa48cRi74Jbw5I4HtlZ/0AtTSBzvNEM0WBLxUWcfqtt?=
- =?us-ascii?Q?qW0OO4oGpl71UzWiNJzba9GLuFRnEJLjpOKuUmi3A5ij3nhJQM/rHpz+qYh+?=
- =?us-ascii?Q?EuaG8Z1p/lIbkYhpAdVymTWaisOBJCpfuhPLxD1YXSOa426PxvAbfC6bMPUd?=
- =?us-ascii?Q?/ZUuRptbqGTwyLIzyfzvKdBes7zr6n/vQYFqQmHGrrCnfD4Q7AFOqlGjDuCr?=
- =?us-ascii?Q?/SfRJhnvvY5t+LsocVCpy8cCxtp9Z6WDbmPnEynPuOgUVuJpnMI0Mqfkdelq?=
- =?us-ascii?Q?eyVpEiIezeQrQiMSsMwhAShGFsU6QqVrpr+gBb37?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D7C1A8F94
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 14:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.2
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740060218; cv=none; b=pPDV8raruAUe43bB4slld1KfI16QTCgh25ahSkDkvnTvfZNa+VdUEVoXwHNtU/SpcrObfYnYXYxf/zIT2PEGjcOtUSy1Alydun18YkltOP+KG+5hUGXp6N7CNtbsqcoeHxCbDZBDvWve1PfDfRyt0wlzkCYr+tN0RspzKwPrlco=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740060218; c=relaxed/simple;
+	bh=OK+wKiv3INSS/jdgScf/SWMYt248TaSo+TrFVE0Hcqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jLmHMsFS+1453B39MTlw3dGrl2ErnfcdsUn16bLHxy88SxZ7qL9XzF5c7PDU2pwoU0jNoMqo+3laSVL647OufqgBoG26hfRo+x/7h5lPh4vTYJm3ItjXMqkma5r6gD5YUyZ1XAcmEGUBN1/l0F9VVgU7bT3MHD3Dp326Byn4qok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=morinfr.org; spf=pass smtp.mailfrom=morinfr.org; dkim=pass (1024-bit key) header.d=morinfr.org header.i=@morinfr.org header.b=Avk9qhtF; arc=none smtp.client-ip=212.27.42.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=morinfr.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morinfr.org
+Received: from bender.morinfr.org (unknown [82.66.66.112])
+	by smtp2-g21.free.fr (Postfix) with ESMTPS id B3F3E2003CA;
+	Thu, 20 Feb 2025 15:03:29 +0100 (CET)
+Authentication-Results: smtp2-g21.free.fr;
+	dkim=pass (1024-bit key; unprotected) header.d=morinfr.org header.i=@morinfr.org header.a=rsa-sha256 header.s=20170427 header.b=Avk9qhtF;
+	dkim-atps=neutral
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
+	; s=20170427; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=64ZWZPJsI9mYJ1iSeQ4Skp2JdkisJ9To91cgUm3QKnU=; b=Avk9qhtFC0zxvGrYnWVEfsMXYB
+	5xAZIpb8/y93k3hXNkHpESFGfP+iSUS0fz2CW53LEIDdiPlkUohUiAdJbfm0wEnBq9s4hqatqzM3a
+	bzjeVYkWknEj2a9pvXDy/Oh1dAVfrBhl1TICa96akp7TSCI9YdmZaHjhTaZY+hVuixdA=;
+Received: from guillaum by bender.morinfr.org with local (Exim 4.96)
+	(envelope-from <guillaume@morinfr.org>)
+	id 1tl79F-000WSk-0G;
+	Thu, 20 Feb 2025 15:03:29 +0100
+Date: Thu, 20 Feb 2025 15:03:29 +0100
+From: Guillaume Morin <guillaume@morinfr.org>
+To: Tomas Glozar <tglozar@redhat.com>
+Cc: Guillaume Morin <guillaume@morinfr.org>, gregkh@linuxfoundation.org,
+	stable@vger.kernel.org, bristot@kernel.org, lgoncalv@redhat.com
+Subject: Re: 6.6.78: timerlat_{hist,top} fail to build
+Message-ID: <Z7c2Mc0DYKQ-L9Yg@bender.morinfr.org>
+References: <Z7XtY3GRlRcKCAzs@bender.morinfr.org>
+ <CAP4=nvQ2cZhJbuvCryW7aTm4FcLSGLyDnhZX1wHNLxo1b3q2Lg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: adtran.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48935234-c2f2-42c2-c2ff-08dd51b726fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2025 14:02:03.1108
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 423946e4-28c0-4deb-904c-a4a4b174fb3f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O7I7d9kUC1v+s5ZtW2lQetCQk05iubbRJqq6G92ws60Vk0Z5Fsu09ETNM8eaGH5wfIGzELjmSDGvZJztIVvrNW65bbrxN/nY+tCtGSlCJYo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR2P281MB1767
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP4=nvQ2cZhJbuvCryW7aTm4FcLSGLyDnhZX1wHNLxo1b3q2Lg@mail.gmail.com>
 
-Dear Maintainers,
+On 19 Feb 16:03, Tomas Glozar wrote:
+>
+> Hello,
+> 
+> st 19. 2. 2025 v 15:48 odesílatel Guillaume Morin
+> <guillaume@morinfr.org> napsal:
+> >
+> > Hello,
+> >
+> > The following patches prevent Linux 6.6.78+ rtla to build:
+> >
+> > - "rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads" (stable
+> > commit 41955b6c268154f81e34f9b61cf8156eec0730c0)
+> > - "rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads" (stable
+> > commit 83b74901bdc9b58739193b8ee6989254391b6ba7)
+> >
+> > Both were added to Linux 6.6.78 based on the Fixes tag in the upstream
+> > commits.
+> >
+> > These patches prevent 6.6.78 rta to build with a similar error (missing
+> > kernel_workload in the params struct)
+> > src/timerlat_top.c:687:52: error: ‘struct timerlat_top_params’ has no member named ‘kernel_workload’
+> >
+> 
+> I did not realize that, sorry!
+> 
+> > These patches appear to depend on "rtla/timerlat: Make user-space
+> > threads the default" commit fb9e90a67ee9a42779a8ea296a4cf7734258b27d
+> > which is not present in 6.6.
+> >
+> > I am not sure if it's better to revert them or pick up
+> > fb9e90a67ee9a42779a8ea296a4cf7734258b27d in 6.6. Tomas, what do you
+> > think?
+> >
+> 
+> We don't want to pick up fb9e90a67ee9a42779a8ea296a4cf7734258b27d
+> (rtla/timerlat: Make user-space threads the default) to stable, since
+> it changes the default behavior as well as output of rtla.
+> 
+> The patches can be fixed by by substituting params->kernel_workload
+> for !params->user_hist (!params->user_top) for the version of the
+> files that is present in 6.6-stable (6.1-stable is not affected, since
+> it doesn't have user workload mode at all).
+> 
+> I'm not sure what the correct procedure would be. One way I can think
+> of is reverting the patch as broken, and me sending an alternate
+> version of the patch for 6.6-stable containing the change above. That
+> would be the cleanest way in my opinion (as compared to sending the
+> fixup directly).
 
-I would like to bring to your attention the need for a backport of several =
-patches to the 5.10.X kernel to address issues with self-tests for rsa-caam=
-. In kernel version 5.10.231-rt123, the introduction of commit dead96e1c748=
-ff84ecac83ea3c5a4d7a2e57e051 (crypto: caam - add error check to caam_rsa_se=
-t_priv_key_form), which added checks for memory allocation errors, has caus=
-ed the self-test for rsa-caam to fail in FIPS mode, resulting in the follow=
-ing error message:
+Either way would work for me. Not sure what Greg prefers however
 
-alg: akcipher: test 1 failed for rsa-caam, err=3D-12
-Kernel panic - not syncing:
-alg: self-tests for rsa-caam (rsa) failed in fips mode!
-
-The following patches should be backported to resolve this issue:
-
-8aaa4044999863199124991dfa489fd248d73789 (crypto: testmgr - some more fixes=
- to RSA test vectors)
-d824c61df41758f8c045e9522e850b615ee0ca1c (crypto: testmgr - populate RSA CR=
-T parameters in RSA test vectors)
-ceb31f1c4c6894c4f9e65f4381781917a7a4c898 (crypto: testmgr - fix version num=
-ber of RSA tests)
-88c2d62e7920edb50661656c85932b5cd100069b (crypto: testmgr - Fix wrong test =
-case of RSA)
-1040cf9c9e7518600e7fcc24764d1c4b8a1b62f5 (crypto: testmgr - fix wrong key l=
-ength for pkcs1pad)
-
-Thank you for your attention to this matter.
-
-Regards,
-Kamila Sionek
-
-General Business
+-- 
+Guillaume Morin <guillaume@morinfr.org>
 
