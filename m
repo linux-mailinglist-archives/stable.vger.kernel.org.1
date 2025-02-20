@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-118401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABEBA3D53A
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:48:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87790A3D536
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 10:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D9317E0C3
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:46:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14DFE7A7FBE
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D181F0E3A;
-	Thu, 20 Feb 2025 09:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="LxQLSg+p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5C51F4734;
+	Thu, 20 Feb 2025 09:45:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C1B1B87EE;
-	Thu, 20 Feb 2025 09:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8E01F153E;
+	Thu, 20 Feb 2025 09:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740044689; cv=none; b=LNrGadGlqALuxeGHlCVUi9Q7+SBc7YoueEX+MjNvEDzWYEi32QQff0OlwbdZlKfiOKVnBOlvvVcHegxX+HzsACPgApdiJMqx2MWl2NQmXYo372HBPFInEuiaNgZQ/YLlCR34wqng+zPPvtUsBwwyeRZJrOYzyn/kIljnzUvGhsY=
+	t=1740044734; cv=none; b=QzEn6wUCqrBfv6yGADsyq8g/SckQ3Y1RDqCUiS0uTBsbOyG01A4SuA4lvQ3/UAJviBHa0P7NdnCbRyGKBL43Zr+LK62IrveIVeQx6mtNyadIOvtoagGHQWLTBsUQnDVrK8bTvMjJDKFGpb+QOtvWO7m/pPqjhIUzuyG9tB0ZSpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740044689; c=relaxed/simple;
-	bh=O+NWxy4b1KytTcS0ZHrugC8vxmfgabRh5HNWwRO/Ks8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bANa6q0KlUg1P5WcJs9+Yy0pBuKHddboKBIAf/MR3fmfoJbor02dloK4z5OY9rpHmhYJ5UUZpblSvH3tniJBWSOwBDaLiEo5Rmp2cL+3BvJfqXMvY4b+X5VLMZSHSPy65U8LtFAQJRptRcLoyWvdMT04expkB/FWC5gX0692tGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=LxQLSg+p; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.14])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 788AD407853D;
-	Thu, 20 Feb 2025 09:44:44 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 788AD407853D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1740044684;
-	bh=VSyXhzk/oou5dN2ui5up8lh68VSTsNSjPW0MQf8saxc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LxQLSg+pO5Zrb++WnEfFMOLfDZlylCRorRX+hy2M9oknFiuIyqIHGquos+7adQrwl
-	 GZI7LQHFDCnKBBhOjeyUStOZWPzlz6g14FBc5mv9BAY7C04Ly/sxONUGRozxwZKcvl
-	 1KKN5d5kdwuClDc0TQXyWy6rauU5cRtimHlKGk9c=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	mpi3mr-linuxdrv.pdl@broadcom.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: mpi3mr: fix invalid 64-bit phy bitmask calculation
-Date: Thu, 20 Feb 2025 12:44:31 +0300
-Message-ID: <20250220094431.38185-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1740044734; c=relaxed/simple;
+	bh=XSseanK2TphLQ568BAzn8bBCOYzuMrDsufDxEPN8fvM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NubJ1e+5B8p8Jw07I7U6BLj6izENMFEhUX2+adZ/pVIJoBb0qCaWGaKiG7euxfjw5CZHYTJJUvqewRwzC/DsypZyiQX6wFnCVJqx6iA5AnWB6DQD8z3Qq90mpPYV9tsKFFir5iIG3JNFpKwxMjdl2ysULkT3IF7AvW8nSGEPiSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-CSE-ConnectionGUID: FIg5OJM5S+mMBhHq3Wyhgw==
+X-CSE-MsgGUID: uXSIcSfcTfy8BsKTGnBm1g==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 20 Feb 2025 18:45:24 +0900
+Received: from localhost.localdomain (unknown [10.226.92.83])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 3A96142175B9;
+	Thu, 20 Feb 2025 18:45:18 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>
+Subject: [PATCH v2 0/2] R-Car CANFD fixes
+Date: Thu, 20 Feb 2025 09:45:10 +0000
+Message-ID: <20250220094516.126598-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,106 +63,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ffs() operates on arguments of type 'int', not generally considered to be
-64-bit values.
+This patch series addresses 2 issues
+ 1) Fix typo in pattern properties for R-Car V4M.
+ 2) Fix page entries in the AFL list.
 
-Shifts like (1 << i) can also only be helpful for calculations that are
-expected to have a range equal to the width of type 'int'. When the left
-operand is of type 'int', valid values of the shift argument should not
-exceed the width of this type (almost always 32 bits), otherwise it is
-considered as undefined behavior.
+v1->v2:
+ * Split fixes patches as separate series.
+ * Added Rb tag from Geert for binding patch.
+ * Added the tag Cc:stable@vger.kernel.org
 
-Since there is a need for manipulating the phy mask bits higher than that,
-perform the calculations directly in 64 bits.
+Biju Das (2):
+  dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties
+    for R-Car V4M
+  can: rcar_canfd: Fix page entries in the AFL list
 
-Found by Linux Verification Center (linuxtesting.org).
+ .../bindings/net/can/renesas,rcar-canfd.yaml    |  2 +-
+ drivers/net/can/rcar/rcar_canfd.c               | 17 ++++++++++-------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-Fixes: cb5b60894602 ("scsi: mpi3mr: Increase maximum number of PHYs to 64 from 32")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/scsi/mpi3mr/mpi3mr_transport.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-index 0ba9e6a6a13c..f0da8c0dc55d 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-@@ -7,6 +7,7 @@
-  *
-  */
- 
-+#include <linux/bits.h>
- #include <linux/vmalloc.h>
- 
- #include "mpi3mr.h"
-@@ -608,10 +609,12 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
- 	mr_sas_port->num_phys--;
- 
- 	if (host_node) {
--		mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
-+		mr_sas_port->phy_mask &= ~BIT_ULL(mr_sas_phy->phy_id);
- 
--		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
--			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id &&
-+		    mr_sas_port->phy_mask)
-+			mr_sas_port->lowest_phy =
-+				__ffs64(mr_sas_port->phy_mask) - 1;
- 	}
- 	sas_port_delete_phy(mr_sas_port->port, mr_sas_phy->phy);
- 	mr_sas_phy->phy_belongs_to_port = 0;
-@@ -639,10 +642,11 @@ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
- 	list_add_tail(&mr_sas_phy->port_siblings, &mr_sas_port->phy_list);
- 	mr_sas_port->num_phys++;
- 	if (host_node) {
--		mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
-+		mr_sas_port->phy_mask |= BIT_ULL(mr_sas_phy->phy_id);
- 
- 		if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
--			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+			mr_sas_port->lowest_phy =
-+				__ffs64(mr_sas_port->phy_mask) - 1;
- 	}
- 	sas_port_add_phy(mr_sas_port->port, mr_sas_phy->phy);
- 	mr_sas_phy->phy_belongs_to_port = 1;
-@@ -1396,7 +1400,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		    &mr_sas_port->phy_list);
- 		mr_sas_port->num_phys++;
- 		if (mr_sas_node->host_node)
--			mr_sas_port->phy_mask |= (1 << i);
-+			mr_sas_port->phy_mask |= BIT_ULL(i);
- 	}
- 
- 	if (!mr_sas_port->num_phys) {
-@@ -1406,7 +1410,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 	}
- 
- 	if (mr_sas_node->host_node)
--		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+		mr_sas_port->lowest_phy = __ffs64(mr_sas_port->phy_mask) - 1;
- 
- 	if (mr_sas_port->remote_identify.device_type == SAS_END_DEVICE) {
- 		tgtdev = mpi3mr_get_tgtdev_by_addr(mrioc,
-@@ -1738,7 +1742,7 @@ mpi3mr_refresh_sas_ports(struct mpi3mr_ioc *mrioc)
- 		found = 0;
- 		for (j = 0; j < host_port_count; j++) {
- 			if (h_port[j].handle == attached_handle) {
--				h_port[j].phy_mask |= (1 << i);
-+				h_port[j].phy_mask |= BIT_ULL(i);
- 				found = 1;
- 				break;
- 			}
-@@ -1765,7 +1769,7 @@ mpi3mr_refresh_sas_ports(struct mpi3mr_ioc *mrioc)
- 		port_idx = host_port_count;
- 		h_port[port_idx].sas_address = le64_to_cpu(sasinf->sas_address);
- 		h_port[port_idx].handle = attached_handle;
--		h_port[port_idx].phy_mask = (1 << i);
-+		h_port[port_idx].phy_mask = BIT_ULL(i);
- 		h_port[port_idx].iounit_port_id = sas_io_unit_pg0->phy_data[i].io_unit_port;
- 		h_port[port_idx].lowest_phy = sasinf->phy_num;
- 		h_port[port_idx].used = 0;
 -- 
-2.48.1
+2.43.0
 
 
