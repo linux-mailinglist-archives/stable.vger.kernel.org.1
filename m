@@ -1,208 +1,220 @@
-Return-Path: <stable+bounces-118529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0216DA3E896
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 00:35:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0617CA3E8A9
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 00:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC95D3BBC31
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 23:35:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2753BC4B1
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 23:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02E12638BC;
-	Thu, 20 Feb 2025 23:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B892676F7;
+	Thu, 20 Feb 2025 23:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imkeMQ3Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdX+hPRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E962B9AA;
-	Thu, 20 Feb 2025 23:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B1F266EF8;
+	Thu, 20 Feb 2025 23:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740094511; cv=none; b=YeHz4wafAAr7m6ZmJwt+QjsThOEasdsIgv54Q82z6KIkfAKG0eLlrrFYI3ET99HSai/IABWqwLrllGb3meq4wXbq2/3bA/0NQfjKcIJRQXTZ/li5ltaNm+Xe3D7MYuZfQV+N+LIqxkl0g/sjg54p6zEzUwmE6d/pBIVSEQ16/1o=
+	t=1740094791; cv=none; b=uLnjzdKwXn9la7U1U5IgGJT+MmhI3BUpJ7aF8l9AiIHyGJHTAeiSkp2mGyXcOBN4WwQafKqVpy0LIE5645SOOdv/Ja+i8pvcYNAeo9GVbu5D+zcbM/zHNrPt4LQGc5lnV9eV6RKsgWvItU2WpgAXwYuqOzhDxX6VHYVzTqPbfUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740094511; c=relaxed/simple;
-	bh=vDbFPgYLs3Dh+pLGeUj+/9uv1LsV9XAX1PMo5PrPSo0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lEzxrb/UShrtRdQKYAbSD/ywpIkue2Zm8gNuCo5mzBCFG54jXs5jEnl/21g9Gg2B/K+K239S6ck55AFZSBbFlOhOrGdJmHYiRnvlGkIjg7sw0qUS6d7FS8bnOEdhSEteT0qS2yRzfO+zIFPto7M942whEcuL0/KN4EEu7wZg0tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imkeMQ3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5F1C4CED1;
-	Thu, 20 Feb 2025 23:35:10 +0000 (UTC)
+	s=arc-20240116; t=1740094791; c=relaxed/simple;
+	bh=a+ewDhWyQHdcj13JBzjWs2K8bIJieZ0GId/WQZ9C2s4=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Dqiw3DxgsDOniRCpimFnLhcfWv6G6DlBCprcRW5gQi5b7Q0i3iioa4pK/62p/9wWl9XeMO3ieUEdUQ7+bAQn53e49f5alIIlFQn1xeA5BpRRqXtNWNwxwqG/q1SmFR0ZP2Un0xEYsdehPQpu+7C2JTCfihoCUrl7whFFWUvvYBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdX+hPRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BC4C4CED1;
+	Thu, 20 Feb 2025 23:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740094510;
-	bh=vDbFPgYLs3Dh+pLGeUj+/9uv1LsV9XAX1PMo5PrPSo0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=imkeMQ3YU/uAeUe9/68TodnpjTIj9uneAGUEnLJgHwYW+AftLota0iaaTrPVQOuhv
-	 24xfoZ5YJsb5O9N1B11FIDDt8X3hUqTw8M1VxMTsSYatFb5ZTTRKT7zL/GqgIsqBpV
-	 hKwKaqpEl1OgF3edaj8Q4ZDF3VEcDZ2GQnfRMK1XWgXjhWullVZ35juB0wBm8+zOw7
-	 RSg7d6M23Zltrqbosj6xkBmiLbJfYuIVniJ5GkMr2YJfxFfh+GiNkg51RyiCcahICo
-	 3unWLQOO2STR/7+5veS1cHwGWI0BX1p1HV2ed9JViHcDT7+VJ0hwJ0SmCTEjfxyrgx
-	 w+2sBX4ojazqw==
-Received: by venus (Postfix, from userid 1000)
-	id 9CB681835EB; Fri, 21 Feb 2025 00:35:08 +0100 (CET)
-Date: Fri, 21 Feb 2025 00:35:08 +0100
-From: Sebastian Reichel <sre@kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Anjelique Melendez <quic_amelende@quicinc.com>, Kamal Wadhwa <quic_kamalw@quicinc.com>, 
-	Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
-	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
- PWMs
-Message-ID: <dfthocttum7dscotngi6l2hz6bpdwfgrdxpvkcv6bdux3lt66d@iqfvmntvzyut>
-References: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
+	s=k20201202; t=1740094791;
+	bh=a+ewDhWyQHdcj13JBzjWs2K8bIJieZ0GId/WQZ9C2s4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IdX+hPRUg8L6jGDvbir/xmIYvttvKycBjY5Tb6n6vh1si2XrPpfkHGSGNNL+iJbMd
+	 biu6St1nK/HpjapPIDNJ3+aw6reEvRcNnmiJhhdM8UTQBANrzds0jQFPRjiJkcLG3P
+	 rmdEn2otRaBMRxwa/6NgidHTXNdVNTm0KAYU622NaABSozmBISY1TmIyICdEmSetkB
+	 mu7aaS9hdtzoWo/yO+x4aUUHJhG51x7cc3Egopl2iqUFfPLgb83EEgQkSfza9Foszt
+	 s90O82eSCBNwNNtN41Balo1biyTuzl6hWqjSwTnEafQbpB73a+mh1T+//WsCxIMfuK
+	 VNKaH2c0wuf3g==
+Date: Fri, 21 Feb 2025 08:39:46 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Heiko Carstens <hca@linux.ibm.com>, Sven
+ Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] ftrace: Fix accounting of adding subops to a
+ manager ops
+Message-Id: <20250221083946.ad92f6914b7bc6fe7bcf0423@kernel.org>
+In-Reply-To: <20250220202055.060300046@goodmis.org>
+References: <20250220202009.689253424@goodmis.org>
+	<20250220202055.060300046@goodmis.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ib536mwduc7v4jwc"
-Content-Disposition: inline
-In-Reply-To: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 20 Feb 2025 15:20:10 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
---ib536mwduc7v4jwc
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
- PWMs
-MIME-Version: 1.0
+> From: Steven Rostedt <rostedt@goodmis.org>
+> 
+> Function graph uses a subops and manager ops mechanism to attach to
+> ftrace.  The manager ops connects to ftrace and the functions it connects
+> to is defined by a list of subops that it manages.
+> 
+> The function hash that defines what the above ops attaches to limits the
+> functions to attach if the hash has any content. If the hash is empty, it
+> means to trace all functions.
+> 
+> The creation of the manager ops hash is done by iterating over all the
+> subops hashes. If any of the subops hashes is empty, it means that the
+> manager ops hash must trace all functions as well.
+> 
+> The issue is in the creation of the manager ops. When a second subops is
+> attached, a new hash is created by starting it as NULL and adding the
+> subops one at a time. But the NULL ops is mistaken as an empty hash, and
+> once an empty hash is found, it stops the loop of subops and just enables
+> all functions.
+> 
+>   # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
+>   # cat /sys/kernel/tracing/enabled_functions
+> kernel_clone (1)           	tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> 
+>   # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
+>   # cat /sys/kernel/tracing/enabled_functions
+> trace_initcall_start_cb (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> run_init_process (1)            tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> try_to_run_init_process (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> x86_pmu_show_pmu_cap (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> cleanup_rapl_pmus (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> uncore_free_pcibus_map (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> uncore_types_exit (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> uncore_pci_exit.part.0 (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> kvm_shutdown (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> vmx_dump_msrs (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> vmx_cleanup_l1d_flush (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
+> [..]
+> 
+> Fix this by initializing the new hash to NULL and if the hash is NULL do
+> not treat it as an empty hash but instead allocate by copying the content
+> of the first sub ops. Then on subsequent iterations, the new hash will not
+> be NULL, but the content of the previous subops. If that first subops
+> attached to all functions, then new hash may assume that the manager ops
+> also needs to attach to all functions.
+> 
 
-Hello Abel,
+Looks good to me.
 
-On Thu, Feb 20, 2025 at 12:31:00PM +0200, Abel Vesa wrote:
-> Currently, for the high resolution PWMs, the resolution, clock,
-> pre-divider and exponent are being selected based on period. Basically,
-> the implementation loops over each one of these and tries to find the
-> closest (higher) period based on the following formula:
->=20
->                           period * refclk
-> prediv_exp =3D log2 -------------------------------------
->                     NSEC_PER_SEC * pre_div * resolution
->=20
-> Since the resolution is power of 2, the actual period resulting is
-> usually higher than what the resolution allows. That's why the duty
-> cycle requested needs to be capped to the maximum value allowed by the
-> resolution (known as PWM size).
->=20
-> Here is an example of how this can happen:
->=20
-> For a requested period of 5000000, the best clock is 19.2MHz, the best
-> prediv is 5, the best exponent is 6 and the best resolution is 256.
->=20
-> Then, the pwm value is determined based on requested period and duty
-> cycle, best prediv, best exponent and best clock, using the following
-> formula:
->=20
->                             duty * refclk
-> pwm_value =3D ----------------------------------------------
->                 NSEC_PER_SEC * prediv * (1 << prediv_exp)
->=20
-> So in this specific scenario:
->=20
-> (5000000 * 19200000) / (1000000000 * 5 * (1 << 64)) =3D 300
->=20
-> With a resolution of 8 bits, this pwm value obviously goes over.
->=20
-> Therefore, the max pwm value allowed needs to be 255.
->=20
-> If not, the PMIC internal logic will only value that is under the set PWM
-> size, resulting in a wrapped around PWM value.
->=20
-> This has been observed on Lenovo Thinkpad T14s Gen6 (LCD panel version)
-> which uses one of the PMK8550 to control the LCD backlight.
->=20
-> Fix the value of the PWM by capping to a max based on the chosen
-> resolution (PWM size).
->=20
-> Cc: stable@vger.kernel.org    # 6.4
-> Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high reso=
-lution PWM")
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+Thanks,
+
+> Cc: stable@vger.kernel.org
+> Fixes: 5fccc7552ccbc ("ftrace: Add subops logic to allow one ops to manage many")
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 > ---
-> Note: This fix is blocking backlight support on Lenovo Thinkpad T14s
-> Gen6 (LCD version), for which I have patches ready to send once this
-> patch is agreed on (review) and merged.
-> ---
+> Changes since v2: https://lore.kernel.org/20250219220510.888959028@goodmis.org
+> 
+> - Have append_hashes() return EMPTY_HASH and not NULL if the resulting
+>   new hash is empty.
+> 
+>  kernel/trace/ftrace.c | 33 ++++++++++++++++++++++-----------
+>  1 file changed, 22 insertions(+), 11 deletions(-)
+> 
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index 728ecda6e8d4..bec54dc27204 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -3220,15 +3220,22 @@ static struct ftrace_hash *copy_hash(struct ftrace_hash *src)
+>   *  The filter_hash updates uses just the append_hash() function
+>   *  and the notrace_hash does not.
+>   */
+> -static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash)
+> +static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash,
+> +		       int size_bits)
+>  {
+>  	struct ftrace_func_entry *entry;
+>  	int size;
+>  	int i;
+>  
+> -	/* An empty hash does everything */
+> -	if (ftrace_hash_empty(*hash))
+> -		return 0;
+> +	if (*hash) {
+> +		/* An empty hash does everything */
+> +		if (ftrace_hash_empty(*hash))
+> +			return 0;
+> +	} else {
+> +		*hash = alloc_ftrace_hash(size_bits);
+> +		if (!*hash)
+> +			return -ENOMEM;
+> +	}
+>  
+>  	/* If new_hash has everything make hash have everything */
+>  	if (ftrace_hash_empty(new_hash)) {
+> @@ -3292,16 +3299,18 @@ static int intersect_hash(struct ftrace_hash **hash, struct ftrace_hash *new_has
+>  /* Return a new hash that has a union of all @ops->filter_hash entries */
+>  static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
+>  {
+> -	struct ftrace_hash *new_hash;
+> +	struct ftrace_hash *new_hash = NULL;
+>  	struct ftrace_ops *subops;
+> +	int size_bits;
+>  	int ret;
+>  
+> -	new_hash = alloc_ftrace_hash(ops->func_hash->filter_hash->size_bits);
+> -	if (!new_hash)
+> -		return NULL;
+> +	if (ops->func_hash->filter_hash)
+> +		size_bits = ops->func_hash->filter_hash->size_bits;
+> +	else
+> +		size_bits = FTRACE_HASH_DEFAULT_BITS;
+>  
+>  	list_for_each_entry(subops, &ops->subop_list, list) {
+> -		ret = append_hash(&new_hash, subops->func_hash->filter_hash);
+> +		ret = append_hash(&new_hash, subops->func_hash->filter_hash, size_bits);
+>  		if (ret < 0) {
+>  			free_ftrace_hash(new_hash);
+>  			return NULL;
+> @@ -3310,7 +3319,8 @@ static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
+>  		if (ftrace_hash_empty(new_hash))
+>  			break;
+>  	}
+> -	return new_hash;
+> +	/* Can't return NULL as that means this failed */
+> +	return new_hash ? : EMPTY_HASH;
+>  }
+>  
+>  /* Make @ops trace evenything except what all its subops do not trace */
+> @@ -3505,7 +3515,8 @@ int ftrace_startup_subops(struct ftrace_ops *ops, struct ftrace_ops *subops, int
+>  		filter_hash = alloc_and_copy_ftrace_hash(size_bits, ops->func_hash->filter_hash);
+>  		if (!filter_hash)
+>  			return -ENOMEM;
+> -		ret = append_hash(&filter_hash, subops->func_hash->filter_hash);
+> +		ret = append_hash(&filter_hash, subops->func_hash->filter_hash,
+> +				  size_bits);
+>  		if (ret < 0) {
+>  			free_ftrace_hash(filter_hash);
+>  			return ret;
+> -- 
+> 2.47.2
+> 
+> 
 
-Do you know if the pwm duty cycle to pwm value calculation is
-correct otherwise?
 
-I'm asking because the max value is only used for capping, so with
-this patch the maximum brightness will be reached at around 80% duty
-cycle (i.e. when the wrap over happens without this patch).
-
-Locally I'm currently remapping the duty cycle range to the PWM
-value range, which means the display brightness increases
-step-by-step until reaching 100% "duty cycle":
-
-		val =3D (duty * 255) / chan->period;
-		chan->pwm_value =3D min(val, 255);
-
-But for the backlight control the absolute numbers do not really
-matter and I have zero knowledge about the chip. So it might be
-that the controller really can only go up to ~80% duty cycle at
-these settings?
-
-Greetings,
-
--- Sebastian
-
->  drivers/leds/rgb/leds-qcom-lpg.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qco=
-m-lpg.c
-> index f3c9ef2bfa572f9ee86c8b8aa37deb8231965490..146cd9b447787bf170310321e=
-939022dfb176e9f 100644
-> --- a/drivers/leds/rgb/leds-qcom-lpg.c
-> +++ b/drivers/leds/rgb/leds-qcom-lpg.c
-> @@ -529,7 +529,7 @@ static void lpg_calc_duty(struct lpg_channel *chan, u=
-int64_t duty)
->  	unsigned int clk_rate;
-> =20
->  	if (chan->subtype =3D=3D LPG_SUBTYPE_HI_RES_PWM) {
-> -		max =3D LPG_RESOLUTION_15BIT - 1;
-> +		max =3D BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
->  		clk_rate =3D lpg_clk_rates_hi_res[chan->clk_sel];
->  	} else {
->  		max =3D LPG_RESOLUTION_9BIT - 1;
->=20
-> ---
-> base-commit: 50a0c754714aa3ea0b0e62f3765eb666a1579f24
-> change-id: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
->=20
-> Best regards,
-> --=20
-> Abel Vesa <abel.vesa@linaro.org>
->=20
-
---ib536mwduc7v4jwc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAme3vCgACgkQ2O7X88g7
-+polIg/+Nt3NuaLC7/BjrWUxWjMjVFSgg3FpMxvr8NKnSN0K7EC7EPm8LHUh303U
-IHd3crTl0J9+BiMSkVCoUerrFQl71M6YZuzIWuRMuizEoqTV0wimGmqfOWu7WAEY
-hS4wYwLCpJONDTfEC/oGjDWkQYWivfXQbuTGbL2NifiDfg4CmEJBnStXWzSA6jtJ
-Euu2192iAH/g/hdNmh6mJWuyPT1SxSPBaMYjj+li18+rjcpU3F4dHXiwXqJysO/4
-NnqAKLRPagTI0f9tC4irutqMztCMzzG62LHF70v4X/pwu7IOCmnUl9vz558LCesn
-THlxbIab98rPShtyuaMGlk1+nhEMLFa8lib7tI4pQyVvyo1lhz3C/lkrfWGrEYU/
-Nhrb0+HUYs9CTttEvG8qwqN9eHhGXNpAInygOQkCn4vao5pdcDuqJnsTL3JokQUr
-OoXnQh7bz9g1s0u3nScnqhkHPV/8mqgmCZ5HAHbyE0fFX9VYUdHfranS3/GZCjiD
-l5xIh7YtL3kS0j4sxIJ5GQUpxSCz2HW4Jegt10Xi0Ne/u6n6WsPviSt96sZsNXpc
-N7igwR6OrQ5q31jswifedrg26VWdvlM3jc6jVR19H4JjcezkgOy3DxTKe0zJDMGU
-yTSWQWboaGoyVAC0Sp3B0rArGq3FZg9sRTbHNWTSSZX2zNOZz1c=
-=3tgX
------END PGP SIGNATURE-----
-
---ib536mwduc7v4jwc--
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
