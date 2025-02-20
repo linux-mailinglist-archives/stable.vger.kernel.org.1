@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-118393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC96A3D363
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:40:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35ACA3D3BA
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 09:52:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E195A3B2633
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 08:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF4E93B09D1
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 08:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF6D1EBA03;
-	Thu, 20 Feb 2025 08:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2NgOppW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414AB1EB1A7;
+	Thu, 20 Feb 2025 08:51:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77541E9B07;
-	Thu, 20 Feb 2025 08:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731FA1EA7EA;
+	Thu, 20 Feb 2025 08:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740040801; cv=none; b=mLHrDlbnqTxhzAcRwoxo+Jn8LAMvDBxIXPG3Fnub3ZwIIAZQ4hX4JLBzgI+HakLQJ1dhhwe4PDPztrMAPH+H+RZtPEgbPW+56d2RYQBpd2VtHeFPA/WP5MZnuWdqtepQs8dBCt9SBLa2cPSxsC8C0+JCykOmEE4UoQSfMKWiKCU=
+	t=1740041502; cv=none; b=qkoe/0UlOzQn80BbbtXkoK2QejjAAQyNeNlJdkjcswyY76sj+uQkPNY1bhKWx4vW182Bb+/tlWlkRuhL75h0SKHAWogXFZui7TTDTIbP6w5+++4Megh1Vtw+KRGaCiwxGMoujQ4QyMJLiWXevNLKKIwwkvLRFdZQyJGlcrbgUy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740040801; c=relaxed/simple;
-	bh=eYc7LMKuByYRxGaNCW8otxZTs2GWL1JDGwpT23bnpp8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fMt5MDAcFJRNKPsoySx+HFvTGtHobLruG0EuWuSvTQ/bKVgTykFAEvcshJHFhoVEG5oz37JTeFNsivjfrix75T7e9pdWi6ao16RlpZbGTSk8wGSbWh2Y7vHN+c5V6a+6aErYDSb/i7ab/dHfWu3EJk6OOOIA4HTSjsjnrmHY2FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2NgOppW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579C1C4CEDD;
-	Thu, 20 Feb 2025 08:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740040800;
-	bh=eYc7LMKuByYRxGaNCW8otxZTs2GWL1JDGwpT23bnpp8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=e2NgOppWT845Ct+uSbitMkIYIEyQHv2XtfSLphu2OJ2COHZwUVD/uHlufulX1vRwX
-	 z4gN6O6vVPklEZTQMXnnKquuZEnRBCkIVBU6egsRH9jVtGMi3JCtjRjwHaEJmJdaIJ
-	 nKa5HuS+fyttsm0AZLKNRLj+22KJEprUwWiZUVd2JyCPX2yx1FivfsqnzjxkRETBNE
-	 wud0xeHYTdsgQtdCTOTIaMd6edoxKj4HucsY1736Lk7o/PKwYcFZBai5YjpPCMH7zT
-	 Ab5SshiPlAjtOl1v8GiSqr6RXaBIOciMoqGDWNKJeeBlyKJ94LU3Hc+NUqxSLrwh2a
-	 Q25ExRergKb8A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E6E380CEE2;
-	Thu, 20 Feb 2025 08:40:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1740041502; c=relaxed/simple;
+	bh=+Y+eQINDzvdLx3S7bjLwx/UdnSeiOX8MBl5UvZosmt0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Px0WgJcCfAH17GghzvQ1FMvvYW6e1KnRaWkPRxZaaRdrjt9NUvFLEa0/RxT6SdAw/VIa24RHoj/1hDRnh+8qxDRpXmgbVkJP76AqvCR8zH5MLMU6p7Lw1mUjs9V2P29M0IMb83RLp1F2lqbxWJQhis3Vf3IS2sg2RLnl+ASjDPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowABnbaEK7bZndtGXDg--.55533S2;
+	Thu, 20 Feb 2025 16:51:24 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: linus.walleij@linaro.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] pinctrl: nomadik: Add error handling for find_nmk_gpio_from_pin
+Date: Thu, 20 Feb 2025 16:50:01 +0800
+Message-ID: <20250220085001.860-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,42 +49,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174004083099.1211626.15093376087065414266.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Feb 2025 08:40:30 +0000
-References: <20250218030409.2425798-1-haoxiang_li2024@163.com>
-In-Reply-To: <20250218030409.2425798-1-haoxiang_li2024@163.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: kuba@kernel.org, louis.peens@corigine.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, qmo@kernel.org,
- daniel@iogearbox.net, bpf@vger.kernel.org, oss-drivers@corigine.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-CM-TRANSID:zQCowABnbaEK7bZndtGXDg--.55533S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AryrZryfWF47XF1rCryxGrg_yoW8AryDpF
+	43Wrn0vry3JFW8t3WDJayjvFyfKan7Jr17Wa9Fk3srW3WYyFykKa15KFW7Zr4qkrWrGw43
+	Ar4rJFy7uwn5AFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1lc2xSY4AK67AK6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7VUUKhF3UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoTA2e2onjwjgAAsp
 
-Hello:
+When find_nmk_gpio_from_pin fails to find a valid GPIO chip
+for the given pin, the bit variable remains uninitialized. This
+uninitialized value is then passed to __nmk_gpio_set_mode,
+leading to undefined behavior and undesired address access.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+To fix this, add error handling to check the return value of
+find_nmk_gpio_from_pin. Log an error message indicating an
+invalid pin offset and return -EINVAL immediately  If the function
+fails.
 
-On Tue, 18 Feb 2025 11:04:09 +0800 you wrote:
-> Add check for the return value of nfp_app_ctrl_msg_alloc() in
-> nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
-> 
-> Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> 
-> [...]
+Fixes: 75d270fda64d ("gpio: nomadik: request dynamic ID allocation")
+Cc: stable@vger.kernel.org # 6.9+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/pinctrl/nomadik/pinctrl-nomadik.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Here is the summary with links:
-  - [net,v3] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
-    https://git.kernel.org/netdev/net/c/878e7b11736e
-
-You are awesome, thank you!
+diff --git a/drivers/pinctrl/nomadik/pinctrl-nomadik.c b/drivers/pinctrl/nomadik/pinctrl-nomadik.c
+index f4f10c60c1d2..4155137b0674 100644
+--- a/drivers/pinctrl/nomadik/pinctrl-nomadik.c
++++ b/drivers/pinctrl/nomadik/pinctrl-nomadik.c
+@@ -985,7 +985,7 @@ static int nmk_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 				   unsigned int pin)
+ {
+ 	struct nmk_pinctrl *npct = pinctrl_dev_get_drvdata(pctldev);
+-	struct nmk_gpio_chip *nmk_chip;
++	struct nmk_gpio_chip *nmk_chip, *r;
+ 	struct gpio_chip *chip;
+ 	unsigned int bit;
+ 
+@@ -1002,7 +1002,12 @@ static int nmk_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 
+ 	dev_dbg(npct->dev, "enable pin %u as GPIO\n", pin);
+ 
+-	find_nmk_gpio_from_pin(pin, &bit);
++	r = find_nmk_gpio_from_pin(pin, &bit);
++	if (!r) {
++		dev_err(npct->dev,
++			"invalid pin offset %d\n", pin);
++		return -EINVAL;
++	}
+ 
+ 	clk_enable(nmk_chip->clk);
+ 	/* There is no glitch when converting any pin to GPIO */
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.42.0.windows.2
 
 
