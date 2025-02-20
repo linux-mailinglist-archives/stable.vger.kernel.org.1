@@ -1,102 +1,173 @@
-Return-Path: <stable+bounces-118474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4A3A3E0A2
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 17:27:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A09A3E0EC
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 17:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0C1164E03
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0720D3A8B75
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8EF204F94;
-	Thu, 20 Feb 2025 16:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB331FDA94;
+	Thu, 20 Feb 2025 16:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PvEJDIHq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098711FECD8;
-	Thu, 20 Feb 2025 16:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5127EDF58
+	for <stable@vger.kernel.org>; Thu, 20 Feb 2025 16:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740068598; cv=none; b=mnQYyM5uIxBNGkZtz0ijreI9r60OQTeEI5UDbXEevAD6Rfjf83jEfrjg+6aCqieDB/YO9jBtszhQsHBI1hyFA1g9Ondl8jlkThrC1qKnEwqL9Wg2d4OrEUZT2sTSmYgyg00mkb4hBxjYAAm8BvjskXrfM1wJAnppUJpRgvtULjg=
+	t=1740069110; cv=none; b=Cs6ltTMbflfJxTpbd/0J0AnI5hetJlzXg4c9Q6A+h4i26KaKw7Fj8l1sGYaoBd9Y3ziGLEubW33X+z39+HyFc3/+uH1v9Oe9A+CDQT0uAUFszHMcs77EWYXn2GSuy23XCBv5OjFBabBQbxfEkH829eBe+NnAIUL6S8yBY2MxnNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740068598; c=relaxed/simple;
-	bh=UV91EEUA7p1dTgOf/1BFgaJCW0c53QB7ivumCRNw6nU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d1N2rB/9XrfOLRivVfNRLV6ebnzUvAw8ak7AMG9vVPjOM01j2iHAYyE98KlhN77ZvFwfKT4RQzKXOUKypRyBSdRnlBV+nWOU96ht0MfKK8KdTVTWm9BJaJ0YzAhjPKYlpjWTAKN/85XyG2ABzfR4TM9Ft1yZqEpeX9Hd0GpTWSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-221206dbd7eso22553015ad.2;
-        Thu, 20 Feb 2025 08:23:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740068596; x=1740673396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dgLm1m+OvFNAJVKM8oPbqnxCJCCi3KlXydcSUynOK6g=;
-        b=k79Bmwo6yQNE2b7jxwE33F+22mk1fdVx9vONrgWfFC1QgY7ajPrzunt53uY8G65aCL
-         mH67egfAk44v/n1/QN04ILfZ0sMpsxxxhzujoIoDWbNbUNuXH3vFktIU03ky0Jjljwpv
-         iSRuoGLE8tuR8iMFuenShJbx/+wV4t8dcA0BYF+35iyLbEIt4BLMQm9+USN2zY+iQmgJ
-         GH6qCZEveWYsSxZeCJe9Xhnr1W8mGV1If2xzdC3GKdBwV4sLGj7R/eAYMwV6JdYIca7G
-         5QF5pNXs6nvYG2AGnmnyBKbKD3AVJWjpqOFDmZdN54PQTWemDBHOK5Am2VFZfprhwxhF
-         Sfzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQlwSsmMiwTsEL/JvkHeMgbE7wc3U3HieEbL41kRGUxWlBufNf0EBVSXLKbth+Gj+4G2Esvm9zxaUd@vger.kernel.org, AJvYcCVXpk7Tz4GYknC28hDAmqnysTfAPa65QnyJZJupkFkxxftGhCxM4Metkv+2WJ/zQ+hUqGi6F76/@vger.kernel.org, AJvYcCXSP8NlpagSuxweKBdVL69KqpJ9QgN3vkt/6rTDvsGG17XEiTuOI558rTa9d21kO5noo5fkodfRGvidkRY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMKlxqVUGgAInMz/kN0Db5Mx370ICCXAvktmzJh5z9ijl25qLV
-	JnugnOO87adg3CUSKKdmg5BqTuHINITOtufqRG0wRSlHl0dqWcOS
-X-Gm-Gg: ASbGncuC/KL/VGmv075Xwv88lLtHT9d9la9lw+2TYFWQ6lKrUK6x/uiv7SDyE9Icv02
-	Jr/OAF5lWrF6x5r22Jr9x83E1fbPZqKuvrchT2XtNwO5by3o7k21O0F7SJI/hN5LOzJ1Ts/9+Ab
-	96JJNxgQEtZkhtFt1Lhhc9CBFrE+g+HvPJuLhzqkftSQYXt9yxDZoQqwgLRODjI3V1MM5zCi+Qj
-	Bwo6B3OPMG0cxFM789ngrLbZQn/dqnpkpUGiW250Jc+GeM3QfyiAQVeAlza/BsUYXSXhG3ZpRAP
-	v3itHQUyqZtHcL7ZW/l44iXc4uZiEqSPhpZHW6w+PN51x9/gSQ==
-X-Google-Smtp-Source: AGHT+IGxDghjV24MGlpOLAShvGV5okwWCIIPd34UUJWTKrxs47PV8/eOQe8MU2IpkQPtA2BMbQevKQ==
-X-Received: by 2002:a17:903:2307:b0:220:fe24:7910 with SMTP id d9443c01a7336-22170968867mr139817165ad.15.1740068596290;
-        Thu, 20 Feb 2025 08:23:16 -0800 (PST)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-220d53494c0sm122756675ad.6.2025.02.20.08.23.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 08:23:15 -0800 (PST)
-Date: Fri, 21 Feb 2025 01:23:13 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: lpieralisi@kernel.org, mani@kernel.org, kishon@kernel.org,
-	bhelgaas@google.com, jpinto@synopsys.com, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: endpoint: Fix a double free in __pci_epc_create()
-Message-ID: <20250220162313.GD2510987@rocinante>
-References: <20250107074601.789649-1-make24@iscas.ac.cn>
- <20250114005737.GA2004845@rocinante>
+	s=arc-20240116; t=1740069110; c=relaxed/simple;
+	bh=E9xKkhlHj9hGw0SPbX/em9ZYiOnxyo7qbN+GUWXseys=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rp+qY5mFY1ZsRa93xHHj45JyhfVNeJrE6Q+N0vmpWwtTkWVKp2y0pFZwQYaBUGkGwQKWnAOM1EH2BKugLH34tWOpXMPYYpm4RWw66snbGxjFhuR4ODHiOnzd6x3O/88UdhWDFB3WkfrL3lA5cB6kDtczzNtGoaOZRu5SaJI61Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PvEJDIHq; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740069110; x=1771605110;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=E9xKkhlHj9hGw0SPbX/em9ZYiOnxyo7qbN+GUWXseys=;
+  b=PvEJDIHq3wW7N22lhI7BSe74lPo+F+/0DF1tTPso8lR0Dg8fsI9wa2PX
+   kG4hgCc9Jqb1iCk4Sz5hqT0ELaOY8rkWsj39iMap7r/Q6CFkO0uaiohvg
+   7mk0OJmPizMi6BLKec4KkHnQBtjBdBfOmr3HxvcVriufKg90Fip5qSCNH
+   PglaqfN4xc8QaZGFvHnRap8Yv9NQI+cqw7YO58eaci71d/shpQHhiIJau
+   5/T72msWlCTfkFVGlRa2Q++I5IMUg1vEMU8g/EXlCXdqEN0bVcdFLUrKv
+   eJCtEdApiyXOSF4yc+TwyWAxqSaSzxohI3PZLk/nId2AizlsDrEGUow87
+   Q==;
+X-CSE-ConnectionGUID: bao12s8xSYmMN+YnsFFsuA==
+X-CSE-MsgGUID: eo/ChcFIRkGinyt9sFzo7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="40044926"
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="40044926"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 08:31:49 -0800
+X-CSE-ConnectionGUID: wudXInrIQPSamfrdbzRWFA==
+X-CSE-MsgGUID: HNvEU4tuQ1ON6qkxxLcEZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,302,1732608000"; 
+   d="scan'208";a="115068146"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa007.fm.intel.com with ESMTP; 20 Feb 2025 08:31:48 -0800
+From: Kan Liang <kan.liang@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.6.y] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
+Date: Thu, 20 Feb 2025 08:31:46 -0800
+Message-Id: <20250220163146.3030320-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <2025021817-pull-grievance-de31@gregkh>
+References: <2025021817-pull-grievance-de31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250114005737.GA2004845@rocinante>
+Content-Transfer-Encoding: 8bit
 
-Hello,
+The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
+To tell the availability of the sub-leaf 1 (enumerate the counter mask),
+perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
 
-> > The put_device(&epc->dev) call will trigger pci_epc_release() which
-> > frees "epc" so the kfree(epc) on the next line is a double free.
-> > 
-> > Found by code review.
+The error is not user-visible on bare metal. Because the sub-leaf 0 and
+the sub-leaf 1 are always available. However, it may bring issues in a
+virtualization environment when a VMM only enumerates the sub-leaf 0.
 
-[...]
-> Which kernel release did you review?  I don't see this kfree() when looking
-> at the current code base per:
-> 
->   https://elixir.bootlin.com/linux/v6.13-rc1/source/drivers/pci/endpoint/pci-epc-core.c#L956-L1020
+Introduce the cpuid35_e?x to replace the macros, which makes the
+implementation style consistent.
 
-I will answer my own question.  This surplus kfree() has already been
-removed as part of the following commit:
+Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250129154820.3755948-3-kan.liang@linux.intel.com
+---
+ arch/x86/events/intel/core.c      | 17 ++++++++++-------
+ arch/x86/include/asm/perf_event.h | 26 +++++++++++++++++++++++++-
+ 2 files changed, 35 insertions(+), 8 deletions(-)
 
-  c9501d268944 ("PCI: endpoint: Fix double free in __pci_epc_create()")
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 37c8badd2701..52f2ca214617 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
+ 
+ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+ {
+-	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
+-	unsigned int eax, ebx, ecx, edx;
++	unsigned int cntr, fixed_cntr, ecx, edx;
++	union cpuid35_eax eax;
++	union cpuid35_ebx ebx;
+ 
+-	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
++	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
++
++	if (eax.split.cntr_subleaf) {
+ 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
+-			    &eax, &ebx, &ecx, &edx);
+-		pmu->num_counters = fls(eax);
+-		pmu->num_counters_fixed = fls(ebx);
++			    &cntr, &fixed_cntr, &ecx, &edx);
++		pmu->num_counters = fls(cntr);
++		pmu->num_counters_fixed = fls(fixed_cntr);
+ 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
+-					     &pmu->intel_ctrl, ebx);
++					     &pmu->intel_ctrl, fixed_cntr);
+ 	}
+ }
+ 
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 85a9fd5a3ec3..384e8a7db482 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -177,9 +177,33 @@ union cpuid10_edx {
+  * detection/enumeration details:
+  */
+ #define ARCH_PERFMON_EXT_LEAF			0x00000023
+-#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
+ #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
+ 
++union cpuid35_eax {
++	struct {
++		unsigned int	leaf0:1;
++		/* Counters Sub-Leaf */
++		unsigned int    cntr_subleaf:1;
++		/* Auto Counter Reload Sub-Leaf */
++		unsigned int    acr_subleaf:1;
++		/* Events Sub-Leaf */
++		unsigned int    events_subleaf:1;
++		unsigned int	reserved:28;
++	} split;
++	unsigned int            full;
++};
++
++union cpuid35_ebx {
++	struct {
++		/* UnitMask2 Supported */
++		unsigned int    umask2:1;
++		/* EQ-bit Supported */
++		unsigned int    eq:1;
++		unsigned int	reserved:30;
++	} split;
++	unsigned int            full;
++};
++
+ /*
+  * Intel Architectural LBR CPUID detection/enumeration details:
+  */
+-- 
+2.38.1
 
-Nevertheless, thank you for the patch.
-
-	Krzysztof
 
