@@ -1,113 +1,98 @@
-Return-Path: <stable+bounces-118432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B0EA3DA3E
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 13:41:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A95A3DA87
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 13:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C3C189E80D
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 12:41:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A67C3BF2AA
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 12:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BFC1F4615;
-	Thu, 20 Feb 2025 12:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7021F583C;
+	Thu, 20 Feb 2025 12:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYhMlWAb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UicTgL8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1421C831A;
-	Thu, 20 Feb 2025 12:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EC01F4E37;
+	Thu, 20 Feb 2025 12:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740055263; cv=none; b=l2BXw/qcxlN6ZE48NlFUeperHEKUYMrAeHrwrkw0zbacg7Sc2kCf+erfWNOkoS+qUjz0mXu+aSVJckdWSFbhL90GcEEMCIAKl59748oP5FiYzc7apv3WmfpU018ihIAQtBBqsJlT/K7UJSbuxJX3ISCvZaBSulvglLm76niq3Wg=
+	t=1740056133; cv=none; b=vAbK/J+pwyk6p/KS8tcLwrSQP4hUTsnQ2+964Dt/8MpW0UhH/+62/6rkql1rQMhGaZUabM7+Zk/iFWQSo8+lucPS+Qq3S5eU1GkM5CeVSncZoCu6P75r/QN9ttCfbF0pbMeWdjtYEfU68puYy+lqDmPCc/GfAEP8l97kwcHK794=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740055263; c=relaxed/simple;
-	bh=vcz8id6kh/tQSinqUfNUplzzW80d3HXm2rhjsaUZE2U=;
+	s=arc-20240116; t=1740056133; c=relaxed/simple;
+	bh=Ki1S5Wm5Lpi3mF5gV4M1NUKLNMD5/yyfIqIWEyP1NBA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZcZfhWnSV4ik74s/UHrVHo6/da2/8yOtfvGxyjca1lLiL9YydLlwajafMwqwCcsGeganD5dbyUptLK0cemrrOaP+SNVLdBboeTUEpPp12g422Mc3S8iUWnjDaSbRbel6luFsm9c6Cv96bt6AdWlyagL+UMOfh4aZs6pixA2Jjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYhMlWAb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F398EC4CED1;
-	Thu, 20 Feb 2025 12:41:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740055263;
-	bh=vcz8id6kh/tQSinqUfNUplzzW80d3HXm2rhjsaUZE2U=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=L2pDg9TRjCRgYSNACTDbqUAjjmoSAaqfgKaF9fCZfe0Nq9dzn/L5RRlrBhRzQLiChpegStcar820oKdeJVibvJYj9gW7KWFy6TA/whYGtrjJ8Oa7zPHlioPEG139knuJj+Q2lkJ71AHIESif/QEuu2GySPrzw237d9JFHxPjTO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UicTgL8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE316C4CED1;
+	Thu, 20 Feb 2025 12:55:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740056133;
+	bh=Ki1S5Wm5Lpi3mF5gV4M1NUKLNMD5/yyfIqIWEyP1NBA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XYhMlWAbL6IQKeTn0ZqXCfEXKxq4atBoFreYpQi9YWl4SXtnXlLeMDa5s/z5A+48F
-	 wX57fAXomGN3kC/CTLzKwtpfE7M1vLY56q7/DEtmiAGtrR4dHivyz+LncH/xkvjp5b
-	 CWel/V5+pA3WvWuvw0o5C1IORYVbdVXX6dMqZc8M=
-Date: Thu, 20 Feb 2025 13:41:00 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Binbin Zhou <zhoubinbin@loongson.cn>,
-	linux-sound@vger.kernel.org,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	=?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Tawfik Bayouk <tawfik.bayouk@mobileye.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] driver core: platform: avoid use-after-free on
- device name
-Message-ID: <2025022005-affluent-hardcore-c595@gregkh>
-References: <20250218-pdev-uaf-v1-0-5ea1a0d3aba0@bootlin.com>
+	b=UicTgL8UlZ+H/Oz4R8KF69TxSKeXVcXZarN/U4ddOONtcClp/w5TdVFt4Wug8K2Sq
+	 PGTuOBECPSHbk2clTrnqZMdCz2i2L4Qk7lKIliWTb0qVZ3Z+ApupU+oovWuyHY0Q6y
+	 wJBLM1iVKSXqjn3LBqvGucMHV/pz7dcZ8wGhszhlxF0Jlt0fI3up65fgwR/kjsUbWa
+	 sgJmt76WRkObjj23iWczzwdhXc2kfOLMBPG+bUYDjcLpnIaMgvIYKYkiEtt2vIm42f
+	 diXkyJ90Eg5S9caXKbccmzg1hapr/IG+qQ8faJN7a9UPssvI5Z+c9AFMwBruKcLBr5
+	 Jy400wiY/BfWA==
+Date: Thu, 20 Feb 2025 12:55:29 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.12 000/225] 6.12.16-rc2 review
+Message-ID: <Z7cmQRwYhbCYG7Zt@finisterre.sirena.org.uk>
+References: <20250220104454.293283301@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LMOhex+tqeyGJ4Mh"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250218-pdev-uaf-v1-0-5ea1a0d3aba0@bootlin.com>
+In-Reply-To: <20250220104454.293283301@linuxfoundation.org>
+X-Cookie: Editing is a rewording activity.
 
-On Tue, Feb 18, 2025 at 12:00:11PM +0100, Théo Lebrun wrote:
-> The use-after-free bug appears when:
->  - A platform device is created from OF, by of_device_add();
->  - The same device's name is changed afterwards using dev_set_name(),
->    by its probe for example.
-> 
-> Out of the 37 drivers that deal with platform devices and do a
-> dev_set_name() call, only one might be affected. That driver is
-> loongson-i2s-plat [0]. All other dev_set_name() calls are on children
-> devices created on the spot. The issue was found on downstream kernels
-> and we don't have what it takes to test loongson-i2s-plat.
-> 
-> Note: loongson-i2s-plat maintainers are CCed.
-> 
->    ⟩ # Finding potential trouble-makers:
->    ⟩ git grep -l 'struct platform_device' | xargs grep -l dev_set_name
-> 
-> The solution proposed is to add a flag to platform_device that tells if
-> it is responsible for freeing its name. We can then duplicate the
-> device name inside of_device_add() instead of copying the pointer.
 
-Ick.
+--LMOhex+tqeyGJ4Mh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> What is done elsewhere?
->  - Platform bus code does a copy of the argument name that is stored
->    alongside the struct platform_device; see platform_device_alloc()[1].
->  - Other busses duplicate the device name; either through a dynamic
->    allocation [2] or through an array embedded inside devices [3].
->  - Some busses don't have a separate name; when they want a name they
->    take it from the device [4].
+On Thu, Feb 20, 2025 at 11:58:09AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.16 release.
+> There are 225 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Really ick.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Let's do the right thing here and just get rid of the name pointer
-entirely in struct platform_device please.  Isn't that the correct
-thing that way the driver core logic will work properly for all of this.
+--LMOhex+tqeyGJ4Mh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks,
+-----BEGIN PGP SIGNATURE-----
 
-greg k-h
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAme3Jj4ACgkQJNaLcl1U
+h9AxSAf/UB750crjTKHWIRF939HiB6PWUTrHkgF6GQawgJIudj++blI9vgsvxrEj
+bzywDTzA7oKtJtsLoerb4wPlTF4NvI5UBBbwv6CkkYXh+5fbagG20g10hggHhJ3a
+vl9TUcNkjVhHIXBZD5olrxuYWLsbE7hKVyfD9zzG0FGpAuHWsQdb1rShCg2y6sha
+NGPmdSvFKwHj4VgKRA/0yS0slUcYFv5aaTHmTMxcf8GQ+vbi67IPSecU/yIy8SCr
+l652Rrg+8wpHlu2h7m8VNKHTzvhkruecsLG8ZLbO/J/brYM399aacpgvjEMgn0dZ
+yN5z5pvZHwXfCQiAdVb3aMsR3vqqYQ==
+=6oEc
+-----END PGP SIGNATURE-----
+
+--LMOhex+tqeyGJ4Mh--
 
