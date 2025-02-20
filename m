@@ -1,357 +1,173 @@
-Return-Path: <stable+bounces-118458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62F8A3DF01
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:43:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D4AA3DF30
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 16:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E8D142166D
-	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 15:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1794917D4EF
+	for <lists+stable@lfdr.de>; Thu, 20 Feb 2025 15:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387631FECBD;
-	Thu, 20 Feb 2025 15:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1A11FA84F;
+	Thu, 20 Feb 2025 15:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bDdFbWWV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CDB1FDE26;
-	Thu, 20 Feb 2025 15:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8358C13BACC;
+	Thu, 20 Feb 2025 15:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740066137; cv=none; b=F0UM9fbOXUE7CAB3R4+JBAc+e19L/5xqZDh5+rHs3bAUNVLlcUj1TnL779pWIlNh1hqo8fnQImTAUy3Uh6PofJne+rAlTYeaFNmm/x76LRzqd2uhqTL7n8+C6KbJcPLjZnQFz8NbzCa3/DZxyjuafarkuqibH0gFW62SWwNWG3c=
+	t=1740066432; cv=none; b=ko320whSvU4XjJQQv62vrS+IabETHNCev/gyYfhfHqbQHr23/UtUTgY7Og2YFSkKUyd/CLRen0/oEVjK5t9+M/UUUKF+ePfyk5liTbt6aT3EkCfwj9KPI+K5wu5UMvhRHgpPDpxsn8ezYjOgWbcTj+LEtqENGH+qCK9v7lEbEZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740066137; c=relaxed/simple;
-	bh=c/7R0BYGbaMGBi+HLJTMDqWjWTV9zes7cKicXvRQ2DI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kkP8+c2PmfhbV8L+kS7zH5cPyGve2j/E/PR+7mIIRUhbV4bc5wUVlroycQ/MTvsLtSH54iH3RHayaf254Uvao9fsug2HMlCFhJ8V5iRVpobRKdV3ydXmxkuoK+1x2SVV6sip0IinctvEtknucSNFWwWOlAOiWkGuAU3hKWQ/gT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0547C4CED1;
-	Thu, 20 Feb 2025 15:42:13 +0000 (UTC)
-Message-ID: <37934625-661f-4347-a1cf-b77d0a8702ca@xs4all.nl>
-Date: Thu, 20 Feb 2025 16:42:12 +0100
+	s=arc-20240116; t=1740066432; c=relaxed/simple;
+	bh=4ni84CzkNyV93MRYSwVLLXyfCfXfk8pzJmoa9OW/6cA=;
+	h=Content-Type:Date:Message-Id:From:Subject:Cc:To:Mime-Version:
+	 References:In-Reply-To; b=GLIbJhDgxg6UMq0co7Nlv8RAFsrXTLMnomb61mg2xkAg3MwovaY9Zz8lBiuieX0cFkjD2hUk2fSFZcQnPB2nVaxT1cOmLnjGiEdfz06b1bi4CDCEpGt1hkbIjul64ihbt6NBNEySPbfMJ9BNdTfid6V2jWE8gRfq/An96bmphhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bDdFbWWV; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 66093443FB;
+	Thu, 20 Feb 2025 15:47:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1740066422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hFrZx3aO5d5jVw4+5EsyssrmSSe7/642XQj528XSzqM=;
+	b=bDdFbWWVaeY1uvx7YeYMrUZTlW/PU/1bK5dr2xnrgNxYMFOQbIGd81V+YSMLywKxmebUJV
+	MX4enZUVeRaqtpAI8r3O5MSD+CZ3nL6QRh1bg4czEFxcEbwwpGmk4oYse4rTaqLJ3uJGTS
+	Y8DdvjlcWYs29T1nNZFQXMaZ9kosaHhd6301rlaA4kY5jYBvO7pGw3Esy5vbhl/cTrrm47
+	yJ++wTWIgVWRQ0XOWUtTWMbd/HfmIHON7/EMmF4v5D8mFoMSsgUv3trgt+acqJh5VmopgE
+	tmVxfYkcBOBWVwfKcBCLNZtZzlLpPsWG8U0o4XB2ICDW1urDcqB856Ea2Fsdsg==
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 20 Feb 2025 16:46:59 +0100
+Message-Id: <D7XE2DSESCHX.328BJ5KCEFH0A@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH 0/2] driver core: platform: avoid use-after-free on
+ device name
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Rob Herring" <robh@kernel.org>, "Saravana Kannan"
+ <saravanak@google.com>, "David S. Miller" <davem@davemloft.net>, "Grant
+ Likely" <grant.likely@secretlab.ca>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark
+ Brown" <broonie@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi
+ Iwai" <tiwai@suse.com>, "Binbin Zhou" <zhoubinbin@loongson.cn>,
+ <linux-sound@vger.kernel.org>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, =?utf-8?q?Gr=C3=A9gory_Clement?=
+ <gregory.clement@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Tawfik Bayouk"
+ <tawfik.bayouk@mobileye.com>, <stable@vger.kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] media: venus: hfi_parser: refactor hfi packet
- parsing logic
-Content-Language: en-US
-To: Vikash Garodia <quic_vgarodia@quicinc.com>,
- Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Tomasz Figa
- <tfiga@chromium.org>, Hans Verkuil <hans.verkuil@cisco.com>
-Cc: Stanimir Varbanov <stanimir.varbanov@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250207-venus_oob_2-v4-0-522da0b68b22@quicinc.com>
- <20250207-venus_oob_2-v4-2-522da0b68b22@quicinc.com>
- <18a005e1-e235-4c2b-8d1a-b593868843a5@xs4all.nl>
- <ef4a4b2e-e17a-5432-49d5-4e211fa826ce@quicinc.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <ef4a4b2e-e17a-5432-49d5-4e211fa826ce@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250218-pdev-uaf-v1-0-5ea1a0d3aba0@bootlin.com>
+ <2025022005-affluent-hardcore-c595@gregkh>
+ <D7XB6MXRYVLY.3RM4EJEWD1IQM@bootlin.com>
+ <2025022004-scheming-expend-b9b3@gregkh>
+In-Reply-To: <2025022004-scheming-expend-b9b3@gregkh>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeijeehtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurheptgffkffhufevvfgggffofhgjsehtqhertdertdejnecuhfhrohhmpefvhhorohcunfgvsghruhhnuceothhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeevvedugefhudfhgedtgeeuhfeufeejteeikeefledtheektdehgeekkeevleeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgupdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvtddprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrn
+ hgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrrhgrvhgrnhgrkhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehgrhgrnhhtrdhlihhkvghlhiesshgvtghrvghtlhgrsgdrtggrpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Sasl: theo.lebrun@bootlin.com
 
-On 2/20/25 16:38, Vikash Garodia wrote:
-> 
-> On 2/20/2025 8:50 PM, Hans Verkuil wrote:
->> On 2/7/25 09:24, Vikash Garodia wrote:
->>> words_count denotes the number of words in total payload, while data
->>> points to payload of various property within it. When words_count
->>> reaches last word, data can access memory beyond the total payload. This
->>> can lead to OOB access. With this patch, the utility api for handling
->>> individual properties now returns the size of data consumed. Accordingly
->>> remaining bytes are calculated before parsing the payload, thereby
->>> eliminates the OOB access possibilities.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
->>> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
->>> ---
->>>  drivers/media/platform/qcom/venus/hfi_parser.c | 95 +++++++++++++++++++-------
->>>  1 file changed, 69 insertions(+), 26 deletions(-)
->>>
->>> diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
->>> index 1cc17f3dc8948160ea6c3015d2c03e475b8aa29e..404c527329c5fa89ee885a6ad15620c9c90a99e4 100644
->>> --- a/drivers/media/platform/qcom/venus/hfi_parser.c
->>> +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
->>> @@ -63,7 +63,7 @@ fill_buf_mode(struct hfi_plat_caps *cap, const void *data, unsigned int num)
->>>  		cap->cap_bufs_mode_dynamic = true;
->>>  }
->>>  
->>> -static void
->>> +static int
->>>  parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  {
->>>  	struct hfi_buffer_alloc_mode_supported *mode = data;
->>> @@ -71,7 +71,7 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  	u32 *type;
->>>  
->>>  	if (num_entries > MAX_ALLOC_MODE_ENTRIES)
->>> -		return;
->>> +		return -EINVAL;
->>>  
->>>  	type = mode->data;
->>>  
->>> @@ -83,6 +83,8 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  
->>>  		type++;
->>>  	}
->>> +
->>> +	return sizeof(*mode);
->>>  }
->>>  
->>>  static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
->>> @@ -97,7 +99,7 @@ static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
->>>  	cap->num_pl += num;
->>>  }
->>>  
->>> -static void
->>> +static int
->>>  parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  {
->>>  	struct hfi_profile_level_supported *pl = data;
->>> @@ -105,12 +107,14 @@ parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  	struct hfi_profile_level pl_arr[HFI_MAX_PROFILE_COUNT] = {};
->>>  
->>>  	if (pl->profile_count > HFI_MAX_PROFILE_COUNT)
->>> -		return;
->>> +		return -EINVAL;
->>>  
->>>  	memcpy(pl_arr, proflevel, pl->profile_count * sizeof(*proflevel));
->>>  
->>>  	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
->>>  		       fill_profile_level, pl_arr, pl->profile_count);
->>> +
->>> +	return pl->profile_count * sizeof(*proflevel) + sizeof(u32);
->>>  }
->>>  
->>>  static void
->>> @@ -125,7 +129,7 @@ fill_caps(struct hfi_plat_caps *cap, const void *data, unsigned int num)
->>>  	cap->num_caps += num;
->>>  }
->>>  
->>> -static void
->>> +static int
->>>  parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  {
->>>  	struct hfi_capabilities *caps = data;
->>> @@ -134,12 +138,14 @@ parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  	struct hfi_capability caps_arr[MAX_CAP_ENTRIES] = {};
->>>  
->>>  	if (num_caps > MAX_CAP_ENTRIES)
->>> -		return;
->>> +		return -EINVAL;
->>>  
->>>  	memcpy(caps_arr, cap, num_caps * sizeof(*cap));
->>>  
->>>  	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
->>>  		       fill_caps, caps_arr, num_caps);
->>> +
->>> +	return sizeof(*caps);
->>>  }
->>>  
->>>  static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
->>> @@ -154,7 +160,7 @@ static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
->>>  	cap->num_fmts += num_fmts;
->>>  }
->>>  
->>> -static void
->>> +static int
->>>  parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  {
->>>  	struct hfi_uncompressed_format_supported *fmt = data;
->>> @@ -163,7 +169,8 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
->>>  	u32 entries = fmt->format_entries;
->>>  	unsigned int i = 0;
->>> -	u32 num_planes;
->>> +	u32 num_planes = 0;
->>> +	u32 size;
->>>  
->>>  	while (entries) {
->>>  		num_planes = pinfo->num_planes;
->>> @@ -173,7 +180,7 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  		i++;
->>>  
->>>  		if (i >= MAX_FMT_ENTRIES)
->>> -			return;
->>> +			return -EINVAL;
->>>  
->>>  		if (pinfo->num_planes > MAX_PLANES)
->>>  			break;
->>> @@ -185,9 +192,13 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
->>>  
->>>  	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
->>>  		       fill_raw_fmts, rawfmts, i);
->>> +	size = fmt->format_entries * (sizeof(*constr) * num_planes + 2 * sizeof(u32))
->>> +		+ 2 * sizeof(u32);
->>> +
->>> +	return size;
->>>  }
->>>  
->>> -static void parse_codecs(struct venus_core *core, void *data)
->>> +static int parse_codecs(struct venus_core *core, void *data)
->>>  {
->>>  	struct hfi_codec_supported *codecs = data;
->>>  
->>> @@ -199,21 +210,27 @@ static void parse_codecs(struct venus_core *core, void *data)
->>>  		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
->>>  		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
->>>  	}
->>> +
->>> +	return sizeof(*codecs);
->>>  }
->>>  
->>> -static void parse_max_sessions(struct venus_core *core, const void *data)
->>> +static int parse_max_sessions(struct venus_core *core, const void *data)
->>>  {
->>>  	const struct hfi_max_sessions_supported *sessions = data;
->>>  
->>>  	core->max_sessions_supported = sessions->max_sessions;
->>> +
->>> +	return sizeof(*sessions);
->>>  }
->>>  
->>> -static void parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
->>> +static int parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
->>>  {
->>>  	struct hfi_codec_mask_supported *mask = data;
->>>  
->>>  	*codecs = mask->codecs;
->>>  	*domain = mask->video_domains;
->>> +
->>> +	return sizeof(*mask);
->>>  }
->>>  
->>>  static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
->>> @@ -282,8 +299,9 @@ static int hfi_platform_parser(struct venus_core *core, struct venus_inst *inst)
->>>  u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
->>>  	       u32 size)
->>>  {
->>> -	unsigned int words_count = size >> 2;
->>> -	u32 *word = buf, *data, codecs = 0, domain = 0;
->>> +	u32 *words = buf, *payload, codecs = 0, domain = 0;
->>> +	u32 *frame_size = buf + size;
->>> +	u32 rem_bytes = size;
->>>  	int ret;
->>>  
->>>  	ret = hfi_platform_parser(core, inst);
->>> @@ -300,38 +318,63 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
->>>  		memset(core->caps, 0, sizeof(core->caps));
->>>  	}
->>>  
->>> -	while (words_count) {
->>> -		data = word + 1;
->>> +	while (words < frame_size) {
->>> +		payload = words + 1;
->>>  
->>> -		switch (*word) {
->>> +		switch (*words) {
->>>  		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
->>> -			parse_codecs(core, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_codec_supported))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_codecs(core, payload);
->>>  			init_codecs(core);
->>
->> Does it make sense to call init_codecs if parse_codecs returned an error?
->> It certainly looks weird, so even if it is OK, perhaps a comment might be
->> useful.
-> parse_codecs() returns the sizeof(struct hfi_codec_supported), so it would
-> always be a valid value. I can put up a comment though.
+On Thu Feb 20, 2025 at 3:06 PM CET, Greg Kroah-Hartman wrote:
+> On Thu, Feb 20, 2025 at 02:31:29PM +0100, Th=C3=A9o Lebrun wrote:
+>> On Thu Feb 20, 2025 at 1:41 PM CET, Greg Kroah-Hartman wrote:
+>> > On Tue, Feb 18, 2025 at 12:00:11PM +0100, Th=C3=A9o Lebrun wrote:
+>> >> The solution proposed is to add a flag to platform_device that tells =
+if
+>> >> it is responsible for freeing its name. We can then duplicate the
+>> >> device name inside of_device_add() instead of copying the pointer.
+>> >
+>> > Ick.
+>> >
+>> >> What is done elsewhere?
+>> >>  - Platform bus code does a copy of the argument name that is stored
+>> >>    alongside the struct platform_device; see platform_device_alloc()[=
+1].
+>> >>  - Other busses duplicate the device name; either through a dynamic
+>> >>    allocation [2] or through an array embedded inside devices [3].
+>> >>  - Some busses don't have a separate name; when they want a name they
+>> >>    take it from the device [4].
+>> >
+>> > Really ick.
+>> >
+>> > Let's do the right thing here and just get rid of the name pointer
+>> > entirely in struct platform_device please.  Isn't that the correct
+>> > thing that way the driver core logic will work properly for all of thi=
+s.
+>>=20
+>> I would agree, if it wasn't for this consideration that is found in the
+>> commit message [0]:
+>
+> What, that the of code is broken?  Then it should be fixed, why does it
+> need a pointer to a name at all anyway?  It shouldn't be needed there
+> either.
 
-Ah, so parse_codecs can never return an error. But what if someone in the future
-does exactly that? I think it is still better to check for an error here. It just
-feels like a bug waiting to happen in the future.
+I cannot guess why it originally has a separate pdev->name field.
+All I can tell you is a good reason to have one, as quoted below.
+
+>> > It is important to duplicate! pdev->name must not change to make sure
+>> > the platform_match() return value is stable over time. If we updated
+>> > pdev->name alongside dev->name, once a device probes and changes its
+>> > name then the platform_match() return value would change.
+>>=20
+>> I'd be fine sending a V2 that removes the field *and the fallback* [1],
+>> but I don't have the full scope in mind to know what would become broken=
+.
+>>=20
+>> [0]: https://lore.kernel.org/lkml/20250218-pdev-uaf-v1-2-5ea1a0d3aba0@bo=
+otlin.com/
+>> [1]: https://elixir.bootlin.com/linux/v6.13.3/source/drivers/base/platfo=
+rm.c#L1357
+>
+> The fallback will not need to be removed, properly point to the name of
+> the device and it should work correctly.
+
+No, it will not work correctly, as the above quote indicates.
+
+Let's assume we remove the field, this situation would be broken:
+ - OF allocates platform devices and gives them names.
+ - A device matches with a driver, which gets probed.
+ - During the probe, driver does a dev_set_name().
+ - Afterwards, the upcoming platform_match() against other drivers are
+   called with another device name.
+
+We should be safe as there are guardraids to not probe twice a device,
+see __driver_probe_device() that checks dev->driver is NULL. But it
+isn't a situation we should be in.
+
+Another broken situation:
+ - OF allocates platform devices and gives them names.
+ - A device matches with a driver, which gets probed based on its name.
+ - During the probe, driver does a dev_set_name().
+ - Module is removed.
+ - Module is re-added, the (driver, device) pair don't end up matching
+   again because the device name changed.
+
+I might be missing other edge-cases.
+
+Conclusion: we need a constant name for platform devices as we want the
+return value of platform_match() to stay stable across time.
 
 Regards,
 
-	Hans
-
->>
->>>  			break;
->>>  		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
->>> -			parse_max_sessions(core, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_max_sessions_supported))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_max_sessions(core, payload);
->>>  			break;
->>>  		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
->>> -			parse_codecs_mask(&codecs, &domain, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_codec_mask_supported))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_codecs_mask(&codecs, &domain, payload);
->>>  			break;
->>>  		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
->>> -			parse_raw_formats(core, codecs, domain, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_uncompressed_format_supported))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_raw_formats(core, codecs, domain, payload);
->>>  			break;
->>>  		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
->>> -			parse_caps(core, codecs, domain, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_capabilities))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_caps(core, codecs, domain, payload);
->>>  			break;
->>>  		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
->>> -			parse_profile_level(core, codecs, domain, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_profile_level_supported))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_profile_level(core, codecs, domain, payload);
->>>  			break;
->>>  		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
->>> -			parse_alloc_mode(core, codecs, domain, data);
->>> +			if (rem_bytes <= sizeof(struct hfi_buffer_alloc_mode_supported))
->>> +				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +			ret = parse_alloc_mode(core, codecs, domain, payload);
->>>  			break;
->>>  		default:
->>> +			ret = sizeof(u32);
->>>  			break;
->>>  		}
->>>  
->>> -		word++;
->>> -		words_count--;
->>> +		if (ret < 0)
->>> +			return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
->>> +
->>> +		words += ret / sizeof(u32);
->>
->> Would it make sense to check and warn if ret is not a multiple of sizeof(u32)?
->> Up to you, just an idea.
-> almost all the individual parsing api in the various cases returns size of
-> predefined structures (or in their multiples), which would make them return in
-> multiple of sizeof(u32). Let say, if it encounters a non multiple of
-> sizeof(u32), the while loop would iterate couple of more iterations to hit the
-> next case in the payload.
->>
->>> +		rem_bytes -= ret;
->>>  	}
->>>  
->>>  	if (!core->max_sessions_supported)
->>>
->>
->> Regards,
->>
->> 	Hans
-> Regards,
-> Vikash
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
