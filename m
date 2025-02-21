@@ -1,131 +1,133 @@
-Return-Path: <stable+bounces-118566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F86A3F162
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 11:07:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1B4A3F1F6
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 11:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2328B1894961
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 10:08:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33E1A165AA0
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 10:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD64204C13;
-	Fri, 21 Feb 2025 10:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="pmmMCG9j"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375AB205AC4;
+	Fri, 21 Feb 2025 10:27:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E96C20469D;
-	Fri, 21 Feb 2025 10:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0941205504;
+	Fri, 21 Feb 2025 10:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740132466; cv=none; b=OWbGSzHFWv7YdTH/0rmMQ4b46ZrbijHOR3QLPJAlTXhc3wYpW89owx6B8ftGEwuUD+TmUZszS8qihv/pf4/IjyUxrFg/UG/5vX3MNzzL8ArbzTfkyqUvBwBJWipMmQMBRs72vN5noxrjFpdbVMs/wwiRNuRb04h0nkUO4CiUJ0U=
+	t=1740133627; cv=none; b=d/CFHYQUh+V3nTK1fsSzcJPsU7Bv+/JtNOrlmEFF2jnzANlx34aPHv2WZpC+Q35UHx29sRtdsU0BFLKvX422vMVwyzkhO7VqgEWgARvxggePBR0z4qfi7Zx49MpX0d0iROnfqB9Oix7dlXHNv9HKoS3gXbWOCzpfHjJnkH977EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740132466; c=relaxed/simple;
-	bh=wtNoofFv6KoVXE2Qy2UY/PwELQzz2XofI38+Etocco4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HPvoxdpHZT2mZ1mPox3FOEyhAy0MZtfACn66pn2znT11aKoNayQCVOjApQj5bkygnRFy9Z3BYgf+KllKjdLlOk5BA8KzI+5hHfBkw5xmMV4cx1fam6nDiWyrNdGe+d6/N4OlcVNF25ZREthaIESuejFBBMWuhX7e7vePcBUP20I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=pmmMCG9j; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=W+26npf18RRwsCWtDsEbmc9w9HSuCv1j/NyTX3JxquE=; b=pmmMCG9jXqbiNJJ6GmtbO6FRsX
-	ARRLZAhlhtPCOl5SKYYH4jzI1WMpRYPi6B1VK779IhlgPgm+3uGz6H4K2RPVVjx1umDTQT7ILSz6Q
-	XmtkEsJfEImhk5hZqrVA6r7EYi35xg+iF2SyPsl/HufSuWsG94G+LPV6Fg3438zjO7i/67O7waij3
-	s7Y5zZiwO3U4cbLFzbwFr9ot77cTfKdduSXt+hMQ4A5j2c0TJ8YNNPxy/PLCBHadHN2Ix21ZQL+ic
-	J53yrW+4bSLBNJ9jlGXesT0oS65Idbf8QOmu3v6R5BKtVhbD9u4p25ThBL1hN30pHrUM0MIjzaugN
-	KgsC6gYw==;
-Received: from i53875a87.versanet.de ([83.135.90.135] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1tlPwY-0002cL-4E; Fri, 21 Feb 2025 11:07:38 +0100
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: "Rob Herring (Arm)" <robh@kernel.org>,
- Quentin Schulz <foss+kernel@0leil.net>,
- Quentin Schulz <quentin.schulz@cherry.de>
-Cc: Farouk Bouabid <farouk.bouabid@theobroma-systems.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-rockchip@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- stable@vger.kernel.org
-Subject:
- Re: [PATCH 0/5] arm64: dts: rockchip: pinmux fixes and support for 2 adapters
- for Theobroma boards
-Date: Fri, 21 Feb 2025 11:07:37 +0100
-Message-ID: <3771836.RUnXabflUD@diego>
-In-Reply-To: <f9b40055-bcb0-4245-b899-4c7890e81b20@cherry.de>
-References:
- <20250220-ringneck-dtbos-v1-0-25c97f2385e6@cherry.de>
- <174008661935.4046882.3221866764998287397.robh@kernel.org>
- <f9b40055-bcb0-4245-b899-4c7890e81b20@cherry.de>
+	s=arc-20240116; t=1740133627; c=relaxed/simple;
+	bh=DTOaY89TL5e87zq5u+s/rMIusW8ifyGJo0qjCcMeWsY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lhqK3c44IphUbok4HufeYdpILkalFBFQ+FgSMUIMU/9xYAMpWZv83uV+actkgo1sGlQRuWiFxziMCeGtUOxDillXFpYmTd7k51OFLdBe5b+viyFo3BJaUDyBwtl51mP/ylCcjBx8a4FXSZR7K5VX4kZ7H7R9BZua+bwTPvLbEck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D36C6169C;
+	Fri, 21 Feb 2025 02:27:21 -0800 (PST)
+Received: from [10.57.85.120] (unknown [10.57.85.120])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 320623F5A1;
+	Fri, 21 Feb 2025 02:26:59 -0800 (PST)
+Message-ID: <1ac64c39-419b-4fac-8820-bbfb4e6afec4@arm.com>
+Date: Fri, 21 Feb 2025 10:26:57 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] arm64: hugetlb: Fix huge_ptep_get_and_clear() for
+ non-present ptes
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ David Hildenbrand <david@redhat.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Mark Rutland <mark.rutland@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250217140419.1702389-1-ryan.roberts@arm.com>
+ <20250217140419.1702389-3-ryan.roberts@arm.com>
+ <e26a59a1-ff9a-49c7-b10a-c3f5c096a2c4@arm.com>
+ <5477d161-12e7-4475-a6e9-ff3921989673@arm.com>
+ <50f48574-241d-42d8-b811-3e422c41e21a@arm.com> <Z7hNgSBw6lfwwcch@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <Z7hNgSBw6lfwwcch@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Quentin,
-
-Am Freitag, 21. Februar 2025, 11:01:44 MEZ schrieb Quentin Schulz:
-> On 2/20/25 10:29 PM, Rob Herring (Arm) wrote:
-> > On Thu, 20 Feb 2025 13:20:09 +0100, Quentin Schulz wrote:
-> I believe this is a false positive due to the node suffix being -gpio? 
-> If I change -gpio suffix to -pin, it doesn't complain anymore.
+On 21/02/2025 09:55, Catalin Marinas wrote:
+> On Thu, Feb 20, 2025 at 12:07:35PM +0530, Anshuman Khandual wrote:
+>> On 2/19/25 14:28, Ryan Roberts wrote:
+>>> On 19/02/2025 08:45, Anshuman Khandual wrote:
+>>>> On 2/17/25 19:34, Ryan Roberts wrote:
+>>>>> +	while (--ncontig) {
+>>>>
+>>>> Should this be converted into a for loop instead just to be in sync with other
+>>>> similar iterators in this file.
+>>>>
+>>>> for (i = 1; i < ncontig; i++, addr += pgsize, ptep++)
+>>>> {
+>>>> 	tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
+>>>> 	if (present) {
+>>>> 		if (pte_dirty(tmp_pte))
+>>>> 			pte = pte_mkdirty(pte);
+>>>> 		if (pte_young(tmp_pte))
+>>>> 			pte = pte_mkyoung(pte);
+>>>> 	}
+>>>> }
+>>>
+>>> I think the way you have written this it's incorrect. Let's say we have 16 ptes
+>>> in the block. We want to iterate over the last 15 of them (we have already read
+>>> pte 0). But you're iterating over the first 15 because you don't increment addr
+>>> and ptep until after you've been around the loop the first time. So we would
+>>> need to explicitly increment those 2 before entering the loop. But that is only
+>>> neccessary if ncontig > 1. Personally I think my approach is neater...
+>>
+>> Thinking about this again. Just wondering should not a pte_present()
+>> check on each entries being cleared along with (ncontig > 1) in this
+>> existing loop before transferring over the dirty and accessed bits -
+>> also work as intended with less code churn ?
 > 
-> """
-> diff --git a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts 
-> b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-> index 08a11e4758413..249e50d64791e 100644
-> --- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-> +++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-> @@ -196,7 +196,7 @@ sd_card_led_pin: sd-card-led-pin {
->   	};
-> 
->   	uart {
-> -		uart5_rts_gpio: uart5-rts-gpio {
-> +		uart5_rts_pin: uart5-rts-pin {
->   			rockchip,pins =
->   			  <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_up>;
->   		};
-> @@ -234,7 +234,7 @@ &uart0 {
->   };
-> 
->   &uart5 {
-> -	pinctrl-0 = <&uart5_xfer &uart5_rts_gpio>;
-> +	pinctrl-0 = <&uart5_xfer &uart5_rts_pin>;
->   	rts-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
->   	status = "okay";
->   };
-> """
-> 
-> @Heiko, I guess you would like a warning-less DT :) I can send a v2 with 
-> that change then if that works for you? I can wait a few days for other 
-> reviews :)
+> Shouldn't all the ptes in a contig block be either all present or all
+> not-present? Is there any point in checking each individually?
 
-that would be great - the v2.
+I agree, that's why I was just testing it once outside the loop. I'm confident
+my code and Anshuman's alternative are both correct. So it's just a stylistic
+choice really. I'd prefer to leave it as is, but will change if there is
+consensus. I'm not sure I'm hearing that though.
 
-We already had patches addressing the -gpio thing for other boards in the
-past, so going to "-pin" is the preferred solution here.
+Catalin, do you want me to respin the series to fix up the typos that Anshuman
+highlighted, or will you handle that?
 
-Also, your patches are totally specific to Theobroma-boards, so just send
-your v2 at your convenience - I don't really expect that much additional
-outside review comments ;-) .
-
-
-Heiko
-
+Thanks,
+Ryan
 
 
