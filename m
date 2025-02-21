@@ -1,124 +1,162 @@
-Return-Path: <stable+bounces-118631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68A0A3FEDF
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:33:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E80FA3FEEF
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793B9168579
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:32:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A9603BA4A3
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008E71FC107;
-	Fri, 21 Feb 2025 18:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C346F24CEEB;
+	Fri, 21 Feb 2025 18:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="PZzZdVBt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="arHxRj/K"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA551E9B09
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 18:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CFE1E9B09;
+	Fri, 21 Feb 2025 18:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162770; cv=none; b=b/uaVMmzH1XOUAna9bTkiSYYuLw4azgCFEfL0QWRj4EHVlEktxu4nB0TgZm21kCsYg8+Jj0FVSSARiYmSeB3GTgSHASYFHG9C7Z8h2OHs+QKVUahIDAGIgK2hWgK7Y2KCyGAb3tMqHreXwimcar1EpcEDxoi+Du++ahR4Vv/44M=
+	t=1740163106; cv=none; b=oHFDbvDg4ZT4TUMe6kmq6oeu3lPcxidBz1VxzOtkLA9DADB5r8UfmAmHA5PCoCvmhB+JyLepKHNLNmjrQV/kpC06/zuXjVYBLwHeROy8Smh+jzdSWS9HjVopASgmsmRA+GhibvyzIgQfg/bA00Eka9/qNscJ9EidEq4MecyDkx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162770; c=relaxed/simple;
-	bh=1wXoHj4YalXCLwHFlrFl0ZRTLaB8wRyrCsGoaDczxSY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CRhBa7rAMyaTOCNSdek9FzPsepRaUDLbysnESWa8yZn0FtLfa+fzdnHMOxEF+oWFTNwcSQ81a8ChYV6DhVNbeHWoSZHXhncCfF/KG21aNSsi+lnPoCDlHEaSUEZL4ilUmsqrXNl7R7lIpvsEHw55pZjtdYHGoV1+6AMKU/WFCfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=PZzZdVBt; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1740162766;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0maluwGgxutRgX14YHugBpqTJpGuQb5ka3VWZSifqk=;
-	b=PZzZdVBttc0fGRLjeS7w95HSQOamv0+Yer1tdUGRpjB3wypW6tmmsrTaeMnI6p6AkEz4py
-	9/QUq9KcN3DzkMeaBDqh50lPPvVrwiEqCAsVd+ItZph4mUKxLFMDHTkScuTvPYcZEm1iSj
-	cTGDfTM8U2zX0M2G1f34VEYH+mdQQOw=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] batman-adv: Drop unmanaged ELP metric worker
-Date: Fri, 21 Feb 2025 19:32:44 +0100
-Message-ID: <6025110.MhkbZ0Pkbq@ripper>
-In-Reply-To: <4657309.LvFx2qVVIh@sven-l14>
-References:
- <20250219165451-d7aeabb8444db978@stable.kernel.org>
- <4657309.LvFx2qVVIh@sven-l14>
+	s=arc-20240116; t=1740163106; c=relaxed/simple;
+	bh=Q936AZExE99tb2q+MrHHJwRam8QYuQsfnHAxnBUlB+I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FxATMm+zDArWirC5cvZWFaqlWUNa9gbkvnnnQGfjpTD3LB9mvl668YMDL1ukiLlDIY9RYIFwW+4SmHkmL0/lJTE6Q0CY3ZJdxnkpV5IrchAifqAddoRFwGohMZPVjmHU+K1aSnWnAwXHi+j2OvQC7YDzdEh0K3RirXYr75iLB5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=arHxRj/K; arc=none smtp.client-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5fcd686fe0fso1377391eaf.3;
+        Fri, 21 Feb 2025 10:38:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740163104; x=1740767904; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hsGNbGLYi3imJsJL+9aifpnDeSIfnWypP/Kgm6qb5gU=;
+        b=arHxRj/KeyMBlyu4ktMVJWF7760TW4gRsDLsiGZaWMc/sjuyJSDF7KztfBOu7Oxi1d
+         6ey8ioRCTe/yViOQ5BJ0Oxnfdg9dbmQTJZZOKVCY9nglYnxhO2xLiy+9wa5zZJeuIKIr
+         wuYnhxodq+l85UqCT3Pomoi6dBzitQa25VN7GOH0Zc8CB/is1nVJ4BUU00flndfwaqDp
+         9QgEQoocToTjmKYHHzAukxTFZ23g72afF30PX0Dnm7mxQ1RJKIVd5izaKz7EOcGBiYoj
+         8lovGuMRZzo0ibnnpwg191wjM5cvZLQWIeXo62q1n7voe3VFJ8g7AtIYMWz7FVAGdXAX
+         YXIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740163104; x=1740767904;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hsGNbGLYi3imJsJL+9aifpnDeSIfnWypP/Kgm6qb5gU=;
+        b=MUNxo+H5KGmIvIiyxVYafLqkND8F6c/GiuMZ8FPsCejxIce2pNOgS3xINI9RqAK6tW
+         Q8awjsStNjwZ3NL3FzE4gKCqHt8BLTET5TiyePwswv39Me+vX9uyZJVqcinJ6dVCpYw0
+         UMDTQvsqvrOK3eE9e/8jG07eUALpRxL0yTO1xk9GxoxSJ5aRZg7W6Xrc4RnCbH9ALsT6
+         /VqE9LKyScHU+Lb05Tm8iJrxmUk7ExYMUi6s+kwNlKFCwt7ke0ZM/+O5JbtOsfbd3AZK
+         j5bj76jPyiNbXh/Bep2qsV2ABedMzE7jvZMUlDSNA6DzQjPaFeTtd56MA/wXPYM5Ekgs
+         PgtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnGbVqK7Di1Xg3cp9JXJcx+QXRYrtagIDcO22IgJL1djrL/5nkRKGlIhGkJZJC9GO32f7tXh+OLh4ZyXA=@vger.kernel.org, AJvYcCWq/DR3PNeLjjU0/nEMmjNMsJAdkD+kDR0z6B+0t5KHg8gFHraBkSbwAJFQ50lnSp/hGqu7QQJt@vger.kernel.org
+X-Gm-Message-State: AOJu0YwopkwbhnhxIbuMfLhAEHHIJxzapGnFHe04jO+GflwWyrMZbLBy
+	dNp2xI0o3t7isIrQfD8Vsn3+ZiveUQbGKglP7noAb+SLNdNj1VIT
+X-Gm-Gg: ASbGncvqnwLUYu1Hw0wjPx/cX0f/IKRlKQEdFRiYhBeh0KVhk2vW733QObIJueKjPaM
+	7VqheJ15ZmEt8ILNYJKL3KPcethj9pWG/l/jabYUgulvdggcURoS77WeStRipgL0BmI2iBXqlF9
+	byuZK1fOwTbzJUIXVROCOrx4wd/mZ9SH1erDSQxDm2E4zhPvn68nLJu7ptw4Ue80JSLYmsRZbM4
+	beNr2PlgxWR1g0hehcgIpMWXbqBqBHo89uuMmVlM2mAiyfaBJBKIhR8erBaSzebA8nOOcYI5TR7
+	TXg77r0cWiMAnJfsxDvB5pAle02l9md6n4u/cXAJBavdyhwJy96NqA==
+X-Google-Smtp-Source: AGHT+IGHalgkEU3Q8tpgYl9lid1QhnBNk/7/u+5TKgseeEXkfKvsLq1RqZXTz9yUGpUMJZ9We3jGfQ==
+X-Received: by 2002:a05:6871:1c9:b0:29e:354e:5fdb with SMTP id 586e51a60fabf-2bd50fb898emr3242983fac.37.1740163104051;
+        Fri, 21 Feb 2025 10:38:24 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2bd68843a69sm141957fac.26.2025.02.21.10.38.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 10:38:21 -0800 (PST)
+Message-ID: <259638f6-061f-4259-8534-d5537f47d85b@gmail.com>
+Date: Fri, 21 Feb 2025 10:38:17 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1818345.VLH7GnMWUR";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+User-Agent: Mozilla Thunderbird
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.13 000/258] 6.13.4-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250220104500.178420129@linuxfoundation.org>
+Content-Language: en-US
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250220104500.178420129@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---nextPart1818345.VLH7GnMWUR
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Date: Fri, 21 Feb 2025 19:32:44 +0100
-Message-ID: <6025110.MhkbZ0Pkbq@ripper>
-In-Reply-To: <4657309.LvFx2qVVIh@sven-l14>
-MIME-Version: 1.0
 
-On Wednesday, 19 February 2025 23:38:07 CET Sven Eckelmann wrote:
-> On Wednesday, 19 February 2025 23:09:53 GMT+1 Sasha Levin wrote:
-> > [ Sasha's backport helper bot ]
-> >=20
-> > Hi,
-> >=20
-> > Summary of potential issues:
-> > =E2=9D=8C Build failures detected
-> >=20
-> > The upstream commit SHA1 provided is correct: 8c8ecc98f5c65947b0070a24b=
-ac11e12e47cc65d
-> >=20
-> >=20
-> > Status in newer kernel trees:
-> > 6.13.y | Present (different SHA1: 7350aafa40a7)
-> > 6.12.y | Present (different SHA1: c09f874f226b)
-> > 6.6.y | Present (different SHA1: c8db60b2a7fd)
-> > 6.1.y | Present (different SHA1: 831dda93b13c)
-> > 5.4.y | Not found
-> >=20
-> > Note: The patch differs from the upstream commit:
-> > ---
-> > Failed to apply patch cleanly.
->=20
-> Was this patch applied with or without the already queued up patches from=
-=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/t=
-ree/queue-5.15 ?
-> They are required for this patch to apply correctly.
 
-Ok, now it will definitely fail because you've added your own backport..
+On 2/20/2025 2:58 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.4 release.
+> There are 258 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.4-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Kind regards,
-	Sven
---nextPart1818345.VLH7GnMWUR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ7jGzAAKCRBND3cr0xT1
-y9iGAQClc9J5Ro3ktEXgUnY81cAkoIeIGsu+O3sZVpx1sfcPLAD+KpxkNH3kixXe
-UHG6a4Yz8+5MAQlDr6K5mTa+TizIaQY=
-=GNsl
------END PGP SIGNATURE-----
-
---nextPart1818345.VLH7GnMWUR--
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
 
