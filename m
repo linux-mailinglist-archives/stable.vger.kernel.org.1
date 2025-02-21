@@ -1,114 +1,101 @@
-Return-Path: <stable+bounces-118543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EFEA3EB61
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 04:29:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F1EA3EB7B
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 04:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24843702788
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 03:28:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B3CD7A8869
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 03:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F39D1F4E38;
-	Fri, 21 Feb 2025 03:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C7A1F758F;
+	Fri, 21 Feb 2025 03:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="DRiP/xus"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="VCYj/aER"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA2B1D47AD;
-	Fri, 21 Feb 2025 03:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F35B1F4182;
+	Fri, 21 Feb 2025 03:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740108489; cv=none; b=jjSCyzMk0cHYvB78U9ahx9mS7AFbg7RvvxMO+1r0eiUjbu8KM5mbr6dNe7Mxhi1WkhEJRGOCa46ropPnhqEQPYJ2ObukTb6ISLj7iBa1kAzTDxaF7rtwCUnjbc3shP0e6sh2KVmXX8MfpkA20Jt15iZh9c+1cEmCDe8IFqvEFmg=
+	t=1740109403; cv=none; b=eEm0vYuimUwp/CxQEyIFxvOV2ol8kpTb3xZEvy/MPiSLThKdBZJ7kO3hEnMslUnGzVpmTD252fvgjIiSuCWUR1u56bQ7Aeqw2mp6Fesl8ObEAJbbYW/xmWt8b4qu3hXbin1DzAU4Kamg/CbKROZPzVnkhBypNcXDMj8K+IEaspw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740108489; c=relaxed/simple;
-	bh=m0UZa4D/Y9XWr5/GmCyP0tstSxb7e2xG3bEZzwn1JHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qaq+QDEIA6j1CAHkl+2wH8NBJjaxvQ/AmYaoMAhHJ+DDgNybvFZ9ZTIqcATMembrIuU5Yp5UkvyaMfLfryQrFQK+litjvSCnaqiGm5JyXMLcCyPEQYlTOV7Rc4/+pxTa3ABASSEZ0C0xPHkyzNyXubJMptIXEqLm9c5OLUQwMLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=DRiP/xus; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51KLrZNQ028671;
-	Fri, 21 Feb 2025 03:27:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=j1e2q47A8U8fcTZcdkdi/wUAfAuX6B4PNpGcn7q7hhA=; b=
-	DRiP/xusSJ4IgWEQ2nHKL6qFzTqFLfIl9aV6KGtagHijWKNjmxmEA1LfdaWt1iGq
-	nl9HbZFROU9yk0Mv6UO7K7Om1fJ5opD0ygnk0aGX/377QXdMYHhK+ZTafmUTgOSF
-	YsPwDiG8pGZDjJ+CGd/lv9rtGUehkpyoLoH/x9HLXUMcrD4Xl0BEW2ZU6KrSGo/q
-	LsUyC0aXI9hCL6hc8Cy8ZoIe3V2sPoWcDPBYMqDW4LLk2yUAf8+lcPZHip7AwMnf
-	xqywiQItNicbL+F9+sBENjcXqJfgHUHcDdQ2jZfMIF9anjOs66kgF67xtoIS3hZY
-	t0pReuE72VE2Frwo2FvAuA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44w00mwg2q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Feb 2025 03:27:49 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 51L2UoNq025190;
-	Fri, 21 Feb 2025 03:27:49 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44w08yu5nk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Feb 2025 03:27:48 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 51L3RmE2001656;
-	Fri, 21 Feb 2025 03:27:48 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44w08yu5n6-1;
-	Fri, 21 Feb 2025 03:27:48 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Arthur Simchaev <arthur.simchaev@sandisk.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        avri.altman@sandisk.com, Avi.Shchislowski@sandisk.com,
-        beanhuo@micron.com, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bvanassche@acm.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3] ufs: core: bsg: Fix memory crash in case arpmb command failed
-Date: Thu, 20 Feb 2025 22:27:24 -0500
-Message-ID: <174010841900.1417860.9136632960046999013.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250220142039.250992-1-arthur.simchaev@sandisk.com>
-References: <20250220142039.250992-1-arthur.simchaev@sandisk.com>
+	s=arc-20240116; t=1740109403; c=relaxed/simple;
+	bh=9xiR0WcQ75NciBVOvowr3/c1n8XpeiMI0KUaxrxBNg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kjeB7N+F69k2KP2WARyo9Svfv5WOC8aIY0SI05KNAiZ9c3D3Zm4ileICZnRUc1XfwO1p+YyHrYunIio+AQ/utI9UA7HxJxnt5BRV7BIVxH1Oy/Qgz+r8Ku+MAHHiWfvArhVJAkXIHdjh9v50N8upTjAMropIVLFKl2oysakcuXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=VCYj/aER; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=tU3HGm8jAkcYfAhXFLQlbPZELAW2UZ72fM84mdvotNs=; b=VCYj/aERgisjZ4Yf/pNXspGlcm
+	Gp6LbrWu50kwsLjzP3oUn66JxOtxEBN7xx13QxOXyHyRkblOygt01XHV1GTy2qZNHi7R2/hw/paKZ
+	CNt8kKCo+9FvGCTNvztHRxFoTKV3H1m6Oc6HkfM4qCqnleVLtcTVxyvg4YtEWt4gmj1/7h/Ef9atz
+	Mr4V2FvzS/cfsFpZ+UiTl/njOMy+SbRlZKA12/fI95rZxlBMi1J5RIzY4C2jWSoUDRgg3cv2bxZ6b
+	49s2w0dAf9NU6nJa3bKS7SuISM2sKYsXybeuHtTue0uaNTjXkMj66IYaAci+nr53p74rXUS9XLlwg
+	Yq0Xr86g==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1tlJwR-000Uyg-1M;
+	Fri, 21 Feb 2025 11:43:08 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 21 Feb 2025 11:43:07 +0800
+Date: Fri, 21 Feb 2025 11:43:07 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Dionna Glaze <dionnaglaze@google.com>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>,
+	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	John Allen <john.allen@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Tianfei zhang <tianfei.zhang@intel.com>, stable@vger.kernel.org,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH v6 4/8] crypto: ccp: Fix uapi definitions of PSP errors
+Message-ID: <Z7f2S3MigLEY80P2@gondor.apana.org.au>
+References: <20241112232253.3379178-1-dionnaglaze@google.com>
+ <20241112232253.3379178-5-dionnaglaze@google.com>
+ <d6ad4239-eb8a-9618-5be4-226dcf3e946c@amd.com>
+ <d72dbe54-2d50-9859-7004-03daf419be86@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-20_09,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0 bulkscore=0
- mlxscore=0 spamscore=0 mlxlogscore=971 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502100000
- definitions=main-2502210022
-X-Proofpoint-ORIG-GUID: fqCSwqdLLTknd736sl1XVqvQjqafh3C6
-X-Proofpoint-GUID: fqCSwqdLLTknd736sl1XVqvQjqafh3C6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d72dbe54-2d50-9859-7004-03daf419be86@amd.com>
 
-On Thu, 20 Feb 2025 16:20:39 +0200, Arthur Simchaev wrote:
+On Thu, Feb 20, 2025 at 10:34:51AM -0600, Tom Lendacky wrote:
+>
+> @Boris or @Herbert, can we pick up this fix separate from this series?
+> It can probably go through either the tip tree or crypto tree.
 
-> In case the device doesn't support arpmb, the kernel get memory crash
-> due to copy user data in bsg_transport_sg_io_fn level. So in case
-> ufs_bsg_exec_advanced_rpmb_req returned error, do not set the job's
-> reply_len.
-> 
-> Memory crash backtrace:
-> 3,1290,531166405,-;ufshcd 0000:00:12.5: ARPMB OP failed: error code -22
-> 
-> [...]
+Please repost this patch by itself.
 
-Applied to 6.14/scsi-fixes, thanks!
-
-[1/1] ufs: core: bsg: Fix memory crash in case arpmb command failed
-      https://git.kernel.org/mkp/scsi/c/f27a95845b01
-
+Thanks!
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
