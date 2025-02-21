@@ -1,311 +1,124 @@
-Return-Path: <stable+bounces-118570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D46A3F2D5
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 12:20:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6EFA3F358
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 12:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D05697AC1B6
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 11:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69B433B7EAD
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 11:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DBF204F64;
-	Fri, 21 Feb 2025 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFEF20968D;
+	Fri, 21 Feb 2025 11:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EEt07qxd"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="b9WQwj1U"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0AC2AE89
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 11:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941721E9B01;
+	Fri, 21 Feb 2025 11:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740136818; cv=none; b=iNLtAl+CH7ec6TprgeWiXip+DOxpg2hxwYkrTXFlo9JuPuNvQhLdXvFY6r58wK0+WGsIZ610/4zOl0Ld5H0goD6X3c03wSH5az2wPH62ZXiGFnHExphPUl76ZnfaTU2P4OQTxSr9xsBUoElhYQFCs3V628yQXLzMYD3xgoZCWUE=
+	t=1740138656; cv=none; b=Y2r1WE/BF7BVlolfhaRDjj8Y0kViP19utRINr+Kb2wtl+zi1SyHmGq6PCK18stTxFHyZVoDVBtL8bsTkH22aUrhqk8qnIMUeHcZfY6wdjILdcihtHBoNkPtItyarZoG7lRLcY895WaSD4xjG/07DKoWJT1mtow+DaiyegfToepM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740136818; c=relaxed/simple;
-	bh=a54WKefhfG7/cuTQifnqtcSb1kVk1SVa3Tyuw52b2to=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EkTDDg2bh/iP6d6nm8SGqTHAi6eT/1LDaEpfgVi3qCTH74/Cmw+pk9NA5hVXYIaVDSNpl4C6/BfjhmizYG5RNALTi94rcHA/8R1zfA09Z4yGaFZbgRFT8gIXE6xui9s2VgL7cHhBiFFzSsApQMKJtacyx6TXYOs6u6Nw9Lsc0lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EEt07qxd; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740136816; x=1771672816;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=a54WKefhfG7/cuTQifnqtcSb1kVk1SVa3Tyuw52b2to=;
-  b=EEt07qxdftuB0HTV9l9dQwcQroEk/+OcKkWjCNIf4Jt/9i44f3oqpIu3
-   DvGVVFqbg4IXV5g4kbXaaCRVCLFQaQZDEb/UKhiIS6fZ10Kd74HP4Sq8+
-   dtL5Vcc84TJOMu1hkLkX9MmmEFx4vAjcmk3XHCXfum35ishV+MCmDMIq6
-   XdCNjap+BrZUAKr5oB4nXR+EVL8eMl+6EQuV34SRix4IHvvUMtEEjYrwN
-   TrG0u3XcZfPsxOIJMWF34QNowIlzvz7p5soD3g8YrxVvEuLX/CRJzzB5G
-   WhrFnwqeZT2CmCTaQ93tUoaZSDQLdcaZa+9G5KmFJH/Zsz0VXfdVOoGOh
-   w==;
-X-CSE-ConnectionGUID: /9yL5ia5Q3uyOKqDlR2uiA==
-X-CSE-MsgGUID: bjYFuOdbSYCgmjIRtO0BcA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="44738063"
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
-   d="scan'208";a="44738063"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 03:20:15 -0800
-X-CSE-ConnectionGUID: uTbTHVWVQyCea2MrUjOvKw==
-X-CSE-MsgGUID: m9gB9y6cTnexkR2FULjr3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
-   d="scan'208";a="115989615"
-Received: from carterle-desk.ger.corp.intel.com (HELO [10.245.246.42]) ([10.245.246.42])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 03:20:14 -0800
-Message-ID: <a6ac4585efaabc710c377b786d042177e0df48ad.camel@linux.intel.com>
-Subject: Re: [PATCH v2 1/3] drm/xe/userptr: restore invalidation list on
- error
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>, Matthew Brost
-	 <matthew.brost@intel.com>
-Cc: intel-xe@lists.freedesktop.org, stable@vger.kernel.org
-Date: Fri, 21 Feb 2025 12:20:11 +0100
-In-Reply-To: <cfbcea7a-bcba-4e7a-9b63-398a48da789d@intel.com>
-References: <20250214170527.272182-4-matthew.auld@intel.com>
-	 <Z6/ttCTrEuwNsD6w@lstrano-desk.jf.intel.com>
-	 <6fec16d5-cbf3-448b-9c07-85a079095f62@intel.com>
-	 <Z7QFUy9ZyBRhPwuY@lstrano-desk.jf.intel.com>
-	 <Z7fAIjU/3wW8eMQL@lstrano-desk.jf.intel.com>
-	 <cfbcea7a-bcba-4e7a-9b63-398a48da789d@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1740138656; c=relaxed/simple;
+	bh=4iKGjyET1laEexqZtbAZOOQU2sFeiufZBXLJZpatY10=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tCmd6J7gBpOX2QQulhbFcH13GxcjafTM+6WopJzHhsMscHYfZVb1wHe3EsM3ZZnPgp96uwigi2ta09ixPzbbAWwVbQOqFq/LxZdg8v6Ga9vPvX/02tCIDU9UD2zyHh8/ZcbxvRrBhSBbiowrMhxdqE6kmrSgDuIbL9odRTbq0zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=b9WQwj1U; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38a8b17d7a7so1088333f8f.2;
+        Fri, 21 Feb 2025 03:50:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1740138653; x=1740743453; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DCetbYu7M/r5G/cWLg8Lx6IRcaQzJ405eRDRSC8isck=;
+        b=b9WQwj1UOYdQb5YimVuDLkmp91nLstJY9MlIbgrmHAEIoIEF6g6oXH48IAvHf0lfBa
+         XZ2Hyk5L35+M7hJT9JQ0+BkYqGEQ6fZvN8D9JOhQEZQifeWxKC7tlJHnvUQjFPGxjSWA
+         DOugyszJB/jhQuI13RADaDEr3Sttf8sUtaWo2F60r4QsyiVmaHoX4xExx6qZWn5YAF7g
+         wkdhq3tNDkQOfiGnAzHKx2XpJP8JSNxTiyLpTybpeHqPUNvDo+iV8UWMOtA1a3tb6q7F
+         7L0OA82VnEvai59CuILLctwRlMSRdoFBHfM7pTNwfCBfPHZNWWFlxzkYj4hbQfScDSq2
+         /1XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740138653; x=1740743453;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCetbYu7M/r5G/cWLg8Lx6IRcaQzJ405eRDRSC8isck=;
+        b=sG/Cz3KUlDuY3gz71kv2x7K5Xxxr7vnQ5bkdmKvyZsBO9Y1ykvy74XNziCXg0zSylm
+         qOA25Ol0bYFKaBuDE28CN/jt5HnwFWi8NPUrUrQBUZM9TW53peDXlXWd9EuX2R8o+PI8
+         +2IEtthfzqygFvSJxgdMrq5BXZzjEefHwhD+F1mbvYJh80Xp5eFyvK4tPoiQBrnMODAu
+         LI+FMefVLrwv1iwMWxbDSVzQBODYs4UXm+Z31akXUpDR2/votm+W1b/3Qza9Kj2I8/Y7
+         GOJ+ZMHbzAZTcfpXvnL/sKUzHeP5PwbvB0DbU21PKp1O7CxP1syyPp1J6qRB6bjaHlZs
+         lFJw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkZNiLN+veu4or+tNIf/Sv4IH0kpo9pGa+pieSvQtpISSkseH7QqCm1ROBMyVzS6Eax3lemO2C@vger.kernel.org, AJvYcCWubBsc/bxrptGac1j8d7bkOpKzO3K8vUyJy18CQimZnmich/x43SDiFy6tyKVFntQaXKkiIIvAhaJJb8c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1nxQ3MkJNhbhhyNzvAMopYw0EaiRT0j21Lnwwiv/hui20r3Zo
+	w9E1btcfemXo4UyooRZhN9zct4BPtSWkg3bAc/QcBLbJRnaL20M=
+X-Gm-Gg: ASbGncuHjwwWni3k3lKRZOGjAhmEIDEttqpImV3HEibI7kJRiHmcxZjI/+ivmxdLrrX
+	MStTsP7GcwiTh6UtIS3mTkU44LgvObhQ2rkh3yjbKvaqwFdLRMeYunEsLIipY7CRahclHpZJVTR
+	jpdFHLxN30EQ6uMluSB66i4KLNaI9EXFVusOEEsh2gQBES/Hi0Whd2FFL+0HPCuJQD+we2taWJa
+	YCx5GLhWeJl0AkX4Svg6Ib9Cz+Gq/lDOn+0TmErQ4uCR85BtCWe6C+EhSnALooUBmjMI+QISYP+
+	ghpImFsDMTu/WqK70OR9HTy0VZmXrF7MGhdN6lv2v99gq4SEGiex9hX9tPT6NuycdoQyivycKlI
+	lAUo=
+X-Google-Smtp-Source: AGHT+IHderF5dL8n18p2RisusD5mS+o5hF48IgFJWXe+lSEDsICJsZcv5gmaeGAv2kReqDUuV5QHNA==
+X-Received: by 2002:a5d:598d:0:b0:38f:3c8a:4c0a with SMTP id ffacd0b85a97d-38f6e7539b7mr1651006f8f.7.1740138652774;
+        Fri, 21 Feb 2025 03:50:52 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b437f.dip0.t-ipconnect.de. [91.43.67.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b44a7sm23540504f8f.12.2025.02.21.03.50.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 03:50:52 -0800 (PST)
+Message-ID: <370446d6-6668-458a-a472-e7c1595854a5@googlemail.com>
+Date: Fri, 21 Feb 2025 12:50:51 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/225] 6.12.16-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250220104454.293283301@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250220104454.293283301@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2025-02-21 at 11:11 +0000, Matthew Auld wrote:
-> On 20/02/2025 23:52, Matthew Brost wrote:
-> > On Mon, Feb 17, 2025 at 07:58:11PM -0800, Matthew Brost wrote:
-> > > On Mon, Feb 17, 2025 at 09:38:26AM +0000, Matthew Auld wrote:
-> > > > On 15/02/2025 01:28, Matthew Brost wrote:
-> > > > > On Fri, Feb 14, 2025 at 05:05:28PM +0000, Matthew Auld wrote:
-> > > > > > On error restore anything still on the pin_list back to the
-> > > > > > invalidation
-> > > > > > list on error. For the actual pin, so long as the vma is
-> > > > > > tracked on
-> > > > > > either list it should get picked up on the next pin,
-> > > > > > however it looks
-> > > > > > possible for the vma to get nuked but still be present on
-> > > > > > this per vm
-> > > > > > pin_list leading to corruption. An alternative might be
-> > > > > > then to instead
-> > > > > > just remove the link when destroying the vma.
-> > > > > >=20
-> > > > > > Fixes: ed2bdf3b264d ("drm/xe/vm: Subclass userptr vmas")
-> > > > > > Suggested-by: Matthew Brost <matthew.brost@intel.com>
-> > > > > > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> > > > > > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> > > > > > Cc: <stable@vger.kernel.org> # v6.8+
-> > > > > > ---
-> > > > > > =C2=A0=C2=A0 drivers/gpu/drm/xe/xe_vm.c | 26 ++++++++++++++++++=
-+-----
-> > > > > > --
-> > > > > > =C2=A0=C2=A0 1 file changed, 19 insertions(+), 7 deletions(-)
-> > > > > >=20
-> > > > > > diff --git a/drivers/gpu/drm/xe/xe_vm.c
-> > > > > > b/drivers/gpu/drm/xe/xe_vm.c
-> > > > > > index d664f2e418b2..668b0bde7822 100644
-> > > > > > --- a/drivers/gpu/drm/xe/xe_vm.c
-> > > > > > +++ b/drivers/gpu/drm/xe/xe_vm.c
-> > > > > > @@ -670,12 +670,12 @@ int xe_vm_userptr_pin(struct xe_vm
-> > > > > > *vm)
-> > > > > > =C2=A0=C2=A0=C2=A0	list_for_each_entry_safe(uvma, next, &vm-
-> > > > > > >userptr.invalidated,
-> > > > > > =C2=A0=C2=A0=C2=A0				 userptr.invalidate_link)
-> > > > > > {
-> > > > > > =C2=A0=C2=A0=C2=A0		list_del_init(&uvma-
-> > > > > > >userptr.invalidate_link);
-> > > > > > -		list_move_tail(&uvma->userptr.repin_link,
-> > > > > > -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &vm->userptr.repin_lis=
-t);
-> > > > > > +		list_add_tail(&uvma->userptr.repin_link,
-> > > > > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &vm->userptr.repin_list);
-> > > > >=20
-> > > > > Why this change?
-> > > >=20
-> > > > Just that with this patch the repin_link should now always be
-> > > > empty at this
-> > > > point, I think. add should complain if that is not the case.
-> > > >=20
-> > >=20
-> > > If it is always expected to be empty, then yea maybe add a
-> > > xe_assert for
-> > > this as the list management is pretty tricky.
-> > >=20
-> > > > >=20
-> > > > > > =C2=A0=C2=A0=C2=A0	}
-> > > > > > =C2=A0=C2=A0=C2=A0	spin_unlock(&vm->userptr.invalidated_lock);
-> > > > > > -	/* Pin and move to temporary list */
-> > > > > > +	/* Pin and move to bind list */
-> > > > > > =C2=A0=C2=A0=C2=A0	list_for_each_entry_safe(uvma, next, &vm-
-> > > > > > >userptr.repin_list,
-> > > > > > =C2=A0=C2=A0=C2=A0				 userptr.repin_link) {
-> > > > > > =C2=A0=C2=A0=C2=A0		err =3D xe_vma_userptr_pin_pages(uvma);
-> > > > > > @@ -691,10 +691,10 @@ int xe_vm_userptr_pin(struct xe_vm
-> > > > > > *vm)
-> > > > > > =C2=A0=C2=A0=C2=A0			err =3D xe_vm_invalidate_vma(&uvma-
-> > > > > > >vma);
-> > > > > > =C2=A0=C2=A0=C2=A0			xe_vm_unlock(vm);
-> > > > > > =C2=A0=C2=A0=C2=A0			if (err)
-> > > > > > -				return err;
-> > > > > > +				break;
-> > > > > > =C2=A0=C2=A0=C2=A0		} else {
-> > > > > > -			if (err < 0)
-> > > > > > -				return err;
-> > > > > > +			if (err)
-> > > > > > +				break;
-> > > > > > =C2=A0=C2=A0=C2=A0			list_del_init(&uvma-
-> > > > > > >userptr.repin_link);
-> > > > > > =C2=A0=C2=A0=C2=A0			list_move_tail(&uvma-
-> > > > > > >vma.combined_links.rebind,
-> > > > > > @@ -702,7 +702,19 @@ int xe_vm_userptr_pin(struct xe_vm
-> > > > > > *vm)
-> > > > > > =C2=A0=C2=A0=C2=A0		}
-> > > > > > =C2=A0=C2=A0=C2=A0	}
-> > > > > > -	return 0;
-> > > > > > +	if (err) {
-> > > > > > +		down_write(&vm->userptr.notifier_lock);
-> > > > >=20
-> > > > > Can you explain why you take the notifier lock here? I don't
-> > > > > think this
-> > > > > required unless I'm missing something.
-> > > >=20
-> > > > For the invalidated list, the docs say:
-> > > >=20
-> > > > "Removing items from the list additionally requires @lock in
-> > > > write mode, and
-> > > > adding items to the list requires the @userptr.notifer_lock in
-> > > > write mode."
-> > > >=20
-> > > > Not sure if the docs needs to be updated here?
-> > > >=20
-> > >=20
-> > > Oh. I believe the part of comment for 'adding items to the list
-> > > requires the @userptr.notifer_lock in write mode' really means
-> > > something
-> > > like this:
-> > >=20
-> > > 'When adding to @vm->userptr.invalidated in the notifier the
-> > > @userptr.notifer_lock in write mode protects against concurrent
-> > > VM binds
-> > > from setting up newly invalidated pages.'
-> > >=20
-> > > So with above and since this code path is in the VM bind path
-> > > (i.e. we
-> > > are not racing with other binds) I think the
-> > > vm->userptr.invalidated_lock is sufficient. Maybe ask Thomas if
-> > > he
-> > > agrees here.
-> > >=20
-> >=20
-> > After some discussion with Thomas, removing notifier lock here is
-> > safe.
->=20
-> Thanks for confirming.
+Am 20.02.2025 um 11:58 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.16 release.
+> There are 225 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-So basically that was to protect exec when it takes the notifier lock
-in read mode, and checks that there are no invalidated userptr, that
-needs to stay true as lock as the notifier lock is held.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-But as MBrost pointed out, the vm lock is also held, so I think the
-kerneldoc should be updated so that the requirement is that either the
-notifier lock is held in write mode, or the vm lock in write mode.=20
-
-As a general comment these locking protection docs are there to
-simplify reading and writing of the code so that when new code is
-written and reviewed, we should just keep to the rules to avoid
-auditing all locations in the driver where the protected data-structure
-is touched. If we want to update those docs I think a complete such
-audit needs to be done and all use-cases are understood.
-
-/Thomas
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
->=20
-> >=20
-> > However, for adding is either userptr.notifer_lock || vm->lock to
-> > also
-> > avoid races between binds, execs, and rebind worker.
-> >=20
-> > I'd like update the documentation and add a helper like this:
-> >=20
-> > void xe_vma_userptr_add_invalidated(struct xe_userptr_vma *uvma)
-> > {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct xe_vm *vm =3D xe_vma_=
-vm(&uvma->vma);
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lockdep_assert(lock_is_held_=
-type(&vm->lock.dep_map, 1) ||
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lock_is_hel=
-d_type(&vm-
-> > >userptr.notifier_lock.dep_map, 1));
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lock(&vm->userptr.inval=
-idated_lock);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_move_tail(&uvma->userpt=
-r.invalidate_link,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &vm->userpt=
-r.invalidated);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_unlock(&vm->userptr.inv=
-alidated_lock);
-> > }
->=20
-> Sounds good.
->=20
-> >=20
-> > However, let's delay the helper until this series and recently post
-> > series of mine [1] merge as both are fixes series and hoping for a
-> > clean
-> > backport.
->=20
-> Makes sense.
->=20
-> >=20
-> > Matt
-> >=20
-> > [1] https://patchwork.freedesktop.org/series/145198/
-> >=20
-> > > Matt
-> > >=20
-> > > > >=20
-> > > > > Matt
-> > > > >=20
-> > > > > > +		spin_lock(&vm->userptr.invalidated_lock);
-> > > > > > +		list_for_each_entry_safe(uvma, next, &vm-
-> > > > > > >userptr.repin_list,
-> > > > > > +				=09
-> > > > > > userptr.repin_link) {
-> > > > > > +			list_del_init(&uvma-
-> > > > > > >userptr.repin_link);
-> > > > > > +			list_move_tail(&uvma-
-> > > > > > >userptr.invalidate_link,
-> > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &vm-
-> > > > > > >userptr.invalidated);
-> > > > > > +		}
-> > > > > > +		spin_unlock(&vm-
-> > > > > > >userptr.invalidated_lock);
-> > > > > > +		up_write(&vm->userptr.notifier_lock);
-> > > > > > +	}
-> > > > > > +	return err;
-> > > > > > =C2=A0=C2=A0 }
-> > > > > > =C2=A0=C2=A0 /**
-> > > > > > --=20
-> > > > > > 2.48.1
-> > > > > >=20
-> > > >=20
->=20
+Beste Grüße,
+Peter Schneider
 
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
