@@ -1,178 +1,121 @@
-Return-Path: <stable+bounces-118534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B019A3E910
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 01:11:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AED75A3E9B2
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 02:13:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55EFE4229F6
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 00:11:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D4613B05BD
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 01:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226D9111AD;
-	Fri, 21 Feb 2025 00:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC2A3F9FB;
+	Fri, 21 Feb 2025 01:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c9UqhShd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cwej9MYo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19688F9E6;
-	Fri, 21 Feb 2025 00:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F57A3594F
+	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 01:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740096619; cv=none; b=UDIb/pQRapy67Lmyt9QEfotEYSjTqS+3sF63YvkItEThWVERFqPS7u3JA17WxMr7gkTpa+5ZfacGkC/hflIOxPeaO6FcrYVEzfWfCTOqLqHMIGM0//m6JfhCGnfKKTNVZ5kOgfSN+r6h52haIvja6M64CcTss8rggNeRDIuNbcY=
+	t=1740100379; cv=none; b=OD66Cx6cHwBPexN8ypfOehmhW4G93ADOipOYMf51xe/C7eye4SPBWgPZah0LBCRwbGQP8gvzUp4HXn2UY91S6+j57ut0yeNKPpegkuQKCPOirFDQvJDOAltkrz5pjtkpd1ekmwy/raGtwD4ySiMeorSzfoYnGsON3Y8Mu0mHDVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740096619; c=relaxed/simple;
-	bh=vXCYwQLSvKIptQcJVs0ex9tqncT35sXQaqqioY+05h8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BTnMV0K4c2E7v8JyB4kXbmjI4NFoJqS14TQbaKLtTohiuCZMDJflZh+v3WYUDJFgOrom32hzhXwGW3Vv0ZnudBnBwqYE5drD5FT1lJqsFWkaxQoD3Df+P5ZzsuONoClaHaeciKVfTt5UfqWsPtsJI2vLh9uGQAUfPqaBDKEoSL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c9UqhShd; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4397e5d5d99so9830715e9.1;
-        Thu, 20 Feb 2025 16:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740096616; x=1740701416; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3ltM/d0CNg9/b6oyJiIqSMkzVa+3F9bgYF4M2wUIeWo=;
-        b=c9UqhShdo7Qe8ydhew8K0JEmxlKNQni6IFdtDgpbuB9/w1o/mFPZHj/SMXAPBifTVm
-         SqIyxofBEeSaLCuFtTMdak+KM+37yOw5Msg1AhjZqaj0wrG+1+B3qIoIUsl5GyYnvC/A
-         arw57asEYfzZNLGjE+g+X+msp/ybchwgUGvKuuIGJqC9plbHkUx76BXhbRK8h093PkzX
-         HXRDT0dzpiCd7veK0ylccxvAVxtoAaWVIw4/kOuyykyZWjJRclI7Zt8CtBufppW9re4q
-         +cf4LBsZdm65FaR2Akd0tVwJmDkwhYqBA7XeztyZDzqQTAnbRrKLI0I5ynA/jgdQnkZv
-         CbZQ==
+	s=arc-20240116; t=1740100379; c=relaxed/simple;
+	bh=Uq7GzPfQ3uC0UiGgLsywtL1UAOYX+nwobFKbFtjrYR8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fVXYM9JEBCBgkWpTPKiXGR7LypSRKyxikimh5gNzZMZGQ/waD+bHhrxrrBV1s3rCGUie4O/Hi+MlL8So/6zFuAiKECBRd2YFUbpsO210jF1FiXY9FHUKNN8vSIvDxBk7TcZcxyj2cKAZ/Jo07ukmEKC20r4eZfs7PuUkk50oMPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cwej9MYo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740100377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uq7GzPfQ3uC0UiGgLsywtL1UAOYX+nwobFKbFtjrYR8=;
+	b=Cwej9MYobLgPbWuEq0/9OlWxMi78UwKh6d66VQYPVtB5EVFs0lgfopPiBZD3CDpSCsAwRr
+	kmOq/OhVFG/MP+e6jBg5xVbxEy0FWvSjyetyQ+oaTqKNDYrMR6zKL5cgIu0/CavgIEAfGy
+	m/tifV/BbRNtCr4G00z2rnh/hpL+BcM=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-ilEALwShNLeuWvgEoB0PAA-1; Thu, 20 Feb 2025 20:12:54 -0500
+X-MC-Unique: ilEALwShNLeuWvgEoB0PAA-1
+X-Mimecast-MFC-AGG-ID: ilEALwShNLeuWvgEoB0PAA_1740100373
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2fc1cb0c2cbso5077800a91.1
+        for <stable@vger.kernel.org>; Thu, 20 Feb 2025 17:12:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740096616; x=1740701416;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3ltM/d0CNg9/b6oyJiIqSMkzVa+3F9bgYF4M2wUIeWo=;
-        b=q67zbOtFaNSjZbAPThTQdaE7f9c90GbMpWHYpUTBCRUbrQVgiPuX6tYPpNYYIrjY0S
-         W9aJBPs9yIMZDPrMpnCaNH7MKeGwxeNUwI5wpu1KmAxjIvp9W5WisXRTgonUsBNnhwz8
-         FqPexbSMgdDjjRG6TxeAdDj3KQQXmldTPwvDsMY4PCFSID2vJ1WwW7bntlxOM1gmge92
-         0ZqODh6uVTaTas5tAe6+k3mJMgyFWyTgYYRg955YVlEtFvUTBuc7L0FJwWj9u4g/Rh7t
-         34T1zlq+opsJU9b/nDcP7w1Tkc8NWVTvmZCQNejVWo5hpAXbVteeDaWszfDWd1LLpMxK
-         V0IA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNi8mEL6EOi7257F45nIKrp3q1zVUGPO2ApACbDbj8rDvqlQGg4AXtGghnNQr2q85+ZJTc8Mm1@vger.kernel.org, AJvYcCXSX1FXG7qIZ6NWF8KftHaquZcSRg9IJz/JHBJO835CscAmy1xOWBPRkrBdvyMEP9OjvyyM/VHbUCDclsvwRVg=@vger.kernel.org, AJvYcCXW6dTFp6/hMIribj/809v2PXp41Zi3Vikqj/sZxULXfnGnHVq7DwtPTNdlybkdY2KIzPcHLgb8x93evNaN@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIHFU5kaunbbrk68fuaEJZ91NX0J679vyBRM7hleDiCK8fj0FQ
-	3TsX3wAiFWUMw3/pifeOOdz2NnV8B9Tce7uAxQEzjkszST9FJ2VS
-X-Gm-Gg: ASbGncv8kw1LzhE82vsQQOOM+5O00CJvDCRt7kvr0ETwodKdG5jbuE1b3hPYItNULLS
-	kwXRU/weCfdlS6+n9nOXfy/eNCGJ27wT2REz/b6f+Jje0faBJ1tVwssAw3IiHqPW63l0DypvmAj
-	V+FH6iG+uQcZh0s3Lc0+oFbDgBmtV4/fPuuKSfjHfJbgMbCMFcGrLhClPJL3iOkRrA7HKfYtojd
-	Juh6toCsq47943tt00mqjWYiGIz0mst402Q1yYSuDO7ClGyxDIOD/+sIX9y74fEFYqiVGTFbVzB
-	2M6qnTDx94Uh
-X-Google-Smtp-Source: AGHT+IESXNVFkG0iILEEgotVDpm45DxMQ/ic89gzIihAXdvMHbx/sLissRXUpyAYoKRhDIFHoznvAg==
-X-Received: by 2002:a05:600c:510f:b0:439:9898:f18c with SMTP id 5b1f17b1804b1-439ae220a50mr8091265e9.26.1740096616064;
-        Thu, 20 Feb 2025 16:10:16 -0800 (PST)
-Received: from localhost ([2a02:168:59f0:1:b0ab:dd5e:5c82:86b0])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38f258dab74sm22174894f8f.32.2025.02.20.16.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 16:10:15 -0800 (PST)
-Date: Fri, 21 Feb 2025 01:10:11 +0100
-From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-To: Jared Finder <jared@finder.org>, hanno@hboeck.de
-Cc: kees@kernel.org, gnoack@google.com, gregkh@linuxfoundation.org,
-	jannh@google.com, jirislaby@kernel.org,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2] tty: Permit some TIOCL_SETSEL modes without
- CAP_SYS_ADMIN
-Message-ID: <20250221.0a947528d8f3@gnoack.org>
-References: <202501100850.5E4D0A5@keescook>
- <cd83bd96b0b536dd96965329e282122c@finder.org>
+        d=1e100.net; s=20230601; t=1740100373; x=1740705173;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Uq7GzPfQ3uC0UiGgLsywtL1UAOYX+nwobFKbFtjrYR8=;
+        b=Ll3ANMidItKZsTU56RbDUM7gIfSsLbkmnc5DwklVj97jUCjmQj3BjBg7kd3KrifnMw
+         M5o2Mv5EBcBYp5pTuR/ECezG01EUurM6oYYsUnxUXaj6jIgaJlFCNDhy+kSqU+2X3fih
+         +13ZV8KQC/bMwZqebr/q5y/JP01+dZstIZmOtABmFeA0/uY8X/kTzCHQPb0ugdQzXtCU
+         /CzbPGAVhD7MIU8jZVDPzAERnmVahMHnePlNcmcSIqSJJS8GWsy3uBK5l/zPNusLXPLJ
+         bC+sBDDEBgUtrjoAveMQ0dk4qIEW/Me5XABfv4pcxz0YkYwHQEK6XXOPbGomkLQy+Mpd
+         Gwog==
+X-Forwarded-Encrypted: i=1; AJvYcCVpuof43vI+nyoeptSqTclQJWfEWiwcijVeZXEpipDjF7twBeaWDDCxKsJXkSR6ukcR7E9cC44=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8MfS0l16JyLLzng3RKUsreh6lCoKTx4UXAuSOtCw/G0yHQjom
+	cQMK1yMWAFREcn59+fjmn6A8CzE3JXxgP7cTBGzCMDiH5+V2KopCrA3qtmsx97zl8Vdn2rXVERs
+	8x+2wVAnBAroCpIXfcXxVm5xkT795m/eXLl5P0kGOMmePQcUQpZ+JsVq/3CpaA8Dw3KxEkot/UO
+	fHpd0yVD3foxwL42+c45h5hl/0shfb
+X-Gm-Gg: ASbGncsuJmA3DkYo4s+H9cWyBRDSEbWZA7R3ZpoLZMqC0yJI5gbihx+eVmwi++hJXYa
+	Ii4jR8bReOe67XYzQshIOXcYjWjpzJDkEaFctG4mTH7w0YwOCPTlbe607QJJcEoI=
+X-Received: by 2002:a17:90b:5310:b0:2ea:696d:732f with SMTP id 98e67ed59e1d1-2fce7b271a4mr2148902a91.29.1740100373609;
+        Thu, 20 Feb 2025 17:12:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGnQJ9hWU4v+2TwwECUtm6Pf8c9YX7B6ZUHd/Hqnqd2kx0Bc2ftH5qx2hCH5z2BE+GZRURxv4Goas3NlmOaXUg=
+X-Received: by 2002:a17:90b:5310:b0:2ea:696d:732f with SMTP id
+ 98e67ed59e1d1-2fce7b271a4mr2148854a91.29.1740100372927; Thu, 20 Feb 2025
+ 17:12:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cd83bd96b0b536dd96965329e282122c@finder.org>
+References: <20250220193732.521462-2-dtatulea@nvidia.com>
+In-Reply-To: <20250220193732.521462-2-dtatulea@nvidia.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 21 Feb 2025 09:12:41 +0800
+X-Gm-Features: AWEUYZkw-CTw854l_MFE994dYvtfLs30K1XdrnaRr8wNLayyzmZm48vwiDxgk6A
+Message-ID: <CACGkMEuUsh-wH=fWPp66XAFeE_xux-drf1gatSQSiGuS_rO_zQ@mail.gmail.com>
+Subject: Re: [PATCH vhost v2] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, 
+	Eugenio Perez Martin <eperezma@redhat.com>, Si-Wei Liu <si-wei.liu@oracle.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, stable@vger.kernel.org, 
+	Cong Meng <cong.meng@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Jared and Hanno!
+On Fri, Feb 21, 2025 at 3:40=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com=
+> wrote:
+>
+> From: Si-Wei Liu <si-wei.liu@oracle.com>
+>
+> create_user_mr() has correct code to count the number of null keys
+> used to fill in a hole for the memory map. However, fill_indir()
+> does not follow the same to cap the range up to the 1GB limit
+> correspondingly. Fill in more null keys for the gaps in between,
+> so that null keys are correctly populated.
+>
+> Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+> Cc: stable@vger.kernel.org
+> Reported-by: Cong Meng <cong.meng@oracle.com>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-On Sat, Feb 08, 2025 at 07:18:22AM -0800, Jared Finder wrote:
-> Hi, I'm the original reporter of this regression (noticed because it
-> impacted GNU Emacs) and I'm wondering if there's any traction on creating an
-> updated patch? This thread appears to have stalled out. I haven't seen any
-> reply for three weeks.
-> 
->   -- MJF
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-Jared, can you please confirm whether Emacs works now with this patch
-in the kernel?
+Thanks
 
-I am asking this because I realized that the patch had a bug.  We are
-erring in the "secure" direction, but not all TIOCL_SELMOUSEREPORT
-invocations work without CAP_SYS_ADMIN.
-
-(TIOCL_SELMOUSEREPORT has to be put into the sel_mode field of the
-argument struct, and that field looked like an enum to me, but as it
-turns out, the TIOCL_SELMOUSEREPORT is 16 and the lower 4 bits of that
-integer are used as an additional argument to indicate the mouse
-button status and modifier keys.  I had overlooked that the
-implementation was doing this.  As a result, TIOCL_SELMOUSEREPORT
-works without CAP_SYS_ADMIN, but only if all four lower bits are 0.)
-
-So, I apologize for the oversight.  -- Jared, can you please confirm
-whether TIOCL_SELMOUSEREPORT is called directly from Emacs (rather
-than from gpm)?  I tried to trace it with perf but could not reproduce
-a scenario where Emacs called it.
-
-If this specific selection mode is not needed by Emacs, I think *the
-best thing would be to keep it guarded by CAP_SYS_ADMIN, after all*.
-
-As it turns out, the following scenario is possible:
-
-* A root shell invokes malicious program P and changes its UID to a
-  less privileged user, but it passes a FD to the TTY.  (Instead of
-  UID switch, it can also be a sandboxed program or another way of
-  lowering privileges.)
-* Program P enables mouse tracking mode by writing "\033[?1000h".
-* Program P sends IOCTL TIOCLINUX with TIOCL_SETSEL with
-  TIOCL_SELMOUSEREPORT and passes suitable mouse coordinate and button
-  press arguments.  As a response, the terminal writes the escape
-  sequence \033[MBXY, where B, X and Y are bytes indicating the button
-  press mask and the 1-based mouse X and Y coordinates, all added to
-  0x20 (space).
-
-It is an obscure scenario and probably requires a console with a
-character width and height above 256 (to control the full byte range),
-but it seems that this can in principle be used to simulate short
-keyboard inputs to programs (like bash) that are not expecting this
-old mouse protocol. - This sort of keypress-simulation is exactly why
-we created the CAP_SYS_ADMIN restriction for TIOCL_SETSEL in the first
-place.
-
-For background on this mouse tracking mechanism, I had to read up on
-it myself, but found the following two links helpful:
-https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Normal-tracking-mode
-https://www.ibm.com/docs/en/aix/7.2?topic=x-xterm-command#xterm__mouse
-
-(Remark on the side, the GPM client library normally gets its mouse
-coordinates through a Unix Domain socket from the GPM daemon. It has
-support for this xterm emulation mode as well, but it is only enabled
-if $TERM starts with "xterm".)
-
-In summary:
-
-If it is not absolutely needed, I think it would be better to not
-permit access to TIOCL_SELMOUSEREPORT after all.  It does not let
-attackers simulate keypresses quite as easily as the other features,
-but it does let them send such input with more limited control, and it
-seems like an unnecessary risk if the feature is not needed by
-anything but mouse daemons running as root, such as GPM and
-Consolation.
-
-Does this seem reasonable?  (Hanno, do you agree with this
-assessment?)  I am by no means an expert in this terminal-mouse
-interaction, I am happy to stand corrected if I am wrong here.
-
-–Günther
 
