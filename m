@@ -1,252 +1,139 @@
-Return-Path: <stable+bounces-118591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50103A3F635
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 14:40:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F05A3F6A3
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:00:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 364953ADAFE
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 13:38:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74EDF3BEAA2
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 13:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF0A204590;
-	Fri, 21 Feb 2025 13:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A6420E335;
+	Fri, 21 Feb 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nAPl/Tzr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IObDNwlc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1378F2054FC
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 13:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619520B7F2
+	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 13:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740145144; cv=none; b=FbwDxSD7/I9ZSRfIN8IgySBTkW2wijWLAOZmUuhLesy00m2rJoeTwwrx1Z1gSIOFqHaieRB2fvMP4Da2nRHUSoqGTX08y3pZgr35T7Pd7j6hRADi7GANYj6V+VybFzKG8b9oz+n4RuaJneOIo44kwSNcx9+bXIHEo0BKmb5+Ejg=
+	t=1740146237; cv=none; b=cbdYQ2j9zW9jztuhyGbBzV/kLMBQPkavUoucm+6Zev8lWLIxiNEuvC/88FEecqssgxohyXMNp8MmO1TB88t9UIzKY82/ZIju3hB3WOPj+jQWys9TAfPWKyWxbqBlNI5es+y32j6TKXTB0NjgU6vd+CpjDUbVKjbkU/VEFbJXduY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740145144; c=relaxed/simple;
-	bh=v42QuVGi+tVtlkD1duzqNPKyyHj/5xBu2onHD0exs40=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCgaVH8tTfxYgYChBG/4hMc7067nF1QYtFmSawPGHh4i6pBVZzBjAylTgpkzqPi2oiKy13D4TP+JQ/pxtUunxF/QM3k2U6gu3knDE8YXR9QUwrPHYbkQe0ZSLi3HtioFTEQm3EcDuP8VTfLWjqAU8Ob8EfyuMWxsTGni6+pjuP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nAPl/Tzr; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-221206dbd7eso41644085ad.2
-        for <stable@vger.kernel.org>; Fri, 21 Feb 2025 05:39:02 -0800 (PST)
+	s=arc-20240116; t=1740146237; c=relaxed/simple;
+	bh=volPFa9RYy4gVcRgv7Kf3SiRUiDUxttAzs4dh4Ct8Vs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=J7TAnQ0caUfHyaOwG03ulvqje58cVFTond9dHtK47794kXOIRmHRNIIRSP0KpHnELEdHJuXXjCOFDGQXx2+ld5QgbfwS7c4JM4+hCn3hv2M7ZnH8EiSHc/316Af9Dd/fy8CfSmPkHIBr49H+jFYIi2tmQPd8GtEe2ZJq+GOtQVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IObDNwlc; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4394c0a58e7so23148975e9.0
+        for <stable@vger.kernel.org>; Fri, 21 Feb 2025 05:57:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740145142; x=1740749942; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mlKVGtJuq9Clxy8NKSvDmJW5rbg05hgcEx0LMRVPgAo=;
-        b=nAPl/TzrPSGje54ire5FcwsTqEOSNF6lKzHAo+O6JReDwyhGmuTmdpf4HFff0MfI//
-         cwU2TUSD0K/O86q2+6BHvNkf3hZe+izV1jt+TY4OSticn0TQZLeRjt8JHofMq8/fDppk
-         nPAcBCfPhYVCFqe4QoLHWNKNTHX0hc916qY6Qja4CgBk5Hk9LHLCPn38z/jrl3bXyESJ
-         os1B23XCpV3XftvU3sSAtnQj3RyIiNp3FSRuG1pbmSRTH/bSYwzQd43hb84Net/Tqs0W
-         PDWjI/YUtYMjsSecdl97m2zD47U4p4BRQQxVrSv8taqa6yhKhJ4wE6q2nNCNpCb37gex
-         v/lQ==
+        d=google.com; s=20230601; t=1740146234; x=1740751034; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0QgqpJEuycUIEe4Og2qawQLjpg/faFxO4eXm0mFbcOA=;
+        b=IObDNwlcrRwXS//K+defeDYPobCM6RWgSCfbh81CsfNrPKJz14I/KyLcx5qYpffOEX
+         /JzW6Ud4us/FxKknkitYizgvEUANFNGDb75LVhZ7nGUyoODZ802RHAuFk9oZ8N7NTQc3
+         hQJtYg2nnxLVB2QbgNa++S1Rt7nTjP8OURxYwSnB3eWB6lYa2zvGtKw0yWkNjyAOsrH1
+         W3zEsPjYsoD8YZ2kb+6xCUoG1JzdwgbLihnKrkPKHL/QzOZ6rxD7DYcBKrCbges9WY58
+         GF4CjdeI/tzXqy0WAtU7Q1AcOuGHpJkVS3/99bX8VsqZ4Pd5DL+d2Kn3NBQ0aYDchx/E
+         Mf9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740145142; x=1740749942;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mlKVGtJuq9Clxy8NKSvDmJW5rbg05hgcEx0LMRVPgAo=;
-        b=PLq3xddqSOD9jLncr6O6+MeQ+iJbOQ+Vhn4maq0lQCBNccuiWlftOaA8/odBt69o8T
-         Kz2y7e/v0ncnSue7Dr6KOKHX3dDHu8SLne2diPxN+Ivk/q2tZj4Y+zmte34uBBZKtNq7
-         ay9TWWGCVCSsGu5kJ7bHRtXzdYnK7/3p0Qr57pVyRr08itnjjOg8w+2yjMpPEHz5Su5S
-         zKJkO1BvwPZ467FmaIVY4bIk++ZqBsEXph5VZ2nGNcHh/A0nrapX+VhX84RKzcMuutJK
-         X2uH2NQH2E1ABEo4iK/4lFNYucDhuP/0LzNB0qBqkSk8hY3ZIRYt/rp6wcRijTyF/cKU
-         IZYQ==
-X-Gm-Message-State: AOJu0YzFMDhayJIuK2bg82qHjkkNlxB7IDIoR0dJx4bHptWNej3t9tqD
-	xGiZqxeZKXB0vrCJcQaatIe0BYeLJ4GttCpw0OvNtt6j0RJvlbdve2SD7Q==
-X-Gm-Gg: ASbGncuDHdh2hLcjoztrC/R/1OFIjsP0P88VuMEvcBaI3uVxJHz0GnpAALC+3myeX53
-	8XmR6yPZryWEkEgcsnmE6EKPtqXmC11f9H+T6HIYvcBf35YUL+dl7IY177qZxevqvMWKn0XXeS1
-	Mk5Pf3HnAcT/LYkWWNwC1ifj0QN26RFe2wG/bdBXg45gGSp7MndjnrmmG+DtVGD/xTQDWkq9C9y
-	Gd92aeTEfaIhhaAno9nA/NNWcS99Z06s9DtQWdRHfnfswGF2dNFAx+L34ebU4e2F7qYRTUPdjhp
-	ShOLVrd+lJcXdAIaxPNIt+yzueS/yUfnzq4ARJSXJkqKyY2w1ACpieYLu1koteUeGTtP4zaJNw=
-	=
-X-Google-Smtp-Source: AGHT+IEj+OkwTEghBCdGgf0fu4aaWLf9PjJxnkgM7BPkl93VCrJurPCS2UxhkDpO6enA2sZ6cJvaDg==
-X-Received: by 2002:a17:902:c950:b0:21f:507b:9ad7 with SMTP id d9443c01a7336-2219ff5e619mr58479805ad.25.1740145141701;
-        Fri, 21 Feb 2025 05:39:01 -0800 (PST)
-Received: from carrot.. (i121-113-18-240.s41.a014.ap.plala.or.jp. [121.113.18.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d5349047sm137818645ad.7.2025.02.21.05.38.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 05:39:00 -0800 (PST)
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 3/3] nilfs2: handle errors that nilfs_prepare_chunk() may return
-Date: Fri, 21 Feb 2025 22:37:55 +0900
-Message-ID: <20250221133848.4335-4-konishi.ryusuke@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250221133848.4335-1-konishi.ryusuke@gmail.com>
-References: <20250221133848.4335-1-konishi.ryusuke@gmail.com>
+        d=1e100.net; s=20230601; t=1740146234; x=1740751034;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0QgqpJEuycUIEe4Og2qawQLjpg/faFxO4eXm0mFbcOA=;
+        b=KeV0dK5w8t1+at5AAUeq+l/9Wa42jgGaaHjJuxzvq75dKtWReqqtfmUNmqaZcYZTzt
+         EGEOYGx2NmDqp/+Bqe6+2SyAUYIAY/1eb583IWkUFAk9MiA73YpGJPT2tBvOH6XelFvn
+         04sSB1+31GACBEuRHBPJNoM4j3vF8epTJ9nBvsldzAh3nmOLToxakt9r///WD9Fmwvqy
+         /8S2WnSW9WGWs4yPFYdImUSVP43xDIRFvVShSCKvezpdSTVdPgVLVOxmYq6jyvA9ojCS
+         pU1KPkwjzygmMlblw8sV+3PpPmhllOaiPLHkH2PzGmTBmrVTnwUH9cNiPHVWLP7Cs1m9
+         6wbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbK5kMvvgkoDyDnt7xHveNOeLeQHhkqmgrG2f0I1SBs7naTnFYbB3h7fYmQCxZBLyA1cV3EXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzgDXo0DOmUUGIScf2A8lv/RLyNzBYV9WOZR5INTHgiO5/oTGj
+	KtKPIneImapz0vojzIJltuE/HKlqvrdVkXzsbuHdxj05xfedyKKjdavzZdnieBwO9ryoog==
+X-Google-Smtp-Source: AGHT+IGx6LVhgSFcm42dg7VjXDgeanxRd6Hh/hW3ioF0J+rcD6X8uxvpf66q7lnwBitra9fBYMtRkJ1O
+X-Received: from wmbfl27.prod.google.com ([2002:a05:600c:b9b:b0:434:f1d0:7dc9])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1383:b0:439:9a5a:d3a5
+ with SMTP id 5b1f17b1804b1-439aeae186dmr20877285e9.1.1740146234049; Fri, 21
+ Feb 2025 05:57:14 -0800 (PST)
+Date: Fri, 21 Feb 2025 14:57:06 +0100
+In-Reply-To: <20250221135704.431269-4-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250221135704.431269-4-ardb+git@google.com>
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1998; i=ardb@kernel.org;
+ h=from:subject; bh=qMOouDoNVEK00y+HH+qNoH/b3RqloGuhSktNBenc3kE=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIX1Hm5Efe0ljepWmvlq70RRXld+/Zu53tny8Q0ONea/FX
+ Ikomz8dpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCJV1xgZWl/eP+v3+PupjU4H
+ rLqeqC5s8mkTuideZRltsfrLtBoBPUaGM+phP2tYz7z1a63lEs068mz7/p3Vl2QeGOj/ZZC02rm YGwA=
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <20250221135704.431269-5-ardb+git@google.com>
+Subject: [PATCH v3 1/2] vmlinux.lds: Ensure that const vars with relocations
+ are mapped R/O
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, Huacai Chen <chenhuacai@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-commit ee70999a988b8abc3490609142f50ebaa8344432 upstream.
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Patch series "nilfs2: fix issues with rename operations".
+In the kernel, there are architectures (x86, arm64) that perform
+boot-time relocation (for KASLR) without relying on PIE codegen. In this
+case, all const global objects are emitted into .rodata, including const
+objects with fields that will be fixed up by the boot-time relocation
+code.  This implies that .rodata (and .text in some cases) need to be
+writable at boot, but they will usually be mapped read-only as soon as
+the boot completes.
 
-This series fixes BUG_ON check failures reported by syzbot around rename
-operations, and a minor behavioral issue where the mtime of a child
-directory changes when it is renamed instead of moved.
+When using PIE codegen, the compiler will emit const global objects into
+.data.rel.ro rather than .rodata if the object contains fields that need
+such fixups at boot-time. This permits the linker to annotate such
+regions as requiring read-write access only at load time, but not at
+execution time (in user space), while keeping .rodata truly const (in
+user space, this is important for reducing the CoW footprint of dynamic
+executables).
 
-This patch (of 2):
+This distinction does not matter for the kernel, but it does imply that
+const data will end up in writable memory if the .data.rel.ro sections
+are not treated in a special way, as they will end up in the writable
+.data segment by default.
 
-The directory manipulation routines nilfs_set_link() and
-nilfs_delete_entry() rewrite the directory entry in the folio/page
-previously read by nilfs_find_entry(), so error handling is omitted on the
-assumption that nilfs_prepare_chunk(), which prepares the buffer for
-rewriting, will always succeed for these.  And if an error is returned, it
-triggers the legacy BUG_ON() checks in each routine.
+So emit .data.rel.ro into the .rodata segment.
 
-This assumption is wrong, as proven by syzbot: the buffer layer called by
-nilfs_prepare_chunk() may call nilfs_get_block() if necessary, which may
-fail due to metadata corruption or other reasons.  This has been there all
-along, but improved sanity checks and error handling may have made it more
-reproducible in fuzzing tests.
-
-Fix this issue by adding missing error paths in nilfs_set_link(),
-nilfs_delete_entry(), and their caller nilfs_rename().
-
-[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
-Link: https://lkml.kernel.org/r/20250111143518.7901-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250111143518.7901-2-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=32c3706ebf5d95046ea1
-Reported-by: syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1097e95f134f37d9395c
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- fs/nilfs2/dir.c   | 13 ++++++++++---
- fs/nilfs2/namei.c | 29 +++++++++++++++--------------
- fs/nilfs2/nilfs.h |  4 ++--
- 3 files changed, 27 insertions(+), 19 deletions(-)
+ include/asm-generic/vmlinux.lds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index c6dd8ef7d284..49ca762baa8f 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -444,7 +444,7 @@ int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
- 	return 0;
- }
- 
--void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
- 		    struct page *page, struct inode *inode)
- {
- 	unsigned int from = (char *)de - (char *)page_address(page);
-@@ -454,11 +454,15 @@ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
- 
- 	lock_page(page);
- 	err = nilfs_prepare_chunk(page, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		unlock_page(page);
-+		return err;
-+	}
- 	de->inode = cpu_to_le64(inode->i_ino);
- 	nilfs_set_de_type(de, inode);
- 	nilfs_commit_chunk(page, mapping, from, to);
- 	dir->i_mtime = inode_set_ctime_current(dir);
-+	return 0;
- }
- 
- /*
-@@ -590,7 +594,10 @@ int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct page *page)
- 		from = (char *)pde - (char *)page_address(page);
- 	lock_page(page);
- 	err = nilfs_prepare_chunk(page, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		unlock_page(page);
-+		goto out;
-+	}
- 	if (pde)
- 		pde->rec_len = nilfs_rec_len_to_disk(to - from);
- 	dir->inode = 0;
-diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
-index 4d60ccdd85f3..43f01fe556fe 100644
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -406,8 +406,10 @@ static int nilfs_rename(struct mnt_idmap *idmap,
- 			err = PTR_ERR(new_de);
- 			goto out_dir;
- 		}
--		nilfs_set_link(new_dir, new_de, new_page, old_inode);
-+		err = nilfs_set_link(new_dir, new_de, new_page, old_inode);
- 		nilfs_put_page(new_page);
-+		if (unlikely(err))
-+			goto out_dir;
- 		nilfs_mark_inode_dirty(new_dir);
- 		inode_set_ctime_current(new_inode);
- 		if (dir_de)
-@@ -430,28 +432,27 @@ static int nilfs_rename(struct mnt_idmap *idmap,
- 	 */
- 	inode_set_ctime_current(old_inode);
- 
--	nilfs_delete_entry(old_de, old_page);
--
--	if (dir_de) {
--		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
--		nilfs_put_page(dir_page);
--		drop_nlink(old_dir);
-+	err = nilfs_delete_entry(old_de, old_page);
-+	if (likely(!err)) {
-+		if (dir_de) {
-+			err = nilfs_set_link(old_inode, dir_de, dir_page,
-+					     new_dir);
-+			drop_nlink(old_dir);
-+		}
-+		nilfs_mark_inode_dirty(old_dir);
- 	}
--	nilfs_put_page(old_page);
--
--	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
- 
--	err = nilfs_transaction_commit(old_dir->i_sb);
--	return err;
--
- out_dir:
- 	if (dir_de)
- 		nilfs_put_page(dir_page);
- out_old:
- 	nilfs_put_page(old_page);
- out:
--	nilfs_transaction_abort(old_dir->i_sb);
-+	if (likely(!err))
-+		err = nilfs_transaction_commit(old_dir->i_sb);
-+	else
-+		nilfs_transaction_abort(old_dir->i_sb);
- 	return err;
- }
- 
-diff --git a/fs/nilfs2/nilfs.h b/fs/nilfs2/nilfs.h
-index fbf74c1cfd1d..4c4b76865484 100644
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -240,8 +240,8 @@ nilfs_find_entry(struct inode *, const struct qstr *, struct page **);
- extern int nilfs_delete_entry(struct nilfs_dir_entry *, struct page *);
- extern int nilfs_empty_dir(struct inode *);
- extern struct nilfs_dir_entry *nilfs_dotdot(struct inode *, struct page **);
--extern void nilfs_set_link(struct inode *, struct nilfs_dir_entry *,
--			   struct page *, struct inode *);
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+		   struct page *page, struct inode *inode);
- 
- static inline void nilfs_put_page(struct page *page)
- {
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 02a4adb4a999..0d5b186abee8 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -457,7 +457,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ 	. = ALIGN((align));						\
+ 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+ 		__start_rodata = .;					\
+-		*(.rodata) *(.rodata.*)					\
++		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
+ 		SCHED_DATA						\
+ 		RO_AFTER_INIT_DATA	/* Read only after init */	\
+ 		. = ALIGN(8);						\
 -- 
-2.43.5
+2.48.1.601.g30ceb7b040-goog
 
 
