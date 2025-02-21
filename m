@@ -1,139 +1,133 @@
-Return-Path: <stable+bounces-118592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F05A3F6A3
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:00:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE56A3F6FD
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74EDF3BEAA2
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 13:57:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7BCC19C0F98
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 14:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A6420E335;
-	Fri, 21 Feb 2025 13:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IObDNwlc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A5C20E71E;
+	Fri, 21 Feb 2025 14:15:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619520B7F2
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 13:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6021C1AAA;
+	Fri, 21 Feb 2025 14:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740146237; cv=none; b=cbdYQ2j9zW9jztuhyGbBzV/kLMBQPkavUoucm+6Zev8lWLIxiNEuvC/88FEecqssgxohyXMNp8MmO1TB88t9UIzKY82/ZIju3hB3WOPj+jQWys9TAfPWKyWxbqBlNI5es+y32j6TKXTB0NjgU6vd+CpjDUbVKjbkU/VEFbJXduY=
+	t=1740147314; cv=none; b=SBsTgLzzzo0fkXqhvJB4DoXzcd+d2+axjAB/emu/TYKxXzXwzq1t0kZpTmZ1HKLjZWqhnBJRnwvBG1fNrUo+1nnrJEl6tIrjJENfYkKQZBydicU0DrlRh7iFZ9lDgWPjKE5pbPYz0xAqAuzbQHqOx1DTjDkxY5JP2QxgvTgj7DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740146237; c=relaxed/simple;
-	bh=volPFa9RYy4gVcRgv7Kf3SiRUiDUxttAzs4dh4Ct8Vs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J7TAnQ0caUfHyaOwG03ulvqje58cVFTond9dHtK47794kXOIRmHRNIIRSP0KpHnELEdHJuXXjCOFDGQXx2+ld5QgbfwS7c4JM4+hCn3hv2M7ZnH8EiSHc/316Af9Dd/fy8CfSmPkHIBr49H+jFYIi2tmQPd8GtEe2ZJq+GOtQVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IObDNwlc; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4394c0a58e7so23148975e9.0
-        for <stable@vger.kernel.org>; Fri, 21 Feb 2025 05:57:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740146234; x=1740751034; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0QgqpJEuycUIEe4Og2qawQLjpg/faFxO4eXm0mFbcOA=;
-        b=IObDNwlcrRwXS//K+defeDYPobCM6RWgSCfbh81CsfNrPKJz14I/KyLcx5qYpffOEX
-         /JzW6Ud4us/FxKknkitYizgvEUANFNGDb75LVhZ7nGUyoODZ802RHAuFk9oZ8N7NTQc3
-         hQJtYg2nnxLVB2QbgNa++S1Rt7nTjP8OURxYwSnB3eWB6lYa2zvGtKw0yWkNjyAOsrH1
-         W3zEsPjYsoD8YZ2kb+6xCUoG1JzdwgbLihnKrkPKHL/QzOZ6rxD7DYcBKrCbges9WY58
-         GF4CjdeI/tzXqy0WAtU7Q1AcOuGHpJkVS3/99bX8VsqZ4Pd5DL+d2Kn3NBQ0aYDchx/E
-         Mf9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740146234; x=1740751034;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0QgqpJEuycUIEe4Og2qawQLjpg/faFxO4eXm0mFbcOA=;
-        b=KeV0dK5w8t1+at5AAUeq+l/9Wa42jgGaaHjJuxzvq75dKtWReqqtfmUNmqaZcYZTzt
-         EGEOYGx2NmDqp/+Bqe6+2SyAUYIAY/1eb583IWkUFAk9MiA73YpGJPT2tBvOH6XelFvn
-         04sSB1+31GACBEuRHBPJNoM4j3vF8epTJ9nBvsldzAh3nmOLToxakt9r///WD9Fmwvqy
-         /8S2WnSW9WGWs4yPFYdImUSVP43xDIRFvVShSCKvezpdSTVdPgVLVOxmYq6jyvA9ojCS
-         pU1KPkwjzygmMlblw8sV+3PpPmhllOaiPLHkH2PzGmTBmrVTnwUH9cNiPHVWLP7Cs1m9
-         6wbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbK5kMvvgkoDyDnt7xHveNOeLeQHhkqmgrG2f0I1SBs7naTnFYbB3h7fYmQCxZBLyA1cV3EXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzgDXo0DOmUUGIScf2A8lv/RLyNzBYV9WOZR5INTHgiO5/oTGj
-	KtKPIneImapz0vojzIJltuE/HKlqvrdVkXzsbuHdxj05xfedyKKjdavzZdnieBwO9ryoog==
-X-Google-Smtp-Source: AGHT+IGx6LVhgSFcm42dg7VjXDgeanxRd6Hh/hW3ioF0J+rcD6X8uxvpf66q7lnwBitra9fBYMtRkJ1O
-X-Received: from wmbfl27.prod.google.com ([2002:a05:600c:b9b:b0:434:f1d0:7dc9])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1383:b0:439:9a5a:d3a5
- with SMTP id 5b1f17b1804b1-439aeae186dmr20877285e9.1.1740146234049; Fri, 21
- Feb 2025 05:57:14 -0800 (PST)
-Date: Fri, 21 Feb 2025 14:57:06 +0100
-In-Reply-To: <20250221135704.431269-4-ardb+git@google.com>
+	s=arc-20240116; t=1740147314; c=relaxed/simple;
+	bh=KWJsaOGT1S2BOpWR5uwWI86Z7VASm2XxQy/u07uzcZw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LkYJP+85o+BpSB8EXeQb1mf9V8pAOqjXrdp31Re7xCCy9TTK37pGS1EN7YVyvbwPDl4s87ZKgzSg2cJcmEiY+eE2my7m44bOuR8KuSXqq5nLP6bAmLWgIfg7/wCTonLLt01eOBRyApLRhoypBzRS1axO+KCuQBLe9liBCWXbYgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; arc=none smtp.client-ip=45.157.188.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0leil.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0leil.net
+Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4YzsMb73YXzCBl;
+	Fri, 21 Feb 2025 15:04:59 +0100 (CET)
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4YzsMb1kxCzQ1x;
+	Fri, 21 Feb 2025 15:04:59 +0100 (CET)
+From: Quentin Schulz <foss+kernel@0leil.net>
+Subject: [PATCH v2 0/5] arm64: dts: rockchip: pinmux fixes and support for
+ 2 adapters for Theobroma boards
+Date: Fri, 21 Feb 2025 15:04:32 +0100
+Message-Id: <20250221-ringneck-dtbos-v2-0-310c0b9a3909@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250221135704.431269-4-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1998; i=ardb@kernel.org;
- h=from:subject; bh=qMOouDoNVEK00y+HH+qNoH/b3RqloGuhSktNBenc3kE=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIX1Hm5Efe0ljepWmvlq70RRXld+/Zu53tny8Q0ONea/FX
- Ikomz8dpSwMYhwMsmKKLAKz/77beXqiVK3zLFmYOaxMIEMYuDgFYCJV1xgZWl/eP+v3+PupjU4H
- rLqeqC5s8mkTuideZRltsfrLtBoBPUaGM+phP2tYz7z1a63lEs068mz7/p3Vl2QeGOj/ZZC02rm YGwA=
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250221135704.431269-5-ardb+git@google.com>
-Subject: [PATCH v3 1/2] vmlinux.lds: Ensure that const vars with relocations
- are mapped R/O
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org, Huacai Chen <chenhuacai@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPCHuGcC/12Py26EMAxFfwVlXVfBIQGz6n9UswiJGaJqYOpQN
+ KMR/14ei0pdHks+996XyiyJs2qLlxJeUk7TuAG+FSoMfrwypLixQo1Wl9iApPE6cviCOHdTBmq
+ 0qxpDxlpW29NduE+PQ/h5OVn4+2fzzufxT7ul7FIsCe7BU+0eIJx5hihpYYFA3pNtHFXo2gV3e
+ +czQ5hutzS3hWPWHfloiCyz7T0iaWODI12aro5RR+NM1am9x5DyPMnz2LmUR5EzHfX/SUsJGtA
+ Gqns0jWX3EQYWeb5HVpd1XX8BWRURDTQBAAA=
+X-Change-ID: 20250128-ringneck-dtbos-98064839355e
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
+ Farouk Bouabid <farouk.bouabid@theobroma-systems.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Quentin Schulz <quentin.schulz@cherry.de>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Infomaniak-Routing: alpha
 
-From: Ard Biesheuvel <ardb@kernel.org>
+This is based on top of
+https://git.kernel.org/pub/scm/linux/kernel/git/mmind/linux-rockchip.git/log/?h=v6.15-armsoc/dts64
+6ee0b9ad3995 ("arm64: dts: rockchip: Add rng node to RK3588") as it
+depends on the (merged) series from
+https://lore.kernel.org/all/20250211-pre-ict-jaguar-v6-0-4484b0f88cfc@cherry.de/
 
-In the kernel, there are architectures (x86, arm64) that perform
-boot-time relocation (for KASLR) without relying on PIE codegen. In this
-case, all const global objects are emitted into .rodata, including const
-objects with fields that will be fixed up by the boot-time relocation
-code.  This implies that .rodata (and .text in some cases) need to be
-writable at boot, but they will usually be mapped read-only as soon as
-the boot completes.
+Patches for Haikou Video Demo adapter for PX30 Ringneck and RK3399 Puma
+(patches 4 and 5) also depend on the following patch series:
+https://lore.kernel.org/linux-devicetree/20250220-pca976x-reset-driver-v1-0-6abbf043050e@cherry.de/
 
-When using PIE codegen, the compiler will emit const global objects into
-.data.rel.ro rather than .rodata if the object contains fields that need
-such fixups at boot-time. This permits the linker to annotate such
-regions as requiring read-write access only at load time, but not at
-execution time (in user space), while keeping .rodata truly const (in
-user space, this is important for reducing the CoW footprint of dynamic
-executables).
+This fixes incorrect pinmux on UART0 and UART5 for PX30 Ringneck on
+Haikou.
 
-This distinction does not matter for the kernel, but it does imply that
-const data will end up in writable memory if the .data.rel.ro sections
-are not treated in a special way, as they will end up in the writable
-.data segment by default.
+This adds support for the HAIKOU-LVDS-9904379 adapter for PX30 Ringneck
+fitted on a Haikou carrierboard.
 
-So emit .data.rel.ro into the .rodata segment.
+Additionally, this adds support for Haikou Video Demo adapter on PX30
+Ringneck and RK3399 Puma fitted on a Haikou carrierboard. Notably
+missing from the overlay is the OV5675 camera module which expects
+19.2MHz which we cannot exactly feed right now. Modifications to the
+OV5675 drivers will be made so it's more flexible and then support for
+the camera module will be added. This adapter has a 720x1280 DSI display
+with a GT911 touchscreen, a GPIO-controllable LED and an I2C GPIO
+expander. Support for this adapter on RK3588 Tiger is being added in a
+separate patch series[1].
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Note that the DSI panel currently is glitchy on both PX30 Ringneck and
+RK3399 Puma but this is being tackled in another series[2]. Since this
+will not be fixed through DT properties for the panel, adding the DT
+nodes for the DSI panel even if not perfect right now seems acceptable
+to me.
+
+[1] https://lore.kernel.org/linux-rockchip/20241127143719.660658-1-heiko@sntech.de/
+[2] https://lore.kernel.org/r/20240626084722.832763-1-heiko@sntech.de
+
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- include/asm-generic/vmlinux.lds.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- rename uart5_rts_gpio to uart5_rts_pin to stop triggering a false
+  positive of the dtschema checker,
+- remove PU from uart5_rts_pin,
+- Link to v1: https://lore.kernel.org/r/20250220-ringneck-dtbos-v1-0-25c97f2385e6@cherry.de
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 02a4adb4a999..0d5b186abee8 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -457,7 +457,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
- 		__start_rodata = .;					\
--		*(.rodata) *(.rodata.*)					\
-+		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
- 		SCHED_DATA						\
- 		RO_AFTER_INIT_DATA	/* Read only after init */	\
- 		. = ALIGN(8);						\
+---
+Quentin Schulz (5):
+      arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
+      arm64: dts: rockchip: fix pinmux of UART5 for PX30 Ringneck on Haikou
+      arm64: dts: rockchip: add support for HAIKOU-LVDS-9904379 adapter for PX30 Ringneck
+      arm64: dts: rockchip: add overlay for PX30 Ringneck Haikou Video Demo adapter
+      arm64: dts: rockchip: add overlay for RK3399 Puma Haikou Video Demo adapter
+
+ arch/arm64/boot/dts/rockchip/Makefile              |  15 ++
+ .../px30-ringneck-haikou-lvds-9904379.dtso         | 130 ++++++++++++++
+ .../rockchip/px30-ringneck-haikou-video-demo.dtso  | 190 +++++++++++++++++++++
+ .../boot/dts/rockchip/px30-ringneck-haikou.dts     |  10 +-
+ .../rockchip/rk3399-puma-haikou-video-demo.dtso    | 166 ++++++++++++++++++
+ 5 files changed, 510 insertions(+), 1 deletion(-)
+---
+base-commit: 6ee0b9ad3995ee5fa229035c69013b7dd0d3634b
+change-id: 20250128-ringneck-dtbos-98064839355e
+prerequisite-change-id: 20250219-pca976x-reset-driver-c9aa95869426:v2
+prerequisite-patch-id: 25c49bae002eb11bc6fec479f49f5e3b28b8f403
+prerequisite-patch-id: 58e9acffbbd052710bfe672c99ef05f59b1978a6
+
+Best regards,
 -- 
-2.48.1.601.g30ceb7b040-goog
+Quentin Schulz <quentin.schulz@cherry.de>
 
 
