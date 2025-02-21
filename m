@@ -1,190 +1,140 @@
-Return-Path: <stable+bounces-118622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22246A3FB5D
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 17:33:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925A9A3FC51
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 17:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8496165468
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:25:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CF3F16AD14
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62B71F0E53;
-	Fri, 21 Feb 2025 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD612215F41;
+	Fri, 21 Feb 2025 16:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="d0lk2H2a"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="FpQcBHdI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F4C1EF0B4;
-	Fri, 21 Feb 2025 16:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DC8214A96;
+	Fri, 21 Feb 2025 16:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740155144; cv=none; b=tJL/JM1vJYo7tvkZ06aFJo2xWRRn40PrCpJfD5SfOrEMqpOGRhkyFwpWAvqq1AmsxkRAEZiUA3y2/7Ve3gnHYl8gYtijHZC3fExy9j1iFJNfwSRett6rRT8sL2cutxniHleVYsOadx+oIojM9K7WETM9QVssYi9jorVdxkuKdtc=
+	t=1740156829; cv=none; b=jFPdyMIXzbeZWCbRPL77fAdJfUlvDBVGmace/VerhxnxxdPIw3yILpNio5dUc7JFcQXcKFtdEWdr/LvRw/o8zln9lcWDPDi9hCs4cnKi9YQbiINKwkHftNsGCx4yFAOFrXUZQ7Zwcf1ylAVL78e0uz57JcrwR6ihvyl5F8TY2fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740155144; c=relaxed/simple;
-	bh=a0ahG7GNpc2Bh1FMZWerWXsz4xsO5Rzcg+40RjlizxY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CCGKWrHYLvpcJGgPyeWiLo9IhRlACyAlGjqev1gFecz4UyJDqoK8m303/f3v6WgXm009woXDbv6gMzBrdwd2r/HhSZcIjUcjUEDlXp8lDbkj6kgXmbqwxFOGO0o8Xr9BruZZrH5pPBhDApBGyRK7uQHPsOUvje4OdOsppi+vPD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=d0lk2H2a; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51LD11uc015152;
-	Fri, 21 Feb 2025 16:25:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	yWWunlq9ptFdkWsR7BCovQgXo10nVfMQQtLgQu+W30I=; b=d0lk2H2aKd/Y0eSs
-	xUvZXzShHlFW/4B2WGV/4cSHSTIIF8RlLDWERYs5kfnjm6vVqLkN4WF28Och6IDm
-	arY8WISol9djwUjhtRe9NrgmMF9jyvProXpUW4yEFKZ6h2aTQ5H7Vk70XJm86GhR
-	TyEJwObm4amEBE/bAsbT28TtUiOJFWrlbwg9f5bCAqdNjPqwzrAPkx27l6VuPISu
-	8pR4H6C4cDESccLXP/7MXWhB8ULEgawnsandK18TUe8KVN4BqV9mhxOvtPocxfW9
-	NhGWIGU4CO/pWzk2uo14lV+8bbA0OpHHGG1d5U6eSUi/8L+YqO/Ik726fqBXgqq8
-	or/hig==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44vyy4jmt4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Feb 2025 16:25:35 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51LGPY8w018373
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Feb 2025 16:25:34 GMT
-Received: from [10.216.10.103] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 21 Feb
- 2025 08:25:30 -0800
-Message-ID: <47eb0aff-a486-10a5-0bbf-c18db03c81e1@quicinc.com>
-Date: Fri, 21 Feb 2025 21:55:18 +0530
+	s=arc-20240116; t=1740156829; c=relaxed/simple;
+	bh=MMcdtRGcqIRiBtTCiGiKF93/eqGt1efuXo61hW6flX4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qFm4POBVnbLw4dSt6GsdxBDkmR+tH+1LHi98e5porDsxybPUkAqoXaCTMxPP94cb5Zs/pM5obbaX8qIOl1LT7TMaYzOTJER9weLhIn8TqQSO2qBkWLzN50o4JzAdlPcUl/SM1QLMbJqj8rKwHkMprbzGFaSmphiWxEeV9ErO7cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=FpQcBHdI; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 505F9260EB;
+	Fri, 21 Feb 2025 16:53:40 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id BA6C83E8A8;
+	Fri, 21 Feb 2025 16:53:31 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id E5D664023E;
+	Fri, 21 Feb 2025 16:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1740156810; bh=MMcdtRGcqIRiBtTCiGiKF93/eqGt1efuXo61hW6flX4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FpQcBHdIe+I0ux0K9OxlNy68XpdnhWwEw6S4Mka8vK6EYsh87M87kE7sBTmWBqUg6
+	 0hZR9rE/IBLo1mIzpi/fpM72Ay7ppi9f5j99By2ZdcDSo8T2YYKpo8K80grBy3JvD6
+	 yUmw7EhrhTMPdcMheOLDcfVAsYDdiR9K/4QzAxco=
+Received: from [172.29.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 8C8B4407D9;
+	Fri, 21 Feb 2025 16:53:26 +0000 (UTC)
+Message-ID: <8a39c1ef-b39b-4c28-b026-26bbb4dbaf7f@aosc.io>
+Date: Sat, 22 Feb 2025 00:53:22 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 4/4] media: venus: hfi: add a check to handle OOB in
- sfr region
-To: Tomasz Figa <tfiga@chromium.org>
-CC: Hans Verkuil <hverkuil@xs4all.nl>,
-        Stanimir Varbanov
-	<stanimir.k.varbanov@gmail.com>,
-        Bryan O'Donoghue
-	<bryan.odonoghue@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hans.verkuil@cisco.com>,
-        Stanimir Varbanov
-	<stanimir.varbanov@linaro.org>,
-        Mauro Carvalho Chehab
-	<mchehab+samsung@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20250207-venus_oob_2-v4-0-522da0b68b22@quicinc.com>
- <20250207-venus_oob_2-v4-4-522da0b68b22@quicinc.com>
- <e794c047-ab0e-4589-a1d2-0f73b813eacc@xs4all.nl>
- <b1721d46-ffbf-e21c-ce18-e96e3e8ee35f@quicinc.com>
- <CAAFQd5ABR8BwG_9JVPzzp+HZv6O=B9r-ipjKQHku7DdTGASetQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] platform/x86: thinkpad_acpi: Add battery quirk for
+ ThinkPad X131e
+To: linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ ibm-acpi-devel@lists.sourceforge.net
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>, Fan Yang <804284660@qq.com>,
+ Xi Ruoyao <xry111@xry111.site>, Henrique de Moraes Holschuh
+ <hmh@hmh.eng.br>, Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ stable@vger.kernel.org
+References: <20250221164825.77315-1-jeffbai@aosc.io>
 Content-Language: en-US
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
-In-Reply-To: <CAAFQd5ABR8BwG_9JVPzzp+HZv6O=B9r-ipjKQHku7DdTGASetQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <20250221164825.77315-1-jeffbai@aosc.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: z6XY414_3z239VBn3rot62zVG9y2qoJL
-X-Proofpoint-ORIG-GUID: z6XY414_3z239VBn3rot62zVG9y2qoJL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-21_05,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=999 spamscore=0 adultscore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502210116
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: E5D664023E
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,804284660.qq.com:server fail,xry111.xry111.site:server fail,stable.vger.kernel.org:server fail];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_CC(0.00)[aosc.io,qq.com,xry111.site,hmh.eng.br,redhat.com,linux.intel.com,vger.kernel.org];
+	FREEMAIL_ENVRCPT(0.00)[qq.com];
+	TO_DN_SOME(0.00)[]
 
+Hi all,
 
-On 2/21/2025 9:25 AM, Tomasz Figa wrote:
-> On Fri, Feb 21, 2025 at 12:56 AM Vikash Garodia
-> <quic_vgarodia@quicinc.com> wrote:
->>
->>
->> On 2/20/2025 8:53 PM, Hans Verkuil wrote:
->>> On 2/7/25 09:24, Vikash Garodia wrote:
->>>> sfr->buf_size is in shared memory and can be modified by malicious user.
->>>> OOB write is possible when the size is made higher than actual sfr data
->>>> buffer. Cap the size to allocated size for such cases.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
->>>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->>>> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
->>>> ---
->>>>  drivers/media/platform/qcom/venus/hfi_venus.c | 9 +++++++--
->>>>  1 file changed, 7 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
->>>> index 6b615270c5dae470c6fad408c9b5bc037883e56e..c3113420d266e61fcab44688580288d7408b50f4 100644
->>>> --- a/drivers/media/platform/qcom/venus/hfi_venus.c
->>>> +++ b/drivers/media/platform/qcom/venus/hfi_venus.c
->>>> @@ -1041,18 +1041,23 @@ static void venus_sfr_print(struct venus_hfi_device *hdev)
->>>>  {
->>>>      struct device *dev = hdev->core->dev;
->>>>      struct hfi_sfr *sfr = hdev->sfr.kva;
->>>> +    u32 size;
->>>>      void *p;
->>>>
->>>>      if (!sfr)
->>>>              return;
->>>>
->>>> -    p = memchr(sfr->data, '\0', sfr->buf_size);
->>>> +    size = sfr->buf_size;
->>>
->>> If this is ever 0...
->>>
->>>> +    if (size > ALIGNED_SFR_SIZE)
->>>> +            size = ALIGNED_SFR_SIZE;
->>>> +
->>>> +    p = memchr(sfr->data, '\0', size);
->>>>      /*
->>>>       * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
->>>>       * that Venus is in the process of crashing.
->>>>       */
->>>>      if (!p)
->>>> -            sfr->data[sfr->buf_size - 1] = '\0';
->>>> +            sfr->data[size - 1] = '\0';
->>>
->>> ...then this will overwrite memory. It probably can't be 0, but a check or perhaps
->>> just a comment might be good. It looks a bit scary.
->> Thats correct, it would not be 0 as its a prefixed one [1]. I can put up a
->> comment here.
+在 2025/2/22 00:48, Mingcong Bai 写道:
+> Based on the dmesg messages from the original reporter:
 > 
-> Couldn't a bug (or vulnerability) in the firmware actually still cause
-> it to write 0 there?
-Possible. Though the size is initialized in driver with "ALIGNED_SFR_SIZE",
-there is a possibility that the same could get overwritten by a rogue firmware.
-Kept a check in v5, which cache the value locally and then does the check before
-using that value.
+> [    4.964073] ACPI: \_SB_.PCI0.LPCB.EC__.HKEY: BCTG evaluated but flagged as error
+> [    4.964083] thinkpad_acpi: Error probing battery 2
+> 
+> Lenovo ThinkPad X131e also needs this battery quirk.
+> 
+> Reported-by: Fan Yang <804284660@qq.com>
+> Tested-by: Fan Yang <804284660@qq.com>
+> Co-developed-by: Xi Ruoyao <xry111@xry111.site>
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+> ---
+>   drivers/platform/x86/thinkpad_acpi.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+> index 1fcb0f99695a7..64765c6939a50 100644
+> --- a/drivers/platform/x86/thinkpad_acpi.c
+> +++ b/drivers/platform/x86/thinkpad_acpi.c
+> @@ -9960,6 +9960,7 @@ static const struct tpacpi_quirk battery_quirk_table[] __initconst = {
+>   	 * Individual addressing is broken on models that expose the
+>   	 * primary battery as BAT1.
+>   	 */
+> +	TPACPI_Q_LNV('G', '8', true),       /* ThinkPad X131e */
+>   	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+>   	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+>   	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
 
-Regards
-Vikash
->>
->> [1]
->> https://elixir.bootlin.com/linux/v6.14-rc3/source/drivers/media/platform/qcom/venus/hfi_venus.c#L836
->>>
->>> Regards,
->>>
->>>       Hans
->>>
->>>>
->>>>      dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
->>>>  }
->>>>
->> Regards,
->> Vikash
+I forgot to include a Cc to stable. This issue dates back to as far as 
+5.19 (the oldest version available in our distro repository).
+
+Cc: stable@vger.kernel.org
+
+Best Regards,
+Mingcong Bai
 
