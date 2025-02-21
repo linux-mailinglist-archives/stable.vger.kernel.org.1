@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-118606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D09FA3F83C
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:17:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7239BA3F8DA
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21DF189356A
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FB608639E4
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC1720102C;
-	Fri, 21 Feb 2025 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F48211485;
+	Fri, 21 Feb 2025 15:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OP2KNIjc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdAhZwhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A312FF69
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812751DFE00;
+	Fri, 21 Feb 2025 15:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740151032; cv=none; b=YDiMNMbwbLHoRLWUs4sAPBteIqR+qtz8RiBxvDXDUApzqvZ6zCG8g5b6eKr2RiGf19tDMx47nDDTxwZWb2j1fuh1dGv+8t6pkjbBMXLI429ZapeowGj8lfuhaybWhtPtaJY8bKTyge9w+4KiOAV7+fkMlpXjuPyrzIZzyjB71QA=
+	t=1740151557; cv=none; b=BG3z0BC3HJcyhLQgmoj26/TFQDX3xa6zZ6JJpw+8mtCGuPH0xBLf7dyOWyUc2eOjooyzFlNffxlE+I3bUtiifaAIP0iBHa9LQ4GrGlHlnv3wIe3tI1FiVMWcwPwa9A27P2jBoXbPdo1V9LDkMOOqaMtcj5GoE22cfNbdGkOf+9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740151032; c=relaxed/simple;
-	bh=VNtxx84Vg7YdMS8F2lDOk/xU1uYuqz0hjgy0kzS273w=;
+	s=arc-20240116; t=1740151557; c=relaxed/simple;
+	bh=OJcmkoiIcvVqjZ0P5kSBXFOodq7+Y4B8DpoSX5+y8gw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iUIPSROOxScd8KmS2TTUELlvoTub3UsMzgzGhT0+FzM+eFqezIlo+5oYxwbve3JW6eisi/gNb7SSnoStJLYggbXuvBxBSh75qBo67H/Ift+UXtgY6KagXKkgyMW1A/g/K8FBs4kzXlnnBz1/CbsTb6VO4PI7/PAqydYTehrLHas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OP2KNIjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C592C4CEEA;
-	Fri, 21 Feb 2025 15:17:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pxx5yZpBBiqFkeUirqddp+LvwVkPftkn4uWy49ZV7UwvRhPncElDw6KbsP7GMl3yGIoiQ2vWk14ZOY6hwfPb8Eub8R+EUpcEH60PgtSWzvdvS0wP1aNegdzRRM7shWf664VoZTekaPbPJn+436YnoUbDhg+uLB4iCINCEyPxLVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdAhZwhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969BAC4CED6;
+	Fri, 21 Feb 2025 15:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740151031;
-	bh=VNtxx84Vg7YdMS8F2lDOk/xU1uYuqz0hjgy0kzS273w=;
+	s=korg; t=1740151557;
+	bh=OJcmkoiIcvVqjZ0P5kSBXFOodq7+Y4B8DpoSX5+y8gw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OP2KNIjcHI3pyTLGy8hh4q3Nk9ujEPZa419E73qU1EMf4s/57bU58qJidKk5QKjsV
-	 C6McYj00n8s1G+Vchks5RaYCT+N/8GldjodhC6mthCDH1zLJ5OS/SQAZ5AgIhbJyY1
-	 X7vxQ1OrX9EQf/HVJXi7oOdxYn1lMCGDyeXuyook=
-Date: Fri, 21 Feb 2025 16:17:09 +0100
+	b=MdAhZwhnNKgQlUTQBfCJuuOfZeIuEDKY7sM4QTMrufICLM1ACnbhibC/WosxCI5ZE
+	 RTWnQpr4eyb4jDKUBpWkr9UNaDj+xXsnRJIDeUq5eZoRXAZHptdktGeE2/EzgwO9cK
+	 OOUu4GH1dHUxT7hHeHo2WJKTB6Z21D7J2/hsZMyE=
+Date: Fri, 21 Feb 2025 16:25:54 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: stable@vger.kernel.org, yang@os.amperecomputing.com,
-	Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: [PATCH stable 5.10.y-6.12.y] arm64: mte: Do not allow PROT_MTE
- on MAP_HUGETLB user mappings
-Message-ID: <2025022102-scabbed-jinx-5f61@gregkh>
-References: <20250220155801.1731061-1-catalin.marinas@arm.com>
+To: Naman Jain <namjain@linux.microsoft.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	John Starks <jostarks@microsoft.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>, Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.13 085/274] Drivers: hv: vmbus: Wait for boot-time
+ offers during boot and resume
+Message-ID: <2025022149-guru-collar-d55a@gregkh>
+References: <20250219082609.533585153@linuxfoundation.org>
+ <20250219082612.949436698@linuxfoundation.org>
+ <7278b63c-4858-418b-8ca2-c0fd50f215c8@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,37 +61,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250220155801.1731061-1-catalin.marinas@arm.com>
+In-Reply-To: <7278b63c-4858-418b-8ca2-c0fd50f215c8@linux.microsoft.com>
 
-On Thu, Feb 20, 2025 at 03:58:01PM +0000, Catalin Marinas wrote:
-> PROT_MTE (memory tagging extensions) is not supported on all user mmap()
-> types for various reasons (memory attributes, backing storage, CoW
-> handling). The arm64 arch_validate_flags() function checks whether the
-> VM_MTE_ALLOWED flag has been set for a vma during mmap(), usually by
-> arch_calc_vm_flag_bits().
+On Fri, Feb 21, 2025 at 11:09:32AM +0530, Naman Jain wrote:
 > 
-> Linux prior to 6.13 does not support PROT_MTE hugetlb mappings. This was
-> added by commit 25c17c4b55de ("hugetlb: arm64: add mte support").
-> However, earlier kernels inadvertently set VM_MTE_ALLOWED on
-> (MAP_ANONYMOUS | MAP_HUGETLB) mappings by only checking for
-> MAP_ANONYMOUS.
 > 
-> Explicitly check MAP_HUGETLB in arch_calc_vm_flag_bits() and avoid
-> setting VM_MTE_ALLOWED for such mappings.
+> On 2/19/2025 1:55 PM, Greg Kroah-Hartman wrote:
+> > 6.13-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Naman Jain <namjain@linux.microsoft.com>
+> > 
+> > [ Upstream commit 113386ca981c3997db6b83272c7ecf47456aeddb ]
+> > 
+> > Channel offers are requested during VMBus initialization and resume from
+> > hibernation. Add support to wait for all boot-time channel offers to
+> > be delivered and processed before returning from vmbus_request_offers.
+> > 
+> > This is in analogy to a PCI bus not returning from probe until it has
+> > scanned all devices on the bus.
+> > 
+> > Without this, user mode can race with VMBus initialization and miss
+> > channel offers. User mode has no way to work around this other than
+> > sleeping for a while, since there is no way to know when VMBus has
+> > finished processing boot-time offers.
+> > 
+> > With this added functionality, remove earlier logic which keeps track
+> > of count of offered channels post resume from hibernation. Once all
+> > offers delivered message is received, no further boot-time offers are
+> > going to be received. Consequently, logic to prevent suspend from
+> > happening after previous resume had missing offers, is also removed.
+> > 
+> > Co-developed-by: John Starks <jostarks@microsoft.com>
+> > Signed-off-by: John Starks <jostarks@microsoft.com>
+> > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> > Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> > Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> > Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> > Link: https://lore.kernel.org/r/20250102130712.1661-2-namjain@linux.microsoft.com
+> > Signed-off-by: Wei Liu <wei.liu@kernel.org>
+> > Message-ID: <20250102130712.1661-2-namjain@linux.microsoft.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >   drivers/hv/channel_mgmt.c | 61 +++++++++++++++++++++++++++++----------
+> >   drivers/hv/connection.c   |  4 +--
+> >   drivers/hv/hyperv_vmbus.h | 14 ++-------
+> >   drivers/hv/vmbus_drv.c    | 16 ----------
+> >   4 files changed, 51 insertions(+), 44 deletions(-)
+> > 
+> > diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+> > index 3c6011a48dabe..6e084c2074141 100644
+> > --- a/drivers/hv/channel_mgmt.c
+> > +++ b/drivers/hv/channel_mgmt.c
+> > @@ -944,16 +944,6 @@ void vmbus_initiate_unload(bool crash)
+> >   		vmbus_wait_for_unload();
+> >   }
+> > -static void check_ready_for_resume_event(void)
+> > -{
+> > -	/*
+> > -	 * If all the old primary channels have been fixed up, then it's safe
+> > -	 * to resume.
+> > -	 */
+> > -	if (atomic_dec_and_test(&vmbus_connection.nr_chan_fixup_on_resume))
+> > -		complete(&vmbus_connection.ready_for_resume_event);
+> > -}
+> > -
+> >   static void vmbus_setup_channel_state(struct vmbus_channel *channel,
+> >   				      struct vmbus_channel_offer_channel *offer)
+> >   {
+> > @@ -1109,8 +1099,6 @@ static void vmbus_onoffer(struct vmbus_channel_message_header *hdr)
+> >   		/* Add the channel back to the array of channels. */
+> >   		vmbus_channel_map_relid(oldchannel);
+> > -		check_ready_for_resume_event();
+> > -
+> >   		mutex_unlock(&vmbus_connection.channel_mutex);
+> >   		return;
+> >   	}
+> > @@ -1296,13 +1284,28 @@ EXPORT_SYMBOL_GPL(vmbus_hvsock_device_unregister);
+> >   /*
+> >    * vmbus_onoffers_delivered -
+> > - * This is invoked when all offers have been delivered.
+> > + * The CHANNELMSG_ALLOFFERS_DELIVERED message arrives after all
+> > + * boot-time offers are delivered. A boot-time offer is for the primary
+> > + * channel for any virtual hardware configured in the VM at the time it boots.
+> > + * Boot-time offers include offers for physical devices assigned to the VM
+> > + * via Hyper-V's Discrete Device Assignment (DDA) functionality that are
+> > + * handled as virtual PCI devices in Linux (e.g., NVMe devices and GPUs).
+> > + * Boot-time offers do not include offers for VMBus sub-channels. Because
+> > + * devices can be hot-added to the VM after it is booted, additional channel
+> > + * offers that aren't boot-time offers can be received at any time after the
+> > + * all-offers-delivered message.
+> >    *
+> > - * Nothing to do here.
+> > + * SR-IOV NIC Virtual Functions (VFs) assigned to a VM are not considered
+> > + * to be assigned to the VM at boot-time, and offers for VFs may occur after
+> > + * the all-offers-delivered message. VFs are optional accelerators to the
+> > + * synthetic VMBus NIC and are effectively hot-added only after the VMBus
+> > + * NIC channel is opened (once it knows the guest can support it, via the
+> > + * sriov bit in the netvsc protocol).
+> >    */
+> >   static void vmbus_onoffers_delivered(
+> >   			struct vmbus_channel_message_header *hdr)
+> >   {
+> > +	complete(&vmbus_connection.all_offers_delivered_event);
+> >   }
+> >   /*
+> > @@ -1578,7 +1581,8 @@ void vmbus_onmessage(struct vmbus_channel_message_header *hdr)
+> >   }
+> >   /*
+> > - * vmbus_request_offers - Send a request to get all our pending offers.
+> > + * vmbus_request_offers - Send a request to get all our pending offers
+> > + * and wait for all boot-time offers to arrive.
+> >    */
+> >   int vmbus_request_offers(void)
+> >   {
+> > @@ -1596,6 +1600,10 @@ int vmbus_request_offers(void)
+> >   	msg->msgtype = CHANNELMSG_REQUESTOFFERS;
+> > +	/*
+> > +	 * This REQUESTOFFERS message will result in the host sending an all
+> > +	 * offers delivered message after all the boot-time offers are sent.
+> > +	 */
+> >   	ret = vmbus_post_msg(msg, sizeof(struct vmbus_channel_message_header),
+> >   			     true);
+> > @@ -1607,6 +1615,29 @@ int vmbus_request_offers(void)
+> >   		goto cleanup;
+> >   	}
+> > +	/*
+> > +	 * Wait for the host to send all boot-time offers.
+> > +	 * Keeping it as a best-effort mechanism, where a warning is
+> > +	 * printed if a timeout occurs, and execution is resumed.
+> > +	 */
+> > +	if (!wait_for_completion_timeout(&vmbus_connection.all_offers_delivered_event,
+> > +					 secs_to_jiffies(60))) {
+> > +		pr_warn("timed out waiting for all boot-time offers to be delivered.\n");
+> > +	}
+> > +
+> > +	/*
+> > +	 * Flush handling of offer messages (which may initiate work on
+> > +	 * other work queues).
+> > +	 */
+> > +	flush_workqueue(vmbus_connection.work_queue);
+> > +
+> > +	/*
+> > +	 * Flush workqueue for processing the incoming offers. Subchannel
+> > +	 * offers and their processing can happen later, so there is no need to
+> > +	 * flush that workqueue here.
+> > +	 */
+> > +	flush_workqueue(vmbus_connection.handle_primary_chan_wq);
+> > +
+> >   cleanup:
+> >   	kfree(msginfo);
+> > diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
+> > index f001ae880e1db..8351360bba161 100644
+> > --- a/drivers/hv/connection.c
+> > +++ b/drivers/hv/connection.c
+> > @@ -34,8 +34,8 @@ struct vmbus_connection vmbus_connection = {
+> >   	.ready_for_suspend_event = COMPLETION_INITIALIZER(
+> >   				  vmbus_connection.ready_for_suspend_event),
+> > -	.ready_for_resume_event	= COMPLETION_INITIALIZER(
+> > -				  vmbus_connection.ready_for_resume_event),
+> > +	.all_offers_delivered_event = COMPLETION_INITIALIZER(
+> > +				  vmbus_connection.all_offers_delivered_event),
+> >   };
+> >   EXPORT_SYMBOL_GPL(vmbus_connection);
+> > diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+> > index 52cb744b4d7fd..e4058af987316 100644
+> > --- a/drivers/hv/hyperv_vmbus.h
+> > +++ b/drivers/hv/hyperv_vmbus.h
+> > @@ -287,18 +287,10 @@ struct vmbus_connection {
+> >   	struct completion ready_for_suspend_event;
+> >   	/*
+> > -	 * The number of primary channels that should be "fixed up"
+> > -	 * upon resume: these channels are re-offered upon resume, and some
+> > -	 * fields of the channel offers (i.e. child_relid and connection_id)
+> > -	 * can change, so the old offermsg must be fixed up, before the resume
+> > -	 * callbacks of the VSC drivers start to further touch the channels.
+> > +	 * Completed once the host has offered all boot-time channels.
+> > +	 * Note that some channels may still be under process on a workqueue.
+> >   	 */
+> > -	atomic_t nr_chan_fixup_on_resume;
+> > -	/*
+> > -	 * vmbus_bus_resume() waits for "nr_chan_fixup_on_resume" to
+> > -	 * drop to zero.
+> > -	 */
+> > -	struct completion ready_for_resume_event;
+> > +	struct completion all_offers_delivered_event;
+> >   };
+> > diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+> > index 2892b8da20a5e..bf5608a740561 100644
+> > --- a/drivers/hv/vmbus_drv.c
+> > +++ b/drivers/hv/vmbus_drv.c
+> > @@ -2427,11 +2427,6 @@ static int vmbus_bus_suspend(struct device *dev)
+> >   	if (atomic_read(&vmbus_connection.nr_chan_close_on_suspend) > 0)
+> >   		wait_for_completion(&vmbus_connection.ready_for_suspend_event);
+> > -	if (atomic_read(&vmbus_connection.nr_chan_fixup_on_resume) != 0) {
+> > -		pr_err("Can not suspend due to a previous failed resuming\n");
+> > -		return -EBUSY;
+> > -	}
+> > -
+> >   	mutex_lock(&vmbus_connection.channel_mutex);
+> >   	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
+> > @@ -2456,17 +2451,12 @@ static int vmbus_bus_suspend(struct device *dev)
+> >   			pr_err("Sub-channel not deleted!\n");
+> >   			WARN_ON_ONCE(1);
+> >   		}
+> > -
+> > -		atomic_inc(&vmbus_connection.nr_chan_fixup_on_resume);
+> >   	}
+> >   	mutex_unlock(&vmbus_connection.channel_mutex);
+> >   	vmbus_initiate_unload(false);
+> > -	/* Reset the event for the next resume. */
+> > -	reinit_completion(&vmbus_connection.ready_for_resume_event);
+> > -
+> >   	return 0;
+> >   }
+> > @@ -2502,14 +2492,8 @@ static int vmbus_bus_resume(struct device *dev)
+> >   	if (ret != 0)
+> >   		return ret;
+> > -	WARN_ON(atomic_read(&vmbus_connection.nr_chan_fixup_on_resume) == 0);
+> > -
+> >   	vmbus_request_offers();
+> > -	if (wait_for_completion_timeout(
+> > -		&vmbus_connection.ready_for_resume_event, secs_to_jiffies(10)) == 0)
+> > -		pr_err("Some vmbus device is missing after suspending?\n");
+> > -
+> >   	/* Reset the event for the next suspend. */
+> >   	reinit_completion(&vmbus_connection.ready_for_suspend_event);
 > 
-> Fixes: 9f3419315f3c ("arm64: mte: Add PROT_MTE support to mmap() and mprotect()")
-> Cc: <stable@vger.kernel.org> # 5.10.x-6.12.x
-> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> ---
 > 
-> Hi Greg,
+> Hi,
+> Thanks for porting this.
+> While we are picking this patch, it would be good to have the other
+> patch, which was part of the same series, picked as well. Reason being, with
+> this patch alone, we won't get any prints for missing offers. Patch 2/2
+> of the series adds those prints back.
 > 
-> This patch applies cleanly on top of the stable-rc/linux-6.12.y to
-> 5.10.y LTS, so I'm only sending it once. It's not for 6.13 onwards since
-> those kernels support hugetlbfs with MTE.
+> commit	fcf5203e289ca0ef75a18ce74a9eb716f7f1f569 (patch)
+> 
+> Series: https://lore.kernel.org/all/20250102130712.1661-3-namjain@linux.microsoft.com/
 
-Now queued up,t hanks.
+Now queued up, thanks.
 
 greg k-h
 
