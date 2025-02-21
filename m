@@ -1,158 +1,206 @@
-Return-Path: <stable+bounces-118626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B82A3FE10
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32AEA3FE61
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B055F4273A7
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BF0420302
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575E024E4AD;
-	Fri, 21 Feb 2025 18:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97450250C15;
+	Fri, 21 Feb 2025 18:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hA13xfsr"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rAwSUPZg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2050.outbound.protection.outlook.com [40.107.243.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0391DF98B;
-	Fri, 21 Feb 2025 18:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740160915; cv=none; b=TvBDywyksTY0k0TQ1H5sYoqqZGmL3Y7V6KmI78Kl5+CQqbsymOKUndyu1Ry01JEnRDl4kbgNV+NBghiuvbrOX9P9V2woYi4WlkBs7eOzCq3Kk4yjtJHAfFO70KcFstYXgH524TEe4ymhkRrD1og4kwzAdANzKGtk4DBNWxIK0O0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740160915; c=relaxed/simple;
-	bh=xK2abE7dId99Kg0nnMRsABxibU1gxsKp6VtQDcyIvQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EiiD+DP9gCfKCAH1UQBGJ2LUx0FzkEqdk9vrWNlIvtWVZ/fe/boNuP70PkPc2bn/JFFntKSL4+nxG2MJ4oYcOfkqyu/A4jysegFggehxVqgXG3UswN2B/1LuapjIseO4CjKvQpYX7HOMNetA5NPa7bcL5cRgy1dwf3CWLl5yHPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hA13xfsr; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2bc79a81e6bso674674fac.0;
-        Fri, 21 Feb 2025 10:01:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740160913; x=1740765713; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=E4FDHLTC0qLTxlBy/OkCpWWyQCJJcEAsVkARFMFcw+I=;
-        b=hA13xfsr9Mtx3Qmw4uv+5NwP5U/H8JUKzUzMEZ0ntDvF4fK2++aqdh5iNDTQS0C7ma
-         xcrfwmmnx4jJijBy89RwYxMJKNvzrIEbHVnFWOkxmUbzTsPGSbQVjZn0MMN73WyaweQO
-         BteET8m/R3Kt3V1FQHXMyGsBXBLzS3sWwNWF5DUzEekobEkcftTSKeQphh/k4rAtT4GY
-         I0gsEBJR2aFDyaW7aAaJ2LV71GJO3LVp7jpv3zjNbNqwsaXSeFadqVd3SHwTvK4cw3RX
-         6RDIAoRaG0/bDF/yhuVuLqxR40weBHp5FpJGd15QV6kAh+G/vALIdAW0wb7c0BHPPpdu
-         hGfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740160913; x=1740765713;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E4FDHLTC0qLTxlBy/OkCpWWyQCJJcEAsVkARFMFcw+I=;
-        b=ja70FFNsa6b7DKIT3+A40cSWrRjqbdWOCpK46Va4dgW2D3DNyVIQgLHBHi7IKWT4c5
-         eOUQzMaeJOHWn/7MIDm9sZNdW565Ly+MZuLoImGS7wzIJx11iwWtTQcXMAkrZDTD3VhJ
-         Omodc4CfMDR4dRkgWFBNyXMww0HYx6OW4zxggDEnhpqp3cGNBC7erQlVrI591zrlI5JG
-         FGCdJc4DvAGiZqktSDEjBdb7Uam9g1OQhQaGfjU9Tc/mzhxtVcy8rAcFrouHguShQ85T
-         2Frv3vq+Zg7gxdGO0nZxizgIz7dW1U0mjhKc0sI2FKkHe17kjKWXuPS5TeQHU5rwbMoT
-         ZDyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMbF9QICS6i3fC43H6HxnrDcxZqUIXbImprXqzJOQUsXN5Kt8IRxckFsdXbe+W8aHHm9s/gQuI@vger.kernel.org, AJvYcCVtyIY/SW7P+VoZvif00TNqJ736iOIiVoLvL0bAOYaDEKd9hFEQvIlpMlIrFX6qYBxSAHfOzxMc+KS9DqE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywzaa53SOHBl09S+iFIHxyRY0FS6EoV+ZIBTWRZEvFpAEU7oiIK
-	/iSJT+W9QE+UKDDw93M000gfzNHJ+zk/r5ZMWny1WCW/n5tgQ9k7
-X-Gm-Gg: ASbGncvKSeNhwa3uxf6PEAZjH3YpSvgygCxifidYZiOIOIWsfW7Baa5vC2Spf7hJAgl
-	VytQZCHaMrmwDfmTRj3A4bbk/6uNk6NcOP26NWs/+LfptS3Y5ERSE0G9isQxhialWk642s3LwNm
-	zuVKXQuB3GUasS97SCM1gr0ouPkWfICno/RTl2R6HddkR+ctlLiZpMMaJUr00iyRjvvv9BBS4bF
-	Koa2LhYCjhDjvFxXJYh4Z6DM5Q7qOjEW0ZWGkidDM43TJStoNp8QgvXWdGDdZEXVsGu4U8Tm0CV
-	GUC7fGfoYJHk3ThLjWC0nXIS1uvH+fCLur9Z8uhLzbMrq0NSDI2uMg==
-X-Google-Smtp-Source: AGHT+IHsFnCKIzi6WuFVASwQmthHRMuJ7iXdlofe+e+uKgr7mtqHXKOxVDDiDvD52SzyUGYiU12CnQ==
-X-Received: by 2002:a05:6870:f815:b0:29e:3132:5897 with SMTP id 586e51a60fabf-2bd50c5a426mr3634160fac.5.1740160912743;
-        Fri, 21 Feb 2025 10:01:52 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b95a7b5495sm7015941fac.36.2025.02.21.10.01.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 10:01:49 -0800 (PST)
-Message-ID: <53c3cd38-03d7-4264-9b5a-4ea885bc141f@gmail.com>
-Date: Fri, 21 Feb 2025 10:01:46 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1EA250C02
+	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 18:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740161365; cv=fail; b=nRpX4k7qIQg1t0JZoLZBC5A3uMb3dhHQAVHR5EugtCt9ftUwQXWzkuvXaznuObBI10lBUdHaKOZBV5sQjUtxTXrrg/2N66mvhXdm+EEd9ayEzY6hJ817jkgNQjcvvxEa7Fd2OdNgfM5ooNIB15Uy8qUhePHmJL++bx01OzHzMwU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740161365; c=relaxed/simple;
+	bh=6BSg4xvUOH3E4PKTsgAPXnnGFy+MFV9RMDnPNA+vpfs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fYiDUzri6/KyjLJzHyZ6COA7bVRpnv376wNq6JKQrfDVBhBJTzGV4Z/UzCNjekbdVb/bm8Bv1zE5A4IlRCJ4lKdZEpDRTV6Mfc4NYAJQ3QaZs5pgvq1TqfYtxDc/DHTtBQGvURtDcodsVpcTurL2Y4GGP01zrybYAMcMCbcmSi4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rAwSUPZg; arc=fail smtp.client-ip=40.107.243.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rwIl7XJPDZFAzo9L9BrNGJVRiadV38CHsAry9EsyAquqTM1dYa2gCN+qI1+otHgSACwNJrcPolykr94XVbdkw6x8Axw/Uiv71hj6cCQA6B9sW+qE1Nn3RW2ThVcuaUxU/SMP2MuUzWHzfDquSsftoHWMptY4z+BGars1NUgBv+FsCY+CstZ2zXyZJGm90i/W9nNWzWW95heJ4pqjIutrA8W/KpiwB8V6CbiXk5fK8xBn+gfWvrm5tE6yJ8CoxdFYpMDpjvSI6pqg5EdwzChnww8kTrUChm+SPiLzV5Mm0BeaqVNj24/hCVgVLN0BnRcDF5pN5Amg9xE9/R6TaEGSpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GSdbSVWzWEfTOe3b1rYQXHBT7ii0rvV8fSpNanQlwhI=;
+ b=kTF9j8xxElY/enHgPAzOjZXU6P860SVB/G2TIkLSeY/deQvz8hOmA9zy6VdJq1KxelFL1fNafVnTLW4FsKwQYzd5WJjDHdvnh7CWHIeqW8ngJdXyZdjhQISWpoKWbiQ0BLdqodGvA8mvnCO0PSHMr+FhY69xnB807Vzi9PsgHPuM+JTuEXKk9iqqNPrQsJi5H2ItF2obuD8p6TnaNcz4Hjj+/pmA0xGfD9WmIA3hwc90Ha0nO9mJSOLcYf9pDPjN/U1VvbIhgN+VNgWvrriyIl7wKAMMMsefvg3TJ8CyXGU9uesAl2Fop2Z6FRu68ephqivobNODRA4fyulkxBowlQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GSdbSVWzWEfTOe3b1rYQXHBT7ii0rvV8fSpNanQlwhI=;
+ b=rAwSUPZgwvC4qIkydBdWmWgR5LRxCoNIshaFHj35dpKo8yiYz/iyDGXcydrstnUet5fPxofyQl6usP0PAhftVSuNu4rHLn0krc+dV5ZCUMFEivJYI4w9EAMxAHza5zLJ1UsESG73iAItvZ/UdxjkGRhAev2xwm6sdNp+vaB9CMc=
+Received: from SA1P222CA0149.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c2::26)
+ by DS0PR12MB7826.namprd12.prod.outlook.com (2603:10b6:8:148::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
+ 2025 18:09:19 +0000
+Received: from SA2PEPF000015CB.namprd03.prod.outlook.com
+ (2603:10b6:806:3c2:cafe::63) by SA1P222CA0149.outlook.office365.com
+ (2603:10b6:806:3c2::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.16 via Frontend Transport; Fri,
+ 21 Feb 2025 18:09:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF000015CB.mail.protection.outlook.com (10.167.241.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8466.11 via Frontend Transport; Fri, 21 Feb 2025 18:09:16 +0000
+Received: from khazad-dum.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 21 Feb
+ 2025 12:09:15 -0600
+From: Lancelot SIX <lancelot.six@amd.com>
+To: <stable@vger.kernel.org>
+CC: Lancelot SIX <lancelot.six@amd.com>, Jay Cornwall <jay.cornwall@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
+Date: Fri, 21 Feb 2025 18:08:52 +0000
+Message-ID: <20250221180852.465651-1-lancelot.six@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2025021803-fondness-ship-dc72@gregkh>
+References: <2025021803-fondness-ship-dc72@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/152] 6.6.79-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250219082550.014812078@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250219082550.014812078@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CB:EE_|DS0PR12MB7826:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5a60106-59fc-448b-26e2-08dd52a2db1e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?isP/DE3Gtgr7klM3QjxUUZqKPX86mF+j6UUU45Yn3T65c4/0iUTJgWbSA7kQ?=
+ =?us-ascii?Q?DI/yVqhOOoJR3TlBzj4obXycr20DGp5ZcOSldCij/zLU0m6cRMJs1/OVfD4K?=
+ =?us-ascii?Q?qRJhvht4Gy6hu1NuGCz5adWJqLs85Fd5AnDNuMo75D/96B1tVcbmYOjU+5QD?=
+ =?us-ascii?Q?0MhERGnXJQDZiAI9RhG07RLicXVr0RimG1q6y6Ne2tHn9/ua/XC7pkAo4ad9?=
+ =?us-ascii?Q?mLiAoj8Tz96wlcxEeMBI30SomyMYUzL7BZwlpUfUenju6AaIEYEaG/g15GEv?=
+ =?us-ascii?Q?XODVHaev8NQtJJYB+qcX2Z3NAGff6T9WsnIz9mS1lZwgSHlmv+Stw8Y3VRfR?=
+ =?us-ascii?Q?JWrbNFpEBAsFZINkxeSG9bplO+M39AHRF9H9Mv+T8sFusuvdklkA8Rq2uE47?=
+ =?us-ascii?Q?YOl0E+MBVpO6jVIJzXxXFHhJPz5jz7qspRkfyBDq5mrECP9z5bMZierex4D+?=
+ =?us-ascii?Q?Pps0coEX6FtdMHF2AeWgow9kO9znwpyf6BwmnXDGYhWFMQCKLAVvyTTeXYZG?=
+ =?us-ascii?Q?Sa2tONfhDbJ7agYhYBjy2+ZUd+zclsNdSziFycnPB792bNg42IiFmuZb7pXj?=
+ =?us-ascii?Q?9ebbh8zdTaFMSIo4hXcYd8uYGDS2KVJOvdE34buSlwjZVhnC7DpY2Xe5hmRK?=
+ =?us-ascii?Q?uVfCx3VcNiMXr8nfnLZnl4BcIJWaV0bpV4DNTBQVSbF7PQWeA5Wh2G/NAJXz?=
+ =?us-ascii?Q?jk0HGwOyY84uNQJdpGAo1cMyUO2NaclXOHaTheEowC/1ftoRTCqQgTTD70f0?=
+ =?us-ascii?Q?AWNiYjFe6xHgEzMO6M6++UgB36qUhdyz+/G/B5At2LLZoz2By/BfTN0iHAUI?=
+ =?us-ascii?Q?JFt1syop+s0MZMkdp7q25Krpgm4itGySAOtncRCOEIKlptSj7YHtPA4j0VTW?=
+ =?us-ascii?Q?qnTbH086y4d6R/4klwlvbplH4V9m/FOW5NTsINLUzi6LjYhDwv4tC4I0IZYA?=
+ =?us-ascii?Q?FyAlkFm7MyAlV/M4pTVfTBbScMN18KytdGkYPsY0z9rMFi05G/dn4j7txcX+?=
+ =?us-ascii?Q?7TJq0dKF6wkgv6pjeh/EYI+bZ91WnUb6n7ldy6ub/Q5WLdwBi3i27wKRsc80?=
+ =?us-ascii?Q?uRUZ2SonHR/8cCFSBUxDA8VfcVgta+9q2l8KkLVeC5IIlD38Zz50kD3L4MjJ?=
+ =?us-ascii?Q?dduJcSvRtZy0EEb0pqdMQcBtyH6ohoxOxjVB1GRDQIHsPyDHyraiXGLwkq14?=
+ =?us-ascii?Q?NDKL35nXIGRLDjuilzfOdVRWit/OM6UkUtSXRZ8xY2cY6FQEWoXgTVqcXbs5?=
+ =?us-ascii?Q?XsxvVA2a/8LqrVstIqf8gMic66mYibncsun8BjyBT+sc4ZFZf0DoTyEhKeZD?=
+ =?us-ascii?Q?HzFU/PpuoFs3tdsfIzBUzMglZyNWl4F4EPl3Fe28uD9juWHdD8ugx/lMFzfj?=
+ =?us-ascii?Q?GrUJfNqMNMW0YlTQRkuboh5XlHB4UwZ/mUdivIwyoIrwM3Ph8vJTl0lk9wbd?=
+ =?us-ascii?Q?GiGFKYjEzIHL73OTFomCSvYhfdJ6OIuiPnwR8Ube6yhD2emrqzvXLrTMd47g?=
+ =?us-ascii?Q?EbB+n011cyAJGPI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 18:09:16.9906
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5a60106-59fc-448b-26e2-08dd52a2db1e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015CB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7826
 
-On 2/19/25 00:26, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.79 release.
-> There are 152 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 21 Feb 2025 08:25:11 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.79-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+It is possible for some waves in a workgroup to finish their save
+sequence before the group leader has had time to capture the workgroup
+barrier state.  When this happens, having those waves exit do impact the
+barrier state.  As a consequence, the state captured by the group leader
+is invalid, and is eventually incorrectly restored.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+This patch proposes to have all waves in a workgroup wait for each other
+at the end of their save sequence (just before calling s_endpgm_saved).
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+This is a cherry-pick.  The cwsr_trap_handler.h part of the original
+part was valid and applied cleanly.  The part of the patch that applied
+to cwsr_trap_handler_gfx12.asm did not apply cleanly since
+80ae55e6115ef "drm/amdkfd: Move gfx12 trap handler to separate file" is
+not part of this branch.  Instead, I ported the change to
+cwsr_trap_handler_gfx10.asm, and guarded it with "ASIC_FAMILY >=
+CHIP_GFX12".
+
+Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.12.x
+(cherry picked from commit d584198a6fe4c51f4aa88ad72f258f8961a0f11c)
+Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+---
+ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h         | 3 ++-
+ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+index 02f7ba8c93cd4..7062f12b5b751 100644
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm
+index 44772eec9ef4d..3ef294ead56c5 100644
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm
+@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
+ 
+ L_END_PGM:
++#if ASIC_FAMILY >= CHIP_GFX12
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
++#endif
+ 	s_endpgm_saved
+ end
+ 
+
+base-commit: 984391de59a1d6918ac9ba63c095decbcfc85c71
 -- 
-Florian
+2.43.0
+
 
