@@ -1,58 +1,88 @@
-Return-Path: <stable+bounces-118607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7239BA3F8DA
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:34:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A34DA3F8FE
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FB608639E4
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:30:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2B7D7063F1
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F48211485;
-	Fri, 21 Feb 2025 15:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2261E8850;
+	Fri, 21 Feb 2025 15:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdAhZwhn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="syu33c5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812751DFE00;
-	Fri, 21 Feb 2025 15:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C51E87B;
+	Fri, 21 Feb 2025 15:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740151557; cv=none; b=BG3z0BC3HJcyhLQgmoj26/TFQDX3xa6zZ6JJpw+8mtCGuPH0xBLf7dyOWyUc2eOjooyzFlNffxlE+I3bUtiifaAIP0iBHa9LQ4GrGlHlnv3wIe3tI1FiVMWcwPwa9A27P2jBoXbPdo1V9LDkMOOqaMtcj5GoE22cfNbdGkOf+9U=
+	t=1740151927; cv=none; b=jx2tWOC29zw63/bMkTfPh+V+1JdICU57q9k5J1dr4YAimEj3T47GzNDAMv8FkdSIofxRDeuD06vM8y1M9olzUtuWhRbUu7QKqx+vNT7uuZh+qRtAUrr35Zmgo7envYLuhqew1LsXh9YzvAteuEw1yfiJ0t5bMzzg11x+uQ9+63s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740151557; c=relaxed/simple;
-	bh=OJcmkoiIcvVqjZ0P5kSBXFOodq7+Y4B8DpoSX5+y8gw=;
+	s=arc-20240116; t=1740151927; c=relaxed/simple;
+	bh=2XaCu9je9IA765r/EB4HdTVXelllIRMjNPyGsqdE/Ic=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pxx5yZpBBiqFkeUirqddp+LvwVkPftkn4uWy49ZV7UwvRhPncElDw6KbsP7GMl3yGIoiQ2vWk14ZOY6hwfPb8Eub8R+EUpcEH60PgtSWzvdvS0wP1aNegdzRRM7shWf664VoZTekaPbPJn+436YnoUbDhg+uLB4iCINCEyPxLVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdAhZwhn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969BAC4CED6;
-	Fri, 21 Feb 2025 15:25:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740151557;
-	bh=OJcmkoiIcvVqjZ0P5kSBXFOodq7+Y4B8DpoSX5+y8gw=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=SRsXo9JD1Z+2WaO/3EJaO4OZRRX/xJCaUAQwfPmm/ObMHyRMIpBV0vgm8334DWzO/nQyuD2hCMbw9OnrUwaZgy+xxB2mgoCVtd84LT/0jmTVPGWUK0k3n+xAnjkunuodB62BA8gcON0R3DvvCaNMzMQwSBmU8MERN8bNoRO32XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=syu33c5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51861C4CED6;
+	Fri, 21 Feb 2025 15:32:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740151926;
+	bh=2XaCu9je9IA765r/EB4HdTVXelllIRMjNPyGsqdE/Ic=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MdAhZwhnNKgQlUTQBfCJuuOfZeIuEDKY7sM4QTMrufICLM1ACnbhibC/WosxCI5ZE
-	 RTWnQpr4eyb4jDKUBpWkr9UNaDj+xXsnRJIDeUq5eZoRXAZHptdktGeE2/EzgwO9cK
-	 OOUu4GH1dHUxT7hHeHo2WJKTB6Z21D7J2/hsZMyE=
-Date: Fri, 21 Feb 2025 16:25:54 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	John Starks <jostarks@microsoft.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>, Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13 085/274] Drivers: hv: vmbus: Wait for boot-time
- offers during boot and resume
-Message-ID: <2025022149-guru-collar-d55a@gregkh>
-References: <20250219082609.533585153@linuxfoundation.org>
- <20250219082612.949436698@linuxfoundation.org>
- <7278b63c-4858-418b-8ca2-c0fd50f215c8@linux.microsoft.com>
+	b=syu33c5FDQHVtMcEcWdynEHBHHQzJPgLhyfB++zvelhIsmLJ2XmDlU7oMDTLeMVwc
+	 RV3Z30p9d0YCTA15XIqmfev+ds6Gzy0+nboSXX1xyuUQDxIqnlxxNAGbVbYCpTfG6/
+	 nyskhslJCl5e9kDaO9HoUtZAIcdJJhBdE1hMld+VMc3YNW5pZcqQEpGd9LraPAKYIm
+	 GggZVSa1UN4kMkRbcNlO7jkTys4qzvFW3RSZdWaOpnC70Pw9uiJbR6HnQKS2wIfLtK
+	 CiEwckQny+xGxD9LpTWSz6M7XtTTJFkuX34BXhlP04kE28YPDHGtiBgP2fV6SWXo4H
+	 UJa/7XqpMI+Xg==
+Date: Fri, 21 Feb 2025 15:31:56 +0000
+From: Will Deacon <will@kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] arm64: hugetlb: Fix huge_ptep_get_and_clear() for
+ non-present ptes
+Message-ID: <20250221153156.GC20567@willie-the-truck>
+References: <20250217140419.1702389-1-ryan.roberts@arm.com>
+ <20250217140419.1702389-3-ryan.roberts@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,247 +91,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7278b63c-4858-418b-8ca2-c0fd50f215c8@linux.microsoft.com>
+In-Reply-To: <20250217140419.1702389-3-ryan.roberts@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Fri, Feb 21, 2025 at 11:09:32AM +0530, Naman Jain wrote:
+On Mon, Feb 17, 2025 at 02:04:15PM +0000, Ryan Roberts wrote:
+> arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
+> a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
+> are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
+> CONT_PMD_SIZE). So the function has to figure out the size from the
+> huge_pte pointer. This was previously done by walking the pgtable to
+> determine the level and by using the PTE_CONT bit to determine the
+> number of ptes at the level.
 > 
+> But the PTE_CONT bit is only valid when the pte is present. For
+> non-present pte values (e.g. markers, migration entries), the previous
+> implementation was therefore erroniously determining the size. There is
+> at least one known caller in core-mm, move_huge_pte(), which may call
+> huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
+> this case. Additionally the "regular" ptep_get_and_clear() is robust to
+> being called for non-present ptes so it makes sense to follow the
+> behaviour.
 > 
-> On 2/19/2025 1:55 PM, Greg Kroah-Hartman wrote:
-> > 6.13-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Naman Jain <namjain@linux.microsoft.com>
-> > 
-> > [ Upstream commit 113386ca981c3997db6b83272c7ecf47456aeddb ]
-> > 
-> > Channel offers are requested during VMBus initialization and resume from
-> > hibernation. Add support to wait for all boot-time channel offers to
-> > be delivered and processed before returning from vmbus_request_offers.
-> > 
-> > This is in analogy to a PCI bus not returning from probe until it has
-> > scanned all devices on the bus.
-> > 
-> > Without this, user mode can race with VMBus initialization and miss
-> > channel offers. User mode has no way to work around this other than
-> > sleeping for a while, since there is no way to know when VMBus has
-> > finished processing boot-time offers.
-> > 
-> > With this added functionality, remove earlier logic which keeps track
-> > of count of offered channels post resume from hibernation. Once all
-> > offers delivered message is received, no further boot-time offers are
-> > going to be received. Consequently, logic to prevent suspend from
-> > happening after previous resume had missing offers, is also removed.
-> > 
-> > Co-developed-by: John Starks <jostarks@microsoft.com>
-> > Signed-off-by: John Starks <jostarks@microsoft.com>
-> > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> > Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> > Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-> > Link: https://lore.kernel.org/r/20250102130712.1661-2-namjain@linux.microsoft.com
-> > Signed-off-by: Wei Liu <wei.liu@kernel.org>
-> > Message-ID: <20250102130712.1661-2-namjain@linux.microsoft.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >   drivers/hv/channel_mgmt.c | 61 +++++++++++++++++++++++++++++----------
-> >   drivers/hv/connection.c   |  4 +--
-> >   drivers/hv/hyperv_vmbus.h | 14 ++-------
-> >   drivers/hv/vmbus_drv.c    | 16 ----------
-> >   4 files changed, 51 insertions(+), 44 deletions(-)
-> > 
-> > diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-> > index 3c6011a48dabe..6e084c2074141 100644
-> > --- a/drivers/hv/channel_mgmt.c
-> > +++ b/drivers/hv/channel_mgmt.c
-> > @@ -944,16 +944,6 @@ void vmbus_initiate_unload(bool crash)
-> >   		vmbus_wait_for_unload();
-> >   }
-> > -static void check_ready_for_resume_event(void)
-> > -{
-> > -	/*
-> > -	 * If all the old primary channels have been fixed up, then it's safe
-> > -	 * to resume.
-> > -	 */
-> > -	if (atomic_dec_and_test(&vmbus_connection.nr_chan_fixup_on_resume))
-> > -		complete(&vmbus_connection.ready_for_resume_event);
-> > -}
-> > -
-> >   static void vmbus_setup_channel_state(struct vmbus_channel *channel,
-> >   				      struct vmbus_channel_offer_channel *offer)
-> >   {
-> > @@ -1109,8 +1099,6 @@ static void vmbus_onoffer(struct vmbus_channel_message_header *hdr)
-> >   		/* Add the channel back to the array of channels. */
-> >   		vmbus_channel_map_relid(oldchannel);
-> > -		check_ready_for_resume_event();
-> > -
-> >   		mutex_unlock(&vmbus_connection.channel_mutex);
-> >   		return;
-> >   	}
-> > @@ -1296,13 +1284,28 @@ EXPORT_SYMBOL_GPL(vmbus_hvsock_device_unregister);
-> >   /*
-> >    * vmbus_onoffers_delivered -
-> > - * This is invoked when all offers have been delivered.
-> > + * The CHANNELMSG_ALLOFFERS_DELIVERED message arrives after all
-> > + * boot-time offers are delivered. A boot-time offer is for the primary
-> > + * channel for any virtual hardware configured in the VM at the time it boots.
-> > + * Boot-time offers include offers for physical devices assigned to the VM
-> > + * via Hyper-V's Discrete Device Assignment (DDA) functionality that are
-> > + * handled as virtual PCI devices in Linux (e.g., NVMe devices and GPUs).
-> > + * Boot-time offers do not include offers for VMBus sub-channels. Because
-> > + * devices can be hot-added to the VM after it is booted, additional channel
-> > + * offers that aren't boot-time offers can be received at any time after the
-> > + * all-offers-delivered message.
-> >    *
-> > - * Nothing to do here.
-> > + * SR-IOV NIC Virtual Functions (VFs) assigned to a VM are not considered
-> > + * to be assigned to the VM at boot-time, and offers for VFs may occur after
-> > + * the all-offers-delivered message. VFs are optional accelerators to the
-> > + * synthetic VMBus NIC and are effectively hot-added only after the VMBus
-> > + * NIC channel is opened (once it knows the guest can support it, via the
-> > + * sriov bit in the netvsc protocol).
-> >    */
-> >   static void vmbus_onoffers_delivered(
-> >   			struct vmbus_channel_message_header *hdr)
-> >   {
-> > +	complete(&vmbus_connection.all_offers_delivered_event);
-> >   }
-> >   /*
-> > @@ -1578,7 +1581,8 @@ void vmbus_onmessage(struct vmbus_channel_message_header *hdr)
-> >   }
-> >   /*
-> > - * vmbus_request_offers - Send a request to get all our pending offers.
-> > + * vmbus_request_offers - Send a request to get all our pending offers
-> > + * and wait for all boot-time offers to arrive.
-> >    */
-> >   int vmbus_request_offers(void)
-> >   {
-> > @@ -1596,6 +1600,10 @@ int vmbus_request_offers(void)
-> >   	msg->msgtype = CHANNELMSG_REQUESTOFFERS;
-> > +	/*
-> > +	 * This REQUESTOFFERS message will result in the host sending an all
-> > +	 * offers delivered message after all the boot-time offers are sent.
-> > +	 */
-> >   	ret = vmbus_post_msg(msg, sizeof(struct vmbus_channel_message_header),
-> >   			     true);
-> > @@ -1607,6 +1615,29 @@ int vmbus_request_offers(void)
-> >   		goto cleanup;
-> >   	}
-> > +	/*
-> > +	 * Wait for the host to send all boot-time offers.
-> > +	 * Keeping it as a best-effort mechanism, where a warning is
-> > +	 * printed if a timeout occurs, and execution is resumed.
-> > +	 */
-> > +	if (!wait_for_completion_timeout(&vmbus_connection.all_offers_delivered_event,
-> > +					 secs_to_jiffies(60))) {
-> > +		pr_warn("timed out waiting for all boot-time offers to be delivered.\n");
-> > +	}
-> > +
-> > +	/*
-> > +	 * Flush handling of offer messages (which may initiate work on
-> > +	 * other work queues).
-> > +	 */
-> > +	flush_workqueue(vmbus_connection.work_queue);
-> > +
-> > +	/*
-> > +	 * Flush workqueue for processing the incoming offers. Subchannel
-> > +	 * offers and their processing can happen later, so there is no need to
-> > +	 * flush that workqueue here.
-> > +	 */
-> > +	flush_workqueue(vmbus_connection.handle_primary_chan_wq);
-> > +
-> >   cleanup:
-> >   	kfree(msginfo);
-> > diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
-> > index f001ae880e1db..8351360bba161 100644
-> > --- a/drivers/hv/connection.c
-> > +++ b/drivers/hv/connection.c
-> > @@ -34,8 +34,8 @@ struct vmbus_connection vmbus_connection = {
-> >   	.ready_for_suspend_event = COMPLETION_INITIALIZER(
-> >   				  vmbus_connection.ready_for_suspend_event),
-> > -	.ready_for_resume_event	= COMPLETION_INITIALIZER(
-> > -				  vmbus_connection.ready_for_resume_event),
-> > +	.all_offers_delivered_event = COMPLETION_INITIALIZER(
-> > +				  vmbus_connection.all_offers_delivered_event),
-> >   };
-> >   EXPORT_SYMBOL_GPL(vmbus_connection);
-> > diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-> > index 52cb744b4d7fd..e4058af987316 100644
-> > --- a/drivers/hv/hyperv_vmbus.h
-> > +++ b/drivers/hv/hyperv_vmbus.h
-> > @@ -287,18 +287,10 @@ struct vmbus_connection {
-> >   	struct completion ready_for_suspend_event;
-> >   	/*
-> > -	 * The number of primary channels that should be "fixed up"
-> > -	 * upon resume: these channels are re-offered upon resume, and some
-> > -	 * fields of the channel offers (i.e. child_relid and connection_id)
-> > -	 * can change, so the old offermsg must be fixed up, before the resume
-> > -	 * callbacks of the VSC drivers start to further touch the channels.
-> > +	 * Completed once the host has offered all boot-time channels.
-> > +	 * Note that some channels may still be under process on a workqueue.
-> >   	 */
-> > -	atomic_t nr_chan_fixup_on_resume;
-> > -	/*
-> > -	 * vmbus_bus_resume() waits for "nr_chan_fixup_on_resume" to
-> > -	 * drop to zero.
-> > -	 */
-> > -	struct completion ready_for_resume_event;
-> > +	struct completion all_offers_delivered_event;
-> >   };
-> > diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-> > index 2892b8da20a5e..bf5608a740561 100644
-> > --- a/drivers/hv/vmbus_drv.c
-> > +++ b/drivers/hv/vmbus_drv.c
-> > @@ -2427,11 +2427,6 @@ static int vmbus_bus_suspend(struct device *dev)
-> >   	if (atomic_read(&vmbus_connection.nr_chan_close_on_suspend) > 0)
-> >   		wait_for_completion(&vmbus_connection.ready_for_suspend_event);
-> > -	if (atomic_read(&vmbus_connection.nr_chan_fixup_on_resume) != 0) {
-> > -		pr_err("Can not suspend due to a previous failed resuming\n");
-> > -		return -EBUSY;
-> > -	}
-> > -
-> >   	mutex_lock(&vmbus_connection.channel_mutex);
-> >   	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
-> > @@ -2456,17 +2451,12 @@ static int vmbus_bus_suspend(struct device *dev)
-> >   			pr_err("Sub-channel not deleted!\n");
-> >   			WARN_ON_ONCE(1);
-> >   		}
-> > -
-> > -		atomic_inc(&vmbus_connection.nr_chan_fixup_on_resume);
-> >   	}
-> >   	mutex_unlock(&vmbus_connection.channel_mutex);
-> >   	vmbus_initiate_unload(false);
-> > -	/* Reset the event for the next resume. */
-> > -	reinit_completion(&vmbus_connection.ready_for_resume_event);
-> > -
-> >   	return 0;
-> >   }
-> > @@ -2502,14 +2492,8 @@ static int vmbus_bus_resume(struct device *dev)
-> >   	if (ret != 0)
-> >   		return ret;
-> > -	WARN_ON(atomic_read(&vmbus_connection.nr_chan_fixup_on_resume) == 0);
-> > -
-> >   	vmbus_request_offers();
-> > -	if (wait_for_completion_timeout(
-> > -		&vmbus_connection.ready_for_resume_event, secs_to_jiffies(10)) == 0)
-> > -		pr_err("Some vmbus device is missing after suspending?\n");
-> > -
-> >   	/* Reset the event for the next suspend. */
-> >   	reinit_completion(&vmbus_connection.ready_for_suspend_event);
+> Fix this by using the new sz parameter which is now provided to the
+> function. Additionally when clearing each pte in a contig range, don't
+> gather the access and dirty bits if the pte is not present.
 > 
+> An alternative approach that would not require API changes would be to
+> store the PTE_CONT bit in a spare bit in the swap entry pte for the
+> non-present case. But it felt cleaner to follow other APIs' lead and
+> just pass in the size.
 > 
-> Hi,
-> Thanks for porting this.
-> While we are picking this patch, it would be good to have the other
-> patch, which was part of the same series, picked as well. Reason being, with
-> this patch alone, we won't get any prints for missing offers. Patch 2/2
-> of the series adds those prints back.
+> As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
+> entry offset field (layout of non-present pte). Since hugetlb is never
+> swapped to disk, this field will only be populated for markers, which
+> always set this bit to 0 and hwpoison swap entries, which set the offset
+> field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
+> memory in that high half was poisoned (I think!). So in practice, this
+> bit would almost always be zero for non-present ptes and we would only
+> clear the first entry if it was actually a contiguous block. That's
+> probably a less severe symptom than if it was always interpretted as 1
+> and cleared out potentially-present neighboring PTEs.
 > 
-> commit	fcf5203e289ca0ef75a18ce74a9eb716f7f1f569 (patch)
+> Cc: stable@vger.kernel.org
+> Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+>  arch/arm64/mm/hugetlbpage.c | 40 ++++++++++++++++---------------------
+>  1 file changed, 17 insertions(+), 23 deletions(-)
 > 
-> Series: https://lore.kernel.org/all/20250102130712.1661-3-namjain@linux.microsoft.com/
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index 06db4649af91..614b2feddba2 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -163,24 +163,23 @@ static pte_t get_clear_contig(struct mm_struct *mm,
+>  			     unsigned long pgsize,
+>  			     unsigned long ncontig)
+>  {
+> -	pte_t orig_pte = __ptep_get(ptep);
+> -	unsigned long i;
+> -
+> -	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
+> -		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
+> -
+> -		/*
+> -		 * If HW_AFDBM is enabled, then the HW could turn on
+> -		 * the dirty or accessed bit for any page in the set,
+> -		 * so check them all.
+> -		 */
+> -		if (pte_dirty(pte))
+> -			orig_pte = pte_mkdirty(orig_pte);
+> -
+> -		if (pte_young(pte))
+> -			orig_pte = pte_mkyoung(orig_pte);
+> +	pte_t pte, tmp_pte;
+> +	bool present;
+> +
+> +	pte = __ptep_get_and_clear(mm, addr, ptep);
+> +	present = pte_present(pte);
+> +	while (--ncontig) {
+> +		ptep++;
+> +		addr += pgsize;
+> +		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
+> +		if (present) {
+> +			if (pte_dirty(tmp_pte))
+> +				pte = pte_mkdirty(pte);
+> +			if (pte_young(tmp_pte))
+> +				pte = pte_mkyoung(pte);
+> +		}
+>  	}
 
-Now queued up, thanks.
+nit: With the loop now structured like this, we really can't handle
+num_contig_ptes() returning 0 if it gets an unknown size. Granted, that
+really shouldn't happen, but perhaps it would be better to add a 'default'
+case with a WARN() to num_contig_ptes() and then add an early return here?
 
-greg k-h
+Will
 
