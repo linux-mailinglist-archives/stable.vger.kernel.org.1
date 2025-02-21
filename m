@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-118601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1023AA3F782
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:42:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EE8A3F7BF
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC831894D8A
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 14:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2738D1893CBD
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 14:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7170E20FA90;
-	Fri, 21 Feb 2025 14:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C14B20E6E6;
+	Fri, 21 Feb 2025 14:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3hGvtbmP"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SHfu3m8E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6365620D4E4
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 14:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E52E20E70E
+	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 14:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740148941; cv=none; b=cD9LHnicXZGLXEZE7Wr8eazjSQkiiZs/FgvIiHuFULG4hLRH0e5600sNwXRl5slQF+i6dH5X70rpgFQRIUzWLIC9YljvJB3YK9IBuUfbzu9+uWpTZ2bJNOC6veaZdbZz7HhyYfcUSczpXY072Nf8Y2xxax8BnxbKBp3VqU0QoUs=
+	t=1740149559; cv=none; b=b7Pm1angh5JD16sh0IfoajvMjMx0ZYez+WScQpyLal7P5y5iQu0fNP6MOcmjNGPkMM557CRGoHt9CwgsSEcqvGrRRsIxuEhMmeoqZCU6usbTAzHq3bXO6Xw+LbdQL5XMKPTNcw3/GWYt4EE/iDJYDwCHx+LmNBf43OFczuCCl/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740148941; c=relaxed/simple;
-	bh=AFjIBXObHULWwBBeti/UQ9IenIPyekvwF6dd/WNVR1k=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qVsfqrZMDRAtqcBI/QK4H/7vVnihV87iKiscFG+gD0+d6cCjWU+Ffq+SJo1MPkfhs98VnousZ+WTzBIQNEfnRfZZplhbCDoIMZAQ2DA3HXhyXD6KsJXSw7HjR9IJutaYN+m1+oFceEaHpsBzBPzl7P2dajGKuwSNZW/Oi7AQ+xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--derkling.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3hGvtbmP; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1740149559; c=relaxed/simple;
+	bh=VWMhrPMtisJb4hIm7Q7em7/129wWiVmvlzMbHR8p3mI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LmrL52Ois/aUnSYBUu1TLXM7v36WHm0Wlm4cQ7xPorgECkIWQbq/tu7SvlwyOAzbHCSI2adNsz+VAhEmuec/nC5KdsNZ3UxzYJmlXe7/2yn2xcWcMGX1E3tjJjdgxjQKKqpQf1jZ2BNu1hfwXOV7DwqYsgbFDNaWLMbY6GgQf9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--derkling.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SHfu3m8E; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--derkling.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-438e180821aso11446325e9.1
-        for <stable@vger.kernel.org>; Fri, 21 Feb 2025 06:42:19 -0800 (PST)
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-38f36fcf4b3so1324751f8f.1
+        for <stable@vger.kernel.org>; Fri, 21 Feb 2025 06:52:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740148938; x=1740753738; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740149556; x=1740754356; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=nkqxYFvP1YOYc3/mGAzLSNb9s+ekzsxk4Sz8UsgdvTg=;
-        b=3hGvtbmPVHtiHyEhwtkKt0rrL4vpDTh5u8cUsj8m+jjxdwnkoNG33kb5HepmrXCo8s
-         78T7gocD7OMCIad/YmhqNW4XdR0+C8a/LhqjqW5UyNhezqPrWDgEnqa4b+PD8GRCGbNK
-         QKsJJYU/rQ0ANTJ91RegifkA+7SspNFwXXCCY/bsIn3W3a3+tqiT/hyh3RABmjRBDlV3
-         VTTtItj0Sj9b1FxF/V2uWD8IWZFgNWff1rv2yOSyXlz8pJA6INi4HsJW2cydWLBZO6IA
-         SWxPfuJcu9bvh/kZUdKEkPJMWfllF+ApVIjX4q0txSbpLlYyE5Y5Bltxa2mGCanG4V1I
-         D5qw==
+        bh=PJklh7u9DqRRvWHRSedTQSVAJYR9DI+wbKJuVOJ/zZU=;
+        b=SHfu3m8EzlyymUDhGMP1jxOTKIftEITksjridHQpLcLUafOjg+N3nNlMQAVVNYJcNd
+         0GCM5Vu93TeUF4z55KLtrJzZODHh6TSwAJTBoVR+uU0IgNHdNqjF5Qn0KhvoqxbBVE4k
+         FxCmuYD1ZNWLqXnqVLNGUEqSk6KUzQh0eRh1/phqobjaFM/iIClBPOyN2zelaW3Kl/Or
+         AkvlrDQpaeuSRXQZJKqkwq4Z+XIE8mWdgp18PKHr8NHNFVwNK0SbsVX3gpC20J7S16wp
+         2xfhwAQoPC1KSdhZKpngzHkjao68WSEizNe1lPxVsz+TXtW7g6qfYd/+K4bh/BuNYRir
+         g7fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740148938; x=1740753738;
+        d=1e100.net; s=20230601; t=1740149556; x=1740754356;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=nkqxYFvP1YOYc3/mGAzLSNb9s+ekzsxk4Sz8UsgdvTg=;
-        b=KBrVxzd+8mRQLEhdlbg/+/0JLU8qSnm/ne78+gslubT907N7qHkXZ6l5s9YMRiLFLy
-         TGri5hqfEOxKCRk/PXI8TgdgBpkFACRLeOj0G/sRrtebe4Qd0I+afPBta+GHLHyxn+5V
-         eWAQ13/JZes6GXM5RM0cbHzT8hmakJO5KfWFJGV4+RlX6mzyV9uOofOjT5lWqCP8NJUL
-         hB1jkP8PJzv8b2M+Ac/86MK9TYzFjNGUGdIyFGtoZKByXTTYJWrgTf80pqO+EhAKWhAD
-         xqKrwUeELDTyd3SY13LNGAZlLdaertAefqtl6g5lgPXGuyM22CRXD4xLlBWOY40/CIsq
-         dufw==
-X-Gm-Message-State: AOJu0Yz6dh/5+Q2nXTgT/+70KoHu5XhYfJ3S4xM7ctWYTnLQlnamZEKn
-	bMXYLAV+DVi/2tUG8Iz9UZyQLKBBubM00b7DRbrCDcx5PeogxbMleWKqgyGEViRzNao3dcGtjUJ
-	OP5Dm8/0viH1965dmQJ+I/VxFcB5vHCja15KARu3t0JaniY2FLRR3etRgjj84kaZ889MA0BKBO/
-	8b6z5lMTnVuVx0I02FtFimTgP4GTXz5IGZaAZ3bxO6LVk=
-X-Google-Smtp-Source: AGHT+IF3X1+pcfYXoY0cCWqu4lNatPIFh55YyQdIDckUD8if227AnRzs56DLXcCjuXNi/nuuw+YQUa8szzXjQg==
-X-Received: from wmsd12.prod.google.com ([2002:a05:600c:3acc:b0:439:80fc:8bb2])
+        bh=PJklh7u9DqRRvWHRSedTQSVAJYR9DI+wbKJuVOJ/zZU=;
+        b=Shgu1xYwKypH2Oq6kG4R04Mq2bnbXxQp84FwSqkADINq0lm2mGcc8krNrMSmk/v5K5
+         DG2Iwit0PdJSq3PzT0TNKqBpp+FRtDKSGtyIKawiDaDCu9kpdoHSCGNP2masV3TpEJRL
+         s9WXUkpRynMzplyzRHFI1EgC6867Vv0rzo4drK6AWC/bmlbtNCoGpR+zsF4M1YAighY3
+         0vAqmQ9cD0UG9JNNlJdeMMHcEDIeqi5pI8rUsMJeSAmIT8uXIwMm6vSkAv05lQnWon2f
+         cPoiSaJCZIChS5slzqEEjZs5IVrSkYGljg+cXt90kYfk/j4/29ifbOke+q97Qq011YX+
+         puHA==
+X-Gm-Message-State: AOJu0Yxun1KInG1oRTlLwv4MBIfl+Ig6fDypZN28zY6V2G1Rro75pseH
+	1KDdfhu2CDBW3rX3R61T4dM1MQNiswoEFi9W7HTatOC50QYOm8ObPiOViXTWPrblxwtgMR1XZih
+	AuKvjHz0FQL8cPXiRnxSBZESWZhPAzzogCrF5cjkF65DDBZFD7PDffbMNKmGiEBujGE3LQd7/P0
+	sV41sNz+ZXyZm7b2YPlVcZgJ3H4or/S3x3f56koo+mYYA=
+X-Google-Smtp-Source: AGHT+IEwZvTcD91+iLHw+VrVG2ux5qKn48gbc83ImXS9beNu4zdCBswbeRoOKzBIt4Xn/WEPEMWSlmskee/ysg==
+X-Received: from wmbfk14.prod.google.com ([2002:a05:600c:cce:b0:439:7d73:d8fc])
  (user=derkling job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5108:b0:439:9898:f18c with SMTP id 5b1f17b1804b1-439b5b3dbbcmr11992165e9.26.1740148937808;
- Fri, 21 Feb 2025 06:42:17 -0800 (PST)
-Date: Fri, 21 Feb 2025 14:42:09 +0000
+ 2002:a5d:6d0a:0:b0:38d:dd70:d70d with SMTP id ffacd0b85a97d-38f6e947399mr3767006f8f.18.1740149555851;
+ Fri, 21 Feb 2025 06:52:35 -0800 (PST)
+Date: Fri, 21 Feb 2025 14:51:56 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,8 +71,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250221144209.135763-1-derkling@google.com>
-Subject: [PATCH 5.15] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+Message-ID: <20250221145156.195014-1-derkling@google.com>
+Subject: [PATCH 5.10] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
 From: Patrick Bellasi <derkling@google.com>
 To: stable@vger.kernel.org
 Cc: patches@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
@@ -144,10 +144,10 @@ Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
  2 files changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2f6312e7ce81f..90ac8d84389cf 100644
+index 0c802ade80406..00ae2e2adcadb 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -2449,7 +2449,8 @@ config CPU_IBPB_ENTRY
+@@ -2463,7 +2463,8 @@ config CPU_IBPB_ENTRY
  	depends on CPU_SUP_AMD && X86_64
  	default y
  	help
@@ -158,10 +158,10 @@ index 2f6312e7ce81f..90ac8d84389cf 100644
  config CPU_IBRS_ENTRY
  	bool "Enable IBRS on kernel entry"
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f84d59cd180b3..dfc02fb32375c 100644
+index 0b7f6bcbb8ea9..725f827718a71 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1092,6 +1092,8 @@ static void __init retbleed_select_mitigation(void)
+@@ -1061,6 +1061,8 @@ static void __init retbleed_select_mitigation(void)
  
  	case RETBLEED_MITIGATION_IBPB:
  		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
@@ -170,7 +170,7 @@ index f84d59cd180b3..dfc02fb32375c 100644
  
  		/*
  		 * IBPB on entry already obviates the need for
-@@ -1101,8 +1103,6 @@ static void __init retbleed_select_mitigation(void)
+@@ -1070,8 +1072,6 @@ static void __init retbleed_select_mitigation(void)
  		setup_clear_cpu_cap(X86_FEATURE_UNRET);
  		setup_clear_cpu_cap(X86_FEATURE_RETHUNK);
  
@@ -179,7 +179,7 @@ index f84d59cd180b3..dfc02fb32375c 100644
  		/*
  		 * There is no need for RSB filling: entry_ibpb() ensures
  		 * all predictions, including the RSB, are invalidated,
-@@ -2607,6 +2607,7 @@ static void __init srso_select_mitigation(void)
+@@ -2469,6 +2469,7 @@ static void __init srso_select_mitigation(void)
  		if (IS_ENABLED(CONFIG_CPU_IBPB_ENTRY)) {
  			if (has_microcode) {
  				setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
@@ -187,7 +187,7 @@ index f84d59cd180b3..dfc02fb32375c 100644
  				srso_mitigation = SRSO_MITIGATION_IBPB;
  
  				/*
-@@ -2616,6 +2617,13 @@ static void __init srso_select_mitigation(void)
+@@ -2478,6 +2479,13 @@ static void __init srso_select_mitigation(void)
  				 */
  				setup_clear_cpu_cap(X86_FEATURE_UNRET);
  				setup_clear_cpu_cap(X86_FEATURE_RETHUNK);
@@ -201,7 +201,7 @@ index f84d59cd180b3..dfc02fb32375c 100644
  			}
  		} else {
  			pr_err("WARNING: kernel not compiled with CPU_IBPB_ENTRY.\n");
-@@ -2624,8 +2632,8 @@ static void __init srso_select_mitigation(void)
+@@ -2486,8 +2494,8 @@ static void __init srso_select_mitigation(void)
  		break;
  
  	case SRSO_CMD_IBPB_ON_VMEXIT:
@@ -212,7 +212,7 @@ index f84d59cd180b3..dfc02fb32375c 100644
  				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
  				srso_mitigation = SRSO_MITIGATION_IBPB_ON_VMEXIT;
  
-@@ -2637,9 +2645,9 @@ static void __init srso_select_mitigation(void)
+@@ -2499,9 +2507,9 @@ static void __init srso_select_mitigation(void)
  				setup_clear_cpu_cap(X86_FEATURE_RSB_VMEXIT);
  			}
  		} else {
