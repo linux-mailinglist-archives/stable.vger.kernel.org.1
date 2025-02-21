@@ -1,171 +1,91 @@
-Return-Path: <stable+bounces-118605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A689A3F833
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D09FA3F83C
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 16:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E9D8189F9F1
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21DF189356A
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 15:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9374A20FABA;
-	Fri, 21 Feb 2025 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC1720102C;
+	Fri, 21 Feb 2025 15:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLpfHGNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OP2KNIjc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D534820A5C3;
-	Fri, 21 Feb 2025 15:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A312FF69
+	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 15:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740150863; cv=none; b=Q9JlR6o+GgGTVAe96j0mlbO0HIIcQpMzdaZFeHRsFqa1Iv8jNJ82LBjEQyHwYHsWZLOR1VThMsTVcA2gTBv66j/BMR3NN9SvtAH1z+BaRuCoM5GhYodMTY7metHcw4V3z18VFZaxO3AUxy2i4S0OiWnV5b2KeXUEusXTeTqypmA=
+	t=1740151032; cv=none; b=YDiMNMbwbLHoRLWUs4sAPBteIqR+qtz8RiBxvDXDUApzqvZ6zCG8g5b6eKr2RiGf19tDMx47nDDTxwZWb2j1fuh1dGv+8t6pkjbBMXLI429ZapeowGj8lfuhaybWhtPtaJY8bKTyge9w+4KiOAV7+fkMlpXjuPyrzIZzyjB71QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740150863; c=relaxed/simple;
-	bh=W+YTeidu3y3Uj7i3nnpU2J4V4dfndNYZv9cMbFSe5sw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SDFC7XwvqiFuI9Y0w3bUWeeUBLMRegc5faOiSQMr7YrueGTP6UrQkvgJjqPjTzqh//iYCuOePBDAL/eOFxfrotYQZ4Uo88n/VkpmF7vD2EJokodoqNTxrRe+Kk60J+/m2U/jeZbCjGsbFj2/cSBqYgE5o7JSFE7v8wMr0yBO2hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLpfHGNO; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fc317ea4b3so560720a91.3;
-        Fri, 21 Feb 2025 07:14:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740150861; x=1740755661; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pfuxV1/a1iOlBYIh1qZOG17fTs3BvOvrUMe6IW7OLwg=;
-        b=XLpfHGNOWKQAZZlpF2x9IuBHR9D5gBL/J6bEHWVToqXkMPC8j1evKmVvrD/MlzLD+l
-         Vv39YjLEbr6KcJjHg8lm/esWgru6ug1ka6c+H1yGK3c8m2jIE9WHvj6aT6MexnLDsV87
-         9Bi+mvziE7Tf3wA7B9l4PDNsYn/S05aulFpnJSxcSNoHQy2fouB9A74DplDrU5i5Vcgy
-         +f1DGcq2KZr/nX0mLaTfrjdjl58wtzbb/rV0QauqpK8NVUBTaDXabuyTt5bJrZ/GKety
-         qeFhLrtqCXTj4lHWqnRGayZlPmvft3aK0AnSui70pNSQTuogQgnES3AQhu4tFjyVns/v
-         YkdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740150861; x=1740755661;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pfuxV1/a1iOlBYIh1qZOG17fTs3BvOvrUMe6IW7OLwg=;
-        b=M18DZUF4CyhSz4Ga+OzYrZIJkLvlgGKDBunI02BCNM5iXbj/kmI5YQtTu0po+YbG3p
-         a4AlsTUS1+JJJVO3lqNDtWxLQ+FJoYjAVHp730SW8ZqwhcvB9G+h3w1WhEM6SHOt3hAA
-         fm2jGv3ysbUiDVgzPjwNb9F23KJ+avLHMVF4p+jTLqUAw5PgGqFkhIFfMfQ2XwDPDoMG
-         bv7NGZk/94381IQlISFum1j3KpNNNi3Wuas1iEU7wreQeMOpsarSLIVBa1Xkfmy9tLiD
-         hR2j/AMwhcnJu6B6Ux1cwhWlDW57P8RvUil61tfXltAw0DhVDdx4Uz1QMrji+wqB3wVX
-         71JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0Wb1R47VEDdyIFOJ8tSy5kfIX7WShFca3CzR7OWXO3hrHEl6BsJZCn7vEUXc2Vuy7ae3mYNI+Qq0jNAM=@vger.kernel.org, AJvYcCVuWB2N/xtVAYaw178MYyuptB+q2KdtiekUtHIKdLi9PQ7jsmbMrFj5JVQRfK0Q8FQDp68TvAzQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YypbPcUasHPWgQ0/EM38zonF7MVWqZ5MQiy/5Ps17gXJKtl/Mpf
-	EPLOkp449J1dXZWcGjgD9xDi/SjzKm/E7ZYHT9l0yK6zwUxwz/FBtAWZSIOu+LASavfymmsEJas
-	KicPkz8t+di/DTMOgCzANL1U2978=
-X-Gm-Gg: ASbGncsI335tGXKPlexrlTw61zDe7095W5Z4EjwxEPa/RlPdpDCIF94D2l93t/Q+8kt
-	E9AVHZvaMpTo8VHpPmweUyBfmpck35PiTF4y/9t3gvyej30jKUXl2Q7hkXgR+CGKidBVbLLMi2v
-	JrjXkR0tk=
-X-Google-Smtp-Source: AGHT+IEibl4fc95czZrJ4RgjP2PVjpAMh5E+9z87AN8A6HGQUPD765UBJ1i70Y4tZ/mfnjgzkJ/UPsVt1W+kY8JBFCA=
-X-Received: by 2002:a17:90b:3907:b0:2fc:f63:4b6a with SMTP id
- 98e67ed59e1d1-2fce75f086bmr2217993a91.0.1740150861088; Fri, 21 Feb 2025
- 07:14:21 -0800 (PST)
+	s=arc-20240116; t=1740151032; c=relaxed/simple;
+	bh=VNtxx84Vg7YdMS8F2lDOk/xU1uYuqz0hjgy0kzS273w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iUIPSROOxScd8KmS2TTUELlvoTub3UsMzgzGhT0+FzM+eFqezIlo+5oYxwbve3JW6eisi/gNb7SSnoStJLYggbXuvBxBSh75qBo67H/Ift+UXtgY6KagXKkgyMW1A/g/K8FBs4kzXlnnBz1/CbsTb6VO4PI7/PAqydYTehrLHas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OP2KNIjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C592C4CEEA;
+	Fri, 21 Feb 2025 15:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740151031;
+	bh=VNtxx84Vg7YdMS8F2lDOk/xU1uYuqz0hjgy0kzS273w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OP2KNIjcHI3pyTLGy8hh4q3Nk9ujEPZa419E73qU1EMf4s/57bU58qJidKk5QKjsV
+	 C6McYj00n8s1G+Vchks5RaYCT+N/8GldjodhC6mthCDH1zLJ5OS/SQAZ5AgIhbJyY1
+	 X7vxQ1OrX9EQf/HVJXi7oOdxYn1lMCGDyeXuyook=
+Date: Fri, 21 Feb 2025 16:17:09 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: stable@vger.kernel.org, yang@os.amperecomputing.com,
+	Naresh Kamboju <naresh.kamboju@linaro.org>
+Subject: Re: [PATCH stable 5.10.y-6.12.y] arm64: mte: Do not allow PROT_MTE
+ on MAP_HUGETLB user mappings
+Message-ID: <2025022102-scabbed-jinx-5f61@gregkh>
+References: <20250220155801.1731061-1-catalin.marinas@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250220064050.686-1-vulab@iscas.ac.cn>
-In-Reply-To: <20250220064050.686-1-vulab@iscas.ac.cn>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Fri, 21 Feb 2025 10:14:08 -0500
-X-Gm-Features: AWEUYZlIX0qqP3tQtVUCU2K3fHzr-Gp8foCznDfOxPvXltvgscdn0oDEaXfnBjE
-Message-ID: <CADnq5_PLNRJarsrJ9i9Q166Yj50CN2sJZSR5uOfokjNUhYDx1g@mail.gmail.com>
-Subject: Re: [PATCH] drm/radeon: Add error handlings for r420 cp errata initiation
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: alexander.deucher@amd.com, christian.koenig@amd.com, Xinhui.Pan@amd.com, 
-	airlied@gmail.com, simona@ffwll.ch, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250220155801.1731061-1-catalin.marinas@arm.com>
 
-On Thu, Feb 20, 2025 at 1:41=E2=80=AFAM Wentao Liang <vulab@iscas.ac.cn> wr=
-ote:
->
-> In r420_cp_errata_init(), the RESYNC information is stored even
-> when the Scratch register is not correctly allocated.
->
-> Change the return type of r420_cp_errata_init() from void to int
-> to propagate errors to the caller. Add error checking after
-> radeon_scratch_get() to ensure RESYNC information is stored
-> to an allocated address. Log an error message and return the
-> error code immediately when radeon_scratch_get() fails.
-> Additionally, handle the return value of r420_cp_errata_init() in
-> r420_startup() to log an appropriate error message and propagate
-> the error if initialization fails.
->
-> Fixes: 62cdc0c20663 ("drm/radeon/kms: Workaround RV410/R420 CP errata (V3=
-)")
-> Cc: stable@vger.kernel.org # 2.6.33+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+On Thu, Feb 20, 2025 at 03:58:01PM +0000, Catalin Marinas wrote:
+> PROT_MTE (memory tagging extensions) is not supported on all user mmap()
+> types for various reasons (memory attributes, backing storage, CoW
+> handling). The arm64 arch_validate_flags() function checks whether the
+> VM_MTE_ALLOWED flag has been set for a vma during mmap(), usually by
+> arch_calc_vm_flag_bits().
+> 
+> Linux prior to 6.13 does not support PROT_MTE hugetlb mappings. This was
+> added by commit 25c17c4b55de ("hugetlb: arm64: add mte support").
+> However, earlier kernels inadvertently set VM_MTE_ALLOWED on
+> (MAP_ANONYMOUS | MAP_HUGETLB) mappings by only checking for
+> MAP_ANONYMOUS.
+> 
+> Explicitly check MAP_HUGETLB in arch_calc_vm_flag_bits() and avoid
+> setting VM_MTE_ALLOWED for such mappings.
+> 
+> Fixes: 9f3419315f3c ("arm64: mte: Add PROT_MTE support to mmap() and mprotect()")
+> Cc: <stable@vger.kernel.org> # 5.10.x-6.12.x
+> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 > ---
->  drivers/gpu/drm/radeon/r420.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/gpu/drm/radeon/r420.c b/drivers/gpu/drm/radeon/r420.=
-c
-> index 9a31cdec6415..67c55153cba8 100644
-> --- a/drivers/gpu/drm/radeon/r420.c
-> +++ b/drivers/gpu/drm/radeon/r420.c
-> @@ -204,7 +204,7 @@ static void r420_clock_resume(struct radeon_device *r=
-dev)
->         WREG32_PLL(R_00000D_SCLK_CNTL, sclk_cntl);
->  }
->
-> -static void r420_cp_errata_init(struct radeon_device *rdev)
-> +static int r420_cp_errata_init(struct radeon_device *rdev)
+> 
+> Hi Greg,
+> 
+> This patch applies cleanly on top of the stable-rc/linux-6.12.y to
+> 5.10.y LTS, so I'm only sending it once. It's not for 6.13 onwards since
+> those kernels support hugetlbfs with MTE.
 
-You changed the function signature, but you didn't adjust the function
-behavior to match.
+Now queued up,t hanks.
 
-Alex
-
->  {
->         int r;
->         struct radeon_ring *ring =3D &rdev->ring[RADEON_RING_TYPE_GFX_IND=
-EX];
-> @@ -215,7 +215,11 @@ static void r420_cp_errata_init(struct radeon_device=
- *rdev)
->          * The proper workaround is to queue a RESYNC at the beginning
->          * of the CP init, apparently.
->          */
-> -       radeon_scratch_get(rdev, &rdev->config.r300.resync_scratch);
-> +       r =3D radeon_scratch_get(rdev, &rdev->config.r300.resync_scratch)=
-;
-> +       if (r) {
-> +               DRM_ERROR("failed to get scratch reg (%d).\n", r);
-> +               return r;
-> +       }
->         r =3D radeon_ring_lock(rdev, ring, 8);
->         WARN_ON(r);
->         radeon_ring_write(ring, PACKET0(R300_CP_RESYNC_ADDR, 1));
-> @@ -290,8 +294,11 @@ static int r420_startup(struct radeon_device *rdev)
->                 dev_err(rdev->dev, "failed initializing CP (%d).\n", r);
->                 return r;
->         }
-> -       r420_cp_errata_init(rdev);
-> -
-> +       r =3D r420_cp_errata_init(rdev);
-> +       if (r) {
-> +               dev_err(rdev->dev, "failed initializing CP errata workaro=
-und (%d).\n", r);
-> +               return r;
-> +       }
->         r =3D radeon_ib_pool_init(rdev);
->         if (r) {
->                 dev_err(rdev->dev, "IB initialization failed (%d).\n", r)=
-;
-> --
-> 2.42.0.windows.2
->
+greg k-h
 
