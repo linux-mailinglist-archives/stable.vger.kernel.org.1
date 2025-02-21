@@ -1,133 +1,124 @@
-Return-Path: <stable+bounces-118567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1B4A3F1F6
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 11:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC8EA3F2A2
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 12:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33E1A165AA0
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 10:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFAA1753ED
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 11:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375AB205AC4;
-	Fri, 21 Feb 2025 10:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F722206F35;
+	Fri, 21 Feb 2025 11:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="EMPe999d"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0941205504;
-	Fri, 21 Feb 2025 10:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D54520766F;
+	Fri, 21 Feb 2025 11:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740133627; cv=none; b=d/CFHYQUh+V3nTK1fsSzcJPsU7Bv+/JtNOrlmEFF2jnzANlx34aPHv2WZpC+Q35UHx29sRtdsU0BFLKvX422vMVwyzkhO7VqgEWgARvxggePBR0z4qfi7Zx49MpX0d0iROnfqB9Oix7dlXHNv9HKoS3gXbWOCzpfHjJnkH977EM=
+	t=1740135867; cv=none; b=Qe5O0hP8yGHRHb4ww8hif7ene4ypQWiQfw5rbb1ttOqUMestHbfU1nlMFL4+X0J/zr0MKS/2kRZKAtDCy/EYIEzyuBPCQl2osUJU2dxzf5gcaAPIwQFV6LmRb1lFM3Ps0Dbs2KnoJpMY3UUD5OkIjDsK+QKzV7mtopQppkEz9kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740133627; c=relaxed/simple;
-	bh=DTOaY89TL5e87zq5u+s/rMIusW8ifyGJo0qjCcMeWsY=;
+	s=arc-20240116; t=1740135867; c=relaxed/simple;
+	bh=BxAf41+oMViMRHa0fuPqM32XRr5xamZXfCW+aloR844=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lhqK3c44IphUbok4HufeYdpILkalFBFQ+FgSMUIMU/9xYAMpWZv83uV+actkgo1sGlQRuWiFxziMCeGtUOxDillXFpYmTd7k51OFLdBe5b+viyFo3BJaUDyBwtl51mP/ylCcjBx8a4FXSZR7K5VX4kZ7H7R9BZua+bwTPvLbEck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D36C6169C;
-	Fri, 21 Feb 2025 02:27:21 -0800 (PST)
-Received: from [10.57.85.120] (unknown [10.57.85.120])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 320623F5A1;
-	Fri, 21 Feb 2025 02:26:59 -0800 (PST)
-Message-ID: <1ac64c39-419b-4fac-8820-bbfb4e6afec4@arm.com>
-Date: Fri, 21 Feb 2025 10:26:57 +0000
+	 In-Reply-To:Content-Type; b=Z/BmF86GlbZXMc8Fu4xvbltNarVeKW2oLbGCao3NPVlTVRnuHCRAuUGXB8y7xZwCigZgIMbQ2IBhYUBrtTg4NiRT8PrOUhSE8fSBjW1TonxAVlc+AWLJ1r2fSn7j09YmAO+rvHbKf3FAJc18ILAuI5xrZP93DW8uJCi/04iF1VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=EMPe999d; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38f6287649eso1487242f8f.3;
+        Fri, 21 Feb 2025 03:04:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1740135864; x=1740740664; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oSilo/wdscUK3kV8MsIT8Y7RL+OEB64ml/2oWr697Z8=;
+        b=EMPe999dnlWq1heicWsYKn7fkrw2emZSK8cTn9v7QRXWSNE/ahaabAO8zHPLhDB7OP
+         tNlTEm+Ch7epGQyY4/wyFi+Z0XBw5CaMgtA1WJwqKo1BHZHR46yCqsQntFAeeFhwSXkd
+         fl0N2sKqlNO7fi3nx7/5ABk/cABDFovk1KL/UOkT0Yr/0ZfyeBjs2pEAEDxSm8xLCths
+         9/KzlSXbTvWeO13l6w7HuJCdJhMtTZ9X+NowjGcZAE3uZnWy+EARuWaTpn+2afml3ylK
+         ykzuoGmYElH2zURxqPMaMP3Rd1Ii2gQbBDPy7CjUcPnTsMZYsR+DNLfGNiCnzeJfKTA8
+         B7uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740135864; x=1740740664;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oSilo/wdscUK3kV8MsIT8Y7RL+OEB64ml/2oWr697Z8=;
+        b=JaKtHGUsL/4BRafh1vcWFy5dQJNsemJARxFJfV6v8Fjwgg6dBEk1LkDQyRfV6Hoe9X
+         +QsJxwAkfaGu1MOh3kKLnp7eAs4AmHE/i0JvWFJYsvtVfj/EuQoglppppXsVacH0/uOy
+         WTqtoxVlc3IUxUg7L1/jAbXX4/3z9AC8L2JVuRJIzA5C3NDh3ZBkj23t1kll7jpmtETh
+         oXJb6oGbMgpmZ1puFo13fHHlddQskUtLLyfEEmaWRtIfSJPopgZx0TDuZBHjXZ8RZftd
+         Xz2xoo5JJEZvFVtOZJZOOcTxsNM0DPLFWS69RMYghIS8tEXqIPXokiOQSeCw5bfx8RHV
+         f/wA==
+X-Forwarded-Encrypted: i=1; AJvYcCXR/Abz8hCsiU9Q/WbePyDm51pkedoTMKY7QbrbYUnWReh0OabauKG+mL8FNcmUv+5cD07WhJTYApwHKU8=@vger.kernel.org, AJvYcCXatgvHaNKho/6/Ggj5wO/56k+IGuLz/FtHAtN00wJV9QlefH37zSqyOoryHQjmnZIOhv9e4fN8@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFQr5Q4CT0ATP3U3scCP6+0NY+ctClt2MJXO0yBKXLFuGueOXS
+	8gBOZxF3216zwcZ7KVmwyBPHUVNk2nyR2Uu1pZnxdxzMLlILhek=
+X-Gm-Gg: ASbGncu++eCuIRS3LJeDexDvjEIrRT+xuOXstxI2DDu9LEQ7SZ6ENVPhc0anW47uYCc
+	5eoHKKPzg8hifsNhBvTpc2NTSp/eTLd7YPb6CUq8T2nMAhVaARygeYxjLJ5ZYAsMkJ2qePUuQof
+	pWGZ2MF6K1Gtpa1aOffv9QYIp35xhT28dndsulXhTrHcaXVX1cI74CMMK3FL33UOj3Vnak3Fqne
+	9St4b4dQeoPXOTpII/Lj7+z1CAr0K3aulvH3zNn5259wbyWXdbbLfque0iVQ0sBuQ5U7qB4syL9
+	TaX/yUYlXz87bnZBGKg8a3vSmlDNMmwqEJtr0WfjOjyU2NN066ZcL/HB5xUV9uqtQFo6H5/3JDA
+	WFzM=
+X-Google-Smtp-Source: AGHT+IGhDg9gKTPce4JVE2GBV+POBxVmROByI8CH4RKxLnv2pIiFDXeep3kM7yKxGhiLRmGUNjIHpA==
+X-Received: by 2002:a5d:64e6:0:b0:385:f6b9:e762 with SMTP id ffacd0b85a97d-38f70825ff6mr1942837f8f.36.1740135863548;
+        Fri, 21 Feb 2025 03:04:23 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b437f.dip0.t-ipconnect.de. [91.43.67.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f25915785sm23758697f8f.58.2025.02.21.03.04.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 03:04:22 -0800 (PST)
+Message-ID: <702f4288-6afa-4c8a-9095-fda1a476afec@googlemail.com>
+Date: Fri, 21 Feb 2025 12:04:21 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] arm64: hugetlb: Fix huge_ptep_get_and_clear() for
- non-present ptes
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- David Hildenbrand <david@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Dev Jain <dev.jain@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250217140419.1702389-1-ryan.roberts@arm.com>
- <20250217140419.1702389-3-ryan.roberts@arm.com>
- <e26a59a1-ff9a-49c7-b10a-c3f5c096a2c4@arm.com>
- <5477d161-12e7-4475-a6e9-ff3921989673@arm.com>
- <50f48574-241d-42d8-b811-3e422c41e21a@arm.com> <Z7hNgSBw6lfwwcch@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <Z7hNgSBw6lfwwcch@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250220104545.805660879@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250220104545.805660879@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 21/02/2025 09:55, Catalin Marinas wrote:
-> On Thu, Feb 20, 2025 at 12:07:35PM +0530, Anshuman Khandual wrote:
->> On 2/19/25 14:28, Ryan Roberts wrote:
->>> On 19/02/2025 08:45, Anshuman Khandual wrote:
->>>> On 2/17/25 19:34, Ryan Roberts wrote:
->>>>> +	while (--ncontig) {
->>>>
->>>> Should this be converted into a for loop instead just to be in sync with other
->>>> similar iterators in this file.
->>>>
->>>> for (i = 1; i < ncontig; i++, addr += pgsize, ptep++)
->>>> {
->>>> 	tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
->>>> 	if (present) {
->>>> 		if (pte_dirty(tmp_pte))
->>>> 			pte = pte_mkdirty(pte);
->>>> 		if (pte_young(tmp_pte))
->>>> 			pte = pte_mkyoung(pte);
->>>> 	}
->>>> }
->>>
->>> I think the way you have written this it's incorrect. Let's say we have 16 ptes
->>> in the block. We want to iterate over the last 15 of them (we have already read
->>> pte 0). But you're iterating over the first 15 because you don't increment addr
->>> and ptep until after you've been around the loop the first time. So we would
->>> need to explicitly increment those 2 before entering the loop. But that is only
->>> neccessary if ncontig > 1. Personally I think my approach is neater...
->>
->> Thinking about this again. Just wondering should not a pte_present()
->> check on each entries being cleared along with (ncontig > 1) in this
->> existing loop before transferring over the dirty and accessed bits -
->> also work as intended with less code churn ?
-> 
-> Shouldn't all the ptes in a contig block be either all present or all
-> not-present? Is there any point in checking each individually?
+Am 20.02.2025 um 11:57 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.129 release.
+> There are 569 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-I agree, that's why I was just testing it once outside the loop. I'm confident
-my code and Anshuman's alternative are both correct. So it's just a stylistic
-choice really. I'd prefer to leave it as is, but will change if there is
-consensus. I'm not sure I'm hearing that though.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Catalin, do you want me to respin the series to fix up the typos that Anshuman
-highlighted, or will you handle that?
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Thanks,
-Ryan
 
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
