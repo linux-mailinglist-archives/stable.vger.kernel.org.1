@@ -1,96 +1,160 @@
-Return-Path: <stable+bounces-118556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7194AA3EF4F
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 10:00:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0F6A3EF85
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 10:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE66C17D350
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 08:58:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E6A019C5C1F
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 09:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B11A202C26;
-	Fri, 21 Feb 2025 08:58:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OG22an2v"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4632036E3;
+	Fri, 21 Feb 2025 09:04:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4D033EA;
-	Fri, 21 Feb 2025 08:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEC3200BBB;
+	Fri, 21 Feb 2025 09:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740128300; cv=none; b=o+Yoriq/2arEOsaeOgjE1MwJQeV+qDZPmdT/+Su9GVZTlFsb9KV0getxvJ7pRL+B8X5/ACuqp+yLcdhbqISALvP2Z83WjOrocwZhiENGmxxBHQVgSI9LIqwAPjxfVKovkrXtRKeoZSsm/zS9DjeyMFQB23jrcE2z5YqhnCv7pRc=
+	t=1740128654; cv=none; b=nex3supTLiIdXCJVatnNW3NXIg13C651Zxfs7YcAxzUalckmwvpHr6S6Z1Uthx6MIimOymfNgBuhkZWeish5wL4a6hiVV4c2FUUNTyJLbtTBvw+yIJS6J8wsUEJw5Um1pRE1jxD3nHRPRGB7V2z2u7aGDRLg3c74Uo2GIPhxP0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740128300; c=relaxed/simple;
-	bh=UyexAoCF90msn3EpRu+01QsmJ98TJOg4xx80bhAjidw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BJPPmC9GBG7Cx1Im8m5o7psyB5pNIgPEhGYNENT8XwHi3OjVfAcQ21dfszI9vwr+Ix1D0M5B8omwf+xzn4vljQlbbP7mhaKKT2JHVBTtWS7i15kDjp/u7GXElDXYTlofMZKPFeQO/3uNcxyHexOgL/jUHp4Tjz8Kcy149tSk6TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OG22an2v; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cLdYr
-	DKnT+YqC55FWMJBE8T5WHN7xWlY7jZoam5g8go=; b=OG22an2vFmq2J1aOQDTfU
-	QHDLzuvqtNf/kTZGxHanO+kUluLpUlaWxyq1g7sULnJwXgsM4gwtyH8KYKuQvFjO
-	z0cjBySXnLgwPyqNklaQ+EBJvcqTBrqXu9fMlZkkzQfRW6fzxkh6byFR0DdlWhPu
-	MPhPdZZRWUwpdB/XvHBEDo=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD312YbQLhng8gYNw--.55440S4;
-	Fri, 21 Feb 2025 16:58:04 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_device_connected()
-Date: Fri, 21 Feb 2025 16:58:01 +0800
-Message-Id: <20250221085801.2760571-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740128654; c=relaxed/simple;
+	bh=UBNSNX42gssN5jlgAh0O8u9/2DQQYgVPWMtcqputxW8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ew28i3ePnHdvc2oGT7/sZhKvVujAl8Zzy/Shrzl+3o2nL75lL5kd/f0HKl3PSJpLwiH9rO6R4OpHUzXqfdjslycY3U7JdN6HOunrfr8dbqZyvAHAyrNKx1gEeBECHlrtPRTVscWqV2NJjMHcySkAWyaAgQyS3vrfvcYe5S85qJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33018C4CED6;
+	Fri, 21 Feb 2025 09:04:12 +0000 (UTC)
+Message-ID: <df5693d0-7747-4423-809e-ae081c9aae92@xs4all.nl>
+Date: Fri, 21 Feb 2025 10:04:10 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD312YbQLhng8gYNw--.55440S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Xr18JFy7tw48Jw18ZFW3trb_yoWDtrcEgr
-	1vv3s3uFyUJas7XF1vkw43urnIyw1rAr97WrW3t3s7A3y5Gr1Uur1DXrnxJ39rua17Cr4x
-	Aws8GFWDZw40gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRWGQhUUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0h-6bme4OkyLEgAAsp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] media: nuvoton: Fix reference handling of ece_pdev
+To: Ricardo Ribalda <ribalda@chromium.org>, Joseph Liu <kwliu@nuvoton.com>,
+ Marvin Lin <kflin@nuvoton.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Marvin Lin <milkfafa@gmail.com>, linux-media@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250121-nuvoton-v1-0-1ea4f0cdbda2@chromium.org>
+ <20250121-nuvoton-v1-1-1ea4f0cdbda2@chromium.org>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <20250121-nuvoton-v1-1-1ea4f0cdbda2@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add check for the return value of mgmt_alloc_skb() in
-mgmt_device_connected() to prevent null pointer dereference.
+Hi Ricardo,
 
-Fixes: e96741437ef0 ("Bluetooth: mgmt: Make use of mgmt_send_event_skb in MGMT_EV_DEVICE_CONNECTED")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
-Changes in v2:
-- modify the title description.
----
- net/bluetooth/mgmt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 21/01/2025 22:14, Ricardo Ribalda wrote:
+> When we obtain a reference to of a platform_device, we need to release
+> it via put_device.
+> 
+> Found by cocci:
+> ./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+> ./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+> ./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
+> ./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index f53304cb09db..f1a9f58d1c7e 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -9659,7 +9659,8 @@ void mgmt_device_connected(struct hci_dev *hdev, struct hci_conn *conn,
- 		skb = mgmt_alloc_skb(hdev, MGMT_EV_DEVICE_CONNECTED,
- 				     sizeof(*ev) + (name ? eir_precalc_len(name_len) : 0) +
- 				     eir_precalc_len(sizeof(conn->dev_class)));
--
-+	if (!skb)
-+		return;
- 	ev = skb_put(skb, sizeof(*ev));
- 	bacpy(&ev->addr.bdaddr, &conn->dst);
- 	ev->addr.type = link_to_bdaddr(conn->type, conn->dst_type);
--- 
-2.25.1
+This driver uses this construct:
+
+                struct device *ece_dev __free(put_device) = &ece_pdev->dev;
+
+to automatically call put_device. So this patch would 'put' the device twice.
+
+Does cocci understand constructs like this? If I hadn't looked closely at the
+code first, I would just have merged it.
+
+Regards,
+
+	Hans
+
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/platform/nuvoton/npcm-video.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/media/platform/nuvoton/npcm-video.c b/drivers/media/platform/nuvoton/npcm-video.c
+> index 024cd8ee1709..7b4c23dbe709 100644
+> --- a/drivers/media/platform/nuvoton/npcm-video.c
+> +++ b/drivers/media/platform/nuvoton/npcm-video.c
+> @@ -1673,6 +1673,7 @@ static int npcm_video_ece_init(struct npcm_video *video)
+>  
+>  		regs = devm_platform_ioremap_resource(ece_pdev, 0);
+>  		if (IS_ERR(regs)) {
+> +			put_device(&ece_pdev->dev);
+>  			dev_err(dev, "Failed to parse ECE reg in DTS\n");
+>  			return PTR_ERR(regs);
+>  		}
+> @@ -1680,11 +1681,13 @@ static int npcm_video_ece_init(struct npcm_video *video)
+>  		video->ece.regmap = devm_regmap_init_mmio(dev, regs,
+>  							  &npcm_video_ece_regmap_cfg);
+>  		if (IS_ERR(video->ece.regmap)) {
+> +			put_device(&ece_pdev->dev);
+>  			dev_err(dev, "Failed to initialize ECE regmap\n");
+>  			return PTR_ERR(video->ece.regmap);
+>  		}
+>  
+>  		video->ece.reset = devm_reset_control_get(&ece_pdev->dev, NULL);
+> +		put_device(&ece_pdev->dev);
+>  		if (IS_ERR(video->ece.reset)) {
+>  			dev_err(dev, "Failed to get ECE reset control in DTS\n");
+>  			return PTR_ERR(video->ece.reset);
+> 
 
 
