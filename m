@@ -1,162 +1,86 @@
-Return-Path: <stable+bounces-118632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E80FA3FEEF
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:38:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BE8A3FF91
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 20:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A9603BA4A3
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:38:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0741703A4F
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C346F24CEEB;
-	Fri, 21 Feb 2025 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D64250BE6;
+	Fri, 21 Feb 2025 19:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="arHxRj/K"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DlqYrXba"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CFE1E9B09;
-	Fri, 21 Feb 2025 18:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849811EF0B9;
+	Fri, 21 Feb 2025 19:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740163106; cv=none; b=oHFDbvDg4ZT4TUMe6kmq6oeu3lPcxidBz1VxzOtkLA9DADB5r8UfmAmHA5PCoCvmhB+JyLepKHNLNmjrQV/kpC06/zuXjVYBLwHeROy8Smh+jzdSWS9HjVopASgmsmRA+GhibvyzIgQfg/bA00Eka9/qNscJ9EidEq4MecyDkx4=
+	t=1740165441; cv=none; b=REYMrMU7ueG18i4qg42AL8oZpVOCvM+GNyuGGm3x441NUdlCs0HpTr9X+1JQpo9Dne4rhPUxjSr+y0qQObY411O+v8Uh743viLLLF/y9wA+XGkV8lDZ/0RiPkNrLZVaq2PgV2/Y9864YtKPyZc4eCI2LAkBJ95oR4mNO8Th+ywg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740163106; c=relaxed/simple;
-	bh=Q936AZExE99tb2q+MrHHJwRam8QYuQsfnHAxnBUlB+I=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FxATMm+zDArWirC5cvZWFaqlWUNa9gbkvnnnQGfjpTD3LB9mvl668YMDL1ukiLlDIY9RYIFwW+4SmHkmL0/lJTE6Q0CY3ZJdxnkpV5IrchAifqAddoRFwGohMZPVjmHU+K1aSnWnAwXHi+j2OvQC7YDzdEh0K3RirXYr75iLB5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=arHxRj/K; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5fcd686fe0fso1377391eaf.3;
-        Fri, 21 Feb 2025 10:38:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740163104; x=1740767904; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hsGNbGLYi3imJsJL+9aifpnDeSIfnWypP/Kgm6qb5gU=;
-        b=arHxRj/KeyMBlyu4ktMVJWF7760TW4gRsDLsiGZaWMc/sjuyJSDF7KztfBOu7Oxi1d
-         6ey8ioRCTe/yViOQ5BJ0Oxnfdg9dbmQTJZZOKVCY9nglYnxhO2xLiy+9wa5zZJeuIKIr
-         wuYnhxodq+l85UqCT3Pomoi6dBzitQa25VN7GOH0Zc8CB/is1nVJ4BUU00flndfwaqDp
-         9QgEQoocToTjmKYHHzAukxTFZ23g72afF30PX0Dnm7mxQ1RJKIVd5izaKz7EOcGBiYoj
-         8lovGuMRZzo0ibnnpwg191wjM5cvZLQWIeXo62q1n7voe3VFJ8g7AtIYMWz7FVAGdXAX
-         YXIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740163104; x=1740767904;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hsGNbGLYi3imJsJL+9aifpnDeSIfnWypP/Kgm6qb5gU=;
-        b=MUNxo+H5KGmIvIiyxVYafLqkND8F6c/GiuMZ8FPsCejxIce2pNOgS3xINI9RqAK6tW
-         Q8awjsStNjwZ3NL3FzE4gKCqHt8BLTET5TiyePwswv39Me+vX9uyZJVqcinJ6dVCpYw0
-         UMDTQvsqvrOK3eE9e/8jG07eUALpRxL0yTO1xk9GxoxSJ5aRZg7W6Xrc4RnCbH9ALsT6
-         /VqE9LKyScHU+Lb05Tm8iJrxmUk7ExYMUi6s+kwNlKFCwt7ke0ZM/+O5JbtOsfbd3AZK
-         j5bj76jPyiNbXh/Bep2qsV2ABedMzE7jvZMUlDSNA6DzQjPaFeTtd56MA/wXPYM5Ekgs
-         PgtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnGbVqK7Di1Xg3cp9JXJcx+QXRYrtagIDcO22IgJL1djrL/5nkRKGlIhGkJZJC9GO32f7tXh+OLh4ZyXA=@vger.kernel.org, AJvYcCWq/DR3PNeLjjU0/nEMmjNMsJAdkD+kDR0z6B+0t5KHg8gFHraBkSbwAJFQ50lnSp/hGqu7QQJt@vger.kernel.org
-X-Gm-Message-State: AOJu0YwopkwbhnhxIbuMfLhAEHHIJxzapGnFHe04jO+GflwWyrMZbLBy
-	dNp2xI0o3t7isIrQfD8Vsn3+ZiveUQbGKglP7noAb+SLNdNj1VIT
-X-Gm-Gg: ASbGncvqnwLUYu1Hw0wjPx/cX0f/IKRlKQEdFRiYhBeh0KVhk2vW733QObIJueKjPaM
-	7VqheJ15ZmEt8ILNYJKL3KPcethj9pWG/l/jabYUgulvdggcURoS77WeStRipgL0BmI2iBXqlF9
-	byuZK1fOwTbzJUIXVROCOrx4wd/mZ9SH1erDSQxDm2E4zhPvn68nLJu7ptw4Ue80JSLYmsRZbM4
-	beNr2PlgxWR1g0hehcgIpMWXbqBqBHo89uuMmVlM2mAiyfaBJBKIhR8erBaSzebA8nOOcYI5TR7
-	TXg77r0cWiMAnJfsxDvB5pAle02l9md6n4u/cXAJBavdyhwJy96NqA==
-X-Google-Smtp-Source: AGHT+IGHalgkEU3Q8tpgYl9lid1QhnBNk/7/u+5TKgseeEXkfKvsLq1RqZXTz9yUGpUMJZ9We3jGfQ==
-X-Received: by 2002:a05:6871:1c9:b0:29e:354e:5fdb with SMTP id 586e51a60fabf-2bd50fb898emr3242983fac.37.1740163104051;
-        Fri, 21 Feb 2025 10:38:24 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2bd68843a69sm141957fac.26.2025.02.21.10.38.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 10:38:21 -0800 (PST)
-Message-ID: <259638f6-061f-4259-8534-d5537f47d85b@gmail.com>
-Date: Fri, 21 Feb 2025 10:38:17 -0800
+	s=arc-20240116; t=1740165441; c=relaxed/simple;
+	bh=fyicvHFif9U3OCmS3KwQTqNzm8djGk2z5hMgb3BaD4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h15+9SaA+N2AoHoaZbJFFZtl+gzdYRdsSZw/UcoAxI1SRTblDX5MfRMSRxFin/rJ6tl6XelpmUB0FAW0t2rU5eH7nGQVNM5Z63WH4nhgAm6B2b/pN76k68rcrEYpLl2b7Nb/JwSxxAxMr2B85OGj5x0aAcwZoYfTvE2w37RLTEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DlqYrXba; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wIywcsgE21jHle8TXRvpSWiOPzaeM16+bhN+cx8tgoE=; b=DlqYrXbahlQeMINOy9UhB/oF2m
+	Miu2NnXVVyQJW9rFyq9LWxm4BTyuFpfZtQWGA6vWEbzNTxoFHxOnlv6Mnb6n1B5Ij+JDvdNVhqLdc
+	KSpf+XlAPxVD+jdlGTyCrMTtEXwj4l7B47PzYeSTvo8k+26rzXpbmrltW9xYRrnix45A2sBhzQmQC
+	0sDowB7rtBPxmpOLEOS/D4Z6f1tLcOWZCLZN3g0M+4fG68KYnN4EbnS4rwmB9CFTXGnDP0nANfJTD
+	OBbOiU1PuAtJlsd851pe74XcAlfYJr/TqeA3hs86SxBFMmNDpZZrVq7SMWsO3vM46i9Rwfu955QHS
+	z1p5a8Sw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tlYWP-0000000Eoh8-2q5h;
+	Fri, 21 Feb 2025 19:17:13 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 4419A30066A; Fri, 21 Feb 2025 20:17:13 +0100 (CET)
+Date: Fri, 21 Feb 2025 20:17:13 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: sched/core] x86/tsc: Always save/restore TSC sched_clock()
+ on suspend/resume
+Message-ID: <20250221191713.GE7373@noisy.programming.kicks-ass.net>
+References: <20250215210314.351480-1-gpiccoli@igalia.com>
+ <174014866289.10177.10974658062988825500.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 6.13 000/258] 6.13.4-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250220104500.178420129@linuxfoundation.org>
-Content-Language: en-US
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250220104500.178420129@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <174014866289.10177.10974658062988825500.tip-bot2@tip-bot2>
 
-
-
-On 2/20/2025 2:58 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.4 release.
-> There are 258 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, Feb 21, 2025 at 02:37:42PM -0000, tip-bot2 for Guilherme G. Piccoli wrote:
+> The following commit has been merged into the sched/core branch of tip:
 > 
-> Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
-> Anything received after that time might be too late.
+> Commit-ID:     d90c9de9de2f1712df56de6e4f7d6982d358cabe
+> Gitweb:        https://git.kernel.org/tip/d90c9de9de2f1712df56de6e4f7d6982d358cabe
+> Author:        Guilherme G. Piccoli <gpiccoli@igalia.com>
+> AuthorDate:    Sat, 15 Feb 2025 17:58:16 -03:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Fri, 21 Feb 2025 15:27:38 +01:00
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.4-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
-
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
-
+Should this not go into x86/core or somesuch?
 
