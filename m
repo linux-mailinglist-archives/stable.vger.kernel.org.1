@@ -1,162 +1,127 @@
-Return-Path: <stable+bounces-118629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C09A3FEB2
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:25:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE94CA3FEDE
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:32:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EDFD700306
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:24:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2078F189201A
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470BB2512DC;
-	Fri, 21 Feb 2025 18:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91731F7561;
+	Fri, 21 Feb 2025 18:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dRDbU5ZC"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="u/+2okWL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5871D5AA7;
-	Fri, 21 Feb 2025 18:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA241FBCA9
+	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 18:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162289; cv=none; b=c6ZiGfaXxjeRc/9N2jzhjSmpZkrh0V1Rd9jympFq872Tfwl76NDVAXwEEp4xdC5J2lhK4rgds1Bd+rzbwiIGx4mMJMKaKftsm9ngIkvG50Go2mopc3bB1qxBnyeagaoqOWIWN30kZkiN52SJCqJb+LjwlHE8sMeOc51cuiSfYHw=
+	t=1740162765; cv=none; b=umtoLRt8BgIqWFk2owM/Qtp8Sq+LJuFs27ZatYKpyDBtHOvBkq/2+ftQNmhbgSt7Dq11EOmKytGFtqCQIUNRisOZZ4qVPiFD+J57hmIWhQXmq2jmXmG95pZaAJ9f340puMhcnUVaLnOK/M+FMwdwrozND5YzK3ZYLh3l5rYWBNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162289; c=relaxed/simple;
-	bh=KE/2RO/lFpVr7sVpJR/cW8Netw0FEdWCl/HcdQ7hZSg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WjogMMxgbf51jWZkej/qhN/WZWdgvBeYK1QRAjJBc2WndFnncj8HwpqhSFIa1xtqolSzCGzdw2pRqTaP3AJjyAsgByNM09z6Gp9FzoVdkrXmoy+reAJn5Ql9IfkLYpMWKpqI+wmlSeKpD/v4tQXk1hCdNGgZUUZbjJBn/BAcmKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dRDbU5ZC; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2b1a9cbfc8dso574337fac.2;
-        Fri, 21 Feb 2025 10:24:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740162287; x=1740767087; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Su3+14tpxkqTvwfVPEZByUtjouZaShymhRyBoXcd7s=;
-        b=dRDbU5ZCYzlWWOqzJJ6O30rOGEME8E3zRaA7SEligSXeVSSTNdLr92zUBBg0RTO8V5
-         EV0JOyXGsRAkNs/eE8gOZnbCXphsgLo9kCsk2WrZNzCySCQpCt7pjgPQCcJgCecADcff
-         0NOO1Nn+qWqBthZX+D4YrrQzl2DDMhLpNYuEkgH5HNjJLa0LNz2ibx80ooeRGmKMtGJg
-         d+naLuLMhhdRjP9Loed1D8ByjvVkZONJmYkB/e+w551FGNTcyKK8rGzldZK86jk2vBx1
-         BjB5ifFZHE+Gb/x+IBcsizqMA/0ul8aveVOTL4o9JFtyCHVrLr4VxFvoPF7THyqFXaDk
-         YRzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740162287; x=1740767087;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6Su3+14tpxkqTvwfVPEZByUtjouZaShymhRyBoXcd7s=;
-        b=ulPmY21QbQSoUFSvoZQaxhQdbOKJtvfsGoKtZ1MSt5NJ8gEPKf932pYIW8uy7b21TT
-         HcwC62EwUbGlAE62JkVslbR2y4krEsph+dvgfYYLjOTmzNzYpumXyQmhL8V/usJPXWBZ
-         WEcpT3GrTxctzht2WLIyf106buETJmen9pE6sM6cTgpEtWlUMx9GFJosfH5y7dlkarSy
-         UquKZxPcd+WE+M34i1EIh/gQW9bJdhfmrRQHjkxXlOPpaqzIN46NVXJfOI+HqMaGkBDE
-         JKes25mmLkoRBYFaDg+q5mszP7kNSdjv0lkr0xWqkf9AUjF7blNZmopW7DrE4iYslwKc
-         kmiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLRjCm5G0MWdFbbe2yM7GIPUapDnigjKzThJwjK+JYd5T4RNeTGsXyaSQH3TrSBJOCZPCSPuX3uASwUMY=@vger.kernel.org, AJvYcCX5nLjUzlpLNf9PMMmZVgA2jGVNH4BFqrbftwvLp3dp5SCpq/Q9LZc03W3KiF4A7tiVkQantpWn@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDE/vJZpSbvmVt0Sl7ZgrXw6yJAIGoehVSoNiQ+3AP7UJI4s7F
-	JYTdTFKJ+jo6/TgObz2yhMTXVSF3Gr3jXSzLh1NQfAxl3gY3oJMs
-X-Gm-Gg: ASbGncsxi2frEyfMRTw6p4ctKrxYj0DKE4w6O715eiWQo/9kWsCpkhRG+7Hx5FXDyK5
-	LsJx1s2VCt3AfuMAbVGzlkSGRvKd2doXXFDXuuN8Ph7Gx9sIi3ZmbaItBzv3qJX0r4qAijEMd9f
-	ZaV1zoSVZUryfvf8zBf3+50LifsVFFpuixvjY05Hg3BEawnfMJMHU46TLPqcmgRydyt9AFXKDUw
-	bgP+rosndfBpktmIiIVnVJ9NLR97KpAUtWt9kMvgQqyJi7IlIBvf2SiowtE5MTHa2mhhZo+rROr
-	ZAIAKNk9zQ+5XVAM18am2/hwwwtsle23lQmKdJBzedTJtiaB+odh/w==
-X-Google-Smtp-Source: AGHT+IELQYu5EK+8uQbcZYp/tabGOaWFJynVjv7IEdRKtNkhYtBb5oVqlIM2APCjl5rzlT4RblTrWw==
-X-Received: by 2002:a05:6870:9f12:b0:29e:2bbd:51cb with SMTP id 586e51a60fabf-2bd5180cf5cmr2853498fac.24.1740162286691;
-        Fri, 21 Feb 2025 10:24:46 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2bd3438a93bsm960157fac.25.2025.02.21.10.24.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 10:24:44 -0800 (PST)
-Message-ID: <dd1606d2-f03b-4a95-bc80-2daf55747e26@gmail.com>
-Date: Fri, 21 Feb 2025 10:24:41 -0800
+	s=arc-20240116; t=1740162765; c=relaxed/simple;
+	bh=4xH0fa9rC2ybFLI5hh2hbaY+qLQJTcc/7Jvej4twixs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PYljfMnARIG8Ze3GDTSegrp2lYoTQG/b+7SE58BXEvHmWb3i0UeFYRssaBGTHLxp1pBXXdcka3IMp3Smy0voxILbaNzmnT7GCi4GEE/N6HP9e8CCIGft1Zhnh+CBJsy5MRTP0uzLSOthxFRgnEgPa+sr1g4suSKoQtD+fNF+o98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=u/+2okWL; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1740162756;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=83mTXp3WlPr0dmh+edS5xDOoCK5jJKdV9wVYKPteUlE=;
+	b=u/+2okWLLjXK+DmK2nCMygcUjbrpM7eo+oPFUP8IP6EOAZDxCkPbU0CO5mhirf/etQPZz7
+	w4li71a7zHRUkqh3iz8LtA7dG1jwzkrsu2ajY06DyfIgoQxXr339IHD7kwD5+IMuFTdDJs
+	SspmuOPjUdiuuqFrY7OQBOz8pfzvRG4=
+From: Sven Eckelmann <sven@narfation.org>
+To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y] batman-adv: Drop unmanaged ELP metric worker
+Date: Fri, 21 Feb 2025 19:32:30 +0100
+Message-ID: <3614082.iIbC2pHGDl@ripper>
+In-Reply-To: <1939631.tdWV9SEqCh@sven-l14>
+References:
+ <20250219165644-edb7cfac3c0ce091@stable.kernel.org>
+ <1939631.tdWV9SEqCh@sven-l14>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 6.12 000/225] 6.12.16-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250220104454.293283301@linuxfoundation.org>
-Content-Language: en-US
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250220104454.293283301@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart9410071.CDJkKcVGEf";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
+--nextPart9410071.CDJkKcVGEf
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Date: Fri, 21 Feb 2025 19:32:30 +0100
+Message-ID: <3614082.iIbC2pHGDl@ripper>
+In-Reply-To: <1939631.tdWV9SEqCh@sven-l14>
+MIME-Version: 1.0
 
+On Wednesday, 19 February 2025 23:38:33 CET Sven Eckelmann wrote:
+> On Wednesday, 19 February 2025 23:09:58 GMT+1 Sasha Levin wrote:
+> > [ Sasha's backport helper bot ]
+> >=20
+> > Hi,
+> >=20
+> > Summary of potential issues:
+> > =E2=9D=8C Build failures detected
+> >=20
+> > The upstream commit SHA1 provided is correct: 8c8ecc98f5c65947b0070a24b=
+ac11e12e47cc65d
+> >=20
+> >=20
+> > Status in newer kernel trees:
+> > 6.13.y | Present (different SHA1: 7350aafa40a7)
+> > 6.12.y | Present (different SHA1: c09f874f226b)
+> > 6.6.y | Present (different SHA1: c8db60b2a7fd)
+> > 6.1.y | Present (different SHA1: 831dda93b13c)
+> > 5.15.y | Present (different SHA1: 72203462f255)
+> > 5.4.y | Not found
+> >=20
+> > Note: The patch differs from the upstream commit:
+> > ---
+> > Failed to apply patch cleanly.
+>=20
+>=20
+> Was this patch applied with or without the already queued up patches from=
+=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/t=
+ree/queue-5.10 ?
+> They are required for this patch to apply correctly.
 
-On 2/20/2025 2:58 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.16 release.
-> There are 225 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.16-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Ok, now it will definitely fail because you've added your own backport..
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Kind regards,
+	Sven
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+--nextPart9410071.CDJkKcVGEf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ7jGvgAKCRBND3cr0xT1
+yzlSAP9crDuN/4sEqZp4jOTSm0H3kl1dELSsDNfICAeq+H2oTwEAu3FGmyZdsJq1
++VT0TBbY+6lBBxrp63Rakpbb2dylYg0=
+=v9/W
+-----END PGP SIGNATURE-----
+
+--nextPart9410071.CDJkKcVGEf--
+
 
 
 
