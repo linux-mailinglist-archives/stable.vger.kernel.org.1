@@ -1,93 +1,139 @@
-Return-Path: <stable+bounces-118638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B62A4006D
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 21:09:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5C3A40310
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 23:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AF004236F9
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 20:09:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02DEB19E1328
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 22:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E42E20DD63;
-	Fri, 21 Feb 2025 20:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE2C253B74;
+	Fri, 21 Feb 2025 22:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7IvXHof"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WpDbNkrm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5B545948
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 20:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9516324C67A;
+	Fri, 21 Feb 2025 22:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740168540; cv=none; b=bf2E2VNRzMdQ9CmP85tHkKKxGe/NrFpDYcLFojIEwgzwenr/+RiLRALPMIgL3Q4DYLH3pfGkb60Rj01qihHaA9JMkaXvVGEm8OhT7fbtbBseUFRzOBWMLo9sz0XrccLDELli+qwATcOzZFE+xj5tlv3zb7s44gFeyDmgJrWvW1A=
+	t=1740178452; cv=none; b=QMykVQPeCfPRSSkjm05HPp6eRyGklvxpVBPSbgR02+HL+YjI4xfPp5w/zrEzG3jHsSW2GzZhhYVRLMAEXC483JbZ1F0tBTCD4CFy8m64OYaSPMxaO8+ts9vyW2FsJdbfkC4adZLKtjpqHir4GMCwLXtC2HRxlUhHkEBXtASF4Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740168540; c=relaxed/simple;
-	bh=DbUCXyOhPh0MtQ7IHJG7PyASJDY3BKB+F0WcyfBrAe8=;
+	s=arc-20240116; t=1740178452; c=relaxed/simple;
+	bh=eI4S9v5YQ1PflURECvTI2csLt60QaAtzmByL5uaBAK0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VnKkBaWdudS+F0+zy8KEKtSarfeWcma6V+Ez9SVJxEm7lDPnVA43rI1MqcGQO7T2phRkrCOnwXLxACdeGRh/AZkaLr8+NlTmDvMeDcG7MSnS4F++e0EsfwRbK1mdn3CoRfZD+yUtB1oStHIoBJod9pdWn5drUfWoTjY20a6lis4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7IvXHof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4C4C4CED6;
-	Fri, 21 Feb 2025 20:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740168539;
-	bh=DbUCXyOhPh0MtQ7IHJG7PyASJDY3BKB+F0WcyfBrAe8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K7IvXHof4mKQZSUEfLwSrK1liGRM8xf+w+Xl+M8llR+LVxR1+5ntAK17WXox5G0yt
-	 nXQ9IHwGhQausGgRdR9Hl/y/9r4qu3ZCQtXxpZmPfERQPEQ9zzQ4so4nNT+qWbZfUw
-	 7iKll/eS0AxDdWdQT3nokngIX1KQyNsSedPxAG0QZdc1e2pjm5LTVc4fU2pFpIDs72
-	 zo+/EuReitwDmAsemflg3828YR5QRxRvZaJbcmvJ+5p0jMbJsyIHmlRasMRVZf15+K
-	 /1fwjS9//SMwdAD2lEIGYRulxW+PURmyDG1SfY3SatOdb+syZr/8eM1m+DVdx1Wufc
-	 /Io5ouN9Sp9kQ==
-Date: Fri, 21 Feb 2025 15:08:55 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Kamila Sionek <kamila.sionek@adtran.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: Backporting patches to resolve rsa-caam self-test issues in
- kernel 5.10.231
-Message-ID: <Z7jdVzOM1rcQzM60@lappy>
-References: <BEZP281MB3029E2F4767A20F1571F7E0B81C42@BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM>
+	 Content-Type:Content-Disposition:In-Reply-To; b=F+VOWQaU0cEiLCyNoyj6JhJgRUD620HqIdB1Xt9kUmp9Gvbc0/34b9inldF7ZMSayJErqk9e2yg/JaAgLEi4WAZs7gVSG9LHmpQBUzurjbhRMpNNey/eWGn9rQpYjr1yCKkz2Bgt4B/vGcB2KRLCgWgVDYRkL7KRele0NnjNSi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WpDbNkrm; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51LIMtpW032172;
+	Fri, 21 Feb 2025 22:54:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=AApoA5LT2pOBlSaVwbegtYHGFdF4gh
+	7t5yNn4T21+Ng=; b=WpDbNkrm0h413Ty0WK4/xDKod0Cd03LcHYLAnmKQGQKqax
+	/n8CITDNGsHXjDNzGsu8ByiJgPPDMjIogqvc+I9c4zaN3jJ87ZAQo48j4H3O7k7O
+	hwnEw6N2A/L7kq8s/P74zBdGiDTXNegbGiGA5nSETP0hDv6RReuyrRmtRrvFS8YW
+	PJHw0duerhVveh4xBNmX0I69vIJ1Dqs5D+Z/EFsT2pvuoMcXaRCcfYDtYXObr8Hb
+	pcdGkvghSVXM7hbcCffKtIlZMnTx3wZ48/vujYfJDpHrEIRt7SnkUlzWYiYXvaSa
+	h27tlQJ4a7U9GsflPEctz8+JFnRK0x1zXpQGyUgQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44xgb0dex8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Feb 2025 22:54:08 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51LMrw2X027218;
+	Fri, 21 Feb 2025 22:54:07 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44xgb0dex5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Feb 2025 22:54:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51LMgbJP029303;
+	Fri, 21 Feb 2025 22:54:06 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44w024tjq2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Feb 2025 22:54:06 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51LMs2MH54788566
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Feb 2025 22:54:02 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0112B20040;
+	Fri, 21 Feb 2025 22:54:02 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 686BE20043;
+	Fri, 21 Feb 2025 22:54:01 +0000 (GMT)
+Received: from localhost (unknown [9.171.80.218])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 21 Feb 2025 22:54:01 +0000 (GMT)
+Date: Fri, 21 Feb 2025 23:53:59 +0100
+From: Vasily Gorbik <gor@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, schwidefsky@de.ibm.com,
+        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] s390/sclp: Add check for get_zeroed_page()
+Message-ID: <your-ad-here.call-01740178439-ext-9536@work.hours>
+References: <20250218025216.2421548-1-haoxiang_li2024@163.com>
+ <20250221151157.11661C33-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <BEZP281MB3029E2F4767A20F1571F7E0B81C42@BEZP281MB3029.DEUP281.PROD.OUTLOOK.COM>
+In-Reply-To: <20250221151157.11661C33-hca@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: uyfsQj4h4Lv8spJFyg7i5yE1xPES5nLl
+X-Proofpoint-ORIG-GUID: CEv_H1_UzSCmiSMwDE50TrePTHtYvKbf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-21_08,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=465
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 phishscore=0 adultscore=0 mlxscore=0
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502210153
 
-Hi Kamila,
+On Fri, Feb 21, 2025 at 04:11:57PM +0100, Heiko Carstens wrote:
+> On Tue, Feb 18, 2025 at 10:52:16AM +0800, Haoxiang Li wrote:
+> > Add check for the return value of get_zeroed_page() in
+> > sclp_console_init() to prevent null pointer dereference.
+> > Furthermore, to solve the memory leak caused by the loop
+> > allocation, add a free helper to do the free job.
+> > 
+> > Fixes: 4c8f4794b61e ("[S390] sclp console: convert from bootmem to slab")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> > ---
+> > Changes in v2:
+> > - Add a free helper to solve the memory leak caused by loop allocation.
+> > - Thanks Heiko! I realized that v1 patch overlooked a potential memory leak.
+> > After consideration, I choose to do the full exercise. I noticed a similar
+> > handling in [1], following that handling I submit this v2 patch. Thanks again!
+> > 
+> > Reference link:
+> > [1]https://github.com/torvalds/linux/blob/master/drivers/s390/char/sclp_vt220.c#L699
+> > ---
+> >  drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> 
+> Ok, but this should come without Fixes and Cc stable, since in real life this
+> code will never be executed. It is just to make the code look saner, and to
+> avoid that more people look into this in the future.
+> 
+> Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
-On Thu, Feb 20, 2025 at 02:02:03PM +0000, Kamila Sionek wrote:
->Dear Maintainers,
->
->I would like to bring to your attention the need for a backport of several patches to the 5.10.X kernel to address issues with self-tests for rsa-caam. In kernel version 5.10.231-rt123, the introduction of commit dead96e1c748ff84ecac83ea3c5a4d7a2e57e051 (crypto: caam - add error check to caam_rsa_set_priv_key_form), which added checks for memory allocation errors, has caused the self-test for rsa-caam to fail in FIPS mode, resulting in the following error message:
->
->alg: akcipher: test 1 failed for rsa-caam, err=-12
->Kernel panic - not syncing:
->alg: self-tests for rsa-caam (rsa) failed in fips mode!
->
->The following patches should be backported to resolve this issue:
-
-Thanks for the heads up, I've queued them for the next release.
-
-One nit:
-
->8aaa4044999863199124991dfa489fd248d73789 (crypto: testmgr - some more fixes to RSA test vectors)
->d824c61df41758f8c045e9522e850b615ee0ca1c (crypto: testmgr - populate RSA CRT parameters in RSA test vectors)
->ceb31f1c4c6894c4f9e65f4381781917a7a4c898 (crypto: testmgr - fix version number of RSA tests)
->88c2d62e7920edb50661656c85932b5cd100069b (crypto: testmgr - Fix wrong test case of RSA)
->1040cf9c9e7518600e7fcc24764d1c4b8a1b62f5 (crypto: testmgr - fix wrong key length for pkcs1pad)
-
-These SHA1s don't seem to correspond to a public tree, so I suspect that
-you cherry-picked them locally. This made me feel better as I suspect
-that you also thoroughly tested them, but keep it in mind for next time
-:)
-
--- 
-Thanks,
-Sasha
+Applied, thank you!
 
