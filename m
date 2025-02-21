@@ -1,206 +1,162 @@
-Return-Path: <stable+bounces-118628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03418A3FE66
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:12:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C09A3FEB2
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 19:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78564441693
-	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:09:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EDFD700306
+	for <lists+stable@lfdr.de>; Fri, 21 Feb 2025 18:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8557A250C02;
-	Fri, 21 Feb 2025 18:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470BB2512DC;
+	Fri, 21 Feb 2025 18:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qx8PEsR4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dRDbU5ZC"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2065.outbound.protection.outlook.com [40.107.101.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C1A2512C3
-	for <stable@vger.kernel.org>; Fri, 21 Feb 2025 18:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740161387; cv=fail; b=X+aNONKtWS+58pRWFBnA1YFHB1aQMVXHu7VdQq0SqfvtSIckrAjg8ot63827c4uXJY2rqWFqWrau2rFW4ah1nL0a9HSXzowOynDcSVhJoIoRZgpSzZwPcMLK7A/+krzqOAi09KwhbUHJL2qGs/LlpdUCpJJ6vVqcz9wEHGcGMX8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740161387; c=relaxed/simple;
-	bh=JbqnKCQShGrxTyMdVrLVVZYvw6E0J/843RmIXZS6nIE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VzM74cLW+kvhixD1vfsnkrXgO2PRjLo5Q7lh6NrVtop3BPimlL2uMArKOl8biinWFnD9+4amhlt6CWGJIuw+X6d9WKDRxpuWm654RPdPBc001LQmVasNsiszBT1l5T7aFIrED81IcdAN2bx87aXmVB/uTaq3GNZ+EYMi1BNhzz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qx8PEsR4; arc=fail smtp.client-ip=40.107.101.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=malOSj1DnGTx8VFlE8vIJCYFNZlBR5TyUo7t6qZPMBgxnnw84hBc1BgQ3epSsV118A7bmWwbmEVFqpiUaXf8EuzbGmPKaF8EASaE/vGqNrueSBYrHZ33VUJ7UYuej8+hZWDV014VXggs1MzzTuMDSUG4joib1uKjUQ6co8cjieT6mLp6Fbo1Rw6vFk+9PG4cUnPdxxc6g5ER1RhL8A3+BST04XX1aGKtt9gPfQJgi6jOwc3DEgUy2LaGr5njqQXHfOLcC70nbf2Waf4c0M5cAfnEPrrT8OM0qN5ccPlj26VKOw7ulLrVjbbfSGOSiFlQKI6BA++5DCRgEr2gyGn9XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CXfcyjb3Hr/SK9ASERusXynoGKzhaFpg0sSEKz3SaK0=;
- b=HMhKMO43VVBOia7/vRO+ODGwcWkgkmmseA2c9+gEezzsWwudWXk9lbWPym2VXZ1uHHGiEMZOHGcoFuI4u8bSiQvTRhevYR6xLCC0cZgC/7bHirmILWuzpeqnb8iIZ6lXRrPInP97urC52sTiLP0SVSAGO9MZKuQSv8Or+3lbLpy3shZ2C8Z3v+mwQl/7vASd7gz/FNEEwVRo2xgZ+ii3BTDdj3U1iWGzMSuFAtc3mpH9xvFFjYWsrvghDUj72Wx5a3ZHV9W2dpHGTxVO+NhKsUZL92cGrq/Orw1S8p/LRrNKMQbYpjt+cI5Pmg4hGh4jhzdY6g/YknQdsLa3HJgvFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CXfcyjb3Hr/SK9ASERusXynoGKzhaFpg0sSEKz3SaK0=;
- b=qx8PEsR4etF9Ifi669OH1SsQ27Q8THlU0Q/IFT5Zsj1SKfQ8U/TJ7PK4bdoSgiaHCwjW25wc/dRtNhMC/59RFxloSZPriuMX2HdfJuqsoc6KNV7GT49b/s98QEpvDoK+cK0Ilsjbfra/GPQWrzoSiQpH99J/zOjhbH1b3HCPL3g=
-Received: from SA1PR04CA0016.namprd04.prod.outlook.com (2603:10b6:806:2ce::21)
- by MN2PR12MB4319.namprd12.prod.outlook.com (2603:10b6:208:1dc::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
- 2025 18:09:42 +0000
-Received: from SA2PEPF000015CC.namprd03.prod.outlook.com
- (2603:10b6:806:2ce:cafe::ac) by SA1PR04CA0016.outlook.office365.com
- (2603:10b6:806:2ce::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.16 via Frontend Transport; Fri,
- 21 Feb 2025 18:09:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF000015CC.mail.protection.outlook.com (10.167.241.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8466.11 via Frontend Transport; Fri, 21 Feb 2025 18:09:41 +0000
-Received: from khazad-dum.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 21 Feb
- 2025 12:09:40 -0600
-From: Lancelot SIX <lancelot.six@amd.com>
-To: <stable@vger.kernel.org>
-CC: Lancelot SIX <lancelot.six@amd.com>, Jay Cornwall <jay.cornwall@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
-Date: Fri, 21 Feb 2025 18:09:28 +0000
-Message-ID: <20250221180928.466632-1-lancelot.six@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2025021802-scrimmage-oppressor-8e61@gregkh>
-References: <2025021802-scrimmage-oppressor-8e61@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5871D5AA7;
+	Fri, 21 Feb 2025 18:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740162289; cv=none; b=c6ZiGfaXxjeRc/9N2jzhjSmpZkrh0V1Rd9jympFq872Tfwl76NDVAXwEEp4xdC5J2lhK4rgds1Bd+rzbwiIGx4mMJMKaKftsm9ngIkvG50Go2mopc3bB1qxBnyeagaoqOWIWN30kZkiN52SJCqJb+LjwlHE8sMeOc51cuiSfYHw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740162289; c=relaxed/simple;
+	bh=KE/2RO/lFpVr7sVpJR/cW8Netw0FEdWCl/HcdQ7hZSg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WjogMMxgbf51jWZkej/qhN/WZWdgvBeYK1QRAjJBc2WndFnncj8HwpqhSFIa1xtqolSzCGzdw2pRqTaP3AJjyAsgByNM09z6Gp9FzoVdkrXmoy+reAJn5Ql9IfkLYpMWKpqI+wmlSeKpD/v4tQXk1hCdNGgZUUZbjJBn/BAcmKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dRDbU5ZC; arc=none smtp.client-ip=209.85.160.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2b1a9cbfc8dso574337fac.2;
+        Fri, 21 Feb 2025 10:24:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740162287; x=1740767087; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6Su3+14tpxkqTvwfVPEZByUtjouZaShymhRyBoXcd7s=;
+        b=dRDbU5ZCYzlWWOqzJJ6O30rOGEME8E3zRaA7SEligSXeVSSTNdLr92zUBBg0RTO8V5
+         EV0JOyXGsRAkNs/eE8gOZnbCXphsgLo9kCsk2WrZNzCySCQpCt7pjgPQCcJgCecADcff
+         0NOO1Nn+qWqBthZX+D4YrrQzl2DDMhLpNYuEkgH5HNjJLa0LNz2ibx80ooeRGmKMtGJg
+         d+naLuLMhhdRjP9Loed1D8ByjvVkZONJmYkB/e+w551FGNTcyKK8rGzldZK86jk2vBx1
+         BjB5ifFZHE+Gb/x+IBcsizqMA/0ul8aveVOTL4o9JFtyCHVrLr4VxFvoPF7THyqFXaDk
+         YRzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740162287; x=1740767087;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6Su3+14tpxkqTvwfVPEZByUtjouZaShymhRyBoXcd7s=;
+        b=ulPmY21QbQSoUFSvoZQaxhQdbOKJtvfsGoKtZ1MSt5NJ8gEPKf932pYIW8uy7b21TT
+         HcwC62EwUbGlAE62JkVslbR2y4krEsph+dvgfYYLjOTmzNzYpumXyQmhL8V/usJPXWBZ
+         WEcpT3GrTxctzht2WLIyf106buETJmen9pE6sM6cTgpEtWlUMx9GFJosfH5y7dlkarSy
+         UquKZxPcd+WE+M34i1EIh/gQW9bJdhfmrRQHjkxXlOPpaqzIN46NVXJfOI+HqMaGkBDE
+         JKes25mmLkoRBYFaDg+q5mszP7kNSdjv0lkr0xWqkf9AUjF7blNZmopW7DrE4iYslwKc
+         kmiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVLRjCm5G0MWdFbbe2yM7GIPUapDnigjKzThJwjK+JYd5T4RNeTGsXyaSQH3TrSBJOCZPCSPuX3uASwUMY=@vger.kernel.org, AJvYcCX5nLjUzlpLNf9PMMmZVgA2jGVNH4BFqrbftwvLp3dp5SCpq/Q9LZc03W3KiF4A7tiVkQantpWn@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDE/vJZpSbvmVt0Sl7ZgrXw6yJAIGoehVSoNiQ+3AP7UJI4s7F
+	JYTdTFKJ+jo6/TgObz2yhMTXVSF3Gr3jXSzLh1NQfAxl3gY3oJMs
+X-Gm-Gg: ASbGncsxi2frEyfMRTw6p4ctKrxYj0DKE4w6O715eiWQo/9kWsCpkhRG+7Hx5FXDyK5
+	LsJx1s2VCt3AfuMAbVGzlkSGRvKd2doXXFDXuuN8Ph7Gx9sIi3ZmbaItBzv3qJX0r4qAijEMd9f
+	ZaV1zoSVZUryfvf8zBf3+50LifsVFFpuixvjY05Hg3BEawnfMJMHU46TLPqcmgRydyt9AFXKDUw
+	bgP+rosndfBpktmIiIVnVJ9NLR97KpAUtWt9kMvgQqyJi7IlIBvf2SiowtE5MTHa2mhhZo+rROr
+	ZAIAKNk9zQ+5XVAM18am2/hwwwtsle23lQmKdJBzedTJtiaB+odh/w==
+X-Google-Smtp-Source: AGHT+IELQYu5EK+8uQbcZYp/tabGOaWFJynVjv7IEdRKtNkhYtBb5oVqlIM2APCjl5rzlT4RblTrWw==
+X-Received: by 2002:a05:6870:9f12:b0:29e:2bbd:51cb with SMTP id 586e51a60fabf-2bd5180cf5cmr2853498fac.24.1740162286691;
+        Fri, 21 Feb 2025 10:24:46 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2bd3438a93bsm960157fac.25.2025.02.21.10.24.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 10:24:44 -0800 (PST)
+Message-ID: <dd1606d2-f03b-4a95-bc80-2daf55747e26@gmail.com>
+Date: Fri, 21 Feb 2025 10:24:41 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CC:EE_|MN2PR12MB4319:EE_
-X-MS-Office365-Filtering-Correlation-Id: e8ec4c74-2ae4-4ee7-1466-08dd52a2e9d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pHMAFizuqVSdb5KIOke0MlwQ6DvXrh09eA9wWW1YZRmBM3OWTpNcgGLVxxJq?=
- =?us-ascii?Q?qw1rtVIs2clnfs627E3WuyEml/1LWmOi+9rSKjFs4Ow5c3q7s+A2iltz9HvO?=
- =?us-ascii?Q?WL7UuvnOYWFTjvjQSM7XGaZ2AK/WlLI9hyakKHGK6BeAo+GeRLlS8KKUxRPu?=
- =?us-ascii?Q?iszOxUDdPBdjND9BNsYMB4+gq56lNZTMEI7ZjEAcq8J5d3zy0246s4xS4WJs?=
- =?us-ascii?Q?35CPv0GqJwm/WIIuL5C+HkF63WFIO5Ak8Q3RQwdoztMV3ryYOrk+vxgE4ytb?=
- =?us-ascii?Q?5zmruDDFVOaI3dajaYaIoUtM3Xj9/kpYMXytfaOPI7VTma8NApv1UYjFGSaI?=
- =?us-ascii?Q?v5S+wqh0TssMzLa1EOFktVBVtD8IMEkbSyeqj/eLTphRPeLE5zSBRvfxqQ7U?=
- =?us-ascii?Q?c+YyeE7qFVf8zckKoUA7ITCrSulNMIDeRrkZ5Y3e+BWWwQON0yToExmvtJM0?=
- =?us-ascii?Q?cQVAN6Qt4RpPrFWi2+aCU80u4R0lv1Sajr8AxBatzBy2nrrzFLHCyMcsGPvR?=
- =?us-ascii?Q?O0M/tJh8i9Gvrv5tnuNVQZhXUeKKbu7wcYdDUtNpPCZ7QS/+HsWzW27mqi4n?=
- =?us-ascii?Q?RcEvDKkYeYvZxa1QS67Jd3YAkcnBSxMqhTVKbD4hOVi442eeoXiRMoMxn1YO?=
- =?us-ascii?Q?FVX+DicZTaCkqvQImQeHKkAflHXOksnOrzA2I3QDv1BSRLIQbCqeyaHbRNPW?=
- =?us-ascii?Q?xEpEsl+jafVdOZNRghePzl1wcrSrGi0LYhVFapxqi3C+CgJA38wReBxouNB6?=
- =?us-ascii?Q?9xudlT2QYWY3jPJ55Zl9XE8VMWJVMKavZEOFrKbrtS0pjtE3CBvs0ySx1+px?=
- =?us-ascii?Q?7bQI72OXh4ELksiJaaHi496oXnUGfOeXTYKEUtokNnlg3UaDTl4U7U17zbZE?=
- =?us-ascii?Q?WYxcUfUW+M8Pb10ziN+ZegM9akO7yBI2abopah3MoCzJ3Bk0CKZJL1TAItb+?=
- =?us-ascii?Q?epabT0GofR+/FNC/YQD/dHI1bf/gyIhdHZ6JHk3gFLj3eq1FDkt4cJOs7Jav?=
- =?us-ascii?Q?mGoue+y20tzLmcK98PpN0p55a3hhQ5+NZnrgmXj0WI4l49Nf7I/nC2X1BZ/k?=
- =?us-ascii?Q?Nu4S583bOqgMuJ3KXSVPT1mQKViqR0vu4YUfq19HA00e1XR7pdkBwKGxmTjm?=
- =?us-ascii?Q?fkT8T7zEKYI7aKot8JbHG+Cjtz6EYpXE3bFW6wGh7VXmlaUEUpNfNbEwRgTX?=
- =?us-ascii?Q?rS0ZucRpNnOG2kalcYKDlM2I4/trohmlXrrFK1MgrLLHFiEoO1I5Vb+2KpoX?=
- =?us-ascii?Q?VWTtJUZ+rmPd1Yk7LyB/NSsyRekH8+WHxSIV8SfN/puFfY+sXsWVfKEbBsWQ?=
- =?us-ascii?Q?mkGkWMggkN7lfgZWU386dlEZsHqFXz+T3z/ovAhkXoNOcbfhziNzG7OQHFBR?=
- =?us-ascii?Q?jeuqti/axf/VFCdNDhz9Kd0uL+/DO6dNrVDgjnOEQb888IN8ELmmf5KWdyHq?=
- =?us-ascii?Q?la8w0W7zYSp+/wkF4VuvdVZwXslqACYcoQBuIZUnJFFrmmPwVHEf7FcTOHbC?=
- =?us-ascii?Q?HqrdBXxN7j8RKvw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 18:09:41.7129
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8ec4c74-2ae4-4ee7-1466-08dd52a2e9d8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015CC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4319
+User-Agent: Mozilla Thunderbird
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.12 000/225] 6.12.16-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250220104454.293283301@linuxfoundation.org>
+Content-Language: en-US
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250220104454.293283301@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-It is possible for some waves in a workgroup to finish their save
-sequence before the group leader has had time to capture the workgroup
-barrier state.  When this happens, having those waves exit do impact the
-barrier state.  As a consequence, the state captured by the group leader
-is invalid, and is eventually incorrectly restored.
 
-This patch proposes to have all waves in a workgroup wait for each other
-at the end of their save sequence (just before calling s_endpgm_saved).
 
-This is a cherry-pick.  The cwsr_trap_handler.h part of the original
-part was valid and applied cleanly.  The part of the patch that applied
-to cwsr_trap_handler_gfx12.asm did not apply cleanly since
-80ae55e6115ef "drm/amdkfd: Move gfx12 trap handler to separate file" is
-not part of this branch.  Instead, I ported the change to
-cwsr_trap_handler_gfx10.asm, and guarded it with "ASIC_FAMILY >=
-CHIP_GFX12".
+On 2/20/2025 2:58 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.16 release.
+> There are 225 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.16-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.12.x
-(cherry picked from commit d584198a6fe4c51f4aa88ad72f258f8961a0f11c)
-Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
----
- drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h         | 3 ++-
- drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm | 6 ++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
-index 02f7ba8c93cd4..7062f12b5b751 100644
---- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
-+++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
-@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
- 	0x0000ffff, 0x8bfe7e7e,
- 	0x8bea6a6a, 0xb97af804,
- 	0xbe804ec2, 0xbf94fffe,
--	0xbe804a6c, 0xbfb10000,
-+	0xbe804a6c, 0xbe804ec2,
-+	0xbf94fffe, 0xbfb10000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0x00000000,
-diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm
-index 44772eec9ef4d..8fd7f17df494c 100644
---- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm
-+++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm
-@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
- 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
- 
- L_END_PGM:
-+#if ASIC_FAMILY >= CHIP_GFX12
-+	// Make sure that no wave of the workgroup can exit the trap handler
-+	// before the workgroup barrier state is saved.
-+	s_barrier_signal	-2
-+	s_barrier_wait	-2
-+#endif
- 	s_endpgm_saved
- end
- 
-
-base-commit: 4e3ac4150cbd02585dc5cd1b4a25b8519a57c6a2
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.43.0
+Florian
+
 
 
