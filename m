@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-118663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5227CA40995
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:53:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A9FA40997
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268E63A4780
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:53:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B631727F6
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC221CBEAA;
-	Sat, 22 Feb 2025 15:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440551C8601;
+	Sat, 22 Feb 2025 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XamTHj9v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cut78GYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAA869D2B
-	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C4469D2B
+	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740239613; cv=none; b=KS9ouC8YCv164MjUR9WBQLS68wNLxCvR8Wtqxfzh4s0lHYkHiFktwNiivAXCXVXM8iKeazsBlCAnpCm40OCN6oXWIfYUl1sBdjwoP6tTwHlXBp+j6ONT+OU5edfJ2IqboyZHraVxQhAUy6HSZKOBm+sU+Fm/kBeEZcH7N5zhMpY=
+	t=1740239615; cv=none; b=oidsLK67bDxy5NJ2aiu7nQeztQIf16NZw0F+2rtPJk3bgN1+OujWWHee1MlE51AfEVBX6HdXC5tT8ob5TfSrk6SlqWS4cwGnCjvwOX/XbaXPkrExFSySe3LRtrpdnDPHkcEPWuHkmsBrwIStC1w0FsZiZx9HDTtd/k9hP9a1CtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740239613; c=relaxed/simple;
-	bh=5p/pMjn/H+yuDLi95u7+6pJdwx4+MZwabffHBQs71ac=;
+	s=arc-20240116; t=1740239615; c=relaxed/simple;
+	bh=HDZtgIDIno0oc8jyAtqChymjLLlS0fS/doO7nyUGfdQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nrnnSb7cVk7eEGvy/1wXsQAPKUqE2IPQehF9b3EUvtKGojkpt4SUEQF6BbCs+PWAVkyiQNfVqYPJ6N4AOdAigK1FSFIpKbgKViCJwt9SuyEjhf0hyIW11DB2yLkiQDazoffNI3Yx1FQ2nAWQUfWU9ECWpOnqm7Vw8kE5xm0q2tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XamTHj9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EECC4CED1;
-	Sat, 22 Feb 2025 15:53:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uL8hYvkTFgld091ZEVCJ03VPzqmu45fpfLC1dj0xShwS20+N8zicYqyOdmOUhoBBBpVRzQiDxM8qtQNyT/Wgr7hsk5yFS5xaxqbha6NQ/wbQVVQRLEiHnO4gnueFDToQcLTWem/ghKLvfXUwpBKaJu1f0obIJtXYK/rr0VhPMgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cut78GYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAA6C4CEE6;
+	Sat, 22 Feb 2025 15:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740239612;
-	bh=5p/pMjn/H+yuDLi95u7+6pJdwx4+MZwabffHBQs71ac=;
+	s=k20201202; t=1740239614;
+	bh=HDZtgIDIno0oc8jyAtqChymjLLlS0fS/doO7nyUGfdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XamTHj9v2/UOTHGlGtwJPOx825aV2EL5ku7eI58YD7iGwkgseF/7DQKDFC1ZbYyxq
-	 /NF7ir711FN1oknUCSHir1I+OA5upW4FV/3Rqd/aY2lx4QPwDkonso+uUaVYvZIJ/Y
-	 nS/1KQbDkWu2rLGogaw22hkSRkKj3o+LZt6kU/6qOCobsqydc+CIXfhYgmVZ2KYkVd
-	 wZJxjEpZ9WkN2mTf+nW4yl7lF7jb1NR6oV/rC3l1XueK0eOPEs7PFqWjrKknCjbeA6
-	 bUfnPbRQ5aW1oAIVJntTFcJI9WKSM0jSq1eq3CSToQ0GYjQMc1RlUXkHC4s/THp+vN
-	 YuHOWVHsQUHYQ==
+	b=cut78GYuhBNJNKXseIggA5AtgLcTpe8oY8t2VNGz80LR5y/Oi4XElDVbYu0Yg38py
+	 f18EyQ+/dL20encXVT/mXO+GO24TddVev86MXNUyvjgfvdl7oRPN1E6ZS33AWBhZrh
+	 zrZoeDMrR5k+PN+OO4A9a6xTqw0yXbtIDLISo56WZDSBf7BKmLr/V3CRNsqqSqJeO4
+	 bgdO6rr2Hxaf1FGN/mtfEPNot5xMaft/08VbxOj7UDy1Ddv3KcKH3+mp0IYWl4OhLB
+	 6UWaGfYNKzDrPEjavK/rlkl+qLQih4yZ9LTGT1PbMgLsUNkM9kKatiCNox7TGVdwB/
+	 KG0yzj7LUoIxA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	lancelot.six@amd.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
-Date: Sat, 22 Feb 2025 10:53:30 -0500
-Message-Id: <20250221202405-1793863f78c0922a@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jetlan9@163.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
+Date: Sat, 22 Feb 2025 10:53:33 -0500
+Message-Id: <20250222102625-9a6ecc43c442bcda@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250221180852.465651-1-lancelot.six@amd.com>
+In-Reply-To:  <20250221084944.5376-1-jetlan9@163.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,59 +64,64 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-❌ Build failures detected
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: d584198a6fe4c51f4aa88ad72f258f8961a0f11c
+The upstream commit SHA1 provided is correct: 9be85491619f1953b8a29590ca630be571941ffa
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: jetlan9@163.com
+Commit author: Yunfei Dong<yunfei.dong@mediatek.com>
 
 
 Status in newer kernel trees:
-6.6.y | Not found
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 588bcce9e64c)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  d584198a6fe4c ! 1:  1ba3cbf705dfa drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
-    @@ Commit message
-         This patch proposes to have all waves in a workgroup wait for each other
-         at the end of their save sequence (just before calling s_endpgm_saved).
+1:  9be85491619f1 ! 1:  dffd0505449e8 media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
+    @@ Metadata
+      ## Commit message ##
+         media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
      
-    +    This is a cherry-pick.  The cwsr_trap_handler.h part of the original
-    +    part was valid and applied cleanly.  The part of the patch that applied
-    +    to cwsr_trap_handler_gfx12.asm did not apply cleanly since
-    +    80ae55e6115ef "drm/amdkfd: Move gfx12 trap handler to separate file" is
-    +    not part of this branch.  Instead, I ported the change to
-    +    cwsr_trap_handler_gfx10.asm, and guarded it with "ASIC_FAMILY >=
-    +    CHIP_GFX12".
+    +    [ Upstream commit 9be85491619f1953b8a29590ca630be571941ffa ]
     +
-         Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
-         Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-         Cc: stable@vger.kernel.org # 6.12.x
-    +    (cherry picked from commit d584198a6fe4c51f4aa88ad72f258f8961a0f11c)
-    +    Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+         Fix a smatch static checker warning on vdec_h264_req_multi_if.c.
+         Which leads to a kernel crash when fb is NULL.
      
-      ## drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h ##
-     @@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h: static const uint32_t cwsr_trap_gfx12_hex[] = {
-    @@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h: static const uint32_t cwsr_trap_
-      	0xbf9f0000, 0xbf9f0000,
-      	0xbf9f0000, 0x00000000,
+    @@ Commit message
+         Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+         Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+         Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    +    [ drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
+    +    is renamed from drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c
+    +    since 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder").
+    +    The path is changed accordingly to apply the patch on 6.1.y. ]
+    +    Signed-off-by: Wenshan Lan <jetlan9@163.com>
      
-    - ## drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm ##
-    -@@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm: L_SKIP_BARRIER_RESTORE:
-    + ## drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm ##
-    +@@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm: L_RETURN_WITHOUT_PRIV:
-      	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
+    - ## drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c ##
+    -@@ drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c: static int vdec_h264_slice_single_decode(void *h_vdec, struct mtk_vcodec_mem *bs
+    + ## drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c ##
+    +@@ drivers/media/platform/mediatek/vcodec/vdec/vdec_h264_req_multi_if.c: static int vdec_h264_slice_single_decode(void *h_vdec, struct mtk_vcodec_mem *bs
+      		return vpu_dec_reset(vpu);
       
-      L_END_PGM:
-    ++#if ASIC_FAMILY >= CHIP_GFX12
-     +	// Make sure that no wave of the workgroup can exit the trap handler
-     +	// before the workgroup barrier state is saved.
-     +	s_barrier_signal	-2
-     +	s_barrier_wait	-2
-    ++#endif
-      	s_endpgm_saved
-      end
+      	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
+     +	if (!fb) {
+    -+		mtk_vdec_err(inst->ctx, "fb buffer is NULL");
+    ++		mtk_vcodec_err(inst, "fb buffer is NULL");
+     +		return -ENOMEM;
+     +	}
+     +
+    @@ drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c: st
+     -	c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
+     +	y_fb_dma = fb->base_y.dma_addr;
+     +	c_fb_dma = fb->base_c.dma_addr;
+    - 	mtk_vdec_debug(inst->ctx, "[h264-dec] [%d] y_dma=%llx c_dma=%llx",
+    - 		       inst->ctx->decoded_frame_cnt, y_fb_dma, c_fb_dma);
+    + 	mtk_vcodec_debug(inst, "[h264-dec] [%d] y_dma=%llx c_dma=%llx",
+    + 			 inst->ctx->decoded_frame_cnt, y_fb_dma, c_fb_dma);
       
 ---
 
@@ -124,148 +129,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
-| stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-
-Build Errors:
-Patch failed to apply on stable/linux-6.6.y. Reject:
-
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
-@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
- 	0x0000ffff, 0x8bfe7e7e,
- 	0x8bea6a6a, 0xb97af804,
- 	0xbe804ec2, 0xbf94fffe,
--	0xbe804a6c, 0xbfb10000,
-+	0xbe804a6c, 0xbe804ec2,
-+	0xbf94fffe, 0xbfb10000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0x00000000,
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
-@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
- 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
- 
- L_END_PGM:
-+#if ASIC_FAMILY >= CHIP_GFX12
-+	// Make sure that no wave of the workgroup can exit the trap handler
-+	// before the workgroup barrier state is saved.
-+	s_barrier_signal	-2
-+	s_barrier_wait	-2
-+#endif
- 	s_endpgm_saved
- end
- 
-Patch failed to apply on stable/linux-6.1.y. Reject:
-
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
-@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
- 	0x0000ffff, 0x8bfe7e7e,
- 	0x8bea6a6a, 0xb97af804,
- 	0xbe804ec2, 0xbf94fffe,
--	0xbe804a6c, 0xbfb10000,
-+	0xbe804a6c, 0xbe804ec2,
-+	0xbf94fffe, 0xbfb10000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0x00000000,
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
-@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
- 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
- 
- L_END_PGM:
-+#if ASIC_FAMILY >= CHIP_GFX12
-+	// Make sure that no wave of the workgroup can exit the trap handler
-+	// before the workgroup barrier state is saved.
-+	s_barrier_signal	-2
-+	s_barrier_wait	-2
-+#endif
- 	s_endpgm_saved
- end
- 
-Patch failed to apply on stable/linux-5.15.y. Reject:
-
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
-@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
- 	0x0000ffff, 0x8bfe7e7e,
- 	0x8bea6a6a, 0xb97af804,
- 	0xbe804ec2, 0xbf94fffe,
--	0xbe804a6c, 0xbfb10000,
-+	0xbe804a6c, 0xbe804ec2,
-+	0xbf94fffe, 0xbfb10000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0x00000000,
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
-@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
- 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
- 
- L_END_PGM:
-+#if ASIC_FAMILY >= CHIP_GFX12
-+	// Make sure that no wave of the workgroup can exit the trap handler
-+	// before the workgroup barrier state is saved.
-+	s_barrier_signal	-2
-+	s_barrier_wait	-2
-+#endif
- 	s_endpgm_saved
- end
- 
-Patch failed to apply on stable/linux-5.10.y. Reject:
-
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
-@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
- 	0x0000ffff, 0x8bfe7e7e,
- 	0x8bea6a6a, 0xb97af804,
- 	0xbe804ec2, 0xbf94fffe,
--	0xbe804a6c, 0xbfb10000,
-+	0xbe804a6c, 0xbe804ec2,
-+	0xbf94fffe, 0xbfb10000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0x00000000,
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
-@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
- 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
- 
- L_END_PGM:
-+#if ASIC_FAMILY >= CHIP_GFX12
-+	// Make sure that no wave of the workgroup can exit the trap handler
-+	// before the workgroup barrier state is saved.
-+	s_barrier_signal	-2
-+	s_barrier_wait	-2
-+#endif
- 	s_endpgm_saved
- end
- 
-Patch failed to apply on stable/linux-5.4.y. Reject:
-
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
-@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
- 	0x0000ffff, 0x8bfe7e7e,
- 	0x8bea6a6a, 0xb97af804,
- 	0xbe804ec2, 0xbf94fffe,
--	0xbe804a6c, 0xbfb10000,
-+	0xbe804a6c, 0xbe804ec2,
-+	0xbf94fffe, 0xbfb10000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0xbf9f0000,
- 	0xbf9f0000, 0x00000000,
-diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
-@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
- 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
- 
- L_END_PGM:
-+#if ASIC_FAMILY >= CHIP_GFX12
-+	// Make sure that no wave of the workgroup can exit the trap handler
-+	// before the workgroup barrier state is saved.
-+	s_barrier_signal	-2
-+	s_barrier_wait	-2
-+#endif
- 	s_endpgm_saved
- end
- 
+| stable/linux-6.1.y        |  Success    |  Success   |
 
