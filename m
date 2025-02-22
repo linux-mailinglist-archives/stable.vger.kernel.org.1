@@ -1,102 +1,120 @@
-Return-Path: <stable+bounces-118647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD46FA4067E
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 09:58:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0C5A406C6
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 10:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7B9E702BCA
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 08:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C80513B8E9A
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 09:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369B92063FC;
-	Sat, 22 Feb 2025 08:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831B82066E8;
+	Sat, 22 Feb 2025 09:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="OclUNiH3"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="QC12IWSl"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3B9201266
-	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 08:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09561FECCF;
+	Sat, 22 Feb 2025 09:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740214734; cv=none; b=txxdvEPMgapyRRxu/LSZqQzne3VDO1mYnpYoDkP3E+o5+igctLUNdUuiCG9hW97UYxjLr1VikqdV3sh7tspvmHl6VcS0AGmGBF8G1wfBB29x9pcD9QfJb79E3L+egfio1l1xPeDmZCRFXdz+n5wraukCr66iuJElFDZb21jRqOs=
+	t=1740216091; cv=none; b=HA2REsvRa9+HoDI7zR3sVCPOXv872AjU8TNzJm2RYUP3wolC8iCUiWq6d0xyIEqnSQH9gOhI/7bbrRy1q2P/5ZDKapesOIj2Me4E6AiYt132BkmMYBtjBDaszyxCSE+N2bgCDYVuCvsI1hg0sbMAMDUysSg9irn8k+gz6s5a4IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740214734; c=relaxed/simple;
-	bh=mh3nCFY6ECx/R7L+qv5N089tcUKlNcAdC1yqNRY2RIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SwQML3nGgW0nqKhMeV37nIKuRuLT+YgQTFYvof1Lx2bpmmvkYI+2lNIIakHythF0HThwiIukDpeqHqs9zdDNY7QL0exEjph5UVWyrd4xz6skcent4ATa5TXzYpePpgNj8FGLGeIcFUIp0HuYpfn4Ko+l2q5UAOtGAmGuPfuVYjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=OclUNiH3; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1740214730;
+	s=arc-20240116; t=1740216091; c=relaxed/simple;
+	bh=qlH9IIzw3P8bG0Y+0Ym3bfM7heifGiP46tWEKwRCeDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JAEp+seQ0Z0Lo4ws3n3B8ol3x05RONPW3A3q6MmCS02B+OlQdMP2HxJCV9hkU6O0+rk8xdXIvJvJmpgpN6l6/gVLtHzTB3qfnSWf7vCOdYWpzu/OgMefhws+SRg9wmFVJ/+Hv3NFlVZNNHdXqf9Bw9aX2wDpnEX3w22Pkeo6vj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=QC12IWSl; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5553510382D37;
+	Sat, 22 Feb 2025 10:21:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1740216086;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zBCGz/4mccDi3wywElFAdLulgPYQyVr4aQAtH3U/r2k=;
-	b=OclUNiH3+LGBquDDDnjLr+W4OHMH7zPlRvBbf7qIhxpbG7AXIgPGPJivW0dKVxIP9sHacM
-	ptx+LtH9VvdhkvBNmfI34hNmPjt2MNZMCzCWmqpAbOFduexQES3e0K+bMTepz0pOuLFCcp
-	CvUDWGDDmWQppOZeNmvunQdcBqRVoZI=
-From: Sven Eckelmann <sven@narfation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.10.y] batman-adv: Drop unmanaged ELP metric worker
-Date: Sat, 22 Feb 2025 09:58:48 +0100
-Message-ID: <3363381.aeNJFYEL58@sven-l14>
-In-Reply-To: <Z7jclt4dEDLWc0te@lappy>
-References:
- <20250219165644-edb7cfac3c0ce091@stable.kernel.org>
- <3614082.iIbC2pHGDl@ripper> <Z7jclt4dEDLWc0te@lappy>
+	bh=UoUQ6xgBvQ4zPUsBkMw3Rw1y1WZnoFmf4uRXsdLpC7E=;
+	b=QC12IWSl8i4pbwqD59DEIsZDB0V9HjZHCk0b5/XMoZw7JGGwYBCtriZD6NPQhyCp9rta6f
+	i2m8dd9dbY/46Pz/fheaQcDBDaS0EUO2SmYsDXhaDqFrJpk8ZA+GqwoOCPSg5Yge42/8Up
+	uyNJGdWxzo1xzuWpuhgxQ7nAXdKmuNziDFGxB+/ENd+h25bx5x/nP0d0KESaCGUXRV0pj+
+	xYrbEe2V4NZ8rg4s1d2qcPTEPOoaDD9nrkAVVUOWQvM5X5dOdnTmSr/s/a6y57Ic5+R/ow
+	QIEg6AWAVW6bkicuxEurwlQ3PojwqEwuZw+fsDjYfMxw6um6QYZ6cPIO3wpOaw==
+Date: Sat, 22 Feb 2025 10:21:18 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
+Message-ID: <Z7mXDolRS+3nLAse@duo.ucw.cz>
+References: <20250220104545.805660879@linuxfoundation.org>
+ <80ab673f-aa94-43e2-899a-0c5a22f3f1e0@gmail.com>
+ <2025022221-revert-hubcap-f519@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3369780.44csPzL39Z";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="WnBP1FLzBJ0x5Zfu"
+Content-Disposition: inline
+In-Reply-To: <2025022221-revert-hubcap-f519@gregkh>
+X-Last-TLS-Session-Version: TLSv1.3
 
---nextPart3369780.44csPzL39Z
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Date: Sat, 22 Feb 2025 09:58:48 +0100
-Message-ID: <3363381.aeNJFYEL58@sven-l14>
-In-Reply-To: <Z7jclt4dEDLWc0te@lappy>
-MIME-Version: 1.0
 
-On Friday, 21 February 2025 21:05:42 GMT+1 Sasha Levin wrote:
-> Ah, sorry, the bot only tests against "vanilla" -stable releases.
-> 
-> I had a backport queued up which brought in a dependency rather than
-> changing the original commit, does it make sense in this case? I think
-> it'll make future backports easier.
+--WnBP1FLzBJ0x5Zfu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The imported changes by you are minimal and should be fine. Thank you for your 
-backporting efforts.
+On Sat 2025-02-22 07:28:10, Greg Kroah-Hartman wrote:
+> On Fri, Feb 21, 2025 at 09:45:15AM -0800, Florian Fainelli wrote:
+> >=20
+> >=20
+> > On 2/20/2025 2:57 AM, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.1.129 release.
+> > > There are 569 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, plea=
+se
+> > > let me know.
+> > >=20
+> > > Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> > > Anything received after that time might be too late.
+> >=20
+> > And yet there was a v6.1.29 tag created already?
+>=20
+> Sometimes I'm faster, which is usually the case for -rc2 and later, I go
+> off of the -rc1 date if the people that had problems with -rc1 have
+> reported that the newer -rc fixes their reported issues.
 
-Kind regards,
-	Sven
---nextPart3369780.44csPzL39Z
+Well, quoting time down to second then doing something completely
+different is quite confusing. Please fix your scripts.
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--WnBP1FLzBJ0x5Zfu
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ7mRyAAKCRBND3cr0xT1
-y2D+APwJFdtgQ+OxFtI+hWActQjXekBC8yQ9ff8G9j5GQFZ8iAEAn1gQWLMkcuAy
-nEx2MSIvSOXWvKMhfcbvmIXhdWtCqg0=
-=U1/y
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ7mXDgAKCRAw5/Bqldv6
+8llnAJ9sSrPxmuiGUCG4udfEAn54Ow/FPQCfdSghReCJWRAH2GRnAj+6HrgvEuk=
+=98kv
 -----END PGP SIGNATURE-----
 
---nextPart3369780.44csPzL39Z--
-
-
-
+--WnBP1FLzBJ0x5Zfu--
 
