@@ -1,106 +1,96 @@
-Return-Path: <stable+bounces-118652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6166DA40848
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 13:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2F3A40874
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 13:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A2717BC11
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 12:21:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CE39420787
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 12:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CC9209695;
-	Sat, 22 Feb 2025 12:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D7520ADCA;
+	Sat, 22 Feb 2025 12:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EBlkl9/y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob2mvSpE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3D81F236B;
-	Sat, 22 Feb 2025 12:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79BE20766E;
+	Sat, 22 Feb 2025 12:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740226873; cv=none; b=d8gkIgS9e3vR8Jq7TNYSoKDXFOSvhn/KB3gpAySb5p+3X3MZd4PWbUMj5OEmLfnxHk0+5s7TOjytUVxCqAC0v2wUrhCxnktA+vx8mJKKhJlzNmoLGV4apvp835Gz95clWcSm/lFAxq+wJUkBL19vhQiMZTjIRf87GQQlzEZk9gI=
+	t=1740228730; cv=none; b=iwQPtNgrTJXkhAhd3vVO/8iIUDhdFWn8UNnU7LP6Nd3hfEcxCEB46aWJa5TJ6HOpXDYKjMvt2VSWQXoo3Q+R9IkON4Eqig05ZjWAgiejfmg4CDYWuqIYKy1U0s3mzIMtHpOSUjrtejpFszMYJ+fBjp/8GzNAvXWStmWK/PgruqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740226873; c=relaxed/simple;
-	bh=il6Qqd5eRhA+wprknB+USCHIJ++iO5SknhOmx3UPBNA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OD2sRmbGFFPnKzJsXtIs51FYKhNlt1IY8ItofZR8o+UehMnHu6n4AnDQpVY4SO8k763exvdR/lYOfgbbp7DmNyBDXVUQOZDURIr4TEgkeNz0KmO7DZRPLuUuMQ0WPvYkRauQHSsuDfv57yJomabrmKs3ItpGqQMmhcdoL3zZjG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EBlkl9/y; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2fc92215d15so774568a91.1;
-        Sat, 22 Feb 2025 04:21:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740226871; x=1740831671; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=il6Qqd5eRhA+wprknB+USCHIJ++iO5SknhOmx3UPBNA=;
-        b=EBlkl9/y9eEKex0xhBWfxDVLb0fSzulmeAKcf7dPDJFOLbgQ29dzl3zp4yxRH/+vHq
-         u/KK6GIo5m25BWPXp0+9VbCdtJOMVXf3WndqADYzEwcGaCptsXuIrRvIyaTNK30FgWwR
-         yhmhCyl2vaJlUGnjURYClvQbLU2zIaWIq7W8bS5qJNwfXkUi3mGfB49dGNr6CeSgrhv6
-         mHvZppxd5Ra4sn1vPMu7dxbWqMQmpkk7PMfv1dbgqSUnOFnT5MTm6zbTSCbEo+SpDepl
-         qb+ciTE7SMB6Ixt1EMxARsHE5s+0p7TUvID/WB5a+kXIVj6rnqs5TNGHiw0UvCAPa1a7
-         rWnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740226871; x=1740831671;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=il6Qqd5eRhA+wprknB+USCHIJ++iO5SknhOmx3UPBNA=;
-        b=sga9mc4uURoIpvhdpjFH6lysHsu/LRX/XPJ4bbf3RtA5Er+UKvFkh2oIYtZ95E491M
-         znr7lbrjpIxPiXEwyyIqCvCb2YPhdoDPoLQAl4k496qzR1SssWy0NDyEz3GvYf8A8XkN
-         uZxEnAQ74rMsRTxvc8el/3F/cFLUjrFDKhJXehwv/fyhHD41Khk5izcyhLS52T0fR8Ex
-         1W0yuQgnOY5MioOk6/W9Er1UCXd5IwKKIhOtWsIaOx0GC0S+hqkdO4YeRINrWYeMBEeo
-         3xaVxRcM0fti0lKxYqLBY3Gp2YIYH5jLURQhSfB8iZiJk6RynrCfMoLS4BSlOqoyenkH
-         wIJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVB7Sv+IKHcWQKwv9ijQexB1/N8QIL62HwmxLqTrsXPbpQ31szyowSMQ15OmXb1uwcMZZPTmmO7fQ4/VcaYwjA=@vger.kernel.org, AJvYcCXQk2Qnb5gWlpwp/E8XdcuGbtNz3r25ZLJ1cwzVMWgLfVWZ1H4jPw5N0HHnm4G6tYtYAnVCPtRiWoBk8A4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOTHLCvHIFW7TFb97gIy5Yo/QgpqefTYyCc7n69Aa/l7ZkJMQL
-	GQ/x2AKzcCyhDE6KmxbWspKs6bQsIXhKMJV9WxMenY5c70uBbQGaiE/QRhEUJ8/f+a0AQkjmSeQ
-	A7MFL/mqDvIZhbzfuZop3n/0nsbfo4AMQ
-X-Gm-Gg: ASbGncskc0FTllHwldVd7ijw9oXwj6qzkmI5T1GJb6QXFVv7oOsg74JSOSRsgyrSbdU
-	5b6vc/Nrvzw65FceOlN7PVK1UI1UPMOtb99oQ0v3Xu/LRaq99nHyvOvgbN8CnreougMBNMHQB4x
-	sRhyVIXOg=
-X-Google-Smtp-Source: AGHT+IE3qKPs7mbXALLEginuUPiswX1VxZibcwmSUbSEIvidpst8iLIyZckHqIY7J450gCzzrBZn2sazu08NQJeZq7o=
-X-Received: by 2002:a17:90b:4c92:b0:2ea:853a:99e0 with SMTP id
- 98e67ed59e1d1-2fce7b389f6mr4371506a91.5.1740226871449; Sat, 22 Feb 2025
- 04:21:11 -0800 (PST)
+	s=arc-20240116; t=1740228730; c=relaxed/simple;
+	bh=AcH7rRnJqyV3m9vAmkcNvvMPMLHZWqAuVkoH6/mGW/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TbGs/EKgTaQlG+g7UmnmGKd7+dI1wPTSi7vH7jBIb55lM9DJ8jiAJttQ3aTOHDr51WjFZLdcP+ZN//1PQIB4KdWdpfiib551fX89+QRzKEaTD93Vg0KdDVSyCZ0TjkdhURQwJf7IzdCvj98ZOM0N8wb6SpduDMUUVgbQ5tpHHsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob2mvSpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7B2C4CED1;
+	Sat, 22 Feb 2025 12:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740228730;
+	bh=AcH7rRnJqyV3m9vAmkcNvvMPMLHZWqAuVkoH6/mGW/o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ob2mvSpEi/X14XT1aFy64FEAHY4VipFwPx+gcrqac5d9vM33oc1zLSwHmT4ADivFv
+	 A9V64jG2iBeNQd4rbjBspihwfs+U0Y3mV7BZItUl+ym5Gh4KXZADv22ShWj2LND/ZD
+	 KH7LHISbB4wEAp1r9aj7hYxqouc4kxjeOGjcCMDXzqogAHTq4fxOKHWD3VYxjEOJ+L
+	 VRFqh255zSyUjNxqG/YPE/QNJPzBiLURGaex5qSoCQWoB2Jt/sFWl31t8VRA/pkz/c
+	 WDb0Gorm67qbertOet6F1RXxLUgY3c6+WsBXo0T9DBvtm8Yhd/M/EZq+H8UytAaBQu
+	 GbDO1TbhC5xnw==
+Date: Sat, 22 Feb 2025 13:51:58 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Sam James <sam@gentoo.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, stable@vger.kernel.org,
+	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
+	Jakub Jelinek <jakub@redhat.com>
+Subject: Re: [PATCH 0/2] A couple of build fixes for x86 when using GCC 15
+Message-ID: <Z7nIbng2JHSg9in_@gmail.com>
+References: <20250121-x86-use-std-consistently-gcc-15-v1-0-8ab0acf645cb@kernel.org>
+ <202501300804.20D8CC2@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ef950304-0e98-4c91-8fa1-d236cbb782b8@disroot.org>
-In-Reply-To: <ef950304-0e98-4c91-8fa1-d236cbb782b8@disroot.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 22 Feb 2025 13:20:59 +0100
-X-Gm-Features: AWEUYZmRBNJTBxN0xkGm_LxZipJHN9QJR0d5yx5U9-67EfskObL1eNFnt-yVeJs
-Message-ID: <CANiq72=WyQdQfoOeb_mK=J_5GtiWBenqzA+mOr=8mN8OTWPB-g@mail.gmail.com>
-Subject: Re: FTBFS: Rust firmware abstractions in current stable (6.13.4) on
- arm64 with rustc 1.85.0
-To: NoisyCoil <noisycoil@disroot.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202501300804.20D8CC2@keescook>
 
-On Sat, Feb 22, 2025 at 1:09=E2=80=AFPM NoisyCoil <noisycoil@disroot.org> w=
-rote:
->
-> The Rust firmware abstractions FTBFS on arm64 and current stable
-> (6.13.4) when compiled with rustc 1.85.0:
 
-Thanks for the report! Yeah, I noticed in my builds too but didn't get
-to it yet (there are also a couple Clippy warnings in the QR code too,
-in case you see them).
+* Kees Cook <kees@kernel.org> wrote:
 
-Cc'ing Danilo in case he wants to send the fix, otherwise I will.
+> On Tue, Jan 21, 2025 at 06:11:32PM -0700, Nathan Chancellor wrote:
+> > GCC 15 changed the default C standard version from gnu17 to gnu23, which
+> > reveals a few places in the kernel where a C standard version was not
+> > set, resulting in build failures because bool, true, and false are
+> > reserved keywords in C23 [1][2]. Update these places to use the same C
+> > standard version as the rest of the kernel, gnu11.
+> 
+> Hello x86 maintainers!
+> 
+> I think this would be valuable to get into -rc1 since we're getting very
+> close to a GCC 15 release. Can someone get this into -tip urgent,
+> please? If everyone is busy I can take it via the hardening tree, as we
+> appear to be the ones tripping over it the most currently. :)
 
-Cheers,
-Miguel
+Just an update, the x86 fix is now upstream via:
+
+  ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+
+Thanks,
+
+	Ingo
+
 
