@@ -1,110 +1,104 @@
-Return-Path: <stable+bounces-118656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FF5A40945
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:00:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6B0A40963
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB61189CE19
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:00:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5AE47A943B
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A568613E02D;
-	Sat, 22 Feb 2025 14:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E21C15DBBA;
+	Sat, 22 Feb 2025 15:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Hb5V3k3+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEIZtKsD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FF01632DD
-	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 14:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6D42CCDB
+	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740236397; cv=none; b=cYJirbb6IRMoOGhKrpA03IqhUKF9KavBidkYijBxGzBVmcRSdjlLm/c05825uC3Wbo8Vj3en95udQJWja7iZD/QTGF+EM8WnXq84XBnB06qDhvZtx4A8gLWTXBQOcH3iPYsXCbaViyCJkFKE0+KiJucghB1OlBPz576vokJm5dY=
+	t=1740237195; cv=none; b=FgIj6Xgrto/r+dUe68CS4x/0Wbu0sgRi7UwVZD+fkCXny5JsZY2VWStGdndSRC5WPwEYw9m+n4tKuUyNl+rWwMbGgND4C0yTTXgswkKMhtnHaoXs5+RUPnMd800kJb3eg+g4utZHvjl+DL7LwQzvhkFxJXTDznlGgNBMTvLxlJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740236397; c=relaxed/simple;
-	bh=VjnDEUpI50B8j+EaVwNlYhHX3dUMnKarGWgaalKx2RY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LxpotApMPcU/+/sFIdRBxDdoSWCC8UsXPyiACwG6ge97viIWlodDDQdyS6KXc12oQLI+vgjoKDGlKSXX48UgGhey8XIPXj9mLGR6bkhZIPmloUw7yp+bE61VlWc5suifJj2zd9+6aHjoM+K3qZcbEyTpIBX3b42A/MXsWG/IY/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Hb5V3k3+; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 94C0B40E01AD;
-	Sat, 22 Feb 2025 14:59:43 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id sFmrAaU8KnI6; Sat, 22 Feb 2025 14:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1740236377; bh=5R0WADrQg8bqPwjVBB/2HLDDApoeccQEOfvzUI25W7A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hb5V3k3+kPvrHHkNkUUtsVTECjLLdTaXcvLLc/gmD3pTW4abqkbgFW0WldSjKJxOz
-	 xj8GM+ELjei5zeyLx/rZeE8ZolqXW3atcJ9RUL5XMICEeNU1jUEoijV74qRoj2bTR7
-	 jWqTtx1nJFpV1F64h4A+wWA+6Sb/XHH3kg6G8hRhKtvMQz5Bl7LzSKOm6Mqt+H3Q5Q
-	 eFGoPLnST7v5P5H6+5KYICrhZhjYsZOw6LK/KRJwLQX7CwPWXGcuLasiWLKu3bXGtG
-	 iWvQpe3+QyQvsI+NMHNPjS2LjidqBIBE7UdVmYny71G6sA54jKWT476BdPOf50Efe5
-	 bMA71oHzYJFr4KqagTLNbbTBbrmIL3tu0Lgx9RGkjEv2oxgQdlzGIEiao+tIawVxRV
-	 qISMlgyuMDHqAI89NLDt1gifyEgNBOccl5+mohuT421/m5amwln/M6igLnJJQlIzGY
-	 nXqI2AIyxjz87aLhA39Mr8r4O2+HaqIppqIKicG5SmgwGE0A4XqfmEYOKOM7oAwWLG
-	 HXdWleikAD0gPVPMUBA1T0h41RhlSV0ok805lZBM5fgnj76cTRBoIWZcNhQ3xwCwou
-	 lO2ycIfVCMnVvhGAZB+6pg5lWZvJ/8D4uTHjXaZTC389LjnOKatB8f8Y9zoyDj5zU5
-	 0md/7Wsl5T2P4sZNqpsCKyvg=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9E7E640E0177;
-	Sat, 22 Feb 2025 14:59:31 +0000 (UTC)
-Date: Sat, 22 Feb 2025 15:59:22 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Patrick Bellasi <derkling@google.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Patrick Bellasi <derkling@matbug.net>,
-	Brendan Jackman <jackmanb@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: Re: [PATCH 6.6] x86/cpu/kvm: SRSO: Fix possible missing IBPB on
- VM-Exit
-Message-ID: <20250222145922.GCZ7nmSqJqslFxalIC@fat_crate.local>
-References: <20250221142002.4136456-1-derkling@google.com>
+	s=arc-20240116; t=1740237195; c=relaxed/simple;
+	bh=q0vxeV5l6blS+8eyd6OawzU48tHTPe+kcG+4KZuOjJo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=or7pMYg3RSBLqocYxlVAT9dFXZzEqM5/KnshV3G09tH88IEYMDHUsuCy9Id/luY6wNeSeplifQ3zrElhfjYTCD34V9KMKUrY2SQi/Y1s1DWUesogAuPy8KesAvzhvfEZmQZJGNpVHetP4sBldX5njmr4mPH2EPuy3pWHjqujn/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEIZtKsD; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-545306588easo445642e87.1
+        for <stable@vger.kernel.org>; Sat, 22 Feb 2025 07:13:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740237192; x=1740841992; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KJZVNsSbuslb0JtD8p7VvgpM/kT0Terhvfag+ESqtVI=;
+        b=cEIZtKsDX9K3fo78Ejm8q8GetrdxiMcXjYHSwrYNF6pCMJkWFdS5/mC2ihsh6bCIXD
+         Z0PEmJ7mdYba0wjyEAq6qAwoUt7h/hUgJpIqz+pttcbG3fLdap5f5kj8+Pcg6WtWP+kG
+         WZ/2CC8QFkHiUXj8aiV++9eU47KaC3iQd4TOKO/3Zr9E4c05rtBmYWwGdadWeh7pacKh
+         Fm7v1ijb9AJ/NJJz/WSK/P6G5pTwqGgiUjfS//lxzXwreHHapZwrHbqNCHzR8VKGNR3l
+         OZBWrRJWk5U5oZgRjUbhvZeCdrBE2O3pmBhu/RDsxYaicTsRCDCyk8OxzX74U8j7VVFZ
+         XETQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740237192; x=1740841992;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KJZVNsSbuslb0JtD8p7VvgpM/kT0Terhvfag+ESqtVI=;
+        b=oQv+LD8MoUnMtfmp5ufda5at2htTroqATL72wr88TZUg8YRnF9LM3W4YOtE7DyYV1Q
+         LvyXhHlHQLx2KltQTWbeD8pif5aPbawC6+K+C69fBil9Xr8AQDR526EUF6ibph6n8Pgc
+         rgRrnhlM1YPQQbxk/wT78/TO8yNzR0hs36V6qLx3yn13DgJdGnFReO09/aMl13Z4rfeg
+         vfT4/j5FTLOsQle+t/1T+Tz1wE7WC/Cw9058LOiYtrHr+Q9/7DYuE3xK5Zf9yA3X1q8J
+         mle2IaP36Zas4xZgp/5JfaL9OB4FDNddBt535s4jDON/B/Ny5bpgL5YCSmHan+DdSJwj
+         9mAw==
+X-Gm-Message-State: AOJu0YwXmEnVRpVI4uGTnICzMWXcw4f4PfVcrsBtvgD1A7WmWeqXSs2z
+	jU5xUpITt7TMnv7unYHL9TrjQwj+N7CJVWQZP3yPBOIERiQRq+8MVA8TOHYcfG1irZ5i3VWjUgd
+	Xgh2P7x0xbG0TN0teaLYEqZi6ZpU=
+X-Gm-Gg: ASbGncsDZNV4DcFU+xz8OMkQivOjes+vx/zWeI5q+hpcgmQgwb4hnlSw/PZtxHBVbIC
+	o7MQbmwvXu9twV6aj8BrvVnVRHgZaTnWPs6Y6lF3eUPsswM2lGXb+Swih12GM0iLJzIlZYUmxYr
+	vQpWlcCm8=
+X-Google-Smtp-Source: AGHT+IGTK3LWLwz46AkEZbnScY4XxyPp4DP/fr0pq84nYvltb24LHomThP785+SLwSZ3tSnwUsHmehs1PFfTyKTZ5+8=
+X-Received: by 2002:a05:6512:3f19:b0:545:40f:5757 with SMTP id
+ 2adb3069b0e04-54838d2379fmr1197726e87.0.1740237191669; Sat, 22 Feb 2025
+ 07:13:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250221142002.4136456-1-derkling@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 22 Feb 2025 16:12:56 +0100
+X-Gm-Features: AWEUYZm40vq9lPteq2G6mxuOv9RIL9sOl5X1jwgT5Rk3M_WbFgHFrzO-jPWqFY8
+Message-ID: <CANiq72kaO+YcvaHJLRrRw1=KteApRnRM0iPuSwgFkaCf2BR01w@mail.gmail.com>
+Subject: Apply 3 commits for 6.13.y
+To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	NoisyCoil <noisycoil@disroot.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Feb 21, 2025 at 02:20:02PM +0000, Patrick Bellasi wrote:
-> commit 318e8c339c9a0891c389298bb328ed0762a9935e upstream.
-> 
-> In [1] the meaning of the synthetic IBPB flags has been redefined for a
-> better separation of concerns:
->  - ENTRY_IBPB     -- issue IBPB on entry only
->  - IBPB_ON_VMEXIT -- issue IBPB on VM-Exit only
-> and the Retbleed mitigations have been updated to match this new
-> semantics.
+Hi Greg, Sasha,
 
-All 4 backports by Patrick:
+Please consider applying the following commits for 6.13.y:
 
-Feb 21           Patrick Bellasi ( : 148|) [PATCH 6.6] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
-Feb 21           Patrick Bellasi ( : 147|) [PATCH 6.1] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
-Feb 21           Patrick Bellasi ( : 147|) [PATCH 5.15] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
-Feb 21           Patrick Bellasi ( : 147|) [PATCH 5.10] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+    27c7518e7f1c ("rust: finish using custom FFI integer types")
+    1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`")
+    9b98be76855f ("rust: cleanup unnecessary casts")
 
-LGTM.
+They should apply cleanly.
+
+This backports the custom FFI integer types, which in turn solves a
+build failure under `CONFIG_RUST_FW_LOADER_ABSTRACTIONS=y`.
+
+I will have to send something similar to 6.12.y, but it requires more
+commits -- I may do the `alloc` backport first we discussed the other
+day.
 
 Thanks!
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Cheers,
+Miguel
 
