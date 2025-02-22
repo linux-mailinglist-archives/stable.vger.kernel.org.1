@@ -1,123 +1,110 @@
-Return-Path: <stable+bounces-118655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F19AA408D9
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:02:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FF5A40945
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AEA4420C7A
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 14:02:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBB61189CE19
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8427082F;
-	Sat, 22 Feb 2025 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A568613E02D;
+	Sat, 22 Feb 2025 14:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JDFxjoEl"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Hb5V3k3+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F522F37;
-	Sat, 22 Feb 2025 14:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FF01632DD
+	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 14:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740232958; cv=none; b=goDp+Z0d7eGeWLOk0rgjdYaOONJFnRNhcc87BinIFvyTj18RLX0bKVWw2L3KmTiKCdf76ttSyLPT42Z9A0d4ZD7ZpMTVBQqUS2CzGjYLYzTxnlLL5evdf0qNtopTS0LErvZNkoD64kLHl6pO4ESlvem+kZJyNFpeD9ZuubrvWBs=
+	t=1740236397; cv=none; b=cYJirbb6IRMoOGhKrpA03IqhUKF9KavBidkYijBxGzBVmcRSdjlLm/c05825uC3Wbo8Vj3en95udQJWja7iZD/QTGF+EM8WnXq84XBnB06qDhvZtx4A8gLWTXBQOcH3iPYsXCbaViyCJkFKE0+KiJucghB1OlBPz576vokJm5dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740232958; c=relaxed/simple;
-	bh=cqLdn3pSfdlFMz8BT1qTRt7U9h2eoJo3ZzvxPRvlrbM=;
+	s=arc-20240116; t=1740236397; c=relaxed/simple;
+	bh=VjnDEUpI50B8j+EaVwNlYhHX3dUMnKarGWgaalKx2RY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=szhHB71bEZnWqzPtFlxnBG4nP8WqxasGGzkuAAqkSQh1LM1UMRKikMmhIUgqZ28hMMaFmNkr2qcqhtShaq7wBKMdN/xEi2/gyEj42uCoLgig9eE83DIwQn5Eg+Kdo+Kv7VTRUT5WmJ0LmLQnwbVWExSsKjKHEhnqMD2WuTAws2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JDFxjoEl; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740232955; x=1771768955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cqLdn3pSfdlFMz8BT1qTRt7U9h2eoJo3ZzvxPRvlrbM=;
-  b=JDFxjoElTh4rI76Xacm/CsX5IL73wisLZm6FLcFTibYzPDR3iZr6Te0t
-   HWd3UXehkWtUb786NXrQUBUdTk8FVHljZocmhIRS/w0otOaopX6vtaZ5B
-   a5pf4ObDZVEME8sBWnI48aLXKa03ZRcOpeMmKe09IbxcjviyFG6q4yuyL
-   mtcHXHriUtZAfyF4axzd0KuMY6fG3KM5Q82A4RGyWsjXOG3fPPLbv0A8F
-   IB8dGzrQ7qs0dRRZA8gw2buZOL8w8ChxK8LiTCmCFRltuZZKoirjyz4Oi
-   Z4CjLSM7oSYbo3r6Aipel3frTmxKXT2BgJsiuMHfIFFgclEevqzbx9HaE
-   g==;
-X-CSE-ConnectionGUID: S3QbqlE4SuyJ24cMEhy7/w==
-X-CSE-MsgGUID: RdcOAyPLSuunxCJ3KJO2Eg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41247802"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="41247802"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2025 06:02:35 -0800
-X-CSE-ConnectionGUID: YpbMq6JwSYqlDX5v5TKBPw==
-X-CSE-MsgGUID: 5foC5zoJSDSp20UImXrUdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,308,1732608000"; 
-   d="scan'208";a="120722829"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 22 Feb 2025 06:02:32 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tlq5N-0006d5-2d;
-	Sat, 22 Feb 2025 14:02:29 +0000
-Date: Sat, 22 Feb 2025 22:01:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christian Eggers <ceggers@arri.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Yuntao Liu <liuyuntao12@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-arm-kernel@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, ceggers@gmx.de,
-	Christian Eggers <ceggers@arri.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] ARM: add KEEP() keyword to ARM_VECTORS
-Message-ID: <202502222158.UhwuvDZv-lkp@intel.com>
-References: <20250221125520.14035-1-ceggers@arri.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LxpotApMPcU/+/sFIdRBxDdoSWCC8UsXPyiACwG6ge97viIWlodDDQdyS6KXc12oQLI+vgjoKDGlKSXX48UgGhey8XIPXj9mLGR6bkhZIPmloUw7yp+bE61VlWc5suifJj2zd9+6aHjoM+K3qZcbEyTpIBX3b42A/MXsWG/IY/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Hb5V3k3+; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 94C0B40E01AD;
+	Sat, 22 Feb 2025 14:59:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sFmrAaU8KnI6; Sat, 22 Feb 2025 14:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1740236377; bh=5R0WADrQg8bqPwjVBB/2HLDDApoeccQEOfvzUI25W7A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hb5V3k3+kPvrHHkNkUUtsVTECjLLdTaXcvLLc/gmD3pTW4abqkbgFW0WldSjKJxOz
+	 xj8GM+ELjei5zeyLx/rZeE8ZolqXW3atcJ9RUL5XMICEeNU1jUEoijV74qRoj2bTR7
+	 jWqTtx1nJFpV1F64h4A+wWA+6Sb/XHH3kg6G8hRhKtvMQz5Bl7LzSKOm6Mqt+H3Q5Q
+	 eFGoPLnST7v5P5H6+5KYICrhZhjYsZOw6LK/KRJwLQX7CwPWXGcuLasiWLKu3bXGtG
+	 iWvQpe3+QyQvsI+NMHNPjS2LjidqBIBE7UdVmYny71G6sA54jKWT476BdPOf50Efe5
+	 bMA71oHzYJFr4KqagTLNbbTBbrmIL3tu0Lgx9RGkjEv2oxgQdlzGIEiao+tIawVxRV
+	 qISMlgyuMDHqAI89NLDt1gifyEgNBOccl5+mohuT421/m5amwln/M6igLnJJQlIzGY
+	 nXqI2AIyxjz87aLhA39Mr8r4O2+HaqIppqIKicG5SmgwGE0A4XqfmEYOKOM7oAwWLG
+	 HXdWleikAD0gPVPMUBA1T0h41RhlSV0ok805lZBM5fgnj76cTRBoIWZcNhQ3xwCwou
+	 lO2ycIfVCMnVvhGAZB+6pg5lWZvJ/8D4uTHjXaZTC389LjnOKatB8f8Y9zoyDj5zU5
+	 0md/7Wsl5T2P4sZNqpsCKyvg=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9E7E640E0177;
+	Sat, 22 Feb 2025 14:59:31 +0000 (UTC)
+Date: Sat, 22 Feb 2025 15:59:22 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Patrick Bellasi <derkling@google.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Patrick Bellasi <derkling@matbug.net>,
+	Brendan Jackman <jackmanb@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: Re: [PATCH 6.6] x86/cpu/kvm: SRSO: Fix possible missing IBPB on
+ VM-Exit
+Message-ID: <20250222145922.GCZ7nmSqJqslFxalIC@fat_crate.local>
+References: <20250221142002.4136456-1-derkling@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250221125520.14035-1-ceggers@arri.de>
+In-Reply-To: <20250221142002.4136456-1-derkling@google.com>
 
-Hi Christian,
+On Fri, Feb 21, 2025 at 02:20:02PM +0000, Patrick Bellasi wrote:
+> commit 318e8c339c9a0891c389298bb328ed0762a9935e upstream.
+> 
+> In [1] the meaning of the synthetic IBPB flags has been redefined for a
+> better separation of concerns:
+>  - ENTRY_IBPB     -- issue IBPB on entry only
+>  - IBPB_ON_VMEXIT -- issue IBPB on VM-Exit only
+> and the Retbleed mitigations have been updated to match this new
+> semantics.
 
-kernel test robot noticed the following build errors:
+All 4 backports by Patrick:
 
-[auto build test ERROR on soc/for-next]
-[also build test ERROR on linus/master v6.14-rc3 next-20250221]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Feb 21           Patrick Bellasi ( : 148|) [PATCH 6.6] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+Feb 21           Patrick Bellasi ( : 147|) [PATCH 6.1] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+Feb 21           Patrick Bellasi ( : 147|) [PATCH 5.15] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+Feb 21           Patrick Bellasi ( : 147|) [PATCH 5.10] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Eggers/ARM-add-KEEP-keyword-to-ARM_VECTORS/20250221-205720
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
-patch link:    https://lore.kernel.org/r/20250221125520.14035-1-ceggers%40arri.de
-patch subject: [PATCH] ARM: add KEEP() keyword to ARM_VECTORS
-config: arm-randconfig-003-20250222 (https://download.01.org/0day-ci/archive/20250222/202502222158.UhwuvDZv-lkp@intel.com/config)
-compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250222/202502222158.UhwuvDZv-lkp@intel.com/reproduce)
+LGTM.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502222158.UhwuvDZv-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> ld.lld: error: ./arch/arm/kernel/vmlinux.lds:33: ( expected, but got }
-   >>>  __vectors_lma = .; OVERLAY 0xffff0000 : AT(__vectors_lma) { .vectors { KEEP(*(.vectors)) } .vectors.bhb.loop8 { KEEP(*(.vectors.bhb.loop8)) } .vectors.bhb.bpiall { KEEP(*(.vectors.bhb.bpiall)) } } __vectors_start = LOADADDR(.vectors); __vectors_end = LOADADDR(.vectors) + SIZEOF(.vectors); __vectors_bhb_loop8_start = LOADADDR(.vectors.bhb.loop8); __vectors_bhb_loop8_end = LOADADDR(.vectors.bhb.loop8) + SIZEOF(.vectors.bhb.loop8); __vectors_bhb_bpiall_start = LOADADDR(.vectors.bhb.bpiall); __vectors_bhb_bpiall_end = LOADADDR(.vectors.bhb.bpiall) + SIZEOF(.vectors.bhb.bpiall); . = __vectors_lma + SIZEOF(.vectors) + SIZEOF(.vectors.bhb.loop8) + SIZEOF(.vectors.bhb.bpiall); __stubs_lma = .; .stubs ADDR(.vectors) + 0x1000 : AT(__stubs_lma) { *(.stubs) } __stubs_start = LOADADDR(.stubs); __stubs_end = LOADADDR(.stubs) + SIZEOF(.stubs); . = __stubs_lma + SIZEOF(.stubs); PROVIDE(vector_fiq_offset = vector_fiq - ADDR(.vectors));
-   >>>                                                                                           ^
+Thanks!
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
