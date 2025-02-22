@@ -1,146 +1,147 @@
-Return-Path: <stable+bounces-118650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D27A40717
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 10:47:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF8CA40832
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 13:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3EF07AD024
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 09:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 385C719C30DA
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 12:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02702207657;
-	Sat, 22 Feb 2025 09:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DA620ADCF;
+	Sat, 22 Feb 2025 12:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="d13HXYl9"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="FxPsKjHD"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3F72063F0;
-	Sat, 22 Feb 2025 09:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8E5207A3F;
+	Sat, 22 Feb 2025 12:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740217623; cv=none; b=KIgI7Vmd2bNUwi5ssHt5oCHLK4pOFdQ/bnip7kawcqTvK825VmvvcQGeN/aaT8Mkmby6/Mb2beyOCzgsK3aL+m+l0xTQPC3D7bT2nCff8n4sKPsC2BtWPr+Krl/lg4SibtMAkDJLlbFcEY/BQDxAkFylUt49G13GXHo5rm1tg5k=
+	t=1740226185; cv=none; b=ndOiOxLNxC9YNB9HSpK2+vbOdROW5dnzZ2Arc1VGpkKAsog/Wh3GG91+9cK/IdcB/H4xAmTd6iAcTBBMJmcXy9vCAWeqmM73vX8eXcPoE3nAKD2sAwb/CgR12swhKx/AWg+YObhozs135+yPgPbtcl7ImSJOPA3DUYJGcq62b5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740217623; c=relaxed/simple;
-	bh=VF6Ud8woaUw2hBuatgzb7156hJnHCd13pH4ajF1JnP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=POxPMbKie1te8eIYMU4ruHWRmtgyUxI1qpO7lVtIGIIlj/NwXRyfS1oA6UkPxpMBjfKP2PsEUrr4ufa1WlXAwt9HROvPxIX9H3Cu8kFxx3SXEqQDCKwOUGwQLMoZ4QoaH6xP/53BYhkjb3FsUzdEHEGR24WaHkMJZiBJFt9Gw80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=d13HXYl9; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D15FA10382D37;
-	Sat, 22 Feb 2025 10:46:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740217619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e6kkcauuE4Q+rb4U5UeJINPLqDBviQ0uDB7Xhy6jslY=;
-	b=d13HXYl95ypF+ZWw5RxVuIUMv18zN90/drgU45hZwlcp5i1fkzCdi7Jhporw/jY7PcDdF8
-	frdQcLuQFtCeRzXUX4U7F2gYHt809p98HVUW+5HAHIL8OM+7Jr67DLQva3NR2tBJ9Akn4c
-	wsfWCuXeOfEJYRi/M6cjgz1F6JBcsbkgFYpfj6RFrxsBfYRMO7LWSKq8+n9Dzz8a1MvFUH
-	gdNJmvHgE2tvkv1Mys9HAITHxZH+ewpMen9nsD0WICXlmVM/T+5gmVAONlxxVLqkw7JLPD
-	aHfNX5cc8qFBOuuPRJPrfCy9BV3xYPfggPD2go+/BWF12yl9tKFKHukih68szw==
-Date: Sat, 22 Feb 2025 10:46:52 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pavel Machek <pavel@denx.de>, Florian Fainelli <f.fainelli@gmail.com>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
-Message-ID: <Z7mdDISNDz7Dq3A3@duo.ucw.cz>
-References: <20250220104545.805660879@linuxfoundation.org>
- <80ab673f-aa94-43e2-899a-0c5a22f3f1e0@gmail.com>
- <2025022221-revert-hubcap-f519@gregkh>
- <Z7mXDolRS+3nLAse@duo.ucw.cz>
- <2025022213-brewery-synergy-b4bf@gregkh>
+	s=arc-20240116; t=1740226185; c=relaxed/simple;
+	bh=hNzbpZUaacYbwAfzJgcJiA0cKgHDn8Zk5gmPryinfII=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=VB49taLvb+0V58Fu3cTwJg6w212NgR0pUQBsNR+Tw3SoQKgoXSAMDvNzUP0TwAfKMRvI816zM7XrQ1Vp/R6g9MbrepPoka769YzGDseFKaJmeCdta5fxocykvBYcMb5v5ZKy9JJxcemDlXWTjYzvy+PXCP0kSCRoc+cgLAeA/Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=FxPsKjHD; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 67FBE25EAA;
+	Sat, 22 Feb 2025 13:09:35 +0100 (CET)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id mClZSRCY7MoH; Sat, 22 Feb 2025 13:09:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1740226171; bh=hNzbpZUaacYbwAfzJgcJiA0cKgHDn8Zk5gmPryinfII=;
+	h=Date:From:Subject:To:Cc;
+	b=FxPsKjHDrwF3QYzKWci48q8djTQNoAldfP6SdhzR37oHoH6bNeW7axNi8xj9GJC/Y
+	 Ir2cYyLN8kZmXsVmlrGu8LhjAX6Zm3qX6/UDL/QC4cGYDmHmMjhaJ3WCdZOSuK6HIG
+	 amcvCZuTWuYaJQqNAsg95OHboX9/zop6RWimyvDKkrZXOIR4Lp4NDhJunnDZWfWsMb
+	 Q5GuULuYmARTLeabp36qUhsxL8rgrt52yLM+pjhMDHJq8/O/6bdfJgQgRG/TQGPEZt
+	 +Idsv3BznNSKVq5wy7kGtsiT2aE3j9bXH5zwYAQiU/mO1khx+SMZNp5ubthwLcaDXQ
+	 sBqXheDcoigKg==
+Message-ID: <ef950304-0e98-4c91-8fa1-d236cbb782b8@disroot.org>
+Date: Sat, 22 Feb 2025 13:09:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CCNlqIj4XocDQZrA"
-Content-Disposition: inline
-In-Reply-To: <2025022213-brewery-synergy-b4bf@gregkh>
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+From: NoisyCoil <noisycoil@disroot.org>
+Subject: FTBFS: Rust firmware abstractions in current stable (6.13.4) on arm64
+ with rustc 1.85.0
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, ojeda@kernel.org, alex.gaynor@gmail.com,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi!
+
+The Rust firmware abstractions FTBFS on arm64 and current stable 
+(6.13.4) when compiled with rustc 1.85.0:
 
 
---CCNlqIj4XocDQZrA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+```
+   RUSTC L rust/kernel.o
+error[E0308]: mismatched types
+   --> rust/kernel/firmware.rs:20:14
+    |
+20 |         Self(bindings::request_firmware)
+    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found 
+fn item
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                  found fn item `unsafe extern "C" fn(_, *const u8, _) 
+-> _ {request_firmware}`
+note: tuple struct defined here
+   --> rust/kernel/firmware.rs:14:8
+    |
+14 | struct FwFunc(
+    |        ^^^^^^
 
-On Sat 2025-02-22 10:39:23, Greg Kroah-Hartman wrote:
-> On Sat, Feb 22, 2025 at 10:21:18AM +0100, Pavel Machek wrote:
-> > On Sat 2025-02-22 07:28:10, Greg Kroah-Hartman wrote:
-> > > On Fri, Feb 21, 2025 at 09:45:15AM -0800, Florian Fainelli wrote:
-> > > >=20
-> > > >=20
-> > > > On 2/20/2025 2:57 AM, Greg Kroah-Hartman wrote:
-> > > > > This is the start of the stable review cycle for the 6.1.129 rele=
-ase.
-> > > > > There are 569 patches in this series, all will be posted as a res=
-ponse
-> > > > > to this one.  If anyone has any issues with these being applied, =
-please
-> > > > > let me know.
-> > > > >=20
-> > > > > Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
-> > > > > Anything received after that time might be too late.
-> > > >=20
-> > > > And yet there was a v6.1.29 tag created already?
-> > >=20
-> > > Sometimes I'm faster, which is usually the case for -rc2 and later, I=
- go
-> > > off of the -rc1 date if the people that had problems with -rc1 have
-> > > reported that the newer -rc fixes their reported issues.
-> >=20
-> > Well, quoting time down to second then doing something completely
-> > different is quite confusing. Please fix your scripts.
->=20
-> Patches gladly welcome :)
+error[E0308]: mismatched types
+   --> rust/kernel/firmware.rs:24:14
+    |
+24 |         Self(bindings::firmware_request_nowarn)
+    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn 
+pointer, found fn item
+    |         |
+    |         arguments to this function are incorrect
+    |
+    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                  found fn item `unsafe extern "C" fn(_, *const u8, _) 
+-> _ {firmware_request_nowarn}`
+note: tuple struct defined here
+   --> rust/kernel/firmware.rs:14:8
+    |
+14 | struct FwFunc(
+    |        ^^^^^^
 
-:-(
-								Pavel
+error[E0308]: mismatched types
+   --> rust/kernel/firmware.rs:64:45
+    |
+64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), 
+dev.as_raw()) };
+    |                            ------           ^^^^^^^^^^^^^^^^^^ 
+expected `*const i8`, found `*const u8`
+    |                            |
+    |                            arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*const i8`
+               found raw pointer `*const u8`
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a5e49d57c589..526daaf5b87a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22471,7 +22471,7 @@ STABLE BRANCH
- M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
- M:	Sasha Levin <sashal@kernel.org>
- L:	stable@vger.kernel.org
--S:	Supported
-+S:	Odd Fixes
- F:	Documentation/process/stable-kernel-rules.rst
-=20
- STAGING - ATOMISP DRIVER
+error: aborting due to 3 previous errors
+
+For more information about this error, try `rustc --explain E0308`.
+```
 
 
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+This is because rustc 1.85 (now stable) switched core::ffi::c_char from 
+i8 to u8 on arm64 and other platforms [1], and because current stable 
+still uses rustc's core's instead of the custom ffi integer types like 
+6.14 will. Looking for other i8's in *.rs files tells me only the QR 
+code panic screen should be affected in addition to the firmware 
+abstractions, and that was already reported in [2].
 
---CCNlqIj4XocDQZrA
-Content-Type: application/pgp-signature; name="signature.asc"
+A simple fix would be to switch i8 to u8 in `struct FwFunc`, but that 
+breaks rustc <= 1.84 so I guess a more robust solution is needed.
 
------BEGIN PGP SIGNATURE-----
+Cheers!
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ7mdDAAKCRAw5/Bqldv6
-8jNqAKCK5nxpHfcYWmjFYCol7TTqC1ElLgCglp3Jqu+bQqptNUIHG6WeV1ZHJ2E=
-=7oeb
------END PGP SIGNATURE-----
 
---CCNlqIj4XocDQZrA--
+[1] https://github.com/rust-lang/rust/pull/132975
+[2] 
+https://lore.kernel.org/all/20250120124531.2581448-1-linkmauve@linkmauve.fr/
 
