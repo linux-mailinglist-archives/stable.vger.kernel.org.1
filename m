@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-118667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92C1A40994
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:53:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F285BA4099D
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A6D47AC786
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6841889251
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DD01C84D8;
-	Sat, 22 Feb 2025 15:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11751C863C;
+	Sat, 22 Feb 2025 15:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/rGoZW2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WklJqSFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E9F69D2B
-	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C171C8604
+	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740239621; cv=none; b=L8KzDQ9QAygRxYs2wZNoMynnTlXhYyr8uRHnXw0fhbZi35iY328DtjyKrQl1KP4bdvwhEe6lQ4mf4LAwKsKFazgESJbuVGsNOSC/oanIWX9AJEQQxgW/xPiFVBEo9WtZ6rnZPdVhX9ykiLIFF8wq5ToQrFhuNzp6ipDXoCuFBkQ=
+	t=1740239623; cv=none; b=ksPf9xHtpKFw+yJY39662zp8KpDXVfDNO7/qk4HZzzrsw4e/9lHEj0LnHmTWLic3KhMEITgK8d0EeDRr0ODkdQiXYW1572g3QcQtwDFF/2p+gFp89Ktf8lVRHJNPusJrPxyKCQmfRx5S2rYmvbo4rjW3++1/LuO7PH5pxBlELPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740239621; c=relaxed/simple;
-	bh=ISpo4qTVDUZgajJMaos0lkQdItuYJlF+VUoUCwDsAuY=;
+	s=arc-20240116; t=1740239623; c=relaxed/simple;
+	bh=QH/S0Vqe8yKf/GFjOR1nH5/tIG/zMnHl2gBa8oUCtDI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h91KJmu9Y2sw+gR+R9w0lA8yIdQ/jb8f/c8FK7CHyBwoSQsa3ToH4Dq09TLZlCHw0CiIQlouwBs0Qj3j5KYULx/n7CMHV+5HX2T+cHu0koewdVb+sYlqmuI1S901WF5nUorc5bIY3Xkg+TqFrSqV0Z+NzENVvBQKx1c192jZZzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/rGoZW2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68A6C4CED1;
-	Sat, 22 Feb 2025 15:53:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AjZy9DOjhvlcCg9tVyisJdO2xPanDJxsRIstIdGc7MfWYQ3QkdPUpSu0usxk9Uo3MC9Agz0ilor1GstfU1sxIZuEnNeM7uXwSFxBKsxnudRDxhtHmpAF6LXxFk5JcT2j1ZOy369U7wz7UWJWusqCiedP7U30zwwsuQaAr89ZMYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WklJqSFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C456DC4CED1;
+	Sat, 22 Feb 2025 15:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740239621;
-	bh=ISpo4qTVDUZgajJMaos0lkQdItuYJlF+VUoUCwDsAuY=;
+	s=k20201202; t=1740239623;
+	bh=QH/S0Vqe8yKf/GFjOR1nH5/tIG/zMnHl2gBa8oUCtDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/rGoZW2HZy7FV03R7LWzQ078KH+piK9IPEeTlakbKD3WoAg1Yq2/aDoFNfPSKaf7
-	 fcaZtWYZdxvvTn87inTd1v52I3TWD1uT+tDtgCxCdCLl17y6pzAZy6UotvpUtB/6z4
-	 N5NaQd2IQp5fQ/uSakcBFW40u8LvsylZeQpjld3zMqYNRXrf8oBxyh4RvQR0d/TTjG
-	 E0GgME2zYInfM+FJsiweR5JPrPzGEnxlLbn5v1D0QnamU3/J1ROvdmQfmVzm2WTYSs
-	 EE2RrobGshMpNvkDBT6ZlHmZl1+QAUwwmCSxGDCSsFm3402pDKMe6n5TvTJLFdKeqY
-	 qdcK3mtmSLL9Q==
+	b=WklJqSFbQBR4X3EZUiSagPJwlBCpH2tEp3tTQr9KGNqx98DRBjRTEdUZmT6HmkpsF
+	 eBvJP57JvyHrLZICHE76sFtF3Q65/fEvSL80br3zHEioIaDMYywgtNFLdwlLXhkvDY
+	 xkgIOt0A/woQBV977W9si3m9ewaw+tEoJVfjf+Ml3S/E8i1RoJgdO6GTZbdtll1MSI
+	 du4DOV9KGUHzmY17aQDJMXg10s2nyxG5dRZmXoWtKrZrB4oKJPo8MJ5vVUJRgu8pg8
+	 pxCL/Me91qHi8qp5M3zP9B+2Riw5igxZ92/V1BUgBRk/UxdimX6Ac70HxNBpfzF7xQ
+	 JEHF8sl4c4M5g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	derkling@google.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
-Date: Sat, 22 Feb 2025 10:53:39 -0500
-Message-Id: <20250221201501-c7596cf2ed3aee8b@stable.kernel.org>
+Subject: Re: [PATCH 6.1] x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+Date: Sat, 22 Feb 2025 10:53:41 -0500
+Message-Id: <20250221194210-7d86ada791744bf6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250221144209.135763-1-derkling@google.com>
+In-Reply-To:  <20250221143051.23140-1-derkling@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,8 +66,6 @@ Hi,
 
 Summary of potential issues:
 ℹ️ Patch is missing in 6.6.y (ignore if backport was sent)
-ℹ️ Patch is missing in 6.1.y (ignore if backport was sent)
-ℹ️ Patch is missing in 5.4.y (ignore if backport was sent)
 
 The upstream commit SHA1 provided is correct: 318e8c339c9a0891c389298bb328ed0762a9935e
 
@@ -76,12 +74,10 @@ Status in newer kernel trees:
 6.13.y | Present (different SHA1: 0bdda736ef7f)
 6.12.y | Present (different SHA1: eea6d16f56e9)
 6.6.y | Not found
-6.1.y | Not found
-5.4.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  318e8c339c9a0 ! 1:  86f437c1d34fe x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
+1:  318e8c339c9a0 ! 1:  e509c2d77c608 x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
     @@ Metadata
       ## Commit message ##
          x86/cpu/kvm: SRSO: Fix possible missing IBPB on VM-Exit
@@ -165,5 +161,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
