@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-118662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B77A40992
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:53:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5227CA40995
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 16:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A022D7AC786
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:52:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268E63A4780
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 15:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F1C1C863C;
-	Sat, 22 Feb 2025 15:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC221CBEAA;
+	Sat, 22 Feb 2025 15:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORV7LJgR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XamTHj9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E2A69D2B
-	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAA869D2B
+	for <stable@vger.kernel.org>; Sat, 22 Feb 2025 15:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740239610; cv=none; b=W7p3gFSXffMO4lCcCemTWiN0QHbx1qoJVsB373iUa0KSmANi20SDWNTlDlzmH3GTs2aGAybCDsbOKI6eEh9fyz5oIB2ByzHdntk6UDdbUMmFpvk+2gz7jPMuMXya/kIetY8GH04ZczCdWLIHMa+g80ae3KHxJGfMXB+Ejmmazhg=
+	t=1740239613; cv=none; b=KS9ouC8YCv164MjUR9WBQLS68wNLxCvR8Wtqxfzh4s0lHYkHiFktwNiivAXCXVXM8iKeazsBlCAnpCm40OCN6oXWIfYUl1sBdjwoP6tTwHlXBp+j6ONT+OU5edfJ2IqboyZHraVxQhAUy6HSZKOBm+sU+Fm/kBeEZcH7N5zhMpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740239610; c=relaxed/simple;
-	bh=8q9F57A9Z3+BMQZbEK3k9OVkXzFjOj5yEjsTJPuwyGc=;
+	s=arc-20240116; t=1740239613; c=relaxed/simple;
+	bh=5p/pMjn/H+yuDLi95u7+6pJdwx4+MZwabffHBQs71ac=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lqXZhVJRLPKYiAht0cKat8XVoUvzO4DJEscDXV+fEkiE+BdE1TmYyHO3wpsPAug0PkeUowhtrgZ86w8mM74JMKNcw62lQ6JeMz1YWztRzG1Y0PtxohvQe9Ci8W8FL60tg3tJP6iOs8dl1r3FsbnxTa+pElhCu2o+3x4rcjaQpIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORV7LJgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A50C4CED1;
-	Sat, 22 Feb 2025 15:53:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nrnnSb7cVk7eEGvy/1wXsQAPKUqE2IPQehF9b3EUvtKGojkpt4SUEQF6BbCs+PWAVkyiQNfVqYPJ6N4AOdAigK1FSFIpKbgKViCJwt9SuyEjhf0hyIW11DB2yLkiQDazoffNI3Yx1FQ2nAWQUfWU9ECWpOnqm7Vw8kE5xm0q2tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XamTHj9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EECC4CED1;
+	Sat, 22 Feb 2025 15:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740239610;
-	bh=8q9F57A9Z3+BMQZbEK3k9OVkXzFjOj5yEjsTJPuwyGc=;
+	s=k20201202; t=1740239612;
+	bh=5p/pMjn/H+yuDLi95u7+6pJdwx4+MZwabffHBQs71ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORV7LJgRFcdnqGOLohwM29C/crjkWWkLh1NN7S1YbHLiAOkDJkRDd9nFo1TyqYHy1
-	 kot/FxShgvSLBsnpNKbshYlXwQAco3NAaCw4wJ40K1RtzGH9xHUgLtW+PSEZIqC8tp
-	 K/YhT+0p1hPr//1oKiFQCTJL9m4PcU7G14RAPr5fAF222yoZXa3TvOU4ALgyjCrMf5
-	 k7I1TJMZJtWgSdq4B19YffbF+bHZeSZ/AfC+5yW9RdrbMVuXo/aAxxXVUltRSEDUR7
-	 lahCEeYLxaUTLU2IIA70HkIk7cWzqyHqPHSOGMP9cNMam5bkIbqOZ4qSgpfDPPMerJ
-	 8BINuBaCLBG3w==
+	b=XamTHj9v2/UOTHGlGtwJPOx825aV2EL5ku7eI58YD7iGwkgseF/7DQKDFC1ZbYyxq
+	 /NF7ir711FN1oknUCSHir1I+OA5upW4FV/3Rqd/aY2lx4QPwDkonso+uUaVYvZIJ/Y
+	 nS/1KQbDkWu2rLGogaw22hkSRkKj3o+LZt6kU/6qOCobsqydc+CIXfhYgmVZ2KYkVd
+	 wZJxjEpZ9WkN2mTf+nW4yl7lF7jb1NR6oV/rC3l1XueK0eOPEs7PFqWjrKknCjbeA6
+	 bUfnPbRQ5aW1oAIVJntTFcJI9WKSM0jSq1eq3CSToQ0GYjQMc1RlUXkHC4s/THp+vN
+	 YuHOWVHsQUHYQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	kan.liang@linux.intel.com
+	lancelot.six@amd.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
-Date: Sat, 22 Feb 2025 10:53:28 -0500
-Message-Id: <20250221195603-304270ded225b186@stable.kernel.org>
+Subject: Re: [PATCH] drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
+Date: Sat, 22 Feb 2025 10:53:30 -0500
+Message-Id: <20250221202405-1793863f78c0922a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250220201711.3030856-1-kan.liang@linux.intel.com>
+In-Reply-To:  <20250221180852.465651-1-lancelot.six@amd.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,8 +66,9 @@ Hi,
 
 Summary of potential issues:
 ❌ Build failures detected
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 47a973fd75639fe80d59f9e1860113bb2a0b112b
+Found matching upstream commit: d584198a6fe4c51f4aa88ad72f258f8961a0f11c
 
 
 Status in newer kernel trees:
@@ -75,416 +76,196 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-Failed to apply patch cleanly.
+1:  d584198a6fe4c ! 1:  1ba3cbf705dfa drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
+    @@ Commit message
+         This patch proposes to have all waves in a workgroup wait for each other
+         at the end of their save sequence (just before calling s_endpgm_saved).
+     
+    +    This is a cherry-pick.  The cwsr_trap_handler.h part of the original
+    +    part was valid and applied cleanly.  The part of the patch that applied
+    +    to cwsr_trap_handler_gfx12.asm did not apply cleanly since
+    +    80ae55e6115ef "drm/amdkfd: Move gfx12 trap handler to separate file" is
+    +    not part of this branch.  Instead, I ported the change to
+    +    cwsr_trap_handler_gfx10.asm, and guarded it with "ASIC_FAMILY >=
+    +    CHIP_GFX12".
+    +
+         Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+         Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+         Cc: stable@vger.kernel.org # 6.12.x
+    +    (cherry picked from commit d584198a6fe4c51f4aa88ad72f258f8961a0f11c)
+    +    Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+     
+      ## drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h ##
+     @@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h: static const uint32_t cwsr_trap_gfx12_hex[] = {
+    @@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h: static const uint32_t cwsr_trap_
+      	0xbf9f0000, 0xbf9f0000,
+      	0xbf9f0000, 0x00000000,
+     
+    - ## drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm ##
+    -@@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm: L_SKIP_BARRIER_RESTORE:
+    + ## drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm ##
+    +@@ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm: L_RETURN_WITHOUT_PRIV:
+      	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
+      
+      L_END_PGM:
+    ++#if ASIC_FAMILY >= CHIP_GFX12
+     +	// Make sure that no wave of the workgroup can exit the trap handler
+     +	// before the workgroup barrier state is saved.
+     +	s_barrier_signal	-2
+     +	s_barrier_wait	-2
+    ++#endif
+      	s_endpgm_saved
+      end
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Failed     |  N/A       |
-| stable/linux-6.12.y       |  Failed     |  N/A       |
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.13.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
 | stable/linux-6.1.y        |  Failed     |  N/A       |
 | stable/linux-5.15.y       |  Failed     |  N/A       |
 | stable/linux-5.10.y       |  Failed     |  N/A       |
 | stable/linux-5.4.y        |  Failed     |  N/A       |
 
 Build Errors:
-Patch failed to apply on stable/linux-6.13.y. Reject:
+Patch failed to apply on stable/linux-6.6.y. Reject:
 
-diff a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c	(rejected hunks)
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
+@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
  
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
+ L_END_PGM:
++#if ASIC_FAMILY >= CHIP_GFX12
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
++#endif
+ 	s_endpgm_saved
+ end
  
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
- 	}
- }
- 
-diff a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h	(rejected hunks)
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
-Patch failed to apply on stable/linux-6.12.y. Reject:
-
-diff a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c	(rejected hunks)
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
- 
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
- 
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
- 	}
- }
- 
-diff a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h	(rejected hunks)
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
 Patch failed to apply on stable/linux-6.1.y. Reject:
 
-diff a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c	(rejected hunks)
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
+@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
  
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
+ L_END_PGM:
++#if ASIC_FAMILY >= CHIP_GFX12
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
++#endif
+ 	s_endpgm_saved
+ end
  
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
- 	}
- }
- 
-diff a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h	(rejected hunks)
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
 Patch failed to apply on stable/linux-5.15.y. Reject:
 
-diff a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c	(rejected hunks)
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
+@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
  
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
+ L_END_PGM:
++#if ASIC_FAMILY >= CHIP_GFX12
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
++#endif
+ 	s_endpgm_saved
+ end
  
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
- 	}
- }
- 
-diff a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h	(rejected hunks)
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
 Patch failed to apply on stable/linux-5.10.y. Reject:
 
-diff a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c	(rejected hunks)
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
+@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
  
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
+ L_END_PGM:
++#if ASIC_FAMILY >= CHIP_GFX12
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
++#endif
+ 	s_endpgm_saved
+ end
  
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
- 	}
- }
- 
-diff a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h	(rejected hunks)
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
 Patch failed to apply on stable/linux-5.4.y. Reject:
 
-diff a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c	(rejected hunks)
-@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters(int *num_counters,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h	(rejected hunks)
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx10.asm	(rejected hunks)
+@@ -1463,6 +1463,12 @@ L_RETURN_WITHOUT_PRIV:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
  
- static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
- {
--	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
--	unsigned int eax, ebx, ecx, edx;
-+	unsigned int cntr, fixed_cntr, ecx, edx;
-+	union cpuid35_eax eax;
-+	union cpuid35_ebx ebx;
+ L_END_PGM:
++#if ASIC_FAMILY >= CHIP_GFX12
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
++#endif
+ 	s_endpgm_saved
+ end
  
--	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
-+	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
-+
-+	if (eax.split.cntr_subleaf) {
- 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
--			    &eax, &ebx, &ecx, &edx);
--		pmu->num_counters = fls(eax);
--		pmu->num_counters_fixed = fls(ebx);
-+			    &cntr, &fixed_cntr, &ecx, &edx);
-+		pmu->num_counters = fls(cntr);
-+		pmu->num_counters_fixed = fls(fixed_cntr);
- 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
--					     &pmu->intel_ctrl, ebx);
-+					     &pmu->intel_ctrl, fixed_cntr);
- 	}
- }
- 
-diff a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h	(rejected hunks)
-@@ -177,9 +177,33 @@ union cpuid10_edx {
-  * detection/enumeration details:
-  */
- #define ARCH_PERFMON_EXT_LEAF			0x00000023
--#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
- #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
- 
-+union cpuid35_eax {
-+	struct {
-+		unsigned int	leaf0:1;
-+		/* Counters Sub-Leaf */
-+		unsigned int    cntr_subleaf:1;
-+		/* Auto Counter Reload Sub-Leaf */
-+		unsigned int    acr_subleaf:1;
-+		/* Events Sub-Leaf */
-+		unsigned int    events_subleaf:1;
-+		unsigned int	reserved:28;
-+	} split;
-+	unsigned int            full;
-+};
-+
-+union cpuid35_ebx {
-+	struct {
-+		/* UnitMask2 Supported */
-+		unsigned int    umask2:1;
-+		/* EQ-bit Supported */
-+		unsigned int    eq:1;
-+		unsigned int	reserved:30;
-+	} split;
-+	unsigned int            full;
-+};
-+
- /*
-  * Intel Architectural LBR CPUID detection/enumeration details:
-  */
 
