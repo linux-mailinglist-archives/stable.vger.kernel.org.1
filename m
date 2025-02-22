@@ -1,119 +1,86 @@
-Return-Path: <stable+bounces-118645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83E1A4055C
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 04:50:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B397A405E6
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 07:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C530C427A2D
-	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 03:50:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA2F33BBA2C
+	for <lists+stable@lfdr.de>; Sat, 22 Feb 2025 06:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94191EF09A;
-	Sat, 22 Feb 2025 03:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148D81FF60E;
+	Sat, 22 Feb 2025 06:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1wCZKK71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgIsOA+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DE6CA5A;
-	Sat, 22 Feb 2025 03:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DC714F121;
+	Sat, 22 Feb 2025 06:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740196240; cv=none; b=gVlwGpYtn5DLHPCZwanVDuSn3JPcLsQ5cWxkntyoRcSxgaBUIUVh0aYNRjB8xL9B11tHx47SOsyXHgr3NIXlc7Dq6sVf1i+EGDGCZxFSMQ1JsBII8Fp/G7I2VUsTO6DD8qpF++15kC5i8QlC7iVKEqumiR4n+Wf28m9h1U+KUkE=
+	t=1740205758; cv=none; b=bD4ZVlb+2PWHBtoTHnoJfwxQIL+GnW1KsCeo7sdRIwjQbUTeqgQWxXVuBup/9lx1DZ3YsWM8LnPk4JdEmPE6Dg83w02TdmFjdtGaJfb3ee+x/7tnoM2rCE3qKno/p/mLOuN4VAhp8JSwmfd8rvKKVoAV+3FLEROcRhAdERVgpDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740196240; c=relaxed/simple;
-	bh=c1TegWbfkRTGCQgQmIA6NFMq1GNOSVLr8GfKLgX66GU=;
-	h=Date:To:From:Subject:Message-Id; b=D7b3xpE9jchvDiyhBOhKLlwdh8qDBp0s64Fn/jlAxVBaZmKic0BLpvxTxWgOkNvsRoz4EkbrBvphzWWoE/KdIEXcA5g4nvGlWa9Gwwu3MoVbjHkyA3EaDQxoI5/aG9uE7uMMbJC9cRRaPGSiLsMlMlhi3/X0X8fFciPVURl1eEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1wCZKK71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F95CC4CED1;
-	Sat, 22 Feb 2025 03:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1740196239;
-	bh=c1TegWbfkRTGCQgQmIA6NFMq1GNOSVLr8GfKLgX66GU=;
-	h=Date:To:From:Subject:From;
-	b=1wCZKK71igKF5Vk25ueqMgUaJUAgeBvDYRjHOTrMQ/I10muOugpmVnJAVjgrlJKI7
-	 eWzZbnJ9fzyLlMDQztL8pXK18njz2W1BAh/1dOOqb9Smmqjv8FGul100grdfNkUd26
-	 KhmhbbehmEWA2aLNPteSXpxTbE4+jVSEKdrnlNxU=
-Date: Fri, 21 Feb 2025 19:50:39 -0800
-To: mm-commits@vger.kernel.org,wei.liu@kernel.org,tglx@linutronix.de,takakura@valinux.co.jp,stable@vger.kernel.org,pmladek@suse.com,john.ogness@linutronix.de,jani.nikula@intel.com,haiyangz@microsoft.com,gregkh@linuxfoundation.org,decui@microsoft.com,bhe@redhat.com,hamzamahfooz@linux.microsoft.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] panic-call-panic-handlers-before-panic_other_cpus_shutdown.patch removed from -mm tree
-Message-Id: <20250222035039.9F95CC4CED1@smtp.kernel.org>
+	s=arc-20240116; t=1740205758; c=relaxed/simple;
+	bh=+muNeOCR8HBJYWxkOjrvjnYNJ2Akk4PGI+8FWBBb58g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XlzCfdUWr17poRP/XJb4R56eEUGLfryYNKpgLuDkw+CPPUrhHCj/OklByqpqT4tGnfA9zF8m5+1rIHtmTN1B+tp1eOzoCXIRRCO49i77wZRgwAQN2oocD7L6HAlSU6WMQ05UgSDJGFqHf5ugF9GGczO0xpoB9TS3T12oqsjnHSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgIsOA+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C42C4CED1;
+	Sat, 22 Feb 2025 06:29:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740205758;
+	bh=+muNeOCR8HBJYWxkOjrvjnYNJ2Akk4PGI+8FWBBb58g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wgIsOA+Upi5ePZvQDkHzngKSZ/b279pvB+K2zGH0a350+i1ZZn3uwlsTbYdDF2OBB
+	 gyySa4oXinMPHcyXtnhAzUxExPiaFHYUe9bWdDWyv5nmKCy9MDYML+X7BlYnDgRpf1
+	 5watj/LPTZn7b3dUCjRP0Htx9NJiPJ3VFR26nFJo=
+Date: Sat, 22 Feb 2025 07:28:10 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
+Message-ID: <2025022221-revert-hubcap-f519@gregkh>
+References: <20250220104545.805660879@linuxfoundation.org>
+ <80ab673f-aa94-43e2-899a-0c5a22f3f1e0@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80ab673f-aa94-43e2-899a-0c5a22f3f1e0@gmail.com>
 
+On Fri, Feb 21, 2025 at 09:45:15AM -0800, Florian Fainelli wrote:
+> 
+> 
+> On 2/20/2025 2:57 AM, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.129 release.
+> > There are 569 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> > Anything received after that time might be too late.
+> 
+> And yet there was a v6.1.29 tag created already?
 
-The quilt patch titled
-     Subject: panic: call panic handlers before panic_other_cpus_shutdown()
-has been removed from the -mm tree.  Its filename was
-     panic-call-panic-handlers-before-panic_other_cpus_shutdown.patch
+Sometimes I'm faster, which is usually the case for -rc2 and later, I go
+off of the -rc1 date if the people that had problems with -rc1 have
+reported that the newer -rc fixes their reported issues.
 
-This patch was dropped because an updated version will be issued
+thanks,
 
-------------------------------------------------------
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: panic: call panic handlers before panic_other_cpus_shutdown()
-Date: Fri, 21 Feb 2025 16:30:52 -0500
-
-Since the panic handlers may require certain cpus to be online to panic
-gracefully, we should call them before turning off SMP.  Without this
-re-ordering, on Hyper-V hv_panic_vmbus_unload() times out, because the
-vmbus channel is bound to VMBUS_CONNECT_CPU and unless the crashing cpu is
-the same as VMBUS_CONNECT_CPU, VMBUS_CONNECT_CPU will be offlined by
-crash_smp_send_stop() before the vmbus channel can be deconstructed.
-
-Link: https://lkml.kernel.org/r/20250221213055.133849-1-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Baoquan he <bhe@redhat.com>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Ryo Takakura <takakura@valinux.co.jp>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/panic.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/kernel/panic.c~panic-call-panic-handlers-before-panic_other_cpus_shutdown
-+++ a/kernel/panic.c
-@@ -372,16 +372,16 @@ void panic(const char *fmt, ...)
- 	if (!_crash_kexec_post_notifiers)
- 		__crash_kexec(NULL);
- 
--	panic_other_cpus_shutdown(_crash_kexec_post_notifiers);
--
--	printk_legacy_allow_panic_sync();
--
- 	/*
- 	 * Run any panic handlers, including those that might need to
- 	 * add information to the kmsg dump output.
- 	 */
- 	atomic_notifier_call_chain(&panic_notifier_list, 0, buf);
- 
-+	panic_other_cpus_shutdown(_crash_kexec_post_notifiers);
-+
-+	printk_legacy_allow_panic_sync();
-+
- 	panic_print_sys_info(false);
- 
- 	kmsg_dump_desc(KMSG_DUMP_PANIC, buf);
-_
-
-Patches currently in -mm which might be from hamzamahfooz@linux.microsoft.com are
-
-
+greg k-h
 
