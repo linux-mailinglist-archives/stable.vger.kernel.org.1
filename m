@@ -1,183 +1,119 @@
-Return-Path: <stable+bounces-118721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25FDA41970
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:45:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAE0A41990
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D04167510
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:45:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3756716E174
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6E624A043;
-	Mon, 24 Feb 2025 09:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B6F24A064;
+	Mon, 24 Feb 2025 09:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zUhI3ofY";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qQuuiImj";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zUhI3ofY";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qQuuiImj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUQI6feA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6212A23F439
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 09:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535A424A05B;
+	Mon, 24 Feb 2025 09:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740390316; cv=none; b=l+9e80zHr/AUd7XdZWPlq8RI+0MPWIdDj+AFmARe6AgB2U2BxMoI1ZXS4gdodpjYoMEr+9Epsgtm5ep4GoZR4iZKliBCC85XC5w9tZ6lG5sl8HJfjG4ngmn0emFsVXFGj4afKNyaeuFLvCFouTzADLlfmJaBISlNbd7MEDmxKUo=
+	t=1740390671; cv=none; b=CVjK7cMngSuEKvmIs00HW393xU1dnPMOtbaXK9N7pgp4EyAjxKghaI8fJ9VEWKLrlYqqXfSoFpfnoqSznUqf3BhgVrVOZMcM03d7OYRnYHj15bj/tJHz+k7399mcNB28R75mQy7T+DGvAFOrSkxml9y3tqA986cpWykCkMTKzDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740390316; c=relaxed/simple;
-	bh=/y4a2t2D0Vi5lomJPcZZ9442t54hDvF7SExTVfrLLhY=;
+	s=arc-20240116; t=1740390671; c=relaxed/simple;
+	bh=a1cc70jbOv5CCjNK84m5TgpuPadBsPl0xnYC/NRZ3Fk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g6Mqf9OMRgsyRv05NS0IKWHKFOaEmquDXRwUa+iCdt4RP8mwwnX19cfTY/y/7LTddC+QQ5lD3fVNPa7idUEizSWNUkVfJfFsEL9qRimP5QpOvayG8RzuxlZ4EZlwX+m1GsO887EBD+53LhhPSMk5+GEUDaaU7i49O/V/KmWfWWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zUhI3ofY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qQuuiImj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zUhI3ofY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qQuuiImj; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 65A8D1F385;
-	Mon, 24 Feb 2025 09:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1740390312;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
-	b=zUhI3ofYGISKLOqUBTksCS/SnsBs5FdUWUu9lDueZpSX6N4eu3qxJ/UbFYmldjd7rB26Nh
-	2UWXfNxfLQhhfBeTX835VJ837hRPAG1hMrxx0CxlunhNCKNnqpMmz7F5FH3Xg2TdTJERet
-	dj8WeOvireMhrX0Y8sIbU2j+BnWiFDg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1740390312;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
-	b=qQuuiImjeepAYxUfzPrJissfvHFFycbxZOlxMcX439tvRooAKzev+NU6o41TByAy08gJQt
-	IHdBfDBBTxd9vMBw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zUhI3ofY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qQuuiImj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1740390312;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
-	b=zUhI3ofYGISKLOqUBTksCS/SnsBs5FdUWUu9lDueZpSX6N4eu3qxJ/UbFYmldjd7rB26Nh
-	2UWXfNxfLQhhfBeTX835VJ837hRPAG1hMrxx0CxlunhNCKNnqpMmz7F5FH3Xg2TdTJERet
-	dj8WeOvireMhrX0Y8sIbU2j+BnWiFDg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1740390312;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
-	b=qQuuiImjeepAYxUfzPrJissfvHFFycbxZOlxMcX439tvRooAKzev+NU6o41TByAy08gJQt
-	IHdBfDBBTxd9vMBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 42C8B13707;
-	Mon, 24 Feb 2025 09:45:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id avoYEKg/vGeGagAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Mon, 24 Feb 2025 09:45:12 +0000
-Date: Mon, 24 Feb 2025 10:45:11 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Ma Ke <make24@iscas.ac.cn>, clm@fb.com, josef@toxicpanda.com,
-	dsterba@suse.com, fdmanana@suse.com, linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: add a sanity check for btrfs root in
- btrfs_next_old_leaf()
-Message-ID: <20250224094511.GK5777@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20250224075937.2959546-1-make24@iscas.ac.cn>
- <0d9f6477-04c2-486a-ae72-c39b6d235891@gmx.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=C1boUKKuBThcXw2/sHTMyW8EntcHEwgZxY1GaXK3A7ocBVxHQJqheqrG0zlaPcveAIBSSeC8VLgU3qJPuXvCcTx1CdINyUQMgUdIEsMhy8mXnkuRyuJ8xewGfhCEwasmn18N3yzluvgAIclZW182sF6FYUxUXCldXrGyPzjy0o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUQI6feA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4489DC4CED6;
+	Mon, 24 Feb 2025 09:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740390667;
+	bh=a1cc70jbOv5CCjNK84m5TgpuPadBsPl0xnYC/NRZ3Fk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nUQI6feAoboadIqs+ta8SLxF0sQs43hw9TsAaTYvAYof2a8ud2gC5z9NT0l70y2YJ
+	 Pv+e10CRD9Y0ovyTZIP8kL8mUsL6CofD5RLqxJuZhBh33tPOEwYQ2TyXdNnipk0KQI
+	 n9TCaTEwNWaxQ07pdtSvUpvFqkksDrRXATOqzubE=
+Date: Mon, 24 Feb 2025 10:51:04 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Prashanth K <prashanth.k@oss.qualcomm.com>
+Cc: Kees Bakker <kees@ijzerbout.nl>,
+	William McVicker <willmcvicker@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: Check bmAttributes only if configuration is
+ valid
+Message-ID: <2025022446-reliable-snugly-84e6@gregkh>
+References: <20250224085604.417327-1-prashanth.k@oss.qualcomm.com>
+ <2025022434-unveiling-handbook-6fc3@gregkh>
+ <63c3b650-c3cf-49bc-973a-c5fe025a22f6@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d9f6477-04c2-486a-ae72-c39b6d235891@gmx.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Rspamd-Queue-Id: 65A8D1F385
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.21 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[gmx.com];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmx.com];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:replyto]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.21
-X-Spam-Flag: NO
+In-Reply-To: <63c3b650-c3cf-49bc-973a-c5fe025a22f6@oss.qualcomm.com>
 
-On Mon, Feb 24, 2025 at 06:48:19PM +1030, Qu Wenruo wrote:
-> 在 2025/2/24 18:29, Ma Ke 写道:
-> > btrfs_next_old_leaf() doesn't check if the target root is NULL or not,
-> > resulting the null-ptr-deref. Add sanity check for btrfs root before
-> > using it in btrfs_next_old_leaf().
+On Mon, Feb 24, 2025 at 02:53:59PM +0530, Prashanth K wrote:
 > 
-> Please provide a real world call trace when this is triggered.
 > 
-> There is a prerequisite, the extent tree can only be NULL if
-> rescue=ibadroots is provided and the extent root is corrupted.
+> On 24-02-25 02:36 pm, Greg Kroah-Hartman wrote:
+> > On Mon, Feb 24, 2025 at 02:26:04PM +0530, Prashanth K wrote:
+> >> If the USB configuration is not valid, then avoid checking for
+> >> bmAttributes to prevent null pointer deference.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
+> >> Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+> >> ---
+> >>  drivers/usb/gadget/composite.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
+> >> index 4bcf73bae761..869ad99afb48 100644
+> >> --- a/drivers/usb/gadget/composite.c
+> >> +++ b/drivers/usb/gadget/composite.c
+> >> @@ -1051,7 +1051,7 @@ static int set_config(struct usb_composite_dev *cdev,
+> >>  		usb_gadget_set_remote_wakeup(gadget, 0);
+> >>  done:
+> >>  	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
+> >> -	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+> >> +	    (c && !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER)))
+> >>  		usb_gadget_clear_selfpowered(gadget);
+> >>  	else
+> >>  		usb_gadget_set_selfpowered(gadget);
+> >> -- 
+> >> 2.25.1
+> >>
+> >>
+> > 
+> > Have you checked linux-next yet for this fix that was posted last week?
+> > Does that not resolve the issue for you?
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> And "rescue=" mount options can only be specified for a fully read-only
-> fs (no internal log replay or any other thing to write even a bit into
-> the fs).
-> 
-> Previously read-only scrub can still be triggered on such fs, but
-> 6aecd91a5c5b ("btrfs: avoid NULL pointer dereference if no valid extent
-> tree") fixed that.
-> 
-> And if you hit such a case in real world, please provide the call trace
-> so that we know we're not missing some critical situations that extent
-> tree is accessed for read-only operations.
+> I hope you are mentioning this one -
+> https://lore.kernel.org/all/20250220120314.3614330-1-m.szyprowski@samsung.com/
 
-Agreed, this needs a real way to trigger it. Some pointers do not have
-to be checked for NULL because it's guaranteed by some of the caller
-higher up in the call chain.
+Yes.
 
-Before we added the rescue options, the invariants were that the extent,
-checksum, fs_tree etc always exist when passed as pointers. The example
-fix 6aecd91a5c5b show it could be possible under some circumstances. So
-if a fix is needed btrfs_next_old_leaf() we also need to see how it
-could happen.
+> The above patch fixes null pointer in composite_suspend(), I'm trying to
+> address a similar bug which is present in set_config(), it gets exposed
+> if the requested configuration is not present in cdev->configs.
+
+Ah, missed that, sorry.  I'll go queue this up too.
+
+thanks,
+
+greg k-h
 
