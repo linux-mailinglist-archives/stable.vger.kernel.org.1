@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-118958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBD6A42409
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A716A4251A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF70D3BD3AF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA35F3AF890
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DBC24FBE8;
-	Mon, 24 Feb 2025 14:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA6C664C6;
+	Mon, 24 Feb 2025 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8AkHI3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSQ5JSqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFB324EF62;
-	Mon, 24 Feb 2025 14:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B7D2571CE;
+	Mon, 24 Feb 2025 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407833; cv=none; b=VpMaqxibNqe8XbkyNOqbPplB8Kb9qoF4c31TJldMO23BwyzkKNHMNJUBOGwP81XaqmQxKyAzUr8yWnK0VOdZQqPMhsi5sfAc11ur9ZOmYJlqVtVgv/EP8RjVQsebhcPSfcBwDHPRHA3igjdkv13W0Z317S2m2Tddb58xfADGACg=
+	t=1740408429; cv=none; b=BdY67+x5aoh+ujG4+dlj7Ovmji+1C/LSHJObugO01x6YwrqTZw/f+I4gJS8BqTLY687zOEX3EVhMOHyR2aAjSs8XIPn2MUDQnDJPlz6e6XO/Pz0Zo6CbqSRwZLn6O1sPzr27/yhtjxoluTzVe8X8WwFqxPsXhWVovwcFDy4Sq68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407833; c=relaxed/simple;
-	bh=+HFCLuVqoyAcc1QqGS+nZX41lencjJX6ayIKLb5LPX0=;
+	s=arc-20240116; t=1740408429; c=relaxed/simple;
+	bh=kyfNt+I55n+nLHsPjOF16P9f/jAo3C7aKtLBeerS3Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQv7Vcini7nzLo7tuj2xdIKdPOFv17ItLtGw8/4LLijtoNEISzCf8jwnmg3n0MUnhW4V1uDoo2uZ3CQLV1yv9Q/prFYpyf0yJanJPBhqy5dXJ9q6ISbDVJmNzzXaRYkqbPSn9mPYgGcwaS9PmB6hwA3z/rPpkxnWclCCIz9pa/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8AkHI3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D5AC4CED6;
-	Mon, 24 Feb 2025 14:37:12 +0000 (UTC)
+	 MIME-Version; b=d6oTW3quVsiWjGuS9YBKIqzF63xJiqF/pR73q1kTkLHXqiZyDPrUt4xpXh4bDJ3dMpwb2UWqV5HLsP9cOlbS/hoPyA7bllha8RH4m7W6YR8cDAf9Q0AJ+5ov10veUKLfpMxScaQ+RZKp+gqYM12NTImAicb+4GqMIF+QKlt5V8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSQ5JSqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77229C4CED6;
+	Mon, 24 Feb 2025 14:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407833;
-	bh=+HFCLuVqoyAcc1QqGS+nZX41lencjJX6ayIKLb5LPX0=;
+	s=korg; t=1740408428;
+	bh=kyfNt+I55n+nLHsPjOF16P9f/jAo3C7aKtLBeerS3Y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8AkHI3BF6grQoQuXm+5E9vYfW/Bxg4LoAUXlirjNFzGynY7G5T4+ozsgC02vsK2u
-	 kZBLGFVM2ZgU0nF2GxZ1PlrF+p6VtAH3Yy3X2CNk6dslL/nWf7WDokCpHH7ZMQXwtD
-	 UmQynz57Ws/N1Ve3xOIlNjCwiKlwrRFYeotUnpMM=
+	b=PSQ5JSqfXCITDNEmEtfB622p7VW2tLLSZhxXnH03r4UzOu55ulz4IsTN7rfJCAVIR
+	 B0PVgE26yrTwko5QKalOmapy2SnEEvViC7Qyy9e9kA77voLVFHzWYnLhceoSAgWoC/
+	 M2UU3ypFJkeBWgvZWhx3xqy5I356Sa1Ejzn0IA4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>
-Subject: [PATCH 6.6 022/140] xfs: update the pag for the last AG at recovery time
-Date: Mon, 24 Feb 2025 15:33:41 +0100
-Message-ID: <20250224142603.876690896@linuxfoundation.org>
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 023/154] Input: serio - define serio_pause_rx guard to pause and resume serio ports
+Date: Mon, 24 Feb 2025 15:33:42 +0100
+Message-ID: <20250224142607.990277760@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 4a201dcfa1ff0dcfe4348c40f3ad8bd68b97eb6c upstream.
+[ Upstream commit 0e45a09a1da0872786885c505467aab8fb29b5b4 ]
 
-Currently log recovery never updates the in-core perag values for the
-last allocation group when they were grown by growfs.  This leads to
-btree record validation failures for the alloc, ialloc or finotbt
-trees if a transaction references this new space.
+serio_pause_rx() and serio_continue_rx() are usually used together to
+temporarily stop receiving interrupts/data for a given serio port.
+Define "serio_pause_rx" guard for this so that the port is always
+resumed once critical section is over.
 
-Found by Brian's new growfs recovery stress test.
+Example:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	scoped_guard(serio_pause_rx, elo->serio) {
+		elo->expected_packet = toupper(packet[0]);
+		init_completion(&elo->cmd_done);
+	}
+
+Link: https://lore.kernel.org/r/20240905041732.2034348-2-dmitry.torokhov@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: 08bd5b7c9a24 ("Input: synaptics - fix crash when enabling pass-through port")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_ag.c        |   17 +++++++++++++++++
- fs/xfs/libxfs/xfs_ag.h        |    1 +
- fs/xfs/xfs_buf_item_recover.c |   19 ++++++++++++++++---
- 3 files changed, 34 insertions(+), 3 deletions(-)
+ include/linux/serio.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -358,6 +358,23 @@ xfs_free_unused_perag_range(
+diff --git a/include/linux/serio.h b/include/linux/serio.h
+index bf2191f253509..69a47674af653 100644
+--- a/include/linux/serio.h
++++ b/include/linux/serio.h
+@@ -6,6 +6,7 @@
+ #define _SERIO_H
+ 
+ 
++#include <linux/cleanup.h>
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ #include <linux/list.h>
+@@ -161,4 +162,6 @@ static inline void serio_continue_rx(struct serio *serio)
+ 	spin_unlock_irq(&serio->lock);
  }
  
- int
-+xfs_update_last_ag_size(
-+	struct xfs_mount	*mp,
-+	xfs_agnumber_t		prev_agcount)
-+{
-+	struct xfs_perag	*pag = xfs_perag_grab(mp, prev_agcount - 1);
++DEFINE_GUARD(serio_pause_rx, struct serio *, serio_pause_rx(_T), serio_continue_rx(_T))
 +
-+	if (!pag)
-+		return -EFSCORRUPTED;
-+	pag->block_count = __xfs_ag_block_count(mp, prev_agcount - 1,
-+			mp->m_sb.sb_agcount, mp->m_sb.sb_dblocks);
-+	__xfs_agino_range(mp, pag->block_count, &pag->agino_min,
-+			&pag->agino_max);
-+	xfs_perag_rele(pag);
-+	return 0;
-+}
-+
-+int
- xfs_initialize_perag(
- 	struct xfs_mount	*mp,
- 	xfs_agnumber_t		old_agcount,
---- a/fs/xfs/libxfs/xfs_ag.h
-+++ b/fs/xfs/libxfs/xfs_ag.h
-@@ -140,6 +140,7 @@ int xfs_initialize_perag(struct xfs_moun
- 		xfs_agnumber_t *maxagi);
- int xfs_initialize_perag_data(struct xfs_mount *mp, xfs_agnumber_t agno);
- void xfs_free_perag(struct xfs_mount *mp);
-+int xfs_update_last_ag_size(struct xfs_mount *mp, xfs_agnumber_t prev_agcount);
- 
- /* Passive AG references */
- struct xfs_perag *xfs_perag_get(struct xfs_mount *mp, xfs_agnumber_t agno);
---- a/fs/xfs/xfs_buf_item_recover.c
-+++ b/fs/xfs/xfs_buf_item_recover.c
-@@ -708,6 +708,11 @@ xlog_recover_do_primary_sb_buffer(
- 
- 	xlog_recover_do_reg_buffer(mp, item, bp, buf_f, current_lsn);
- 
-+	if (orig_agcount == 0) {
-+		xfs_alert(mp, "Trying to grow file system without AGs");
-+		return -EFSCORRUPTED;
-+	}
-+
- 	/*
- 	 * Update the in-core super block from the freshly recovered on-disk one.
- 	 */
-@@ -719,14 +724,22 @@ xlog_recover_do_primary_sb_buffer(
- 	}
- 
- 	/*
-+	 * Growfs can also grow the last existing AG.  In this case we also need
-+	 * to update the length in the in-core perag structure and values
-+	 * depending on it.
-+	 */
-+	error = xfs_update_last_ag_size(mp, orig_agcount);
-+	if (error)
-+		return error;
-+
-+	/*
- 	 * Initialize the new perags, and also update various block and inode
- 	 * allocator setting based off the number of AGs or total blocks.
- 	 * Because of the latter this also needs to happen if the agcount did
- 	 * not change.
- 	 */
--	error = xfs_initialize_perag(mp, orig_agcount,
--			mp->m_sb.sb_agcount, mp->m_sb.sb_dblocks,
--			&mp->m_maxagi);
-+	error = xfs_initialize_perag(mp, orig_agcount, mp->m_sb.sb_agcount,
-+			mp->m_sb.sb_dblocks, &mp->m_maxagi);
- 	if (error) {
- 		xfs_warn(mp, "Failed recovery per-ag init: %d", error);
- 		return error;
+ #endif
+-- 
+2.39.5
+
 
 
 
