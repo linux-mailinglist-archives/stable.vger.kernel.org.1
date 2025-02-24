@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-118968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3D9A42352
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B989A42395
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABBB37A4F22
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6003C7A3232
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C83418950A;
-	Mon, 24 Feb 2025 14:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CBE146A63;
+	Mon, 24 Feb 2025 14:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+SJaTeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVGl5MwN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A20824A3;
-	Mon, 24 Feb 2025 14:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A344B17579;
+	Mon, 24 Feb 2025 14:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407868; cv=none; b=c1ZSWa0dTRRlFn/SlDF3GAJzIDLsTcb6riwoVBj0y8agx+3x0czPNnzS2UDzu3ZD4ufqgkOJqx7/3Wg6JcBm+dlHNCz4x7p+Oco+UAcuXzLOilPs8EaEYHq4or1I8zrZGaKugTePzYZ8vnuLh6VlengdjdCIOxu5qnEPKsvhlyM=
+	t=1740408274; cv=none; b=n9beg2xUSzfLJt+psxlLut/mKf4C00Cxjtv/Xo15G0lbnZqh9AplsJVaubcWQCvb9yHITJ6+ONMdpOAW8u8emVwoFA/DomvD5qY+RUtw77j3ExGc6YrJQR3E8uAUdkxNyy37ZC1mXhF7hjH7MyyfEImLoAcv10qOn7tZPQ8RBd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407868; c=relaxed/simple;
-	bh=HJH9WLJo2aVOihYBHWvQR1qfKqMZ4PzLGjFfsgsevd0=;
+	s=arc-20240116; t=1740408274; c=relaxed/simple;
+	bh=YrKHugiqNFG+OV7OcfxlHb/aaB+ZGHmvN9pWBAq2n2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/4ZtUofC3uzzYEICdxVds7xTQthwZfwJyYWfubAsbDdnYYf9NjDrtVC05UC4l0Cfr8bNBiaOPLa1J+QK9C6gYstzdD8dR4AVoa49ojAc5nkj97FNS33BcSa9h5ckxCYYaCrydwHv2kqflvJbIF79l6DTVyMYIWBMR57OHdAtB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+SJaTeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A8BC4CED6;
-	Mon, 24 Feb 2025 14:37:47 +0000 (UTC)
+	 MIME-Version; b=opzQeIAcB0oItvCgMM0KZKBI/F3g7ndfWUp1u50BEE5OybqUSL5M9TQbvCBV9wPHAha2wZTwTP4D7R83kqzPPBApO/kV014Qy2iY99kZ/5EUQ/gMzD3cXlRCIvR+v96p94gpoYQ8MTesuR74JQnwKZJBpKBJfb1YU7U4cs8Hh0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVGl5MwN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB7CC4CED6;
+	Mon, 24 Feb 2025 14:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407868;
-	bh=HJH9WLJo2aVOihYBHWvQR1qfKqMZ4PzLGjFfsgsevd0=;
+	s=korg; t=1740408274;
+	bh=YrKHugiqNFG+OV7OcfxlHb/aaB+ZGHmvN9pWBAq2n2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+SJaTeGXb82nFAM/fIluXuoCG5vt9iDHoC3Zuh3Osa80QlPU0bpFlEXCHIzWEZGf
-	 7XpZQgoqmc2Y9vz5ET5k6JwRTFIt2fCbkgDu6oSddkATBeiWwldvvktK/CwSwYd2Vp
-	 UOIxbvDHH0SaC4rx1yXxEOtRRgSaB3JCQVjM7+Sw=
+	b=LVGl5MwNbKkB5QuoIGOyI+ltZJwrB9AVrEvAQPNDxuVIH2wnAF9kYhLyaxIB9hiRG
+	 dWwj2n7aA/DbFi55Y765tiYn0t43z7ecsCiV0Upqa5fJOW87sLCt220xMRb43LMdzT
+	 cKiLEUgHpp5InK0MsCBU6mQAOrU+xA5bv89tMxII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 009/140] xfs: return bool from xfs_attr3_leaf_add
-Date: Mon, 24 Feb 2025 15:33:28 +0100
-Message-ID: <20250224142603.376051598@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 010/154] btrfs: unify to use writer locks for subpage locking
+Date: Mon, 24 Feb 2025 15:33:29 +0100
+Message-ID: <20250224142607.474438408@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,224 +62,212 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 346c1d46d4c631c0c88592d371f585214d714da4 upstream.
+[ Upstream commit 336e69f3025fb70db9d0dfb7f36ac79887bf5341 ]
 
-[backport: dependency of a5f7334 and b3f4e84]
+Since commit d7172f52e993 ("btrfs: use per-buffer locking for
+extent_buffer reading"), metadata read no longer relies on the subpage
+reader locking.
 
-xfs_attr3_leaf_add only has two potential return values, indicating if the
-entry could be added or not.  Replace the errno return with a bool so that
-ENOSPC from it can't easily be confused with a real ENOSPC.
+This means we do not need to maintain a different metadata/data split
+for locking, so we can convert the existing reader lock users by:
 
-Remove the return value from the xfs_attr3_leaf_add_work helper entirely,
-as it always return 0.
+- add_ra_bio_pages()
+  Convert to btrfs_folio_set_writer_lock()
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- end_folio_read()
+  Convert to btrfs_folio_end_writer_lock()
+
+- begin_folio_read()
+  Convert to btrfs_folio_set_writer_lock()
+
+- folio_range_has_eb()
+  Remove the subpage->readers checks, since it is always 0.
+
+- Remove btrfs_subpage_start_reader() and btrfs_subpage_end_reader()
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 8bf334beb349 ("btrfs: fix double accounting race when extent_writepage_io() failed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_attr.c      |   13 +++++--------
- fs/xfs/libxfs/xfs_attr_leaf.c |   37 +++++++++++++++++++------------------
- fs/xfs/libxfs/xfs_attr_leaf.h |    2 +-
- 3 files changed, 25 insertions(+), 27 deletions(-)
+ fs/btrfs/compression.c |  3 +-
+ fs/btrfs/extent_io.c   | 10 ++-----
+ fs/btrfs/subpage.c     | 62 ++----------------------------------------
+ fs/btrfs/subpage.h     | 13 ---------
+ 4 files changed, 5 insertions(+), 83 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_attr.c
-+++ b/fs/xfs/libxfs/xfs_attr.c
-@@ -503,10 +503,7 @@ xfs_attr_leaf_addname(
- 	 * or perform more xattr manipulations. Otherwise there is nothing more
- 	 * to do and we can return success.
- 	 */
--	error = xfs_attr3_leaf_add(bp, args);
--	if (error) {
--		if (error != -ENOSPC)
--			return error;
-+	if (!xfs_attr3_leaf_add(bp, args)) {
- 		error = xfs_attr3_leaf_to_node(args);
- 		if (error)
- 			return error;
-@@ -520,7 +517,7 @@ xfs_attr_leaf_addname(
+diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+index 90aef2627ca27..64eaf74fbebc8 100644
+--- a/fs/btrfs/compression.c
++++ b/fs/btrfs/compression.c
+@@ -545,8 +545,7 @@ static noinline int add_ra_bio_pages(struct inode *inode,
+ 		 * subpage::readers and to unlock the page.
+ 		 */
+ 		if (fs_info->sectorsize < PAGE_SIZE)
+-			btrfs_subpage_start_reader(fs_info, folio, cur,
+-						   add_size);
++			btrfs_folio_set_writer_lock(fs_info, folio, cur, add_size);
+ 		folio_put(folio);
+ 		cur += add_size;
  	}
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 8222ae6f29af5..5d6b3b812593d 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -438,7 +438,7 @@ static void end_folio_read(struct folio *folio, bool uptodate, u64 start, u32 le
+ 	if (!btrfs_is_subpage(fs_info, folio->mapping))
+ 		folio_unlock(folio);
+ 	else
+-		btrfs_subpage_end_reader(fs_info, folio, start, len);
++		btrfs_folio_end_writer_lock(fs_info, folio, start, len);
+ }
  
- 	trace_xfs_attr_leaf_addname_return(attr->xattri_dela_state, args->dp);
--	return error;
-+	return 0;
+ /*
+@@ -495,7 +495,7 @@ static void begin_folio_read(struct btrfs_fs_info *fs_info, struct folio *folio)
+ 		return;
  
- out_brelse:
- 	xfs_trans_brelse(args->trans, bp);
-@@ -1393,21 +1390,21 @@ xfs_attr_node_try_addname(
+ 	ASSERT(folio_test_private(folio));
+-	btrfs_subpage_start_reader(fs_info, folio, folio_pos(folio), PAGE_SIZE);
++	btrfs_folio_set_writer_lock(fs_info, folio, folio_pos(folio), PAGE_SIZE);
+ }
+ 
+ /*
+@@ -2507,12 +2507,6 @@ static bool folio_range_has_eb(struct btrfs_fs_info *fs_info, struct folio *foli
+ 		subpage = folio_get_private(folio);
+ 		if (atomic_read(&subpage->eb_refs))
+ 			return true;
+-		/*
+-		 * Even there is no eb refs here, we may still have
+-		 * end_folio_read() call relying on page::private.
+-		 */
+-		if (atomic_read(&subpage->readers))
+-			return true;
+ 	}
+ 	return false;
+ }
+diff --git a/fs/btrfs/subpage.c b/fs/btrfs/subpage.c
+index 99341e98bbcc7..0587a7d7b5e81 100644
+--- a/fs/btrfs/subpage.c
++++ b/fs/btrfs/subpage.c
+@@ -140,12 +140,10 @@ struct btrfs_subpage *btrfs_alloc_subpage(const struct btrfs_fs_info *fs_info,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	spin_lock_init(&ret->lock);
+-	if (type == BTRFS_SUBPAGE_METADATA) {
++	if (type == BTRFS_SUBPAGE_METADATA)
+ 		atomic_set(&ret->eb_refs, 0);
+-	} else {
+-		atomic_set(&ret->readers, 0);
++	else
+ 		atomic_set(&ret->writers, 0);
+-	}
+ 	return ret;
+ }
+ 
+@@ -221,62 +219,6 @@ static void btrfs_subpage_assert(const struct btrfs_fs_info *fs_info,
+ 	__start_bit;							\
+ })
+ 
+-void btrfs_subpage_start_reader(const struct btrfs_fs_info *fs_info,
+-				struct folio *folio, u64 start, u32 len)
+-{
+-	struct btrfs_subpage *subpage = folio_get_private(folio);
+-	const int start_bit = subpage_calc_start_bit(fs_info, folio, locked, start, len);
+-	const int nbits = len >> fs_info->sectorsize_bits;
+-	unsigned long flags;
+-
+-
+-	btrfs_subpage_assert(fs_info, folio, start, len);
+-
+-	spin_lock_irqsave(&subpage->lock, flags);
+-	/*
+-	 * Even though it's just for reading the page, no one should have
+-	 * locked the subpage range.
+-	 */
+-	ASSERT(bitmap_test_range_all_zero(subpage->bitmaps, start_bit, nbits));
+-	bitmap_set(subpage->bitmaps, start_bit, nbits);
+-	atomic_add(nbits, &subpage->readers);
+-	spin_unlock_irqrestore(&subpage->lock, flags);
+-}
+-
+-void btrfs_subpage_end_reader(const struct btrfs_fs_info *fs_info,
+-			      struct folio *folio, u64 start, u32 len)
+-{
+-	struct btrfs_subpage *subpage = folio_get_private(folio);
+-	const int start_bit = subpage_calc_start_bit(fs_info, folio, locked, start, len);
+-	const int nbits = len >> fs_info->sectorsize_bits;
+-	unsigned long flags;
+-	bool is_data;
+-	bool last;
+-
+-	btrfs_subpage_assert(fs_info, folio, start, len);
+-	is_data = is_data_inode(BTRFS_I(folio->mapping->host));
+-
+-	spin_lock_irqsave(&subpage->lock, flags);
+-
+-	/* The range should have already been locked. */
+-	ASSERT(bitmap_test_range_all_set(subpage->bitmaps, start_bit, nbits));
+-	ASSERT(atomic_read(&subpage->readers) >= nbits);
+-
+-	bitmap_clear(subpage->bitmaps, start_bit, nbits);
+-	last = atomic_sub_and_test(nbits, &subpage->readers);
+-
+-	/*
+-	 * For data we need to unlock the page if the last read has finished.
+-	 *
+-	 * And please don't replace @last with atomic_sub_and_test() call
+-	 * inside if () condition.
+-	 * As we want the atomic_sub_and_test() to be always executed.
+-	 */
+-	if (is_data && last)
+-		folio_unlock(folio);
+-	spin_unlock_irqrestore(&subpage->lock, flags);
+-}
+-
+ static void btrfs_subpage_clamp_range(struct folio *folio, u64 *start, u32 *len)
  {
- 	struct xfs_da_state		*state = attr->xattri_da_state;
- 	struct xfs_da_state_blk		*blk;
--	int				error;
-+	int				error = 0;
+ 	u64 orig_start = *start;
+diff --git a/fs/btrfs/subpage.h b/fs/btrfs/subpage.h
+index 6289d6f65b87d..8488ea057b30b 100644
+--- a/fs/btrfs/subpage.h
++++ b/fs/btrfs/subpage.h
+@@ -45,14 +45,6 @@ enum {
+ struct btrfs_subpage {
+ 	/* Common members for both data and metadata pages */
+ 	spinlock_t lock;
+-	/*
+-	 * Both data and metadata needs to track how many readers are for the
+-	 * page.
+-	 * Data relies on @readers to unlock the page when last reader finished.
+-	 * While metadata doesn't need page unlock, it needs to prevent
+-	 * page::private get cleared before the last end_page_read().
+-	 */
+-	atomic_t readers;
+ 	union {
+ 		/*
+ 		 * Structures only used by metadata
+@@ -95,11 +87,6 @@ void btrfs_free_subpage(struct btrfs_subpage *subpage);
+ void btrfs_folio_inc_eb_refs(const struct btrfs_fs_info *fs_info, struct folio *folio);
+ void btrfs_folio_dec_eb_refs(const struct btrfs_fs_info *fs_info, struct folio *folio);
  
- 	trace_xfs_attr_node_addname(state->args);
- 
- 	blk = &state->path.blk[state->path.active-1];
- 	ASSERT(blk->magic == XFS_ATTR_LEAF_MAGIC);
- 
--	error = xfs_attr3_leaf_add(blk->bp, state->args);
--	if (error == -ENOSPC) {
-+	if (!xfs_attr3_leaf_add(blk->bp, state->args)) {
- 		if (state->path.active == 1) {
- 			/*
- 			 * Its really a single leaf node, but it had
- 			 * out-of-line values so it looked like it *might*
- 			 * have been a b-tree. Let the caller deal with this.
- 			 */
-+			error = -ENOSPC;
- 			goto out;
- 		}
- 
---- a/fs/xfs/libxfs/xfs_attr_leaf.c
-+++ b/fs/xfs/libxfs/xfs_attr_leaf.c
-@@ -46,7 +46,7 @@
-  */
- STATIC int xfs_attr3_leaf_create(struct xfs_da_args *args,
- 				 xfs_dablk_t which_block, struct xfs_buf **bpp);
--STATIC int xfs_attr3_leaf_add_work(struct xfs_buf *leaf_buffer,
-+STATIC void xfs_attr3_leaf_add_work(struct xfs_buf *leaf_buffer,
- 				   struct xfs_attr3_icleaf_hdr *ichdr,
- 				   struct xfs_da_args *args, int freemap_index);
- STATIC void xfs_attr3_leaf_compact(struct xfs_da_args *args,
-@@ -990,10 +990,8 @@ xfs_attr_shortform_to_leaf(
- 		}
- 		error = xfs_attr3_leaf_lookup_int(bp, &nargs); /* set a->index */
- 		ASSERT(error == -ENOATTR);
--		error = xfs_attr3_leaf_add(bp, &nargs);
--		ASSERT(error != -ENOSPC);
--		if (error)
--			goto out;
-+		if (!xfs_attr3_leaf_add(bp, &nargs))
-+			ASSERT(0);
- 		sfe = xfs_attr_sf_nextentry(sfe);
- 	}
- 	error = 0;
-@@ -1349,8 +1347,9 @@ xfs_attr3_leaf_split(
- 	struct xfs_da_state_blk	*oldblk,
- 	struct xfs_da_state_blk	*newblk)
- {
--	xfs_dablk_t blkno;
--	int error;
-+	bool			added;
-+	xfs_dablk_t		blkno;
-+	int			error;
- 
- 	trace_xfs_attr_leaf_split(state->args);
- 
-@@ -1385,10 +1384,10 @@ xfs_attr3_leaf_split(
- 	 */
- 	if (state->inleaf) {
- 		trace_xfs_attr_leaf_add_old(state->args);
--		error = xfs_attr3_leaf_add(oldblk->bp, state->args);
-+		added = xfs_attr3_leaf_add(oldblk->bp, state->args);
- 	} else {
- 		trace_xfs_attr_leaf_add_new(state->args);
--		error = xfs_attr3_leaf_add(newblk->bp, state->args);
-+		added = xfs_attr3_leaf_add(newblk->bp, state->args);
- 	}
- 
- 	/*
-@@ -1396,13 +1395,15 @@ xfs_attr3_leaf_split(
- 	 */
- 	oldblk->hashval = xfs_attr_leaf_lasthash(oldblk->bp, NULL);
- 	newblk->hashval = xfs_attr_leaf_lasthash(newblk->bp, NULL);
--	return error;
-+	if (!added)
-+		return -ENOSPC;
-+	return 0;
- }
- 
- /*
-  * Add a name to the leaf attribute list structure.
-  */
--int
-+bool
- xfs_attr3_leaf_add(
- 	struct xfs_buf		*bp,
- 	struct xfs_da_args	*args)
-@@ -1411,6 +1412,7 @@ xfs_attr3_leaf_add(
- 	struct xfs_attr3_icleaf_hdr ichdr;
- 	int			tablesize;
- 	int			entsize;
-+	bool			added = true;
- 	int			sum;
- 	int			tmp;
- 	int			i;
-@@ -1439,7 +1441,7 @@ xfs_attr3_leaf_add(
- 		if (ichdr.freemap[i].base < ichdr.firstused)
- 			tmp += sizeof(xfs_attr_leaf_entry_t);
- 		if (ichdr.freemap[i].size >= tmp) {
--			tmp = xfs_attr3_leaf_add_work(bp, &ichdr, args, i);
-+			xfs_attr3_leaf_add_work(bp, &ichdr, args, i);
- 			goto out_log_hdr;
- 		}
- 		sum += ichdr.freemap[i].size;
-@@ -1451,7 +1453,7 @@ xfs_attr3_leaf_add(
- 	 * no good and we should just give up.
- 	 */
- 	if (!ichdr.holes && sum < entsize)
--		return -ENOSPC;
-+		return false;
- 
- 	/*
- 	 * Compact the entries to coalesce free space.
-@@ -1464,24 +1466,24 @@ xfs_attr3_leaf_add(
- 	 * free region, in freemap[0].  If it is not big enough, give up.
- 	 */
- 	if (ichdr.freemap[0].size < (entsize + sizeof(xfs_attr_leaf_entry_t))) {
--		tmp = -ENOSPC;
-+		added = false;
- 		goto out_log_hdr;
- 	}
- 
--	tmp = xfs_attr3_leaf_add_work(bp, &ichdr, args, 0);
-+	xfs_attr3_leaf_add_work(bp, &ichdr, args, 0);
- 
- out_log_hdr:
- 	xfs_attr3_leaf_hdr_to_disk(args->geo, leaf, &ichdr);
- 	xfs_trans_log_buf(args->trans, bp,
- 		XFS_DA_LOGRANGE(leaf, &leaf->hdr,
- 				xfs_attr3_leaf_hdr_size(leaf)));
--	return tmp;
-+	return added;
- }
- 
- /*
-  * Add a name to a leaf attribute list structure.
-  */
--STATIC int
-+STATIC void
- xfs_attr3_leaf_add_work(
- 	struct xfs_buf		*bp,
- 	struct xfs_attr3_icleaf_hdr *ichdr,
-@@ -1599,7 +1601,6 @@ xfs_attr3_leaf_add_work(
- 		}
- 	}
- 	ichdr->usedbytes += xfs_attr_leaf_entsize(leaf, args->index);
--	return 0;
- }
- 
- /*
---- a/fs/xfs/libxfs/xfs_attr_leaf.h
-+++ b/fs/xfs/libxfs/xfs_attr_leaf.h
-@@ -78,7 +78,7 @@ int	xfs_attr3_leaf_split(struct xfs_da_s
- int	xfs_attr3_leaf_lookup_int(struct xfs_buf *leaf,
- 					struct xfs_da_args *args);
- int	xfs_attr3_leaf_getvalue(struct xfs_buf *bp, struct xfs_da_args *args);
--int	xfs_attr3_leaf_add(struct xfs_buf *leaf_buffer,
-+bool	xfs_attr3_leaf_add(struct xfs_buf *leaf_buffer,
- 				 struct xfs_da_args *args);
- int	xfs_attr3_leaf_remove(struct xfs_buf *leaf_buffer,
- 				    struct xfs_da_args *args);
+-void btrfs_subpage_start_reader(const struct btrfs_fs_info *fs_info,
+-				struct folio *folio, u64 start, u32 len);
+-void btrfs_subpage_end_reader(const struct btrfs_fs_info *fs_info,
+-			      struct folio *folio, u64 start, u32 len);
+-
+ void btrfs_folio_end_writer_lock(const struct btrfs_fs_info *fs_info,
+ 				 struct folio *folio, u64 start, u32 len);
+ void btrfs_folio_set_writer_lock(const struct btrfs_fs_info *fs_info,
+-- 
+2.39.5
+
 
 
 
