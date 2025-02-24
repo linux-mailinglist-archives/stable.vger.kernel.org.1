@@ -1,119 +1,124 @@
-Return-Path: <stable+bounces-118722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAE0A41990
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:51:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9279A419D9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3756716E174
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3502D188931B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B6F24A064;
-	Mon, 24 Feb 2025 09:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUQI6feA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641FD24C689;
+	Mon, 24 Feb 2025 09:57:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535A424A05B;
-	Mon, 24 Feb 2025 09:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC72224C66B;
+	Mon, 24 Feb 2025 09:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740390671; cv=none; b=CVjK7cMngSuEKvmIs00HW393xU1dnPMOtbaXK9N7pgp4EyAjxKghaI8fJ9VEWKLrlYqqXfSoFpfnoqSznUqf3BhgVrVOZMcM03d7OYRnYHj15bj/tJHz+k7399mcNB28R75mQy7T+DGvAFOrSkxml9y3tqA986cpWykCkMTKzDA=
+	t=1740391033; cv=none; b=pjBm7CZ+wd6xQOZUpBZZRb96ENCWos/BbIfi0ybc0Z2R8hT/vG94BhcMp7nV9ECGygcA7OMnt50x+kfXAfk26ZcGFSmbG59/4Gz50guk9C2fFw7+b5MV1FkWLUtRPpFGz6xqRJUXx7O8ly5weaRS0t9JtUFVaOf0D9pZXvUwQE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740390671; c=relaxed/simple;
-	bh=a1cc70jbOv5CCjNK84m5TgpuPadBsPl0xnYC/NRZ3Fk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C1boUKKuBThcXw2/sHTMyW8EntcHEwgZxY1GaXK3A7ocBVxHQJqheqrG0zlaPcveAIBSSeC8VLgU3qJPuXvCcTx1CdINyUQMgUdIEsMhy8mXnkuRyuJ8xewGfhCEwasmn18N3yzluvgAIclZW182sF6FYUxUXCldXrGyPzjy0o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUQI6feA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4489DC4CED6;
-	Mon, 24 Feb 2025 09:51:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740390667;
-	bh=a1cc70jbOv5CCjNK84m5TgpuPadBsPl0xnYC/NRZ3Fk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nUQI6feAoboadIqs+ta8SLxF0sQs43hw9TsAaTYvAYof2a8ud2gC5z9NT0l70y2YJ
-	 Pv+e10CRD9Y0ovyTZIP8kL8mUsL6CofD5RLqxJuZhBh33tPOEwYQ2TyXdNnipk0KQI
-	 n9TCaTEwNWaxQ07pdtSvUpvFqkksDrRXATOqzubE=
-Date: Mon, 24 Feb 2025 10:51:04 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Prashanth K <prashanth.k@oss.qualcomm.com>
-Cc: Kees Bakker <kees@ijzerbout.nl>,
-	William McVicker <willmcvicker@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: Check bmAttributes only if configuration is
- valid
-Message-ID: <2025022446-reliable-snugly-84e6@gregkh>
-References: <20250224085604.417327-1-prashanth.k@oss.qualcomm.com>
- <2025022434-unveiling-handbook-6fc3@gregkh>
- <63c3b650-c3cf-49bc-973a-c5fe025a22f6@oss.qualcomm.com>
+	s=arc-20240116; t=1740391033; c=relaxed/simple;
+	bh=MSl6c5eG4xbpBVfyZR8dcHuYjVQmZCg26ue/c3GLq0c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMZOSEdrEVwm2rdoF5sKiZlkMlevdPyaUlLVjVXYXFbgmTn3xn1ottpdr6bNFzLpAYbvjlW+YLwu38qxzaX7dWXBVR/+ElzRwOL0exhw5hsQ2Jaj00WuEuRxtlP2GQC3YsQOVRk13A+QjXCz483A729Xpgaq6UZeAKV1REpFUqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-521b84aa5d5so836738e0c.1;
+        Mon, 24 Feb 2025 01:57:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740391029; x=1740995829;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YZbn+v0xyuTX45sY6qG0ln35ZltgvYtyEb5LTmw+eFM=;
+        b=NhzwFrASfMEghcu4aVL0Kwv30RXSb7Igts4aCRoQSZFqw+hclOeSGa3ToDe4fxul+n
+         JtDqRSvuCev2ToKb9OyChf9zPHXsrRtdmUpxpWU991Z5528tCClF66QM9Mlul5Yl93YW
+         Ld6WIyDftBp0NzdT/mJBFggt6Fzw6mkZ4Je1CmDo2YNpk/0rz0PhoFwaDtcz38QsJu82
+         JcUlvakNHIufDfz8dLQ7ykxeT7HTwyngWR8BSmCdDdCCYXYAvFvsLZVf58Ux9vfg3TV4
+         mzom3149OkWNqaPBtpUhMS+MxQG2dH5GyB4mUjrXZNG1Wuj6B9irTZqRWi5qzOzh+JdT
+         eXQA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3TN+IM11kMV2YIr9pLt4DsMs2n0VSXsmmP6Hu04dvMGLMVGCDHxDJf3R9txyakp9jINw23BB8@vger.kernel.org, AJvYcCXLQWHDmcWbzUaguNCSMT1CG7r1hlFmKkgMlpD17UmGqwDIn0FA3C2LcwdPqVmEZvKrC7oYG+7xLOcceZk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuMJrtNBhLbZfsLwXlYAI05DyPgAXxRAed7fFH8y6KHx+5d/3M
+	/rG/9gpbfQZpXpKmdORvPwBexg4fnR+Cs6EOz0SNMtjXHLSHI3E6cr6H2l2cjZA=
+X-Gm-Gg: ASbGnctZXm9nQHR7EItm2VV60Z8d+zO2e2wv6jlvDyAXn5TC+tNhnUAaTaxYpERQMG3
+	SL8/OsFtMVPhul7SAOOFpe/CDQ/BIKUfIHvs/qGG6IjPKyIzqZU1KiXDyjsK8p4ikdfXfk8jlFE
+	EU8WHOO6hTdsN7P2dVUfKg0rVVZ1PTzmPIXgH1H1TZarhOtkpfWoF1o0KLy0m5+40RFWfZ8gkOR
+	V5Eu3mhPDLM7FihAd6csa04hLaVN9UMmy12UZ18LKDconvEIn2UWWl4mLAQ2xlgrdUyylFUV3Ko
+	SflKspyEYnBQ4wQFyLx9lb/yo6cfn2OX2+sAxrPgoJ7HkrvLhYDRbuCRLjv5Z4lr
+X-Google-Smtp-Source: AGHT+IEw9LxbFjzj4bELO/xURG1hu87zIbfTFfPGvOoKxWFtpTFf5ICvakyGFZ94QKjPq5U6ABHSng==
+X-Received: by 2002:a05:6122:3295:b0:520:3914:e6bb with SMTP id 71dfb90a1353d-521ee424763mr4701769e0c.7.1740391029579;
+        Mon, 24 Feb 2025 01:57:09 -0800 (PST)
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-520b0ff2c9fsm3278637e0c.35.2025.02.24.01.57.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 01:57:09 -0800 (PST)
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-86715793b1fso1240502241.0;
+        Mon, 24 Feb 2025 01:57:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU9Bvvh/5bJsXXA9tLa/+hQ2+XXo04cseIQcw9qMa9+zA6vpubhaWYWy8UAO7LqUOe6bMVT5g/HvDzks38=@vger.kernel.org, AJvYcCXyIn3/KSZuecRo1/KV4cO+oXghfOrz+mMlV/Gu5Nrl5x/w+khLAI7rXXZtVSf98WWfmg+CyeU5@vger.kernel.org
+X-Received: by 2002:a05:6102:3711:b0:4bb:e14a:944b with SMTP id
+ ada2fe7eead31-4bfc023cc30mr4782066137.20.1740391028952; Mon, 24 Feb 2025
+ 01:57:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <63c3b650-c3cf-49bc-973a-c5fe025a22f6@oss.qualcomm.com>
+References: <20250224093810.2965667-1-haoxiang_li2024@163.com>
+In-Reply-To: <20250224093810.2965667-1-haoxiang_li2024@163.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 24 Feb 2025 10:56:57 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVufJ3CopGfCXzqfsX14AKWoAn_eUMY4GP1o+mznugKUQ@mail.gmail.com>
+X-Gm-Features: AWEUYZlkdpt8bJJMHFN4pXPfA2mxx7JvlLlSHhLsEyTe_NpsJQ9SXsLfs1W2bic
+Message-ID: <CAMuHMdVufJ3CopGfCXzqfsX14AKWoAn_eUMY4GP1o+mznugKUQ@mail.gmail.com>
+Subject: Re: [PATCH] auxdisplay: hd44780: Fix an API misuse in hd44780_probe()
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: andy@kernel.org, u.kleine-koenig@pengutronix.de, erick.archer@outlook.com, 
+	ojeda@kernel.org, w@1wt.eu, poeschel@lemonage.de, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Feb 24, 2025 at 02:53:59PM +0530, Prashanth K wrote:
-> 
-> 
-> On 24-02-25 02:36 pm, Greg Kroah-Hartman wrote:
-> > On Mon, Feb 24, 2025 at 02:26:04PM +0530, Prashanth K wrote:
-> >> If the USB configuration is not valid, then avoid checking for
-> >> bmAttributes to prevent null pointer deference.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
-> >> Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-> >> ---
-> >>  drivers/usb/gadget/composite.c | 2 +-
-> >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-> >> index 4bcf73bae761..869ad99afb48 100644
-> >> --- a/drivers/usb/gadget/composite.c
-> >> +++ b/drivers/usb/gadget/composite.c
-> >> @@ -1051,7 +1051,7 @@ static int set_config(struct usb_composite_dev *cdev,
-> >>  		usb_gadget_set_remote_wakeup(gadget, 0);
-> >>  done:
-> >>  	if (power > USB_SELF_POWER_VBUS_MAX_DRAW ||
-> >> -	    !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
-> >> +	    (c && !(c->bmAttributes & USB_CONFIG_ATT_SELFPOWER)))
-> >>  		usb_gadget_clear_selfpowered(gadget);
-> >>  	else
-> >>  		usb_gadget_set_selfpowered(gadget);
-> >> -- 
-> >> 2.25.1
-> >>
-> >>
-> > 
-> > Have you checked linux-next yet for this fix that was posted last week?
-> > Does that not resolve the issue for you?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> I hope you are mentioning this one -
-> https://lore.kernel.org/all/20250220120314.3614330-1-m.szyprowski@samsung.com/
+Hi Haoxiang,
 
-Yes.
+On Mon, 24 Feb 2025 at 10:39, Haoxiang Li <haoxiang_li2024@163.com> wrote:
+> Variable "lcd" allocated by charlcd_alloc() should be
+> released by charlcd_free(). The following patch changed
+> kfree(lcd) to charlcd_free(lcd) to fix an API misuse.
+>
+> Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 
-> The above patch fixes null pointer in composite_suspend(), I'm trying to
-> address a similar bug which is present in set_config(), it gets exposed
-> if the requested configuration is not present in cdev->configs.
+Thanks for your patch!
 
-Ah, missed that, sorry.  I'll go queue this up too.
+> --- a/drivers/auxdisplay/hd44780.c
+> +++ b/drivers/auxdisplay/hd44780.c
+> @@ -313,7 +313,7 @@ static int hd44780_probe(struct platform_device *pdev)
+>  fail3:
+>         kfree(hd);
+>  fail2:
+> -       kfree(lcd);
+> +       charlcd_free(lcd);
+>  fail1:
+>         kfree(hdc);
+>         return ret;
 
-thanks,
+LGTM, but please make a similar change to hd44780_remove().
 
-greg k-h
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
