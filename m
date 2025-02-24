@@ -1,96 +1,183 @@
-Return-Path: <stable+bounces-118723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC3BA419A0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:55:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25FDA41970
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:45:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7051889F48
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:54:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D04167510
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E09243947;
-	Mon, 24 Feb 2025 09:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6E624A043;
+	Mon, 24 Feb 2025 09:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GO4YtGQL"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zUhI3ofY";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qQuuiImj";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zUhI3ofY";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qQuuiImj"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC60242937;
-	Mon, 24 Feb 2025 09:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6212A23F439
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 09:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740390871; cv=none; b=Yv18sNh8WSARVVAQmjQVhWm025Q4AJh6Bss+yDPDaRhrDe2ibFt+zVY2+tTa799iBqnjaaR8Iyk0wYeiMgmyhLTTUaEU9QeCWEAIfPNqEaztEYZ5voSil4kgSeG17rRUlQEnnQAbrg3QIm1IYTJcIW3uE+2hDBj60K6S72Kvoug=
+	t=1740390316; cv=none; b=l+9e80zHr/AUd7XdZWPlq8RI+0MPWIdDj+AFmARe6AgB2U2BxMoI1ZXS4gdodpjYoMEr+9Epsgtm5ep4GoZR4iZKliBCC85XC5w9tZ6lG5sl8HJfjG4ngmn0emFsVXFGj4afKNyaeuFLvCFouTzADLlfmJaBISlNbd7MEDmxKUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740390871; c=relaxed/simple;
-	bh=g8X99TOPL0otzcxF1N+utf6ztWrEQtdujpo+L0MLn9k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g1dI0ZuuVlMU2y4gMLHuJVPUVAhTBXYxOkfdIvovBkLRCBM9UVlfam9gW1H2oQr4sndtpU1jgbRg7IJzHpBcIU3FWtEjVcL8+MLJuYvxw8EEHAGPpj/bn6Y42vZ+8VHmjrPrFs1RQdUSiBJNgUTcfa5LEhzFebMjb8jZWl7SGxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GO4YtGQL; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Sh06N
-	4SQha47MxwITMQ5mfmDR3A2miHvY6K140EwxyQ=; b=GO4YtGQLDNdTTkgestW1X
-	0vnSLOEDXDA5QvtbTRxLzoPsch34UUCOnsnXWh0m1LQi7T9LOdmxF/PFBoD+RKGl
-	dMTq1kP4uurH+k9x0aSj6NNFudD/vrBmeKrY3Z/0+ErNwfcaIDTqeQqgMvo4L1yg
-	bidlcH4hozQd901B0ZASt0=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3HSQEPrxnlgK1OQ--.21200S4;
-	Mon, 24 Feb 2025 17:38:13 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: andy@kernel.org,
-	geert@linux-m68k.org,
-	haoxiang_li2024@163.com,
-	u.kleine-koenig@pengutronix.de,
-	erick.archer@outlook.com,
-	ojeda@kernel.org,
-	w@1wt.eu,
-	poeschel@lemonage.de
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] auxdisplay: hd44780: Fix an API misuse in hd44780_probe()
-Date: Mon, 24 Feb 2025 17:38:10 +0800
-Message-Id: <20250224093810.2965667-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740390316; c=relaxed/simple;
+	bh=/y4a2t2D0Vi5lomJPcZZ9442t54hDvF7SExTVfrLLhY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6Mqf9OMRgsyRv05NS0IKWHKFOaEmquDXRwUa+iCdt4RP8mwwnX19cfTY/y/7LTddC+QQ5lD3fVNPa7idUEizSWNUkVfJfFsEL9qRimP5QpOvayG8RzuxlZ4EZlwX+m1GsO887EBD+53LhhPSMk5+GEUDaaU7i49O/V/KmWfWWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zUhI3ofY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qQuuiImj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zUhI3ofY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qQuuiImj; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 65A8D1F385;
+	Mon, 24 Feb 2025 09:45:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1740390312;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
+	b=zUhI3ofYGISKLOqUBTksCS/SnsBs5FdUWUu9lDueZpSX6N4eu3qxJ/UbFYmldjd7rB26Nh
+	2UWXfNxfLQhhfBeTX835VJ837hRPAG1hMrxx0CxlunhNCKNnqpMmz7F5FH3Xg2TdTJERet
+	dj8WeOvireMhrX0Y8sIbU2j+BnWiFDg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1740390312;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
+	b=qQuuiImjeepAYxUfzPrJissfvHFFycbxZOlxMcX439tvRooAKzev+NU6o41TByAy08gJQt
+	IHdBfDBBTxd9vMBw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zUhI3ofY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qQuuiImj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1740390312;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
+	b=zUhI3ofYGISKLOqUBTksCS/SnsBs5FdUWUu9lDueZpSX6N4eu3qxJ/UbFYmldjd7rB26Nh
+	2UWXfNxfLQhhfBeTX835VJ837hRPAG1hMrxx0CxlunhNCKNnqpMmz7F5FH3Xg2TdTJERet
+	dj8WeOvireMhrX0Y8sIbU2j+BnWiFDg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1740390312;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yBLSS1gkJN060FTnQnccFnH/9i68QNBPjHnK3RxjUak=;
+	b=qQuuiImjeepAYxUfzPrJissfvHFFycbxZOlxMcX439tvRooAKzev+NU6o41TByAy08gJQt
+	IHdBfDBBTxd9vMBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 42C8B13707;
+	Mon, 24 Feb 2025 09:45:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id avoYEKg/vGeGagAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Mon, 24 Feb 2025 09:45:12 +0000
+Date: Mon, 24 Feb 2025 10:45:11 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Ma Ke <make24@iscas.ac.cn>, clm@fb.com, josef@toxicpanda.com,
+	dsterba@suse.com, fdmanana@suse.com, linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: add a sanity check for btrfs root in
+ btrfs_next_old_leaf()
+Message-ID: <20250224094511.GK5777@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20250224075937.2959546-1-make24@iscas.ac.cn>
+ <0d9f6477-04c2-486a-ae72-c39b6d235891@gmx.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3HSQEPrxnlgK1OQ--.21200S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKw13tr1UJw1kCw4ftw1DJrb_yoW3uFX_Ga
-	4ruFs3XF4jyr4UZ3s7tF4fury0qr1jqrn5ZwsFq3y3XFyUuF4xtry2qrn5Gas8ZFW8tr95
-	C3Z8WFZrCa17AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRRApnDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkA39bme77loMFgADs-
+In-Reply-To: <0d9f6477-04c2-486a-ae72-c39b6d235891@gmx.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Rspamd-Queue-Id: 65A8D1F385
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.21 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[gmx.com];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmx.com];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:replyto]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.21
+X-Spam-Flag: NO
 
-Variable "lcd" allocated by charlcd_alloc() should be
-released by charlcd_free(). The following patch changed
-kfree(lcd) to charlcd_free(lcd) to fix an API misuse.
+On Mon, Feb 24, 2025 at 06:48:19PM +1030, Qu Wenruo wrote:
+> 在 2025/2/24 18:29, Ma Ke 写道:
+> > btrfs_next_old_leaf() doesn't check if the target root is NULL or not,
+> > resulting the null-ptr-deref. Add sanity check for btrfs root before
+> > using it in btrfs_next_old_leaf().
+> 
+> Please provide a real world call trace when this is triggered.
+> 
+> There is a prerequisite, the extent tree can only be NULL if
+> rescue=ibadroots is provided and the extent root is corrupted.
+> 
+> And "rescue=" mount options can only be specified for a fully read-only
+> fs (no internal log replay or any other thing to write even a bit into
+> the fs).
+> 
+> Previously read-only scrub can still be triggered on such fs, but
+> 6aecd91a5c5b ("btrfs: avoid NULL pointer dereference if no valid extent
+> tree") fixed that.
+> 
+> And if you hit such a case in real world, please provide the call trace
+> so that we know we're not missing some critical situations that extent
+> tree is accessed for read-only operations.
 
-Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/auxdisplay/hd44780.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Agreed, this needs a real way to trigger it. Some pointers do not have
+to be checked for NULL because it's guaranteed by some of the caller
+higher up in the call chain.
 
-diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
-index 0526f0d90a79..a1729196bc82 100644
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -313,7 +313,7 @@ static int hd44780_probe(struct platform_device *pdev)
- fail3:
- 	kfree(hd);
- fail2:
--	kfree(lcd);
-+	charlcd_free(lcd);
- fail1:
- 	kfree(hdc);
- 	return ret;
--- 
-2.25.1
-
+Before we added the rescue options, the invariants were that the extent,
+checksum, fs_tree etc always exist when passed as pointers. The example
+fix 6aecd91a5c5b show it could be possible under some circumstances. So
+if a fix is needed btrfs_next_old_leaf() we also need to see how it
+could happen.
 
