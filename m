@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AE4A42364
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:41:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B4FA4246A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C2E77A25D9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3BDA19C1830
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C89254869;
-	Mon, 24 Feb 2025 14:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2753684A35;
+	Mon, 24 Feb 2025 14:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Um0NK8pW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B15Mn688"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15B0254855;
-	Mon, 24 Feb 2025 14:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4760165F09;
+	Mon, 24 Feb 2025 14:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407983; cv=none; b=PgTRHpQIFzJsEamhICmCXeGze8NTjFSZL+WC+r6nHzs0gpmavVPZHUB4aAAC4qecrN0VqbisJXfeezI50bu3XrVPnHhojv9FrXN+erSGyJkXhrBYg7GGqoK3SUHwBMN1MNKcwH1RI2VExbN6xbkFc4Y9plI2oXszxpoHfTFkCBo=
+	t=1740408351; cv=none; b=Em3wbRFuUye7KUGCyKRf/k/mOoPLBCcF/6f6E+vbuanWBfOTAznBOCJH9vtWSSCL7+6bg4HSHVQy3OAPz3CzNgkZH/dpfUTiMqfh+F5tyqk6dJ0DXUaUroVkoPmkmKnRE9hO6fU+H87ExBLvFuep11MyV2sEYnzOCfPegEefSlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407983; c=relaxed/simple;
-	bh=xpGehIMNHL5StDJPfORy0/7nOfPzqPSXQNQlE33k9yE=;
+	s=arc-20240116; t=1740408351; c=relaxed/simple;
+	bh=LEzQL5mSOsCExoQPhemnhyOFGweZOT+Eb21PBM4TJXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdFbXmUhuEpjZdfOCdqlOwgDwcUkQRWPOO8Zwr9n9MqVu2itsqwfk0iMOZUY1jwescGfdHMIKZoBvKyu6ssPVq+MxZ7IUwy49BJ5lG/4FY1FkSV/f2fCKOxK5eJk6LPDxBrehUDDK155sZpDc8G+DrHYHaw83ieksCsTUyBSjkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Um0NK8pW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484C4C4CED6;
-	Mon, 24 Feb 2025 14:39:42 +0000 (UTC)
+	 MIME-Version; b=GC6s+tfatOrYOKQ3lmOP1SP6vrT5aSYfLydpTuhnuer+9mzBPQskieyDW7LLSIBpJ9voSNi5+sCghOp6oma2SEaCqd7VxmuVimVLIM93V+9b4Wli81xBHMNaU0eU7hxBslwIIVRfk9viNd5LAUwAck9aJqvj7xTd9dtC33x3tR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B15Mn688; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7D5C4CED6;
+	Mon, 24 Feb 2025 14:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407982;
-	bh=xpGehIMNHL5StDJPfORy0/7nOfPzqPSXQNQlE33k9yE=;
+	s=korg; t=1740408351;
+	bh=LEzQL5mSOsCExoQPhemnhyOFGweZOT+Eb21PBM4TJXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Um0NK8pWeQY9lA7qodWOb20FjGWa1Wpu1BTf/wYnpTuShOqA+X0iXDEr96NTUa//N
-	 SXzMEQpxrBHbokOesLWU8PK24j5uI9/G374VCpmdjkgLVgBQSlabm0qhrU4hQ4uNFx
-	 QQwYbKpSUcfS6ZdxSCJqLkZ53pcWdVkyv0FKzfV0=
+	b=B15Mn688LULgt1x4FAJMb9Pihs0qIl8qiqRFjdnX1Slp0ACDsl4gNIjmf9itlSXzj
+	 egWb1U72LJDC8DAUQkeyekIXYNvVOC2/fCW0PMgNKQhR1AnHQ/WtyT6AGyEG4KYQYG
+	 hrKNJHLChjXwveIwqknmRhbnqNh1Na4EySuHIV8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/140] md/md-bitmap: add sync_size into struct md_bitmap_stats
+Subject: [PATCH 6.12 033/154] accel/ivpu: Limit FW version string length
 Date: Mon, 24 Feb 2025 15:33:52 +0100
-Message-ID: <20250224142604.309617146@linuxfoundation.org>
+Message-ID: <20250224142608.381516224@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit ec6bb299c7c3dd4ca1724d13d5f5fae3ee54fc65 ]
+[ Upstream commit 990b1e3d150104249115a0ad81ea77c53b28f0f8 ]
 
-To avoid dereferencing bitmap directly in md-cluster to prepare
-inventing a new bitmap.
+Limit FW version string, when parsing FW binary, to 256 bytes and
+always add NULL-terminate it.
 
-BTW, also fix following checkpatch warnings:
-
-WARNING: Deprecated use of 'kmap_atomic', prefer 'kmap_local_page' instead
-WARNING: Deprecated use of 'kunmap_atomic', prefer 'kunmap_local' instead
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240826074452.1490072-7-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
-Stable-dep-of: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
+Reviewed-by: Karol Wachowski <karol.wachowski@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-7-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Stable-dep-of: 41a2d8286c90 ("accel/ivpu: Fix error handling in recovery/reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c  |  6 ++++++
- drivers/md/md-bitmap.h  |  1 +
- drivers/md/md-cluster.c | 34 ++++++++++++++++++++--------------
- 3 files changed, 27 insertions(+), 14 deletions(-)
+ drivers/accel/ivpu/ivpu_fw.c | 7 ++++---
+ drivers/accel/ivpu/ivpu_fw.h | 6 +++++-
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index f7b02d87a6da7..80b0cd7b88995 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2115,10 +2115,15 @@ EXPORT_SYMBOL_GPL(md_bitmap_copy_from_slot);
- int md_bitmap_get_stats(struct bitmap *bitmap, struct md_bitmap_stats *stats)
- {
- 	struct bitmap_counts *counts;
-+	bitmap_super_t *sb;
+diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
+index ede6165e09d90..b2b6d89f06537 100644
+--- a/drivers/accel/ivpu/ivpu_fw.c
++++ b/drivers/accel/ivpu/ivpu_fw.c
+@@ -25,7 +25,6 @@
+ #define FW_SHAVE_NN_MAX_SIZE	SZ_2M
+ #define FW_RUNTIME_MIN_ADDR	(FW_GLOBAL_MEM_START)
+ #define FW_RUNTIME_MAX_ADDR	(FW_GLOBAL_MEM_END - FW_SHARED_MEM_SIZE)
+-#define FW_VERSION_HEADER_SIZE	SZ_4K
+ #define FW_FILE_IMAGE_OFFSET	(VPU_FW_HEADER_SIZE + FW_VERSION_HEADER_SIZE)
  
- 	if (!bitmap)
- 		return -ENOENT;
+ #define WATCHDOG_MSS_REDIRECT	32
+@@ -191,8 +190,10 @@ static int ivpu_fw_parse(struct ivpu_device *vdev)
+ 	ivpu_dbg(vdev, FW_BOOT, "Header version: 0x%x, format 0x%x\n",
+ 		 fw_hdr->header_version, fw_hdr->image_format);
  
-+	sb = kmap_local_page(bitmap->storage.sb_page);
-+	stats->sync_size = le64_to_cpu(sb->sync_size);
-+	kunmap_local(sb);
+-	ivpu_info(vdev, "Firmware: %s, version: %s", fw->name,
+-		  (const char *)fw_hdr + VPU_FW_HEADER_SIZE);
++	if (!scnprintf(fw->version, sizeof(fw->version), "%s", fw->file->data + VPU_FW_HEADER_SIZE))
++		ivpu_warn(vdev, "Missing firmware version\n");
 +
- 	counts = &bitmap->counts;
- 	stats->missing_pages = counts->missing_pages;
- 	stats->pages = counts->pages;
-@@ -2126,6 +2131,7 @@ int md_bitmap_get_stats(struct bitmap *bitmap, struct md_bitmap_stats *stats)
++	ivpu_info(vdev, "Firmware: %s, version: %s\n", fw->name, fw->version);
  
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(md_bitmap_get_stats);
- 
- int md_bitmap_resize(struct bitmap *bitmap, sector_t blocks,
- 		  int chunksize, int init)
-diff --git a/drivers/md/md-bitmap.h b/drivers/md/md-bitmap.h
-index 60b86ee939081..840efd1b8a01c 100644
---- a/drivers/md/md-bitmap.h
-+++ b/drivers/md/md-bitmap.h
-@@ -236,6 +236,7 @@ struct bitmap {
- 
- struct md_bitmap_stats {
- 	unsigned long	missing_pages;
-+	unsigned long	sync_size;
- 	unsigned long	pages;
- 	struct file	*file;
- };
-diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
-index ca4d3a8d5dd76..6a89f6b5d64f9 100644
---- a/drivers/md/md-cluster.c
-+++ b/drivers/md/md-cluster.c
-@@ -1190,18 +1190,21 @@ static int resize_bitmaps(struct mddev *mddev, sector_t newsize, sector_t oldsiz
+ 	if (IVPU_FW_CHECK_API_COMPAT(vdev, fw_hdr, BOOT, 3))
+ 		return -EINVAL;
+diff --git a/drivers/accel/ivpu/ivpu_fw.h b/drivers/accel/ivpu/ivpu_fw.h
+index 40d9d17be3f52..5e8eb608b70f1 100644
+--- a/drivers/accel/ivpu/ivpu_fw.h
++++ b/drivers/accel/ivpu/ivpu_fw.h
+@@ -1,11 +1,14 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (C) 2020-2023 Intel Corporation
++ * Copyright (C) 2020-2024 Intel Corporation
   */
- static int cluster_check_sync_size(struct mddev *mddev)
- {
--	int i, rv;
--	bitmap_super_t *sb;
--	unsigned long my_sync_size, sync_size = 0;
--	int node_num = mddev->bitmap_info.nodes;
- 	int current_slot = md_cluster_ops->slot_number(mddev);
-+	int node_num = mddev->bitmap_info.nodes;
- 	struct bitmap *bitmap = mddev->bitmap;
--	char str[64];
- 	struct dlm_lock_resource *bm_lockres;
-+	struct md_bitmap_stats stats;
-+	unsigned long sync_size = 0;
-+	unsigned long my_sync_size;
-+	char str[64];
-+	int i, rv;
  
--	sb = kmap_atomic(bitmap->storage.sb_page);
--	my_sync_size = le64_to_cpu(sb->sync_size);
--	kunmap_atomic(sb);
-+	rv = md_bitmap_get_stats(bitmap, &stats);
-+	if (rv)
-+		return rv;
+ #ifndef __IVPU_FW_H__
+ #define __IVPU_FW_H__
+ 
++#define FW_VERSION_HEADER_SIZE	SZ_4K
++#define FW_VERSION_STR_SIZE	SZ_256
 +
-+	my_sync_size = stats.sync_size;
- 
- 	for (i = 0; i < node_num; i++) {
- 		if (i == current_slot)
-@@ -1230,15 +1233,18 @@ static int cluster_check_sync_size(struct mddev *mddev)
- 			md_bitmap_update_sb(bitmap);
- 		lockres_free(bm_lockres);
- 
--		sb = kmap_atomic(bitmap->storage.sb_page);
--		if (sync_size == 0)
--			sync_size = le64_to_cpu(sb->sync_size);
--		else if (sync_size != le64_to_cpu(sb->sync_size)) {
--			kunmap_atomic(sb);
-+		rv = md_bitmap_get_stats(bitmap, &stats);
-+		if (rv) {
-+			md_bitmap_free(bitmap);
-+			return rv;
-+		}
-+
-+		if (sync_size == 0) {
-+			sync_size = stats.sync_size;
-+		} else if (sync_size != stats.sync_size) {
- 			md_bitmap_free(bitmap);
- 			return -1;
- 		}
--		kunmap_atomic(sb);
- 		md_bitmap_free(bitmap);
- 	}
- 
+ struct ivpu_device;
+ struct ivpu_bo;
+ struct vpu_boot_params;
+@@ -13,6 +16,7 @@ struct vpu_boot_params;
+ struct ivpu_fw_info {
+ 	const struct firmware *file;
+ 	const char *name;
++	char version[FW_VERSION_STR_SIZE];
+ 	struct ivpu_bo *mem;
+ 	struct ivpu_bo *mem_shave_nn;
+ 	struct ivpu_bo *mem_log_crit;
 -- 
 2.39.5
 
