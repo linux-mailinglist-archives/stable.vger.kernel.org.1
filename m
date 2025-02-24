@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-118831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51D8A41CB6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:29:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38786A41CC8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:30:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79151897B68
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 194BC1799EB
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54255266F16;
-	Mon, 24 Feb 2025 11:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9542A267392;
+	Mon, 24 Feb 2025 11:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6KtyKrG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCS7t20O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D57025D522;
-	Mon, 24 Feb 2025 11:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E79225D522;
+	Mon, 24 Feb 2025 11:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395927; cv=none; b=WBjOgD0Jb5m+ZvHJYYdniOnkivrqf+SIeKr4p8KXvsjKYcPFbHZlQdSOvJvMtRp2P7yb0pjKVbPt3p8A0A/u+wlrnohwlCp+Od2P7CGMLC0BVQG7KbuIlNr8WNOnn9ujcRFGL2C/7FCRcMdrregEp32MsSHCbw2AZAKGA2VQ5rc=
+	t=1740395930; cv=none; b=E/cWGUBKhyIqieDvsrXTEhRWuuNPImA6cWvj6pYRMjutb8cXacEMNBLCVjAxrzUtT0w0YTtukdqYMQCKlOI5MFNME7woqPTpy5pZ/+xiFjbFCvIWJ1tn3NY2AzuUWUDQfcXY62gPIQ+4HsWIjWTIILRuJTqLUfvhJmg8vgQOzsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395927; c=relaxed/simple;
-	bh=C1C9f/Wo4SGSOFdsxeg8gPzfICwdDWBilGAh9LINT8A=;
+	s=arc-20240116; t=1740395930; c=relaxed/simple;
+	bh=Y4rZNFYSylkmGfHLUVXlMlbGM1GfzpFoqc4b3EN5IAE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uB3jct5Ij3lyYdbjTnPpGxsMCpCw3+CBgk2sYSF9Yao+8u2sPl+Nu+DPn+2LJuFV30SUSnswV0lmyneUxC1Uc7ji3JrcA8sGagh4Hkcl5JoQ+Hi939n0WebcMyt8Rq6jLpdDa6x7rx1x0VPsVPxJYjj66tZGC1VSyNaRc3NLi3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6KtyKrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D58BC4CEE6;
-	Mon, 24 Feb 2025 11:18:45 +0000 (UTC)
+	 MIME-Version; b=YFTZl8NmXaVn3tdoP8+Gbu0Hq8BsYo6Ar9rQA0W31Eg/DBG/ZfZpU/V+6qCxoBBlrlhK+svIEU0RfumAfWPXAY4z36ggVhfcUdqzhC5Osl/ByEqCn9DyHMcvbi1J5NYLodMrHaxvtneKCdWpXGk0GSYHnWRv6edzhSInG8NyoTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCS7t20O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D4BC4CEEC;
+	Mon, 24 Feb 2025 11:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395926;
-	bh=C1C9f/Wo4SGSOFdsxeg8gPzfICwdDWBilGAh9LINT8A=;
+	s=k20201202; t=1740395929;
+	bh=Y4rZNFYSylkmGfHLUVXlMlbGM1GfzpFoqc4b3EN5IAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6KtyKrG7BUWNxz6/qMniqKbIBegpB9q/dNTMUw9Nt0qEof2vo3biyQac4y65vTKm
-	 HpZK7qCnlSceUCQzdeteXMxwjYFNWiIDSRHDoCHteWnP025p6+5fd/wJajyBct2MqI
-	 dmJeer7Y8uB1KGWB+gPQB7Havcio1aSJvxxJh0BZEzFvH3UIs7E4ccRbAZkyMPr5MV
-	 zOF8LohuAEaWkJ8mJFUBcBDebdRbZMZjsbHm1sk+l56ilbS1AXxexRocBcm1KSHsSt
-	 //wBf2DazR/119pdC06j+8Xwbe59bdGfknn5+XeMIvl4gppUkkDEZqsNGA1jZWm4jN
-	 55XscQayYFX0g==
+	b=CCS7t20Olw9j1nqX94Brdpvi8z0l5XrfHUUeFKY+ctNOriGjYyxlryT4w5VgVL30h
+	 ZQWlFR3WzXOESn64IPmX0xwNh8IjlVz5Z34Jfby+mPmKEdecv5JXeH7K8Ggf3prMmA
+	 6Np+Sy4GmTes3DD4YETFFg32CCXf+TPlKuZsuvFOvKzbiIoOdUBVJmZMYS1OIG/ByQ
+	 8nAPiCfWQI7HLoJbaUR/G+E+y+zH6ysIQJl856REKjyHU3rKZwwhsnprF6NuolIlXs
+	 KC73kXJbfXjuddKcFgL9pZGkwmTlRkzo/tf6UQO11EyIE3+bb3bNh3p7pzneEYSzxI
+	 Df+YQT+Z4i2ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
 	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	ranjani.sridharan@linux.intel.com,
-	daniel.baluta@nxp.com,
 	perex@perex.cz,
 	tiwai@suse.com,
 	pierre-louis.bossart@linux.dev,
-	peterz@infradead.org,
-	sound-open-firmware@alsa-project.org,
+	hkallweit1@gmail.com,
+	chaitanya.kumar.borah@intel.com,
+	wangyuli@uniontech.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/28] ASoC: SOF: Intel: pci-ptl: Add support for PTL-H
-Date: Mon, 24 Feb 2025 06:17:46 -0500
-Message-Id: <20250224111759.2213772-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 16/28] ALSA: hda: hda-intel: add Panther Lake-H support
+Date: Mon, 24 Feb 2025 06:17:47 -0500
+Message-Id: <20250224111759.2213772-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111759.2213772-1-sashal@kernel.org>
 References: <20250224111759.2213772-1-sashal@kernel.org>
@@ -76,35 +74,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.16
 Content-Transfer-Encoding: 8bit
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 4e9c87cfcd0584f2a2e2f352a43ff003d688f3a4 ]
+[ Upstream commit d7e2447a4d51de5c3c03e3b7892898e98ddd9769 ]
 
-PTL-H uses the same configuration as PTL.
+Add Intel PTL-H audio Device ID.
 
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250210081730.22916-4-peter.ujfalusi@linux.intel.com
+Link: https://patch.msgid.link/20250210081730.22916-5-peter.ujfalusi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/pci-ptl.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/hda_intel.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/sof/intel/pci-ptl.c b/sound/soc/sof/intel/pci-ptl.c
-index 69195b5e7b1a9..f54d098d616f6 100644
---- a/sound/soc/sof/intel/pci-ptl.c
-+++ b/sound/soc/sof/intel/pci-ptl.c
-@@ -50,6 +50,7 @@ static const struct sof_dev_desc ptl_desc = {
- /* PCI IDs */
- static const struct pci_device_id sof_pci_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_PTL, &ptl_desc) }, /* PTL */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_PTL_H, &ptl_desc) }, /* PTL-H */
- 	{ 0, }
- };
- MODULE_DEVICE_TABLE(pci, sof_pci_ids);
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index b4540c5cd2a6f..76cd9076fed7d 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2506,6 +2506,8 @@ static const struct pci_device_id azx_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
+ 	/* Panther Lake */
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_PTL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
++	/* Panther Lake-H */
++	{ PCI_DEVICE_DATA(INTEL, HDA_PTL_H, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
+ 	/* Apollolake (Broxton-P) */
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_APL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON) },
+ 	/* Gemini-Lake */
 -- 
 2.39.5
 
