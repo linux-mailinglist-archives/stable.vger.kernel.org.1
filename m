@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-118978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B8CA42389
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBCDA42496
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4512189A4CD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92282425A84
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D257718BC2F;
-	Mon, 24 Feb 2025 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C130621930E;
+	Mon, 24 Feb 2025 14:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kw1n2Iek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8kLD/lz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FDB18A6BA;
-	Mon, 24 Feb 2025 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCB1824A3;
+	Mon, 24 Feb 2025 14:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407902; cv=none; b=PTC9snXWyPBw6hldPRwOjJ/X5xzR0S+uyyCRjDNll/5AamuPEYFdWwrEagBm74UWQUu2g694Ly/dPMwVSwroNnW5z0pcDSfH5VU4Aq8K6O0lkbsE3H/joZHGGW28pkmScsol7fbIc9QyJ6G9XztuV4HbNkKpoWZwzobtU3JJvis=
+	t=1740408388; cv=none; b=r/0jX+JbGumRW2UbFP5TADdguwfcFkB4EDXyN78GX1uhsHfNgHER7dg+SFSMfgAY7m7+DVGVK5rLChTNuJ84dHtJxkHsa3kHq1eg9Y46dF8Te4jYBiaD2MJaiDU9UNjvNS5hLAHfxyHM0my9RLeaRIhCP2sJ6Qx/w79ciW49mT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407902; c=relaxed/simple;
-	bh=vQjHUjVppY9mxgN8nonIdf4I8/S9eHjQw+2PCellyKA=;
+	s=arc-20240116; t=1740408388; c=relaxed/simple;
+	bh=PMvox3xMYbl7WiSJTlIdEICbSrpurN7CnPQzOq0sZZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVX16jnej2jI2J8f0aJBMHEJs6CCMLCfgWrMHcJw6uBmAyYs1TECzsSFi9u1Fwf68gYnuTF5HCO4p0zvvdnkLRjmMce6ply3K+miS30XGgSJ9xmM0PSP/CHvC9r9s4RA/qFHnvk3lfMxOExOKequ0X2CXuadMqr1a6VV10W53SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kw1n2Iek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C209C4CEE6;
-	Mon, 24 Feb 2025 14:38:21 +0000 (UTC)
+	 MIME-Version; b=GbUoOeyFWVgUgF8wMtMIZAaI7OBd8VmDDBc6dF9sIoA/vh1wQQC23CHrXRbJmMY2RPbq+u32Zw/0g9qZkelXDbegYMehyGciJhZA/5T0qIylmwa3X6jhjJiq/9J0WkF5CqQ39kJbTfVrx2byeWTje1BHYtG/pgOlHt6rHZFWKU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8kLD/lz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DE5C4CED6;
+	Mon, 24 Feb 2025 14:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407902;
-	bh=vQjHUjVppY9mxgN8nonIdf4I8/S9eHjQw+2PCellyKA=;
+	s=korg; t=1740408388;
+	bh=PMvox3xMYbl7WiSJTlIdEICbSrpurN7CnPQzOq0sZZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kw1n2Iekr9jkCwPLmOFSHSuyKGvjIouhaZ5PLBbJj06TJEWqHf2+N5IbcTw6JMse1
-	 +Srsn/7TZsSOnoL9C2VIp4vr2LWPE4adLOJwu/DELyvyuAo+DOtHJpxF9xvzZC691I
-	 Dx4/HEoS5gxJ9fPYcvLWOZ28L1Yi3l04JkEIneyE=
+	b=r8kLD/lzm5EsdoojsvyUMdzR4jiGks8evIb7sc26dkJkflFbkWWSMYSsrDLtsTaVa
+	 kkPSbhE95uZI0v70XQsWNhdXqfKCowa07h3uKtpqEPuWUZ2TrVqG4+TuT9qWKv1NNX
+	 U7x/wSoohsxvERGRHPSQOPzy/Ju4MpMjtGQKKqaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/140] Input: synaptics - fix crash when enabling pass-through port
+Subject: [PATCH 6.12 043/154] sched_ext: Fix migration disabled handling in targeted dispatches
 Date: Mon, 24 Feb 2025 15:34:02 +0100
-Message-ID: <20250224142604.702047436@linuxfoundation.org>
+Message-ID: <20250224142608.779388192@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 08bd5b7c9a2401faabdaa1472d45c7de0755fd7e ]
+[ Upstream commit 32966821574cd2917bd60f2554f435fe527f4702 ]
 
-When enabling a pass-through port an interrupt might come before psmouse
-driver binds to the pass-through port. However synaptics sub-driver
-tries to access psmouse instance presumably associated with the
-pass-through port to figure out if only 1 byte of response or entire
-protocol packet needs to be forwarded to the pass-through port and may
-crash if psmouse instance has not been attached to the port yet.
+A dispatch operation that can target a specific local DSQ -
+scx_bpf_dsq_move_to_local() or scx_bpf_dsq_move() - checks whether the task
+can be migrated to the target CPU using task_can_run_on_remote_rq(). If the
+task can't be migrated to the targeted CPU, it is bounced through a global
+DSQ.
 
-Fix the crash by introducing open() and close() methods for the port and
-check if the port is open before trying to access psmouse instance.
-Because psmouse calls serio_open() only after attaching psmouse instance
-to serio port instance this prevents the potential crash.
+task_can_run_on_remote_rq() assumes that the task is on a CPU that's
+different from the targeted CPU but the callers doesn't uphold the
+assumption and may call the function when the task is already on the target
+CPU. When such task has migration disabled, task_can_run_on_remote_rq() ends
+up returning %false incorrectly unnecessarily bouncing the task to a global
+DSQ.
 
-Reported-by: Takashi Iwai <tiwai@suse.de>
-Fixes: 100e16959c3c ("Input: libps2 - attach ps2dev instances as serio port's drvdata")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1219522
-Cc: stable@vger.kernel.org
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/Z4qSHORvPn7EU2j1@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fix it by updating the callers to only call task_can_run_on_remote_rq() when
+the task is on a different CPU than the target CPU. As this is a bit subtle,
+for clarity and documentation:
+
+- Make task_can_run_on_remote_rq() trigger SCHED_WARN_ON() if the task is on
+  the same CPU as the target CPU.
+
+- is_migration_disabled() test in task_can_run_on_remote_rq() cannot trigger
+  if the task is on a different CPU than the target CPU as the preceding
+  task_allowed_on_cpu() test should fail beforehand. Convert the test into
+  SCHED_WARN_ON().
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
+Fixes: 0366017e0973 ("sched_ext: Use task_can_run_on_remote_rq() test in dispatch_to_local_dsq()")
+Cc: stable@vger.kernel.org # v6.12+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics.c | 56 ++++++++++++++++++++++++---------
- drivers/input/mouse/synaptics.h |  1 +
- 2 files changed, 43 insertions(+), 14 deletions(-)
+ kernel/sched/ext.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
-index cff3393f0dd00..26677432ac836 100644
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -667,23 +667,50 @@ static void synaptics_pt_stop(struct serio *serio)
- 	serio_continue_rx(parent->ps2dev.serio);
- }
- 
-+static int synaptics_pt_open(struct serio *serio)
-+{
-+	struct psmouse *parent = psmouse_from_serio(serio->parent);
-+	struct synaptics_data *priv = parent->private;
-+
-+	guard(serio_pause_rx)(parent->ps2dev.serio);
-+	priv->pt_port_open = true;
-+
-+	return 0;
-+}
-+
-+static void synaptics_pt_close(struct serio *serio)
-+{
-+	struct psmouse *parent = psmouse_from_serio(serio->parent);
-+	struct synaptics_data *priv = parent->private;
-+
-+	guard(serio_pause_rx)(parent->ps2dev.serio);
-+	priv->pt_port_open = false;
-+}
-+
- static int synaptics_is_pt_packet(u8 *buf)
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 97076748dee0e..0fc18fc5753b0 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2300,12 +2300,16 @@ static void move_remote_task_to_local_dsq(struct task_struct *p, u64 enq_flags,
+  *
+  * - The BPF scheduler is bypassed while the rq is offline and we can always say
+  *   no to the BPF scheduler initiated migrations while offline.
++ *
++ * The caller must ensure that @p and @rq are on different CPUs.
+  */
+ static bool task_can_run_on_remote_rq(struct task_struct *p, struct rq *rq,
+ 				      bool trigger_error)
  {
- 	return (buf[0] & 0xFC) == 0x84 && (buf[3] & 0xCC) == 0xC4;
- }
+ 	int cpu = cpu_of(rq);
  
--static void synaptics_pass_pt_packet(struct serio *ptport, u8 *packet)
-+static void synaptics_pass_pt_packet(struct synaptics_data *priv, u8 *packet)
- {
--	struct psmouse *child = psmouse_from_serio(ptport);
-+	struct serio *ptport;
- 
--	if (child && child->state == PSMOUSE_ACTIVATED) {
--		serio_interrupt(ptport, packet[1], 0);
--		serio_interrupt(ptport, packet[4], 0);
--		serio_interrupt(ptport, packet[5], 0);
--		if (child->pktsize == 4)
--			serio_interrupt(ptport, packet[2], 0);
--	} else {
--		serio_interrupt(ptport, packet[1], 0);
-+	ptport = priv->pt_port;
-+	if (!ptport)
-+		return;
++	SCHED_WARN_ON(task_cpu(p) == cpu);
 +
-+	serio_interrupt(ptport, packet[1], 0);
-+
-+	if (priv->pt_port_open) {
-+		struct psmouse *child = psmouse_from_serio(ptport);
-+
-+		if (child->state == PSMOUSE_ACTIVATED) {
-+			serio_interrupt(ptport, packet[4], 0);
-+			serio_interrupt(ptport, packet[5], 0);
-+			if (child->pktsize == 4)
-+				serio_interrupt(ptport, packet[2], 0);
-+		}
- 	}
- }
- 
-@@ -722,6 +749,8 @@ static void synaptics_pt_create(struct psmouse *psmouse)
- 	serio->write = synaptics_pt_write;
- 	serio->start = synaptics_pt_start;
- 	serio->stop = synaptics_pt_stop;
-+	serio->open = synaptics_pt_open;
-+	serio->close = synaptics_pt_close;
- 	serio->parent = psmouse->ps2dev.serio;
- 
- 	psmouse->pt_activate = synaptics_pt_activate;
-@@ -1218,11 +1247,10 @@ static psmouse_ret_t synaptics_process_byte(struct psmouse *psmouse)
- 
- 		if (SYN_CAP_PASS_THROUGH(priv->info.capabilities) &&
- 		    synaptics_is_pt_packet(psmouse->packet)) {
--			if (priv->pt_port)
--				synaptics_pass_pt_packet(priv->pt_port,
--							 psmouse->packet);
--		} else
-+			synaptics_pass_pt_packet(priv, psmouse->packet);
-+		} else {
- 			synaptics_process_packet(psmouse);
-+		}
- 
- 		return PSMOUSE_FULL_PACKET;
- 	}
-diff --git a/drivers/input/mouse/synaptics.h b/drivers/input/mouse/synaptics.h
-index 08533d1b1b16f..4b34f13b9f761 100644
---- a/drivers/input/mouse/synaptics.h
-+++ b/drivers/input/mouse/synaptics.h
-@@ -188,6 +188,7 @@ struct synaptics_data {
- 	bool disable_gesture;			/* disable gestures */
- 
- 	struct serio *pt_port;			/* Pass-through serio port */
-+	bool pt_port_open;
- 
  	/*
- 	 * Last received Advanced Gesture Mode (AGM) packet. An AGM packet
+ 	 * We don't require the BPF scheduler to avoid dispatching to offline
+ 	 * CPUs mostly for convenience but also because CPUs can go offline
+@@ -2319,8 +2323,11 @@ static bool task_can_run_on_remote_rq(struct task_struct *p, struct rq *rq,
+ 		return false;
+ 	}
+ 
+-	if (unlikely(is_migration_disabled(p)))
+-		return false;
++	/*
++	 * If @p has migration disabled, @p->cpus_ptr only contains its current
++	 * CPU and the above task_allowed_on_cpu() test should have failed.
++	 */
++	SCHED_WARN_ON(is_migration_disabled(p));
+ 
+ 	if (!scx_rq_online(rq))
+ 		return false;
+@@ -2424,7 +2431,8 @@ static struct rq *move_task_between_dsqs(struct task_struct *p, u64 enq_flags,
+ 
+ 	if (dst_dsq->id == SCX_DSQ_LOCAL) {
+ 		dst_rq = container_of(dst_dsq, struct rq, scx.local_dsq);
+-		if (!task_can_run_on_remote_rq(p, dst_rq, true)) {
++		if (src_rq != dst_rq &&
++		    unlikely(!task_can_run_on_remote_rq(p, dst_rq, true))) {
+ 			dst_dsq = find_global_dsq(p);
+ 			dst_rq = src_rq;
+ 		}
+@@ -2541,7 +2549,8 @@ static void dispatch_to_local_dsq(struct rq *rq, struct scx_dispatch_q *dst_dsq,
+ 	}
+ 
+ #ifdef CONFIG_SMP
+-	if (unlikely(!task_can_run_on_remote_rq(p, dst_rq, true))) {
++	if (src_rq != dst_rq &&
++	    unlikely(!task_can_run_on_remote_rq(p, dst_rq, true))) {
+ 		dispatch_enqueue(find_global_dsq(p), p,
+ 				 enq_flags | SCX_ENQ_CLEAR_OPSS);
+ 		return;
 -- 
 2.39.5
 
