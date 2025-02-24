@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-119127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2F3A42518
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBD6A42409
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A50D3A25C0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF70D3BD3AF
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA6323BD1D;
-	Mon, 24 Feb 2025 14:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DBC24FBE8;
+	Mon, 24 Feb 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebwsACHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8AkHI3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C1F14D28C;
-	Mon, 24 Feb 2025 14:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFB324EF62;
+	Mon, 24 Feb 2025 14:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408408; cv=none; b=H+YwMSsvsQGurwiw4WUEoyoLl77BdCKWU5/Z1OFBY0n5G4JobXhZzrJOhT2GIUNGk+za+ilxvipqZTMm0iqVmYdaTp0nahSeJhd1+KUuFn7tbddHGVhDChLvlnQNY/kiga7gB7cBid/Fmu5RdUWzpzGEBKnZahOcjVLxEhVqLeU=
+	t=1740407833; cv=none; b=VpMaqxibNqe8XbkyNOqbPplB8Kb9qoF4c31TJldMO23BwyzkKNHMNJUBOGwP81XaqmQxKyAzUr8yWnK0VOdZQqPMhsi5sfAc11ur9ZOmYJlqVtVgv/EP8RjVQsebhcPSfcBwDHPRHA3igjdkv13W0Z317S2m2Tddb58xfADGACg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408408; c=relaxed/simple;
-	bh=r+VfOjUOTLcdgTmBlJHYy6LUlCTuigeBKlcpKGWeBI0=;
+	s=arc-20240116; t=1740407833; c=relaxed/simple;
+	bh=+HFCLuVqoyAcc1QqGS+nZX41lencjJX6ayIKLb5LPX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmXuHSH5iGk5ijyeNqtdr1r9jQzKeOnCYmxGmVpglAt9876SOgT3HrAKU5iHG5lcU1oG8F9d31mu0Op5t/K5gUIcf8uHd4Nv2iNcumiReqs/VZxzv4bya6uAt6CNZ8lm2u8m893e5J5CXUFA778qC1Fc4zHnOeMM5xsxXqDy4jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebwsACHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83B0C4CED6;
-	Mon, 24 Feb 2025 14:46:47 +0000 (UTC)
+	 MIME-Version; b=LQv7Vcini7nzLo7tuj2xdIKdPOFv17ItLtGw8/4LLijtoNEISzCf8jwnmg3n0MUnhW4V1uDoo2uZ3CQLV1yv9Q/prFYpyf0yJanJPBhqy5dXJ9q6ISbDVJmNzzXaRYkqbPSn9mPYgGcwaS9PmB6hwA3z/rPpkxnWclCCIz9pa/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8AkHI3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D5AC4CED6;
+	Mon, 24 Feb 2025 14:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408408;
-	bh=r+VfOjUOTLcdgTmBlJHYy6LUlCTuigeBKlcpKGWeBI0=;
+	s=korg; t=1740407833;
+	bh=+HFCLuVqoyAcc1QqGS+nZX41lencjJX6ayIKLb5LPX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebwsACHPGpqLKrgsgYBpS6eqidZUyh6d2efQCUqfPT7rbGsuv+uOTwsLlq+j9t0YC
-	 n6pSKxLtKh0BPTFPKZvsu3IRuCZ3F+tnm0gT4SxHCezGynpZQmWWVhWxUX18ucElqr
-	 s0roDzVH+l7512nUi3zXioVwondAD7/1MucxpA9M=
+	b=Y8AkHI3BF6grQoQuXm+5E9vYfW/Bxg4LoAUXlirjNFzGynY7G5T4+ozsgC02vsK2u
+	 kZBLGFVM2ZgU0nF2GxZ1PlrF+p6VtAH3Yy3X2CNk6dslL/nWf7WDokCpHH7ZMQXwtD
+	 UmQynz57Ws/N1Ve3xOIlNjCwiKlwrRFYeotUnpMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Steev Klimaszewski <steev@kali.org>
-Subject: [PATCH 6.12 022/154] Bluetooth: qca: Fix poor RF performance for WCN6855
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 6.6 022/140] xfs: update the pag for the last AG at recovery time
 Date: Mon, 24 Feb 2025 15:33:41 +0100
-Message-ID: <20250224142607.948363456@linuxfoundation.org>
+Message-ID: <20250224142603.876690896@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit a2fad248947d702ed3dcb52b8377c1a3ae201e44 ]
+commit 4a201dcfa1ff0dcfe4348c40f3ad8bd68b97eb6c upstream.
 
-For WCN6855, board ID specific NVM needs to be downloaded once board ID
-is available, but the default NVM is always downloaded currently.
+Currently log recovery never updates the in-core perag values for the
+last allocation group when they were grown by growfs.  This leads to
+btree record validation failures for the alloc, ialloc or finotbt
+trees if a transaction references this new space.
 
-The wrong NVM causes poor RF performance, and effects user experience
-for several types of laptop with WCN6855 on the market.
+Found by Brian's new growfs recovery stress test.
 
-Fix by downloading board ID specific NVM if board ID is available.
-
-Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
-Cc: stable@vger.kernel.org # 6.4
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Steev Klimaszewski <steev@kali.org> #Thinkpad X13s
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btqca.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_ag.c        |   17 +++++++++++++++++
+ fs/xfs/libxfs/xfs_ag.h        |    1 +
+ fs/xfs/xfs_buf_item_recover.c |   19 ++++++++++++++++---
+ 3 files changed, 34 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 5cb1fd1a0c7b5..04d02c746ec0f 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -905,8 +905,9 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 				 "qca/msnv%02x.bin", rom_ver);
- 			break;
- 		case QCA_WCN6855:
--			snprintf(config.fwname, sizeof(config.fwname),
--				 "qca/hpnv%02x.bin", rom_ver);
-+			qca_read_fw_board_id(hdev, &boardid);
-+			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
-+						  "hpnv", soc_type, ver, rom_ver, boardid);
- 			break;
- 		case QCA_WCN7850:
- 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
--- 
-2.39.5
-
+--- a/fs/xfs/libxfs/xfs_ag.c
++++ b/fs/xfs/libxfs/xfs_ag.c
+@@ -358,6 +358,23 @@ xfs_free_unused_perag_range(
+ }
+ 
+ int
++xfs_update_last_ag_size(
++	struct xfs_mount	*mp,
++	xfs_agnumber_t		prev_agcount)
++{
++	struct xfs_perag	*pag = xfs_perag_grab(mp, prev_agcount - 1);
++
++	if (!pag)
++		return -EFSCORRUPTED;
++	pag->block_count = __xfs_ag_block_count(mp, prev_agcount - 1,
++			mp->m_sb.sb_agcount, mp->m_sb.sb_dblocks);
++	__xfs_agino_range(mp, pag->block_count, &pag->agino_min,
++			&pag->agino_max);
++	xfs_perag_rele(pag);
++	return 0;
++}
++
++int
+ xfs_initialize_perag(
+ 	struct xfs_mount	*mp,
+ 	xfs_agnumber_t		old_agcount,
+--- a/fs/xfs/libxfs/xfs_ag.h
++++ b/fs/xfs/libxfs/xfs_ag.h
+@@ -140,6 +140,7 @@ int xfs_initialize_perag(struct xfs_moun
+ 		xfs_agnumber_t *maxagi);
+ int xfs_initialize_perag_data(struct xfs_mount *mp, xfs_agnumber_t agno);
+ void xfs_free_perag(struct xfs_mount *mp);
++int xfs_update_last_ag_size(struct xfs_mount *mp, xfs_agnumber_t prev_agcount);
+ 
+ /* Passive AG references */
+ struct xfs_perag *xfs_perag_get(struct xfs_mount *mp, xfs_agnumber_t agno);
+--- a/fs/xfs/xfs_buf_item_recover.c
++++ b/fs/xfs/xfs_buf_item_recover.c
+@@ -708,6 +708,11 @@ xlog_recover_do_primary_sb_buffer(
+ 
+ 	xlog_recover_do_reg_buffer(mp, item, bp, buf_f, current_lsn);
+ 
++	if (orig_agcount == 0) {
++		xfs_alert(mp, "Trying to grow file system without AGs");
++		return -EFSCORRUPTED;
++	}
++
+ 	/*
+ 	 * Update the in-core super block from the freshly recovered on-disk one.
+ 	 */
+@@ -719,14 +724,22 @@ xlog_recover_do_primary_sb_buffer(
+ 	}
+ 
+ 	/*
++	 * Growfs can also grow the last existing AG.  In this case we also need
++	 * to update the length in the in-core perag structure and values
++	 * depending on it.
++	 */
++	error = xfs_update_last_ag_size(mp, orig_agcount);
++	if (error)
++		return error;
++
++	/*
+ 	 * Initialize the new perags, and also update various block and inode
+ 	 * allocator setting based off the number of AGs or total blocks.
+ 	 * Because of the latter this also needs to happen if the agcount did
+ 	 * not change.
+ 	 */
+-	error = xfs_initialize_perag(mp, orig_agcount,
+-			mp->m_sb.sb_agcount, mp->m_sb.sb_dblocks,
+-			&mp->m_maxagi);
++	error = xfs_initialize_perag(mp, orig_agcount, mp->m_sb.sb_agcount,
++			mp->m_sb.sb_dblocks, &mp->m_maxagi);
+ 	if (error) {
+ 		xfs_warn(mp, "Failed recovery per-ag init: %d", error);
+ 		return error;
 
 
 
