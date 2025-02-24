@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-119193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AE9A4252A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:05:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF16A425C5
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6B513AA6A7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C769442595A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EF324EF9B;
-	Mon, 24 Feb 2025 14:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0060F19E997;
+	Mon, 24 Feb 2025 14:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1E2D5rRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jw4sUHkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679F31514CC;
-	Mon, 24 Feb 2025 14:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B055A1946DF;
+	Mon, 24 Feb 2025 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408635; cv=none; b=V4CpokexqQjDDoqo5cF/O1M6ktkmDHKwMk+8yoREzr/BU/AAnYeqn2JjJdVyyCOHueYA9+/m7XQ7WYI+gyyjhGmArNe8YIlT/ygax/ioGVRWlKLTzz3nFcBEucWQOomiNAJoatZ57fYdf9z2yNnP7QOdop4E3+H49K/T1OV1Hhc=
+	t=1740409061; cv=none; b=hm/0r+x0qZOXKvjpTEPDnaZrkxjR+bHX0CdgRPrmjmxp5taJPiHgKidXZlW4Cl7WBBsrX8FPzG1wMwHb/a3Mwx0e5BGsd1Be84NNwfoi3elBR4f7Hre+xaZ/yC8/VxDw5fS2UJ3lxby3n6CYBxMkExLNwoTLLAx7+V98zkgtBlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408635; c=relaxed/simple;
-	bh=Cl5VF84Nl9JGwYpSGq7mB1WZZQpYKtut27aJf47tkYs=;
+	s=arc-20240116; t=1740409061; c=relaxed/simple;
+	bh=odnbsf9p0bTjZXsX71lDJxkw41DiscYetvvlZDu1ZJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqm9G7AqQPpc5fYcrj1qEx6xD7fq7iaDiCrcSTD67FhBllRvGhGm+4Hr4DtJz6oFtUc31RLnVuw58WaTAX4LWX/rkYVSaEleLhd6o6Xh21VIF1RRJrJNDhT/09ow7HnOH/LtSsa3EQ4CTG8hNpffjRU1TuuIEw+KGotsHklH92E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1E2D5rRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66AFC4CED6;
-	Mon, 24 Feb 2025 14:50:34 +0000 (UTC)
+	 MIME-Version; b=WmI0Jbvnfdv69CYppUVb86ILd7KN+GTyi7iI7FwQLugryA/9h0WFDcZ0SMXhZcWaW49b69NuAC0uxGfPIsv3BiPX9279vInNDpNTokGL6sMVqTPYDS8JJMWiZRAYvygIF20T9laxr4VxC//jsoKXIz+0K13971sEgbJI7+2Rkd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jw4sUHkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD7AC4CED6;
+	Mon, 24 Feb 2025 14:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408635;
-	bh=Cl5VF84Nl9JGwYpSGq7mB1WZZQpYKtut27aJf47tkYs=;
+	s=korg; t=1740409061;
+	bh=odnbsf9p0bTjZXsX71lDJxkw41DiscYetvvlZDu1ZJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1E2D5rRyw9e+sSu/SF2XHNB/b5XzwgqPX0DmrLTS0LOrRbP9md3L1Pnt9MJgm/8GP
-	 qQdQ93XYTC9Bb4bXJoEvfVNJi+Og8rMAd+Cq7Gkd4bnJqnYZsoHYw3n0Sjv7Q5gSKI
-	 1dJsQfs2GlWt+T4nHLU1P38P1YXLwyGv+uGWlEro=
+	b=Jw4sUHknvyq5aXXHWrKKxjqhyxlyC6shtaqcNDU8vIKt99tjGMVSmzWN+e7ji4gFX
+	 dbvP4Vi5XT9meXU4c4QH953LKu2NKx8px5sislikZ+spK/tPhARhB1SIK+G1C5EDHI
+	 AwtPYSc3QUG60JRMDdyW5whUXGilicBwsZPeqpos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 115/154] gpiolib: protect gpio_chip with SRCU in array_info paths in multi get/set
-Date: Mon, 24 Feb 2025 15:35:14 +0100
-Message-ID: <20250224142611.560607260@linuxfoundation.org>
+	Artur Rojek <contact@artur-rojek.eu>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 085/138] irqchip/jcore-aic, clocksource/drivers/jcore: Fix jcore-pit interrupt request
+Date: Mon, 24 Feb 2025 15:35:15 +0100
+Message-ID: <20250224142607.818777744@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,202 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Artur Rojek <contact@artur-rojek.eu>
 
-commit 81570d6a7ad37033c7895811551a5a9023706eda upstream.
+[ Upstream commit d7e3fd658248f257006227285095d190e70ee73a ]
 
-During the locking rework in GPIOLIB, we omitted one important use-case,
-namely: setting and getting values for GPIO descriptor arrays with
-array_info present.
+The jcore-aic irqchip does not have separate interrupt numbers reserved for
+cpu-local vs global interrupts. Therefore the device drivers need to
+request the given interrupt as per CPU interrupt.
 
-This patch does two things: first it makes struct gpio_array store the
-address of the underlying GPIO device and not chip. Next: it protects
-the chip with SRCU from removal in gpiod_get_array_value_complex() and
-gpiod_set_array_value_complex().
+69a9dcbd2d65 ("clocksource/drivers/jcore: Use request_percpu_irq()")
+converted the clocksource driver over to request_percpu_irq(), but failed
+to do add all the required changes, resulting in a failure to register PIT
+interrupts.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250215095655.23152-1-brgl@bgdev.pl
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by:
+
+ 1) Explicitly mark the interrupt via irq_set_percpu_devid() in
+    jcore_pit_init().
+
+ 2) Enable and disable the per CPU interrupt in the CPU hotplug callbacks.
+
+ 3) Pass the correct per-cpu cookie to the irq handler by using
+    handle_percpu_devid_irq() instead of handle_percpu_irq() in
+    handle_jcore_irq().
+
+[ tglx: Massage change log ]
+
+Fixes: 69a9dcbd2d65 ("clocksource/drivers/jcore: Use request_percpu_irq()")
+Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/all/20250216175545.35079-3-contact@artur-rojek.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c |   48 +++++++++++++++++++++++++++++++++---------------
- drivers/gpio/gpiolib.h |    4 ++--
- 2 files changed, 35 insertions(+), 17 deletions(-)
+ drivers/clocksource/jcore-pit.c | 15 ++++++++++++++-
+ drivers/irqchip/irq-jcore-aic.c |  2 +-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -3082,6 +3082,8 @@ static int gpiod_get_raw_value_commit(co
- static int gpio_chip_get_multiple(struct gpio_chip *gc,
- 				  unsigned long *mask, unsigned long *bits)
- {
-+	lockdep_assert_held(&gc->gpiodev->srcu);
+diff --git a/drivers/clocksource/jcore-pit.c b/drivers/clocksource/jcore-pit.c
+index a3fe98cd38382..82815428f8f92 100644
+--- a/drivers/clocksource/jcore-pit.c
++++ b/drivers/clocksource/jcore-pit.c
+@@ -114,6 +114,18 @@ static int jcore_pit_local_init(unsigned cpu)
+ 	pit->periodic_delta = DIV_ROUND_CLOSEST(NSEC_PER_SEC, HZ * buspd);
+ 
+ 	clockevents_config_and_register(&pit->ced, freq, 1, ULONG_MAX);
++	enable_percpu_irq(pit->ced.irq, IRQ_TYPE_NONE);
 +
- 	if (gc->get_multiple)
- 		return gc->get_multiple(gc, mask, bits);
- 	if (gc->get) {
-@@ -3112,6 +3114,7 @@ int gpiod_get_array_value_complex(bool r
- 				  struct gpio_array *array_info,
- 				  unsigned long *value_bitmap)
- {
-+	struct gpio_chip *gc;
- 	int ret, i = 0;
- 
- 	/*
-@@ -3123,10 +3126,15 @@ int gpiod_get_array_value_complex(bool r
- 	    array_size <= array_info->size &&
- 	    (void *)array_info == desc_array + array_info->size) {
- 		if (!can_sleep)
--			WARN_ON(array_info->chip->can_sleep);
-+			WARN_ON(array_info->gdev->can_sleep);
- 
--		ret = gpio_chip_get_multiple(array_info->chip,
--					     array_info->get_mask,
-+		guard(srcu)(&array_info->gdev->srcu);
-+		gc = srcu_dereference(array_info->gdev->chip,
-+				      &array_info->gdev->srcu);
-+		if (!gc)
-+			return -ENODEV;
++	return 0;
++}
 +
-+		ret = gpio_chip_get_multiple(gc, array_info->get_mask,
- 					     value_bitmap);
- 		if (ret)
- 			return ret;
-@@ -3407,6 +3415,8 @@ static void gpiod_set_raw_value_commit(s
- static void gpio_chip_set_multiple(struct gpio_chip *gc,
- 				   unsigned long *mask, unsigned long *bits)
- {
-+	lockdep_assert_held(&gc->gpiodev->srcu);
++static int jcore_pit_local_teardown(unsigned cpu)
++{
++	struct jcore_pit *pit = this_cpu_ptr(jcore_pit_percpu);
 +
- 	if (gc->set_multiple) {
- 		gc->set_multiple(gc, mask, bits);
- 	} else {
-@@ -3424,6 +3434,7 @@ int gpiod_set_array_value_complex(bool r
- 				  struct gpio_array *array_info,
- 				  unsigned long *value_bitmap)
- {
-+	struct gpio_chip *gc;
- 	int i = 0;
- 
- 	/*
-@@ -3435,14 +3446,19 @@ int gpiod_set_array_value_complex(bool r
- 	    array_size <= array_info->size &&
- 	    (void *)array_info == desc_array + array_info->size) {
- 		if (!can_sleep)
--			WARN_ON(array_info->chip->can_sleep);
-+			WARN_ON(array_info->gdev->can_sleep);
++	pr_info("Local J-Core PIT teardown on cpu %u\n", cpu);
 +
-+		guard(srcu)(&array_info->gdev->srcu);
-+		gc = srcu_dereference(array_info->gdev->chip,
-+				      &array_info->gdev->srcu);
-+		if (!gc)
-+			return -ENODEV;
++	disable_percpu_irq(pit->ced.irq);
  
- 		if (!raw && !bitmap_empty(array_info->invert_mask, array_size))
- 			bitmap_xor(value_bitmap, value_bitmap,
- 				   array_info->invert_mask, array_size);
+ 	return 0;
+ }
+@@ -168,6 +180,7 @@ static int __init jcore_pit_init(struct device_node *node)
+ 		return -ENOMEM;
+ 	}
  
--		gpio_chip_set_multiple(array_info->chip, array_info->set_mask,
--				       value_bitmap);
-+		gpio_chip_set_multiple(gc, array_info->set_mask, value_bitmap);
++	irq_set_percpu_devid(pit_irq);
+ 	err = request_percpu_irq(pit_irq, jcore_timer_interrupt,
+ 				 "jcore_pit", jcore_pit_percpu);
+ 	if (err) {
+@@ -237,7 +250,7 @@ static int __init jcore_pit_init(struct device_node *node)
  
- 		i = find_first_zero_bit(array_info->set_mask, array_size);
- 		if (i == array_size)
-@@ -4698,9 +4714,10 @@ struct gpio_descs *__must_check gpiod_ge
+ 	cpuhp_setup_state(CPUHP_AP_JCORE_TIMER_STARTING,
+ 			  "clockevents/jcore:starting",
+-			  jcore_pit_local_init, NULL);
++			  jcore_pit_local_init, jcore_pit_local_teardown);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
+index b9dcc8e78c750..1f613eb7b7f03 100644
+--- a/drivers/irqchip/irq-jcore-aic.c
++++ b/drivers/irqchip/irq-jcore-aic.c
+@@ -38,7 +38,7 @@ static struct irq_chip jcore_aic;
+ static void handle_jcore_irq(struct irq_desc *desc)
  {
- 	struct gpio_desc *desc;
- 	struct gpio_descs *descs;
-+	struct gpio_device *gdev;
- 	struct gpio_array *array_info = NULL;
--	struct gpio_chip *gc;
- 	int count, bitmap_size;
-+	unsigned long dflags;
- 	size_t descs_size;
- 
- 	count = gpiod_count(dev, con_id);
-@@ -4721,7 +4738,7 @@ struct gpio_descs *__must_check gpiod_ge
- 
- 		descs->desc[descs->ndescs] = desc;
- 
--		gc = gpiod_to_chip(desc);
-+		gdev = gpiod_to_gpio_device(desc);
- 		/*
- 		 * If pin hardware number of array member 0 is also 0, select
- 		 * its chip as a candidate for fast bitmap processing path.
-@@ -4729,8 +4746,8 @@ struct gpio_descs *__must_check gpiod_ge
- 		if (descs->ndescs == 0 && gpio_chip_hwgpio(desc) == 0) {
- 			struct gpio_descs *array;
- 
--			bitmap_size = BITS_TO_LONGS(gc->ngpio > count ?
--						    gc->ngpio : count);
-+			bitmap_size = BITS_TO_LONGS(gdev->ngpio > count ?
-+						    gdev->ngpio : count);
- 
- 			array = krealloc(descs, descs_size +
- 					 struct_size(array_info, invert_mask, 3 * bitmap_size),
-@@ -4750,7 +4767,7 @@ struct gpio_descs *__must_check gpiod_ge
- 
- 			array_info->desc = descs->desc;
- 			array_info->size = count;
--			array_info->chip = gc;
-+			array_info->gdev = gdev;
- 			bitmap_set(array_info->get_mask, descs->ndescs,
- 				   count - descs->ndescs);
- 			bitmap_set(array_info->set_mask, descs->ndescs,
-@@ -4763,7 +4780,7 @@ struct gpio_descs *__must_check gpiod_ge
- 			continue;
- 
- 		/* Unmark array members which don't belong to the 'fast' chip */
--		if (array_info->chip != gc) {
-+		if (array_info->gdev != gdev) {
- 			__clear_bit(descs->ndescs, array_info->get_mask);
- 			__clear_bit(descs->ndescs, array_info->set_mask);
- 		}
-@@ -4786,9 +4803,10 @@ struct gpio_descs *__must_check gpiod_ge
- 					    array_info->set_mask);
- 			}
- 		} else {
-+			dflags = READ_ONCE(desc->flags);
- 			/* Exclude open drain or open source from fast output */
--			if (gpiochip_line_is_open_drain(gc, descs->ndescs) ||
--			    gpiochip_line_is_open_source(gc, descs->ndescs))
-+			if (test_bit(FLAG_OPEN_DRAIN, &dflags) ||
-+			    test_bit(FLAG_OPEN_SOURCE, &dflags))
- 				__clear_bit(descs->ndescs,
- 					    array_info->set_mask);
- 			/* Identify 'fast' pins which require invertion */
-@@ -4800,7 +4818,7 @@ struct gpio_descs *__must_check gpiod_ge
- 	if (array_info)
- 		dev_dbg(dev,
- 			"GPIO array info: chip=%s, size=%d, get_mask=%lx, set_mask=%lx, invert_mask=%lx\n",
--			array_info->chip->label, array_info->size,
-+			array_info->gdev->label, array_info->size,
- 			*array_info->get_mask, *array_info->set_mask,
- 			*array_info->invert_mask);
- 	return descs;
---- a/drivers/gpio/gpiolib.h
-+++ b/drivers/gpio/gpiolib.h
-@@ -110,7 +110,7 @@ extern const char *const gpio_suffixes[]
-  *
-  * @desc:		Array of pointers to the GPIO descriptors
-  * @size:		Number of elements in desc
-- * @chip:		Parent GPIO chip
-+ * @gdev:		Parent GPIO device
-  * @get_mask:		Get mask used in fastpath
-  * @set_mask:		Set mask used in fastpath
-  * @invert_mask:	Invert mask used in fastpath
-@@ -122,7 +122,7 @@ extern const char *const gpio_suffixes[]
- struct gpio_array {
- 	struct gpio_desc	**desc;
- 	unsigned int		size;
--	struct gpio_chip	*chip;
-+	struct gpio_device	*gdev;
- 	unsigned long		*get_mask;
- 	unsigned long		*set_mask;
- 	unsigned long		invert_mask[];
+ 	if (irqd_is_per_cpu(irq_desc_get_irq_data(desc)))
+-		handle_percpu_irq(desc);
++		handle_percpu_devid_irq(desc);
+ 	else
+ 		handle_simple_irq(desc);
+ }
+-- 
+2.39.5
+
 
 
 
