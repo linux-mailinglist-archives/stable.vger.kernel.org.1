@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-119108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25D0A4244A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8980A423A3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A34F443D55
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:47:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F0D3189F956
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A5818BC36;
-	Mon, 24 Feb 2025 14:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7394254857;
+	Mon, 24 Feb 2025 14:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRpbcTUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXYBVhiX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA78A2A8D0;
-	Mon, 24 Feb 2025 14:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC413F43A;
+	Mon, 24 Feb 2025 14:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408348; cv=none; b=R7uJLDhaaAcyL1NeX4LRcBhgpbTa5PjmvMHR8+cR1FrdGZ3UfJxEEIE557+S6uwsGHX2Pa9kOiB2z/b2JTxwWskgz9JjZeBEnoTCpyR5y3+GmvFIeTqRNmbXIP+m2IjNdiZj2+ZXJdcekqC3WYRpvIi3ZhvDHHBDTXCizXJP7lo=
+	t=1740407979; cv=none; b=ohbrLv/R2edxqfSeFrRKupEHNAQbpzvqHEjX3cA5mqE0zyfSjWWf2ltKNJMzzYBVT+wPXxcHSO1TiUMOt1oK79AxzUz4qRNGUvCQS58FfI8YvSaAzLkTrYdqL9HDZxdphbeoGXrVg4YuywpPXIEgFUR7qD94Zzw2vu1D/puiIrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408348; c=relaxed/simple;
-	bh=uNOy3P9gCbZt8OQxlFw2sCNzqlbiTEGew0M7fJ2EdFI=;
+	s=arc-20240116; t=1740407979; c=relaxed/simple;
+	bh=97epbmB9Wz7Z/6pQGiPABCGvNdVzn35gRrfuaMCFPag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHrm0A0nJUmmPgbOYhEs2tjyBShG+wyl2wHOWxSUMqqk82pNIz9v5tHF9MeXRrFe9jPB1kQamHRojNSpiX6YcIKjWKpNTF9kWogKvq3tDmsX2zxEOQ49d/q8t1ixiEost7tQht633fR76pKM0rqqawQKISaQGkzR2WVTKNXuing=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRpbcTUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE09C4CED6;
-	Mon, 24 Feb 2025 14:45:47 +0000 (UTC)
+	 MIME-Version; b=oMqRiCpH9ZrLtBnX1/xvHV8bFDGR+IB2sFyZxg3m60+231+5VwkIH1LnVmWvI+L3X0XB6CmuTmPod5K39fTLZZVaqH5EIEbCOVoKFHp3AEdVVFLJiUJLxj61DMBojc+SCsDbII4gDZZM8D1IdocIIu8ljdGwCIuubrr2Mmyv3K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXYBVhiX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AD9C4CED6;
+	Mon, 24 Feb 2025 14:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408348;
-	bh=uNOy3P9gCbZt8OQxlFw2sCNzqlbiTEGew0M7fJ2EdFI=;
+	s=korg; t=1740407979;
+	bh=97epbmB9Wz7Z/6pQGiPABCGvNdVzn35gRrfuaMCFPag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRpbcTUo9hWVZ9skhubTyjAEZmND5Hp0DRUHyNlQKVWJkx+s1ipGnMPaPCO+6oJDC
-	 uw2or/82hqBFWo7BLQ+WgtzYfuPdSsH9XWkIdulhEU+GRx2ow9Xn6E5JfzMyhbDptM
-	 PzmGJ3QJvvFLwt+z5DUirfS8XbA7PiYVyQiVyvSM=
+	b=yXYBVhiXfLIsiAECzEmU3WwC2lsecQBMgRe8na5fhefyCOW6i77vUzaI1Cu0LCNF7
+	 NfQXthWgf6Ops1tnku3ZYfBFMDCXIgrj2lgWkcVgF/X+AQLofiBF3JAQ28QBGqP7/S
+	 dRsUvdVcr0ygknAduUyaYrEF9KJKBHNvfBfqwL9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Fei Shao <fshao@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/154] arm64: dts: mediatek: mt8183: Disable DSI display output by default
+Subject: [PATCH 6.6 032/140] md/md-cluster: fix spares warnings for __le64
 Date: Mon, 24 Feb 2025 15:33:51 +0100
-Message-ID: <20250224142608.343272351@linuxfoundation.org>
+Message-ID: <20250224142604.270901914@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 26f6e91fa29a58fdc76b47f94f8f6027944a490c ]
+[ Upstream commit 82697ccf7e495c1ba81e315c2886d6220ff84c2c ]
 
-Most SoC dtsi files have the display output interfaces disabled by
-default, and only enabled on boards that utilize them. The MT8183
-has it backwards: the display outputs are left enabled by default,
-and only disabled at the board level.
+drivers/md/md-cluster.c:1220:22: warning: incorrect type in assignment (different base types)
+drivers/md/md-cluster.c:1220:22:    expected unsigned long my_sync_size
+drivers/md/md-cluster.c:1220:22:    got restricted __le64 [usertype] sync_size
+drivers/md/md-cluster.c:1252:35: warning: incorrect type in assignment (different base types)
+drivers/md/md-cluster.c:1252:35:    expected unsigned long sync_size
+drivers/md/md-cluster.c:1252:35:    got restricted __le64 [usertype] sync_size
+drivers/md/md-cluster.c:1253:41: warning: restricted __le64 degrades to integer
 
-Reverse the situation for the DSI output so that it follows the
-normal scheme. For ease of backporting the DPI output is handled
-in a separate patch.
+Fix the warnings by using le64_to_cpu() to convet __le64 to integer.
 
-Fixes: 88ec840270e6 ("arm64: dts: mt8183: Add dsi node")
-Fixes: 19b6403f1e2a ("arm64: dts: mt8183: add mt8183 pumpkin board")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20241025075630.3917458-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240826074452.1490072-6-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
+Stable-dep-of: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts | 4 ----
- arch/arm64/boot/dts/mediatek/mt8183.dtsi        | 1 +
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/md/md-cluster.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts
-index 61a6f66914b86..dbdee604edab4 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts
-@@ -522,10 +522,6 @@
- 	status = "okay";
- };
+diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
+index 1e26eb2233495..ca4d3a8d5dd76 100644
+--- a/drivers/md/md-cluster.c
++++ b/drivers/md/md-cluster.c
+@@ -1200,7 +1200,7 @@ static int cluster_check_sync_size(struct mddev *mddev)
+ 	struct dlm_lock_resource *bm_lockres;
  
--&dsi0 {
--	status = "disabled";
--};
--
- &dpi0 {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&dpi_func_pins>;
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 5cb6bd3c5acbb..92c41463d10e3 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1835,6 +1835,7 @@
- 			resets = <&mmsys MT8183_MMSYS_SW0_RST_B_DISP_DSI0>;
- 			phys = <&mipi_tx0>;
- 			phy-names = "dphy";
-+			status = "disabled";
- 		};
+ 	sb = kmap_atomic(bitmap->storage.sb_page);
+-	my_sync_size = sb->sync_size;
++	my_sync_size = le64_to_cpu(sb->sync_size);
+ 	kunmap_atomic(sb);
  
- 		dpi0: dpi@14015000 {
+ 	for (i = 0; i < node_num; i++) {
+@@ -1232,8 +1232,8 @@ static int cluster_check_sync_size(struct mddev *mddev)
+ 
+ 		sb = kmap_atomic(bitmap->storage.sb_page);
+ 		if (sync_size == 0)
+-			sync_size = sb->sync_size;
+-		else if (sync_size != sb->sync_size) {
++			sync_size = le64_to_cpu(sb->sync_size);
++		else if (sync_size != le64_to_cpu(sb->sync_size)) {
+ 			kunmap_atomic(sb);
+ 			md_bitmap_free(bitmap);
+ 			return -1;
 -- 
 2.39.5
 
