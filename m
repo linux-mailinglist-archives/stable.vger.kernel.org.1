@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-119170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B1FA4256B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64619A42587
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B794F443AF9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A34C117A420
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAA1824A3;
-	Mon, 24 Feb 2025 14:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482631607B7;
+	Mon, 24 Feb 2025 14:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTFoRpB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICILYi9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88623BD1D;
-	Mon, 24 Feb 2025 14:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0454D84A35;
+	Mon, 24 Feb 2025 14:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408557; cv=none; b=rVt0INpl0icUUidwYlL/Jkj/vLK/hC8RxLyBD7HTgFxqI/OrozpApN6D0i/lieZTUuuRreelyGZvZJS5XYhf8ILVx6GTz39tk8GphQnodnBAoXX4mWNWixtK3QI4+Q//oM1Kef4P4B7Dm3ENlpleHzon63LnzoIO9cqJRCAafd4=
+	t=1740408986; cv=none; b=Z8kYK6hSJwkmPIwcEA3Z514byT80ksHacZ+cOCKfi6K3Fi+bjz5Vun2vXwEpJ3p0WrtDM9VURv4ymgvu24YV3Bvyquq2wkTVMU0eGlHnRnWQVbZLlb74KU1OXPNj/OspuY4aZwZ+nU27qSmPjnnIwZxJbxwuvTZ+WcFt5soWJhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408557; c=relaxed/simple;
-	bh=Us/kShg1y0Hp+YVyW723Yy3CvWfJJ1EM5F8cxN2CrTU=;
+	s=arc-20240116; t=1740408986; c=relaxed/simple;
+	bh=YRei2AEhMZTdLytwTHmyf45TIiT4OzNc5B8Kf4WnfoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjoGU8avFG550VWpUTEjCjJ8xV5G0gWI9mRrg8Cb1CjpaIwOEJgdff0dKLhD4VJSLIfuvPuy/PpPQlZgbqgoVi9syRemXyUuF84aqt3bJKb2qxyvZJj6zQe9Es4wYsY6I5qa6pB4B4h1muSRP7f3300RXieFku9usYVRJceQnmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTFoRpB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C391C4CED6;
-	Mon, 24 Feb 2025 14:49:16 +0000 (UTC)
+	 MIME-Version; b=mOv/HJeot9GxREKRXIpjXsgtgZa5Bs6tE/+xaaLOoeT08KsxJDxHbPgS/LGtKbDqyg1S3sKW/nG5XtZzbeJ+xdiZ6xiMZt3MF6+AwRFnjitpQgw6C6HZX3vZALj4GlAFMLgTDPg2QcLYyCQi10nVbKtgocFXfycXpfaovI32s+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICILYi9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8297DC4CED6;
+	Mon, 24 Feb 2025 14:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408557;
-	bh=Us/kShg1y0Hp+YVyW723Yy3CvWfJJ1EM5F8cxN2CrTU=;
+	s=korg; t=1740408985;
+	bh=YRei2AEhMZTdLytwTHmyf45TIiT4OzNc5B8Kf4WnfoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTFoRpB22Gh2oJJ9aYHVKub5mmDhYulyCpJCI+SoUyvQ+AzXr8ZBtqK/OWnmdqIX5
-	 UreduReZ7vkdmWs3Wj/SF/AUbbkgqCtt8N9FuIwoMEXbstmM68t0CQ9Gzp+2xsrhBF
-	 ul/sFmc+W14rq9s9iRQ+bT1pH6H0ecTD66AzfYwI=
+	b=ICILYi9XL+M2kr7tksmPw9dEAc6YlVPDeO0QPS6jKn8oovtgCTiWcDP1r9SvRT3Rf
+	 z+6XHwcmL8zv0vs0pjvqDDDDQJ0J4w4dRLsZnLyV5sQ7zrdx8ETFKvSrSQGX8CVryB
+	 f62Cf0YRHrmjFMbWk0jf2SmWbNqWHh6fOtVmL8yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/154] tcp: adjust rcvq_space after updating scaling ratio
-Date: Mon, 24 Feb 2025 15:34:20 +0100
-Message-ID: <20250224142609.472852567@linuxfoundation.org>
+Subject: [PATCH 6.13 031/138] ALSA: seq: Drop UMP events when no UMP-conversion is set
+Date: Mon, 24 Feb 2025 15:34:21 +0100
+Message-ID: <20250224142605.692709966@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit f5da7c45188eea71394bf445655cae2df88a7788 ]
+[ Upstream commit e77aa4b2eaa7fb31b2a7a50214ecb946b2a8b0f6 ]
 
-Since commit under Fixes we set the window clamp in accordance
-to newly measured rcvbuf scaling_ratio. If the scaling_ratio
-decreased significantly we may put ourselves in a situation
-where windows become smaller than rcvq_space, preventing
-tcp_rcv_space_adjust() from increasing rcvbuf.
+When a destination client is a user client in the legacy MIDI mode and
+it sets the no-UMP-conversion flag, currently the all UMP events are
+still passed as-is.  But this may confuse the user-space, because the
+event packet size is different from the legacy mode.
 
-The significant decrease of scaling_ratio is far more likely
-since commit 697a6c8cec03 ("tcp: increase the default TCP scaling ratio"),
-which increased the "default" scaling ratio from ~30% to 50%.
+Since we cannot handle UMP events in user clients unless it's running
+in the UMP client mode, we should filter out those events instead of
+accepting blindly.  This patch addresses it by slightly adjusting the
+conditions for UMP event handling at the event delivery time.
 
-Hitting the bad condition depends a lot on TCP tuning, and
-drivers at play. One of Meta's workloads hits it reliably
-under following conditions:
- - default rcvbuf of 125k
- - sender MTU 1500, receiver MTU 5000
- - driver settles on scaling_ratio of 78 for the config above.
-Initial rcvq_space gets calculated as TCP_INIT_CWND * tp->advmss
-(10 * 5k = 50k). Once we find out the true scaling ratio and
-MSS we clamp the windows to 38k. Triggering the condition also
-depends on the message sequence of this workload. I can't repro
-the problem with simple iperf or TCP_RR-style tests.
-
-Fixes: a2cbb1603943 ("tcp: Update window clamping condition")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20250217232905.3162187-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 329ffe11a014 ("ALSA: seq: Allow suppressing UMP conversions")
+Link: https://lore.kernel.org/b77a2cd6-7b59-4eb0-a8db-22d507d3af5f@gmail.com
+Link: https://patch.msgid.link/20250217170034.21930-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 12 +++++++++---
+ sound/core/seq/seq_clientmgr.c | 12 +++++++++---
  1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 2d43b29da15e2..bb17add6e4a78 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -243,9 +243,15 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 			do_div(val, skb->truesize);
- 			tcp_sk(sk)->scaling_ratio = val ? val : 1;
+diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
+index 77b6ac9b5c11b..9955c4d54e42a 100644
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -678,12 +678,18 @@ static int snd_seq_deliver_single_event(struct snd_seq_client *client,
+ 					  dest_port->time_real);
  
--			if (old_ratio != tcp_sk(sk)->scaling_ratio)
--				WRITE_ONCE(tcp_sk(sk)->window_clamp,
--					   tcp_win_from_space(sk, sk->sk_rcvbuf));
-+			if (old_ratio != tcp_sk(sk)->scaling_ratio) {
-+				struct tcp_sock *tp = tcp_sk(sk);
-+
-+				val = tcp_win_from_space(sk, sk->sk_rcvbuf);
-+				tcp_set_window_clamp(sk, val);
-+
-+				if (tp->window_clamp < tp->rcvq_space.space)
-+					tp->rcvq_space.space = tp->window_clamp;
-+			}
- 		}
- 		icsk->icsk_ack.rcv_mss = min_t(unsigned int, len,
- 					       tcp_sk(sk)->advmss);
+ #if IS_ENABLED(CONFIG_SND_SEQ_UMP)
+-	if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
+-		if (snd_seq_ev_is_ump(event)) {
++	if (snd_seq_ev_is_ump(event)) {
++		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
+ 			result = snd_seq_deliver_from_ump(client, dest, dest_port,
+ 							  event, atomic, hop);
+ 			goto __skip;
+-		} else if (snd_seq_client_is_ump(dest)) {
++		} else if (dest->type == USER_CLIENT &&
++			   !snd_seq_client_is_ump(dest)) {
++			result = 0; // drop the event
++			goto __skip;
++		}
++	} else if (snd_seq_client_is_ump(dest)) {
++		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
+ 			result = snd_seq_deliver_to_ump(client, dest, dest_port,
+ 							event, atomic, hop);
+ 			goto __skip;
 -- 
 2.39.5
 
