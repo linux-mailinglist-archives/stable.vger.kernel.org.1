@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4589A423D6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE212A42497
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ACB716F776
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3149619C3F62
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B33C24397B;
-	Mon, 24 Feb 2025 14:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C48245002;
+	Mon, 24 Feb 2025 14:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huVaT+Ug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pr6kiVSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392D718E34A;
-	Mon, 24 Feb 2025 14:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DE22571CE;
+	Mon, 24 Feb 2025 14:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407941; cv=none; b=IDidx8eAB6KRVc1IX2LdIouTHBLbbrdvhgJhYzgecYDyLHFfnElAjVtXOOdK16Be0PK4XXvrpcIxo7GOIiEr2SHarkFGf1kjeZQWrLeEfcAxQNFKHdY6NFtEK+F67Wy4yTuthxL5IupTjZROB3rzJLOlTEOlvaEpcIYYx6A7sP8=
+	t=1740408425; cv=none; b=O8hbJqJ16/DSxFgYMfk1n/xWLAng4XRdN7G7hMwjSCQxNxjlX2M+do6rzO+ZlPXujmT4z5giIhwgG5UPLOgigEuWu/l2V74HzfEvNItIXKAmuQzD89NHl/YsPG9u0lteS2yjt2emY2PfPmqQ8qoIJ6n8Ss0Q2/oWKRuCOiwcLCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407941; c=relaxed/simple;
-	bh=FopeIlChfvqR0fLLqaCTlQx8AWeHyTkxjwUWMBCd4Fg=;
+	s=arc-20240116; t=1740408425; c=relaxed/simple;
+	bh=75jfg1gKxkWnM5xWPLRC4EXEYubmeSaSSKr/ukSCaH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p5VNdHs1OGZsO45aa0geCqsmL+tAE6ZRbwHes1lRKDTe76HNhKoreGovlFLlDoNtRAwNyWSANwJG1Gn8IboxRJM5qdG4XkjJu79zL8YVjEce2NHkDXWORBTaQVZRyNTqEVjkeLlsmjjHaiBjyX5IBCp4zw3yEdVAqhmTvQcdKis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huVaT+Ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDBEC4CEE6;
-	Mon, 24 Feb 2025 14:39:00 +0000 (UTC)
+	 MIME-Version; b=NxoveSIhsIzw9rMOTHYzU87s7eEHuxQjX1aECQFvjfS5Yj5jexT6wpDX/1G7PXmCuuJgx3eBUfdYKCsdJo3g3olTt0SRsxP3Ka6Q2M7EHHl8iA+Oc1OEpE9aYx0VmP13foBlfA5xPlklfNpmcszvvPTLVXRuoxyWHiDpy+VlHdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pr6kiVSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC0CC4CED6;
+	Mon, 24 Feb 2025 14:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407941;
-	bh=FopeIlChfvqR0fLLqaCTlQx8AWeHyTkxjwUWMBCd4Fg=;
+	s=korg; t=1740408425;
+	bh=75jfg1gKxkWnM5xWPLRC4EXEYubmeSaSSKr/ukSCaH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huVaT+UgOaTteRrocig0IBAfkNpzzRM8rgEd0pYIq4MkoLke+GwJRe22jrimfflEn
-	 /j+uOJCvAhKqLZUQlVuSB48kLaB7F+Zfjjk4E1OuDivVnLNcy7xI/bZ46kF7B18CN9
-	 DgzBNs5sbQ6cJ4n6CvEWN3kkP+1ZzFPeU878phgg=
+	b=pr6kiVSr2uyeR0+ecKTsYxEObVoqrUkgUdmMwdOdwTBtCFAzokU8lEjKYzJSFdy7Y
+	 yiuX9K9uZSPp7k8/zLDKWE1NdW9rMJjIZOsEkym8F1Rinh9eIwKqGEBE/6+VqpJogj
+	 klRn6rmof7p0gF93P8eadMu8lx4lcyiLiCbxwhPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/140] soc/mediatek: mtk-devapc: Convert to platform remove callback returning void
+Subject: [PATCH 6.12 053/154] ALSA: hda/cirrus: Correct the full scale volume set logic
 Date: Mon, 24 Feb 2025 15:34:12 +0100
-Message-ID: <20250224142605.099208309@linuxfoundation.org>
+Message-ID: <20250224142609.169193393@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
 
-[ Upstream commit a129ac3555c0dca6f04ae404dc0f0790656587fb ]
+[ Upstream commit 08b613b9e2ba431db3bd15cb68ca72472a50ef5c ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+This patch corrects the full-scale volume setting logic. On certain
+platforms, the full-scale volume bit is required. The current logic
+mistakenly sets this bit and incorrectly clears reserved bit 0, causing
+the headphone output to be muted.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230925095532.1984344-15-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Stable-dep-of: c9c0036c1990 ("soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove")
+Fixes: 342b6b610ae2 ("ALSA: hda/cs8409: Fix Full Scale Volume setting for all variants")
+Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250214210736.30814-1-vitalyr@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_cs8409-tables.c |  6 +++---
+ sound/pci/hda/patch_cs8409.c        | 20 +++++++++++---------
+ sound/pci/hda/patch_cs8409.h        |  5 +++--
+ 3 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
-index 0dfc1da9471cb..eb8f92f585882 100644
---- a/drivers/soc/mediatek/mtk-devapc.c
-+++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -300,18 +300,16 @@ static int mtk_devapc_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/sound/pci/hda/patch_cs8409-tables.c b/sound/pci/hda/patch_cs8409-tables.c
+index 759f48038273d..621f947e38174 100644
+--- a/sound/pci/hda/patch_cs8409-tables.c
++++ b/sound/pci/hda/patch_cs8409-tables.c
+@@ -121,7 +121,7 @@ static const struct cs8409_i2c_param cs42l42_init_reg_seq[] = {
+ 	{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 	{ CS42L42_MIXER_CHB_VOL, 0x3F },
+ 	{ CS42L42_MIXER_ADC_VOL, 0x3f },
+-	{ CS42L42_HP_CTL, 0x03 },
++	{ CS42L42_HP_CTL, 0x0D },
+ 	{ CS42L42_MIC_DET_CTL1, 0xB6 },
+ 	{ CS42L42_TIPSENSE_CTL, 0xC2 },
+ 	{ CS42L42_HS_CLAMP_DISABLE, 0x01 },
+@@ -315,7 +315,7 @@ static const struct cs8409_i2c_param dolphin_c0_init_reg_seq[] = {
+ 	{ CS42L42_ASP_TX_SZ_EN, 0x01 },
+ 	{ CS42L42_PWR_CTL1, 0x0A },
+ 	{ CS42L42_PWR_CTL2, 0x84 },
+-	{ CS42L42_HP_CTL, 0x03 },
++	{ CS42L42_HP_CTL, 0x0D },
+ 	{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 	{ CS42L42_MIXER_CHB_VOL, 0x3F },
+ 	{ CS42L42_MIXER_ADC_VOL, 0x3f },
+@@ -371,7 +371,7 @@ static const struct cs8409_i2c_param dolphin_c1_init_reg_seq[] = {
+ 	{ CS42L42_ASP_TX_SZ_EN, 0x00 },
+ 	{ CS42L42_PWR_CTL1, 0x0E },
+ 	{ CS42L42_PWR_CTL2, 0x84 },
+-	{ CS42L42_HP_CTL, 0x01 },
++	{ CS42L42_HP_CTL, 0x0D },
+ 	{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 	{ CS42L42_MIXER_CHB_VOL, 0x3F },
+ 	{ CS42L42_MIXER_ADC_VOL, 0x3f },
+diff --git a/sound/pci/hda/patch_cs8409.c b/sound/pci/hda/patch_cs8409.c
+index 614327218634c..b760332a4e357 100644
+--- a/sound/pci/hda/patch_cs8409.c
++++ b/sound/pci/hda/patch_cs8409.c
+@@ -876,7 +876,7 @@ static void cs42l42_resume(struct sub_codec *cs42l42)
+ 		{ CS42L42_DET_INT_STATUS2, 0x00 },
+ 		{ CS42L42_TSRS_PLUG_STATUS, 0x00 },
+ 	};
+-	int fsv_old, fsv_new;
++	unsigned int fsv;
  
--static int mtk_devapc_remove(struct platform_device *pdev)
-+static void mtk_devapc_remove(struct platform_device *pdev)
- {
- 	struct mtk_devapc_context *ctx = platform_get_drvdata(pdev);
+ 	/* Bring CS42L42 out of Reset */
+ 	spec->gpio_data = snd_hda_codec_read(codec, CS8409_PIN_AFG, 0, AC_VERB_GET_GPIO_DATA, 0);
+@@ -893,13 +893,15 @@ static void cs42l42_resume(struct sub_codec *cs42l42)
+ 	/* Clear interrupts, by reading interrupt status registers */
+ 	cs8409_i2c_bulk_read(cs42l42, irq_regs, ARRAY_SIZE(irq_regs));
  
- 	stop_devapc(ctx);
--
--	return 0;
- }
+-	fsv_old = cs8409_i2c_read(cs42l42, CS42L42_HP_CTL);
+-	if (cs42l42->full_scale_vol == CS42L42_FULL_SCALE_VOL_0DB)
+-		fsv_new = fsv_old & ~CS42L42_FULL_SCALE_VOL_MASK;
+-	else
+-		fsv_new = fsv_old & CS42L42_FULL_SCALE_VOL_MASK;
+-	if (fsv_new != fsv_old)
+-		cs8409_i2c_write(cs42l42, CS42L42_HP_CTL, fsv_new);
++	fsv = cs8409_i2c_read(cs42l42, CS42L42_HP_CTL);
++	if (cs42l42->full_scale_vol) {
++		// Set the full scale volume bit
++		fsv |= CS42L42_FULL_SCALE_VOL_MASK;
++		cs8409_i2c_write(cs42l42, CS42L42_HP_CTL, fsv);
++	}
++	// Unmute analog channels A and B
++	fsv = (fsv & ~CS42L42_ANA_MUTE_AB);
++	cs8409_i2c_write(cs42l42, CS42L42_HP_CTL, fsv);
  
- static struct platform_driver mtk_devapc_driver = {
- 	.probe = mtk_devapc_probe,
--	.remove = mtk_devapc_remove,
-+	.remove_new = mtk_devapc_remove,
- 	.driver = {
- 		.name = "mtk-devapc",
- 		.of_match_table = mtk_devapc_dt_match,
+ 	/* we have to explicitly allow unsol event handling even during the
+ 	 * resume phase so that the jack event is processed properly
+@@ -920,7 +922,7 @@ static void cs42l42_suspend(struct sub_codec *cs42l42)
+ 		{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 		{ CS42L42_MIXER_ADC_VOL, 0x3F },
+ 		{ CS42L42_MIXER_CHB_VOL, 0x3F },
+-		{ CS42L42_HP_CTL, 0x0F },
++		{ CS42L42_HP_CTL, 0x0D },
+ 		{ CS42L42_ASP_RX_DAI0_EN, 0x00 },
+ 		{ CS42L42_ASP_CLK_CFG, 0x00 },
+ 		{ CS42L42_PWR_CTL1, 0xFE },
+diff --git a/sound/pci/hda/patch_cs8409.h b/sound/pci/hda/patch_cs8409.h
+index 5e48115caf096..14645d25e70fd 100644
+--- a/sound/pci/hda/patch_cs8409.h
++++ b/sound/pci/hda/patch_cs8409.h
+@@ -230,9 +230,10 @@ enum cs8409_coefficient_index_registers {
+ #define CS42L42_PDN_TIMEOUT_US			(250000)
+ #define CS42L42_PDN_SLEEP_US			(2000)
+ #define CS42L42_INIT_TIMEOUT_MS			(45)
++#define CS42L42_ANA_MUTE_AB			(0x0C)
+ #define CS42L42_FULL_SCALE_VOL_MASK		(2)
+-#define CS42L42_FULL_SCALE_VOL_0DB		(1)
+-#define CS42L42_FULL_SCALE_VOL_MINUS6DB		(0)
++#define CS42L42_FULL_SCALE_VOL_0DB		(0)
++#define CS42L42_FULL_SCALE_VOL_MINUS6DB		(1)
+ 
+ /* Dell BULLSEYE / WARLOCK / CYBORG Specific Definitions */
+ 
 -- 
 2.39.5
 
