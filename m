@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-118993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3196A42399
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA9EA42486
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61121189C904
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CEE07A910A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB9924BBFC;
-	Mon, 24 Feb 2025 14:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968E7194A75;
+	Mon, 24 Feb 2025 14:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYm+sbfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL50cZM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B60170A13;
-	Mon, 24 Feb 2025 14:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5542714012;
+	Mon, 24 Feb 2025 14:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407955; cv=none; b=U0asDa0GvUcySIxk9LWPzoxiUD6n9qcuLXvzflDCFoV7Pr9xHeiwEYcZfMkGp78Xgu1yeb6+PpwD0M9bin+gTAQREIxcvlgyDwusRddtIPuUbfvvI2iq7I+adzOFKO9D7SqAIhgyYfOpUdl7XBa9R+wBC2cZ9p1oJYDXmCbAv6Q=
+	t=1740408970; cv=none; b=MxrnpGEWy8xTNeketLFd2LRSzsMig05U5/qnn7f70b2+K7mWA7/js/0JLXGBaGiCUYdt2r0CcsluZ4T7AiILWCuu2OmnJOTYxPEE6ntToOP5EGEE8a/8tG1ujCbkusJYVxwlO4s9vudD+N/7IIKEuZ3fQYsfCTGPYE4hnPyoOw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407955; c=relaxed/simple;
-	bh=c2TeEOyP/2fSjuPb7b+E5yKiJIhqRSnhGicYNhLNdmk=;
+	s=arc-20240116; t=1740408970; c=relaxed/simple;
+	bh=9orwN6EYBfEioVWRQS/dptKUIMBvpqjp5cq1KFKAfTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmQveEtCF0gFuv+K31HcDyVl1I2OvmkJJI9VU2UmNtsbn6zkj+9EhQLM8cD5gAwzWuSMdmB/ELX5673MRoSLDDP+ZaAozYnOaGP8o5qkC9lRfXvlr87OPW70m6sl4c5pzP6/XMcNdL8EF+XnucIaqZajGzeJJUPSnh2/NZFRsJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYm+sbfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C17BC4CED6;
-	Mon, 24 Feb 2025 14:39:14 +0000 (UTC)
+	 MIME-Version; b=uPG+ZLn3iE80blwFl6evTWEoEYYqKCjuVx06EGU+v3rnssCB8XN/P+fNtZ7jh8O1oJPiRDzZaqfnyKGl1dczxpBwSlHtGn6Doccc6eWGIm+ZdKGCHLFAyYDmFaQzF4/tQFWBrtk/MBACraTI876EwtVDPHG0zNn6tS0mOwngQWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AL50cZM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C9BC4CED6;
+	Mon, 24 Feb 2025 14:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407955;
-	bh=c2TeEOyP/2fSjuPb7b+E5yKiJIhqRSnhGicYNhLNdmk=;
+	s=korg; t=1740408969;
+	bh=9orwN6EYBfEioVWRQS/dptKUIMBvpqjp5cq1KFKAfTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYm+sbfhEOoqptwZIJ9YErpsSmCdpwdJ7uRRzASmIuaHPRoWQFZURH/bAr167y0WK
-	 dDYXdpurHvfxFJb1J5z2IuyGNVcoQ44k264yjNsWS2IQEvllgr8qh8vxF2wbFPz7y3
-	 J9RVq7lMkUQZW6vM6RYzz6ej9EhOYR+t/FL0kdVc=
+	b=AL50cZM+9EVSHc+JtK/AYmtMr7TKmk51DRRPzn+jnIu261fLjqHSGMk5G2ZCXir7g
+	 /7JGNJMf9LjoMHFdMuIMm1mf1tA59Tm7cljFsEnLiPMMMBYiZ77REoLa1xlTHRTs69
+	 9Zd9kPhGn4F5tckM4MZbLU5t071Ys94vaGEBylg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/140] media: uvcvideo: Only save async fh if success
-Date: Mon, 24 Feb 2025 15:34:15 +0100
-Message-ID: <20250224142605.215772812@linuxfoundation.org>
+Subject: [PATCH 6.13 026/138] ASoC: imx-audmix: remove cpu_mclk which is from cpu dai device
+Date: Mon, 24 Feb 2025 15:34:16 +0100
+Message-ID: <20250224142605.498877239@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit d9fecd096f67a4469536e040a8a10bbfb665918b ]
+[ Upstream commit 571b69f2f9b1ec7cf7d0e9b79e52115a87a869c4 ]
 
-Now we keep a reference to the active fh for any call to uvc_ctrl_set,
-regardless if it is an actual set or if it is a just a try or if the
-device refused the operation.
+When defer probe happens, there may be below error:
 
-We should only keep the file handle if the device actually accepted
-applying the operation.
+platform 59820000.sai: Resources present before probing
 
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-1-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+The cpu_mclk clock is from the cpu dai device, if it is not released,
+then the cpu dai device probe will fail for the second time.
+
+The cpu_mclk is used to get rate for rate constraint, rate constraint
+may be specific for each platform, which is not necessary for machine
+driver, so remove it.
+
+Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250213070518.547375-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ sound/soc/fsl/imx-audmix.c | 31 -------------------------------
+ 1 file changed, 31 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index f78e0c02b3379..478e2c1fdf0fd 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1762,7 +1762,10 @@ int uvc_ctrl_begin(struct uvc_video_chain *chain)
- }
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index 231400661c906..50ecc5f51100e 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -23,7 +23,6 @@ struct imx_audmix {
+ 	struct snd_soc_card card;
+ 	struct platform_device *audmix_pdev;
+ 	struct platform_device *out_pdev;
+-	struct clk *cpu_mclk;
+ 	int num_dai;
+ 	struct snd_soc_dai_link *dai;
+ 	int num_dai_conf;
+@@ -32,34 +31,11 @@ struct imx_audmix {
+ 	struct snd_soc_dapm_route *dapm_routes;
+ };
  
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
--	struct uvc_entity *entity, int rollback, struct uvc_control **err_ctrl)
-+				  struct uvc_fh *handle,
-+				  struct uvc_entity *entity,
-+				  int rollback,
-+				  struct uvc_control **err_ctrl)
- {
- 	struct uvc_control *ctrl;
- 	unsigned int i;
-@@ -1810,6 +1813,10 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 				*err_ctrl = ctrl;
- 			return ret;
- 		}
-+
-+		if (!rollback && handle &&
-+		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-+			ctrl->handle = handle;
- 	}
- 
- 	return 0;
-@@ -1846,8 +1853,8 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 
- 	/* Find the control. */
- 	list_for_each_entry(entity, &chain->entities, chain) {
--		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
--					     &err_ctrl);
-+		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
-+					     rollback, &err_ctrl);
- 		if (ret < 0) {
- 			if (ctrls)
- 				ctrls->error_idx =
-@@ -1997,9 +2004,6 @@ int uvc_ctrl_set(struct uvc_fh *handle,
- 	mapping->set(mapping, value,
- 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
- 
--	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--		ctrl->handle = handle;
+-static const u32 imx_audmix_rates[] = {
+-	8000, 12000, 16000, 24000, 32000, 48000, 64000, 96000,
+-};
 -
- 	ctrl->dirty = 1;
- 	ctrl->modified = 1;
- 	return 0;
-@@ -2328,7 +2332,7 @@ int uvc_ctrl_restore_values(struct uvc_device *dev)
- 			ctrl->dirty = 1;
- 		}
+-static const struct snd_pcm_hw_constraint_list imx_audmix_rate_constraints = {
+-	.count = ARRAY_SIZE(imx_audmix_rates),
+-	.list = imx_audmix_rates,
+-};
+-
+ static int imx_audmix_fe_startup(struct snd_pcm_substream *substream)
+ {
+-	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+-	struct imx_audmix *priv = snd_soc_card_get_drvdata(rtd->card);
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct device *dev = rtd->card->dev;
+-	unsigned long clk_rate = clk_get_rate(priv->cpu_mclk);
+ 	int ret;
  
--		ret = uvc_ctrl_commit_entity(dev, entity, 0, NULL);
-+		ret = uvc_ctrl_commit_entity(dev, NULL, entity, 0, NULL);
- 		if (ret < 0)
- 			return ret;
+-	if (clk_rate % 24576000 == 0) {
+-		ret = snd_pcm_hw_constraint_list(runtime, 0,
+-						 SNDRV_PCM_HW_PARAM_RATE,
+-						 &imx_audmix_rate_constraints);
+-		if (ret < 0)
+-			return ret;
+-	} else {
+-		dev_warn(dev, "mclk may be not supported %lu\n", clk_rate);
+-	}
+-
+ 	ret = snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_CHANNELS,
+ 					   1, 8);
+ 	if (ret < 0)
+@@ -323,13 +299,6 @@ static int imx_audmix_probe(struct platform_device *pdev)
  	}
+ 	put_device(&cpu_pdev->dev);
+ 
+-	priv->cpu_mclk = devm_clk_get(&cpu_pdev->dev, "mclk1");
+-	if (IS_ERR(priv->cpu_mclk)) {
+-		ret = PTR_ERR(priv->cpu_mclk);
+-		dev_err(&cpu_pdev->dev, "failed to get DAI mclk1: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	priv->audmix_pdev = audmix_pdev;
+ 	priv->out_pdev  = cpu_pdev;
+ 
 -- 
 2.39.5
 
