@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-119352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EECFA425C4
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:13:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B27FA42560
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5AD443ABA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A9B742564B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC0A27701;
-	Mon, 24 Feb 2025 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4512323370B;
+	Mon, 24 Feb 2025 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTuAYwpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaxZOCS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B7B1B7F4;
-	Mon, 24 Feb 2025 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023FD27701;
+	Mon, 24 Feb 2025 14:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409174; cv=none; b=I+koa51NfO1XyUbNXWNvjYLWeE7Dczu09dEU1CEXn8GD5sa2k/Y75kp8edgCTUKM9Hln5KNlsOvUWvbf1n0Wn+VhtwrBxjFAaOz5Je5m6jalsq7qts2QxM7MS5N01T5On17Er38kMdQ5wJSF6wGWJa+IKJyzqtFFimcpHR+SGs8=
+	t=1740408755; cv=none; b=tW8vdVbgS+1hPtzBhKuq/gpT4wnaD3FMB0Z5FlT65QaH3G9vZ2s/xLFESCf3dDyt0m/aX8Xa3o+memJkaLfhl0vW4vdq3tz+6u5GtLKvxkHEhWKv9YuAh8A4efXNTdTX5X6QNm1VhdIMrN4LbaIv5RcE7YTt104Lsak0feotLQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409174; c=relaxed/simple;
-	bh=F4PyRwAR3WyT+jLk0oYqGiq4oN4ZDqIKUWAtDNrxNic=;
+	s=arc-20240116; t=1740408755; c=relaxed/simple;
+	bh=d4xv90brtP8oU5FiuIuWIiMQWcLx2IlEn6lLSKpNdFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBEynatjwv+53yU+UPUIf26T+EezodQRvf09qTCvztBLXjEkFyoUZ1cLIYvn8qri3W1HCRJ7wua1BQpmerTGJIV5qKjL3sWA922hHE2yBXgqvAbaOFUvkashu/kutyPJ9S1THpnqr+uueip0PmM4koLiBTKu1gbMP6ov05XpNAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTuAYwpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE77EC4CED6;
-	Mon, 24 Feb 2025 14:59:33 +0000 (UTC)
+	 MIME-Version; b=ci0KYPJjyrE01DEENdLKDglfSlqdQh6PAr1n4s9yKT93Myp7VyzCDAlPZ2DrP0j/BGEOYhEq7CsgzUXsxIcUhwUsB1r9+wB+i+32UZVJRdR3K5QDblTZIphasIDgvKdFH3IufJKweTpfQAF7v6atazgkUg2AKSFmO8DzdO9F9Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaxZOCS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07787C4CED6;
+	Mon, 24 Feb 2025 14:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409174;
-	bh=F4PyRwAR3WyT+jLk0oYqGiq4oN4ZDqIKUWAtDNrxNic=;
+	s=korg; t=1740408754;
+	bh=d4xv90brtP8oU5FiuIuWIiMQWcLx2IlEn6lLSKpNdFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTuAYwplqBxan7oIwRISe1CNnSYD6qwDZHGJkjxlnYf0Zmir5CMgZgZ8u6RBCQonm
-	 Gug5RbvYNuokpU3VKSbJp30myG1m0x5E4IjtHVwS+GRqd93WZ+HTpEITeudp9+TRD3
-	 ai6IQmwSFEBlPUaa0+HNgYFft5dGOSR34VBKZYO0=
+	b=SaxZOCS++c1J39WDBL1xRv3Zk5z+3NKl6Y4aCEm4S2I3M9gkvD4skQcdXMbmkf7Hj
+	 WbV3oXWqlVD7jEnbIPbykveRjtTT/t6AxQjZkFYZoNN92gBQlFzcul5Q2WmjzKoYV9
+	 3qfF8qVm1Pq6hVRXdlAoIf9/5Zxpc4xgXnFnqLDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Veness <john-linux@pelago.org.uk>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 118/138] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
-Date: Mon, 24 Feb 2025 15:35:48 +0100
-Message-ID: <20250224142609.113342764@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Jake Hillion <jakehillion@meta.com>
+Subject: [PATCH 6.12 150/154] sched_ext: Fix incorrect assumption about migration disabled tasks in task_can_run_on_remote_rq()
+Date: Mon, 24 Feb 2025 15:35:49 +0100
+Message-ID: <20250224142612.918620591@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Veness <john-linux@pelago.org.uk>
+From: Tejun Heo <tj@kernel.org>
 
-commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
+commit f3f08c3acfb8860e07a22814a344e83c99ad7398 upstream.
 
-Allows the LED on the dedicated mute button on the HP ProBook 450 G4
-laptop to change colour correctly.
+While fixing migration disabled task handling, 32966821574c ("sched_ext: Fix
+migration disabled handling in targeted dispatches") assumed that a
+migration disabled task's ->cpus_ptr would only have the pinned CPU. While
+this is eventually true for migration disabled tasks that are switched out,
+->cpus_ptr update is performed by migrate_disable_switch() which is called
+right before context_switch() in __scheduler(). However, the task is
+enqueued earlier during pick_next_task() via put_prev_task_scx(), so there
+is a race window where another CPU can see the task on a DSQ.
 
-Signed-off-by: John Veness <john-linux@pelago.org.uk>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+If the CPU tries to dispatch the migration disabled task while in that
+window, task_allowed_on_cpu() will succeed and task_can_run_on_remote_rq()
+will subsequently trigger SCHED_WARN(is_migration_disabled()).
+
+  WARNING: CPU: 8 PID: 1837 at kernel/sched/ext.c:2466 task_can_run_on_remote_rq+0x12e/0x140
+  Sched_ext: layered (enabled+all), task: runnable_at=-10ms
+  RIP: 0010:task_can_run_on_remote_rq+0x12e/0x140
+  ...
+   <TASK>
+   consume_dispatch_q+0xab/0x220
+   scx_bpf_dsq_move_to_local+0x58/0xd0
+   bpf_prog_84dd17b0654b6cf0_layered_dispatch+0x290/0x1cfa
+   bpf__sched_ext_ops_dispatch+0x4b/0xab
+   balance_one+0x1fe/0x3b0
+   balance_scx+0x61/0x1d0
+   prev_balance+0x46/0xc0
+   __pick_next_task+0x73/0x1c0
+   __schedule+0x206/0x1730
+   schedule+0x3a/0x160
+   __do_sys_sched_yield+0xe/0x20
+   do_syscall_64+0xbb/0x1e0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fix it by converting the SCHED_WARN() back to a regular failure path. Also,
+perform the migration disabled test before task_allowed_on_cpu() test so
+that BPF schedulers which fail to handle migration disabled tasks can be
+noticed easily.
+
+While at it, adjust scx_ops_error() message for !task_allowed_on_cpu() case
+for brevity and consistency.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 32966821574c ("sched_ext: Fix migration disabled handling in targeted dispatches")
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Reported-by: Jake Hillion <jakehillion@meta.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/ext.c |   29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1080,6 +1080,7 @@ static const struct hda_quirk cxt5066_fi
- 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2311,6 +2311,25 @@ static bool task_can_run_on_remote_rq(st
+ 	SCHED_WARN_ON(task_cpu(p) == cpu);
+ 
+ 	/*
++	 * If @p has migration disabled, @p->cpus_ptr is updated to contain only
++	 * the pinned CPU in migrate_disable_switch() while @p is being switched
++	 * out. However, put_prev_task_scx() is called before @p->cpus_ptr is
++	 * updated and thus another CPU may see @p on a DSQ inbetween leading to
++	 * @p passing the below task_allowed_on_cpu() check while migration is
++	 * disabled.
++	 *
++	 * Test the migration disabled state first as the race window is narrow
++	 * and the BPF scheduler failing to check migration disabled state can
++	 * easily be masked if task_allowed_on_cpu() is done first.
++	 */
++	if (unlikely(is_migration_disabled(p))) {
++		if (trigger_error)
++			scx_ops_error("SCX_DSQ_LOCAL[_ON] cannot move migration disabled %s[%d] from CPU %d to %d",
++				      p->comm, p->pid, task_cpu(p), cpu);
++		return false;
++	}
++
++	/*
+ 	 * We don't require the BPF scheduler to avoid dispatching to offline
+ 	 * CPUs mostly for convenience but also because CPUs can go offline
+ 	 * between scx_bpf_dispatch() calls and here. Trigger error iff the
+@@ -2318,17 +2337,11 @@ static bool task_can_run_on_remote_rq(st
+ 	 */
+ 	if (!task_allowed_on_cpu(p, cpu)) {
+ 		if (trigger_error)
+-			scx_ops_error("SCX_DSQ_LOCAL[_ON] verdict target cpu %d not allowed for %s[%d]",
+-				      cpu_of(rq), p->comm, p->pid);
++			scx_ops_error("SCX_DSQ_LOCAL[_ON] target CPU %d not allowed for %s[%d]",
++				      cpu, p->comm, p->pid);
+ 		return false;
+ 	}
+ 
+-	/*
+-	 * If @p has migration disabled, @p->cpus_ptr only contains its current
+-	 * CPU and the above task_allowed_on_cpu() test should have failed.
+-	 */
+-	SCHED_WARN_ON(is_migration_disabled(p));
+-
+ 	if (!scx_rq_online(rq))
+ 		return false;
+ 
 
 
 
