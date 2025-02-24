@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-118970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5F0A42436
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57C8A4239E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F97D44156A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:39:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AA9A170A10
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B365319343B;
-	Mon, 24 Feb 2025 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C719716CD1D;
+	Mon, 24 Feb 2025 14:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuDGrM4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpXPLNcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAB81953BD;
-	Mon, 24 Feb 2025 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E5418B46C;
+	Mon, 24 Feb 2025 14:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407875; cv=none; b=WLdAdcAPZClUzRXFVr0Ssvl/ERpFoAL3o/HLDFTMtRGQkMCy8iUbihc4noRyjHhNOFayHhHW+5gi5F7I1y4XE2KGaoHmbNra4eIl4zSyOhcPu1+H3++9YTy5Af/2FLYlGQ22vGWq4xt6Yi9MnrCuJGmeDX5dIrJgZljhSowqxdk=
+	t=1740407913; cv=none; b=gGZdLFg3ZXF5F8aPbJ+/G1Fz0QdZPVm+8skqbVVONSdLcU+WQXlfbVpmeBy/PBh6KwOJQ0VnDq9yCma96qgMeN/nhVMorZpUyCHhQrC9hPgW8t7ov6l8tNh6+wQWO+xWyMulPLdbA1syjWI6Lh6xj3BVrXPOyZQgIyhlQk1ojqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407875; c=relaxed/simple;
-	bh=xAlTgqb2ruybFs9dMVLk84CpCVxMouw85EhUw47Iut0=;
+	s=arc-20240116; t=1740407913; c=relaxed/simple;
+	bh=pZNULoOEY3xNjpLHL77Ld/cQQE+egcUD9rEkDQmKjw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr4G4VDCuohdMKzhvmvtJZxjp2evV9F/d6YwdwzMM5OuGvLkvnA1PDv3M/BBik8tdCj6UVNGJ2ObG+cRDZZZJpl5EmeKcb0T6eSsSg/VBNYNo1+zGM1eXjVOByqhNG7Btwj+z18spwuDLXofnxvTkYU7GVxc93oVNMAjwoHFDYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuDGrM4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498D9C4CED6;
-	Mon, 24 Feb 2025 14:37:54 +0000 (UTC)
+	 MIME-Version; b=ebjUAL8uXPUN6UNLXNR1N3+UBsvhUKEztG8fKt/tcQxtrVDtgfuJRBtWX0W1m5NlO4GT8E2tWRO6gSrZxXxf/dVbku3+wud33JLtyFNQlEIiNGGVAI6rEWfpaCxOlwdq39I/GsFpbitaoCXbXfdJ9t0v1fF1A+2uN9l+qmoMIfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpXPLNcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBF5C4CED6;
+	Mon, 24 Feb 2025 14:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407875;
-	bh=xAlTgqb2ruybFs9dMVLk84CpCVxMouw85EhUw47Iut0=;
+	s=korg; t=1740407913;
+	bh=pZNULoOEY3xNjpLHL77Ld/cQQE+egcUD9rEkDQmKjw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuDGrM4DEHLjYIiQlWdDLyNgFuJrSRRfL7EbliqPABCHjvXzy6ZrBFjr+IRZPjxRU
-	 ME7z7kxGbunkqqvYFP3ZwCnxg837gaFeWcsNfT3L2q78/IaO00XUrBJO2NHGcOqnVM
-	 tkcmjjnaAe1Cuau7gWnsbQdMMTVYgCX/0H2b0GOM=
+	b=cpXPLNcTdiDcHxQQ5PIAxUWoVhP4UJ3DXHBRbP5HtI6WEXUFbNiUCUZRnstJv3rLI
+	 n3sc3CgijtYTRJ1OA3COdwWo4vbFm4gmJzEfwACsky3cnYabDgGjI/Bvgyw8x8LP1I
+	 rviQ3EHscOeH38w5s8T3It9yXIyZNX5dQ2rbzh7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Florac <eflorac@intellique.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/140] xfs: dont over-report free space or inodes in statvfs
-Date: Mon, 24 Feb 2025 15:33:46 +0100
-Message-ID: <20250224142604.072486052@linuxfoundation.org>
+Subject: [PATCH 6.6 028/140] md: use separate work_struct for md_start_sync()
+Date: Mon, 24 Feb 2025 15:33:47 +0100
+Message-ID: <20250224142604.115413211@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
 References: <20250224142602.998423469@linuxfoundation.org>
@@ -67,83 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 4b8d867ca6e2fc6d152f629fdaf027053b81765a ]
+[ Upstream commit ac619781967bd5663c29606246b50dbebd8b3473 ]
 
-Emmanual Florac reports a strange occurrence when project quota limits
-are enabled, free space is lower than the remaining quota, and someone
-runs statvfs:
+It's a little weird to borrow 'del_work' for md_start_sync(), declare
+a new work_struct 'sync_work' for md_start_sync().
 
-  # mkfs.xfs -f /dev/sda
-  # mount /dev/sda /mnt -o prjquota
-  # xfs_quota  -x -c 'limit -p bhard=2G 55' /mnt
-  # mkdir /mnt/dir
-  # xfs_io -c 'chproj 55' -c 'chattr +P' -c 'stat -vvvv' /mnt/dir
-  # fallocate -l 19g /mnt/a
-  # df /mnt /mnt/dir
-  Filesystem      Size  Used Avail Use% Mounted on
-  /dev/sda         20G   20G  345M  99% /mnt
-  /dev/sda        2.0G     0  2.0G   0% /mnt
-
-I think the bug here is that xfs_fill_statvfs_from_dquot unconditionally
-assigns to f_bfree without checking that the filesystem has enough free
-space to fill the remaining project quota.  However, this is a
-longstanding behavior of xfs so it's unclear what to do here.
-
-Cc: <stable@vger.kernel.org> # v2.6.18
-Fixes: 932f2c323196c2 ("[XFS] statvfs component of directory/project quota support, code originally by Glen.")
-Reported-by: Emmanuel Florac <eflorac@intellique.com>
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Xiao Ni <xni@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230825031622.1530464-2-yukuai1@huaweicloud.com
+Stable-dep-of: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_qm_bhv.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/md/md.c | 10 ++++++----
+ drivers/md/md.h |  5 ++++-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/xfs/xfs_qm_bhv.c b/fs/xfs/xfs_qm_bhv.c
-index 268a07218c777..26b2c449f3c66 100644
---- a/fs/xfs/xfs_qm_bhv.c
-+++ b/fs/xfs/xfs_qm_bhv.c
-@@ -32,21 +32,28 @@ xfs_fill_statvfs_from_dquot(
- 	limit = blkres->softlimit ?
- 		blkres->softlimit :
- 		blkres->hardlimit;
--	if (limit && statp->f_blocks > limit) {
--		statp->f_blocks = limit;
--		statp->f_bfree = statp->f_bavail =
--			(statp->f_blocks > blkres->reserved) ?
--			 (statp->f_blocks - blkres->reserved) : 0;
-+	if (limit) {
-+		uint64_t	remaining = 0;
-+
-+		if (limit > blkres->reserved)
-+			remaining = limit - blkres->reserved;
-+
-+		statp->f_blocks = min(statp->f_blocks, limit);
-+		statp->f_bfree = min(statp->f_bfree, remaining);
-+		statp->f_bavail = min(statp->f_bavail, remaining);
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 9bc19a5a4119b..342407ea87d83 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -648,13 +648,13 @@ void mddev_put(struct mddev *mddev)
+ 		 * flush_workqueue() after mddev_find will succeed in waiting
+ 		 * for the work to be done.
+ 		 */
+-		INIT_WORK(&mddev->del_work, mddev_delayed_delete);
+ 		queue_work(md_misc_wq, &mddev->del_work);
  	}
- 
- 	limit = dqp->q_ino.softlimit ?
- 		dqp->q_ino.softlimit :
- 		dqp->q_ino.hardlimit;
--	if (limit && statp->f_files > limit) {
--		statp->f_files = limit;
--		statp->f_ffree =
--			(statp->f_files > dqp->q_ino.reserved) ?
--			 (statp->f_files - dqp->q_ino.reserved) : 0;
-+	if (limit) {
-+		uint64_t	remaining = 0;
-+
-+		if (limit > dqp->q_ino.reserved)
-+			remaining = limit - dqp->q_ino.reserved;
-+
-+		statp->f_files = min(statp->f_files, limit);
-+		statp->f_ffree = min(statp->f_ffree, remaining);
- 	}
+ 	spin_unlock(&all_mddevs_lock);
  }
  
+ static void md_safemode_timeout(struct timer_list *t);
++static void md_start_sync(struct work_struct *ws);
+ 
+ void mddev_init(struct mddev *mddev)
+ {
+@@ -679,6 +679,9 @@ void mddev_init(struct mddev *mddev)
+ 	mddev->resync_min = 0;
+ 	mddev->resync_max = MaxSector;
+ 	mddev->level = LEVEL_NONE;
++
++	INIT_WORK(&mddev->sync_work, md_start_sync);
++	INIT_WORK(&mddev->del_work, mddev_delayed_delete);
+ }
+ EXPORT_SYMBOL_GPL(mddev_init);
+ 
+@@ -9333,7 +9336,7 @@ static int remove_and_add_spares(struct mddev *mddev,
+ 
+ static void md_start_sync(struct work_struct *ws)
+ {
+-	struct mddev *mddev = container_of(ws, struct mddev, del_work);
++	struct mddev *mddev = container_of(ws, struct mddev, sync_work);
+ 
+ 	rcu_assign_pointer(mddev->sync_thread,
+ 			   md_register_thread(md_do_sync, mddev, "resync"));
+@@ -9546,8 +9549,7 @@ void md_check_recovery(struct mddev *mddev)
+ 				 */
+ 				md_bitmap_write_all(mddev->bitmap);
+ 			}
+-			INIT_WORK(&mddev->del_work, md_start_sync);
+-			queue_work(md_misc_wq, &mddev->del_work);
++			queue_work(md_misc_wq, &mddev->sync_work);
+ 			goto unlock;
+ 		}
+ 	not_running:
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index f29fa8650cd0f..46995558d3bd9 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -453,7 +453,10 @@ struct mddev {
+ 	struct kernfs_node		*sysfs_degraded;	/*handle for 'degraded' */
+ 	struct kernfs_node		*sysfs_level;		/*handle for 'level' */
+ 
+-	struct work_struct del_work;	/* used for delayed sysfs removal */
++	/* used for delayed sysfs removal */
++	struct work_struct del_work;
++	/* used for register new sync thread */
++	struct work_struct sync_work;
+ 
+ 	/* "lock" protects:
+ 	 *   flush_bio transition from NULL to !NULL
 -- 
 2.39.5
 
