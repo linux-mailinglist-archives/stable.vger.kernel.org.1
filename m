@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-119039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FA7A423D1
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A34EA423D7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4643E19C451C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CBD91695F7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9CC193436;
-	Mon, 24 Feb 2025 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B72E19ADA6;
+	Mon, 24 Feb 2025 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EehrrO/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ce8knihA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA85C17C21C;
-	Mon, 24 Feb 2025 14:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3BB1925B8;
+	Mon, 24 Feb 2025 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408112; cv=none; b=CbBoi5bxOWCxsUH2InsYL5M8o19Q5gyxd/e4KzCFo7vJcr2Du16IiTvPYWkZMxh3Dhd0V6o3r46aaDclHTOZOX3kP7rm4RcVph1D8DVAgoSbzWw9QE0IJZr4aza8s3+OY/KOe92Kskx7vh7NjywTtQYlOW6eEdAxDt0j3C4FnWs=
+	t=1740407997; cv=none; b=fOFouKfgNLR5M2LHbgYucJmHbliv/z7vdgElWl7mFn2++POT+e6+Y5trIc/umIjyXA6cICLwnG/H3ZengRKdjvWommEzzpVK0DVxyUvHXIuK3bB96mJT2eSrES8bjKnhXdS8jIaDYwwybqNmrGb2I57N08c29Zx9rjkMIw7hBX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408112; c=relaxed/simple;
-	bh=9ZchoO7qo9/joQiQbPghO1o4qXZqtYuoUX/FjVoBuf4=;
+	s=arc-20240116; t=1740407997; c=relaxed/simple;
+	bh=wzFD1+B1rJcWNIAuy+WYtV6zJPObDd8MTeveHCN+zuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tUURtANm4ZKxUrgh8B43EHmI3V56XRIm32RDT9QdzyNyQqGMnzJZJjlKIIlfhv3HuYQQyYRuCC64s+SzLTmKaMNaX9Fblh4Vo0u6ojXDtnzyFe+4gEM3G/3CHPRK45XeY+zMRLw6iZZOAsYwU/DlWk9xYhYcrS5AZ+9Jy+L3Les=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EehrrO/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44289C4CEE8;
-	Mon, 24 Feb 2025 14:41:52 +0000 (UTC)
+	 MIME-Version; b=cTTiXZG0FDo3efpavdF7ZTu6aVIRpfr5D7o/917zTl3HFj101XZLxmiegN87w4aoRGHWl8ye/rxtx5TuUKMBRMT9s+PMri4posECAjzq7vBe8Qg1LXHX6SAKMCPMnwHIWQdQLxLvcv9L0xHp59oztSFvetsY8WNrrj/vaK7TqRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ce8knihA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882B8C4CED6;
+	Mon, 24 Feb 2025 14:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408112;
-	bh=9ZchoO7qo9/joQiQbPghO1o4qXZqtYuoUX/FjVoBuf4=;
+	s=korg; t=1740407997;
+	bh=wzFD1+B1rJcWNIAuy+WYtV6zJPObDd8MTeveHCN+zuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EehrrO/R+Q37E/JYXFFs/oQTaMsCLmpSS53BfaeIaAJoA21wTdXC2FS90Hh9oMwTm
-	 vloKMLYpTwQyvTJy/Q7QrSpKKb5bz+tiYNVsWmEnFsriVBOgftwADo8vV3AG0WdFEK
-	 hwZxjObzuK+RMP8FBVinbhwmyNzgb4VBYrtSUhS0=
+	b=ce8knihADd2HnY96KLjhNy04qCmM+O5zVawgCh5z6U2JP2BoVChn+TC3DVELDAjjp
+	 l7emxtiL02lMoaToyQXdNzMawrYoJWnztfEKVxfFdygF4gVxEAGCrkZsOyl+r5LpVz
+	 ew5hQqMPybula2jOuSXF+IwETpEYMM0M9r4PldqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	stable <stable@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Roy Luo <royluo@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/140] nvmem: imx-ocotp-ele: fix MAC address byte order
-Date: Mon, 24 Feb 2025 15:34:20 +0100
-Message-ID: <20250224142605.412057956@linuxfoundation.org>
+Subject: [PATCH 6.6 062/140] USB: gadget: core: create sysfs link between udc and gadget
+Date: Mon, 24 Feb 2025 15:34:21 +0100
+Message-ID: <20250224142605.450289250@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
 References: <20250224142602.998423469@linuxfoundation.org>
@@ -68,78 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Roy Luo <royluo@google.com>
 
-[ Upstream commit 391b06ecb63e6eacd054582cb4eb738dfbf5eb77 ]
+[ Upstream commit 0ef40f399aa2be8c04aee9b7430705612c104ce5 ]
 
-According to the i.MX93 Fusemap the two MAC addresses are stored in
-words 315 to 317 like this:
+udc device and gadget device are tightly coupled, yet there's no good
+way to corelate the two. Add a sysfs link in udc that points to the
+corresponding gadget device.
+An example use case: userspace configures a f_midi configfs driver and
+bind the udc device, then it tries to locate the corresponding midi
+device, which is a child device of the gadget device. The gadget device
+that's associated to the udc device has to be identified in order to
+index the midi device. Having a sysfs link would make things much
+easier.
 
-315	MAC1_ADDR_31_0[31:0]
-316	MAC1_ADDR_47_32[47:32]
-	MAC2_ADDR_15_0[15:0]
-317	MAC2_ADDR_47_16[31:0]
-
-This means the MAC addresses are stored in reverse byte order. We have
-to swap the bytes before passing them to the upper layers. The storage
-format is consistent to the one used on i.MX6 using imx-ocotp driver
-which does the same byte swapping as introduced here.
-
-With this patch the MAC address on my i.MX93 TQ board correctly reads as
-00:d0:93:6b:27:b8 instead of b8:27:6b:93:d0:00.
-
-Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20241230141901.263976-4-srinivas.kandagatla@linaro.org
+Signed-off-by: Roy Luo <royluo@google.com>
+Link: https://lore.kernel.org/r/20240307030922.3573161-1-royluo@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 399a45e5237c ("usb: gadget: core: flush gadget workqueue after device removal")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/imx-ocotp-ele.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/usb/gadget/udc/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index dfc925edfc83e..1356ec93bfd00 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -107,6 +107,26 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 33979f61dc4dd..1d58adc597a7e 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1419,8 +1419,16 @@ int usb_add_gadget(struct usb_gadget *gadget)
+ 	if (ret)
+ 		goto err_free_id;
+ 
++	ret = sysfs_create_link(&udc->dev.kobj,
++				&gadget->dev.kobj, "gadget");
++	if (ret)
++		goto err_del_gadget;
++
  	return 0;
- };
  
-+static int imx_ocotp_cell_pp(void *context, const char *id, int index,
-+			     unsigned int offset, void *data, size_t bytes)
-+{
-+	u8 *buf = data;
-+	int i;
++ err_del_gadget:
++	device_del(&gadget->dev);
 +
-+	/* Deal with some post processing of nvmem cell data */
-+	if (id && !strcmp(id, "mac-address"))
-+		for (i = 0; i < bytes / 2; i++)
-+			swap(buf[i], buf[bytes - i - 1]);
-+
-+	return 0;
-+}
-+
-+static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
-+					 struct nvmem_cell_info *cell)
-+{
-+	cell->read_post_process = imx_ocotp_cell_pp;
-+}
-+
- static int imx_ele_ocotp_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -133,6 +153,8 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
- 	priv->config.stride = 1;
- 	priv->config.priv = priv;
- 	priv->config.read_only = true;
-+	priv->config.add_legacy_fixed_of_cells = true;
-+	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
- 	mutex_init(&priv->lock);
+  err_free_id:
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
  
- 	nvmem = devm_nvmem_register(dev, &priv->config);
+@@ -1529,6 +1537,7 @@ void usb_del_gadget(struct usb_gadget *gadget)
+ 	mutex_unlock(&udc_lock);
+ 
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
++	sysfs_remove_link(&udc->dev.kobj, "gadget");
+ 	flush_work(&gadget->work);
+ 	device_del(&gadget->dev);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
 -- 
 2.39.5
 
