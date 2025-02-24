@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-118815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915ACA41C99
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:26:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72203A41C9D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D5D7A982C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:22:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B673BA863
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A962641D8;
-	Mon, 24 Feb 2025 11:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B671D26463E;
+	Mon, 24 Feb 2025 11:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRv/rhdf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aw+VOzAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDC0263C9E;
-	Mon, 24 Feb 2025 11:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7105226460A;
+	Mon, 24 Feb 2025 11:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395878; cv=none; b=EdJ8S2uN/Qn9Sar8E9/Kd+QhT2jrlOFbAaI2EoBtE/x4OtNCENs7386DTx96TpCXu8UrS5d31EqhmtpyiKjbJ946/p1v6POczlr/sHsYhDsDQsTQPsP16KoIH8HhlRSfMBj5dkATY/5kbuN7KTzqZTN1N7Mnm7y/F4ZrpiwL9IE=
+	t=1740395879; cv=none; b=O9owrHk8Yg6ruMoRJ4nOgTQ1VQRyeeEAamnoLt25q3sdQOrD0t4xakKYYy4XTxMfYyYmj+Z0qWAUj8UZ6gk/hWLoQSoSGmxK/Aa0iG1V3uyQsh0Z4n4DNQGhG7P/maU8DrXfgGdW7XwPzknRpISZYnbIOOlv9fkd2CLW0W1Rptc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395878; c=relaxed/simple;
-	bh=dqPuA9v4dNcw/imLKMmpcyLGTWuXEGp8WqzvpE77BxA=;
+	s=arc-20240116; t=1740395879; c=relaxed/simple;
+	bh=Yim0/UFxWsVs7ZjFolL1jtb/Fogcz7Qgthqq78PKsxo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=joSRac+wCjhlAr1jsV/RO8nHwx65/BiNCjA41XpMeysao02xs/OeYh2v2M8PTRSMpaYqWCMnwaymyWiFjSIDgNmkhRiZXWljaJ0YrYo6ff4hSxNwq2Kxn+LxZADE6kFv8hfwuZEN8uMGChN9bqwWZUGqkwyuf8DIkdJMgGWNY00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRv/rhdf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71B2C4CEE6;
-	Mon, 24 Feb 2025 11:17:56 +0000 (UTC)
+	 MIME-Version; b=aUAMi5+HcRyaoFU9uEfPRaep8v2RB0pv0QGN4sBGzAQKEZnd3qhLoNOLsXGIrdIrX08XiPSpGS26yaJbZFVCr/3mYeaC/Una7/bU8bYkFZtsrYVEtKPrQb5CxA3BpzjenVkvhawGr9n0vmuh6zJZyRFK3BlSsI2OzZVBaGMsjSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aw+VOzAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B08DC4CEEB;
+	Mon, 24 Feb 2025 11:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395877;
-	bh=dqPuA9v4dNcw/imLKMmpcyLGTWuXEGp8WqzvpE77BxA=;
+	s=k20201202; t=1740395878;
+	bh=Yim0/UFxWsVs7ZjFolL1jtb/Fogcz7Qgthqq78PKsxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRv/rhdf1SjMeTipnptVZsT96UQQuylA/QxkXecCo78d9SyV6oMCeTdRNrLt8Mext
-	 Vhzjd1iDwy2o1508FBfrA7Nka+Kgdl9vvs9rrx7hR326mxdYwyONfvQRK6O3uvo6mH
-	 YexruldfFLUORhF1K2NZwU2Ulvx9lLwNPHjT16Fwz3y3OOVkn2xYYbSlj/133IlhEo
-	 g5tDFdNTZb1GJT+gC69kAQ0Y/7ODxhdom1ttjafaqCewXXMPHf3WdaSvvUZeuOeBbn
-	 QnDmGkmDtNaIxhyrneSp9b9i2TfZa8m+2h0UMdjVcs+5EJCyLZUunn0WpATdwvxRzm
-	 or808WViWnLiw==
+	b=Aw+VOzAvJaDAwAEeY3V+YcIh4deMWgjBBSFPB387vtnhL+tRB4Qq1Cw+t7Kfw9F1Z
+	 UqTmmFJjqR/f3LFe6Q+tRyjyZhdFIWMOX9O+ABGc2sxHem61yEUeHR3ZK2Jzid3I8G
+	 Op7VlRo9sdlNkPWlu9+6dPA1ZChGY52RI2c1RKWJx/8+mPL4Bc7uvKo6tSXL2ZWTUZ
+	 adVeMi0cM/CNIersWYNsb8D5MCOEKLfB+rA+zZC7gaynaPeapICZlgDTMcZfqDGuSt
+	 /Blz2751nKoigFrxmWkNJpc9dDClfAg6b7wqfuNEBG700zidkrIynnKRjuJwZuaKop
+	 sd8mwJT+iZ01A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Wagner <wagi@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.13 31/32] nvme: only allow entering LIVE from CONNECTING state
-Date: Mon, 24 Feb 2025 06:16:37 -0500
-Message-Id: <20250224111638.2212832-31-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 32/32] irqchip/qcom-pdc: Workaround hardware register bug on X1E80100
+Date: Mon, 24 Feb 2025 06:16:38 -0500
+Message-Id: <20250224111638.2212832-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111638.2212832-1-sashal@kernel.org>
 References: <20250224111638.2212832-1-sashal@kernel.org>
@@ -66,36 +66,198 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.4
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit d2fe192348f93fe3a0cb1e33e4aba58e646397f4 ]
+[ Upstream commit e9a48ea4d90be251e0d057d41665745caccb0351 ]
 
-The fabric transports and also the PCI transport are not entering the
-LIVE state from NEW or RESETTING. This makes the state machine more
-restrictive and allows to catch not supported state transitions, e.g.
-directly switching from RESETTING to LIVE.
+On X1E80100, there is a hardware bug in the register logic of the
+IRQ_ENABLE_BANK register: While read accesses work on the normal address,
+all write accesses must be made to a shifted address. Without a workaround
+for this, the wrong interrupt gets enabled in the PDC and it is impossible
+to wakeup from deep suspend (CX collapse). This has not caused problems so
+far, because the deep suspend state was not enabled. A workaround is
+required now since work is ongoing to fix this.
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+The PDC has multiple "DRV" regions, each one has a size of 0x10000 and
+provides the same set of registers for a particular client in the system.
+Linux is one the clients and uses DRV region 2 on X1E. Each "bank" inside
+the DRV region consists of 32 interrupt pins that can be enabled using the
+IRQ_ENABLE_BANK register:
+
+  IRQ_ENABLE_BANK[bank] = base + IRQ_ENABLE_BANK + bank * sizeof(u32)
+
+On X1E, this works as intended for read access. However, write access to
+most banks is shifted by 2:
+
+  IRQ_ENABLE_BANK_X1E[0] = IRQ_ENABLE_BANK[-2]
+  IRQ_ENABLE_BANK_X1E[1] = IRQ_ENABLE_BANK[-1]
+  IRQ_ENABLE_BANK_X1E[2] = IRQ_ENABLE_BANK[0] = IRQ_ENABLE_BANK[2 - 2]
+  IRQ_ENABLE_BANK_X1E[3] = IRQ_ENABLE_BANK[1] = IRQ_ENABLE_BANK[3 - 2]
+  IRQ_ENABLE_BANK_X1E[4] = IRQ_ENABLE_BANK[2] = IRQ_ENABLE_BANK[4 - 2]
+  IRQ_ENABLE_BANK_X1E[5] = IRQ_ENABLE_BANK[5] (this one works as intended)
+
+The negative indexes underflow to banks of the previous DRV/client region:
+
+  IRQ_ENABLE_BANK_X1E[drv 2][bank 0] = IRQ_ENABLE_BANK[drv 2][bank -2]
+                                     = IRQ_ENABLE_BANK[drv 1][bank 5-2]
+                                     = IRQ_ENABLE_BANK[drv 1][bank 3]
+                                     = IRQ_ENABLE_BANK[drv 1][bank 0 + 3]
+  IRQ_ENABLE_BANK_X1E[drv 2][bank 1] = IRQ_ENABLE_BANK[drv 2][bank -1]
+                                     = IRQ_ENABLE_BANK[drv 1][bank 5-1]
+                                     = IRQ_ENABLE_BANK[drv 1][bank 4]
+                                     = IRQ_ENABLE_BANK[drv 1][bank 1 + 3]
+
+Introduce a workaround for the bug by matching the qcom,x1e80100-pdc
+compatible and apply the offsets as shown above:
+
+ - Bank 0...1: previous DRV region, bank += 3
+ - Bank 1...4: our DRV region, bank -= 2
+ - Bank 5: our DRV region, no fixup required
+
+The PDC node in the device tree only describes the DRV region for the Linux
+client, but the workaround also requires to map parts of the previous DRV
+region to issue writes there. To maintain compatibility with old device
+trees, obtain the base address of the preceeding region by applying the
+-0x10000 offset. Note that this is also more correct from a conceptual
+point of view:
+
+It does not really make use of the other region; it just issues shifted
+writes that end up in the registers of the Linux associated DRV region 2.
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/all/20250218-x1e80100-pdc-hw-wa-v2-1-29be4c98e355@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/irqchip/qcom-pdc.c | 67 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 64 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 46e04b30f6425..cf0e7c6d5502b 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -564,8 +564,6 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
- 	switch (new_state) {
- 	case NVME_CTRL_LIVE:
- 		switch (old_state) {
--		case NVME_CTRL_NEW:
--		case NVME_CTRL_RESETTING:
- 		case NVME_CTRL_CONNECTING:
- 			changed = true;
- 			fallthrough;
+diff --git a/drivers/irqchip/qcom-pdc.c b/drivers/irqchip/qcom-pdc.c
+index 74b2f124116e3..52d77546aacb9 100644
+--- a/drivers/irqchip/qcom-pdc.c
++++ b/drivers/irqchip/qcom-pdc.c
+@@ -21,9 +21,11 @@
+ #include <linux/types.h>
+ 
+ #define PDC_MAX_GPIO_IRQS	256
++#define PDC_DRV_OFFSET		0x10000
+ 
+ /* Valid only on HW version < 3.2 */
+ #define IRQ_ENABLE_BANK		0x10
++#define IRQ_ENABLE_BANK_MAX	(IRQ_ENABLE_BANK + BITS_TO_BYTES(PDC_MAX_GPIO_IRQS))
+ #define IRQ_i_CFG		0x110
+ 
+ /* Valid only on HW version >= 3.2 */
+@@ -46,13 +48,20 @@ struct pdc_pin_region {
+ 
+ static DEFINE_RAW_SPINLOCK(pdc_lock);
+ static void __iomem *pdc_base;
++static void __iomem *pdc_prev_base;
+ static struct pdc_pin_region *pdc_region;
+ static int pdc_region_cnt;
+ static unsigned int pdc_version;
++static bool pdc_x1e_quirk;
++
++static void pdc_base_reg_write(void __iomem *base, int reg, u32 i, u32 val)
++{
++	writel_relaxed(val, base + reg + i * sizeof(u32));
++}
+ 
+ static void pdc_reg_write(int reg, u32 i, u32 val)
+ {
+-	writel_relaxed(val, pdc_base + reg + i * sizeof(u32));
++	pdc_base_reg_write(pdc_base, reg, i, val);
+ }
+ 
+ static u32 pdc_reg_read(int reg, u32 i)
+@@ -60,6 +69,34 @@ static u32 pdc_reg_read(int reg, u32 i)
+ 	return readl_relaxed(pdc_base + reg + i * sizeof(u32));
+ }
+ 
++static void pdc_x1e_irq_enable_write(u32 bank, u32 enable)
++{
++	void __iomem *base;
++
++	/* Remap the write access to work around a hardware bug on X1E */
++	switch (bank) {
++	case 0 ... 1:
++		/* Use previous DRV (client) region and shift to bank 3-4 */
++		base = pdc_prev_base;
++		bank += 3;
++		break;
++	case 2 ... 4:
++		/* Use our own region and shift to bank 0-2 */
++		base = pdc_base;
++		bank -= 2;
++		break;
++	case 5:
++		/* No fixup required for bank 5 */
++		base = pdc_base;
++		break;
++	default:
++		WARN_ON(1);
++		return;
++	}
++
++	pdc_base_reg_write(base, IRQ_ENABLE_BANK, bank, enable);
++}
++
+ static void __pdc_enable_intr(int pin_out, bool on)
+ {
+ 	unsigned long enable;
+@@ -72,7 +109,11 @@ static void __pdc_enable_intr(int pin_out, bool on)
+ 
+ 		enable = pdc_reg_read(IRQ_ENABLE_BANK, index);
+ 		__assign_bit(mask, &enable, on);
+-		pdc_reg_write(IRQ_ENABLE_BANK, index, enable);
++
++		if (pdc_x1e_quirk)
++			pdc_x1e_irq_enable_write(index, enable);
++		else
++			pdc_reg_write(IRQ_ENABLE_BANK, index, enable);
+ 	} else {
+ 		enable = pdc_reg_read(IRQ_i_CFG, pin_out);
+ 		__assign_bit(IRQ_i_CFG_IRQ_ENABLE, &enable, on);
+@@ -324,10 +365,29 @@ static int qcom_pdc_init(struct device_node *node, struct device_node *parent)
+ 	if (res_size > resource_size(&res))
+ 		pr_warn("%pOF: invalid reg size, please fix DT\n", node);
+ 
++	/*
++	 * PDC has multiple DRV regions, each one provides the same set of
++	 * registers for a particular client in the system. Due to a hardware
++	 * bug on X1E, some writes to the IRQ_ENABLE_BANK register must be
++	 * issued inside the previous region. This region belongs to
++	 * a different client and is not described in the device tree. Map the
++	 * region with the expected offset to preserve support for old DTs.
++	 */
++	if (of_device_is_compatible(node, "qcom,x1e80100-pdc")) {
++		pdc_prev_base = ioremap(res.start - PDC_DRV_OFFSET, IRQ_ENABLE_BANK_MAX);
++		if (!pdc_prev_base) {
++			pr_err("%pOF: unable to map previous PDC DRV region\n", node);
++			return -ENXIO;
++		}
++
++		pdc_x1e_quirk = true;
++	}
++
+ 	pdc_base = ioremap(res.start, res_size);
+ 	if (!pdc_base) {
+ 		pr_err("%pOF: unable to map PDC registers\n", node);
+-		return -ENXIO;
++		ret = -ENXIO;
++		goto fail;
+ 	}
+ 
+ 	pdc_version = pdc_reg_read(PDC_VERSION_REG, 0);
+@@ -363,6 +423,7 @@ static int qcom_pdc_init(struct device_node *node, struct device_node *parent)
+ fail:
+ 	kfree(pdc_region);
+ 	iounmap(pdc_base);
++	iounmap(pdc_prev_base);
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
