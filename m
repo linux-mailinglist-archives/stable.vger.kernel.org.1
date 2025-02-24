@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-119206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5C7A42515
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126EEA42440
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18EBE19E0855
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA2B4420C8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3AC254856;
-	Mon, 24 Feb 2025 14:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1861946DF;
+	Mon, 24 Feb 2025 14:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPoBy3Ll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVZRLr/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3668D1A239E;
-	Mon, 24 Feb 2025 14:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76832571CE;
+	Mon, 24 Feb 2025 14:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408678; cv=none; b=UjizV1YUA0g2jaOWVeg25DHeGlmg7GBLa4n30XuSKMexXU1dRl+pye9RgDgGWz+WnGw08kqPwMbgLsnSCf+3FSO5p20YUC84Tjz5cEr9NPHKpW4V771jSlNj20RWpb0IJXNrsMMLP3vWRMI6LPy7ILClbXhxsWvF2kp5HiKTQ+A=
+	t=1740408235; cv=none; b=tdad7hN4D1UYQw0vlxgh/tBcbyTdEe1vljsWGlmPifoj10RmUobdtInxho8Yr7mZeYqFKOC7X8O370TCZNeYWnrl4UKgxumvXiv/agdqYhXvYFUAHhXsLAJ1fEB9FFiAIg51ENnqEYgBpYu02iOmBpwTlV/i/opfZ4FI270/V/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408678; c=relaxed/simple;
-	bh=MHmDvuEHE095WsvfQyiH7UdIIIQVm0+Rw4gLjpQDmNA=;
+	s=arc-20240116; t=1740408235; c=relaxed/simple;
+	bh=9NWCUzu6nY2UraAUwuGpeXJ171j8EBfLR/42p0f46Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eehp6Z6Zo39kSOecJq/LOz08247c2DkVgnXwVLivAB70CdSV+Bqj89F421FJ3R2vBcexySG0hrqkNDIpj+Wz+BE1fSit8VnawdWCXh95kSxRCagufJMGtk4w7ij2LRSMw5cCllX87ZgzdQD86/o0ddQl80DlUkBh0Ooq63CyXbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPoBy3Ll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEEEC4CEE6;
-	Mon, 24 Feb 2025 14:51:17 +0000 (UTC)
+	 MIME-Version; b=oWUHKVuwGTW3RohYTvHM5iJLZ3cyvk5xGBYm6ZIl3m5E4tdGvODH4ZzAozl+4FaDeyKurTo5oKxS2+nlxQwxglPS5AcK6nMWvjR7+1O5pefLLlVih8tyvncZ+r1BbE7kO0HxNK0hITguNUCNnIDuwCQEd2MELDHlF+o7uFGS6dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVZRLr/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD85EC4CEE6;
+	Mon, 24 Feb 2025 14:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408678;
-	bh=MHmDvuEHE095WsvfQyiH7UdIIIQVm0+Rw4gLjpQDmNA=;
+	s=korg; t=1740408233;
+	bh=9NWCUzu6nY2UraAUwuGpeXJ171j8EBfLR/42p0f46Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPoBy3Ll8obH7qYVOc1G+P38hr6agupvSdVNPsVUVt6LJnhAB9w2zjbdrXQ6oYtbP
-	 B4bCempJVTrezGX4pAOpFCbiflWZD9WX3YGL2GxWGW9tPcgWareikumdaTFApQS1/f
-	 cbG6fbBqbVAfF3FYzoWiOTZrW5IF7eXa4/FTTf3U=
+	b=FVZRLr/D6Hnr8LMQDZ4ERtAilo+QCwVyFvajizCnNMhz/dk8QnPMHWaQgIkkpJTra
+	 EKz6cEVZgaSa8Vt/xC9Ce/OB4uGBr84nHaaWUf3SI5Agfvg90m30dUGZoy/U+3uGzB
+	 WCsCR7jV3UyDPiOcsNzAVlZUJJTTpdUtnpSerwfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/154] drm/msm/dpu: Dont leak bits_per_component into random DSC_ENC fields
+Subject: [PATCH 6.6 096/140] bpf: avoid holding freeze_mutex during mmap operation
 Date: Mon, 24 Feb 2025 15:34:55 +0100
-Message-ID: <20250224142610.824057658@linuxfoundation.org>
+Message-ID: <20250224142606.787290836@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 144429831f447223253a0e4376489f84ff37d1a7 ]
+[ Upstream commit bc27c52eea189e8f7492d40739b7746d67b65beb ]
 
-What used to be the input_10_bits boolean - feeding into the lowest
-bit of DSC_ENC - on MSM downstream turned into an accidental OR with
-the full bits_per_component number when it was ported to the upstream
-kernel.
+We use map->freeze_mutex to prevent races between map_freeze() and
+memory mapping BPF map contents with writable permissions. The way we
+naively do this means we'll hold freeze_mutex for entire duration of all
+the mm and VMA manipulations, which is completely unnecessary. This can
+potentially also lead to deadlocks, as reported by syzbot in [0].
 
-On typical bpc=8 setups we don't notice this because line_buf_depth is
-always an odd value (it contains bpc+1) and will also set the 4th bit
-after left-shifting by 3 (hence this |= bits_per_component is a no-op).
+So, instead, hold freeze_mutex only during writeability checks, bump
+(proactively) "write active" count for the map, unlock the mutex and
+proceed with mmap logic. And only if something went wrong during mmap
+logic, then undo that "write active" counter increment.
 
-Now that guards are being removed to allow more bits_per_component
-values besides 8 (possible since commit 49fd30a7153b ("drm/msm/dsi: use
-DRM DSC helpers for DSC setup")), a bpc of 10 will instead clash with
-the 5th bit which is convert_rgb.  This is "fortunately" also always set
-to true by MSM's dsi_populate_dsc_params() already, but once a bpc of 12
-starts being used it'll write into simple_422 which is normally false.
+  [0] https://lore.kernel.org/bpf/678dcbc9.050a0220.303755.0066.GAE@google.com/
 
-To solve all these overlaps, simply replicate downstream code and only
-set this lowest bit if bits_per_component is equal to 10.  It is unclear
-why DSC requires this only for bpc=10 but not bpc=12, and also notice
-that this lowest bit wasn't set previously despite having a panel and
-patch on the list using it without any mentioned issues.
-
-Fixes: c110cfd1753e ("drm/msm/disp/dpu1: Add support for DSC")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/636311/
-Link: https://lore.kernel.org/r/20250211-dsc-10-bit-v1-1-1c85a9430d9a@somainline.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: fc9702273e2e ("bpf: Add mmap() support for BPF_MAP_TYPE_ARRAY")
+Reported-by: syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-index 5e9aad1b2aa28..d1e0fb2139765 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-@@ -52,6 +52,7 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
- 	u32 slice_last_group_size;
- 	u32 det_thresh_flatness;
- 	bool is_cmd_mode = !(mode & DSC_MODE_VIDEO);
-+	bool input_10_bits = dsc->bits_per_component == 10;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 98d7558e2f2be..9f791b6b09edc 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -882,7 +882,7 @@ static const struct vm_operations_struct bpf_map_default_vmops = {
+ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+ {
+ 	struct bpf_map *map = filp->private_data;
+-	int err;
++	int err = 0;
  
- 	DPU_REG_WRITE(c, DSC_COMMON_MODE, mode);
+ 	if (!map->ops->map_mmap || !IS_ERR_OR_NULL(map->record))
+ 		return -ENOTSUPP;
+@@ -906,7 +906,12 @@ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+ 			err = -EACCES;
+ 			goto out;
+ 		}
++		bpf_map_write_active_inc(map);
+ 	}
++out:
++	mutex_unlock(&map->freeze_mutex);
++	if (err)
++		return err;
  
-@@ -68,7 +69,7 @@ static void dpu_hw_dsc_config(struct dpu_hw_dsc *hw_dsc,
- 	data |= (dsc->line_buf_depth << 3);
- 	data |= (dsc->simple_422 << 2);
- 	data |= (dsc->convert_rgb << 1);
--	data |= dsc->bits_per_component;
-+	data |= input_10_bits;
+ 	/* set default open/close callbacks */
+ 	vma->vm_ops = &bpf_map_default_vmops;
+@@ -923,13 +928,11 @@ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+ 		vm_flags_clear(vma, VM_MAYWRITE);
  
- 	DPU_REG_WRITE(c, DSC_ENC, data);
+ 	err = map->ops->map_mmap(map, vma);
+-	if (err)
+-		goto out;
++	if (err) {
++		if (vma->vm_flags & VM_WRITE)
++			bpf_map_write_active_dec(map);
++	}
+ 
+-	if (vma->vm_flags & VM_WRITE)
+-		bpf_map_write_active_inc(map);
+-out:
+-	mutex_unlock(&map->freeze_mutex);
+ 	return err;
+ }
  
 -- 
 2.39.5
