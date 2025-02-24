@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-118984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA54A4238E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E684A424AD
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 252121893B0E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3075216F273
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B181DFDE;
-	Mon, 24 Feb 2025 14:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4C123ED56;
+	Mon, 24 Feb 2025 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ww4QJW8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8UmbaS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4BF18A95E;
-	Mon, 24 Feb 2025 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0671624D9;
+	Mon, 24 Feb 2025 14:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407923; cv=none; b=BydokzAbb7I6EdokILVuvBhI1D2XnGCEbcWVL6KIgDZ4AJ2QJkIxTJgZuRM0JAzYNAbL7WJlSxqFJ9Kwi1o6eu7uU4j3cCK7KMumpCaN+DIhC5KWNpyoMfB/cRas96yEndFh3zeMvgbUhts98I/sXykOWOQG9uqwST19eaVOAL0=
+	t=1740408404; cv=none; b=K6V/z8Xo7glfJ7/tnfe4FvmC15iXWArifcy2Kxu+HiTkJN+cx7UUNjxzYi8aLETb35tTRthwNYR2X81eS9carQ5HNvJy8HmBcwRgy4sYtq1dCDc59TAOq3cOMhF4UCY/3zFIfwWVp+VEZtWpm1/3HusaAh3h/QGmcABjPP2S5Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407923; c=relaxed/simple;
-	bh=6cimDX7seyBQ4u4Zhamw2x9IllH3UcIx55CBpoJFUpw=;
+	s=arc-20240116; t=1740408404; c=relaxed/simple;
+	bh=l8KGbocB25eVQXCyU/+zX/Pz5YYuHvdCErAoJMIQCHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMf5OG811HMN6C6DjONq0Ff/ioHAHk/tLtQngZNnsNWKdp67rNfAaW75qHBJ37fcT9bimffMQFZj8hoBHP/dDvTQ9uZIYnqq7dWF+ktPZ+ZWfmyHLVAN9KfsVI53638mNUSiHlms4096HH1SdYRBlC61zhKnKqq3Cklx+ef/o3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ww4QJW8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A148C4CED6;
-	Mon, 24 Feb 2025 14:38:43 +0000 (UTC)
+	 MIME-Version; b=NVSlTh+WoHRgavbDnymic7JZAxdksgbN/rEzwS/xiwNTCI41DBUBU7rgIl9r/eO37OPw6Dn1nBUl0EaMVqVVx1xhK1SDGuf5zg0HfpAoMwl5dfFdFXrJFOp1H1tTk11H7lsQ9HP9+kahQEGcNXksjx7dawfZ/i7ymkOkA8oMn4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8UmbaS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A3EC4CED6;
+	Mon, 24 Feb 2025 14:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407923;
-	bh=6cimDX7seyBQ4u4Zhamw2x9IllH3UcIx55CBpoJFUpw=;
+	s=korg; t=1740408404;
+	bh=l8KGbocB25eVQXCyU/+zX/Pz5YYuHvdCErAoJMIQCHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ww4QJW8erwsznOvIGORAWMBdFqZoas0qn+vlXFSDbIldG/1Fm2FTcF254H0JDcPhk
-	 RSk+kdtz1+vdNy73B5eiCJq1fg8T7u657ruNqn3B3yMjmhQBHIY6LbVdu0F2GLhnCK
-	 NKYTaiQ6hx0U+W3UtbJEAq7Sz6hiPDVyKnmTrEys=
+	b=D8UmbaS09kWbGHQgXNGWhQGjf7sHUd5IyZI42bRx2GJpmnhk2GFz+8YSswgARNj26
+	 GGOT0yxDMtDMFdyGCmgJfsPRDYW984fyzkQTZZHI2OTj+l/BBCGUHQiqlK4iMfxYEn
+	 0ZdXNXx54DeqM6PoHF86u+zh1wBoDsAasMH5iM0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/140] arm64: dts: qcom: sm8450: add missing qcom,non-secure-domain property
+Subject: [PATCH 6.12 048/154] ALSA: hda/realtek: Fixup ALC225 depop procedure
 Date: Mon, 24 Feb 2025 15:34:07 +0100
-Message-ID: <20250224142604.901321244@linuxfoundation.org>
+Message-ID: <20250224142608.975892524@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 033fbfa0eb60e519f50e97ef93baec270cd28a88 ]
+[ Upstream commit 174448badb4409491bfba2e6b46f7aa078741c5e ]
 
-By default the DSP domains are non secure, add the missing
-qcom,non-secure-domain property to mark them as non-secure.
+Headset MIC will no function when power_save=0.
 
-Fixes: 91d70eb70867 ("arm64: dts: qcom: sm8450: add fastrpc nodes")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240227-topic-sm8x50-upstream-fastrpc-non-secure-domain-v1-1-15c4c864310f@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 13c96bee5d5e ("arm64: dts: qcom: sm8450: Fix ADSP memory base and length")
+Fixes: 1fd50509fe14 ("ALSA: hda/realtek: Update ALC225 depop procedure")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219743
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0474a095ab0044d0939ec4bf4362423d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index 2a49a29713752..fb0162e65a38c 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2135,6 +2135,7 @@
- 					compatible = "qcom,fastrpc";
- 					qcom,glink-channels = "fastrpcglink-apps-dsp";
- 					label = "sdsp";
-+					qcom,non-secure-domain;
- 					#address-cells = <1>;
- 					#size-cells = <0>;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index f3f849b96402d..9bf99fe6cd34d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3790,6 +3790,7 @@ static void alc225_init(struct hda_codec *codec)
+ 				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
  
-@@ -2449,6 +2450,7 @@
- 					compatible = "qcom,fastrpc";
- 					qcom,glink-channels = "fastrpcglink-apps-dsp";
- 					label = "adsp";
-+					qcom,non-secure-domain;
- 					#address-cells = <1>;
- 					#size-cells = <0>;
- 
-@@ -2515,6 +2517,7 @@
- 					compatible = "qcom,fastrpc";
- 					qcom,glink-channels = "fastrpcglink-apps-dsp";
- 					label = "cdsp";
-+					qcom,non-secure-domain;
- 					#address-cells = <1>;
- 					#size-cells = <0>;
- 
+ 		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+ 		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
+ 	}
+ }
 -- 
 2.39.5
 
