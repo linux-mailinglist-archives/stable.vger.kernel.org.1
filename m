@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-119275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41774A4247D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:57:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BCCA424AC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA5467A86BC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1D6177178
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7592218A6BA;
-	Mon, 24 Feb 2025 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05EE24EF92;
+	Mon, 24 Feb 2025 14:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfOVlzLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11BCiyn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320C127701;
-	Mon, 24 Feb 2025 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50E24EF8D;
+	Mon, 24 Feb 2025 14:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408910; cv=none; b=aqC/eCL7HjEKGVC/HxiR4bApwTtsalgrTX0FC4as3XuFfymSqus4C9vn6hjOAH1RpYs+Azb8TKbrlV2wSMGtPOCpq4iyA6A6g/KXxPFPJDx1kSQmJnRyzAlf8c4ijFUYD+Gwk1dGgxWQts941yASTVe7LiqJdz4z5AItNxcrvBk=
+	t=1740408453; cv=none; b=oHsbBAkUsYOcqhMxxZLtWmqBoerIJ5QmSl4Gafsg/UpmNRATTwBRnydQoLKFigkwoE4N1rIF8pmsXoF6YHRwET6+a1MHKcbycpnzkk+RQ3yr/AEbtW7dKXL+elf8VkwNCrt2DKMQF8oyGKeXQMSQM6E+acaFjnx6Y8hq33nt22s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408910; c=relaxed/simple;
-	bh=9119VAZoVEtH08aCJ4/7xUHgPdSHFkQdh+RFc0KRmi0=;
+	s=arc-20240116; t=1740408453; c=relaxed/simple;
+	bh=meSylcJpSwzOXWatbzIydFjv94nrF+NrAfuHcvkUHNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBpIJgApFdu4gFRf88+Z74p9xMq6MOcmaRC0O1p/Z7WHcG7VM0TGvYz6euWXC8QB8M+cX7DhiqIh2EKQgOW80Qq7wWFgxmoXny/H/j4v56iXM386JZI8jtY4MSOqC/v1x71jwcWJBzeall99//DmycD2id4RoxRaINoJlyjtuuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfOVlzLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF94C4CEE6;
-	Mon, 24 Feb 2025 14:55:09 +0000 (UTC)
+	 MIME-Version; b=p/0X+kcW9FvoDy+t/VMI0uB/qJgyHuL1Uf3zaO0ZQWi0ysE7sylHP4bYJH5Tv/Ypw3MsdGnT8aAbrNPsWQ4VTSh1NhKupmOcINRz586C9GF76W29/qRvlMKRUhPJwo9l5s8ETDPXG3dBuW42JPwmCfo1UzfClKSFSrZXWa5xUY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11BCiyn4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CBEC4CEE9;
+	Mon, 24 Feb 2025 14:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408910;
-	bh=9119VAZoVEtH08aCJ4/7xUHgPdSHFkQdh+RFc0KRmi0=;
+	s=korg; t=1740408453;
+	bh=meSylcJpSwzOXWatbzIydFjv94nrF+NrAfuHcvkUHNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfOVlzLdvg6bt0oAxUU9CcjLEvrfFaAPLvblBQ0ULT3Ybn0Rm8elT+z9P/wAyOEfD
-	 pTBkS/dUR9CI8GzkNldcHNVQDP/k+T6IErTSi8v7uVKzwK5Q4kqJmiAdmRz6X0tgPm
-	 QeDcLPBuS+Y/jMMvzlcxggQzYJJtaEvnfngDcT64=
+	b=11BCiyn4TVrTh114cSyCmXJuQIJOwgp84HqnmHDQex3J85/UQfTpkthpjwk3+tDOL
+	 NK6U/Ui00MR3YnsDIA+oOAmluaVq3yA1MxjUkTVVEDnyobhE4nbsebDl7EkotlfKRE
+	 zGlKfHdBFB71hGJq4zUsk8B0iQGa+vz2LuYvhrbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 024/138] ALSA: hda/realtek: Fixup ALC225 depop procedure
+Subject: [PATCH 6.12 055/154] ALSA: seq: Drop UMP events when no UMP-conversion is set
 Date: Mon, 24 Feb 2025 15:34:14 +0100
-Message-ID: <20250224142605.420549611@linuxfoundation.org>
+Message-ID: <20250224142609.244114249@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 174448badb4409491bfba2e6b46f7aa078741c5e ]
+[ Upstream commit e77aa4b2eaa7fb31b2a7a50214ecb946b2a8b0f6 ]
 
-Headset MIC will no function when power_save=0.
+When a destination client is a user client in the legacy MIDI mode and
+it sets the no-UMP-conversion flag, currently the all UMP events are
+still passed as-is.  But this may confuse the user-space, because the
+event packet size is different from the legacy mode.
 
-Fixes: 1fd50509fe14 ("ALSA: hda/realtek: Update ALC225 depop procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219743
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/0474a095ab0044d0939ec4bf4362423d@realtek.com
+Since we cannot handle UMP events in user clients unless it's running
+in the UMP client mode, we should filter out those events instead of
+accepting blindly.  This patch addresses it by slightly adjusting the
+conditions for UMP event handling at the event delivery time.
+
+Fixes: 329ffe11a014 ("ALSA: seq: Allow suppressing UMP conversions")
+Link: https://lore.kernel.org/b77a2cd6-7b59-4eb0-a8db-22d507d3af5f@gmail.com
+Link: https://patch.msgid.link/20250217170034.21930-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/core/seq/seq_clientmgr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 6c352602987ba..ffe3de617d5dd 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3790,6 +3790,7 @@ static void alc225_init(struct hda_codec *codec)
- 				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
+index 77b6ac9b5c11b..9955c4d54e42a 100644
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -678,12 +678,18 @@ static int snd_seq_deliver_single_event(struct snd_seq_client *client,
+ 					  dest_port->time_real);
  
- 		msleep(75);
-+		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
- 		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
- 	}
- }
+ #if IS_ENABLED(CONFIG_SND_SEQ_UMP)
+-	if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
+-		if (snd_seq_ev_is_ump(event)) {
++	if (snd_seq_ev_is_ump(event)) {
++		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
+ 			result = snd_seq_deliver_from_ump(client, dest, dest_port,
+ 							  event, atomic, hop);
+ 			goto __skip;
+-		} else if (snd_seq_client_is_ump(dest)) {
++		} else if (dest->type == USER_CLIENT &&
++			   !snd_seq_client_is_ump(dest)) {
++			result = 0; // drop the event
++			goto __skip;
++		}
++	} else if (snd_seq_client_is_ump(dest)) {
++		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
+ 			result = snd_seq_deliver_to_ump(client, dest, dest_port,
+ 							event, atomic, hop);
+ 			goto __skip;
 -- 
 2.39.5
 
