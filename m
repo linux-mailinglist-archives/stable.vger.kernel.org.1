@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-119179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A20A424E9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86991A42414
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46730441BCA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7F416F7AA
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964CA24EF6A;
-	Mon, 24 Feb 2025 14:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4D91925B8;
+	Mon, 24 Feb 2025 14:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VolYslKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d226HAyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B1224A04F;
-	Mon, 24 Feb 2025 14:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D822571CE;
+	Mon, 24 Feb 2025 14:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408589; cv=none; b=ahqW28HmxuI1mOoW6g1MJ/dxW3C0fdJfUQPkWFbvmWXhFgiyP4e7bp7bTqbEWS6Pu8BHfflFPHfkkPpqIUde0cE/9bKdEf/3Wt4L4XoxwYNC4jqnCgzsVYKthWNzAaztopN84ZGKcvGlpQ3hyHfd/YMPSWTjZDYTWYdeeOqmmX8=
+	t=1740408223; cv=none; b=kD4QQNAoIy4IFLnmHyMM9+s04ilyZzzE892ynJsHEb7Sbykd3+LtRTwthFoRb8KSbTYhgbqtbIp7zzLEYiFNWd7Qo2tY+Mz1HML9PskvSJg+pGzAels8fmraJ8q0fAbkAaK3EukzDB6dRs6DKBijCgC+UE1P2r7BiN/ueScr6xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408589; c=relaxed/simple;
-	bh=uPn8DAvUpTQLTrhCIDFlaaQbhnzq9+cR6CsSab+9YpE=;
+	s=arc-20240116; t=1740408223; c=relaxed/simple;
+	bh=liwpKNtLHb/2xnHgeQx+9W+J+NSo3UrkXsUOm3eASI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHdChAIPIqBcX0EPsK1Yahk9p7ukh0MFtnrVgPPi3tOEF3rZ8HeKl/LZ2Klr0L27DN8UbRWRPdAIqsQzt8Ed7JvD2ugSARkTT6ahk03Sx3jyuYqcvtOUO1f5WaK7ojkMeyOdfh9DwNn/UAa6RKFvUimJfLO6X08//UmAwKXXQuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VolYslKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9146C4CED6;
-	Mon, 24 Feb 2025 14:49:48 +0000 (UTC)
+	 MIME-Version; b=hHkAOggCNFT3iiTzm7ZzGtlYHud6lR0JnJS+TxUi6KpIZ1CNOCEmJccJtGzhFIC/OJbC6YqOiVNwKTfFMgtCCfkB1Tqke3iekJdVE36Y/+C9SCQ5GyAxaTRSX2yqohnUuGO1tiFWE50KA9VTgY+jvU+XQQxVP2oJ3vM+7XQP77w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d226HAyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1C4C4CED6;
+	Mon, 24 Feb 2025 14:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408589;
-	bh=uPn8DAvUpTQLTrhCIDFlaaQbhnzq9+cR6CsSab+9YpE=;
+	s=korg; t=1740408223;
+	bh=liwpKNtLHb/2xnHgeQx+9W+J+NSo3UrkXsUOm3eASI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VolYslKbWPh+uRxmvwkHrdezzxtD8Yz0/Sv0u552meYdoUEQNA3LHbtXaEVse5niY
-	 Cdy1Xm+vy3lPVUpizR/OdpsrUjpq8b992QOtBdypsRtMuVRKSHb/fZv9ni/ZeIOkBa
-	 ZefdnVCiKIZTSk/tua15CBE1nqnfWYY4eQaW7ItE=
+	b=d226HAyVURLcb0xFGjINdw12ZzW76zJQLBkyb2nDnwGyZc7xpBE6O+ybTA4deGIFu
+	 UgHQft3KGXFccZfeyPLFperUngo58Qun61WbWvQ5pAtHZnXEFv09IkJn/x38IhcIE9
+	 M4wTDasLXYKM32MG8BwjKGvINzSyH9AbiRvcUvs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/154] nvme/ioctl: add missing space in err message
-Date: Mon, 24 Feb 2025 15:35:01 +0100
-Message-ID: <20250224142611.057008544@linuxfoundation.org>
+Subject: [PATCH 6.6 103/140] drm/msm: Avoid rounding up to one jiffy
+Date: Mon, 24 Feb 2025 15:35:02 +0100
+Message-ID: <20250224142607.062334065@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 487a3ea7b1b8ba2ca7d2c2bb3c3594dc360d6261 ]
+[ Upstream commit 669c285620231786fffe9d87ab432e08a6ed922b ]
 
-nvme_validate_passthru_nsid() logs an err message whose format string is
-split over 2 lines. There is a missing space between the two pieces,
-resulting in log lines like "... does not match nsid (1)of namespace".
-Add the missing space between ")" and "of". Also combine the format
-string pieces onto a single line to make the err message easier to grep.
+If userspace is trying to achieve a timeout of zero, let 'em have it.
+Only round up if the timeout is greater than zero.
 
-Fixes: e7d4b5493a2d ("nvme: factor out a nvme_validate_passthru_nsid helper")
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 4969bccd5f4e ("drm/msm: Avoid rounding down to zero jiffies")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/632264/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.h | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index a96976b22fa79..61af1583356c2 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -276,8 +276,7 @@ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
+diff --git a/drivers/gpu/drm/msm/msm_drv.h b/drivers/gpu/drm/msm/msm_drv.h
+index 48e1a8c6942c9..223bf904235a8 100644
+--- a/drivers/gpu/drm/msm/msm_drv.h
++++ b/drivers/gpu/drm/msm/msm_drv.h
+@@ -533,15 +533,12 @@ static inline int align_pitch(int width, int bpp)
+ static inline unsigned long timeout_to_jiffies(const ktime_t *timeout)
  {
- 	if (ns && nsid != ns->head->ns_id) {
- 		dev_err(ctrl->device,
--			"%s: nsid (%u) in cmd does not match nsid (%u)"
--			"of namespace\n",
-+			"%s: nsid (%u) in cmd does not match nsid (%u) of namespace\n",
- 			current->comm, nsid, ns->head->ns_id);
- 		return false;
- 	}
+ 	ktime_t now = ktime_get();
+-	s64 remaining_jiffies;
+ 
+-	if (ktime_compare(*timeout, now) < 0) {
+-		remaining_jiffies = 0;
+-	} else {
+-		ktime_t rem = ktime_sub(*timeout, now);
+-		remaining_jiffies = ktime_divns(rem, NSEC_PER_SEC / HZ);
+-	}
++	if (ktime_compare(*timeout, now) <= 0)
++		return 0;
+ 
++	ktime_t rem = ktime_sub(*timeout, now);
++	s64 remaining_jiffies = ktime_divns(rem, NSEC_PER_SEC / HZ);
+ 	return clamp(remaining_jiffies, 1LL, (s64)INT_MAX);
+ }
+ 
 -- 
 2.39.5
 
