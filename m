@@ -1,182 +1,124 @@
-Return-Path: <stable+bounces-118714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D9DA4176B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:33:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66815A41788
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1AE188FB3B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500B2173B5D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CA017BEBF;
-	Mon, 24 Feb 2025 08:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="MKQ4f10o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1B7193073;
+	Mon, 24 Feb 2025 08:37:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F61282EE;
-	Mon, 24 Feb 2025 08:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E0035893;
+	Mon, 24 Feb 2025 08:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740386014; cv=none; b=FcLow8glTy0qh6sd6tscoM5xeDckl/HHkoMoyMSYuffsI0lluWGJe3e4Oo4k4NWuS63jTIkCqIKBbL9gwxtTAWRhN8lW2e6++gFyczXjj2ra3LvWIWcfEYZpc3o+9lBFu5DQjYINTyEy8XBtOEVqCxi3do3CPt83/Wa4iGTV0Cs=
+	t=1740386241; cv=none; b=Ai4WrGsS3fE9RA1Wwfl4Z0rdAdzijMGEPL6y1lr3nIKwXX2DqKUA/KWYUVuWO7HFm49R6P4xG3gVzXmd7Kwd4JFJHKim9RBUqzpe50lMPGWFyz9iWs1RP005UP2rkH7UeLtGDu1d4wTxKz3JK7yXsMdZIc84jXYw06Qfoye2Aw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740386014; c=relaxed/simple;
-	bh=NuzFwxtYdesIophLu0YyccS/I+GnQ6AvcugdwLFq/CY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=skZ7QAyT12fWWQzpQeYivuBky9BomC38KJqJ3ejffbpPYJKoh+I7/MziHbKL9IscW9Pp6aCCJeH1vfp0cHdFb6UFKgPHxsqNJ2ED2NyPi0+KZYA9eLN3gkxRXhyZbS3iu9krqPsSzEidPneaDEwyGuV7gm7kdgd8EKx45K6C5Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=MKQ4f10o; arc=none smtp.client-ip=217.72.192.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1740385999; x=1740990799; i=christian@heusel.eu;
-	bh=KgVRmiwCVReVwWRPkj4/Qyf0OtRG7F/ydIgzOByr4Zg=;
-	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=MKQ4f10o3LW3TDhCKde2QqP1N9krMOy4d6v3C8hnb2NY2GdimkmYeTA8ejbugU7Z
-	 p7PvEhQGiCMHE1/CdQfJ5MV4ga2CxjEdXVwhg9zu79gBVMEp+apFyDRIucvzctAZL
-	 pkqgfx5MxMLGh0Hv0sAdrC7PV6tUY3Hy+TdspiC0tZBsl7wfSpnqy2LQ1Lx7hmVJw
-	 +/V+WwWw5Ww5qlWkC5fdp+hRSaeR2TZn41B2/1dQsaYAd0Lmkd6pT9ZtY+wzy3pjx
-	 052oKejQySj6CN1vXvRCZKpqe3e+L+8T9Qwu9dRm3XXQQxIUByqu/WMAODpbqMF/o
-	 sK/n3fDlNiuMyvJb+A==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from meterpeter.localdomain ([141.70.80.5]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis)
- id 1MKbwg-1u0pt52sMm-00IAck; Mon, 24 Feb 2025 09:33:19 +0100
-From: Christian Heusel <christian@heusel.eu>
-Date: Mon, 24 Feb 2025 09:32:59 +0100
-Subject: [PATCH] Revert "drivers/card_reader/rtsx_usb: Restore interrupt
- based detection"
+	s=arc-20240116; t=1740386241; c=relaxed/simple;
+	bh=qPNVOCdhV9D0BTv6UKMJgx08V8ryL4MBKvGY/0pzI5s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nBsIVyVJbJ/a+uArgZoairqzdgZzIT7IY6xM9DHNyc2rAlfOHlSEIsQr610W3RSB45InWU84Y/o0ahNdinFJb7TQqbFqYnTtNCk/a8hSA60g8n9pnSau8HHsAnq9/+XMB9A648U6RyUp5LgKUZMt8NzBWIntapUz9PbOGaGB15U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O7gOWF008533;
+	Mon, 24 Feb 2025 00:37:11 -0800
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 44yeyqhktd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 24 Feb 2025 00:37:10 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 24 Feb 2025 00:37:10 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 24 Feb 2025 00:37:07 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <kvalo@kernel.org>, <rand.sec96@gmail.com>,
+        <gregkh@linuxfoundation.org>, <m@bues.ch>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <zhe.he@windriver.com>
+Subject: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+Date: Mon, 24 Feb 2025 16:37:07 +0800
+Message-ID: <20250224083707.2532381-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu>
-X-B4-Tracking: v=1; b=H4sIALouvGcC/x2MQQqAMAzAviI9W9C5ofgV8VDWTntR6UQE8e8Oj
- 4EkD2QxlQxj9YDJpVn3rUBbVxBX2hZB5cLgGhca5zwWSezEzJGM8aAzrph66n3o2PNAUMrDJOn
- 9X6f5fT/NpgpWZQAAAA==
-X-Change-ID: 20250224-revert-sdcard-patch-f7a7453d4d8a
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Sean Rhodes <sean@starlabs.systems>
-Cc: linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
- stable@vger.kernel.org, qf <quintafeira@tutanota.com>, 
- Christian Heusel <christian@heusel.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2053; i=christian@heusel.eu;
- h=from:subject:message-id; bh=V6xy3xipLArMKiCyA2z7lBLNfypg99krUJnGZrY8h+I=;
- b=owEBbQKS/ZANAwAIAcBH1PMotSWFAcsmYgBnvC7OCYTL/0VjTDcElDQJfiRhKcbn1dx/CiwaL
- 403m0uA7hCJAjMEAAEIAB0WIQRvd5reJHprig9yzBPAR9TzKLUlhQUCZ7wuzgAKCRDAR9TzKLUl
- hawaD/9jUFBJsEKllhjaSIqOJBKKamQgve1ikyxMX6hcCnXDV8Vq2Ff6B90v6+ndhrQ7ecsbB4V
- HkV2Do7Z0GSwdeGlKYpQlTTgzFQ2ZKkmu9CRp93l95aU9KYiHuq/ESIt/XzYn4p2zn/qAqfWfUU
- fZN70LLjeMOzayDqOIhjRB8yU7LgpoaoHTreOqRsZ5B8jMmasvwdyDUfL0qaPbErRxaEa0XdYaZ
- +z8i4V90UJx6xRlF4xeA2F6XQPtthcWjt+uLMOUV/6xCr6pWClw10Hiwf9l29/g4ac0L1pSNwU4
- 909bhNvTWbCp63PHaIipjEmbgBPGpdWcSRm5ZYiNTQEHbYBMwghPcFoOh3BaaBreove/QRJjdwQ
- u1SKx3bUPS6+R++yzwOUh9jw2ha1Mx978GSOLlj/Zc09LGmubPqAqyXNTBTdKt0ER1Q2vBdUaGr
- We3PaeXGneeu4rNUtl18bdXER6cej9Qm7m7wha0RYwJ5C/8TDe5ISaLjioFdL+XQgQtHTiUeZOo
- +tnnQEJ5zbWTQVDsIJKkD6LjmIVUJBK0KYtex1UotLUL+XLivKt6MNKgw0b/9kgBvejdrO3pjpZ
- 1w3MLogwZZzpRrdBzP50EviUPLy2Gg9TyyZFjJiR8w7noMU1tLIZP+jzzh+5xO4RxDUUgkg4y7p
- iK8cVvKf59/Y48Q==
-X-Developer-Key: i=christian@heusel.eu; a=openpgp;
- fpr=6F779ADE247A6B8A0F72CC13C047D4F328B52585
-X-Provags-ID: V03:K1:cP2vEgXYL7A+FBvrgir/UoCCcxPcVF0N/v2xJTZcaZYFbB/xvbr
- YB9ao8B5gUrn6wvpi1UUghABvbsM545vww4HgRKKMnaDvF094vmJTJxzecfrpd51z54W6ml
- uIWvRsqEeLwSLm0059jgw5m5a+5avCDtBLyw+X9ZnXJdJjjf9NnVajSyGsdC647DE79shag
- nfviVGBRMYte/Kx0PablQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LCklwuAw0Og=;ONA//bQGGaAuhUAPERHOSf42mu/
- hRYNn/tAxtgVGymKS8O/oIkWMjtoQcEKVhrbcf2U4A1ADynEziksTelACTsPhoynjGZnJhOel
- GPrMNhbLXm3T0pXPP350sc+k01jgxmUvc7CS5iDH+H8ZMjt8oswxIG9yTwewzfb4cI7VhxlF4
- Yl3YKMSB2LSmDcnZq9j4Kvrx2PVQNMFOeveTLSybZ1V9b+62pcM3nAF2qB+6XcvC4q+TssEm7
- 5UDFRHL+jrwhXJaOp5Cxg2WQ7DjE4jKalHpg/c/+zeui03X7yPY4Xvln7ls03qeKoX9Qiv8AT
- qpVZrIT3fwpgRbUB+kYxCOO2brMrRAbH9z1yUgOyNUJE5FvcMCmWDk8jxwa8v4gdZHU7KsBe0
- MZ/3/UUE6Hut1xKlT4I41sqJ9A0fG/7H5ZXL0qfp1yo0KfeUHBB7mMcX8grfxOJpBWWrOrWTq
- 0WSPMvekLnFtcJVujC8kDy4KLW5Zi2IClrFJmgaQeojOo8fHftgEFb/EMjptLkFaQgWiIGREo
- or+1Xr42tR//amT+BJy5nYfoO5pM23OQYlRFeWcYOqOrAax75zZRLDkA71bb8P7+gYBAjBMmM
- tcdbHyCQa46TTJ5oqcX3wx0ufpSjEuGgmkdj7Fiw0sNIRibx/IWHD21dFjQFTSBFvD/bLLMXr
- yO5DfvZleYAfxDD5BAVOFSUpOf1kqFL8Qt0tQp4MaxA2O1NRH6fMCgBz+1fjVOZq4sHiypQxo
- VmP3TdDAP/lV3WyXt5uYjKSOniBLEnusk73PInuxX1lNmJyk6k6A5/iwgNQSrRwhmdA8T6U0e
- fp/ZhzcFEjGYK/eVj6vPw/co9Uqvr23ASVdRqUWsBrOEtJk9nPO4hEjCRrqflzqclUXWl5Y8i
- K27cZZ8GYzoQaTTqUWoqTMIqLr6ndSTyTu5YkcZix4XLVWNWxr5vX1K6RhdRvTXM0+bnPn50J
- 9IproCwRdmCsjpbrJRaR9+Z9xprsiT4KPSTXyjKL2Xark62tt2PkwXQECh8CLBolutHC5kgxq
- 46tsJ/tZaA6CUYhn1OMNHgMzzp5Rw+nwSamy83I/2nmvobfmi/DIinAuNq0QZpciLjWHpVUfD
- vx1QH6T+bvdbQ8/ZZkmrjyPaASSemkJFBMdyNEC5ZahtqmaZ1qrMSOjJ/dheG9CJKfdExK99h
- 7Ekmm9XzJcBRNgjET84PNxwQHS9humwgp/+6AAEez5A2yKidbbwRkd43XFn3PI2FCFh02YaDK
- sFcuAHtNtojLObgMXG2RXEMFt0YKcIEXmVGkDuOPSomedxzjWEvnGNjjSdpmoUS1w/1r9EUux
- F5L2F/IKeOY+GSlfvfAGmpyXUcsk/n+5gbYu0sBNUXu6omsj/2EQK4i8MKEJFqtCtfX9X0eHj
- PdKmXWgDGt/StOvKgfGYNwWwt/CTWdVgMHASg=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=AbBLH2XG c=1 sm=1 tr=0 ts=67bc2fb6 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=T2h4t0Lz3GQA:10 a=bC-a23v3AAAA:8 a=pGLkceISAAAA:8 a=HH5vDtPzAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8
+ a=maAJvPpQ-1jnF_CgM8MA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=QM_-zKB-Ew0MsOlNKMB5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: fy6Bdt89WwP2EvdsYcR57cgnOrC_ViHc
+X-Proofpoint-GUID: fy6Bdt89WwP2EvdsYcR57cgnOrC_ViHc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_03,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=740
+ phishscore=0 suspectscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 clxscore=1015 adultscore=0 spamscore=0 lowpriorityscore=0
+ mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
+ definitions=main-2502240062
 
-This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
+From: Rand Deeb <rand.sec96@gmail.com>
 
-This commit was found responsible for issues with SD card recognition,
-as users had to re-insert their cards in the readers and wait for a
-while. As for some people the SD card was involved in the boot process
-it also caused boot failures.
+[ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
 
-Cc: stable@vger.kernel.org
-Link: https://bbs.archlinux.org/viewtopic.php?id=3D303321
-Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt base=
-d detection")
-Reported-by: qf <quintafeira@tutanota.com>
-Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@h=
-eusel.eu
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-=2D--
- drivers/misc/cardreader/rtsx_usb.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+The ssb_device_uevent() function first attempts to convert the 'dev' pointer
+to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
+performing the NULL check, potentially leading to a NULL pointer
+dereference if 'dev' is NULL.
 
-diff --git a/drivers/misc/cardreader/rtsx_usb.c b/drivers/misc/cardreader/=
-rtsx_usb.c
-index e0174da5e9fc39ae96b70ce70d57a87dfaa2ebdb..77b0490a1b38d79134d48020bd=
-49a9fa6f0df967 100644
-=2D-- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -286,7 +286,6 @@ static int rtsx_usb_get_status_with_bulk(struct rtsx_u=
-cr *ucr, u16 *status)
- int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+To fix this issue, move the NULL check before dereferencing the 'dev' pointer,
+ensuring that the pointer is valid before attempting to use it.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test.
+---
+ drivers/ssb/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index d52e91258e98..aae50a5dfb57 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
+ 
+ static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
  {
- 	int ret;
--	u8 interrupt_val =3D 0;
- 	u16 *buf;
-
- 	if (!status)
-@@ -309,20 +308,6 @@ int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u1=
-6 *status)
- 		ret =3D rtsx_usb_get_status_with_bulk(ucr, status);
- 	}
-
--	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
--	/* Cross check presence with interrupts */
--	if (*status & XD_CD)
--		if (!(interrupt_val & XD_INT))
--			*status &=3D ~XD_CD;
--
--	if (*status & SD_CD)
--		if (!(interrupt_val & SD_INT))
--			*status &=3D ~SD_CD;
--
--	if (*status & MS_CD)
--		if (!(interrupt_val & MS_INT))
--			*status &=3D ~MS_CD;
--
- 	/* usb_control_msg may return positive when success */
- 	if (ret < 0)
- 		return ret;
-
-=2D--
-base-commit: d082ecbc71e9e0bf49883ee4afd435a77a5101b6
-change-id: 20250224-revert-sdcard-patch-f7a7453d4d8a
-
-Best regards,
-=2D-
-Christian Heusel <christian@heusel.eu>
+-	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
++	struct ssb_device *ssb_dev;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	ssb_dev = dev_to_ssb_dev(dev);
++
+ 	return add_uevent_var(env,
+ 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
+ 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
+-- 
+2.25.1
 
 
