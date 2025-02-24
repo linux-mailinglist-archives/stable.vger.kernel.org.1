@@ -1,116 +1,94 @@
-Return-Path: <stable+bounces-119418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713C7A42EA0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 22:09:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10E5A42EA2
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 22:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B5317A0E0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 21:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDE2189A5E3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 21:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A816193404;
-	Mon, 24 Feb 2025 21:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD731957E4;
+	Mon, 24 Feb 2025 21:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hyHc/FsN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDqPCwGq"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC45921345;
-	Mon, 24 Feb 2025 21:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CC421345;
+	Mon, 24 Feb 2025 21:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740431359; cv=none; b=W5zOtbPgoaR0jz12acd6tqWS/ad5rjAYxAa2s2CvyhwcjzmLl+kiobCyOxC8VBXuExl5Xw1tgOzH/bKwG1/ax7ShEowyUUKl2kMluO+C5kb2jUlgyihnucFzibaMQBthBZTpkQJ4dfi8ggtZT7tgW1nzxqVzQ4Q7wKJgDobM3Nc=
+	t=1740431402; cv=none; b=uTqXyFjm421fpGbRmpLrzMEj9LI5OULMnjUiajOafb8JK7ytZ24WddZmH3PrPRcUCF0cZQWAmOQ4pH4OHzKfrQAE0bxKloDfr2XKIxGMysGTWE9vq7zxAmgfowpEq+65lepK1vtOiuwpquWzil2PmUywDN+hh1f/GFdT/7EvYk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740431359; c=relaxed/simple;
-	bh=guqJxAKXDfn634VndPunaNjT9uS40FqYaHe1iRQ91Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dTqu9GBW1LO9wRcd9ltqjgE0HBx5IF2RjbnqUc4BSoBX3AMjt3l459e7iHckg4qQxzsx/oQWTlABEIKjjetZ530T72XMYG1jigfevr/T8H+uCpJoPoL0wcuLcAQbDO47WY6uKX1kUWd4vsMslZNwIPn1EaHW7QWIREyIxZg48G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=hyHc/FsN; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5709510382F1F;
-	Mon, 24 Feb 2025 22:09:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740431352;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gCFTUJhvP7sYPpfnNbKkCvTj6m0PeLY9YrwPgvAE7zM=;
-	b=hyHc/FsNBDdoScpDZW8ImxYryCq04KF0/aunnESBYUYsRf8HzG/idd8VmYvK71OKFNzsWP
-	asY0sjWf7WDjdpkHZewqzefdNRcWVokIOKqfQ+9dO3/5vs4XhvvhlcMtSVSRymetQX0JVF
-	FrcUVyjGhXP57Ld1WWT9ZLC4EN5SapHW64hyaBLPCfMIpNlbtZZ9jaJTP2ORvZG6hrAlwn
-	gxK5C3AkxHN9Dq/vkBtcgJ1zTXrIW3XyMPj3iYrTJBoxFSLjRa/Qmav32v80TxBgCSov5b
-	cMufO354Az5jH06mYgdJQ9vND4OR5i2TGBsvhY8yoUx15PJLKaIv+ldWX5le1Q==
-Date: Mon, 24 Feb 2025 22:09:05 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.13 000/138] 6.13.5-rc1 review
-Message-ID: <Z7zf8X5UoDtpX4FS@duo.ucw.cz>
-References: <20250224142604.442289573@linuxfoundation.org>
+	s=arc-20240116; t=1740431402; c=relaxed/simple;
+	bh=hbW/SJlFMzuudS0GacEN5aJw+CSrtge6vWyr9X+ARNs=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ppVmfrTNJK5gyZjPOlr7kbpnWk5gehwtv3Mq2tbkxH9Ze6HrUaLVl/oUteU2xJvpAZmWj8UtJ4U38xy6FGFJWH2kYZW5mizPL8lfwMRwm4/JUlOC4msnelqMMnq3tnbPtjmgIfRTQBO90XjK3jH4GsBUi3x0cyahgLxIXemKGxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDqPCwGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D64C4CED6;
+	Mon, 24 Feb 2025 21:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740431402;
+	bh=hbW/SJlFMzuudS0GacEN5aJw+CSrtge6vWyr9X+ARNs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=UDqPCwGqxDMF/yKvJYMFIzD6OBVp7ih8GAeoV2H4KbIzml6xSmnCA7UFUVS2ICXg+
+	 LjFNAv+NAJXlr53+RY2wXujtNOfM22nZRuVa1PmP2tb93fzIFhq8x1ms3irow7SSJo
+	 ghoSUUj72tiDlJyPu/U3OwSRkoYt5kXuTSJpDZk5wdFEcxubcLS7iz/uWOoh0Xw3Hv
+	 rbnMQ/Z0QbTpaDDUYlyswffLbP2vqcT9houRZft57/E00GD9UiVFWIFc5UkInpR7km
+	 DoFz88d2Ig3LV9RCzTkpoMXTT0nk514cwYCp0jFyPndi5O3Mq7hpp5l2+iQ/9LojvU
+	 k55IrQmbjEdjQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE264380CEFC;
+	Mon, 24 Feb 2025 21:10:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0lwAjGOtVX5NJEWC"
-Content-Disposition: inline
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] Bluetooth: Add check for mgmt_alloc_skb() in
+ mgmt_remote_name()
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <174043143326.3609111.3392148851063113279.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Feb 2025 21:10:33 +0000
+References: <20250221084947.2756859-1-haoxiang_li2024@163.com>
+In-Reply-To: <20250221084947.2756859-1-haoxiang_li2024@163.com>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+ mm@semihalf.com, acz@semihalf.com, rad@semihalf.com,
+ linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+
+Hello:
+
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+
+On Fri, 21 Feb 2025 16:49:47 +0800 you wrote:
+> Add check for the return value of mgmt_alloc_skb() in
+> mgmt_remote_name() to prevent null pointer dereference.
+> 
+> Fixes: ba17bb62ce41 ("Bluetooth: Fix skb allocation in mgmt_remote_name() & mgmt_device_connected()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2] Bluetooth: Add check for mgmt_alloc_skb() in mgmt_remote_name()
+    https://git.kernel.org/bluetooth/bluetooth-next/c/62ee156d6b29
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
---0lwAjGOtVX5NJEWC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-> This is the start of the stable review cycle for the 6.13.5 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.13.y
-
-6.12 and 6.6 pass our testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---0lwAjGOtVX5NJEWC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ7zf8QAKCRAw5/Bqldv6
-8omFAJ0a8d7UT/lNuUu5714XGT1Ct36W0wCcCixYO1ePu/aQNrUyntkTrpS9e+0=
-=rEnU
------END PGP SIGNATURE-----
-
---0lwAjGOtVX5NJEWC--
 
