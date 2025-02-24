@@ -1,187 +1,235 @@
-Return-Path: <stable+bounces-118712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1D2A4171C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:18:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73198A41730
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5C31892D03
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:18:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC1FF3B3FB2
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE98778F37;
-	Mon, 24 Feb 2025 08:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44BA185B72;
+	Mon, 24 Feb 2025 08:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="M3n/wK3S"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oFiToFM2"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13311FDA;
-	Mon, 24 Feb 2025 08:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7C411187
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 08:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740385123; cv=none; b=WN3/GSf88ySUEtZQirdEWLrK+jO6UVxNCIRrEA7qs6YHFwtq+cVBjrmAqJA+wctrx2WJE0vuLkBtQoqfLOpeETycFTPSNPTnPF/6J3l9Z1udrpXaavnexATaPLdbqPWAYGSNbpnOrnJyJP3fJGCBTJHTRTt3BrgYF6SbzzKPezE=
+	t=1740385214; cv=none; b=UcEyoIKg6NyaJIkUIcAx3wRAv3BDr/B1SGdYAmCbvyUyJ+VWNlRtrC7y6tzzLO/0PdJVMVr6cJfXezAvpFvA6EmN75PgSd5u2gcuA5riNJPWSkDddcx6WCu4nSiFiOnnDEP8zp9ASDbX3Le0m81ktFPKcUkyNi9SDHFWZ63LXLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740385123; c=relaxed/simple;
-	bh=W5lZdY14/HdzaoveUbN230UTomBrJvRsRjGOsNuyHy8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uvfenV19S8o9hQe/IhZeidfkFBjxE7ZYtyKMEXtpUQ3fEdwEJPrea1Hg0VIwlSeJhTT16Kz+cZVZWOaz7b1PK2lOdECXcgoDEEyyf4bSkGtzhC1nz9jBnPsv+oSw0KJ5LVkgc5TvHNwIpj/s4LpmYJumehn+BEmew6fw+xwcl0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=M3n/wK3S; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1740385105; x=1740989905; i=quwenruo.btrfs@gmx.com;
-	bh=n8wsHkddx/G85nADsnXvMHHb2TKzYYRjQ+Xo0MY2eog=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=M3n/wK3SY3qPduvWW06cPc3yA2btZecXk0nv+oXfOl9GPEh6IDvU7V/RpaB6sod9
-	 a4q1+82Vu58chQel4QduXy8eAm29grPmkkQ4QSFom26bwnXAPIp434Sdjs/QvFpqH
-	 N95ZpbyxZclON1m9/6WMYZG+MlRybWgXBbFkjCYMZRgzwXaAuqXp103c5CWKJsgGy
-	 Km9a3woaI57pazfuQlwuO8465oRqDGp82Ji0Y+adBoRmpWxCYnceu5NOlp/F4TUGv
-	 eE8RJpuHTAccGKOI+AwMZJT8qBg+EOO6FEDyIdgGj2QkDLdkR5WCiNC42jepZ46lS
-	 DeokN/ZWotPOiBqrJw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1N4zAy-1tL9j23pDA-00wNxZ; Mon, 24
- Feb 2025 09:18:25 +0100
-Message-ID: <0d9f6477-04c2-486a-ae72-c39b6d235891@gmx.com>
-Date: Mon, 24 Feb 2025 18:48:19 +1030
+	s=arc-20240116; t=1740385214; c=relaxed/simple;
+	bh=21E7UgrvRkxRMCUgPTzjSwSV9qomtLwoLuLUv0Zpa7w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iCisV92fzHwbLtPDXRGm+XC6uLJQB8hmwA3/KGq4ZHsF0Vk6LJUBwlY31DNaOXiT/flw2xy+yS8brXWVnBWt2W1VJ5uVDFi//xoBJWB51aexubUc4Ijm9PM6fjyG1UcgWhSSVr0N7EOwKQPW+1+QxzLGGFLDe3aC6lcPugpmG20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oFiToFM2; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5209ea469e9so3526862e0c.0
+        for <stable@vger.kernel.org>; Mon, 24 Feb 2025 00:20:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740385211; x=1740990011; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j6r85kezRIutcCGmLi1srTZWWPXuVJ6TvYefvLy8aRc=;
+        b=oFiToFM2RRqtIdfQ8GfyOV6Aa/uE/qT62hHNpX3sB7DbKJylU5+bGU3p+fA/etXkQV
+         J8MYSbdVhgEkceayh2Yg7BGO701UDjmgp7Vns9hITq+iwPELrEJ/WzTF0BIXA4/cKd2U
+         tksZpfCbmU+84sNCUZJzB9o8Gen65mU/wIS3P4oJ1Ntib9i4ge7XibGwgDTAeyHfgZMe
+         pveQ+eJmMl+aVn3HNEWhV3l+20NPSDM7woK4nMfR3bV4d3/KJgHc1yaGUnympydo84NC
+         TSF7kWfJbv6C7RMor/fZjswVec8ZFHTSG+YrWTnpjd4Q6d7RT8OT60bCG5uLhme/qZjL
+         35tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740385211; x=1740990011;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j6r85kezRIutcCGmLi1srTZWWPXuVJ6TvYefvLy8aRc=;
+        b=m5s1eBvUfS97hBqmoa3vjlEFtsDftlYn6wcUlRDb1Vnnc0tajn1wWQOsFC4UKxKUBn
+         rMzOP62hoRPsGDg9G7VjAGglElFv0aTQFJm2ST2N+OcNQa9eBhyXLuTpTRRYpCvH2hPh
+         bF2OxQeDKca7MN3QHTRW/BSXxs/iOXKRsOuQOCcUPMq4m7RghWmg2ssezzfzNMnSu9zg
+         iXLVWJ3vgqjJfxzBihTiaPbdC+EYgM5lx055LvEj5bHnNYwT1XlG3E8M93ejRMd4c+Zb
+         COAJffwUg48rFaXGCKyX0L4c5+FCGL6g9RsJZ9lAp7Lo+Pe5oKkwI/lP1KvwMvBbahkn
+         5SrQ==
+X-Gm-Message-State: AOJu0YyRF9VB+QOJronM5k7E+1mQLbTnJ9GFxeGhpYPhjyRKoYhmkFW0
+	aek+PiC8EGXh05P/3UX1s+PbN9E9deJE8Z1aOxPDx67AvUsT8yX3HlixyIMTitpA8oUc389xwyn
+	vHDt6SAC8YbfY48gCfHBjWP3uGWwprYzQOP1wOlAW0xSrbw+XJ8E=
+X-Gm-Gg: ASbGncsFE1bfXwmWiqPBsfvPK2snL6ZVXCphzkFQfuwUy6vIup5Egk60IIHRB6o7sam
+	s4KGtcvCf7twpPPJ5kvMW4PAqkChgnW/T1JjeuGvgOFp8rKmd+iBea93j3fHLqRuHooeaF+AJNq
+	ip7YgKA/NNa/urLgU64oQxCCCZ9+IsUJiWDj9M15h4
+X-Google-Smtp-Source: AGHT+IGGzBs8e4QC3zhjyLv0Q2Kb5xRXaFl1GSs1fX52Ac61Q9Lj9A2GVQb5hQJPza9sD0lao51FBajmXwOvO1rVoSk=
+X-Received: by 2002:a05:6122:3190:b0:51f:a02b:45d4 with SMTP id
+ 71dfb90a1353d-521eeadca66mr5091486e0c.1.1740385210804; Mon, 24 Feb 2025
+ 00:20:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] btrfs: add a sanity check for btrfs root in
- btrfs_next_old_leaf()
-To: Ma Ke <make24@iscas.ac.cn>, clm@fb.com, josef@toxicpanda.com,
- dsterba@suse.com, fdmanana@suse.com
-Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250224075937.2959546-1-make24@iscas.ac.cn>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <20250224075937.2959546-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20250220104500.178420129@linuxfoundation.org>
+In-Reply-To: <20250220104500.178420129@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 24 Feb 2025 13:49:58 +0530
+X-Gm-Features: AWEUYZlEaOoTQqQ6ZfWquTdxPh6cQo7pAekxnBccb5yJ3vfsbf5zMYnRWYnbUyE
+Message-ID: <CA+G9fYuGk8vO3-OHRe3AHzgDWhNYWpZnuhT3p49zytXgeCN1Gg@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/258] 6.13.4-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:PE6r0G1K6qU4wJar4LD1jU1ER4JaCInrue1/qb0cbVnsagj/iFY
- 6woJyHQk1dOH4zffCuDBS7eD7qoRmQl7nT2/50SYwHhgZfyhLfbPqiTMtOqNqs/SNQ/9PnD
- ydAAhtOE5VcBjW4/cbqirVPhebCKrKzaN2XofhuujhP8NQtY0A3e2O5Cua3cnGBGfV26Hfq
- /q51PIoc/lSP+CXuz2/0g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:GAhmzB0pPUA=;vUgeJlxxGCkvO5gBYy85DDBaJTQ
- 7P0CUZ+gorunJwd8rAdFDl/tekrrsz1T0Vhe6PpT7Ez79WPAt2KfbCYIOA7PmqettlTdNVhCD
- hAhx2fAinDExuRT7PAVWyoSZNxHy9PDHcc3jgllZzUih6j6onCHpKxysFG/axc8jVqGTRgiH0
- mZRJIHtG7ue4uaPW/CDYebeMthwqzHBNRKgGFYO2w3eyPcQuqPJTGm38mTNTIjO+jmRBlworn
- CfXSCXXhxp4kIJXUhP0JuBoho41Zd3hNTxvtx/kQdFHPrp1kJ63CkHtLAnOj7d/pR24TsXkUa
- DZB8q3EqHPMW9bW9Fcd/79YpIGIGeF8Z67L05qMB9Kdlr5IqnMpCspQ27iPnT6x0ZSONqXsAX
- wuo9KfB0ue+VqPnnULNbojXImfhOT3XpzbwbRGhDeE1yZcYtcBQOS1h7zz6EyKETXAOYZxfIG
- T7/TFE939WgCEoghvSLDSed4HQMWYkzP2Q7hLATOgymtOT2x5vQ1wlUrbQ14i+WYetcf3I/Ez
- XHZW9D2V0hFjGQ0i/uHV4AsV9jTydFTZDPP/6GMhbS2VXJRjMhMy841cSqFqcES7uL2UmQIpz
- lPj4lctXydjHgRP1iLVpKI3XNMyBNcSR8GuuiK0Zy/UaolLbbKIMGhxjRVpB4l+tsQDeUvQyD
- BaHNo2IHQZql7njxKw5S7tA1qX3gLVufBTqA2/K8ou//gNRX4fVZ1mXzFXZuNt+mu2LXUQdmf
- Fce++k9jAdkCIVIhP4cxZn9q25eyQLtXHjiXc/YInMrmfv57yQO9FApD6peDD27cgqsiZCcRs
- 2iazjF+08WU9ySMWnXf/caPIJCzGMtH03e1WEHbHF6K0bWsZVsZ0jCvNfyL+CJ02rCHui8JbG
- jmu9neEmvN5KKY9Q7bn+PL4iTfkNuUsHraCMLVhV1+X4rGWSHF/3sfAMgWY3W5tkqMkdwytPw
- C7lbJOGsWomrygtCQ5rhA7c8yAbGp/jrimLCEwAvrtHMUjlo/kYIhx04xXHehw3BFB2+Rr6/c
- YU+KQX15X7QB68s9eotR5XMS9eouSlYNIPWParCrXLheGr8PgYEuqnj9nQODkwwfr4SHZCJmk
- 3av/IEGguL11hjdohkmY9RrsTMJB0qZFY/ONd8zlJZlP/2SFPyB8JcuF18xRrop3sR94b5iLI
- ruqcthCuudI+VntbuaQpJrT5MIBM46riWiKOfuX22q2zPilrGvLOJOSvzE10EWigNwhvZdfN6
- G993CPJJK3PzLgagAMOKxX2FNeumbi54s4B7V8pmUaYq/v+LgTOfarbeE7BSA8rBAq1t8NQsm
- HZmAUpGM4EnekfJju9uFT2eaNpisbs3daQu3T37XvhEbCCL/M1fkFXwwq7OuELdpbSPVAxsNm
- Lmv4fx5vQfmhMkq8MS8Lgq0XSazxN/n4UpyPfkzmsD/wTGZr53UA1WoHA1
 
-
-
-=E5=9C=A8 2025/2/24 18:29, Ma Ke =E5=86=99=E9=81=93:
-> btrfs_next_old_leaf() doesn't check if the target root is NULL or not,
-> resulting the null-ptr-deref. Add sanity check for btrfs root before
-> using it in btrfs_next_old_leaf().
-
-Please provide a real world call trace when this is triggered.
-
-There is a prerequisite, the extent tree can only be NULL if
-rescue=3Dibadroots is provided and the extent root is corrupted.
-
-And "rescue=3D" mount options can only be specified for a fully read-only
-fs (no internal log replay or any other thing to write even a bit into
-the fs).
-
-Previously read-only scrub can still be triggered on such fs, but
-6aecd91a5c5b ("btrfs: avoid NULL pointer dereference if no valid extent
-tree") fixed that.
-
-And if you hit such a case in real world, please provide the call trace
-so that we know we're not missing some critical situations that extent
-tree is accessed for read-only operations.
-
-Thanks,
-Qu
-
+On Thu, 20 Feb 2025 at 16:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Found by code review.
+> This is the start of the stable review cycle for the 6.13.4 release.
+> There are 258 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Cc: stable@vger.kernel.org
-> Fixes: d96b34248c2f ("btrfs: make send work with concurrent block group =
-relocation")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->   fs/btrfs/ctree.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+> Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> Anything received after that time might be too late.
 >
-> diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-> index 4e2e1c38d33a..1a3fc3863860 100644
-> --- a/fs/btrfs/ctree.c
-> +++ b/fs/btrfs/ctree.c
-> @@ -4794,13 +4794,17 @@ int btrfs_next_old_leaf(struct btrfs_root *root,=
- struct btrfs_path *path,
->   	int level;
->   	struct extent_buffer *c;
->   	struct extent_buffer *next;
-> -	struct btrfs_fs_info *fs_info =3D root->fs_info;
-> +	struct btrfs_fs_info *fs_info;
->   	struct btrfs_key key;
->   	bool need_commit_sem =3D false;
->   	u32 nritems;
->   	int ret;
->   	int i;
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.13.4-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.13.y
+> and the diffstat can be found below.
 >
-> +	if (!root)
-> +		return -EINVAL;
-> +
-> +	fs_info =3D root->fs_info;
->   	/*
->   	 * The nowait semantics are used only for write paths, where we don't
->   	 * use the tree mod log and sequence numbers.
+> thanks,
+>
+> greg k-h
 
+
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.13.4-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 191ccd3d65d15205ada79613c4f4a38e01e56b28
+* git describe: v6.13.3-259-g191ccd3d65d1
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.13=
+.3-259-g191ccd3d65d1
+
+## Test Regressions (compared to v6.13.2-443-gf10c3f62c5fd)
+
+## Metric Regressions (compared to v6.13.2-443-gf10c3f62c5fd)
+
+## Test Fixes (compared to v6.13.2-443-gf10c3f62c5fd)
+
+## Metric Fixes (compared to v6.13.2-443-gf10c3f62c5fd)
+
+## Test result summary
+total: 125960, pass: 103347, fail: 3715, skip: 18898, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 137 total, 137 passed, 0 failed
+* arm64: 48 total, 48 passed, 0 failed
+* i386: 17 total, 17 passed, 0 failed
+* mips: 32 total, 32 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 38 total, 38 passed, 0 failed
+* riscv: 22 total, 22 passed, 0 failed
+* s390: 21 total, 20 passed, 1 failed
+* sh: 6 total, 5 passed, 1 failed
+* sparc: 3 total, 3 passed, 0 failed
+* x86_64: 44 total, 44 passed, 0 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
