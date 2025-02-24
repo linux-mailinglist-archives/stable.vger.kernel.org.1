@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9940BA423AF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:47:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF4BA42465
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95D3B3B0C24
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:39:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 054D219C2474
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA02F44C94;
-	Mon, 24 Feb 2025 14:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A2F38DD8;
+	Mon, 24 Feb 2025 14:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ul/G/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyoaTMAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856D318A6BA;
-	Mon, 24 Feb 2025 14:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7A52571CB;
+	Mon, 24 Feb 2025 14:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407906; cv=none; b=SxkHtvhxNCp5uIw2+Jb7Xf94rXSIocCOyC9YT5SsJzKUybR73e7p58ooY6ryKL/bEKWBZcF/1IcFG35PJ1LJN3UwwAw8x4uLRaVU9OAVx/riHfakWvUJPFKVZGmLMidME87y0vqSw/A5+EyNlFkJV2mfFAl8Wcsrte640avTi60=
+	t=1740408391; cv=none; b=ltRxerT46P2MmhIC3cLx5oqFSMjPAOuE3DY6rdxgrOd+jqt+opOj7Ah0zaWYABs17cffbwwsxi70X+2apk8PnxMQ2uofvGGzh8s5GAw/g1v/Gx4Ys9TvmULAS2NKmzD7duFZJaCX6l46HmX7RFJAvQSIz17qS4m6VNnqEmbTcSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407906; c=relaxed/simple;
-	bh=EaDiff5p/s+N1xi3h9UaA6cBs7nGnsn7BQMnVuj7yjo=;
+	s=arc-20240116; t=1740408391; c=relaxed/simple;
+	bh=qOrxJnsbdGXpRz7M9SgNZweEy9A/O4Ffpej3T7ECEEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQfyREPJkfJLGvuUj7l1VS1owJQ63fn2jhYzmnFDZrCYPsDkl/69/j/RUrzW82CF15Wk3ByuDW2Sr4oU+ftHr2x1hVi0KelDs2j26Fm5T04QWXX2y+DvaGLD5ZUrMuWoDCEJ4+HxEcnMLuAscascUcONDC2dJX4MBeJ2zuyGuQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ul/G/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2186C4CEE6;
-	Mon, 24 Feb 2025 14:38:25 +0000 (UTC)
+	 MIME-Version; b=YdhYgekItqAWstnCvp1wnUoU32xw86K8n4KcE23TJ4yJKVIxy2V5nHpCUf4eIS5OnfRsMIakACc35TvnnZWL0zUlMJUoJ/IE8XMbRaOfaLQG5hgKp3f+VtnfzEwLgkcg/6xBjwUBSL2hW/C284pQEt5Xx8ojRs/40sW/ZWBo9oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyoaTMAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB74C4CEE6;
+	Mon, 24 Feb 2025 14:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407906;
-	bh=EaDiff5p/s+N1xi3h9UaA6cBs7nGnsn7BQMnVuj7yjo=;
+	s=korg; t=1740408391;
+	bh=qOrxJnsbdGXpRz7M9SgNZweEy9A/O4Ffpej3T7ECEEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2ul/G/I1AsHJrANKRk3wX5f9lwhl4qCIJXNWJcf2AhsZGDP/ASNHGZTb3scSi5As
-	 bpBQBnI/bSCJjnWBtZTr1sErJAuOObumrao2CTBxT07G25vBGK1lqvbe/WtpWa2jp9
-	 j2wJCg2+Mek9Z8V8DCKkn8AsXFoycDzr8DNmbR6s=
+	b=GyoaTMAXILw/wKIZ4NJmVA1sV5uEtXkk+bysh3Q1SFUE9ibCptxAZVVZsLIof0AGS
+	 IU9IOXegtCYbzasyriqDX/mvV319eizLIZVRXeFE77Pz76oiJa/SIpk9nzqLBdC1F4
+	 jrMrmzBj8OZQ6J6F1DClxNMgrKVeNFY4vEVkTsZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	John Keeping <jkeeping@inmusicbrands.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/140] ASoC: renesas: rz-ssi: Add a check for negative sample_space
+Subject: [PATCH 6.12 044/154] ASoC: rockchip: i2s-tdm: fix shift config for SND_SOC_DAIFMT_DSP_[AB]
 Date: Mon, 24 Feb 2025 15:34:03 +0100
-Message-ID: <20250224142604.740499178@linuxfoundation.org>
+Message-ID: <20250224142608.819419786@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit 82a0a3e6f8c02b3236b55e784a083fa4ee07c321 ]
+[ Upstream commit 6b24e67b4056ba83b1e95e005b7e50fdb1cc6cf4 ]
 
-My static checker rule complains about this code.  The concern is that
-if "sample_space" is negative then the "sample_space >= runtime->channels"
-condition will not work as intended because it will be type promoted to a
-high unsigned int value.
+Commit 2f45a4e289779 ("ASoC: rockchip: i2s_tdm: Fixup config for
+SND_SOC_DAIFMT_DSP_A/B") applied a partial change to fix the
+configuration for DSP A and DSP B formats.
 
-strm->fifo_sample_size is SSI_FIFO_DEPTH (32).  The SSIFSR_TDC_MASK is
-0x3f.  Without any further context it does seem like a reasonable warning
-and it can't hurt to add a check for negatives.
+The shift control also needs updating to set the correct offset for
+frame data compared to LRCK.  Set the correct values.
 
-Cc: stable@vger.kernel.org
-Fixes: 03e786bd4341 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/e07c3dc5-d885-4b04-a742-71f42243f4fd@stanley.mountain
+Fixes: 081068fd64140 ("ASoC: rockchip: add support for i2s-tdm controller")
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://patch.msgid.link/20250204161311.2117240-1-jkeeping@inmusicbrands.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rz-ssi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/rockchip/rockchip_i2s_tdm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
-index 353863f49b313..54f096bdc7ee2 100644
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -484,6 +484,8 @@ static int rz_ssi_pio_send(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
- 	sample_space = strm->fifo_sample_size;
- 	ssifsr = rz_ssi_reg_readl(ssi, SSIFSR);
- 	sample_space -= (ssifsr >> SSIFSR_TDC_SHIFT) & SSIFSR_TDC_MASK;
-+	if (sample_space < 0)
-+		return -EINVAL;
- 
- 	/* Only add full frames at a time */
- 	while (frames_left && (sample_space >= runtime->channels)) {
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index acd75e48851fc..7feefeb6b876d 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -451,11 +451,11 @@ static int rockchip_i2s_tdm_set_fmt(struct snd_soc_dai *cpu_dai,
+ 			break;
+ 		case SND_SOC_DAIFMT_DSP_A:
+ 			val = I2S_TXCR_TFS_TDM_PCM;
+-			tdm_val = TDM_SHIFT_CTRL(0);
++			tdm_val = TDM_SHIFT_CTRL(2);
+ 			break;
+ 		case SND_SOC_DAIFMT_DSP_B:
+ 			val = I2S_TXCR_TFS_TDM_PCM;
+-			tdm_val = TDM_SHIFT_CTRL(2);
++			tdm_val = TDM_SHIFT_CTRL(4);
+ 			break;
+ 		default:
+ 			ret = -EINVAL;
 -- 
 2.39.5
 
