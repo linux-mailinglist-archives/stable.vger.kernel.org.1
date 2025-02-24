@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-119133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A716A4251A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05588A4236F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA35F3AF890
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551D1188E933
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA6C664C6;
-	Mon, 24 Feb 2025 14:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6026B24EF9D;
+	Mon, 24 Feb 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSQ5JSqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/stzz7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B7D2571CE;
-	Mon, 24 Feb 2025 14:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B13024EF62;
+	Mon, 24 Feb 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408429; cv=none; b=BdY67+x5aoh+ujG4+dlj7Ovmji+1C/LSHJObugO01x6YwrqTZw/f+I4gJS8BqTLY687zOEX3EVhMOHyR2aAjSs8XIPn2MUDQnDJPlz6e6XO/Pz0Zo6CbqSRwZLn6O1sPzr27/yhtjxoluTzVe8X8WwFqxPsXhWVovwcFDy4Sq68=
+	t=1740407837; cv=none; b=a85ifs4eELWbvEGpqQUveLOvZnJsR7W3dCZlI2vAobSkGwtKol2z/vybQhVpOpmZ7JJCfOKXmqL/dpAV5dF4syMxMkIZcix5oqxBgCZ5j9zJ1p9J9mtfhEzYcpogFix3+5MLabIhziWqYySNwYYOiC849HjcBdk+Qut6Vc103Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408429; c=relaxed/simple;
-	bh=kyfNt+I55n+nLHsPjOF16P9f/jAo3C7aKtLBeerS3Y8=;
+	s=arc-20240116; t=1740407837; c=relaxed/simple;
+	bh=YOsYKYfq7vvrxxmx2aZJAiuhkOD9UWrsYTxxrwJCFb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6oTW3quVsiWjGuS9YBKIqzF63xJiqF/pR73q1kTkLHXqiZyDPrUt4xpXh4bDJ3dMpwb2UWqV5HLsP9cOlbS/hoPyA7bllha8RH4m7W6YR8cDAf9Q0AJ+5ov10veUKLfpMxScaQ+RZKp+gqYM12NTImAicb+4GqMIF+QKlt5V8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSQ5JSqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77229C4CED6;
-	Mon, 24 Feb 2025 14:47:08 +0000 (UTC)
+	 MIME-Version; b=AySVIim3RZHwulXOB2yCUZsP5UE7blam4arYI1i3Q6bZ5bVSqRYONO2lTibwHNU1f8WsXzTTam/kFHOUDfrWWM3YmSOm/eIkyECICcwtjYHh0HFXpuHKNDIMS5xvCEfMq0W3g2nzx9fCWKE7ZEYN+kbIgDX/yHA37bXuCyDjpLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/stzz7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642CAC4CED6;
+	Mon, 24 Feb 2025 14:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408428;
-	bh=kyfNt+I55n+nLHsPjOF16P9f/jAo3C7aKtLBeerS3Y8=;
+	s=korg; t=1740407837;
+	bh=YOsYKYfq7vvrxxmx2aZJAiuhkOD9UWrsYTxxrwJCFb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSQ5JSqfXCITDNEmEtfB622p7VW2tLLSZhxXnH03r4UzOu55ulz4IsTN7rfJCAVIR
-	 B0PVgE26yrTwko5QKalOmapy2SnEEvViC7Qyy9e9kA77voLVFHzWYnLhceoSAgWoC/
-	 M2UU3ypFJkeBWgvZWhx3xqy5I356Sa1Ejzn0IA4U=
+	b=P/stzz7p6Rz7f/asSjdiWw2L3cdiGMU0oJgOCSxJ7mCbZvSRXWTFBqGgab+I1V6tY
+	 YIjjcbOelbNxscr06LzCaznLLQU1UZ4RZROd0Dz5lrfRTrlow35OkuBsqXHs+u7QMn
+	 VJzRKrPY8j0E3wYnwD95aS80uwPrvgoLM92aIcnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/154] Input: serio - define serio_pause_rx guard to pause and resume serio ports
+	xfs-stable@lists.linux.dev,
+	Chi Zhiling <chizhiling@kylinos.cn>,
+	Dave Chinner <dchinner@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 6.6 023/140] xfs: Reduce unnecessary searches when searching for the best extents
 Date: Mon, 24 Feb 2025 15:33:42 +0100
-Message-ID: <20250224142607.990277760@linuxfoundation.org>
+Message-ID: <20250224142603.915250638@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Chi Zhiling <chizhiling@kylinos.cn>
 
-[ Upstream commit 0e45a09a1da0872786885c505467aab8fb29b5b4 ]
+commit 3ef22684038aa577c10972ee9c6a2455f5fac941 upstream.
 
-serio_pause_rx() and serio_continue_rx() are usually used together to
-temporarily stop receiving interrupts/data for a given serio port.
-Define "serio_pause_rx" guard for this so that the port is always
-resumed once critical section is over.
+Recently, we found that the CPU spent a lot of time in
+xfs_alloc_ag_vextent_size when the filesystem has millions of fragmented
+spaces.
 
-Example:
+The reason is that we conducted much extra searching for extents that
+could not yield a better result, and these searches would cost a lot of
+time when there were millions of extents to search through. Even if we
+get the same result length, we don't switch our choice to the new one,
+so we can definitely terminate the search early.
 
-	scoped_guard(serio_pause_rx, elo->serio) {
-		elo->expected_packet = toupper(packet[0]);
-		init_completion(&elo->cmd_done);
-	}
+Since the result length cannot exceed the found length, when the found
+length equals the best result length we already have, we can conclude
+the search.
 
-Link: https://lore.kernel.org/r/20240905041732.2034348-2-dmitry.torokhov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: 08bd5b7c9a24 ("Input: synaptics - fix crash when enabling pass-through port")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We did a test in that filesystem:
+[root@localhost ~]# xfs_db -c freesp /dev/vdb
+   from      to extents  blocks    pct
+      1       1     215     215   0.01
+      2       3  994476 1988952  99.99
+
+Before this patch:
+ 0)               |  xfs_alloc_ag_vextent_size [xfs]() {
+ 0) * 15597.94 us |  }
+
+After this patch:
+ 0)               |  xfs_alloc_ag_vextent_size [xfs]() {
+ 0)   19.176 us    |  }
+
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/serio.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/libxfs/xfs_alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/serio.h b/include/linux/serio.h
-index bf2191f253509..69a47674af653 100644
---- a/include/linux/serio.h
-+++ b/include/linux/serio.h
-@@ -6,6 +6,7 @@
- #define _SERIO_H
- 
- 
-+#include <linux/cleanup.h>
- #include <linux/types.h>
- #include <linux/interrupt.h>
- #include <linux/list.h>
-@@ -161,4 +162,6 @@ static inline void serio_continue_rx(struct serio *serio)
- 	spin_unlock_irq(&serio->lock);
- }
- 
-+DEFINE_GUARD(serio_pause_rx, struct serio *, serio_pause_rx(_T), serio_continue_rx(_T))
-+
- #endif
--- 
-2.39.5
-
+--- a/fs/xfs/libxfs/xfs_alloc.c
++++ b/fs/xfs/libxfs/xfs_alloc.c
+@@ -1783,7 +1783,7 @@ restart:
+ 				error = -EFSCORRUPTED;
+ 				goto error0;
+ 			}
+-			if (flen < bestrlen)
++			if (flen <= bestrlen)
+ 				break;
+ 			busy = xfs_alloc_compute_aligned(args, fbno, flen,
+ 					&rbno, &rlen, &busy_gen);
 
 
 
