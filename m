@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-119361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34438A424DD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A046A42384
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B5407AA463
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AF897A4A3C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA36B1607AA;
-	Mon, 24 Feb 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE30424169C;
+	Mon, 24 Feb 2025 14:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxMzJssA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ANQyEyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98D338DD8;
-	Mon, 24 Feb 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D03B2192E8;
+	Mon, 24 Feb 2025 14:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409205; cv=none; b=ZgRfb956ZFsUn4FKEUmqop9VxfsE16yigQNJZnqGAm//wyvsU3JJGbbJm3/5ynTksK07c6sxLaLpgYDMQyL1hBjsCDhlgZuWu+K+kpYCYnHOxXknE4sgktNgm2av2QqwjET5hM2RPuO1ifbx2s99MJaZPkM2/szwdmfsEdgx72M=
+	t=1740408198; cv=none; b=qkyXPBCacdl4n/ClhCn489dk5r5PWKzVsbPI3jkQwTs3AL53F4SVyDo4EAWYrtIlcjp5dJcsgXVHzBqb5cXb0/C6yRNPosd2lvv9ozptYWIFo225lwchMyFoVVjAbYY7O6vpTJ1ibyb6m2er6MYwdsOKim1CYTRLa0CezuRXcz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409205; c=relaxed/simple;
-	bh=NTMiOfpWSN/c7L1S5SJIapGixZggaEfFR+qVg+2lZRo=;
+	s=arc-20240116; t=1740408198; c=relaxed/simple;
+	bh=eB99jKI0dm31Y/cgu77K6Sw1ZjdbInRS0ygIjDa8mQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rd/Zu7FQdR0jf+VJq/DZ1H2OkvMyYp4wW/D8tENXaCV8L5RlHyWglkpXkTp+8lR0LOyDUdV1mdtk9Efa96yLVdr2Oj4xDBPem7lWhKqKBCk1ThM0f/2LLHkucpB0KJupLXu/zDslPD+qOc87AwPhZw9kuWwRTgO0D97fJQUjduU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxMzJssA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2542FC4CED6;
-	Mon, 24 Feb 2025 15:00:04 +0000 (UTC)
+	 MIME-Version; b=klNZxvDM2UtBgsYa8T7TqEkWdC6WOcGcJLrJSFa6iAUE4AvM0+naOQYOBONbzZKkYY8CgHRK93QUsmvc8z35Fh49QS65+kiJ8JR2h4Dy28R1zam2zyhTz3oeuhySTvD659Y31Xii608BSx8kutWCkTCYHxNzSHnpK3y+Dn82RmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ANQyEyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721B4C4CED6;
+	Mon, 24 Feb 2025 14:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409205;
-	bh=NTMiOfpWSN/c7L1S5SJIapGixZggaEfFR+qVg+2lZRo=;
+	s=korg; t=1740408197;
+	bh=eB99jKI0dm31Y/cgu77K6Sw1ZjdbInRS0ygIjDa8mQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxMzJssAun+rVl4CZTpyDHjJMAMV2fqx8q+SZrvAlFsY4z9Ghs0lqyWNu28WXrmTU
-	 0T7GXqFXpFq5+YWyPCFLCCPZEu6gh4VM4snbJBknUcGZg7xaYSE3W4JWQMKJ8uj2YM
-	 gCvmqoZYT3BkRtxFsax98/RRA0ghEfRZhHEldEMo=
+	b=2ANQyEywEoOKHCFhZxhNOVKjYUpyXwvH2KtQ6Ax4LaK3aFjRmhivPLW9fj+2RyFVT
+	 Ws08LmDVWPg+6PM0w/z7vnmS0ExbnlhMnd0D/yh2ddCSmVItNc9vOGp+Vj3JJNZgb1
+	 GjPR2SuWuNDnZKV3DVCvapjjryouwOZ623ooPmlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.13 096/138] io_uring: prevent opcode speculation
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 127/140] mtd: rawnand: cadence: fix incorrect device in dma_unmap_single
 Date: Mon, 24 Feb 2025 15:35:26 +0100
-Message-ID: <20250224142608.252309410@linuxfoundation.org>
+Message-ID: <20250224142607.997047285@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-commit 1e988c3fe1264708f4f92109203ac5b1d65de50b upstream.
+commit f37d135b42cb484bdecee93f56b9f483214ede78 upstream.
 
-sqe->opcode is used for different tables, make sure we santitise it
-against speculations.
+dma_map_single is using physical/bus device (DMA) but dma_unmap_single
+is using framework device(NAND controller), which is incorrect.
+Fixed dma_unmap_single to use correct physical/bus device.
 
+Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
 Cc: stable@vger.kernel.org
-Fixes: d3656344fea03 ("io_uring: add lookup table for various opcode needs")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/r/7eddbf31c8ca0a3947f8ed98271acc2b4349c016.1739568408.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2045,6 +2045,8 @@ static int io_init_req(struct io_ring_ct
- 		req->opcode = 0;
- 		return io_init_fail_req(req, -EINVAL);
- 	}
-+	opcode = array_index_nospec(opcode, IORING_OP_LAST);
-+
- 	def = &io_issue_defs[opcode];
- 	if (unlikely(sqe_flags & ~SQE_COMMON_FLAGS)) {
- 		/* enforce forwards compatibility on users */
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -1866,12 +1866,12 @@ static int cadence_nand_slave_dma_transf
+ 	dma_async_issue_pending(cdns_ctrl->dmac);
+ 	wait_for_completion(&finished);
+ 
+-	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
++	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
+ 
+ 	return 0;
+ 
+ err_unmap:
+-	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
++	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
+ 
+ err:
+ 	dev_dbg(cdns_ctrl->dev, "Fall back to CPU I/O\n");
 
 
 
