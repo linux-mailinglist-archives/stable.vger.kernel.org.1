@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-118955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082DAA423DA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC47A4234C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 224DC3ACACC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA4B97A48F8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87A92629F;
-	Mon, 24 Feb 2025 14:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E32254851;
+	Mon, 24 Feb 2025 14:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYulucDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfKayxat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEE224EF62;
-	Mon, 24 Feb 2025 14:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7006254845;
+	Mon, 24 Feb 2025 14:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407823; cv=none; b=BLrvXFJd036/vgDfxlv+qYnq8xTgpxpr212d8KgvEueDASfPEi5jzmbF9MolkiSFYBVkCgTN5wuiN7dpgpBdx9UwByFgEba94NnkrknqUFew44OV8MOu9vqGYAYRMlF23P0YgVCzwKJdzvkUE2rxObNUmdQCT6KZJfuGLfmgTIU=
+	t=1740407848; cv=none; b=jEvuLxOjyFciKSzjsPziZ8oeA39E/Htl+yvtYe3CtCFal49oLSRDENQlJkZYU1KA1Ho+tvrQUsXuyB0fzcRVz53Lf4mZmwou749hsdcmuhL7kfQRjpEMJuVb+VGi453y+8CmPGeAvJ0EFN9jgaymkWk/kY3l3S6oFjL6rD/Ev2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407823; c=relaxed/simple;
-	bh=2gYAjBp1A+SkMw3qDZYabhadMmRMtiPFmlrEq5bS5fE=;
+	s=arc-20240116; t=1740407848; c=relaxed/simple;
+	bh=OBOQb61L6wukRNIEOPrWjynlpCic7u56UNJMgZahssE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knYV5lkONdS05Sh4L3UHHHor0oWwsMeeoLXuFA1xLRTHwBNgXmkKAIM/ocAr0B3Yr632QVbPluzPgv5rCytpphm6vSd5JwboGsikiPXa0eolSrQRMwVe2TYg1YdOExRWv7rR7WpS48QJOvW1CyTLpxQ9FFR4rtcCAWfU3dvYmL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYulucDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E334C4CEEF;
-	Mon, 24 Feb 2025 14:37:02 +0000 (UTC)
+	 MIME-Version; b=q9Z7hlcbX2SF4TryyZWnQ1blcK0zX/e85lEdvrMzOd93muuzHCe+MBeolJAO5mG5BMjM7htKTz153z/daXPab4xDPBo2Gue03N+6D57DaBKBoKpHTtCL4wzYul/IPKZvjrdNxKTOEm6rXVaR/Gr1Kr8reB5TzqiDmyGXYdSy4HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfKayxat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E878DC4CED6;
+	Mon, 24 Feb 2025 14:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407823;
-	bh=2gYAjBp1A+SkMw3qDZYabhadMmRMtiPFmlrEq5bS5fE=;
+	s=korg; t=1740407847;
+	bh=OBOQb61L6wukRNIEOPrWjynlpCic7u56UNJMgZahssE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYulucDObM9SC2xfgBpKOg0Bt8uWCMq3H07cM6g5f5dlPv39/6xuv2lKotccVg3Nd
-	 EYt8eVasLvbuNG70u9xwWGf1uN8B4CcWbhqVJ97LyfBK3/vFsi6N/A2e2iB50wWnHi
-	 PdhDiYbsQWdC3OiwrF+A/wU6ZL+zkA5hEaD50nXM=
+	b=CfKayxate1iW9MZc0D17l1o0HMsWZS13gbbSlNzQF2/Tt+phOYqSWsuUN6cZXulH1
+	 lsEKJQ6EgRf6FORNhON1UDoDBWpueQsap8gjTOGvakoBvsaaRGZTH3cqv2NX+b1X5o
+	 6kzeQvJRpGLMAzJDCQ/4xxeAA5mnG8DsZkpCUIjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Dave Chinner <dchinner@redhat.com>,
 	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 002/140] xfs: assert a valid limit in xfs_rtfind_forw
-Date: Mon, 24 Feb 2025 15:33:21 +0100
-Message-ID: <20250224142603.100295780@linuxfoundation.org>
+Subject: [PATCH 6.6 003/140] xfs: validate inumber in xfs_iget
+Date: Mon, 24 Feb 2025 15:33:22 +0100
+Message-ID: <20250224142603.139668518@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
 References: <20250224142602.998423469@linuxfoundation.org>
@@ -67,34 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 6d2db12d56a389b3e8efa236976f8dc3a8ae00f0 upstream.
+commit 05aba1953f4a6e2b48e13c610e8a4545ba4ef509 upstream.
 
-Protect against developers passing stupid limits when refactoring the
-RT code once again.
+Actually use the inumber validator to check the argument passed in here.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
 Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
 Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_rtbitmap.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/xfs/xfs_icache.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_rtbitmap.c
-+++ b/fs/xfs/libxfs/xfs_rtbitmap.c
-@@ -288,6 +288,8 @@ xfs_rtfind_forw(
- 	xfs_rtword_t	wdiff;		/* difference from wanted value */
- 	int		word;		/* word number in the buffer */
+--- a/fs/xfs/xfs_icache.c
++++ b/fs/xfs/xfs_icache.c
+@@ -748,7 +748,7 @@ xfs_iget(
+ 	ASSERT((lock_flags & (XFS_IOLOCK_EXCL | XFS_IOLOCK_SHARED)) == 0);
  
-+	ASSERT(start <= limit);
-+
- 	/*
- 	 * Compute and read in starting bitmap block for starting block.
- 	 */
+ 	/* reject inode numbers outside existing AGs */
+-	if (!ino || XFS_INO_TO_AGNO(mp, ino) >= mp->m_sb.sb_agcount)
++	if (!xfs_verify_ino(mp, ino))
+ 		return -EINVAL;
+ 
+ 	XFS_STATS_INC(mp, xs_ig_attempts);
 
 
 
