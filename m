@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-119210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFE9A424EA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A36A42422
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:53:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BBA03B6EC3
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 568F83B9497
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E84C207E13;
-	Mon, 24 Feb 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B39192D9D;
+	Mon, 24 Feb 2025 14:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksDyBwqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0nyXMRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFE9156F44;
-	Mon, 24 Feb 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B978B2AD14;
+	Mon, 24 Feb 2025 14:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408692; cv=none; b=ba2Qo2RmqN+IpQExrkMEK4IN/n996GqZGnVBapahHXf5aNMOfpUBSyQRmQ87aKJuzYaGnvZIkryryc2S+vD04+HkBoT6oC5LGfu5gJGvNDJ/tmxgv+zEK5MQZ5EhcLQonSc8tsDxj4v+J9Or0G/jHrYt590bkce2TedWF3yyw2w=
+	t=1740408243; cv=none; b=Nl2Y66/l1gWylOul79coi3R0F8OK/y0Up3l1+Vo9eCidBPwRP5FWXlKrzUfOVzJlXwmHWjaHuTxuXpBJpZTbd3sEQBKYLErSLXNKM5/cc/s2wadbm0VpgrCdOw66sJBmwRkqr7Th4NgjrqbyVKOs4OPAAsAeJqVW+XycmiIctIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408692; c=relaxed/simple;
-	bh=qJgL3RK7ny/nfuQMmQIM8BPzVBYFiogsP1Y6REmqQnU=;
+	s=arc-20240116; t=1740408243; c=relaxed/simple;
+	bh=03LoekPb77zKp95DhW1Y80rQZpYZWo+BwrQouH/36Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUYwCN+fUvVNV4TOmQljvHzhMqo/Xxx8gAYnJw7Tp1HcApwueIubcMoPv0bQs2GgyaCLgw0v5AMSQ4nSU5Jk2a/AIBSjpTF4jsoVxvNAJBgu7ymyiUuCzrDGmOiieJw1c/pEulCFXJYiQa16tNfqs/Roh4SFWGRFbvVDVXOS+PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksDyBwqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E8EC4CED6;
-	Mon, 24 Feb 2025 14:51:31 +0000 (UTC)
+	 MIME-Version; b=KWtsIoygT/DoQIFAew1WgNcSu6pb3qAEBYcJjEvcDKI7Z0jDjJVZbXy3GzhqpRlJL7GesB1ROmB4Fdp7ambr+v4F8yaw1k7KoSobX5QZoS3Moyhne1c0Q30WUPd87kWpo6w/5O/FwXXByR22xoPMJzRj5yhO7W88y4U80mnXjxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0nyXMRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253B0C4CEE6;
+	Mon, 24 Feb 2025 14:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408691;
-	bh=qJgL3RK7ny/nfuQMmQIM8BPzVBYFiogsP1Y6REmqQnU=;
+	s=korg; t=1740408243;
+	bh=03LoekPb77zKp95DhW1Y80rQZpYZWo+BwrQouH/36Fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ksDyBwqUJ47V3o9X8L0OYznrtok52XjL+DAdikBWFv46B6xd2zMX+Jg/1BH/bgYP0
-	 khZ26TskgDBzRj5LOjKNVWhB1PnDpp2RnrGnqSQI0I6FJwhPWznmg6X+XgDr2Hu1Ex
-	 36z9YALeYZW1+akLR3HhoawBbYVsxHo9ahx66FC8=
+	b=T0nyXMRh3j8dSejzWjUYHMp53A9TtF5v11J5ji+b68XMuc9zhXvaOhx3aGwaIyK0s
+	 cmdfCo8XxJnrJbDjL/TTPiG9YnLTircZR/o2j+1eUK/VfQXzM967VcaGZvcmSxJFdJ
+	 Dsj/JPgox6Jv+m98+QfxXNNGqNJ0HEI5/wAknwds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 133/154] ASoC: SOF: pcm: Clear the susbstream pointer to NULL on close
-Date: Mon, 24 Feb 2025 15:35:32 +0100
-Message-ID: <20250224142612.257744393@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.6 134/140] md: Fix md_seq_ops() regressions
+Date: Mon, 24 Feb 2025 15:35:33 +0100
+Message-ID: <20250224142608.275068758@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +61,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 46c7b901e2a03536df5a3cb40b3b26e2be505df6 upstream.
+commit f9cfe7e7f96a9414a17d596e288693c4f2325d49 upstream.
 
-The spcm->stream[substream->stream].substream is set during open and was
-left untouched. After the first PCM stream it will never be NULL and we
-have code which checks for substream NULLity as indication if the stream is
-active or not.
-For the compressed cstream pointer the same has been done, this change will
-correct the handling of PCM streams.
+Commit cf1b6d4441ff ("md: simplify md_seq_ops") introduce following
+regressions:
 
-Fixes: 090349a9feba ("ASoC: SOF: Add support for compress API for stream data/offset")
-Cc: stable@vger.kernel.org
-Reported-by: Curtis Malainey <cujomalainey@chromium.org>
-Closes: https://github.com/thesofproject/linux/pull/5214
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
-Link: https://patch.msgid.link/20250205135232.19762-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+1) If list all_mddevs is emptly, personalities and unused devices won't
+   be showed to user anymore.
+2) If seq_file buffer overflowed from md_seq_show(), then md_seq_start()
+   will be called again, hence personalities will be showed to user
+   again.
+3) If seq_file buffer overflowed from md_seq_stop(), seq_read_iter()
+   doesn't handle this, hence unused devices won't be showed to user.
+
+Fix above problems by printing personalities and unused devices in
+md_seq_show().
+
+Fixes: cf1b6d4441ff ("md: simplify md_seq_ops")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240109133957.2975272-1-yukuai1@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/pcm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/md.c |   40 +++++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
 
---- a/sound/soc/sof/pcm.c
-+++ b/sound/soc/sof/pcm.c
-@@ -511,6 +511,8 @@ static int sof_pcm_close(struct snd_soc_
- 		 */
- 	}
- 
-+	spcm->stream[substream->stream].substream = NULL;
-+
- 	return 0;
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8121,6 +8121,19 @@ static void status_unused(struct seq_fil
+ 	seq_printf(seq, "\n");
  }
+ 
++static void status_personalities(struct seq_file *seq)
++{
++	struct md_personality *pers;
++
++	seq_puts(seq, "Personalities : ");
++	spin_lock(&pers_lock);
++	list_for_each_entry(pers, &pers_list, list)
++		seq_printf(seq, "[%s] ", pers->name);
++
++	spin_unlock(&pers_lock);
++	seq_puts(seq, "\n");
++}
++
+ static int status_resync(struct seq_file *seq, struct mddev *mddev)
+ {
+ 	sector_t max_sectors, resync, res;
+@@ -8262,20 +8275,10 @@ static int status_resync(struct seq_file
+ static void *md_seq_start(struct seq_file *seq, loff_t *pos)
+ 	__acquires(&all_mddevs_lock)
+ {
+-	struct md_personality *pers;
+-
+-	seq_puts(seq, "Personalities : ");
+-	spin_lock(&pers_lock);
+-	list_for_each_entry(pers, &pers_list, list)
+-		seq_printf(seq, "[%s] ", pers->name);
+-
+-	spin_unlock(&pers_lock);
+-	seq_puts(seq, "\n");
+ 	seq->poll_event = atomic_read(&md_event_count);
+-
+ 	spin_lock(&all_mddevs_lock);
+ 
+-	return seq_list_start(&all_mddevs, *pos);
++	return seq_list_start_head(&all_mddevs, *pos);
+ }
+ 
+ static void *md_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+@@ -8286,7 +8289,6 @@ static void *md_seq_next(struct seq_file
+ static void md_seq_stop(struct seq_file *seq, void *v)
+ 	__releases(&all_mddevs_lock)
+ {
+-	status_unused(seq);
+ 	spin_unlock(&all_mddevs_lock);
+ }
+ 
+@@ -8319,10 +8321,18 @@ static void md_bitmap_status(struct seq_
+ 
+ static int md_seq_show(struct seq_file *seq, void *v)
+ {
+-	struct mddev *mddev = list_entry(v, struct mddev, all_mddevs);
++	struct mddev *mddev;
+ 	sector_t sectors;
+ 	struct md_rdev *rdev;
+ 
++	if (v == &all_mddevs) {
++		status_personalities(seq);
++		if (list_empty(&all_mddevs))
++			status_unused(seq);
++		return 0;
++	}
++
++	mddev = list_entry(v, struct mddev, all_mddevs);
+ 	if (!mddev_get(mddev))
+ 		return 0;
+ 
+@@ -8403,6 +8413,10 @@ static int md_seq_show(struct seq_file *
+ 	spin_unlock(&mddev->lock);
+ 	mutex_unlock(&mddev->bitmap_info.mutex);
+ 	spin_lock(&all_mddevs_lock);
++
++	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
++		status_unused(seq);
++
+ 	if (atomic_dec_and_test(&mddev->active))
+ 		__mddev_put(mddev);
  
 
 
