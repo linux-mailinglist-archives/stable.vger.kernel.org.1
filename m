@@ -1,220 +1,155 @@
-Return-Path: <stable+bounces-118895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFFAA41D88
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:50:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119E8A41C3B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CF167A5032
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:44:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611E73B6690
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D185B26157A;
-	Mon, 24 Feb 2025 11:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FA524169C;
+	Mon, 24 Feb 2025 11:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="NhaLqcrX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jw8IrwSa"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25762571B2
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 11:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1687E802;
+	Mon, 24 Feb 2025 11:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740396186; cv=none; b=uFyV3/WLN3EZv76x8uDVO2sd/OYOhcIzxwYwOn3wT5nTFrV7ItLz0mwiSNotc5g3A+J7nWAK6C0h1ePavv6D3h9qGtVBdCTzm0NtKMyXA59YaeH7nJC4+QisMgICJOVeSo+v8h7AWIv9G/Wts6WLNtC0AzUV7izv3XmRXQky0E4=
+	t=1740395802; cv=none; b=KTosUJZ2cAAsccfJK/CLoNAJ5d6qWTCvQDtChlqFraI6xwbD8gnw+yweY+oPxttJd5G8xA0AuZYV6SCq7pHSikwb9Ax607bEoavp8RC73FsmB+m411V7btlbuk6H83G61JLMEI3IwRP9MOM7eZecPtyKJfNvLIpdHxGmgsZVV3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740396186; c=relaxed/simple;
-	bh=TtDFwfOe+M7rX+A4iGRiDlFG7IOa8wLFW8moxaWCqtg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=S8vFTLLJlCeiG69vgk2+9ifQupFTJBM1lqIEQROo9R3cyJrjNQIJA2yg8/XSo1qd08pmMm/5rVF4z0N3oqgnLkj9Ia+91pbsFBx1sc78mqpOuE5EmP+iocIFSr1nDGJXnAqXpiibLZClJV2DXvQOa7AQxwCtc5wfgEDcaGIiIj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=NhaLqcrX; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 0DCA6108CAEA;
-	Mon, 24 Feb 2025 14:13:25 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 0DCA6108CAEA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1740395605; bh=6nOMZNqXqXlQS10L8SY11nLjRcr9rTt72FGxt4d92aE=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=NhaLqcrXQGug+DKB1KPtR12J7NlKohY7Df1ftx76KeSs2lrVuxh582EhQvLxv7tjQ
-	 5tYzrwChRAAfXBaNlfRplLWP4RYfM7wsajvQFrjPjZOlsZmvLc+OUZQ+koqPNOdfq0
-	 yZo8QBwiPCqM2fTMfi2msHei9hMNHCASEiKad3ko=
-Received: from msk-exch-01.infotecs-nt (msk-exch-01.infotecs-nt [10.0.7.191])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 0B9E83046175;
-	Mon, 24 Feb 2025 14:13:25 +0300 (MSK)
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>, Ido Schimmel
-	<idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y] drop_monitor: fix incorrect initialization order
-Thread-Topic: [PATCH 5.10.y] drop_monitor: fix incorrect initialization order
-Thread-Index: AQHbhq0ffRb8sj5MdkKT9SNO9ftMhg==
-Date: Mon, 24 Feb 2025 11:13:24 +0000
-Message-ID: <20250224111323.458094-1-Ilia.Gavrilov@infotecs.ru>
-References: <2025022442-charger-diabetes-859a@gregkh>
-In-Reply-To: <2025022442-charger-diabetes-859a@gregkh>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1740395802; c=relaxed/simple;
+	bh=snZu7pL4BcHs/H3bClvaolJQqBjKqx8IvUNhokoLJz4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=de+/IHaS9o1euyAwnQViny8qZI8Ljn4ZnsyFMJeaNPSCe6shTgeAsglJddhObkPaXHf2tSzknYsYBJR9nMr6TjheBEdzjlI5vFkpVdTNLFGCnRTyQhQUCvdcMVGtLd6q0TblFBpZrSUN/WNQn3QKxT8Cjmc9xdu+3nghjcph7t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jw8IrwSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192F3C4CED6;
+	Mon, 24 Feb 2025 11:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740395801;
+	bh=snZu7pL4BcHs/H3bClvaolJQqBjKqx8IvUNhokoLJz4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jw8IrwSaKWeGIPfpQhyp+dPmmFivRly2UKmQzKTMy7IoxX9ELcIb0uA6/gPv+WpHV
+	 VsHJczbCMFx7YjRm0NQ2xjxVo4Ne4CGeFA8bVYgMl8/N1eucjINXARYZTSywQExGzf
+	 ABS0tH94oKRIcXPAZ6TQg1Kf20WsHx+sX2pfh7TCeWPEdcHXZh+OrvxpZLJwy9h73Y
+	 /kj1wh1X7narHrN3oVFt4M1pvP2MTEU8i4nCnAlFlQZinbqfrzQvaHTwcI2ofVVCME
+	 QjDO6cS8PLvNkZ8h1bK+D4YJhKdlEpJa4KX8DHAs5DFX52ayd8bIQgHD7ds+oWrSri
+	 eSsDteTvEFqQw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Shigeru Yoshida <syoshida@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	shuah@kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 01/32] selftests/bpf: Adjust data size to have ETH_HLEN
+Date: Mon, 24 Feb 2025 06:16:07 -0500
+Message-Id: <20250224111638.2212832-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/02/24 10:30:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/02/24 07:52:00 #27427887
-X-KLMS-AntiVirus-Status: Clean, skipped
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.4
+Content-Transfer-Encoding: 8bit
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-Syzkaller reports the following bug:
+[ Upstream commit c7f2188d68c114095660a950b7e880a1e5a71c8f ]
 
-BUG: spinlock bad magic on CPU#1, syz-executor.0/7995
- lock: 0xffff88805303f3e0, .magic: 00000000, .owner: <none>/-1, .owner_cpu:=
- 0
-CPU: 1 PID: 7995 Comm: syz-executor.0 Tainted: G            E     5.10.209+=
- #1
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference=
- Platform, BIOS 6.00 11/12/2020
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x119/0x179 lib/dump_stack.c:118
- debug_spin_lock_before kernel/locking/spinlock_debug.c:83 [inline]
- do_raw_spin_lock+0x1f6/0x270 kernel/locking/spinlock_debug.c:112
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:117 [inline]
- _raw_spin_lock_irqsave+0x50/0x70 kernel/locking/spinlock.c:159
- reset_per_cpu_data+0xe6/0x240 [drop_monitor]
- net_dm_cmd_trace+0x43d/0x17a0 [drop_monitor]
- genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
- genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
- genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
- netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2497
- genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
- netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
- netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1348
- netlink_sendmsg+0x914/0xe00 net/netlink/af_netlink.c:1916
- sock_sendmsg_nosec net/socket.c:651 [inline]
- __sock_sendmsg+0x157/0x190 net/socket.c:663
- ____sys_sendmsg+0x712/0x870 net/socket.c:2378
- ___sys_sendmsg+0xf8/0x170 net/socket.c:2432
- __sys_sendmsg+0xea/0x1b0 net/socket.c:2461
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x62/0xc7
-RIP: 0033:0x7f3f9815aee9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 =
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
-f 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f3f972bf0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f3f9826d050 RCX: 00007f3f9815aee9
-RDX: 0000000020000000 RSI: 0000000020001300 RDI: 0000000000000007
-RBP: 00007f3f981b63bd R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000006e R14: 00007f3f9826d050 R15: 00007ffe01ee6768
+The function bpf_test_init() now returns an error if user_size
+(.data_size_in) is less than ETH_HLEN, causing the tests to
+fail. Adjust the data size to ensure it meets the requirement of
+ETH_HLEN.
 
-If drop_monitor is built as a kernel module, syzkaller may have time
-to send a netlink NET_DM_CMD_START message during the module loading.
-This will call the net_dm_monitor_start() function that uses
-a spinlock that has not yet been initialized.
-
-To fix this, let's place resource initialization above the registration
-of a generic netlink family.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementat=
-ion & Netlink protocol")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250213152054.2785669-1-Ilia.Gavrilov@infot=
-ecs.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 07b598c0e6f06a0f254c88dafb4ad50f8a8c6eea)
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250121150643.671650-2-syoshida@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/drop_monitor.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ .../testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c  | 4 ++--
+ .../testing/selftests/bpf/prog_tests/xdp_devmap_attach.c  | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index 009b9e22c4e7..c8a3d6056365 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -1727,30 +1727,30 @@ static int __init init_net_drop_monitor(void)
- 		return -ENOSPC;
- 	}
-=20
--	rc =3D genl_register_family(&net_drop_monitor_family);
--	if (rc) {
--		pr_err("Could not create drop monitor netlink family\n");
--		return rc;
-+	for_each_possible_cpu(cpu) {
-+		net_dm_cpu_data_init(cpu);
-+		net_dm_hw_cpu_data_init(cpu);
- 	}
--	WARN_ON(net_drop_monitor_family.mcgrp_offset !=3D NET_DM_GRP_ALERT);
-=20
- 	rc =3D register_netdevice_notifier(&dropmon_net_notifier);
- 	if (rc < 0) {
- 		pr_crit("Failed to register netdevice notifier\n");
-+		return rc;
-+	}
-+
-+	rc =3D genl_register_family(&net_drop_monitor_family);
-+	if (rc) {
-+		pr_err("Could not create drop monitor netlink family\n");
- 		goto out_unreg;
- 	}
-+	WARN_ON(net_drop_monitor_family.mcgrp_offset !=3D NET_DM_GRP_ALERT);
-=20
- 	rc =3D 0;
-=20
--	for_each_possible_cpu(cpu) {
--		net_dm_cpu_data_init(cpu);
--		net_dm_hw_cpu_data_init(cpu);
--	}
--
- 	goto out;
-=20
- out_unreg:
--	genl_unregister_family(&net_drop_monitor_family);
-+	WARN_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
- out:
- 	return rc;
- }
-@@ -1759,19 +1759,18 @@ static void exit_net_drop_monitor(void)
- {
- 	int cpu;
-=20
--	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
--
- 	/*
- 	 * Because of the module_get/put we do in the trace state change path
- 	 * we are guarnateed not to have any current users when we get here
- 	 */
-+	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
-+
-+	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
-=20
- 	for_each_possible_cpu(cpu) {
- 		net_dm_hw_cpu_data_fini(cpu);
- 		net_dm_cpu_data_fini(cpu);
- 	}
--
--	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
- }
-=20
- module_init(init_net_drop_monitor);
---=20
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
+index c7f74f068e788..df27535995af8 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
+@@ -52,10 +52,10 @@ static void test_xdp_with_cpumap_helpers(void)
+ 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to cpumap entry prog_id");
+ 
+ 	/* send a packet to trigger any potential bugs in there */
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
+index 27ffed17d4be3..461ab18705d5c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
+@@ -23,7 +23,7 @@ static void test_xdp_with_devmap_helpers(void)
+ 	__u32 len = sizeof(info);
+ 	int err, dm_fd, dm_fd_redir, map_fd;
+ 	struct nstoken *nstoken = NULL;
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	__u32 idx = 0;
+ 
+ 	SYS(out_close, "ip netns add %s", TEST_NS);
+@@ -58,7 +58,7 @@ static void test_xdp_with_devmap_helpers(void)
+ 	/* send a packet to trigger any potential bugs in there */
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+@@ -158,7 +158,7 @@ static void test_xdp_with_devmap_helpers_veth(void)
+ 	struct nstoken *nstoken = NULL;
+ 	__u32 len = sizeof(info);
+ 	int err, dm_fd, dm_fd_redir, map_fd, ifindex_dst;
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	__u32 idx = 0;
+ 
+ 	SYS(out_close, "ip netns add %s", TEST_NS);
+@@ -208,7 +208,7 @@ static void test_xdp_with_devmap_helpers_veth(void)
+ 	/* send a packet to trigger any potential bugs in there */
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+-- 
 2.39.5
+
 
