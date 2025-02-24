@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-119227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A80A42443
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE67A424DA
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 090AB7A1E57
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21DC17AB002
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15C323373D;
-	Mon, 24 Feb 2025 14:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3A814D28C;
+	Mon, 24 Feb 2025 14:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dnf9Zaib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaTFBtkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E31F824A3;
-	Mon, 24 Feb 2025 14:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAA714A62A;
+	Mon, 24 Feb 2025 14:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408751; cv=none; b=fI1L9qLvpUzWgMvkU4t3cndpEaOGLMRJFd61nkJHscDw5crtrKUv1qw2pic5LE+tysTDhLt+6bmKp/jquw2WlF6SJFaTl/wDIGy5S6O+WJOYOfOXqVpTs5wz7zOtAM+OqU5eY3WZT+obZiYA1083PrzwfMzlWoXyen/pK+J5N+A=
+	t=1740409177; cv=none; b=M9MxJhCmhsTkcw09i2LG7HgoKoe6NUcWcoRz2egx2hHa/GW9uwS0xUU7DTi6RQ2M2D1eerVODGxHnEWPC8qSbhkAnarE+nyASH/D4D1LQUqHjBMKX/BuNUD7qjQsKtEXtcv150KIprEkdiLBOLnfNDuWduEf2BWc864TmTy+GzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408751; c=relaxed/simple;
-	bh=x6q1aSJzOc56dRdp0kFlhIHaaonCXkTd5vnQEItvyAo=;
+	s=arc-20240116; t=1740409177; c=relaxed/simple;
+	bh=K/+A7olelVRerV/cv20XkOTKFudQmEmuOw9lwURW4mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mqc2gB41cGye4u69artiGicwWry5kJtzXOmCb2AQo0PIYBydyYHGoPweKzGJfcY3rBvXWan0nfWFFOd+aWm4qAaBX71/0g94WObh9Ub43dfPveHRp29+y5MYOsL0SvPGPc+zT1vnh4xwiEZKyKfhETm4TRO+ZbDgKsxHEbD2FkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dnf9Zaib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83386C4CEE8;
-	Mon, 24 Feb 2025 14:52:30 +0000 (UTC)
+	 MIME-Version; b=dTlLeThYSDiCN6Q1X0KBXkL3uRKBWGAr0mbttMGBxWcix7pFMLwuWnVnoa6YffDflifR93BnwvijqRomXAtWtT/re0irppIy50GX0E8xeVF66PbB9EsuKAhO/Th3WfKxCg8+1vEYwgslqT6U+ogzPkBftG1+4PCJ0jxzpNi9R2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaTFBtkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6F3C4CEE8;
+	Mon, 24 Feb 2025 14:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408751;
-	bh=x6q1aSJzOc56dRdp0kFlhIHaaonCXkTd5vnQEItvyAo=;
+	s=korg; t=1740409177;
+	bh=K/+A7olelVRerV/cv20XkOTKFudQmEmuOw9lwURW4mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dnf9ZaibD5Zg4uegYfg13j980T1lsx+F68SKL9tUGpJZLTjMlnXpJ3KDLuLlhfPlM
-	 Zt+C5krLlfA506ylVdbc2mODHT813Luo1D25LfaaPLDW9sNXh4/qZZezeOsyBdI+DR
-	 ULONzLa+QQDp6tfJ2u+iUHSjL0jAZuXmjMafpXjA=
+	b=QaTFBtkY0mlp+7gfgML9J50wkzsVkGNboDTaipMGlZ2MKubiMzerME2xHgxhA5miK
+	 OmNB05XyQrkQhLxmLVaCUuTBV1zWXd89Ntw7Omk28uqVvaLfM8wfb4Bh5QMDFkuBgd
+	 6d/sBYU/G0StFX33ss3PaXJTWojx/B45TgQi4oYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 149/154] net: pse-pd: Fix deadlock in current limit functions
-Date: Mon, 24 Feb 2025 15:35:48 +0100
-Message-ID: <20250224142612.880033740@linuxfoundation.org>
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 119/138] ASoC: SOF: pcm: Clear the susbstream pointer to NULL on close
+Date: Mon, 24 Feb 2025 15:35:49 +0100
+Message-ID: <20250224142609.151684636@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 488fb6effe03e20f38d34da7425de77bbd3e2665 upstream.
+commit 46c7b901e2a03536df5a3cb40b3b26e2be505df6 upstream.
 
-Fix a deadlock in pse_pi_get_current_limit and pse_pi_set_current_limit
-caused by consecutive mutex_lock calls. One in the function itself and
-another in pse_pi_get_voltage.
+The spcm->stream[substream->stream].substream is set during open and was
+left untouched. After the first PCM stream it will never be NULL and we
+have code which checks for substream NULLity as indication if the stream is
+active or not.
+For the compressed cstream pointer the same has been done, this change will
+correct the handling of PCM streams.
 
-Resolve the issue by using the unlocked version of pse_pi_get_voltage
-instead.
-
-Fixes: e0a5e2bba38a ("net: pse-pd: Use power limit at driver side instead of current limit")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20250212151751.1515008-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 090349a9feba ("ASoC: SOF: Add support for compress API for stream data/offset")
+Cc: stable@vger.kernel.org
+Reported-by: Curtis Malainey <cujomalainey@chromium.org>
+Closes: https://github.com/thesofproject/linux/pull/5214
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
+Link: https://patch.msgid.link/20250205135232.19762-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/pse-pd/pse_core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/pcm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -309,7 +309,7 @@ static int pse_pi_get_current_limit(stru
- 		goto out;
- 	mW = ret;
+--- a/sound/soc/sof/pcm.c
++++ b/sound/soc/sof/pcm.c
+@@ -511,6 +511,8 @@ static int sof_pcm_close(struct snd_soc_
+ 		 */
+ 	}
  
--	ret = pse_pi_get_voltage(rdev);
-+	ret = _pse_pi_get_voltage(rdev);
- 	if (!ret) {
- 		dev_err(pcdev->dev, "Voltage null\n");
- 		ret = -ERANGE;
-@@ -346,7 +346,7 @@ static int pse_pi_set_current_limit(stru
++	spcm->stream[substream->stream].substream = NULL;
++
+ 	return 0;
+ }
  
- 	id = rdev_get_id(rdev);
- 	mutex_lock(&pcdev->lock);
--	ret = pse_pi_get_voltage(rdev);
-+	ret = _pse_pi_get_voltage(rdev);
- 	if (!ret) {
- 		dev_err(pcdev->dev, "Voltage null\n");
- 		ret = -ERANGE;
 
 
 
