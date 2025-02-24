@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-118857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18A5A41D14
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:39:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD53EA41CF3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3A13B31F0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:32:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116DE188F0AE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E147D26B092;
-	Mon, 24 Feb 2025 11:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406A026B2AE;
+	Mon, 24 Feb 2025 11:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjSCXUUX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P6arpPlc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6926B089;
-	Mon, 24 Feb 2025 11:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9D826B0B8;
+	Mon, 24 Feb 2025 11:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395989; cv=none; b=nSBxc1e3dH6vccI2orLaNOr7sWnsOr6Bo2M8BBxhvadf4kOO01qP8xmNrUTkjvkxoexF3KjAoK5dmajwJdTMkbgp2tVbUC9R55r2LBPInTSIltUiu/gD97OlGWkomfNfLt8pyUVQJn8JB9yAO5lly5dsJgcVJK6oxJEC7qML9Kk=
+	t=1740395991; cv=none; b=nVPhD5IJQVT2shmXnV2EauNrQlSWo/mSsH5MSrMaG3xiQWHO//okz9jKzfvny8PjX877/oH4jIrsaf8zxe4edex/0T0OeKCOmb6coDyh9HKCHgws6J8YijAh6zD/PMp3SwXIakiFYOsYnsq/QPXcj3lZNgtTLZOxiOkwAGsNVw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395989; c=relaxed/simple;
-	bh=uA1lwD82vb+sC0QUB7bxcLlcxVnvh0W+B39WusQlBZE=;
+	s=arc-20240116; t=1740395991; c=relaxed/simple;
+	bh=doGjVE1V8FGTN6ddb5N6EDVRC6NyPZhLn2QjD3Qu4yw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OcCQUdn3MBc4czictR+iSXfclujv/xPbRoM1R2yqCXZa0imp45O3BbiFZUR0lQBb8qmFjwRshyIk2sGk7ZohFC6UEIsovzRDQlsinrRqW1mETwCArLyxHvHxf0Mn5pCulUjXULnpgfDwSe/uiHze8G9rGb049mR+pAhLvGfahyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjSCXUUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF1EC4CED6;
-	Mon, 24 Feb 2025 11:19:48 +0000 (UTC)
+	 MIME-Version; b=ABQpU7he4yBGCsY8ARt7SxVUP+nPyogoTMSVGdSUVYtDOaSJ89PcOVZlqsrhbaLdkNvrkxKalw0M6m4nKeJZpUkHeUZ6ueOaGS3k73WjBeK6yFUSmaQQbnFCb4JThUaAOfx8KMtpT1kkuBy2RmFXA2p8y3KTbjifBTzH1Gz6fGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P6arpPlc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC5AC4CED6;
+	Mon, 24 Feb 2025 11:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395989;
-	bh=uA1lwD82vb+sC0QUB7bxcLlcxVnvh0W+B39WusQlBZE=;
+	s=k20201202; t=1740395990;
+	bh=doGjVE1V8FGTN6ddb5N6EDVRC6NyPZhLn2QjD3Qu4yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjSCXUUXhfOmlsDpTEjj64Vtin4y0eGR0XzhsUvC4IfQ+p43I0abzZdcROBxwrQvl
-	 zWyC9dP5RgUsUd43YrWK2R7DHFKK4Q5kx+lA2trHsohIs3W5+qJChZUd5yU8L4dlku
-	 iHb7Itt7uQ1ZaE9WyJcjMluOSWgxMf/V1GLxKY9XbTpQyIUWBbqtRGfx7PdS+ev/+U
-	 ewTXUbbhSF7DBANFyBA11CO15emRB7Lq6iX60eCx6O6Bxx5zF3dPhKzKZijKww/Z9P
-	 M8QMX9+Mil/rH02SS33+idogZm6EzdO9y8fRPTx9p0QPGAbMGQpzGt7nGxVz4VMjQf
-	 4xGBnO81KC4HA==
+	b=P6arpPlczI142FI/4lWTnk7pWkhs3wJB2nDo/w0uwtiT2rfnRAYEaLXVCrtgIux8E
+	 tbN0WWDRa+nJWroHfbDWH9VTE/8ZODD1P/kMW2npMOAlQf8fYj1SHzbe+UnY4pO1my
+	 ruXmfIbdGuOxHzFh3pz2oO4ZKUsb+FXEsOy5blfjMaZPZH/3CuNDIAp1sulHP/zdN6
+	 OzyqeVTwaFMYzDzEDS6dD/iBP6I3dpWxF5kD3aTJ/DO2QzsDosnDk1W2x0JyliYmPy
+	 td5dPTy/uDe3AWzZdu5vhaYNAGjBZtUkL4AAB60hCH7rujJJI06adpHexgTT7/G9KX
+	 yKwrZ8Oj3I/pQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christopher Lentocha <christopherericlentocha@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
 	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 13/20] nvme-pci: quirk Acer FA100 for non-uniqueue identifiers
-Date: Mon, 24 Feb 2025 06:19:06 -0500
-Message-Id: <20250224111914.2214326-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 14/20] nvme-tcp: add basic support for the C2HTermReq PDU
+Date: Mon, 24 Feb 2025 06:19:07 -0500
+Message-Id: <20250224111914.2214326-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111914.2214326-1-sashal@kernel.org>
 References: <20250224111914.2214326-1-sashal@kernel.org>
@@ -67,84 +66,101 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.79
 Content-Transfer-Encoding: 8bit
 
-From: Christopher Lentocha <christopherericlentocha@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit fcd875445866a5219cf2be3101e276b21fc843f3 ]
+[ Upstream commit 84e009042d0f3dfe91bec60bcd208ee3f866cbcd ]
 
-In order for two Acer FA100 SSDs to work in one PC (in the case of
-myself, a Lenovo Legion T5 28IMB05), and not show one drive and not
-the other, and sometimes mix up what drive shows up (randomly), these
-two lines of code need to be added, and then both of the SSDs will
-show up and not conflict when booting off of one of them. If you boot
-up your computer with both SSDs installed without this patch, you may
-also randomly get into a kernel panic (if the initrd is not set up) or
-stuck in the initrd "/init" process, it is set up, however, if you do
-apply this patch, there should not be problems with booting or seeing
-both contents of the drive. Tested with the btrfs filesystem with a
-RAID configuration of having the root drive '/' combined to make two
-256GB Acer FA100 SSDs become 512GB in total storage.
+Previously, the NVMe/TCP host driver did not handle the C2HTermReq PDU,
+instead printing "unsupported pdu type (3)" when received. This patch adds
+support for processing the C2HTermReq PDU, allowing the driver
+to print the Fatal Error Status field.
 
-Kernel Logs with patch applied (`dmesg -t | grep -i nvm`):
+Example of output:
+nvme nvme4: Received C2HTermReq (FES = Invalid PDU Header Field)
 
-```
-...
-nvme 0000:04:00.0: platform quirk: setting simple suspend
-nvme nvme0: pci function 0000:04:00.0
-nvme 0000:05:00.0: platform quirk: setting simple suspend
-nvme nvme1: pci function 0000:05:00.0
-nvme nvme1: missing or invalid SUBNQN field.
-nvme nvme1: allocated 64 MiB host memory buffer.
-nvme nvme0: missing or invalid SUBNQN field.
-nvme nvme0: allocated 64 MiB host memory buffer.
-nvme nvme1: 8/0/0 default/read/poll queues
-nvme nvme1: Ignoring bogus Namespace Identifiers
-nvme nvme0: 8/0/0 default/read/poll queues
-nvme nvme0: Ignoring bogus Namespace Identifiers
-nvme0n1: p1 p2
-...
-```
-
-Kernel Logs with patch not applied (`dmesg -t | grep -i nvm`):
-
-```
-...
-nvme 0000:04:00.0: platform quirk: setting simple suspend
-nvme nvme0: pci function 0000:04:00.0
-nvme 0000:05:00.0: platform quirk: setting simple suspend
-nvme nvme1: pci function 0000:05:00.0
-nvme nvme0: missing or invalid SUBNQN field.
-nvme nvme1: missing or invalid SUBNQN field.
-nvme nvme0: allocated 64 MiB host memory buffer.
-nvme nvme1: allocated 64 MiB host memory buffer.
-nvme nvme0: 8/0/0 default/read/poll queues
-nvme nvme1: 8/0/0 default/read/poll queues
-nvme nvme1: globally duplicate IDs for nsid 1
-nvme nvme1: VID:DID 1dbe:5216 model:Acer SSD FA100 256GB firmware:1.Z.J.2X
-nvme0n1: p1 p2
-...
-```
-
-Signed-off-by: Christopher Lentocha <christopherericlentocha@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/host/tcp.c  | 43 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/nvme-tcp.h |  2 ++
+ 2 files changed, 45 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index b1310e69d07da..a36ec6df6624b 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3509,6 +3509,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1cc1, 0x5350),   /* ADATA XPG GAMMIX S50 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x1dbe, 0x5216),   /* Acer/INNOGRIT FA100/5216 NVMe SSD */
-+		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1dbe, 0x5236),   /* ADATA XPG GAMMIX S70 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1e49, 0x0021),   /* ZHITAI TiPro5000 NVMe SSD */
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index be04c5f3856d2..83366a8f0f916 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -707,6 +707,40 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
+ 	return 0;
+ }
+ 
++static void nvme_tcp_handle_c2h_term(struct nvme_tcp_queue *queue,
++		struct nvme_tcp_term_pdu *pdu)
++{
++	u16 fes;
++	const char *msg;
++	u32 plen = le32_to_cpu(pdu->hdr.plen);
++
++	static const char * const msg_table[] = {
++		[NVME_TCP_FES_INVALID_PDU_HDR] = "Invalid PDU Header Field",
++		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
++		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
++		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
++		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
++		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
++	};
++
++	if (plen < NVME_TCP_MIN_C2HTERM_PLEN ||
++	    plen > NVME_TCP_MAX_C2HTERM_PLEN) {
++		dev_err(queue->ctrl->ctrl.device,
++			"Received a malformed C2HTermReq PDU (plen = %u)\n",
++			plen);
++		return;
++	}
++
++	fes = le16_to_cpu(pdu->fes);
++	if (fes && fes < ARRAY_SIZE(msg_table))
++		msg = msg_table[fes];
++	else
++		msg = "Unknown";
++
++	dev_err(queue->ctrl->ctrl.device,
++		"Received C2HTermReq (FES = %s)\n", msg);
++}
++
+ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
+ 		unsigned int *offset, size_t *len)
+ {
+@@ -728,6 +762,15 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
+ 		return 0;
+ 
+ 	hdr = queue->pdu;
++	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
++		/*
++		 * C2HTermReq never includes Header or Data digests.
++		 * Skip the checks.
++		 */
++		nvme_tcp_handle_c2h_term(queue, (void *)queue->pdu);
++		return -EINVAL;
++	}
++
+ 	if (queue->hdr_digest) {
+ 		ret = nvme_tcp_verify_hdgst(queue, queue->pdu, hdr->hlen);
+ 		if (unlikely(ret))
+diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
+index e07e8978d691b..e435250fcb4d0 100644
+--- a/include/linux/nvme-tcp.h
++++ b/include/linux/nvme-tcp.h
+@@ -13,6 +13,8 @@
+ #define NVME_TCP_ADMIN_CCSZ	SZ_8K
+ #define NVME_TCP_DIGEST_LENGTH	4
+ #define NVME_TCP_MIN_MAXH2CDATA 4096
++#define NVME_TCP_MIN_C2HTERM_PLEN	24
++#define NVME_TCP_MAX_C2HTERM_PLEN	152
+ 
+ enum nvme_tcp_pfv {
+ 	NVME_TCP_PFV_1_0 = 0x0,
 -- 
 2.39.5
 
