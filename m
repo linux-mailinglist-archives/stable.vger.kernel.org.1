@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D88A42459
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:55:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39F1A423CE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE75116EC01
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA25F16AB2D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103EF1624F8;
-	Mon, 24 Feb 2025 14:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DC823BCE6;
+	Mon, 24 Feb 2025 14:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmVyeAUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/yQdQ0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EE14D28C;
-	Mon, 24 Feb 2025 14:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC561624D5;
+	Mon, 24 Feb 2025 14:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408416; cv=none; b=drrWRQn6UlmQhPTWhh7XOzjMZsoRixli8I5o/7aGeXSKGKDVuFAVWO8vQTjbrHfQeZuYuG0WwHbi/5+dBBGmY2hbRO++UbRR5EOS4TL1q9PvNtK72Ar5eV9qDm+vunAR+C76RiUDF8NJpPk29bBWgbMtii3cmn0LAcWvyvg77Dk=
+	t=1740407930; cv=none; b=JjVi3dvLH8tfaJoecfU0SsPeCCvdyYFTq15RCc1B2p80fPSWweUvstDw3wXEahgNNlECMM2uey6W39VkKM8+SPnA8zbyNUZuX3htm681JFrHdSxb9QCUb1AefN+S28u5thPDucsuZR4eg5KTsMK1Z8H8tBcSF0CflavdrBn8dGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408416; c=relaxed/simple;
-	bh=abl0tGNIxkHxTXa5n+yilEG/4rkXCOG+iMy8X4axm4Q=;
+	s=arc-20240116; t=1740407930; c=relaxed/simple;
+	bh=Y7X2OXiQFh6khghTjaC/80bezUNgo5FSs2eJ9FrEyBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckrWRXpfaBx5Rtqw46xL3uQ7tF/l8I6j1Ne2OiBd4T1wD8gZz3WxaRlwOuEJsu4/LsbFg7sHW8wAl8eeY5HsZ7XEF1sCzld0rEspCRTvUGHtcr1n2MtayUSgs5qEEceGpZjKkrYTZO6zzechC76eidysqQeH84R5vAyp9ma/lbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmVyeAUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8877C4CED6;
-	Mon, 24 Feb 2025 14:46:54 +0000 (UTC)
+	 MIME-Version; b=UxP29uB30xJXxbLtYYPG7l0xntR2pIStpi7YBGKSHGo34mVMg+J3f6XvSWqD9pwz0JnuhTiU7UAQp9EexyPjYoLGmDMFPqCog8CtGsApREzOPzDkUWV1X0w6gGRCjIgfoiju/WSCx0i6kGQEA0nOsZDWyliYftNtH8LE+sx7BOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/yQdQ0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3BBC4CED6;
+	Mon, 24 Feb 2025 14:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408415;
-	bh=abl0tGNIxkHxTXa5n+yilEG/4rkXCOG+iMy8X4axm4Q=;
+	s=korg; t=1740407930;
+	bh=Y7X2OXiQFh6khghTjaC/80bezUNgo5FSs2eJ9FrEyBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmVyeAUCqkFb3MJzojurNKqPYokLd/7CPVWJ9njMm7IUivFLcXlaeGJ/PMBRFDG0J
-	 Bro6gtvfWrSCZrClw8aBkPdDs4JUDYqq4ikFP+isgKYPALJEZQUVbgW/LwF42mW6mQ
-	 WaOcSa3lZLZvWfS5SPVFbB8zqXHL4FPvNxaAFVJM=
+	b=Y/yQdQ0/ZCCni49Qkk2wkqd5TiRWTHApUZgDSNuwqChUZxrQxsY3sjcvaQcdR0+gG
+	 zA40RBs5JGQvd8njQ7f1WLd6L7tMvPSLVf29gwIjyKI9e+7pfcY1dB+jIjfbbVuiSA
+	 JQrOpQke2O4ESfjMhdnlTIQ7/4P7f9lKAYnRvywM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/154] ASoC: imx-audmix: remove cpu_mclk which is from cpu dai device
+Subject: [PATCH 6.6 050/140] arm64: dts: qcom: sm8550: Add dma-coherent property
 Date: Mon, 24 Feb 2025 15:34:09 +0100
-Message-ID: <20250224142609.052553291@linuxfoundation.org>
+Message-ID: <20250224142604.980436439@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Ling Xu <quic_lxu5@quicinc.com>
 
-[ Upstream commit 571b69f2f9b1ec7cf7d0e9b79e52115a87a869c4 ]
+[ Upstream commit 4a03b85b8491d8bfe84a26ff979507b6ae7122c1 ]
 
-When defer probe happens, there may be below error:
+Add dma-coherent property to fastRPC context bank nodes to pass dma
+sequence test in fastrpc sanity test, ensure that data integrity is
+maintained during DMA operations.
 
-platform 59820000.sai: Resources present before probing
-
-The cpu_mclk clock is from the cpu dai device, if it is not released,
-then the cpu dai device probe will fail for the second time.
-
-The cpu_mclk is used to get rate for rate constraint, rate constraint
-may be specific for each platform, which is not necessary for machine
-driver, so remove it.
-
-Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250213070518.547375-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Link: https://lore.kernel.org/r/20240125102413.3016-2-quic_lxu5@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: a6a8f54bc2af ("arm64: dts: qcom: sm8550: Fix ADSP memory base and length")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-audmix.c | 31 -------------------------------
- 1 file changed, 31 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 8e7b75cf64db4..ff3671226306b 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -23,7 +23,6 @@ struct imx_audmix {
- 	struct snd_soc_card card;
- 	struct platform_device *audmix_pdev;
- 	struct platform_device *out_pdev;
--	struct clk *cpu_mclk;
- 	int num_dai;
- 	struct snd_soc_dai_link *dai;
- 	int num_dai_conf;
-@@ -32,34 +31,11 @@ struct imx_audmix {
- 	struct snd_soc_dapm_route *dapm_routes;
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index f3a0e1fe333c4..51407c482b51f 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -4006,6 +4006,7 @@
+ 						reg = <3>;
+ 						iommus = <&apps_smmu 0x1003 0x80>,
+ 							 <&apps_smmu 0x1063 0x0>;
++						dma-coherent;
+ 					};
  
--static const u32 imx_audmix_rates[] = {
--	8000, 12000, 16000, 24000, 32000, 48000, 64000, 96000,
--};
--
--static const struct snd_pcm_hw_constraint_list imx_audmix_rate_constraints = {
--	.count = ARRAY_SIZE(imx_audmix_rates),
--	.list = imx_audmix_rates,
--};
--
- static int imx_audmix_fe_startup(struct snd_pcm_substream *substream)
- {
--	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
--	struct imx_audmix *priv = snd_soc_card_get_drvdata(rtd->card);
- 	struct snd_pcm_runtime *runtime = substream->runtime;
--	struct device *dev = rtd->card->dev;
--	unsigned long clk_rate = clk_get_rate(priv->cpu_mclk);
- 	int ret;
+ 					compute-cb@4 {
+@@ -4013,6 +4014,7 @@
+ 						reg = <4>;
+ 						iommus = <&apps_smmu 0x1004 0x80>,
+ 							 <&apps_smmu 0x1064 0x0>;
++						dma-coherent;
+ 					};
  
--	if (clk_rate % 24576000 == 0) {
--		ret = snd_pcm_hw_constraint_list(runtime, 0,
--						 SNDRV_PCM_HW_PARAM_RATE,
--						 &imx_audmix_rate_constraints);
--		if (ret < 0)
--			return ret;
--	} else {
--		dev_warn(dev, "mclk may be not supported %lu\n", clk_rate);
--	}
--
- 	ret = snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_CHANNELS,
- 					   1, 8);
- 	if (ret < 0)
-@@ -325,13 +301,6 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 	}
- 	put_device(&cpu_pdev->dev);
+ 					compute-cb@5 {
+@@ -4020,6 +4022,7 @@
+ 						reg = <5>;
+ 						iommus = <&apps_smmu 0x1005 0x80>,
+ 							 <&apps_smmu 0x1065 0x0>;
++						dma-coherent;
+ 					};
  
--	priv->cpu_mclk = devm_clk_get(&cpu_pdev->dev, "mclk1");
--	if (IS_ERR(priv->cpu_mclk)) {
--		ret = PTR_ERR(priv->cpu_mclk);
--		dev_err(&cpu_pdev->dev, "failed to get DAI mclk1: %d\n", ret);
--		return ret;
--	}
--
- 	priv->audmix_pdev = audmix_pdev;
- 	priv->out_pdev  = cpu_pdev;
+ 					compute-cb@6 {
+@@ -4027,6 +4030,7 @@
+ 						reg = <6>;
+ 						iommus = <&apps_smmu 0x1006 0x80>,
+ 							 <&apps_smmu 0x1066 0x0>;
++						dma-coherent;
+ 					};
  
+ 					compute-cb@7 {
+@@ -4034,6 +4038,7 @@
+ 						reg = <7>;
+ 						iommus = <&apps_smmu 0x1007 0x80>,
+ 							 <&apps_smmu 0x1067 0x0>;
++						dma-coherent;
+ 					};
+ 				};
+ 
+@@ -4140,6 +4145,7 @@
+ 						iommus = <&apps_smmu 0x1961 0x0>,
+ 							 <&apps_smmu 0x0c01 0x20>,
+ 							 <&apps_smmu 0x19c1 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@2 {
+@@ -4148,6 +4154,7 @@
+ 						iommus = <&apps_smmu 0x1962 0x0>,
+ 							 <&apps_smmu 0x0c02 0x20>,
+ 							 <&apps_smmu 0x19c2 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@3 {
+@@ -4156,6 +4163,7 @@
+ 						iommus = <&apps_smmu 0x1963 0x0>,
+ 							 <&apps_smmu 0x0c03 0x20>,
+ 							 <&apps_smmu 0x19c3 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@4 {
+@@ -4164,6 +4172,7 @@
+ 						iommus = <&apps_smmu 0x1964 0x0>,
+ 							 <&apps_smmu 0x0c04 0x20>,
+ 							 <&apps_smmu 0x19c4 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@5 {
+@@ -4172,6 +4181,7 @@
+ 						iommus = <&apps_smmu 0x1965 0x0>,
+ 							 <&apps_smmu 0x0c05 0x20>,
+ 							 <&apps_smmu 0x19c5 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@6 {
+@@ -4180,6 +4190,7 @@
+ 						iommus = <&apps_smmu 0x1966 0x0>,
+ 							 <&apps_smmu 0x0c06 0x20>,
+ 							 <&apps_smmu 0x19c6 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@7 {
+@@ -4188,6 +4199,7 @@
+ 						iommus = <&apps_smmu 0x1967 0x0>,
+ 							 <&apps_smmu 0x0c07 0x20>,
+ 							 <&apps_smmu 0x19c7 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					compute-cb@8 {
+@@ -4196,6 +4208,7 @@
+ 						iommus = <&apps_smmu 0x1968 0x0>,
+ 							 <&apps_smmu 0x0c08 0x20>,
+ 							 <&apps_smmu 0x19c8 0x10>;
++						dma-coherent;
+ 					};
+ 
+ 					/* note: secure cb9 in downstream */
 -- 
 2.39.5
 
