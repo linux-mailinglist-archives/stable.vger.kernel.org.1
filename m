@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-119050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1A4A42380
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B378BA424F4
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58CB77A54DA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6CE916910F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8A018BC36;
-	Mon, 24 Feb 2025 14:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D3824FBE8;
+	Mon, 24 Feb 2025 14:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7kQcbv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZsZHFpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499AD2A8D0;
-	Mon, 24 Feb 2025 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159AA2571C3;
+	Mon, 24 Feb 2025 14:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408150; cv=none; b=kM2enfhLTivaQ9SzR/TYbUUuR2plEdsD238ZUhQFoDYjsoHqEZcL4OLnWTDQ1rbvHGzKnEYIpUfG4Nizes18ksjYjeRqrEaH0tkKRN+GjVtTcC3CN7G/RPoZWHblUm3mJLvLGPxkrt0TU0XZLVtX4IjvMamW5CfYXUjpextsu+g=
+	t=1740408639; cv=none; b=dXqPgQDyKBIMkXu+rh+96335STpu+mYj30DISnaaVtKHcDbGsBPS0sbxkMgsnbTq6lvKCnr4pqkJDHLsLyRyuJFpVDjTLoUredGQ/hsJodvZzHYj/MWVV0CTulRfGYdC/84kLR2RZxT9E+LTyxoRCUcTlnq4mS1YPEfuZCJ7uJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408150; c=relaxed/simple;
-	bh=If3f82s50NykblGWF0ZPsQKzvtGtvbFg2TuxAul2RTE=;
+	s=arc-20240116; t=1740408639; c=relaxed/simple;
+	bh=s4IDN/uDey13CZJ3FT3kCYnXnBSvQaUfcENdbwTTx6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OE4uCCD5Kvs1vT7rPeYLI4l16qKeHRyeml/9x2u26iYAutiWCpxhFGS2BE2RGTmB7hcyrFd5jhZJII8ztHGJTShKliLu0LEHIdhyv+HoZmdepaX995M6YwpSUpDZPBc8TO6JStqf65kvLlbMB9xBNi3FM7y8/oreF/9NzY7jxWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7kQcbv8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EECC4CED6;
-	Mon, 24 Feb 2025 14:42:29 +0000 (UTC)
+	 MIME-Version; b=pdHLw1KWbywLT/EKUASVZoqQuzJMHDp2bDMj4DSXAIPZRVEjwptB7UqOwt574aA15JMpJe74U7idbXjAHodyIvia5/EUu/6U0v+EQllq54k/H7i5FHyLPy4Qz/v6R3w2UaF4HW4R8M52iWQ+7iiw+sCRJIlLP4CWsqCWJbenKps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZsZHFpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348D7C4CEE6;
+	Mon, 24 Feb 2025 14:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408149;
-	bh=If3f82s50NykblGWF0ZPsQKzvtGtvbFg2TuxAul2RTE=;
+	s=korg; t=1740408638;
+	bh=s4IDN/uDey13CZJ3FT3kCYnXnBSvQaUfcENdbwTTx6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7kQcbv8zaD4Z+s5EOinEtjiNPnPvFSes4+B627QvbOoH4xC+qXMTbJupcSKbMdzR
-	 YNBIpt3KjZPRkTToNbV1pnHewFZmoohVGwujNBoXlLu1MJAKWwAynpddsLjK+ZdQw4
-	 KA3qZQ77jKpLucSLp5wRnVzSjRyC6LPPKzRCIkes=
+	b=AZsZHFpVJSZtD1E0wrydTVwwmQWjiWn6ovhnNJ3mJ3qD7q+vfiL9L3T9MpDJtXw9J
+	 R9qwNc69VYaPAPMGjBP7jpv6a6SVC78g5IKspLp8XbSv1emEdJoJl4pkLf3bvTcQ6B
+	 tZAqpGzwiDjFIPS6iJcC3Z4EXL5kZF5nFNpPm8Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 115/140] lib/iov_iter: fix import_iovec_ubuf iovec management
-Date: Mon, 24 Feb 2025 15:35:14 +0100
-Message-ID: <20250224142607.534937771@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.12 116/154] tee: optee: Fix supplicant wait loop
+Date: Mon, 24 Feb 2025 15:35:15 +0100
+Message-ID: <20250224142611.599695470@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-commit f4b78260fc678ccd7169f32dc9f3bfa3b93931c7 upstream.
+commit 70b0d6b0a199c5a3ee6c72f5e61681ed6f759612 upstream.
 
-import_iovec() says that it should always be fine to kfree the iovec
-returned in @iovp regardless of the error code.  __import_iovec_ubuf()
-never reallocates it and thus should clear the pointer even in cases when
-copy_iovec_*() fail.
+OP-TEE supplicant is a user-space daemon and it's possible for it
+be hung or crashed or killed in the middle of processing an OP-TEE
+RPC call. It becomes more complicated when there is incorrect shutdown
+ordering of the supplicant process vs the OP-TEE client application which
+can eventually lead to system hang-up waiting for the closure of the
+client application.
 
-Link: https://lkml.kernel.org/r/378ae26923ffc20fd5e41b4360d673bf47b1775b.1738332461.git.asml.silence@gmail.com
-Fixes: 3b2deb0e46da ("iov_iter: import single vector iovecs as ITER_UBUF")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Allow the client process waiting in kernel for supplicant response to
+be killed rather than indefinitely waiting in an unkillable state. Also,
+a normal uninterruptible wait should not have resulted in the hung-task
+watchdog getting triggered, but the endless loop would.
+
+This fixes issues observed during system reboot/shutdown when supplicant
+got hung for some reason or gets crashed/killed which lead to client
+getting hung in an unkillable state. It in turn lead to system being in
+hung up state requiring hard power off/on to recover.
+
+Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/iov_iter.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tee/optee/supp.c |   35 ++++++++---------------------------
+ 1 file changed, 8 insertions(+), 27 deletions(-)
 
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -1441,6 +1441,8 @@ static ssize_t __import_iovec_ubuf(int t
- 	struct iovec *iov = *iovp;
- 	ssize_t ret;
+--- a/drivers/tee/optee/supp.c
++++ b/drivers/tee/optee/supp.c
+@@ -80,7 +80,6 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	struct optee *optee = tee_get_drvdata(ctx->teedev);
+ 	struct optee_supp *supp = &optee->supp;
+ 	struct optee_supp_req *req;
+-	bool interruptable;
+ 	u32 ret;
  
-+	*iovp = NULL;
-+
- 	if (compat)
- 		ret = copy_compat_iovec_from_user(iov, uvec, 1);
- 	else
-@@ -1451,7 +1453,6 @@ static ssize_t __import_iovec_ubuf(int t
- 	ret = import_ubuf(type, iov->iov_base, iov->iov_len, i);
- 	if (unlikely(ret))
- 		return ret;
--	*iovp = NULL;
- 	return i->count;
- }
+ 	/*
+@@ -111,36 +110,18 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	/*
+ 	 * Wait for supplicant to process and return result, once we've
+ 	 * returned from wait_for_completion(&req->c) successfully we have
+-	 * exclusive access again.
++	 * exclusive access again. Allow the wait to be killable such that
++	 * the wait doesn't turn into an indefinite state if the supplicant
++	 * gets hung for some reason.
+ 	 */
+-	while (wait_for_completion_interruptible(&req->c)) {
++	if (wait_for_completion_killable(&req->c)) {
+ 		mutex_lock(&supp->mutex);
+-		interruptable = !supp->ctx;
+-		if (interruptable) {
+-			/*
+-			 * There's no supplicant available and since the
+-			 * supp->mutex currently is held none can
+-			 * become available until the mutex released
+-			 * again.
+-			 *
+-			 * Interrupting an RPC to supplicant is only
+-			 * allowed as a way of slightly improving the user
+-			 * experience in case the supplicant hasn't been
+-			 * started yet. During normal operation the supplicant
+-			 * will serve all requests in a timely manner and
+-			 * interrupting then wouldn't make sense.
+-			 */
+-			if (req->in_queue) {
+-				list_del(&req->link);
+-				req->in_queue = false;
+-			}
++		if (req->in_queue) {
++			list_del(&req->link);
++			req->in_queue = false;
+ 		}
+ 		mutex_unlock(&supp->mutex);
+-
+-		if (interruptable) {
+-			req->ret = TEEC_ERROR_COMMUNICATION;
+-			break;
+-		}
++		req->ret = TEEC_ERROR_COMMUNICATION;
+ 	}
  
+ 	ret = req->ret;
 
 
 
