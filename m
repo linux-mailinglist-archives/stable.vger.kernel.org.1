@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EE3A42524
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A03A425D4
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32D0F162B42
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 839CF425A69
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CFF2571C3;
-	Mon, 24 Feb 2025 14:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F5818A6BD;
+	Mon, 24 Feb 2025 14:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whg4b2im"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMhJYAG9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6955B84A35;
-	Mon, 24 Feb 2025 14:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E56189919;
+	Mon, 24 Feb 2025 14:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408792; cv=none; b=t2SdQ0fJiTz7oVen2Tg8BVNA3yTvxKqqaxZAXjQBpPjFcVronqTMlC/OFoJX7qfFc/+QcOweKFeZrQtu/7MMC6s9OGSrHANadg35eNQtwlyTuv3Emfwn6wP0vrXsJA8OO4zFAgIpcZY1ML8/AzXttfGAl3wG7VMIK2ID6tyC8lQ=
+	t=1740409116; cv=none; b=PjlwwQnxmDLec6quoyrfUzIcXAPDSTug1FFGBjdciQcZzNm2/dhy4LYB6s1rdh7jx09DQKoib38pLdD8Hr1iGrdouw/qvQrW2DYe/dcZssyShkL0vaAFehpJTO5YG0py+iWVaoLXZMsR3bWG8IW8cUTKUUXyJZa3y5Jagd/N7so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408792; c=relaxed/simple;
-	bh=bPvtwSg8sXzswljzj32CaUiC19r0+EkZ7KeuNsynQ0E=;
+	s=arc-20240116; t=1740409116; c=relaxed/simple;
+	bh=4Fk2xL55soGQFUv2ghIVXyhvJTN+aSROozBAcHEQDyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZxCC4cA+9hKw4dQFvR+Lv416FasVQKpRE0mN7tnZZ3KsMrB7b3RqUXggh9kXULQUKOLsCqISwZ0FXLA/BV9ZmO46W+Hi6+lXlXjQyaGZVmHDdXbXiUFVuaQO5qorRO4fR/oQY9eRdKrRnS+SawxWc54KETly37gsjGLRu6kzIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whg4b2im; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D78C4CED6;
-	Mon, 24 Feb 2025 14:53:11 +0000 (UTC)
+	 MIME-Version; b=mEq3/abumrNzibxG7hu6oC6B5LKgNRRqPwSWppDayQEqIJGHYzWbbE0CPZeeMlOXMQ5Y0wdH/oTCylG2w5W/Q9gDyz9ew6n4Gg332yT3rGZ47500pILxBvgp8Hdu5683SUeoJVEGP8hMYYe2o0KOQS+7U3tKlnAZOxeFeJ6UkLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMhJYAG9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDF1C4CED6;
+	Mon, 24 Feb 2025 14:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408791;
-	bh=bPvtwSg8sXzswljzj32CaUiC19r0+EkZ7KeuNsynQ0E=;
+	s=korg; t=1740409116;
+	bh=4Fk2xL55soGQFUv2ghIVXyhvJTN+aSROozBAcHEQDyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whg4b2imCNMq8sqhOhGKPHcnim1bi7AK/+exCNP8In11817+/0upxklfgccUXYZXH
-	 k08eYxktwOwtySSWUDGv9ip7lNL7ctObqYoFICTM1bj4N5bAYWkHYhmMjxFiHceQSx
-	 adG1vVx/0aaqAgSRNWbtgH8saH9Lz+MPpf4WZ7h4=
+	b=aMhJYAG9N2W9r9TRudLOQgkYglckFK4QBmp+SvGcTbre7ApwW5NjA5aFtD1t1rilN
+	 64/XC1fhwfFgRNKX7Bos0k22C2/6MvSJQLigxnTCDZEhqC2HIxKyGQbR3J/L6eSdUI
+	 U8D8oRxeD/+/K/7TFRJdw5soDAEkBYVUf60ed7rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Veness <john-linux@pelago.org.uk>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 132/154] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
-Date: Mon, 24 Feb 2025 15:35:31 +0100
-Message-ID: <20250224142612.220390355@linuxfoundation.org>
+	Tianling Shen <cnsztl@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.13 102/138] arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
+Date: Mon, 24 Feb 2025 15:35:32 +0100
+Message-ID: <20250224142608.489799291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Veness <john-linux@pelago.org.uk>
+From: Tianling Shen <cnsztl@gmail.com>
 
-commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
+commit a6a7cba17c544fb95d5a29ab9d9ed4503029cb29 upstream.
 
-Allows the LED on the dedicated mute button on the HP ProBook 450 G4
-laptop to change colour correctly.
+In general the delay should be added by the PHY instead of the MAC,
+and this improves network stability on some boards which seem to
+need different delay.
 
-Signed-off-by: John Veness <john-linux@pelago.org.uk>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 Plus LTS")
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Tianling Shen <cnsztl@gmail.com>
+Link: https://lore.kernel.org/r/20250119091154.1110762-1-cnsztl@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts |    3 +--
+ arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts     |    1 +
+ arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi    |    1 -
+ 3 files changed, 2 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1080,6 +1080,7 @@ static const struct hda_quirk cxt5066_fi
- 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+--- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
+@@ -17,8 +17,7 @@
+ 
+ &gmac2io {
+ 	phy-handle = <&yt8531c>;
+-	tx_delay = <0x19>;
+-	rx_delay = <0x05>;
++	phy-mode = "rgmii-id";
+ 	status = "okay";
+ 
+ 	mdio {
+--- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
+@@ -15,6 +15,7 @@
+ 
+ &gmac2io {
+ 	phy-handle = <&rtl8211e>;
++	phy-mode = "rgmii";
+ 	tx_delay = <0x24>;
+ 	rx_delay = <0x18>;
+ 	status = "okay";
+--- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
+@@ -109,7 +109,6 @@
+ 	assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
+ 	assigned-clock-parents = <&gmac_clk>, <&gmac_clk>;
+ 	clock_in_out = "input";
+-	phy-mode = "rgmii";
+ 	phy-supply = <&vcc_io>;
+ 	pinctrl-0 = <&rgmiim1_pins>;
+ 	pinctrl-names = "default";
 
 
 
