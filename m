@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-118873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DBEA41D31
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:42:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189DBA41D3E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3695917EACE
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:37:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A59613A656E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4485027427C;
-	Mon, 24 Feb 2025 11:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A8D27FE79;
+	Mon, 24 Feb 2025 11:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLo0ACEm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOjvUXUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A64274273;
-	Mon, 24 Feb 2025 11:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467F27FE71;
+	Mon, 24 Feb 2025 11:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740396026; cv=none; b=sfVICwsqWGC9Pmo0vUlOG+T3xjuiuDyeSneDMU+8HjpQQ6UF0mphHYL1XpysAvXGPHhKZaRpm3ze0F+TjhA84jppm3vaPxrdDrWIqycCuZlfrpjQgf3ap+VBbLaBF3A+FR0UvXXZAFyqoZ/Me8D629in94oKjUP0BkHz18pxYmg=
+	t=1740396027; cv=none; b=Jz5PSAzhJOurkmyRqpEtF5koaKIz0iDCYUxAWnUhstX9eIy2l/9yyrKr5wHupSU/uV9dUmgQv4IN6mZ/yppwHZq4k56LHxiNpOk6QFnBiMIF2Vvm2nCPJYBbwWG5MxNl4Doj556PkDe7ww0u3MltjVf8ddfBxasv3/7KNis6UnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740396026; c=relaxed/simple;
-	bh=bwWqZcqslCrnTxZAJGJxH75X7i7Q0AGJPhsWGc/FhxM=;
+	s=arc-20240116; t=1740396027; c=relaxed/simple;
+	bh=WhZhiJFmlviInd25I00iuuq/F/ZpFPymnJWovYMggBc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SzFURnvZGQ4dDekXG28jNSYVSJBR23mEp1ONkN7Jn9pYDzP2ZKLjIoIMqbzgK0MgZHh62CxxmVOGBgpQpbktpOxTkhfC+roXrStcTmMXUTq5PNlRH8m80PZA1vWzU9JeBFwY/xlwq0DC1GPPK0yYSa9jTEUbxYmGY0Qb8WsXIsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLo0ACEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD58C4CEEB;
-	Mon, 24 Feb 2025 11:20:24 +0000 (UTC)
+	 MIME-Version; b=Yd0jn3+EsOEtw0ermBW9H3n+yGy+lg8OW2a58GSMS8r9YGKr4arF+c3MxuHqTbZna4ymn1xdyjuo/8ce0jEkqb39KRSlCngCkTpAYu5KTLMV63jfgWKnfrs/ja1IgTJUN4vTn14fHX5gPtjegfRCUbsERFaDu2ImVWipz+t4Q3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOjvUXUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6DCC4CEE8;
+	Mon, 24 Feb 2025 11:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740396025;
-	bh=bwWqZcqslCrnTxZAJGJxH75X7i7Q0AGJPhsWGc/FhxM=;
+	s=k20201202; t=1740396027;
+	bh=WhZhiJFmlviInd25I00iuuq/F/ZpFPymnJWovYMggBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLo0ACEmS9Fc4iDoXuLQ/xNQTnp12A3axuaBdzOZ7quo+PavVlpbQIpHJULEg9cpF
-	 hjed1cfDT383hGo/+r5E67h0dSeeUHzrrA1M/FgNQg23yvvCFkHkiu3TYMzp0HH+Cu
-	 ySi7tbzjn1PEXWZmgFOYrVOCxS0svy7qcU83spiKgfq/wD/f4RMp/7fb6MT8035pTx
-	 yNOULhTP6nsgSMuoHj4bdxaQi3c4UXTBBdDj8fe8IniE3Agcul7W4JbQxsy/WC/i/q
-	 LDJe8mu1mhbFHHer1wG4SgyQ7iLf1mYBy5HZfiLtM6Tkj+S++vxxsCR5qI5x6s0g8O
-	 ncOVEGvuPvUmQ==
+	b=TOjvUXUu9ZTIO7G/dgvA0obQaOWwbJ6LbOpub9/LRiTOjZTTPAe2plh/ZS4//HcUr
+	 a4cfs9uP4p939slsU863zONMCr/gn7XUB2ZW+kfwLcPU6D3k1ehLzIG5XM6DZK7M8h
+	 DAlk2k2bqqIJCS2dDRF/7s8iMarDrnTm5UsIicdVdF/OAFhTMVW8/bC+tqOKPu2me4
+	 5TFglBpySyrLcYz8TC3cIcjMYio71PWKWA3sAewhbMgsgNeICwWWLsml+PSYIcZFpC
+	 3uQ1165uga8nz8dUB4/CXasdTNqWCRt0zb0vC+TY9o1A47g/091i36P8MvqM8yPJ49
+	 zVlgZDfnUqLVw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Maurizio Lombardi <mlombard@redhat.com>,
+Cc: Ruozhu Li <david.li@jaguarmicro.com>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	kch@nvidia.com,
 	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 09/12] nvme-tcp: add basic support for the C2HTermReq PDU
-Date: Mon, 24 Feb 2025 06:19:57 -0500
-Message-Id: <20250224112002.2214613-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 10/12] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
+Date: Mon, 24 Feb 2025 06:19:58 -0500
+Message-Id: <20250224112002.2214613-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224112002.2214613-1-sashal@kernel.org>
 References: <20250224112002.2214613-1-sashal@kernel.org>
@@ -66,101 +67,77 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.129
 Content-Transfer-Encoding: 8bit
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Ruozhu Li <david.li@jaguarmicro.com>
 
-[ Upstream commit 84e009042d0f3dfe91bec60bcd208ee3f866cbcd ]
+[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
 
-Previously, the NVMe/TCP host driver did not handle the C2HTermReq PDU,
-instead printing "unsupported pdu type (3)" when received. This patch adds
-support for processing the C2HTermReq PDU, allowing the driver
-to print the Fatal Error Status field.
+The queue state checking in nvmet_rdma_recv_done is not in queue state
+lock.Queue state can transfer to LIVE in cm establish handler between
+state checking and state lock here, cause a silent drop of nvme connect
+cmd.
+Recheck queue state whether in LIVE state in state lock to prevent this
+issue.
 
-Example of output:
-nvme nvme4: Received C2HTermReq (FES = Invalid PDU Header Field)
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
 Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c  | 43 ++++++++++++++++++++++++++++++++++++++++
- include/linux/nvme-tcp.h |  2 ++
- 2 files changed, 45 insertions(+)
+ drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 29489c2c52fb9..f7ef727ee44e3 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -694,6 +694,40 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
- 	return 0;
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index a6d55ebb82382..298c46834a539 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -997,6 +997,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
+ 	nvmet_req_complete(&cmd->req, status);
  }
  
-+static void nvme_tcp_handle_c2h_term(struct nvme_tcp_queue *queue,
-+		struct nvme_tcp_term_pdu *pdu)
++static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
++		struct nvmet_rdma_rsp *rsp)
 +{
-+	u16 fes;
-+	const char *msg;
-+	u32 plen = le32_to_cpu(pdu->hdr.plen);
++	unsigned long flags;
++	bool ret = true;
 +
-+	static const char * const msg_table[] = {
-+		[NVME_TCP_FES_INVALID_PDU_HDR] = "Invalid PDU Header Field",
-+		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
-+		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
-+		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
-+		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
-+		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
-+	};
-+
-+	if (plen < NVME_TCP_MIN_C2HTERM_PLEN ||
-+	    plen > NVME_TCP_MAX_C2HTERM_PLEN) {
-+		dev_err(queue->ctrl->ctrl.device,
-+			"Received a malformed C2HTermReq PDU (plen = %u)\n",
-+			plen);
-+		return;
-+	}
-+
-+	fes = le16_to_cpu(pdu->fes);
-+	if (fes && fes < ARRAY_SIZE(msg_table))
-+		msg = msg_table[fes];
++	spin_lock_irqsave(&queue->state_lock, flags);
++	/*
++	 * recheck queue state is not live to prevent a race condition
++	 * with RDMA_CM_EVENT_ESTABLISHED handler.
++	 */
++	if (queue->state == NVMET_RDMA_Q_LIVE)
++		ret = false;
++	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
++		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
 +	else
-+		msg = "Unknown";
-+
-+	dev_err(queue->ctrl->ctrl.device,
-+		"Received C2HTermReq (FES = %s)\n", msg);
++		nvmet_rdma_put_rsp(rsp);
++	spin_unlock_irqrestore(&queue->state_lock, flags);
++	return ret;
 +}
 +
- static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		unsigned int *offset, size_t *len)
+ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
  {
-@@ -715,6 +749,15 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		return 0;
+ 	struct nvmet_rdma_cmd *cmd =
+@@ -1038,17 +1059,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	rsp->req.port = queue->port;
+ 	rsp->n_rdma = 0;
  
- 	hdr = queue->pdu;
-+	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
-+		/*
-+		 * C2HTermReq never includes Header or Data digests.
-+		 * Skip the checks.
-+		 */
-+		nvme_tcp_handle_c2h_term(queue, (void *)queue->pdu);
-+		return -EINVAL;
-+	}
-+
- 	if (queue->hdr_digest) {
- 		ret = nvme_tcp_verify_hdgst(queue, queue->pdu, hdr->hlen);
- 		if (unlikely(ret))
-diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
-index 57ebe1267f7fb..0278ce3ad1fbd 100644
---- a/include/linux/nvme-tcp.h
-+++ b/include/linux/nvme-tcp.h
-@@ -13,6 +13,8 @@
- #define NVME_TCP_ADMIN_CCSZ	SZ_8K
- #define NVME_TCP_DIGEST_LENGTH	4
- #define NVME_TCP_MIN_MAXH2CDATA 4096
-+#define NVME_TCP_MIN_C2HTERM_PLEN	24
-+#define NVME_TCP_MAX_C2HTERM_PLEN	152
+-	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
+-		unsigned long flags;
+-
+-		spin_lock_irqsave(&queue->state_lock, flags);
+-		if (queue->state == NVMET_RDMA_Q_CONNECTING)
+-			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
+-		else
+-			nvmet_rdma_put_rsp(rsp);
+-		spin_unlock_irqrestore(&queue->state_lock, flags);
++	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
++	    nvmet_rdma_recv_not_live(queue, rsp))
+ 		return;
+-	}
  
- enum nvme_tcp_pfv {
- 	NVME_TCP_PFV_1_0 = 0x0,
+ 	nvmet_rdma_handle_command(queue, rsp);
+ }
 -- 
 2.39.5
 
