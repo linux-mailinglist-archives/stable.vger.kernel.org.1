@@ -1,112 +1,224 @@
-Return-Path: <stable+bounces-118709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862BBA416C6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:00:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F68A416EC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 09:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B01189539F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC883A6F37
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4780241673;
-	Mon, 24 Feb 2025 08:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B231DAC81;
+	Mon, 24 Feb 2025 08:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WDtL7Ii3"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B741207DF7;
-	Mon, 24 Feb 2025 07:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD13217548
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 08:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740384001; cv=none; b=VBnyGMaQnHyhuZcqmuvxndPFL+p4u8gUs5gWYdJP5lqockeNEhIG6kQ6LdFF4czrqmb1qpQUY2PxDnPc4c547vlfgb4MjwaxE3udYvEAhkhneGCW7DTv+e2+Wnv+H+/NOpwL6T2HnWO3vrJvnmXKtDKzwI0+19id1YDzCOS+q8E=
+	t=1740384631; cv=none; b=MZmVgiSVfGAu2FJOhy2iwA6KEMGYUFA3x0HT2BevZWbXGgHFpJVkoB7119aPy7D0Kjhz+PLEUFS7ACokc0Z4SafIpX/l/3urxWOnOoh657ygmN9kVDbkyz0/3aknplHLa4ONoYjFZE0CAP+M2xUckcLXrUJ/6yNp1eVKRRCgT10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740384001; c=relaxed/simple;
-	bh=03CjEY3oVXOoJ7aw7338nodyXVXPpOxAUbsCIn2BYdM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cJRGzYxa20J0p8WYvhwXVjx6lXJdcJcJ0+c64N6sluRzJvUBH2tQgTorQbvZATI4G+0sTg+4fEgWXTuw7wci+YKSm809X2osdWzWDFI4smNzDOpHnXFSa8BRE3sCdGPosJ5FsTABAjtCR9bNYSsHfUjbyx4VqD8k2bqYHyDQ3ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowACnr1vqJrxnLXzyDw--.47959S2;
-	Mon, 24 Feb 2025 15:59:50 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: clm@fb.com,
-	josef@toxicpanda.com,
-	dsterba@suse.com,
-	fdmanana@suse.com
-Cc: linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] btrfs: add a sanity check for btrfs root in btrfs_next_old_leaf()
-Date: Mon, 24 Feb 2025 15:59:37 +0800
-Message-Id: <20250224075937.2959546-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740384631; c=relaxed/simple;
+	bh=u8TrK9hYcC65/WeviX8JWvUBq96uK8ZgDDuf0b8u/ew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KImR5MfDIEA71Si48jFv9rqdM3HnjjmHf7LB3YDOd3et88IN+UVHQ2U2KHUwCnx4hm7JNItYRsg9gyG8UtSGRFbkWDblJec25mBwEcBkMtXdRrETK73dsj587lo3iPZG5Lt/nFE0C3XtL2KPgP5XufwNLk7cEn+F9qNDZeg/2MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WDtL7Ii3; arc=none smtp.client-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-868fa40bb9aso1244686241.1
+        for <stable@vger.kernel.org>; Mon, 24 Feb 2025 00:10:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740384628; x=1740989428; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5rAfh0+TUi6TP02l6JXkpyL3aEAeCTCEFN0Bf4ro6c4=;
+        b=WDtL7Ii3e5ZCQ+E5MAdnHj3IMXVFC4PGp9uY9bQZ6doH2gSTSW7u+wOANozq0gjsBr
+         A1rD1fgXmpQd0EJAXfE+rABAsKDmjdw8q6c26SUXqc3oRc9j4ldslefh7K69bcU6rn0M
+         m3KBevC0UK1L2BObnjH8uYfq8E3PQwzYYSx6csEdQZLgQHUCwK+HLppkZ09QJSn+O1Fw
+         bxYlxavX7rIyGT/hgrcSJbyOBkhphWv6zXBHPO/nrCa9sY5OGIGT7TkYA+OvhQRN4mny
+         H+sFi0qS67k1WYO4sd2pYRWk2XWrGxXrMZJDwidFlj19EGqEhZhiBq7Is7Nr/4vAox9Y
+         58Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740384628; x=1740989428;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5rAfh0+TUi6TP02l6JXkpyL3aEAeCTCEFN0Bf4ro6c4=;
+        b=XXcQ7CZGKdcd+hNFSt6UIuAYGAtpaamq+L85qMbiK5pZJTZWGMYHxL/psCZOK2h7G8
+         Gzl875RixPG7m0/4UG3mDJei0IczJM45ZvuiVbQ6R/3cLg1l6IDhurH0c9dH2d3XV2ND
+         Zf8vgaDUdU2Kv6hdphQu9JN7ZZh9CyzZAEKDSS/avMklRI+AJNlL2sTJPoBbEHyqLweR
+         blzm2xdgD7EAOXF7ZEdtOhFV1WIWJGllRak/upxYW+VDPs1TN1iDiRcJNT11HboRN/ZJ
+         vaqAKKurpooAXOoPKD2JisqT0jQYU8GCLWzwgTMXmasf8gBJARJl0o47UpwsgZz+2cOO
+         plHw==
+X-Gm-Message-State: AOJu0YyQpfsCom4NnNNEzgjak9N3yoQexve3LsUtn6W1hX8eJSSyZw10
+	EkW7F+X3l0/Oro2QO8sBc5WYow65uX50vBjtw+DINNdDEeN35rufSbXLQI55pszECA16znUyr/q
+	wmH+fXkR8Rzx4bpr0ZoPh1OdB9ZcwE4oEuVameQ==
+X-Gm-Gg: ASbGncvlttsqYP+98qwqoO/6T1Xcl/qJ8Axck+a07i2ygjhiiT8iZ1d7Yg7JhDOnEuu
+	/pmQfhPDIxBt7dOT/cdfgS2CcsaOELaJiGZpNq+vQKuBIDr5g+6k65dipex1FJDKrzFo2JCIhc7
+	W1spmj7jvdpxXAs2Jlu2gg4eE085OwA5h0ShoRL6XU
+X-Google-Smtp-Source: AGHT+IFtTzjpecd4WNbfJBrPmnNi8gxRNYitwtUYtxG//98YquxYsUWInAxrtNW/QbRt9da1gEn7CzWKqroyZsH5TV8=
+X-Received: by 2002:a05:6102:c8c:b0:4bb:e8c5:b172 with SMTP id
+ ada2fe7eead31-4bfc0098918mr5692399137.8.1740384628553; Mon, 24 Feb 2025
+ 00:10:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnr1vqJrxnLXzyDw--.47959S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZr43Gr1UGFWkWr48Zr4Utwb_yoWkWrb_GF
-	WxZ34UGrW5Gr1fC3yrKwsIvFWDKw4vkrn2ga4qgF98KFyUtFn8Gws2qrsrG34xGa1UXF15
-	G390v34I9a1I9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUp7KsUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+References: <20250220104545.805660879@linuxfoundation.org>
+In-Reply-To: <20250220104545.805660879@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 24 Feb 2025 13:40:16 +0530
+X-Gm-Features: AWEUYZkqBO2UQkfmgOsDe-rD71hPOBWtwJTpV4dFszBoXqdjV-sFVpZiDA8Hqo4
+Message-ID: <CA+G9fYuoYfGft-2D88dCVQeB5mTvyf6ADkWau172BZs2SD99VQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-btrfs_next_old_leaf() doesn't check if the target root is NULL or not,
-resulting the null-ptr-deref. Add sanity check for btrfs root before
-using it in btrfs_next_old_leaf().
+On Thu, 20 Feb 2025 at 16:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.129 release.
+> There are 569 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.129-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Found by code review.
 
-Cc: stable@vger.kernel.org
-Fixes: d96b34248c2f ("btrfs: make send work with concurrent block group relocation")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- fs/btrfs/ctree.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 4e2e1c38d33a..1a3fc3863860 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -4794,13 +4794,17 @@ int btrfs_next_old_leaf(struct btrfs_root *root, struct btrfs_path *path,
- 	int level;
- 	struct extent_buffer *c;
- 	struct extent_buffer *next;
--	struct btrfs_fs_info *fs_info = root->fs_info;
-+	struct btrfs_fs_info *fs_info;
- 	struct btrfs_key key;
- 	bool need_commit_sem = false;
- 	u32 nritems;
- 	int ret;
- 	int i;
- 
-+	if (!root)
-+		return -EINVAL;
-+
-+	fs_info = root->fs_info;
- 	/*
- 	 * The nowait semantics are used only for write paths, where we don't
- 	 * use the tree mod log and sequence numbers.
--- 
-2.25.1
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.1.129-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: fdd3f50c8e3e56aa4407011c21e440d1f39bf99f
+* git describe: v6.1.128-570-gfdd3f50c8e3e
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
+28-570-gfdd3f50c8e3e
+
+## Test Regressions (compared to v6.1.126-65-gc5148ca733b3)
+
+## Metric Regressions (compared to v6.1.126-65-gc5148ca733b3)
+
+## Test Fixes (compared to v6.1.126-65-gc5148ca733b3)
+
+## Metric Fixes (compared to v6.1.126-65-gc5148ca733b3)
+
+## Test result summary
+total: 104367, pass: 81540, fail: 3794, skip: 18597, xfail: 436
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 133 total, 133 passed, 0 failed
+* arm64: 20 total, 20 passed, 0 failed
+* i386: 26 total, 22 passed, 4 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 31 total, 30 passed, 1 failed
+* riscv: 9 total, 9 passed, 0 failed
+* s390: 11 total, 11 passed, 0 failed
+* sh: 12 total, 10 passed, 2 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 32 total, 32 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
