@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-118991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573F4A42394
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41774A4247D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 460B6189AE3A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA5467A86BC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FE5248861;
-	Mon, 24 Feb 2025 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7592218A6BA;
+	Mon, 24 Feb 2025 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cROWt3lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfOVlzLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34348190063;
-	Mon, 24 Feb 2025 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320C127701;
+	Mon, 24 Feb 2025 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407948; cv=none; b=IJgB098qLYzK74W8SlXcmLJy3bz/EiFUiKVKhKsnRAQ+Ko5TEAMGRgkwKXoy1RSr9YU4A5vUYQp7LQcCdsVjZDw0yet+yLku7qKGtHbutlOjiMrumaET810H/g6KyAZ4nURFANHq8BBb6Jq/WBCbcUCr7zWIOiTQGO5Mgp+Veqk=
+	t=1740408910; cv=none; b=aqC/eCL7HjEKGVC/HxiR4bApwTtsalgrTX0FC4as3XuFfymSqus4C9vn6hjOAH1RpYs+Azb8TKbrlV2wSMGtPOCpq4iyA6A6g/KXxPFPJDx1kSQmJnRyzAlf8c4ijFUYD+Gwk1dGgxWQts941yASTVe7LiqJdz4z5AItNxcrvBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407948; c=relaxed/simple;
-	bh=3Qg/1SePnIqhOIu8ob6Hv3OXFkiyMkNIGKlSGZ+I9/8=;
+	s=arc-20240116; t=1740408910; c=relaxed/simple;
+	bh=9119VAZoVEtH08aCJ4/7xUHgPdSHFkQdh+RFc0KRmi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQ+2wNCAxMMbqcjV7fepqCOrc+feG4ZrwBNGABh9sq56LQMV8YB0KopMLtSU68rcr+rXcBanQjpLiLddwbWl7hkrUAt7PRbDPzCCarVJawatjkG2xkJnoQc8xWZrZQZoUrgQYSwrpMe7KnnHGjFPv6F4lG064l8siWyuG1LAYIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cROWt3lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F505C4CED6;
-	Mon, 24 Feb 2025 14:39:07 +0000 (UTC)
+	 MIME-Version; b=eBpIJgApFdu4gFRf88+Z74p9xMq6MOcmaRC0O1p/Z7WHcG7VM0TGvYz6euWXC8QB8M+cX7DhiqIh2EKQgOW80Qq7wWFgxmoXny/H/j4v56iXM386JZI8jtY4MSOqC/v1x71jwcWJBzeall99//DmycD2id4RoxRaINoJlyjtuuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfOVlzLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF94C4CEE6;
+	Mon, 24 Feb 2025 14:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407948;
-	bh=3Qg/1SePnIqhOIu8ob6Hv3OXFkiyMkNIGKlSGZ+I9/8=;
+	s=korg; t=1740408910;
+	bh=9119VAZoVEtH08aCJ4/7xUHgPdSHFkQdh+RFc0KRmi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cROWt3lhZGO/pyklLliTRFur7hPetGYIdGuqM8TW4z6oone+RL/pA9tjnQw1fenLU
-	 l9qgzPLsdBWrDb9QG4jzWj8GrjqGAX3O/D4Iu7ldE/dnkSQTQUL0KfyOptDDKw/Cf/
-	 LPAYWIP+yAnJ55oV69iTLZkvqcviVrOajR92sKtU=
+	b=PfOVlzLdvg6bt0oAxUU9CcjLEvrfFaAPLvblBQ0ULT3Ybn0Rm8elT+z9P/wAyOEfD
+	 pTBkS/dUR9CI8GzkNldcHNVQDP/k+T6IErTSi8v7uVKzwK5Q4kqJmiAdmRz6X0tgPm
+	 QeDcLPBuS+Y/jMMvzlcxggQzYJJtaEvnfngDcT64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/140] media: uvcvideo: Refactor iterators
+Subject: [PATCH 6.13 024/138] ALSA: hda/realtek: Fixup ALC225 depop procedure
 Date: Mon, 24 Feb 2025 15:34:14 +0100
-Message-ID: <20250224142605.176375325@linuxfoundation.org>
+Message-ID: <20250224142605.420549611@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 64627daf0c5f7838111f52bbbd1a597cb5d6871a ]
+[ Upstream commit 174448badb4409491bfba2e6b46f7aa078741c5e ]
 
-Avoid using the iterators after the list_for_each() constructs.
-This patch should be a NOP, but makes cocci, happier:
+Headset MIC will no function when power_save=0.
 
-drivers/media/usb/uvc/uvc_ctrl.c:1861:44-50: ERROR: invalid reference to the index variable of the iterator on line 1850
-drivers/media/usb/uvc/uvc_ctrl.c:2195:17-23: ERROR: invalid reference to the index variable of the iterator on line 2179
-
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: d9fecd096f67 ("media: uvcvideo: Only save async fh if success")
+Fixes: 1fd50509fe14 ("ALSA: hda/realtek: Update ALC225 depop procedure")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219743
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0474a095ab0044d0939ec4bf4362423d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index ce70e96b8fb52..f78e0c02b3379 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1848,16 +1848,18 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
- 	list_for_each_entry(entity, &chain->entities, chain) {
- 		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
- 					     &err_ctrl);
--		if (ret < 0)
-+		if (ret < 0) {
-+			if (ctrls)
-+				ctrls->error_idx =
-+					uvc_ctrl_find_ctrl_idx(entity, ctrls,
-+							       err_ctrl);
- 			goto done;
-+		}
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 6c352602987ba..ffe3de617d5dd 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3790,6 +3790,7 @@ static void alc225_init(struct hda_codec *codec)
+ 				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
  
- 	if (!rollback)
- 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
- done:
--	if (ret < 0 && ctrls)
--		ctrls->error_idx = uvc_ctrl_find_ctrl_idx(entity, ctrls,
--							  err_ctrl);
- 	mutex_unlock(&chain->ctrl_mutex);
- 	return ret;
+ 		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+ 		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
+ 	}
  }
-@@ -2170,7 +2172,7 @@ static int uvc_ctrl_init_xu_ctrl(struct uvc_device *dev,
- int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
- 	struct uvc_xu_control_query *xqry)
- {
--	struct uvc_entity *entity;
-+	struct uvc_entity *entity, *iter;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
- 	bool found;
-@@ -2180,16 +2182,16 @@ int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
- 	int ret;
- 
- 	/* Find the extension unit. */
--	found = false;
--	list_for_each_entry(entity, &chain->entities, chain) {
--		if (UVC_ENTITY_TYPE(entity) == UVC_VC_EXTENSION_UNIT &&
--		    entity->id == xqry->unit) {
--			found = true;
-+	entity = NULL;
-+	list_for_each_entry(iter, &chain->entities, chain) {
-+		if (UVC_ENTITY_TYPE(iter) == UVC_VC_EXTENSION_UNIT &&
-+		    iter->id == xqry->unit) {
-+			entity = iter;
- 			break;
- 		}
- 	}
- 
--	if (!found) {
-+	if (!entity) {
- 		uvc_dbg(chain->dev, CONTROL, "Extension unit %u not found\n",
- 			xqry->unit);
- 		return -ENOENT;
 -- 
 2.39.5
 
