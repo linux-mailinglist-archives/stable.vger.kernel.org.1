@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-119213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6330A424FD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A375A4241E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16B2A3A9BC9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2AD5421FC7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26271459EA;
-	Mon, 24 Feb 2025 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901B07F7FC;
+	Mon, 24 Feb 2025 14:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ5lExLk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIa9ZGdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFAF27701;
-	Mon, 24 Feb 2025 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D79927701;
+	Mon, 24 Feb 2025 14:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408702; cv=none; b=u7n3k3jtaY4ezKgPVfHg3JEP/6m8taaHclOMFReGUf+nyXLxTvhlAMbxW/HYDlZLRqiIRzTGNyblkVi8yDnGDXlFtXSAB+5rFuZTEBPKU1i6WyeCvv6XQoRJNzfp3h56iyiiEJrt5nehGsMuMRazAVjffpk/KaceyXpm/JuLnB0=
+	t=1740408251; cv=none; b=kbenSa4RGPU7eREJDSFx6X/BEKSrX2AaWcCcILkocdObwu1N7VSyn+lljNPWiIuR9PN2ucO1GpawHGb9nFmVB8VpF3PG3vube1t17+4uevpZ2vHIK1gnITME34DPFQAginWrebZ6XEjNsmQsWd4ZQYJ0/Cqqho+bssktH8TkUC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408702; c=relaxed/simple;
-	bh=k1yNl6pTyLWeYG3D+iDmO7vlyj160OfEuQld7dUK5J4=;
+	s=arc-20240116; t=1740408251; c=relaxed/simple;
+	bh=lA/QuMu77X2kbtTpe3xw3bROzIzw5BwaCo2H2uI96W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K37fHh/gZty3e2zvlGC5fA6wviwcQc1makisIpKap6vezc2jsCOm0KkeTqLZmtTdjJugay7mYfUp+EONb+tIs+I9YJBYuY1imvsBXLmkTk3RwKv0Xezg+mbiGqJtr6hI4TJewTSkB3drOd1J/IPQymizUh4ygkZXylLESJTmgj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ5lExLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8497C4CED6;
-	Mon, 24 Feb 2025 14:51:41 +0000 (UTC)
+	 MIME-Version; b=a7DSYDouQq3zTgQc97A476Rpq3/uJXXrzYN0uzuwJaH9ipSV/aN8FWa4jMnn3r5eoTsFSJ8XCdNo0o1gmNq5+kzZ8wsnF8xfNsXOKIEG2XNhGm5lidx1mXfVjAKZoQBNkeDUz6IL2dCNaB92PVbQ5s9EwNqj+RvXJ2GwXZJ3Pjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIa9ZGdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEF2C4CED6;
+	Mon, 24 Feb 2025 14:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408702;
-	bh=k1yNl6pTyLWeYG3D+iDmO7vlyj160OfEuQld7dUK5J4=;
+	s=korg; t=1740408250;
+	bh=lA/QuMu77X2kbtTpe3xw3bROzIzw5BwaCo2H2uI96W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ5lExLkh3qUqBHP0raqVm2CTgaDF+psLQYfIxWsR7dlvEsaKjPfzd9nV/hbu03At
-	 DXP3U7MFHu+HR7IWMQbTsCg0FyxfgyvxOjTGer6/9pRHWb2D97PNxJDkquJInC5/Gb
-	 QdyGtpm2zPQPl2XpljIdodlk5ha0JUEm8BoeMTs0=
+	b=qIa9ZGdtLi7RC+XQzgwypyG6w7qyqV9reYEqAH/ALJR/KwBlJ23jZYvB2ZCQUEtaj
+	 KYT2QlQNPE2Z3pAd6qKcDTAoMTenMPhOmkM44Tu0nUGaAog7/hh1oimx4zlA9W6aNz
+	 NQK/6GBFL896wOXKWVZHeEDTaXsChjHSadYOFhJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Florent Revest <revest@google.com>,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 136/154] mm,madvise,hugetlb: check for 0-length range after end address adjustment
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 136/140] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
 Date: Mon, 24 Feb 2025 15:35:35 +0100
-Message-ID: <20250224142612.375586519@linuxfoundation.org>
+Message-ID: <20250224142608.354228001@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +59,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Cañuelo Navarro <rcn@igalia.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 2ede647a6fde3e54a6bfda7cf01c716649655900 upstream.
+commit 47a973fd75639fe80d59f9e1860113bb2a0b112b upstream.
 
-Add a sanity check to madvise_dontneed_free() to address a corner case in
-madvise where a race condition causes the current vma being processed to
-be backed by a different page size.
+The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
+To tell the availability of the sub-leaf 1 (enumerate the counter mask),
+perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
 
-During a madvise(MADV_DONTNEED) call on a memory region registered with a
-userfaultfd, there's a period of time where the process mm lock is
-temporarily released in order to send a UFFD_EVENT_REMOVE and let
-userspace handle the event.  During this time, the vma covering the
-current address range may change due to an explicit mmap done concurrently
-by another thread.
+The error is not user-visible on bare metal. Because the sub-leaf 0 and
+the sub-leaf 1 are always available. However, it may bring issues in a
+virtualization environment when a VMM only enumerates the sub-leaf 0.
 
-If, after that change, the memory region, which was originally backed by
-4KB pages, is now backed by hugepages, the end address is rounded down to
-a hugepage boundary to avoid data loss (see "Fixes" below).  This rounding
-may cause the end address to be truncated to the same address as the
-start.
+Introduce the cpuid35_e?x to replace the macros, which makes the
+implementation style consistent.
 
-Make this corner case follow the same semantics as in other similar cases
-where the requested region has zero length (ie.  return 0).
-
-This will make madvise_walk_vmas() continue to the next vma in the range
-(this time holding the process mm lock) which, due to the prev pointer
-becoming stale because of the vma change, will be the same hugepage-backed
-vma that was just checked before.  The next time madvise_dontneed_free()
-runs for this vma, if the start address isn't aligned to a hugepage
-boundary, it'll return -EINVAL, which is also in line with the madvise
-api.
-
->From userspace perspective, madvise() will return EINVAL because the start
-address isn't aligned according to the new vma alignment requirements
-(hugepage), even though it was correctly page-aligned when the call was
-issued.
-
-Link: https://lkml.kernel.org/r/20250203075206.1452208-1-rcn@igalia.com
-Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Florent Revest <revest@google.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250129154820.3755948-3-kan.liang@linux.intel.com
+[ The patch is not exactly the same as the upstream patch. Because in the 6.6
+  stable kernel, the umask2/eq enumeration is not supported. The number of
+  counters is used rather than the counter mask. But the change is
+  straightforward, which utilizes the structured union to replace the macros
+  when parsing the CPUID enumeration. It also fixed a wrong macros. ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/madvise.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/core.c      |   17 ++++++++++-------
+ arch/x86/include/asm/perf_event.h |   26 +++++++++++++++++++++++++-
+ 2 files changed, 35 insertions(+), 8 deletions(-)
 
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -920,7 +920,16 @@ static long madvise_dontneed_free(struct
- 			 */
- 			end = vma->vm_end;
- 		}
--		VM_WARN_ON(start >= end);
-+		/*
-+		 * If the memory region between start and end was
-+		 * originally backed by 4kB pages and then remapped to
-+		 * be backed by hugepages while mmap_lock was dropped,
-+		 * the adjustment for hugetlb vma above may have rounded
-+		 * end down to the start address.
-+		 */
-+		if (start == end)
-+			return 0;
-+		VM_WARN_ON(start > end);
- 	}
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4643,16 +4643,19 @@ static void intel_pmu_check_num_counters
  
- 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
+ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
+ {
+-	unsigned int sub_bitmaps = cpuid_eax(ARCH_PERFMON_EXT_LEAF);
+-	unsigned int eax, ebx, ecx, edx;
++	unsigned int cntr, fixed_cntr, ecx, edx;
++	union cpuid35_eax eax;
++	union cpuid35_ebx ebx;
+ 
+-	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
++	cpuid(ARCH_PERFMON_EXT_LEAF, &eax.full, &ebx.full, &ecx, &edx);
++
++	if (eax.split.cntr_subleaf) {
+ 		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
+-			    &eax, &ebx, &ecx, &edx);
+-		pmu->num_counters = fls(eax);
+-		pmu->num_counters_fixed = fls(ebx);
++			    &cntr, &fixed_cntr, &ecx, &edx);
++		pmu->num_counters = fls(cntr);
++		pmu->num_counters_fixed = fls(fixed_cntr);
+ 		intel_pmu_check_num_counters(&pmu->num_counters, &pmu->num_counters_fixed,
+-					     &pmu->intel_ctrl, ebx);
++					     &pmu->intel_ctrl, fixed_cntr);
+ 	}
+ }
+ 
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -177,9 +177,33 @@ union cpuid10_edx {
+  * detection/enumeration details:
+  */
+ #define ARCH_PERFMON_EXT_LEAF			0x00000023
+-#define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
+ #define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
+ 
++union cpuid35_eax {
++	struct {
++		unsigned int	leaf0:1;
++		/* Counters Sub-Leaf */
++		unsigned int    cntr_subleaf:1;
++		/* Auto Counter Reload Sub-Leaf */
++		unsigned int    acr_subleaf:1;
++		/* Events Sub-Leaf */
++		unsigned int    events_subleaf:1;
++		unsigned int	reserved:28;
++	} split;
++	unsigned int            full;
++};
++
++union cpuid35_ebx {
++	struct {
++		/* UnitMask2 Supported */
++		unsigned int    umask2:1;
++		/* EQ-bit Supported */
++		unsigned int    eq:1;
++		unsigned int	reserved:30;
++	} split;
++	unsigned int            full;
++};
++
+ /*
+  * Intel Architectural LBR CPUID detection/enumeration details:
+  */
 
 
 
