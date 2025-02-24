@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83CB0A4242B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4606DA42491
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFBFD44302A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C87EE446816
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6356B2629F;
-	Mon, 24 Feb 2025 14:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9C627701;
+	Mon, 24 Feb 2025 14:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uJ0fSCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6GujHA3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223DA146A6F;
-	Mon, 24 Feb 2025 14:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69661A2393;
+	Mon, 24 Feb 2025 14:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408030; cv=none; b=Ncv5PjXWETTymWNV9pjlIwZnJNcyV82gZgF1uDgZdCN7ZDuyn/T0989SlLF5xRPbcMHiHE0YwgPKR/jcMmCYc9Y2tg2v4AaeuIneHa08+ceoHwgYqbGD6nCWt+ROCPJAfEiz+BN6AaMiivG0XhWpT4Ex6ZhrrRIn2n99Shk1hAI=
+	t=1740408515; cv=none; b=LrA+kI+3i6nntPSmRLl44G0DiD+khTcexc0pyebdlz/OXmtyVGVcoxZPZGg5REhzKIG+vzPvFXzX8REHS6r3WHUYUMNqQAfF2rLjW+UwX9IRCqcp14+S8bfBZz/VX8umkn3itC0YuJAWY2l6QGDnoQvG5L44jtY7J9WkdBtSpqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408030; c=relaxed/simple;
-	bh=oKbYsIjMzdmGeP9g8gITjoLifZ6U10+fGWW2pT8w0nQ=;
+	s=arc-20240116; t=1740408515; c=relaxed/simple;
+	bh=NCE6Uo6+dww/CwtOiRL33XrP7UpE3BIA3O+2GYFhREY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRtFHbr1m4IrKiwx+HIDL4xH5rARXH0LShbnFJim7E45Bh9uhbZWJ4ZF5KHN3sUPpBHQpq9MlHRe3gO5D4ELm/ECTmCOqtXFOIlGrzje26V3VOXzmhe4coe0Pkek7Esan/NmVFyGlU+HKDoVjJLbXA3N3aNCgeCy2pJJbEmpuBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uJ0fSCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF59C4CED6;
-	Mon, 24 Feb 2025 14:40:29 +0000 (UTC)
+	 MIME-Version; b=EBwk0Nr8IljGqbYteZn+r5YMa5tYueziefV1/daalOPyt3RMcMK9X278dcJ/StHvZJnBlfV11ja9W8b+uaDTLCZXGhooR2ks5uiX9hoc1ABhLHlJPATLIcw1zVK+Et2v9fumaahVCvDdSmdYwzufIlrcsHcchskS1oinaVE196E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6GujHA3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB47C4CED6;
+	Mon, 24 Feb 2025 14:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408030;
-	bh=oKbYsIjMzdmGeP9g8gITjoLifZ6U10+fGWW2pT8w0nQ=;
+	s=korg; t=1740408515;
+	bh=NCE6Uo6+dww/CwtOiRL33XrP7UpE3BIA3O+2GYFhREY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uJ0fSCq4YJzhOsCDIdWFxUgJq5Lx2yw3pUF9kGfxyEXq9Cx5TgmLKd3H0i02rcKa
-	 FXnCmMoDY5K8XJOvhkWM0eQAjygO0dvrEGxXYi5FysCcHLbob/YcyFTx4dWg3sjTpD
-	 LG6gQ2Ne7rT7izQF/jdC3nn1VJLkn/m9QpWnJRMI=
+	b=E6GujHA3Q9Qe5hSZVh6bjcfhlqL5+9vuJ4njky/sOTQAhPU2KomiZ8BHBM7n3Wlm2
+	 4rMtpw0JhceimWNW9/CY1jBqPb2WmT3FV4cP6ln0Tf9rnkWU00WpKOXSe2YzKOx+yl
+	 WJc6vnGdNiPWcuWEu+Yh/rL8xvktmXQ+zmBm6v+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Abel Wu <wuyun.abel@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/140] vsock/bpf: Warn on socket without transport
+Subject: [PATCH 6.12 080/154] bpf: Fix deadlock when freeing cgroup storage
 Date: Mon, 24 Feb 2025 15:34:39 +0100
-Message-ID: <20250224142606.154732161@linuxfoundation.org>
+Message-ID: <20250224142610.211889077@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-[ Upstream commit 857ae05549ee2542317e7084ecaa5f8536634dd9 ]
+[ Upstream commit c78f4afbd962f43a3989f45f3ca04300252b19b5 ]
 
-In the spirit of commit 91751e248256 ("vsock: prevent null-ptr-deref in
-vsock_*[has_data|has_space]"), armorize the "impossible" cases with a
-warning.
+The following commit
+bc235cdb423a ("bpf: Prevent deadlock from recursive bpf_task_storage_[get|delete]")
+first introduced deadlock prevention for fentry/fexit programs attaching
+on bpf_task_storage helpers. That commit also employed the logic in map
+free path in its v6 version.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Later bpf_cgrp_storage was first introduced in
+c4bcfb38a95e ("bpf: Implement cgroup storage available to non-cgroup-attached bpf progs")
+which faces the same issue as bpf_task_storage, instead of its busy
+counter, NULL was passed to bpf_local_storage_map_free() which opened
+a window to cause deadlock:
+
+	<TASK>
+		(acquiring local_storage->lock)
+	_raw_spin_lock_irqsave+0x3d/0x50
+	bpf_local_storage_update+0xd1/0x460
+	bpf_cgrp_storage_get+0x109/0x130
+	bpf_prog_a4d4a370ba857314_cgrp_ptr+0x139/0x170
+	? __bpf_prog_enter_recur+0x16/0x80
+	bpf_trampoline_6442485186+0x43/0xa4
+	cgroup_storage_ptr+0x9/0x20
+		(holding local_storage->lock)
+	bpf_selem_unlink_storage_nolock.constprop.0+0x135/0x160
+	bpf_selem_unlink_storage+0x6f/0x110
+	bpf_local_storage_map_free+0xa2/0x110
+	bpf_map_free_deferred+0x5b/0x90
+	process_one_work+0x17c/0x390
+	worker_thread+0x251/0x360
+	kthread+0xd2/0x100
+	ret_from_fork+0x34/0x50
+	ret_from_fork_asm+0x1a/0x30
+	</TASK>
+
+Progs:
+ - A: SEC("fentry/cgroup_storage_ptr")
+   - cgid (BPF_MAP_TYPE_HASH)
+	Record the id of the cgroup the current task belonging
+	to in this hash map, using the address of the cgroup
+	as the map key.
+   - cgrpa (BPF_MAP_TYPE_CGRP_STORAGE)
+	If current task is a kworker, lookup the above hash
+	map using function parameter @owner as the key to get
+	its corresponding cgroup id which is then used to get
+	a trusted pointer to the cgroup through
+	bpf_cgroup_from_id(). This trusted pointer can then
+	be passed to bpf_cgrp_storage_get() to finally trigger
+	the deadlock issue.
+ - B: SEC("tp_btf/sys_enter")
+   - cgrpb (BPF_MAP_TYPE_CGRP_STORAGE)
+	The only purpose of this prog is to fill Prog A's
+	hash map by calling bpf_cgrp_storage_get() for as
+	many userspace tasks as possible.
+
+Steps to reproduce:
+ - Run A;
+ - while (true) { Run B; Destroy B; }
+
+Fix this issue by passing its busy counter to the free procedure so
+it can be properly incremented before storage/smap locking.
+
+Fixes: c4bcfb38a95e ("bpf: Implement cgroup storage available to non-cgroup-attached bpf progs")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20241221061018.37717-1-wuyun.abel@bytedance.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c  | 3 +++
- net/vmw_vsock/vsock_bpf.c | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/bpf_cgrp_storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 618b18e80cea0..622875a6f787c 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1185,6 +1185,9 @@ static int vsock_read_skb(struct sock *sk, skb_read_actor_t read_actor)
- {
- 	struct vsock_sock *vsk = vsock_sk(sk);
+diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
+index 28efd0a3f2200..6547fb7ac0dcb 100644
+--- a/kernel/bpf/bpf_cgrp_storage.c
++++ b/kernel/bpf/bpf_cgrp_storage.c
+@@ -154,7 +154,7 @@ static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
  
-+	if (WARN_ON_ONCE(!vsk->transport))
-+		return -ENODEV;
-+
- 	return vsk->transport->read_skb(vsk, read_actor);
+ static void cgroup_storage_map_free(struct bpf_map *map)
+ {
+-	bpf_local_storage_map_free(map, &cgroup_cache, NULL);
++	bpf_local_storage_map_free(map, &cgroup_cache, &bpf_cgrp_storage_busy);
  }
  
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index f201d9eca1df2..07b96d56f3a57 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -87,7 +87,7 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	lock_sock(sk);
- 	vsk = vsock_sk(sk);
- 
--	if (!vsk->transport) {
-+	if (WARN_ON_ONCE(!vsk->transport)) {
- 		copied = -ENODEV;
- 		goto out;
- 	}
+ /* *gfp_flags* is a hidden argument provided by the verifier */
 -- 
 2.39.5
 
