@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-119081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A8BA42418
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32990A424CE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01ABA1894304
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF0A77AAD7A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D12248898;
-	Mon, 24 Feb 2025 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAF2155744;
+	Mon, 24 Feb 2025 14:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGG25LHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyZ4d16W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC91A38DD8;
-	Mon, 24 Feb 2025 14:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4551459EA;
+	Mon, 24 Feb 2025 14:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408258; cv=none; b=GSIau1gFIOp7A4MsEEmwgoMXdjJZ8LxnJWuMD+9Do4T1Sd4PVjfIL0RzhiMNigVi9+H4g7hpq4iq/fQp3L3VBL7KTEMXVvrzfiMcdXApIftBfVUvvOG8jP63favTh2n7oPtJcUdjZWP5fYykIit66qotITkIl6WVUuOLIQPMaBw=
+	t=1740409136; cv=none; b=taXWBPecGPGzmhOU7EtONDfC0G7LN3V3WZ0CZ1WHXNvgkP0iAWC6Ni/nHnN7MaKwiSFE5AJ3U80xVCc4JNLKYTmAddTGBP7tvO/N1WEfYuQLsA3SkUxpsIDbci150hBE+4Sv3gtxAzF21fy5YF+ZieL+I8iM/DHwFKTGzvEsqew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408258; c=relaxed/simple;
-	bh=9FynCXkbJoTnFZLUArnjGreLXew0Hq/iAfAQG7Z5lzw=;
+	s=arc-20240116; t=1740409136; c=relaxed/simple;
+	bh=L43wwQgJs5TW799l52/WWJEbJTO2S8SZx1cX/h+pBgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4WEURgB0rGdutrkzmFKW5AvHUJg74eAnyMasIiq++VDyZwG1sRPaYt+IrQi0orgR1Dr1PiQFtCxGJAUdnbDmUlkYx1LfcqRb8lSRMEvmH4rXBNepOSo0ms9lCv3C16qWZflRAtXO/iGtco5Bh9BYh7ycjOeFNlSeKcr/yS97YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGG25LHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593FCC4CEE9;
-	Mon, 24 Feb 2025 14:44:17 +0000 (UTC)
+	 MIME-Version; b=khjLWv/ctxIMNVBOSi/RhTt4Sl+Ee75CWKyT9VH4993ejTLsZbnyPnWWX5Ya7ctEWyl0RMLNUfy3ZcJrZbPBMnM7XFasoaBmKvALLHFGU+Rm4cKFIDwD9AvG7PDfxNbeSLF5qUWzbHNvBKWgIiUBRegjXrLU+ng8Uxd7ziHabYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyZ4d16W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB18C4CED6;
+	Mon, 24 Feb 2025 14:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408257;
-	bh=9FynCXkbJoTnFZLUArnjGreLXew0Hq/iAfAQG7Z5lzw=;
+	s=korg; t=1740409136;
+	bh=L43wwQgJs5TW799l52/WWJEbJTO2S8SZx1cX/h+pBgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGG25LHPSN2I6GiEvpxSPvEeQGGm28aABwP77ZqD0FVWRHyn2PmBO2f2FGh7fFkqe
-	 I1ECxVZfkz2KFLRK430Rmzqn593bcP9BGiFhrXLmkAlq7GZSBuHW6sWIgF7gvKXB93
-	 M4v0d+Z+eTl/4i6yI+ex9O3zhmtnlKDXXK06fbuw=
+	b=LyZ4d16W/I/LqptK/I2pf0mOf25WA1x1VT/O1C914duiP++6MhWOlGVx6k2OSNB7u
+	 ObdkFlKeu92S9thk6mGhQLrC1JT1k3hiTqwU4C42DaDxAVYizsn8qn+7BhicFGUJe7
+	 vmNQ6FY2h4j6k3T/pXZFn+hIaa5FAeYgBN/15Kjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 6.6 138/140] nilfs2: eliminate staggered calls to kunmap in nilfs_rename
-Date: Mon, 24 Feb 2025 15:35:37 +0100
-Message-ID: <20250224142608.431744743@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.13 108/138] s390/boot: Fix ESSA detection
+Date: Mon, 24 Feb 2025 15:35:38 +0100
+Message-ID: <20250224142608.725203223@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 8cf57c6df818f58fdad16a909506be213623a88e upstream.
+commit c3a589fd9fcbf295a7402a4b188dc9277d505f4f upstream.
 
-In nilfs_rename(), calls to nilfs_put_page() to release pages obtained
-with nilfs_find_entry() or nilfs_dotdot() are alternated in the normal
-path.
+The cmma_test_essa() inline assembly uses tmp as input and output, however
+tmp is specified as output only, which allows the compiler to optimize the
+initialization of tmp away.
 
-When replacing the kernel memory mapping method from kmap to
-kmap_local_{page,folio}, this violates the constraint on the calling order
-of kunmap_local().
+Therefore the ESSA detection may or may not work depending on previous
+contents of the register that the compiler selected for tmp.
 
-Swap the order of nilfs_put_page calls where the kmap sections of multiple
-pages overlap so that they are nested, allowing direct replacement of
-nilfs_put_page() -> unmap_and_put_page().
+Fix this by using the correct constraint modifier.
 
-Without this reordering, that replacement will cause a kernel WARNING in
-kunmap_local_indexed() on architectures with high memory mapping.
-
-Link: https://lkml.kernel.org/r/20231127143036.2425-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
+Fixes: 468a3bc2b7b9 ("s390/cmma: move parsing of cmma kernel parameter to early boot code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/namei.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/boot/startup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -431,13 +431,14 @@ static int nilfs_rename(struct mnt_idmap
- 	inode_set_ctime_current(old_inode);
- 
- 	nilfs_delete_entry(old_de, old_page);
--	nilfs_put_page(old_page);
- 
- 	if (dir_de) {
- 		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
- 		nilfs_put_page(dir_page);
- 		drop_nlink(old_dir);
- 	}
-+	nilfs_put_page(old_page);
-+
- 	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
- 
+--- a/arch/s390/boot/startup.c
++++ b/arch/s390/boot/startup.c
+@@ -75,7 +75,7 @@ static int cmma_test_essa(void)
+ 		: [reg1] "=&d" (reg1),
+ 		  [reg2] "=&a" (reg2),
+ 		  [rc] "+&d" (rc),
+-		  [tmp] "=&d" (tmp),
++		  [tmp] "+&d" (tmp),
+ 		  "+Q" (get_lowcore()->program_new_psw),
+ 		  "=Q" (old)
+ 		: [psw_old] "a" (&old),
 
 
 
