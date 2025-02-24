@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2EFA4246B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082DAA423DA
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 864CF3AF4BB
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 224DC3ACACC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F051953BD;
-	Mon, 24 Feb 2025 14:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87A92629F;
+	Mon, 24 Feb 2025 14:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8YdRErs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYulucDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925D11624F3;
-	Mon, 24 Feb 2025 14:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEE224EF62;
+	Mon, 24 Feb 2025 14:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408305; cv=none; b=kni2Ol0bVvddUrcEhPUMi901plTw3C4FoI4oGj1XlCRHQoGUOzoR69ZckI/shxVQEhEsacIMg774PeAxPgFNXEfJyDj3ezkbmAM9kS4dquFCSxo7keOcCywXUyal4xdvzGJiVDwFCOjiinLpCXo/BaT82rmdYz6Go5hMlIRjogE=
+	t=1740407823; cv=none; b=BLrvXFJd036/vgDfxlv+qYnq8xTgpxpr212d8KgvEueDASfPEi5jzmbF9MolkiSFYBVkCgTN5wuiN7dpgpBdx9UwByFgEba94NnkrknqUFew44OV8MOu9vqGYAYRMlF23P0YgVCzwKJdzvkUE2rxObNUmdQCT6KZJfuGLfmgTIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408305; c=relaxed/simple;
-	bh=u1qhEhsg2u2qX0pP6bAXsl7PjhgAe1GqCab5iY5ZlRk=;
+	s=arc-20240116; t=1740407823; c=relaxed/simple;
+	bh=2gYAjBp1A+SkMw3qDZYabhadMmRMtiPFmlrEq5bS5fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFImSLRyQihFB3qrAGECmRUdeU4DoxxG3WMx2p3bhDgoxy3vaJUpmIp713q4p/NXTtPTpS9kTDQvyiTnGEVdDAVTTaYvUU/kHAvZCclXMwlxP8rXowV6zpRNs/zuccL1sGkvbS0ZTLdX+17FYPo31+yqUTjTfgisnr4+BSRTbrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8YdRErs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00E9C4CED6;
-	Mon, 24 Feb 2025 14:45:04 +0000 (UTC)
+	 MIME-Version; b=knYV5lkONdS05Sh4L3UHHHor0oWwsMeeoLXuFA1xLRTHwBNgXmkKAIM/ocAr0B3Yr632QVbPluzPgv5rCytpphm6vSd5JwboGsikiPXa0eolSrQRMwVe2TYg1YdOExRWv7rR7WpS48QJOvW1CyTLpxQ9FFR4rtcCAWfU3dvYmL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYulucDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E334C4CEEF;
+	Mon, 24 Feb 2025 14:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408305;
-	bh=u1qhEhsg2u2qX0pP6bAXsl7PjhgAe1GqCab5iY5ZlRk=;
+	s=korg; t=1740407823;
+	bh=2gYAjBp1A+SkMw3qDZYabhadMmRMtiPFmlrEq5bS5fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8YdRErsZr66bFThKNCPL1qgkDl3BTY9CTaO0HPb6kO8mTipmS6OOUzfFD/x65wNR
-	 5pWnH5jc/3VFuAMwvwd12tqo0M20BDrahgeFxf90TPy6TU+tOx13mEN1V9KFDuIYQ2
-	 5OmJLMDLo7QuLY0m5gECnh2INvwzANM6F9TR6qh4=
+	b=CYulucDObM9SC2xfgBpKOg0Bt8uWCMq3H07cM6g5f5dlPv39/6xuv2lKotccVg3Nd
+	 EYt8eVasLvbuNG70u9xwWGf1uN8B4CcWbhqVJ97LyfBK3/vFsi6N/A2e2iB50wWnHi
+	 PdhDiYbsQWdC3OiwrF+A/wU6ZL+zkA5hEaD50nXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/154] drm/xe/oa: Separate batch submission from waiting for completion
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 002/140] xfs: assert a valid limit in xfs_rtfind_forw
 Date: Mon, 24 Feb 2025 15:33:21 +0100
-Message-ID: <20250224142607.160163230@linuxfoundation.org>
+Message-ID: <20250224142603.100295780@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit dddcb19ad4d4bbe943a72a1fb3266c6e8aa8d541 ]
+commit 6d2db12d56a389b3e8efa236976f8dc3a8ae00f0 upstream.
 
-When we introduce xe_syncs, we don't wait for internal OA programming
-batches to complete. That is, xe_syncs are signaled asynchronously. In
-anticipation for this, separate out batch submission from waiting for
-completion of those batches.
+Protect against developers passing stupid limits when refactoring the
+RT code once again.
 
-v2: Change return type of xe_oa_submit_bb to "struct dma_fence *" (Matt B)
-v3: Retain init "int err = 0;" in xe_oa_submit_bb (Jose)
-
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-2-ashutosh.dixit@intel.com
-Stable-dep-of: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c | 57 +++++++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 13 deletions(-)
+ fs/xfs/libxfs/xfs_rtbitmap.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index 6fc00d63b2857..3328529774cb7 100644
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -567,11 +567,10 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
- 	return ret;
- }
+--- a/fs/xfs/libxfs/xfs_rtbitmap.c
++++ b/fs/xfs/libxfs/xfs_rtbitmap.c
+@@ -288,6 +288,8 @@ xfs_rtfind_forw(
+ 	xfs_rtword_t	wdiff;		/* difference from wanted value */
+ 	int		word;		/* word number in the buffer */
  
--static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
-+static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
- {
- 	struct xe_sched_job *job;
- 	struct dma_fence *fence;
--	long timeout;
- 	int err = 0;
- 
- 	/* Kernel configuration is issued on stream->k_exec_q, not stream->exec_q */
-@@ -585,14 +584,9 @@ static int xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
- 	fence = dma_fence_get(&job->drm.s_fence->finished);
- 	xe_sched_job_push(job);
- 
--	timeout = dma_fence_wait_timeout(fence, false, HZ);
--	dma_fence_put(fence);
--	if (timeout < 0)
--		err = timeout;
--	else if (!timeout)
--		err = -ETIME;
-+	return fence;
- exit:
--	return err;
-+	return ERR_PTR(err);
- }
- 
- static void write_cs_mi_lri(struct xe_bb *bb, const struct xe_oa_reg *reg_data, u32 n_regs)
-@@ -656,6 +650,7 @@ static void xe_oa_store_flex(struct xe_oa_stream *stream, struct xe_lrc *lrc,
- static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lrc,
- 				  const struct flex *flex, u32 count)
- {
-+	struct dma_fence *fence;
- 	struct xe_bb *bb;
- 	int err;
- 
-@@ -667,7 +662,16 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
- 
- 	xe_oa_store_flex(stream, lrc, bb, flex, count);
- 
--	err = xe_oa_submit_bb(stream, bb);
-+	fence = xe_oa_submit_bb(stream, bb);
-+	if (IS_ERR(fence)) {
-+		err = PTR_ERR(fence);
-+		goto free_bb;
-+	}
-+	xe_bb_free(bb, fence);
-+	dma_fence_put(fence);
++	ASSERT(start <= limit);
 +
-+	return 0;
-+free_bb:
- 	xe_bb_free(bb, NULL);
- exit:
- 	return err;
-@@ -675,6 +679,7 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
- 
- static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *reg_lri)
- {
-+	struct dma_fence *fence;
- 	struct xe_bb *bb;
- 	int err;
- 
-@@ -686,7 +691,16 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
- 
- 	write_cs_mi_lri(bb, reg_lri, 1);
- 
--	err = xe_oa_submit_bb(stream, bb);
-+	fence = xe_oa_submit_bb(stream, bb);
-+	if (IS_ERR(fence)) {
-+		err = PTR_ERR(fence);
-+		goto free_bb;
-+	}
-+	xe_bb_free(bb, fence);
-+	dma_fence_put(fence);
-+
-+	return 0;
-+free_bb:
- 	xe_bb_free(bb, NULL);
- exit:
- 	return err;
-@@ -914,15 +928,32 @@ static int xe_oa_emit_oa_config(struct xe_oa_stream *stream, struct xe_oa_config
- {
- #define NOA_PROGRAM_ADDITIONAL_DELAY_US 500
- 	struct xe_oa_config_bo *oa_bo;
--	int err, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-+	int err = 0, us = NOA_PROGRAM_ADDITIONAL_DELAY_US;
-+	struct dma_fence *fence;
-+	long timeout;
- 
-+	/* Emit OA configuration batch */
- 	oa_bo = xe_oa_alloc_config_buffer(stream, config);
- 	if (IS_ERR(oa_bo)) {
- 		err = PTR_ERR(oa_bo);
- 		goto exit;
- 	}
- 
--	err = xe_oa_submit_bb(stream, oa_bo->bb);
-+	fence = xe_oa_submit_bb(stream, oa_bo->bb);
-+	if (IS_ERR(fence)) {
-+		err = PTR_ERR(fence);
-+		goto exit;
-+	}
-+
-+	/* Wait till all previous batches have executed */
-+	timeout = dma_fence_wait_timeout(fence, false, 5 * HZ);
-+	dma_fence_put(fence);
-+	if (timeout < 0)
-+		err = timeout;
-+	else if (!timeout)
-+		err = -ETIME;
-+	if (err)
-+		drm_dbg(&stream->oa->xe->drm, "dma_fence_wait_timeout err %d\n", err);
- 
- 	/* Additional empirical delay needed for NOA programming after registers are written */
- 	usleep_range(us, 2 * us);
--- 
-2.39.5
-
+ 	/*
+ 	 * Compute and read in starting bitmap block for starting block.
+ 	 */
 
 
 
