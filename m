@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-119355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC30A42593
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1903A425D9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC763189490F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15A51893AC1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B082146A6F;
-	Mon, 24 Feb 2025 14:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7708784A35;
+	Mon, 24 Feb 2025 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8kH19hf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGR9Jwh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8051B7F4;
-	Mon, 24 Feb 2025 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DC2664C6;
+	Mon, 24 Feb 2025 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409185; cv=none; b=NvOPi5CMx+Dmw5icbNGlIlVZL7KfktB5hPf8GiAzV2b4NBCNjtQxn7TRU69gjTfv4DIm1fG2jU62ylPpU1dmzZ1ozVKCpKy1GTn73LSZdDigtzzzUehOHUYPYMgQ7Iu+WWdpu/FzdTMsqB0tkv0dGRddFuJ5pyEWSs+oTzoMUjw=
+	t=1740409192; cv=none; b=ocvoSf5LbwNNFDvOpOD1ZBhyrUE+rdDIYVrwPxmpaWi7yBIUXvtoTRqY+fk044dJ/OZprXxGOBIki/UzBjFGMDs3iTmR6tcxH8srxwiNWOcFbwrHKNEUkpCE5PelwPsXUfvrbS4eIyqLf7Z9MR9y/tNwsSusRzszQd6qKm6dPuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409185; c=relaxed/simple;
-	bh=wDbZo1pTFT7Kjgj//gdc+4twUbF8zOkIw1gj2RnRoNo=;
+	s=arc-20240116; t=1740409192; c=relaxed/simple;
+	bh=73G7jxY4n94xUPOCOFDqodCvWVUzCH4JqTrjqoPVtL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFFlaWpz+hSOc4QVuQNHz8ub4F8Iwh0A+5DEf2ICnYBRRApat11lGMjOWcoA4k5hlCoU3BcKKQrkcu1WpO/coRz8FG2QaRigy0btpv4URUdjveghfqQXWECuJ5zeyiDQHyk+TGmy26Xqz75MkYY4f0Xf31oE0U/pjHWUsYyg7lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8kH19hf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDC9C4CED6;
-	Mon, 24 Feb 2025 14:59:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cOjS+2algMe1YkZJCY9AZHbZHRytkwdebNzsiu+6p54yrO4ag7ljAir9Vw+Xh5JtOUW3+6RVkTlO0v8HbToJanmRKlY5RfAjQ1hHMcKoVbUQJdqjjqFFtFKyaBxV3YePwpZc7JTBVDBwq2UqWDDZrtyVE6mLtuGPQUXk3khO9mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGR9Jwh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B2AC4CEE8;
+	Mon, 24 Feb 2025 14:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409184;
-	bh=wDbZo1pTFT7Kjgj//gdc+4twUbF8zOkIw1gj2RnRoNo=;
+	s=korg; t=1740409192;
+	bh=73G7jxY4n94xUPOCOFDqodCvWVUzCH4JqTrjqoPVtL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8kH19hftt8jONV9XdAiFpO1OG7wsMqt4H9+LMoUHOWHFm4w50rCrChX7QyJknJou
-	 XTj5+olN5nig+pOfCfjVgsCjmPh9ILzE4RPHi2oZgKVJghhivnISPqUL/uuU/2wvoq
-	 edDeoViQEtJYARaS+jJLWLc0yC2q4hwM3vdcmfVg=
+	b=OGR9Jwh4CBS6P30uNFw44HFhdvQTdAExlhcN583N0Jj9cs58kSaZAqaGenAx3Df5X
+	 OjTnIPPia/Dw93Z2nFFx6/ZEA5J8ny6Dt4oFsFFxVqimuQV0+clPsOAl2XTRL4k2Ks
+	 WgiZgr3eYAow9GlGZ+THnxqD2FXSAJS+KuUEYDMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.13 121/138] acct: block access to kernel internal filesystems
-Date: Mon, 24 Feb 2025 15:35:51 +0100
-Message-ID: <20250224142609.227852387@linuxfoundation.org>
+	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Florent Revest <revest@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 122/138] mm,madvise,hugetlb: check for 0-length range after end address adjustment
+Date: Mon, 24 Feb 2025 15:35:52 +0100
+Message-ID: <20250224142609.265851352@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -60,54 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Ricardo Cañuelo Navarro <rcn@igalia.com>
 
-commit 890ed45bde808c422c3c27d3285fc45affa0f930 upstream.
+commit 2ede647a6fde3e54a6bfda7cf01c716649655900 upstream.
 
-There's no point in allowing anything kernel internal nor procfs or
-sysfs.
+Add a sanity check to madvise_dontneed_free() to address a corner case in
+madvise where a race condition causes the current vma being processed to
+be backed by a different page size.
 
-Link: https://lore.kernel.org/r/20250127091811.3183623-1-quzicheng@huawei.com
-Link: https://lore.kernel.org/r/20250211-work-acct-v1-2-1c16aecab8b3@kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Reported-by: Zicheng Qu <quzicheng@huawei.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+During a madvise(MADV_DONTNEED) call on a memory region registered with a
+userfaultfd, there's a period of time where the process mm lock is
+temporarily released in order to send a UFFD_EVENT_REMOVE and let
+userspace handle the event.  During this time, the vma covering the
+current address range may change due to an explicit mmap done concurrently
+by another thread.
+
+If, after that change, the memory region, which was originally backed by
+4KB pages, is now backed by hugepages, the end address is rounded down to
+a hugepage boundary to avoid data loss (see "Fixes" below).  This rounding
+may cause the end address to be truncated to the same address as the
+start.
+
+Make this corner case follow the same semantics as in other similar cases
+where the requested region has zero length (ie.  return 0).
+
+This will make madvise_walk_vmas() continue to the next vma in the range
+(this time holding the process mm lock) which, due to the prev pointer
+becoming stale because of the vma change, will be the same hugepage-backed
+vma that was just checked before.  The next time madvise_dontneed_free()
+runs for this vma, if the start address isn't aligned to a hugepage
+boundary, it'll return -EINVAL, which is also in line with the madvise
+api.
+
+>From userspace perspective, madvise() will return EINVAL because the start
+address isn't aligned according to the new vma alignment requirements
+(hugepage), even though it was correctly page-aligned when the call was
+issued.
+
+Link: https://lkml.kernel.org/r/20250203075206.1452208-1-rcn@igalia.com
+Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
+Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Florent Revest <revest@google.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/acct.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ mm/madvise.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/kernel/acct.c
-+++ b/kernel/acct.c
-@@ -243,6 +243,20 @@ static int acct_on(struct filename *path
- 		return -EACCES;
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -928,7 +928,16 @@ static long madvise_dontneed_free(struct
+ 			 */
+ 			end = vma->vm_end;
+ 		}
+-		VM_WARN_ON(start >= end);
++		/*
++		 * If the memory region between start and end was
++		 * originally backed by 4kB pages and then remapped to
++		 * be backed by hugepages while mmap_lock was dropped,
++		 * the adjustment for hugetlb vma above may have rounded
++		 * end down to the start address.
++		 */
++		if (start == end)
++			return 0;
++		VM_WARN_ON(start > end);
  	}
  
-+	/* Exclude kernel kernel internal filesystems. */
-+	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
-+		kfree(acct);
-+		filp_close(file, NULL);
-+		return -EINVAL;
-+	}
-+
-+	/* Exclude procfs and sysfs. */
-+	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
-+		kfree(acct);
-+		filp_close(file, NULL);
-+		return -EINVAL;
-+	}
-+
- 	if (!(file->f_mode & FMODE_CAN_WRITE)) {
- 		kfree(acct);
- 		filp_close(file, NULL);
+ 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
 
 
 
