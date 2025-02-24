@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-119162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C7FA42521
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:05:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F5DA4252B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA2C167CD5
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9609319C257B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0442571CB;
-	Mon, 24 Feb 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D110221F31;
+	Mon, 24 Feb 2025 14:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahstDnYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwAa9aBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A670824A3;
-	Mon, 24 Feb 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B179189905;
+	Mon, 24 Feb 2025 14:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408529; cv=none; b=RxpUcIdNJnn54n16TKa67AzXOlwu4kbETd+r9x/uqhA3oAw9+dxAmVHLnoPj2kW2xB7mcunvYyhFprGcc/FCTVnY/PcB7tB4ZeFx86YrXeV0927mVM8EiIEErW3aRNHGByw0dG+yZ7H88SDFtLazT16Yewbr09cb6U+GNgxBsYU=
+	t=1740408973; cv=none; b=CuhCYaJUvBQ5t6atvEPhha8U6iyuq0JtUy0VL3Ggng+rK/gENfFi3VoDlXAOKgV1IZwgmExepndvBQ0cdagFUIDaaWcJauDyjjnAsN09srOInlQPFw05mgAsFHQOwtMeC4tu4JQwBvazmkM3bW+tQHF44HPKnBx34YF8415SPzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408529; c=relaxed/simple;
-	bh=hvLopu9rYW3y5+Ez9k4j3CtxZ0xV4WjgZQ0KCyjXiBs=;
+	s=arc-20240116; t=1740408973; c=relaxed/simple;
+	bh=2Sowp2hk4u/sfZZuLo+c8wm6iACDYx1ZagjysI01OOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqP+ra30btzoAVX5/wOjbgxE9JNc4O5EBrin2zR5mGBzLKcyBfiabTSLCOUOiQVzpaNu8XD+PqniKZFdWHiU+rKy90qRxyrHqfbk3miLi6lammeUNBf3mzEiP9f4cMDIYifluViinFBIXnISnxCnOcvpogAv/ty0p/yxH5ODo0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahstDnYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B1FC4CED6;
-	Mon, 24 Feb 2025 14:48:48 +0000 (UTC)
+	 MIME-Version; b=Mgxcsyt/KnVyzFFnBjVkxE3p9gXgZ6WQ7JgtbOWlAi1igdxOo/L1cNuDNfzZPXI5ZmCjiSwu4k5J2AtXLYv0UBNt9ADVNsOPqhvS95UxLUHq9GCzLVJC0Ck61RogkEZh70p/A8anewqw55YGx+PdZI1IKQq9cpo3co8DtAZ+erg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwAa9aBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8419AC4CEE6;
+	Mon, 24 Feb 2025 14:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408529;
-	bh=hvLopu9rYW3y5+Ez9k4j3CtxZ0xV4WjgZQ0KCyjXiBs=;
+	s=korg; t=1740408972;
+	bh=2Sowp2hk4u/sfZZuLo+c8wm6iACDYx1ZagjysI01OOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahstDnYC1JuqHdF0mnF1mq8ACxnRAhT8QdlSqW0eIH4dFB5VfsWTonYvu5KGVU35E
-	 n/NNoqtFhNJ0JWWKAIcULrMGmVQv/S0mzj+ci3ZSv8NNK4blNq5usJMRgTyXw2SLhq
-	 OIWmmTw0bbVs3RGscu/LNtX27h5m943NhJQcf5q4=
+	b=WwAa9aBAz94YmnmHD2cfUjf+elyc4HEDSNVGb41nLsoSRuovXHJo4sYr+2Ni7MTT+
+	 tmCkdKaH+RpB0bWK7tX/i0Fsf8tXT8VSg8kcdQIRzqH0rv8J2V8+Q67WR60/ZyNcEv
+	 N/2CHWMYmYgeU0Z7oODxq/jm4Hx/+6Q8H3Zzl36M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
+	Ying Gao <ying01.gao@samsung.com>,
+	Junnan Wu <junnan01.wu@samsung.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/154] ibmvnic: Add stat for tx direct vs tx batched
-Date: Mon, 24 Feb 2025 15:34:16 +0100
-Message-ID: <20250224142609.319606832@linuxfoundation.org>
+Subject: [PATCH 6.13 027/138] vsock/virtio: fix variables initialization during resuming
+Date: Mon, 24 Feb 2025 15:34:17 +0100
+Message-ID: <20250224142605.538137507@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Junnan Wu <junnan01.wu@samsung.com>
 
-[ Upstream commit 2ee73c54a615b74d2e7ee6f20844fd3ba63fc485 ]
+[ Upstream commit 55eff109e76a14e5ed10c8c3c3978d20a35e2a4d ]
 
-Allow tracking of packets sent with send_subcrq direct vs
-indirect. `ethtool -S <dev>` will now provide a counter
-of the number of uses of each xmit method. This metric will
-be useful in performance debugging.
+When executing suspend to ram twice in a row,
+the `rx_buf_nr` and `rx_buf_max_nr` increase to three times vq->num_free.
+Then after virtqueue_get_buf and `rx_buf_nr` decreased
+in function virtio_transport_rx_work,
+the condition to fill rx buffer
+(rx_buf_nr < rx_buf_max_nr / 2) will never be met.
 
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241001163531.1803152-1-nnac123@linux.ibm.com
+It is because that `rx_buf_nr` and `rx_buf_max_nr`
+are initialized only in virtio_vsock_probe(),
+but they should be reset whenever virtqueues are recreated,
+like after a suspend/resume.
+
+Move the `rx_buf_nr` and `rx_buf_max_nr` initialization in
+virtio_vsock_vqs_init(), so we are sure that they are properly
+initialized, every time we initialize the virtqueues, either when we
+load the driver or after a suspend/resume.
+
+To prevent erroneous atomic load operations on the `queued_replies`
+in the virtio_transport_send_pkt_work() function
+which may disrupt the scheduling of vsock->rx_work
+when transmitting reply-required socket packets,
+this atomic variable must undergo synchronized initialization
+alongside the preceding two variables after a suspend/resume.
+
+Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+Link: https://lore.kernel.org/virtualization/20250207052033.2222629-1-junnan01.wu@samsung.com/
+Co-developed-by: Ying Gao <ying01.gao@samsung.com>
+Signed-off-by: Ying Gao <ying01.gao@samsung.com>
+Signed-off-by: Junnan Wu <junnan01.wu@samsung.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250214012200.1883896-1-junnan01.wu@samsung.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: bdf5d13aa05e ("ibmvnic: Don't reference skb after sending to VIOS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 23 ++++++++++++++++-------
- drivers/net/ethernet/ibm/ibmvnic.h |  3 ++-
- 2 files changed, 18 insertions(+), 8 deletions(-)
+ net/vmw_vsock/virtio_transport.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 97425c06e1ed7..cca2ed6ad2899 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2310,7 +2310,7 @@ static void ibmvnic_tx_scrq_clean_buffer(struct ibmvnic_adapter *adapter,
- 		tx_buff = &tx_pool->tx_buff[index];
- 		adapter->netdev->stats.tx_packets--;
- 		adapter->netdev->stats.tx_bytes -= tx_buff->skb->len;
--		adapter->tx_stats_buffers[queue_num].packets--;
-+		adapter->tx_stats_buffers[queue_num].batched_packets--;
- 		adapter->tx_stats_buffers[queue_num].bytes -=
- 						tx_buff->skb->len;
- 		dev_kfree_skb_any(tx_buff->skb);
-@@ -2402,7 +2402,8 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	unsigned int tx_map_failed = 0;
- 	union sub_crq indir_arr[16];
- 	unsigned int tx_dropped = 0;
--	unsigned int tx_packets = 0;
-+	unsigned int tx_dpackets = 0;
-+	unsigned int tx_bpackets = 0;
- 	unsigned int tx_bytes = 0;
- 	dma_addr_t data_dma_addr;
- 	struct netdev_queue *txq;
-@@ -2575,6 +2576,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		if (lpar_rc != H_SUCCESS)
- 			goto tx_err;
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index b58c3818f284f..f0e48e6911fc4 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -670,6 +670,13 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	};
+ 	int ret;
  
-+		tx_dpackets++;
- 		goto early_exit;
- 	}
- 
-@@ -2603,6 +2605,8 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 			goto tx_err;
- 	}
- 
-+	tx_bpackets++;
++	mutex_lock(&vsock->rx_lock);
++	vsock->rx_buf_nr = 0;
++	vsock->rx_buf_max_nr = 0;
++	mutex_unlock(&vsock->rx_lock);
 +
- early_exit:
- 	if (atomic_add_return(num_entries, &tx_scrq->used)
- 					>= adapter->req_tx_entries_per_subcrq) {
-@@ -2610,7 +2614,6 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		netif_stop_subqueue(netdev, queue_num);
- 	}
- 
--	tx_packets++;
- 	tx_bytes += skb->len;
- 	txq_trans_cond_update(txq);
- 	ret = NETDEV_TX_OK;
-@@ -2640,10 +2643,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	rcu_read_unlock();
- 	netdev->stats.tx_dropped += tx_dropped;
- 	netdev->stats.tx_bytes += tx_bytes;
--	netdev->stats.tx_packets += tx_packets;
-+	netdev->stats.tx_packets += tx_bpackets + tx_dpackets;
- 	adapter->tx_send_failed += tx_send_failed;
- 	adapter->tx_map_failed += tx_map_failed;
--	adapter->tx_stats_buffers[queue_num].packets += tx_packets;
-+	adapter->tx_stats_buffers[queue_num].batched_packets += tx_bpackets;
-+	adapter->tx_stats_buffers[queue_num].direct_packets += tx_dpackets;
- 	adapter->tx_stats_buffers[queue_num].bytes += tx_bytes;
- 	adapter->tx_stats_buffers[queue_num].dropped_packets += tx_dropped;
- 
-@@ -3808,7 +3812,10 @@ static void ibmvnic_get_strings(struct net_device *dev, u32 stringset, u8 *data)
- 		memcpy(data, ibmvnic_stats[i].name, ETH_GSTRING_LEN);
- 
- 	for (i = 0; i < adapter->req_tx_queues; i++) {
--		snprintf(data, ETH_GSTRING_LEN, "tx%d_packets", i);
-+		snprintf(data, ETH_GSTRING_LEN, "tx%d_batched_packets", i);
-+		data += ETH_GSTRING_LEN;
++	atomic_set(&vsock->queued_replies, 0);
 +
-+		snprintf(data, ETH_GSTRING_LEN, "tx%d_direct_packets", i);
- 		data += ETH_GSTRING_LEN;
+ 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+ 	if (ret < 0)
+ 		return ret;
+@@ -779,9 +786,6 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
  
- 		snprintf(data, ETH_GSTRING_LEN, "tx%d_bytes", i);
-@@ -3873,7 +3880,9 @@ static void ibmvnic_get_ethtool_stats(struct net_device *dev,
- 				      (adapter, ibmvnic_stats[i].offset));
+ 	vsock->vdev = vdev;
  
- 	for (j = 0; j < adapter->req_tx_queues; j++) {
--		data[i] = adapter->tx_stats_buffers[j].packets;
-+		data[i] = adapter->tx_stats_buffers[j].batched_packets;
-+		i++;
-+		data[i] = adapter->tx_stats_buffers[j].direct_packets;
- 		i++;
- 		data[i] = adapter->tx_stats_buffers[j].bytes;
- 		i++;
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 94ac36b1408be..a189038d88df0 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -213,7 +213,8 @@ struct ibmvnic_statistics {
+-	vsock->rx_buf_nr = 0;
+-	vsock->rx_buf_max_nr = 0;
+-	atomic_set(&vsock->queued_replies, 0);
  
- #define NUM_TX_STATS 3
- struct ibmvnic_tx_queue_stats {
--	u64 packets;
-+	u64 batched_packets;
-+	u64 direct_packets;
- 	u64 bytes;
- 	u64 dropped_packets;
- };
+ 	mutex_init(&vsock->tx_lock);
+ 	mutex_init(&vsock->rx_lock);
 -- 
 2.39.5
 
