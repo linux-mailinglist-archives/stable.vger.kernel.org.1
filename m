@@ -1,95 +1,89 @@
-Return-Path: <stable+bounces-118916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0106A41F38
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:37:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B85A41F77
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35223188B723
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:37:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13ECD3A87C9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2D6219316;
-	Mon, 24 Feb 2025 12:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D442C233722;
+	Mon, 24 Feb 2025 12:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hy/n9czl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FCF163;
-	Mon, 24 Feb 2025 12:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EA2233710
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 12:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740400614; cv=none; b=p4abZ6LW2nB3Odo+01zNhM6hGPPizTrfWBYq7xVyUm0TDUvDOMD+DPWYIDGFibT+e5nYubYBRX3ceJbtxacjdr/vbo4RpGLzy/y4i0Vj+7TdoBHp/YtGeGP8QZxs6GsXi1ym1yRPE2d0kwf2myLp0N+Bj0XEacq4tySyI1J0knY=
+	t=1740400708; cv=none; b=RsbBt2vkMqiIIcz8RDJ8DcoDZxMhvqfzPn4J+HGWvy/ECqOVDCFlftBSFLUXIvGKXzRyduUKkoHGiJGvE5rvWwhpz6VFhYIVOUGdGDY8a/0wPZbOPTPmfRlqc0lJBJYFwRpG2GOCG07qJfz7aMbWqVAdJMHjOwHK4YQxZkcRqDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740400614; c=relaxed/simple;
-	bh=aayPYYFGtkFCxVK1CCv/9P5T5XgtfauuUYDmfvGoPOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VrotEqZJuUs7qxDFx6VNhqccTFgzHJKhTFZJG3obpnP8/K/ykwpBg6EyVHQsy/w/6Mv9cxUCzJG1QKzIfhHCPF1Zj7GIYuJKRFYxKwjhaUoaXavD7VwxY0seSqHDxmGbyNsjlxT/cRowe8vGUqL0yb59/t9tAsnvk3oMy28mRCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: OnPQFCs3ToKG4nPJluqLAg==
-X-CSE-MsgGUID: 2VSlAfBiR1K7sCMUbMEpuA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="51789787"
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="51789787"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 04:36:53 -0800
-X-CSE-ConnectionGUID: h8svp6MYS5SyqvuA3sfQ5A==
-X-CSE-MsgGUID: mh/CViJZRr2EN8TjhREqvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="116069609"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 04:36:50 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andy@kernel.org>)
-	id 1tmXhX-0000000Eh7W-1izE;
-	Mon, 24 Feb 2025 14:36:47 +0200
-Date: Mon, 24 Feb 2025 14:36:47 +0200
-From: Andy Shevchenko <andy@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Haoxiang Li <haoxiang_li2024@163.com>, u.kleine-koenig@pengutronix.de,
-	erick.archer@outlook.com, ojeda@kernel.org, w@1wt.eu,
-	poeschel@lemonage.de, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] auxdisplay: hd44780: Fix an API misuse in hd44780.c
-Message-ID: <Z7xn3_x-CTm1H3LK@smile.fi.intel.com>
-References: <20250224101527.2971012-1-haoxiang_li2024@163.com>
- <CAMuHMdUM18v5zyvQ5YZWRhN5Ppn8ks5LGxrjOX1GHy=hC3SD3Q@mail.gmail.com>
+	s=arc-20240116; t=1740400708; c=relaxed/simple;
+	bh=N5mYUEf1Q7ecFXRXQ1Gdi8oXpkHBhoFVpD4B9DAXVZ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AAabb8yYJMAGIjHYgrPkYqVNEzKlOU3CDFhVfEYMcat/OSDTQRKPkI/WFLkL9lmLrOwXp2lRgWdhwswqwlHSwZh+WNykV33ONwviZM0UixIyBFkmH5GeZsPm1pLMRMNuySf/Obw2eFFETtuS4Mqq5XqvxgkrdYEYwrc58zkO53E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hy/n9czl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9F3C4CED6;
+	Mon, 24 Feb 2025 12:38:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740400708;
+	bh=N5mYUEf1Q7ecFXRXQ1Gdi8oXpkHBhoFVpD4B9DAXVZ0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hy/n9czlUkzYTNFsBUL0JK3Glnk3tgbVs1Htmuwe10P64GAkb101fX0Pq/sKU+LpI
+	 u+WHS0H0t1Mz68vHaEy15pIEH8ubqba7f3b6OkFb+QZZW/zs0si9pD+xc5XkZ9cajG
+	 Z00hrs0VSxNtOMDa02mHInZyW7GQUEl1cXZ0nes1+tXRTXmP3OexRjeGx2MNCsXA3s
+	 w0de3d2O1L5XEr78LrD1clbXdjubA/PhzmifQXtjc5RcJTLCTVSIL3wC+N29DqFJQu
+	 TpiON7dw4pUtNp0Z9bexiw1zi0RXMLgXlVu3533lM6e4sm8CseyGmW/q+PSml/Q77l
+	 C84UiM3KwlpgQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	cnsztl@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12.y] arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
+Date: Mon, 24 Feb 2025 07:38:26 -0500
+Message-Id: <20250224071439-4cf6e833ab05c6a7@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250224105422.840097-1-cnsztl@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdUM18v5zyvQ5YZWRhN5Ppn8ks5LGxrjOX1GHy=hC3SD3Q@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 24, 2025 at 01:30:47PM +0100, Geert Uytterhoeven wrote:
-> On Mon, 24 Feb 2025 at 11:16, Haoxiang Li <haoxiang_li2024@163.com> wrote:
-> > Variable allocated by charlcd_alloc() should be released
-> > by charlcd_free(). The following patch changed kfree() to
-> > charlcd_free() to fix an API misuse.
-> >
-> > Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> > ---
-> > Changes in v2:
-> > - Merge the two patches into one.
-> > - Modify the patch description.
-> 
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+[ Sasha's backport helper bot ]
 
-Pushed to my review and testing queue, thanks!
+Hi,
 
--- 
-With Best Regards,
-Andy Shevchenko
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
+ℹ️ Patch is missing in 6.13.y (ignore if backport was sent)
+⚠️ Commit missing in all newer stable branches
+
+Found matching upstream commit: a6a7cba17c544fb95d5a29ab9d9ed4503029cb29
 
 
+Status in newer kernel trees:
+6.13.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  a6a7cba17c544 < -:  ------------- arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
+-:  ------------- > 1:  2d087bdd21e9b arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.12.y       |  Success    |  Success   |
 
