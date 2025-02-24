@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-119251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1471DA42544
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:07:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D12A42575
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC46E1799ED
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93A4716A0AF
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35ECA1A239D;
-	Mon, 24 Feb 2025 14:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75A21459EA;
+	Mon, 24 Feb 2025 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGbhuQdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5eAJTqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B34170A13;
-	Mon, 24 Feb 2025 14:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F4F2571CB;
+	Mon, 24 Feb 2025 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408833; cv=none; b=CscXGwc3eWldVeXbcUZGV3IpqsykTcqLuCrQItDbkQ7fXLoZdfFI1RkH8PrYbCQ6hk0JMVDdDEn6NkNKz+aM8YFeA2hw5XIiE4GqdIcicaMJsA890ACLrkN64QK41kJ2+vAc+eEwqYDio/e2GonpWTMblJc88Nk4Uf54FcS3jbE=
+	t=1740408839; cv=none; b=FC4PLbue3HH8sjY5K9veHguzqPfsbBBmU+xz4nVLps9yePRW6Fk5qUksAJzLDdn5l7GdWA5HFbAz/QjTjrYAVV+A6+qGQi607UG9RUEHaHjuMJKULiewlduBzdJ8AuBv2tFB8tBJfWwyMjneHB60DGAOIJSYUvAXZqp/ZUKLIgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408833; c=relaxed/simple;
-	bh=1xGUlbHWWJy2nYWR58F/r1p05qskOi/hwM4ikPi8ndc=;
+	s=arc-20240116; t=1740408839; c=relaxed/simple;
+	bh=5PR4vcGm9wPSjUOI68j96h0wbfgCnUp5eT7iUBd9sCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utVtzb//EmBoBgdGlsPmjgE+el/h6JeDK6lfIkuZws85Of+KJ3jNc/JbPYGVF0RtxHa8P0GfQnyGxmDGsQ4eLZViolBNy/BrjVmXjKI5UmOGqdY4PwAQnztNa27Qj1+sITtKJQKkUyMMxfImxWHfC32KVj9cPCb/DqRrREwWQok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGbhuQdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB64C4CED6;
-	Mon, 24 Feb 2025 14:53:52 +0000 (UTC)
+	 MIME-Version; b=VUD6zQqy2GSm3wu0ECsuZL3bXVnzD97EXdXEqpMHwAbynJfhuiS/rA7fNR1S04rF+MOo4gMwdvlXJI96D5r1Jp+KqAaDw0hC4Fi4c5Io7u8q0TtV1TxYs4vCaLBipNo0Qv4mfOKArwGeng7bs1mbzaV0g3wg31wGngzVkrsvuR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5eAJTqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3C0C4CED6;
+	Mon, 24 Feb 2025 14:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408832;
-	bh=1xGUlbHWWJy2nYWR58F/r1p05qskOi/hwM4ikPi8ndc=;
+	s=korg; t=1740408839;
+	bh=5PR4vcGm9wPSjUOI68j96h0wbfgCnUp5eT7iUBd9sCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UGbhuQdhnHhPC6RT/4nNx18/PYkvSHl4FYZGXzBrGc1/mHpWmip8AZlki87+2vypp
-	 mpvkuCKck39sR0YD5H9ZrnzyTuuB05RaXuhvcYMJ/E5rCPG58wQ/7QhSs9Cl0Dgsrr
-	 cv5aRDoeZh8xGb0wMYh+Gj/hbuem9HdPCEPNvVzw=
+	b=n5eAJTqGbLcVfAGRDgp4eJsEJ4A64JCstx7qTyrHOIpwtEreeFGHE3ZlfeoflNEMt
+	 Pe4EI/7xlklW6UotIHZxVg7KPct+I0yufJItBgIN40H78Le2I+8c+8EU7lE3Jo1Vgk
+	 DUl1aeL/uDBLekV/h+Vf8uKJ2+qIdMf+Ushn6a6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jill Donahue <jilliandonahue58@gmail.com>,
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 019/138] USB: gadget: f_midi: f_midi_complete to call queue_work
-Date: Mon, 24 Feb 2025 15:34:09 +0100
-Message-ID: <20250224142605.221150474@linuxfoundation.org>
+Subject: [PATCH 6.13 020/138] ASoC: rockchip: i2s-tdm: fix shift config for SND_SOC_DAIFMT_DSP_[AB]
+Date: Mon, 24 Feb 2025 15:34:10 +0100
+Message-ID: <20250224142605.260326683@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -66,40 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jill Donahue <jilliandonahue58@gmail.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit 4ab37fcb42832cdd3e9d5e50653285ca84d6686f ]
+[ Upstream commit 6b24e67b4056ba83b1e95e005b7e50fdb1cc6cf4 ]
 
-When using USB MIDI, a lock is attempted to be acquired twice through a
-re-entrant call to f_midi_transmit, causing a deadlock.
+Commit 2f45a4e289779 ("ASoC: rockchip: i2s_tdm: Fixup config for
+SND_SOC_DAIFMT_DSP_A/B") applied a partial change to fix the
+configuration for DSP A and DSP B formats.
 
-Fix it by using queue_work() to schedule the inner f_midi_transmit() via
-a high priority work queue from the completion handler.
+The shift control also needs updating to set the correct offset for
+frame data compared to LRCK.  Set the correct values.
 
-Link: https://lore.kernel.org/all/CAArt=LjxU0fUZOj06X+5tkeGT+6RbXzpWg1h4t4Fwa_KGVAX6g@mail.gmail.com/
-Fixes: d5daf49b58661 ("USB: gadget: midi: add midi function driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jill Donahue <jilliandonahue58@gmail.com>
-Link: https://lore.kernel.org/r/20250211174805.1369265-1-jdonahue@fender.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 081068fd64140 ("ASoC: rockchip: add support for i2s-tdm controller")
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://patch.msgid.link/20250204161311.2117240-1-jkeeping@inmusicbrands.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/rockchip/rockchip_i2s_tdm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-index 47260d65066a8..da82598fcef8a 100644
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -283,7 +283,7 @@ f_midi_complete(struct usb_ep *ep, struct usb_request *req)
- 			/* Our transmit completed. See if there's more to go.
- 			 * f_midi_transmit eats req, don't queue it again. */
- 			req->length = 0;
--			f_midi_transmit(midi);
-+			queue_work(system_highpri_wq, &midi->work);
- 			return;
- 		}
- 		break;
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index acd75e48851fc..7feefeb6b876d 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -451,11 +451,11 @@ static int rockchip_i2s_tdm_set_fmt(struct snd_soc_dai *cpu_dai,
+ 			break;
+ 		case SND_SOC_DAIFMT_DSP_A:
+ 			val = I2S_TXCR_TFS_TDM_PCM;
+-			tdm_val = TDM_SHIFT_CTRL(0);
++			tdm_val = TDM_SHIFT_CTRL(2);
+ 			break;
+ 		case SND_SOC_DAIFMT_DSP_B:
+ 			val = I2S_TXCR_TFS_TDM_PCM;
+-			tdm_val = TDM_SHIFT_CTRL(2);
++			tdm_val = TDM_SHIFT_CTRL(4);
+ 			break;
+ 		default:
+ 			ret = -EINVAL;
 -- 
 2.39.5
 
