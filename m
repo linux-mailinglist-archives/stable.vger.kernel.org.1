@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-119334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668DAA424C6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508FAA423F7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D27B7A9A94
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C430189899E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1694D17C21C;
-	Mon, 24 Feb 2025 14:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC01221F20;
+	Mon, 24 Feb 2025 14:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1Zum6wf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aSoAxfQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C633D2837B;
-	Mon, 24 Feb 2025 14:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB27F2629F;
+	Mon, 24 Feb 2025 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409112; cv=none; b=dnVcGkKqjINzKpAv/RRXECAK9Y4jRsHtmtXt7U8zHhE75HJ8KUbUp5iDGCzQki8u3GQYbIHj69Rz3USWjuvzUBZ/gsdlKPs9tafqX3/KNQqYV1UCGj4aV+YQQsBtogqFzSNwpe6SRziAPOw3uVUEF0oSVD0uAUIO4pBGc+O8/h0=
+	t=1740408187; cv=none; b=slHXYFax2ilHdafyQGYBt3HBMwP18DWiVJDDOqtVjVFZFvx35uaC2G0tZJXRrZiBax9zjsv45F09nxyZqALWwgvQ17J6K8jrBDRN16nx1Q9c3DlChwTyPuJvPeh+sVmP6+w2DO+pUnJZO/nukDBCGOJeunlrzo5Rrp7qb7rfoQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409112; c=relaxed/simple;
-	bh=I5NVwoPFI9v2c2V8l9IJ9zeXhztuUY99nyVcf/RqPCY=;
+	s=arc-20240116; t=1740408187; c=relaxed/simple;
+	bh=+M5YfdWEhXlsurBmpzciMDYSOMRfCi6+dtbrpybF62g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1p0yXCkFaSAaixliVV38RuHpcdaCKLsA0eM8ZiTJq8wQQNw3/MoD6SCAUIvLdnvVq1NrsSO0aSPAV53JaQuUnwlZh6MqbBznvsaMF/UIAnqFU7sgoFYAPyTilNBq/KYgsGj/mrxReIbI8gga850JhREo8cIex/Jzuhq3k/gTic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1Zum6wf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3913EC4CED6;
-	Mon, 24 Feb 2025 14:58:32 +0000 (UTC)
+	 MIME-Version; b=bD8h03eROx1MDR4JwW4OqyWGISHMK0YHYZT3PHfYaoWpOdkbjvXPl4Zs1veY5mkd+RsBk4OJVRaklgwdctQ+xyFeDkDaxL0RSCAIg4Ok6nJQABCBGu+eibJMvzAzD5czSPakHPr/RP4t+6qQjrNRLpuIEexqj3L9nbKls1Y7CBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aSoAxfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2E4C4CEF0;
+	Mon, 24 Feb 2025 14:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409112;
-	bh=I5NVwoPFI9v2c2V8l9IJ9zeXhztuUY99nyVcf/RqPCY=;
+	s=korg; t=1740408187;
+	bh=+M5YfdWEhXlsurBmpzciMDYSOMRfCi6+dtbrpybF62g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1Zum6wf+u6Nn+C0uHPLtPsoQxi0LZaheiDeBQ5fBO3vHe8ro8wpISPohWbTFJ9Nw
-	 XuwWGsdgzG20G9aiL1oKqrhdFT6zICd/Yn8wXJne/VT1akHc7roI3a/Tldu0yieu8x
-	 tYDksl5jkflNwITxA9sNebO23fQ65JpHLf2jXcXM=
+	b=1aSoAxfQhkvhSewJdwI9SX67BAwYG9Y7Z+dE7ep1Xt9KFWNDZQqNrFH2mBW7Yfvn9
+	 zW/QxpD2RT/edEkIIBenJsc9/n6rlNfBzhfKKKle22ILQpcdm4E6jmZ1QVySNRJOIm
+	 OWvURVbTX9csHnQ6wZuAjdGy1nxZlljyIjhoo1vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Maciej Patelczyk <maciej.patelczyk@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 093/138] drm/i915/gt: Use spin_lock_irqsave() in interruptible context
-Date: Mon, 24 Feb 2025 15:35:23 +0100
-Message-ID: <20250224142608.134924232@linuxfoundation.org>
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 125/140] mtd: rawnand: cadence: fix error code in cadence_nand_init()
+Date: Mon, 24 Feb 2025 15:35:24 +0100
+Message-ID: <20250224142607.921139132@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Karas <krzysztof.karas@intel.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-commit e49477f7f78598295551d486ecc7f020d796432e upstream.
+commit 2b9df00cded911e2ca2cfae5c45082166b24f8aa upstream.
 
-spin_lock/unlock() functions used in interrupt contexts could
-result in a deadlock, as seen in GitLab issue #13399,
-which occurs when interrupt comes in while holding a lock.
+Replace dma_request_channel() with dma_request_chan_by_mask() and use
+helper functions to return proper error code instead of fixed -EBUSY.
 
-Try to remedy the problem by saving irq state before spin lock
-acquisition.
-
-v2: add irqs' state save/restore calls to all locks/unlocks in
- signal_irq_work() execution (Maciej)
-
-v3: use with spin_lock_irqsave() in guc_lrc_desc_unpin() instead
- of other lock/unlock calls and add Fixes and Cc tags (Tvrtko);
- change title and commit message
-
-Fixes: 2f2cc53b5fe7 ("drm/i915/guc: Close deregister-context race against CT-loss")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13399
-Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: <stable@vger.kernel.org> # v6.9+
-Reviewed-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/pusppq5ybyszau2oocboj3mtj5x574gwij323jlclm5zxvimmu@mnfg6odxbpsv
-(cherry picked from commit c088387ddd6482b40f21ccf23db1125e8fa4af7e)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -3425,10 +3425,10 @@ static inline int guc_lrc_desc_unpin(str
- 	 */
- 	ret = deregister_context(ce, ce->guc_id.id);
- 	if (ret) {
--		spin_lock(&ce->guc_state.lock);
-+		spin_lock_irqsave(&ce->guc_state.lock, flags);
- 		set_context_registered(ce);
- 		clr_context_destroyed(ce);
--		spin_unlock(&ce->guc_state.lock);
-+		spin_unlock_irqrestore(&ce->guc_state.lock, flags);
- 		/*
- 		 * As gt-pm is awake at function entry, intel_wakeref_put_async merely decrements
- 		 * the wakeref immediately but per function spec usage call this after unlock.
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2909,11 +2909,10 @@ static int cadence_nand_init(struct cdns
+ 	dma_cap_set(DMA_MEMCPY, mask);
+ 
+ 	if (cdns_ctrl->caps1->has_dma) {
+-		cdns_ctrl->dmac = dma_request_channel(mask, NULL, NULL);
+-		if (!cdns_ctrl->dmac) {
+-			dev_err(cdns_ctrl->dev,
+-				"Unable to get a DMA channel\n");
+-			ret = -EBUSY;
++		cdns_ctrl->dmac = dma_request_chan_by_mask(&mask);
++		if (IS_ERR(cdns_ctrl->dmac)) {
++			ret = dev_err_probe(cdns_ctrl->dev, PTR_ERR(cdns_ctrl->dmac),
++					    "%d: Failed to get a DMA channel\n", ret);
+ 			goto disable_irq;
+ 		}
+ 	}
 
 
 
