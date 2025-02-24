@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-119285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17FFA42553
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E91E5A42569
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8D819E1604
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D7919E1635
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12F7189F57;
-	Mon, 24 Feb 2025 14:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277E71917F1;
+	Mon, 24 Feb 2025 14:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBJHa092"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHyfxoMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F24B146A63;
-	Mon, 24 Feb 2025 14:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77AB14012;
+	Mon, 24 Feb 2025 14:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408947; cv=none; b=gwQvmWR+hH3+PF0lnn9I3BQbAoyp07Sk3VsyEzqX1yo6a4nh2ZK1G0iyqFH8j/AMwDZH0jBq2g2uygvj3uI3YqGyIpv94b1IJU7WF+qbq8aEpRKpjc5qCbPY1j97oK/wtT4YDkilqc6IzKENF+AwUi7VB+Y2Nf9eRTrva5rDN1U=
+	t=1740408953; cv=none; b=g5sGSq/BQJjju32qH637u8zjvJCqgCvgSl1brOcST/AXghCxTl6Fhwdg+SBiR3gmvgc/KgQpXaN7Wgtd/AVGxhS1akhvLRXa4i5fSfEG8I3ayyYqsoER3R1LlF8opyGyFfAREAW0GE+XOq5yT0pBV75SZQrJFWQDmUxXIabS5GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408947; c=relaxed/simple;
-	bh=XTJaoq5eI0ui+whTVzO+zWKA9LU/Q6eslEB6P5GExUc=;
+	s=arc-20240116; t=1740408953; c=relaxed/simple;
+	bh=ZAoxeKaNrWrbYvHpiVwzKVQKTVnsf96Ed+JFv0KJFcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itNjRlJZkeq60AXvEzXPVbce/1iwVzTIeKk7HWCXFbdHcO9sdMWd3FIbLxqpOgE78df71nEp3b1ueUVWEIZ+RE9Z/FZchK+rLN5MhZDALBphw5faExJsc0RopUxY29YNtbIoWGqgBjJYcBxz4BAFl74AFHhIEV45zjvPkl157O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBJHa092; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDF1C4CEE6;
-	Mon, 24 Feb 2025 14:55:45 +0000 (UTC)
+	 MIME-Version; b=ZaosOtFKn+QBj+8rCwdvxDC1O3XSybNntRf1H7qFmqFbrenyUCUimrtTShd80mBP4Z/JH68B7KWEdDae4sUQna3jJYMfGMCcIB/lhLWsHpwJVdSJOwyEMdeqcUKhXIdK39wju4dH5dtnNJa6l4PRzuSqQqh7o0ZLRLIkEfNH2tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHyfxoMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46734C4CED6;
+	Mon, 24 Feb 2025 14:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408947;
-	bh=XTJaoq5eI0ui+whTVzO+zWKA9LU/Q6eslEB6P5GExUc=;
+	s=korg; t=1740408953;
+	bh=ZAoxeKaNrWrbYvHpiVwzKVQKTVnsf96Ed+JFv0KJFcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBJHa0924uFaz974tTa8Y2vVMs2bs7SMYtSLct1Ght6daEwSgg2mFN9o20uaMFj77
-	 fqMKKdMMeBRilc8PGvwrfUI/sVhmtjkbDnLaD+sD20DZAIRJeGo73BWkcxhDw1xQ6L
-	 SDVwu7gfC8eN9TIcIbZ5GOVdvXD0hlIZaHLNAzoY=
+	b=bHyfxoMkF1Js403MYjbqEwIHIFCicO81GcFRC6NbkcJFLe+eSq0M7TN9zUD1OBmRc
+	 bBvUaHS13MajmAKGmhPcZrfrUGGCZCo95F1/GEx2FkjoKlLtOuR2Yptni6LMsyEcVg
+	 K3utjEy2W9sosqYUog8Yne6zO1NGhLxYTrXRkwDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.13 051/138] rust: cleanup unnecessary casts
-Date: Mon, 24 Feb 2025 15:34:41 +0100
-Message-ID: <20250224142606.485245521@linuxfoundation.org>
+	syzkaller <syzkaller@googlegroups.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 052/138] bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type()
+Date: Mon, 24 Feb 2025 15:34:42 +0100
+Message-ID: <20250224142606.524625269@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -66,77 +71,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gary Guo <gary@garyguo.net>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 9b98be76855f14bd5180b59c1ac646b5add98f33 upstream.
+[ Upstream commit 6b3d638ca897e099fa99bd6d02189d3176f80a47 ]
 
-With `long` mapped to `isize`, `size_t`/`__kernel_size_t` mapped to
-`usize` and `char` mapped to `u8`, many of the existing casts are no
-longer necessary.
+KMSAN reported a use-after-free issue in eth_skb_pkt_type()[1]. The
+cause of the issue was that eth_skb_pkt_type() accessed skb's data
+that didn't contain an Ethernet header. This occurs when
+bpf_prog_test_run_xdp() passes an invalid value as the user_data
+argument to bpf_test_init().
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240913213041.395655-6-gary@garyguo.net
-[ Moved `uaccess` changes to the previous commit, since they were
-  irrefutable patterns that Rust >= 1.82.0 warns about. Removed a
-  couple casts that now use `c""` literals. Rebased on top of
-  `rust-next`. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by returning an error when user_data is less than ETH_HLEN in
+bpf_test_init(). Additionally, remove the check for "if (user_size >
+size)" as it is unnecessary.
+
+[1]
+BUG: KMSAN: use-after-free in eth_skb_pkt_type include/linux/etherdevice.h:627 [inline]
+BUG: KMSAN: use-after-free in eth_type_trans+0x4ee/0x980 net/ethernet/eth.c:165
+ eth_skb_pkt_type include/linux/etherdevice.h:627 [inline]
+ eth_type_trans+0x4ee/0x980 net/ethernet/eth.c:165
+ __xdp_build_skb_from_frame+0x5a8/0xa50 net/core/xdp.c:635
+ xdp_recv_frames net/bpf/test_run.c:272 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2954/0x3330 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0x148e/0x1b10 net/bpf/test_run.c:1318
+ bpf_prog_test_run+0x5b7/0xa30 kernel/bpf/syscall.c:4371
+ __sys_bpf+0x6a6/0xe20 kernel/bpf/syscall.c:5777
+ __do_sys_bpf kernel/bpf/syscall.c:5866 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5864 [inline]
+ __x64_sys_bpf+0xa4/0xf0 kernel/bpf/syscall.c:5864
+ x64_sys_call+0x2ea0/0x3d90 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1d0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+ free_pages_prepare mm/page_alloc.c:1056 [inline]
+ free_unref_page+0x156/0x1320 mm/page_alloc.c:2657
+ __free_pages+0xa3/0x1b0 mm/page_alloc.c:4838
+ bpf_ringbuf_free kernel/bpf/ringbuf.c:226 [inline]
+ ringbuf_map_free+0xff/0x1e0 kernel/bpf/ringbuf.c:235
+ bpf_map_free kernel/bpf/syscall.c:838 [inline]
+ bpf_map_free_deferred+0x17c/0x310 kernel/bpf/syscall.c:862
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa2b/0x1b60 kernel/workqueue.c:3310
+ worker_thread+0xedf/0x1550 kernel/workqueue.c:3391
+ kthread+0x535/0x6b0 kernel/kthread.c:389
+ ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+CPU: 1 UID: 0 PID: 17276 Comm: syz.1.16450 Not tainted 6.12.0-05490-g9bb88c659673 #8
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+
+Fixes: be3d72a2896c ("bpf: move user_size out of bpf_test_init")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/20250121150643.671650-1-syoshida@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/print.rs |    4 ++--
- rust/kernel/str.rs   |    6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/bpf/test_run.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -107,7 +107,7 @@ pub unsafe fn call_printk(
-     // SAFETY: TODO.
-     unsafe {
-         bindings::_printk(
--            format_string.as_ptr() as _,
-+            format_string.as_ptr(),
-             module_name.as_ptr(),
-             &args as *const _ as *const c_void,
-         );
-@@ -128,7 +128,7 @@ pub fn call_printk_cont(args: fmt::Argum
-     #[cfg(CONFIG_PRINTK)]
-     unsafe {
-         bindings::_printk(
--            format_strings::CONT.as_ptr() as _,
-+            format_strings::CONT.as_ptr(),
-             &args as *const _ as *const c_void,
-         );
-     }
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -189,7 +189,7 @@ impl CStr {
-         // to a `NUL`-terminated C string.
-         let len = unsafe { bindings::strlen(ptr) } + 1;
-         // SAFETY: Lifetime guaranteed by the safety precondition.
--        let bytes = unsafe { core::slice::from_raw_parts(ptr as _, len as _) };
-+        let bytes = unsafe { core::slice::from_raw_parts(ptr as _, len) };
-         // SAFETY: As `len` is returned by `strlen`, `bytes` does not contain interior `NUL`.
-         // As we have added 1 to `len`, the last byte is known to be `NUL`.
-         unsafe { Self::from_bytes_with_nul_unchecked(bytes) }
-@@ -248,7 +248,7 @@ impl CStr {
-     /// Returns a C pointer to the string.
-     #[inline]
-     pub const fn as_char_ptr(&self) -> *const crate::ffi::c_char {
--        self.0.as_ptr() as _
-+        self.0.as_ptr()
-     }
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 501ec4249fedc..8612023bec60d 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -660,12 +660,9 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
+ 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
+ 	void *data;
  
-     /// Convert the string to a byte slice without the trailing `NUL` byte.
-@@ -838,7 +838,7 @@ impl CString {
-         // SAFETY: The buffer is valid for read because `f.bytes_written()` is bounded by `size`
-         // (which the minimum buffer size) and is non-zero (we wrote at least the `NUL` terminator)
-         // so `f.bytes_written() - 1` doesn't underflow.
--        let ptr = unsafe { bindings::memchr(buf.as_ptr().cast(), 0, (f.bytes_written() - 1) as _) };
-+        let ptr = unsafe { bindings::memchr(buf.as_ptr().cast(), 0, f.bytes_written() - 1) };
-         if !ptr.is_null() {
-             return Err(EINVAL);
-         }
+-	if (size < ETH_HLEN || size > PAGE_SIZE - headroom - tailroom)
++	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	if (user_size > size)
+-		return ERR_PTR(-EMSGSIZE);
+-
+ 	size = SKB_DATA_ALIGN(size);
+ 	data = kzalloc(size + headroom + tailroom, GFP_USER);
+ 	if (!data)
+-- 
+2.39.5
+
 
 
 
