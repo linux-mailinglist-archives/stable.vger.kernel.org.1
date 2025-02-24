@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-119376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23235A425E2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:15:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2F9A425F6
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7E13B8B8E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BF0318919DF
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B756118BC26;
-	Mon, 24 Feb 2025 15:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2165189919;
+	Mon, 24 Feb 2025 15:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRaFGAvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG9v2zy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7450C2747B;
-	Mon, 24 Feb 2025 15:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCC3190685;
+	Mon, 24 Feb 2025 15:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409256; cv=none; b=jKBudKVKQDYgVW2+ZWhxitdoxdfeLFfCcQB4NCqD6ttD9MB7jh04I9dFQ9DxIVCyyX0BtyFMc9/UtKh1AWJJZYbEPHf2iA7PZXy3L4eUrMeP1s52zfmWK55N5Fe+B7wtEEKCSnPEPlQSmpvvITJTikoqOueBXLZOkMV6x+9AQVQ=
+	t=1740409262; cv=none; b=f6JJBeQES+8My4lza9yMh8GI3Vd4azru/2nLO0fMsgi0qIz/fbd7oONsBVN1/9Dr//E1Y4M6FfzgOtCcmbeMEOp+LrxuZXesJyxwPtzV0Zt2eyOC+f5ouWh+xFDsekEKZ12IogHV+UcuXLf2bCDCousEdncj8oaJ9gC1Kl+as/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409256; c=relaxed/simple;
-	bh=cCG/2J39BZcCU8OJY2Niby1Gn3CcI1ECWvAuVvcV0ps=;
+	s=arc-20240116; t=1740409262; c=relaxed/simple;
+	bh=VLslfXI9EoIyNTyedvOxz9Jedd/1mWbQlWO/M6ErYaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipaDe1QwwcjmbzHZVA3Al7EmHDU4/8X3uJYqFYpAv96iNxr+Pwz3tc4mN/syK2tuqNx4Yzjd3UszRX56OsDMzdrAsC5MXEt3jOeajX7lHDP0oFmcVXRpY0VUeg7FQLzrRwzY19vpquIMsNOCuJzDk37ARwIPMGOM8AxvxTt5pb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRaFGAvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42875C4CED6;
-	Mon, 24 Feb 2025 15:00:55 +0000 (UTC)
+	 MIME-Version; b=mwwh9FHvoUoBMDrOynRzE+HcvBh112TPZvHqJTB+gfZcgVEaXvQXkcHuW8tgt4ae4F4R9Fp8MDC0qvwfjRE22ElZfZeyoojDiJMyjN1adv1cpMlExX28AzHzLxbrW+Ca32hvITAfEUR3pW8Njjj88YRbGQE/baeysdWfaoq5i/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG9v2zy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B7AC4CED6;
+	Mon, 24 Feb 2025 15:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409255;
-	bh=cCG/2J39BZcCU8OJY2Niby1Gn3CcI1ECWvAuVvcV0ps=;
+	s=korg; t=1740409262;
+	bh=VLslfXI9EoIyNTyedvOxz9Jedd/1mWbQlWO/M6ErYaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRaFGAvQOyHJOR9LrQVwRQWQgCG0yMpfa0Rahf8w71zjziFyJoNxSV/w8FT0CrUp+
-	 fqYMiz/NoaTKUB03nrt/rb/FMNJxfuugs0HDWCbZxsiGHuCtD7g0G1iWJ9cWc6lA32
-	 xwVQVnc+Y1FA7zONgj9Roz2seQ0zmBaJ881y1iGY=
+	b=QG9v2zy4j4rl5B80q2NQiSgxFjWwdjn7VSwpmsN4ugDdC/rlEv0vU+bvXSkJOpY+0
+	 NttA8P5s2hK7x48NxMGcGhPCQB2vQr8RU7Rgs+8VZMPJRgIW+8VS1e5GlN7ZVcmfOl
+	 iXhRRmRvtw3cAIU02lNda9fsbt2sBATtj7CR48vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 132/138] ftrace: Fix accounting of adding subops to a manager ops
-Date: Mon, 24 Feb 2025 15:36:02 +0100
-Message-ID: <20250224142609.657156585@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	NoisyCoil <noisycoil@disroot.org>
+Subject: [PATCH 6.13 134/138] drm: select DRM_KMS_HELPER from DRM_GEM_SHMEM_HELPER
+Date: Mon, 24 Feb 2025 15:36:04 +0100
+Message-ID: <20250224142609.737297253@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -72,145 +67,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 38b14061947fa546491656e3f5e388d4fedf8dba upstream.
+commit c40ca9ef7c5c9bbb0d2f7774c87417cc4f1713bf upstream.
 
-Function graph uses a subops and manager ops mechanism to attach to
-ftrace.  The manager ops connects to ftrace and the functions it connects
-to is defined by a list of subops that it manages.
+In the combination of DRM_KMS_HELPER=m, DRM_GEM_SHMEM_HELPER=y, DRM_FBDEV_EMULATION=y,
+The shmem code fails to link against the KMS helpers:
 
-The function hash that defines what the above ops attaches to limits the
-functions to attach if the hash has any content. If the hash is empty, it
-means to trace all functions.
+x86_64-linux-ld: vmlinux.o: in function `drm_fbdev_shmem_driver_fbdev_probe':
+(.text+0xeec601): undefined reference to `drm_fb_helper_alloc_info'
+x86_64-linux-ld: (.text+0xeec633): undefined reference to `drm_fb_helper_fill_info'
+x86_64-linux-ld: vmlinux.o: in function `drm_fbdev_shmem_get_page':
+drm_fbdev_shmem.c:(.text+0xeec7d2): undefined reference to `drm_gem_fb_get_obj'
+x86_64-linux-ld: vmlinux.o: in function `drm_fbdev_shmem_fb_mmap':
+drm_fbdev_shmem.c:(.text+0xeec9f6): undefined reference to `drm_gem_fb_get_obj'
+x86_64-linux-ld: vmlinux.o: in function `drm_fbdev_shmem_defio_imageblit':
+(.rodata+0x5b2288): undefined reference to `drm_fb_helper_check_var'
+x86_64-linux-ld: (.rodata+0x5b2290): undefined reference to `drm_fb_helper_set_par'
 
-The creation of the manager ops hash is done by iterating over all the
-subops hashes. If any of the subops hashes is empty, it means that the
-manager ops hash must trace all functions as well.
+This can happen for a number of device drivers that select DRM_GEM_SHMEM_HELPER
+without also selecting DRM_KMS_HELPER. To work around this, add another select
+that forces DRM_KMS_HELPER to be built-in rather than a loadable module, but
+only if FBDEV emulation is also enabled. DRM_TTM_HELPER and DRM_GEM_DMA_HELPER
+look like they have the same problem in theory even if there is no possible
+configuration that shows it. For consistency, do the same change to those.
 
-The issue is in the creation of the manager ops. When a second subops is
-attached, a new hash is created by starting it as NULL and adding the
-subops one at a time. But the NULL ops is mistaken as an empty hash, and
-once an empty hash is found, it stops the loop of subops and just enables
-all functions.
-
-  # echo "f:myevent1 kernel_clone" >> /sys/kernel/tracing/dynamic_events
-  # cat /sys/kernel/tracing/enabled_functions
-kernel_clone (1)           	tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-
-  # echo "f:myevent2 schedule_timeout" >> /sys/kernel/tracing/dynamic_events
-  # cat /sys/kernel/tracing/enabled_functions
-trace_initcall_start_cb (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-run_init_process (1)            tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-try_to_run_init_process (1)             tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-x86_pmu_show_pmu_cap (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-cleanup_rapl_pmus (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-uncore_free_pcibus_map (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-uncore_types_exit (1)                   tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-uncore_pci_exit.part.0 (1)              tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-kvm_shutdown (1)                tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-vmx_dump_msrs (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-vmx_cleanup_l1d_flush (1)               tramp: 0xffffffffc0309000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60
-[..]
-
-Fix this by initializing the new hash to NULL and if the hash is NULL do
-not treat it as an empty hash but instead allocate by copying the content
-of the first sub ops. Then on subsequent iterations, the new hash will not
-be NULL, but the content of the previous subops. If that first subops
-attached to all functions, then new hash may assume that the manager ops
-also needs to attach to all functions.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250220202055.060300046@goodmis.org
-Fixes: 5fccc7552ccbc ("ftrace: Add subops logic to allow one ops to manage many")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/all/20250121-greedy-flounder-of-abundance-4d2ee8-mkl@pengutronix.de
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Tested-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250122090211.3161186-1-arnd@kernel.org
+Cc: NoisyCoil <noisycoil@disroot.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/Kconfig |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3238,15 +3238,22 @@ static struct ftrace_hash *copy_hash(str
-  *  The filter_hash updates uses just the append_hash() function
-  *  and the notrace_hash does not.
-  */
--static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash)
-+static int append_hash(struct ftrace_hash **hash, struct ftrace_hash *new_hash,
-+		       int size_bits)
- {
- 	struct ftrace_func_entry *entry;
- 	int size;
- 	int i;
- 
--	/* An empty hash does everything */
--	if (ftrace_hash_empty(*hash))
--		return 0;
-+	if (*hash) {
-+		/* An empty hash does everything */
-+		if (ftrace_hash_empty(*hash))
-+			return 0;
-+	} else {
-+		*hash = alloc_ftrace_hash(size_bits);
-+		if (!*hash)
-+			return -ENOMEM;
-+	}
- 
- 	/* If new_hash has everything make hash have everything */
- 	if (ftrace_hash_empty(new_hash)) {
-@@ -3310,16 +3317,18 @@ static int intersect_hash(struct ftrace_
- /* Return a new hash that has a union of all @ops->filter_hash entries */
- static struct ftrace_hash *append_hashes(struct ftrace_ops *ops)
- {
--	struct ftrace_hash *new_hash;
-+	struct ftrace_hash *new_hash = NULL;
- 	struct ftrace_ops *subops;
-+	int size_bits;
- 	int ret;
- 
--	new_hash = alloc_ftrace_hash(ops->func_hash->filter_hash->size_bits);
--	if (!new_hash)
--		return NULL;
-+	if (ops->func_hash->filter_hash)
-+		size_bits = ops->func_hash->filter_hash->size_bits;
-+	else
-+		size_bits = FTRACE_HASH_DEFAULT_BITS;
- 
- 	list_for_each_entry(subops, &ops->subop_list, list) {
--		ret = append_hash(&new_hash, subops->func_hash->filter_hash);
-+		ret = append_hash(&new_hash, subops->func_hash->filter_hash, size_bits);
- 		if (ret < 0) {
- 			free_ftrace_hash(new_hash);
- 			return NULL;
-@@ -3328,7 +3337,8 @@ static struct ftrace_hash *append_hashes
- 		if (ftrace_hash_empty(new_hash))
- 			break;
- 	}
--	return new_hash;
-+	/* Can't return NULL as that means this failed */
-+	return new_hash ? : EMPTY_HASH;
- }
- 
- /* Make @ops trace evenything except what all its subops do not trace */
-@@ -3523,7 +3533,8 @@ int ftrace_startup_subops(struct ftrace_
- 		filter_hash = alloc_and_copy_ftrace_hash(size_bits, ops->func_hash->filter_hash);
- 		if (!filter_hash)
- 			return -ENOMEM;
--		ret = append_hash(&filter_hash, subops->func_hash->filter_hash);
-+		ret = append_hash(&filter_hash, subops->func_hash->filter_hash,
-+				  size_bits);
- 		if (ret < 0) {
- 			free_ftrace_hash(filter_hash);
- 			return ret;
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -359,6 +359,7 @@ config DRM_TTM_HELPER
+ 	tristate
+ 	depends on DRM
+ 	select DRM_TTM
++	select DRM_KMS_HELPER if DRM_FBDEV_EMULATION
+ 	select FB_CORE if DRM_FBDEV_EMULATION
+ 	select FB_SYSMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
+ 	help
+@@ -367,6 +368,7 @@ config DRM_TTM_HELPER
+ config DRM_GEM_DMA_HELPER
+ 	tristate
+ 	depends on DRM
++	select DRM_KMS_HELPER if DRM_FBDEV_EMULATION
+ 	select FB_CORE if DRM_FBDEV_EMULATION
+ 	select FB_DMAMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
+ 	help
+@@ -375,6 +377,7 @@ config DRM_GEM_DMA_HELPER
+ config DRM_GEM_SHMEM_HELPER
+ 	tristate
+ 	depends on DRM && MMU
++	select DRM_KMS_HELPER if DRM_FBDEV_EMULATION
+ 	select FB_CORE if DRM_FBDEV_EMULATION
+ 	select FB_SYSMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
+ 	help
 
 
 
