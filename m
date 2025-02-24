@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96A8A42402
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C3FA424BB
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDED41695F6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2D997A8B69
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AEB24BC14;
-	Mon, 24 Feb 2025 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D523C4A33;
+	Mon, 24 Feb 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVoETij5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+0n99DR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304EC17579;
-	Mon, 24 Feb 2025 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921252192E7;
+	Mon, 24 Feb 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408067; cv=none; b=UDSwBADN4XIW2DCvCsbgXVwBXSPU5fGa1UgACBdjSgOJBEIPG0hnzIZKTDsA5W2/HJpXVjiNdr4vqpFR9W8uZEpCeqDgWGUDrM08OFSN07KfV5pc9tq5LMR8pXgOYM9R0BBXdawjYKjd9EMChqAO5a9ZyAhA0eneCIMyXn+Bkj4=
+	t=1740409068; cv=none; b=uqYE8GMS7z2H7U/BU3CjFF3AF0w/YQnIWrF0LIMnK1t4gV3ZZnG9rEAJ+iz28ZWRMHXUsu6tGmzSNznlA8oYZ1JYhlcII4ZXUN9P8ghAGEANKZabdjwYRt56hPzugI7UVDXhNOaH+O3C1MvvKhEJ1wUKRihUH2hh9xhBMHg1TlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408067; c=relaxed/simple;
-	bh=RtF70ZZWzRSqLfMMzr1OG5S8UWc+1JMWGm1v3d1/iEk=;
+	s=arc-20240116; t=1740409068; c=relaxed/simple;
+	bh=HgXc2Y60s/zDHCY+7Y7HVNmIZTSGUOleSg0a+yB2YGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPDOz5apsfmnJzRl436dK3nbbPz2OMr2loT6B0yGYN5UDskWAGkFXZ9E31EOkEi3cc/j0gkYtcdZ6pKmFh8C1h3TzVSt9ttCye5FhdVukELoqp71YBQrW/q7t228mfZa1TaX4COoZ+n34kj7zIVNS+v/Kqzppu0Hc61VBYC+hu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVoETij5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EE2C4CED6;
-	Mon, 24 Feb 2025 14:41:06 +0000 (UTC)
+	 MIME-Version; b=OydgpmC35RMIfVrUw6FN0EpNk5k7mrCuiWOu0aAaasnKFmYOiUIF55TrAtNYQ7a8IHSZMGRxp7/h2P94Sq4cZsNtF29VdegTN+iNAKV+I2Hru/mgwCk1pMDwOhAfLa3Fy1bQCghxjRy8lHRniuI+j2r/fYR8aoxTpb59/W6iiTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+0n99DR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1621C4CEE6;
+	Mon, 24 Feb 2025 14:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408067;
-	bh=RtF70ZZWzRSqLfMMzr1OG5S8UWc+1JMWGm1v3d1/iEk=;
+	s=korg; t=1740409068;
+	bh=HgXc2Y60s/zDHCY+7Y7HVNmIZTSGUOleSg0a+yB2YGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVoETij5gmMJthqIbRGafTlI0+18MdCRQt+lPrtwHvzAssFpeXLZm5u9cvDn4rIsh
-	 wPB/PPjbL5XbhTpgXiAfII3Rc9juEnzSVJ6EOhJtrXP8EtLNYRFmFwX1wCOEpuk5gU
-	 Ydl3Fp+ibHVDoUOi/cuUCMFgCyPM+YgMx20r5mhU=
+	b=n+0n99DRCaYn+5qpfjqZsosvsuXyr8gcoDPa96CY/CNdg6e+BztA9TLDjleBVy99w
+	 +pY00oV9pT+xzFfPRVDYwwGDurGThbzv1kderXt0ngyH7u1jxquZRtrD72GijUaTlS
+	 wuqbNfEj8S5UcIRNwOHBXM7tiOb4vf2Q6t+/PHcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/140] drm/tidss: Add simple K2G manual reset
-Date: Mon, 24 Feb 2025 15:34:49 +0100
-Message-ID: <20250224142606.549899803@linuxfoundation.org>
+Subject: [PATCH 6.13 060/138] power: supply: axp20x_battery: Fix fault handling for AXP717
+Date: Mon, 24 Feb 2025 15:34:50 +0100
+Message-ID: <20250224142606.840168671@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 576d96c5c896221b5bc8feae473739469a92e144 ]
+[ Upstream commit 98380110bd48fbfd6a798ee11fffff893d36062c ]
 
-K2G display controller does not support soft reset, but we can do the
-most important steps manually: mask the IRQs and disable the VPs.
+Correct the fault handling for the AXP717 by changing the i2c write
+from regmap_update_bits() to regmap_write_bits(). The update bits
+function does not work properly on a RW1C register where we must
+write a 1 back to an existing register to clear it.
 
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-7-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: a9a73f2661e6 ("drm/tidss: Fix race condition while handling interrupt registers")
+Additionally, as part of this testing I confirmed the behavior of
+errors reappearing, so remove comment about assumptions.
+
+Fixes: 6625767049c2 ("power: supply: axp20x_battery: add support for AXP717")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250131231455.153447-2-macroalpha82@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/power/supply/axp20x_battery.c | 31 +++++++++++++--------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index ee3531bbccd7d..4327e1203c565 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2704,14 +2704,28 @@ static void dispc_init_errata(struct dispc_device *dispc)
- 	}
- }
+diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
+index fa27195f074e7..3c3158f31a484 100644
+--- a/drivers/power/supply/axp20x_battery.c
++++ b/drivers/power/supply/axp20x_battery.c
+@@ -466,10 +466,9 @@ static int axp717_battery_get_prop(struct power_supply *psy,
  
-+/*
-+ * K2G display controller does not support soft reset, so we do a basic manual
-+ * reset here: make sure the IRQs are masked and VPs are disabled.
-+ */
-+static void dispc_softreset_k2g(struct dispc_device *dispc)
-+{
-+	dispc_set_irqenable(dispc, 0);
-+	dispc_read_and_clear_irqstatus(dispc);
-+
-+	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
-+		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
-+}
-+
- static int dispc_softreset(struct dispc_device *dispc)
- {
- 	u32 val;
- 	int ret = 0;
+ 	/*
+ 	 * If a fault is detected it must also be cleared; if the
+-	 * condition persists it should reappear (This is an
+-	 * assumption, it's actually not documented). A restart was
+-	 * not sufficient to clear the bit in testing despite the
+-	 * register listed as POR.
++	 * condition persists it should reappear. A restart was not
++	 * sufficient to clear the bit in testing despite the register
++	 * listed as POR.
+ 	 */
+ 	case POWER_SUPPLY_PROP_HEALTH:
+ 		ret = regmap_read(axp20x_batt->regmap, AXP717_PMU_FAULT,
+@@ -480,26 +479,26 @@ static int axp717_battery_get_prop(struct power_supply *psy,
+ 		switch (reg & AXP717_BATT_PMU_FAULT_MASK) {
+ 		case AXP717_BATT_UVLO_2_5V:
+ 			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+-			regmap_update_bits(axp20x_batt->regmap,
+-					   AXP717_PMU_FAULT,
+-					   AXP717_BATT_UVLO_2_5V,
+-					   AXP717_BATT_UVLO_2_5V);
++			regmap_write_bits(axp20x_batt->regmap,
++					  AXP717_PMU_FAULT,
++					  AXP717_BATT_UVLO_2_5V,
++					  AXP717_BATT_UVLO_2_5V);
+ 			return 0;
  
--	/* K2G display controller does not support soft reset */
--	if (dispc->feat->subrev == DISPC_K2G)
-+	if (dispc->feat->subrev == DISPC_K2G) {
-+		dispc_softreset_k2g(dispc);
- 		return 0;
-+	}
+ 		case AXP717_BATT_OVER_TEMP:
+ 			val->intval = POWER_SUPPLY_HEALTH_HOT;
+-			regmap_update_bits(axp20x_batt->regmap,
+-					   AXP717_PMU_FAULT,
+-					   AXP717_BATT_OVER_TEMP,
+-					   AXP717_BATT_OVER_TEMP);
++			regmap_write_bits(axp20x_batt->regmap,
++					  AXP717_PMU_FAULT,
++					  AXP717_BATT_OVER_TEMP,
++					  AXP717_BATT_OVER_TEMP);
+ 			return 0;
  
- 	/* Soft reset */
- 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
+ 		case AXP717_BATT_UNDER_TEMP:
+ 			val->intval = POWER_SUPPLY_HEALTH_COLD;
+-			regmap_update_bits(axp20x_batt->regmap,
+-					   AXP717_PMU_FAULT,
+-					   AXP717_BATT_UNDER_TEMP,
+-					   AXP717_BATT_UNDER_TEMP);
++			regmap_write_bits(axp20x_batt->regmap,
++					  AXP717_PMU_FAULT,
++					  AXP717_BATT_UNDER_TEMP,
++					  AXP717_BATT_UNDER_TEMP);
+ 			return 0;
+ 
+ 		default:
 -- 
 2.39.5
 
