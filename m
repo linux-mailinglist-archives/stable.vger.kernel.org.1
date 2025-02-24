@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62991A4237F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7616BA424B5
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7B957A4F6E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01F319E05D1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8606A25484B;
-	Mon, 24 Feb 2025 14:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC9E24EF8F;
+	Mon, 24 Feb 2025 14:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsWmbfbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC0hoJtF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DBC38DD8;
-	Mon, 24 Feb 2025 14:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765A524EF8E;
+	Mon, 24 Feb 2025 14:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408126; cv=none; b=IzIuBCC1y/n0eyZvMUmuVGZprI4Qj9zvqqMeX3WMUPh7ufq9GA+xujnha77lEGOUUQ9mH6Z/KMnFaiwIHo7f+eakTc6h0Kir5ZfCrEwNFtT9vb+dg5W0OsMqmrcFCWupktDHpv79n338599NYhwEr4WSfJoRou7ROirlP52GRp0=
+	t=1740408616; cv=none; b=PHzPIDDGqQxgj259Nf550R7DcPXroj4fr9uE62QNKjHWOfOx4C4d6W7dLYr/7sLkPDc0hI2bN3riT/NTvBL4cCa/Jj89wfF7BlNosOh1f0NMBRhvWiCuUDOqRDKuLG6P01IdaFv8erBZRjKV21GDgXPcwDKGMyWnyK4NTSXamng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408126; c=relaxed/simple;
-	bh=7nuh+g4GrFP2F70G4YM+W8SXfpJHTV+0VX/n3b5p2VY=;
+	s=arc-20240116; t=1740408616; c=relaxed/simple;
+	bh=ZKrC+dpOB15uDcIo/Sqs1/g9gvJ+DNAPckzeSwpuAaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfdtWd2SZL4BJs6M/kBvM0C6sd+5x3ac+0hQCGae056wY+II+U2sOBNwf0EloNVTABPTI6gUeimmtzll3cx2tRqPMqKePLeDvKtZBr4flQVAhco886hr9jeFd4JEeg3jCIclWbsB2QOv3KB+K7SASlzr5ERlkzAG9gyvm2Dfvyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsWmbfbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C27C4CED6;
-	Mon, 24 Feb 2025 14:42:05 +0000 (UTC)
+	 MIME-Version; b=koQOUz+QR4PvZ0TmlN07eUzNIIM6+0NhUyBldjzOSYQ96NOvvuZ6e0NV30vpx11zTfRY8uXrT/Rh7v6cUhMcQfvrJDBE3CwydMnvYW+ujegWJU2ZDqcHOiZS6L721Q9YiN2E+uPT97rsQjZI7YiGPol4rDum2CIBEfnQWuXCgTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC0hoJtF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDD3C4CEE8;
+	Mon, 24 Feb 2025 14:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408126;
-	bh=7nuh+g4GrFP2F70G4YM+W8SXfpJHTV+0VX/n3b5p2VY=;
+	s=korg; t=1740408616;
+	bh=ZKrC+dpOB15uDcIo/Sqs1/g9gvJ+DNAPckzeSwpuAaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zsWmbfbOYSjXtNrhyaak+oxv2g5VZW4HUYJJC0x7Wc/4jInfda8BYqugnnmn/UciW
-	 qstMj5fujncrzFMfZDObBzB0szOKwde79agbLGp4rgUVVZkteNiv5BbXaMAoxtILkH
-	 9jHBS3jqH07ETSNTU6RQq5iwMwAhsqK7ERq6fD5A=
+	b=nC0hoJtFCJ8OihQJhu0pTc+U9jQBb5KtSC4W18tPdaLzyBaamuWZA1YxQxe+4A1HY
+	 iMZNg3YUTH4lw1nEDxzcFXHicuBmdQABYpeBe+KUmSGIlz6DRUcbrtG7y3Btq49Pv4
+	 wO6ZbShOPQ2+TGUKiBU0Fk8aXNo1sHfHmxggxJ9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>
-Subject: [PATCH 6.6 108/140] drm/msm/dpu: Disable dither in phys encoder cleanup
-Date: Mon, 24 Feb 2025 15:35:07 +0100
-Message-ID: <20250224142607.257530515@linuxfoundation.org>
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12 109/154] drm/i915/dp: Fix error handling during 128b/132b link training
+Date: Mon, 24 Feb 2025 15:35:08 +0100
+Message-ID: <20250224142611.322880742@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit f063ac6b55df03ed25996bdc84d9e1c50147cfa1 upstream.
+commit b9275eabe31e6679ae12c46a4a0a18d622db4570 upstream.
 
-Disable pingpong dither in dpu_encoder_helper_phys_cleanup().
+At the end of a 128b/132b link training sequence, the HW expects the
+transcoder training pattern to be set to TPS2 and from that to normal
+mode (disabling the training pattern). Transitioning from TPS1 directly
+to normal mode leaves the transcoder in a stuck state, resulting in
+page-flip timeouts later in the modeset sequence.
 
-This avoids the issue where an encoder unknowingly uses dither after
-reserving a pingpong block that was previously bound to an encoder that
-had enabled dither.
+Atm, in case of a failure during link training, the transcoder may be
+still set to output the TPS1 pattern. Later the transcoder is then set
+from TPS1 directly to normal mode in intel_dp_stop_link_train(), leading
+to modeset failures later as described above. Fix this by setting the
+training patter to TPS2, if the link training failed at any point.
 
-Cc: stable@vger.kernel.org
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://lore.kernel.org/all/jr7zbj5w7iq4apg3gofuvcwf4r2swzqjk7sshwcdjll4mn6ctt@l2n3qfpujg3q/
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Fixes: 3c128638a07d ("drm/msm/dpu: add support for dither block in display")
-Patchwork: https://patchwork.freedesktop.org/patch/636517/
-Link: https://lore.kernel.org/r/20250211-dither-disable-v1-1-ac2cb455f6b9@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+The clue in the specification about the above HW behavior is the
+explicit mention that TPS2 must be set after the link training sequence
+(and there isn't a similar requirement specified for the 8b/10b link
+training), see the Bspec links below.
+
+v2: Add bspec aspect/link to the commit log. (Jani)
+
+Bspec: 54128, 65448, 68849
+Cc: stable@vger.kernel.org # v5.18+
+Cc: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250217223828.1166093-2-imre.deak@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 8b4bbaf8ddc1f68f3ee96a706f65fdb1bcd9d355)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/intel_dp_link_training.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -2075,6 +2075,9 @@ void dpu_encoder_helper_phys_cleanup(str
- 		}
+--- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+@@ -1561,7 +1561,7 @@ intel_dp_128b132b_link_train(struct inte
+ 
+ 	if (wait_for(intel_dp_128b132b_intra_hop(intel_dp, crtc_state) == 0, 500)) {
+ 		lt_err(intel_dp, DP_PHY_DPRX, "128b/132b intra-hop not clear\n");
+-		return false;
++		goto out;
  	}
  
-+	if (phys_enc->hw_pp && phys_enc->hw_pp->ops.setup_dither)
-+		phys_enc->hw_pp->ops.setup_dither(phys_enc->hw_pp, NULL);
+ 	if (intel_dp_128b132b_lane_eq(intel_dp, crtc_state) &&
+@@ -1573,6 +1573,19 @@ intel_dp_128b132b_link_train(struct inte
+ 	       passed ? "passed" : "failed",
+ 	       crtc_state->port_clock, crtc_state->lane_count);
+ 
++out:
++	/*
++	 * Ensure that the training pattern does get set to TPS2 even in case
++	 * of a failure, as is the case at the end of a passing link training
++	 * and what is expected by the transcoder. Leaving TPS1 set (and
++	 * disabling the link train mode in DP_TP_CTL later from TPS1 directly)
++	 * would result in a stuck transcoder HW state and flip-done timeouts
++	 * later in the modeset sequence.
++	 */
++	if (!passed)
++		intel_dp_program_link_training_pattern(intel_dp, crtc_state,
++						       DP_PHY_DPRX, DP_TRAINING_PATTERN_2);
 +
- 	/* reset the merge 3D HW block */
- 	if (phys_enc->hw_pp && phys_enc->hw_pp->merge_3d) {
- 		phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
+ 	return passed;
+ }
+ 
 
 
 
