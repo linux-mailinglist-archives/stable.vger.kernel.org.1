@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-119135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A8AA424D7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31163A42373
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4BD43A8564
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3C8B1892CFC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5EA24634F;
-	Mon, 24 Feb 2025 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFD61624CF;
+	Mon, 24 Feb 2025 14:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX3Zhd87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7P0xDi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B538189919;
-	Mon, 24 Feb 2025 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8054B2505B8;
+	Mon, 24 Feb 2025 14:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408436; cv=none; b=ovLIadHX/lQqLAd/aOCW2+hlBiUBdfgG0Q3nl08b373wHpFZsc98G2o4VZQFayIReg5ho9WcN/ZHXDGL9qd7/njIS9ucDI2e73opde4XZAyN/HoRXhC6KySESTojcscjnubl+PZUDUhGCk78s7mmhEjZ9zftuD9XHrXi0sAPGDw=
+	t=1740407844; cv=none; b=CjQ/jzOBCI4ytfn5iMpIbxWEaOUc722Vs3GhQu5K/lED6BcqB7teBc45rAmOQ2lZ13edmnVe5YzEeDJ+4/i9u8buouHvVH93qRbbRZoGcUam3gO1tNqVTsLlFVPOCRc2uGrq/xvBTdHrqsG0eVrylpRM3Kd6Cvua/uqFM5OehW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408436; c=relaxed/simple;
-	bh=Z5u/lBxIPfrSHStZ172akTW2SZBJqgRypqOzzZzQDeQ=;
+	s=arc-20240116; t=1740407844; c=relaxed/simple;
+	bh=jdp6Fbzfowyu3zEYhu0vfkMdOouF9E23zmH4UIK20wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhL8Nq4vloHEuvnG+DOGVXZVYc09KcEZ43mD3XwtFNjTDb1d0mDbAF3SiA/CW1N1QuFeGLul/tK709Epb+jA9zzHjWMYRCUsxA4/p2kURDE/6XhtLLOadTzrUDfA+4WGDPSS6a6Txopb8RQvGQd8A4cpRvYfRCE041zfxVqqRhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JX3Zhd87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A1AC4CED6;
-	Mon, 24 Feb 2025 14:47:15 +0000 (UTC)
+	 MIME-Version; b=T4hx6MyndNERFuQWTw/3hh56pzb+R2s+R8aTGkTc0ExLkpZ5pWAWV4U+uDPHMaNEIFXVv6I/O4qrDYJJnhgqqR1Ns7ev1J+udmTt/+oy6ePU8pOKYBZ46DZAkKlqUzkq3MkF2WKwECHqsUy0VfKqFf+DSUkbVRqvHdYJhja/+XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7P0xDi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A983C4CED6;
+	Mon, 24 Feb 2025 14:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408436;
-	bh=Z5u/lBxIPfrSHStZ172akTW2SZBJqgRypqOzzZzQDeQ=;
+	s=korg; t=1740407844;
+	bh=jdp6Fbzfowyu3zEYhu0vfkMdOouF9E23zmH4UIK20wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JX3Zhd87U6T4oZAyfA/Vn5MFU3CN8joHZIk7bk+uMNFnEXnDTLGgM5N4+KqmO2bu6
-	 XykZm/JVm7WjtyVkDEMMMHWpxn3XWsFJJQJwoCFZ393u5teOPZJWYPlCTar2ttiLHG
-	 xa55Sj9jg59iAnShthk2fOqafxhVO83FqHnGQ7VA=
+	b=T7P0xDi6ZZodjsJne4wRUeDhQO1vUxWZe8zmsdgU3r4xE6B5f4A0edNXTlcxZ9Eop
+	 l/oBmdI/UI2cOnn7dynAQRrZn0uFHPEn3TNdvKb0XCvyu0rxMdyAdHtAPcq0itqjBs
+	 DueMBnakPEN32cBWItBcNLa/nNAF1QBo2F4HCZEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/154] ASoC: renesas: rz-ssi: Terminate all the DMA transactions
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 025/140] xfs: Check for delayed allocations before setting extsize
 Date: Mon, 24 Feb 2025 15:33:44 +0100
-Message-ID: <20250224142608.068117202@linuxfoundation.org>
+Message-ID: <20250224142603.993806685@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +66,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 541011dc2d7c4c82523706f726f422a5e23cc86f ]
+commit 2a492ff66673c38a77d0815d67b9a8cce2ef57f8 upstream.
 
-The stop trigger invokes rz_ssi_stop() and rz_ssi_stream_quit().
-- The purpose of rz_ssi_stop() is to disable TX/RX, terminate DMA
-  transactions, and set the controller to idle.
-- The purpose of rz_ssi_stream_quit() is to reset the substream-specific
-  software data by setting strm->running and strm->substream appropriately.
+Extsize should only be allowed to be set on files with no data in it.
+For this, we check if the files have extents but miss to check if
+delayed extents are present. This patch adds that check.
 
-The function rz_ssi_is_stream_running() checks if both strm->substream and
-strm->running are valid and returns true if so. Its implementation is as
-follows:
+While we are at it, also refactor this check into a helper since
+it's used in some other places as well like xfs_inactive() or
+xfs_ioctl_setattr_xflags()
 
-static inline bool rz_ssi_is_stream_running(struct rz_ssi_stream *strm)
-{
-    return strm->substream && strm->running;
-}
+**Without the patch (SUCCEEDS)**
 
-When the controller is configured in full-duplex mode (with both playback
-and capture active), the rz_ssi_stop() function does not modify the
-controller settings when called for the first substream in the full-duplex
-setup. Instead, it simply sets strm->running = 0 and returns if the
-companion substream is still running. The following code illustrates this:
+$ xfs_io -c 'open -f testfile' -c 'pwrite 0 1024' -c 'extsize 65536'
 
-static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
-{
-    strm->running = 0;
+wrote 1024/1024 bytes at offset 0
+1 KiB, 1 ops; 0.0002 sec (4.628 MiB/sec and 4739.3365 ops/sec)
 
-    if (rz_ssi_is_stream_running(&ssi->playback) ||
-        rz_ssi_is_stream_running(&ssi->capture))
-        return 0;
+**With the patch (FAILS as expected)**
 
-    // ...
-}
+$ xfs_io -c 'open -f testfile' -c 'pwrite 0 1024' -c 'extsize 65536'
 
-The controller settings, along with the DMA termination (for the last
-stopped substream), are only applied when the last substream in the
-full-duplex setup is stopped.
+wrote 1024/1024 bytes at offset 0
+1 KiB, 1 ops; 0.0002 sec (4.628 MiB/sec and 4739.3365 ops/sec)
+xfs_io: FS_IOC_FSSETXATTR testfile: Invalid argument
 
-While applying the controller settings only when the last substream stops
-is not problematic, terminating the DMA operations for only one substream
-causes failures when starting and stopping full-duplex operations multiple
-times in a loop.
-
-To address this issue, call dmaengine_terminate_async() for both substreams
-involved in the full-duplex setup when the last substream in the setup is
-stopped.
-
-Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20241210170953.2936724-5-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e94af02a9cd7 ("[XFS] fix old xfs_setattr mis-merge from irix; mostly harmless esp if not using xfs rt")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sh/rz-ssi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_inode.c |    2 +-
+ fs/xfs/xfs_inode.h |    5 +++++
+ fs/xfs/xfs_ioctl.c |    4 ++--
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
-index 32db2cead8a4e..1b74dc1137958 100644
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -416,8 +416,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
- 	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1758,7 +1758,7 @@ xfs_inactive(
  
- 	/* Cancel all remaining DMA transactions */
--	if (rz_ssi_is_dma_enabled(ssi))
--		dmaengine_terminate_async(strm->dma_ch);
-+	if (rz_ssi_is_dma_enabled(ssi)) {
-+		if (ssi->playback.dma_ch)
-+			dmaengine_terminate_async(ssi->playback.dma_ch);
-+		if (ssi->capture.dma_ch)
-+			dmaengine_terminate_async(ssi->capture.dma_ch);
-+	}
+ 	if (S_ISREG(VFS_I(ip)->i_mode) &&
+ 	    (ip->i_disk_size != 0 || XFS_ISIZE(ip) != 0 ||
+-	     ip->i_df.if_nextents > 0 || ip->i_delayed_blks > 0))
++	     xfs_inode_has_filedata(ip)))
+ 		truncate = 1;
  
- 	rz_ssi_set_idle(ssi);
+ 	if (xfs_iflags_test(ip, XFS_IQUOTAUNCHECKED)) {
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -286,6 +286,11 @@ static inline bool xfs_is_metadata_inode
+ 		xfs_is_quota_inode(&mp->m_sb, ip->i_ino);
+ }
  
--- 
-2.39.5
-
++static inline bool xfs_inode_has_filedata(const struct xfs_inode *ip)
++{
++	return ip->i_df.if_nextents > 0 || ip->i_delayed_blks > 0;
++}
++
+ /*
+  * Check if an inode has any data in the COW fork.  This might be often false
+  * even for inodes with the reflink flag when there is no pending COW operation.
+--- a/fs/xfs/xfs_ioctl.c
++++ b/fs/xfs/xfs_ioctl.c
+@@ -1126,7 +1126,7 @@ xfs_ioctl_setattr_xflags(
+ 
+ 	if (rtflag != XFS_IS_REALTIME_INODE(ip)) {
+ 		/* Can't change realtime flag if any extents are allocated. */
+-		if (ip->i_df.if_nextents || ip->i_delayed_blks)
++		if (xfs_inode_has_filedata(ip))
+ 			return -EINVAL;
+ 
+ 		/*
+@@ -1247,7 +1247,7 @@ xfs_ioctl_setattr_check_extsize(
+ 	if (!fa->fsx_valid)
+ 		return 0;
+ 
+-	if (S_ISREG(VFS_I(ip)->i_mode) && ip->i_df.if_nextents &&
++	if (S_ISREG(VFS_I(ip)->i_mode) && xfs_inode_has_filedata(ip) &&
+ 	    XFS_FSB_TO_B(mp, ip->i_extsize) != fa->fsx_extsize)
+ 		return -EINVAL;
+ 
 
 
 
