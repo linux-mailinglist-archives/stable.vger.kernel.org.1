@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-118953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491C6A42398
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BDDA42415
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0050116246F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 938EC1895487
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334841632D3;
-	Mon, 24 Feb 2025 14:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF73418A6AD;
+	Mon, 24 Feb 2025 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJVvqWJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6lOdX8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5552629F;
-	Mon, 24 Feb 2025 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF89151998;
+	Mon, 24 Feb 2025 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407817; cv=none; b=I5wYLMDxAQfItREZv+EIuYw7ATQSGLKq4BGPEKGhha6jB5m912xHa5yHG6KfHOTkMMXkXyxokEn3WfQFXsut4r+takBKx7fLkvfg9g8RQhhtLymZdtMyassMq7dJN8IHA6c65GJWiDPMx8k7pM4zXicK1RnnCmquyB0d2zp1nMk=
+	t=1740408302; cv=none; b=G8zuRM+NjNk0mR+2nFE09iJx12+ZSLnEawmQjFzvs2uwCK6uKj6vREgoFlA7a+9RUAKx68g/aHrl4WCzhjv/m309SxOsukpvnbzzs9Umc4DwGFmub5nW9hy31D5Qxhv+DH/VKMOf63AeKGAjQFYnlKUgb92xL95n6P0idwWbHxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407817; c=relaxed/simple;
-	bh=pHwjZ3EqvEbJ/RZ6P7pwPYLs2JUeaGzxxVxYltVLFXI=;
+	s=arc-20240116; t=1740408302; c=relaxed/simple;
+	bh=9XD5Kwlkw331ukH35WIt7v4bJXXiLnvlzr9/Z+jGTAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWU/4EEVWKVLCl+E9gyew/fLp3ZNKUznCn5gWf8PuIs97SZkP8NxNJd4TKRCchvsRodTMQSC8Yi9hQFXt2s/hqJUH9tE+zFqP/D1ymBgWhh0DqjgFEJ2aIn3tc5bBpGREwVrDF7aPC0rWv7SXDVMOLIhafGl5XpdKwvv0X+v0Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJVvqWJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28AEC4CED6;
-	Mon, 24 Feb 2025 14:36:55 +0000 (UTC)
+	 MIME-Version; b=H+0tpd6aONKrfLeRopfeIr8+f4XpyjdLCPcCHTw+4/s6Ci6pnMTj0UyxpCfYYPcYXidn8kmrEIexnYhAvetZt/MHTXgYP1vgnakjEEl/pdDN5jeHwQyZGSS08nCFDfSwfrH+uiLYZjGGXhgF3YfII22kkPhB3H9GHnNDgsZ4nWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6lOdX8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9573AC4CED6;
+	Mon, 24 Feb 2025 14:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407816;
-	bh=pHwjZ3EqvEbJ/RZ6P7pwPYLs2JUeaGzxxVxYltVLFXI=;
+	s=korg; t=1740408302;
+	bh=9XD5Kwlkw331ukH35WIt7v4bJXXiLnvlzr9/Z+jGTAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJVvqWJYSLIGsMNRrs/BJcfYs1Se4B6WFyC5TYV5Lj5WpTy67aU6tql5tapi3eHhV
-	 3eJVO5JnzQ0TU+bPmtu03TLW+69ReQ0ujags935hWzoCArjeFG0ndhVtP0aZ0UGFPl
-	 UTU3rvqrjPsUX9CkjgSnGTCnEyj0EfvPfMncMvqs=
+	b=m6lOdX8Ty+L83+MaqDMRDLQgmsU43GANqXankkHKnPC4PIoWfCwS56Jp2ZZPwziGK
+	 4HDhGX3z3ptjtaRFcv4Zdqf347QTRnF8hA/9J/lUH7e8Abcf3PShrEkQLXIvja0gKY
+	 BSiLyBjUpM0wMKB2wzy93aJZspkmMKIJHHgUVCUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Brian Foster <bfoster@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 018/140] xfs: pass the exact range to initialize to xfs_initialize_perag
+	Mounika Adhuri <mounika.adhuri@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Lohita Mudimela <lohita.mudimela@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 018/154] drm/amd/display: Refactoring if and endif statements to enable DC_LOGGER
 Date: Mon, 24 Feb 2025 15:33:37 +0100
-Message-ID: <20250224142603.721528519@linuxfoundation.org>
+Message-ID: <20250224142607.792668445@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,195 +66,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Lohita Mudimela <lohita.mudimela@amd.com>
 
-commit 82742f8c3f1a93787a05a00aca50c2a565231f84 upstream.
+[ Upstream commit b04200432c4730c9bb730a66be46551c83d60263 ]
 
-[backport: dependency of 6a18765b]
+[Why]
+For Header related changes for core
 
-Currently only the new agcount is passed to xfs_initialize_perag, which
-requires lookups of existing AGs to skip them and complicates error
-handling.  Also pass the previous agcount so that the range that
-xfs_initialize_perag operates on is exactly defined.  That way the
-extra lookups can be avoided, and error handling can clean up the
-exact range from the old count to the last added perag structure.
+[How]
+Refactoring if and endif statements to enable DC_LOGGER
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mounika Adhuri <mounika.adhuri@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Lohita Mudimela <lohita.mudimela@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: f88192d2335b ("drm/amd/display: Correct register address in dcn35")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_ag.c   |   28 ++++++----------------------
- fs/xfs/libxfs/xfs_ag.h   |    5 +++--
- fs/xfs/xfs_fsops.c       |   18 ++++++++----------
- fs/xfs/xfs_log_recover.c |    5 +++--
- fs/xfs/xfs_mount.c       |    4 ++--
- 5 files changed, 22 insertions(+), 38 deletions(-)
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c    | 5 +++--
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c  | 6 +++---
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 1 +
+ .../drm/amd/display/dc/link/protocols/link_dp_capability.c  | 3 ++-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -360,27 +360,16 @@ xfs_free_unused_perag_range(
- int
- xfs_initialize_perag(
- 	struct xfs_mount	*mp,
--	xfs_agnumber_t		agcount,
-+	xfs_agnumber_t		old_agcount,
-+	xfs_agnumber_t		new_agcount,
- 	xfs_rfsblock_t		dblocks,
- 	xfs_agnumber_t		*maxagi)
- {
- 	struct xfs_perag	*pag;
- 	xfs_agnumber_t		index;
--	xfs_agnumber_t		first_initialised = NULLAGNUMBER;
- 	int			error;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
+index e93df3d6222e6..bc123f1884da3 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
+@@ -50,12 +50,13 @@
+ #include "link.h"
  
--	/*
--	 * Walk the current per-ag tree so we don't try to initialise AGs
--	 * that already exist (growfs case). Allocate and insert all the
--	 * AGs we don't find ready for initialisation.
--	 */
--	for (index = 0; index < agcount; index++) {
--		pag = xfs_perag_get(mp, index);
--		if (pag) {
--			xfs_perag_put(pag);
--			continue;
--		}
--
-+	for (index = old_agcount; index < new_agcount; index++) {
- 		pag = kmem_zalloc(sizeof(*pag), KM_MAYFAIL);
- 		if (!pag) {
- 			error = -ENOMEM;
-@@ -425,21 +414,17 @@ xfs_initialize_perag(
- 		/* Active ref owned by mount indicates AG is online. */
- 		atomic_set(&pag->pag_active_ref, 1);
- 
--		/* first new pag is fully initialized */
--		if (first_initialised == NULLAGNUMBER)
--			first_initialised = index;
--
- 		/*
- 		 * Pre-calculated geometry
- 		 */
--		pag->block_count = __xfs_ag_block_count(mp, index, agcount,
-+		pag->block_count = __xfs_ag_block_count(mp, index, new_agcount,
- 				dblocks);
- 		pag->min_block = XFS_AGFL_BLOCK(mp);
- 		__xfs_agino_range(mp, pag->block_count, &pag->agino_min,
- 				&pag->agino_max);
- 	}
- 
--	index = xfs_set_inode_alloc(mp, agcount);
-+	index = xfs_set_inode_alloc(mp, new_agcount);
- 
- 	if (maxagi)
- 		*maxagi = index;
-@@ -455,8 +440,7 @@ out_remove_pag:
- out_free_pag:
- 	kmem_free(pag);
- out_unwind_new_pags:
--	/* unwind any prior newly initialized pags */
--	xfs_free_unused_perag_range(mp, first_initialised, agcount);
-+	xfs_free_unused_perag_range(mp, old_agcount, index);
- 	return error;
- }
- 
---- a/fs/xfs/libxfs/xfs_ag.h
-+++ b/fs/xfs/libxfs/xfs_ag.h
-@@ -135,8 +135,9 @@ __XFS_AG_OPSTATE(agfl_needs_reset, AGFL_
- 
- void xfs_free_unused_perag_range(struct xfs_mount *mp, xfs_agnumber_t agstart,
- 			xfs_agnumber_t agend);
--int xfs_initialize_perag(struct xfs_mount *mp, xfs_agnumber_t agcount,
--			xfs_rfsblock_t dcount, xfs_agnumber_t *maxagi);
-+int xfs_initialize_perag(struct xfs_mount *mp, xfs_agnumber_t old_agcount,
-+		xfs_agnumber_t agcount, xfs_rfsblock_t dcount,
-+		xfs_agnumber_t *maxagi);
- int xfs_initialize_perag_data(struct xfs_mount *mp, xfs_agnumber_t agno);
- void xfs_free_perag(struct xfs_mount *mp);
- 
---- a/fs/xfs/xfs_fsops.c
-+++ b/fs/xfs/xfs_fsops.c
-@@ -87,6 +87,7 @@ xfs_growfs_data_private(
- 	struct xfs_mount	*mp,		/* mount point for filesystem */
- 	struct xfs_growfs_data	*in)		/* growfs data input struct */
- {
-+	xfs_agnumber_t		oagcount = mp->m_sb.sb_agcount;
- 	struct xfs_buf		*bp;
- 	int			error;
- 	xfs_agnumber_t		nagcount;
-@@ -94,7 +95,6 @@ xfs_growfs_data_private(
- 	xfs_rfsblock_t		nb, nb_div, nb_mod;
- 	int64_t			delta;
- 	bool			lastag_extended = false;
--	xfs_agnumber_t		oagcount;
- 	struct xfs_trans	*tp;
- 	struct aghdr_init_data	id = {};
- 	struct xfs_perag	*last_pag;
-@@ -138,16 +138,14 @@ xfs_growfs_data_private(
- 	if (delta == 0)
- 		return 0;
- 
--	oagcount = mp->m_sb.sb_agcount;
--	/* allocate the new per-ag structures */
--	if (nagcount > oagcount) {
--		error = xfs_initialize_perag(mp, nagcount, nb, &nagimax);
--		if (error)
--			return error;
--	} else if (nagcount < oagcount) {
--		/* TODO: shrinking the entire AGs hasn't yet completed */
-+	/* TODO: shrinking the entire AGs hasn't yet completed */
-+	if (nagcount < oagcount)
- 		return -EINVAL;
--	}
+ #include "logger_types.h"
 +
-+	/* allocate the new per-ag structures */
-+	error = xfs_initialize_perag(mp, oagcount, nagcount, nb, &nagimax);
-+	if (error)
-+		return error;
++
++#include "yellow_carp_offset.h"
+ #undef DC_LOGGER
+ #define DC_LOGGER \
+ 	clk_mgr->base.base.ctx->logger
  
- 	if (delta > 0)
- 		error = xfs_trans_alloc(mp, &M_RES(mp)->tr_growdata,
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -3317,6 +3317,7 @@ xlog_do_recover(
- 	struct xfs_mount	*mp = log->l_mp;
- 	struct xfs_buf		*bp = mp->m_sb_bp;
- 	struct xfs_sb		*sbp = &mp->m_sb;
-+	xfs_agnumber_t		orig_agcount = sbp->sb_agcount;
- 	int			error;
+-#include "yellow_carp_offset.h"
+-
+ #define regCLK1_CLK_PLL_REQ			0x0237
+ #define regCLK1_CLK_PLL_REQ_BASE_IDX		0
  
- 	trace_xfs_log_recover(log, head_blk, tail_blk);
-@@ -3365,8 +3366,8 @@ xlog_do_recover(
- 	/* re-initialise in-core superblock and geometry structures */
- 	mp->m_features |= xfs_sb_version_to_features(sbp);
- 	xfs_reinit_percpu_counters(mp);
--	error = xfs_initialize_perag(mp, sbp->sb_agcount, sbp->sb_dblocks,
--			&mp->m_maxagi);
-+	error = xfs_initialize_perag(mp, orig_agcount, sbp->sb_agcount,
-+			sbp->sb_dblocks, &mp->m_maxagi);
- 	if (error) {
- 		xfs_warn(mp, "Failed post-recovery per-ag init: %d", error);
- 		return error;
---- a/fs/xfs/xfs_mount.c
-+++ b/fs/xfs/xfs_mount.c
-@@ -797,8 +797,8 @@ xfs_mountfs(
- 	/*
- 	 * Allocate and initialize the per-ag data.
- 	 */
--	error = xfs_initialize_perag(mp, sbp->sb_agcount, mp->m_sb.sb_dblocks,
--			&mp->m_maxagi);
-+	error = xfs_initialize_perag(mp, 0, sbp->sb_agcount,
-+			mp->m_sb.sb_dblocks, &mp->m_maxagi);
- 	if (error) {
- 		xfs_warn(mp, "Failed per-ag init: %d", error);
- 		goto out_free_dir;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+index 29eff386505ab..91d872d6d392b 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+@@ -53,9 +53,6 @@
+ 
+ 
+ #include "logger_types.h"
+-#undef DC_LOGGER
+-#define DC_LOGGER \
+-	clk_mgr->base.base.ctx->logger
+ 
+ 
+ #define MAX_INSTANCE                                        7
+@@ -77,6 +74,9 @@ static const struct IP_BASE CLK_BASE = { { { { 0x00016C00, 0x02401800, 0, 0, 0,
+ 					{ { 0x0001B200, 0x0242DC00, 0, 0, 0, 0, 0, 0 } },
+ 					{ { 0x0001B400, 0x0242E000, 0, 0, 0, 0, 0, 0 } } } };
+ 
++#undef DC_LOGGER
++#define DC_LOGGER \
++	clk_mgr->base.base.ctx->logger
+ #define regCLK1_CLK_PLL_REQ			0x0237
+ #define regCLK1_CLK_PLL_REQ_BASE_IDX		0
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 3bd0d46c17010..bbdc39ae57b9d 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -55,6 +55,7 @@
+ #define DC_LOGGER \
+ 	clk_mgr->base.base.ctx->logger
+ 
++
+ #define regCLK1_CLK_PLL_REQ			0x0237
+ #define regCLK1_CLK_PLL_REQ_BASE_IDX		0
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index d78c8ec4de79e..885e749cdc6e9 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -51,9 +51,10 @@
+ #include "dc_dmub_srv.h"
+ #include "gpio_service_interface.h"
+ 
++#define DC_TRACE_LEVEL_MESSAGE(...) /* do nothing */
++
+ #define DC_LOGGER \
+ 	link->ctx->logger
+-#define DC_TRACE_LEVEL_MESSAGE(...) /* do nothing */
+ 
+ #ifndef MAX
+ #define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+-- 
+2.39.5
+
 
 
 
