@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-119009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91043A423B7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:47:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D679A42510
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E14A188B371
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD4403BCAA9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C582561CB;
-	Mon, 24 Feb 2025 14:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DA22561B1;
+	Mon, 24 Feb 2025 14:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMoN2FfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGUxNX/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C361C2561C5;
-	Mon, 24 Feb 2025 14:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4910718A6BD;
+	Mon, 24 Feb 2025 14:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408010; cv=none; b=p2ht53RlH3WgeW7URQSf64xCsKxMJhTxrSmzE5+LFAE6WGJfSkaMSzCrwN70uc2l3uvZBJYMrWsPLaQUVSA6dPsReAyDQGtiUUBhpxP6ARLuT2nlTwxFRtEBYjjXk5r5oCNj9cjj0HKopn4aSLS37HWivqztUI3uY4TOQ/HgTl8=
+	t=1740408498; cv=none; b=G9IlBoO9Ub4eUrJV1ivWNNElFMjEvlVhFDS46FcX1k74VqjDlDH/U0gCUhO3V6CObqEIiQret3KmxRTFO0Gs2Y2A4ckLxwZuoNIMgizempWwIFZnVl4ZCJ8YDySEz49owcrFKmMACsuMxUZ2FnKI/gnZCuMg10ZtMjraSNDy5o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408010; c=relaxed/simple;
-	bh=LhFGchTbkFROj1loHdovCT6IqA9d/I6jGD/Pqzj/3zw=;
+	s=arc-20240116; t=1740408498; c=relaxed/simple;
+	bh=YdnzX3sui57deHZipnyddcq72f7Pof8EbHYRGOv8WNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7ZQpabTJmbVW5YuKhzAcrnjVULiQFyhYCEEKWi+3IeEs5eaiqv06GP1YC61CgTgvKTHvMb4pz+TCcWEE4On+Nilj1/Z+dP5gVaGAcztJEMnIhYVvnZetVMcaUyDOEWO5DEdUQajoXYc7iN+/MHjGxT+g3OYnKv4+1tJSPZE3eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMoN2FfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4E9C4CED6;
-	Mon, 24 Feb 2025 14:40:10 +0000 (UTC)
+	 MIME-Version; b=M3bPB1Cw9OFs1JaMvvZLkygIAEQApc9IT3mZhudWT8rnSy82hug6eSqiM2GJx8iSBCXBJ/K1UYtWmEpbOAHhyUXf5XCPCRk/JIz26bwbp2napUDEgbf9E+gpTaXh0gpM5ODa8Usjgmn1GCR4aVGPWB0vcyxf32UPiXZo4CgUqoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGUxNX/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99AAC4CED6;
+	Mon, 24 Feb 2025 14:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408010;
-	bh=LhFGchTbkFROj1loHdovCT6IqA9d/I6jGD/Pqzj/3zw=;
+	s=korg; t=1740408498;
+	bh=YdnzX3sui57deHZipnyddcq72f7Pof8EbHYRGOv8WNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMoN2FfRy1bgKbrx1CGEwz+TFbCDxuF3Dg1rDYa9eXfJxtuoVgiTjOr2hKPUUcUoi
-	 ol3aIQWVKHa+rufiNrEVifrVUOtiZGKTMWq2DfXK1P52+Ni7MZLuCtOxeOMTrG1ehG
-	 1AB7DyXxtSEqYWq0Oot7mK8A1ak7dyjgfhrBLGDI=
+	b=MGUxNX/pczqkOi5mGDJwUZ6jauEeMzqe9P4E8VC31CzJGgRNs7zVAdsvrSvMZY1cX
+	 GR0QpJP3f2IQZb4ro/fh2lYAtul2bD3oFXucUmn9KELNoOGVlBxlC7eC/J6Kkl/W1V
+	 04uI3JX6YpL900F00sV8zgL5aNmk5HKKnn7NSa6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Julian Ruess <julianr@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/140] s390/ism: add release function for struct device
-Date: Mon, 24 Feb 2025 15:34:33 +0100
-Message-ID: <20250224142605.915406919@linuxfoundation.org>
+Subject: [PATCH 6.12 075/154] bpf: unify VM_WRITE vs VM_MAYWRITE use in BPF map mmaping logic
+Date: Mon, 24 Feb 2025 15:34:34 +0100
+Message-ID: <20250224142610.020088370@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Ruess <julianr@linux.ibm.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 915e34d5ad35a6a9e56113f852ade4a730fb88f0 ]
+[ Upstream commit 98671a0fd1f14e4a518ee06b19037c20014900eb ]
 
-According to device_release() in /drivers/base/core.c,
-a device without a release function is a broken device
-and must be fixed.
+For all BPF maps we ensure that VM_MAYWRITE is cleared when
+memory-mapping BPF map contents as initially read-only VMA. This is
+because in some cases BPF verifier relies on the underlying data to not
+be modified afterwards by user space, so once something is mapped
+read-only, it shouldn't be re-mmap'ed as read-write.
 
-The current code directly frees the device after calling device_add()
-without waiting for other kernel parts to release their references.
-Thus, a reference could still be held to a struct device,
-e.g., by sysfs, leading to potential use-after-free
-issues if a proper release function is not set.
+As such, it's not necessary to check VM_MAYWRITE in bpf_map_mmap() and
+map->ops->map_mmap() callbacks: VM_WRITE should be consistently set for
+read-write mappings, and if VM_WRITE is not set, there is no way for
+user space to upgrade read-only mapping to read-write one.
 
-Fixes: 8c81ba20349d ("net/smc: De-tangle ism and smc device initialization")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250214120137.563409-1-wintera@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch cleans up this VM_WRITE vs VM_MAYWRITE handling within
+bpf_map_mmap(), which is an entry point for any BPF map mmap()-ing
+logic. We also drop unnecessary sanitization of VM_MAYWRITE in BPF
+ringbuf's map_mmap() callback implementation, as it is already performed
+by common code in bpf_map_mmap().
+
+Note, though, that in bpf_map_mmap_{open,close}() callbacks we can't
+drop VM_MAYWRITE use, because it's possible (and is outside of
+subsystem's control) to have initially read-write memory mapping, which
+is subsequently dropped to read-only by user space through mprotect().
+In such case, from BPF verifier POV it's read-write data throughout the
+lifetime of BPF map, and is counted as "active writer".
+
+But its VMAs will start out as VM_WRITE|VM_MAYWRITE, then mprotect() can
+change it to just VM_MAYWRITE (and no VM_WRITE), so when its finally
+munmap()'ed and bpf_map_mmap_close() is called, vm_flags will be just
+VM_MAYWRITE, but we still need to decrement active writer count with
+bpf_map_write_active_dec() as it's still considered to be a read-write
+mapping by the rest of BPF subsystem.
+
+Similar reasoning applies to bpf_map_mmap_open(), which is called
+whenever mmap(), munmap(), and/or mprotect() forces mm subsystem to
+split original VMA into multiple discontiguous VMAs.
+
+Memory-mapping handling is a bit tricky, yes.
+
+Cc: Jann Horn <jannh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250129012246.1515826-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: bc27c52eea18 ("bpf: avoid holding freeze_mutex during mmap operation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/ism_drv.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ kernel/bpf/ringbuf.c |  4 ----
+ kernel/bpf/syscall.c | 10 ++++++++--
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-index f6a0626a6b3ec..af0d90beba638 100644
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -611,6 +611,15 @@ static int ism_dev_init(struct ism_dev *ism)
- 	return ret;
- }
+diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
+index e1cfe890e0be6..1499d8caa9a35 100644
+--- a/kernel/bpf/ringbuf.c
++++ b/kernel/bpf/ringbuf.c
+@@ -268,8 +268,6 @@ static int ringbuf_map_mmap_kern(struct bpf_map *map, struct vm_area_struct *vma
+ 		/* allow writable mapping for the consumer_pos only */
+ 		if (vma->vm_pgoff != 0 || vma->vm_end - vma->vm_start != PAGE_SIZE)
+ 			return -EPERM;
+-	} else {
+-		vm_flags_clear(vma, VM_MAYWRITE);
+ 	}
+ 	/* remap_vmalloc_range() checks size and offset constraints */
+ 	return remap_vmalloc_range(vma, rb_map->rb,
+@@ -289,8 +287,6 @@ static int ringbuf_map_mmap_user(struct bpf_map *map, struct vm_area_struct *vma
+ 			 * position, and the ring buffer data itself.
+ 			 */
+ 			return -EPERM;
+-	} else {
+-		vm_flags_clear(vma, VM_MAYWRITE);
+ 	}
+ 	/* remap_vmalloc_range() checks size and offset constraints */
+ 	return remap_vmalloc_range(vma, rb_map->rb, vma->vm_pgoff + RINGBUF_PGOFF);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 368ae8d231d41..fa43f26ce0dac 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -966,15 +966,21 @@ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+ 	vma->vm_ops = &bpf_map_default_vmops;
+ 	vma->vm_private_data = map;
+ 	vm_flags_clear(vma, VM_MAYEXEC);
++	/* If mapping is read-only, then disallow potentially re-mapping with
++	 * PROT_WRITE by dropping VM_MAYWRITE flag. This VM_MAYWRITE clearing
++	 * means that as far as BPF map's memory-mapped VMAs are concerned,
++	 * VM_WRITE and VM_MAYWRITE and equivalent, if one of them is set,
++	 * both should be set, so we can forget about VM_MAYWRITE and always
++	 * check just VM_WRITE
++	 */
+ 	if (!(vma->vm_flags & VM_WRITE))
+-		/* disallow re-mapping with PROT_WRITE */
+ 		vm_flags_clear(vma, VM_MAYWRITE);
  
-+static void ism_dev_release(struct device *dev)
-+{
-+	struct ism_dev *ism;
-+
-+	ism = container_of(dev, struct ism_dev, dev);
-+
-+	kfree(ism);
-+}
-+
- static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct ism_dev *ism;
-@@ -624,6 +633,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	dev_set_drvdata(&pdev->dev, ism);
- 	ism->pdev = pdev;
- 	ism->dev.parent = &pdev->dev;
-+	ism->dev.release = ism_dev_release;
- 	device_initialize(&ism->dev);
- 	dev_set_name(&ism->dev, dev_name(&pdev->dev));
- 	ret = device_add(&ism->dev);
-@@ -660,7 +670,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	device_del(&ism->dev);
- err_dev:
- 	dev_set_drvdata(&pdev->dev, NULL);
--	kfree(ism);
-+	put_device(&ism->dev);
+ 	err = map->ops->map_mmap(map, vma);
+ 	if (err)
+ 		goto out;
  
- 	return ret;
- }
-@@ -706,7 +716,7 @@ static void ism_remove(struct pci_dev *pdev)
- 	pci_disable_device(pdev);
- 	device_del(&ism->dev);
- 	dev_set_drvdata(&pdev->dev, NULL);
--	kfree(ism);
-+	put_device(&ism->dev);
- }
- 
- static struct pci_driver ism_driver = {
+-	if (vma->vm_flags & VM_MAYWRITE)
++	if (vma->vm_flags & VM_WRITE)
+ 		bpf_map_write_active_inc(map);
+ out:
+ 	mutex_unlock(&map->freeze_mutex);
 -- 
 2.39.5
 
