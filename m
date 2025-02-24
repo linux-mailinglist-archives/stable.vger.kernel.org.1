@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5BDA42533
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEBDA42567
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1550444F64
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53BD517ABE1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE27524EF7C;
-	Mon, 24 Feb 2025 14:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0081624D9;
+	Mon, 24 Feb 2025 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S90kFA/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZWOLwBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C99F24BC09;
-	Mon, 24 Feb 2025 14:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0836B2571CB;
+	Mon, 24 Feb 2025 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408603; cv=none; b=bZhCLCojPqKwgQUCeMR+jH/YqwrofTKFLyHcqBuDa1qWQyPhHQ73kDxltKivIoWoS+ZygT0cK1mjUoqJ6OnCIyht793GINZEP2Zi9Wf3L8NY4T2mvpz6+ur66dWIchgU9GENaEVqfwGnBJwsqLXXyUwimi1INhpTBVyBqtQGkdE=
+	t=1740409024; cv=none; b=PnFmFEPtkGwBEsAwsRQrEj9ZQ9u2kAVP9x8o4CDN3/ruBdMfaz8ScC6Bk1H2OGlslrzC4wl7RLflafgc/1XfDtz5OyWIRz5AYpgq6wMWGblo1OhOXxACXfaH/x2tpHpOBrn4fx4DBR6agmJvtafHvGc8952fYZdc3mDRh4tqsmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408603; c=relaxed/simple;
-	bh=11bXifA3UjSAQy1DU4CrDLXuERyAlBwJVNT3puVmoSE=;
+	s=arc-20240116; t=1740409024; c=relaxed/simple;
+	bh=OKfBFp0iSn+BMHiGtLcONIBgQoUVDGB1AbIpzf0shcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThL1N09o5scSIGeoGN6DVLo650QmscsVNBk90Svhb+y4Ec0n8G6DXG9n7NRVWH93yekqznAMulLZTbtQz12zai5HDUx8qGG+cwQcSu206SeEBPV9L0YIIpdx+et/3BfEumUTRzxQ6pXaY/iTca3OvY5fS9H5wV1hpBw58N6rV3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S90kFA/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1EAC4CED6;
-	Mon, 24 Feb 2025 14:50:02 +0000 (UTC)
+	 MIME-Version; b=tuCCLcPszSbjtdW3Rc1dkHSVIcxOSJsZrR56KJlOvjLYM5M4Is/dFnLshD/IE27RJKTlOCjGzI3/ZAPjvFnn9ymT7sxwqINRy9k+Kb4Ky7oHWiUR8cXEyurWVfkhZ5MLAoN0YwOfFc3c9Vq3My+uR+Deuj7ct4YhyvsvB4+bg/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZWOLwBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D72C4CEE6;
+	Mon, 24 Feb 2025 14:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408603;
-	bh=11bXifA3UjSAQy1DU4CrDLXuERyAlBwJVNT3puVmoSE=;
+	s=korg; t=1740409023;
+	bh=OKfBFp0iSn+BMHiGtLcONIBgQoUVDGB1AbIpzf0shcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S90kFA/RSEptUNvZbvXKW0Sv5y/B8JclSjsQVjzzhteJQNGgp4nwCiQkRuNFo3A6X
-	 6oSDOrK0iRb6AbtB9BY1Y9Xm+c3iNa/SMe/iqbM+R6lxLF+/RpoS0A3YM0kYJfVM16
-	 lUllBOQngNEFLcl8U3Q6s4+uN8l9RSxmmvyseRqo=
+	b=jZWOLwBzWIS6PW6qN1MQGqJ5lGaKeGOkBaB7znWDkUwTpZbPwvKNewadQ/IC+qbTC
+	 poOpPuWws03Ne2phUa8R2S9WNlro8vZt195FOYowtAmpubn0B63NPHSJvRczTsag+Z
+	 y/lIbmVF83ueWc2Urse+44sFnmZiIty/3o+lIPjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.12 106/154] drm: panel: jd9365da-h3: fix reset signal polarity
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 075/138] drm/msm/dsi/phy: Do not overwite PHY_CMN_CLK_CFG1 when choosing bitclk source
 Date: Mon, 24 Feb 2025 15:35:05 +0100
-Message-ID: <20250224142611.209170914@linuxfoundation.org>
+Message-ID: <20250224142607.424693925@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a8972d5a49b408248294b5ecbdd0a085e4726349 upstream.
+[ Upstream commit 73f69c6be2a9f22c31c775ec03c6c286bfe12cfa ]
 
-In jadard_prepare() a reset pulse is generated with the following
-statements (delays ommited for clarity):
+PHY_CMN_CLK_CFG1 register has four fields being used in the driver: DSI
+clock divider, source of bitclk and two for enabling the DSI PHY PLL
+clocks.
 
-    gpiod_set_value(jadard->reset, 1); --> Deassert reset
-    gpiod_set_value(jadard->reset, 0); --> Assert reset for 10ms
-    gpiod_set_value(jadard->reset, 1); --> Deassert reset
+dsi_7nm_set_usecase() sets only the source of bitclk, so should leave
+all other bits untouched.  Use newly introduced
+dsi_pll_cmn_clk_cfg1_update() to update respective bits without
+overwriting the rest.
 
-However, specifying second argument of "0" to gpiod_set_value() means to
-deassert the GPIO, and "1" means to assert it. If the reset signal is
-defined as GPIO_ACTIVE_LOW in the DTS, the above statements will
-incorrectly generate the reset pulse (inverted) and leave it asserted
-(LOW) at the end of jadard_prepare().
+While shuffling the code, define and use PHY_CMN_CLK_CFG1 bitfields to
+make the code more readable and obvious.
 
-Fix reset behavior by inverting gpiod_set_value() second argument
-in jadard_prepare(). Also modify second argument to devm_gpiod_get()
-in jadard_dsi_probe() to assert the reset when probing.
-
-Do not modify it in jadard_unprepare() as it is already properly
-asserted with "1", which seems to be the intended behavior.
-
-Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240927135306.857617-1-hugo@hugovil.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240927135306.857617-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ef7c99d145c ("drm/msm/dsi: add support for 7nm DSI PHY/PLL")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/637380/
+Link: https://lore.kernel.org/r/20250214-drm-msm-phy-pll-cfg-reg-v3-3-0943b850722c@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c             | 4 ++--
+ drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-+++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-@@ -109,13 +109,13 @@ static int jadard_prepare(struct drm_pan
- 	if (jadard->desc->lp11_to_reset_delay_ms)
- 		msleep(jadard->desc->lp11_to_reset_delay_ms);
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 388017db45d80..798168180c1ab 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -617,7 +617,6 @@ static int dsi_7nm_pll_restore_state(struct msm_dsi_phy *phy)
+ static int dsi_7nm_set_usecase(struct msm_dsi_phy *phy)
+ {
+ 	struct dsi_pll_7nm *pll_7nm = to_pll_7nm(phy->vco_hw);
+-	void __iomem *base = phy->base;
+ 	u32 data = 0x0;	/* internal PLL */
  
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(5);
+ 	DBG("DSI PLL%d", pll_7nm->phy->id);
+@@ -636,7 +635,8 @@ static int dsi_7nm_set_usecase(struct msm_dsi_phy *phy)
+ 	}
  
--	gpiod_set_value(jadard->reset, 0);
-+	gpiod_set_value(jadard->reset, 1);
- 	msleep(10);
+ 	/* set PLL src */
+-	writel(data << 2, base + REG_DSI_7nm_PHY_CMN_CLK_CFG1);
++	dsi_pll_cmn_clk_cfg1_update(pll_7nm, DSI_7nm_PHY_CMN_CLK_CFG1_BITCLK_SEL__MASK,
++				    DSI_7nm_PHY_CMN_CLK_CFG1_BITCLK_SEL(data));
  
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(130);
- 
- 	ret = jadard->desc->init(jadard);
-@@ -1130,7 +1130,7 @@ static int jadard_dsi_probe(struct mipi_
- 	dsi->format = desc->format;
- 	dsi->lanes = desc->lanes;
- 
--	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(jadard->reset)) {
- 		DRM_DEV_ERROR(&dsi->dev, "failed to get our reset GPIO\n");
- 		return PTR_ERR(jadard->reset);
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml b/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
+index cfaf78c028b13..35f7f40e405b7 100644
+--- a/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
++++ b/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
+@@ -16,6 +16,7 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
+ 	<reg32 offset="0x00014" name="CLK_CFG1">
+ 		<bitfield name="CLK_EN" pos="5" type="boolean"/>
+ 		<bitfield name="CLK_EN_SEL" pos="4" type="boolean"/>
++		<bitfield name="BITCLK_SEL" low="2" high="3" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x00018" name="GLBL_CTRL"/>
+ 	<reg32 offset="0x0001c" name="RBUF_CTRL"/>
+-- 
+2.39.5
+
 
 
 
