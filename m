@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-118973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7222A42387
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D3BA42479
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E7321892C93
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7AE81777B8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474507F7FC;
-	Mon, 24 Feb 2025 14:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA561946B1;
+	Mon, 24 Feb 2025 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLDYacOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMMkuJlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FB012E5D;
-	Mon, 24 Feb 2025 14:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B2E13AD18;
+	Mon, 24 Feb 2025 14:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407887; cv=none; b=AjjJWBtC73iziXF+gJQAQpQha9a07GfWxBWb25OS4ftbMIF4h3naE9MABeiicyw9HfsS9SsetHxIGr8yCjahFwbLoe4GbvwkIM9kNjWEt2F6rk0FXCHIS5sheooTbKkbGJQ/yh5FGhtq2hWW5oroLj+2gZQG6OVCkQcTu2dQqmI=
+	t=1740408368; cv=none; b=eMIR8FJsk4ynYfk3jG1tq/iajza4HOq+I7AYgTWAnNuI9VFRjUI2ADPBb0OpPef/SU1SKy8qjPNkKfAaK0IP4eAwXimNJynayf9LmAtzXwEhQ8lkU2qSmcUCyPEIzUanrI4NnttfmXNBp8VE7gF0spK/1Q83ind96ivZEML7tG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407887; c=relaxed/simple;
-	bh=uomXlVVSdp/ErZNEcUWmEw8dHP437ThpY8GmuWFSBRw=;
+	s=arc-20240116; t=1740408368; c=relaxed/simple;
+	bh=EkpL3Nf5l+woQWFikTHEnzgdc+1rH4XXm5lge8QNQqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kr9rNHvQxVAQjoEc0AdD9Nw2rPqI+DPbs1t05nDOmKQq+17vahyMOr3dBa22ma3dtLp+EVTpFJpKV/8uv6UWAIUc21KbraMTxsM1b0wM84MTKq++g/zkEcTzUWrTFCfqm6DTHdY7YvxgO1+s6oacKQOONYGHXrvJn1iYm9Q5SKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLDYacOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0981AC4CED6;
-	Mon, 24 Feb 2025 14:38:04 +0000 (UTC)
+	 MIME-Version; b=sN3Ghk2o75OsEdSKBm/E0Z9KuBq+lCWW/SYd193fwj7ZY1UW+lA86hBZ4eXS4f0m7vnQmfuMY6AdOR8g6NmS4Ak2guphaclhfftuDBuvYBvVzDg7G2AM+roaYwQPNIrHjz2xJVui6bCOVOUx5qcSUeiHATHnBVR4tQkCDJXtbok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMMkuJlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47B8C4CED6;
+	Mon, 24 Feb 2025 14:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407885;
-	bh=uomXlVVSdp/ErZNEcUWmEw8dHP437ThpY8GmuWFSBRw=;
+	s=korg; t=1740408368;
+	bh=EkpL3Nf5l+woQWFikTHEnzgdc+1rH4XXm5lge8QNQqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLDYacOLOMNKnbtXYaJ1WF81ro/frisTgEsIBYrdl6Xnw/++AwRU4dx3RBeyb7FE5
-	 tpNiIo93KxatpR0GDGJSn1MBhtCuW4ljKr2vMGaiy60+nnDS841+exDmH4VtwDdslt
-	 muVYbVvKfp+VmdqaSjGOxezSYWWZZcduGnjhcYxU=
+	b=yMMkuJlRzgmkScbNKHPNOA2QvUxxPQUjR+F01vcfEBUCLldm4WifwUWcPWL1hBz7f
+	 Mfg/hMHEqih8zjpecvsXzpoV4S3jSlQRefcLKoYQ9H5OmQtfVeuwogrmZe067EBq6g
+	 6Wr3/4YwXWbwkupUsfSH1ae7p/ybpjXwnYgtw9IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Radu Rendec <rrendec@redhat.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lancelot SIX <lancelot.six@amd.com>,
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/140] cpufreq: fix using cpufreq-dt as module
+Subject: [PATCH 6.12 038/154] drm/amdkfd: Ensure consistent barrier state saved in gfx12 trap handler
 Date: Mon, 24 Feb 2025 15:33:57 +0100
-Message-ID: <20250224142604.505270114@linuxfoundation.org>
+Message-ID: <20250224142608.581426028@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Lancelot SIX <lancelot.six@amd.com>
 
-[ Upstream commit f1f010c9d9c62c865d9f54e94075800ba764b4d9 ]
+[ Upstream commit d584198a6fe4c51f4aa88ad72f258f8961a0f11c ]
 
-This driver can be built as a module since commit 3b062a086984 ("cpufreq:
-dt-platdev: Support building as module"), but unfortunately this caused
-a regression because the cputfreq-dt-platdev.ko module does not autoload.
+It is possible for some waves in a workgroup to finish their save
+sequence before the group leader has had time to capture the workgroup
+barrier state.  When this happens, having those waves exit do impact the
+barrier state.  As a consequence, the state captured by the group leader
+is invalid, and is eventually incorrectly restored.
 
-Usually, this is solved by just using the MODULE_DEVICE_TABLE() macro to
-export all the device IDs as module aliases. But this driver is special
-due how matches with devices and decides what platform supports.
+This patch proposes to have all waves in a workgroup wait for each other
+at the end of their save sequence (just before calling s_endpgm_saved).
 
-There are two of_device_id lists, an allow list that are for CPU devices
-that always match and a deny list that's for devices that must not match.
-
-The driver registers a cpufreq-dt platform device for all the CPU device
-nodes that either are in the allow list or contain an operating-points-v2
-property and are not in the deny list.
-
-Enforce builtin compile of cpufreq-dt-platdev to make autoload work.
-
-Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as module")
-Link: https://lore.kernel.org/all/20241104201424.2a42efdd@akair/
-Link: https://lore.kernel.org/all/20241119111918.1732531-1-javierm@redhat.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reported-by: Radu Rendec <rrendec@redhat.com>
-Reported-by: Javier Martinez Canillas <javierm@redhat.com>
-[ Viresh: Picked commit log from Javier, updated tags ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/Kconfig              | 2 +-
- drivers/cpufreq/cpufreq-dt-platdev.c | 2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h         | 3 ++-
+ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm | 4 ++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index f429b9b37b76c..7e773c47a4fcd 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -218,7 +218,7 @@ config CPUFREQ_DT
- 	  If in doubt, say N.
+diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+index 02f7ba8c93cd4..7062f12b5b751 100644
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+@@ -4117,7 +4117,8 @@ static const uint32_t cwsr_trap_gfx12_hex[] = {
+ 	0x0000ffff, 0x8bfe7e7e,
+ 	0x8bea6a6a, 0xb97af804,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbfb10000,
++	0xbe804a6c, 0xbe804ec2,
++	0xbf94fffe, 0xbfb10000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0x00000000,
+diff --git a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
+index 1740e98c6719d..7b9d36e5fa437 100644
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
+@@ -1049,6 +1049,10 @@ L_SKIP_BARRIER_RESTORE:
+ 	s_rfe_b64	s_restore_pc_lo						//Return to the main shader program and resume execution
  
- config CPUFREQ_DT_PLATDEV
--	tristate "Generic DT based cpufreq platdev driver"
-+	bool "Generic DT based cpufreq platdev driver"
- 	depends on OF
- 	help
- 	  This adds a generic DT based cpufreq platdev driver for frequency
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index 99c31837084c0..09becf14653b5 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -225,5 +225,3 @@ static int __init cpufreq_dt_platdev_init(void)
- 			       sizeof(struct cpufreq_dt_platform_data)));
- }
- core_initcall(cpufreq_dt_platdev_init);
--MODULE_DESCRIPTION("Generic DT based cpufreq platdev driver");
--MODULE_LICENSE("GPL");
+ L_END_PGM:
++	// Make sure that no wave of the workgroup can exit the trap handler
++	// before the workgroup barrier state is saved.
++	s_barrier_signal	-2
++	s_barrier_wait	-2
+ 	s_endpgm_saved
+ end
+ 
 -- 
 2.39.5
 
