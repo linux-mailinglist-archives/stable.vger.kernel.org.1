@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-118703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE64CA415C7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:04:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E74A415CE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:05:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 163267A516B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:03:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E902D3B6354
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB46240608;
-	Mon, 24 Feb 2025 07:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC83241663;
+	Mon, 24 Feb 2025 07:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SyEIklq2"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="MrlsSQcZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D036D2B9B7
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 07:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB6A20AF80
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 07:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740380641; cv=none; b=QdegR7rAQUJFSm2gB839QFUqMMq409xG0kvwVqe/HFGoj8A5EZM527AeaVRm9C5NkjyAYpXMnB/XNC0/6beXfvkj4SiEI0opz5GGZtmp79l84lDpSe2sLPbI+gGn8moCooXh1Q+oP4ncey0NXlHlvBTrmwq6mKJSkS/D0XDj3zw=
+	t=1740380642; cv=none; b=bH2kZzDCENbcE5Tljgms59c2MPnfyqWgGoe6CKBpQGtLc5AY4KVhbIjPcCftFYvUYKGsjefS/JLwjeVMJPAnmnPdAuGNERyeYKiMMY7M/R5vyEphBiIxckPweD6eNJHXrVvfR8+jOCYsab9K6cbmbuda3d9Y4r8kEAXfAU7BQ44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740380641; c=relaxed/simple;
-	bh=RPkr2Yle/AQxgRyUW8B77AJqlobQFEDPL71xwQL/gG4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ox/DaMlJIFTdBrc4jx9QiQY+wWVeHuHrh+BQpMU0NAMC2ulP7PkzQrR4cnhjENazkuHwgGd1t8h3GxJfbhn7+Lz3TatqCxhDEK8ufL4ZvYqFPtZLmtR/AVzu+/hzZlbnZFamDvDYgqIGdozd1wiaw2IcgFfQBnBvjzzYjEP3H/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SyEIklq2; arc=none smtp.client-ip=209.85.222.176
+	s=arc-20240116; t=1740380642; c=relaxed/simple;
+	bh=gxhapjJ2V7VmgaU4ygU27WoYv9liMFZHBLfXA9uaLac=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=m5AxCRZd4EtvbUYkAlPSSERuXl1mwu0Za1Ct5rbQxUupzRaDwn/6qapHs4Gg0+yMjYYn/w2ftKvPwLvX3OJj0nFLRx5pdCj8szQQ2Q+hTV/skbQBJyHgaqm+5pFFH1bR2IDPbRYVTH306dN5L8E9PYCQsqNnRAYO59Bi9Kfdxx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=MrlsSQcZ; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7c2303a56d6so58043185a.3
-        for <stable@vger.kernel.org>; Sun, 23 Feb 2025 23:03:58 -0800 (PST)
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c2303a56d6so58044585a.3
+        for <stable@vger.kernel.org>; Sun, 23 Feb 2025 23:04:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1740380638; x=1740985438; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HHRUOB722SP2pT9GOeb3cvEiqmLTG17HzDuBznymqOc=;
-        b=SyEIklq2FmUI7LQzbzRtYZcbCHQO0ZXYX1kPQbZxOoejwxVIBSWwRT8UtJjDqsDSRd
-         U4pTzLyIILWahG7P2cZa1RlQ/9Y5tx4klo8opq89SU/1Aw+VZwKdf2DI4vYzlhqpwmgY
-         7w+B2ujxMhEIXu6ByiraLTS62V6eYuP9SyV9A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740380638; x=1740985438;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=chromium.org; s=google; t=1740380639; x=1740985439; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HHRUOB722SP2pT9GOeb3cvEiqmLTG17HzDuBznymqOc=;
-        b=lQ+1vyr4jOGNZ513nY+vOQq2tK27CzNlsLx3tb5YYE9jzuC/CQXPzah8MT9RlGxsj8
-         LMq2L4DaZsSxwvl6R6+dZ8zCaXUWqup94yk1LaMUbP3JPUEK7mQ9uyGGRNh2l06XarQQ
-         Zx1Ft97hGM/xxMuXOdS4J3OeWvz/sO7lW2yA/xLRog8mr1zbfCPJqFjMOttunzB/4hri
-         MAkhY9BvYvLMLwKvGvRioFqJlB5Y5o/x3twBJjMb0bFs1ZP0nlbxvhQRABRYo8sR03h+
-         Dwz2pttCXtYHuEET97ovced0DDWSgKT8qEmuLOfAr0Wr9NSo3KZ/5uNSJ31Gdc/gA5vL
-         Rgsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPaoFsDG0UmdNytQMRATKFmp8NH36hdnTNcy3fh451amH4Hk98Vfzyfar691B1iNna7k6Xm7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoaLGpQuGdNLscGDUmf1MQU5L91JQJ+MNKOoYjttUz+iyp5oy4
-	JnRAnI4PNhykkvKS17WlIrlRhXj3gdZRveQbfj3KJ9k2ikLBT2hoog69MPOYaiA14yQpwyEb/ey
-	c/A==
-X-Gm-Gg: ASbGncuHYi+WXLjdpawsI5odbZJj9ZhnCG0oJbsEcQD/6Q9zuKWC3Ufe12daCo6AoLq
-	OtSo1cmMwgAF06QkKg4GXBn+3iuwA8FQ6AWbL//xTUsbqs4OMeEswxsyKm6hg9rRLJ99r8RvU1j
-	cG6TZgJqkP/kgudObxZ9lrInJ4/agv8mHdS8ApA6BTVGfXOi6mbUKjQG+l1cDSTB7gMwUolo92t
-	h62BEBYBGlCalSzXuld9zpKX778jfST+Urkg32sEFXeDOgTbZquYsD+/L5sfW8UlwwjRP8fDHrh
-	ArzuVH4Bi7yF4AmONpZ3XB61lPr8necEm2mRDI+V1YdLx3wSnm6t/o+W/lDnXvaAyAlJNmgubAH
-	QMDA=
-X-Google-Smtp-Source: AGHT+IFkIZyKy46tv3pPOrC7t02hlkGCHtN8wPMQx/td4toBFnJF7+sLcSy9HQrjuNm68CaBgRk5CA==
-X-Received: by 2002:a05:620a:450c:b0:7c0:abe0:ce64 with SMTP id af79cd13be357-7c0cf8aec7emr1654304985a.9.1740380637686;
-        Sun, 23 Feb 2025 23:03:57 -0800 (PST)
+        bh=+zNBSiNN48vAuN3f6QiTHcLYM/YjS/mOVk8GlAcAGX0=;
+        b=MrlsSQcZYiQPKGDyNH4bQfoY5eUpyg0fJk+ViixTJ8pRRnwQ6hQFWzK1U8yrVIMJ+H
+         GUOsysBQGsWM2huhXAikce7Ne33qE9HoH0/7lh6EfNhMdhlp/8VdSpm13T+HevnEOEuB
+         T+e5BrS7ntkCVfOY2qhPgK4IjT+TZitoNQV94=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740380639; x=1740985439;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+zNBSiNN48vAuN3f6QiTHcLYM/YjS/mOVk8GlAcAGX0=;
+        b=EzADUexMolLHPPO2DAxBBbTA0aT1t+w+d9ym2oKKlSgqcV9rRvsDCHxlHKdXNho0mf
+         NL3MpzpEUpfMg/26RhQPkjebxoBxRxpxTJTE8Rg3s+Rcb43lVkdor44M+61UPObx395z
+         /OrBdyGPhQvHmbqXSM2fwCDtDVJ/2XwBv1TCNHd6r2qp3g2JHoQGfmJYWRHQdZajK0c4
+         cZSsuOV8xMgBOy8KwQBWUaPfc0nDclEzG8XWJmMma0xHNdmIrJ0V3qdE3UIxuuUUeKj3
+         R685SVwVELwZpj3uFNsNnTihFNgBWgInHzren2VK59j5odbcLAUPjBV7V/uJwnzX/IJx
+         f7Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCKSbpovpNslp3WaMcooMq8Vlnu8CS8zR7eghJ9+/M5YpjEvZiT2qiKZ0JpghImAX4F+1tLms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoxEKy5a9YyUnQLuX4r8UROMuepmcoiFpeKwiJXzjRugOzhTj4
+	REQzdNHctf98qfLjCnBoTT0jh8zjTnM7OgKKi6mnxSwDNTlW5PcaEoigiaQ/tw==
+X-Gm-Gg: ASbGncsAlv2JdO9SQz35+Fz2yFhUmISogrDkjIUsKGM3a//d9Hg2XDMmhPFYbdfygsN
+	K5CVmtJnrPd6df28XzQZk55nCRCvAQJFWM+X+B5dk9/7L+KMnIxvIkhq0wJwcF7ehzjPBAvdjA/
+	0OP5V3QQsqDYvAPeQWEfESWTNygQtONwlbLI3DIPbuM8vY1Oo3lILTG/TqBC31aVJqIGU7LZuj1
+	emXvFUGOA7z660VMfaIVsK3cam6ixBROdOj1hFsM82aOqgxaDeKoCiFuTpnY66ia6iEnF3Yd8Ud
+	Sf9ess9cQEinXSwIu0UMKKXptq4SExwmDePcjB4Wo73nPkN190njytJOWJtGj7SXDGNiGfhP7QJ
+	ynMc=
+X-Google-Smtp-Source: AGHT+IHcm5l4vj+qLy5nO1kcV2ISxYp1Ig6V5tDSH+3S1QoU9rYnKzcGaZk0NeL01r9155s+2saw4Q==
+X-Received: by 2002:a05:620a:488f:b0:7c0:b018:5928 with SMTP id af79cd13be357-7c0cf96eeacmr1637963085a.47.1740380639403;
+        Sun, 23 Feb 2025 23:03:59 -0800 (PST)
 Received: from denia.c.googlers.com (15.237.245.35.bc.googleusercontent.com. [35.245.237.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c09bf81253sm977920485a.47.2025.02.23.23.03.55
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c09bf81253sm977920485a.47.2025.02.23.23.03.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 23:03:56 -0800 (PST)
+        Sun, 23 Feb 2025 23:03:58 -0800 (PST)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH v2 0/2] media: nuvoton: Fix some reference handling issues
-Date: Mon, 24 Feb 2025 07:03:53 +0000
-Message-Id: <20250224-nuvoton-v2-0-8faaa606be01@chromium.org>
+Date: Mon, 24 Feb 2025 07:03:54 +0000
+Subject: [PATCH v2 1/2] media: nuvoton: Fix reference handling of ece_node
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,9 +81,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANkZvGcC/2XMyw7CIBCF4VdpZi0GiLe48j1MF1yGMosyBlqia
- Xh3sVuX/8nJt0HBTFjgPmyQsVIhTj30YQAXTZpQkO8NWuqzVFqJtFZeOImAt6t0FkOwF+jvV8Z
- A7116jr0jlYXzZ4er+q3/RlVCCoXmFKTz1hv9cDHzTOt85DzB2Fr7AoP7C4ehAAAA
+Message-Id: <20250224-nuvoton-v2-1-8faaa606be01@chromium.org>
+References: <20250224-nuvoton-v2-0-8faaa606be01@chromium.org>
+In-Reply-To: <20250224-nuvoton-v2-0-8faaa606be01@chromium.org>
 To: Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
  Hans Verkuil <hverkuil@xs4all.nl>, Philipp Zabel <p.zabel@pengutronix.de>
@@ -92,27 +92,41 @@ Cc: Marvin Lin <milkfafa@gmail.com>, linux-media@vger.kernel.org,
  Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.1
 
-When trying out 6.13 cocci, some bugs were found.
+Make sure all the code paths call of_node_put().
 
+Instead of manually calling of_node_put, use the __free macros/helpers.
+
+Cc: stable@vger.kernel.org
+Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
-Changes in v2:
-- Squash fixes and port to cleanup.h.
-- Link to v1: https://lore.kernel.org/r/20250121-nuvoton-v1-0-1ea4f0cdbda2@chromium.org
+ drivers/media/platform/nuvoton/npcm-video.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
----
-Ricardo Ribalda (2):
-      media: nuvoton: Fix reference handling of ece_node
-      media: nuvoton: Fix reference handling of ece_pdev
+diff --git a/drivers/media/platform/nuvoton/npcm-video.c b/drivers/media/platform/nuvoton/npcm-video.c
+index 024cd8ee1709..0547f119c38f 100644
+--- a/drivers/media/platform/nuvoton/npcm-video.c
++++ b/drivers/media/platform/nuvoton/npcm-video.c
+@@ -1648,8 +1648,8 @@ static int npcm_video_setup_video(struct npcm_video *video)
+ 
+ static int npcm_video_ece_init(struct npcm_video *video)
+ {
++	struct device_node *ece_node __free(device_node) = NULL;
+ 	struct device *dev = video->dev;
+-	struct device_node *ece_node;
+ 	struct platform_device *ece_pdev;
+ 	void __iomem *regs;
+ 
+@@ -1669,7 +1669,6 @@ static int npcm_video_ece_init(struct npcm_video *video)
+ 			dev_err(dev, "Failed to find ECE device\n");
+ 			return -ENODEV;
+ 		}
+-		of_node_put(ece_node);
+ 
+ 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
+ 		if (IS_ERR(regs)) {
 
- drivers/media/platform/nuvoton/npcm-video.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
----
-base-commit: c2b96a6818159fba8a3bcc38262da9e77f9b3ec7
-change-id: 20250121-nuvoton-fe870cbeffb6
-
-Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+2.48.1.601.g30ceb7b040-goog
 
 
