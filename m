@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-118951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C548CA423EC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:50:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 145F9A4243D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22DA13AAC1E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2EB423022
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722E324BBF8;
-	Mon, 24 Feb 2025 14:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D359A189905;
+	Mon, 24 Feb 2025 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNJpLv8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x26IXd3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2740218A95E;
-	Mon, 24 Feb 2025 14:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAC821345;
+	Mon, 24 Feb 2025 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407810; cv=none; b=YSuoBkuRGw6H14hN8G/EvFVwrzvRPkwgtSEJvBAfdEZPZrjHwaZwZJcIc9g3T5opm3yWwTyJX6P30QDKQi6tw9pUtf+YIe7KKpSnbPxsdg3pv767g5O2bz3UQFS5EhQJ7xSpu4I01gZ1qc38lOmYVpgbkXdVvxFgo2Bgtgvz1Mo=
+	t=1740408295; cv=none; b=bejyymkdtB+Yh5jEmXQ/dxpJiLSofWmWJWpbVC9abKx5TAid8BPfnuKbFTRRPE/VeTP3MolZFzj2nNg7uChV8GEetAuXEyhkgbbuzXzTCVKJDsn0hLsQjJv0GXEQnGkZ6REp44Nu/GUCNtEWR1dlOjilLRfUjth5R/Yr7NDcRAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407810; c=relaxed/simple;
-	bh=FSdU2QKLnTnrDNqPxMnB3ZEZBMTLbIj5PDkUo31bsMM=;
+	s=arc-20240116; t=1740408295; c=relaxed/simple;
+	bh=JjzpQcE4/Pjf62bhiqcBBhE+45zXHHUDJz3yt/uLYh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPzi1X/7m8QO+cPWQML3OwsGf7ELb4b7FM5ZYTLX/nvGyQxkYtbB6v3oR2pVAOlO/ZfidonVgY5XA+XUbJHzyYoK5wT/mM/rCCivXI+LiybTYtnB2o36j7k3HPhmjzVFh/ldrVTRLJxzmQEhsHh3wCu/iVNjdtqKr36HoJuVxO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNJpLv8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0884C4CED6;
-	Mon, 24 Feb 2025 14:36:48 +0000 (UTC)
+	 MIME-Version; b=VVfxgqYFeGZkEzPSju2FyKoHzQxunUa536qSYtoo5ZdD3faAnfsAdUCwXHFfOSoPsj9I8HFDAynvdthlQj9E7zhStGOlCc25+Ep3XRXbjMOOUCmEHmxnhX8xp8Er9uKEK+MnwkyEJXXmld0iTDztTQdJmGuYfFTv213NMoJYui4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x26IXd3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CB5C4CED6;
+	Mon, 24 Feb 2025 14:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407809;
-	bh=FSdU2QKLnTnrDNqPxMnB3ZEZBMTLbIj5PDkUo31bsMM=;
+	s=korg; t=1740408295;
+	bh=JjzpQcE4/Pjf62bhiqcBBhE+45zXHHUDJz3yt/uLYh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNJpLv8eoQakGpS7XKsJ4Ob1CKNIIrq3odN5GSpmzn++utljSmD0D12heqFI97bMD
-	 L3HgHD79w60MnTYMQcmDQ1Oros79/bou1mtO2CErCb1wJi99bu40nmsuQALK+LX1QH
-	 PukBLsl1BvcRDOdLer9Fa8LC+3WeekNjAf8rr5dE=
+	b=x26IXd3kbaHBMVJpmG2al3nslXKz8X/vH2Uyek4W6F8AaKY2YvBBIOFmLtKCe33WU
+	 LYJEGGvU2K4LL8Nx3q6Ort+hqMDYGvxOfTnKX0SLj5xb6QhSgwy38cC+nUlpCZu7y+
+	 +2/LXxVM4M2op9LG20k231nRcxS5F0dN4a5ozBYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Chandan Babu R <chandan.babu@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 016/140] xfs: Use try_cmpxchg() in xlog_cil_insert_pcp_aggregate()
+	Kai Huang <kai.huang@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 016/154] KVM: x86: Inline kvm_get_apic_mode() in lapic.h
 Date: Mon, 24 Feb 2025 15:33:35 +0100
-Message-ID: <20250224142603.644672193@linuxfoundation.org>
+Message-ID: <20250224142607.716290665@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 20195d011c840b01fa91a85ebcd099ca95fbf8fc upstream.
+[ Upstream commit adfec1f4591cf8c69664104eaf41e06b2e7b767e ]
 
-Use !try_cmpxchg instead of cmpxchg (*ptr, old, new) != old in
-xlog_cil_insert_pcp_aggregate().  x86 CMPXCHG instruction returns
-success in ZF flag, so this change saves a compare after cmpxchg.
-
-Also, try_cmpxchg implicitly assigns old *ptr value to "old" when
-cmpxchg fails. There is no need to re-read the value in the loop.
-
-Note that the value from *ptr should be read using READ_ONCE to
-prevent the compiler from merging, refetching or reordering the read.
+Inline kvm_get_apic_mode() in lapic.h to avoid a CALL+RET as well as an
+export.  The underlying kvm_apic_mode() helper is public information, i.e.
+there is no state/information that needs to be hidden from vendor modules.
 
 No functional change intended.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@infradead.org>
-Cc: Chandan Babu R <chandan.babu@oracle.com>
-Cc: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20241009181742.1128779-5-seanjc@google.com
+Link: https://lore.kernel.org/r/20241101183555.1794700-5-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 04bc93cf49d1 ("KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_log_cil.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/kvm/lapic.h | 6 +++++-
+ arch/x86/kvm/x86.c   | 6 ------
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
---- a/fs/xfs/xfs_log_cil.c
-+++ b/fs/xfs/xfs_log_cil.c
-@@ -156,7 +156,6 @@ xlog_cil_insert_pcp_aggregate(
- 	struct xfs_cil		*cil,
- 	struct xfs_cil_ctx	*ctx)
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 441abc4f4afd9..fc4bd36d44cfc 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -120,7 +120,6 @@ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
+ int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
+ int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+-enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu);
+ int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
+ 
+ u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
+@@ -270,6 +269,11 @@ static inline enum lapic_mode kvm_apic_mode(u64 apic_base)
+ 	return apic_base & (MSR_IA32_APICBASE_ENABLE | X2APIC_ENABLE);
+ }
+ 
++static inline enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu)
++{
++	return kvm_apic_mode(vcpu->arch.apic_base);
++}
++
+ static inline u8 kvm_xapic_id(struct kvm_lapic *apic)
  {
--	struct xlog_cil_pcp	*cilpcp;
- 	int			cpu;
- 	int			count = 0;
+ 	return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 36bedf235340c..b67a2f46e40b0 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -667,12 +667,6 @@ static void drop_user_return_notifiers(void)
+ 		kvm_on_user_return(&msrs->urn);
+ }
  
-@@ -171,13 +170,11 @@ xlog_cil_insert_pcp_aggregate(
- 	 * structures that could have a nonzero space_used.
- 	 */
- 	for_each_cpu(cpu, &ctx->cil_pcpmask) {
--		int	old, prev;
-+		struct xlog_cil_pcp	*cilpcp = per_cpu_ptr(cil->xc_pcp, cpu);
-+		int			old = READ_ONCE(cilpcp->space_used);
- 
--		cilpcp = per_cpu_ptr(cil->xc_pcp, cpu);
--		do {
--			old = cilpcp->space_used;
--			prev = cmpxchg(&cilpcp->space_used, old, 0);
--		} while (old != prev);
-+		while (!try_cmpxchg(&cilpcp->space_used, &old, 0))
-+			;
- 		count += old;
- 	}
- 	atomic_add(count, &ctx->space_used);
+-enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu)
+-{
+-	return kvm_apic_mode(vcpu->arch.apic_base);
+-}
+-EXPORT_SYMBOL_GPL(kvm_get_apic_mode);
+-
+ int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ {
+ 	enum lapic_mode old_mode = kvm_get_apic_mode(vcpu);
+-- 
+2.39.5
+
 
 
 
