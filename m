@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379DAA4258B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAC6A425AD
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0073BD2CE
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E091649A2
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2928219408C;
-	Mon, 24 Feb 2025 14:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDA219408C;
+	Mon, 24 Feb 2025 14:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFgRsor7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPLfZsXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB1218BC26;
-	Mon, 24 Feb 2025 14:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8B818BC36;
+	Mon, 24 Feb 2025 14:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408625; cv=none; b=K9UcVO+5nkDQHljUHulw0iSIat+B0zf/6yBhsyBEkWRxME6QFe7GIBQLdFhg0bdxatrS0hqpqe+Heaeb1Fd0sGm3M92LZPi/IlYxwYV6hP/twdDWbLnaECxrwkYrkTFjdG9Tpkc6UsGs072YodrQbDxEEwkcQl9KLRIg1gTCoE0=
+	t=1740409054; cv=none; b=XJp0e2HRE9GqHndP7meR/YHBl4bKuY59RCYBnVH30AjcS76q9OXh2I/n2ejsEmBB8EdBaqPTYOJzgc+eOzk0W5NonpGjGg3MW88se6K8aZ7x010Vnx6LCLtO0mzmYLcSwVnB1qpEIIWb5smaRBobtXrM9URes2WgRuwF2sEdPG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408625; c=relaxed/simple;
-	bh=MXWBQvoLypf7Y+HeqlC17xqtPIuXQRAQKrTFZ3R1pjg=;
+	s=arc-20240116; t=1740409054; c=relaxed/simple;
+	bh=0XG+9Is0eWorVJ/yX/qHZYrRYyza1YPT+PnSTTRiEX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fv6Vib6CMXEErg/VyRCFu6K0DhbdJG0BhExK2cNTgRrK8in9SDBTDBEEpAEusEnJw6DqojwXGrLYNFaeDw4potnlLWuUheRfvIsFGrU7sIoCDiaoJNqWpGDxvyXRnkAC0vhhvil79xJf176QKddG76ZPZFdwoQ10Y66yFMABYgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFgRsor7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2E3C4CED6;
-	Mon, 24 Feb 2025 14:50:25 +0000 (UTC)
+	 MIME-Version; b=bh+jjBgdc0ogv5cF0ivP1PnBfMg0aty6cu/fiLLFTgZjugmXEiR8OH4ORPKyE2dpQ82sMxovf+eKjYnRiJgvl5F5zvXrY2Yth4hIgRpBndWjK27xVzhlkeuqH+Cu4xLuQdoUOQAtEGQLSH93ctg7+vqHYbvu+Br+PzL5P+EPaXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPLfZsXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D43C4CED6;
+	Mon, 24 Feb 2025 14:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408625;
-	bh=MXWBQvoLypf7Y+HeqlC17xqtPIuXQRAQKrTFZ3R1pjg=;
+	s=korg; t=1740409054;
+	bh=0XG+9Is0eWorVJ/yX/qHZYrRYyza1YPT+PnSTTRiEX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFgRsor7VXkY0Tg/FwStZuS5ghGsMbYvk9zTmqBEYh9OZM04cuDzezp4nmErLSuO/
-	 W664xsV1wsMJ8JMj17hsm0wCnILAKoeALZt9HLUj8NpJN/PbvT7J+x/5c3//9gQZcw
-	 WFWzrLiffsbe5B2S4mAKcQbfd86K7tezzLKYBoiY=
+	b=DPLfZsXXvd+I/CwSFcRYj2qcYQwvcfggoimxg0ubzWfsZ21oiDjFtXwEU/+/F8iaj
+	 LBMv7o6pu0WD66KcmjF/P6kS12dri/HKR0IAvJAdNla2WsrIfPE77ynZ81xmUELQ/l
+	 GFjOo4fw4uPa2maHw9G/ff72m8ViLPDcxmjnDnJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chase xd <sl1589472800@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 112/154] io_uring/rw: forbid multishot async reads
-Date: Mon, 24 Feb 2025 15:35:11 +0100
-Message-ID: <20250224142611.443257463@linuxfoundation.org>
+	Yan Zhai <yan@cloudflare.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 083/138] bpf: skip non exist keys in generic_map_lookup_batch
+Date: Mon, 24 Feb 2025 15:35:13 +0100
+Message-ID: <20250224142607.742999831@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Yan Zhai <yan@cloudflare.com>
 
-commit 67b0025d19f99fb9fbb8b62e6975553c183f3a16 upstream.
+[ Upstream commit 5644c6b50ffee0a56c1e01430a8c88e34decb120 ]
 
-At the moment we can't sanely handle queuing an async request from a
-multishot context, so disable them. It shouldn't matter as pollable
-files / socekts don't normally do async.
+The generic_map_lookup_batch currently returns EINTR if it fails with
+ENOENT and retries several times on bpf_map_copy_value. The next batch
+would start from the same location, presuming it's a transient issue.
+This is incorrect if a map can actually have "holes", i.e.
+"get_next_key" can return a key that does not point to a valid value. At
+least the array of maps type may contain such holes legitly. Right now
+these holes show up, generic batch lookup cannot proceed any more. It
+will always fail with EINTR errors.
 
-Patching it in __io_read() is not the cleanest way, but it's simpler
-than other options, so let's fix it there and clean up on top.
+Rather, do not retry in generic_map_lookup_batch. If it finds a non
+existing element, skip to the next key. This simple solution comes with
+a price that transient errors may not be recovered, and the iteration
+might cycle back to the first key under parallel deletion. For example,
+Hou Tao <houtao@huaweicloud.com> pointed out a following scenario:
 
-Cc: stable@vger.kernel.org
-Reported-by: chase xd <sl1589472800@gmail.com>
-Fixes: fc68fcda04910 ("io_uring/rw: add support for IORING_OP_READ_MULTISHOT")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/7d51732c125159d17db4fe16f51ec41b936973f8.1739919038.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For LPM trie map:
+(1) ->map_get_next_key(map, prev_key, key) returns a valid key
+
+(2) bpf_map_copy_value() return -ENOMENT
+It means the key must be deleted concurrently.
+
+(3) goto next_key
+It swaps the prev_key and key
+
+(4) ->map_get_next_key(map, prev_key, key) again
+prev_key points to a non-existing key, for LPM trie it will treat just
+like prev_key=NULL case, the returned key will be duplicated.
+
+With the retry logic, the iteration can continue to the key next to the
+deleted one. But if we directly skip to the next key, the iteration loop
+would restart from the first key for the lpm_trie type.
+
+However, not all races may be recovered. For example, if current key is
+deleted after instead of before bpf_map_copy_value, or if the prev_key
+also gets deleted, then the loop will still restart from the first key
+for lpm_tire anyway. For generic lookup it might be better to stay
+simple, i.e. just skip to the next key. To guarantee that the output
+keys are not duplicated, it is better to implement map type specific
+batch operations, which can properly lock the trie and synchronize with
+concurrent mutators.
+
+Fixes: cb4d03ab499d ("bpf: Add generic support for lookup batch op")
+Closes: https://lore.kernel.org/bpf/Z6JXtA1M5jAZx8xD@debian.debian/
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/85618439eea75930630685c467ccefeac0942e2b.1739171594.git.yan@cloudflare.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ kernel/bpf/syscall.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -862,7 +862,15 @@ static int __io_read(struct io_kiocb *re
- 	if (unlikely(ret))
- 		return ret;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index f086fd8f263f1..36cb18b73e725 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1973,8 +1973,6 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
+ 	return err;
+ }
  
--	ret = io_iter_do_read(rw, &io->iter);
-+	if (unlikely(req->opcode == IORING_OP_READ_MULTISHOT)) {
-+		void *cb_copy = rw->kiocb.ki_complete;
-+
-+		rw->kiocb.ki_complete = NULL;
-+		ret = io_iter_do_read(rw, &io->iter);
-+		rw->kiocb.ki_complete = cb_copy;
-+	} else {
-+		ret = io_iter_do_read(rw, &io->iter);
-+	}
+-#define MAP_LOOKUP_RETRIES 3
+-
+ int generic_map_lookup_batch(struct bpf_map *map,
+ 				    const union bpf_attr *attr,
+ 				    union bpf_attr __user *uattr)
+@@ -1984,8 +1982,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 	void __user *values = u64_to_user_ptr(attr->batch.values);
+ 	void __user *keys = u64_to_user_ptr(attr->batch.keys);
+ 	void *buf, *buf_prevkey, *prev_key, *key, *value;
+-	int err, retry = MAP_LOOKUP_RETRIES;
+ 	u32 value_size, cp, max_count;
++	int err;
  
- 	/*
- 	 * Some file systems like to return -EOPNOTSUPP for an IOCB_NOWAIT
-@@ -887,7 +895,8 @@ static int __io_read(struct io_kiocb *re
- 	} else if (ret == -EIOCBQUEUED) {
- 		return IOU_ISSUE_SKIP_COMPLETE;
- 	} else if (ret == req->cqe.res || ret <= 0 || !force_nonblock ||
--		   (req->flags & REQ_F_NOWAIT) || !need_complete_io(req)) {
-+		   (req->flags & REQ_F_NOWAIT) || !need_complete_io(req) ||
-+		   (issue_flags & IO_URING_F_MULTISHOT)) {
- 		/* read all, failed, already did sync or don't want to retry */
- 		goto done;
+ 	if (attr->batch.elem_flags & ~BPF_F_LOCK)
+ 		return -EINVAL;
+@@ -2031,14 +2029,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 		err = bpf_map_copy_value(map, key, value,
+ 					 attr->batch.elem_flags);
+ 
+-		if (err == -ENOENT) {
+-			if (retry) {
+-				retry--;
+-				continue;
+-			}
+-			err = -EINTR;
+-			break;
+-		}
++		if (err == -ENOENT)
++			goto next_key;
+ 
+ 		if (err)
+ 			goto free_buf;
+@@ -2053,12 +2045,12 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 			goto free_buf;
+ 		}
+ 
++		cp++;
++next_key:
+ 		if (!prev_key)
+ 			prev_key = buf_prevkey;
+ 
+ 		swap(prev_key, key);
+-		retry = MAP_LOOKUP_RETRIES;
+-		cp++;
+ 		cond_resched();
  	}
+ 
+-- 
+2.39.5
+
 
 
 
