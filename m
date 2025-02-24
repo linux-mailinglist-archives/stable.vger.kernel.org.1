@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7997A42411
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AABDA424D0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B69B17F2C1
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5D8219E0532
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC6D192D8F;
-	Mon, 24 Feb 2025 14:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8732A24EF75;
+	Mon, 24 Feb 2025 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoC9KnOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3wIX1Mz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBA215442C;
-	Mon, 24 Feb 2025 14:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4410E1885B8;
+	Mon, 24 Feb 2025 14:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408227; cv=none; b=rKHqcuUobXUq6nGWixCNyjusgqCHsGTv3DuNPjEWfWjfFaAxVT1PQPeYPrNErtnKHxFUFj7xhzyu39OCDV6bNPR7xevra395fGPbZSwFo5+W3Mal1vPf7ImGFGeeRPAy7YB0AkaZuajr1/towijbmuB6E3xptm18OTbMKHETn6Y=
+	t=1740408600; cv=none; b=YE4GCcZi2/9BjYO7KXaPvssSFaztTbIMrnjpdovJbTV5s4ynQVb2oGozbJDKhGdO3UkGMo9awSpda0/ttG9X7UMSaqXrsYpfxM9VXlwVv3G7j/2yr+t2852qDtDh9IiDcWS/rnyvjAkN9dForH94i7cJefUSILB5fylnfHj2xQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408227; c=relaxed/simple;
-	bh=NCVnbX3O9dyv+5c44AnIIqcw1uNUonQ6z9qfH9IKc/Q=;
+	s=arc-20240116; t=1740408600; c=relaxed/simple;
+	bh=+eZoJ88QDrWFPe8xZr4K7aKW/OrMEh6BXiXD0Jg81co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPGI6R5DvTxQiwXDgZLtV4javZTD6To0lRv1mFWYVN1ZcPTtGqkseA+5hTcvDLkFrrbbrLTUFKRlVHtiR7jIw8015LyR3vND88iX8WgSL0euDtaeJB50P2WkEuY370dtZXuqkBWCVe3nVUykP6yGwTcMIGugv0zUIFP664MUruk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoC9KnOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E510DC4CED6;
-	Mon, 24 Feb 2025 14:43:45 +0000 (UTC)
+	 MIME-Version; b=JOQReuJS7L9fNpFtH0J5EF7relw5tUFeD4OeAN/l4qFN3lEztBIgHgqCfXwYrdfeIIhwiPBDhgZP8s9rf86Og1vaiUZX17/2zpSMr5S5LImUFnMn6lrc9x2xcQJq3S/pp8ZAy4YlIU606s0Wg34I/viVOaOOTCpLQLInsejr024=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3wIX1Mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A7BC4CED6;
+	Mon, 24 Feb 2025 14:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408226;
-	bh=NCVnbX3O9dyv+5c44AnIIqcw1uNUonQ6z9qfH9IKc/Q=;
+	s=korg; t=1740408599;
+	bh=+eZoJ88QDrWFPe8xZr4K7aKW/OrMEh6BXiXD0Jg81co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoC9KnObCs8oaIiEO7PYNfUTCa31xGRCHvNSMN2Eay3NltSGwBI1C0pN/gxr0kIdl
-	 v3tALzWRmeWSlQ6IdRnr9OCUu9LM7uMb0kbWHBHza4jClqPgasQOD+9xiPI0q3cDgU
-	 KE34k8d6l6sgRnxpn6xYl0oc6A2l052JeFOn8j8c=
+	b=S3wIX1Mz/RIX6hhKRk01BCSyBU6FGqfF5V+9XaWgCOe7mj0DYQdKbeg8NEHy+Ft9H
+	 9KhQTQeavkjZSbV6vQl0K+0a9nnIpoxL1OrPfH9ImDznOSEDTwFB9z+Cl2UA+ydRa/
+	 JcChyuJThjdjvTioXw7QIAwgjAqi5rmZsyzLKzko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Artur Rojek <contact@artur-rojek.eu>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uros Bizjak <ubizjak@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/140] nvme/ioctl: add missing space in err message
-Date: Mon, 24 Feb 2025 15:35:03 +0100
-Message-ID: <20250224142607.100747139@linuxfoundation.org>
+Subject: [PATCH 6.12 105/154] irqchip/jcore-aic, clocksource/drivers/jcore: Fix jcore-pit interrupt request
+Date: Mon, 24 Feb 2025 15:35:04 +0100
+Message-ID: <20250224142611.170996790@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Artur Rojek <contact@artur-rojek.eu>
 
-[ Upstream commit 487a3ea7b1b8ba2ca7d2c2bb3c3594dc360d6261 ]
+[ Upstream commit d7e3fd658248f257006227285095d190e70ee73a ]
 
-nvme_validate_passthru_nsid() logs an err message whose format string is
-split over 2 lines. There is a missing space between the two pieces,
-resulting in log lines like "... does not match nsid (1)of namespace".
-Add the missing space between ")" and "of". Also combine the format
-string pieces onto a single line to make the err message easier to grep.
+The jcore-aic irqchip does not have separate interrupt numbers reserved for
+cpu-local vs global interrupts. Therefore the device drivers need to
+request the given interrupt as per CPU interrupt.
 
-Fixes: e7d4b5493a2d ("nvme: factor out a nvme_validate_passthru_nsid helper")
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+69a9dcbd2d65 ("clocksource/drivers/jcore: Use request_percpu_irq()")
+converted the clocksource driver over to request_percpu_irq(), but failed
+to do add all the required changes, resulting in a failure to register PIT
+interrupts.
+
+Fix this by:
+
+ 1) Explicitly mark the interrupt via irq_set_percpu_devid() in
+    jcore_pit_init().
+
+ 2) Enable and disable the per CPU interrupt in the CPU hotplug callbacks.
+
+ 3) Pass the correct per-cpu cookie to the irq handler by using
+    handle_percpu_devid_irq() instead of handle_percpu_irq() in
+    handle_jcore_irq().
+
+[ tglx: Massage change log ]
+
+Fixes: 69a9dcbd2d65 ("clocksource/drivers/jcore: Use request_percpu_irq()")
+Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/all/20250216175545.35079-3-contact@artur-rojek.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clocksource/jcore-pit.c | 15 ++++++++++++++-
+ drivers/irqchip/irq-jcore-aic.c |  2 +-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 19a7f0160618d..4ce31f9f06947 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -336,8 +336,7 @@ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
- {
- 	if (ns && nsid != ns->head->ns_id) {
- 		dev_err(ctrl->device,
--			"%s: nsid (%u) in cmd does not match nsid (%u)"
--			"of namespace\n",
-+			"%s: nsid (%u) in cmd does not match nsid (%u) of namespace\n",
- 			current->comm, nsid, ns->head->ns_id);
- 		return false;
+diff --git a/drivers/clocksource/jcore-pit.c b/drivers/clocksource/jcore-pit.c
+index a3fe98cd38382..82815428f8f92 100644
+--- a/drivers/clocksource/jcore-pit.c
++++ b/drivers/clocksource/jcore-pit.c
+@@ -114,6 +114,18 @@ static int jcore_pit_local_init(unsigned cpu)
+ 	pit->periodic_delta = DIV_ROUND_CLOSEST(NSEC_PER_SEC, HZ * buspd);
+ 
+ 	clockevents_config_and_register(&pit->ced, freq, 1, ULONG_MAX);
++	enable_percpu_irq(pit->ced.irq, IRQ_TYPE_NONE);
++
++	return 0;
++}
++
++static int jcore_pit_local_teardown(unsigned cpu)
++{
++	struct jcore_pit *pit = this_cpu_ptr(jcore_pit_percpu);
++
++	pr_info("Local J-Core PIT teardown on cpu %u\n", cpu);
++
++	disable_percpu_irq(pit->ced.irq);
+ 
+ 	return 0;
+ }
+@@ -168,6 +180,7 @@ static int __init jcore_pit_init(struct device_node *node)
+ 		return -ENOMEM;
  	}
+ 
++	irq_set_percpu_devid(pit_irq);
+ 	err = request_percpu_irq(pit_irq, jcore_timer_interrupt,
+ 				 "jcore_pit", jcore_pit_percpu);
+ 	if (err) {
+@@ -237,7 +250,7 @@ static int __init jcore_pit_init(struct device_node *node)
+ 
+ 	cpuhp_setup_state(CPUHP_AP_JCORE_TIMER_STARTING,
+ 			  "clockevents/jcore:starting",
+-			  jcore_pit_local_init, NULL);
++			  jcore_pit_local_init, jcore_pit_local_teardown);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
+index b9dcc8e78c750..1f613eb7b7f03 100644
+--- a/drivers/irqchip/irq-jcore-aic.c
++++ b/drivers/irqchip/irq-jcore-aic.c
+@@ -38,7 +38,7 @@ static struct irq_chip jcore_aic;
+ static void handle_jcore_irq(struct irq_desc *desc)
+ {
+ 	if (irqd_is_per_cpu(irq_desc_get_irq_data(desc)))
+-		handle_percpu_irq(desc);
++		handle_percpu_devid_irq(desc);
+ 	else
+ 		handle_simple_irq(desc);
+ }
 -- 
 2.39.5
 
