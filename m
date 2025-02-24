@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09475A42552
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:07:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452F7A42581
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8811D4269EF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 105263A7916
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA8124EF83;
-	Mon, 24 Feb 2025 14:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D987C158858;
+	Mon, 24 Feb 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RThNnz5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psfQh4YP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674F817BEC6;
-	Mon, 24 Feb 2025 14:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B12571CB;
+	Mon, 24 Feb 2025 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408613; cv=none; b=DoX/lR+iVuimwOKZtX8iwNw+K4BUJVx9O0c4+QKWVb5tUzKb9CgL40BP2/1jcfvKcFboiRFDj2BffieJGZntuXnz7Sk5ybPnHu2Sy7kEEZY6TZWbE17lvtqOGspVHXVa+ikA3m9brNbTFaeHlmytsNMilFoRFQbYn7c5bO8o8jE=
+	t=1740409037; cv=none; b=so5dAjGjc2L/hMADX/MbJNFOBAGrSBg2eJmQhgkm+ClwJ8I2ffUWCXzB+Xp+kusgMt7QTxgEvN2E9MxTSImybBoMEhLJwv2qK3O51uSniK0G8PaRiUW6iNRCwswHLKNFqymkEQV9vbrXhFVWJ4XMvU61Ix47FCZn9KjqtElcf7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408613; c=relaxed/simple;
-	bh=3+56lIqfSdLKp1GXEl4pLrT4bJWNB5a4VocxEoAc5dM=;
+	s=arc-20240116; t=1740409037; c=relaxed/simple;
+	bh=3/HKTNj9RGc0cFjuJXGTzQb7DLG6rvgaMR0a9IFbgcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ayC37H7Ka/7f6jO2/O5F1GnlsirwjCZqMsiLZ9y+Aa7EPLdThg4eJtXHmyfBvZOWcSyn9yv7Urd2FvOMjWhgApyQMYOK+B2mjQNlQIcYT0AWHtVo8EDvEH2M2y0q9ycE2sSWyoq4RAWwDeAgfPmNsHJjU8PbtNcXRD7GnZ8VJYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RThNnz5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56B7C4CED6;
-	Mon, 24 Feb 2025 14:50:12 +0000 (UTC)
+	 MIME-Version; b=Mcwpe/+e1toI3Gbq/0VJGs7ghd6UHFyYELgXwPGY6LxfkiydzG3yOd/TfeY/DLYIZqsnEosHhfYdtySqqvRzVAVDpy7V2rHKY1oIMhiHlaCDhmOmU1fF8E37gOumnzSEK15h0c5yJpxd5u9NpOGrjqZMiITRCzSaYuS5X+KEqqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psfQh4YP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D284C4CED6;
+	Mon, 24 Feb 2025 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408613;
-	bh=3+56lIqfSdLKp1GXEl4pLrT4bJWNB5a4VocxEoAc5dM=;
+	s=korg; t=1740409037;
+	bh=3/HKTNj9RGc0cFjuJXGTzQb7DLG6rvgaMR0a9IFbgcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RThNnz5nbMNgDl0QhiWfOziCNBKOS9qasphcNJwTORtDCllwPDWPsY5LzAVG1Nxo1
-	 aAtncbvYfNCqKduZAdCobEsi58nlQqx/8o+tos5JN7GtOsZpBClwyFB0Kc0Lke00VC
-	 pu+75HFIF6iZqeWCwPPP3dVYPRtPKwhb8HoCWWVU=
+	b=psfQh4YPmaWcxFJpMJh7hANuzK5Tfv/nMLsEAmFjHYXvO4ahesyk3t7+g61AncsD0
+	 Dd3IXi5gGAULqWGewfp4DqiXmknJ4Dd+Ra3Wn1UL2nFwvAcgVUQ/UtiLk9YksvPx3u
+	 x8ZTfXVxAUePVbBApbxmHgXj5xBHGeYkiHDrpoPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 108/154] drm/i915: Make sure all planes in use by the joiner have their crtc included
-Date: Mon, 24 Feb 2025 15:35:07 +0100
-Message-ID: <20250224142611.285630022@linuxfoundation.org>
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 078/138] drm/xe: Fix error handling in xe_irq_install()
+Date: Mon, 24 Feb 2025 15:35:08 +0100
+Message-ID: <20250224142607.541679346@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit 07fb70d82e0df085980246bf17bc12537588795f upstream.
+[ Upstream commit 0c455f3a12298e9c89a78d2f3327e15e52c0adc5 ]
 
-Any active plane needs to have its crtc included in the atomic
-state. For planes enabled via uapi that is all handler in the core.
-But when we use a plane for joiner the uapi code things the plane
-is disabled and therefore doesn't have a crtc. So we need to pull
-those in by hand. We do it first thing in
-intel_joiner_add_affected_crtcs() so that any newly added crtc will
-subsequently pull in all of its joined crtcs as well.
+When devm_add_action_or_reset() fails, it already calls the function
+passed as parameter and that function is already free'ing the irqs.
+Drop the goto and just return.
 
-The symptoms from failing to do this are:
-- duct tape in the form of commit 1d5b09f8daf8 ("drm/i915: Fix NULL
-  ptr deref by checking new_crtc_state")
-- the plane's hw state will get overwritten by the disabled
-  uapi state if it can't find the uapi counterpart plane in
-  the atomic state from where it should copy the correct state
+The caller, xe_device_probe(), should also do the same thing instead of
+wrongly doing `goto err` and calling the unrelated xe_display_fini()
+function.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250212164330.16891-2-ville.syrjala@linux.intel.com
-(cherry picked from commit 91077d1deb5374eb8be00fb391710f00e751dc4b)
+Fixes: 14d25d8d684d ("drm/xe: change old msi irq api to a new one")
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213192909.996148-3-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 121b214cdf10d4129b64f2b1f31807154c74ae55)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/gpu/drm/xe/xe_irq.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6369,12 +6369,30 @@ static int intel_async_flip_check_hw(str
- static int intel_joiner_add_affected_crtcs(struct intel_atomic_state *state)
- {
- 	struct drm_i915_private *i915 = to_i915(state->base.dev);
-+	const struct intel_plane_state *plane_state;
- 	struct intel_crtc_state *crtc_state;
-+	struct intel_plane *plane;
- 	struct intel_crtc *crtc;
- 	u8 affected_pipes = 0;
- 	u8 modeset_pipes = 0;
- 	int i;
+diff --git a/drivers/gpu/drm/xe/xe_irq.c b/drivers/gpu/drm/xe/xe_irq.c
+index de220ce113c25..ca04327bd6dfb 100644
+--- a/drivers/gpu/drm/xe/xe_irq.c
++++ b/drivers/gpu/drm/xe/xe_irq.c
+@@ -757,19 +757,7 @@ int xe_irq_install(struct xe_device *xe)
  
-+	/*
-+	 * Any plane which is in use by the joiner needs its crtc.
-+	 * Pull those in first as this will not have happened yet
-+	 * if the plane remains disabled according to uapi.
-+	 */
-+	for_each_new_intel_plane_in_state(state, plane, plane_state, i) {
-+		crtc = to_intel_crtc(plane_state->hw.crtc);
-+		if (!crtc)
-+			continue;
-+
-+		crtc_state = intel_atomic_get_crtc_state(&state->base, crtc);
-+		if (IS_ERR(crtc_state))
-+			return PTR_ERR(crtc_state);
-+	}
-+
-+	/* Now pull in all joined crtcs */
- 	for_each_new_intel_crtc_in_state(state, crtc, crtc_state, i) {
- 		affected_pipes |= crtc_state->joiner_pipes;
- 		if (intel_crtc_needs_modeset(crtc_state))
+ 	xe_irq_postinstall(xe);
+ 
+-	err = devm_add_action_or_reset(xe->drm.dev, irq_uninstall, xe);
+-	if (err)
+-		goto free_irq_handler;
+-
+-	return 0;
+-
+-free_irq_handler:
+-	if (xe_device_has_msix(xe))
+-		xe_irq_msix_free(xe);
+-	else
+-		xe_irq_msi_free(xe);
+-
+-	return err;
++	return devm_add_action_or_reset(xe->drm.dev, irq_uninstall, xe);
+ }
+ 
+ static void xe_irq_msi_synchronize_irq(struct xe_device *xe)
+-- 
+2.39.5
+
 
 
 
