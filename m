@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-119357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1903A425D9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:15:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BBDA42561
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15A51893AC1
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:00:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26FC117A2A8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7708784A35;
-	Mon, 24 Feb 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8CB17BEC6;
+	Mon, 24 Feb 2025 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGR9Jwh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvkqC+Nj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DC2664C6;
-	Mon, 24 Feb 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13B2571CE;
+	Mon, 24 Feb 2025 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409192; cv=none; b=ocvoSf5LbwNNFDvOpOD1ZBhyrUE+rdDIYVrwPxmpaWi7yBIUXvtoTRqY+fk044dJ/OZprXxGOBIki/UzBjFGMDs3iTmR6tcxH8srxwiNWOcFbwrHKNEUkpCE5PelwPsXUfvrbS4eIyqLf7Z9MR9y/tNwsSusRzszQd6qKm6dPuw=
+	t=1740408772; cv=none; b=uHA655mhYB+gvCNK/nB84mmtmEOwrHfKiL6tE6rNJISC5s3iIlyfiQjC0vgJzSvwS+FbYBOU3t2446ps/hkMZrfpcLgt2n8pTXCXiAhvup9Inbby0Py0PS5nWUDgYjxx7WjB3J8cx3lm/NSYrbiOUECa5R2WKZukbgjKwZ/O/wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409192; c=relaxed/simple;
-	bh=73G7jxY4n94xUPOCOFDqodCvWVUzCH4JqTrjqoPVtL4=;
+	s=arc-20240116; t=1740408772; c=relaxed/simple;
+	bh=unFYozWLdHewEgyxeg0f5CpDgyJLidw275xsS8mlwyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cOjS+2algMe1YkZJCY9AZHbZHRytkwdebNzsiu+6p54yrO4ag7ljAir9Vw+Xh5JtOUW3+6RVkTlO0v8HbToJanmRKlY5RfAjQ1hHMcKoVbUQJdqjjqFFtFKyaBxV3YePwpZc7JTBVDBwq2UqWDDZrtyVE6mLtuGPQUXk3khO9mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGR9Jwh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B2AC4CEE8;
-	Mon, 24 Feb 2025 14:59:51 +0000 (UTC)
+	 MIME-Version; b=aT7BkeCxH5mslPuiTA+0z/ypI1wr1XTznLvWsZcAZB2bYLazBSEdSvNN7qJE69h1aArCF1rcvbpnywLDPtKIYHfoSWEMMv9pviDANRX3nX+eIOSab1FKth/6G36KKyDhzvUrgy0FZCbv23SpOs3czHJfu1X8f4Yc3Iw89e19kKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvkqC+Nj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AA6C4CED6;
+	Mon, 24 Feb 2025 14:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409192;
-	bh=73G7jxY4n94xUPOCOFDqodCvWVUzCH4JqTrjqoPVtL4=;
+	s=korg; t=1740408772;
+	bh=unFYozWLdHewEgyxeg0f5CpDgyJLidw275xsS8mlwyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGR9Jwh4CBS6P30uNFw44HFhdvQTdAExlhcN583N0Jj9cs58kSaZAqaGenAx3Df5X
-	 OjTnIPPia/Dw93Z2nFFx6/ZEA5J8ny6Dt4oFsFFxVqimuQV0+clPsOAl2XTRL4k2Ks
-	 WgiZgr3eYAow9GlGZ+THnxqD2FXSAJS+KuUEYDMM=
+	b=vvkqC+Nj1YWW/4CuVeWEGo6NkzC5TLtP8UhtU2Jtckwnuh8SYEFuqMjkTdHNnkJsG
+	 6FSBAx+vO0yR33mdj9f4C3+oFSesGW5TfeFrIDVAhCLsWtuZUKxEpeVNoqVo2UuyBF
+	 awUQ4iMWWTRJL8mnxBolZux2Hujh3YzKW1vvpYKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Florent Revest <revest@google.com>,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 122/138] mm,madvise,hugetlb: check for 0-length range after end address adjustment
-Date: Mon, 24 Feb 2025 15:35:52 +0100
-Message-ID: <20250224142609.265851352@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 154/154] drm/amdgpu: bump version for RV/PCO compute fix
+Date: Mon, 24 Feb 2025 15:35:53 +0100
+Message-ID: <20250224142613.076246393@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Cañuelo Navarro <rcn@igalia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 2ede647a6fde3e54a6bfda7cf01c716649655900 upstream.
+commit 55ed2b1b50d029dd7e49a35f6628ca64db6d75d8 upstream.
 
-Add a sanity check to madvise_dontneed_free() to address a corner case in
-madvise where a race condition causes the current vma being processed to
-be backed by a different page size.
+Bump the driver version for RV/PCO compute stability fix
+so mesa can use this check to enable compute queues on
+RV/PCO.
 
-During a madvise(MADV_DONTNEED) call on a memory region registered with a
-userfaultfd, there's a period of time where the process mm lock is
-temporarily released in order to send a UFFD_EVENT_REMOVE and let
-userspace handle the event.  During this time, the vma covering the
-current address range may change due to an explicit mmap done concurrently
-by another thread.
-
-If, after that change, the memory region, which was originally backed by
-4KB pages, is now backed by hugepages, the end address is rounded down to
-a hugepage boundary to avoid data loss (see "Fixes" below).  This rounding
-may cause the end address to be truncated to the same address as the
-start.
-
-Make this corner case follow the same semantics as in other similar cases
-where the requested region has zero length (ie.  return 0).
-
-This will make madvise_walk_vmas() continue to the next vma in the range
-(this time holding the process mm lock) which, due to the prev pointer
-becoming stale because of the vma change, will be the same hugepage-backed
-vma that was just checked before.  The next time madvise_dontneed_free()
-runs for this vma, if the start address isn't aligned to a hugepage
-boundary, it'll return -EINVAL, which is also in line with the madvise
-api.
-
->From userspace perspective, madvise() will return EINVAL because the start
-address isn't aligned according to the new vma alignment requirements
-(hugepage), even though it was correctly page-aligned when the call was
-issued.
-
-Link: https://lkml.kernel.org/r/20250203075206.1452208-1-rcn@igalia.com
-Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Florent Revest <revest@google.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/madvise.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -928,7 +928,16 @@ static long madvise_dontneed_free(struct
- 			 */
- 			end = vma->vm_end;
- 		}
--		VM_WARN_ON(start >= end);
-+		/*
-+		 * If the memory region between start and end was
-+		 * originally backed by 4kB pages and then remapped to
-+		 * be backed by hugepages while mmap_lock was dropped,
-+		 * the adjustment for hugetlb vma above may have rounded
-+		 * end down to the start address.
-+		 */
-+		if (start == end)
-+			return 0;
-+		VM_WARN_ON(start > end);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -119,9 +119,10 @@
+  * - 3.58.0 - Add GFX12 DCC support
+  * - 3.59.0 - Cleared VRAM
+  * - 3.60.0 - Add AMDGPU_TILING_GFX12_DCC_WRITE_COMPRESS_DISABLE (Vulkan requirement)
++ * - 3.61.0 - Contains fix for RV/PCO compute queues
+  */
+ #define KMS_DRIVER_MAJOR	3
+-#define KMS_DRIVER_MINOR	60
++#define KMS_DRIVER_MINOR	61
+ #define KMS_DRIVER_PATCHLEVEL	0
  
- 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
+ /*
 
 
 
