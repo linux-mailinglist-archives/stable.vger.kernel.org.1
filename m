@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-119202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA71A424B7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:00:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0E5A423DE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798753B8480
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51199442D3C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F488254846;
-	Mon, 24 Feb 2025 14:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7F623373D;
+	Mon, 24 Feb 2025 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+E3yndT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IN1nb15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AE22A8D0;
-	Mon, 24 Feb 2025 14:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291F71662E7;
+	Mon, 24 Feb 2025 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408664; cv=none; b=OZalxe1XeOKvDCHFjlsjpou/AA3sH6x0hCqVxdn/gU4IQc6HEOwNvLoLx6yjGLSHKnGQJaNjZDDrLXhIEgm86ssRbc2TfN94I0+TAJvgjs5zHFvmTwOVOobOzZk+w5xsI3azFK6pEkclZbCPVPZnrf6/QTZXlu+o+KOiKDXhwc8=
+	t=1740408077; cv=none; b=ZYH8eYnC+5EBt4ZEAC4spOyggyzE/i3SFpgHd/Y3MugwWX82F56m1Rk/RUu8809z+VP+0Zg5yX2oueBm3qJ3Dt7RTpubkvrQib3+ibg476hIa3QT2xzwbdmWEd31yzSIo/q391Z3j8Yc5P1I/5QqbUoie/a42jf0A0w6e89/jbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408664; c=relaxed/simple;
-	bh=Vhv64plsBRJ4rhTu9GrsJWAoYjvSDzELEu1GWUi7/eg=;
+	s=arc-20240116; t=1740408077; c=relaxed/simple;
+	bh=NSTks1HQtub93u07fdi+auVX+yLYKIDmG8o67Axj6EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTKoIR4V3k5CHS35ta0wS+kX6HTgiIR0pKMF8tuKJzSyjus0awZ3jwHRXuqzM0y0f4Y8UWxSQe93FWFP2kVW34ebc1j18NAPvsBk+IrcEjOKFvAhpvJpVP2k51pmuTzLvKsTNR4pnPNeJq9i7KlCSJH09Df2l1JmWFx9rf0gVrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+E3yndT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B879C4CEE6;
-	Mon, 24 Feb 2025 14:51:03 +0000 (UTC)
+	 MIME-Version; b=XYWOlu+ZbMvmjx4WvBDg8lL5k/9X5tHNHCbGSS/s9wN+rOo9s5dQQc+JpfhgrbfJQUPGKYRMyoFmYktpfJh5jK6Rv2ulvf2l1I7USnZKmbzdROQiNZPSms2vpG52Au9UGx0/yDb8yI3zSirBKpYGUMVk2+zrEGawJyJNim4IcPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IN1nb15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83497C4CED6;
+	Mon, 24 Feb 2025 14:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408664;
-	bh=Vhv64plsBRJ4rhTu9GrsJWAoYjvSDzELEu1GWUi7/eg=;
+	s=korg; t=1740408077;
+	bh=NSTks1HQtub93u07fdi+auVX+yLYKIDmG8o67Axj6EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+E3yndTg+mODPAlrymQKrKfefhQhVABkeUWlaqcyTxD1oRmajW38X8f97q2GPzV0
-	 HuhBZJl2rCKn/n9tAxVWk7KovjgpzYE9vbZxFbHUdZeraxohkiuxhZnCtkSiyLjkvI
-	 jQa6QAh7ujh9t7GVe134/LTHVrIdtMss+Ujt4bg4=
+	b=2IN1nb15otXyj0g3/usBI+wTKHB30W0fxsbp8SLTAZLcq/CSpjb1VqryWmD49Cfaw
+	 FVlEiN+6qjOfSAJdD/tPfSaQ9I9kj4ZMlxoaAZRoJRxUaG4+2U/as+UyslaIIiGGkW
+	 Xw4+jTLtj7drlKD9fdPBnwFED9GG9150LDEYDo+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/154] nouveau/svm: fix missing folio unlock + put after make_device_exclusive_range()
+Subject: [PATCH 6.6 092/140] drm/msm/gem: Demote userspace errors to DRM_UT_DRIVER
 Date: Mon, 24 Feb 2025 15:34:51 +0100
-Message-ID: <20250224142610.672143587@linuxfoundation.org>
+Message-ID: <20250224142606.629336616@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +61,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit b3fefbb30a1691533cb905006b69b2a474660744 ]
+[ Upstream commit b2acb89af1a400be721bcb14f137aa22b509caba ]
 
-In case we have to retry the loop, we are missing to unlock+put the
-folio. In that case, we will keep failing make_device_exclusive_range()
-because we cannot grab the folio lock, and even return from the function
-with the folio locked and referenced, effectively never succeeding the
-make_device_exclusive_range().
+Error messages resulting from incorrect usage of the kernel uabi should
+not spam dmesg by default.  But it is useful to enable them to debug
+userspace.  So demote to DRM_UT_DRIVER.
 
-While at it, convert the other unlock+put to use a folio as well.
-
-This was found by code inspection.
-
-Fixes: 8f187163eb89 ("nouveau/svm: implement atomic SVM access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250124181524.3584236-2-david@redhat.com
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/564189/
+Stable-dep-of: 3a47f4b439be ("drm/msm/gem: prevent integer overflow in msm_ioctl_gem_submit()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_svm.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_gem.c        |  6 ++---
+ drivers/gpu/drm/msm/msm_gem_submit.c | 36 ++++++++++++++++------------
+ 2 files changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
-index b4da82ddbb6b2..8ea98f06d39af 100644
---- a/drivers/gpu/drm/nouveau/nouveau_svm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
-@@ -590,6 +590,7 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
- 	unsigned long timeout =
- 		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- 	struct mm_struct *mm = svmm->notifier.mm;
-+	struct folio *folio;
- 	struct page *page;
- 	unsigned long start = args->p.addr;
- 	unsigned long notifier_seq;
-@@ -616,12 +617,16 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+index db1e748daa753..1113e6b2ec8ec 100644
+--- a/drivers/gpu/drm/msm/msm_gem.c
++++ b/drivers/gpu/drm/msm/msm_gem.c
+@@ -226,9 +226,9 @@ static struct page **msm_gem_pin_pages_locked(struct drm_gem_object *obj,
+ 
+ 	msm_gem_assert_locked(obj);
+ 
+-	if (GEM_WARN_ON(msm_obj->madv > madv)) {
+-		DRM_DEV_ERROR(obj->dev->dev, "Invalid madv state: %u vs %u\n",
+-			msm_obj->madv, madv);
++	if (msm_obj->madv > madv) {
++		DRM_DEV_DEBUG_DRIVER(obj->dev->dev, "Invalid madv state: %u vs %u\n",
++				     msm_obj->madv, madv);
+ 		return ERR_PTR(-EBUSY);
+ 	}
+ 
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 99744de6c05a1..207b6ba1565d8 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -17,6 +17,12 @@
+ #include "msm_gem.h"
+ #include "msm_gpu_trace.h"
+ 
++/* For userspace errors, use DRM_UT_DRIVER.. so that userspace can enable
++ * error msgs for debugging, but we don't spam dmesg by default
++ */
++#define SUBMIT_ERROR(submit, fmt, ...) \
++	DRM_DEV_DEBUG_DRIVER((submit)->dev->dev, fmt, ##__VA_ARGS__)
++
+ /*
+  * Cmdstream submission:
+  */
+@@ -136,7 +142,7 @@ static int submit_lookup_objects(struct msm_gem_submit *submit,
+ 
+ 		if ((submit_bo.flags & ~MSM_SUBMIT_BO_FLAGS) ||
+ 			!(submit_bo.flags & MANDATORY_FLAGS)) {
+-			DRM_ERROR("invalid flags: %x\n", submit_bo.flags);
++			SUBMIT_ERROR(submit, "invalid flags: %x\n", submit_bo.flags);
+ 			ret = -EINVAL;
+ 			i = 0;
+ 			goto out;
+@@ -158,7 +164,7 @@ static int submit_lookup_objects(struct msm_gem_submit *submit,
+ 		 */
+ 		obj = idr_find(&file->object_idr, submit->bos[i].handle);
+ 		if (!obj) {
+-			DRM_ERROR("invalid handle %u at index %u\n", submit->bos[i].handle, i);
++			SUBMIT_ERROR(submit, "invalid handle %u at index %u\n", submit->bos[i].handle, i);
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+@@ -202,13 +208,13 @@ static int submit_lookup_cmds(struct msm_gem_submit *submit,
+ 		case MSM_SUBMIT_CMD_CTX_RESTORE_BUF:
+ 			break;
+ 		default:
+-			DRM_ERROR("invalid type: %08x\n", submit_cmd.type);
++			SUBMIT_ERROR(submit, "invalid type: %08x\n", submit_cmd.type);
+ 			return -EINVAL;
+ 		}
+ 
+ 		if (submit_cmd.size % 4) {
+-			DRM_ERROR("non-aligned cmdstream buffer size: %u\n",
+-					submit_cmd.size);
++			SUBMIT_ERROR(submit, "non-aligned cmdstream buffer size: %u\n",
++				     submit_cmd.size);
  			ret = -EINVAL;
  			goto out;
  		}
-+		folio = page_folio(page);
+@@ -306,8 +312,8 @@ static int submit_lock_objects(struct msm_gem_submit *submit)
  
- 		mutex_lock(&svmm->mutex);
- 		if (!mmu_interval_read_retry(&notifier->notifier,
- 					     notifier_seq))
- 			break;
- 		mutex_unlock(&svmm->mutex);
-+
-+		folio_unlock(folio);
-+		folio_put(folio);
+ fail:
+ 	if (ret == -EALREADY) {
+-		DRM_ERROR("handle %u at index %u already on submit list\n",
+-				submit->bos[i].handle, i);
++		SUBMIT_ERROR(submit, "handle %u at index %u already on submit list\n",
++			     submit->bos[i].handle, i);
+ 		ret = -EINVAL;
  	}
  
- 	/* Map the page on the GPU. */
-@@ -637,8 +642,8 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
- 	ret = nvif_object_ioctl(&svmm->vmm->vmm.object, args, size, NULL);
- 	mutex_unlock(&svmm->mutex);
+@@ -448,8 +454,8 @@ static int submit_bo(struct msm_gem_submit *submit, uint32_t idx,
+ 		struct drm_gem_object **obj, uint64_t *iova, bool *valid)
+ {
+ 	if (idx >= submit->nr_bos) {
+-		DRM_ERROR("invalid buffer index: %u (out of %u)\n",
+-				idx, submit->nr_bos);
++		SUBMIT_ERROR(submit, "invalid buffer index: %u (out of %u)\n",
++			     idx, submit->nr_bos);
+ 		return -EINVAL;
+ 	}
  
--	unlock_page(page);
--	put_page(page);
-+	folio_unlock(folio);
-+	folio_put(folio);
+@@ -475,7 +481,7 @@ static int submit_reloc(struct msm_gem_submit *submit, struct drm_gem_object *ob
+ 		return 0;
  
- out:
- 	mmu_interval_notifier_remove(&notifier->notifier);
+ 	if (offset % 4) {
+-		DRM_ERROR("non-aligned cmdstream buffer: %u\n", offset);
++		SUBMIT_ERROR(submit, "non-aligned cmdstream buffer: %u\n", offset);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -497,8 +503,8 @@ static int submit_reloc(struct msm_gem_submit *submit, struct drm_gem_object *ob
+ 		bool valid;
+ 
+ 		if (submit_reloc.submit_offset % 4) {
+-			DRM_ERROR("non-aligned reloc offset: %u\n",
+-					submit_reloc.submit_offset);
++			SUBMIT_ERROR(submit, "non-aligned reloc offset: %u\n",
++				     submit_reloc.submit_offset);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -508,7 +514,7 @@ static int submit_reloc(struct msm_gem_submit *submit, struct drm_gem_object *ob
+ 
+ 		if ((off >= (obj->size / 4)) ||
+ 				(off < last_offset)) {
+-			DRM_ERROR("invalid offset %u at reloc %u\n", off, i);
++			SUBMIT_ERROR(submit, "invalid offset %u at reloc %u\n", off, i);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -881,7 +887,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 		if (!submit->cmd[i].size ||
+ 			((submit->cmd[i].size + submit->cmd[i].offset) >
+ 				obj->size / 4)) {
+-			DRM_ERROR("invalid cmdstream size: %u\n", submit->cmd[i].size * 4);
++			SUBMIT_ERROR(submit, "invalid cmdstream size: %u\n", submit->cmd[i].size * 4);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -893,7 +899,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 
+ 		if (!gpu->allow_relocs) {
+ 			if (submit->cmd[i].nr_relocs) {
+-				DRM_ERROR("relocs not allowed\n");
++				SUBMIT_ERROR(submit, "relocs not allowed\n");
+ 				ret = -EINVAL;
+ 				goto out;
+ 			}
 -- 
 2.39.5
 
