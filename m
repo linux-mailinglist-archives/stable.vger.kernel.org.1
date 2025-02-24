@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-119091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C0AA42419
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0472DA423E4
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:50:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFA9189B04F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E952E3BBD94
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6020917B50B;
-	Mon, 24 Feb 2025 14:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C163F24A06C;
+	Mon, 24 Feb 2025 14:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPE44Nsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StXK8GYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E12821345;
-	Mon, 24 Feb 2025 14:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769FC18A6C5;
+	Mon, 24 Feb 2025 14:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408292; cv=none; b=FlQeEX5kyVTXmjyHwhnPH5k/6PF+cUFGyN/sunvozGDpdQFwj97PQ4HiHd51L13lTx8ukzJwGdLPX6shGNHlXxyWkUO8i8V9FQ5eM9XYvg6naB18Qb9/6Vi0EnlXpb6D1UXYLhCFiR4FTqy8v57v7zgrcgjryy3E9eOFHno8fJw=
+	t=1740407806; cv=none; b=lo/0MdAlEoEMupoLV6E8Lvtx8oy/utximPd+lRVA6ANtNY774STEEDIXrvG3YTxzJ3FAJuG1rFSa7zzlbkGsZaq/KukOTw++14a322+Sd8PXcF1ffaqjpHzPPL/Q7jG/Q/DmL++jQeU47snuXwzleTt4AknBXJ+hx4O75xVtTlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408292; c=relaxed/simple;
-	bh=0DNtuYuCETJRXznZl4hKBA3PTiEC9LYADQmkWAvNVLo=;
+	s=arc-20240116; t=1740407806; c=relaxed/simple;
+	bh=QFPUOJIEqcItETYHEp/2VAol/3fKSzZR+P0ONzp0MTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvHyWy+oW6la1Plu99By55GGD0+UvByMrU9sei1tzKz/0RpVAjWLYthcUKSIK7X3fc+Q3KdDFr1mdCZJodAq2b+jjTlqTy/BrCnCEFKrh0RlM36iAr6UA2tfBfxzSmf6XmzByTUWyDrj5imVGFH2E7Q3t0PPAFcRIz5EC2Muuzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPE44Nsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7290AC4CED6;
-	Mon, 24 Feb 2025 14:44:51 +0000 (UTC)
+	 MIME-Version; b=URvuhWww3CKRjE6tCdrUsKo+1MHsNA+7D7rdG+FUP3MF2YtMaV27MkPXJgJtKxkrhsOwbduLQONSsmfaIzxkpD7Kd7TMF2PC1Q7b58Gq+u8iaQd/Y4P02CKDJ8XPIm4PoxvDxZCj4775icnmcVxr6eVjCZwwkTS5Q0q2sYE0qLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StXK8GYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECF3C4CED6;
+	Mon, 24 Feb 2025 14:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408291;
-	bh=0DNtuYuCETJRXznZl4hKBA3PTiEC9LYADQmkWAvNVLo=;
+	s=korg; t=1740407806;
+	bh=QFPUOJIEqcItETYHEp/2VAol/3fKSzZR+P0ONzp0MTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPE44NswJfIIpe7VNbCBavU409zeyBRRyifKrCQWhslCnIJWWpOrkFCy/y3PsqsCA
-	 0SJAvEmlrV1RU17dmtpdFXOXermEcwuPsWSHoy3iBQlzwL8WQYkicb3PT8gg//WOME
-	 jNfzVOJ6SCIMfSRU04mz/JQKwdl2UIec9F1z6Jgw=
+	b=StXK8GYQF/NKB6ldY2EIc1OODodx6Bb1gZLCdA5PilvXemrSHfkpnsiLhTh6qPcEx
+	 ZjRPIal1XYrQ8jbCvcg8Vxc9HgN15YKJ8GaGjB6MvWFn12aUH9ChOEFy84VDsnN6yZ
+	 aj6PLnWNR6C2X/wSIlmWtalpjCLRV74cxISIWrF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/154] KVM: x86: Get vcpu->arch.apic_base directly and drop kvm_get_apic_base()
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 015/140] xfs: support lowmode allocations in xfs_bmap_exact_minlen_extent_alloc
 Date: Mon, 24 Feb 2025 15:33:34 +0100
-Message-ID: <20250224142607.677657994@linuxfoundation.org>
+Message-ID: <20250224142603.607078905@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit d91060e342a66b52d9bd64f0b123b9c306293b76 ]
+commit 6aac77059881e4419df499392c995bf02fb9630b upstream.
 
-Access KVM's emulated APIC base MSR value directly instead of bouncing
-through a helper, as there is no reason to add a layer of indirection, and
-there are other MSRs with a "set" but no "get", e.g. EFER.
+Currently the debug-only xfs_bmap_exact_minlen_extent_alloc allocation
+variant fails to drop into the lowmode last resort allocator, and
+thus can sometimes fail allocations for which the caller has a
+transaction block reservation.
 
-No functional change intended.
+Fix this by using xfs_bmap_btalloc_low_space to do the actual allocation.
 
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241009181742.1128779-4-seanjc@google.com
-Link: https://lore.kernel.org/r/20241101183555.1794700-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 04bc93cf49d1 ("KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.h |  1 -
- arch/x86/kvm/x86.c   | 13 ++++---------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ fs/xfs/libxfs/xfs_bmap.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 1b8ef9856422a..441abc4f4afd9 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -117,7 +117,6 @@ bool kvm_irq_delivery_to_apic_fast(struct kvm *kvm, struct kvm_lapic *src,
- 		struct kvm_lapic_irq *irq, int *r, struct dest_map *dest_map);
- void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -3412,7 +3412,13 @@ xfs_bmap_exact_minlen_extent_alloc(
+ 	 */
+ 	ap->blkno = XFS_AGB_TO_FSB(ap->ip->i_mount, 0, 0);
  
--u64 kvm_get_apic_base(struct kvm_vcpu *vcpu);
- int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
- int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
- int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0846e3af5f6c5..36bedf235340c 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -667,14 +667,9 @@ static void drop_user_return_notifiers(void)
- 		kvm_on_user_return(&msrs->urn);
+-	return xfs_alloc_vextent_first_ag(args, ap->blkno);
++	/*
++	 * Call xfs_bmap_btalloc_low_space here as it first does a "normal" AG
++	 * iteration and then drops args->total to args->minlen, which might be
++	 * required to find an allocation for the transaction reservation when
++	 * the file system is very full.
++	 */
++	return xfs_bmap_btalloc_low_space(ap, args);
  }
  
--u64 kvm_get_apic_base(struct kvm_vcpu *vcpu)
--{
--	return vcpu->arch.apic_base;
--}
--
- enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu)
- {
--	return kvm_apic_mode(kvm_get_apic_base(vcpu));
-+	return kvm_apic_mode(vcpu->arch.apic_base);
- }
- EXPORT_SYMBOL_GPL(kvm_get_apic_mode);
- 
-@@ -4314,7 +4309,7 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		msr_info->data = 1 << 24;
- 		break;
- 	case MSR_IA32_APICBASE:
--		msr_info->data = kvm_get_apic_base(vcpu);
-+		msr_info->data = vcpu->arch.apic_base;
- 		break;
- 	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
- 		return kvm_x2apic_msr_read(vcpu, msr_info->index, &msr_info->data);
-@@ -10159,7 +10154,7 @@ static void post_kvm_run_save(struct kvm_vcpu *vcpu)
- 
- 	kvm_run->if_flag = kvm_x86_call(get_if_flag)(vcpu);
- 	kvm_run->cr8 = kvm_get_cr8(vcpu);
--	kvm_run->apic_base = kvm_get_apic_base(vcpu);
-+	kvm_run->apic_base = vcpu->arch.apic_base;
- 
- 	kvm_run->ready_for_interrupt_injection =
- 		pic_in_kernel(vcpu->kvm) ||
-@@ -11718,7 +11713,7 @@ static void __get_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
- 	sregs->cr4 = kvm_read_cr4(vcpu);
- 	sregs->cr8 = kvm_get_cr8(vcpu);
- 	sregs->efer = vcpu->arch.efer;
--	sregs->apic_base = kvm_get_apic_base(vcpu);
-+	sregs->apic_base = vcpu->arch.apic_base;
- }
- 
- static void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
--- 
-2.39.5
-
+ /*
 
 
 
