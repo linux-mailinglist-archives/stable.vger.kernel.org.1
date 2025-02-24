@@ -1,110 +1,99 @@
-Return-Path: <stable+bounces-118925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796F2A41FAD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:54:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051D0A4202B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4240A1896F77
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:54:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7B037ABE22
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9674B233737;
-	Mon, 24 Feb 2025 12:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0+td8w5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2828123CEF8;
+	Mon, 24 Feb 2025 13:13:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359BD221F00;
-	Mon, 24 Feb 2025 12:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C39823BD1C;
+	Mon, 24 Feb 2025 13:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740401654; cv=none; b=OGyMN3glK772HuZRuZl6GWaPMlAkRKkoKz/IE02XhOzwIqGneirAUnjKZ+w8IicCKAkQnWEX4OReTxSuzxzDcFQMeZwZq7b8Y3AR22E9J4rUrPSR1WSQQkdCNc18t4eVGxTklrw8p6HTftqU0bcs09ZpVpzt+lsrH3RxsgBIdJw=
+	t=1740402795; cv=none; b=L66QzssOLs/BoNKLsAKXKv0YR3lWCfkwXVQow5Br7X4/84Ug7E9H3EsOFnYBivhZg7ybtxuav/tuK82Jri9FHUjEnmMK2Y+DmI/WAnhsF4xlkhRO0y+Eze5SvSiWQiw67I1yLRYhY3UF4+AXBmchFwX1qRV+/V/gklIIl6vnde8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740401654; c=relaxed/simple;
-	bh=BVaV6E0vu9Z/0quDpf7tDL/iGAcbEvGWgsSeHYa0oQA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hhJqTixgJ0S+mrkl1Y+0lDUs+bHY+AqqXzinlA7cCmR/7tieGDoQdNaW+jjNBNvECeB3qBo19VQrve/hGQ87UPR/7WlmcNK6CMghC6R5JAwzI7aq9d+n+sS+gDPnAymtYKjDNQ8hF1qTpdJhfuV2kydMu2kcc6DCcBsTC8RyBmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0+td8w5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D775C4CED6;
-	Mon, 24 Feb 2025 12:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740401654;
-	bh=BVaV6E0vu9Z/0quDpf7tDL/iGAcbEvGWgsSeHYa0oQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k0+td8w5VgxPU/n8Lm4t8xexsTS8JTKU13ZGdCDVpzlvuyRuOuGp9ZVrh/d6I38vs
-	 BAAy4T0BFW37EZtL7nqumzaOFImaYLCeLIMsg2z+jWhsRb1jRPeHFR8FM4dVOz3tds
-	 QJ16NtndhMyxPhgOKZsvskkoxVYlNWhi/kPYEvo0=
-Date: Mon, 24 Feb 2025 13:54:10 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: jianqi.ren.cn@windriver.com
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, kvalo@kernel.org,
-	rand.sec96@gmail.com, m@bues.ch, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, zhe.he@windriver.com
-Subject: Re: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in
- ssb_device_uevent()
-Message-ID: <2025022412-unlikable-aftermost-bc2a@gregkh>
-References: <20250224083707.2532381-1-jianqi.ren.cn@windriver.com>
+	s=arc-20240116; t=1740402795; c=relaxed/simple;
+	bh=WAJR8x2EpfE32DKv2HxvwThe9/mAvgaXgzCVvYr6vto=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MN32q1w/L4xrGIcoPEKKVWfWYLm633QU9ssZ69sW2X6CjU1EIwrAZGeapUaFYUSel37Y7HgRhsDUiM/2/cDL2i/05C9Qfvn3GjIq+2DByfzzar3SuGbaJZlhgxomahRHJDIZPPjwjZqJmyFnJjKhJzwclPdCtarVcz7Rbu96nu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-CSE-ConnectionGUID: QdzH9puzQ+aATfoWOGibFw==
+X-CSE-MsgGUID: p+cn56RLRLaKZd6LSyEcow==
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 24 Feb 2025 22:13:06 +0900
+Received: from localhost.localdomain (unknown [10.226.92.231])
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 62592400F319;
+	Mon, 24 Feb 2025 22:13:04 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>,
+	linux-renesas-soc@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v6 02/12] irqchip/renesas-rzv2h: Fix wrong variable usage in rzv2h_tint_set_type()
+Date: Mon, 24 Feb 2025 13:11:18 +0000
+Message-ID: <20250224131253.134199-3-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250224131253.134199-1-biju.das.jz@bp.renesas.com>
+References: <20250224131253.134199-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250224083707.2532381-1-jianqi.ren.cn@windriver.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 24, 2025 at 04:37:07PM +0800, jianqi.ren.cn@windriver.com wrote:
-> From: Rand Deeb <rand.sec96@gmail.com>
-> 
-> [ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
-> 
-> The ssb_device_uevent() function first attempts to convert the 'dev' pointer
-> to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
-> performing the NULL check, potentially leading to a NULL pointer
-> dereference if 'dev' is NULL.
-> 
-> To fix this issue, move the NULL check before dereferencing the 'dev' pointer,
-> ensuring that the pointer is valid before attempting to use it.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
-> Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-> Signed-off-by: He Zhe <zhe.he@windriver.com>
-> ---
-> Verified the build test.
-> ---
->  drivers/ssb/main.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-> index d52e91258e98..aae50a5dfb57 100644
-> --- a/drivers/ssb/main.c
-> +++ b/drivers/ssb/main.c
-> @@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
->  
->  static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
->  {
-> -	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
-> +	struct ssb_device *ssb_dev;
->  
->  	if (!dev)
->  		return -ENODEV;
->  
-> +	ssb_dev = dev_to_ssb_dev(dev);
+The variable tssel_n is used for selecting TINT source and titsel_n for
+setting the interrupt type. The variable titsel_n is wrongly used for
+enabling the TINT interrupt in rzv2h_tint_set_type(). Fix this issue by
+using the correct variable tssel_n.
 
-This patch does nothing, sorry.  It's impossible for dev to be null so
-no need to verify this and I guess I'll go reject the cve that was
-assigned to it as well as it's pointless.
+While at it, move the tien variable assignment near to tssr.
 
-thanks,
+Fixes: 0d7605e75ac2 ("irqchip: Add RZ/V2H(P) Interrupt Control Unit (ICU) driver")
+Cc: stable@vger.kernel.org
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/CAMuHMdU3xJpz-jh=j7t4JreBat2of2ksP_OR3+nKAoZBr4pSxg@mail.gmail.com
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+v5->v6:
+ * Added Reported-by tag and Cced stable@vger.kernel.org.
+v5:
+ * New patch
+---
+ drivers/irqchip/irq-renesas-rzv2h.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesas-rzv2h.c
+index fe2d29e91026..f6363246a71a 100644
+--- a/drivers/irqchip/irq-renesas-rzv2h.c
++++ b/drivers/irqchip/irq-renesas-rzv2h.c
+@@ -301,10 +301,10 @@ static int rzv2h_tint_set_type(struct irq_data *d, unsigned int type)
+ 
+ 	tssr_k = ICU_TSSR_K(tint_nr);
+ 	tssel_n = ICU_TSSR_TSSEL_N(tint_nr);
++	tien = ICU_TSSR_TIEN(tssel_n);
+ 
+ 	titsr_k = ICU_TITSR_K(tint_nr);
+ 	titsel_n = ICU_TITSR_TITSEL_N(tint_nr);
+-	tien = ICU_TSSR_TIEN(titsel_n);
+ 
+ 	guard(raw_spinlock)(&priv->lock);
+ 
+-- 
+2.43.0
+
 
