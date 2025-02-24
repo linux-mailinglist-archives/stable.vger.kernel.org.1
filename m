@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A975DA425D0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:14:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE96CA4253D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86D4B19E024D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056651899752
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A641B7F4;
-	Mon, 24 Feb 2025 14:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A45252904;
+	Mon, 24 Feb 2025 14:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKeCJAi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoXZSebj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3149913AD18;
-	Mon, 24 Feb 2025 14:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E01519A5;
+	Mon, 24 Feb 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409082; cv=none; b=CrKBmdV0+OW4obnf0KGDqRl64PXfMOyiOyr3VxfZHEYR953vsHf9h6ZEsmMARaz7mhiMiSWxvjRdbnD3cozQhpSlIS9MrQ56Sy2RFmtQQygfY0R9HD1IC9FTcfAzVp5p3mU6nkH2NE7OP1WTPk11+ztNpamm7+/y13HpbdDusTM=
+	t=1740408658; cv=none; b=nzv8cdOJtg0eB1x+ZIN9vOywUQWrL+JwudkQzI950ZDIKMz8wcHBVAeieTNY7c13PRLZuYP75+kOn1zQC37TC+nzE1EnrPC0Vow7o3bTIg0o9Mwzu3HWRxB78Ji04c0qZcLp0rVbODDL8n8N7DPta0mEgXSXRH8Qz8GRJdD7/uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409082; c=relaxed/simple;
-	bh=fv3c86jd9ZSXZOoEZ3aaQ2iW/ilzKbvDj0CnLxGr7qw=;
+	s=arc-20240116; t=1740408658; c=relaxed/simple;
+	bh=y8K9xCeXCS0OuvPiz1YFL8Wqr+gJVn7Jgnlh5N29Cm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rk66QDt78QmqL5UR8nB2dv7Wb+1Ha6cxtS5+hnWhIb5ryrssUKM2Y0j0IEpC55SrDRUQGJyLAuRMm5s7TJfbx3ppc3Wb1D1nWx3V/E6wwp/A5G2Z/d0jC5QLh95GPWC3mn6m57IUHAJq7KqkjmcLLT5LqlnFSJ+1SsHZMikoeBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKeCJAi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923BDC4CED6;
-	Mon, 24 Feb 2025 14:58:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E81z1MYRpAFw5sb82zi9iA+phMqm125byUmmUqHaICs03oweRHcHChUXCiUtG7i8w4L4GxBqpVnJZqVEWsMp6SUgCUybnJYDPs7t1oTApGYgX+dvLlKWMhK9ReYYVWCMOAbs3o7gZTbW58mCekwZcrldcVw/xeSy3ZnTbuiL68w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoXZSebj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F57CC4CED6;
+	Mon, 24 Feb 2025 14:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409082;
-	bh=fv3c86jd9ZSXZOoEZ3aaQ2iW/ilzKbvDj0CnLxGr7qw=;
+	s=korg; t=1740408657;
+	bh=y8K9xCeXCS0OuvPiz1YFL8Wqr+gJVn7Jgnlh5N29Cm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKeCJAi6cJz54mY8zwgmSIgmiU16pSwAw081Y73SCTEjEhgSVl9J5w/lYuoeO6YoZ
-	 fsM0wNyqi1tU/a3E7Hc7DfCGYjDAScLeB3YDYhz7Cao21F7IImbImtFS9A4YFetpjy
-	 YczhdRpM2TtFINnBY5elIyHYnf9gMKeCbc4/iODs=
+	b=FoXZSebjKsIt0kzKCZiqLRQGxEzQVzGQX8KL5IiA/gzPvhciYSQOldXUCEk5w7LgL
+	 j5Lu+X4AKEVE2UsumegknEJtnepG9fEf8xhVMK6Cj+kMCn34sJZgTji1DIp8qrsLY0
+	 anQwKsE92bB9kKN6dCte+cYy83uJ7sdXpVO1dLNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 090/138] drm/i915: Make sure all planes in use by the joiner have their crtc included
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.12 121/154] arm64: dts: rockchip: Disable DMA for uart5 on px30-ringneck
 Date: Mon, 24 Feb 2025 15:35:20 +0100
-Message-ID: <20250224142608.014723098@linuxfoundation.org>
+Message-ID: <20250224142611.791200658@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 
-commit 07fb70d82e0df085980246bf17bc12537588795f upstream.
+commit 5ae4dca718eacd0a56173a687a3736eb7e627c77 upstream.
 
-Any active plane needs to have its crtc included in the atomic
-state. For planes enabled via uapi that is all handler in the core.
-But when we use a plane for joiner the uapi code things the plane
-is disabled and therefore doesn't have a crtc. So we need to pull
-those in by hand. We do it first thing in
-intel_joiner_add_affected_crtcs() so that any newly added crtc will
-subsequently pull in all of its joined crtcs as well.
-
-The symptoms from failing to do this are:
-- duct tape in the form of commit 1d5b09f8daf8 ("drm/i915: Fix NULL
-  ptr deref by checking new_crtc_state")
-- the plane's hw state will get overwritten by the disabled
-  uapi state if it can't find the uapi counterpart plane in
-  the atomic state from where it should copy the correct state
+UART controllers without flow control seem to behave unstable
+in case DMA is enabled. The issues were indicated in the message:
+https://lore.kernel.org/linux-arm-kernel/CAMdYzYpXtMocCtCpZLU_xuWmOp2Ja_v0Aj0e6YFNRA-yV7u14g@mail.gmail.com/
+In case of PX30-uQ7 Ringneck SoM, it was noticed that after couple
+of hours of UART communication, the CPU stall was occurring,
+leading to the system becoming unresponsive.
+After disabling the DMA, extensive UART communication tests for
+up to two weeks were performed, and no issues were further
+observed.
+The flow control pins for uart5 are not available on PX30-uQ7
+Ringneck, as configured by pinctrl-0, so the DMA nodes were
+removed on SoM dtsi.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250212164330.16891-2-ville.syrjala@linux.intel.com
-(cherry picked from commit 91077d1deb5374eb8be00fb391710f00e751dc4b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250121125604.3115235-3-lukasz.czechowski@thaumatec.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6641,12 +6641,30 @@ static int intel_async_flip_check_hw(str
- static int intel_joiner_add_affected_crtcs(struct intel_atomic_state *state)
- {
- 	struct drm_i915_private *i915 = to_i915(state->base.dev);
-+	const struct intel_plane_state *plane_state;
- 	struct intel_crtc_state *crtc_state;
-+	struct intel_plane *plane;
- 	struct intel_crtc *crtc;
- 	u8 affected_pipes = 0;
- 	u8 modeset_pipes = 0;
- 	int i;
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+@@ -374,6 +374,8 @@
+ };
  
-+	/*
-+	 * Any plane which is in use by the joiner needs its crtc.
-+	 * Pull those in first as this will not have happened yet
-+	 * if the plane remains disabled according to uapi.
-+	 */
-+	for_each_new_intel_plane_in_state(state, plane, plane_state, i) {
-+		crtc = to_intel_crtc(plane_state->hw.crtc);
-+		if (!crtc)
-+			continue;
-+
-+		crtc_state = intel_atomic_get_crtc_state(&state->base, crtc);
-+		if (IS_ERR(crtc_state))
-+			return PTR_ERR(crtc_state);
-+	}
-+
-+	/* Now pull in all joined crtcs */
- 	for_each_new_intel_crtc_in_state(state, crtc, crtc_state, i) {
- 		affected_pipes |= crtc_state->joiner_pipes;
- 		if (intel_crtc_needs_modeset(crtc_state))
+ &uart5 {
++	/delete-property/ dmas;
++	/delete-property/ dma-names;
+ 	pinctrl-0 = <&uart5_xfer>;
+ };
+ 
 
 
 
