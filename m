@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-119259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF36BA4254D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:07:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A448A425A9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C0742372D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 597523AB7E3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6836521930E;
-	Mon, 24 Feb 2025 14:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00EE233720;
+	Mon, 24 Feb 2025 14:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFty5kqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kuv1z3Bc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2375117C21C;
-	Mon, 24 Feb 2025 14:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC83117C21C;
+	Mon, 24 Feb 2025 14:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408856; cv=none; b=BjlpKDk6yo37t+8yrGJVkLFYzJBGessLM4XYAIIKIMxSVYTp8bQ9nyRGHgKz3OJhotU0lz9eSoQJwaiKCs+lh/n2lQb4eDTHFy4Lhd6kFRJmPbJjKbzXlFFX8+zKDvjS1hy0UhGYXKbwNSnrmQrQHHfqe6RqpSgoyYgSViL4Vwc=
+	t=1740408862; cv=none; b=q9NrO/sEqAbSsxK0BYgVCIBBKWIa0Ck6p4ePN2dWJBOrxj8QBM5s86ZTZZd7JD4sDEF3bivtMMn0RInDCfEgN24aPF65O9heAVS+hAr7sw+DyOAFX04+rj1szYwMXTx7GgWdXzkqiHrpgK3K7KGufi+GH/UP756pJCFiLZQmLw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408856; c=relaxed/simple;
-	bh=7Uyzj1/uFguS099BnYQLRhjlPXfsnMOslFAdVz9rNx0=;
+	s=arc-20240116; t=1740408862; c=relaxed/simple;
+	bh=Bg135oZRcWJ+J1LCFxJ1COiIsg/PX5zj3vPSFihlPgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fAUMOP8CKIGQrFkD59HWX7nESfmt49mmMiSdB+mypO8Me+QVHOr8ZofGdpt/qxYu2iglQh8IFEyQRVflnoDKLChZZehruvkkVI1eDkQdrY8TrAFQZQ+zHP9ZsnJS45IZRh76CXDAKIsDmCw8y35u5l8aYsy9uqablM2Xmf5FUUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFty5kqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759B9C4CED6;
-	Mon, 24 Feb 2025 14:54:15 +0000 (UTC)
+	 MIME-Version; b=a+R3dJ0HHbxDah4HcIwEEmoF76avJ4/OcGpiaxYL2RxZ9HUGu3XK4DPiblUwB3n57SVqjc8eXUHIC1xUEmZcAcfXalLN8OnFh+4lSXizogkjgBydlEuRU+hGUdFIHxML2eN9iI7ZcaaMyuQGccBpTqpEM51WLbaiXKgRBMBN2u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kuv1z3Bc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15547C4CED6;
+	Mon, 24 Feb 2025 14:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408856;
-	bh=7Uyzj1/uFguS099BnYQLRhjlPXfsnMOslFAdVz9rNx0=;
+	s=korg; t=1740408862;
+	bh=Bg135oZRcWJ+J1LCFxJ1COiIsg/PX5zj3vPSFihlPgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFty5kqywXvnIxqPYLlK95kexq+dv9GA7g9pftIUxjZuanQ1N6AwTpPXdfN8HFISu
-	 HomynAc8UX1pmh9O1iYpG0V2AuXgMWKVks8fRUZucuuUmrQTTRjl6eiaocKfIclVfz
-	 Rd2JJP/GfcOsq5Fyvm3bONIX5QVXunnMG+H5dJLM=
+	b=Kuv1z3Bc75rZv3GCIAnpafzyLk3HxyN5YU64SZ/fKlhD/sDG9YOxcZfXXTEZBHfbS
+	 qN2LVEParnvRRhBtuS57mi1w/OnRSgmrpHCGn24i9c15v0ULD1cbqAJyhHi2OagKAH
+	 IK7RwL/4l1q6WkuyLms3XmUzhcmc2NOf8nIo6zyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Lo-An Chen <lo-an.chen@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 006/138] drm/amd/display: Correct register address in dcn35
-Date: Mon, 24 Feb 2025 15:33:56 +0100
-Message-ID: <20250224142604.703433579@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>
+Subject: [PATCH 6.13 008/138] Bluetooth: qca: Fix poor RF performance for WCN6855
+Date: Mon, 24 Feb 2025 15:33:58 +0100
+Message-ID: <20250224142604.782381853@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -69,38 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: loanchen <lo-an.chen@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit f88192d2335b5a911fcfa09338cc00624571ec5e ]
+[ Upstream commit a2fad248947d702ed3dcb52b8377c1a3ae201e44 ]
 
-[Why]
-the offset address of mmCLK5_spll_field_8 was incorrect for dcn35
-which causes SSC not to be enabled.
+For WCN6855, board ID specific NVM needs to be downloaded once board ID
+is available, but the default NVM is always downloaded currently.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Lo-An Chen <lo-an.chen@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+The wrong NVM causes poor RF performance, and effects user experience
+for several types of laptop with WCN6855 on the market.
+
+Fix by downloading board ID specific NVM if board ID is available.
+
+Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
+Cc: stable@vger.kernel.org # 6.4
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Steev Klimaszewski <steev@kali.org> #Thinkpad X13s
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btqca.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 6d6cb8ef59db0..2e435ee363fed 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -89,7 +89,7 @@
- #define mmCLK1_CLK4_ALLOW_DS 0x16EA8
- #define mmCLK1_CLK5_ALLOW_DS 0x16EB1
- 
--#define mmCLK5_spll_field_8 0x1B04B
-+#define mmCLK5_spll_field_8 0x1B24B
- #define mmDENTIST_DISPCLK_CNTL 0x0124
- #define regDENTIST_DISPCLK_CNTL 0x0064
- #define regDENTIST_DISPCLK_CNTL_BASE_IDX 1
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 5cb1fd1a0c7b5..04d02c746ec0f 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -905,8 +905,9 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 				 "qca/msnv%02x.bin", rom_ver);
+ 			break;
+ 		case QCA_WCN6855:
+-			snprintf(config.fwname, sizeof(config.fwname),
+-				 "qca/hpnv%02x.bin", rom_ver);
++			qca_read_fw_board_id(hdev, &boardid);
++			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
++						  "hpnv", soc_type, ver, rom_ver, boardid);
+ 			break;
+ 		case QCA_WCN7850:
+ 			qca_get_nvm_name_by_board(config.fwname, sizeof(config.fwname),
 -- 
 2.39.5
 
