@@ -1,100 +1,119 @@
-Return-Path: <stable+bounces-119385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA9DA42699
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:42:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07E9A426BB
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C8AB1893331
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 930FD4418B5
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B53B2192EB;
-	Mon, 24 Feb 2025 15:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC6E2561A8;
+	Mon, 24 Feb 2025 15:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lmgCafSl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hbygH3ul"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B498924EF7C;
-	Mon, 24 Feb 2025 15:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C921A0BD6
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 15:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740411402; cv=none; b=U/oGZXt7kEq6nMb0+7OloVOSnf4yt8toA2xy7FtE+PgTyIPXeDiZBhvzxhgyn7GV0xfR0dInHQX/vWlt0NDshAybvXBFDGJI1yTuIcCWv8oEJvHA7mN73kQFc1S/roeYN/eJMqsCbXxHZtAnqhtgCaRwOvoYztD68etSvlFrlew=
+	t=1740411492; cv=none; b=TY1HWP+oIC0UGxWIc3l9VrBeK245GHQzTlB6vTwr+7++yveSI40ZmBuN4xUKdOttXYwV2HtaWzJ5pDqQKSdQ6Q5F4+w+rZmMqIk715lVjbksWAWfe/iQrmyDtR2FV9+/DSjhACIjkhq74ypibyKsEu1P+EiZ8pf2WSu7d+0yOGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740411402; c=relaxed/simple;
-	bh=8e+QUEACEMP9vSayM7dLVeCNo0bcfzKj1qkl0cfnorU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RtnXzj9A7HWQptMATfTiCS0A7Jg4Q00/pXSS8i/o1kCq0aQZsQHW4CKRzj3k+wer8+Cfxxr60he+lLUi5WMiMsFkyAcSC+FfDMY6v/9KbsuxS7zWofO5uljhb33xCzX/vRXIFRRthET5ffivnSprCeGfjnCkMENeP4H++n5XTkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lmgCafSl; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0475444281;
-	Mon, 24 Feb 2025 15:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740411397;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8e+QUEACEMP9vSayM7dLVeCNo0bcfzKj1qkl0cfnorU=;
-	b=lmgCafSlaWX4FJWfhbRr3/uGb3GKmpOjg+NFrXJ3TbBCjaRJsqeYCRiGP/NbQNyQNbfq/G
-	ZCxnWXScG4vU/fFl6+AVipSym7D8L0BQCnmnMShCKmqQsuIySZoU5c/DvxvuPSvbh9MZIs
-	I+a12r8ylTg4MZQHt0YMc3APuWtqfrKhEZrzPwg5o6AkSpdaTgqgIewpPQ8ISNfbdXMtGA
-	0t+hNpfijn+NJ7TsV4EmWUiPAsXaBJkKxFKFYlbRvebgDOZGfCRBZ0+o7GxzhbUIiCpXPn
-	T7Iwh0CldgCkZMz1EzAnpIfhj4WD40xwlTPcsELFHK8pn+CV8xNG6fD2+/TjPQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: richard@nod.at,  vigneshr@ti.com,  David.Woodhouse@intel.com,
-  jarkko.lavinen@nokia.com,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH] mtd: Fix potential UAF for mtdswap_dev pointers
-In-Reply-To: <20250224133007.3037357-1-make24@iscas.ac.cn> (Ma Ke's message of
-	"Mon, 24 Feb 2025 21:30:07 +0800")
-References: <20250224133007.3037357-1-make24@iscas.ac.cn>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 24 Feb 2025 16:36:30 +0100
-Message-ID: <875xkzfj7l.fsf@bootlin.com>
+	s=arc-20240116; t=1740411492; c=relaxed/simple;
+	bh=+ll2EL/HRbmFdt3KQ3pxPazIlysrePz+isuU7/xCrus=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DN7vx12eW4HfAiene5YPyMHpWqSoaflS2SWx/sQouF/CLK0zEMnFdaqdQP0enrZYGo+cqwCRD4jZtjklSvMLUwvJbIJWketky6ufpHfgAR3G1jCL8I1ksg8fvgFLoBrErAyJYnrMwuUBHLWMJoN4rTjocBYdors9I16V0iRS1J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hbygH3ul; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740411490; x=1771947490;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+ll2EL/HRbmFdt3KQ3pxPazIlysrePz+isuU7/xCrus=;
+  b=hbygH3ulA5EAJOpP2/wTVG8NSPntMshf4ieSnzKpmQBcoSOTT/VvsLnB
+   1/Clggfa1KmZ1cp3BCiff9seefVormEZiK+oWrnd6RRyXLt1pZFDNN3mg
+   TNYm8hwO19T1odc3iygf/8kEMEEbdWq69E45xRaeIpJAJDRGkbDimGF2k
+   A+7YcRFb3FkBnLD5accliChL3xekCsX3q/CbvjD380jqTYQRjilV53A6I
+   +9fQrijpdHLfMPMss/8lg3laY1pUsQbv9eSC9SNHcXGRyFcY6nVszOlXk
+   F//VO+u3XyqB03atDsGkmi6JHpYw/tY4TMHNgrEcEpMGpWZ9MfnJ0E1Y4
+   A==;
+X-CSE-ConnectionGUID: BSE+bAFLQfqKhKBGoGtu4A==
+X-CSE-MsgGUID: 1krr1RKCQLiWxlR5088QCw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="44824823"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="44824823"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:38:10 -0800
+X-CSE-ConnectionGUID: gV2yU88sR/KOusIXCrnQlA==
+X-CSE-MsgGUID: /e+hzTBTSU+qeXAeDtHezg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="116068980"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:38:08 -0800
+From: Imre Deak <imre.deak@intel.com>
+To: stable@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12.y] drm/i915/dsi: Use TRANS_DDI_FUNC_CTL's own port width macro
+Date: Mon, 24 Feb 2025 17:39:10 +0200
+Message-ID: <20250224153910.1960010-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <2025022418-clergyman-hacker-f7f7@gregkh>
+References: <2025022418-clergyman-hacker-f7f7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejleduiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffeghfejtdefieeguddukedujeektdeihfelleeuieeuveehkedvleduheeivdefnecukfhppedvudejrdduuddvrddukeelrddukedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddujedrudduvddrudekledrudekuddphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepkedprhgtphhtthhopehmrghkvgdvgeesihhstggrshdrrggtrdgtnhdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtohepffgrvhhiugdrhghoohguhhhouhhsvgesihhnthgvlhdrtghomhdprhgtphhtthhopehjrghrkhhkohdrlhgrvhhinhgvnhesnhhokhhirgdrtghomhdprhgtphhtthhopehlihhnu
- higqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Hello Ma,
+commit 76120b3a304aec28fef4910204b81a12db8974da upstream.
 
-On 24/02/2025 at 21:30:07 +08, Ma Ke <make24@iscas.ac.cn> wrote:
+The format of the port width field in the DDI_BUF_CTL and the
+TRANS_DDI_FUNC_CTL registers are different starting with MTL, where the
+x3 lane mode for HDMI FRL has a different encoding in the two registers.
+To account for this use the TRANS_DDI_FUNC_CTL's own port width macro.
 
-> In the mtdswap_init(), if the allocations fail, the error handling
-> path frees d->page_buf, d->eb_data, d->revmap and d->page_data without
-> setting these pointers to NULL. This could lead to UAF if subsequent
-> error handling or device reset operations attempt to release these
-> pointers again.
->
-> Set d->page_buf, d->eb_data, d->revmap and d->page_data to NULL
-> immediately after freeing them to prevent misuse. Release immediately
-> and set to NULL, adhering to the 'release implies invalid' defensive
-> programming principle.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: a32159024620 ("mtd: Add mtdswap block driver")
+Cc: <stable@vger.kernel.org> # v6.5+
+Fixes: b66a8abaa48a ("drm/i915/display/mtl: Fill port width in DDI_BUF_/TRANS_DDI_FUNC_/PORT_BUF_CTL for HDMI")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-2-imre.deak@intel.com
+(cherry picked from commit 76120b3a304aec28fef4910204b81a12db8974da)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 879f70382ff3e92fc854589ada3453e3f5f5b601)
+[Imre: Rebased on v6.12.y, due to upstream API changes in
+ intel_de_read(), TRANS_DDI_FUNC_CTL()]
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ drivers/gpu/drm/i915/display/icl_dsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I am sorry but are you really fixing something? There are thousand of
-drivers doing nothing with their freed pointers in the error path,
-because they just cannot be used anymore.
+diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
+index 293efc1f841df..834ec19b303d5 100644
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -800,8 +800,8 @@ gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
+ 		/* select data lane width */
+ 		tmp = intel_de_read(dev_priv,
+ 				    TRANS_DDI_FUNC_CTL(dev_priv, dsi_trans));
+-		tmp &= ~DDI_PORT_WIDTH_MASK;
+-		tmp |= DDI_PORT_WIDTH(intel_dsi->lane_count);
++		tmp &= ~TRANS_DDI_PORT_WIDTH_MASK;
++		tmp |= TRANS_DDI_PORT_WIDTH(intel_dsi->lane_count);
+ 
+ 		/* select input pipe */
+ 		tmp &= ~TRANS_DDI_EDP_INPUT_MASK;
+-- 
+2.44.2
 
-Thanks,
-Miqu=C3=A8l
 
