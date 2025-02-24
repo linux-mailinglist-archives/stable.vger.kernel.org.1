@@ -1,193 +1,161 @@
-Return-Path: <stable+bounces-118701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DAFA4156E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:35:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4362FA41581
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2F363B64FF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 06:34:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBBB77A1E29
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 06:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107881DE2A5;
-	Mon, 24 Feb 2025 06:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PBEqBgS3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9C61DB15B;
+	Mon, 24 Feb 2025 06:37:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11681DB15B
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 06:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934991AB531;
+	Mon, 24 Feb 2025 06:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740378871; cv=none; b=HtYVL0iYhTuRql56oOGhCOt4pNy/oWVratMECffp3cj+o016k5f7Evg1+rx1EbgOc//DtMIyJT5D2IWRs9Vfaj+Psx9Sc1b39FJJ0r2QEVi8DTSTPhu/hUT82nO2auUIStRPKJUreh4eSMHKAYF4s7ANVmaXGp5Z0B85k1iDJpQ=
+	t=1740379038; cv=none; b=naKswtc94TFUl/5w0PhCFjzcCwAvXWAi1crFLUo5vRoi2WHI/UhCC2SZ+ATC1bRkgRvBv0IDUGVq6Mu8ue6NzpCJL/dGt9H8M+I9P0VwzjarAO9o2EZ88on8E6PNFmZG4WxoMxp5c44JhqAOjz/Jfg22+IX5Nza5P1cpbvM2Jog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740378871; c=relaxed/simple;
-	bh=fQDRfw3EhrfUd3Fny4Nab7kzxfYkmF1PMtyrdiyxXes=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qDDmC84KyCSvYgYpsKYIaznEhquqwtIof6POWXeW6EmWLxkzpR5vcy2ECX95QTYjrZu7tJenJRHikQgS7DmDJ4lKO4fZBhTH9ynBvQy2pfzbwNMwzMbjI8JgO36dsbKZqDcO5BXmmCtVlAOR5L2afw56eXhq9Ly2fTxDOzy9M+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PBEqBgS3; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30738a717ffso30801021fa.0
-        for <stable@vger.kernel.org>; Sun, 23 Feb 2025 22:34:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1740378868; x=1740983668; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UDmIbBVBrmOqaPqtm3OIVdTs+1YkPggGmmD9ociAVJQ=;
-        b=PBEqBgS3YR41UqftH4NkXcKxWKThvVldMJUUckucV8R5jFl8z9Ib/PROfOljIeZE47
-         XMaH7wGtwY2fCfhSutNBjtLMKu6HnzKLE9IpJgBVlFIC2Od7DIhx4522fOA4xw7zwLA6
-         KIziMosLwMCAoqbHCxQI1zpbuq5sUtkfHIB9k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740378868; x=1740983668;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UDmIbBVBrmOqaPqtm3OIVdTs+1YkPggGmmD9ociAVJQ=;
-        b=J8HiOuaQiLr8F1ORf9odT6/EPhaIbIkjC6yoQ+Y88IlfTBvnBRvMnyraWZw8f41ek3
-         JuDCU8tjvP5hioXsQ19cgYeLjz6UUWRHIL9WmhoSIjmEdYBdhbUKVNdBh+YM8Pip+10l
-         s7WfoR1ew9kdtC2b43Mfic873F+5vY3LoYCh9pAlv1fX9aAk9MthTzI9vJhQZP9GW+K3
-         tB++ARzO+hmTKsFeBBExoUUZgSBmm/wpKTYzaLwvarvrxMLeikfjSAfyYmbZD+a9Pzze
-         OU8R9tVz9/nAEUt59zzArEUHTKEIqVEdKfx7E4aoy7i4XPV6LUd7V+Id9usjPSRs3CKF
-         zR2w==
-X-Forwarded-Encrypted: i=1; AJvYcCW/3S+5rkf38PLnl/e1sTBo7btx10QtOlqCgrKc+qowXgsXl+m7vLcFXbcuUUeQgMX3n974hdo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuqAe9EWTmdFAG/0Cnsku23pYNoiWjIlMjrmGhQGDjEg8NXx5q
-	mS2fQFmKlBDH10CsUWlin9lvbDJ8RyqDxoH+ZofVqbxWIlBdkdWITEaVW2c2J+eUHgpwwQGSEeV
-	Wjg==
-X-Gm-Gg: ASbGncsLVqB+XoHW6uma/iFVibwqcBtGS3PWfkooALhwlEHLjII7AjfTfe79i3Vv3qc
-	ssB/1C6kBfC1SFRe7qxBgGiUiBbqrwsdi5V+MLMYCP5LSTY3P18S3WIvrG6v2//1lfHTfViVFok
-	FjoH57ryx9TKB6vUF+z014yFW8fuIc9g/A+S5VJUDlKxZgsfQvR+bOlGJxhuB9BgtB1T2i+m3ss
-	r6Cohek87VtF6xkpArc76oTQ7AwDnlDWudZjty9PBbJ+58dKlZMzVde8RyqLliHXAitBjV/lKDM
-	hS41UJCduW2BT1QRhJk4Uzm6PNF77x/UZTxEHy/4UlZ7HtzXW60AxXiTE7p1eGig
-X-Google-Smtp-Source: AGHT+IGbuiGC3IhgUduZhFnQP7KcwSipD3e4Jf8cXccOD1kzAG3ejaGtDKnX+CqxR04W8nPqoIuFWg==
-X-Received: by 2002:a05:6512:3f20:b0:545:2d80:a482 with SMTP id 2adb3069b0e04-54838d3d881mr4115099e87.0.1740378867888;
-        Sun, 23 Feb 2025 22:34:27 -0800 (PST)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5462f125a0esm1490883e87.24.2025.02.23.22.34.22
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Feb 2025 22:34:22 -0800 (PST)
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5461dab4bfdso4965665e87.3
-        for <stable@vger.kernel.org>; Sun, 23 Feb 2025 22:34:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXntKC2i46qOL0Lar5YTtlREkHq2lg064fluS6M4lpnfaV8PeC2HfVYKdlifGYlBNvqppmLIUc=@vger.kernel.org
-X-Received: by 2002:a05:6512:3ca5:b0:545:2ee6:84a8 with SMTP id
- 2adb3069b0e04-54838ee76c0mr4652920e87.14.1740378861858; Sun, 23 Feb 2025
- 22:34:21 -0800 (PST)
+	s=arc-20240116; t=1740379038; c=relaxed/simple;
+	bh=Jc+2WNUmjLGHyuFYszJFy8/ImzfdaZ4fJ76+p/vwYoc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kqb845et3U3BmdG+RyCM+3o5iU3wn3mnbI/XJCEnb0WUE1yuZmH59KDQcrmT5v2x4eNAMO36/7P2glvI3EIZURw1nx0pivF10uW/VHCJh0ptLVqV3ETg9nMF6tLA8XRWVtb4coqZYDyROeQbeaZ0lbGSjIxo9x3ZwP7T6aTy+vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O5C2RX002897;
+	Sun, 23 Feb 2025 22:36:55 -0800
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 44yar7hp93-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 23 Feb 2025 22:36:54 -0800 (PST)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Sun, 23 Feb 2025 22:36:54 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Sun, 23 Feb 2025 22:36:50 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <cratiu@nvidia.com>, <saeedm@nvidia.com>, <leon@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <roid@nvidia.com>, <netdev@vger.kernel.org>,
+        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <dtatulea@nvidia.com>, <tariqt@nvidia.com>, <zhe.he@windriver.com>
+Subject: [PATCH 6.6.y] net/mlx5e: Don't call cleanup on profile rollback failure
+Date: Mon, 24 Feb 2025 14:36:50 +0800
+Message-ID: <20250224063650.2397912-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121-nuvoton-v1-0-1ea4f0cdbda2@chromium.org>
- <20250121-nuvoton-v1-1-1ea4f0cdbda2@chromium.org> <df5693d0-7747-4423-809e-ae081c9aae92@xs4all.nl>
- <dffc8e0b-2603-4e7e-ba64-15691c11ff7e@xs4all.nl> <CANiDSCsMCSJMEsY3R=pnZ4XUTiEYuPz-N1kEX7y13yTzE6Dm5w@mail.gmail.com>
- <2025022426-lilly-next-72e0@gregkh>
-In-Reply-To: <2025022426-lilly-next-72e0@gregkh>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 24 Feb 2025 07:34:09 +0100
-X-Gmail-Original-Message-ID: <CANiDSCvr5Fz2CE7Vx5gk_r=JFHwpT-w=7GGgZ-MN8FkjQyp+yA@mail.gmail.com>
-X-Gm-Features: AWEUYZneujeUqRzowTHsCuBd_481VOXalvBfDTLy1Zv-JKeySU-2ECz97LHUiDc
-Message-ID: <CANiDSCvr5Fz2CE7Vx5gk_r=JFHwpT-w=7GGgZ-MN8FkjQyp+yA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] media: nuvoton: Fix reference handling of ece_pdev
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: Hans Verkuil <hverkuil@xs4all.nl>, Joseph Liu <kwliu@nuvoton.com>, 
-	Marvin Lin <kflin@nuvoton.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Marvin Lin <milkfafa@gmail.com>, linux-media@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, sashal@kernel.or
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: woJEHtJ8A_wJquBsPPk-rp0fIpslxwCZ
+X-Authority-Analysis: v=2.4 cv=Be0i0qt2 c=1 sm=1 tr=0 ts=67bc1386 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=T2h4t0Lz3GQA:10 a=Ikd4Dj_1AAAA:8 a=20KFwNOVAAAA:8 a=t7CeM3EgAAAA:8 a=Ba9Sw2FB-nAdYA35_e8A:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: woJEHtJ8A_wJquBsPPk-rp0fIpslxwCZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_02,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ phishscore=0 suspectscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ malwarescore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
+ definitions=main-2502240047
 
-On Mon, 24 Feb 2025 at 06:52, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Sun, Feb 23, 2025 at 07:34:30PM +0100, Ricardo Ribalda wrote:
-> > On Fri, 21 Feb 2025 at 10:18, Hans Verkuil <hverkuil@xs4all.nl> wrote:
-> > >
-> > > On 21/02/2025 10:04, Hans Verkuil wrote:
-> > > > Hi Ricardo,
-> > > >
-> > > > On 21/01/2025 22:14, Ricardo Ribalda wrote:
-> > > >> When we obtain a reference to of a platform_device, we need to release
-> > > >> it via put_device.
-> > > >>
-> > > >> Found by cocci:
-> > > >> ./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-> > > >> ./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-> > > >> ./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-> > > >> ./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-> > > >
-> > > > This driver uses this construct:
-> > > >
-> > > >                 struct device *ece_dev __free(put_device) = &ece_pdev->dev;
-> > > >
-> > > > to automatically call put_device. So this patch would 'put' the device twice.
-> > > >
-> > > > Does cocci understand constructs like this? If I hadn't looked closely at the
-> > > > code first, I would just have merged it.
-> > >
-> > > Oh wait, now that I am reading the following patches I see that it was those later
-> > > patches that add the __free code.
-> > >
-> > > This is far too confusing. Please post a v2 that just combines the 'fix references'
-> > > and 'use cleanup.h macros' in a single patch. It makes no sense to have this two-phase
-> > > approach.
-> >
-> > I believe this is discouraged.
-> >
-> > cleanup.h macros does not exist in old kernel versions, so makes it
-> > impossible to backport the fix to them.
->
-> That's not a problem, fix things properly in the main tree and let the
-> stable/lts kernels work it out on their own.
->
-> > This is an example of other series following this policy:
-> > https://lore.kernel.org/lkml/173608125422.1253657.3732758016133408588.stgit@devnote2/
-> >
-> > They also mention the same here:
-> > https://hackerbikepacker.com/kernel-auto-cleanup-1 .... I am pretty
-> > sure that I read the policy in a more official location... but I
-> > cannot find it right now :)
->
-> No, it is NOT official policy at all.  Otherwise you would be saying
-> that no one could use these new functions for 6 years just because of
-> really old kernels still living around somewhere.  That's not how kernel
-> development works, thankfully.
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-No, I am not saying that we cannot use cleanup.h for 6 years.
+[ Upstream commit 4dbc1d1a9f39c3711ad2a40addca04d07d9ab5d0 ]
 
-What I am saying is that first we fix the errors without it, and then
-we move to cleanup.h. All in the same series:
-1/2 Fix reference handling (cc: stable)
-2/2 Use cleanup.h
+When profile rollback fails in mlx5e_netdev_change_profile, the netdev
+profile var is left set to NULL. Avoid a crash when unloading the driver
+by not calling profile->cleanup in such a case.
 
-That way the fix (1/2) can be applied without changes to all the
-stable trees, and 2/2 can be ignored by them.
+This was encountered while testing, with the original trigger that
+the wq rescuer thread creation got interrupted (presumably due to
+Ctrl+C-ing modprobe), which gets converted to ENOMEM (-12) by
+mlx5e_priv_init, the profile rollback also fails for the same reason
+(signal still active) so the profile is left as NULL, leading to a crash
+later in _mlx5e_remove.
 
-The alternative is a patch that cannot be applied to stable and either
-you, the author or the maintainer have to backport to stable
-(basically implementing 1/2).  So no, we do not save work by just
-posting a cleanup.h version of the fix to the mailing list.
+ [  732.473932] mlx5_core 0000:08:00.1: E-Switch: Unload vfs: mode(OFFLOADS), nvfs(2), necvfs(0), active vports(2)
+ [  734.525513] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+ [  734.557372] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
+ [  734.559187] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: new profile init failed, -12
+ [  734.560153] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+ [  734.589378] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
+ [  734.591136] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
+ [  745.537492] BUG: kernel NULL pointer dereference, address: 0000000000000008
+ [  745.538222] #PF: supervisor read access in kernel mode
+<snipped>
+ [  745.551290] Call Trace:
+ [  745.551590]  <TASK>
+ [  745.551866]  ? __die+0x20/0x60
+ [  745.552218]  ? page_fault_oops+0x150/0x400
+ [  745.555307]  ? exc_page_fault+0x79/0x240
+ [  745.555729]  ? asm_exc_page_fault+0x22/0x30
+ [  745.556166]  ? mlx5e_remove+0x6b/0xb0 [mlx5_core]
+ [  745.556698]  auxiliary_bus_remove+0x18/0x30
+ [  745.557134]  device_release_driver_internal+0x1df/0x240
+ [  745.557654]  bus_remove_device+0xd7/0x140
+ [  745.558075]  device_del+0x15b/0x3c0
+ [  745.558456]  mlx5_rescan_drivers_locked.part.0+0xb1/0x2f0 [mlx5_core]
+ [  745.559112]  mlx5_unregister_device+0x34/0x50 [mlx5_core]
+ [  745.559686]  mlx5_uninit_one+0x46/0xf0 [mlx5_core]
+ [  745.560203]  remove_one+0x4e/0xd0 [mlx5_core]
+ [  745.560694]  pci_device_remove+0x39/0xa0
+ [  745.561112]  device_release_driver_internal+0x1df/0x240
+ [  745.561631]  driver_detach+0x47/0x90
+ [  745.562022]  bus_remove_driver+0x84/0x100
+ [  745.562444]  pci_unregister_driver+0x3b/0x90
+ [  745.562890]  mlx5_cleanup+0xc/0x1b [mlx5_core]
+ [  745.563415]  __x64_sys_delete_module+0x14d/0x2f0
+ [  745.563886]  ? kmem_cache_free+0x1b0/0x460
+ [  745.564313]  ? lockdep_hardirqs_on_prepare+0xe2/0x190
+ [  745.564825]  do_syscall_64+0x6d/0x140
+ [  745.565223]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ [  745.565725] RIP: 0033:0x7f1579b1288b
 
-The even better alternative is that cleanup.h is backported to all the
-stable trees.
+Fixes: 3ef14e463f6e ("net/mlx5e: Separate between netdev objects and mlx5e profiles initialization")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test.
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-
-Anyway, it is up to you and Sasha to decide. I will repost the series
-only using cleanup.h
-
-Best regards!
-
-
->
-> thanks,
->
-> greg k-h
-
-
-
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 6e431f587c23..b34f57ab9755 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -6110,7 +6110,9 @@ static void mlx5e_remove(struct auxiliary_device *adev)
+ 	mlx5e_dcbnl_delete_app(priv);
+ 	unregister_netdev(priv->netdev);
+ 	mlx5e_suspend(adev, state);
+-	priv->profile->cleanup(priv);
++	/* Avoid cleanup if profile rollback failed. */
++	if (priv->profile)
++		priv->profile->cleanup(priv);
+ 	mlx5e_destroy_netdev(priv);
+ 	mlx5e_devlink_port_unregister(mlx5e_dev);
+ 	mlx5e_destroy_devlink(mlx5e_dev);
 -- 
-Ricardo Ribalda
+2.25.1
+
 
