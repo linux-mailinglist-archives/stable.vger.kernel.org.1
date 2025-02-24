@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-119016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A48A423BC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:48:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4972A424A7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A44419C231F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50BC8425EF9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA531993B2;
-	Mon, 24 Feb 2025 14:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69ADC25487F;
+	Mon, 24 Feb 2025 14:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhWP1GDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjVHWrK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA54155308;
-	Mon, 24 Feb 2025 14:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABD8254873;
+	Mon, 24 Feb 2025 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408033; cv=none; b=sp+v+vAw/iSG9qwUE/wZv5t7hQD5f6t2BjE45N9ZGzxb01CPH2OAQOMD+rOh6BiX1H/oe8PkrVDyWIO9ALFd4lFOvX0N92yO3W6I7/Flp//Kwiu+Yc2GOfT01RaM1UzOMre5//CJpRIlwHXbZnQm0JN7fcfukRh7jNIjY9TevDA=
+	t=1740408457; cv=none; b=mFYH8meIwtt8EoBeE1I34suXfFeO+FT14e6Bc5pWZGAkgVPQ8Jqu2XPuyld/uDNVYnslskcXAhDM8PplTbexDS/S/XbTyedkvJpTUnuuyDs/tB0Tma704hi0dvWeChOOrLmq8OsTM40djlavGoRYFIRpEjNfR49+wcRoYMXGDFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408033; c=relaxed/simple;
-	bh=R5OO/tq7FBJv0LGImbE0aoVId3TXd1gHCmCI7xYrbtE=;
+	s=arc-20240116; t=1740408457; c=relaxed/simple;
+	bh=lrWt3OWdAW8Yf5GaMv6KsPVlml2WoW7gPx2630hA9W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLkgqnovhhzMVefgWGAyAZEX2dULQeLGdE9q6eks/8caDRseGzXiXqtGmDwwh0WEgqEobyCQpBI7/aUMwt69ILDL0audF33B7nK3mA1xZVpXXtPaFMp4rQSr6pSz92JaBx7rQAc3jwZQZDFsdn6Gy2ADgLIVsJLbg8lU42aH5Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhWP1GDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE478C4CED6;
-	Mon, 24 Feb 2025 14:40:32 +0000 (UTC)
+	 MIME-Version; b=pwvFfsPOFDE2NBKhj15nt6pwkcraneYTbuTCNpMNBibBOOmmDfU+NJ89cdPM8rxLOvLGVGlgaLvFWg24OZPNyJChPKC6O+SYazM44Xd9kzlk4R9w1lUAZwxwLlcVoEDpWepORfdtmt5cJVE98t8B6mNuAZVYyRPZQ9sKM9/JORY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjVHWrK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A58C4CED6;
+	Mon, 24 Feb 2025 14:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408033;
-	bh=R5OO/tq7FBJv0LGImbE0aoVId3TXd1gHCmCI7xYrbtE=;
+	s=korg; t=1740408456;
+	bh=lrWt3OWdAW8Yf5GaMv6KsPVlml2WoW7gPx2630hA9W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZhWP1GDkDLgaNc5BanAiw9Z+7XqhrRendfhW3kfEya5lbgMYgDtE2hcFKIpzs7/t9
-	 kJxnToMOXZh0zO5BKzIKe5sSi/wxrupTUAHl3hgP1mhZIJK2kFY0FHV1wm+RAqjNS5
-	 KEl24RbhALwHUUvSzmigOVgNnIyADTAr18D9hIaE=
+	b=QjVHWrK1zwIW2JsVKNszxcCCE2F0oKqLE2iOUNa2jyb+suWJoL0cey5XRSa7qIF6V
+	 4NhqgIVfj6Ldw+V+qoDC9TKgJzMZqu7iuzTCHa+Ebm/qFAVCRNfii7jtxDh29yRez4
+	 r0nFoe7kmhFOD47F6HccQQZ6+DBQSKmBVLR+NsmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Roy Luo <royluo@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/140] usb: gadget: core: flush gadget workqueue after device removal
-Date: Mon, 24 Feb 2025 15:34:22 +0100
-Message-ID: <20250224142605.489947277@linuxfoundation.org>
+Subject: [PATCH 6.12 064/154] net: pse-pd: pd692x0: Fix power limit retrieval
+Date: Mon, 24 Feb 2025 15:34:23 +0100
+Message-ID: <20250224142609.587711079@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Luo <royluo@google.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 399a45e5237ca14037120b1b895bd38a3b4492ea ]
+[ Upstream commit f6093c5ec74d5cc495f89bd359253d9c738d04d9 ]
 
-device_del() can lead to new work being scheduled in gadget->work
-workqueue. This is observed, for example, with the dwc3 driver with the
-following call stack:
-  device_del()
-    gadget_unbind_driver()
-      usb_gadget_disconnect_locked()
-        dwc3_gadget_pullup()
-	  dwc3_gadget_soft_disconnect()
-	    usb_gadget_set_state()
-	      schedule_work(&gadget->work)
+Fix incorrect data offset read in the pd692x0_pi_get_pw_limit callback.
+The issue was previously unnoticed as it was only used by the regulator
+API and not thoroughly tested, since the PSE is mainly controlled via
+ethtool.
 
-Move flush_work() after device_del() to ensure the workqueue is cleaned
-up.
+The function became actively used by ethtool after commit 3e9dbfec4998
+("net: pse-pd: Split ethtool_get_status into multiple callbacks"),
+which led to the discovery of this issue.
 
-Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Roy Luo <royluo@google.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250204233642.666991-1-royluo@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by using the correct data offset.
+
+Fixes: a87e699c9d33 ("net: pse-pd: pd692x0: Enhance with new current limit and voltage read callbacks")
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20250217134812.1925345-1-kory.maincent@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c | 2 +-
+ drivers/net/pse-pd/pd692x0.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index 1d58adc597a7e..a4120a25428e5 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1538,8 +1538,8 @@ void usb_del_gadget(struct usb_gadget *gadget)
+diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
+index 9f00538f7e450..7cfc36cadb576 100644
+--- a/drivers/net/pse-pd/pd692x0.c
++++ b/drivers/net/pse-pd/pd692x0.c
+@@ -1012,7 +1012,7 @@ static int pd692x0_pi_get_pw_limit(struct pse_controller_dev *pcdev,
+ 	if (ret < 0)
+ 		return ret;
  
- 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
- 	sysfs_remove_link(&udc->dev.kobj, "gadget");
--	flush_work(&gadget->work);
- 	device_del(&gadget->dev);
-+	flush_work(&gadget->work);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
- 	cancel_work_sync(&udc->vbus_work);
- 	device_unregister(&udc->dev);
+-	return pd692x0_pi_get_pw_from_table(buf.data[2], buf.data[3]);
++	return pd692x0_pi_get_pw_from_table(buf.data[0], buf.data[1]);
+ }
+ 
+ static int pd692x0_pi_set_pw_limit(struct pse_controller_dev *pcdev,
 -- 
 2.39.5
 
