@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-119297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64619A42587
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D98A42578
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A34C117A420
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B303B0772
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482631607B7;
-	Mon, 24 Feb 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E97B2571CE;
+	Mon, 24 Feb 2025 14:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICILYi9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vu8foTG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0454D84A35;
-	Mon, 24 Feb 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBD523BD1D;
+	Mon, 24 Feb 2025 14:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408986; cv=none; b=Z8kYK6hSJwkmPIwcEA3Z514byT80ksHacZ+cOCKfi6K3Fi+bjz5Vun2vXwEpJ3p0WrtDM9VURv4ymgvu24YV3Bvyquq2wkTVMU0eGlHnRnWQVbZLlb74KU1OXPNj/OspuY4aZwZ+nU27qSmPjnnIwZxJbxwuvTZ+WcFt5soWJhQ=
+	t=1740408561; cv=none; b=Q67J5mCrN1fip8/ksT84YiZZV3UNU8owgHIBM/zsoaKrJPj8dZ11wLK5HY63akLnieEL9skd1PkS4vQcR91NWWK7WPL1x9/700pvM4qYusT1l35jmfvxiMOCwplnidR3UcTWP21tOIEyRhiO/KwMQNtEq+qIWydyNHuXOPkLGEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408986; c=relaxed/simple;
-	bh=YRei2AEhMZTdLytwTHmyf45TIiT4OzNc5B8Kf4WnfoM=;
+	s=arc-20240116; t=1740408561; c=relaxed/simple;
+	bh=mbxhS6qxmAW4KQoQIOSDnRI8ezUe8bH6F+X2mIlIZnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOv/HJeot9GxREKRXIpjXsgtgZa5Bs6tE/+xaaLOoeT08KsxJDxHbPgS/LGtKbDqyg1S3sKW/nG5XtZzbeJ+xdiZ6xiMZt3MF6+AwRFnjitpQgw6C6HZX3vZALj4GlAFMLgTDPg2QcLYyCQi10nVbKtgocFXfycXpfaovI32s+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICILYi9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8297DC4CED6;
-	Mon, 24 Feb 2025 14:56:25 +0000 (UTC)
+	 MIME-Version; b=PfCHTw5IRUjoqTHuU/d9GhcF70plog29UfszT473K0Bn2GoMAesjHKIGN1fEpvoJwiqjrh6u4/2WzxuqCBp1E32YJ8L3+YTxh2OEOE7xNufuHNqDRpKhsVCBytSrLubD6XJAy0m2239qKJSkBtFqLejLeZnzAy+74bfgB15alCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vu8foTG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F107C4CEE6;
+	Mon, 24 Feb 2025 14:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408985;
-	bh=YRei2AEhMZTdLytwTHmyf45TIiT4OzNc5B8Kf4WnfoM=;
+	s=korg; t=1740408561;
+	bh=mbxhS6qxmAW4KQoQIOSDnRI8ezUe8bH6F+X2mIlIZnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICILYi9XL+M2kr7tksmPw9dEAc6YlVPDeO0QPS6jKn8oovtgCTiWcDP1r9SvRT3Rf
-	 z+6XHwcmL8zv0vs0pjvqDDDDQJ0J4w4dRLsZnLyV5sQ7zrdx8ETFKvSrSQGX8CVryB
-	 f62Cf0YRHrmjFMbWk0jf2SmWbNqWHh6fOtVmL8yw=
+	b=vu8foTG3J5iTQgloRekl3TyAEbro0C04OZpD5oBUmX6NF2e5fd6DAzcLPKucCIYSx
+	 5nmpxeBKu2rQUG8P6AlSpTNHjq4YCZ1JcPEHxOkYkt2x/Usi81VnTz4++6CVPFOP6W
+	 7q55VOxg4Qt6ubD3YxdE/5yqfZGycEbjwyvDpbjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 031/138] ALSA: seq: Drop UMP events when no UMP-conversion is set
+Subject: [PATCH 6.12 062/154] net: pse-pd: Avoid setting max_uA in regulator constraints
 Date: Mon, 24 Feb 2025 15:34:21 +0100
-Message-ID: <20250224142605.692709966@linuxfoundation.org>
+Message-ID: <20250224142609.511909268@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit e77aa4b2eaa7fb31b2a7a50214ecb946b2a8b0f6 ]
+[ Upstream commit 675d0e3cacc3ae7c29294a5f6a820187f862ad8b ]
 
-When a destination client is a user client in the legacy MIDI mode and
-it sets the no-UMP-conversion flag, currently the all UMP events are
-still passed as-is.  But this may confuse the user-space, because the
-event packet size is different from the legacy mode.
+Setting the max_uA constraint in the regulator API imposes a current
+limit during the regulator registration process. This behavior conflicts
+with preserving the maximum PI power budget configuration across reboots.
 
-Since we cannot handle UMP events in user clients unless it's running
-in the UMP client mode, we should filter out those events instead of
-accepting blindly.  This patch addresses it by slightly adjusting the
-conditions for UMP event handling at the event delivery time.
+Instead, compare the desired current limit to MAX_PI_CURRENT in the
+pse_pi_set_current_limit() function to ensure proper handling of the
+power budget.
 
-Fixes: 329ffe11a014 ("ALSA: seq: Allow suppressing UMP conversions")
-Link: https://lore.kernel.org/b77a2cd6-7b59-4eb0-a8db-22d507d3af5f@gmail.com
-Link: https://patch.msgid.link/20250217170034.21930-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: f6093c5ec74d ("net: pse-pd: pd692x0: Fix power limit retrieval")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_clientmgr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
-index 77b6ac9b5c11b..9955c4d54e42a 100644
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -678,12 +678,18 @@ static int snd_seq_deliver_single_event(struct snd_seq_client *client,
- 					  dest_port->time_real);
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 2906ce173f66c..9fee4dd53515a 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -357,6 +357,9 @@ static int pse_pi_set_current_limit(struct regulator_dev *rdev, int min_uA,
+ 	if (!ops->pi_set_current_limit)
+ 		return -EOPNOTSUPP;
  
- #if IS_ENABLED(CONFIG_SND_SEQ_UMP)
--	if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
--		if (snd_seq_ev_is_ump(event)) {
-+	if (snd_seq_ev_is_ump(event)) {
-+		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
- 			result = snd_seq_deliver_from_ump(client, dest, dest_port,
- 							  event, atomic, hop);
- 			goto __skip;
--		} else if (snd_seq_client_is_ump(dest)) {
-+		} else if (dest->type == USER_CLIENT &&
-+			   !snd_seq_client_is_ump(dest)) {
-+			result = 0; // drop the event
-+			goto __skip;
-+		}
-+	} else if (snd_seq_client_is_ump(dest)) {
-+		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
- 			result = snd_seq_deliver_to_ump(client, dest, dest_port,
- 							event, atomic, hop);
- 			goto __skip;
++	if (max_uA > MAX_PI_CURRENT)
++		return -ERANGE;
++
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
+ 	ret = ops->pi_set_current_limit(pcdev, id, max_uA);
+@@ -403,11 +406,9 @@ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
+ 
+ 	rinit_data->constraints.valid_ops_mask = REGULATOR_CHANGE_STATUS;
+ 
+-	if (pcdev->ops->pi_set_current_limit) {
++	if (pcdev->ops->pi_set_current_limit)
+ 		rinit_data->constraints.valid_ops_mask |=
+ 			REGULATOR_CHANGE_CURRENT;
+-		rinit_data->constraints.max_uA = MAX_PI_CURRENT;
+-	}
+ 
+ 	rinit_data->supply_regulator = "vpwr";
+ 
 -- 
 2.39.5
 
