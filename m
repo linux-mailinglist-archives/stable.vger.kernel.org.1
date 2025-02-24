@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A722CA424C9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0D0A42370
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9F9D426635
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 899857A256A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D30714D28C;
-	Mon, 24 Feb 2025 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB5223BCE6;
+	Mon, 24 Feb 2025 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nCU1U/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Thh5aFOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C078F824A3;
-	Mon, 24 Feb 2025 14:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DACE191F66;
+	Mon, 24 Feb 2025 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408543; cv=none; b=Z+bz2o6/kwswStmmLzhqk7rX/bAoTApvUDvYcV4Y+A12KOfd4hSbdu9h5Zsh8zbcA57kwLJ9b4a3JyoWFM2RFSoTD7gW7U0mLy3oP3Owj1HZnyzWCOc6aXQEuStJDxNCg+gCCLwLOUohp9jIPL18g1B3KrFIaLdbLxT3GdXHDyA=
+	t=1740408056; cv=none; b=GjdKXj4+5Arjdz7UBPzQS4JaUR8Gw7oF+/ZSHnUefeKaGL98+/3vXrGleInTf0FwxsPdsfwwEUlnFAsRTgA35lEMu5yEDSTHNUzbguExP+fsxDsVYOhHBzY+51ozRNxU+s5zTyMK0FbtKs/WQiMdeCvXEMl7wTw7b/Qj1v+7LSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408543; c=relaxed/simple;
-	bh=J7L90U4nRH78G/ZUEsKpU7EKlK78k9IWfp5glK/6F7Q=;
+	s=arc-20240116; t=1740408056; c=relaxed/simple;
+	bh=EmuCzDXMIxfgBxXFWhCZ93uc3UKq41DTqNw5purtRpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PH85+Qg3ZLA1TzxWOmL2F4dV/4HBv6rLSx2YCVT2BUkycgFwTA/vrvDBegtlW1mkReC1DJdzkDlICCJ47VSPXLhufEGrPFXQCu5BIMYC5LBg502Sh/AfKoBFopZG1nf3rOMKIKrW8s3GxwCIeW34ZBwr0AUxuIHyGx39nYV4unc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nCU1U/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F26C4CED6;
-	Mon, 24 Feb 2025 14:49:02 +0000 (UTC)
+	 MIME-Version; b=i6PXSak+vMnvzrWqxs6J0JZmCXA8WeCoRsXGRxejK9M1ZkCQ6O4CD0E4RKUSQLeMd25MKBChPlNkuYJ0XlpQe/OvMNIjm8zKXgwZc8ZuIAUPTdImZtqDxCou0AZAwHNOkDV9WRrzKiZxn/gXGdIR3skrheHsGk8C6sndmiKhdec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Thh5aFOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA21C4CEE6;
+	Mon, 24 Feb 2025 14:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408543;
-	bh=J7L90U4nRH78G/ZUEsKpU7EKlK78k9IWfp5glK/6F7Q=;
+	s=korg; t=1740408056;
+	bh=EmuCzDXMIxfgBxXFWhCZ93uc3UKq41DTqNw5purtRpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1nCU1U/lwwBsUyYgW2Sb5OyjQrxcKyIIN5i243y4q1dm2hXxh8SW9hEH2RVvzSdUL
-	 ZuyxuNw3MtABs/q2k0Z2AlM4OK01epQkoj6zTK5u3xT6J13Sff8VQ6dLs2bPkamRVo
-	 0LjKcahGda60ClLk4Sce6M8eF81Lwi3G4XRMBowQ=
+	b=Thh5aFOqbQOhFHuu35NWzxLcja52ppR2n2Gl/xKUvSjnOH1856j+ucE9nTrgVoZkD
+	 RCeDY/R/rip+Qmrst9SenX+rttuX0qtX4G2j1f0ssYEpKeR7aO5n6p9ly2buee53ID
+	 BQna0cNtDJ4dkw2wVTPyzASUBjrZKkpHY/TIuwp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrick Wildt <patrick@blueri.se>,
-	Niklas Cassel <cassel@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/154] arm64: dts: rockchip: adjust SMMU interrupt type on rk3588
+Subject: [PATCH 6.6 087/140] arp: switch to dev_getbyhwaddr() in arp_req_set_public()
 Date: Mon, 24 Feb 2025 15:34:46 +0100
-Message-ID: <20250224142610.480835318@linuxfoundation.org>
+Message-ID: <20250224142606.432561555@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrick Wildt <patrick@blueri.se>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 8546cfd08aa4b982acd2357403a1f15495d622ec ]
+[ Upstream commit 4eae0ee0f1e6256d0b0b9dd6e72f1d9cf8f72e08 ]
 
-The SMMU architecture requires wired interrupts to be edge triggered,
-which does not align with the DT description for the RK3588.  This leads
-to interrupt storms, as the SMMU continues to hold the pin high and only
-pulls it down for a short amount when issuing an IRQ.  Update the DT
-description to be in line with the spec and perceived reality.
+The arp_req_set_public() function is called with the rtnl lock held,
+which provides enough synchronization protection. This makes the RCU
+variant of dev_getbyhwaddr() unnecessary. Switch to using the simpler
+dev_getbyhwaddr() function since we already have the required rtnl
+locking.
 
-Signed-off-by: Patrick Wildt <patrick@blueri.se>
-Fixes: cd81d3a0695c ("arm64: dts: rockchip: add rk3588 pcie and php IOMMUs")
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/Z6pxme2Chmf3d3uK@windev.fritz.box
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+This change helps maintain consistency in the networking code by using
+the appropriate helper function for the existing locking context.
+Since we're not holding the RCU read lock in arp_req_set_public()
+existing code could trigger false positive locking warnings.
+
+Fixes: 941666c2e3e0 ("net: RCU conversion of dev_getbyhwaddr() and arp_ioctl()")
+Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20250218-arm_fix_selftest-v5-2-d3d6892db9e1@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/ipv4/arp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-index fc67585b64b7b..1fd8093f2124c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-@@ -549,10 +549,10 @@ usb_host2_xhci: usb@fcd00000 {
- 	mmu600_pcie: iommu@fc900000 {
- 		compatible = "arm,smmu-v3";
- 		reg = <0x0 0xfc900000 0x0 0x200000>;
--		interrupts = <GIC_SPI 369 IRQ_TYPE_LEVEL_HIGH 0>,
--			     <GIC_SPI 371 IRQ_TYPE_LEVEL_HIGH 0>,
--			     <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH 0>,
--			     <GIC_SPI 367 IRQ_TYPE_LEVEL_HIGH 0>;
-+		interrupts = <GIC_SPI 369 IRQ_TYPE_EDGE_RISING 0>,
-+			     <GIC_SPI 371 IRQ_TYPE_EDGE_RISING 0>,
-+			     <GIC_SPI 374 IRQ_TYPE_EDGE_RISING 0>,
-+			     <GIC_SPI 367 IRQ_TYPE_EDGE_RISING 0>;
- 		interrupt-names = "eventq", "gerror", "priq", "cmdq-sync";
- 		#iommu-cells = <1>;
- 		status = "disabled";
-@@ -561,10 +561,10 @@ mmu600_pcie: iommu@fc900000 {
- 	mmu600_php: iommu@fcb00000 {
- 		compatible = "arm,smmu-v3";
- 		reg = <0x0 0xfcb00000 0x0 0x200000>;
--		interrupts = <GIC_SPI 381 IRQ_TYPE_LEVEL_HIGH 0>,
--			     <GIC_SPI 383 IRQ_TYPE_LEVEL_HIGH 0>,
--			     <GIC_SPI 386 IRQ_TYPE_LEVEL_HIGH 0>,
--			     <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH 0>;
-+		interrupts = <GIC_SPI 381 IRQ_TYPE_EDGE_RISING 0>,
-+			     <GIC_SPI 383 IRQ_TYPE_EDGE_RISING 0>,
-+			     <GIC_SPI 386 IRQ_TYPE_EDGE_RISING 0>,
-+			     <GIC_SPI 379 IRQ_TYPE_EDGE_RISING 0>;
- 		interrupt-names = "eventq", "gerror", "priq", "cmdq-sync";
- 		#iommu-cells = <1>;
- 		status = "disabled";
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 02776453bf97a..784dc8b37be5a 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -1030,7 +1030,7 @@ static int arp_req_set_public(struct net *net, struct arpreq *r,
+ 	if (mask && mask != htonl(0xFFFFFFFF))
+ 		return -EINVAL;
+ 	if (!dev && (r->arp_flags & ATF_COM)) {
+-		dev = dev_getbyhwaddr_rcu(net, r->arp_ha.sa_family,
++		dev = dev_getbyhwaddr(net, r->arp_ha.sa_family,
+ 				      r->arp_ha.sa_data);
+ 		if (!dev)
+ 			return -ENODEV;
 -- 
 2.39.5
 
