@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-118818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A68A41C9F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:26:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585B1A41CA2
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B62FD188BDDF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:24:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 183E4188F659
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFCF264F99;
-	Mon, 24 Feb 2025 11:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAD0264FBC;
+	Mon, 24 Feb 2025 11:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qmUCD7Dz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qs8U+O88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88371264F86;
-	Mon, 24 Feb 2025 11:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C72E264A7F;
+	Mon, 24 Feb 2025 11:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395885; cv=none; b=Q/0WpDtqiTjCsK0DUqe7GnaMHDP+NhLSmKoNXn3/vgzkLz5eDqJZoVapJmgP4EWI6CO/Y/Hx3Tt92trUcTW9pZ4/ULoAehWjqbdH9JSOVyb1lwOlIKLyM5C3HA8RggsedXGtVbGW89OBqqtC25+qCCeOuo6G5DMmawoNCWDJaa4=
+	t=1740395889; cv=none; b=qiDkri4CHFW6PlSovxPL0eqX6Xj9Vgq5UCuu9FCHLFzrauvRXrruLO0XAi57mygRHtFjr8xLMzGb6U7M8qqOLqELFU39qbX5CxUerpdmI1CqVX/cha1PLPqbarsouikBGFYdI0DS3Qc0POhP/ykKkO+QQJNyVdWYLEMuTTtLnpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395885; c=relaxed/simple;
-	bh=JUUcY/okrRUSb+ExrNOofazcc3tHz6adZShiyT4+ukg=;
+	s=arc-20240116; t=1740395889; c=relaxed/simple;
+	bh=0lz0fiyiL0oqUiQGqCjmSs7vLdseJRl2Qcxpeys47qk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p5H/uPC6FwlcCBgz0pmv7JGTReRWBM2r923n1XHlhGlVNu2Dttv2hWzoTIBgov8WMD6+yac1w0jdZFZWnEr9gWOCGJ7b6aCWjjHdS7NLBaeYn5hz8Z5q8qoTxsxYMw/h8EJrosx5wQ/aSJsj/PBDab0tIgQv59mCZaaKRsRbJ+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qmUCD7Dz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C95C4CED6;
-	Mon, 24 Feb 2025 11:18:03 +0000 (UTC)
+	 MIME-Version; b=GPx8sU24g3KW0+Sn+XELua8naRdR6f/J3ykT3WwxmCiHxpF8UEi46xZeYiUE2N0/sxqzT9rJBZYvh+nja9oexoYgBi9GMCtbvRa3WQ4/WT0WOJJ6woqZAhEmnmS7H5YJJor8QQun0vwpoQ8AYPA7qghaZPKB3056NCZhQwriCWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qs8U+O88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28BCC4CEE6;
+	Mon, 24 Feb 2025 11:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395885;
-	bh=JUUcY/okrRUSb+ExrNOofazcc3tHz6adZShiyT4+ukg=;
+	s=k20201202; t=1740395888;
+	bh=0lz0fiyiL0oqUiQGqCjmSs7vLdseJRl2Qcxpeys47qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmUCD7Dzs8mUsQGm1I+IVj5stfqlepYKalxGsJZTtbeVf9ZD/s//8N8X14x/1bl/s
-	 /aAJikksiYxxJiuWWHskMOyjyvbrlflOQeKFnOEl30IMom+aFk435ENXW9PY+jd3Cc
-	 ZP6Kr66me5O884xlarJ8FcXUe7dwa5JH1U2CCxopI3ttFKB+MTDAGq+j6jdHMtiwz0
-	 sGlhWoyCEMiud3fspxO3OJ/AFiHM5kvlGytgtGsRSNUZiV4hgijxQL5HSGXmAhSEJF
-	 eL9Hq+dkLfsf1ZctQ0ABVhPjdPQ/Yc9MSqCDCnIXiUip7oPj7pOXT5PgJ8nGp6j93g
-	 mX7ZZtyUs5Bzw==
+	b=qs8U+O88hg5yXc83nFEwy3Iq3nCybeXp5iL0JTfn1tdvdCQqrAEVR6CEGaivTZhiI
+	 oQfmmcuw+yVEXTWhN+YQf5o4hk/0a0myrIo3pLhpHrWEtAZyvDRDJiMv/Pnav9qXcL
+	 gtNcmvIi+solVBt6+nwz3/RYz79Zev1TVdVGo5uEO8VrCyqgaB/7W79kWPxNCbxulp
+	 9T7VbddnPgTJ8RHwgiyifcukZL0MQq2cqHZVDl88fH4xcp8t9FAP1koeaGzDWmSPyb
+	 jUJlRfKmE7go4iXJp04VIpuhHWGD35hRIizpoajDyKyjmMyShIV2ohQQZG7qkNg8K1
+	 tXmgrEqV2Gb5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiayuan Chen <mrpre@163.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+Cc: Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	shuah@kernel.org,
-	mhal@rbox.co,
-	sgarzare@redhat.com,
-	yonghong.song@linux.dev,
-	cong.wang@bytedance.com,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 02/28] selftests/bpf: Fix invalid flag of recv()
-Date: Mon, 24 Feb 2025 06:17:33 -0500
-Message-Id: <20250224111759.2213772-2-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	ckeepax@opensource.cirrus.com,
+	Vijendar.Mukunda@amd.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 03/28] ASoC: Intel: sof_sdw: Add lookup of quirk using PCI subsystem ID
+Date: Mon, 24 Feb 2025 06:17:34 -0500
+Message-Id: <20250224111759.2213772-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111759.2213772-1-sashal@kernel.org>
 References: <20250224111759.2213772-1-sashal@kernel.org>
@@ -77,47 +77,93 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.16
 Content-Transfer-Encoding: 8bit
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit a0c11149509aa905aeec10cf9998091443472b0b ]
+[ Upstream commit fc016ef7da64fd473d73ee6c261ba1b0b47afe2b ]
 
-SOCK_NONBLOCK flag is only effective during socket creation, not during
-recv. Use MSG_DONTWAIT instead.
+Add lookup of PCI subsystem vendor:device ID to find a quirk.
 
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://patch.msgid.link/20250122100917.49845-5-mrpre@163.com
+The subsystem ID (SSID) is part of the PCI specification to uniquely
+identify a particular system-specific implementation of a hardware
+device.
+
+Unlike DMI information, it identifies the sound hardware itself, rather
+than a specific model of PC. SSID can be more reliable and stable than
+DMI strings, and is preferred by some vendors as the way to identify
+the actual sound hardware.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250204053943.93596-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockmap_basic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/sof_sdw.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index 82bfb266741cf..fb08c565d6aad 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -492,8 +492,8 @@ static void test_sockmap_skb_verdict_shutdown(void)
- 	if (!ASSERT_EQ(err, 1, "epoll_wait(fd)"))
- 		goto out_close;
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 84fc35d88b926..8f2416b73dc43 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -13,6 +13,7 @@
+ #include <linux/soundwire/sdw.h>
+ #include <linux/soundwire/sdw_type.h>
+ #include <linux/soundwire/sdw_intel.h>
++#include <sound/core.h>
+ #include <sound/soc-acpi.h>
+ #include "sof_sdw_common.h"
+ #include "../../codecs/rt711.h"
+@@ -685,6 +686,22 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 	{}
+ };
  
--	n = recv(c1, &b, 1, SOCK_NONBLOCK);
--	ASSERT_EQ(n, 0, "recv_timeout(fin)");
-+	n = recv(c1, &b, 1, MSG_DONTWAIT);
-+	ASSERT_EQ(n, 0, "recv(fin)");
- out_close:
- 	close(c1);
- 	close(p1);
-@@ -546,7 +546,7 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- 	ASSERT_EQ(avail, expected, "ioctl(FIONREAD)");
- 	/* On DROP test there will be no data to read */
- 	if (pass_prog) {
--		recvd = recv_timeout(c1, &buf, sizeof(buf), SOCK_NONBLOCK, IO_TIMEOUT_SEC);
-+		recvd = recv_timeout(c1, &buf, sizeof(buf), MSG_DONTWAIT, IO_TIMEOUT_SEC);
- 		ASSERT_EQ(recvd, sizeof(buf), "recv_timeout(c0)");
- 	}
++static const struct snd_pci_quirk sof_sdw_ssid_quirk_table[] = {
++	{}
++};
++
++static void sof_sdw_check_ssid_quirk(const struct snd_soc_acpi_mach *mach)
++{
++	const struct snd_pci_quirk *quirk_entry;
++
++	quirk_entry = snd_pci_quirk_lookup_id(mach->mach_params.subsystem_vendor,
++					      mach->mach_params.subsystem_device,
++					      sof_sdw_ssid_quirk_table);
++
++	if (quirk_entry)
++		sof_sdw_quirk = quirk_entry->value;
++}
++
+ static struct snd_soc_dai_link_component platform_component[] = {
+ 	{
+ 		/* name might be overridden during probe */
+@@ -1212,6 +1229,13 @@ static int mc_probe(struct platform_device *pdev)
  
+ 	snd_soc_card_set_drvdata(card, ctx);
+ 
++	if (mach->mach_params.subsystem_id_set) {
++		snd_soc_card_set_pci_ssid(card,
++					  mach->mach_params.subsystem_vendor,
++					  mach->mach_params.subsystem_device);
++		sof_sdw_check_ssid_quirk(mach);
++	}
++
+ 	dmi_check_system(sof_sdw_quirk_table);
+ 
+ 	if (quirk_override != -1) {
+@@ -1227,12 +1251,6 @@ static int mc_probe(struct platform_device *pdev)
+ 	for (i = 0; i < ctx->codec_info_list_count; i++)
+ 		codec_info_list[i].amp_num = 0;
+ 
+-	if (mach->mach_params.subsystem_id_set) {
+-		snd_soc_card_set_pci_ssid(card,
+-					  mach->mach_params.subsystem_vendor,
+-					  mach->mach_params.subsystem_device);
+-	}
+-
+ 	ret = sof_card_dai_links_create(card);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.39.5
 
