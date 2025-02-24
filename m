@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-119308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEBDA42567
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676E0A42550
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53BD517ABE1
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B9793AF22F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0081624D9;
-	Mon, 24 Feb 2025 14:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672E524EF6B;
+	Mon, 24 Feb 2025 14:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZWOLwBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqt5fVHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0836B2571CB;
-	Mon, 24 Feb 2025 14:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2535617BEC6;
+	Mon, 24 Feb 2025 14:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409024; cv=none; b=PnFmFEPtkGwBEsAwsRQrEj9ZQ9u2kAVP9x8o4CDN3/ruBdMfaz8ScC6Bk1H2OGlslrzC4wl7RLflafgc/1XfDtz5OyWIRz5AYpgq6wMWGblo1OhOXxACXfaH/x2tpHpOBrn4fx4DBR6agmJvtafHvGc8952fYZdc3mDRh4tqsmU=
+	t=1740408607; cv=none; b=rg7vBFw9fHMT+KFUGdjBYFvnQWpcKIxOfQiSpaa3VmA2IpsSdROwADtDC+xjouJDv0QFWtIernJYMNyBW/Ame5zxZgPYFd634FhG0FxgEkFgjabr53+u2xpC1aKaN/NsS637ZmmiGmgMRTKrwv9daZCE+ACPtgHtgFGNJNwNU0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409024; c=relaxed/simple;
-	bh=OKfBFp0iSn+BMHiGtLcONIBgQoUVDGB1AbIpzf0shcM=;
+	s=arc-20240116; t=1740408607; c=relaxed/simple;
+	bh=qP6OzJGhrLTxJXqtHZZdfQNriQ0ybjTwMyW0OYxltrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuCCLcPszSbjtdW3Rc1dkHSVIcxOSJsZrR56KJlOvjLYM5M4Is/dFnLshD/IE27RJKTlOCjGzI3/ZAPjvFnn9ymT7sxwqINRy9k+Kb4Ky7oHWiUR8cXEyurWVfkhZ5MLAoN0YwOfFc3c9Vq3My+uR+Deuj7ct4YhyvsvB4+bg/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZWOLwBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D72C4CEE6;
-	Mon, 24 Feb 2025 14:57:03 +0000 (UTC)
+	 MIME-Version; b=UTg0wNaFvrBS1NWnsEwzbHYU9YJ3x5D+64zeLlLxHhKX269C/qIdlrnt/lNpnGBmrI9F8cUnoGoszZJm2bGKDWhqUwIBv+hCDKDJphhjid84+XP43e/nzXvvhEWHhWqIHMnuce6r+A/DyZwlQWDDtq/F/7BPhxs6YDxylKLnjPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqt5fVHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574C5C4CED6;
+	Mon, 24 Feb 2025 14:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409023;
-	bh=OKfBFp0iSn+BMHiGtLcONIBgQoUVDGB1AbIpzf0shcM=;
+	s=korg; t=1740408607;
+	bh=qP6OzJGhrLTxJXqtHZZdfQNriQ0ybjTwMyW0OYxltrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZWOLwBzWIS6PW6qN1MQGqJ5lGaKeGOkBaB7znWDkUwTpZbPwvKNewadQ/IC+qbTC
-	 poOpPuWws03Ne2phUa8R2S9WNlro8vZt195FOYowtAmpubn0B63NPHSJvRczTsag+Z
-	 y/lIbmVF83ueWc2Urse+44sFnmZiIty/3o+lIPjI=
+	b=pqt5fVHv+ip4wuoeDPlZcWTnsViu/V5K3VGgEi3o+GjhrwHww5xOJhQARKVDBNhPk
+	 0zS+abnvbKctPHF6LCNPw0Sfa2c0BNDR/ml9aaZUHhNMyG79bszkvWjFhilTdxLVEd
+	 R+83X9AfxdXQLDyb5qzGMVT+Ud80ZuCRZGCSviQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 075/138] drm/msm/dsi/phy: Do not overwite PHY_CMN_CLK_CFG1 when choosing bitclk source
-Date: Mon, 24 Feb 2025 15:35:05 +0100
-Message-ID: <20250224142607.424693925@linuxfoundation.org>
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>
+Subject: [PATCH 6.12 107/154] drm/msm/dpu: Disable dither in phys encoder cleanup
+Date: Mon, 24 Feb 2025 15:35:06 +0100
+Message-ID: <20250224142611.247467228@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit 73f69c6be2a9f22c31c775ec03c6c286bfe12cfa ]
+commit f063ac6b55df03ed25996bdc84d9e1c50147cfa1 upstream.
 
-PHY_CMN_CLK_CFG1 register has four fields being used in the driver: DSI
-clock divider, source of bitclk and two for enabling the DSI PHY PLL
-clocks.
+Disable pingpong dither in dpu_encoder_helper_phys_cleanup().
 
-dsi_7nm_set_usecase() sets only the source of bitclk, so should leave
-all other bits untouched.  Use newly introduced
-dsi_pll_cmn_clk_cfg1_update() to update respective bits without
-overwriting the rest.
+This avoids the issue where an encoder unknowingly uses dither after
+reserving a pingpong block that was previously bound to an encoder that
+had enabled dither.
 
-While shuffling the code, define and use PHY_CMN_CLK_CFG1 bitfields to
-make the code more readable and obvious.
-
-Fixes: 1ef7c99d145c ("drm/msm/dsi: add support for 7nm DSI PHY/PLL")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Closes: https://lore.kernel.org/all/jr7zbj5w7iq4apg3gofuvcwf4r2swzqjk7sshwcdjll4mn6ctt@l2n3qfpujg3q/
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/637380/
-Link: https://lore.kernel.org/r/20250214-drm-msm-phy-pll-cfg-reg-v3-3-0943b850722c@linaro.org
+Fixes: 3c128638a07d ("drm/msm/dpu: add support for dither block in display")
+Patchwork: https://patchwork.freedesktop.org/patch/636517/
+Link: https://lore.kernel.org/r/20250211-dither-disable-v1-1-ac2cb455f6b9@quicinc.com
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c             | 4 ++--
- drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 388017db45d80..798168180c1ab 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -617,7 +617,6 @@ static int dsi_7nm_pll_restore_state(struct msm_dsi_phy *phy)
- static int dsi_7nm_set_usecase(struct msm_dsi_phy *phy)
- {
- 	struct dsi_pll_7nm *pll_7nm = to_pll_7nm(phy->vco_hw);
--	void __iomem *base = phy->base;
- 	u32 data = 0x0;	/* internal PLL */
- 
- 	DBG("DSI PLL%d", pll_7nm->phy->id);
-@@ -636,7 +635,8 @@ static int dsi_7nm_set_usecase(struct msm_dsi_phy *phy)
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -2125,6 +2125,9 @@ void dpu_encoder_helper_phys_cleanup(str
+ 		}
  	}
  
- 	/* set PLL src */
--	writel(data << 2, base + REG_DSI_7nm_PHY_CMN_CLK_CFG1);
-+	dsi_pll_cmn_clk_cfg1_update(pll_7nm, DSI_7nm_PHY_CMN_CLK_CFG1_BITCLK_SEL__MASK,
-+				    DSI_7nm_PHY_CMN_CLK_CFG1_BITCLK_SEL(data));
- 
- 	return 0;
- }
-diff --git a/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml b/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
-index cfaf78c028b13..35f7f40e405b7 100644
---- a/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
-+++ b/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
-@@ -16,6 +16,7 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
- 	<reg32 offset="0x00014" name="CLK_CFG1">
- 		<bitfield name="CLK_EN" pos="5" type="boolean"/>
- 		<bitfield name="CLK_EN_SEL" pos="4" type="boolean"/>
-+		<bitfield name="BITCLK_SEL" low="2" high="3" type="uint"/>
- 	</reg32>
- 	<reg32 offset="0x00018" name="GLBL_CTRL"/>
- 	<reg32 offset="0x0001c" name="RBUF_CTRL"/>
--- 
-2.39.5
-
++	if (phys_enc->hw_pp && phys_enc->hw_pp->ops.setup_dither)
++		phys_enc->hw_pp->ops.setup_dither(phys_enc->hw_pp, NULL);
++
+ 	/* reset the merge 3D HW block */
+ 	if (phys_enc->hw_pp && phys_enc->hw_pp->merge_3d) {
+ 		phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
 
 
 
