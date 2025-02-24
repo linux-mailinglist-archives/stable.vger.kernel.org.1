@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-118980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04511A4238A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E687A424C1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F4121189A671
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09503164414
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477892063DD;
-	Mon, 24 Feb 2025 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02ABD14012;
+	Mon, 24 Feb 2025 14:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZOaXNpm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNwVgcLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04224192D97;
-	Mon, 24 Feb 2025 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C69824A3;
+	Mon, 24 Feb 2025 14:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407910; cv=none; b=EI4eEDZzQBYxVuj2ySV005s2CBApLbdMweRlBwaKOQve0F/tF1j4QfhbFxtF1mmiNnfYPZ/sKnhw6hJmaQ5gKNgOKCqWbY87CHkh6o5NkZN9RUOiTBNsh47jgplFImkOSUj0W+f3Hj9FXdzkq7mpACo5Dhw79KMDJze2Ke+nXRM=
+	t=1740408394; cv=none; b=Gv2GpZTnHDPBsVUqsRg7k0QtKvAxAt3TRLJw//BqBiiICTDz4k+uKNQ8nJC/XOpIkJob8JrilrlLv7NzSopN0PYJANdYBUJb0UQWIXfd0717CRWUyJrj53woXEeXkUPK+H4YNPYuNPLkvmqJj+Kea1O0sV3diJIUXJeKnTLECiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407910; c=relaxed/simple;
-	bh=vORD/xnjTjwsBybsF4lqWHIe29xYZIV/XDvBJVBwG4w=;
+	s=arc-20240116; t=1740408394; c=relaxed/simple;
+	bh=m5QPZXxyauMCxdHImZlQ52wxUY5ocwLfqWxZEeOy4gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1LSQavbMiTaE4zCWgacjmv5stfXE1dWW+Ieo3yJVws/82dgTy8h3f1ahFAlTTeg7EVaMdy/FoIucnwGKk+C7BeoL9QvwLG8xF2Uw3ZyWcxrqaz3IFXARNf1nREPbTYJSW9QdbMgWMd86pnKI/msCQqDnKgij8n1ec6mj3FkXzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZOaXNpm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650B3C4CED6;
-	Mon, 24 Feb 2025 14:38:29 +0000 (UTC)
+	 MIME-Version; b=PsbuvCOiY3kjRrCoLOUsRashuxLFrSxdv+ODGaUzcKjqKrHUIvlFoUnuwrn6L0bEr4vKvESiueA1zf9De2szb4zHg8eBqZqWzKfscuIG+KswUeMXWiHLVaRzDXRKaoWGGT9tXvsnqbOCrYFunBU9XrDsoEJ6EPQjwlrBfIGhSVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNwVgcLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B2AC4CED6;
+	Mon, 24 Feb 2025 14:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407909;
-	bh=vORD/xnjTjwsBybsF4lqWHIe29xYZIV/XDvBJVBwG4w=;
+	s=korg; t=1740408394;
+	bh=m5QPZXxyauMCxdHImZlQ52wxUY5ocwLfqWxZEeOy4gE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZOaXNpmh9Wksk1YhNWo1CxbTd6j3tNatF1SwCzCQlHFDCw4jDXZ9LszgvZcrTY/M
-	 Nbdvm75CJhQ+B+OtQZAGdYQV/gAghPxQ/oKW8lYUibbCuzyfgB0RyTFfP7hMQ/AAqY
-	 DyyEufL/mewdu79B/2jntvVSkBBq9yo+Mm92mXMk=
+	b=DNwVgcLwrEROA/Y9VoYxsLw0403WtF2q5ci9QU2bl0S3fPGKGGqMNzl2PjYcbLVfg
+	 OLnPIs9Bm0XomeBeElcwnyevxJP9Iq2qLSfM774MVH06uDI5bhOKnghjwp4GnvldzX
+	 V3MoR4m+24Ynkd3wYwW6mU/soVcFAVh8LuG9fu2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/140] firmware: qcom: scm: Fix missing read barrier in qcom_scm_is_available()
+Subject: [PATCH 6.12 045/154] ASoC: SOF: ipc4-topology: Harden loops for looking up ALH copiers
 Date: Mon, 24 Feb 2025 15:34:04 +0100
-Message-ID: <20250224142604.780074626@linuxfoundation.org>
+Message-ID: <20250224142608.858671175@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 0a744cceebd0480cb39587b3b1339d66a9d14063 ]
+[ Upstream commit 6fd60136d256b3b948333ebdb3835f41a95ab7ef ]
 
-Commit 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq
-completion variable initialization") introduced a write barrier in probe
-function to store global '__scm' variable.  It also claimed that it
-added a read barrier, because as we all known barriers are paired (see
-memory-barriers.txt: "Note that write barriers should normally be paired
-with read or address-dependency barriers"), however it did not really
-add it.
+Other, non DAI copier widgets could have the same  stream name (sname) as
+the ALH copier and in that case the copier->data is NULL, no alh_data is
+attached, which could lead to NULL pointer dereference.
+We could check for this NULL pointer in sof_ipc4_prepare_copier_module()
+and avoid the crash, but a similar loop in sof_ipc4_widget_setup_comp_dai()
+will miscalculate the ALH device count, causing broken audio.
 
-The offending commit used READ_ONCE() to access '__scm' global which is
-not a barrier.
+The correct fix is to harden the matching logic by making sure that the
+1. widget is a DAI widget - so dai = w->private is valid
+2. the dai (and thus the copier) is ALH copier
 
-The barrier is needed so the store to '__scm' will be properly visible.
-This is most likely not fatal in current driver design, because missing
-read barrier would mean qcom_scm_is_available() callers will access old
-value, NULL.  Driver does not support unbinding and does not correctly
-handle probe failures, thus there is no risk of stale or old pointer in
-'__scm' variable.
-
-However for code correctness, readability and to be sure that we did not
-mess up something in this tricky topic of SMP barriers, add a read
-barrier for accessing '__scm'.  Change also comment from useless/obvious
-what does barrier do, to what is expected: which other parts of the code
-are involved here.
-
-Fixes: 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq completion variable initialization")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-1-9061013c8d92@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a150345aa758 ("ASoC: SOF: ipc4-topology: add SoundWire/ALH aggregation support")
+Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Link: https://github.com/thesofproject/sof/pull/9652
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250206084642.14988-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom_scm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/sof/ipc4-topology.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-index 7af59985f1c1f..4c5c2b73d42c2 100644
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -1339,7 +1339,8 @@ static int qcom_scm_find_dload_address(struct device *dev, u64 *addr)
-  */
- bool qcom_scm_is_available(void)
- {
--	return !!READ_ONCE(__scm);
-+	/* Paired with smp_store_release() in qcom_scm_probe */
-+	return !!smp_load_acquire(&__scm);
- }
- EXPORT_SYMBOL_GPL(qcom_scm_is_available);
+diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
+index 240fee2166d12..f82db7f2a6b7e 100644
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -671,10 +671,16 @@ static int sof_ipc4_widget_setup_comp_dai(struct snd_sof_widget *swidget)
+ 		}
  
-@@ -1457,7 +1458,7 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+ 		list_for_each_entry(w, &sdev->widget_list, list) {
+-			if (w->widget->sname &&
++			struct snd_sof_dai *alh_dai;
++
++			if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
+ 			    strcmp(w->widget->sname, swidget->widget->sname))
+ 				continue;
  
--	/* Let all above stores be available after this */
-+	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
- 	smp_store_release(&__scm, scm);
++			alh_dai = w->private;
++			if (alh_dai->type != SOF_DAI_INTEL_ALH)
++				continue;
++
+ 			blob->alh_cfg.device_count++;
+ 		}
  
- 	irq = platform_get_irq_optional(pdev, 0);
+@@ -1973,11 +1979,13 @@ sof_ipc4_prepare_copier_module(struct snd_sof_widget *swidget,
+ 			list_for_each_entry(w, &sdev->widget_list, list) {
+ 				u32 node_type;
+ 
+-				if (w->widget->sname &&
++				if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
+ 				    strcmp(w->widget->sname, swidget->widget->sname))
+ 					continue;
+ 
+ 				dai = w->private;
++				if (dai->type != SOF_DAI_INTEL_ALH)
++					continue;
+ 				alh_copier = (struct sof_ipc4_copier *)dai->private;
+ 				alh_data = &alh_copier->data;
+ 				node_type = SOF_IPC4_GET_NODE_TYPE(alh_data->gtw_cfg.node_id);
 -- 
 2.39.5
 
