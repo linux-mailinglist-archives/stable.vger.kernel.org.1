@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0354A424E6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7997A42411
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B5C41897910
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B69B17F2C1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D349424A04F;
-	Mon, 24 Feb 2025 14:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC6D192D8F;
+	Mon, 24 Feb 2025 14:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2DusMSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoC9KnOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF6E24BC09;
-	Mon, 24 Feb 2025 14:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBA215442C;
+	Mon, 24 Feb 2025 14:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408596; cv=none; b=Geb1/raQn14Ms214IhHGgAhvsJGCDr7Zv9jBAtMIouUa91vn8mEIcd8iIx+l23umnY5NFZgFlFjYosiMMxu9wq4KOQgr70vgIeHcTcI1T6wnwt24JGDFltCT+QD/AGOaCDinM8Ha2Si8DYzxszTPxZmAHntARmQU2VWjmGmYEFg=
+	t=1740408227; cv=none; b=rKHqcuUobXUq6nGWixCNyjusgqCHsGTv3DuNPjEWfWjfFaAxVT1PQPeYPrNErtnKHxFUFj7xhzyu39OCDV6bNPR7xevra395fGPbZSwFo5+W3Mal1vPf7ImGFGeeRPAy7YB0AkaZuajr1/towijbmuB6E3xptm18OTbMKHETn6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408596; c=relaxed/simple;
-	bh=Ahioettn6utMj33/dofXL9vIL8tlhgESwMzNgkrOWtA=;
+	s=arc-20240116; t=1740408227; c=relaxed/simple;
+	bh=NCVnbX3O9dyv+5c44AnIIqcw1uNUonQ6z9qfH9IKc/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7Nx25/GGppa2+Db15B8vBZQBeOQLGxh0oHUV7/WcKzfOoJbnyANOXkoREXoJGp02Q48Kaf3MLUADrch9nGLz4Wd11lDeGk3T/WSUEr80TVHQND5JrjYbaD4EHL5a0B26nuM2zJ2j06U3vi26iMgbh0tM44a4J1/ypzRIv/80dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2DusMSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF8AC4CED6;
-	Mon, 24 Feb 2025 14:49:55 +0000 (UTC)
+	 MIME-Version; b=kPGI6R5DvTxQiwXDgZLtV4javZTD6To0lRv1mFWYVN1ZcPTtGqkseA+5hTcvDLkFrrbbrLTUFKRlVHtiR7jIw8015LyR3vND88iX8WgSL0euDtaeJB50P2WkEuY370dtZXuqkBWCVe3nVUykP6yGwTcMIGugv0zUIFP664MUruk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoC9KnOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E510DC4CED6;
+	Mon, 24 Feb 2025 14:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408596;
-	bh=Ahioettn6utMj33/dofXL9vIL8tlhgESwMzNgkrOWtA=;
+	s=korg; t=1740408226;
+	bh=NCVnbX3O9dyv+5c44AnIIqcw1uNUonQ6z9qfH9IKc/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2DusMSwHB5e2jNQOwLTM+yk0fb/S7+5A4r6mxM+ZQ7BHrTXhax1dLnAEjRBlNlza
-	 KqNjwulnPEa+UWWQOckss7V+4eIP+qrFRAePM0YKNFlnPGNUchYp4ZnGxNtheXzzzn
-	 AMWAXbhgHKCHILfT0rDAnkD+J72wPZqjY1o+fkwU=
+	b=ZoC9KnObCs8oaIiEO7PYNfUTCa31xGRCHvNSMN2Eay3NltSGwBI1C0pN/gxr0kIdl
+	 v3tALzWRmeWSlQ6IdRnr9OCUu9LM7uMb0kbWHBHza4jClqPgasQOD+9xiPI0q3cDgU
+	 KE34k8d6l6sgRnxpn6xYl0oc6A2l052JeFOn8j8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/154] drm/nouveau/pmu: Fix gp10b firmware guard
+Subject: [PATCH 6.6 104/140] nvme/ioctl: add missing space in err message
 Date: Mon, 24 Feb 2025 15:35:03 +0100
-Message-ID: <20250224142611.132329588@linuxfoundation.org>
+Message-ID: <20250224142607.100747139@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 3dbc0215e3c502a9f3221576da0fdc9847fb9721 ]
+[ Upstream commit 487a3ea7b1b8ba2ca7d2c2bb3c3594dc360d6261 ]
 
-Most kernel configs enable multiple Tegra SoC generations, causing this
-typo to go unnoticed. But in the case where a kernel config is strictly
-for Tegra186, this is a problem.
+nvme_validate_passthru_nsid() logs an err message whose format string is
+split over 2 lines. There is a missing space between the two pieces,
+resulting in log lines like "... does not match nsid (1)of namespace".
+Add the missing space between ")" and "of". Also combine the format
+string pieces onto a single line to make the err message easier to grep.
 
-Fixes: 989863d7cbe5 ("drm/nouveau/pmu: select implementation based on available firmware")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250218-nouveau-gm10b-guard-v2-1-a4de71500d48@gmail.com
+Fixes: e7d4b5493a2d ("nvme: factor out a nvme_validate_passthru_nsid helper")
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/pmu/gp10b.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/ioctl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/pmu/gp10b.c b/drivers/gpu/drm/nouveau/nvkm/subdev/pmu/gp10b.c
-index a6f410ba60bc9..d393bc540f862 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/pmu/gp10b.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/pmu/gp10b.c
-@@ -75,7 +75,7 @@ gp10b_pmu_acr = {
- 	.bootstrap_multiple_falcons = gp10b_pmu_acr_bootstrap_multiple_falcons,
- };
- 
--#if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-+#if IS_ENABLED(CONFIG_ARCH_TEGRA_186_SOC)
- MODULE_FIRMWARE("nvidia/gp10b/pmu/desc.bin");
- MODULE_FIRMWARE("nvidia/gp10b/pmu/image.bin");
- MODULE_FIRMWARE("nvidia/gp10b/pmu/sig.bin");
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index 19a7f0160618d..4ce31f9f06947 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -336,8 +336,7 @@ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
+ {
+ 	if (ns && nsid != ns->head->ns_id) {
+ 		dev_err(ctrl->device,
+-			"%s: nsid (%u) in cmd does not match nsid (%u)"
+-			"of namespace\n",
++			"%s: nsid (%u) in cmd does not match nsid (%u) of namespace\n",
+ 			current->comm, nsid, ns->head->ns_id);
+ 		return false;
+ 	}
 -- 
 2.39.5
 
