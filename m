@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-119215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C159A424C8
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A8BA42418
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86238189F0DF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01ABA1894304
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F78221F31;
-	Mon, 24 Feb 2025 14:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D12248898;
+	Mon, 24 Feb 2025 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdDeMWrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGG25LHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92CE156F44;
-	Mon, 24 Feb 2025 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC91A38DD8;
+	Mon, 24 Feb 2025 14:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408709; cv=none; b=YcR5zJSjEA9/4LqTIK1k2LjGKZ3DE6zL8RmHbVRqceAdnAGqQUJkJt6ZzWLpB2h2B3C2XWqbVYfOVIOSC/ceKuaND05jeNy7h5fr3UvJoO3NqB0BTBu//uMr2tFIUZ7fWiOrchQrEumV9MWT3M2099uv0FTyaQW9Wylk91fhnxQ=
+	t=1740408258; cv=none; b=GSIau1gFIOp7A4MsEEmwgoMXdjJZ8LxnJWuMD+9Do4T1Sd4PVjfIL0RzhiMNigVi9+H4g7hpq4iq/fQp3L3VBL7KTEMXVvrzfiMcdXApIftBfVUvvOG8jP63favTh2n7oPtJcUdjZWP5fYykIit66qotITkIl6WVUuOLIQPMaBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408709; c=relaxed/simple;
-	bh=w4rqf41Ipxpgk//fTQLZB/+ipX34Zvyngrwpp8lF9jY=;
+	s=arc-20240116; t=1740408258; c=relaxed/simple;
+	bh=9FynCXkbJoTnFZLUArnjGreLXew0Hq/iAfAQG7Z5lzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fcll0D5eqq973Ewo+IeY3pxMA1kSRMp/poVveKrKfnv6YbSvvRYiJy6UaCweNiuJqFwlpoEK2+9CLBveBjXw2Evh8hR2AwogzM97pyg5PsMktlXDP5Iizbcs2zxoaHu9ocTAQChM77DQazatM+FSH2fUeTkmd1nT6hhOrkNPaEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdDeMWrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AA2C4CED6;
-	Mon, 24 Feb 2025 14:51:48 +0000 (UTC)
+	 MIME-Version; b=e4WEURgB0rGdutrkzmFKW5AvHUJg74eAnyMasIiq++VDyZwG1sRPaYt+IrQi0orgR1Dr1PiQFtCxGJAUdnbDmUlkYx1LfcqRb8lSRMEvmH4rXBNepOSo0ms9lCv3C16qWZflRAtXO/iGtco5Bh9BYh7ycjOeFNlSeKcr/yS97YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGG25LHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593FCC4CEE9;
+	Mon, 24 Feb 2025 14:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408709;
-	bh=w4rqf41Ipxpgk//fTQLZB/+ipX34Zvyngrwpp8lF9jY=;
+	s=korg; t=1740408257;
+	bh=9FynCXkbJoTnFZLUArnjGreLXew0Hq/iAfAQG7Z5lzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdDeMWrvcmYaP+P96QU41YmZEV/lhT3GgpucUZ7a82n8Y/rqDws2pSPG7DSX5ebBc
-	 xwpv/B4I15FatkGu8OAjvPAo2tWuxx4it1L9epnoo3D30AkLA9AVHb8H+kHKnbKLJh
-	 +o8ZEZP4E4PMLwtxO1+0upktD5IhpUHeJoA+jH3o=
+	b=SGG25LHPSN2I6GiEvpxSPvEeQGGm28aABwP77ZqD0FVWRHyn2PmBO2f2FGh7fFkqe
+	 I1ECxVZfkz2KFLRK430Rmzqn593bcP9BGiFhrXLmkAlq7GZSBuHW6sWIgF7gvKXB93
+	 M4v0d+Z+eTl/4i6yI+ex9O3zhmtnlKDXXK06fbuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 138/154] mtd: rawnand: cadence: fix error code in cadence_nand_init()
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: [PATCH 6.6 138/140] nilfs2: eliminate staggered calls to kunmap in nilfs_rename
 Date: Mon, 24 Feb 2025 15:35:37 +0100
-Message-ID: <20250224142612.452886952@linuxfoundation.org>
+Message-ID: <20250224142608.431744743@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 2b9df00cded911e2ca2cfae5c45082166b24f8aa upstream.
+commit 8cf57c6df818f58fdad16a909506be213623a88e upstream.
 
-Replace dma_request_channel() with dma_request_chan_by_mask() and use
-helper functions to return proper error code instead of fixed -EBUSY.
+In nilfs_rename(), calls to nilfs_put_page() to release pages obtained
+with nilfs_find_entry() or nilfs_dotdot() are alternated in the normal
+path.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+When replacing the kernel memory mapping method from kmap to
+kmap_local_{page,folio}, this violates the constraint on the calling order
+of kunmap_local().
+
+Swap the order of nilfs_put_page calls where the kmap sections of multiple
+pages overlap so that they are nested, allowing direct replacement of
+nilfs_put_page() -> unmap_and_put_page().
+
+Without this reordering, that replacement will cause a kernel WARNING in
+kunmap_local_indexed() on architectures with high memory mapping.
+
+Link: https://lkml.kernel.org/r/20231127143036.2425-3-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/nilfs2/namei.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2904,11 +2904,10 @@ static int cadence_nand_init(struct cdns
- 	dma_cap_set(DMA_MEMCPY, mask);
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -431,13 +431,14 @@ static int nilfs_rename(struct mnt_idmap
+ 	inode_set_ctime_current(old_inode);
  
- 	if (cdns_ctrl->caps1->has_dma) {
--		cdns_ctrl->dmac = dma_request_channel(mask, NULL, NULL);
--		if (!cdns_ctrl->dmac) {
--			dev_err(cdns_ctrl->dev,
--				"Unable to get a DMA channel\n");
--			ret = -EBUSY;
-+		cdns_ctrl->dmac = dma_request_chan_by_mask(&mask);
-+		if (IS_ERR(cdns_ctrl->dmac)) {
-+			ret = dev_err_probe(cdns_ctrl->dev, PTR_ERR(cdns_ctrl->dmac),
-+					    "%d: Failed to get a DMA channel\n", ret);
- 			goto disable_irq;
- 		}
+ 	nilfs_delete_entry(old_de, old_page);
+-	nilfs_put_page(old_page);
+ 
+ 	if (dir_de) {
+ 		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
+ 		nilfs_put_page(dir_page);
+ 		drop_nlink(old_dir);
  	}
++	nilfs_put_page(old_page);
++
+ 	nilfs_mark_inode_dirty(old_dir);
+ 	nilfs_mark_inode_dirty(old_inode);
+ 
 
 
 
