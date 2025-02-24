@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-119093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BEEA42397
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491C6A42398
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81E147A1CA6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0050116246F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1642F18C01D;
-	Mon, 24 Feb 2025 14:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334841632D3;
+	Mon, 24 Feb 2025 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvAXB7ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJVvqWJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75C626ADD;
-	Mon, 24 Feb 2025 14:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5552629F;
+	Mon, 24 Feb 2025 14:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408298; cv=none; b=OYBygjr4rOLGvFYXyWP+Eb53yuJY0ikVzK1xJiZLjeac5vKINVMlbURkqAaP8k6Eoyh55Z0tfybDiwhffJUQO9kFCgiQqz4XlHTnx8qjF6z9ASv9/2n7GBodHmxEwwLpdOzqVW2ps4FpHO6BenknG+H56PuAe1FgxpL1rjYQCIc=
+	t=1740407817; cv=none; b=I5wYLMDxAQfItREZv+EIuYw7ATQSGLKq4BGPEKGhha6jB5m912xHa5yHG6KfHOTkMMXkXyxokEn3WfQFXsut4r+takBKx7fLkvfg9g8RQhhtLymZdtMyassMq7dJN8IHA6c65GJWiDPMx8k7pM4zXicK1RnnCmquyB0d2zp1nMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408298; c=relaxed/simple;
-	bh=+m3TmeDlGMDNSCwtBGYo50cwn0TSCqHMhMtFeQRQEOs=;
+	s=arc-20240116; t=1740407817; c=relaxed/simple;
+	bh=pHwjZ3EqvEbJ/RZ6P7pwPYLs2JUeaGzxxVxYltVLFXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KdqDYXgStZe1sOEADRLTlv1z8GU4y4wuhzZVQb/yEf0E485BHsIynlrltVfVE8k7g7QqVRYItw11LTqrAyyDB62mR/hOBYyaAz76tt7Qfb4LmY445ilMl8hbQwW1nHt0gHqiBWIV7HK4rFbQ1BifE6g6weqN2ck5yWSgXSRBmtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvAXB7ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D65C4CEE6;
-	Mon, 24 Feb 2025 14:44:57 +0000 (UTC)
+	 MIME-Version; b=YWU/4EEVWKVLCl+E9gyew/fLp3ZNKUznCn5gWf8PuIs97SZkP8NxNJd4TKRCchvsRodTMQSC8Yi9hQFXt2s/hqJUH9tE+zFqP/D1ymBgWhh0DqjgFEJ2aIn3tc5bBpGREwVrDF7aPC0rWv7SXDVMOLIhafGl5XpdKwvv0X+v0Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJVvqWJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28AEC4CED6;
+	Mon, 24 Feb 2025 14:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408298;
-	bh=+m3TmeDlGMDNSCwtBGYo50cwn0TSCqHMhMtFeQRQEOs=;
+	s=korg; t=1740407816;
+	bh=pHwjZ3EqvEbJ/RZ6P7pwPYLs2JUeaGzxxVxYltVLFXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvAXB7ty85bpYn3oR/umoJjNr98Z7nyVRGXJmmEaeLJ5yhgOgp/YTefaBrg/KQk9+
-	 DFydh9Gz+0NlnNYvLsSBUuGpQn1mkBndE0cjOdXwc4nXfTgPW6m1rvL6ZdAWEL8/u3
-	 MfEBs/7vDcuLy7QzE/hn7I5m/o6veboTYstA+3yU=
+	b=OJVvqWJYSLIGsMNRrs/BJcfYs1Se4B6WFyC5TYV5Lj5WpTy67aU6tql5tapi3eHhV
+	 3eJVO5JnzQ0TU+bPmtu03TLW+69ReQ0ujags935hWzoCArjeFG0ndhVtP0aZ0UGFPl
+	 UTU3rvqrjPsUX9CkjgSnGTCnEyj0EfvPfMncMvqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Markku=20Ahvenj=C3=A4rvi?= <mankku@gmail.com>,
-	Janne Karhunen <janne.karhunen@gmail.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/154] KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID
-Date: Mon, 24 Feb 2025 15:33:36 +0100
-Message-ID: <20250224142607.753637865@linuxfoundation.org>
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 018/140] xfs: pass the exact range to initialize to xfs_initialize_perag
+Date: Mon, 24 Feb 2025 15:33:37 +0100
+Message-ID: <20250224142603.721528519@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,162 +63,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Gao <chao.gao@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 04bc93cf49d16d01753b95ddb5d4f230b809a991 ]
+commit 82742f8c3f1a93787a05a00aca50c2a565231f84 upstream.
 
-If KVM emulates an EOI for L1's virtual APIC while L2 is active, defer
-updating GUEST_INTERUPT_STATUS.SVI, i.e. the VMCS's cache of the highest
-in-service IRQ, until L1 is active, as vmcs01, not vmcs02, needs to track
-vISR.  The missed SVI update for vmcs01 can result in L1 interrupts being
-incorrectly blocked, e.g. if there is a pending interrupt with lower
-priority than the interrupt that was EOI'd.
+[backport: dependency of 6a18765b]
 
-This bug only affects use cases where L1's vAPIC is effectively passed
-through to L2, e.g. in a pKVM scenario where L2 is L1's depriveleged host,
-as KVM will only emulate an EOI for L1's vAPIC if Virtual Interrupt
-Delivery (VID) is disabled in vmc12, and L1 isn't intercepting L2 accesses
-to its (virtual) APIC page (or if x2APIC is enabled, the EOI MSR).
+Currently only the new agcount is passed to xfs_initialize_perag, which
+requires lookups of existing AGs to skip them and complicates error
+handling.  Also pass the previous agcount so that the range that
+xfs_initialize_perag operates on is exactly defined.  That way the
+extra lookups can be avoided, and error handling can clean up the
+exact range from the old count to the last added perag structure.
 
-WARN() if KVM updates L1's ISR while L2 is active with VID enabled, as an
-EOI from L2 is supposed to affect L2's vAPIC, but still defer the update,
-to try to keep L1 alive.  Specifically, KVM forwards all APICv-related
-VM-Exits to L1 via nested_vmx_l1_wants_exit():
-
-	case EXIT_REASON_APIC_ACCESS:
-	case EXIT_REASON_APIC_WRITE:
-	case EXIT_REASON_EOI_INDUCED:
-		/*
-		 * The controls for "virtualize APIC accesses," "APIC-
-		 * register virtualization," and "virtual-interrupt
-		 * delivery" only come from vmcs12.
-		 */
-		return true;
-
-Fixes: c7c9c56ca26f ("x86, apicv: add virtual interrupt delivery support")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/kvm/20230312180048.1778187-1-jason.cj.chen@intel.com
-Reported-by: Markku Ahvenjärvi <mankku@gmail.com>
-Closes: https://lore.kernel.org/all/20240920080012.74405-1-mankku@gmail.com
-Cc: Janne Karhunen <janne.karhunen@gmail.com>
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-[sean: drop request, handle in VMX, write changelog]
-Tested-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/r/20241128000010.4051275-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c      | 11 +++++++++++
- arch/x86/kvm/lapic.h      |  1 +
- arch/x86/kvm/vmx/nested.c |  5 +++++
- arch/x86/kvm/vmx/vmx.c    | 21 +++++++++++++++++++++
- arch/x86/kvm/vmx/vmx.h    |  1 +
- 5 files changed, 39 insertions(+)
+ fs/xfs/libxfs/xfs_ag.c   |   28 ++++++----------------------
+ fs/xfs/libxfs/xfs_ag.h   |    5 +++--
+ fs/xfs/xfs_fsops.c       |   18 ++++++++----------
+ fs/xfs/xfs_log_recover.c |    5 +++--
+ fs/xfs/xfs_mount.c       |    4 ++--
+ 5 files changed, 22 insertions(+), 38 deletions(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 375bbb9600d3c..1a8148dec4afe 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -816,6 +816,17 @@ static inline void apic_clear_isr(int vec, struct kvm_lapic *apic)
+--- a/fs/xfs/libxfs/xfs_ag.c
++++ b/fs/xfs/libxfs/xfs_ag.c
+@@ -360,27 +360,16 @@ xfs_free_unused_perag_range(
+ int
+ xfs_initialize_perag(
+ 	struct xfs_mount	*mp,
+-	xfs_agnumber_t		agcount,
++	xfs_agnumber_t		old_agcount,
++	xfs_agnumber_t		new_agcount,
+ 	xfs_rfsblock_t		dblocks,
+ 	xfs_agnumber_t		*maxagi)
+ {
+ 	struct xfs_perag	*pag;
+ 	xfs_agnumber_t		index;
+-	xfs_agnumber_t		first_initialised = NULLAGNUMBER;
+ 	int			error;
+ 
+-	/*
+-	 * Walk the current per-ag tree so we don't try to initialise AGs
+-	 * that already exist (growfs case). Allocate and insert all the
+-	 * AGs we don't find ready for initialisation.
+-	 */
+-	for (index = 0; index < agcount; index++) {
+-		pag = xfs_perag_get(mp, index);
+-		if (pag) {
+-			xfs_perag_put(pag);
+-			continue;
+-		}
+-
++	for (index = old_agcount; index < new_agcount; index++) {
+ 		pag = kmem_zalloc(sizeof(*pag), KM_MAYFAIL);
+ 		if (!pag) {
+ 			error = -ENOMEM;
+@@ -425,21 +414,17 @@ xfs_initialize_perag(
+ 		/* Active ref owned by mount indicates AG is online. */
+ 		atomic_set(&pag->pag_active_ref, 1);
+ 
+-		/* first new pag is fully initialized */
+-		if (first_initialised == NULLAGNUMBER)
+-			first_initialised = index;
+-
+ 		/*
+ 		 * Pre-calculated geometry
+ 		 */
+-		pag->block_count = __xfs_ag_block_count(mp, index, agcount,
++		pag->block_count = __xfs_ag_block_count(mp, index, new_agcount,
+ 				dblocks);
+ 		pag->min_block = XFS_AGFL_BLOCK(mp);
+ 		__xfs_agino_range(mp, pag->block_count, &pag->agino_min,
+ 				&pag->agino_max);
  	}
+ 
+-	index = xfs_set_inode_alloc(mp, agcount);
++	index = xfs_set_inode_alloc(mp, new_agcount);
+ 
+ 	if (maxagi)
+ 		*maxagi = index;
+@@ -455,8 +440,7 @@ out_remove_pag:
+ out_free_pag:
+ 	kmem_free(pag);
+ out_unwind_new_pags:
+-	/* unwind any prior newly initialized pags */
+-	xfs_free_unused_perag_range(mp, first_initialised, agcount);
++	xfs_free_unused_perag_range(mp, old_agcount, index);
+ 	return error;
  }
  
-+void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_lapic *apic = vcpu->arch.apic;
-+
-+	if (WARN_ON_ONCE(!lapic_in_kernel(vcpu)) || !apic->apicv_active)
-+		return;
-+
-+	kvm_x86_call(hwapic_isr_update)(vcpu, apic_find_highest_isr(apic));
-+}
-+EXPORT_SYMBOL_GPL(kvm_apic_update_hwapic_isr);
-+
- int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu)
+--- a/fs/xfs/libxfs/xfs_ag.h
++++ b/fs/xfs/libxfs/xfs_ag.h
+@@ -135,8 +135,9 @@ __XFS_AG_OPSTATE(agfl_needs_reset, AGFL_
+ 
+ void xfs_free_unused_perag_range(struct xfs_mount *mp, xfs_agnumber_t agstart,
+ 			xfs_agnumber_t agend);
+-int xfs_initialize_perag(struct xfs_mount *mp, xfs_agnumber_t agcount,
+-			xfs_rfsblock_t dcount, xfs_agnumber_t *maxagi);
++int xfs_initialize_perag(struct xfs_mount *mp, xfs_agnumber_t old_agcount,
++		xfs_agnumber_t agcount, xfs_rfsblock_t dcount,
++		xfs_agnumber_t *maxagi);
+ int xfs_initialize_perag_data(struct xfs_mount *mp, xfs_agnumber_t agno);
+ void xfs_free_perag(struct xfs_mount *mp);
+ 
+--- a/fs/xfs/xfs_fsops.c
++++ b/fs/xfs/xfs_fsops.c
+@@ -87,6 +87,7 @@ xfs_growfs_data_private(
+ 	struct xfs_mount	*mp,		/* mount point for filesystem */
+ 	struct xfs_growfs_data	*in)		/* growfs data input struct */
  {
- 	/* This may race with setting of irr in __apic_accept_irq() and
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index fc4bd36d44cfc..3aa599db77968 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -120,6 +120,7 @@ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
- int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
- int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
- int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
-+void kvm_apic_update_hwapic_isr(struct kvm_vcpu *vcpu);
- int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
++	xfs_agnumber_t		oagcount = mp->m_sb.sb_agcount;
+ 	struct xfs_buf		*bp;
+ 	int			error;
+ 	xfs_agnumber_t		nagcount;
+@@ -94,7 +95,6 @@ xfs_growfs_data_private(
+ 	xfs_rfsblock_t		nb, nb_div, nb_mod;
+ 	int64_t			delta;
+ 	bool			lastag_extended = false;
+-	xfs_agnumber_t		oagcount;
+ 	struct xfs_trans	*tp;
+ 	struct aghdr_init_data	id = {};
+ 	struct xfs_perag	*last_pag;
+@@ -138,16 +138,14 @@ xfs_growfs_data_private(
+ 	if (delta == 0)
+ 		return 0;
  
- u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 931a7361c30f2..22bee8a711442 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -5043,6 +5043,11 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
- 		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
- 	}
- 
-+	if (vmx->nested.update_vmcs01_hwapic_isr) {
-+		vmx->nested.update_vmcs01_hwapic_isr = false;
-+		kvm_apic_update_hwapic_isr(vcpu);
-+	}
+-	oagcount = mp->m_sb.sb_agcount;
+-	/* allocate the new per-ag structures */
+-	if (nagcount > oagcount) {
+-		error = xfs_initialize_perag(mp, nagcount, nb, &nagimax);
+-		if (error)
+-			return error;
+-	} else if (nagcount < oagcount) {
+-		/* TODO: shrinking the entire AGs hasn't yet completed */
++	/* TODO: shrinking the entire AGs hasn't yet completed */
++	if (nagcount < oagcount)
+ 		return -EINVAL;
+-	}
 +
- 	if ((vm_exit_reason != -1) &&
- 	    (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx)))
- 		vmx->nested.need_vmcs12_to_shadow_sync = true;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index f06d443ec3c68..1af30e3472cdd 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6858,6 +6858,27 @@ void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
- 	u16 status;
- 	u8 old;
++	/* allocate the new per-ag structures */
++	error = xfs_initialize_perag(mp, oagcount, nagcount, nb, &nagimax);
++	if (error)
++		return error;
  
-+	/*
-+	 * If L2 is active, defer the SVI update until vmcs01 is loaded, as SVI
-+	 * is only relevant for if and only if Virtual Interrupt Delivery is
-+	 * enabled in vmcs12, and if VID is enabled then L2 EOIs affect L2's
-+	 * vAPIC, not L1's vAPIC.  KVM must update vmcs01 on the next nested
-+	 * VM-Exit, otherwise L1 with run with a stale SVI.
-+	 */
-+	if (is_guest_mode(vcpu)) {
-+		/*
-+		 * KVM is supposed to forward intercepted L2 EOIs to L1 if VID
-+		 * is enabled in vmcs12; as above, the EOIs affect L2's vAPIC.
-+		 * Note, userspace can stuff state while L2 is active; assert
-+		 * that VID is disabled if and only if the vCPU is in KVM_RUN
-+		 * to avoid false positives if userspace is setting APIC state.
-+		 */
-+		WARN_ON_ONCE(vcpu->wants_to_run &&
-+			     nested_cpu_has_vid(get_vmcs12(vcpu)));
-+		to_vmx(vcpu)->nested.update_vmcs01_hwapic_isr = true;
-+		return;
-+	}
-+
- 	if (max_isr == -1)
- 		max_isr = 0;
+ 	if (delta > 0)
+ 		error = xfs_trans_alloc(mp, &M_RES(mp)->tr_growdata,
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -3317,6 +3317,7 @@ xlog_do_recover(
+ 	struct xfs_mount	*mp = log->l_mp;
+ 	struct xfs_buf		*bp = mp->m_sb_bp;
+ 	struct xfs_sb		*sbp = &mp->m_sb;
++	xfs_agnumber_t		orig_agcount = sbp->sb_agcount;
+ 	int			error;
  
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 2325f773a20be..41bf59bbc6426 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -176,6 +176,7 @@ struct nested_vmx {
- 	bool reload_vmcs01_apic_access_page;
- 	bool update_vmcs01_cpu_dirty_logging;
- 	bool update_vmcs01_apicv_status;
-+	bool update_vmcs01_hwapic_isr;
- 
+ 	trace_xfs_log_recover(log, head_blk, tail_blk);
+@@ -3365,8 +3366,8 @@ xlog_do_recover(
+ 	/* re-initialise in-core superblock and geometry structures */
+ 	mp->m_features |= xfs_sb_version_to_features(sbp);
+ 	xfs_reinit_percpu_counters(mp);
+-	error = xfs_initialize_perag(mp, sbp->sb_agcount, sbp->sb_dblocks,
+-			&mp->m_maxagi);
++	error = xfs_initialize_perag(mp, orig_agcount, sbp->sb_agcount,
++			sbp->sb_dblocks, &mp->m_maxagi);
+ 	if (error) {
+ 		xfs_warn(mp, "Failed post-recovery per-ag init: %d", error);
+ 		return error;
+--- a/fs/xfs/xfs_mount.c
++++ b/fs/xfs/xfs_mount.c
+@@ -797,8 +797,8 @@ xfs_mountfs(
  	/*
- 	 * Enlightened VMCS has been enabled. It does not mean that L1 has to
--- 
-2.39.5
-
+ 	 * Allocate and initialize the per-ag data.
+ 	 */
+-	error = xfs_initialize_perag(mp, sbp->sb_agcount, mp->m_sb.sb_dblocks,
+-			&mp->m_maxagi);
++	error = xfs_initialize_perag(mp, 0, sbp->sb_agcount,
++			mp->m_sb.sb_dblocks, &mp->m_maxagi);
+ 	if (error) {
+ 		xfs_warn(mp, "Failed per-ag init: %d", error);
+ 		goto out_free_dir;
 
 
 
