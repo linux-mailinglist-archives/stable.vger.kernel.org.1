@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-119149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C40A42582
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203DEA4259F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F47446729
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53056424DDD
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A474E19F133;
-	Mon, 24 Feb 2025 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A522118E34A;
+	Mon, 24 Feb 2025 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErwQgecd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krJbYTe6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E67919644B;
-	Mon, 24 Feb 2025 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FEB27701;
+	Mon, 24 Feb 2025 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408484; cv=none; b=R8T4XPsO4EcFTKwDqMh3abgu0sVMWFmj6XJvsLkDW3Y4rKKlsvZBuirGkvrN6RYvREsKTl7mANXedsoEQbDg29tDDAanC2a7WT4lOe7clPMSvcHyOegc8BrCBPMduNdGPuIU9lkQSmFqHP9yH2T4quxiZT6psSBCfJipreaWRic=
+	t=1740408913; cv=none; b=j45RpGI69PtOF6JuNYoAtsC4L8abveqOXU3o3VI6R0IeAjRW6qWwFcZvLhjDf0OouQhUgQuEeFHbXLeZdJVF6NoljtcnB5ogDYOZWYt19SLt6aYqU944HIKJHlXrt6VNtWZ/5M1y6OetMyvBK2+3bVbKP/oGB3/PTHfqoowUUsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408484; c=relaxed/simple;
-	bh=0FLrWcz1/6Z+JscA7k63e2FEylqPpWBl+0ExvZ1uPP0=;
+	s=arc-20240116; t=1740408913; c=relaxed/simple;
+	bh=7okwyCjPq8BIidtwplwi4moIpb3u1ZNL/d+U6DBOaWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBlKENifeLloxifJh2emZ6JsI6SERn2hJOJEuid6izaQg/ChVuHcBmseBtw5eCtjspKT6+D2GzPStsIeUmTPFnSDF2vqeW2FguUkU2EG0OsDA+UBnSGCI5YG4m3HE1/1Ir90PfyVCpNgeAFWTABWUIhLlzytq/xV5kfRqnbH5ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErwQgecd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8385C4CEE6;
-	Mon, 24 Feb 2025 14:48:03 +0000 (UTC)
+	 MIME-Version; b=XoJjYNMRwA8HarK1MsY5jB17wd43xo1g2/faL/8CIOHfc1ASmv2waJmvdt7R6vg8b8I+OKA49Yn+l7132feiiDAusFRlmoSgj16A1AB/t9rRfVc5d73X6PzzGbs0+nCz8G/8pADDEUl7Sxw6mYJNxEGWdYYWZslofFhIufOKZwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krJbYTe6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE38C4CED6;
+	Mon, 24 Feb 2025 14:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408484;
-	bh=0FLrWcz1/6Z+JscA7k63e2FEylqPpWBl+0ExvZ1uPP0=;
+	s=korg; t=1740408913;
+	bh=7okwyCjPq8BIidtwplwi4moIpb3u1ZNL/d+U6DBOaWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErwQgecdZ5nztwzswZGKkqTQiSzpzLLjWskGLucuXekceWUcnUsZrhu9s7crbviyF
-	 hffsO2i9KUVOOxYkQ/ZpF8BgnI16vY8ocbrG7zhRYOBH8btqLpiBnVi8r/DiHe/qKi
-	 m/B5wzn4pbP6sWyTfa36gssAxinbUX0+4A1bpAuU=
+	b=krJbYTe6pWiyzaf1vdoMLh7zGp42Up6pi3cKFHxHlq6wZXGbUAWk9kc4uw5cr4N2Q
+	 h1gRikKbPqwhHkYyTLM2+YMHiifxCCf13otTVUo+XtyPKMjr42KXcxYL7Kjj/Vsm08
+	 dqmQNfLvedbt7UQYmKqH1x7NdgDO262hB07qC5ZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/154] tcp: drop secpath at the same time as we currently drop dst
-Date: Mon, 24 Feb 2025 15:34:31 +0100
-Message-ID: <20250224142609.901481869@linuxfoundation.org>
+Subject: [PATCH 6.13 042/138] flow_dissector: Fix handling of mixed port and port-range keys
+Date: Mon, 24 Feb 2025 15:34:32 +0100
+Message-ID: <20250224142606.123075110@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,160 +67,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 9b6412e6979f6f9e0632075f8f008937b5cd4efd ]
+[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
 
-Xiumei reported hitting the WARN in xfrm6_tunnel_net_exit while
-running tests that boil down to:
- - create a pair of netns
- - run a basic TCP test over ipcomp6
- - delete the pair of netns
+This patch fixes a bug in TC flower filter where rules combining a
+specific destination port with a source port range weren't working
+correctly.
 
-The xfrm_state found on spi_byaddr was not deleted at the time we
-delete the netns, because we still have a reference on it. This
-lingering reference comes from a secpath (which holds a ref on the
-xfrm_state), which is still attached to an skb. This skb is not
-leaked, it ends up on sk_receive_queue and then gets defer-free'd by
-skb_attempt_defer_free.
+The specific case was when users tried to configure rules like:
 
-The problem happens when we defer freeing an skb (push it on one CPU's
-defer_list), and don't flush that list before the netns is deleted. In
-that case, we still have a reference on the xfrm_state that we don't
-expect at this point.
+tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
+dst_port 5000 src_port 2000-3000 action drop
 
-We already drop the skb's dst in the TCP receive path when it's no
-longer needed, so let's also drop the secpath. At this point,
-tcp_filter has already called into the LSM hooks that may require the
-secpath, so it should not be needed anymore. However, in some of those
-places, the MPTCP extension has just been attached to the skb, so we
-cannot simply drop all extensions.
+The root cause was in the flow dissector code. While both
+FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
+were being set correctly in the classifier, the __skb_flow_dissect_ports()
+function was only populating one of them: whichever came first in
+the enum check. This meant that when the code needed both a specific
+port and a port range, one of them would be left as 0, causing the
+filter to not match packets as expected.
 
-Fixes: 68822bdf76f1 ("net: generalize skb freeing deferral to per-cpu lists")
-Reported-by: Xiumei Mu <xmu@redhat.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/5055ba8f8f72bdcb602faa299faca73c280b7735.1739743613.git.sd@queasysnail.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix it by removing the either/or logic and instead checking and
+populating both key types independently when they're in use.
+
+Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h       | 14 ++++++++++++++
- net/ipv4/tcp_fastopen.c |  4 ++--
- net/ipv4/tcp_input.c    |  8 ++++----
- net/ipv4/tcp_ipv4.c     |  2 +-
- 4 files changed, 21 insertions(+), 7 deletions(-)
+ net/core/flow_dissector.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index d1948d357dade..6cd0fde806519 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -41,6 +41,7 @@
- #include <net/inet_ecn.h>
- #include <net/dst.h>
- #include <net/mptcp.h>
-+#include <net/xfrm.h>
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 5db41bf2ed93e..c33af3ef0b790 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -853,23 +853,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
+ 			 void *target_container, const void *data,
+ 			 int nhoff, u8 ip_proto, int hlen)
+ {
+-	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
+-	struct flow_dissector_key_ports *key_ports;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
++	struct flow_dissector_key_ports *key_ports = NULL;
++	__be32 ports;
  
- #include <linux/seq_file.h>
- #include <linux/memcontrol.h>
-@@ -683,6 +684,19 @@ void tcp_fin(struct sock *sk);
- void tcp_check_space(struct sock *sk);
- void tcp_sack_compress_send_ack(struct sock *sk);
+ 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
++		key_ports = skb_flow_dissector_target(flow_dissector,
++						      FLOW_DISSECTOR_KEY_PORTS,
++						      target_container);
  
-+static inline void tcp_cleanup_skb(struct sk_buff *skb)
-+{
-+	skb_dst_drop(skb);
-+	secpath_reset(skb);
-+}
+-	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
 +
-+static inline void tcp_add_receive_queue(struct sock *sk, struct sk_buff *skb)
-+{
-+	DEBUG_NET_WARN_ON_ONCE(skb_dst(skb));
-+	DEBUG_NET_WARN_ON_ONCE(secpath_exists(skb));
-+	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+}
-+
- /* tcp_timer.c */
- void tcp_init_xmit_timers(struct sock *);
- static inline void tcp_clear_xmit_timers(struct sock *sk)
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 0f523cbfe329e..32b28fc21b63c 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -178,7 +178,7 @@ void tcp_fastopen_add_skb(struct sock *sk, struct sk_buff *skb)
- 	if (!skb)
++	if (!key_ports && !key_ports_range)
  		return;
  
--	skb_dst_drop(skb);
-+	tcp_cleanup_skb(skb);
- 	/* segs_in has been initialized to 1 in tcp_create_openreq_child().
- 	 * Hence, reset segs_in to 0 before calling tcp_segs_in()
- 	 * to avoid double counting.  Also, tcp_segs_in() expects
-@@ -195,7 +195,7 @@ void tcp_fastopen_add_skb(struct sock *sk, struct sk_buff *skb)
- 	TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
+-	key_ports = skb_flow_dissector_target(flow_dissector,
+-					      dissector_ports,
+-					      target_container);
+-	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
+-						data, hlen);
++	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
++
++	if (key_ports)
++		key_ports->ports = ports;
++
++	if (key_ports_range)
++		key_ports_range->tp.ports = ports;
+ }
  
- 	tp->rcv_nxt = TCP_SKB_CB(skb)->end_seq;
--	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+	tcp_add_receive_queue(sk, skb);
- 	tp->syn_data_acked = 1;
- 
- 	/* u64_stats_update_begin(&tp->syncp) not needed here,
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index bb17add6e4a78..d93a5a89c5692 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4970,7 +4970,7 @@ static void tcp_ofo_queue(struct sock *sk)
- 		tcp_rcv_nxt_update(tp, TCP_SKB_CB(skb)->end_seq);
- 		fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
- 		if (!eaten)
--			__skb_queue_tail(&sk->sk_receive_queue, skb);
-+			tcp_add_receive_queue(sk, skb);
- 		else
- 			kfree_skb_partial(skb, fragstolen);
- 
-@@ -5162,7 +5162,7 @@ static int __must_check tcp_queue_rcv(struct sock *sk, struct sk_buff *skb,
- 				  skb, fragstolen)) ? 1 : 0;
- 	tcp_rcv_nxt_update(tcp_sk(sk), TCP_SKB_CB(skb)->end_seq);
- 	if (!eaten) {
--		__skb_queue_tail(&sk->sk_receive_queue, skb);
-+		tcp_add_receive_queue(sk, skb);
- 		skb_set_owner_r(skb, sk);
- 	}
- 	return eaten;
-@@ -5245,7 +5245,7 @@ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
- 		__kfree_skb(skb);
- 		return;
- 	}
--	skb_dst_drop(skb);
-+	tcp_cleanup_skb(skb);
- 	__skb_pull(skb, tcp_hdr(skb)->doff * 4);
- 
- 	reason = SKB_DROP_REASON_NOT_SPECIFIED;
-@@ -6214,7 +6214,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
- 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPHPHITS);
- 
- 			/* Bulk data transfer: receiver */
--			skb_dst_drop(skb);
-+			tcp_cleanup_skb(skb);
- 			__skb_pull(skb, tcp_header_len);
- 			eaten = tcp_queue_rcv(sk, skb, &fragstolen);
- 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index bcc2f1e090c7d..824048679e1b8 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -2025,7 +2025,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	 */
- 	skb_condense(skb);
- 
--	skb_dst_drop(skb);
-+	tcp_cleanup_skb(skb);
- 
- 	if (unlikely(tcp_checksum_complete(skb))) {
- 		bh_unlock_sock(sk);
+ static void
 -- 
 2.39.5
 
