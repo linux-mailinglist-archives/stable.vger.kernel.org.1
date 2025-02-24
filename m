@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-119061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508FAA423F7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEF9A424D2
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C430189899E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E34F17A9F93
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC01221F20;
-	Mon, 24 Feb 2025 14:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86EA15198B;
+	Mon, 24 Feb 2025 14:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aSoAxfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBkaVnij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB27F2629F;
-	Mon, 24 Feb 2025 14:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E9D146A63;
+	Mon, 24 Feb 2025 14:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408187; cv=none; b=slHXYFax2ilHdafyQGYBt3HBMwP18DWiVJDDOqtVjVFZFvx35uaC2G0tZJXRrZiBax9zjsv45F09nxyZqALWwgvQ17J6K8jrBDRN16nx1Q9c3DlChwTyPuJvPeh+sVmP6+w2DO+pUnJZO/nukDBCGOJeunlrzo5Rrp7qb7rfoQw=
+	t=1740409150; cv=none; b=p6BwlDqSEpHj1z2lsfjLwBtf+pFflUuJE5Ta45yglD/YF9JVw4lJTjoagX2cIl2JVoo2BH3yzQdopZYKPbzOZ7/1hpgX0ALQS0rNwMw9ge83fUKsGvOjmYNGTWmfLECcFO0TftMYsKGGw14byCa2HqRargiX4M0woBmsr9wDz08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408187; c=relaxed/simple;
-	bh=+M5YfdWEhXlsurBmpzciMDYSOMRfCi6+dtbrpybF62g=;
+	s=arc-20240116; t=1740409150; c=relaxed/simple;
+	bh=9yEA3HGPoxrXl8X+ULiGfPS46HBi6L05hE5GsWAvJuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bD8h03eROx1MDR4JwW4OqyWGISHMK0YHYZT3PHfYaoWpOdkbjvXPl4Zs1veY5mkd+RsBk4OJVRaklgwdctQ+xyFeDkDaxL0RSCAIg4Ok6nJQABCBGu+eibJMvzAzD5czSPakHPr/RP4t+6qQjrNRLpuIEexqj3L9nbKls1Y7CBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aSoAxfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2E4C4CEF0;
-	Mon, 24 Feb 2025 14:43:07 +0000 (UTC)
+	 MIME-Version; b=DJ3HtYvRs6ivBqGV6YLteqFIaLd5rN8Mwot0QGekS5WV65NJo+yY6RkwiRF/ibvKztZsVtcn5KLS7OoGXZXZM7T37/sVbRDKB1q/Vo5VBU+oauF2AwGGXqEu6Cy2xpEX/Uh9Ym82Q9ZqQItTXv7hQODWc+YvOQwwiJ5Eu79J2g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBkaVnij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34D5C4CED6;
+	Mon, 24 Feb 2025 14:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408187;
-	bh=+M5YfdWEhXlsurBmpzciMDYSOMRfCi6+dtbrpybF62g=;
+	s=korg; t=1740409150;
+	bh=9yEA3HGPoxrXl8X+ULiGfPS46HBi6L05hE5GsWAvJuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aSoAxfQhkvhSewJdwI9SX67BAwYG9Y7Z+dE7ep1Xt9KFWNDZQqNrFH2mBW7Yfvn9
-	 zW/QxpD2RT/edEkIIBenJsc9/n6rlNfBzhfKKKle22ILQpcdm4E6jmZ1QVySNRJOIm
-	 OWvURVbTX9csHnQ6wZuAjdGy1nxZlljyIjhoo1vQ=
+	b=wBkaVnijbv6g+HmHdRjPYmEEia683fIhBoD6sLt1XXN1XDFQIrZA3PXqWDtxz4Y71
+	 rWXSjuNKmXsJTUvelgHDSa5yo8Iz5Zndy5PoRzdzAifVuAzGaqj91bo4WI0NFsYTUt
+	 Q3I5cpVXwYmws9hG2RqBo5YIO1Ys1sHK93FnUxqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 125/140] mtd: rawnand: cadence: fix error code in cadence_nand_init()
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 094/138] drm/i915/dsi: Use TRANS_DDI_FUNC_CTLs own port width macro
 Date: Mon, 24 Feb 2025 15:35:24 +0100
-Message-ID: <20250224142607.921139132@linuxfoundation.org>
+Message-ID: <20250224142608.174888046@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 2b9df00cded911e2ca2cfae5c45082166b24f8aa upstream.
+commit 879f70382ff3e92fc854589ada3453e3f5f5b601 upstream.
 
-Replace dma_request_channel() with dma_request_chan_by_mask() and use
-helper functions to return proper error code instead of fixed -EBUSY.
+The format of the port width field in the DDI_BUF_CTL and the
+TRANS_DDI_FUNC_CTL registers are different starting with MTL, where the
+x3 lane mode for HDMI FRL has a different encoding in the two registers.
+To account for this use the TRANS_DDI_FUNC_CTL's own port width macro.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: <stable@vger.kernel.org> # v6.5+
+Fixes: b66a8abaa48a ("drm/i915/display/mtl: Fill port width in DDI_BUF_/TRANS_DDI_FUNC_/PORT_BUF_CTL for HDMI")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-2-imre.deak@intel.com
+(cherry picked from commit 76120b3a304aec28fef4910204b81a12db8974da)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2909,11 +2909,10 @@ static int cadence_nand_init(struct cdns
- 	dma_cap_set(DMA_MEMCPY, mask);
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -808,8 +808,8 @@ gen11_dsi_configure_transcoder(struct in
+ 		/* select data lane width */
+ 		tmp = intel_de_read(display,
+ 				    TRANS_DDI_FUNC_CTL(display, dsi_trans));
+-		tmp &= ~DDI_PORT_WIDTH_MASK;
+-		tmp |= DDI_PORT_WIDTH(intel_dsi->lane_count);
++		tmp &= ~TRANS_DDI_PORT_WIDTH_MASK;
++		tmp |= TRANS_DDI_PORT_WIDTH(intel_dsi->lane_count);
  
- 	if (cdns_ctrl->caps1->has_dma) {
--		cdns_ctrl->dmac = dma_request_channel(mask, NULL, NULL);
--		if (!cdns_ctrl->dmac) {
--			dev_err(cdns_ctrl->dev,
--				"Unable to get a DMA channel\n");
--			ret = -EBUSY;
-+		cdns_ctrl->dmac = dma_request_chan_by_mask(&mask);
-+		if (IS_ERR(cdns_ctrl->dmac)) {
-+			ret = dev_err_probe(cdns_ctrl->dev, PTR_ERR(cdns_ctrl->dmac),
-+					    "%d: Failed to get a DMA channel\n", ret);
- 			goto disable_irq;
- 		}
- 	}
+ 		/* select input pipe */
+ 		tmp &= ~TRANS_DDI_EDP_INPUT_MASK;
 
 
 
