@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-118923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE18A41FB2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:55:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6AFA41FC0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0592E1659D3
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:49:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92293B3E0B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E275323BD04;
-	Mon, 24 Feb 2025 12:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B288923BCFA;
+	Mon, 24 Feb 2025 12:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wd2mJdCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHEDXCbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923CF23BD00;
-	Mon, 24 Feb 2025 12:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EB418B47D
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 12:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740401323; cv=none; b=UShhU38ArOmjL9s3hid4KJPm4C8BwIdIq9hlBWMzHY3mc/bqWXf6ggblyZepXGNPjgwpYF3nv7rirMyMyu8FxDKlajdHGbQIH1TXmtAcBsicvPdwdOY3GKk7RoTIeo87yhR7Q9fTQ3mUEx2BhuMOBT9dU03hvaJQnNUMxr4PL4U=
+	t=1740401412; cv=none; b=pYwLNr9G1m93ingorPlhmNnqFdV1vomzsJtFXP1ZiqPHJoqjY6xXt74hVcgg0TRZhbTWJPcSJsgr2etqCjn6HYrEYb62eySMHWuFbGjMBRYx6ttJLefqf/yNLFUmohJugBO24SP9W1gK2wLfQ80TWqs5F9hPL1AZ/aQA1X9pRLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740401323; c=relaxed/simple;
-	bh=t2oFCbePl5zWYdAkJbTnFTKukSqDIBGCcwzqRSvEdMg=;
+	s=arc-20240116; t=1740401412; c=relaxed/simple;
+	bh=x/d7h7F2f9ES2/GHWrAvtcp2vyGtRoUd7cwQd05bpUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WNWE8/4B8167XwCRIgKy0aF2Ejn6ukQwEkb3GB3i26AreTooPo54n5JgWfTMh5+xn4yjjXOUYQTd+d7W9abvWmyMPj5zG8kaVINmtkqwP/+IALODLzB0glttGir/7lKaAK7fxrYpaKM/YNpStokoiOknbFqAjjybk9C1JaHv5ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd2mJdCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B75C4CED6;
-	Mon, 24 Feb 2025 12:48:41 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z+2Z0ZkFuQgx3HuetqJHcwRSt94g+3y12JaW7qHhaUPl66K87Dc/G0gIt7LCXMYiNBy8yXkI9kxR1dCot1/4oXpcO0gMwc10DBu45ZpNmK36wPKf1cPDxFiUPbciD9/qVA94Qf6BcvrDjiHs6v2RssZro/4Lf6a42hapkeq172c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHEDXCbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9790BC4CED6;
+	Mon, 24 Feb 2025 12:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740401322;
-	bh=t2oFCbePl5zWYdAkJbTnFTKukSqDIBGCcwzqRSvEdMg=;
+	s=korg; t=1740401412;
+	bh=x/d7h7F2f9ES2/GHWrAvtcp2vyGtRoUd7cwQd05bpUE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wd2mJdChu3Erc3GCpcEaPPO9X+PJglImNOREvEdhM6EbwWZ3LfAkWGtPATUhmz/s8
-	 gn195YsYUoPQIIZAc9I95G4vVdPPk63O4GS96Lr6ap/ZQfw9rnDF1kXDBdXbAPyslV
-	 ZlzXTPXfnpwGXwBe88PYqcfib7PizS/P8z8DpwbI=
-Date: Mon, 24 Feb 2025 13:48:38 +0100
+	b=pHEDXCbN4zBHpBCA4vf2/iocyNfxnmPIgrjEv/wM+tVK/QfbPUazTxCJ6SZ+5sM/e
+	 SEjUWgHOtpNedzm+Q7axr0Jr3svTSWSCWQIiKyxKb9UDuSs/Gj9C+4OQ51eLQeq5Ug
+	 692kVltRiIJGE9pC0WAI/ESoOUZATRBn2TwJl3Sc=
+Date: Mon, 24 Feb 2025 13:50:09 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Wentao Guan <guanwentao@uniontech.com>
-Cc: John Keeping <jkeeping@inmusicbrands.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Ferry Toth <ftoth@exalondelft.nl>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-serial <linux-serial@vger.kernel.org>,
-	stable <stable@vger.kernel.org>
-Subject: Re: [PATCH] serial: 8250_dma: terminate correct DMA in tx_dma_flush()
-Message-ID: <2025022434-subsiding-esquire-1de2@gregkh>
-References: <20250224121831.1429323-1-jkeeping@inmusicbrands.com>
- <tencent_09E5A20410369ED253A21788@qq.com>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: lukasz.czechowski@thaumatec.com, heiko@sntech.de,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] arm64: dts: rockchip: Disable DMA for
+ uart5 on px30-ringneck" failed to apply to 6.6-stable tree
+Message-ID: <2025022438-frail-cache-64c7@gregkh>
+References: <2025022438-automated-recycled-cc12@gregkh>
+ <ff3a6ebe-1723-4879-8c17-561c9ea5b9c4@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,22 +56,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_09E5A20410369ED253A21788@qq.com>
+In-Reply-To: <ff3a6ebe-1723-4879-8c17-561c9ea5b9c4@cherry.de>
 
-On Mon, Feb 24, 2025 at 08:36:20PM +0800, Wentao Guan wrote:
-> Hello,
-> Thanks for reply.
-> + Cc: stable@vger.kernel.org
+On Mon, Feb 24, 2025 at 11:46:55AM +0100, Quentin Schulz wrote:
+> Hi Greg, Heiko, Lukasz,
 > 
-> BRs
-> Wentao Guan
+> On 2/24/25 11:27 AM, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.6-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 5ae4dca718eacd0a56173a687a3736eb7e627c77
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025022438-automated-recycled-cc12@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> 
+> Commit 5ae4dca718ea ("arm64: dts: rockchip: Disable DMA for uart5 on
+> px30-ringneck") depends on 4eee627ea593 ("arm64: dts: rockchip: Move uart5
+> pin configuration to px30 ringneck SoM"), both slated for stable, so I'm
+> surprised this patch is the one conflicting and not the first one (because
+> it does conflict too!).
+> 
+> An option for clean application is to backport 5963d97aa780 ("arm64: dts:
+> rockchip: add rs485 support on uart5 of px30-ringneck-haikou") to 6.6 first,
+> and then 4eee627ea593 followed by 5ae4dca718ea.
+> 
+> Another option is to resolve the conflict for 4eee627ea593 which is simply
+> about the git context (rts-gpios can be removed if 5963d97aa780 isn't
+> backported).
+> 
+> @Heiko, @Greg, a preference on one of those two options (or a third one
+> maybe?)? I personally would prefer the additional backport so we avoid other
+> conflicts in the future (I already foresee one with a patch I posted (not
+> merged yet!) last week).
 
-<formletter>
+I don't care, it's your call, just submit a patch series of the
+backported patches you want to see applied and I'll gladly take them.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+thanks,
 
-</formletter>
+greg k-h
 
