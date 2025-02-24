@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-119323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F2AA424BF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079BEA42408
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E958C7AA92A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C3917C981
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CDA19F42D;
-	Mon, 24 Feb 2025 14:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749A578F5F;
+	Mon, 24 Feb 2025 14:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8+hrOvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clJO6Mx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E23114B080;
-	Mon, 24 Feb 2025 14:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322D1155308;
+	Mon, 24 Feb 2025 14:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409075; cv=none; b=s24NFUTEn8TRsQ5zezsVOnGEOK147e5ReRbSQFyzG1RRGpEEGXnuFLYNHeLuHxrMyrA9fEQ4RDes9Ut7NQhbMlUZrj8qLYuDDNhri9wdhR84qQLTMv77M+4I6z2uWqNBP7gDnK14zGhFeZOLiUp2PtLag3avL6dJ2A0zAoyJ/s0=
+	t=1740408171; cv=none; b=Kn/6QbmrhaQCo3ygPiZIuOQbnKx7EMKpmXUCU0R0GVOKD8ApB9zcQo4bRXtdjh52Gbl102TLiDcR+MHVB2w5S87bRa6bQHRqdcSHRhY9Lb90gBzNgRybKdYuFHBLyU3gKpZtzb/Mx5RQnet18bpkJIDkZmE1VDJu5+xXdJOnzaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409075; c=relaxed/simple;
-	bh=rQiKx+I+rRitL7NXRQihAxDoVKaLefB+dSoYRB4B2dg=;
+	s=arc-20240116; t=1740408171; c=relaxed/simple;
+	bh=IJgoU+1+QjzFMPHbw8+5yOAV5LU9ZOJAl0ixZilisHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7p150aN6lBZlzI88Oug5j49RGTEz4yHXOBUttCBn684PON9NmNLLWFedKyz9ZGc6EyKUCRRhqU65DHW4nJQLN/hB4PfvOP5iDpbrywfQsIUyKvs/ugXF9ekwr0UqUSGErTAQV3XRfoTcmYw2ccX6Zgs3Q9Bsdr74yFVSsd6Fmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8+hrOvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C83C4CED6;
-	Mon, 24 Feb 2025 14:57:54 +0000 (UTC)
+	 MIME-Version; b=TXETOeLMsv36KknO69zzuFzIh9jFP1xybqMojWKfLczfoCHtcIPF5B5qDh+2ro0xxwoz2ECBSR0KtCpbwu2+MhzsNPoxyh4jH3kW1IkQ9pgHsGlv0+mt5P2DAczvCnmLQkF/8jx0zjlckA7UruHTSnKOe+ZaOmqFMeuf4RBeYW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=clJO6Mx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4A9C4CED6;
+	Mon, 24 Feb 2025 14:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409075;
-	bh=rQiKx+I+rRitL7NXRQihAxDoVKaLefB+dSoYRB4B2dg=;
+	s=korg; t=1740408170;
+	bh=IJgoU+1+QjzFMPHbw8+5yOAV5LU9ZOJAl0ixZilisHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8+hrOvXjsTtH+cvid9y9luf2jSTmoCoJ/9biSkiNzaEmpI+XOGXvGE+M7yUTdoeP
-	 17JYTWpeSWnouvyeo9hZpAfBdDD0LorYlVQFcSjZADwddukx+RvTW0PManq3dSc8Ob
-	 Gn5D2ZTSqmga7+Pg6Ei7L6P7Py2AfE87h5zoLnqM=
+	b=clJO6Mx+FQoA4i43D5lbXKzw9XUTtAJ4I54u7QnL7cUZRIksLdSV5XliimaVKg5vr
+	 uJrxxIVM5lGcfPlIkSRKmnGA60nLqdtNl7Srkg39wLhQ16JdioU3p1Iw496bP3edCd
+	 1Sm4XeamD1ZVGCQq1E5L94Qu0EyjB5FFxbLT9KlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dale Whinham <daleyo@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>
-Subject: [PATCH 6.13 088/138] drm/msm/dp: account for widebus and yuv420 during mode validation
-Date: Mon, 24 Feb 2025 15:35:18 +0100
-Message-ID: <20250224142607.933773425@linuxfoundation.org>
+	John Veness <john-linux@pelago.org.uk>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 120/140] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
+Date: Mon, 24 Feb 2025 15:35:19 +0100
+Message-ID: <20250224142607.732453929@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: John Veness <john-linux@pelago.org.uk>
 
-commit df9cf852ca3099feb8fed781bdd5d3863af001c8 upstream.
+commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
 
-Widebus allows the DP controller to operate in 2 pixel per clock mode.
-The mode validation logic validates the mode->clock against the max
-DP pixel clock. However the max DP pixel clock limit assumes widebus
-is already enabled. Adjust the mode validation logic to only compare
-the adjusted pixel clock which accounts for widebus against the max DP
-pixel clock. Also fix the mode validation logic for YUV420 modes as in
-that case as well, only half the pixel clock is needed.
+Allows the LED on the dedicated mute button on the HP ProBook 450 G4
+laptop to change colour correctly.
 
-Cc: stable@vger.kernel.org
-Fixes: 757a2f36ab09 ("drm/msm/dp: enable widebus feature for display port")
-Fixes: 6db6e5606576 ("drm/msm/dp: change clock related programming for YUV420 over DP")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dale Whinham <daleyo@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/635789/
-Link: https://lore.kernel.org/r/20250206-dp-widebus-fix-v2-1-cb89a0313286@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: John Veness <john-linux@pelago.org.uk>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c |   11 ++++++-----
- drivers/gpu/drm/msm/dp/dp_drm.c     |    5 ++++-
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_conexant.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -937,16 +937,17 @@ enum drm_mode_status msm_dp_bridge_mode_
- 		return -EINVAL;
- 	}
- 
--	if (mode->clock > DP_MAX_PIXEL_CLK_KHZ)
--		return MODE_CLOCK_HIGH;
--
- 	msm_dp_display = container_of(dp, struct msm_dp_display_private, msm_dp_display);
- 	link_info = &msm_dp_display->panel->link_info;
- 
--	if (drm_mode_is_420_only(&dp->connector->display_info, mode) &&
--	    msm_dp_display->panel->vsc_sdp_supported)
-+	if ((drm_mode_is_420_only(&dp->connector->display_info, mode) &&
-+	     msm_dp_display->panel->vsc_sdp_supported) ||
-+	     msm_dp_wide_bus_available(dp))
- 		mode_pclk_khz /= 2;
- 
-+	if (mode_pclk_khz > DP_MAX_PIXEL_CLK_KHZ)
-+		return MODE_CLOCK_HIGH;
-+
- 	mode_bpp = dp->connector->display_info.bpc * num_components;
- 	if (!mode_bpp)
- 		mode_bpp = default_bpp;
---- a/drivers/gpu/drm/msm/dp/dp_drm.c
-+++ b/drivers/gpu/drm/msm/dp/dp_drm.c
-@@ -257,7 +257,10 @@ static enum drm_mode_status msm_edp_brid
- 		return -EINVAL;
- 	}
- 
--	if (mode->clock > DP_MAX_PIXEL_CLK_KHZ)
-+	if (msm_dp_wide_bus_available(dp))
-+		mode_pclk_khz /= 2;
-+
-+	if (mode_pclk_khz > DP_MAX_PIXEL_CLK_KHZ)
- 		return MODE_CLOCK_HIGH;
- 
- 	/*
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1084,6 +1084,7 @@ static const struct hda_quirk cxt5066_fi
+ 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
+ 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
++	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
 
 
 
