@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-118983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075C1A4238C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C266CA423C7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F170E1893B08
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FE127A767A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8B218B46C;
-	Mon, 24 Feb 2025 14:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC62B14B080;
+	Mon, 24 Feb 2025 14:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLEHfpp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYfoDXiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14A04A33;
-	Mon, 24 Feb 2025 14:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A952571CB;
+	Mon, 24 Feb 2025 14:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407921; cv=none; b=YvGIJFPqZRz10RNvgPMiKgLUmcL4W2mDO71MrGgUy3LdAkPa854E1P9RuxHSFHCO2xuKQqA/NukEtmPeCTbBXXy/SrwEGYXAQLbOfuAE69ummkHa/PnA3MNXI2sauT8mU+u5ayz6H9delO0VvU4beWsXwBLu7mliRb5EkxKBvGs=
+	t=1740408401; cv=none; b=hAbcCOBSmv/EnUCev0n5pybwoClbWzg9GosLZkNWfzuuzLPtEUsKa9UlLnSHSOQLbyptuuFH49cM9HCmSazhgcUUMbXzGU1YgHFxHB7dh1Tuseg5gxREqonaxPd9nhto3dDT2tR+PWqTy6C18Yw6otcX0Oa6LruSHjcVvw7+Phc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407921; c=relaxed/simple;
-	bh=m9Ot6gPKOMKY//nu5cyto7sGXKOkMrr54vR5RPrG7LM=;
+	s=arc-20240116; t=1740408401; c=relaxed/simple;
+	bh=jG40cGS7Z93C3vDgYaUScOuPrTDF7eHf2/6vA5MQqEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYk3UhFGWlQcoHb+ua5xpXgmaPBIK91Xtbno8ow0VjNKsbcRrVSHKGRqDbazRtvzvtssRjUVSFRTIAopSFD1jEg8dW0pcIXrlTEeA46zZ3XRwW/QAqDy1C1lOcX9celt3UBoZT/XK3eye2u1ISwZVk7A+CjoCdCAkdu3a7/dBGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLEHfpp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A1DC4CED6;
-	Mon, 24 Feb 2025 14:38:39 +0000 (UTC)
+	 MIME-Version; b=hKOCkejDYxG9KnytQ5GnF9y9HZD4QKsblEKk9dzSJcm9DZN9td3Z4w/VztkXKTrQNdWLo0MJ1evX3BEBg4nrLgUk5cZzg/k6RWt+KLDiyf+4wCySyq8PfK4tqliA24R7Op7zevqkBSJv8i5C+WfYhEw7vkm2KYIMgr3aaCy7CSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYfoDXiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FD9C4CEE6;
+	Mon, 24 Feb 2025 14:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407920;
-	bh=m9Ot6gPKOMKY//nu5cyto7sGXKOkMrr54vR5RPrG7LM=;
+	s=korg; t=1740408401;
+	bh=jG40cGS7Z93C3vDgYaUScOuPrTDF7eHf2/6vA5MQqEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLEHfpp3ya9pJpRfJqXWqr0qCFURW8MSRMF8KYl0b9EtjHYBgd1MFm7MBao1KfMee
-	 1kjegfeJhQCOfxPkez0BshH5A7HX695usILGuZDTAkq68oh1OOMGczy42dj6i12iM/
-	 eW+7mqorkTYIsAD5ZVd92hULFpZgPQIpSFgVXy84=
+	b=NYfoDXiUea8Acmau+AiZdAIItHN4UxkCuXMLCuAeoRT+J+NrsvL0YU8WD1kmzrqZh
+	 /o6SAibQHyVWRP/hGwrv78aJbRWKc9FsXFqb1yOBE8bh/ItJtwBIx+lO2ssFdpH2Mv
+	 wPNVCaCqSnhxIsDInA0qr5fEoShGJaUxY+FooePQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/140] scsi: core: Do not retry I/Os during depopulation
+Subject: [PATCH 6.12 047/154] powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
 Date: Mon, 24 Feb 2025 15:34:06 +0100
-Message-ID: <20250224142604.860326394@linuxfoundation.org>
+Message-ID: <20250224142608.937698519@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 9ff7c383b8ac0c482a1da7989f703406d78445c6 ]
+[ Upstream commit 61bcc752d1b81fde3cae454ff20c1d3c359df500 ]
 
-Fail I/Os instead of retry to prevent user space processes from being
-blocked on the I/O completion for several minutes.
+Rewrite __real_pte() and __rpte_to_hidx() as static inline in order to
+avoid following warnings/errors when building with 4k page size:
 
-Retrying I/Os during "depopulation in progress" or "depopulation restore in
-progress" results in a continuous retry loop until the depopulation
-completes or until the I/O retry loop is aborted due to a timeout by the
-scsi_cmd_runtime_exceeced().
+	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
+	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
+	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
+	   49 |         int i, offset;
+	      |                ^~~~~~
 
-Depopulation is slow and can take 24+ hours to complete on 20+ TB HDDs.
-Most I/Os in the depopulation retry loop end up taking several minutes
-before returning the failure to user space.
+	  CC      arch/powerpc/mm/book3s64/hash_native.o
+	arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
+	arch/powerpc/mm/book3s64/hash_native.c:782:29: error: variable 'index' set but not used [-Werror=unused-but-set-variable]
+	  782 |         unsigned long hash, index, hidx, shift, slot;
+	      |                             ^~~~~
 
-Cc: stable@vger.kernel.org # 4.18.x: 2bbeb8d scsi: core: Handle depopulation and restoration in progress
-Cc: stable@vger.kernel.org # 4.18.x
-Fixes: e37c7d9a0341 ("scsi: core: sanitize++ in progress")
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20250131184408.859579-1-ipylypiv@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
+Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/e0d340a5b7bd478ecbf245d826e6ab2778b74e06.1736706263.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 2f54e1a853099..f026377f1cf1c 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -774,13 +774,18 @@ static void scsi_io_completion_action(struct scsi_cmnd *cmd, int result)
- 				case 0x1a: /* start stop unit in progress */
- 				case 0x1b: /* sanitize in progress */
- 				case 0x1d: /* configuration in progress */
--				case 0x24: /* depopulation in progress */
--				case 0x25: /* depopulation restore in progress */
- 					action = ACTION_DELAYED_RETRY;
- 					break;
- 				case 0x0a: /* ALUA state transition */
- 					action = ACTION_DELAYED_REPREP;
- 					break;
-+				/*
-+				 * Depopulation might take many hours,
-+				 * thus it is not worthwhile to retry.
-+				 */
-+				case 0x24: /* depopulation in progress */
-+				case 0x25: /* depopulation restore in progress */
-+					fallthrough;
- 				default:
- 					action = ACTION_FAIL;
- 					break;
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+index c3efacab4b941..aa90a048f319a 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+@@ -77,9 +77,17 @@
+ /*
+  * With 4K page size the real_pte machinery is all nops.
+  */
+-#define __real_pte(e, p, o)		((real_pte_t){(e)})
++static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
++{
++	return (real_pte_t){pte};
++}
++
+ #define __rpte_to_pte(r)	((r).pte)
+-#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
++
++static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
++{
++	return pte_val(__rpte_to_pte(rpte)) >> H_PAGE_F_GIX_SHIFT;
++}
+ 
+ #define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
+ 	do {							         \
 -- 
 2.39.5
 
