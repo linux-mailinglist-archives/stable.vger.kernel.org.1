@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D925A4251F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:05:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D902EA4240C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7036819E0458
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5732C3AA62D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF3524634F;
-	Mon, 24 Feb 2025 14:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD7517B50B;
+	Mon, 24 Feb 2025 14:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfazKz+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A45xAA3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E8D24889A;
-	Mon, 24 Feb 2025 14:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1D21474A9;
+	Mon, 24 Feb 2025 14:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408579; cv=none; b=b9Acepb9MV8cm3Gg4ZTdSsJqYs6X2IINowYRPqrBzaJDCtgAslxUJgObkmt/NjHMt1WBTKYODDnYJiH9L9p4/dpelukVGWi1VVtm3XU9oQ0pgA9+K+1KU19bVPwL+agXVhgM7E8FHUjtYtiBQQYsm3BiFMvGRBfEhvjzi33p7TA=
+	t=1740408212; cv=none; b=D4IW9uj7DkB5gDLtA9z3k5e1+6Ff3RpoKgAOnXA81vZjWwYHPkwwFN8Xt9SGVZFadoYKXIJ6XmheYwZJ0RpVUtoTyi0VCZfDab3F2FhE0hsdDQ0+ZOSeM1ovOjR22vOaXbEBHEm0+UQNk04stG4fc1ml5Teia/1eeK58KArB4HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408579; c=relaxed/simple;
-	bh=yWYYKPM3ydqFSbvymmiGgWqgPZUsAlAgZqQMCMcc9+I=;
+	s=arc-20240116; t=1740408212; c=relaxed/simple;
+	bh=HLkXzvmfHy9tExlimtWv2JEzkqXiawnv4/30NOh/3E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCFx6wBcTjZOBzGJEMPHXH2F7D8SYXEzqmRcgDFhOacKuhw/et9TTICb3MgXKICDj5I3kUSWPFPIdczsg05YhwpZRIHaJX57Nhb6WyplMo76hEjIpu5S1dDgpzlyjJLE5pcKN5CHy3RAWbKSpH6zTTzBLSX2/aUgEMs5PLdJAQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfazKz+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624DCC4CED6;
-	Mon, 24 Feb 2025 14:49:38 +0000 (UTC)
+	 MIME-Version; b=noYAOwcxV0ts02crMfPludHupLfEpX0XUHcn08VUwHQOKie+5DrFj3R6hC1MOR4smFKY/w9JCjYk+wt6KvYYw4mIgOICbPkQjob02Ih3wTAcPRNR5tNpYYQ8OIBtwZ3FxyFZD+RNxkRoP1M7st1bJ17zMr4ms4ky/blL38F9iSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A45xAA3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAA6C4CED6;
+	Mon, 24 Feb 2025 14:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408578;
-	bh=yWYYKPM3ydqFSbvymmiGgWqgPZUsAlAgZqQMCMcc9+I=;
+	s=korg; t=1740408212;
+	bh=HLkXzvmfHy9tExlimtWv2JEzkqXiawnv4/30NOh/3E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfazKz+SQNoYbkgqt91ejaccTO8WCa7ha3wD1kkhvFvUdJpzJrSUsBRCUNZByqV7o
-	 oqmgBN539f8z9TtQFRRlWE3ptASnC9IfxYuNwdXRy1mz7Ct9c2TfHrWWJcfJv/XOW1
-	 zUxCrUPEu5furZ2JWJe4B5Je1E6Pm2jOFdzSrMvo=
+	b=A45xAA3g9b/Pebg2j+XoeEYIqSc3xFxJhaficqyftwFZ6zjy4RFOaIbBRghUV9DwG
+	 x50D0+5Xut7ZD2LCFrWUMh01q1lNSvSwL/9SaghdpVCtDXTBlWsEmrXD3Ujyaz0BoP
+	 KTSgv6b9HsOdq/vGD2J2MxRJJ1qTKbqKFYGHaXu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Abel Wu <wuyun.abel@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/154] drm/msm/dsi/phy: Do not overwite PHY_CMN_CLK_CFG1 when choosing bitclk source
-Date: Mon, 24 Feb 2025 15:34:58 +0100
-Message-ID: <20250224142610.940823600@linuxfoundation.org>
+Subject: [PATCH 6.6 100/140] bpf: Fix deadlock when freeing cgroup storage
+Date: Mon, 24 Feb 2025 15:34:59 +0100
+Message-ID: <20250224142606.946194461@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-[ Upstream commit 73f69c6be2a9f22c31c775ec03c6c286bfe12cfa ]
+[ Upstream commit c78f4afbd962f43a3989f45f3ca04300252b19b5 ]
 
-PHY_CMN_CLK_CFG1 register has four fields being used in the driver: DSI
-clock divider, source of bitclk and two for enabling the DSI PHY PLL
-clocks.
+The following commit
+bc235cdb423a ("bpf: Prevent deadlock from recursive bpf_task_storage_[get|delete]")
+first introduced deadlock prevention for fentry/fexit programs attaching
+on bpf_task_storage helpers. That commit also employed the logic in map
+free path in its v6 version.
 
-dsi_7nm_set_usecase() sets only the source of bitclk, so should leave
-all other bits untouched.  Use newly introduced
-dsi_pll_cmn_clk_cfg1_update() to update respective bits without
-overwriting the rest.
+Later bpf_cgrp_storage was first introduced in
+c4bcfb38a95e ("bpf: Implement cgroup storage available to non-cgroup-attached bpf progs")
+which faces the same issue as bpf_task_storage, instead of its busy
+counter, NULL was passed to bpf_local_storage_map_free() which opened
+a window to cause deadlock:
 
-While shuffling the code, define and use PHY_CMN_CLK_CFG1 bitfields to
-make the code more readable and obvious.
+	<TASK>
+		(acquiring local_storage->lock)
+	_raw_spin_lock_irqsave+0x3d/0x50
+	bpf_local_storage_update+0xd1/0x460
+	bpf_cgrp_storage_get+0x109/0x130
+	bpf_prog_a4d4a370ba857314_cgrp_ptr+0x139/0x170
+	? __bpf_prog_enter_recur+0x16/0x80
+	bpf_trampoline_6442485186+0x43/0xa4
+	cgroup_storage_ptr+0x9/0x20
+		(holding local_storage->lock)
+	bpf_selem_unlink_storage_nolock.constprop.0+0x135/0x160
+	bpf_selem_unlink_storage+0x6f/0x110
+	bpf_local_storage_map_free+0xa2/0x110
+	bpf_map_free_deferred+0x5b/0x90
+	process_one_work+0x17c/0x390
+	worker_thread+0x251/0x360
+	kthread+0xd2/0x100
+	ret_from_fork+0x34/0x50
+	ret_from_fork_asm+0x1a/0x30
+	</TASK>
 
-Fixes: 1ef7c99d145c ("drm/msm/dsi: add support for 7nm DSI PHY/PLL")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/637380/
-Link: https://lore.kernel.org/r/20250214-drm-msm-phy-pll-cfg-reg-v3-3-0943b850722c@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Progs:
+ - A: SEC("fentry/cgroup_storage_ptr")
+   - cgid (BPF_MAP_TYPE_HASH)
+	Record the id of the cgroup the current task belonging
+	to in this hash map, using the address of the cgroup
+	as the map key.
+   - cgrpa (BPF_MAP_TYPE_CGRP_STORAGE)
+	If current task is a kworker, lookup the above hash
+	map using function parameter @owner as the key to get
+	its corresponding cgroup id which is then used to get
+	a trusted pointer to the cgroup through
+	bpf_cgroup_from_id(). This trusted pointer can then
+	be passed to bpf_cgrp_storage_get() to finally trigger
+	the deadlock issue.
+ - B: SEC("tp_btf/sys_enter")
+   - cgrpb (BPF_MAP_TYPE_CGRP_STORAGE)
+	The only purpose of this prog is to fill Prog A's
+	hash map by calling bpf_cgrp_storage_get() for as
+	many userspace tasks as possible.
+
+Steps to reproduce:
+ - Run A;
+ - while (true) { Run B; Destroy B; }
+
+Fix this issue by passing its busy counter to the free procedure so
+it can be properly incremented before storage/smap locking.
+
+Fixes: c4bcfb38a95e ("bpf: Implement cgroup storage available to non-cgroup-attached bpf progs")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20241221061018.37717-1-wuyun.abel@bytedance.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c             | 4 ++--
- drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ kernel/bpf/bpf_cgrp_storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 388017db45d80..798168180c1ab 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -617,7 +617,6 @@ static int dsi_7nm_pll_restore_state(struct msm_dsi_phy *phy)
- static int dsi_7nm_set_usecase(struct msm_dsi_phy *phy)
+diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
+index d44fe8dd97329..ee1c7b77096e7 100644
+--- a/kernel/bpf/bpf_cgrp_storage.c
++++ b/kernel/bpf/bpf_cgrp_storage.c
+@@ -154,7 +154,7 @@ static struct bpf_map *cgroup_storage_map_alloc(union bpf_attr *attr)
+ 
+ static void cgroup_storage_map_free(struct bpf_map *map)
  {
- 	struct dsi_pll_7nm *pll_7nm = to_pll_7nm(phy->vco_hw);
--	void __iomem *base = phy->base;
- 	u32 data = 0x0;	/* internal PLL */
- 
- 	DBG("DSI PLL%d", pll_7nm->phy->id);
-@@ -636,7 +635,8 @@ static int dsi_7nm_set_usecase(struct msm_dsi_phy *phy)
- 	}
- 
- 	/* set PLL src */
--	writel(data << 2, base + REG_DSI_7nm_PHY_CMN_CLK_CFG1);
-+	dsi_pll_cmn_clk_cfg1_update(pll_7nm, DSI_7nm_PHY_CMN_CLK_CFG1_BITCLK_SEL__MASK,
-+				    DSI_7nm_PHY_CMN_CLK_CFG1_BITCLK_SEL(data));
- 
- 	return 0;
+-	bpf_local_storage_map_free(map, &cgroup_cache, NULL);
++	bpf_local_storage_map_free(map, &cgroup_cache, &bpf_cgrp_storage_busy);
  }
-diff --git a/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml b/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
-index cfaf78c028b13..35f7f40e405b7 100644
---- a/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
-+++ b/drivers/gpu/drm/msm/registers/display/dsi_phy_7nm.xml
-@@ -16,6 +16,7 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
- 	<reg32 offset="0x00014" name="CLK_CFG1">
- 		<bitfield name="CLK_EN" pos="5" type="boolean"/>
- 		<bitfield name="CLK_EN_SEL" pos="4" type="boolean"/>
-+		<bitfield name="BITCLK_SEL" low="2" high="3" type="uint"/>
- 	</reg32>
- 	<reg32 offset="0x00018" name="GLBL_CTRL"/>
- 	<reg32 offset="0x0001c" name="RBUF_CTRL"/>
+ 
+ /* *gfp_flags* is a hidden argument provided by the verifier */
 -- 
 2.39.5
 
