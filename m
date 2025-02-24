@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-118829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF66EA41CBD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:29:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958E0A41CC9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8EB017D75C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:26:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D1A43BC430
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81438266B6F;
-	Mon, 24 Feb 2025 11:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE6B266EF5;
+	Mon, 24 Feb 2025 11:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaOmV1Te"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKRhHqMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3CE266B67;
-	Mon, 24 Feb 2025 11:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3792266EE5;
+	Mon, 24 Feb 2025 11:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395919; cv=none; b=hzL/GAuRb4sgpwuCPHhTvMjbZ11sDqkrotH3SxLz7e8TAZrduh5nRIe+GcM5EccMtcvZ9DKpkwU9tJfH5tKZnvElLtSKQ85xzHb0vtOf3BLkdA8v1CyhSnFtcP/xmRDWoOEQoEGDY9PAtUdYDJAgIzaHByaDLvbF/n0H/K0Znp0=
+	t=1740395922; cv=none; b=Ngnsaw7GLU9WN2nvVO/N6PyTFlUfq0oWl4BaNqYia2WrJTHKW+ux+SQkEirmr18FLqy/bn9mmElf8tMKwhU1aHf/w8E8M6FtJtPMidaQnK3PfHiIUsqTsy3CaCkMEOgQrRzHjlm1qxX65QScU7+CVdhOY0M1aL3i0Ck9fd4/zag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395919; c=relaxed/simple;
-	bh=HXGONoBrETz851kZQjDwIlLOZ/yI3qbSzzRM421/IJo=;
+	s=arc-20240116; t=1740395922; c=relaxed/simple;
+	bh=u9SQIV3tGqziB1RMg0DkUzRthm1YoPQCvfu+6iH4H/0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OrKjuHMqlspplnyNc/hAf90mpbofXOPCTOtjjTtjAPAjM4l4d7tvh++aqZHeAva9XYzTaVaaNwAADe9zX7e37E9HBMQzWLwD7FH0+OcjAkDlAuzg63tL96LXSxdZF1/nlMRHr7Qb99luZcepAVh4BBFuS3XwtMYYqyo/DBU9nd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaOmV1Te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F10C4CEE6;
-	Mon, 24 Feb 2025 11:18:37 +0000 (UTC)
+	 MIME-Version; b=Fe1AAW1Oc3vkbwboh+N+/Nr2dp18yOupPMEv+vKe9RmyYYQRdAwH67EFs5BMc5/Ll0Sh8QpyIQaG8r2vUxHe9s2yHgeKVCgIDepWXl1lhCoqY0cHmXkP9vgzQl3NrX2ID4bklDPRf5qm6RtJYNIBy/YvUNkkJu1JQpBxTQ6nqp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKRhHqMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733EFC4CEE6;
+	Mon, 24 Feb 2025 11:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395919;
-	bh=HXGONoBrETz851kZQjDwIlLOZ/yI3qbSzzRM421/IJo=;
+	s=k20201202; t=1740395922;
+	bh=u9SQIV3tGqziB1RMg0DkUzRthm1YoPQCvfu+6iH4H/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaOmV1TedCUBkFC2QZzLKWOBiopw18alriC9lKzu00TDsaBJoeNoqK65IoRilet1g
-	 NtGPqok/ynZQQCVaYhzUqqTpd5LLDu2BT/UByC7IfNXkAgxskvX/fECzxrQXv+cHPo
-	 4ziR07cIjJIjSUjaHfD80LMGEOQDC0CUAggnSjJGV1WVU5jk6Ma3Q8DOUx+Dj59w8y
-	 /Zi5kVWJFFzGksK8Yb5d8XK2SeXncBBNfBodfh1AULGIyWuw5pZeaYdWyqZMGHQFtO
-	 IKugX1/wtGo9tZowlnRyt+dRQSIz8nujs+OyQK1wBz7ANocKeQDXmu2+VvFR7L7+X2
-	 0H0T5kWU/3hKw==
+	b=sKRhHqMs2YljPJEZzFRCiJMY1g5HkSQRPMswvu1XD7kgdSK39zMzfiHQ4I0Zr79Vo
+	 1XqU6RQAw3gcHYcatDGGdJVeIfw1K7PKkJ7Y5qBekDRLx7mLGoC2qnyRVUlnZaz9LT
+	 ZtZS7NwvVTSTLaXSpXjisjwwhmgsEB6ITgTBh9XmUHhjQXxy5Hkz12Wc9J4LIHsmt9
+	 TBgKaZgs2P0WbbIgrXs8+uMyPM+0PcS0FUNpqdjTVQ+mE9ilffnpmW5lvHTufBzMFl
+	 0Gxh1CUzvIjCzw2lSl7QfYU8qtd+iiyLAWjcwOD4i4agQuVXX9+PG4UmRO3PrRWJ/I
+	 R5WQ50KJkhATQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,13 +48,19 @@ Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
 	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 13/28] PCI: pci_ids: add INTEL_HDA_PTL_H
-Date: Mon, 24 Feb 2025 06:17:44 -0500
-Message-Id: <20250224111759.2213772-13-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	cezary.rojewski@intel.com,
+	amadeuszx.slawinski@linux.intel.com,
+	hdegoede@redhat.com,
+	peterz@infradead.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 14/28] ALSA: hda: intel-dsp-config: Add PTL-H support
+Date: Mon, 24 Feb 2025 06:17:45 -0500
+Message-Id: <20250224111759.2213772-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111759.2213772-1-sashal@kernel.org>
 References: <20250224111759.2213772-1-sashal@kernel.org>
@@ -71,34 +77,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit a1f7b7ff0e10ae574d388131596390157222f986 ]
+[ Upstream commit 214e6be2d91d5d58f28d3a37630480077a1aafbd ]
 
-Add Intel PTL-H audio Device ID.
+Use same recipes as PTL for PTL-H.
 
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250210081730.22916-2-peter.ujfalusi@linux.intel.com
+Link: https://patch.msgid.link/20250210081730.22916-3-peter.ujfalusi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci_ids.h | 1 +
- 1 file changed, 1 insertion(+)
+ sound/hda/intel-dsp-config.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 22f6b018cff8d..c9dc15355f1ba 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -3133,6 +3133,7 @@
- #define PCI_DEVICE_ID_INTEL_HDA_LNL_P	0xa828
- #define PCI_DEVICE_ID_INTEL_S21152BB	0xb152
- #define PCI_DEVICE_ID_INTEL_HDA_BMG	0xe2f7
-+#define PCI_DEVICE_ID_INTEL_HDA_PTL_H	0xe328
- #define PCI_DEVICE_ID_INTEL_HDA_PTL	0xe428
- #define PCI_DEVICE_ID_INTEL_HDA_CML_R	0xf0c8
- #define PCI_DEVICE_ID_INTEL_HDA_RKL_S	0xf1c8
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index 9f849e05ce79f..34825b2f3b108 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -539,6 +539,11 @@ static const struct config_entry config_table[] = {
+ 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
+ 		.device = PCI_DEVICE_ID_INTEL_HDA_PTL,
+ 	},
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_PTL_H,
++	},
++
+ #endif
+ 
+ };
 -- 
 2.39.5
 
