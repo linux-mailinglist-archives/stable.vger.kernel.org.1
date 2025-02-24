@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-119028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E210CA423FD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA71A424B7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6497A171B63
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798753B8480
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E659217579;
-	Mon, 24 Feb 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F488254846;
+	Mon, 24 Feb 2025 14:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N85ihzqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+E3yndT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D8824EF63;
-	Mon, 24 Feb 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AE22A8D0;
+	Mon, 24 Feb 2025 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408073; cv=none; b=LD7j5YporeojeKqW49ZB6vGyYBrh5XYpK3oJHwp409aILytJUVPxFxhwwwmKhItrlqhxrgV3BNXNCLvUd68go0pgLt3qjfeAKE9EkGeFYZjWGs06pk+iQp9+s6SQty6pe7KHazW04qqx6/RiVhK+xt0XCu/pPH105nlbRBtj1c8=
+	t=1740408664; cv=none; b=OZalxe1XeOKvDCHFjlsjpou/AA3sH6x0hCqVxdn/gU4IQc6HEOwNvLoLx6yjGLSHKnGQJaNjZDDrLXhIEgm86ssRbc2TfN94I0+TAJvgjs5zHFvmTwOVOobOzZk+w5xsI3azFK6pEkclZbCPVPZnrf6/QTZXlu+o+KOiKDXhwc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408073; c=relaxed/simple;
-	bh=L1nOCit5yyUOMqpJZIos6KV082E1IZk0hKpsJ4HXWMw=;
+	s=arc-20240116; t=1740408664; c=relaxed/simple;
+	bh=Vhv64plsBRJ4rhTu9GrsJWAoYjvSDzELEu1GWUi7/eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tS1W+SgLYqrQFnojR2k6M5tBR81JnWHcQjv/NFPLiuHIwRvw+TX3zs5du7xWlAy14rmTA2LSGBWvTDcZyBj7Z+Ov7XaTaMZtM4TEZh/OkOji1t9bAqiwaSs7rJg1phUwti6QXeUgO4LuLXPYduxzV6b0bljT+afAs+8i2YC2+mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N85ihzqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FA0C4CED6;
-	Mon, 24 Feb 2025 14:41:12 +0000 (UTC)
+	 MIME-Version; b=oTKoIR4V3k5CHS35ta0wS+kX6HTgiIR0pKMF8tuKJzSyjus0awZ3jwHRXuqzM0y0f4Y8UWxSQe93FWFP2kVW34ebc1j18NAPvsBk+IrcEjOKFvAhpvJpVP2k51pmuTzLvKsTNR4pnPNeJq9i7KlCSJH09Df2l1JmWFx9rf0gVrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+E3yndT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B879C4CEE6;
+	Mon, 24 Feb 2025 14:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408073;
-	bh=L1nOCit5yyUOMqpJZIos6KV082E1IZk0hKpsJ4HXWMw=;
+	s=korg; t=1740408664;
+	bh=Vhv64plsBRJ4rhTu9GrsJWAoYjvSDzELEu1GWUi7/eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N85ihzqmSGy5TEfSdMvIKzwiGV0fvhMNo8t2TOkUIuVAxcf+xjSyu6cEral/5krcl
-	 pBrpqaKw2Cl/s+razrZJUJ6Gbf+JL16sYVo0QTPYQxEgLMiymQRef6z7Mh+ODzj3ff
-	 yIyHkTR61g+oXavVo6wvwV8EihfZUUkQ6MR8rtjU=
+	b=V+E3yndTg+mODPAlrymQKrKfefhQhVABkeUWlaqcyTxD1oRmajW38X8f97q2GPzV0
+	 HuhBZJl2rCKn/n9tAxVWk7KovjgpzYE9vbZxFbHUdZeraxohkiuxhZnCtkSiyLjkvI
+	 jQa6QAh7ujh9t7GVe134/LTHVrIdtMss+Ujt4bg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Jonathan Cormier <jcormier@criticallink.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/140] drm/tidss: Fix race condition while handling interrupt registers
-Date: Mon, 24 Feb 2025 15:34:50 +0100
-Message-ID: <20250224142606.590255496@linuxfoundation.org>
+Subject: [PATCH 6.12 092/154] nouveau/svm: fix missing folio unlock + put after make_device_exclusive_range()
+Date: Mon, 24 Feb 2025 15:34:51 +0100
+Message-ID: <20250224142610.672143587@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devarsh Thakkar <devarsht@ti.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit a9a73f2661e6f625d306c9b0ef082e4593f45a21 ]
+[ Upstream commit b3fefbb30a1691533cb905006b69b2a474660744 ]
 
-The driver has a spinlock for protecting the irq_masks field and irq
-enable registers. However, the driver misses protecting the irq status
-registers which can lead to races.
+In case we have to retry the loop, we are missing to unlock+put the
+folio. In that case, we will keep failing make_device_exclusive_range()
+because we cannot grab the folio lock, and even return from the function
+with the folio locked and referenced, effectively never succeeding the
+make_device_exclusive_range().
 
-Take the spinlock when accessing irqstatus too.
+While at it, convert the other unlock+put to use a folio as well.
 
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
-[Tomi: updated the desc]
-Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
-Tested-by: Jonathan Cormier <jcormier@criticallink.com>
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021-tidss-irq-fix-v1-6-82ddaec94e4a@ideasonboard.com
+This was found by code inspection.
+
+Fixes: 8f187163eb89 ("nouveau/svm: implement atomic SVM access")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Tested-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250124181524.3584236-2-david@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 4 ++++
- drivers/gpu/drm/tidss/tidss_irq.c   | 2 ++
- 2 files changed, 6 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_svm.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 4327e1203c565..355c64bafb82b 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2710,8 +2710,12 @@ static void dispc_init_errata(struct dispc_device *dispc)
-  */
- static void dispc_softreset_k2g(struct dispc_device *dispc)
- {
-+	unsigned long flags;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
+index b4da82ddbb6b2..8ea98f06d39af 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_svm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
+@@ -590,6 +590,7 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+ 	unsigned long timeout =
+ 		jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ 	struct mm_struct *mm = svmm->notifier.mm;
++	struct folio *folio;
+ 	struct page *page;
+ 	unsigned long start = args->p.addr;
+ 	unsigned long notifier_seq;
+@@ -616,12 +617,16 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
++		folio = page_folio(page);
+ 
+ 		mutex_lock(&svmm->mutex);
+ 		if (!mmu_interval_read_retry(&notifier->notifier,
+ 					     notifier_seq))
+ 			break;
+ 		mutex_unlock(&svmm->mutex);
 +
-+	spin_lock_irqsave(&dispc->tidss->wait_lock, flags);
- 	dispc_set_irqenable(dispc, 0);
- 	dispc_read_and_clear_irqstatus(dispc);
-+	spin_unlock_irqrestore(&dispc->tidss->wait_lock, flags);
++		folio_unlock(folio);
++		folio_put(folio);
+ 	}
  
- 	for (unsigned int vp_idx = 0; vp_idx < dispc->feat->num_vps; ++vp_idx)
- 		VP_REG_FLD_MOD(dispc, vp_idx, DISPC_VP_CONTROL, 0, 0, 0);
-diff --git a/drivers/gpu/drm/tidss/tidss_irq.c b/drivers/gpu/drm/tidss/tidss_irq.c
-index 0c681c7600bcb..f13c7e434f8ed 100644
---- a/drivers/gpu/drm/tidss/tidss_irq.c
-+++ b/drivers/gpu/drm/tidss/tidss_irq.c
-@@ -60,7 +60,9 @@ static irqreturn_t tidss_irq_handler(int irq, void *arg)
- 	unsigned int id;
- 	dispc_irq_t irqstatus;
+ 	/* Map the page on the GPU. */
+@@ -637,8 +642,8 @@ static int nouveau_atomic_range_fault(struct nouveau_svmm *svmm,
+ 	ret = nvif_object_ioctl(&svmm->vmm->vmm.object, args, size, NULL);
+ 	mutex_unlock(&svmm->mutex);
  
-+	spin_lock(&tidss->wait_lock);
- 	irqstatus = dispc_read_and_clear_irqstatus(tidss->dispc);
-+	spin_unlock(&tidss->wait_lock);
+-	unlock_page(page);
+-	put_page(page);
++	folio_unlock(folio);
++	folio_put(folio);
  
- 	for (id = 0; id < tidss->num_crtcs; id++) {
- 		struct drm_crtc *crtc = tidss->crtcs[id];
+ out:
+ 	mmu_interval_notifier_remove(&notifier->notifier);
 -- 
 2.39.5
 
