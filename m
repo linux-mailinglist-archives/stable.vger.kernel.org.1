@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-118996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3B7A423A0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40D6A424BC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 263A0189F165
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CA644468FC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA81D25484F;
-	Mon, 24 Feb 2025 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037FE189919;
+	Mon, 24 Feb 2025 14:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyXpjNwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvu/gxKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A01192B96;
-	Mon, 24 Feb 2025 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65612837B;
+	Mon, 24 Feb 2025 14:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407965; cv=none; b=TZ+AtbfouG586N5TL/z4jagORpLp2T5n1h5xuiove4POCuYAZEQPMOZE1yJrcdtxcm+B2OGsSvkgDGqVMjtgxJofcs4l7c+ZpH2dqSS5w9elVKTjGGRd45k+Tix7px2XYo4RNQ7t1jSbqYyB9uNFRMFYl4wrtDa/opUU8kKSGcE=
+	t=1740408550; cv=none; b=WSPmIZijAhw332R7RDe/asG8zAEBGM3EK83AuIUBqr88iS3kBrlR7eihMxUf22f7dLJt5kXZm56DK0+77E0t6l5f2JGc868dSCIxsYGKb4Zs695LXipyEk5FK6FaHrSliF0/GBiMf2ueCK2o+NDKMEGFyRbKwsW2tQsvJOj5ikA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407965; c=relaxed/simple;
-	bh=OKcU3RV+5ezdb72Wf4TRNpWOg0Wwb/RaSn7knm2gHpM=;
+	s=arc-20240116; t=1740408550; c=relaxed/simple;
+	bh=+ahInQ8gESVwu7aN+CcauTExKgH//qjHQjP65ypRrsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foOdeQwOFkFtBbnJ5ZpG4ioL01dHXOrDgfZfl//Qma5pqLq2MTLLf7fQSmkG/JK4zcrjPk7ParyT0rzhtszCjj0KQCaepha8lYCk3zmTMUxtWft09SZhu8yEGzOCV+Kfw9bwO4/qmFUhGhqmKpC/HqUBssVsvMKq7fkyA7WZUaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyXpjNwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0474DC4CED6;
-	Mon, 24 Feb 2025 14:39:24 +0000 (UTC)
+	 MIME-Version; b=Q5bZW0XOLBIM/QzQvI+iKKZz12SZcGVzIYGMGQcImejdKBygRiiN5IErv9zbxX+nxO30SBABC4rnju5GH+LqMLPW9ztgmxZf4BbXeCt61r73cK5K48vMd3WAxDVjnSwKc/Y7GEkR8nKt3lqJmalt9UrGwpo32GMtG2clP4nzXac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvu/gxKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21768C4CED6;
+	Mon, 24 Feb 2025 14:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407965;
-	bh=OKcU3RV+5ezdb72Wf4TRNpWOg0Wwb/RaSn7knm2gHpM=;
+	s=korg; t=1740408550;
+	bh=+ahInQ8gESVwu7aN+CcauTExKgH//qjHQjP65ypRrsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyXpjNwAdUKOJgdon0oDGWD92ZR+JIE8r4BmwJG5rBzcRtL6keFDa9VT9ki+p1lW4
-	 bMPI82PEF7vLfEgoTbf4+s8SQvmYwrcVLy940WdeYKxsnT6ukovnX3uUjYfFkdXFls
-	 7nZjlAsoYOLUCiUPsllBw1jR8nxyVc9eYn70Mkro=
+	b=Mvu/gxKtgj/ZVqgPMK+oI8Fl84K9cnSBPCtJrAmU4HZMcjuMq1zx14UMN9tWjRJ0D
+	 9FlW0R3uvsQNU2zK/5WdF8UANWF1RbyDqVomp0ziPHgzkrfP9G4Z9PNX22lzBJ11e7
+	 JqS+eup5RLJ977qFS5PTbhdGEGj3TdMA6uBcciiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/140] nvmem: Simplify the ->add_cells() hook
+Subject: [PATCH 6.12 059/154] sockmap, vsock: For connectible sockets allow only connected
 Date: Mon, 24 Feb 2025 15:34:18 +0100
-Message-ID: <20250224142605.333632488@linuxfoundation.org>
+Message-ID: <20250224142609.396430849@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 1b7c298a4ecbc28cc6ee94005734bff55eb83d22 ]
+[ Upstream commit 8fb5bb169d17cdd12c2dcc2e96830ed487d77a0f ]
 
-The layout entry is not used and will anyway be made useless by the new
-layout bus infrastructure coming next, so drop it. While at it, clarify
-the kdoc entry.
+sockmap expects all vsocks to have a transport assigned, which is expressed
+in vsock_proto::psock_update_sk_prot(). However, there is an edge case
+where an unconnected (connectible) socket may lose its previously assigned
+transport. This is handled with a NULL check in the vsock/BPF recv path.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231215111536.316972-5-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 391b06ecb63e ("nvmem: imx-ocotp-ele: fix MAC address byte order")
+Another design detail is that listening vsocks are not supposed to have any
+transport assigned at all. Which implies they are not supported by the
+sockmap. But this is complicated by the fact that a socket, before
+switching to TCP_LISTEN, may have had some transport assigned during a
+failed connect() attempt. Hence, we may end up with a listening vsock in a
+sockmap, which blows up quickly:
+
+KASAN: null-ptr-deref in range [0x0000000000000120-0x0000000000000127]
+CPU: 7 UID: 0 PID: 56 Comm: kworker/7:0 Not tainted 6.14.0-rc1+
+Workqueue: vsock-loopback vsock_loopback_work
+RIP: 0010:vsock_read_skb+0x4b/0x90
+Call Trace:
+ sk_psock_verdict_data_ready+0xa4/0x2e0
+ virtio_transport_recv_pkt+0x1ca8/0x2acc
+ vsock_loopback_work+0x27d/0x3f0
+ process_one_work+0x846/0x1420
+ worker_thread+0x5b3/0xf80
+ kthread+0x35a/0x700
+ ret_from_fork+0x2d/0x70
+ ret_from_fork_asm+0x1a/0x30
+
+For connectible sockets, instead of relying solely on the state of
+vsk->transport, tell sockmap to only allow those representing established
+connections. This aligns with the behaviour for AF_INET and AF_UNIX.
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/core.c             | 2 +-
- drivers/nvmem/layouts/onie-tlv.c | 3 +--
- drivers/nvmem/layouts/sl28vpd.c  | 3 +--
- include/linux/nvmem-provider.h   | 8 +++-----
- 4 files changed, 6 insertions(+), 10 deletions(-)
+ net/core/sock_map.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index ec35886e921a8..ed8a1cba361e2 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -815,7 +815,7 @@ static int nvmem_add_cells_from_layout(struct nvmem_device *nvmem)
- 	int ret;
- 
- 	if (layout && layout->add_cells) {
--		ret = layout->add_cells(&nvmem->dev, nvmem, layout);
-+		ret = layout->add_cells(&nvmem->dev, nvmem);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/drivers/nvmem/layouts/onie-tlv.c b/drivers/nvmem/layouts/onie-tlv.c
-index 59fc87ccfcffe..defd42d4375cc 100644
---- a/drivers/nvmem/layouts/onie-tlv.c
-+++ b/drivers/nvmem/layouts/onie-tlv.c
-@@ -182,8 +182,7 @@ static bool onie_tlv_crc_is_valid(struct device *dev, size_t table_len, u8 *tabl
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index f1b9b3958792c..2f1be9baad057 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -541,6 +541,9 @@ static bool sock_map_sk_state_allowed(const struct sock *sk)
+ 		return (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_LISTEN);
+ 	if (sk_is_stream_unix(sk))
+ 		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
++	if (sk_is_vsock(sk) &&
++	    (sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET))
++		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
  	return true;
  }
  
--static int onie_tlv_parse_table(struct device *dev, struct nvmem_device *nvmem,
--				struct nvmem_layout *layout)
-+static int onie_tlv_parse_table(struct device *dev, struct nvmem_device *nvmem)
- {
- 	struct onie_tlv_hdr hdr;
- 	size_t table_len, data_len, hdr_len;
-diff --git a/drivers/nvmem/layouts/sl28vpd.c b/drivers/nvmem/layouts/sl28vpd.c
-index 05671371f6316..26c7cf21b5233 100644
---- a/drivers/nvmem/layouts/sl28vpd.c
-+++ b/drivers/nvmem/layouts/sl28vpd.c
-@@ -80,8 +80,7 @@ static int sl28vpd_v1_check_crc(struct device *dev, struct nvmem_device *nvmem)
- 	return 0;
- }
- 
--static int sl28vpd_add_cells(struct device *dev, struct nvmem_device *nvmem,
--			     struct nvmem_layout *layout)
-+static int sl28vpd_add_cells(struct device *dev, struct nvmem_device *nvmem)
- {
- 	const struct nvmem_cell_info *pinfo;
- 	struct nvmem_cell_info info = {0};
-diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
-index 1b81adebdb8be..ecd580ee84db9 100644
---- a/include/linux/nvmem-provider.h
-+++ b/include/linux/nvmem-provider.h
-@@ -158,9 +158,8 @@ struct nvmem_cell_table {
-  *
-  * @name:		Layout name.
-  * @of_match_table:	Open firmware match table.
-- * @add_cells:		Will be called if a nvmem device is found which
-- *			has this layout. The function will add layout
-- *			specific cells with nvmem_add_one_cell().
-+ * @add_cells:		Called to populate the layout using
-+ *			nvmem_add_one_cell().
-  * @fixup_cell_info:	Will be called before a cell is added. Can be
-  *			used to modify the nvmem_cell_info.
-  * @owner:		Pointer to struct module.
-@@ -174,8 +173,7 @@ struct nvmem_cell_table {
- struct nvmem_layout {
- 	const char *name;
- 	const struct of_device_id *of_match_table;
--	int (*add_cells)(struct device *dev, struct nvmem_device *nvmem,
--			 struct nvmem_layout *layout);
-+	int (*add_cells)(struct device *dev, struct nvmem_device *nvmem);
- 	void (*fixup_cell_info)(struct nvmem_device *nvmem,
- 				struct nvmem_layout *layout,
- 				struct nvmem_cell_info *cell);
 -- 
 2.39.5
 
