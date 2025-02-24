@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-119151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3862A424A5
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3196A42399
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7AEF1890CBC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61121189C904
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FAE2063DD;
-	Mon, 24 Feb 2025 14:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB9924BBFC;
+	Mon, 24 Feb 2025 14:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rE+JIIgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYm+sbfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38FD19644B;
-	Mon, 24 Feb 2025 14:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B60170A13;
+	Mon, 24 Feb 2025 14:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408491; cv=none; b=KcDwXWEXsWj171FunDQhuYnHrRna9iA9O5R/mxA6BkncjE0LwRR/uA2HQrjvwxEdc+11vnXOgTxqVFCpmoMnhQKAXy0acSLYpEGIf5REIPohFXUqROD6gWRsVJNyl4x+ngiQu88GQcThAX4szqBa95b6z6Xmht/NshADu8DM+Mg=
+	t=1740407955; cv=none; b=U0asDa0GvUcySIxk9LWPzoxiUD6n9qcuLXvzflDCFoV7Pr9xHeiwEYcZfMkGp78Xgu1yeb6+PpwD0M9bin+gTAQREIxcvlgyDwusRddtIPuUbfvvI2iq7I+adzOFKO9D7SqAIhgyYfOpUdl7XBa9R+wBC2cZ9p1oJYDXmCbAv6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408491; c=relaxed/simple;
-	bh=FS57OQUQK1IAUsjHr6y/CqOZf4S5HjAJcx3xutIWC8I=;
+	s=arc-20240116; t=1740407955; c=relaxed/simple;
+	bh=c2TeEOyP/2fSjuPb7b+E5yKiJIhqRSnhGicYNhLNdmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8GaIeubK+Qiu7HMszU231aAafylhUleDa4ozXbqCwj4G1ut3HrnMuI5O2EoTVEIkOU8zSTdwMC0PzOxXsuocTHyZxYtqVhccWjPwg1K3x5s7USJ0Xur9Tm3IxVT4Gbps/bcwE4nUvrLwx8TkLtxyNFlxaW0akPdyryO1r9xMyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rE+JIIgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBADC4CED6;
-	Mon, 24 Feb 2025 14:48:10 +0000 (UTC)
+	 MIME-Version; b=HmQveEtCF0gFuv+K31HcDyVl1I2OvmkJJI9VU2UmNtsbn6zkj+9EhQLM8cD5gAwzWuSMdmB/ELX5673MRoSLDDP+ZaAozYnOaGP8o5qkC9lRfXvlr87OPW70m6sl4c5pzP6/XMcNdL8EF+XnucIaqZajGzeJJUPSnh2/NZFRsJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYm+sbfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C17BC4CED6;
+	Mon, 24 Feb 2025 14:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408491;
-	bh=FS57OQUQK1IAUsjHr6y/CqOZf4S5HjAJcx3xutIWC8I=;
+	s=korg; t=1740407955;
+	bh=c2TeEOyP/2fSjuPb7b+E5yKiJIhqRSnhGicYNhLNdmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rE+JIIgnxP85EfyQY3GT2hQ1nTxLxPu0csTUKP5Q8Vjg7VAZQzDwZvMNXtniFFQ9Y
-	 vssscEaSIpi3c2OBDLfE905gLRgVVssVjoMlo2tKqH2U2Ghkc8PKP1bjyizLQAnbRF
-	 Pue5JRMPCmolOTFpKSQ3sXtfsm8LUkn0I0oj926w=
+	b=SYm+sbfhEOoqptwZIJ9YErpsSmCdpwdJ7uRRzASmIuaHPRoWQFZURH/bAr167y0WK
+	 dDYXdpurHvfxFJb1J5z2IuyGNVcoQ44k264yjNsWS2IQEvllgr8qh8vxF2wbFPz7y3
+	 J9RVq7lMkUQZW6vM6RYzz6ej9EhOYR+t/FL0kdVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Julian Ruess <julianr@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/154] s390/ism: add release function for struct device
+Subject: [PATCH 6.6 056/140] media: uvcvideo: Only save async fh if success
 Date: Mon, 24 Feb 2025 15:34:15 +0100
-Message-ID: <20250224142609.280849632@linuxfoundation.org>
+Message-ID: <20250224142605.215772812@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Ruess <julianr@linux.ibm.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 915e34d5ad35a6a9e56113f852ade4a730fb88f0 ]
+[ Upstream commit d9fecd096f67a4469536e040a8a10bbfb665918b ]
 
-According to device_release() in /drivers/base/core.c,
-a device without a release function is a broken device
-and must be fixed.
+Now we keep a reference to the active fh for any call to uvc_ctrl_set,
+regardless if it is an actual set or if it is a just a try or if the
+device refused the operation.
 
-The current code directly frees the device after calling device_add()
-without waiting for other kernel parts to release their references.
-Thus, a reference could still be held to a struct device,
-e.g., by sysfs, leading to potential use-after-free
-issues if a proper release function is not set.
+We should only keep the file handle if the device actually accepted
+applying the operation.
 
-Fixes: 8c81ba20349d ("net/smc: De-tangle ism and smc device initialization")
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250214120137.563409-1-wintera@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-1-26c867231118@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/ism_drv.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-index e36e3ea165d3b..2f34761e64135 100644
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -588,6 +588,15 @@ static int ism_dev_init(struct ism_dev *ism)
- 	return ret;
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index f78e0c02b3379..478e2c1fdf0fd 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1762,7 +1762,10 @@ int uvc_ctrl_begin(struct uvc_video_chain *chain)
  }
  
-+static void ism_dev_release(struct device *dev)
-+{
-+	struct ism_dev *ism;
-+
-+	ism = container_of(dev, struct ism_dev, dev);
-+
-+	kfree(ism);
-+}
-+
- static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+-	struct uvc_entity *entity, int rollback, struct uvc_control **err_ctrl)
++				  struct uvc_fh *handle,
++				  struct uvc_entity *entity,
++				  int rollback,
++				  struct uvc_control **err_ctrl)
  {
- 	struct ism_dev *ism;
-@@ -601,6 +610,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	dev_set_drvdata(&pdev->dev, ism);
- 	ism->pdev = pdev;
- 	ism->dev.parent = &pdev->dev;
-+	ism->dev.release = ism_dev_release;
- 	device_initialize(&ism->dev);
- 	dev_set_name(&ism->dev, dev_name(&pdev->dev));
- 	ret = device_add(&ism->dev);
-@@ -637,7 +647,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	device_del(&ism->dev);
- err_dev:
- 	dev_set_drvdata(&pdev->dev, NULL);
--	kfree(ism);
-+	put_device(&ism->dev);
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+@@ -1810,6 +1813,10 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 				*err_ctrl = ctrl;
+ 			return ret;
+ 		}
++
++		if (!rollback && handle &&
++		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
++			ctrl->handle = handle;
+ 	}
  
- 	return ret;
- }
-@@ -682,7 +692,7 @@ static void ism_remove(struct pci_dev *pdev)
- 	pci_disable_device(pdev);
- 	device_del(&ism->dev);
- 	dev_set_drvdata(&pdev->dev, NULL);
--	kfree(ism);
-+	put_device(&ism->dev);
- }
+ 	return 0;
+@@ -1846,8 +1853,8 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
  
- static struct pci_driver ism_driver = {
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+-		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
+-					     &err_ctrl);
++		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
++					     rollback, &err_ctrl);
+ 		if (ret < 0) {
+ 			if (ctrls)
+ 				ctrls->error_idx =
+@@ -1997,9 +2004,6 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+ 	mapping->set(mapping, value,
+ 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+ 
+-	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-		ctrl->handle = handle;
+-
+ 	ctrl->dirty = 1;
+ 	ctrl->modified = 1;
+ 	return 0;
+@@ -2328,7 +2332,7 @@ int uvc_ctrl_restore_values(struct uvc_device *dev)
+ 			ctrl->dirty = 1;
+ 		}
+ 
+-		ret = uvc_ctrl_commit_entity(dev, entity, 0, NULL);
++		ret = uvc_ctrl_commit_entity(dev, NULL, entity, 0, NULL);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 -- 
 2.39.5
 
