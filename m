@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-118949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDEEA423A1
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C0AA42419
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E4A3BC409
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFA9189B04F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0E5192D84;
-	Mon, 24 Feb 2025 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6020917B50B;
+	Mon, 24 Feb 2025 14:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixqU29Ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPE44Nsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C218A6C5;
-	Mon, 24 Feb 2025 14:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E12821345;
+	Mon, 24 Feb 2025 14:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407803; cv=none; b=bCbHEvZpkYwweBzm6pdeLs+g57zen1954lWsk1t2q/j5mscigr2ULIvcdD5bVUW6QJtpc6oskZXtFP8mzTWM2Q7PLbGdC02kI16aPwIV79wq7P4iMnOSiO46k1Olyae1WzZApz/DzGlV0Tnk5JzncrQW2kSBijzNevrKLSWJ/FA=
+	t=1740408292; cv=none; b=FlQeEX5kyVTXmjyHwhnPH5k/6PF+cUFGyN/sunvozGDpdQFwj97PQ4HiHd51L13lTx8ukzJwGdLPX6shGNHlXxyWkUO8i8V9FQ5eM9XYvg6naB18Qb9/6Vi0EnlXpb6D1UXYLhCFiR4FTqy8v57v7zgrcgjryy3E9eOFHno8fJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407803; c=relaxed/simple;
-	bh=qU5HrH2r33ezbco8TMWgz2HVUtUfXRRGXM1gjxKScDQ=;
+	s=arc-20240116; t=1740408292; c=relaxed/simple;
+	bh=0DNtuYuCETJRXznZl4hKBA3PTiEC9LYADQmkWAvNVLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=adiN+gH/k6FeFslDdeuDXgdidz5t0krMqw++2LGCT7VVj3MIB0ceWnIOxpjG0lD3fA5hzE/CF/xvOHRvwlGw5PUSwoeIDrwN/QcGDL2kybAs5wqFEqE+gbHs1ufRhKFUFqtGi8NUEo4qDF5Uczi5aGrk4DrJT4sfiLNqlJeaQkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixqU29Ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9BDC4CED6;
-	Mon, 24 Feb 2025 14:36:41 +0000 (UTC)
+	 MIME-Version; b=ZvHyWy+oW6la1Plu99By55GGD0+UvByMrU9sei1tzKz/0RpVAjWLYthcUKSIK7X3fc+Q3KdDFr1mdCZJodAq2b+jjTlqTy/BrCnCEFKrh0RlM36iAr6UA2tfBfxzSmf6XmzByTUWyDrj5imVGFH2E7Q3t0PPAFcRIz5EC2Muuzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPE44Nsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7290AC4CED6;
+	Mon, 24 Feb 2025 14:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407802;
-	bh=qU5HrH2r33ezbco8TMWgz2HVUtUfXRRGXM1gjxKScDQ=;
+	s=korg; t=1740408291;
+	bh=0DNtuYuCETJRXznZl4hKBA3PTiEC9LYADQmkWAvNVLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixqU29OtNZRkaLExt9t8oJQD7teno5Ttc9B5cCAJSzWNCDB3DC1zQYrl8i0B8sLuJ
-	 Mgel8anwxIuE1uf+ASGpcoiZx77U+X1aqhGKcUNp6uWnBRkrlp5M+eUKkyFAJDCH4o
-	 zBfSpF0BpJpfLITfvmyplREYAFyUO0dpg/tX0eN0=
+	b=VPE44NswJfIIpe7VNbCBavU409zeyBRRyifKrCQWhslCnIJWWpOrkFCy/y3PsqsCA
+	 0SJAvEmlrV1RU17dmtpdFXOXermEcwuPsWSHoy3iBQlzwL8WQYkicb3PT8gg//WOME
+	 jNfzVOJ6SCIMfSRU04mz/JQKwdl2UIec9F1z6Jgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 014/140] xfs: call xfs_bmap_exact_minlen_extent_alloc from xfs_bmap_btalloc
-Date: Mon, 24 Feb 2025 15:33:33 +0100
-Message-ID: <20250224142603.569830545@linuxfoundation.org>
+	Kai Huang <kai.huang@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 015/154] KVM: x86: Get vcpu->arch.apic_base directly and drop kvm_get_apic_base()
+Date: Mon, 24 Feb 2025 15:33:34 +0100
+Message-ID: <20250224142607.677657994@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 405ee87c6938f67e6ab62a3f8f85b3c60a093886 upstream.
+[ Upstream commit d91060e342a66b52d9bd64f0b123b9c306293b76 ]
 
-[backport: dependency of 6aac770]
+Access KVM's emulated APIC base MSR value directly instead of bouncing
+through a helper, as there is no reason to add a layer of indirection, and
+there are other MSRs with a "set" but no "get", e.g. EFER.
 
-xfs_bmap_exact_minlen_extent_alloc duplicates the args setup in
-xfs_bmap_btalloc.  Switch to call it from xfs_bmap_btalloc after
-doing the basic setup.
+No functional change intended.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20241009181742.1128779-4-seanjc@google.com
+Link: https://lore.kernel.org/r/20241101183555.1794700-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 04bc93cf49d1 ("KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |   61 ++++++++++-------------------------------------
- 1 file changed, 13 insertions(+), 48 deletions(-)
+ arch/x86/kvm/lapic.h |  1 -
+ arch/x86/kvm/x86.c   | 13 ++++---------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -3390,28 +3390,17 @@ xfs_bmap_process_allocated_extent(
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 1b8ef9856422a..441abc4f4afd9 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -117,7 +117,6 @@ bool kvm_irq_delivery_to_apic_fast(struct kvm *kvm, struct kvm_lapic *src,
+ 		struct kvm_lapic_irq *irq, int *r, struct dest_map *dest_map);
+ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
  
- static int
- xfs_bmap_exact_minlen_extent_alloc(
--	struct xfs_bmalloca	*ap)
-+	struct xfs_bmalloca	*ap,
-+	struct xfs_alloc_arg	*args)
- {
--	struct xfs_mount	*mp = ap->ip->i_mount;
--	struct xfs_alloc_arg	args = { .tp = ap->tp, .mp = mp };
--	xfs_fileoff_t		orig_offset;
--	xfs_extlen_t		orig_length;
--	int			error;
--
--	ASSERT(ap->length);
--
- 	if (ap->minlen != 1) {
--		ap->blkno = NULLFSBLOCK;
--		ap->length = 0;
-+		args->fsbno = NULLFSBLOCK;
- 		return 0;
- 	}
- 
--	orig_offset = ap->offset;
--	orig_length = ap->length;
--
--	args.alloc_minlen_only = 1;
--
--	xfs_bmap_compute_alignments(ap, &args);
-+	args->alloc_minlen_only = 1;
-+	args->minlen = args->maxlen = ap->minlen;
-+	args->total = ap->total;
- 
- 	/*
- 	 * Unlike the longest extent available in an AG, we don't track
-@@ -3421,33 +3410,9 @@ xfs_bmap_exact_minlen_extent_alloc(
- 	 * we need not be concerned about a drop in performance in
- 	 * "debug only" code paths.
- 	 */
--	ap->blkno = XFS_AGB_TO_FSB(mp, 0, 0);
--
--	args.oinfo = XFS_RMAP_OINFO_SKIP_UPDATE;
--	args.minlen = args.maxlen = ap->minlen;
--	args.total = ap->total;
-+	ap->blkno = XFS_AGB_TO_FSB(ap->ip->i_mount, 0, 0);
- 
--	args.alignment = 1;
--	args.minalignslop = 0;
--
--	args.minleft = ap->minleft;
--	args.wasdel = ap->wasdel;
--	args.resv = XFS_AG_RESV_NONE;
--	args.datatype = ap->datatype;
--
--	error = xfs_alloc_vextent_first_ag(&args, ap->blkno);
--	if (error)
--		return error;
--
--	if (args.fsbno != NULLFSBLOCK) {
--		xfs_bmap_process_allocated_extent(ap, &args, orig_offset,
--			orig_length);
--	} else {
--		ap->blkno = NULLFSBLOCK;
--		ap->length = 0;
--	}
--
--	return 0;
-+	return xfs_alloc_vextent_first_ag(args, ap->blkno);
+-u64 kvm_get_apic_base(struct kvm_vcpu *vcpu);
+ int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
+ int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0846e3af5f6c5..36bedf235340c 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -667,14 +667,9 @@ static void drop_user_return_notifiers(void)
+ 		kvm_on_user_return(&msrs->urn);
  }
  
- /*
-@@ -3706,8 +3671,11 @@ xfs_bmap_btalloc(
- 	/* Trim the allocation back to the maximum an AG can fit. */
- 	args.maxlen = min(ap->length, mp->m_ag_max_usable);
+-u64 kvm_get_apic_base(struct kvm_vcpu *vcpu)
+-{
+-	return vcpu->arch.apic_base;
+-}
+-
+ enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu)
+ {
+-	return kvm_apic_mode(kvm_get_apic_base(vcpu));
++	return kvm_apic_mode(vcpu->arch.apic_base);
+ }
+ EXPORT_SYMBOL_GPL(kvm_get_apic_mode);
  
--	if ((ap->datatype & XFS_ALLOC_USERDATA) &&
--	    xfs_inode_is_filestream(ap->ip))
-+	if (unlikely(XFS_TEST_ERROR(false, mp,
-+			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
-+		error = xfs_bmap_exact_minlen_extent_alloc(ap, &args);
-+	else if ((ap->datatype & XFS_ALLOC_USERDATA) &&
-+			xfs_inode_is_filestream(ap->ip))
- 		error = xfs_bmap_btalloc_filestreams(ap, &args, stripe_align);
- 	else
- 		error = xfs_bmap_btalloc_best_length(ap, &args, stripe_align);
-@@ -4128,9 +4096,6 @@ xfs_bmapi_allocate(
- 	if ((bma->datatype & XFS_ALLOC_USERDATA) &&
- 	    XFS_IS_REALTIME_INODE(bma->ip))
- 		error = xfs_bmap_rtalloc(bma);
--	else if (unlikely(XFS_TEST_ERROR(false, mp,
--			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
--		error = xfs_bmap_exact_minlen_extent_alloc(bma);
- 	else
- 		error = xfs_bmap_btalloc(bma);
- 	if (error)
+@@ -4314,7 +4309,7 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		msr_info->data = 1 << 24;
+ 		break;
+ 	case MSR_IA32_APICBASE:
+-		msr_info->data = kvm_get_apic_base(vcpu);
++		msr_info->data = vcpu->arch.apic_base;
+ 		break;
+ 	case APIC_BASE_MSR ... APIC_BASE_MSR + 0xff:
+ 		return kvm_x2apic_msr_read(vcpu, msr_info->index, &msr_info->data);
+@@ -10159,7 +10154,7 @@ static void post_kvm_run_save(struct kvm_vcpu *vcpu)
+ 
+ 	kvm_run->if_flag = kvm_x86_call(get_if_flag)(vcpu);
+ 	kvm_run->cr8 = kvm_get_cr8(vcpu);
+-	kvm_run->apic_base = kvm_get_apic_base(vcpu);
++	kvm_run->apic_base = vcpu->arch.apic_base;
+ 
+ 	kvm_run->ready_for_interrupt_injection =
+ 		pic_in_kernel(vcpu->kvm) ||
+@@ -11718,7 +11713,7 @@ static void __get_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ 	sregs->cr4 = kvm_read_cr4(vcpu);
+ 	sregs->cr8 = kvm_get_cr8(vcpu);
+ 	sregs->efer = vcpu->arch.efer;
+-	sregs->apic_base = kvm_get_apic_base(vcpu);
++	sregs->apic_base = vcpu->arch.apic_base;
+ }
+ 
+ static void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+-- 
+2.39.5
+
 
 
 
