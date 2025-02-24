@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14C4A423A8
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:47:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446EEA42469
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729E93B0B75
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC7E616F2A9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44ACF254850;
-	Mon, 24 Feb 2025 14:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A39319408C;
+	Mon, 24 Feb 2025 14:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibdp72fN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXqLZUIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE97254845;
-	Mon, 24 Feb 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5837518CBEC;
+	Mon, 24 Feb 2025 14:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407851; cv=none; b=IPYVJlbqvcjELN+CmrjAjisUIzOqWa2sB55/ASgXKh6T4jlrv3JnnMl8H6dZVoNmV1plWAnYv/922W+Sjw99IranpZDdxXkbSWvkzGVnRimPQM62j7FNwYcNY+c1Vr/dbK6sRl+1OXivjoQm+dmlFMn2YSbZZgZx3rRfNwOUXJU=
+	t=1740408312; cv=none; b=HQa4ieOjYh7/A9xq64KsPIqOmiHdVjyngQ76AClTXp7LG4B0NU/RrvuanPjZD69Baczw2Skq+L1/NKi2GbA5dB9x86SdOi5Kyjve28Hljp4tA7Gc3JePmSkwqdVlf0uwHMQIULY+hGZ5+5Eef9OZyevfUr9/OGJyFbF6eXSRPJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407851; c=relaxed/simple;
-	bh=HSx+LVZP5gtcvuRpUZpyzzLrh9VW8HoEzDvbFotnGpA=;
+	s=arc-20240116; t=1740408312; c=relaxed/simple;
+	bh=QeK5/6vh4ds+ISoak+7uPiZ9hREgZKApXSis/SQDeIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jG1PMzCLa3ki4GRT5XUySIDqsrEpJuWmC3qoKZC/xGNzj7viVe3D4C4uHglt4nqo0kVdTSgLmIkCGBSB+f3Mobr9l2sVcUcpbSl5zw+1htrZ6eXiZHgal1i+ERYw9mm42clDbZRz/B+ksCoGFqG9OIOWratfZMJSESN9ebrr25Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibdp72fN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE70C4CEE8;
-	Mon, 24 Feb 2025 14:37:30 +0000 (UTC)
+	 MIME-Version; b=SuC/ZZvnvOylVyMP1T5YT5JPG/DWaqWub/n0XynytTS4yGkhgprQxwttpDqGkAqlRLe+LKboYfgjqIqj1mo0h1K7C0cCBvods71EqJrh5SeOrxG9JG1JX2dn6O1X5nVt5g1O/XpATZ2kqXbbdDRRWPm0zF55NP6jF/0hwj9WZvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXqLZUIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A96EC4CED6;
+	Mon, 24 Feb 2025 14:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407850;
-	bh=HSx+LVZP5gtcvuRpUZpyzzLrh9VW8HoEzDvbFotnGpA=;
+	s=korg; t=1740408311;
+	bh=QeK5/6vh4ds+ISoak+7uPiZ9hREgZKApXSis/SQDeIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibdp72fNjVNSApgpvNaOnifP1b38oLPFApa+qjGl9F/wt3CMydMK6uosdtqw9JPhq
-	 3m9bGDjAN5N9Kbi2nGf77B3u2EvCzw2INrkSHTxHxjwN5WLYPsE9EohJSQM8AhGMuZ
-	 M3ThoY95RoTNm6uNmttduMfv445rQ3/uxz699lbM=
+	b=CXqLZUIoR1ZOpsAE4CZN0pwl2fUxiddR8pxRCNNaM919evKnJvaElUP8HTXZ34ZiL
+	 o94ZpjY4UJlMy4aBTZTayYxQS8YHCGvuKpZxqNM5mQaYVRE+gKnuQ/nEo65vAr+A+t
+	 f7D3R3PcGbDrTZdTC8gq0MQMoEA/eKcUAESA7sXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 004/140] xfs: fix a sloppy memory handling bug in xfs_iroot_realloc
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 004/154] drm/xe/oa: Add input fence dependencies
 Date: Mon, 24 Feb 2025 15:33:23 +0100
-Message-ID: <20250224142603.178880987@linuxfoundation.org>
+Message-ID: <20250224142607.240699155@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit de55149b6639e903c4d06eb0474ab2c05060e61d upstream.
+[ Upstream commit 2fb4350a283af03a5ee34ba765783a941f942b82 ]
 
-While refactoring code, I noticed that when xfs_iroot_realloc tries to
-shrink a bmbt root block, it allocates a smaller new block and then
-copies "records" and pointers to the new block.  However, bmbt root
-blocks cannot ever be leaves, which means that it's not technically
-correct to copy records.  We /should/ be copying keys.
+Add input fence dependencies which will make OA configuration wait till
+these dependencies are met (till input fences signal).
 
-Note that this has never resulted in actual memory corruption because
-sizeof(bmbt_rec) == (sizeof(bmbt_key) + sizeof(bmbt_ptr)).  However,
-this will no longer be true when we start adding realtime rmap stuff,
-so fix this now.
+v2: Change add_deps arg to xe_oa_submit_bb from bool to enum (Matt Brost)
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241022200352.1192560-4-ashutosh.dixit@intel.com
+Stable-dep-of: f0ed39830e60 ("xe/oa: Fix query mode of operation for OAR/OAC")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_inode_fork.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_inode_fork.c
-+++ b/fs/xfs/libxfs/xfs_inode_fork.c
-@@ -449,15 +449,15 @@ xfs_iroot_realloc(
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index 20d279ed3c382..1bfc4b58b5c17 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -42,6 +42,11 @@
+ #define DEFAULT_POLL_PERIOD_NS (NSEC_PER_SEC / DEFAULT_POLL_FREQUENCY_HZ)
+ #define XE_OA_UNIT_INVALID U32_MAX
+ 
++enum xe_oa_submit_deps {
++	XE_OA_SUBMIT_NO_DEPS,
++	XE_OA_SUBMIT_ADD_DEPS,
++};
++
+ struct xe_oa_reg {
+ 	struct xe_reg addr;
+ 	u32 value;
+@@ -572,7 +577,8 @@ static __poll_t xe_oa_poll(struct file *file, poll_table *wait)
+ 	return ret;
+ }
+ 
+-static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_bb *bb)
++static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, enum xe_oa_submit_deps deps,
++					 struct xe_bb *bb)
+ {
+ 	struct xe_sched_job *job;
+ 	struct dma_fence *fence;
+@@ -585,11 +591,22 @@ static struct dma_fence *xe_oa_submit_bb(struct xe_oa_stream *stream, struct xe_
+ 		goto exit;
  	}
  
- 	/*
--	 * Only copy the records and pointers if there are any.
-+	 * Only copy the keys and pointers if there are any.
- 	 */
- 	if (new_max > 0) {
- 		/*
--		 * First copy the records.
-+		 * First copy the keys.
- 		 */
--		op = (char *)XFS_BMBT_REC_ADDR(mp, ifp->if_broot, 1);
--		np = (char *)XFS_BMBT_REC_ADDR(mp, new_broot, 1);
--		memcpy(np, op, new_max * (uint)sizeof(xfs_bmbt_rec_t));
-+		op = (char *)XFS_BMBT_KEY_ADDR(mp, ifp->if_broot, 1);
-+		np = (char *)XFS_BMBT_KEY_ADDR(mp, new_broot, 1);
-+		memcpy(np, op, new_max * (uint)sizeof(xfs_bmbt_key_t));
++	if (deps == XE_OA_SUBMIT_ADD_DEPS) {
++		for (int i = 0; i < stream->num_syncs && !err; i++)
++			err = xe_sync_entry_add_deps(&stream->syncs[i], job);
++		if (err) {
++			drm_dbg(&stream->oa->xe->drm, "xe_sync_entry_add_deps err %d\n", err);
++			goto err_put_job;
++		}
++	}
++
+ 	xe_sched_job_arm(job);
+ 	fence = dma_fence_get(&job->drm.s_fence->finished);
+ 	xe_sched_job_push(job);
  
- 		/*
- 		 * Then copy the pointers.
+ 	return fence;
++err_put_job:
++	xe_sched_job_put(job);
+ exit:
+ 	return ERR_PTR(err);
+ }
+@@ -667,7 +684,7 @@ static int xe_oa_modify_ctx_image(struct xe_oa_stream *stream, struct xe_lrc *lr
+ 
+ 	xe_oa_store_flex(stream, lrc, bb, flex, count);
+ 
+-	fence = xe_oa_submit_bb(stream, bb);
++	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+ 	if (IS_ERR(fence)) {
+ 		err = PTR_ERR(fence);
+ 		goto free_bb;
+@@ -696,7 +713,7 @@ static int xe_oa_load_with_lri(struct xe_oa_stream *stream, struct xe_oa_reg *re
+ 
+ 	write_cs_mi_lri(bb, reg_lri, 1);
+ 
+-	fence = xe_oa_submit_bb(stream, bb);
++	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_NO_DEPS, bb);
+ 	if (IS_ERR(fence)) {
+ 		err = PTR_ERR(fence);
+ 		goto free_bb;
+@@ -944,7 +961,7 @@ static int xe_oa_emit_oa_config(struct xe_oa_stream *stream, struct xe_oa_config
+ 		goto exit;
+ 	}
+ 
+-	fence = xe_oa_submit_bb(stream, oa_bo->bb);
++	fence = xe_oa_submit_bb(stream, XE_OA_SUBMIT_ADD_DEPS, oa_bo->bb);
+ 	if (IS_ERR(fence)) {
+ 		err = PTR_ERR(fence);
+ 		goto exit;
+-- 
+2.39.5
+
 
 
 
