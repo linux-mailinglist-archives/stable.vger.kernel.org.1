@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FB0A42572
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B1FA4256B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE5D63BBA39
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B794F443AF9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F80323370B;
-	Mon, 24 Feb 2025 14:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAA1824A3;
+	Mon, 24 Feb 2025 14:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCElGciH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTFoRpB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C48714012;
-	Mon, 24 Feb 2025 14:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88623BD1D;
+	Mon, 24 Feb 2025 14:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408983; cv=none; b=pLlBwzrsPW20Z79vksN+hDt4tBLEpjmWrp6vDp95tu3Bf2sKQzv8YpCOZdXqGZv3/6mUnO/U3HEOapKz4Cr/Wes2KziCt1HN/ssCcPvzl1aqA53hk4y2wnsF6DMR+AQag9RRUVTDaHZdOpPDBqr7Z2fc3jdJeqwl0K/esKGWJWU=
+	t=1740408557; cv=none; b=rVt0INpl0icUUidwYlL/Jkj/vLK/hC8RxLyBD7HTgFxqI/OrozpApN6D0i/lieZTUuuRreelyGZvZJS5XYhf8ILVx6GTz39tk8GphQnodnBAoXX4mWNWixtK3QI4+Q//oM1Kef4P4B7Dm3ENlpleHzon63LnzoIO9cqJRCAafd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408983; c=relaxed/simple;
-	bh=Q6X8vAUM6G3VjVvsph51Pqt2XF3iTqTJSP33jkt0R7o=;
+	s=arc-20240116; t=1740408557; c=relaxed/simple;
+	bh=Us/kShg1y0Hp+YVyW723Yy3CvWfJJ1EM5F8cxN2CrTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOHnwY6bESm2mWxg7TFH7EBwdev9hoIdwhOzrFSL/vM80izlCB7/dqbFqn/hiah2vMLfERg6lT06/+wOpHWUzt5XCjIz0T010WV8dxka0FnpxPjAsy43lWti8XQdlKn/SctBkPaeuFfRpOy9pHYVdV5qzMQOUcJcWFJYc52SfvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCElGciH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440AEC4CEE8;
-	Mon, 24 Feb 2025 14:56:22 +0000 (UTC)
+	 MIME-Version; b=GjoGU8avFG550VWpUTEjCjJ8xV5G0gWI9mRrg8Cb1CjpaIwOEJgdff0dKLhD4VJSLIfuvPuy/PpPQlZgbqgoVi9syRemXyUuF84aqt3bJKb2qxyvZJj6zQe9Es4wYsY6I5qa6pB4B4h1muSRP7f3300RXieFku9usYVRJceQnmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTFoRpB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C391C4CED6;
+	Mon, 24 Feb 2025 14:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408982;
-	bh=Q6X8vAUM6G3VjVvsph51Pqt2XF3iTqTJSP33jkt0R7o=;
+	s=korg; t=1740408557;
+	bh=Us/kShg1y0Hp+YVyW723Yy3CvWfJJ1EM5F8cxN2CrTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCElGciHZ2C4Ug/8MxrrzqgrC1CyTBBb/rZ33bNq08cd8ptl9mP2scvh09K82/ukz
-	 nRVLDkOgb7pceSsf++/91SDD3oQPPOiCE9oNU50wTUSwB/Yiol08Yu4mpEP2Wy6rZM
-	 dUfp9XCrrY9DzAWZyOXoF87tI1AzB4TBMZK/vzek=
+	b=fTFoRpB22Gh2oJJ9aYHVKub5mmDhYulyCpJCI+SoUyvQ+AzXr8ZBtqK/OWnmdqIX5
+	 UreduReZ7vkdmWs3Wj/SF/AUbbkgqCtt8N9FuIwoMEXbstmM68t0CQ9Gzp+2xsrhBF
+	 ul/sFmc+W14rq9s9iRQ+bT1pH6H0ecTD66AzfYwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Riteau <pierre@stackhpc.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 030/138] net/sched: cls_api: fix error handling causing NULL dereference
+Subject: [PATCH 6.12 061/154] tcp: adjust rcvq_space after updating scaling ratio
 Date: Mon, 24 Feb 2025 15:34:20 +0100
-Message-ID: <20250224142605.653436588@linuxfoundation.org>
+Message-ID: <20250224142609.472852567@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Riteau <pierre@stackhpc.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 071ed42cff4fcdd89025d966d48eabef59913bf2 ]
+[ Upstream commit f5da7c45188eea71394bf445655cae2df88a7788 ]
 
-tcf_exts_miss_cookie_base_alloc() calls xa_alloc_cyclic() which can
-return 1 if the allocation succeeded after wrapping. This was treated as
-an error, with value 1 returned to caller tcf_exts_init_ex() which sets
-exts->actions to NULL and returns 1 to caller fl_change().
+Since commit under Fixes we set the window clamp in accordance
+to newly measured rcvbuf scaling_ratio. If the scaling_ratio
+decreased significantly we may put ourselves in a situation
+where windows become smaller than rcvq_space, preventing
+tcp_rcv_space_adjust() from increasing rcvbuf.
 
-fl_change() treats err == 1 as success, calling tcf_exts_validate_ex()
-which calls tcf_action_init() with exts->actions as argument, where it
-is dereferenced.
+The significant decrease of scaling_ratio is far more likely
+since commit 697a6c8cec03 ("tcp: increase the default TCP scaling ratio"),
+which increased the "default" scaling ratio from ~30% to 50%.
 
-Example trace:
+Hitting the bad condition depends a lot on TCP tuning, and
+drivers at play. One of Meta's workloads hits it reliably
+under following conditions:
+ - default rcvbuf of 125k
+ - sender MTU 1500, receiver MTU 5000
+ - driver settles on scaling_ratio of 78 for the config above.
+Initial rcvq_space gets calculated as TCP_INIT_CWND * tp->advmss
+(10 * 5k = 50k). Once we find out the true scaling ratio and
+MSS we clamp the windows to 38k. Triggering the condition also
+depends on the message sequence of this workload. I can't repro
+the problem with simple iperf or TCP_RR-style tests.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-CPU: 114 PID: 16151 Comm: handler114 Kdump: loaded Not tainted 5.14.0-503.16.1.el9_5.x86_64 #1
-RIP: 0010:tcf_action_init+0x1f8/0x2c0
-Call Trace:
- tcf_action_init+0x1f8/0x2c0
- tcf_exts_validate_ex+0x175/0x190
- fl_change+0x537/0x1120 [cls_flower]
-
-Fixes: 80cd22c35c90 ("net/sched: cls_api: Support hardware miss to tc action")
-Signed-off-by: Pierre Riteau <pierre@stackhpc.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250213223610.320278-1-pierre@stackhpc.com
+Fixes: a2cbb1603943 ("tcp: Update window clamping condition")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20250217232905.3162187-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 8e47e5355be61..4f648af8cfaaf 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -97,7 +97,7 @@ tcf_exts_miss_cookie_base_alloc(struct tcf_exts *exts, struct tcf_proto *tp,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 2d43b29da15e2..bb17add6e4a78 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -243,9 +243,15 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
+ 			do_div(val, skb->truesize);
+ 			tcp_sk(sk)->scaling_ratio = val ? val : 1;
  
- 	err = xa_alloc_cyclic(&tcf_exts_miss_cookies_xa, &n->miss_cookie_base,
- 			      n, xa_limit_32b, &next, GFP_KERNEL);
--	if (err)
-+	if (err < 0)
- 		goto err_xa_alloc;
- 
- 	exts->miss_cookie_node = n;
+-			if (old_ratio != tcp_sk(sk)->scaling_ratio)
+-				WRITE_ONCE(tcp_sk(sk)->window_clamp,
+-					   tcp_win_from_space(sk, sk->sk_rcvbuf));
++			if (old_ratio != tcp_sk(sk)->scaling_ratio) {
++				struct tcp_sock *tp = tcp_sk(sk);
++
++				val = tcp_win_from_space(sk, sk->sk_rcvbuf);
++				tcp_set_window_clamp(sk, val);
++
++				if (tp->window_clamp < tp->rcvq_space.space)
++					tp->rcvq_space.space = tp->window_clamp;
++			}
+ 		}
+ 		icsk->icsk_ack.rcv_mss = min_t(unsigned int, len,
+ 					       tcp_sk(sk)->advmss);
 -- 
 2.39.5
 
