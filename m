@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-118881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4344AA41D58
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:45:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323E3A41D3D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:43:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2568D3B3013
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594151889420
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAFD21931C;
-	Mon, 24 Feb 2025 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3981221F23;
+	Mon, 24 Feb 2025 11:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMychr3t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DTXWYUZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DEE21931D;
-	Mon, 24 Feb 2025 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794B3221F18;
+	Mon, 24 Feb 2025 11:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740396047; cv=none; b=HmfnBjmLytUt4BT4tClSfkOQaXT/AoixdCFR+iX0on1f491HPigQcGnXtNBjuVCnYYrnAfB60oTkfCRcpY2qExUjxOmJjUq28yUWyq5v8OwMl2+k4/wafNpqGyzShgUeXlZij+W0bDeiuMYWh7ROQa5eoG97WWytnTZVNmgC2AQ=
+	t=1740396049; cv=none; b=bPX1PfD13bdBGNLf5l+0+mHeToAm/SNRdp5lN/682VHUv0j+li0B55yvsJJqzYXkX+Qkyu1TmJEnkTozljq0h71dFcZ/x6d3cV82jTgt0cbp4dCwSgoehJPhaVC/6rKhKR/gGqEgJGxsDE5FLrwXpg9Vg5NnajtMNeB1wEWUOAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740396047; c=relaxed/simple;
-	bh=zMzkz1mI6jtcn7+HAEQsWDVeXJfP5TGwxGUXHph+jXA=;
+	s=arc-20240116; t=1740396049; c=relaxed/simple;
+	bh=Aw1AhRCRe0h7xFMnZoKTzgHuSv27yUk9wz8rZ4NUg7Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B0BL/v3UXjJKqOtz/2kVQAjwhpNvIKiZ5oZ1XZZYo8pw8HtVkdqEYUsVhi8PboctfzqipcpWuEQvr711Oq/x6cwGagp+sbgJPy29ajSXA9yb7updnxwaagtlvA15pZRKG6NpXN8dCdJ+cSyoL0eHCFFbUICEXYuqabfuvv+1po8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMychr3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585BAC4CEE6;
-	Mon, 24 Feb 2025 11:20:46 +0000 (UTC)
+	 MIME-Version; b=HNuN4sMSVylSyriDDjqsqURE0WXXBr4liDDCa+ewHsiagLsDZ5x+K29bHvw7Y8fjpCCtAooxVUgUNeMFdyF6xdPcxHPqDxJtrfEheRkigV0mCLHpmtQdkAJfgex6C4z439lk1ldmEtl06B6XA0zEFy/8mylK2eb1SzHOSXczkOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DTXWYUZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B1BC4CEE6;
+	Mon, 24 Feb 2025 11:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740396047;
-	bh=zMzkz1mI6jtcn7+HAEQsWDVeXJfP5TGwxGUXHph+jXA=;
+	s=k20201202; t=1740396049;
+	bh=Aw1AhRCRe0h7xFMnZoKTzgHuSv27yUk9wz8rZ4NUg7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMychr3tGyKTBzGIF1szi7Z2srViMK2Lnu6Nd5XxGFPmxtSUiHB36Q+WMTaqr7e8s
-	 Ou4JcprkgbFIRyiWCtvyTQjNXyGa4YYNxYRlD/WbPfvqd+BEbvOasOaafFYRMOW57P
-	 pK47OiNzPXp7EBLmy+Ty4Ii4ZL0BbGIDYfqcL/7U9XNsgZkekGqT6JiZxx5Zk3eMHM
-	 q+qW1MstYKY7y2Bm0iQ28WAPgL+vjQrg5WyTysF5LU9JhN0lxU/qsmqtVt1oddGclf
-	 TjBr395a13LTDhsUpW041hP6DTWejzYKZJF7NiOtZduim/ueu25hsy4K/FDta6FN+C
-	 TEA/HlAO7enkA==
+	b=DTXWYUZWcBPb9ILS2OLpZRuwRsthPm5zEVkX4bmZccwTYTfmDQNwfRSaF0syumMfb
+	 HxRpAtX74yrSu4y8SVWsY8b/SpJ5gtJkZZkKrRzYBV0Xyj9GnX9sxyIfMw0MRJvPBB
+	 qatsvBramnhEpuEtDtzIOxLZId2q0XYKaLqvx/2dmRUOzICas0hPTGuCXuBROoVtJo
+	 rnJhVOpn7o4CIekCuQfpg7IxU+yxBko33/xvfo78awvGTyA2PcOGsLs5SScQthUU+r
+	 Gm+nEcyIF/M2M8KyPGGoP1hsc4i7TEEJFCLD8OKx/jV9+eBcEWwcnsdbv7+71UBcE7
+	 2RfAzgW4Ci1Pw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ruozhu Li <david.li@jaguarmicro.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kch@nvidia.com,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 5/7] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
-Date: Mon, 24 Feb 2025 06:20:28 -0500
-Message-Id: <20250224112033.2214818-5-sashal@kernel.org>
+	marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 6/7] sctp: Fix undefined behavior in left shift operation
+Date: Mon, 24 Feb 2025 06:20:29 -0500
+Message-Id: <20250224112033.2214818-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224112033.2214818-1-sashal@kernel.org>
 References: <20250224112033.2214818-1-sashal@kernel.org>
@@ -67,77 +71,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.178
 Content-Transfer-Encoding: 8bit
 
-From: Ruozhu Li <david.li@jaguarmicro.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
+[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
 
-The queue state checking in nvmet_rdma_recv_done is not in queue state
-lock.Queue state can transfer to LIVE in cm establish handler between
-state checking and state lock here, cause a silent drop of nvme connect
-cmd.
-Recheck queue state whether in LIVE state in state lock to prevent this
-issue.
+According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
+"If E1 has a signed type and E1 x 2^E2 is not representable in the result
+type, the behavior is undefined."
 
-Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Shifting 1 << 31 causes signed integer overflow, which leads to undefined
+behavior.
+
+Fix this by explicitly using '1U << 31' to ensure the shift operates on
+an unsigned type, avoiding undefined behavior.
+
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ net/sctp/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 9561ba3d43138..3b4b2d134cf81 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -996,6 +996,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
- 	nvmet_req_complete(&cmd->req, status);
- }
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index ee6514af830f7..0527728aee986 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
+ 	 *     value SHOULD be the smallest TSN not acknowledged by the
+ 	 *     receiver of the request plus 2^31.
+ 	 */
+-	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
++	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
+ 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
+ 			 init_tsn, GFP_ATOMIC);
  
-+static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
-+		struct nvmet_rdma_rsp *rsp)
-+{
-+	unsigned long flags;
-+	bool ret = true;
-+
-+	spin_lock_irqsave(&queue->state_lock, flags);
-+	/*
-+	 * recheck queue state is not live to prevent a race condition
-+	 * with RDMA_CM_EVENT_ESTABLISHED handler.
-+	 */
-+	if (queue->state == NVMET_RDMA_Q_LIVE)
-+		ret = false;
-+	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
-+		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
-+	else
-+		nvmet_rdma_put_rsp(rsp);
-+	spin_unlock_irqrestore(&queue->state_lock, flags);
-+	return ret;
-+}
-+
- static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
- {
- 	struct nvmet_rdma_cmd *cmd =
-@@ -1037,17 +1058,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	rsp->req.port = queue->port;
- 	rsp->n_rdma = 0;
- 
--	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
--		unsigned long flags;
--
--		spin_lock_irqsave(&queue->state_lock, flags);
--		if (queue->state == NVMET_RDMA_Q_CONNECTING)
--			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
--		else
--			nvmet_rdma_put_rsp(rsp);
--		spin_unlock_irqrestore(&queue->state_lock, flags);
-+	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
-+	    nvmet_rdma_recv_not_live(queue, rsp))
- 		return;
--	}
- 
- 	nvmet_rdma_handle_command(queue, rsp);
- }
 -- 
 2.39.5
 
