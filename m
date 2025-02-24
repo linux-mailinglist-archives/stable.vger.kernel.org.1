@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-119161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55CFA424CB
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E535A423D4
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090621897326
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAE6E170824
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38772191F66;
-	Mon, 24 Feb 2025 14:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FAA18CC1C;
+	Mon, 24 Feb 2025 14:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6TXvU7z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqXlUQTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC25614012;
-	Mon, 24 Feb 2025 14:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978AB14012;
+	Mon, 24 Feb 2025 14:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408526; cv=none; b=R7vAKN+vqk28PPIo8SHmq20lj5IlhB3G7XuTi9RmKZ0J8YWCTWWkiiM0I0dpRtVdDhJgJMieL6AyuxtTm+JFRCx1n96NYGGYZhkFZFKA2gxdt4VkFJ+sGc4KEZQTmz+SJ0h+kphHqqrIOg9lG8i58kd8OU0qUwFQ3B6AHr+xn1o=
+	t=1740408046; cv=none; b=d4CK0y0JEZYkYSyprZdMVHa0HYQRh8IyMNB3OQDHgSZiUferhjB4xT3awluKi2KxCphpUKlyUEd3e/x0+I4r5JxZTMZ38LpHNrrgtmaL2SYfdP8r6Y9wYxwpGMb2jFxGpNNf7vsrR7JAfsSQfX5zcDm0xdtKsHqPYrBdla0uGwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408526; c=relaxed/simple;
-	bh=eCI8lSAWwjb+rFDzsjq+ED/mH/KHtHRhWfMDk0lLuDQ=;
+	s=arc-20240116; t=1740408046; c=relaxed/simple;
+	bh=nUdFUxNG6yfh0oudE9AFpCLG1g2YyPg8yxf+joPG7q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGmt4/DoAVYviSQwDnzP4wszYUFtVvJC4lfdQfrbhAbAZWt3d87k8ELXbvVMRNF1jMG1iwkOHwKlIrkeZgs/Cwv9Cp55HbkoxP052iSF5LMXB99VMWDwt/q+aeTi3/XCPrOEQW8zLcxEUFAxyX2EdnVHKXptf17bGcClxh1HAL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6TXvU7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57188C4CED6;
-	Mon, 24 Feb 2025 14:48:45 +0000 (UTC)
+	 MIME-Version; b=C0NVEkV3YVDzf4DURD/stoF0L+gw4K/gb34hyWVd17uPbVV758Rnmwm3+T5Vxpfk/eZKVBZiFqWlQHYnCIPE93Pp8lyoU1u7gvzQN6MmRbSWVYSkN2L8aolff/I5Q1Rw4pLjPQc8flhTVKCX8rM9/dE/T1DptrDX4Eic7+vHSDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqXlUQTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D00CC4CED6;
+	Mon, 24 Feb 2025 14:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408525;
-	bh=eCI8lSAWwjb+rFDzsjq+ED/mH/KHtHRhWfMDk0lLuDQ=;
+	s=korg; t=1740408046;
+	bh=nUdFUxNG6yfh0oudE9AFpCLG1g2YyPg8yxf+joPG7q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6TXvU7zuRLcXQKjJp4F4y+GxUCGkRGxkjuql2fLlUWfCS5dMy31MR63Zvg5J6cuG
-	 W2r3Z8L9YoN1jGV2w57EqL/g/TKRZeCbCeHv6gH2gDoJSmUBLMCayQZ68k0qZf0jFA
-	 qj5c0vmxfiFRDqrMpah7L1r9MofWrqaGkFiR0MFE=
+	b=mqXlUQTy40BE4U18+t+C6kPbaWPEjgkX3ZP/b/RUYZucZZVCyJqguR48P6RfggHcX
+	 cPz+zQZ1T7Thhpv9ZqFfUNjYjpDj+Z2GRIXGMltBk1J1Y6N6r8CofJhOM3yr5fVFzm
+	 +2ELP+yPn9gAGoLQMi2JlbEGr5GWG/oPldaOhSPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/154] power: supply: axp20x_battery: Fix fault handling for AXP717
-Date: Mon, 24 Feb 2025 15:34:42 +0100
-Message-ID: <20250224142610.327708763@linuxfoundation.org>
+Subject: [PATCH 6.6 084/140] flow_dissector: Fix handling of mixed port and port-range keys
+Date: Mon, 24 Feb 2025 15:34:43 +0100
+Message-ID: <20250224142606.313240018@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +67,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 98380110bd48fbfd6a798ee11fffff893d36062c ]
+[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
 
-Correct the fault handling for the AXP717 by changing the i2c write
-from regmap_update_bits() to regmap_write_bits(). The update bits
-function does not work properly on a RW1C register where we must
-write a 1 back to an existing register to clear it.
+This patch fixes a bug in TC flower filter where rules combining a
+specific destination port with a source port range weren't working
+correctly.
 
-Additionally, as part of this testing I confirmed the behavior of
-errors reappearing, so remove comment about assumptions.
+The specific case was when users tried to configure rules like:
 
-Fixes: 6625767049c2 ("power: supply: axp20x_battery: add support for AXP717")
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20250131231455.153447-2-macroalpha82@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
+dst_port 5000 src_port 2000-3000 action drop
+
+The root cause was in the flow dissector code. While both
+FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
+were being set correctly in the classifier, the __skb_flow_dissect_ports()
+function was only populating one of them: whichever came first in
+the enum check. This meant that when the code needed both a specific
+port and a port range, one of them would be left as 0, causing the
+filter to not match packets as expected.
+
+Fix it by removing the either/or logic and instead checking and
+populating both key types independently when they're in use.
+
+Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp20x_battery.c | 31 +++++++++++++--------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ net/core/flow_dissector.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index f71cc90fea127..57eba1ddb17ba 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -466,10 +466,9 @@ static int axp717_battery_get_prop(struct power_supply *psy,
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 00a5c41c1831d..842da66034158 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -829,23 +829,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
+ 			 void *target_container, const void *data,
+ 			 int nhoff, u8 ip_proto, int hlen)
+ {
+-	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
+-	struct flow_dissector_key_ports *key_ports;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
++	struct flow_dissector_key_ports *key_ports = NULL;
++	__be32 ports;
  
- 	/*
- 	 * If a fault is detected it must also be cleared; if the
--	 * condition persists it should reappear (This is an
--	 * assumption, it's actually not documented). A restart was
--	 * not sufficient to clear the bit in testing despite the
--	 * register listed as POR.
-+	 * condition persists it should reappear. A restart was not
-+	 * sufficient to clear the bit in testing despite the register
-+	 * listed as POR.
- 	 */
- 	case POWER_SUPPLY_PROP_HEALTH:
- 		ret = regmap_read(axp20x_batt->regmap, AXP717_PMU_FAULT,
-@@ -480,26 +479,26 @@ static int axp717_battery_get_prop(struct power_supply *psy,
- 		switch (reg & AXP717_BATT_PMU_FAULT_MASK) {
- 		case AXP717_BATT_UVLO_2_5V:
- 			val->intval = POWER_SUPPLY_HEALTH_DEAD;
--			regmap_update_bits(axp20x_batt->regmap,
--					   AXP717_PMU_FAULT,
--					   AXP717_BATT_UVLO_2_5V,
--					   AXP717_BATT_UVLO_2_5V);
-+			regmap_write_bits(axp20x_batt->regmap,
-+					  AXP717_PMU_FAULT,
-+					  AXP717_BATT_UVLO_2_5V,
-+					  AXP717_BATT_UVLO_2_5V);
- 			return 0;
+ 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
++		key_ports = skb_flow_dissector_target(flow_dissector,
++						      FLOW_DISSECTOR_KEY_PORTS,
++						      target_container);
  
- 		case AXP717_BATT_OVER_TEMP:
- 			val->intval = POWER_SUPPLY_HEALTH_HOT;
--			regmap_update_bits(axp20x_batt->regmap,
--					   AXP717_PMU_FAULT,
--					   AXP717_BATT_OVER_TEMP,
--					   AXP717_BATT_OVER_TEMP);
-+			regmap_write_bits(axp20x_batt->regmap,
-+					  AXP717_PMU_FAULT,
-+					  AXP717_BATT_OVER_TEMP,
-+					  AXP717_BATT_OVER_TEMP);
- 			return 0;
+-	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
++
++	if (!key_ports && !key_ports_range)
+ 		return;
  
- 		case AXP717_BATT_UNDER_TEMP:
- 			val->intval = POWER_SUPPLY_HEALTH_COLD;
--			regmap_update_bits(axp20x_batt->regmap,
--					   AXP717_PMU_FAULT,
--					   AXP717_BATT_UNDER_TEMP,
--					   AXP717_BATT_UNDER_TEMP);
-+			regmap_write_bits(axp20x_batt->regmap,
-+					  AXP717_PMU_FAULT,
-+					  AXP717_BATT_UNDER_TEMP,
-+					  AXP717_BATT_UNDER_TEMP);
- 			return 0;
+-	key_ports = skb_flow_dissector_target(flow_dissector,
+-					      dissector_ports,
+-					      target_container);
+-	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
+-						data, hlen);
++	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
++
++	if (key_ports)
++		key_ports->ports = ports;
++
++	if (key_ports_range)
++		key_ports_range->tp.ports = ports;
+ }
  
- 		default:
+ static void
 -- 
 2.39.5
 
