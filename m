@@ -1,138 +1,91 @@
-Return-Path: <stable+bounces-118705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E28A415EA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:05:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1557CA4167A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052F3174380
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F41AE3A2B64
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D113B24168E;
-	Mon, 24 Feb 2025 07:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FC218B482;
+	Mon, 24 Feb 2025 07:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DQvVUuRc"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="McTsKz6d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BAF241675
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 07:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1633E1BC3C;
+	Mon, 24 Feb 2025 07:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740380644; cv=none; b=O6z2hjrSROKPc1oizITkOegbIcVrQSolgMkB5Nvp2BuQyiKznaYEYK5+qZTu9N95IyIWma+/Mw2lKGtEKUWZM6xt5AVr5jLnTJAgE5kg4Lurc0YpN9kakb63KqTYg+nWfOGNt+dWGh0D9d2w2oRiR7WhXfDvwdiEo4x5oZ5TxnQ=
+	t=1740383013; cv=none; b=hBIuPNfwXLigOv47fKli8Nbaz+OMW9x+9LUvB2PWCPB78AaT3Mb+DYAXHMtuhmLPAnopruFP+057sWzq5LtLS1RAEcR74floTPq4NigJpkgCbFh0NW+/rR4OUCqy+y0sYCigQd7jBRfab7M/j7bFkneeL4zzbpNmfxKdFuWTL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740380644; c=relaxed/simple;
-	bh=8AyV0e0qRbEmKU/uCI50pjnIFt3/6pXpYJ2kgM0yvh0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pYf5HHuPkvd5sD2/s59SAhf2jZk94GR5N7bdXPyQUTnp/Fo280uxP2MEzqTr/er9MO/dzplUCXU7AiNteXkwGgPJTjJcDXlUQGfHRH6vzFzxySwvV4cRUgKxSXXWrA4YhNqr4ZV542DFsKI21jp0bbkcP1DS9qjRNI/3umx1ZNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DQvVUuRc; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c0a1c4780bso423519185a.3
-        for <stable@vger.kernel.org>; Sun, 23 Feb 2025 23:04:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1740380642; x=1740985442; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5q6OzdDXgwAQxAxBQA745WK29nT03MLnpLkJ+gh1wVI=;
-        b=DQvVUuRc07ODeb9F6NLOEkVhpDBAPELeUDxv+/BT3zMQuczi/VtdxMCERZa4NWORux
-         I2WC3lDXCpx78wv7fLDoffJLGT+xxOta8dX9OR6Fxf6qi5FjYlU+JUIyJKlspy9hoblF
-         dWeVt9pkXzmPifK0T1ZLsqAFBXBNAWGHm5m54=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740380642; x=1740985442;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5q6OzdDXgwAQxAxBQA745WK29nT03MLnpLkJ+gh1wVI=;
-        b=jJJTOf4DTZS1OJwFkgOXgOj5Trrq/wsfRpji5Ax/FBZnoZLE+O1984052j1XHvJe34
-         6duqF9RIYAQc5avXhLVTry9BDNrugeqw4kT/3jZbFLIJOQCy76aYelhRczfJymm2Pjfu
-         HzL+u1aqrPapSsN8ItUl9dMcZDqJJ39EkeDQk3jiEoGHhLx3FXA2GCZ3Zf2W6sKmYkHh
-         UoAgU+c472gqX24wcVhWQWJBH6bQIPjA2KsxKkSPzXnSK751ftjxY3OUE5mxwR2yEV8T
-         adtgRIpufoG8tRwVTk94j6WOBYcfNULM5sPxZX7vzXwovup0GP9F7r/qmKamqFPrjKJ0
-         DJug==
-X-Forwarded-Encrypted: i=1; AJvYcCUALNyRejOLJEd6t6asNNTEojBz6VVe39Ccd3UgPjuDH3ykJ9lf9BAr9oGbc2yIaaE9iPNbdZM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyrd5dgwepXNlBAtk5VVRxUVO6ZrY4pwHp/L8qJmQGBMJHtliyK
-	k5rPh/uhc61soy/880pYRbCnSAWb8MKUuCOK3tZDPenpH3J2iH7BKlOi9cGTvg==
-X-Gm-Gg: ASbGncuz98ue8IlxQjHxW00KGL9Qq+Xs+HzwYX82aZP+A3CamQw7Djq//WXggWu9xey
-	JL4F3r+5L0IUd+jnQHTmrVSgoWGkWN5HFrJoIo/rHsS3D+PVnmqvJq3CNiCKlBcY1pc2F0DACmS
-	eUEpYQ7q6AKR0D+RE0T1K88QeC5rtTGYjud9sVpu5gIxECMh2hcd7yDjdfeov7kcSJvW13sBTDk
-	5oU8WPvEnhfgg6E8Me1dLdyBb9jPm9YyB1V8GE8mBBiyEqEFq+UugoO9+af5Lujfk4IdUfg6Rp5
-	Rycp3S2YsztldW504icJU023WLKAjAN+wGkdK6oSnJN7cKXXCxI2AAXTtL7PG58ZuMZPxphVEOX
-	vEok=
-X-Google-Smtp-Source: AGHT+IHgxFsGJ5AGKD2il9LAdTDxMgGFCz1Kjs7fo9qIU1XdeZFdKJmn66/YwmftLgDLOc15f+yjhQ==
-X-Received: by 2002:a05:620a:8006:b0:7c0:8175:3651 with SMTP id af79cd13be357-7c0cef5333fmr1704029285a.43.1740380641946;
-        Sun, 23 Feb 2025 23:04:01 -0800 (PST)
-Received: from denia.c.googlers.com (15.237.245.35.bc.googleusercontent.com. [35.245.237.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c09bf81253sm977920485a.47.2025.02.23.23.03.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 23:04:00 -0800 (PST)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 24 Feb 2025 07:03:55 +0000
-Subject: [PATCH v2 2/2] media: nuvoton: Fix reference handling of ece_pdev
+	s=arc-20240116; t=1740383013; c=relaxed/simple;
+	bh=YGsuhljqccKPHTYpawWHibXzqUjkIgNy6z/pL7cScYk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rqhNViM3h+ksxudWBo4RT0h3s9e6pxoo2vecQh1/WVx1ciE4ccinNsXqL+8ScHCq+peTdQt2EsJZto4ZThLoMccax/5AAoVKZ0HCu7fFCiDVx8vjHfXIEnK6xWBjYxBdMbVt083KmDXDjFW+s5xjMMBhnzrp9QFj/CeRlGrhVcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=McTsKz6d; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=JBeRk
+	4co3+uSwf3WyPiW0R5ciRcTZIeouYHkX7tcL/M=; b=McTsKz6dcaZmybhL4zeys
+	KZLrr5bcTkC1DHyjwS0DFwmle2Q6erq8+CcKTpCFJDOeUQjZEMmN6G2Fse1KzGDX
+	Y9xVuSo/9cSUqMs5zZZFe47Mxel2qEqR0u8nJju4NpRoyYS12n9HLimCkWfvLI/A
+	h3ZsPElFwhTMpYQBcTAslk=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCXu_oSI7xnHWzkNg--.62438S4;
+	Mon, 24 Feb 2025 15:43:16 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: airlied@redhat.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] agp: Fix a potential memory leak bug in agp_amdk7_probe()
+Date: Mon, 24 Feb 2025 15:43:13 +0800
+Message-Id: <20250224074313.2958696-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250224-nuvoton-v2-2-8faaa606be01@chromium.org>
-References: <20250224-nuvoton-v2-0-8faaa606be01@chromium.org>
-In-Reply-To: <20250224-nuvoton-v2-0-8faaa606be01@chromium.org>
-To: Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil@xs4all.nl>, Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Marvin Lin <milkfafa@gmail.com>, linux-media@vger.kernel.org, 
- openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.1
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXu_oSI7xnHWzkNg--.62438S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GF4DCF47tFyktw17JF17trb_yoWDXFb_G3
+	yUAr9293s5AFW8ur1akw4F9rWF9a1rXryku3ZFgwnxAFy3Zr4xXanrWFs5WF17ursrCFy7
+	t34DXr4Uuw1IyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRXyCLJUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkA39bme77loMFgABs9
 
-When we obtain a reference to of a platform_device, we need to release
-it via put_device.
+Variable "bridge" is allocated by agp_alloc_bridge() and
+have to be released by agp_put_bridge() if something goes
+wrong. In this patch, add the missing call of agp_put_bridge()
+in agp_amdk7_probe() to prevent potential memory leak bug.
 
-Found by cocci:
-./platform/nuvoton/npcm-video.c:1677:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1684:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1690:3-9: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-./platform/nuvoton/npcm-video.c:1694:1-7: ERROR: missing put_device; call of_find_device_by_node on line 1667, but without a corresponding object release within this function.
-
-Instead of manually calling put_device, use the __free macros.
-
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: 46c15a4ff1f4 ("media: nuvoton: Add driver for NPCM video capture and encoding engine")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- drivers/media/platform/nuvoton/npcm-video.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/agp/amd-k7-agp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/nuvoton/npcm-video.c b/drivers/media/platform/nuvoton/npcm-video.c
-index 0547f119c38f..7a9d8928ae40 100644
---- a/drivers/media/platform/nuvoton/npcm-video.c
-+++ b/drivers/media/platform/nuvoton/npcm-video.c
-@@ -1669,6 +1669,7 @@ static int npcm_video_ece_init(struct npcm_video *video)
- 			dev_err(dev, "Failed to find ECE device\n");
- 			return -ENODEV;
- 		}
-+		struct device *ece_dev __free(put_device) = &ece_pdev->dev;
- 
- 		regs = devm_platform_ioremap_resource(ece_pdev, 0);
- 		if (IS_ERR(regs)) {
-@@ -1683,7 +1684,7 @@ static int npcm_video_ece_init(struct npcm_video *video)
- 			return PTR_ERR(video->ece.regmap);
- 		}
- 
--		video->ece.reset = devm_reset_control_get(&ece_pdev->dev, NULL);
-+		video->ece.reset = devm_reset_control_get(ece_dev, NULL);
- 		if (IS_ERR(video->ece.reset)) {
- 			dev_err(dev, "Failed to get ECE reset control in DTS\n");
- 			return PTR_ERR(video->ece.reset);
-
+diff --git a/drivers/char/agp/amd-k7-agp.c b/drivers/char/agp/amd-k7-agp.c
+index 795c8c9ff680..40e1fc462dca 100644
+--- a/drivers/char/agp/amd-k7-agp.c
++++ b/drivers/char/agp/amd-k7-agp.c
+@@ -441,6 +441,7 @@ static int agp_amdk7_probe(struct pci_dev *pdev,
+ 			gfxcard = pci_get_class(PCI_CLASS_DISPLAY_VGA<<8, gfxcard);
+ 			if (!gfxcard) {
+ 				dev_info(&pdev->dev, "no AGP VGA controller\n");
++				agp_put_bridge(bridge);
+ 				return -ENODEV;
+ 			}
+ 			cap_ptr = pci_find_capability(gfxcard, PCI_CAP_ID_AGP);
 -- 
-2.48.1.601.g30ceb7b040-goog
+2.25.1
 
 
