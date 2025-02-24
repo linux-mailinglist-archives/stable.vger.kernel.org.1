@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-118814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8FFA41C97
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:26:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915ACA41C99
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83FCE3B9ABF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D5D7A982C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14926263F48;
-	Mon, 24 Feb 2025 11:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A962641D8;
+	Mon, 24 Feb 2025 11:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNc5Ktpr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRv/rhdf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD532263F3B;
-	Mon, 24 Feb 2025 11:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDC0263C9E;
+	Mon, 24 Feb 2025 11:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395876; cv=none; b=g/2j+IDcRWXmLPi6/VADyzdibQHy5B05CNCAweWnd4Qc8c544yRyfNx5NcLO4tiohobg0zAUAcLhyaYdtKovddGoYEp4Muo905ntuhVmWVXZTE6yiHfbftQctEgYGk4ihj3AcYCnG9rF0gO+BHYCJu6tSe1ZF10MixO/kx+ooXY=
+	t=1740395878; cv=none; b=EdJ8S2uN/Qn9Sar8E9/Kd+QhT2jrlOFbAaI2EoBtE/x4OtNCENs7386DTx96TpCXu8UrS5d31EqhmtpyiKjbJ946/p1v6POczlr/sHsYhDsDQsTQPsP16KoIH8HhlRSfMBj5dkATY/5kbuN7KTzqZTN1N7Mnm7y/F4ZrpiwL9IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395876; c=relaxed/simple;
-	bh=gNhpMd6xhiiiI7IQjUh5qom9njguHMcExPCIvyTQ+oE=;
+	s=arc-20240116; t=1740395878; c=relaxed/simple;
+	bh=dqPuA9v4dNcw/imLKMmpcyLGTWuXEGp8WqzvpE77BxA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WDg7hkybpq9Xd/JDsDQ1IR124/ItdV+OJ4/qs6FoIA68R8rSQJFeCHvGGL+VlDAgeYvtgIz2jAIpt5MMgWbHb6bfKLyAWFccwbckex/PFZgYv9kYEGXSl22vRt2i49SjSRr//l7DKsaWrte5+di19193VMCqUKbpF1x9IodJEiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNc5Ktpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1869C4CEE8;
-	Mon, 24 Feb 2025 11:17:54 +0000 (UTC)
+	 MIME-Version; b=joSRac+wCjhlAr1jsV/RO8nHwx65/BiNCjA41XpMeysao02xs/OeYh2v2M8PTRSMpaYqWCMnwaymyWiFjSIDgNmkhRiZXWljaJ0YrYo6ff4hSxNwq2Kxn+LxZADE6kFv8hfwuZEN8uMGChN9bqwWZUGqkwyuf8DIkdJMgGWNY00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRv/rhdf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71B2C4CEE6;
+	Mon, 24 Feb 2025 11:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395876;
-	bh=gNhpMd6xhiiiI7IQjUh5qom9njguHMcExPCIvyTQ+oE=;
+	s=k20201202; t=1740395877;
+	bh=dqPuA9v4dNcw/imLKMmpcyLGTWuXEGp8WqzvpE77BxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNc5KtprbqCNQ4w9RoIk+aEJwg09V2Du4/RGGPEsvzZumUx8zUhgtyUCGKtRlyOQO
-	 t9YUbq6rWmIMV3+Wn0Nxbdwe1Y61xDWtgFbpO1hY01KJ5MrBGUENCq3fVPYj+s7x4F
-	 iaY3TMWbD5B/me3XJ4+Ak7VJLafE6ZOfXOsQrJoBI8EocTdyn/QjnDY3kD3KyIBG9K
-	 sbmjJ0tMuK0bl2b1PtnXkKIbM4ZUT0FAZ1Tt0/jvT0OIFdDI32X158m90DaC7sFaxT
-	 QYm9Vv7a8wfLc36tnsZx4hafr0B6/6LZCREX1cLFk7at5Xbiw0l6yN81MJ2JdHP0Y5
-	 d9G6NWxCdonFg==
+	b=gRv/rhdf1SjMeTipnptVZsT96UQQuylA/QxkXecCo78d9SyV6oMCeTdRNrLt8Mext
+	 Vhzjd1iDwy2o1508FBfrA7Nka+Kgdl9vvs9rrx7hR326mxdYwyONfvQRK6O3uvo6mH
+	 YexruldfFLUORhF1K2NZwU2Ulvx9lLwNPHjT16Fwz3y3OOVkn2xYYbSlj/133IlhEo
+	 g5tDFdNTZb1GJT+gC69kAQ0Y/7ODxhdom1ttjafaqCewXXMPHf3WdaSvvUZeuOeBbn
+	 QnDmGkmDtNaIxhyrneSp9b9i2TfZa8m+2h0UMdjVcs+5EJCyLZUunn0WpATdwvxRzm
+	 or808WViWnLiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Daniel Wagner <wagi@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 30/32] sctp: Fix undefined behavior in left shift operation
-Date: Mon, 24 Feb 2025 06:16:36 -0500
-Message-Id: <20250224111638.2212832-30-sashal@kernel.org>
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 31/32] nvme: only allow entering LIVE from CONNECTING state
+Date: Mon, 24 Feb 2025 06:16:37 -0500
+Message-Id: <20250224111638.2212832-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111638.2212832-1-sashal@kernel.org>
 References: <20250224111638.2212832-1-sashal@kernel.org>
@@ -71,41 +66,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.4
 Content-Transfer-Encoding: 8bit
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
+[ Upstream commit d2fe192348f93fe3a0cb1e33e4aba58e646397f4 ]
 
-According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
-"If E1 has a signed type and E1 x 2^E2 is not representable in the result
-type, the behavior is undefined."
+The fabric transports and also the PCI transport are not entering the
+LIVE state from NEW or RESETTING. This makes the state machine more
+restrictive and allows to catch not supported state transitions, e.g.
+directly switching from RESETTING to LIVE.
 
-Shifting 1 << 31 causes signed integer overflow, which leads to undefined
-behavior.
-
-Fix this by explicitly using '1U << 31' to ensure the shift operates on
-an unsigned type, avoiding undefined behavior.
-
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index c241cc552e8d5..bfcff6d6a4386 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
- 	 *     value SHOULD be the smallest TSN not acknowledged by the
- 	 *     receiver of the request plus 2^31.
- 	 */
--	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
-+	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
- 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
- 			 init_tsn, GFP_ATOMIC);
- 
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 46e04b30f6425..cf0e7c6d5502b 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -564,8 +564,6 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
+ 	switch (new_state) {
+ 	case NVME_CTRL_LIVE:
+ 		switch (old_state) {
+-		case NVME_CTRL_NEW:
+-		case NVME_CTRL_RESETTING:
+ 		case NVME_CTRL_CONNECTING:
+ 			changed = true;
+ 			fallthrough;
 -- 
 2.39.5
 
