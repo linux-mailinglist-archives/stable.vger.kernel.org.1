@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-118997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EF3A423A2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FA7A423D1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50AE0189F626
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4643E19C451C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4330F252904;
-	Mon, 24 Feb 2025 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9CC193436;
+	Mon, 24 Feb 2025 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgTpEaj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EehrrO/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DBF13F43A;
-	Mon, 24 Feb 2025 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA85C17C21C;
+	Mon, 24 Feb 2025 14:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407969; cv=none; b=Fj0P7onA1b2XjRDqCisViJggZQERRM7+3eO9ie4cC0J0fA512junhE0uveAhmKFYcLlltSDrubDEXpKduKqZKi2WQxeDCe0LlWj7s5Q9X+uKMWCXNW46u7/dyukPXaPdKlA6t/wg5i8p/OA3CFRKBJOlfp/QxL6JeXXqFslt+Eg=
+	t=1740408112; cv=none; b=CbBoi5bxOWCxsUH2InsYL5M8o19Q5gyxd/e4KzCFo7vJcr2Du16IiTvPYWkZMxh3Dhd0V6o3r46aaDclHTOZOX3kP7rm4RcVph1D8DVAgoSbzWw9QE0IJZr4aza8s3+OY/KOe92Kskx7vh7NjywTtQYlOW6eEdAxDt0j3C4FnWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407969; c=relaxed/simple;
-	bh=ON75Oz6jbX9o67gFHYb4nnpD4udllXVFrDbmpMLYAEk=;
+	s=arc-20240116; t=1740408112; c=relaxed/simple;
+	bh=9ZchoO7qo9/joQiQbPghO1o4qXZqtYuoUX/FjVoBuf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7ULtAJT+cvAquOZiXMf9NyWNF4Ke6uoF6N0dHI6DJgauekymN4UIiumiiExJhQvZO7ap3vGV7Yd8Wj3eLgk8mMXL/Kzw3ptpzSKDiKzla0WH0TcwgzTcLywcn8hIOV2LMzy8ioda02srJ4kJZ0nWDV62QkpL23VjecPgzsId7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgTpEaj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608BFC4CED6;
-	Mon, 24 Feb 2025 14:39:28 +0000 (UTC)
+	 MIME-Version; b=tUURtANm4ZKxUrgh8B43EHmI3V56XRIm32RDT9QdzyNyQqGMnzJZJjlKIIlfhv3HuYQQyYRuCC64s+SzLTmKaMNaX9Fblh4Vo0u6ojXDtnzyFe+4gEM3G/3CHPRK45XeY+zMRLw6iZZOAsYwU/DlWk9xYhYcrS5AZ+9Jy+L3Les=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EehrrO/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44289C4CEE8;
+	Mon, 24 Feb 2025 14:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407968;
-	bh=ON75Oz6jbX9o67gFHYb4nnpD4udllXVFrDbmpMLYAEk=;
+	s=korg; t=1740408112;
+	bh=9ZchoO7qo9/joQiQbPghO1o4qXZqtYuoUX/FjVoBuf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgTpEaj01meFR/zTky4bMcnAt0/mWwBwkLtk/IvJjenDK8pKQYt9RY8uLwWh8kdj0
-	 ujwxLR/kihopJAHG8fBMDnzilk3Vj0Dc51ihCCFdHFW6ods4um5fZAojU1ROTQqWBc
-	 PHW02j2SoVD/ocyUhcAVbP8nOkUfXAT02LBnulow=
+	b=EehrrO/R+Q37E/JYXFFs/oQTaMsCLmpSS53BfaeIaAJoA21wTdXC2FS90Hh9oMwTm
+	 vloKMLYpTwQyvTJy/Q7QrSpKKb5bz+tiYNVsWmEnFsriVBOgftwADo8vV3AG0WdFEK
+	 hwZxjObzuK+RMP8FBVinbhwmyNzgb4VBYrtSUhS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	stable <stable@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
 	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/140] nvmem: Move and rename ->fixup_cell_info()
-Date: Mon, 24 Feb 2025 15:34:19 +0100
-Message-ID: <20250224142605.372931287@linuxfoundation.org>
+Subject: [PATCH 6.6 061/140] nvmem: imx-ocotp-ele: fix MAC address byte order
+Date: Mon, 24 Feb 2025 15:34:20 +0100
+Message-ID: <20250224142605.412057956@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
 References: <20250224142602.998423469@linuxfoundation.org>
@@ -66,186 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 1172460e716784ac7e1049a537bdca8edbf97360 ]
+[ Upstream commit 391b06ecb63e6eacd054582cb4eb738dfbf5eb77 ]
 
-This hook is meant to be used by any provider and instantiating a layout
-just for this is useless. Let's instead move this hook to the nvmem
-device and add it to the config structure to be easily shared by the
-providers.
+According to the i.MX93 Fusemap the two MAC addresses are stored in
+words 315 to 317 like this:
 
-While at moving this hook, rename it ->fixup_dt_cell_info() to clarify
-its main intended purpose.
+315	MAC1_ADDR_31_0[31:0]
+316	MAC1_ADDR_47_32[47:32]
+	MAC2_ADDR_15_0[15:0]
+317	MAC2_ADDR_47_16[31:0]
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+This means the MAC addresses are stored in reverse byte order. We have
+to swap the bytes before passing them to the upper layers. The storage
+format is consistent to the one used on i.MX6 using imx-ocotp driver
+which does the same byte swapping as introduced here.
+
+With this patch the MAC address on my i.MX93 TQ board correctly reads as
+00:d0:93:6b:27:b8 instead of b8:27:6b:93:d0:00.
+
+Fixes: 22e9e6fcfb50 ("nvmem: imx: support i.MX93 OCOTP")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231215111536.316972-6-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20241230141901.263976-4-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 391b06ecb63e ("nvmem: imx-ocotp-ele: fix MAC address byte order")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/core.c           |  6 +++---
- drivers/nvmem/imx-ocotp.c      | 11 +++--------
- drivers/nvmem/internals.h      |  2 ++
- drivers/nvmem/mtk-efuse.c      | 11 +++--------
- include/linux/nvmem-provider.h |  9 ++++-----
- 5 files changed, 15 insertions(+), 24 deletions(-)
+ drivers/nvmem/imx-ocotp-ele.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index ed8a1cba361e2..3ea94bc26e800 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -674,7 +674,6 @@ static int nvmem_validate_keepouts(struct nvmem_device *nvmem)
- 
- static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_node *np)
- {
--	struct nvmem_layout *layout = nvmem->layout;
- 	struct device *dev = &nvmem->dev;
- 	struct device_node *child;
- 	const __be32 *addr;
-@@ -704,8 +703,8 @@ static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_nod
- 
- 		info.np = of_node_get(child);
- 
--		if (layout && layout->fixup_cell_info)
--			layout->fixup_cell_info(nvmem, layout, &info);
-+		if (nvmem->fixup_dt_cell_info)
-+			nvmem->fixup_dt_cell_info(nvmem, &info);
- 
- 		ret = nvmem_add_one_cell(nvmem, &info);
- 		kfree(info.name);
-@@ -902,6 +901,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
- 
- 	kref_init(&nvmem->refcnt);
- 	INIT_LIST_HEAD(&nvmem->cells);
-+	nvmem->fixup_dt_cell_info = config->fixup_dt_cell_info;
- 
- 	nvmem->owner = config->owner;
- 	if (!nvmem->owner && config->dev->driver)
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index f1e202efaa497..79dd4fda03295 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -583,17 +583,12 @@ static const struct of_device_id imx_ocotp_dt_ids[] = {
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index dfc925edfc83e..1356ec93bfd00 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -107,6 +107,26 @@ static int imx_ocotp_reg_read(void *context, unsigned int offset, void *val, siz
+ 	return 0;
  };
- MODULE_DEVICE_TABLE(of, imx_ocotp_dt_ids);
  
--static void imx_ocotp_fixup_cell_info(struct nvmem_device *nvmem,
--				      struct nvmem_layout *layout,
--				      struct nvmem_cell_info *cell)
++static int imx_ocotp_cell_pp(void *context, const char *id, int index,
++			     unsigned int offset, void *data, size_t bytes)
++{
++	u8 *buf = data;
++	int i;
++
++	/* Deal with some post processing of nvmem cell data */
++	if (id && !strcmp(id, "mac-address"))
++		for (i = 0; i < bytes / 2; i++)
++			swap(buf[i], buf[bytes - i - 1]);
++
++	return 0;
++}
++
 +static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
 +					 struct nvmem_cell_info *cell)
- {
- 	cell->read_post_process = imx_ocotp_cell_pp;
- }
- 
--static struct nvmem_layout imx_ocotp_layout = {
--	.fixup_cell_info = imx_ocotp_fixup_cell_info,
--};
--
- static int imx_ocotp_probe(struct platform_device *pdev)
++{
++	cell->read_post_process = imx_ocotp_cell_pp;
++}
++
+ static int imx_ele_ocotp_probe(struct platform_device *pdev)
  {
  	struct device *dev = &pdev->dev;
-@@ -619,7 +614,7 @@ static int imx_ocotp_probe(struct platform_device *pdev)
- 	imx_ocotp_nvmem_config.size = 4 * priv->params->nregs;
- 	imx_ocotp_nvmem_config.dev = dev;
- 	imx_ocotp_nvmem_config.priv = priv;
--	imx_ocotp_nvmem_config.layout = &imx_ocotp_layout;
-+	imx_ocotp_nvmem_config.fixup_dt_cell_info = &imx_ocotp_fixup_dt_cell_info;
+@@ -133,6 +153,8 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
+ 	priv->config.stride = 1;
+ 	priv->config.priv = priv;
+ 	priv->config.read_only = true;
++	priv->config.add_legacy_fixed_of_cells = true;
++	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
+ 	mutex_init(&priv->lock);
  
- 	priv->config = &imx_ocotp_nvmem_config;
- 
-diff --git a/drivers/nvmem/internals.h b/drivers/nvmem/internals.h
-index ce353831cd655..893553fbdf51a 100644
---- a/drivers/nvmem/internals.h
-+++ b/drivers/nvmem/internals.h
-@@ -23,6 +23,8 @@ struct nvmem_device {
- 	struct bin_attribute	eeprom;
- 	struct device		*base_dev;
- 	struct list_head	cells;
-+	void (*fixup_dt_cell_info)(struct nvmem_device *nvmem,
-+				   struct nvmem_cell_info *cell);
- 	const struct nvmem_keepout *keepout;
- 	unsigned int		nkeepout;
- 	nvmem_reg_read_t	reg_read;
-diff --git a/drivers/nvmem/mtk-efuse.c b/drivers/nvmem/mtk-efuse.c
-index 87c94686cfd21..84f05b40a4112 100644
---- a/drivers/nvmem/mtk-efuse.c
-+++ b/drivers/nvmem/mtk-efuse.c
-@@ -45,9 +45,8 @@ static int mtk_efuse_gpu_speedbin_pp(void *context, const char *id, int index,
- 	return 0;
- }
- 
--static void mtk_efuse_fixup_cell_info(struct nvmem_device *nvmem,
--				      struct nvmem_layout *layout,
--				      struct nvmem_cell_info *cell)
-+static void mtk_efuse_fixup_dt_cell_info(struct nvmem_device *nvmem,
-+					 struct nvmem_cell_info *cell)
- {
- 	size_t sz = strlen(cell->name);
- 
-@@ -61,10 +60,6 @@ static void mtk_efuse_fixup_cell_info(struct nvmem_device *nvmem,
- 		cell->read_post_process = mtk_efuse_gpu_speedbin_pp;
- }
- 
--static struct nvmem_layout mtk_efuse_layout = {
--	.fixup_cell_info = mtk_efuse_fixup_cell_info,
--};
--
- static int mtk_efuse_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -91,7 +86,7 @@ static int mtk_efuse_probe(struct platform_device *pdev)
- 	econfig.priv = priv;
- 	econfig.dev = dev;
- 	if (pdata->uses_post_processing)
--		econfig.layout = &mtk_efuse_layout;
-+		econfig.fixup_dt_cell_info = &mtk_efuse_fixup_dt_cell_info;
- 	nvmem = devm_nvmem_register(dev, &econfig);
- 
- 	return PTR_ERR_OR_ZERO(nvmem);
-diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
-index ecd580ee84db9..9a015e4d428cc 100644
---- a/include/linux/nvmem-provider.h
-+++ b/include/linux/nvmem-provider.h
-@@ -83,6 +83,8 @@ struct nvmem_cell_info {
-  * @cells:	Optional array of pre-defined NVMEM cells.
-  * @ncells:	Number of elements in cells.
-  * @add_legacy_fixed_of_cells:	Read fixed NVMEM cells from old OF syntax.
-+ * @fixup_dt_cell_info: Will be called before a cell is added. Can be
-+ *		used to modify the nvmem_cell_info.
-  * @keepout:	Optional array of keepout ranges (sorted ascending by start).
-  * @nkeepout:	Number of elements in the keepout array.
-  * @type:	Type of the nvmem storage
-@@ -114,6 +116,8 @@ struct nvmem_config {
- 	const struct nvmem_cell_info	*cells;
- 	int			ncells;
- 	bool			add_legacy_fixed_of_cells;
-+	void (*fixup_dt_cell_info)(struct nvmem_device *nvmem,
-+				   struct nvmem_cell_info *cell);
- 	const struct nvmem_keepout *keepout;
- 	unsigned int		nkeepout;
- 	enum nvmem_type		type;
-@@ -160,8 +164,6 @@ struct nvmem_cell_table {
-  * @of_match_table:	Open firmware match table.
-  * @add_cells:		Called to populate the layout using
-  *			nvmem_add_one_cell().
-- * @fixup_cell_info:	Will be called before a cell is added. Can be
-- *			used to modify the nvmem_cell_info.
-  * @owner:		Pointer to struct module.
-  * @node:		List node.
-  *
-@@ -174,9 +176,6 @@ struct nvmem_layout {
- 	const char *name;
- 	const struct of_device_id *of_match_table;
- 	int (*add_cells)(struct device *dev, struct nvmem_device *nvmem);
--	void (*fixup_cell_info)(struct nvmem_device *nvmem,
--				struct nvmem_layout *layout,
--				struct nvmem_cell_info *cell);
- 
- 	/* private */
- 	struct module *owner;
+ 	nvmem = devm_nvmem_register(dev, &priv->config);
 -- 
 2.39.5
 
