@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-119360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A334AA4256E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64690A42595
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9BF3B36E9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 636581667F8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91C61624C8;
-	Mon, 24 Feb 2025 15:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFF31632D3;
+	Mon, 24 Feb 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEaX3CoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE7ikeWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96106156F44;
-	Mon, 24 Feb 2025 15:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B51770E2;
+	Mon, 24 Feb 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409202; cv=none; b=TUMrT9m9ixXdZqXVJWwNva8oBu6hJRs7FqCNufb2L41y2hdQgEi9aRd9lXOtbzVaGgi+GTiYZsfd5QDjWKne48uSOPdTrrBcwYtXknxnCuobylwj5rrbAz0aA0ZTjWGMQbYxP3KkqCt7YEdpqa7YkIyCf5kNwy9sI2GjNn4xbfY=
+	t=1740409229; cv=none; b=SqLdNtQ8pvCbCwvb+v3rdOm6G2v0P1EzFnQxSXnYfstK7len5aU4FefRYa0RYIYNObN4QMOqNMW0japmDKDuH0On6NVYofKDIgK2/OWsUgkEGAmgaJ8x8qWtlrVENNVubHWcD7J78Y3io04m+KzptHCH9+tZy5C/Vsw+2wDUhCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409202; c=relaxed/simple;
-	bh=xlbtDdxVpXzIfTnrWBDjC64jl+1fMZvP+HTNJtLv+Og=;
+	s=arc-20240116; t=1740409229; c=relaxed/simple;
+	bh=27llFbruzhkdYgeOi16+X4L8xWP+jSdk3xKOgu9crnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLW5DoUjemhxy0miW49wUzd7dDXpK3bNHqQyf9XF/vEFjK0GQXst8GvMbvbcgHI8zSeAewPWnTPek2A1xMvsXZEcEu29NFSacnxAonJXwMUzSQyCjiKKksbhQCus0QgCTBO4PxAElNDlkb9c2Kah5bkKdDZPd0tC7sJtqMR7cbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEaX3CoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C08C4CED6;
-	Mon, 24 Feb 2025 15:00:01 +0000 (UTC)
+	 MIME-Version; b=R8GDRBNLAkkCUhvBzKcShmkRiLAXT845C5HuHorsheLvjx+BQXQjGK1iOKxwWF1nX90Gt6BaFEeKLha25Bx50BHykttlc0vpyyxX5NsxHNgLPJcpE4D7m1eAyFNU3wTWWaZ5VW34XsgEXDi5DqnnxzLRDYZ58QzUBfn0btt9uBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE7ikeWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D50C4CEE6;
+	Mon, 24 Feb 2025 15:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409202;
-	bh=xlbtDdxVpXzIfTnrWBDjC64jl+1fMZvP+HTNJtLv+Og=;
+	s=korg; t=1740409229;
+	bh=27llFbruzhkdYgeOi16+X4L8xWP+jSdk3xKOgu9crnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEaX3CoQTilL6zmvRB1V+B9D7bduq1ggr8bQmd6wzdBSjDDMbEdfFoGG7htvc+5ik
-	 4XqHXvxgBDrHbbvQRV9Dp+G9IyoeXFsaNKzrEhkC/KxzqNb8Q2NK22rR6zccmfQY2f
-	 8qQe7LdJNG1Us3tLvlitGOtylhmcIySc2OnreIb8=
+	b=zE7ikeWRJiDUtMMuV9hsAekHZXPlo/LUUiQu4ylFeiYkfz3MH2CCxkooB7zIDHSSC
+	 4WJB19QEjtDJlYYCMX9jp+qJp76mBvMG/6qrL/LZ+6BPEVL+ZkV+ABjjHlKMv0rStw
+	 IQhKGgUZ/mJ7iKo6nh7b5NCP5HgNvzM01XNW7uJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.13 125/138] mtd: rawnand: cadence: use dma_map_resource for sdma address
-Date: Mon, 24 Feb 2025 15:35:55 +0100
-Message-ID: <20250224142609.384844721@linuxfoundation.org>
+	Amiri Khalil <amiri.khalil@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.13 127/138] perf/x86/intel: Fix event constraints for LNC
+Date: Mon, 24 Feb 2025 15:35:57 +0100
+Message-ID: <20250224142609.462554382@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -65,117 +66,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit d76d22b5096c5b05208fd982b153b3f182350b19 upstream.
+commit 782cffeec9ad96daa64ffb2d527b2a052fb02552 upstream.
 
-Remap the slave DMA I/O resources to enhance driver portability.
-Using a physical address causes DMA translation failure when the
-ARM SMMU is enabled.
+According to the latest event list, update the event constraint tables
+for Lion Cove core.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
+The general rule (the event codes < 0x90 are restricted to counters
+0-3.) has been removed. There is no restriction for most of the
+performance monitoring events.
+
+Fixes: a932aa0e868f ("perf/x86: Add Lunar Lake and Arrow Lake support")
+Reported-by: Amiri Khalil <amiri.khalil@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lkml.kernel.org/r/20250219141005.2446823-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |   29 +++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/core.c |   20 +++++++-------------
+ arch/x86/events/intel/ds.c   |    2 +-
+ 2 files changed, 8 insertions(+), 14 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -471,6 +471,8 @@ struct cdns_nand_ctrl {
- 	struct {
- 		void __iomem *virt;
- 		dma_addr_t dma;
-+		dma_addr_t iova_dma;
-+		u32 size;
- 	} io;
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -397,34 +397,28 @@ static struct event_constraint intel_lnc
+ 	METRIC_EVENT_CONSTRAINT(INTEL_TD_METRIC_FETCH_LAT, 6),
+ 	METRIC_EVENT_CONSTRAINT(INTEL_TD_METRIC_MEM_BOUND, 7),
  
- 	int irq;
-@@ -1835,11 +1837,11 @@ static int cadence_nand_slave_dma_transf
- 	}
- 
- 	if (dir == DMA_FROM_DEVICE) {
--		src_dma = cdns_ctrl->io.dma;
-+		src_dma = cdns_ctrl->io.iova_dma;
- 		dst_dma = buf_dma;
- 	} else {
- 		src_dma = buf_dma;
--		dst_dma = cdns_ctrl->io.dma;
-+		dst_dma = cdns_ctrl->io.iova_dma;
- 	}
- 
- 	tx = dmaengine_prep_dma_memcpy(cdns_ctrl->dmac, dst_dma, src_dma, len,
-@@ -2869,6 +2871,7 @@ cadence_nand_irq_cleanup(int irqnum, str
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	dma_cap_mask_t mask;
-+	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
- 	int ret;
- 
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2912,6 +2915,16 @@ static int cadence_nand_init(struct cdns
- 		}
- 	}
- 
-+	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
-+						  cdns_ctrl->io.size,
-+						  DMA_BIDIRECTIONAL, 0);
++	INTEL_EVENT_CONSTRAINT(0x20, 0xf),
 +
-+	ret = dma_mapping_error(dma_dev->dev, cdns_ctrl->io.iova_dma);
-+	if (ret) {
-+		dev_err(cdns_ctrl->dev, "Failed to map I/O resource to DMA\n");
-+		goto dma_release_chnl;
-+	}
++	INTEL_UEVENT_CONSTRAINT(0x012a, 0xf),
++	INTEL_UEVENT_CONSTRAINT(0x012b, 0xf),
+ 	INTEL_UEVENT_CONSTRAINT(0x0148, 0x4),
+ 	INTEL_UEVENT_CONSTRAINT(0x0175, 0x4),
+ 
+ 	INTEL_EVENT_CONSTRAINT(0x2e, 0x3ff),
+ 	INTEL_EVENT_CONSTRAINT(0x3c, 0x3ff),
+-	/*
+-	 * Generally event codes < 0x90 are restricted to counters 0-3.
+-	 * The 0x2E and 0x3C are exception, which has no restriction.
+-	 */
+-	INTEL_EVENT_CONSTRAINT_RANGE(0x01, 0x8f, 0xf),
+ 
+-	INTEL_UEVENT_CONSTRAINT(0x01a3, 0xf),
+-	INTEL_UEVENT_CONSTRAINT(0x02a3, 0xf),
+ 	INTEL_UEVENT_CONSTRAINT(0x08a3, 0x4),
+ 	INTEL_UEVENT_CONSTRAINT(0x0ca3, 0x4),
+ 	INTEL_UEVENT_CONSTRAINT(0x04a4, 0x1),
+ 	INTEL_UEVENT_CONSTRAINT(0x08a4, 0x1),
+ 	INTEL_UEVENT_CONSTRAINT(0x10a4, 0x1),
+ 	INTEL_UEVENT_CONSTRAINT(0x01b1, 0x8),
++	INTEL_UEVENT_CONSTRAINT(0x01cd, 0x3fc),
+ 	INTEL_UEVENT_CONSTRAINT(0x02cd, 0x3),
+-	INTEL_EVENT_CONSTRAINT(0xce, 0x1),
+ 
+ 	INTEL_EVENT_CONSTRAINT_RANGE(0xd0, 0xdf, 0xf),
+-	/*
+-	 * Generally event codes >= 0x90 are likely to have no restrictions.
+-	 * The exception are defined as above.
+-	 */
+-	INTEL_EVENT_CONSTRAINT_RANGE(0x90, 0xfe, 0x3ff),
 +
- 	nand_controller_init(&cdns_ctrl->controller);
- 	INIT_LIST_HEAD(&cdns_ctrl->chips);
++	INTEL_UEVENT_CONSTRAINT(0x00e0, 0xf),
  
-@@ -2922,18 +2935,22 @@ static int cadence_nand_init(struct cdns
- 	if (ret) {
- 		dev_err(cdns_ctrl->dev, "Failed to register MTD: %d\n",
- 			ret);
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
+ 	EVENT_CONSTRAINT_END
+ };
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1199,7 +1199,7 @@ struct event_constraint intel_lnc_pebs_e
+ 	INTEL_FLAGS_UEVENT_CONSTRAINT(0x100, 0x100000000ULL),	/* INST_RETIRED.PREC_DIST */
+ 	INTEL_FLAGS_UEVENT_CONSTRAINT(0x0400, 0x800000000ULL),
  
- 	kfree(cdns_ctrl->buf);
- 	cdns_ctrl->buf = kzalloc(cdns_ctrl->buf_size, GFP_KERNEL);
- 	if (!cdns_ctrl->buf) {
- 		ret = -ENOMEM;
--		goto dma_release_chnl;
-+		goto unmap_dma_resource;
- 	}
- 
- 	return 0;
- 
-+unmap_dma_resource:
-+	dma_unmap_resource(dma_dev->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
-+
- dma_release_chnl:
- 	if (cdns_ctrl->dmac)
- 		dma_release_channel(cdns_ctrl->dmac);
-@@ -2955,6 +2972,8 @@ free_buf_desc:
- static void cadence_nand_remove(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	cadence_nand_chips_cleanup(cdns_ctrl);
-+	dma_unmap_resource(cdns_ctrl->dmac->device->dev, cdns_ctrl->io.iova_dma,
-+			   cdns_ctrl->io.size, DMA_BIDIRECTIONAL, 0);
- 	cadence_nand_irq_cleanup(cdns_ctrl->irq, cdns_ctrl);
- 	kfree(cdns_ctrl->buf);
- 	dma_free_coherent(cdns_ctrl->dev, sizeof(struct cadence_nand_cdma_desc),
-@@ -3019,7 +3038,9 @@ static int cadence_nand_dt_probe(struct
- 	cdns_ctrl->io.virt = devm_platform_get_and_ioremap_resource(ofdev, 1, &res);
- 	if (IS_ERR(cdns_ctrl->io.virt))
- 		return PTR_ERR(cdns_ctrl->io.virt);
-+
- 	cdns_ctrl->io.dma = res->start;
-+	cdns_ctrl->io.size = resource_size(res);
- 
- 	dt->clk = devm_clk_get(cdns_ctrl->dev, "nf_clk");
- 	if (IS_ERR(dt->clk))
+-	INTEL_HYBRID_LDLAT_CONSTRAINT(0x1cd, 0x3ff),
++	INTEL_HYBRID_LDLAT_CONSTRAINT(0x1cd, 0x3fc),
+ 	INTEL_HYBRID_STLAT_CONSTRAINT(0x2cd, 0x3),
+ 	INTEL_FLAGS_UEVENT_CONSTRAINT_DATALA_LD(0x11d0, 0xf),	/* MEM_INST_RETIRED.STLB_MISS_LOADS */
+ 	INTEL_FLAGS_UEVENT_CONSTRAINT_DATALA_ST(0x12d0, 0xf),	/* MEM_INST_RETIRED.STLB_MISS_STORES */
 
 
 
