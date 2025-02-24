@@ -1,114 +1,96 @@
-Return-Path: <stable+bounces-119377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1ACA4251B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F5AA42453
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:55:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 484CD7A9BBD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:00:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3726219C555A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DC1207E13;
-	Mon, 24 Feb 2025 15:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52858254B11;
+	Mon, 24 Feb 2025 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq2oXnB1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pPrfsqy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2498F192D97;
-	Mon, 24 Feb 2025 15:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061AB175D48;
+	Mon, 24 Feb 2025 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409259; cv=none; b=rlA7uUfwbMdLRGi0isW9JNK2ti2cYs/rdnYZHENdALnPUip0kNYeLHkJW3qDQZdPuKsJa9qKwjvv2/wHQozbdDQVISCZt3HODQ8We+AEK2H3IZxlVVbq0J+iygJRqVwmv7xtGkLbWy777QA05C8Tz0eS1C0taQIGxbKz87/5kb0=
+	t=1740408354; cv=none; b=sp81QQHeM4ZGZA6etPDTGXJ/7v5b4N5dKLN32KZnyPdbQwg02ef3XWDgk2VhKhI2q7zHUuyBgg/lprwq1UNw183luDluux9px1k+luJ8jL+y9qx9UAdonpNRwaymV6UAI9sGawW55pdFopVWBlWc2GCiXmghKIMqdAOvH+U/Bc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409259; c=relaxed/simple;
-	bh=50RBF2/uqVQpNmQBBTUdqgQ/M5+vb6dM5npquOgMi60=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/O5mBacYQDJZw/tanNbgCHrDeume14tunCcgEIM3V9aDmPwiSOMispEIDp1wgZe7hv/TnLfvcdiBqYWSgpZ6UqOeaF+CwP4WxPcx6FefGp1FelaY8HJCuBfxTg8qm4F7qvcMW8JbQldnYFuJt5LGiKmYatpd2qgnv0mU98WMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq2oXnB1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865A6C4CEE9;
-	Mon, 24 Feb 2025 15:00:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409259;
-	bh=50RBF2/uqVQpNmQBBTUdqgQ/M5+vb6dM5npquOgMi60=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cq2oXnB14NB3IJTpmNXmZVfNO8Ibxosz8FIUcorbHNt7G92T5dbeluAtT8nZUU47T
-	 asy8xwiSHF2tYHEszoqHVomv00iZufUv+DoJmyfBvW6c8JOsniu9xxsKvOd0+bCAmO
-	 D4qRTDFZtZ8n35E/2VKwnKC3gpTTn6+f2k9g7+vQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.13 133/138] ftrace: Do not add duplicate entries in subops manager ops
-Date: Mon, 24 Feb 2025 15:36:03 +0100
-Message-ID: <20250224142609.698076334@linuxfoundation.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1740408354; c=relaxed/simple;
+	bh=ujM50x4BBUOHKlivHdroNLmZ1MmHSsIVHccHWsgkcEY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a/xl4/5fH+A8lTurQXu8380331KQVfZ55UbPwjsHw9VA056j9g8FX424UjaAZCU6SSZ6Iuqz1MKOuF/a/N7pNaHbKrOwBXeRUbikPhbvefPMYYy3mPWEZ/6ungIY2UvbmArisuBsNy+LBruqilycITpWtX5KhPcfHTZ0QEdV3TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pPrfsqy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B486FC4CED6;
+	Mon, 24 Feb 2025 14:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740408353;
+	bh=ujM50x4BBUOHKlivHdroNLmZ1MmHSsIVHccHWsgkcEY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pPrfsqy0I2jVnLoNwB3eqL44DCzFti9Fg8t7ITPpIP2XZs4coedDArwp+r9zCf4vF
+	 Leriuxqe13YJk7+BHkR8MepoyWVNMQJG7Sc2omAiyzMvawUqX6UlY3PfB/qTWAdC5V
+	 CW6Y05qG9So7w+0cLQp/f/mkLbrDtvBz73wHQ0ck0+o4kOt8J0twOwvtjIcgKdpgNR
+	 1QYX86KTG52TbMTZTYWVRk7s//LZuMhN4tb4YNan2xJvh99sy//8yGqCWqJY76f/sY
+	 E0RN2p5WFOE/THTpQoWACIulu68dOElzjIB5a3U+UKab4yqSbU07HVcr6vuSUWPN+L
+	 2HayzZgir6L/Q==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tmZie-0000000059k-2bfo;
+	Mon, 24 Feb 2025 15:46:04 +0100
+Date: Mon, 24 Feb 2025 15:46:04 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.13 32/32] irqchip/qcom-pdc: Workaround hardware
+ register bug on X1E80100
+Message-ID: <Z7yGLDkI1T4laWBd@hovoldconsulting.com>
+References: <20250224111638.2212832-1-sashal@kernel.org>
+ <20250224111638.2212832-32-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250224111638.2212832-32-sashal@kernel.org>
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+Hi Sasha,
 
-------------------
+On Mon, Feb 24, 2025 at 06:16:38AM -0500, Sasha Levin wrote:
+> From: Stephan Gerhold <stephan.gerhold@linaro.org>
+> 
+> [ Upstream commit e9a48ea4d90be251e0d057d41665745caccb0351 ]
+> 
+> On X1E80100, there is a hardware bug in the register logic of the
+> IRQ_ENABLE_BANK register: While read accesses work on the normal address,
+> all write accesses must be made to a shifted address. Without a workaround
+> for this, the wrong interrupt gets enabled in the PDC and it is impossible
+> to wakeup from deep suspend (CX collapse). This has not caused problems so
+> far, because the deep suspend state was not enabled. A workaround is
+> required now since work is ongoing to fix this.
 
-From: Steven Rostedt <rostedt@goodmis.org>
+> Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Link: https://lore.kernel.org/all/20250218-x1e80100-pdc-hw-wa-v2-1-29be4c98e355@linaro.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-commit 8eb4b09e0bbd30981305643229fe7640ad41b667 upstream.
+This one was not marked for backporting on purpose and is not needed in
+older kernels, please drop from all autosel queues.
 
-Check if a function is already in the manager ops of a subops. A manager
-ops contains multiple subops, and if two or more subops are tracing the
-same function, the manager ops only needs a single entry in its hash.
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250220202055.226762894@goodmis.org
-Fixes: 4f554e955614f ("ftrace: Add ftrace_set_filter_ips function")
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- kernel/trace/ftrace.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5770,6 +5770,9 @@ __ftrace_match_addr(struct ftrace_hash *
- 			return -ENOENT;
- 		free_hash_entry(hash, entry);
- 		return 0;
-+	} else if (__ftrace_lookup_ip(hash, ip) != NULL) {
-+		/* Already exists */
-+		return 0;
- 	}
- 
- 	entry = add_hash_entry(hash, ip);
-
-
+Johan
 
