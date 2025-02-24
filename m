@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-118861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AC3A41D1C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:40:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2949A41D02
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE93F3AC049
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C297188AA8F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FE826BDBC;
-	Mon, 24 Feb 2025 11:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24C726E167;
+	Mon, 24 Feb 2025 11:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKBJtPbD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYJtztpp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B849B26BDB4;
-	Mon, 24 Feb 2025 11:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9E26E153;
+	Mon, 24 Feb 2025 11:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395995; cv=none; b=dbE4V7btUy2an+ATwqmTfDzoqgqM5i8xTbtZyvYEF1RpRIG2TOBJQo/W7qP9xgXkzvmu+QPyZsBMbPAmFRYVKSjH7NQJJHx+vXCwLV5mojVN4hhQA+pAGNGpFWipoKJFmrgVh4BOyFU7TMmzP+nTb/cQanwbkatHUwJScysifSA=
+	t=1740395997; cv=none; b=TUQksiBNcv5BPB2WQa+CvskFnd/COppjK6TRIMtcJbGeO3Kbn7OMQdGHO1FsJJ03TeRErdQ1d0vtNcmyuojY65lvtDa7oK2iIsvUaAYZHGiW0HqAgkb53pmD217pccz7+7m2KE3ZKrjvcTCJq7jDTCXqmf/qA2LHyp7fD/+Pd5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395995; c=relaxed/simple;
-	bh=osZaV4rm0G40kP39LS28Emu7FAgBMz4vabpiAjNoTTE=;
+	s=arc-20240116; t=1740395997; c=relaxed/simple;
+	bh=gNhpMd6xhiiiI7IQjUh5qom9njguHMcExPCIvyTQ+oE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aO/uU/mvfdQg8bA9AeUOnXqOPzDN37ftbeFjj6HMwg2MT74DJBvOOJyhjw2Cua5ERHfGTNyzD7w9aN7cRRjb1XzLH6g1i1lg+4/R6wecSC+iAQ8p8UT4qUawHCzzWKp4y+Ls90lWEzO2s7s+S6+0Vefg2YUphlVLwZGVx9QywYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKBJtPbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD6EC4CED6;
-	Mon, 24 Feb 2025 11:19:54 +0000 (UTC)
+	 MIME-Version; b=eBMZ1zCHDr1mMou2i1Nzhvn+eG+jbOerRskku71p2n6/ow84evFxFHVWVnVWYAtOWB7mkuaiRhrliWuXfNivNy45mAMlTIvkkNYfOcVxSKcoLDCid+sn3m0DfZ+p6JdHZqCUm/1Rju/r5NvSAFLll8TDI5MfJth0Mp+CEc6bFJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYJtztpp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EBFC4CEE6;
+	Mon, 24 Feb 2025 11:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395995;
-	bh=osZaV4rm0G40kP39LS28Emu7FAgBMz4vabpiAjNoTTE=;
+	s=k20201202; t=1740395997;
+	bh=gNhpMd6xhiiiI7IQjUh5qom9njguHMcExPCIvyTQ+oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKBJtPbDm7dq9VtV/69rwHg/wJzRPGV2a/+HsfhzrH+uoSep3y51lQkkV7O7Es2nQ
-	 mD9Y/h8pY5bt+OhUpCY/0PkGBZ06GRJUZiWKlVGYxjk6E7KtufWNTOsn5zqHCbtZtv
-	 9owtghrvgq978XVfIpiLHaIKr9JwcRZ/4ltW3SfI8Q1p3LU2PS6ddKJlrbuNJF1R4V
-	 cnNa0AIoFg74ENq9ItwjazQCYj2wMvQWC6EpqQErKPZBue7rVZflLd20/iSR1Y8xoG
-	 Gxh7v+o3XlvUGMhpoNZXz4xTUzObr26icdrJylLVO/Rqqp/KKFdypP1+9rVuFkMPxm
-	 d8sGmQ11roIMQ==
+	b=eYJtztppVaYV0rSMzKY16Lmu9W8L9YQzYpbrOT00uZG2y509JHc91qIIjfJCZTkNF
+	 qE/ObRvOMwG9fjn8LYVZNR1FcyD3qdoUPP/6AvJlWYQej07NJyHW6reBVpZm//NOQ/
+	 p332jqd+H0+9wWVKGk6R9qJOssvQIA3nDPDbLtJ9M8x4uHijUqG3UdTL/VJDgv7QKO
+	 FUS0fKXtwnc9QH7hNKpLHrg2TpBhoagqFiX7clyNoUW7zGcVPLAITeP8dcYuvilaf0
+	 DNhhxCRAZJpPmDEpodqL2CTIbgLPuOIY9iaupN+7thFasiP+4/Lau1a0H+cA3Ydvmh
+	 ZNX5goPZuB4kQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linkinjeon@kernel.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.6 17/20] cifs: Treat unhandled directory name surrogate reparse points as mount directory nodes
-Date: Mon, 24 Feb 2025 06:19:10 -0500
-Message-Id: <20250224111914.2214326-17-sashal@kernel.org>
+	marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 18/20] sctp: Fix undefined behavior in left shift operation
+Date: Mon, 24 Feb 2025 06:19:11 -0500
+Message-Id: <20250224111914.2214326-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111914.2214326-1-sashal@kernel.org>
 References: <20250224111914.2214326-1-sashal@kernel.org>
@@ -63,73 +66,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.79
 Content-Transfer-Encoding: 8bit
 
-From: Pali Rohár <pali@kernel.org>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit b587fd128660d48cd2122f870f720ff8e2b4abb3 ]
+[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
 
-If the reparse point was not handled (indicated by the -EOPNOTSUPP from
-ops->parse_reparse_point() call) but reparse tag is of type name surrogate
-directory type, then treat is as a new mount point.
+According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
+"If E1 has a signed type and E1 x 2^E2 is not representable in the result
+type, the behavior is undefined."
 
-Name surrogate reparse point represents another named entity in the system.
+Shifting 1 << 31 causes signed integer overflow, which leads to undefined
+behavior.
 
-From SMB client point of view, this another entity is resolved on the SMB
-server, and server serves its content automatically. Therefore from Linux
-client point of view, this name surrogate reparse point of directory type
-crosses mount point.
+Fix this by explicitly using '1U << 31' to ensure the shift operates on
+an unsigned type, avoiding undefined behavior.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c    | 13 +++++++++++++
- fs/smb/common/smbfsctl.h |  3 +++
- 2 files changed, 16 insertions(+)
+ net/sctp/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index b3e59a7c71205..55d6e926cd8cb 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1132,6 +1132,19 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
- 			rc = server->ops->parse_reparse_point(cifs_sb,
- 							      full_path,
- 							      iov, data);
-+			/*
-+			 * If the reparse point was not handled but it is the
-+			 * name surrogate which points to directory, then treat
-+			 * is as a new mount point. Name surrogate reparse point
-+			 * represents another named entity in the system.
-+			 */
-+			if (rc == -EOPNOTSUPP &&
-+			    IS_REPARSE_TAG_NAME_SURROGATE(data->reparse.tag) &&
-+			    (le32_to_cpu(data->fi.Attributes) & ATTR_DIRECTORY)) {
-+				rc = 0;
-+				cifs_create_junction_fattr(fattr, sb);
-+				goto out;
-+			}
- 		}
- 		break;
- 	}
-diff --git a/fs/smb/common/smbfsctl.h b/fs/smb/common/smbfsctl.h
-index a94d658b88e86..6eff3a8bde096 100644
---- a/fs/smb/common/smbfsctl.h
-+++ b/fs/smb/common/smbfsctl.h
-@@ -158,6 +158,9 @@
- #define IO_REPARSE_TAG_LX_CHR	     0x80000025
- #define IO_REPARSE_TAG_LX_BLK	     0x80000026
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index c241cc552e8d5..bfcff6d6a4386 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
+ 	 *     value SHOULD be the smallest TSN not acknowledged by the
+ 	 *     receiver of the request plus 2^31.
+ 	 */
+-	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
++	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
+ 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
+ 			 init_tsn, GFP_ATOMIC);
  
-+/* If Name Surrogate Bit is set, the file or directory represents another named entity in the system. */
-+#define IS_REPARSE_TAG_NAME_SURROGATE(tag) (!!((tag) & 0x20000000))
-+
- /* fsctl flags */
- /* If Flags is set to this value, the request is an FSCTL not ioctl request */
- #define SMB2_0_IOCTL_IS_FSCTL		0x00000001
 -- 
 2.39.5
 
