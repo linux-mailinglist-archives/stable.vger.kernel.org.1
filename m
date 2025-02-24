@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-118988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9ADA423DC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFB8A42476
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28D01709AA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8691619C5F81
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393291EA7E6;
-	Mon, 24 Feb 2025 14:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CE517C21C;
+	Mon, 24 Feb 2025 14:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWOaFgRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saoacgR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3D118E34A;
-	Mon, 24 Feb 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359D8664C6;
+	Mon, 24 Feb 2025 14:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407937; cv=none; b=Cp/rEiIxbXqKXTBbZmOqkrROb48W8FFMPdj9z+q6AZctSe4qv4UBW5ryGB8fAnm2qyyIoJfw2/h2Y4jXsvpVOVYNcSZJUzHQUzamoCmgYxIRtfwFDAtcwnR+F7NA/lAWTujVDq68PIS3uju70130/o5dsOm86sPnSReRiGWB0Ns=
+	t=1740408422; cv=none; b=c+9zHGkFDqCZ0drikZmHQNCg03vjoBnAsAROlZP5MBe6hRiTWWXe0RBGuRBZ5uaU8DbUwOlLiWqsdlLmmCzvT93PxaPyDqLCBwmCXsROUd7WpuXY33U0Uc+z3w6NqQ4DvZF0YQew3jKgYr/9v/bbgq/ffzBmL2gNG3cLk6x0Fz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407937; c=relaxed/simple;
-	bh=Tmhg0KYxILGLs6KvKq1AGBJzt3Eaz6/oK+hFWexKecM=;
+	s=arc-20240116; t=1740408422; c=relaxed/simple;
+	bh=9YZ5j/FtN5JBdTjLX0mNgdgL4daqELANtCcXbOX41fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdasWEig+G6TB8j0rGJcKGtAdelgMeatRiZ1xpsIfFi4gefh5A12QDejUYxLVF8Pc9s2fjJorTztage/Tkhbe7rKhtsh1SPyLecakBl2sv2uRW2apaX8iXBaaefci50YdylobTtC/BioolHcyOXcWYrDfhevEbzaSUHIvOGrRL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWOaFgRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D348DC4CED6;
-	Mon, 24 Feb 2025 14:38:56 +0000 (UTC)
+	 MIME-Version; b=uA3VTFS6fh3OK4eMsh+vvJ9fjuteaFvscO/+mfKB8UT1skspfAnntGpHcqXCENCMivOTt9TQctKTCgZCkkyDr9Ma9nrVIpcJvGoXbzmk3valu1EtPaLAk3yIkPdRvKBRrVMqJlZ9zffEvlhsFAbcK8r/0iaAZ8J+nE/k+EXf0KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saoacgR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC20C4CED6;
+	Mon, 24 Feb 2025 14:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407937;
-	bh=Tmhg0KYxILGLs6KvKq1AGBJzt3Eaz6/oK+hFWexKecM=;
+	s=korg; t=1740408422;
+	bh=9YZ5j/FtN5JBdTjLX0mNgdgL4daqELANtCcXbOX41fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWOaFgRrNxLP5h1MbrjMn9un/oCX0Uamzm20sHqDVLgr6fRI3rO2hFdGLoj4MqGDB
-	 JD4VmZmge75q4T0sL4o02v6cDBtrYmmV2PhLy/SyMelRJwxTeSDtyTrHX+chRQH57L
-	 HGG/ibmFeeENuh+UUH5o8EnNor12UJqOM3k3CVQQ=
+	b=saoacgR30aBMeulI5SKwqya0jYCIG6nRkFcaBrIiGuSfgsHzWC7RzwT7Xsx3DcG7l
+	 xQ8q++OYyc26picQTydBO6V/GVLDxx8uaGiesSENAJ8yaClCPcn97sJqf5Bpc7RtLJ
+	 eUtP1ekQtyfT2D/eb6IfJyA1AGm0tGd9bTZAZ35U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/140] arm64: dts: qcom: sm8550: Fix ADSP memory base and length
+Subject: [PATCH 6.12 052/154] geneve: Fix use-after-free in geneve_find_dev().
 Date: Mon, 24 Feb 2025 15:34:11 +0100
-Message-ID: <20250224142605.059224564@linuxfoundation.org>
+Message-ID: <20250224142609.129482626@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,320 +63,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit a6a8f54bc2af555738322783ba1e990c2ae7f443 ]
+[ Upstream commit 9593172d93b9f91c362baec4643003dc29802929 ]
 
-The address space in ADSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0680_0000 with length of 0x10000.
+syzkaller reported a use-after-free in geneve_find_dev() [0]
+without repro.
 
-0x3000_0000, value used so far, is the main region of CDSP.  Downstream
-DTS uses 0x0300_0000, which is oddly similar to 0x3000_0000, yet quite
-different and points to unused area.
+geneve_configure() links struct geneve_dev.next to
+net_generic(net, geneve_net_id)->geneve_list.
 
-Correct the base address and length, which also moves the node to
-different place to keep things sorted by unit address.  The diff looks
-big, but only the unit address and "reg" property were changed.  This
-should have no functional impact on Linux users, because PAS loader does
-not use this address space at all.
+The net here could differ from dev_net(dev) if IFLA_NET_NS_PID,
+IFLA_NET_NS_FD, or IFLA_TARGET_NETNSID is set.
 
-Fixes: d0c061e366ed ("arm64: dts: qcom: sm8550: add adsp, cdsp & mdss nodes")
-Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-7-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+When dev_net(dev) is dismantled, geneve_exit_batch_rtnl() finally
+calls unregister_netdevice_queue() for each dev in the netns,
+and later the dev is freed.
+
+However, its geneve_dev.next is still linked to the backend UDP
+socket netns.
+
+Then, use-after-free will occur when another geneve dev is created
+in the netns.
+
+Let's call geneve_dellink() instead in geneve_destroy_tunnels().
+
+[0]:
+BUG: KASAN: slab-use-after-free in geneve_find_dev drivers/net/geneve.c:1295 [inline]
+BUG: KASAN: slab-use-after-free in geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
+Read of size 2 at addr ffff000054d6ee24 by task syz.1.4029/13441
+
+CPU: 1 UID: 0 PID: 13441 Comm: syz.1.4029 Not tainted 6.13.0-g0ad9617c78ac #24 dc35ca22c79fb82e8e7bc5c9c9adafea898b1e3d
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ show_stack+0x38/0x50 arch/arm64/kernel/stacktrace.c:466 (C)
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbc/0x108 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x16c/0x6f0 mm/kasan/report.c:489
+ kasan_report+0xc0/0x120 mm/kasan/report.c:602
+ __asan_report_load2_noabort+0x20/0x30 mm/kasan/report_generic.c:379
+ geneve_find_dev drivers/net/geneve.c:1295 [inline]
+ geneve_configure+0x234/0x858 drivers/net/geneve.c:1343
+ geneve_newlink+0xb8/0x128 drivers/net/geneve.c:1634
+ rtnl_newlink_create+0x23c/0x868 net/core/rtnetlink.c:3795
+ __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+ rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
+ rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
+ netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
+ rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
+ ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
+ __sys_sendmsg net/socket.c:2654 [inline]
+ __do_sys_sendmsg net/socket.c:2659 [inline]
+ __se_sys_sendmsg net/socket.c:2657 [inline]
+ __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
+
+Allocated by task 13247:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x68 mm/kasan/common.c:68
+ kasan_save_alloc_info+0x44/0x58 mm/kasan/generic.c:568
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x84/0xa0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4298 [inline]
+ __kmalloc_node_noprof+0x2a0/0x560 mm/slub.c:4304
+ __kvmalloc_node_noprof+0x9c/0x230 mm/util.c:645
+ alloc_netdev_mqs+0xb8/0x11a0 net/core/dev.c:11470
+ rtnl_create_link+0x2b8/0xb50 net/core/rtnetlink.c:3604
+ rtnl_newlink_create+0x19c/0x868 net/core/rtnetlink.c:3780
+ __rtnl_newlink net/core/rtnetlink.c:3906 [inline]
+ rtnl_newlink+0x1054/0x1630 net/core/rtnetlink.c:4021
+ rtnetlink_rcv_msg+0x61c/0x918 net/core/rtnetlink.c:6911
+ netlink_rcv_skb+0x1dc/0x398 net/netlink/af_netlink.c:2543
+ rtnetlink_rcv+0x34/0x50 net/core/rtnetlink.c:6938
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x618/0x838 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x5fc/0x8b0 net/netlink/af_netlink.c:1892
+ sock_sendmsg_nosec net/socket.c:713 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x410/0x6f8 net/socket.c:2568
+ ___sys_sendmsg+0x178/0x1d8 net/socket.c:2622
+ __sys_sendmsg net/socket.c:2654 [inline]
+ __do_sys_sendmsg net/socket.c:2659 [inline]
+ __se_sys_sendmsg net/socket.c:2657 [inline]
+ __arm64_sys_sendmsg+0x12c/0x1c8 net/socket.c:2657
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x90/0x278 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x13c/0x250 arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x54/0x70 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x4c/0xa8 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x1a0 arch/arm64/kernel/entry.S:600
+
+Freed by task 45:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x68 mm/kasan/common.c:68
+ kasan_save_free_info+0x58/0x70 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x48/0x68 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4613 [inline]
+ kfree+0x140/0x420 mm/slub.c:4761
+ kvfree+0x4c/0x68 mm/util.c:688
+ netdev_release+0x94/0xc8 net/core/net-sysfs.c:2065
+ device_release+0x98/0x1c0
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x2b0/0x438 lib/kobject.c:737
+ netdev_run_todo+0xe5c/0xfc8 net/core/dev.c:11185
+ rtnl_unlock+0x20/0x38 net/core/rtnetlink.c:151
+ cleanup_net+0x4fc/0x8c0 net/core/net_namespace.c:648
+ process_one_work+0x700/0x1398 kernel/workqueue.c:3236
+ process_scheduled_works kernel/workqueue.c:3317 [inline]
+ worker_thread+0x8c4/0xe10 kernel/workqueue.c:3398
+ kthread+0x4bc/0x608 kernel/kthread.c:464
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:862
+
+The buggy address belongs to the object at ffff000054d6e000
+ which belongs to the cache kmalloc-cg-4k of size 4096
+The buggy address is located 3620 bytes inside of
+ freed 4096-byte region [ffff000054d6e000, ffff000054d6f000)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x94d68
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+memcg:ffff000016276181
+flags: 0x3fffe0000000040(head|node=0|zone=0|lastcpupid=0x1ffff)
+page_type: f5(slab)
+raw: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
+head: 03fffe0000000040 ffff0000c000f500 dead000000000122 0000000000000000
+head: 0000000000000000 0000000000040004 00000001f5000000 ffff000016276181
+head: 03fffe0000000003 fffffdffc1535a01 ffffffffffffffff 0000000000000000
+head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff000054d6ed00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff000054d6ed80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff000054d6ee00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                               ^
+ ffff000054d6ee80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff000054d6ef00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Fixes: 2d07dc79fe04 ("geneve: add initial netdev driver for GENEVE tunnels")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250213043354.91368-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 262 +++++++++++++--------------
- 1 file changed, 131 insertions(+), 131 deletions(-)
+ drivers/net/geneve.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 500dfbd79fb69..bc9a1fca2db3a 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2026,6 +2026,137 @@
- 			};
- 		};
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index ba15a0a4ce629..9c53b0bbb4c57 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1907,16 +1907,11 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
+ 	/* gather any geneve devices that were moved into this ns */
+ 	for_each_netdev_safe(net, dev, aux)
+ 		if (dev->rtnl_link_ops == &geneve_link_ops)
+-			unregister_netdevice_queue(dev, head);
++			geneve_dellink(dev, head);
  
-+		remoteproc_adsp: remoteproc@6800000 {
-+			compatible = "qcom,sm8550-adsp-pas";
-+			reg = <0x0 0x06800000 0x0 0x10000>;
-+
-+			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready",
-+					  "handover", "stop-ack";
-+
-+			clocks = <&rpmhcc RPMH_CXO_CLK>;
-+			clock-names = "xo";
-+
-+			power-domains = <&rpmhpd RPMHPD_LCX>,
-+					<&rpmhpd RPMHPD_LMX>;
-+			power-domain-names = "lcx", "lmx";
-+
-+			interconnects = <&lpass_lpicx_noc MASTER_LPASS_PROC 0 &mc_virt SLAVE_EBI1 0>;
-+
-+			memory-region = <&adspslpi_mem>, <&q6_adsp_dtb_mem>;
-+
-+			qcom,qmp = <&aoss_qmp>;
-+
-+			qcom,smem-states = <&smp2p_adsp_out 0>;
-+			qcom,smem-state-names = "stop";
-+
-+			status = "disabled";
-+
-+			remoteproc_adsp_glink: glink-edge {
-+				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
-+							     IPCC_MPROC_SIGNAL_GLINK_QMP
-+							     IRQ_TYPE_EDGE_RISING>;
-+				mboxes = <&ipcc IPCC_CLIENT_LPASS
-+						IPCC_MPROC_SIGNAL_GLINK_QMP>;
-+
-+				label = "lpass";
-+				qcom,remote-pid = <2>;
-+
-+				fastrpc {
-+					compatible = "qcom,fastrpc";
-+					qcom,glink-channels = "fastrpcglink-apps-dsp";
-+					label = "adsp";
-+					qcom,non-secure-domain;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					compute-cb@3 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <3>;
-+						iommus = <&apps_smmu 0x1003 0x80>,
-+							 <&apps_smmu 0x1063 0x0>;
-+						dma-coherent;
-+					};
-+
-+					compute-cb@4 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <4>;
-+						iommus = <&apps_smmu 0x1004 0x80>,
-+							 <&apps_smmu 0x1064 0x0>;
-+						dma-coherent;
-+					};
-+
-+					compute-cb@5 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <5>;
-+						iommus = <&apps_smmu 0x1005 0x80>,
-+							 <&apps_smmu 0x1065 0x0>;
-+						dma-coherent;
-+					};
-+
-+					compute-cb@6 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <6>;
-+						iommus = <&apps_smmu 0x1006 0x80>,
-+							 <&apps_smmu 0x1066 0x0>;
-+						dma-coherent;
-+					};
-+
-+					compute-cb@7 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <7>;
-+						iommus = <&apps_smmu 0x1007 0x80>,
-+							 <&apps_smmu 0x1067 0x0>;
-+						dma-coherent;
-+					};
-+				};
-+
-+				gpr {
-+					compatible = "qcom,gpr";
-+					qcom,glink-channels = "adsp_apps";
-+					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
-+					qcom,intents = <512 20>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					q6apm: service@1 {
-+						compatible = "qcom,q6apm";
-+						reg = <GPR_APM_MODULE_IID>;
-+						#sound-dai-cells = <0>;
-+						qcom,protection-domain = "avs/audio",
-+									 "msm/adsp/audio_pd";
-+
-+						q6apmdai: dais {
-+							compatible = "qcom,q6apm-dais";
-+							iommus = <&apps_smmu 0x1001 0x80>,
-+								 <&apps_smmu 0x1061 0x0>;
-+						};
-+
-+						q6apmbedai: bedais {
-+							compatible = "qcom,q6apm-lpass-dais";
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6prm: service@2 {
-+						compatible = "qcom,q6prm";
-+						reg = <GPR_PRM_MODULE_IID>;
-+						qcom,protection-domain = "avs/audio",
-+									 "msm/adsp/audio_pd";
-+
-+						q6prmcc: clock-controller {
-+							compatible = "qcom,q6prm-lpass-clocks";
-+							#clock-cells = <2>;
-+						};
-+					};
-+				};
-+			};
-+		};
-+
- 		lpass_wsa2macro: codec@6aa0000 {
- 			compatible = "qcom,sm8550-lpass-wsa-macro";
- 			reg = <0 0x06aa0000 0 0x1000>;
-@@ -3954,137 +4085,6 @@
- 			interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
- 		};
+ 	/* now gather any other geneve devices that were created in this ns */
+-	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next) {
+-		/* If geneve->dev is in the same netns, it was already added
+-		 * to the list by the previous loop.
+-		 */
+-		if (!net_eq(dev_net(geneve->dev), net))
+-			unregister_netdevice_queue(geneve->dev, head);
+-	}
++	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
++		geneve_dellink(geneve->dev, head);
+ }
  
--		remoteproc_adsp: remoteproc@30000000 {
--			compatible = "qcom,sm8550-adsp-pas";
--			reg = <0x0 0x30000000 0x0 0x100>;
--
--			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "wdog", "fatal", "ready",
--					  "handover", "stop-ack";
--
--			clocks = <&rpmhcc RPMH_CXO_CLK>;
--			clock-names = "xo";
--
--			power-domains = <&rpmhpd RPMHPD_LCX>,
--					<&rpmhpd RPMHPD_LMX>;
--			power-domain-names = "lcx", "lmx";
--
--			interconnects = <&lpass_lpicx_noc MASTER_LPASS_PROC 0 &mc_virt SLAVE_EBI1 0>;
--
--			memory-region = <&adspslpi_mem>, <&q6_adsp_dtb_mem>;
--
--			qcom,qmp = <&aoss_qmp>;
--
--			qcom,smem-states = <&smp2p_adsp_out 0>;
--			qcom,smem-state-names = "stop";
--
--			status = "disabled";
--
--			remoteproc_adsp_glink: glink-edge {
--				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
--							     IPCC_MPROC_SIGNAL_GLINK_QMP
--							     IRQ_TYPE_EDGE_RISING>;
--				mboxes = <&ipcc IPCC_CLIENT_LPASS
--						IPCC_MPROC_SIGNAL_GLINK_QMP>;
--
--				label = "lpass";
--				qcom,remote-pid = <2>;
--
--				fastrpc {
--					compatible = "qcom,fastrpc";
--					qcom,glink-channels = "fastrpcglink-apps-dsp";
--					label = "adsp";
--					qcom,non-secure-domain;
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					compute-cb@3 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <3>;
--						iommus = <&apps_smmu 0x1003 0x80>,
--							 <&apps_smmu 0x1063 0x0>;
--						dma-coherent;
--					};
--
--					compute-cb@4 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <4>;
--						iommus = <&apps_smmu 0x1004 0x80>,
--							 <&apps_smmu 0x1064 0x0>;
--						dma-coherent;
--					};
--
--					compute-cb@5 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <5>;
--						iommus = <&apps_smmu 0x1005 0x80>,
--							 <&apps_smmu 0x1065 0x0>;
--						dma-coherent;
--					};
--
--					compute-cb@6 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <6>;
--						iommus = <&apps_smmu 0x1006 0x80>,
--							 <&apps_smmu 0x1066 0x0>;
--						dma-coherent;
--					};
--
--					compute-cb@7 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <7>;
--						iommus = <&apps_smmu 0x1007 0x80>,
--							 <&apps_smmu 0x1067 0x0>;
--						dma-coherent;
--					};
--				};
--
--				gpr {
--					compatible = "qcom,gpr";
--					qcom,glink-channels = "adsp_apps";
--					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
--					qcom,intents = <512 20>;
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					q6apm: service@1 {
--						compatible = "qcom,q6apm";
--						reg = <GPR_APM_MODULE_IID>;
--						#sound-dai-cells = <0>;
--						qcom,protection-domain = "avs/audio",
--									 "msm/adsp/audio_pd";
--
--						q6apmdai: dais {
--							compatible = "qcom,q6apm-dais";
--							iommus = <&apps_smmu 0x1001 0x80>,
--								 <&apps_smmu 0x1061 0x0>;
--						};
--
--						q6apmbedai: bedais {
--							compatible = "qcom,q6apm-lpass-dais";
--							#sound-dai-cells = <1>;
--						};
--					};
--
--					q6prm: service@2 {
--						compatible = "qcom,q6prm";
--						reg = <GPR_PRM_MODULE_IID>;
--						qcom,protection-domain = "avs/audio",
--									 "msm/adsp/audio_pd";
--
--						q6prmcc: clock-controller {
--							compatible = "qcom,q6prm-lpass-clocks";
--							#clock-cells = <2>;
--						};
--					};
--				};
--			};
--		};
--
- 		nsp_noc: interconnect@320c0000 {
- 			compatible = "qcom,sm8550-nsp-noc";
- 			reg = <0 0x320c0000 0 0xe080>;
+ static void __net_exit geneve_exit_batch_rtnl(struct list_head *net_list,
 -- 
 2.39.5
 
