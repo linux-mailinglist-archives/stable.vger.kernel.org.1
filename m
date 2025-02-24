@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2ECA424A9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BCAA423EE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C36ED1894E90
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7921893FB3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FCD24EF96;
-	Mon, 24 Feb 2025 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14A144C94;
+	Mon, 24 Feb 2025 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb5QnLn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnV0OKK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3790C84A35;
-	Mon, 24 Feb 2025 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADD22571D9;
+	Mon, 24 Feb 2025 14:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408632; cv=none; b=bUMWDmSEUbmu3hW2z4bH6xkH7Iz1G+Qfy3JtWjWNMi3l59Q0dvc2PnVD+Vt1Y7RdGgTJqjAgEefXSE4XSBZ/dzQLovreD5IIe/12TsKGxwzHcKf/QhiXjoetB8fhbL/RkmveSJFLnEf6h+3QeeJRHVVZ83ee8FJXc+2EbIfhgos=
+	t=1740408146; cv=none; b=mKmdoBNaSsvqzQVl5HftYe8aOt8oM8lGpgAKCt8U3Di8zShv1IfchAf50/4qyQET4w8XINyyyfNLzSlwqC37ap7DaxoPmPHLnrjvlQBrC+PEbph2lRgY6U/xTZ173+TurWiGKWR4jHl0eetHapNLzX+2A+PfqyKevQ9qakkfAbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408632; c=relaxed/simple;
-	bh=gn6JmfYJ+mZs4mrMFweKqHkvaUVjmDQ1zWPr6LAdEgM=;
+	s=arc-20240116; t=1740408146; c=relaxed/simple;
+	bh=O3FeYP0wrESoVFB1UNbR1k1LotdhGLgPIh809egmFcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RznLOT7wKa+TU8VpVByHrO20T5GKPpjodVoTUA54G/MdwuxVYkM8TAWfIjuxaETLLGek4gozgDX67rNbvxr7xGRCTzxzXulGOE9hpYytoQQa0D8/SuWrE0b8iMsg5eS3egzrbnuTC6QnHOiE1e/GnlV5vOgMJWpNz/JFTBcCVjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb5QnLn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18A2C4CED6;
-	Mon, 24 Feb 2025 14:50:31 +0000 (UTC)
+	 MIME-Version; b=Z6bDSAzAVq/7xpFNCFKDNtDoRVwSebDQoMiRzoo39QQT75idaEgTHgJ/CRQzJfo2Hjc+Asgxcny5owRIqbnqho8V6v54ZKhCbnJqkDbd8cVryfcURBIw5vGn1ZIgqgQSYAXApMjooZPeKxS/MIzLrdpAkAXQjHv7b6Rnbnmfq+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnV0OKK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8F6C4CED6;
+	Mon, 24 Feb 2025 14:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408632;
-	bh=gn6JmfYJ+mZs4mrMFweKqHkvaUVjmDQ1zWPr6LAdEgM=;
+	s=korg; t=1740408146;
+	bh=O3FeYP0wrESoVFB1UNbR1k1LotdhGLgPIh809egmFcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tb5QnLn+UHOAUn1w9NM6md08JGYKpZRC5eSApG/CGYsKTandRKKpoTLe+ldKD14XZ
-	 fa9BUYkS0t6kjKXugAKnNSGMDKht2TR1cJY5k/D2fZX2TUFb0dG5xDgJQ0LoMr2rN7
-	 LE6o1grgZi6pK919ZKP8k1RdIxW7QBj2E8r+3+h8=
+	b=tnV0OKK2mGJ/MFGgzLJpiEB9nhV3WN37xVOh/JffNzdbabM2w6xPwuHH+rLVGb3Rk
+	 OINFSXkhtn8olkCby7/h8ik8nCOz+oLXNiRrvpguowyRwnU2Fv6YAI1ex9lrAw6pm6
+	 xR/cOaU7mlbMrG3yOLBigcDgTAllJgHQju8pdCqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 114/154] gpiolib: check the return value of gpio_chip::get_direction()
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 114/140] soc: loongson: loongson2_guts: Add check for devm_kstrdup()
 Date: Mon, 24 Feb 2025 15:35:13 +0100
-Message-ID: <20250224142611.521183263@linuxfoundation.org>
+Message-ID: <20250224142607.495910481@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 9d846b1aebbe488f245f1aa463802ff9c34cc078 upstream.
+commit e31e3f6c0ce473f7ce1e70d54ac8e3ed190509f8 upstream.
 
-As per the API contract - gpio_chip::get_direction() may fail and return
-a negative error number. However, we treat it as if it always returned 0
-or 1. Check the return value of the callback and propagate the error
-number up the stack.
+Add check for the return value of devm_kstrdup() in
+loongson2_guts_probe() to catch potential exception.
 
+Fixes: b82621ac8450 ("soc: loongson: add GUTS driver for loongson-2 platforms")
 Cc: stable@vger.kernel.org
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250210-gpio-sanitize-retvals-v1-1-12ea88506cb2@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://lore.kernel.org/r/20250220081714.2676828-1-haoxiang_li2024@163.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c |   44 +++++++++++++++++++++++++++++---------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+ drivers/soc/loongson/loongson2_guts.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1059,8 +1059,11 @@ int gpiochip_add_data_with_key(struct gp
- 		struct gpio_desc *desc = &gdev->descs[desc_index];
+--- a/drivers/soc/loongson/loongson2_guts.c
++++ b/drivers/soc/loongson/loongson2_guts.c
+@@ -114,8 +114,11 @@ static int loongson2_guts_probe(struct p
+ 	if (of_property_read_string(root, "model", &machine))
+ 		of_property_read_string_index(root, "compatible", 0, &machine);
+ 	of_node_put(root);
+-	if (machine)
++	if (machine) {
+ 		soc_dev_attr.machine = devm_kstrdup(dev, machine, GFP_KERNEL);
++		if (!soc_dev_attr.machine)
++			return -ENOMEM;
++	}
  
- 		if (gc->get_direction && gpiochip_line_is_valid(gc, desc_index)) {
--			assign_bit(FLAG_IS_OUT,
--				   &desc->flags, !gc->get_direction(gc, desc_index));
-+			ret = gc->get_direction(gc, desc_index);
-+			if (ret < 0)
-+				goto err_cleanup_desc_srcu;
-+
-+			assign_bit(FLAG_IS_OUT, &desc->flags, !ret);
- 		} else {
- 			assign_bit(FLAG_IS_OUT,
- 				   &desc->flags, !gc->direction_input);
-@@ -2702,13 +2705,18 @@ int gpiod_direction_input(struct gpio_de
- 	if (guard.gc->direction_input) {
- 		ret = guard.gc->direction_input(guard.gc,
- 						gpio_chip_hwgpio(desc));
--	} else if (guard.gc->get_direction &&
--		  (guard.gc->get_direction(guard.gc,
--					   gpio_chip_hwgpio(desc)) != 1)) {
--		gpiod_warn(desc,
--			   "%s: missing direction_input() operation and line is output\n",
--			   __func__);
--		return -EIO;
-+	} else if (guard.gc->get_direction) {
-+		ret = guard.gc->get_direction(guard.gc,
-+					      gpio_chip_hwgpio(desc));
-+		if (ret < 0)
-+			return ret;
-+
-+		if (ret != GPIO_LINE_DIRECTION_IN) {
-+			gpiod_warn(desc,
-+				   "%s: missing direction_input() operation and line is output\n",
-+				    __func__);
-+			return -EIO;
-+		}
- 	}
- 	if (ret == 0) {
- 		clear_bit(FLAG_IS_OUT, &desc->flags);
-@@ -2746,12 +2754,18 @@ static int gpiod_direction_output_raw_co
- 						 gpio_chip_hwgpio(desc), val);
- 	} else {
- 		/* Check that we are in output mode if we can */
--		if (guard.gc->get_direction &&
--		    guard.gc->get_direction(guard.gc, gpio_chip_hwgpio(desc))) {
--			gpiod_warn(desc,
--				"%s: missing direction_output() operation\n",
--				__func__);
--			return -EIO;
-+		if (guard.gc->get_direction) {
-+			ret = guard.gc->get_direction(guard.gc,
-+						      gpio_chip_hwgpio(desc));
-+			if (ret < 0)
-+				return ret;
-+
-+			if (ret != GPIO_LINE_DIRECTION_OUT) {
-+				gpiod_warn(desc,
-+					   "%s: missing direction_output() operation\n",
-+					   __func__);
-+				return -EIO;
-+			}
- 		}
- 		/*
- 		 * If we can't actively set the direction, we are some
+ 	svr = loongson2_guts_get_svr();
+ 	soc_die = loongson2_soc_die_match(svr, loongson2_soc_die);
 
 
 
