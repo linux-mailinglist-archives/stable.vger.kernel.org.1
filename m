@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-118981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57C8A4239E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD8DA42441
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AA9A170A10
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3916419C513A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C719716CD1D;
-	Mon, 24 Feb 2025 14:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB0324EF9D;
+	Mon, 24 Feb 2025 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpXPLNcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFFk5WxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E5418B46C;
-	Mon, 24 Feb 2025 14:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A52224EF95;
+	Mon, 24 Feb 2025 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407913; cv=none; b=gGZdLFg3ZXF5F8aPbJ+/G1Fz0QdZPVm+8skqbVVONSdLcU+WQXlfbVpmeBy/PBh6KwOJQ0VnDq9yCma96qgMeN/nhVMorZpUyCHhQrC9hPgW8t7ov6l8tNh6+wQWO+xWyMulPLdbA1syjWI6Lh6xj3BVrXPOyZQgIyhlQk1ojqU=
+	t=1740408338; cv=none; b=sOqTkr4wGbCq2weolgOJ6cMfMFj7HVyMD9g1bAc1xBmyMS4VrV63EOWMUw7drnm1OM1IKEuCXO9om/HH48DQ7Uv1qawUCyw/LxBIxrCsejcsZFj+o6wi4CL+QEqZDGTfBelWOD6qjLeC9MJROzKg22z2KSSF93oHkQ9o+ESDm/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407913; c=relaxed/simple;
-	bh=pZNULoOEY3xNjpLHL77Ld/cQQE+egcUD9rEkDQmKjw8=;
+	s=arc-20240116; t=1740408338; c=relaxed/simple;
+	bh=NPqrY8ViGUTrSMRknVJimsaJxlh7FYllqP/7iAxyu0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebjUAL8uXPUN6UNLXNR1N3+UBsvhUKEztG8fKt/tcQxtrVDtgfuJRBtWX0W1m5NlO4GT8E2tWRO6gSrZxXxf/dVbku3+wud33JLtyFNQlEIiNGGVAI6rEWfpaCxOlwdq39I/GsFpbitaoCXbXfdJ9t0v1fF1A+2uN9l+qmoMIfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpXPLNcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBF5C4CED6;
-	Mon, 24 Feb 2025 14:38:32 +0000 (UTC)
+	 MIME-Version; b=S8uLxTKw60p8WA9IQjOseMniD33BmOsK+qSLNCAbVtp/IEAvHEb55quwfpRrWfC29FRzOvAoTTaJBvFonIi4hB0BkwliJ9xJ6WmhurgSePt7RRznXMcqwMf0WqrtYLuOffGvPXWtbgytvpRm+NFNoODfklh0QbFXaEZQTv836VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFFk5WxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A5EC4CEEA;
+	Mon, 24 Feb 2025 14:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407913;
-	bh=pZNULoOEY3xNjpLHL77Ld/cQQE+egcUD9rEkDQmKjw8=;
+	s=korg; t=1740408338;
+	bh=NPqrY8ViGUTrSMRknVJimsaJxlh7FYllqP/7iAxyu0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpXPLNcTdiDcHxQQ5PIAxUWoVhP4UJ3DXHBRbP5HtI6WEXUFbNiUCUZRnstJv3rLI
-	 n3sc3CgijtYTRJ1OA3COdwWo4vbFm4gmJzEfwACsky3cnYabDgGjI/Bvgyw8x8LP1I
-	 rviQ3EHscOeH38w5s8T3It9yXIyZNX5dQ2rbzh7M=
+	b=kFFk5WxLFLxYx5Kb5i3c5Yh5/wKp6V05/DJ8IDBbPd2ITuGHcnd6nINYjA+slcECp
+	 8WRm+eOpSlC0+xp1ejRuk2p0k+7J7YjkYwCcP/0ZqOHS5+WfkNxE97RtTvtiXu8ubT
+	 P40EYyPnTPMkWCNkgQLqAx4XGmNA8hmMSLZ7mrTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Song Liu <song@kernel.org>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/140] md: use separate work_struct for md_start_sync()
-Date: Mon, 24 Feb 2025 15:33:47 +0100
-Message-ID: <20250224142604.115413211@linuxfoundation.org>
+Subject: [PATCH 6.12 029/154] PCI: Remove devres from pci_intx()
+Date: Mon, 24 Feb 2025 15:33:48 +0100
+Message-ID: <20250224142608.227451394@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit ac619781967bd5663c29606246b50dbebd8b3473 ]
+[ Upstream commit dfa2f4d5f9e5d757700cefa8ee480099889f1c69 ]
 
-It's a little weird to borrow 'del_work' for md_start_sync(), declare
-a new work_struct 'sync_work' for md_start_sync().
+pci_intx() is a hybrid function which can sometimes be managed through
+devres. This hybrid nature is undesirable.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230825031622.1530464-2-yukuai1@huaweicloud.com
-Stable-dep-of: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
+Since all users of pci_intx() have by now been ported either to
+always-managed pcim_intx() or never-managed pci_intx_unmanaged(), the
+devres functionality can be removed from pci_intx().
+
+Consequently, pci_intx_unmanaged() is now redundant, because pci_intx()
+itself is now unmanaged.
+
+Remove the devres functionality from pci_intx(). Have all users of
+pci_intx_unmanaged() call pci_intx(). Remove pci_intx_unmanaged().
+
+Link: https://lore.kernel.org/r/20241209130632.132074-13-pstanner@redhat.com
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: d555ed45a5a1 ("PCI: Restore original INTX_DISABLE bit by pcim_intx()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 10 ++++++----
- drivers/md/md.h |  5 ++++-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/pci/devres.c |  4 ++--
+ drivers/pci/pci.c    | 43 ++-----------------------------------------
+ include/linux/pci.h  |  1 -
+ 3 files changed, 4 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 9bc19a5a4119b..342407ea87d83 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -648,13 +648,13 @@ void mddev_put(struct mddev *mddev)
- 		 * flush_workqueue() after mddev_find will succeed in waiting
- 		 * for the work to be done.
- 		 */
--		INIT_WORK(&mddev->del_work, mddev_delayed_delete);
- 		queue_work(md_misc_wq, &mddev->del_work);
- 	}
- 	spin_unlock(&all_mddevs_lock);
+diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+index c3699105656a7..70f1a46d07c5e 100644
+--- a/drivers/pci/devres.c
++++ b/drivers/pci/devres.c
+@@ -416,7 +416,7 @@ static void pcim_intx_restore(struct device *dev, void *data)
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct pcim_intx_devres *res = data;
+ 
+-	pci_intx_unmanaged(pdev, res->orig_intx);
++	pci_intx(pdev, res->orig_intx);
  }
  
- static void md_safemode_timeout(struct timer_list *t);
-+static void md_start_sync(struct work_struct *ws);
+ static struct pcim_intx_devres *get_or_create_intx_devres(struct device *dev)
+@@ -453,7 +453,7 @@ int pcim_intx(struct pci_dev *pdev, int enable)
+ 		return -ENOMEM;
  
- void mddev_init(struct mddev *mddev)
- {
-@@ -679,6 +679,9 @@ void mddev_init(struct mddev *mddev)
- 	mddev->resync_min = 0;
- 	mddev->resync_max = MaxSector;
- 	mddev->level = LEVEL_NONE;
-+
-+	INIT_WORK(&mddev->sync_work, md_start_sync);
-+	INIT_WORK(&mddev->del_work, mddev_delayed_delete);
+ 	res->orig_intx = !enable;
+-	pci_intx_unmanaged(pdev, enable);
++	pci_intx(pdev, enable);
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(mddev_init);
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 3916e0b23cdaf..1aa5d6f98ebda 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4481,17 +4481,13 @@ void pci_disable_parity(struct pci_dev *dev)
+ }
  
-@@ -9333,7 +9336,7 @@ static int remove_and_add_spares(struct mddev *mddev,
- 
- static void md_start_sync(struct work_struct *ws)
+ /**
+- * pci_intx_unmanaged - enables/disables PCI INTx for device dev,
+- * unmanaged version
++ * pci_intx - enables/disables PCI INTx for device dev
+  * @pdev: the PCI device to operate on
+  * @enable: boolean: whether to enable or disable PCI INTx
+  *
+  * Enables/disables PCI INTx for device @pdev
+- *
+- * This function behavios identically to pci_intx(), but is never managed with
+- * devres.
+  */
+-void pci_intx_unmanaged(struct pci_dev *pdev, int enable)
++void pci_intx(struct pci_dev *pdev, int enable)
  {
--	struct mddev *mddev = container_of(ws, struct mddev, del_work);
-+	struct mddev *mddev = container_of(ws, struct mddev, sync_work);
+ 	u16 pci_command, new;
  
- 	rcu_assign_pointer(mddev->sync_thread,
- 			   md_register_thread(md_do_sync, mddev, "resync"));
-@@ -9546,8 +9549,7 @@ void md_check_recovery(struct mddev *mddev)
- 				 */
- 				md_bitmap_write_all(mddev->bitmap);
- 			}
--			INIT_WORK(&mddev->del_work, md_start_sync);
--			queue_work(md_misc_wq, &mddev->del_work);
-+			queue_work(md_misc_wq, &mddev->sync_work);
- 			goto unlock;
- 		}
- 	not_running:
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index f29fa8650cd0f..46995558d3bd9 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -453,7 +453,10 @@ struct mddev {
- 	struct kernfs_node		*sysfs_degraded;	/*handle for 'degraded' */
- 	struct kernfs_node		*sysfs_level;		/*handle for 'level' */
+@@ -4507,41 +4503,6 @@ void pci_intx_unmanaged(struct pci_dev *pdev, int enable)
  
--	struct work_struct del_work;	/* used for delayed sysfs removal */
-+	/* used for delayed sysfs removal */
-+	struct work_struct del_work;
-+	/* used for register new sync thread */
-+	struct work_struct sync_work;
+ 	pci_write_config_word(pdev, PCI_COMMAND, new);
+ }
+-EXPORT_SYMBOL_GPL(pci_intx_unmanaged);
+-
+-/**
+- * pci_intx - enables/disables PCI INTx for device dev
+- * @pdev: the PCI device to operate on
+- * @enable: boolean: whether to enable or disable PCI INTx
+- *
+- * Enables/disables PCI INTx for device @pdev
+- *
+- * NOTE:
+- * This is a "hybrid" function: It's normally unmanaged, but becomes managed
+- * when pcim_enable_device() has been called in advance. This hybrid feature is
+- * DEPRECATED! If you want managed cleanup, use pcim_intx() instead.
+- */
+-void pci_intx(struct pci_dev *pdev, int enable)
+-{
+-	u16 pci_command, new;
+-
+-	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
+-
+-	if (enable)
+-		new = pci_command & ~PCI_COMMAND_INTX_DISABLE;
+-	else
+-		new = pci_command | PCI_COMMAND_INTX_DISABLE;
+-
+-	if (new != pci_command) {
+-		/* Preserve the "hybrid" behavior for backwards compatibility */
+-		if (pci_is_managed(pdev)) {
+-			WARN_ON_ONCE(pcim_intx(pdev, enable) != 0);
+-			return;
+-		}
+-
+-		pci_write_config_word(pdev, PCI_COMMAND, new);
+-	}
+-}
+ EXPORT_SYMBOL_GPL(pci_intx);
  
- 	/* "lock" protects:
- 	 *   flush_bio transition from NULL to !NULL
+ /**
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 6ef32a8d146b1..74114acbb07fb 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1353,7 +1353,6 @@ int __must_check pcim_set_mwi(struct pci_dev *dev);
+ int pci_try_set_mwi(struct pci_dev *dev);
+ void pci_clear_mwi(struct pci_dev *dev);
+ void pci_disable_parity(struct pci_dev *dev);
+-void pci_intx_unmanaged(struct pci_dev *pdev, int enable);
+ void pci_intx(struct pci_dev *dev, int enable);
+ bool pci_check_and_mask_intx(struct pci_dev *dev);
+ bool pci_check_and_unmask_intx(struct pci_dev *dev);
 -- 
 2.39.5
 
