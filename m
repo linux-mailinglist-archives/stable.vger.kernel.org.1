@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AABDA424D0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1171A42403
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5D8219E0532
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 521801891958
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8732A24EF75;
-	Mon, 24 Feb 2025 14:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767BA19066D;
+	Mon, 24 Feb 2025 14:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3wIX1Mz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdqGVta5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4410E1885B8;
-	Mon, 24 Feb 2025 14:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3336521345;
+	Mon, 24 Feb 2025 14:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408600; cv=none; b=YE4GCcZi2/9BjYO7KXaPvssSFaztTbIMrnjpdovJbTV5s4ynQVb2oGozbJDKhGdO3UkGMo9awSpda0/ttG9X7UMSaqXrsYpfxM9VXlwVv3G7j/2yr+t2852qDtDh9IiDcWS/rnyvjAkN9dForH94i7cJefUSILB5fylnfHj2xQQ=
+	t=1740408230; cv=none; b=qnOmiUIZ20sM2kSW2Vnr5yBTA89EP2mcsDVbFcJbtfuWmogDnYElt1MU+c+8gRSv3W0x/97NB2b5DgBkUvTPY50PmQxMiQDW/HKupYIGjTry8fMT82UUc40ZYJa7jhqFgeZ26SoBMWWPkEAAUsLcdrrWxzSwElNl+a9/uN7dcBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408600; c=relaxed/simple;
-	bh=+eZoJ88QDrWFPe8xZr4K7aKW/OrMEh6BXiXD0Jg81co=;
+	s=arc-20240116; t=1740408230; c=relaxed/simple;
+	bh=r1tBppUIxZ//nzgYXkl/2JmhU8+bg78KnmeWlWEuLCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOQReuJS7L9fNpFtH0J5EF7relw5tUFeD4OeAN/l4qFN3lEztBIgHgqCfXwYrdfeIIhwiPBDhgZP8s9rf86Og1vaiUZX17/2zpSMr5S5LImUFnMn6lrc9x2xcQJq3S/pp8ZAy4YlIU606s0Wg34I/viVOaOOTCpLQLInsejr024=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3wIX1Mz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A7BC4CED6;
-	Mon, 24 Feb 2025 14:49:58 +0000 (UTC)
+	 MIME-Version; b=X9udrmmOUjp64EfkSbCUjhKURM1sLgkeCytnP7vNknlJkALBt0idN2jy4dvUb8PDZhmpzziJN4H1sPOb2gjWPFNoLUaxRldgfJevPvr1pU3hFGb68gYvYOkArJOr8atK6/pnVcG/epFbosLQUNZsJ0X2DEFUELg86AEX+x8CzQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdqGVta5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD35C4CED6;
+	Mon, 24 Feb 2025 14:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408599;
-	bh=+eZoJ88QDrWFPe8xZr4K7aKW/OrMEh6BXiXD0Jg81co=;
+	s=korg; t=1740408229;
+	bh=r1tBppUIxZ//nzgYXkl/2JmhU8+bg78KnmeWlWEuLCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3wIX1Mz/RIX6hhKRk01BCSyBU6FGqfF5V+9XaWgCOe7mj0DYQdKbeg8NEHy+Ft9H
-	 9KhQTQeavkjZSbV6vQl0K+0a9nnIpoxL1OrPfH9ImDznOSEDTwFB9z+Cl2UA+ydRa/
-	 JcChyuJThjdjvTioXw7QIAwgjAqi5rmZsyzLKzko=
+	b=SdqGVta5hwu/d5VdWM6rh5Z6X/mWZj0gNeflMCs5AP/BfXDiJO08T/QXAEWJunU8V
+	 xRW9eeWNUc2QZenWiIjlIZMtPV0PUHHBBW1sWvLdpLjhFbTntVVfTxyQbOHUy+i5jK
+	 eeFI/QN2HbdQ8HbNto32Or8sUF49BNUBb/ZgiuLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Rojek <contact@artur-rojek.eu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uros Bizjak <ubizjak@gmail.com>,
+	Yan Zhai <yan@cloudflare.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/154] irqchip/jcore-aic, clocksource/drivers/jcore: Fix jcore-pit interrupt request
+Subject: [PATCH 6.6 105/140] bpf: skip non exist keys in generic_map_lookup_batch
 Date: Mon, 24 Feb 2025 15:35:04 +0100
-Message-ID: <20250224142611.170996790@linuxfoundation.org>
+Message-ID: <20250224142607.141107582@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Rojek <contact@artur-rojek.eu>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit d7e3fd658248f257006227285095d190e70ee73a ]
+[ Upstream commit 5644c6b50ffee0a56c1e01430a8c88e34decb120 ]
 
-The jcore-aic irqchip does not have separate interrupt numbers reserved for
-cpu-local vs global interrupts. Therefore the device drivers need to
-request the given interrupt as per CPU interrupt.
+The generic_map_lookup_batch currently returns EINTR if it fails with
+ENOENT and retries several times on bpf_map_copy_value. The next batch
+would start from the same location, presuming it's a transient issue.
+This is incorrect if a map can actually have "holes", i.e.
+"get_next_key" can return a key that does not point to a valid value. At
+least the array of maps type may contain such holes legitly. Right now
+these holes show up, generic batch lookup cannot proceed any more. It
+will always fail with EINTR errors.
 
-69a9dcbd2d65 ("clocksource/drivers/jcore: Use request_percpu_irq()")
-converted the clocksource driver over to request_percpu_irq(), but failed
-to do add all the required changes, resulting in a failure to register PIT
-interrupts.
+Rather, do not retry in generic_map_lookup_batch. If it finds a non
+existing element, skip to the next key. This simple solution comes with
+a price that transient errors may not be recovered, and the iteration
+might cycle back to the first key under parallel deletion. For example,
+Hou Tao <houtao@huaweicloud.com> pointed out a following scenario:
 
-Fix this by:
+For LPM trie map:
+(1) ->map_get_next_key(map, prev_key, key) returns a valid key
 
- 1) Explicitly mark the interrupt via irq_set_percpu_devid() in
-    jcore_pit_init().
+(2) bpf_map_copy_value() return -ENOMENT
+It means the key must be deleted concurrently.
 
- 2) Enable and disable the per CPU interrupt in the CPU hotplug callbacks.
+(3) goto next_key
+It swaps the prev_key and key
 
- 3) Pass the correct per-cpu cookie to the irq handler by using
-    handle_percpu_devid_irq() instead of handle_percpu_irq() in
-    handle_jcore_irq().
+(4) ->map_get_next_key(map, prev_key, key) again
+prev_key points to a non-existing key, for LPM trie it will treat just
+like prev_key=NULL case, the returned key will be duplicated.
 
-[ tglx: Massage change log ]
+With the retry logic, the iteration can continue to the key next to the
+deleted one. But if we directly skip to the next key, the iteration loop
+would restart from the first key for the lpm_trie type.
 
-Fixes: 69a9dcbd2d65 ("clocksource/drivers/jcore: Use request_percpu_irq()")
-Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Uros Bizjak <ubizjak@gmail.com>
-Link: https://lore.kernel.org/all/20250216175545.35079-3-contact@artur-rojek.eu
+However, not all races may be recovered. For example, if current key is
+deleted after instead of before bpf_map_copy_value, or if the prev_key
+also gets deleted, then the loop will still restart from the first key
+for lpm_tire anyway. For generic lookup it might be better to stay
+simple, i.e. just skip to the next key. To guarantee that the output
+keys are not duplicated, it is better to implement map type specific
+batch operations, which can properly lock the trie and synchronize with
+concurrent mutators.
+
+Fixes: cb4d03ab499d ("bpf: Add generic support for lookup batch op")
+Closes: https://lore.kernel.org/bpf/Z6JXtA1M5jAZx8xD@debian.debian/
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/85618439eea75930630685c467ccefeac0942e2b.1739171594.git.yan@cloudflare.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/jcore-pit.c | 15 ++++++++++++++-
- drivers/irqchip/irq-jcore-aic.c |  2 +-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ kernel/bpf/syscall.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clocksource/jcore-pit.c b/drivers/clocksource/jcore-pit.c
-index a3fe98cd38382..82815428f8f92 100644
---- a/drivers/clocksource/jcore-pit.c
-+++ b/drivers/clocksource/jcore-pit.c
-@@ -114,6 +114,18 @@ static int jcore_pit_local_init(unsigned cpu)
- 	pit->periodic_delta = DIV_ROUND_CLOSEST(NSEC_PER_SEC, HZ * buspd);
- 
- 	clockevents_config_and_register(&pit->ced, freq, 1, ULONG_MAX);
-+	enable_percpu_irq(pit->ced.irq, IRQ_TYPE_NONE);
-+
-+	return 0;
-+}
-+
-+static int jcore_pit_local_teardown(unsigned cpu)
-+{
-+	struct jcore_pit *pit = this_cpu_ptr(jcore_pit_percpu);
-+
-+	pr_info("Local J-Core PIT teardown on cpu %u\n", cpu);
-+
-+	disable_percpu_irq(pit->ced.irq);
- 
- 	return 0;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 9f791b6b09edc..f089a61630111 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1807,8 +1807,6 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
+ 	return err;
  }
-@@ -168,6 +180,7 @@ static int __init jcore_pit_init(struct device_node *node)
- 		return -ENOMEM;
+ 
+-#define MAP_LOOKUP_RETRIES 3
+-
+ int generic_map_lookup_batch(struct bpf_map *map,
+ 				    const union bpf_attr *attr,
+ 				    union bpf_attr __user *uattr)
+@@ -1818,8 +1816,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 	void __user *values = u64_to_user_ptr(attr->batch.values);
+ 	void __user *keys = u64_to_user_ptr(attr->batch.keys);
+ 	void *buf, *buf_prevkey, *prev_key, *key, *value;
+-	int err, retry = MAP_LOOKUP_RETRIES;
+ 	u32 value_size, cp, max_count;
++	int err;
+ 
+ 	if (attr->batch.elem_flags & ~BPF_F_LOCK)
+ 		return -EINVAL;
+@@ -1865,14 +1863,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 		err = bpf_map_copy_value(map, key, value,
+ 					 attr->batch.elem_flags);
+ 
+-		if (err == -ENOENT) {
+-			if (retry) {
+-				retry--;
+-				continue;
+-			}
+-			err = -EINTR;
+-			break;
+-		}
++		if (err == -ENOENT)
++			goto next_key;
+ 
+ 		if (err)
+ 			goto free_buf;
+@@ -1887,12 +1879,12 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 			goto free_buf;
+ 		}
+ 
++		cp++;
++next_key:
+ 		if (!prev_key)
+ 			prev_key = buf_prevkey;
+ 
+ 		swap(prev_key, key);
+-		retry = MAP_LOOKUP_RETRIES;
+-		cp++;
+ 		cond_resched();
  	}
  
-+	irq_set_percpu_devid(pit_irq);
- 	err = request_percpu_irq(pit_irq, jcore_timer_interrupt,
- 				 "jcore_pit", jcore_pit_percpu);
- 	if (err) {
-@@ -237,7 +250,7 @@ static int __init jcore_pit_init(struct device_node *node)
- 
- 	cpuhp_setup_state(CPUHP_AP_JCORE_TIMER_STARTING,
- 			  "clockevents/jcore:starting",
--			  jcore_pit_local_init, NULL);
-+			  jcore_pit_local_init, jcore_pit_local_teardown);
- 
- 	return 0;
- }
-diff --git a/drivers/irqchip/irq-jcore-aic.c b/drivers/irqchip/irq-jcore-aic.c
-index b9dcc8e78c750..1f613eb7b7f03 100644
---- a/drivers/irqchip/irq-jcore-aic.c
-+++ b/drivers/irqchip/irq-jcore-aic.c
-@@ -38,7 +38,7 @@ static struct irq_chip jcore_aic;
- static void handle_jcore_irq(struct irq_desc *desc)
- {
- 	if (irqd_is_per_cpu(irq_desc_get_irq_data(desc)))
--		handle_percpu_irq(desc);
-+		handle_percpu_devid_irq(desc);
- 	else
- 		handle_simple_irq(desc);
- }
 -- 
 2.39.5
 
