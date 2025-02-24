@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-119099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDF4A424B2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:00:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9E0A42391
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 835403A8703
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B163424478
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBEF19AA56;
-	Mon, 24 Feb 2025 14:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9D878F5F;
+	Mon, 24 Feb 2025 14:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfT+Obaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUg/4iED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA2318A6BD;
-	Mon, 24 Feb 2025 14:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C784D165F16;
+	Mon, 24 Feb 2025 14:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408319; cv=none; b=o3PAhmvBgikB+qbjwavxIPZIJiC3tfYTcILEbgmeBM4KWLBtMCLqo0VqimivUgKjysTh5WF7V5cazFeC/IzPqX3DZzETxBkFXZthm2ptfpeT6/lBsBC6FkC0u9KYBpImuoH0IWEzMb6cHYK3Jxys190t+h9rCQMczjHYUdzyGD4=
+	t=1740407857; cv=none; b=lmFMnkp/XXK1RfbWQgOPadwB3MgjCFGShKv8NqP/p7aulyaVXtalNuJ1jChsLb/wK9nA4OPkj+lk/HyCfAzH0a0zQlm5PDa+NWVlI+hyDJFqP3SBRZMLZLRoCyRhqSpWxpnuRhq0N0mVeVuJHNgbsGKgPs9H+X7/+ekJsa/LFW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408319; c=relaxed/simple;
-	bh=Dp/NMF08zO85APglQj+qwuckrckVc/mkgqZnQjw4UWI=;
+	s=arc-20240116; t=1740407857; c=relaxed/simple;
+	bh=ZQz07TkbcnmvuXeV8QH3uOd7xKvMTQ2s9PRhbn/xnME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obw8siLxeYKqAfz+6h6gumjPYoEpj4qNQJG3I+bfeFvgScmENT0j+yDknRmmn0b/2F3QJy1QeM2TaN8tdvtNtjmm+XrVNA9Pgi4Li9B+hIitfGt1BRQNeMFOLPGCWUZDbY76ELM3f1rTH/mTpBQvEQJeVwl5wkSXyurbObnGUog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfT+Obaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64893C4CED6;
-	Mon, 24 Feb 2025 14:45:18 +0000 (UTC)
+	 MIME-Version; b=geh6QaFzcmwGhcoEjIIxNW0etiEPXWS6OilklBxwDE3ipPjUJY3w4INUQTYAAtSED6yDA7C0Vo3OD86Cwm/EVx7ir/CS7Pstk74PDhnc01Fj5laNgiWUh8X+vt9wNRIAEb6ekzim8Bd1b67B2Dk1jQ58rEgetl4glTSkph8pz74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUg/4iED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E68CC4CED6;
+	Mon, 24 Feb 2025 14:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408318;
-	bh=Dp/NMF08zO85APglQj+qwuckrckVc/mkgqZnQjw4UWI=;
+	s=korg; t=1740407857;
+	bh=ZQz07TkbcnmvuXeV8QH3uOd7xKvMTQ2s9PRhbn/xnME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfT+ObaqWEqNALredddpovFy/oaO/N5wqdGpmHPGMpUuph2ZIThVt6Tcbl6n5W/Is
-	 u9/9bp9biE399c5q8+vTRgshzulsp5IDpzDuhRhWYkSGI3UnhGJKbmtxPDMMSgX9AS
-	 0x3Xzg7qxm2sKzlDPdHnjFcyGmcZXA4PA5Xj4now=
+	b=IUg/4iED7nxWR0ovrxNCRcXqX+sNVDw2EirV2zHoW0CN5ZbgYhZnmAioLDXfHUy73
+	 HEcH7L2ebSFuqkbw9zWsuzdMn5W1f3IT7HtTkf3UyiAp8HgCn9Znd8rLEvkHnZ3btD
+	 rKfwHyeQjnTFrQB3J3iPNxSuOZB9Hd60bIVgspqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/154] btrfs: do not assume the full page range is not dirty in extent_writepage_io()
+	xfs-stable@lists.linux.dev,
+	Darrick Wong <djwong@kernel.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 006/140] xfs: skip background cowblock trims on inodes open for write
 Date: Mon, 24 Feb 2025 15:33:25 +0100
-Message-ID: <20250224142607.318964825@linuxfoundation.org>
+Message-ID: <20250224142603.256386231@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit 928b4de66ed3b0d9a6f201ce41ab2eed6ea2e7ef ]
+commit 90a71daaf73f5d39bb0cbb3c7ab6af942fe6233e upstream.
 
-The function extent_writepage_io() will submit the dirty sectors inside
-the page for the write.
+The background blockgc scanner runs on a 5m interval by default and
+trims preallocation (post-eof and cow fork) from inodes that are
+otherwise idle. Idle effectively means that iolock can be acquired
+without blocking and that the inode has no dirty pagecache or I/O in
+flight.
 
-But recently to co-operate with the incoming subpage compression
-enhancement, a new bitmap is introduced to
-btrfs_bio_ctrl::submit_bitmap, to only avoid a subset of the dirty
-range.
+This simple mechanism and heuristic has worked fairly well for
+post-eof speculative preallocations. Support for reflink and COW
+fork preallocations came sometime later and plugged into the same
+mechanism, with similar heuristics. Some recent testing has shown
+that COW fork preallocation may be notably more sensitive to blockgc
+processing than post-eof preallocation, however.
 
-This is because we can have the following cases with 64K page size:
+For example, consider an 8GB reflinked file with a COW extent size
+hint of 1MB. A worst case fully randomized overwrite of this file
+results in ~8k extents of an average size of ~1MB. If the same
+workload is interrupted a couple times for blockgc processing
+(assuming the file goes idle), the resulting extent count explodes
+to over 100k extents with an average size <100kB. This is
+significantly worse than ideal and essentially defeats the COW
+extent size hint mechanism.
 
-    0      16K       32K       48K       64K
-    |      |/////////|         |/|
-                                 52K
+While this particular test is instrumented, it reflects a fairly
+reasonable pattern in practice where random I/Os might spread out
+over a large period of time with varying periods of (in)activity.
+For example, consider a cloned disk image file for a VM or container
+with long uptime and variable and bursty usage. A background blockgc
+scan that races and processes the image file when it happens to be
+clean and idle can have a significant effect on the future
+fragmentation level of the file, even when still in use.
 
-For range [16K, 32K), we queue the dirty range for compression, which is
-ran in a delayed workqueue.
-Then for range [48K, 52K), we go through the regular submission path.
+To help combat this, update the heuristic to skip cowblocks inodes
+that are currently opened for write access during non-sync blockgc
+scans. This allows COW fork preallocations to persist for as long as
+possible unless otherwise needed for functional purposes (i.e. a
+sync scan), the file is idle and closed, or the inode is being
+evicted from cache. While here, update the comments to help
+distinguish performance oriented heuristics from the logic that
+exists to maintain functional correctness.
 
-In that case, our btrfs_bio_ctrl::submit_bitmap will exclude the range
-[16K, 32K).
-
-The dirty flags for the range [16K, 32K) is only cleared when the
-compression is done, by the extent_clear_unlock_delalloc() call inside
-submit_one_async_extent().
-
-This patch fix the false alert by removing the
-btrfs_folio_assert_not_dirty() check, since it's no longer correct for
-subpage compression cases.
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 8bf334beb349 ("btrfs: fix double accounting race when extent_writepage_io() failed")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Darrick Wong <djwong@kernel.org>
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/xfs/xfs_icache.c |   31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index fe08c983d5bb4..9ff72a5a13eb3 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1394,8 +1394,6 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			goto out;
- 		submitted_io = true;
- 	}
--
--	btrfs_folio_assert_not_dirty(fs_info, folio, start, len);
- out:
+--- a/fs/xfs/xfs_icache.c
++++ b/fs/xfs/xfs_icache.c
+@@ -1234,14 +1234,17 @@ xfs_inode_clear_eofblocks_tag(
+ }
+ 
+ /*
+- * Set ourselves up to free CoW blocks from this file.  If it's already clean
+- * then we can bail out quickly, but otherwise we must back off if the file
+- * is undergoing some kind of write.
++ * Prepare to free COW fork blocks from an inode.
+  */
+ static bool
+ xfs_prep_free_cowblocks(
+-	struct xfs_inode	*ip)
++	struct xfs_inode	*ip,
++	struct xfs_icwalk	*icw)
+ {
++	bool			sync;
++
++	sync = icw && (icw->icw_flags & XFS_ICWALK_FLAG_SYNC);
++
  	/*
- 	 * If we didn't submitted any sector (>= i_size), folio dirty get
--- 
-2.39.5
-
+ 	 * Just clear the tag if we have an empty cow fork or none at all. It's
+ 	 * possible the inode was fully unshared since it was originally tagged.
+@@ -1253,9 +1256,21 @@ xfs_prep_free_cowblocks(
+ 	}
+ 
+ 	/*
+-	 * If the mapping is dirty or under writeback we cannot touch the
+-	 * CoW fork.  Leave it alone if we're in the midst of a directio.
++	 * A cowblocks trim of an inode can have a significant effect on
++	 * fragmentation even when a reasonable COW extent size hint is set.
++	 * Therefore, we prefer to not process cowblocks unless they are clean
++	 * and idle. We can never process a cowblocks inode that is dirty or has
++	 * in-flight I/O under any circumstances, because outstanding writeback
++	 * or dio expects targeted COW fork blocks exist through write
++	 * completion where they can be remapped into the data fork.
++	 *
++	 * Therefore, the heuristic used here is to never process inodes
++	 * currently opened for write from background (i.e. non-sync) scans. For
++	 * sync scans, use the pagecache/dio state of the inode to ensure we
++	 * never free COW fork blocks out from under pending I/O.
+ 	 */
++	if (!sync && inode_is_open_for_write(VFS_I(ip)))
++		return false;
+ 	if ((VFS_I(ip)->i_state & I_DIRTY_PAGES) ||
+ 	    mapping_tagged(VFS_I(ip)->i_mapping, PAGECACHE_TAG_DIRTY) ||
+ 	    mapping_tagged(VFS_I(ip)->i_mapping, PAGECACHE_TAG_WRITEBACK) ||
+@@ -1291,7 +1306,7 @@ xfs_inode_free_cowblocks(
+ 	if (!xfs_iflags_test(ip, XFS_ICOWBLOCKS))
+ 		return 0;
+ 
+-	if (!xfs_prep_free_cowblocks(ip))
++	if (!xfs_prep_free_cowblocks(ip, icw))
+ 		return 0;
+ 
+ 	if (!xfs_icwalk_match(ip, icw))
+@@ -1320,7 +1335,7 @@ xfs_inode_free_cowblocks(
+ 	 * Check again, nobody else should be able to dirty blocks or change
+ 	 * the reflink iflag now that we have the first two locks held.
+ 	 */
+-	if (xfs_prep_free_cowblocks(ip))
++	if (xfs_prep_free_cowblocks(ip, icw))
+ 		ret = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, false);
+ 	return ret;
+ }
 
 
 
