@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-119150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758C7A424E7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97711A4248A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36BC219C7E9A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A9F3BB94E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224EE1A239E;
-	Mon, 24 Feb 2025 14:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA40E1946B1;
+	Mon, 24 Feb 2025 14:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooAZErZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfjGw7My"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29601946B1;
-	Mon, 24 Feb 2025 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780B619C54F;
+	Mon, 24 Feb 2025 14:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408487; cv=none; b=V/e56Y0aATlkajGh+VeACktYB58D3WQ5q1Z6IA3j4MSS0v5b5hPhdfcE/sRmzSV19gpx8nYhVJGS83NkP7+GviZAur6JvpkM9ZtXdRkpRDuxTf7g646o79Pi37EoFUdJHCJRc20LZe8z1SyRg9cyBxEQY/Qi8TmetlQF9cJmzDk=
+	t=1740408496; cv=none; b=HN4o0DwRMDXPWE24zAUdqlQ6bWi3HsEDNHK0n4SF71aj6NBZ8wPV9tEtqTsMT2E3Y/WguPI6x20an1aCPM7mn6KQcRCDBYo1AW7LVpMzPayabQHQ0+pld/34jsrW7LGYXcD8N/KdofN3ljSHhAhoUVbaA6QjnBc2VSDdRohYU2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408487; c=relaxed/simple;
-	bh=FfmmXdnmW+UKGb/7AYV8PPKBByDwgBd/VaKrzd15MAM=;
+	s=arc-20240116; t=1740408496; c=relaxed/simple;
+	bh=IZNm21/dyAcGItiDNvK5FsFvRt1ohqSZoeIVX3rT8Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLfyxG2/FUPhjJk2/zZRRfd1sVnhkxdtbp18aGbJFLQrRDgavCyS4gH378uFA9cldyJhKlmcqxfYx9et/LDhp52qYZfmZp/sIy7bhSUJluWG3x6K2hS3Tl/94Dsi0AIYANSDUg+TgzQTEPhyh8KMvMDrfsoH2DoAz8/R7wcgwuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooAZErZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40112C4CED6;
-	Mon, 24 Feb 2025 14:48:07 +0000 (UTC)
+	 MIME-Version; b=JJOcY6bnUNOSTjb0wZHWhqtfne+s7vda4TwSPTDlgOgAt++f51qqbCN2cb5U16/aNq5vmgr/yWNM2IC5LsXzec8HP3l7zU9Thcysa0HivAaNtGa5vmYNIojBLPXe1YSuI0fFpvZb80grYYapN2J94gBL0ioHACzPoIVyIx7B/70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfjGw7My; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B79AC4CED6;
+	Mon, 24 Feb 2025 14:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408487;
-	bh=FfmmXdnmW+UKGb/7AYV8PPKBByDwgBd/VaKrzd15MAM=;
+	s=korg; t=1740408494;
+	bh=IZNm21/dyAcGItiDNvK5FsFvRt1ohqSZoeIVX3rT8Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ooAZErZT1vCIUcK6QAYyrGdaxKFtLqydak6d9bh5NanQqFNbysmDEaRAY14ONYfOM
-	 6KreYSCgz1e00BmVfc8187T82fuRtZLhrllnQ8/LEpOl/mnpFx/ZDp18hwO/6f8RFO
-	 Y71HFjbEGvglT3DIBExfKxJkFPLaHeGG1ne08Ykw=
+	b=HfjGw7My8Ta19VVeYDz2eSnSFV8jvmQDNmRwSjeP6coAZ+3cyPSUOCZ4jVXCut4h0
+	 khliJ0Ix6UCjHS9hzHC3wEZlxlVjohKW1+3nkqsoNFjq9iC5PP89GmIinPtc9ZrYss
+	 7WgqTT6YhzLwcxt1Q0cUyOQHO9Il7wHosUAIJiKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/154] net: allow small head cache usage with large MAX_SKB_FRAGS values
-Date: Mon, 24 Feb 2025 15:34:32 +0100
-Message-ID: <20250224142609.940131781@linuxfoundation.org>
+Subject: [PATCH 6.12 074/154] bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type()
+Date: Mon, 24 Feb 2025 15:34:33 +0100
+Message-ID: <20250224142609.981750686@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
 References: <20250224142607.058226288@linuxfoundation.org>
@@ -67,144 +71,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 14ad6ed30a10afbe91b0749d6378285f4225d482 ]
+[ Upstream commit 6b3d638ca897e099fa99bd6d02189d3176f80a47 ]
 
-Sabrina reported the following splat:
+KMSAN reported a use-after-free issue in eth_skb_pkt_type()[1]. The
+cause of the issue was that eth_skb_pkt_type() accessed skb's data
+that didn't contain an Ethernet header. This occurs when
+bpf_prog_test_run_xdp() passes an invalid value as the user_data
+argument to bpf_test_init().
 
-    WARNING: CPU: 0 PID: 1 at net/core/dev.c:6935 netif_napi_add_weight_locked+0x8f2/0xba0
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc1-net-00092-g011b03359038 #996
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-    RIP: 0010:netif_napi_add_weight_locked+0x8f2/0xba0
-    Code: e8 c3 e6 6a fe 48 83 c4 28 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc c7 44 24 10 ff ff ff ff e9 8f fb ff ff e8 9e e6 6a fe <0f> 0b e9 d3 fe ff ff e8 92 e6 6a fe 48 8b 04 24 be ff ff ff ff 48
-    RSP: 0000:ffffc9000001fc60 EFLAGS: 00010293
-    RAX: 0000000000000000 RBX: ffff88806ce48128 RCX: 1ffff11001664b9e
-    RDX: ffff888008f00040 RSI: ffffffff8317ca42 RDI: ffff88800b325cb6
-    RBP: ffff88800b325c40 R08: 0000000000000001 R09: ffffed100167502c
-    R10: ffff88800b3a8163 R11: 0000000000000000 R12: ffff88800ac1c168
-    R13: ffff88800ac1c168 R14: ffff88800ac1c168 R15: 0000000000000007
-    FS:  0000000000000000(0000) GS:ffff88806ce00000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: ffff888008201000 CR3: 0000000004c94001 CR4: 0000000000370ef0
-    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-    Call Trace:
-    <TASK>
-    gro_cells_init+0x1ba/0x270
-    xfrm_input_init+0x4b/0x2a0
-    xfrm_init+0x38/0x50
-    ip_rt_init+0x2d7/0x350
-    ip_init+0xf/0x20
-    inet_init+0x406/0x590
-    do_one_initcall+0x9d/0x2e0
-    do_initcalls+0x23b/0x280
-    kernel_init_freeable+0x445/0x490
-    kernel_init+0x20/0x1d0
-    ret_from_fork+0x46/0x80
-    ret_from_fork_asm+0x1a/0x30
-    </TASK>
-    irq event stamp: 584330
-    hardirqs last  enabled at (584338): [<ffffffff8168bf87>] __up_console_sem+0x77/0xb0
-    hardirqs last disabled at (584345): [<ffffffff8168bf6c>] __up_console_sem+0x5c/0xb0
-    softirqs last  enabled at (583242): [<ffffffff833ee96d>] netlink_insert+0x14d/0x470
-    softirqs last disabled at (583754): [<ffffffff8317c8cd>] netif_napi_add_weight_locked+0x77d/0xba0
+Fix this by returning an error when user_data is less than ETH_HLEN in
+bpf_test_init(). Additionally, remove the check for "if (user_size >
+size)" as it is unnecessary.
 
-on kernel built with MAX_SKB_FRAGS=45, where SKB_WITH_OVERHEAD(1024)
-is smaller than GRO_MAX_HEAD.
+[1]
+BUG: KMSAN: use-after-free in eth_skb_pkt_type include/linux/etherdevice.h:627 [inline]
+BUG: KMSAN: use-after-free in eth_type_trans+0x4ee/0x980 net/ethernet/eth.c:165
+ eth_skb_pkt_type include/linux/etherdevice.h:627 [inline]
+ eth_type_trans+0x4ee/0x980 net/ethernet/eth.c:165
+ __xdp_build_skb_from_frame+0x5a8/0xa50 net/core/xdp.c:635
+ xdp_recv_frames net/bpf/test_run.c:272 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2954/0x3330 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0x148e/0x1b10 net/bpf/test_run.c:1318
+ bpf_prog_test_run+0x5b7/0xa30 kernel/bpf/syscall.c:4371
+ __sys_bpf+0x6a6/0xe20 kernel/bpf/syscall.c:5777
+ __do_sys_bpf kernel/bpf/syscall.c:5866 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5864 [inline]
+ __x64_sys_bpf+0xa4/0xf0 kernel/bpf/syscall.c:5864
+ x64_sys_call+0x2ea0/0x3d90 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd9/0x1d0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Such built additionally contains the revert of the single page frag cache
-so that napi_get_frags() ends up using the page frag allocator, triggering
-the splat.
+Uninit was created at:
+ free_pages_prepare mm/page_alloc.c:1056 [inline]
+ free_unref_page+0x156/0x1320 mm/page_alloc.c:2657
+ __free_pages+0xa3/0x1b0 mm/page_alloc.c:4838
+ bpf_ringbuf_free kernel/bpf/ringbuf.c:226 [inline]
+ ringbuf_map_free+0xff/0x1e0 kernel/bpf/ringbuf.c:235
+ bpf_map_free kernel/bpf/syscall.c:838 [inline]
+ bpf_map_free_deferred+0x17c/0x310 kernel/bpf/syscall.c:862
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa2b/0x1b60 kernel/workqueue.c:3310
+ worker_thread+0xedf/0x1550 kernel/workqueue.c:3391
+ kthread+0x535/0x6b0 kernel/kthread.c:389
+ ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Note that the underlying issue is independent from the mentioned
-revert; address it ensuring that the small head cache will fit either TCP
-and GRO allocation and updating napi_alloc_skb() and __netdev_alloc_skb()
-to select kmalloc() usage for any allocation fitting such cache.
+CPU: 1 UID: 0 PID: 17276 Comm: syz.1.16450 Not tainted 6.12.0-05490-g9bb88c659673 #8
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
 
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: be3d72a2896c ("bpf: move user_size out of bpf_test_init")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/20250121150643.671650-1-syoshida@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/gro.h |  3 +++
- net/core/gro.c    |  3 ---
- net/core/skbuff.c | 10 +++++++---
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ net/bpf/test_run.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/net/gro.h b/include/net/gro.h
-index b9b58c1f8d190..7b548f91754bf 100644
---- a/include/net/gro.h
-+++ b/include/net/gro.h
-@@ -11,6 +11,9 @@
- #include <net/udp.h>
- #include <net/hotdata.h>
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 501ec4249fedc..8612023bec60d 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -660,12 +660,9 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
+ 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
+ 	void *data;
  
-+/* This should be increased if a protocol with a bigger head is added. */
-+#define GRO_MAX_HEAD (MAX_HEADER + 128)
-+
- struct napi_gro_cb {
- 	union {
- 		struct {
-diff --git a/net/core/gro.c b/net/core/gro.c
-index d1f44084e978f..78b320b631744 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -7,9 +7,6 @@
+-	if (size < ETH_HLEN || size > PAGE_SIZE - headroom - tailroom)
++	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
+ 		return ERR_PTR(-EINVAL);
  
- #define MAX_GRO_SKBS 8
- 
--/* This should be increased if a protocol with a bigger head is added. */
--#define GRO_MAX_HEAD (MAX_HEADER + 128)
+-	if (user_size > size)
+-		return ERR_PTR(-EMSGSIZE);
 -
- static DEFINE_SPINLOCK(offload_lock);
- 
- /**
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 74149dc4ee318..61a950f13a91c 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -69,6 +69,7 @@
- #include <net/dst.h>
- #include <net/sock.h>
- #include <net/checksum.h>
-+#include <net/gro.h>
- #include <net/gso.h>
- #include <net/hotdata.h>
- #include <net/ip6_checksum.h>
-@@ -95,7 +96,9 @@
- static struct kmem_cache *skbuff_ext_cache __ro_after_init;
- #endif
- 
--#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(MAX_TCP_HEADER)
-+#define GRO_MAX_HEAD_PAD (GRO_MAX_HEAD + NET_SKB_PAD + NET_IP_ALIGN)
-+#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(max(MAX_TCP_HEADER, \
-+					       GRO_MAX_HEAD_PAD))
- 
- /* We want SKB_SMALL_HEAD_CACHE_SIZE to not be a power of two.
-  * This should ensure that SKB_SMALL_HEAD_HEADROOM is a unique
-@@ -736,7 +739,7 @@ struct sk_buff *__netdev_alloc_skb(struct net_device *dev, unsigned int len,
- 	/* If requested length is either too small or too big,
- 	 * we use kmalloc() for skb->head allocation.
- 	 */
--	if (len <= SKB_WITH_OVERHEAD(1024) ||
-+	if (len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE) ||
- 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
- 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
- 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX, NUMA_NO_NODE);
-@@ -816,7 +819,8 @@ struct sk_buff *napi_alloc_skb(struct napi_struct *napi, unsigned int len)
- 	 * When the small frag allocator is available, prefer it over kmalloc
- 	 * for small fragments
- 	 */
--	if ((!NAPI_HAS_SMALL_PAGE_FRAG && len <= SKB_WITH_OVERHEAD(1024)) ||
-+	if ((!NAPI_HAS_SMALL_PAGE_FRAG &&
-+	     len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE)) ||
- 	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
- 	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
- 		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX | SKB_ALLOC_NAPI,
+ 	size = SKB_DATA_ALIGN(size);
+ 	data = kzalloc(size + headroom + tailroom, GFP_USER);
+ 	if (!data)
 -- 
 2.39.5
 
