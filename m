@@ -1,103 +1,124 @@
-Return-Path: <stable+bounces-118927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB1AA42024
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:15:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AFEA4207E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A434166AD8
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6800A3B26CA
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85732243369;
-	Mon, 24 Feb 2025 13:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA50619D8BE;
+	Mon, 24 Feb 2025 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="TFeCz0wX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkR4/BxA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE0F23BCF3;
-	Mon, 24 Feb 2025 13:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A64823BD03
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 13:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740402884; cv=none; b=N5vrhnnD40d3iVGAjcWfLHjwvvbm6EosHvKEV6YXHTHHuXcuuFNjaNhO9gx4HQm3mKWcdefBzFJImDFd6kIpcx6e9rpHuMTdYJIj8ebY8feC1KnBpnxNZZOANvCSXqu4o+cM6K57pRMjIQ1uycT6najeC9PWjLOgso/oyEl2KTs=
+	t=1740403370; cv=none; b=o+4wwo/mroY6kjASSFFDxb57dAk3S1jnOlSC35VFlMs7RHUNl7dBblwsfXOuKJU/4ydDAyZXWfTak9P/ngNApINptUcrBReRw3USmkx2cdSWIWXFYJhDUwW0AMYAC2OZcybzJoelgHWpW8RoWeLVslMYqwu8Ix03S+0VVprvIQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740402884; c=relaxed/simple;
-	bh=CyJN9JaMODyHdJc8qubxk5o7iU9zvIlTc2ZbhfkECdg=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=q3k/iRkbq6u9ya0M5vHfbZUD/XtqqnWGLbW4QK8A7XukCu7ngQWqYN0rRrCj0Rww7+69Btr5KoW3GiB9d8/JZC8w0mnbcQSxmAdBJFdLDgdXLxTTS2+L43jwqsjP+idGCaLyawngFpSkLNL/gcdVySChUnxDTZqRGBCKciiOhKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=TFeCz0wX; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1740402812;
-	bh=CyJN9JaMODyHdJc8qubxk5o7iU9zvIlTc2ZbhfkECdg=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=TFeCz0wX2rOSWZP7ais0R/h/DMJs9yrqJxsEu1HAmaWzpEtcj9AJyXjSf4KG2jhkW
-	 sxSmesi/qTG5MA6jVNijpoSd8xaxeXWNsYnZqaxoIU2+l6Zzvutj/yCU8QQDgxHAh7
-	 Lwog7MFdhzXwNReNgI2/nYWeP/gz6nzL+yEPCDf8=
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqT6iyfUez+DXx4B7ybItHVbSxkDlA8/kMI=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: LTKmhXHO+1nYhaZnHpGMJG08yBMWnWJmYXF7R9u8a7s=
-X-QQ-STYLE: 
-X-QQ-mid: v3sz3a-6t1740402810t4115755
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
-Cc: "=?utf-8?B?Sm9obiBLZWVwaW5n?=" <jkeeping@inmusicbrands.com>, "=?utf-8?B?SmlyaSBTbGFieQ==?=" <jirislaby@kernel.org>, "=?utf-8?B?RmVycnkgVG90aA==?=" <ftoth@exalondelft.nl>, "=?utf-8?B?SWxwbyBKw6RydmluZW4=?=" <ilpo.jarvinen@linux.intel.com>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bGludXgtc2VyaWFs?=" <linux-serial@vger.kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Subject: Re: [PATCH] serial: 8250_dma: terminate correct DMA in tx_dma_flush()
+	s=arc-20240116; t=1740403370; c=relaxed/simple;
+	bh=IbH9FMMVPjBPXkC8Fq4tzJlhI34ps4GXaTtKjZxjq3Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kFXjOJahOzsR5wndbzsPzvm328iL6Ei6zq5Tbmd5OPTq4t3vUhMrs+rHirUa955hDSZRgy05cb/XUUr22ziMl8efXB8m19myLN6hiXfY3Ix7R4IP2rJ/8JbX9kwJggeDFLoR8vwB58o6+WS3R2GRNOY0QAea3nDz8l4RVpP3xLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkR4/BxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87530C4CED6;
+	Mon, 24 Feb 2025 13:22:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740403370;
+	bh=IbH9FMMVPjBPXkC8Fq4tzJlhI34ps4GXaTtKjZxjq3Y=;
+	h=Subject:To:Cc:From:Date:From;
+	b=QkR4/BxAW33aqOX1HrrONew9xuiGtUFRA+2abjSIYP2Y4WxWJfk9wDIg/YWepkHUn
+	 q0Xt8I7aOQr3BP4PbJL8KmKz9E8nFK7MYopj59TS3f+eB7BvS3+5zwa26roBz0039a
+	 mEA6wjhgpTSKBaNI23V6f73cHqlTM1i/8j7vsqPs=
+Subject: FAILED: patch "[PATCH] ibmvnic: Inspect header requirements before using scrq direct" failed to apply to 6.1-stable tree
+To: nnac123@linux.ibm.com,horms@kernel.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Feb 2025 14:22:46 +0100
+Message-ID: <2025022446-sanding-rover-58d9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Mon, 24 Feb 2025 21:13:29 +0800
-X-Priority: 3
-Message-ID: <tencent_013690E01596D03C0362D092@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20250224121831.1429323-1-jkeeping@inmusicbrands.com>
-	<tencent_09E5A20410369ED253A21788@qq.com>
-	<2025022434-subsiding-esquire-1de2@gregkh>
-In-Reply-To: <2025022434-subsiding-esquire-1de2@gregkh>
-X-QQ-ReplyHash: 67608264
-X-BIZMAIL-ID: 1832330930202671626
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Mon, 24 Feb 2025 21:13:31 +0800 (CST)
-Feedback-ID: v:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NpoapEztA32CwkNa2GufcN+h19vav4pkwPH0RUvhz5AKMuKltzEqBjic
-	SFyiYWWQMPgy5LzwY4bu2wgAOx7r57+7PC9ow7PWlsTf0THf8lUf34errH0hNSX/aAMw3Lc
-	Q662wB6NqFbAK7T/VuHp4V3j3qtn6U3kZgpBPW/CJBrP5AwUIAXMPljp5hOh46t0S0rIdiU
-	ukg6nDP0gQYYcZcclLQKBtfYalssv4VZNgspeyMy+KNPRNGk4Ejd17oYV/1xfFhYpgwaIiD
-	MaiJsYrjrsh6dqhU72LJNuv7yiIvsT88E0/Vf+lqU2EUkXJRz4B/DVUMdQ+i6DV4PAlQgnt
-	KteP1R3q02FunWEpgaGul5v+lpS8GPMWHisKt7OiLX+BrdGrnsU3QgkMAnvWA7kilohORrx
-	EhLIiLXkFPIwBW/gB8EJ7jmPaw4fsFbrRam5Xo03XWPhckW4g/JaIjv5WdlWBvraceRVxc3
-	jA24barTecDIu2ywnk+jcC2dUEjHYj3l4dxEeWVQrvRDpHKhTjipfdiKqALh86xKPBurU1J
-	0nGNOLzBUjB9Lg2y2lTVEgMyZhXdu9PikZam/wnEmcMh3LVORtFzjQ4vyfD7J5yB2nlR+dK
-	UwtdQpM4E5LX0mZJNXPgFJLmGSHgL0A6HpSb98B53BCK1FUdcaPHahVkZN6dQWR5TVlKT5s
-	DrhjpOiA86b1KkLPdjCjqEvDWR45a42ty8DRXwHdPOeT2qyEWJUhsew44rvJxUfj5P0qZAI
-	duYWXeTSEvpjooRLxpHBmCHcGnGIgVVzr1uSnRAr8wkRKT8ZncIZfip/NPgksQ+wOoGcO6Z
-	q0ZPX4vhVM0SwYlpjEqEG+KhhvaLNcBrw982KVGpj4INgz59Aq+ZbrcVlo4Tc9bHqsFpjOi
-	ClVe74w9Az74TWGYhLhaLl8VC5daTeoZigOCNO097N+r6AoqnmVB7iH+C2wyWuSANRNjZJJ
-	I3uv1wM4MBCI7iU+SPZwo4mD6/GJWQF4Qy9T5jD2/Qk7c+Nu/hgXx8aFP50MUJOHSjDpW0A
-	QjGYOSltYjpxIeko1gGVPwQqAkufcb7A3qJK/Oa7YRojyt74G8Jz8f4NcD4FPkW+9MsiobH
-	i5XLqVQQi0K
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-SGVsbG8gR3JlZywNClNvcnJ5IGZvciBteSBIVE1MIGZvcm1hdCBwYXN0Lg0KSXQgaXMgbWVh
-bnMgdGhhdCAnRml4ZXMgeHh4eHh4JyB0YWcgcG9pbnQgY29tbWl0IHdpbGwgYXV0byBiZSBi
-YWNrcG9ydCB0byB0aG9zZSBzdGFibGUgdHJlZSB3aXRoDQp4eHh4eHggY29tbWl0IHdpdGhv
-dXQgY2Mgc3RhYmxlLCBjb3JyZWN0ID8NCg0KQlJzDQpXZW50YW8gR3Vhbg==
+
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x de390657b5d6f7deb9d1d36aaf45f02ba51ec9dc
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025022446-sanding-rover-58d9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From de390657b5d6f7deb9d1d36aaf45f02ba51ec9dc Mon Sep 17 00:00:00 2001
+From: Nick Child <nnac123@linux.ibm.com>
+Date: Tue, 1 Oct 2024 11:32:00 -0500
+Subject: [PATCH] ibmvnic: Inspect header requirements before using scrq direct
+
+Previously, the TX header requirement for standard frames was ignored.
+This requirement is a bitstring sent from the VIOS which maps to the
+type of header information needed during TX. If no header information,
+is needed then send subcrq direct can be used (which can be more
+performant).
+
+This bitstring was previously ignored for standard packets (AKA non LSO,
+non CSO) due to the belief that the bitstring was over-cautionary. It
+turns out that there are some configurations where the backing device
+does need header information for transmission of standard packets. If
+the information is not supplied then this causes continuous "Adapter
+error" transport events. Therefore, this bitstring should be respected
+and observed before considering the use of send subcrq direct.
+
+Fixes: 74839f7a8268 ("ibmvnic: Introduce send sub-crq direct")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241001163200.1802522-2-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 87e693a81433..97425c06e1ed 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2472,9 +2472,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	/* if we are going to send_subcrq_direct this then we need to
+ 	 * update the checksum before copying the data into ltb. Essentially
+ 	 * these packets force disable CSO so that we can guarantee that
+-	 * FW does not need header info and we can send direct.
++	 * FW does not need header info and we can send direct. Also, vnic
++	 * server must be able to xmit standard packets without header data
+ 	 */
+-	if (!skb_is_gso(skb) && !ind_bufp->index && !netdev_xmit_more()) {
++	if (*hdrs == 0 && !skb_is_gso(skb) &&
++	    !ind_bufp->index && !netdev_xmit_more()) {
+ 		use_scrq_send_direct = true;
+ 		if (skb->ip_summed == CHECKSUM_PARTIAL &&
+ 		    skb_checksum_help(skb))
 
 
