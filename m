@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-119013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DF0A42445
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DCBA424F0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199F5442180
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4E0116C190
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FF915FA7B;
-	Mon, 24 Feb 2025 14:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3BF2561D4;
+	Mon, 24 Feb 2025 14:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2zDUWfG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRYLarF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706B24A33;
-	Mon, 24 Feb 2025 14:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF4A2561CE;
+	Mon, 24 Feb 2025 14:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408023; cv=none; b=m17RZf1XL60W+PSTSRzb3dVwV5vsBCQ5d6wsSdoTu9j7gVR/RZ+hB3PM4EIcW7PYpPSeAc+n7upqvCBk3vYOOgnCVuX7Y6s9835FEMpiougwY5G0XMzVofj24OmDxwOgyBuPQOwHjOWsqVeGuecQDPhtNZ2dlOet6y2Zp+7Pr7o=
+	t=1740408508; cv=none; b=fZTdDqvuzSYzNVHMmGb2JFz5BnGuE8YgkDR+wHVkcBlchzt+i0+b4juR18kVQxNWVSoEJ57FPy0aUPPDTmYjNaXxfpmFlLnuPk26ga3OUNQLWqJ7YuddXBks5d1tPTunl2duyx4fuBgAFnPgvOO8tTKgnUs8m9fjg/Sea+uFZOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408023; c=relaxed/simple;
-	bh=5vjmiRQmr6n2OxUUHw4DTT597qdS0PDMSeQLl1OZCQw=;
+	s=arc-20240116; t=1740408508; c=relaxed/simple;
+	bh=SRkvc27TRQfsDEQytELpaf9sTZUB3HBny3kZ1LGud60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9NOmAmzRVreIBXouK10lyIRtY3qrVTQ9cdzMWfW2IvGoq428eRvYJmwDxOVfWrUrthPj3dFb3JIP3GamEFlN9KEUBrDSF4/YwQmBZOvLnDf6JIBwzCUAH5GDIBzl/g9i/IQlNRZGl0rhsqvKyQjFw89oxCFNpjhcBRSypLXjVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2zDUWfG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75FDC4CED6;
-	Mon, 24 Feb 2025 14:40:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FhwzfNf7JOnsmkWeICaD0o02aXl9CrIXQg04vZ2nLjdaqjePLZz0h401TG+htnww8Zo4NfaoUaUoZ7TrHe2aIZar7BCcPzPyKuz7mMRB0ZyPnqnZjtDE9ml3eSH84PdYraoBJzAeMDEr7qJcYCQOKZsiwJvfaxDhOAh7r/E9+tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRYLarF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BBCC4CEE6;
+	Mon, 24 Feb 2025 14:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408023;
-	bh=5vjmiRQmr6n2OxUUHw4DTT597qdS0PDMSeQLl1OZCQw=;
+	s=korg; t=1740408508;
+	bh=SRkvc27TRQfsDEQytELpaf9sTZUB3HBny3kZ1LGud60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2zDUWfGxc+VF3mcXjjDfEcaETuFC92NtnuUoQbJ897kz+x0vXstQs7Jlg7MOE6yI
-	 Vd5zzAyN5nOn8fDz60Ss/k6xRsvI0Rxkv81s4lDezCm20VAdOaSXkVfJep3nwd8kF+
-	 7z2YY3H7ibc6ciqYtfo0Hkia5MFR62CgFewDpKn8=
+	b=cRYLarF24X/0AVn8awOu8H19vUQDvaqKRcs2/cAolE400JHPXq3vTxPpQfc/Bxcqa
+	 LQ6CQcJ0WBjBTmkLf0BlrXthUq0OjKo8CJob/6lCuOhAwdjUrOWXdHlO5NSXYwk2Xv
+	 7Cu5d4qEUNSMGC8f4u/4+bLd3nWYp9zYmKgtow98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/140] ibmvnic: Dont reference skb after sending to VIOS
+Subject: [PATCH 6.12 078/154] bpf: Fix wrong copied_seq calculation
 Date: Mon, 24 Feb 2025 15:34:37 +0100
-Message-ID: <20250224142606.076592361@linuxfoundation.org>
+Message-ID: <20250224142610.135947306@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,237 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit bdf5d13aa05ec314d4385b31ac974d6c7e0997c9 ]
+[ Upstream commit 36b62df5683c315ba58c950f1a9c771c796c30ec ]
 
-Previously, after successfully flushing the xmit buffer to VIOS,
-the tx_bytes stat was incremented by the length of the skb.
+'sk->copied_seq' was updated in the tcp_eat_skb() function when the action
+of a BPF program was SK_REDIRECT. For other actions, like SK_PASS, the
+update logic for 'sk->copied_seq' was moved to tcp_bpf_recvmsg_parser()
+to ensure the accuracy of the 'fionread' feature.
 
-It is invalid to access the skb memory after sending the buffer to
-the VIOS because, at any point after sending, the VIOS can trigger
-an interrupt to free this memory. A race between reading skb->len
-and freeing the skb is possible (especially during LPM) and will
-result in use-after-free:
- ==================================================================
- BUG: KASAN: slab-use-after-free in ibmvnic_xmit+0x75c/0x1808 [ibmvnic]
- Read of size 4 at addr c00000024eb48a70 by task hxecom/14495
- <...>
- Call Trace:
- [c000000118f66cf0] [c0000000018cba6c] dump_stack_lvl+0x84/0xe8 (unreliable)
- [c000000118f66d20] [c0000000006f0080] print_report+0x1a8/0x7f0
- [c000000118f66df0] [c0000000006f08f0] kasan_report+0x128/0x1f8
- [c000000118f66f00] [c0000000006f2868] __asan_load4+0xac/0xe0
- [c000000118f66f20] [c0080000046eac84] ibmvnic_xmit+0x75c/0x1808 [ibmvnic]
- [c000000118f67340] [c0000000014be168] dev_hard_start_xmit+0x150/0x358
- <...>
- Freed by task 0:
- kasan_save_stack+0x34/0x68
- kasan_save_track+0x2c/0x50
- kasan_save_free_info+0x64/0x108
- __kasan_mempool_poison_object+0x148/0x2d4
- napi_skb_cache_put+0x5c/0x194
- net_tx_action+0x154/0x5b8
- handle_softirqs+0x20c/0x60c
- do_softirq_own_stack+0x6c/0x88
- <...>
- The buggy address belongs to the object at c00000024eb48a00 which
-  belongs to the cache skbuff_head_cache of size 224
-==================================================================
+It works for a single stream_verdict scenario, as it also modified
+sk_data_ready->sk_psock_verdict_data_ready->tcp_read_skb
+to remove updating 'sk->copied_seq'.
 
-Fixes: 032c5e82847a ("Driver for IBM System i/p VNIC protocol")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250214155233.235559-1-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, for programs where both stream_parser and stream_verdict are
+active (strparser purpose), tcp_read_sock() was used instead of
+tcp_read_skb() (sk_data_ready->strp_data_ready->tcp_read_sock).
+tcp_read_sock() now still updates 'sk->copied_seq', leading to duplicate
+updates.
+
+In summary, for strparser + SK_PASS, copied_seq is redundantly calculated
+in both tcp_read_sock() and tcp_bpf_recvmsg_parser().
+
+The issue causes incorrect copied_seq calculations, which prevent
+correct data reads from the recv() interface in user-land.
+
+We do not want to add new proto_ops to implement a new version of
+tcp_read_sock, as this would introduce code complexity [1].
+
+We could have added noack and copied_seq to desc, and then called
+ops->read_sock. However, unfortunately, other modules didn’t fully
+initialize desc to zero. So, for now, we are directly calling
+tcp_read_sock_noack() in tcp_bpf.c.
+
+[1]: https://lore.kernel.org/bpf/20241218053408.437295-1-mrpre@163.com
+
+Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://patch.msgid.link/20250122100917.49845-3-mrpre@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/skmsg.h |  2 ++
+ include/net/tcp.h     |  8 ++++++++
+ net/core/skmsg.c      |  7 +++++++
+ net/ipv4/tcp.c        | 29 ++++++++++++++++++++++++-----
+ net/ipv4/tcp_bpf.c    | 36 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 77 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index cd5224f6c42a3..4f18addc191b8 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2424,6 +2424,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	dma_addr_t data_dma_addr;
- 	struct netdev_queue *txq;
- 	unsigned long lpar_rc;
-+	unsigned int skblen;
- 	union sub_crq tx_crq;
- 	unsigned int offset;
- 	int num_entries = 1;
-@@ -2526,6 +2527,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	tx_buff->skb = skb;
- 	tx_buff->index = bufidx;
- 	tx_buff->pool_index = queue_num;
-+	skblen = skb->len;
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index 2cbe0c22a32f3..0b9095a281b89 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -91,6 +91,8 @@ struct sk_psock {
+ 	struct sk_psock_progs		progs;
+ #if IS_ENABLED(CONFIG_BPF_STREAM_PARSER)
+ 	struct strparser		strp;
++	u32				copied_seq;
++	u32				ingress_bytes;
+ #endif
+ 	struct sk_buff_head		ingress_skb;
+ 	struct list_head		ingress_msg;
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 6cd0fde806519..3255a199ef60d 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -743,6 +743,9 @@ void tcp_get_info(struct sock *, struct tcp_info *);
+ /* Read 'sendfile()'-style from a TCP socket */
+ int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
+ 		  sk_read_actor_t recv_actor);
++int tcp_read_sock_noack(struct sock *sk, read_descriptor_t *desc,
++			sk_read_actor_t recv_actor, bool noack,
++			u32 *copied_seq);
+ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor);
+ struct sk_buff *tcp_recv_skb(struct sock *sk, u32 seq, u32 *off);
+ void tcp_read_done(struct sock *sk, size_t len);
+@@ -2609,6 +2612,11 @@ struct sk_psock;
+ #ifdef CONFIG_BPF_SYSCALL
+ int tcp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore);
+ void tcp_bpf_clone(const struct sock *sk, struct sock *newsk);
++#ifdef CONFIG_BPF_STREAM_PARSER
++struct strparser;
++int tcp_bpf_strp_read_sock(struct strparser *strp, read_descriptor_t *desc,
++			   sk_read_actor_t recv_actor);
++#endif /* CONFIG_BPF_STREAM_PARSER */
+ #endif /* CONFIG_BPF_SYSCALL */
  
- 	memset(&tx_crq, 0, sizeof(tx_crq));
- 	tx_crq.v1.first = IBMVNIC_CRQ_CMD;
-@@ -2616,7 +2618,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		netif_stop_subqueue(netdev, queue_num);
+ #ifdef CONFIG_INET
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 8ad7e6755fd64..f76cbf49c68c8 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -548,6 +548,9 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ 			return num_sge;
  	}
  
--	tx_bytes += skb->len;
-+	tx_bytes += skblen;
- 	txq_trans_cond_update(txq);
- 	ret = NETDEV_TX_OK;
- 	goto out;
++#if IS_ENABLED(CONFIG_BPF_STREAM_PARSER)
++	psock->ingress_bytes += len;
++#endif
+ 	copied = len;
+ 	msg->sg.start = 0;
+ 	msg->sg.size = copied;
+@@ -1143,6 +1146,10 @@ int sk_psock_init_strp(struct sock *sk, struct sk_psock *psock)
+ 	if (!ret)
+ 		sk_psock_set_state(psock, SK_PSOCK_RX_STRP_ENABLED);
+ 
++	if (sk_is_tcp(sk)) {
++		psock->strp.cb.read_sock = tcp_bpf_strp_read_sock;
++		psock->copied_seq = tcp_sk(sk)->copied_seq;
++	}
+ 	return ret;
+ }
+ 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 4f77bd862e957..68cb6a966b18b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1564,12 +1564,13 @@ EXPORT_SYMBOL(tcp_recv_skb);
+  *	  or for 'peeking' the socket using this routine
+  *	  (although both would be easy to implement).
+  */
+-int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
+-		  sk_read_actor_t recv_actor)
++static int __tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
++			   sk_read_actor_t recv_actor, bool noack,
++			   u32 *copied_seq)
+ {
+ 	struct sk_buff *skb;
+ 	struct tcp_sock *tp = tcp_sk(sk);
+-	u32 seq = tp->copied_seq;
++	u32 seq = *copied_seq;
+ 	u32 offset;
+ 	int copied = 0;
+ 
+@@ -1623,9 +1624,12 @@ int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
+ 		tcp_eat_recv_skb(sk, skb);
+ 		if (!desc->count)
+ 			break;
+-		WRITE_ONCE(tp->copied_seq, seq);
++		WRITE_ONCE(*copied_seq, seq);
+ 	}
+-	WRITE_ONCE(tp->copied_seq, seq);
++	WRITE_ONCE(*copied_seq, seq);
++
++	if (noack)
++		goto out;
+ 
+ 	tcp_rcv_space_adjust(sk);
+ 
+@@ -1634,10 +1638,25 @@ int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
+ 		tcp_recv_skb(sk, seq, &offset);
+ 		tcp_cleanup_rbuf(sk, copied);
+ 	}
++out:
+ 	return copied;
+ }
++
++int tcp_read_sock(struct sock *sk, read_descriptor_t *desc,
++		  sk_read_actor_t recv_actor)
++{
++	return __tcp_read_sock(sk, desc, recv_actor, false,
++			       &tcp_sk(sk)->copied_seq);
++}
+ EXPORT_SYMBOL(tcp_read_sock);
+ 
++int tcp_read_sock_noack(struct sock *sk, read_descriptor_t *desc,
++			sk_read_actor_t recv_actor, bool noack,
++			u32 *copied_seq)
++{
++	return __tcp_read_sock(sk, desc, recv_actor, noack, copied_seq);
++}
++
+ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ {
+ 	struct sk_buff *skb;
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 392678ae80f4e..22e8a2af5dd8b 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -646,6 +646,42 @@ static int tcp_bpf_assert_proto_ops(struct proto *ops)
+ 	       ops->sendmsg  == tcp_sendmsg ? 0 : -ENOTSUPP;
+ }
+ 
++#if IS_ENABLED(CONFIG_BPF_STREAM_PARSER)
++int tcp_bpf_strp_read_sock(struct strparser *strp, read_descriptor_t *desc,
++			   sk_read_actor_t recv_actor)
++{
++	struct sock *sk = strp->sk;
++	struct sk_psock *psock;
++	struct tcp_sock *tp;
++	int copied = 0;
++
++	tp = tcp_sk(sk);
++	rcu_read_lock();
++	psock = sk_psock(sk);
++	if (WARN_ON_ONCE(!psock)) {
++		desc->error = -EINVAL;
++		goto out;
++	}
++
++	psock->ingress_bytes = 0;
++	copied = tcp_read_sock_noack(sk, desc, recv_actor, true,
++				     &psock->copied_seq);
++	if (copied < 0)
++		goto out;
++	/* recv_actor may redirect skb to another socket (SK_REDIRECT) or
++	 * just put skb into ingress queue of current socket (SK_PASS).
++	 * For SK_REDIRECT, we need to ack the frame immediately but for
++	 * SK_PASS, we want to delay the ack until tcp_bpf_recvmsg_parser().
++	 */
++	tp->copied_seq = psock->copied_seq - psock->ingress_bytes;
++	tcp_rcv_space_adjust(sk);
++	__tcp_cleanup_rbuf(sk, copied - psock->ingress_bytes);
++out:
++	rcu_read_unlock();
++	return copied;
++}
++#endif /* CONFIG_BPF_STREAM_PARSER */
++
+ int tcp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
+ {
+ 	int family = sk->sk_family == AF_INET6 ? TCP_BPF_IPV6 : TCP_BPF_IPV4;
 -- 
 2.39.5
 
