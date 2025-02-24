@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-119315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF48DA425C9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:13:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379DAA4258B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C697B19E1A6E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA0073BD2CE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35885664C6;
-	Mon, 24 Feb 2025 14:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2928219408C;
+	Mon, 24 Feb 2025 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wg7l9trd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFgRsor7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B4F1514CC;
-	Mon, 24 Feb 2025 14:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB1218BC26;
+	Mon, 24 Feb 2025 14:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409048; cv=none; b=oOv8ANQIPCWhjO5IN7Bn0OcxIrlkgpHBcfcqQ4FhdtsacRJgz+GZqljjaqR5bXaZhd4mRqBItCwLc9oG8ZAVo/+9hOP14LnZCd5S8pwKTEamPY+oljCwHaFpKZSrRjMuN6sttiW/boyP4WruEUjEFi8oUZOMSl+9chHJyq4N1UQ=
+	t=1740408625; cv=none; b=K9UcVO+5nkDQHljUHulw0iSIat+B0zf/6yBhsyBEkWRxME6QFe7GIBQLdFhg0bdxatrS0hqpqe+Heaeb1Fd0sGm3M92LZPi/IlYxwYV6hP/twdDWbLnaECxrwkYrkTFjdG9Tpkc6UsGs072YodrQbDxEEwkcQl9KLRIg1gTCoE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409048; c=relaxed/simple;
-	bh=Sfe3W8Qq/t1hWc49CF5KqwZ/hOABB54n7u7aZRWP1Js=;
+	s=arc-20240116; t=1740408625; c=relaxed/simple;
+	bh=MXWBQvoLypf7Y+HeqlC17xqtPIuXQRAQKrTFZ3R1pjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmAsB3OMlbE/FEJ8gPIU5GO7wtFkPBhzxrdXckeaiWCCBIQr8LQ77iHR2aPikca9zcPYmcwSXn0napfZZJIiZDMW6J/EDY3VEZWmz3YuxHVlLk2mufIZaRDU7Iadv0BLkAYRmRpgM5lp82hd0VAXPDSQYobRlxsA50/q2REbOsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wg7l9trd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB7DC4CED6;
-	Mon, 24 Feb 2025 14:57:27 +0000 (UTC)
+	 MIME-Version; b=Fv6Vib6CMXEErg/VyRCFu6K0DhbdJG0BhExK2cNTgRrK8in9SDBTDBEEpAEusEnJw6DqojwXGrLYNFaeDw4potnlLWuUheRfvIsFGrU7sIoCDiaoJNqWpGDxvyXRnkAC0vhhvil79xJf176QKddG76ZPZFdwoQ10Y66yFMABYgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFgRsor7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2E3C4CED6;
+	Mon, 24 Feb 2025 14:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409047;
-	bh=Sfe3W8Qq/t1hWc49CF5KqwZ/hOABB54n7u7aZRWP1Js=;
+	s=korg; t=1740408625;
+	bh=MXWBQvoLypf7Y+HeqlC17xqtPIuXQRAQKrTFZ3R1pjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wg7l9trdz4bdmOGQPqrJicDID5qJf0+Lg7/z33FfWyyUkFkRLrUcsx2XWTNxI2w+s
-	 x9gnaQVOWCWpkh5hXrlCqjdEo4dkWGOrmPfwT+ZgWtV+OsnqZLrDzTjm4fKe4w4iSe
-	 5iLk2qYwxWE97i4GkPOoqUZ3t2FnLiLc/NbEUCUc=
+	b=bFgRsor7VXkY0Tg/FwStZuS5ghGsMbYvk9zTmqBEYh9OZM04cuDzezp4nmErLSuO/
+	 W664xsV1wsMJ8JMj17hsm0wCnILAKoeALZt9HLUj8NpJN/PbvT7J+x/5c3//9gQZcw
+	 WFWzrLiffsbe5B2S4mAKcQbfd86K7tezzLKYBoiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 081/138] nvme-tcp: fix connect failure on receiving partial ICResp PDU
+	chase xd <sl1589472800@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 112/154] io_uring/rw: forbid multishot async reads
 Date: Mon, 24 Feb 2025 15:35:11 +0100
-Message-ID: <20250224142607.664936752@linuxfoundation.org>
+Message-ID: <20250224142611.443257463@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 578539e0969028f711c34d9a4565931edfe1d730 ]
+commit 67b0025d19f99fb9fbb8b62e6975553c183f3a16 upstream.
 
-nvme_tcp_init_connection() attempts to receive an ICResp PDU but only
-checks that the return value from recvmsg() is non-negative. If the
-sender closes the TCP connection or sends fewer than 128 bytes, this
-check will pass even though the full PDU wasn't received.
+At the moment we can't sanely handle queuing an async request from a
+multishot context, so disable them. It shouldn't matter as pollable
+files / socekts don't normally do async.
 
-Ensure the full ICResp PDU is received by checking that recvmsg()
-returns the expected 128 bytes.
+Patching it in __io_read() is not the cleanest way, but it's simpler
+than other options, so let's fix it there and clean up on top.
 
-Additionally set the MSG_WAITALL flag for recvmsg(), as a sender could
-split the ICResp over multiple TCP frames. Without MSG_WAITALL,
-recvmsg() could return prematurely with only part of the PDU.
-
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: chase xd <sl1589472800@gmail.com>
+Fixes: fc68fcda04910 ("io_uring/rw: add support for IORING_OP_READ_MULTISHOT")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/7d51732c125159d17db4fe16f51ec41b936973f8.1739919038.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ io_uring/rw.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 4162893d49395..d7c193028e7c3 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1449,11 +1449,14 @@ static int nvme_tcp_init_connection(struct nvme_tcp_queue *queue)
- 		msg.msg_control = cbuf;
- 		msg.msg_controllen = sizeof(cbuf);
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -862,7 +862,15 @@ static int __io_read(struct io_kiocb *re
+ 	if (unlikely(ret))
+ 		return ret;
+ 
+-	ret = io_iter_do_read(rw, &io->iter);
++	if (unlikely(req->opcode == IORING_OP_READ_MULTISHOT)) {
++		void *cb_copy = rw->kiocb.ki_complete;
++
++		rw->kiocb.ki_complete = NULL;
++		ret = io_iter_do_read(rw, &io->iter);
++		rw->kiocb.ki_complete = cb_copy;
++	} else {
++		ret = io_iter_do_read(rw, &io->iter);
++	}
+ 
+ 	/*
+ 	 * Some file systems like to return -EOPNOTSUPP for an IOCB_NOWAIT
+@@ -887,7 +895,8 @@ static int __io_read(struct io_kiocb *re
+ 	} else if (ret == -EIOCBQUEUED) {
+ 		return IOU_ISSUE_SKIP_COMPLETE;
+ 	} else if (ret == req->cqe.res || ret <= 0 || !force_nonblock ||
+-		   (req->flags & REQ_F_NOWAIT) || !need_complete_io(req)) {
++		   (req->flags & REQ_F_NOWAIT) || !need_complete_io(req) ||
++		   (issue_flags & IO_URING_F_MULTISHOT)) {
+ 		/* read all, failed, already did sync or don't want to retry */
+ 		goto done;
  	}
-+	msg.msg_flags = MSG_WAITALL;
- 	ret = kernel_recvmsg(queue->sock, &msg, &iov, 1,
- 			iov.iov_len, msg.msg_flags);
--	if (ret < 0) {
-+	if (ret < sizeof(*icresp)) {
- 		pr_warn("queue %d: failed to receive icresp, error %d\n",
- 			nvme_tcp_queue_id(queue), ret);
-+		if (ret >= 0)
-+			ret = -ECONNRESET;
- 		goto free_icresp;
- 	}
- 	ret = -ENOTCONN;
--- 
-2.39.5
-
 
 
 
