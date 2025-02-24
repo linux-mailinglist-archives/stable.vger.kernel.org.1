@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-118985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5838DA4238F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D88A42459
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70D651893D17
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE75116EC01
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8C6233723;
-	Mon, 24 Feb 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103EF1624F8;
+	Mon, 24 Feb 2025 14:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5+SAksX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmVyeAUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3542629F;
-	Mon, 24 Feb 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86EE14D28C;
+	Mon, 24 Feb 2025 14:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407927; cv=none; b=hZkMh7W1PxKrEmBnt2eX3r3oMhw2yoFv86JUWVf3RhLV1YSz9mzrH+v1QK9FuLTK2X3M5B68+WyRCrzQ9OTJabAmQGPsINALOad/PrQsCJnd7TXG0nhIJpBHGDHXmI6ttiBq+SZGd5xie8izw45tpjHmpAUQsm7nIHlXVlXnvQM=
+	t=1740408416; cv=none; b=drrWRQn6UlmQhPTWhh7XOzjMZsoRixli8I5o/7aGeXSKGKDVuFAVWO8vQTjbrHfQeZuYuG0WwHbi/5+dBBGmY2hbRO++UbRR5EOS4TL1q9PvNtK72Ar5eV9qDm+vunAR+C76RiUDF8NJpPk29bBWgbMtii3cmn0LAcWvyvg77Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407927; c=relaxed/simple;
-	bh=/jTI4RBYDrNHvrkm5M7DjsIUYeuMRYN4+sj+06zJbBU=;
+	s=arc-20240116; t=1740408416; c=relaxed/simple;
+	bh=abl0tGNIxkHxTXa5n+yilEG/4rkXCOG+iMy8X4axm4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3NILeSmNNkUqS4XDnWsQnp0ytNfV+HhoQfLC/qewosEn2WwunRn7yNjqS4Pq1KfTJj9qBbwv2DB95CYU2CIOY+ubYoGhqlbD00E0rZr9uXF14NnojFo1LD292JNSrTb1zlJOJo3JtjjI0F45b/usEgH/2N+/cMIDSMVKDzQM4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5+SAksX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39B5C4CED6;
-	Mon, 24 Feb 2025 14:38:46 +0000 (UTC)
+	 MIME-Version; b=ckrWRXpfaBx5Rtqw46xL3uQ7tF/l8I6j1Ne2OiBd4T1wD8gZz3WxaRlwOuEJsu4/LsbFg7sHW8wAl8eeY5HsZ7XEF1sCzld0rEspCRTvUGHtcr1n2MtayUSgs5qEEceGpZjKkrYTZO6zzechC76eidysqQeH84R5vAyp9ma/lbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmVyeAUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8877C4CED6;
+	Mon, 24 Feb 2025 14:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407927;
-	bh=/jTI4RBYDrNHvrkm5M7DjsIUYeuMRYN4+sj+06zJbBU=;
+	s=korg; t=1740408415;
+	bh=abl0tGNIxkHxTXa5n+yilEG/4rkXCOG+iMy8X4axm4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5+SAksXJtv6a/sB8AXUVwfC5YU3KKq8fKLbAFnllrfhRkwkgWUNY1y2Y6R0MRvqB
-	 gyiiv93Lv8mHEYUFPIAaJDLQ6IHWpKIG3L89Y3i1c+fHp13+G+5VDkIUcHQi7Cy2ds
-	 7zvUno2XAxJONhSpt2shozbYyQCoUUL5lQnJpqs8=
+	b=bmVyeAUCqkFb3MJzojurNKqPYokLd/7CPVWJ9njMm7IUivFLcXlaeGJ/PMBRFDG0J
+	 Bro6gtvfWrSCZrClw8aBkPdDs4JUDYqq4ikFP+isgKYPALJEZQUVbgW/LwF42mW6mQ
+	 WaOcSa3lZLZvWfS5SPVFbB8zqXHL4FPvNxaAFVJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/140] arm64: dts: qcom: sm8450: Fix ADSP memory base and length
-Date: Mon, 24 Feb 2025 15:34:08 +0100
-Message-ID: <20250224142604.940609413@linuxfoundation.org>
+Subject: [PATCH 6.12 050/154] ASoC: imx-audmix: remove cpu_mclk which is from cpu dai device
+Date: Mon, 24 Feb 2025 15:34:09 +0100
+Message-ID: <20250224142609.052553291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,267 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 13c96bee5d5e5b61a9d8d000c9bb37bb9a2a0551 ]
+[ Upstream commit 571b69f2f9b1ec7cf7d0e9b79e52115a87a869c4 ]
 
-The address space in ADSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0300_0000 with length of 0x10000, which also matches
-downstream DTS.  0x3000_0000, value used so far, was in datasheet is the
-region of CDSP.
+When defer probe happens, there may be below error:
 
-Correct the base address and length, which also moves the node to
-different place to keep things sorted by unit address.  The diff looks
-big, but only the unit address and "reg" property were changed.  This
-should have no functional impact on Linux users, because PAS loader does
-not use this address space at all.
+platform 59820000.sai: Resources present before probing
 
-Fixes: 1172729576fb ("arm64: dts: qcom: sm8450: Add remoteproc enablers and instances")
-Cc: stable@vger.kernel.org
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241213-dts-qcom-cdsp-mpss-base-address-v3-4-2e0036fccd8d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The cpu_mclk clock is from the cpu dai device, if it is not released,
+then the cpu dai device probe will fail for the second time.
+
+The cpu_mclk is used to get rate for rate constraint, rate constraint
+may be specific for each platform, which is not necessary for machine
+driver, so remove it.
+
+Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250213070518.547375-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 212 +++++++++++++--------------
- 1 file changed, 106 insertions(+), 106 deletions(-)
+ sound/soc/fsl/imx-audmix.c | 31 -------------------------------
+ 1 file changed, 31 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index fb0162e65a38c..3b4d788230089 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2161,6 +2161,112 @@
- 			};
- 		};
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index 8e7b75cf64db4..ff3671226306b 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -23,7 +23,6 @@ struct imx_audmix {
+ 	struct snd_soc_card card;
+ 	struct platform_device *audmix_pdev;
+ 	struct platform_device *out_pdev;
+-	struct clk *cpu_mclk;
+ 	int num_dai;
+ 	struct snd_soc_dai_link *dai;
+ 	int num_dai_conf;
+@@ -32,34 +31,11 @@ struct imx_audmix {
+ 	struct snd_soc_dapm_route *dapm_routes;
+ };
  
-+		remoteproc_adsp: remoteproc@3000000 {
-+			compatible = "qcom,sm8450-adsp-pas";
-+			reg = <0x0 0x03000000 0x0 0x10000>;
-+
-+			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready",
-+					  "handover", "stop-ack";
-+
-+			clocks = <&rpmhcc RPMH_CXO_CLK>;
-+			clock-names = "xo";
-+
-+			power-domains = <&rpmhpd RPMHPD_LCX>,
-+					<&rpmhpd RPMHPD_LMX>;
-+			power-domain-names = "lcx", "lmx";
-+
-+			memory-region = <&adsp_mem>;
-+
-+			qcom,qmp = <&aoss_qmp>;
-+
-+			qcom,smem-states = <&smp2p_adsp_out 0>;
-+			qcom,smem-state-names = "stop";
-+
-+			status = "disabled";
-+
-+			remoteproc_adsp_glink: glink-edge {
-+				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
-+							     IPCC_MPROC_SIGNAL_GLINK_QMP
-+							     IRQ_TYPE_EDGE_RISING>;
-+				mboxes = <&ipcc IPCC_CLIENT_LPASS
-+						IPCC_MPROC_SIGNAL_GLINK_QMP>;
-+
-+				label = "lpass";
-+				qcom,remote-pid = <2>;
-+
-+				gpr {
-+					compatible = "qcom,gpr";
-+					qcom,glink-channels = "adsp_apps";
-+					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
-+					qcom,intents = <512 20>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					q6apm: service@1 {
-+						compatible = "qcom,q6apm";
-+						reg = <GPR_APM_MODULE_IID>;
-+						#sound-dai-cells = <0>;
-+						qcom,protection-domain = "avs/audio",
-+									 "msm/adsp/audio_pd";
-+
-+						q6apmdai: dais {
-+							compatible = "qcom,q6apm-dais";
-+							iommus = <&apps_smmu 0x1801 0x0>;
-+						};
-+
-+						q6apmbedai: bedais {
-+							compatible = "qcom,q6apm-lpass-dais";
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6prm: service@2 {
-+						compatible = "qcom,q6prm";
-+						reg = <GPR_PRM_MODULE_IID>;
-+						qcom,protection-domain = "avs/audio",
-+									 "msm/adsp/audio_pd";
-+
-+						q6prmcc: clock-controller {
-+							compatible = "qcom,q6prm-lpass-clocks";
-+							#clock-cells = <2>;
-+						};
-+					};
-+				};
-+
-+				fastrpc {
-+					compatible = "qcom,fastrpc";
-+					qcom,glink-channels = "fastrpcglink-apps-dsp";
-+					label = "adsp";
-+					qcom,non-secure-domain;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					compute-cb@3 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <3>;
-+						iommus = <&apps_smmu 0x1803 0x0>;
-+					};
-+
-+					compute-cb@4 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <4>;
-+						iommus = <&apps_smmu 0x1804 0x0>;
-+					};
-+
-+					compute-cb@5 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <5>;
-+						iommus = <&apps_smmu 0x1805 0x0>;
-+					};
-+				};
-+			};
-+		};
-+
- 		wsa2macro: codec@31e0000 {
- 			compatible = "qcom,sm8450-lpass-wsa-macro";
- 			reg = <0 0x031e0000 0 0x1000>;
-@@ -2369,112 +2475,6 @@
- 			status = "disabled";
- 		};
+-static const u32 imx_audmix_rates[] = {
+-	8000, 12000, 16000, 24000, 32000, 48000, 64000, 96000,
+-};
+-
+-static const struct snd_pcm_hw_constraint_list imx_audmix_rate_constraints = {
+-	.count = ARRAY_SIZE(imx_audmix_rates),
+-	.list = imx_audmix_rates,
+-};
+-
+ static int imx_audmix_fe_startup(struct snd_pcm_substream *substream)
+ {
+-	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+-	struct imx_audmix *priv = snd_soc_card_get_drvdata(rtd->card);
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct device *dev = rtd->card->dev;
+-	unsigned long clk_rate = clk_get_rate(priv->cpu_mclk);
+ 	int ret;
  
--		remoteproc_adsp: remoteproc@30000000 {
--			compatible = "qcom,sm8450-adsp-pas";
--			reg = <0 0x30000000 0 0x100>;
+-	if (clk_rate % 24576000 == 0) {
+-		ret = snd_pcm_hw_constraint_list(runtime, 0,
+-						 SNDRV_PCM_HW_PARAM_RATE,
+-						 &imx_audmix_rate_constraints);
+-		if (ret < 0)
+-			return ret;
+-	} else {
+-		dev_warn(dev, "mclk may be not supported %lu\n", clk_rate);
+-	}
 -
--			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
--			interrupt-names = "wdog", "fatal", "ready",
--					  "handover", "stop-ack";
+ 	ret = snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_CHANNELS,
+ 					   1, 8);
+ 	if (ret < 0)
+@@ -325,13 +301,6 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 	}
+ 	put_device(&cpu_pdev->dev);
+ 
+-	priv->cpu_mclk = devm_clk_get(&cpu_pdev->dev, "mclk1");
+-	if (IS_ERR(priv->cpu_mclk)) {
+-		ret = PTR_ERR(priv->cpu_mclk);
+-		dev_err(&cpu_pdev->dev, "failed to get DAI mclk1: %d\n", ret);
+-		return ret;
+-	}
 -
--			clocks = <&rpmhcc RPMH_CXO_CLK>;
--			clock-names = "xo";
--
--			power-domains = <&rpmhpd RPMHPD_LCX>,
--					<&rpmhpd RPMHPD_LMX>;
--			power-domain-names = "lcx", "lmx";
--
--			memory-region = <&adsp_mem>;
--
--			qcom,qmp = <&aoss_qmp>;
--
--			qcom,smem-states = <&smp2p_adsp_out 0>;
--			qcom,smem-state-names = "stop";
--
--			status = "disabled";
--
--			remoteproc_adsp_glink: glink-edge {
--				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
--							     IPCC_MPROC_SIGNAL_GLINK_QMP
--							     IRQ_TYPE_EDGE_RISING>;
--				mboxes = <&ipcc IPCC_CLIENT_LPASS
--						IPCC_MPROC_SIGNAL_GLINK_QMP>;
--
--				label = "lpass";
--				qcom,remote-pid = <2>;
--
--				gpr {
--					compatible = "qcom,gpr";
--					qcom,glink-channels = "adsp_apps";
--					qcom,domain = <GPR_DOMAIN_ID_ADSP>;
--					qcom,intents = <512 20>;
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					q6apm: service@1 {
--						compatible = "qcom,q6apm";
--						reg = <GPR_APM_MODULE_IID>;
--						#sound-dai-cells = <0>;
--						qcom,protection-domain = "avs/audio",
--									 "msm/adsp/audio_pd";
--
--						q6apmdai: dais {
--							compatible = "qcom,q6apm-dais";
--							iommus = <&apps_smmu 0x1801 0x0>;
--						};
--
--						q6apmbedai: bedais {
--							compatible = "qcom,q6apm-lpass-dais";
--							#sound-dai-cells = <1>;
--						};
--					};
--
--					q6prm: service@2 {
--						compatible = "qcom,q6prm";
--						reg = <GPR_PRM_MODULE_IID>;
--						qcom,protection-domain = "avs/audio",
--									 "msm/adsp/audio_pd";
--
--						q6prmcc: clock-controller {
--							compatible = "qcom,q6prm-lpass-clocks";
--							#clock-cells = <2>;
--						};
--					};
--				};
--
--				fastrpc {
--					compatible = "qcom,fastrpc";
--					qcom,glink-channels = "fastrpcglink-apps-dsp";
--					label = "adsp";
--					qcom,non-secure-domain;
--					#address-cells = <1>;
--					#size-cells = <0>;
--
--					compute-cb@3 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <3>;
--						iommus = <&apps_smmu 0x1803 0x0>;
--					};
--
--					compute-cb@4 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <4>;
--						iommus = <&apps_smmu 0x1804 0x0>;
--					};
--
--					compute-cb@5 {
--						compatible = "qcom,fastrpc-compute-cb";
--						reg = <5>;
--						iommus = <&apps_smmu 0x1805 0x0>;
--					};
--				};
--			};
--		};
--
- 		remoteproc_cdsp: remoteproc@32300000 {
- 			compatible = "qcom,sm8450-cdsp-pas";
- 			reg = <0 0x32300000 0 0x10000>;
+ 	priv->audmix_pdev = audmix_pdev;
+ 	priv->out_pdev  = cpu_pdev;
+ 
 -- 
 2.39.5
 
