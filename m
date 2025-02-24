@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-119271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772AEA42535
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61260A42538
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5397B444304
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F09219E1457
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEBC18A95E;
-	Mon, 24 Feb 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901C019ADA6;
+	Mon, 24 Feb 2025 14:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQB/e69O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ch8jLuWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8652A8D0;
-	Mon, 24 Feb 2025 14:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE0C19408C;
+	Mon, 24 Feb 2025 14:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408898; cv=none; b=tQzr5Zwh4HBcNJMwjbj/11HEtzCxXQ1yKcfeTY45UZcOGMeZFYlCGNCQG+c2lhuEkOcMURK8ftoiJM+yOTusEaOsgASPrP8XZdT95cSlKOAzVlwfSDEToV0h0HQSRtewcKO9ovKYcgJ5ZEYaC9Uqzwjmha/RaWrMjIcaE2heNlg=
+	t=1740408903; cv=none; b=nMzoGcslHa8OUSFRC0fKTyZH67yjBrjIhAKkx4q7zrwVRF26+TuRwr92bYRgWjaWdFdhnf61IRU1eAZ6JKW50B1NaubqMaR8IlhaT9Hr7rl8/BcUSsioadqpXvmZI3Sz7EQCLjRELhZjdWLnxjuvsj6Y95Co7SSuftfbsL+4slQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408898; c=relaxed/simple;
-	bh=/AH2iGRJhziTIYimU7NF2RJ0sqhK3xaGqrUQhBsHi/A=;
+	s=arc-20240116; t=1740408903; c=relaxed/simple;
+	bh=ZYM+xMf6uVbvornN4LAEl+iRgXSHmylf7U6X+2orXGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJK882PORoZJjwlQwNHRL+gwagUwjK+S6hcSqjfHeXbxxtIE8kVHB5CW1/d3JrmRvR91i1T5mGEJhqigIdF6ugqr+yK8MLR/BSd7D4BN3BPjw8mU0784jrdbqUeI4lR2dJvPs9ryRsZcztLcw2q6sQllEEvwcGZnEG9+9KuVmpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQB/e69O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6AAC4CED6;
-	Mon, 24 Feb 2025 14:54:55 +0000 (UTC)
+	 MIME-Version; b=RkD2wHazkvpvY07nH4bnr/0YTrL3pq9pw8B5Q0Cp1uabqdRbyBhwq5kJ+DRhfZh+vtyYRn0NMPCagJA/Ydtv0fdxWadQo0wy0U0GfEQueWG5OBUJ+yLnwgFixnhYbpJWR1Bcvc0COYQ0dKbAu1UDGiAfeZJDXxKIcMditUOY7sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ch8jLuWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE83C4CEE6;
+	Mon, 24 Feb 2025 14:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408896;
-	bh=/AH2iGRJhziTIYimU7NF2RJ0sqhK3xaGqrUQhBsHi/A=;
+	s=korg; t=1740408903;
+	bh=ZYM+xMf6uVbvornN4LAEl+iRgXSHmylf7U6X+2orXGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQB/e69OfjEhUKppZ24I3pbaPkszdV9YMM+nq+MR9wE0jfYtcSXeNa7CDVQS8WFDl
-	 iDaiBjdJ3nqkcs7HLysVbwggpgTUGJ4rNgjU8rZzKtfj6rzN0EWkZ/IkjYmSNHmHne
-	 jk6/v/kaEyj39wIP84DTuLq234bOtQBy09ucBoDc=
+	b=ch8jLuWHr+yiaJGzTeK4n/voyRfjlIryG6iGdC03J5bJhbaRqrZNu8ahpAxqE32B8
+	 dN6zYfV7WNOxf/Jm2+0t+R+Ame7HstOymG9zp7UCi/wk6obRFXhK7PTla3e8IC0asz
+	 qJDG8iP2htDk0+koqPpF2p7eprv2eG8ZZEterw0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brad Spengler <spender@grsecurity.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 038/138] net: pse-pd: Use power limit at driver side instead of current limit
-Date: Mon, 24 Feb 2025 15:34:28 +0100
-Message-ID: <20250224142605.964401615@linuxfoundation.org>
+Subject: [PATCH 6.13 040/138] gtp: Suppress list corruption splat in gtp_net_exit_batch_rtnl().
+Date: Mon, 24 Feb 2025 15:34:30 +0100
+Message-ID: <20250224142606.044698143@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -67,309 +67,119 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit e0a5e2bba38aa61a900934b45d6e846e0a6d7524 ]
+[ Upstream commit 4ccacf86491d33d2486b62d4d44864d7101b299d ]
 
-The regulator framework uses current limits, but the PSE standard and
-known PSE controllers rely on power limits. Instead of converting
-current to power within each driver, perform the conversion in the PSE
-core. This avoids redundancy in driver implementation and aligns better
-with the standard, simplifying driver development.
+Brad Spengler reported the list_del() corruption splat in
+gtp_net_exit_batch_rtnl(). [0]
 
-Remove at the same time the _pse_ethtool_get_status() function which is
-not needed anymore.
+Commit eb28fd76c0a0 ("gtp: Destroy device along with udp socket's netns
+dismantle.") added the for_each_netdev() loop in gtp_net_exit_batch_rtnl()
+to destroy devices in each netns as done in geneve and ip tunnels.
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: f6093c5ec74d ("net: pse-pd: pd692x0: Fix power limit retrieval")
+However, this could trigger ->dellink() twice for the same device during
+->exit_batch_rtnl().
+
+Say we have two netns A & B and gtp device B that resides in netns B but
+whose UDP socket is in netns A.
+
+  1. cleanup_net() processes netns A and then B.
+
+  2. gtp_net_exit_batch_rtnl() finds the device B while iterating
+     netns A's gn->gtp_dev_list and calls ->dellink().
+
+  [ device B is not yet unlinked from netns B
+    as unregister_netdevice_many() has not been called. ]
+
+  3. gtp_net_exit_batch_rtnl() finds the device B while iterating
+     netns B's for_each_netdev() and calls ->dellink().
+
+gtp_dellink() cleans up the device's hash table, unlinks the dev from
+gn->gtp_dev_list, and calls unregister_netdevice_queue().
+
+Basically, calling gtp_dellink() multiple times is fine unless
+CONFIG_DEBUG_LIST is enabled.
+
+Let's remove for_each_netdev() in gtp_net_exit_batch_rtnl() and
+delegate the destruction to default_device_exit_batch() as done
+in bareudp.
+
+[0]:
+list_del corruption, ffff8880aaa62c00->next (autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc00/0x1000 [slab object]) is LIST_POISON1 (ffffffffffffff02) (prev is 0xffffffffffffff04)
+kernel BUG at lib/list_debug.c:58!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 UID: 0 PID: 1804 Comm: kworker/u8:7 Tainted: G                T   6.12.13-grsec-full-20250211091339 #1
+Tainted: [T]=RANDSTRUCT
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: netns cleanup_net
+RIP: 0010:[<ffffffff84947381>] __list_del_entry_valid_or_report+0x141/0x200 lib/list_debug.c:58
+Code: c2 76 91 31 c0 e8 9f b1 f7 fc 0f 0b 4d 89 f0 48 c7 c1 02 ff ff ff 48 89 ea 48 89 ee 48 c7 c7 e0 c2 76 91 31 c0 e8 7f b1 f7 fc <0f> 0b 4d 89 e8 48 c7 c1 04 ff ff ff 48 89 ea 48 89 ee 48 c7 c7 60
+RSP: 0018:fffffe8040b4fbd0 EFLAGS: 00010283
+RAX: 00000000000000cc RBX: dffffc0000000000 RCX: ffffffff818c4054
+RDX: ffffffff84947381 RSI: ffffffff818d1512 RDI: 0000000000000000
+RBP: ffff8880aaa62c00 R08: 0000000000000001 R09: fffffbd008169f32
+R10: fffffe8040b4f997 R11: 0000000000000001 R12: a1988d84f24943e4
+R13: ffffffffffffff02 R14: ffffffffffffff04 R15: ffff8880aaa62c08
+RBX: kasan shadow of 0x0
+RCX: __wake_up_klogd.part.0+0x74/0xe0 kernel/printk/printk.c:4554
+RDX: __list_del_entry_valid_or_report+0x141/0x200 lib/list_debug.c:58
+RSI: vprintk+0x72/0x100 kernel/printk/printk_safe.c:71
+RBP: autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc00/0x1000 [slab object]
+RSP: process kstack fffffe8040b4fbd0+0x7bd0/0x8000 [kworker/u8:7+netns 1804 ]
+R09: kasan shadow of process kstack fffffe8040b4f990+0x7990/0x8000 [kworker/u8:7+netns 1804 ]
+R10: process kstack fffffe8040b4f997+0x7997/0x8000 [kworker/u8:7+netns 1804 ]
+R15: autoslab_size_M_dev_P_net_core_dev_11127_8_1328_8_S_4096_A_64_n_139+0xc08/0x1000 [slab object]
+FS:  0000000000000000(0000) GS:ffff888116000000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000748f5372c000 CR3: 0000000015408000 CR4: 00000000003406f0 shadow CR4: 00000000003406f0
+Stack:
+ 0000000000000000 ffffffff8a0c35e7 ffffffff8a0c3603 ffff8880aaa62c00
+ ffff8880aaa62c00 0000000000000004 ffff88811145311c 0000000000000005
+ 0000000000000001 ffff8880aaa62000 fffffe8040b4fd40 ffffffff8a0c360d
+Call Trace:
+ <TASK>
+ [<ffffffff8a0c360d>] __list_del_entry_valid include/linux/list.h:131 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] __list_del_entry include/linux/list.h:248 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] list_del include/linux/list.h:262 [inline] fffffe8040b4fc28
+ [<ffffffff8a0c360d>] gtp_dellink+0x16d/0x360 drivers/net/gtp.c:1557 fffffe8040b4fc28
+ [<ffffffff8a0d0404>] gtp_net_exit_batch_rtnl+0x124/0x2c0 drivers/net/gtp.c:2495 fffffe8040b4fc88
+ [<ffffffff8e705b24>] cleanup_net+0x5a4/0xbe0 net/core/net_namespace.c:635 fffffe8040b4fcd0
+ [<ffffffff81754c97>] process_one_work+0xbd7/0x2160 kernel/workqueue.c:3326 fffffe8040b4fd88
+ [<ffffffff81757195>] process_scheduled_works kernel/workqueue.c:3407 [inline] fffffe8040b4fec0
+ [<ffffffff81757195>] worker_thread+0x6b5/0xfa0 kernel/workqueue.c:3488 fffffe8040b4fec0
+ [<ffffffff817782a0>] kthread+0x360/0x4c0 kernel/kthread.c:397 fffffe8040b4ff78
+ [<ffffffff814d8594>] ret_from_fork+0x74/0xe0 arch/x86/kernel/process.c:172 fffffe8040b4ffb8
+ [<ffffffff8110f509>] ret_from_fork_asm+0x29/0xc0 arch/x86/entry/entry_64.S:399 fffffe8040b4ffe8
+ </TASK>
+Modules linked in:
+
+Fixes: eb28fd76c0a0 ("gtp: Destroy device along with udp socket's netns dismantle.")
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250217203705.40342-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pse-pd/pd692x0.c  | 45 ++++-------------
- drivers/net/pse-pd/pse_core.c | 91 ++++++++++++++++-------------------
- include/linux/pse-pd/pse.h    | 16 +++---
- 3 files changed, 57 insertions(+), 95 deletions(-)
+ drivers/net/gtp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-index 0af7db80b2f88..9f00538f7e450 100644
---- a/drivers/net/pse-pd/pd692x0.c
-+++ b/drivers/net/pse-pd/pd692x0.c
-@@ -999,13 +999,12 @@ static int pd692x0_pi_get_voltage(struct pse_controller_dev *pcdev, int id)
- 	return (buf.sub[0] << 8 | buf.sub[1]) * 100000;
- }
- 
--static int pd692x0_pi_get_current_limit(struct pse_controller_dev *pcdev,
--					int id)
-+static int pd692x0_pi_get_pw_limit(struct pse_controller_dev *pcdev,
-+				   int id)
- {
- 	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
- 	struct pd692x0_msg msg, buf = {0};
--	int mW, uV, uA, ret;
--	s64 tmp_64;
-+	int ret;
- 
- 	msg = pd692x0_msg_template_list[PD692X0_MSG_GET_PORT_PARAM];
- 	msg.sub[2] = id;
-@@ -1013,48 +1012,24 @@ static int pd692x0_pi_get_current_limit(struct pse_controller_dev *pcdev,
- 	if (ret < 0)
- 		return ret;
- 
--	ret = pd692x0_pi_get_pw_from_table(buf.data[2], buf.data[3]);
--	if (ret < 0)
--		return ret;
--	mW = ret;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index fbabada7d3ba9..2cb13e092a856 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -2479,11 +2479,6 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
+ 	list_for_each_entry(net, net_list, exit_list) {
+ 		struct gtp_net *gn = net_generic(net, gtp_net_id);
+ 		struct gtp_dev *gtp, *gtp_next;
+-		struct net_device *dev;
 -
--	ret = pd692x0_pi_get_voltage(pcdev, id);
--	if (ret < 0)
--		return ret;
--	uV = ret;
--
--	tmp_64 = mW;
--	tmp_64 *= 1000000000ull;
--	/* uA = mW * 1000000000 / uV */
--	uA = DIV_ROUND_CLOSEST_ULL(tmp_64, uV);
--	return uA;
-+	return pd692x0_pi_get_pw_from_table(buf.data[2], buf.data[3]);
- }
+-		for_each_netdev(net, dev)
+-			if (dev->rtnl_link_ops == &gtp_link_ops)
+-				gtp_dellink(dev, dev_to_kill);
  
--static int pd692x0_pi_set_current_limit(struct pse_controller_dev *pcdev,
--					int id, int max_uA)
-+static int pd692x0_pi_set_pw_limit(struct pse_controller_dev *pcdev,
-+				   int id, int max_mW)
- {
- 	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
- 	struct device *dev = &priv->client->dev;
- 	struct pd692x0_msg msg, buf = {0};
--	int uV, ret, mW;
--	s64 tmp_64;
-+	int ret;
- 
- 	ret = pd692x0_fw_unavailable(priv);
- 	if (ret)
- 		return ret;
- 
--	ret = pd692x0_pi_get_voltage(pcdev, id);
--	if (ret < 0)
--		return ret;
--	uV = ret;
--
- 	msg = pd692x0_msg_template_list[PD692X0_MSG_SET_PORT_PARAM];
- 	msg.sub[2] = id;
--	tmp_64 = uV;
--	tmp_64 *= max_uA;
--	/* mW = uV * uA / 1000000000 */
--	mW = DIV_ROUND_CLOSEST_ULL(tmp_64, 1000000000);
--	ret = pd692x0_pi_set_pw_from_table(dev, &msg, mW);
-+	ret = pd692x0_pi_set_pw_from_table(dev, &msg, max_mW);
- 	if (ret)
- 		return ret;
- 
-@@ -1068,8 +1043,8 @@ static const struct pse_controller_ops pd692x0_ops = {
- 	.pi_disable = pd692x0_pi_disable,
- 	.pi_is_enabled = pd692x0_pi_is_enabled,
- 	.pi_get_voltage = pd692x0_pi_get_voltage,
--	.pi_get_current_limit = pd692x0_pi_get_current_limit,
--	.pi_set_current_limit = pd692x0_pi_set_current_limit,
-+	.pi_get_pw_limit = pd692x0_pi_get_pw_limit,
-+	.pi_set_pw_limit = pd692x0_pi_set_pw_limit,
- };
- 
- #define PD692X0_FW_LINE_MAX_SZ 0xff
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 9fee4dd53515a..4c5abef9e94ee 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -291,33 +291,25 @@ static int pse_pi_get_voltage(struct regulator_dev *rdev)
- 	return ret;
- }
- 
--static int _pse_ethtool_get_status(struct pse_controller_dev *pcdev,
--				   int id,
--				   struct netlink_ext_ack *extack,
--				   struct pse_control_status *status);
--
- static int pse_pi_get_current_limit(struct regulator_dev *rdev)
- {
- 	struct pse_controller_dev *pcdev = rdev_get_drvdata(rdev);
- 	const struct pse_controller_ops *ops;
--	struct netlink_ext_ack extack = {};
--	struct pse_control_status st = {};
--	int id, uV, ret;
-+	int id, uV, mW, ret;
- 	s64 tmp_64;
- 
- 	ops = pcdev->ops;
- 	id = rdev_get_id(rdev);
-+	if (!ops->pi_get_pw_limit || !ops->pi_get_voltage)
-+		return -EOPNOTSUPP;
-+
- 	mutex_lock(&pcdev->lock);
--	if (ops->pi_get_current_limit) {
--		ret = ops->pi_get_current_limit(pcdev, id);
-+	ret = ops->pi_get_pw_limit(pcdev, id);
-+	if (ret < 0)
- 		goto out;
--	}
-+	mW = ret;
- 
--	/* If pi_get_current_limit() callback not populated get voltage
--	 * from pi_get_voltage() and power limit from ethtool_get_status()
--	 *  to calculate current limit.
--	 */
--	ret = _pse_pi_get_voltage(rdev);
-+	ret = pse_pi_get_voltage(rdev);
- 	if (!ret) {
- 		dev_err(pcdev->dev, "Voltage null\n");
- 		ret = -ERANGE;
-@@ -327,16 +319,7 @@ static int pse_pi_get_current_limit(struct regulator_dev *rdev)
- 		goto out;
- 	uV = ret;
- 
--	ret = _pse_ethtool_get_status(pcdev, id, &extack, &st);
--	if (ret)
--		goto out;
--
--	if (!st.c33_avail_pw_limit) {
--		ret = -ENODATA;
--		goto out;
--	}
--
--	tmp_64 = st.c33_avail_pw_limit;
-+	tmp_64 = mW;
- 	tmp_64 *= 1000000000ull;
- 	/* uA = mW * 1000000000 / uV */
- 	ret = DIV_ROUND_CLOSEST_ULL(tmp_64, uV);
-@@ -351,10 +334,11 @@ static int pse_pi_set_current_limit(struct regulator_dev *rdev, int min_uA,
- {
- 	struct pse_controller_dev *pcdev = rdev_get_drvdata(rdev);
- 	const struct pse_controller_ops *ops;
--	int id, ret;
-+	int id, mW, ret;
-+	s64 tmp_64;
- 
- 	ops = pcdev->ops;
--	if (!ops->pi_set_current_limit)
-+	if (!ops->pi_set_pw_limit || !ops->pi_get_voltage)
- 		return -EOPNOTSUPP;
- 
- 	if (max_uA > MAX_PI_CURRENT)
-@@ -362,7 +346,21 @@ static int pse_pi_set_current_limit(struct regulator_dev *rdev, int min_uA,
- 
- 	id = rdev_get_id(rdev);
- 	mutex_lock(&pcdev->lock);
--	ret = ops->pi_set_current_limit(pcdev, id, max_uA);
-+	ret = pse_pi_get_voltage(rdev);
-+	if (!ret) {
-+		dev_err(pcdev->dev, "Voltage null\n");
-+		ret = -ERANGE;
-+		goto out;
-+	}
-+	if (ret < 0)
-+		goto out;
-+
-+	tmp_64 = ret;
-+	tmp_64 *= max_uA;
-+	/* mW = uA * uV / 1000000000 */
-+	mW = DIV_ROUND_CLOSEST_ULL(tmp_64, 1000000000);
-+	ret = ops->pi_set_pw_limit(pcdev, id, mW);
-+out:
- 	mutex_unlock(&pcdev->lock);
- 
- 	return ret;
-@@ -406,7 +404,7 @@ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
- 
- 	rinit_data->constraints.valid_ops_mask = REGULATOR_CHANGE_STATUS;
- 
--	if (pcdev->ops->pi_set_current_limit)
-+	if (pcdev->ops->pi_set_pw_limit)
- 		rinit_data->constraints.valid_ops_mask |=
- 			REGULATOR_CHANGE_CURRENT;
- 
-@@ -737,23 +735,6 @@ struct pse_control *of_pse_control_get(struct device_node *node)
- }
- EXPORT_SYMBOL_GPL(of_pse_control_get);
- 
--static int _pse_ethtool_get_status(struct pse_controller_dev *pcdev,
--				   int id,
--				   struct netlink_ext_ack *extack,
--				   struct pse_control_status *status)
--{
--	const struct pse_controller_ops *ops;
--
--	ops = pcdev->ops;
--	if (!ops->ethtool_get_status) {
--		NL_SET_ERR_MSG(extack,
--			       "PSE driver does not support status report");
--		return -EOPNOTSUPP;
--	}
--
--	return ops->ethtool_get_status(pcdev, id, extack, status);
--}
--
- /**
-  * pse_ethtool_get_status - get status of PSE control
-  * @psec: PSE control pointer
-@@ -766,11 +747,21 @@ int pse_ethtool_get_status(struct pse_control *psec,
- 			   struct netlink_ext_ack *extack,
- 			   struct pse_control_status *status)
- {
-+	const struct pse_controller_ops *ops;
-+	struct pse_controller_dev *pcdev;
- 	int err;
- 
--	mutex_lock(&psec->pcdev->lock);
--	err = _pse_ethtool_get_status(psec->pcdev, psec->id, extack, status);
--	mutex_unlock(&psec->pcdev->lock);
-+	pcdev = psec->pcdev;
-+	ops = pcdev->ops;
-+	if (!ops->ethtool_get_status) {
-+		NL_SET_ERR_MSG(extack,
-+			       "PSE driver does not support status report");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	mutex_lock(&pcdev->lock);
-+	err = ops->ethtool_get_status(pcdev, psec->id, extack, status);
-+	mutex_unlock(&pcdev->lock);
- 
- 	return err;
- }
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index 591a53e082e65..df1592022d938 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -75,12 +75,8 @@ struct pse_control_status {
-  * @pi_disable: Configure the PSE PI as disabled.
-  * @pi_get_voltage: Return voltage similarly to get_voltage regulator
-  *		    callback.
-- * @pi_get_current_limit: Get the configured current limit similarly to
-- *			  get_current_limit regulator callback.
-- * @pi_set_current_limit: Configure the current limit similarly to
-- *			  set_current_limit regulator callback.
-- *			  Should not return an error in case of MAX_PI_CURRENT
-- *			  current value set.
-+ * @pi_get_pw_limit: Get the configured power limit of the PSE PI.
-+ * @pi_set_pw_limit: Configure the power limit of the PSE PI.
-  */
- struct pse_controller_ops {
- 	int (*ethtool_get_status)(struct pse_controller_dev *pcdev,
-@@ -91,10 +87,10 @@ struct pse_controller_ops {
- 	int (*pi_enable)(struct pse_controller_dev *pcdev, int id);
- 	int (*pi_disable)(struct pse_controller_dev *pcdev, int id);
- 	int (*pi_get_voltage)(struct pse_controller_dev *pcdev, int id);
--	int (*pi_get_current_limit)(struct pse_controller_dev *pcdev,
--				    int id);
--	int (*pi_set_current_limit)(struct pse_controller_dev *pcdev,
--				    int id, int max_uA);
-+	int (*pi_get_pw_limit)(struct pse_controller_dev *pcdev,
-+			       int id);
-+	int (*pi_set_pw_limit)(struct pse_controller_dev *pcdev,
-+			       int id, int max_mW);
- };
- 
- struct module;
+ 		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
+ 			gtp_dellink(gtp->dev, dev_to_kill);
 -- 
 2.39.5
 
