@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-119104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2154CA4243C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D22A423F3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 679C417B13E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:46:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B1DF3ACAE3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E747B24EF7E;
-	Mon, 24 Feb 2025 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A4B24EF93;
+	Mon, 24 Feb 2025 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvZBEVeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bK5gsL+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C0324EF7A;
-	Mon, 24 Feb 2025 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B6724EF62;
+	Mon, 24 Feb 2025 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408335; cv=none; b=D5OaMxQLkV+xeymbdhFZDuOOw5/PybkK83rtXRm21bgxlqtRYhcKO9pny00sUzIoMLyeFbq/5r7X4IY042bSAXNC0URpErjtR5DAqHaBM0i2A/0R1qcH2+0hjaiS6mKPuy9xNcVRTsZDc0CHvjTfRITwVZNVwZl6Lrbnc2Y5AKY=
+	t=1740407827; cv=none; b=WEibhBWKxBw/zqj1/ouACmr7eNISdf79uaqFo7MxFMqOGVRPvbn90cmfb2tabKddRorBgTVRCnWs4/zpbIZ8Fu3VudHdPd6V3PnnKna9OJwJl4rBdKtf5W30wC8I+AFK5E0KLQmPWWjX8hhLT0Ix9lGafJ9PZvRdgv7uM1NDE4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408335; c=relaxed/simple;
-	bh=FB2cvsK0NWOa+qQ3Uu9XhKpcj2Luo9dHUjQQAjieDyc=;
+	s=arc-20240116; t=1740407827; c=relaxed/simple;
+	bh=fr1Wmo/GhMb6rTazd5YrbIEQI4WCHyK+dApBP06m9hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QT8GOq78Y/DL3imYZOYG7A8Syd4+Ulg8Wlb6jwN891E8ABCvlGZVbF8Z0h9qS6u1ENSne+8uNG9YNiOK/hT2AfvepeCTy4tsoe9gcKMUPTb/f/OTE00Pipr7sdkq/RjasWSvY7RFmsDiuxcubQROsSA4OjDmUBxC+C/gEB56lrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvZBEVeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9934CC4CED6;
-	Mon, 24 Feb 2025 14:45:34 +0000 (UTC)
+	 MIME-Version; b=rTec5zddrrTy/1C1+7eSa7kHEqHEB6kWlvX64GdkBgROtMbZVJqJ8cLLx1qfa/PGlvhw+dnol9/8RZyLWe9482Z4sM99Q72eTWO9rRebjN0ud0GIG8P/e9PSMAulaaJpOzU8UToo/E97JVu5HjRMAHSMlyzfn2cCrxcrbAcRniU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bK5gsL+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBA5C4CED6;
+	Mon, 24 Feb 2025 14:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408335;
-	bh=FB2cvsK0NWOa+qQ3Uu9XhKpcj2Luo9dHUjQQAjieDyc=;
+	s=korg; t=1740407827;
+	bh=fr1Wmo/GhMb6rTazd5YrbIEQI4WCHyK+dApBP06m9hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvZBEVeGd6aU2UcFd8oaT3ntSvWU7TyCXU3iczPSLe0nV6UBjMsPMptKCW2nGm/cD
-	 BA9aOTzKRn9/Y3U/D/p+6kH/EyQo2ejR9eiKhw8bHueNkwBZnLzJPPjn99Ivuw0pTM
-	 UdRDtMXNDMDQ4t1C9NDRQhJvLMO4kmiC4vfJsPR0=
+	b=bK5gsL+iZePUzmEbotQ3Wm+UJ5rm9HRnll97QOX6/eaRnpERIONkPM71R7G3woCo3
+	 SPkVhoHgphO72rp2WT4aTdPjwMgO5W1vEk9Gfw91ylU5YtBoRn9C4hj1vJvdFZCVub
+	 9A4xsbRoawO6T2sH6bRrPxEAYnhitAFgHp8Qga+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Lo-An Chen <lo-an.chen@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/154] drm/amd/display: Correct register address in dcn35
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 020/140] xfs: error out when a superblock buffer update reduces the agcount
 Date: Mon, 24 Feb 2025 15:33:39 +0100
-Message-ID: <20250224142607.871530410@linuxfoundation.org>
+Message-ID: <20250224142603.799086963@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: loanchen <lo-an.chen@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit f88192d2335b5a911fcfa09338cc00624571ec5e ]
+commit b882b0f8138ffa935834e775953f1630f89bbb62 upstream.
 
-[Why]
-the offset address of mmCLK5_spll_field_8 was incorrect for dcn35
-which causes SSC not to be enabled.
+XFS currently does not support reducing the agcount, so error out if
+a logged sb buffer tries to shrink the agcount.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Lo-An Chen <lo-an.chen@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_buf_item_recover.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index d8a4cdbb5495d..7d0d8852ce8d2 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -89,7 +89,7 @@
- #define mmCLK1_CLK4_ALLOW_DS 0x16EA8
- #define mmCLK1_CLK5_ALLOW_DS 0x16EB1
+--- a/fs/xfs/xfs_buf_item_recover.c
++++ b/fs/xfs/xfs_buf_item_recover.c
+@@ -713,6 +713,11 @@ xlog_recover_do_primary_sb_buffer(
+ 	 */
+ 	xfs_sb_from_disk(&mp->m_sb, dsb);
  
--#define mmCLK5_spll_field_8 0x1B04B
-+#define mmCLK5_spll_field_8 0x1B24B
- #define mmDENTIST_DISPCLK_CNTL 0x0124
- #define regDENTIST_DISPCLK_CNTL 0x0064
- #define regDENTIST_DISPCLK_CNTL_BASE_IDX 1
--- 
-2.39.5
-
++	if (mp->m_sb.sb_agcount < orig_agcount) {
++		xfs_alert(mp, "Shrinking AG count in log recovery not supported");
++		return -EFSCORRUPTED;
++	}
++
+ 	/*
+ 	 * Initialize the new perags, and also update various block and inode
+ 	 * allocator setting based off the number of AGs or total blocks.
 
 
 
