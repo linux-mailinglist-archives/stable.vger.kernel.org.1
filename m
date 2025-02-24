@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-118947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B6DA42393
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD61A4241C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A668816B232
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2872F19C4896
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2CA21CC59;
-	Mon, 24 Feb 2025 14:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473E81624C8;
+	Mon, 24 Feb 2025 14:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkH9oj2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmfchwGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA6418C01D;
-	Mon, 24 Feb 2025 14:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DA526ADD;
+	Mon, 24 Feb 2025 14:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407796; cv=none; b=FOywuhnT80hFwelO+G8mTyb0l69psEbD1T78nbzHu0tcRvBZEdaMI1fBojcy7/iwQR3NRQSmn5/IWPk9gGGHkwmrY2/GekbEZssrJLJp/Hkia3yUiT9LU9TE1sj30eOT9KcW/UYeZIKtlJxEmQvX1mK4UIc8+uSmJ2YUpTEZuO0=
+	t=1740408283; cv=none; b=YxBBWyy1V75nZZtHqcC4CX1IxfUgd8tc+MXvDde+Y6NyoLLQ/2Qfk3qP4x7taHgfCSz/tKxGgo4iCu5siiJshowQDUDj5E9YoAMczgTdR4uGXsS0LKukbKmJ3vG9tom/0ROC0xW5snectSSrXo0v/P4LaNfwM4+fb6dZ6SEzni8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407796; c=relaxed/simple;
-	bh=a+/Hz9Pa8vi5xXlpkV4jlax9017fnP/ZQS0M4KB6KbE=;
+	s=arc-20240116; t=1740408283; c=relaxed/simple;
+	bh=FuMd4rrMMjB3JzRdwXoRztS2KNPNgu2SyaYduYnBPtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1sJ3cgDQzYYSUH6s5RGcH8uvb/iiKP9iB9S/cn1mXZnOsOz9W8Ai7oLCy1C+2BPhBVUyJQT66mHC4E8vMSuKii+pUextn0C1Ub4wdsYiuix07qU6U9rTgugdIGPEzjsBAsnfoJNnIBcvugWbxnM0PzQN2ghZXcqCtIWUXZWHdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkH9oj2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAFAC4CEE9;
-	Mon, 24 Feb 2025 14:36:35 +0000 (UTC)
+	 MIME-Version; b=DoNL5BXMR66GhxyQUThg2D3IMPmZm44NqUefRiA/YieTR8Bmx8h8mwQ9RjYL/6ND31nojuACCuwOaIBNWXUE9YKPbgSQFyVdI9ooQag05Oo+FFoOOuUsWIq9dFdqzel1KFKRNC8w2NaLeMXXOPY9pIFZQFIPu/L+e7qLo3SVr5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmfchwGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4504C4CED6;
+	Mon, 24 Feb 2025 14:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407795;
-	bh=a+/Hz9Pa8vi5xXlpkV4jlax9017fnP/ZQS0M4KB6KbE=;
+	s=korg; t=1740408281;
+	bh=FuMd4rrMMjB3JzRdwXoRztS2KNPNgu2SyaYduYnBPtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkH9oj2xRfefuw9QaYVwB4PV8WveCaFEItTYE+YIKfty/C4dVCefqoxpW5tVtBwIr
-	 3rlb3m0v70Vy4t4s0rpLaKYZFJzeyHqj5nSvguRdMnYsAsBCt/EaPP9Ub0oAnkFHnt
-	 vf2I2tgHMTskj7NqYnJSj6Pdqxalx4Mb1prjWDJ0=
+	b=FmfchwGX0x7kJNil6uYE8+mXJ1Pyg7Nv6Q2OmqPHtHg8dVDnFfSYyLkDlTMAhsfzt
+	 ma/HS/vQaxuxJWvBLO5DhAg1tzMdYUWHmuQBnEeuhag1GXSvQ+JzqTnR4pwsLBabmg
+	 f17EW4hEwWpRDbL9phVbhlf1PCeafm2BVwIrgsMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 012/140] xfs: fold xfs_bmap_alloc_userdata into xfs_bmapi_allocate
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 012/154] btrfs: use btrfs_inode in extent_writepage()
 Date: Mon, 24 Feb 2025 15:33:31 +0100
-Message-ID: <20250224142603.493237057@linuxfoundation.org>
+Message-ID: <20250224142607.555312252@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: David Sterba <dsterba@suse.com>
 
-commit 865469cd41bce2b04bef9539cbf70676878bc8df upstream.
+[ Upstream commit 011a9a1f244656cc3cbde47edba2b250f794d440 ]
 
-[backport: dependency of 6aac770]
+As extent_writepage() is internal helper we should use our inode type,
+so change it from struct inode.
 
-Userdata and metadata allocations end up in the same allocation helpers.
-Remove the separate xfs_bmap_alloc_userdata function to make this more
-clear.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 8bf334beb349 ("btrfs: fix double accounting race when extent_writepage_io() failed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |   73 ++++++++++++++++++-----------------------------
- 1 file changed, 28 insertions(+), 45 deletions(-)
+ fs/btrfs/extent_io.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -4078,43 +4078,6 @@ out:
- }
- 
- static int
--xfs_bmap_alloc_userdata(
--	struct xfs_bmalloca	*bma)
--{
--	struct xfs_mount	*mp = bma->ip->i_mount;
--	int			whichfork = xfs_bmapi_whichfork(bma->flags);
--	int			error;
--
--	/*
--	 * Set the data type being allocated. For the data fork, the first data
--	 * in the file is treated differently to all other allocations. For the
--	 * attribute fork, we only need to ensure the allocated range is not on
--	 * the busy list.
--	 */
--	bma->datatype = XFS_ALLOC_NOBUSY;
--	if (whichfork == XFS_DATA_FORK || whichfork == XFS_COW_FORK) {
--		bma->datatype |= XFS_ALLOC_USERDATA;
--		if (bma->offset == 0)
--			bma->datatype |= XFS_ALLOC_INITIAL_USER_DATA;
--
--		if (mp->m_dalign && bma->length >= mp->m_dalign) {
--			error = xfs_bmap_isaeof(bma, whichfork);
--			if (error)
--				return error;
--		}
--
--		if (XFS_IS_REALTIME_INODE(bma->ip))
--			return xfs_bmap_rtalloc(bma);
--	}
--
--	if (unlikely(XFS_TEST_ERROR(false, mp,
--			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
--		return xfs_bmap_exact_minlen_extent_alloc(bma);
--
--	return xfs_bmap_btalloc(bma);
--}
--
--static int
- xfs_bmapi_allocate(
- 	struct xfs_bmalloca	*bma)
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 5a1bde8cc8b64..e8f882f949051 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1467,15 +1467,15 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+  */
+ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl)
  {
-@@ -4147,15 +4110,35 @@ xfs_bmapi_allocate(
- 	else
- 		bma->minlen = 1;
+-	struct inode *inode = folio->mapping->host;
+-	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
++	struct btrfs_inode *inode = BTRFS_I(folio->mapping->host);
++	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+ 	const u64 page_start = folio_pos(folio);
+ 	int ret;
+ 	size_t pg_offset;
+-	loff_t i_size = i_size_read(inode);
++	loff_t i_size = i_size_read(&inode->vfs_inode);
+ 	unsigned long end_index = i_size >> PAGE_SHIFT;
  
--	if (bma->flags & XFS_BMAPI_METADATA) {
--		if (unlikely(XFS_TEST_ERROR(false, mp,
--				XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
--			error = xfs_bmap_exact_minlen_extent_alloc(bma);
--		else
--			error = xfs_bmap_btalloc(bma);
--	} else {
--		error = xfs_bmap_alloc_userdata(bma);
-+	if (!(bma->flags & XFS_BMAPI_METADATA)) {
-+		/*
-+		 * For the data and COW fork, the first data in the file is
-+		 * treated differently to all other allocations. For the
-+		 * attribute fork, we only need to ensure the allocated range
-+		 * is not on the busy list.
-+		 */
-+		bma->datatype = XFS_ALLOC_NOBUSY;
-+		if (whichfork == XFS_DATA_FORK || whichfork == XFS_COW_FORK) {
-+			bma->datatype |= XFS_ALLOC_USERDATA;
-+			if (bma->offset == 0)
-+				bma->datatype |= XFS_ALLOC_INITIAL_USER_DATA;
-+
-+			if (mp->m_dalign && bma->length >= mp->m_dalign) {
-+				error = xfs_bmap_isaeof(bma, whichfork);
-+				if (error)
-+					return error;
-+			}
-+		}
+-	trace_extent_writepage(folio, inode, bio_ctrl->wbc);
++	trace_extent_writepage(folio, &inode->vfs_inode, bio_ctrl->wbc);
+ 
+ 	WARN_ON(!folio_test_locked(folio));
+ 
+@@ -1499,13 +1499,13 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+ 	if (ret < 0)
+ 		goto done;
+ 
+-	ret = writepage_delalloc(BTRFS_I(inode), folio, bio_ctrl);
++	ret = writepage_delalloc(inode, folio, bio_ctrl);
+ 	if (ret == 1)
+ 		return 0;
+ 	if (ret)
+ 		goto done;
+ 
+-	ret = extent_writepage_io(BTRFS_I(inode), folio, folio_pos(folio),
++	ret = extent_writepage_io(inode, folio, folio_pos(folio),
+ 				  PAGE_SIZE, bio_ctrl, i_size);
+ 	if (ret == 1)
+ 		return 0;
+@@ -1514,7 +1514,7 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+ 
+ done:
+ 	if (ret) {
+-		btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
++		btrfs_mark_ordered_io_finished(inode, folio,
+ 					       page_start, PAGE_SIZE, !ret);
+ 		mapping_set_error(folio->mapping, ret);
  	}
-+
-+	if ((bma->datatype & XFS_ALLOC_USERDATA) &&
-+	    XFS_IS_REALTIME_INODE(bma->ip))
-+		error = xfs_bmap_rtalloc(bma);
-+	else if (unlikely(XFS_TEST_ERROR(false, mp,
-+			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
-+		error = xfs_bmap_exact_minlen_extent_alloc(bma);
-+	else
-+		error = xfs_bmap_btalloc(bma);
- 	if (error)
- 		return error;
- 	if (bma->blkno == NULLFSBLOCK)
+-- 
+2.39.5
+
 
 
 
