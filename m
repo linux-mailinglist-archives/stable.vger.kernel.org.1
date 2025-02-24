@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-119230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6213FA4255A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC30A42593
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E944719C0737
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC763189490F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BE2245037;
-	Mon, 24 Feb 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B082146A6F;
+	Mon, 24 Feb 2025 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQjivjxi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8kH19hf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFC0245002;
-	Mon, 24 Feb 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8051B7F4;
+	Mon, 24 Feb 2025 14:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408761; cv=none; b=WlQ3TTytpL5uas4Qpc5OTIR0P18lKrt0LI1mdR7A1D7WXx6PN0jljJAyHV8gQsYGZx6jM/AubzBhr0U4frJoMdkDPdW7BryvBRmh+6sdqTqruu/CpNcH5gii0BO2QbMac4Y/SbhgEIfnDAjVTrp4/1aXLKqWvQ/OhLGM/pH7ShU=
+	t=1740409185; cv=none; b=NvOPi5CMx+Dmw5icbNGlIlVZL7KfktB5hPf8GiAzV2b4NBCNjtQxn7TRU69gjTfv4DIm1fG2jU62ylPpU1dmzZ1ozVKCpKy1GTn73LSZdDigtzzzUehOHUYPYMgQ7Iu+WWdpu/FzdTMsqB0tkv0dGRddFuJ5pyEWSs+oTzoMUjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408761; c=relaxed/simple;
-	bh=V0xjJcGQzLb/gbh8DZsHBNI7iD6oSQckPjYnVncfD40=;
+	s=arc-20240116; t=1740409185; c=relaxed/simple;
+	bh=wDbZo1pTFT7Kjgj//gdc+4twUbF8zOkIw1gj2RnRoNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1YInoGgSEe/94LeupgMIzKU8MQy5rUNUEJxj9bh4dnKh92jUQ51JYLMkZ5jucGYuOa84y+XT02eaxQRfFVEzM++BD1dDJRrUS1HiWihWaoZA05ZOrpVnBjQS2wCzefXX3bAzy1kxKr+N3yDbKtgz/1ilJsEfDoUtmrIasq+si8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQjivjxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168E5C4CED6;
-	Mon, 24 Feb 2025 14:52:40 +0000 (UTC)
+	 MIME-Version; b=uFFlaWpz+hSOc4QVuQNHz8ub4F8Iwh0A+5DEf2ICnYBRRApat11lGMjOWcoA4k5hlCoU3BcKKQrkcu1WpO/coRz8FG2QaRigy0btpv4URUdjveghfqQXWECuJ5zeyiDQHyk+TGmy26Xqz75MkYY4f0Xf31oE0U/pjHWUsYyg7lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8kH19hf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDC9C4CED6;
+	Mon, 24 Feb 2025 14:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408761;
-	bh=V0xjJcGQzLb/gbh8DZsHBNI7iD6oSQckPjYnVncfD40=;
+	s=korg; t=1740409184;
+	bh=wDbZo1pTFT7Kjgj//gdc+4twUbF8zOkIw1gj2RnRoNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQjivjxioaKK6e5c+id32u2+8vEllntEYyB9cqHlJT+BOVijtKAuDM9vkAHA30Rrl
-	 xgEyWrqvouZ1IN/VHZqjB8vbZDGn6Iyg9vbwDHu9QjRNdwlpZna1LEdlWgMBWOxwxJ
-	 NiypqBdORFT3H+mzLOviggrGe9JKSq6cAGsIfJtY=
+	b=F8kH19hftt8jONV9XdAiFpO1OG7wsMqt4H9+LMoUHOWHFm4w50rCrChX7QyJknJou
+	 XTj5+olN5nig+pOfCfjVgsCjmPh9ILzE4RPHi2oZgKVJghhivnISPqUL/uuU/2wvoq
+	 edDeoViQEtJYARaS+jJLWLc0yC2q4hwM3vdcmfVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianling Shen <cnsztl@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 152/154] arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
+	Amir Goldstein <amir73il@gmail.com>,
+	Zicheng Qu <quzicheng@huawei.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 121/138] acct: block access to kernel internal filesystems
 Date: Mon, 24 Feb 2025 15:35:51 +0100
-Message-ID: <20250224142612.995547337@linuxfoundation.org>
+Message-ID: <20250224142609.227852387@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianling Shen <cnsztl@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit a6a7cba17c544fb95d5a29ab9d9ed4503029cb29 upstream.
+commit 890ed45bde808c422c3c27d3285fc45affa0f930 upstream.
 
-In general the delay should be added by the PHY instead of the MAC,
-and this improves network stability on some boards which seem to
-need different delay.
+There's no point in allowing anything kernel internal nor procfs or
+sysfs.
 
-Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 Plus LTS")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Tianling Shen <cnsztl@gmail.com>
-Link: https://lore.kernel.org/r/20250119091154.1110762-1-cnsztl@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-[Fix conflicts due to missing dtsi conversion]
-Signed-off-by: Tianling Shen <cnsztl@gmail.com>
+Link: https://lore.kernel.org/r/20250127091811.3183623-1-quzicheng@huawei.com
+Link: https://lore.kernel.org/r/20250211-work-acct-v1-2-1c16aecab8b3@kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reported-by: Zicheng Qu <quzicheng@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/acct.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-@@ -15,9 +15,11 @@
- };
+--- a/kernel/acct.c
++++ b/kernel/acct.c
+@@ -243,6 +243,20 @@ static int acct_on(struct filename *path
+ 		return -EACCES;
+ 	}
  
- &gmac2io {
-+	/delete-property/ tx_delay;
-+	/delete-property/ rx_delay;
++	/* Exclude kernel kernel internal filesystems. */
++	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
++		kfree(acct);
++		filp_close(file, NULL);
++		return -EINVAL;
++	}
 +
- 	phy-handle = <&yt8531c>;
--	tx_delay = <0x19>;
--	rx_delay = <0x05>;
-+	phy-mode = "rgmii-id";
- 
- 	mdio {
- 		/delete-node/ ethernet-phy@1;
++	/* Exclude procfs and sysfs. */
++	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
++		kfree(acct);
++		filp_close(file, NULL);
++		return -EINVAL;
++	}
++
+ 	if (!(file->f_mode & FMODE_CAN_WRITE)) {
+ 		kfree(acct);
+ 		filp_close(file, NULL);
 
 
 
