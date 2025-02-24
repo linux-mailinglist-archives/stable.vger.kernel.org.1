@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-118803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA797A41C82
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:22:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7203CA41C84
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269BA3BC7FC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:20:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21A653BB7CE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C466261395;
-	Mon, 24 Feb 2025 11:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED13261571;
+	Mon, 24 Feb 2025 11:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjpjPy3s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmdrX6Bn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26616205AAF;
-	Mon, 24 Feb 2025 11:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485BF26156C;
+	Mon, 24 Feb 2025 11:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395857; cv=none; b=nrhJZ8wF0xqCrBSQkxFxT+BbiHIrOm9Orvz3zCp9gPpiDBadYIQ3EeWQLlurAbflzyuT0G9kxXtGowJYgMKZ09WmkN33BlJoJW5dNyrk+Nd/vugU6QryIM/dR/k0xRYw7zNs7RfbpR6UEWq+E0jixOzwizz764eh3NooL7MzEMM=
+	t=1740395860; cv=none; b=dJieiy7I39DjdEOJAjsYkOpbu4JZyZzJcJ9pdyKbeyGWtRBEOxMoVUOKl1A7+2dQAnQRczgzFK8fiKAwM1jiKcvsxbTPp+EGRgfkSg5Ta2GPZRkjhlcGpha3aWL7OJeXs08PvwVp9klTnl44lmnsUPLbg4ajuNVpSjr6VGS+NpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395857; c=relaxed/simple;
-	bh=7a27Ewkktf429nWm/HiXb0YWa2mUrzVr/EV67G6JmS0=;
+	s=arc-20240116; t=1740395860; c=relaxed/simple;
+	bh=HuzOtvANT2iS/b8mzEPUx/768H2RHmHBD/7ZWLQmsWo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kLLH40xuSdBYweLpxz6m+bdygIGgbf7mChwM7hoREyviGfd3qP28b+/OCjvjRlVAf36KLXRxKgOR3v4mCvvXttkz0iCZlULiLRVuHf23k2LVzzKRKnlnuPU3dP0LgcYq6pez0M1BgTm7tkSSDUmEKoTZuEC8/vJEir96hq/UZHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjpjPy3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083FEC4AF09;
-	Mon, 24 Feb 2025 11:17:34 +0000 (UTC)
+	 MIME-Version; b=pR6MAU5F3mTHJa9T68pPDqXYiN1k/Ar75nKEGzBpox9NtKCV4f5x73CrX0KGfx9kYaeRc2sPS8OxhHGCyn807thdBb4GQZMCdrMt1EkZVRkoS6OinC4ZpXkiXmUFssO4XXnbAa/WsJ7q1+35PwJ6TZtVYzqcZUcxclz4Zy9VOBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmdrX6Bn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4DDC4CED6;
+	Mon, 24 Feb 2025 11:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395857;
-	bh=7a27Ewkktf429nWm/HiXb0YWa2mUrzVr/EV67G6JmS0=;
+	s=k20201202; t=1740395860;
+	bh=HuzOtvANT2iS/b8mzEPUx/768H2RHmHBD/7ZWLQmsWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjpjPy3smvZKT74Ks6AvlRUVmAUU0DGj4lfvzZJ+EKLhrs0f8m/Yxi2pnMguV9SEO
-	 0JYJeZhgHcppPpPZstN+ekpcznyL7JeRkZMzIVJ+HbZuEoK1cQ+qKIuNpi2/a8lor+
-	 WBRjtw6t8eD29XedPHOVSJJKaIiQjRO07QbddzuLhXGXHDZi83nqLgH41+dsHfwAQ9
-	 kIpOHaYIEqXS4kWPPdrcDGLk3dE5WAubZdIW3aIm43V/jJGSsz/ZwzhLop3e9ijftn
-	 RZvCeeeHA7KqFrQXFJEUVfixBoMva8iI2DC+kHrZTYZMpAjvuCe7fYff56FuGNp1G9
-	 YyrYyzhsHxPhQ==
+	b=jmdrX6BnoKhD+78XURTEbbQu9izHD8Pd2jCl7+deSPgSHUhDrPeDRyN4zYi6uaENn
+	 q+qvOr2oHPjy3z6atS852UHc8jrEqnpgg+YkKQmf9kUW7xnj4iRsXdkP52L6fvf9HB
+	 b9mZOM+ha27Tnm4/440Gu/IuAyH6rSX6MT70uigA1C9p0N0XjN1TRypL4f3zQ1KxPJ
+	 QM3HJzdq3HHwfB/AqeusxQGEOefgGovzHJree6g3fvcV1bAp8tXZIss9sBgD1Oy92m
+	 um0FIOSpBUOYPY1WQkYkWdBc84dVQ7bwXGZ1UG44CXHbLGxjfRAS49cdt7tumkFzSs
+	 35K8fS2ZPa9ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,17 +54,14 @@ Cc: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	daniel.baluta@nxp.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	Vijendar.Mukunda@amd.com,
-	pierre-louis.bossart@linux.dev,
-	venkataprasad.potturu@amd.com,
-	peterz@infradead.org,
-	krzk@kernel.org,
 	gregkh@linuxfoundation.org,
+	peterz@infradead.org,
+	venkataprasad.potturu@amd.com,
 	sound-open-firmware@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 19/32] ASoC: SOF: amd: Add post_fw_run_delay ACP quirk
-Date: Mon, 24 Feb 2025 06:16:25 -0500
-Message-Id: <20250224111638.2212832-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 20/32] ASoC: SOF: amd: Handle IPC replies before FW_BOOT_COMPLETE
+Date: Mon, 24 Feb 2025 06:16:26 -0500
+Message-Id: <20250224111638.2212832-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111638.2212832-1-sashal@kernel.org>
 References: <20250224111638.2212832-1-sashal@kernel.org>
@@ -81,116 +78,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 91b98d5a6e8067c5226207487681a48f0d651e46 ]
+[ Upstream commit ac84ca815adb4171a4276b1d44096b75f6a150b7 ]
 
-Stress testing resume from suspend on Valve Steam Deck OLED (Galileo)
-revealed that the DSP firmware could enter an unrecoverable faulty
-state, where the kernel ring buffer is flooded with IPC related error
-messages:
+In some cases, e.g. during resuming from suspend, there is a possibility
+that some IPC reply messages get received by the host while the DSP
+firmware has not yet reached the complete boot state.
 
-[  +0.017002] snd_sof_amd_vangogh 0000:04:00.5: acp_sof_ipc_send_msg: Failed to acquire HW lock
-[  +0.000054] snd_sof_amd_vangogh 0000:04:00.5: ipc3_tx_msg_unlocked: ipc message send for 0x30100000 failed: -22
-[  +0.000005] snd_sof_amd_vangogh 0000:04:00.5: Failed to setup widget PIPELINE.6.ACPHS1.IN
-[  +0.000004] snd_sof_amd_vangogh 0000:04:00.5: Failed to restore pipeline after resume -22
-[  +0.000003] snd_sof_amd_vangogh 0000:04:00.5: PM: dpm_run_callback(): pci_pm_resume returns -22
-[  +0.000009] snd_sof_amd_vangogh 0000:04:00.5: PM: failed to resume async: error -22
-[...]
-[  +0.002582] PM: suspend exit
-[  +0.065085] snd_sof_amd_vangogh 0000:04:00.5: ipc tx error for 0x30130000 (msg/reply size: 12/0): -22
-[  +0.000499] snd_sof_amd_vangogh 0000:04:00.5: error: failed widget list set up for pcm 1 dir 0
-[  +0.000011] snd_sof_amd_vangogh 0000:04:00.5: error: set pcm hw_params after resume
-[  +0.000006] snd_sof_amd_vangogh 0000:04:00.5: ASoC: error at snd_soc_pcm_component_prepare on 0000:04:00.5: -22
-[...]
-
-A system reboot would be necessary to restore the speakers
-functionality.
-
-However, by delaying a bit any host to DSP transmission right after
-the firmware boot completed, the issue could not be reproduced anymore
-and sound continued to work flawlessly even after performing thousands
-of suspend/resume cycles.
-
-Introduce the post_fw_run_delay ACP quirk to allow providing the
-aforementioned delay via the snd_sof_dsp_ops->post_fw_run() callback for
-the affected devices.
+Detect when this happens and do not attempt to process the unexpected
+replies from DSP.  Instead, provide proper debugging support.
 
 Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-1-67824c1e4c9a@collabora.com
+Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-3-67824c1e4c9a@collabora.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/acp.c     |  1 +
- sound/soc/sof/amd/acp.h     |  1 +
- sound/soc/sof/amd/vangogh.c | 18 ++++++++++++++++++
- 3 files changed, 20 insertions(+)
+ sound/soc/sof/amd/acp-ipc.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index 33648ff8b8336..9e13c96528be3 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -27,6 +27,7 @@ MODULE_PARM_DESC(enable_fw_debug, "Enable Firmware debug");
- static struct acp_quirk_entry quirk_valve_galileo = {
- 	.signed_fw_image = true,
- 	.skip_iram_dram_size_mod = true,
-+	.post_fw_run_delay = true,
- };
+diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
+index 5f371d9263f3b..12caefd087885 100644
+--- a/sound/soc/sof/amd/acp-ipc.c
++++ b/sound/soc/sof/amd/acp-ipc.c
+@@ -167,6 +167,7 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
  
- const struct dmi_system_id acp_sof_quirk_table[] = {
-diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
-index 800594440f739..2a19d82d62002 100644
---- a/sound/soc/sof/amd/acp.h
-+++ b/sound/soc/sof/amd/acp.h
-@@ -220,6 +220,7 @@ struct sof_amd_acp_desc {
- struct acp_quirk_entry {
- 	bool signed_fw_image;
- 	bool skip_iram_dram_size_mod;
-+	bool post_fw_run_delay;
- };
- 
- /* Common device data struct for ACP devices */
-diff --git a/sound/soc/sof/amd/vangogh.c b/sound/soc/sof/amd/vangogh.c
-index 8e2672106ac60..d5f1dddd43e72 100644
---- a/sound/soc/sof/amd/vangogh.c
-+++ b/sound/soc/sof/amd/vangogh.c
-@@ -11,6 +11,7 @@
-  * Hardware interface for Audio DSP on Vangogh platform
-  */
- 
-+#include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/module.h>
- 
-@@ -136,6 +137,20 @@ static struct snd_soc_dai_driver vangogh_sof_dai[] = {
- 	},
- };
- 
-+static int sof_vangogh_post_fw_run_delay(struct snd_sof_dev *sdev)
-+{
-+	/*
-+	 * Resuming from suspend in some cases my cause the DSP firmware
-+	 * to enter an unrecoverable faulty state.  Delaying a bit any host
-+	 * to DSP transmission right after firmware boot completion seems
-+	 * to resolve the issue.
-+	 */
-+	if (!sdev->first_boot)
-+		usleep_range(100, 150);
+ 	if (sdev->first_boot && sdev->fw_state != SOF_FW_BOOT_COMPLETE) {
+ 		acp_mailbox_read(sdev, sdev->dsp_box.offset, &status, sizeof(status));
 +
-+	return 0;
-+}
-+
- /* Vangogh ops */
- struct snd_sof_dsp_ops sof_vangogh_ops;
- EXPORT_SYMBOL_NS(sof_vangogh_ops, "SND_SOC_SOF_AMD_COMMON");
-@@ -157,6 +172,9 @@ int sof_vangogh_ops_init(struct snd_sof_dev *sdev)
+ 		if ((status & SOF_IPC_PANIC_MAGIC_MASK) == SOF_IPC_PANIC_MAGIC) {
+ 			snd_sof_dsp_panic(sdev, sdev->dsp_box.offset + sizeof(status),
+ 					  true);
+@@ -188,13 +189,21 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
  
- 		if (quirks->signed_fw_image)
- 			sof_vangogh_ops.load_firmware = acp_sof_load_signed_firmware;
+ 	dsp_ack = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_ack_write);
+ 	if (dsp_ack) {
+-		spin_lock_irq(&sdev->ipc_lock);
+-		/* handle immediate reply from DSP core */
+-		acp_dsp_ipc_get_reply(sdev);
+-		snd_sof_ipc_reply(sdev, 0);
+-		/* set the done bit */
+-		acp_dsp_ipc_dsp_done(sdev);
+-		spin_unlock_irq(&sdev->ipc_lock);
++		if (likely(sdev->fw_state == SOF_FW_BOOT_COMPLETE)) {
++			spin_lock_irq(&sdev->ipc_lock);
 +
-+		if (quirks->post_fw_run_delay)
-+			sof_vangogh_ops.post_fw_run = sof_vangogh_post_fw_run_delay;
++			/* handle immediate reply from DSP core */
++			acp_dsp_ipc_get_reply(sdev);
++			snd_sof_ipc_reply(sdev, 0);
++			/* set the done bit */
++			acp_dsp_ipc_dsp_done(sdev);
++
++			spin_unlock_irq(&sdev->ipc_lock);
++		} else {
++			dev_dbg_ratelimited(sdev->dev, "IPC reply before FW_BOOT_COMPLETE: %#x\n",
++					    dsp_ack);
++		}
++
+ 		ipc_irq = true;
  	}
  
- 	return 0;
 -- 
 2.39.5
 
