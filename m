@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-118849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A81FA41CDC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:33:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313C2A41D00
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760C3189C63F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6CB3A7A28
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37822690D1;
-	Mon, 24 Feb 2025 11:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE31B269808;
+	Mon, 24 Feb 2025 11:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="roVJQXbJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQ9Z7gU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845672690CB;
-	Mon, 24 Feb 2025 11:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C3D25E479;
+	Mon, 24 Feb 2025 11:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395967; cv=none; b=VNQCKvYHqPAqhHeAL14hh4Dtsb6tBMZM6O0zC/PzQwe9lcl+RF7Vqb3pFa94ChAbK4O4L+2opeaYvI5ZMmD3a0lXEKDaOGRSxfsuu/OCSh/rixSco8nsR4wbEqf04A3DhLavPnICOvg1f7pP1idVMJlOAkXmHm34SURFx8YVEPk=
+	t=1740395972; cv=none; b=kB5ss69CmhpdjohaNr86ZB/gNNPHTN6VJEMshmPfnNlP9+e+jUivlGBKNkeVbPcHqmHnPsf776yzpYlbNbfd5CNQoETIMH2Hwr30nT1HY8zapnYEfDd6rKHt+DeZ/IvzG93I6IH3Z9ZKmqevO9claABzwQvsx0AtvSXCLfZYGbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395967; c=relaxed/simple;
-	bh=KachhjvHlgdI7EuxbAmmXbMUXUXDWbyNsfZe0FVzCqg=;
+	s=arc-20240116; t=1740395972; c=relaxed/simple;
+	bh=saetJLQJy0/ds028HSR754l+xWhJCR/GPsaKMyC5t10=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jfbh4tJXJbTSAfL6hWaq54yy0foz4fY8TtMiO04tgp9RGEBZezQ1f3tU/uxqxM2bMHj2Mrj9tXFjzxF0PHiuLafCRXFHlsF3/WaS0QL7UTeDwd98tkUoBRuyCime5iowzKgPm5/I1uPvUy6OnXA9JbD6mgUfJgwDV/AN8UdDYXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=roVJQXbJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336B2C4CED6;
-	Mon, 24 Feb 2025 11:19:26 +0000 (UTC)
+	 MIME-Version; b=ftuXXkiqrqifdPjGR+XPR8sYb9lLno8UCf1kuF4Xh2L+595kmsy58Vq3BHTtFpzW0ABYWkI2ew56vykMfUiKndue/pIcbvhDi4OnpZld9eeaKu3Fhc0bszFP1qepda9GO/2yO2ZjHgiC8kNW4lrHgKNjKG897W6xb97clTU3D2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQ9Z7gU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E366C4CEE8;
+	Mon, 24 Feb 2025 11:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395967;
-	bh=KachhjvHlgdI7EuxbAmmXbMUXUXDWbyNsfZe0FVzCqg=;
+	s=k20201202; t=1740395972;
+	bh=saetJLQJy0/ds028HSR754l+xWhJCR/GPsaKMyC5t10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=roVJQXbJJiEwEFVML1nxUFzQP8eh9o2LUxtgnWxUNBHxqvZm6wX7SYsLELtBjs94r
-	 KPto30aEk6NyKhySOpC0mZx7SrQGPyWW28CT6F15Dx7p6xG3Hs5vU2XDPBrbtukGD9
-	 3efghLiLfvnW/e2aWFS83ChPboZw0/oCAjkXC6wjdsL1Insj5YZm11x6wSYDeDaHKQ
-	 YOjp/3b2onHdlGbd8BYsOvD4Av88zVjXgkl6ESAbsLidg491krcGz4hA63B8iGFmWd
-	 1dadktaLD5QDnSb15h+51b8OzWLL96npvKce15tkJ3ZIelo2tftTIwlrDZFtsu3ieb
-	 USk2Ya5PA/ZaQ==
+	b=DQ9Z7gU9frsbX0ullO62RIej06m9aRuDatTljKb3ocEZiuy/HPTdIHwf+1GelWVv/
+	 R8w1szgVOWU8DS822vbFqrn631R93KObsVuzDAHfKUILQp2pLfezpZkzQ84+W6vlyx
+	 9CxxHh9MHLAVRLF0lbsq3s+LG7aC8FSSVHYf7ulxY94VKflPuMvJYagcd75gVp8UPK
+	 /PO0xirH6DbKg/HzJUWrhwm/gx/gzHly4Lv0XSqyFcxorn6Ied8Jv9FRCN4OjkhvC5
+	 b97Wq6RDE5L7BwN81szC/A58lgwjLGkIqC/N/W6Ar1W2kq6Vd10ha7U0q2URyhw0De
+	 GRvSrv57w89Cg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,10 +52,12 @@ Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	perex@perex.cz,
 	tiwai@suse.com,
 	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	krzysztof.kozlowski@linaro.org,
+	u.kleine-koenig@baylibre.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/20] ASoC: rsnd: indicate unsupported clock rate
-Date: Mon, 24 Feb 2025 06:18:58 -0500
-Message-Id: <20250224111914.2214326-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 06/20] ASoC: rsnd: don't indicate warning on rsnd_kctrl_accept_runtime()
+Date: Mon, 24 Feb 2025 06:18:59 -0500
+Message-Id: <20250224111914.2214326-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111914.2214326-1-sashal@kernel.org>
 References: <20250224111914.2214326-1-sashal@kernel.org>
@@ -72,33 +74,120 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 796106e29e5df6cd4b4e2b51262a8a19e9fa0625 ]
+[ Upstream commit c3fc002b206c6c83d1e3702b979733002ba6fb2c ]
 
-It will indicate "unsupported clock rate" when setup clock failed.
-But it is unclear what kind of rate was failed. Indicate it.
+rsnd_kctrl_accept_runtime() (1) is used for runtime convert rate
+(= Synchronous SRC Mode). Now, rsnd driver has 2 kctrls for it
+
+(A):	"SRC Out Rate Switch"
+(B):	"SRC Out Rate"		// it calls (1)
+
+(A): can be called anytime
+(B): can be called only runtime, and will indicate warning if it was used
+   at non-runtime.
+
+To use runtime convert rate (= Synchronous SRC Mode), user might uses
+command in below order.
+
+(X):	> amixer set "SRC Out Rate" on
+	> aplay xxx.wav &
+(Y):	> amixer set "SRC Out Rate" 48010 // convert rate to 48010Hz
+
+(Y): calls B
+(X): calls both A and B.
+
+In this case, when user calls (X), it calls both (A) and (B), but it is not
+yet start running. So, (B) will indicate warning.
+
+This warning was added by commit b5c088689847 ("ASoC: rsnd: add warning
+message to rsnd_kctrl_accept_runtime()"), but the message sounds like the
+operation was not correct. Let's update warning message.
+
+The message is very SRC specific, implement it in src.c
 
 Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/874j192qej.wl-kuninori.morimoto.gx@renesas.com
+Link: https://patch.msgid.link/8734gt2qed.wl-kuninori.morimoto.gx@renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rcar/ssi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/sh/rcar/core.c | 14 --------------
+ sound/soc/sh/rcar/rsnd.h |  1 -
+ sound/soc/sh/rcar/src.c  | 18 +++++++++++++++++-
+ 3 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/sh/rcar/ssi.c b/sound/soc/sh/rcar/ssi.c
-index 690ac0d6ef41a..2a9e8d20c23c3 100644
---- a/sound/soc/sh/rcar/ssi.c
-+++ b/sound/soc/sh/rcar/ssi.c
-@@ -334,7 +334,8 @@ static int rsnd_ssi_master_clk_start(struct rsnd_mod *mod,
- 	return 0;
- 
- rate_err:
--	dev_err(dev, "unsupported clock rate\n");
-+	dev_err(dev, "unsupported clock rate (%d)\n", rate);
-+
- 	return ret;
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index 98c7be340a536..3cd14fbca28ea 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -1775,20 +1775,6 @@ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io)
+ 	return 1;
  }
+ 
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io)
+-{
+-	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
+-	struct rsnd_priv *priv = rsnd_io_to_priv(io);
+-	struct device *dev = rsnd_priv_to_dev(priv);
+-
+-	if (!runtime) {
+-		dev_warn(dev, "Can't update kctrl when idle\n");
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg)
+ {
+ 	cfg->cfg.val = cfg->val;
+diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
+index 43c0d675cc343..1214dbba6898b 100644
+--- a/sound/soc/sh/rcar/rsnd.h
++++ b/sound/soc/sh/rcar/rsnd.h
+@@ -755,7 +755,6 @@ struct rsnd_kctrl_cfg_s {
+ #define rsnd_kctrl_vals(x)	((x).val)	/* = (x).cfg.val[0] */
+ 
+ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io);
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_s(struct rsnd_kctrl_cfg_s *cfg);
+ int rsnd_kctrl_new(struct rsnd_mod *mod,
+diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
+index f832165e46bc0..9893839666d7b 100644
+--- a/sound/soc/sh/rcar/src.c
++++ b/sound/soc/sh/rcar/src.c
+@@ -530,6 +530,22 @@ static irqreturn_t rsnd_src_interrupt(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int rsnd_src_kctrl_accept_runtime(struct rsnd_dai_stream *io)
++{
++	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
++
++	if (!runtime) {
++		struct rsnd_priv *priv = rsnd_io_to_priv(io);
++		struct device *dev = rsnd_priv_to_dev(priv);
++
++		dev_warn(dev, "\"SRC Out Rate\" can use during running\n");
++
++		return 0;
++	}
++
++	return 1;
++}
++
+ static int rsnd_src_probe_(struct rsnd_mod *mod,
+ 			   struct rsnd_dai_stream *io,
+ 			   struct rsnd_priv *priv)
+@@ -593,7 +609,7 @@ static int rsnd_src_pcm_new(struct rsnd_mod *mod,
+ 			       rsnd_io_is_play(io) ?
+ 			       "SRC Out Rate" :
+ 			       "SRC In Rate",
+-			       rsnd_kctrl_accept_runtime,
++			       rsnd_src_kctrl_accept_runtime,
+ 			       rsnd_src_set_convert_rate,
+ 			       &src->sync, 192000);
  
 -- 
 2.39.5
