@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-119287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91E5A42569
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:09:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CDEA42541
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D7919E1635
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 008AF16C32D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277E71917F1;
-	Mon, 24 Feb 2025 14:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315D514012;
+	Mon, 24 Feb 2025 14:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHyfxoMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYiAS+UJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77AB14012;
-	Mon, 24 Feb 2025 14:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15B4146A63;
+	Mon, 24 Feb 2025 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408953; cv=none; b=g5sGSq/BQJjju32qH637u8zjvJCqgCvgSl1brOcST/AXghCxTl6Fhwdg+SBiR3gmvgc/KgQpXaN7Wgtd/AVGxhS1akhvLRXa4i5fSfEG8I3ayyYqsoER3R1LlF8opyGyFfAREAW0GE+XOq5yT0pBV75SZQrJFWQDmUxXIabS5GA=
+	t=1740408533; cv=none; b=mbMELjIa+IYxK3tzw2iKMasDAFvHJ/8tRKQit5cMnKWhZkbuazQMQ6/H14g72pSie+SPReVaXSXa7waqEImevePR1LXglVoS56y1qxLOis3Jqz0O2mKUCF9dm0LmHJ6K78bzAw9oNopmwc/MB72zrmybpnIDEY+WK4wreAHfYzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408953; c=relaxed/simple;
-	bh=ZAoxeKaNrWrbYvHpiVwzKVQKTVnsf96Ed+JFv0KJFcM=;
+	s=arc-20240116; t=1740408533; c=relaxed/simple;
+	bh=efl7r/jRX17MuKHd7GnKCHWw4rS0hP1fzi5tShJxnyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaosOtFKn+QBj+8rCwdvxDC1O3XSybNntRf1H7qFmqFbrenyUCUimrtTShd80mBP4Z/JH68B7KWEdDae4sUQna3jJYMfGMCcIB/lhLWsHpwJVdSJOwyEMdeqcUKhXIdK39wju4dH5dtnNJa6l4PRzuSqQqh7o0ZLRLIkEfNH2tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHyfxoMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46734C4CED6;
-	Mon, 24 Feb 2025 14:55:53 +0000 (UTC)
+	 MIME-Version; b=Z+LHJKRo8VY4/9nb89Sx14Z/SSeJkLPrzRKXvdvKeG6tlOJCOCpX0jR2HfRj6Xe3T3eaHR/xh73hpg+/LSZLPlVXUYyAJ0NVwKOogPhlL7gYoIq/3dajaswc2xOfl6LbG5IEDPvwnhs6BxF8EOFBrrED9lsZIDSbywF4vXsP3K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYiAS+UJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D34BC4CED6;
+	Mon, 24 Feb 2025 14:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408953;
-	bh=ZAoxeKaNrWrbYvHpiVwzKVQKTVnsf96Ed+JFv0KJFcM=;
+	s=korg; t=1740408532;
+	bh=efl7r/jRX17MuKHd7GnKCHWw4rS0hP1fzi5tShJxnyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHyfxoMkF1Js403MYjbqEwIHIFCicO81GcFRC6NbkcJFLe+eSq0M7TN9zUD1OBmRc
-	 bBvUaHS13MajmAKGmhPcZrfrUGGCZCo95F1/GEx2FkjoKlLtOuR2Yptni6LMsyEcVg
-	 K3utjEy2W9sosqYUog8Yne6zO1NGhLxYTrXRkwDI=
+	b=zYiAS+UJ2xRXPKgBmMrNn4ZrdInNPvKgfOppPQeqfDV0k86WuRHAGdtOn7WZvelYW
+	 /XeJUBYMms3l/PWch/Iqw/+zv0JKi7bPEmJj2sOgfXaq8tHac7jaNG3plrsmbx3/Qj
+	 oC3jK2xvmm8YBQkoETE4MOjr56AqMAZsSQVVWUWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 052/138] bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type()
-Date: Mon, 24 Feb 2025 15:34:42 +0100
-Message-ID: <20250224142606.524625269@linuxfoundation.org>
+Subject: [PATCH 6.12 084/154] selftests/bpf: Add tests for raw_tp null handling
+Date: Mon, 24 Feb 2025 15:34:43 +0100
+Message-ID: <20250224142610.366275364@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 6b3d638ca897e099fa99bd6d02189d3176f80a47 ]
+[ Upstream commit d798ce3f4cab1b0d886b19ec5cc8e6b3d7e35081 ]
 
-KMSAN reported a use-after-free issue in eth_skb_pkt_type()[1]. The
-cause of the issue was that eth_skb_pkt_type() accessed skb's data
-that didn't contain an Ethernet header. This occurs when
-bpf_prog_test_run_xdp() passes an invalid value as the user_data
-argument to bpf_test_init().
+Ensure that trusted PTR_TO_BTF_ID accesses perform PROBE_MEM handling in
+raw_tp program. Without the previous fix, this selftest crashes the
+kernel due to a NULL-pointer dereference. Also ensure that dead code
+elimination does not kick in for checks on the pointer.
 
-Fix this by returning an error when user_data is less than ETH_HLEN in
-bpf_test_init(). Additionally, remove the check for "if (user_size >
-size)" as it is unnecessary.
-
-[1]
-BUG: KMSAN: use-after-free in eth_skb_pkt_type include/linux/etherdevice.h:627 [inline]
-BUG: KMSAN: use-after-free in eth_type_trans+0x4ee/0x980 net/ethernet/eth.c:165
- eth_skb_pkt_type include/linux/etherdevice.h:627 [inline]
- eth_type_trans+0x4ee/0x980 net/ethernet/eth.c:165
- __xdp_build_skb_from_frame+0x5a8/0xa50 net/core/xdp.c:635
- xdp_recv_frames net/bpf/test_run.c:272 [inline]
- xdp_test_run_batch net/bpf/test_run.c:361 [inline]
- bpf_test_run_xdp_live+0x2954/0x3330 net/bpf/test_run.c:390
- bpf_prog_test_run_xdp+0x148e/0x1b10 net/bpf/test_run.c:1318
- bpf_prog_test_run+0x5b7/0xa30 kernel/bpf/syscall.c:4371
- __sys_bpf+0x6a6/0xe20 kernel/bpf/syscall.c:5777
- __do_sys_bpf kernel/bpf/syscall.c:5866 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:5864 [inline]
- __x64_sys_bpf+0xa4/0xf0 kernel/bpf/syscall.c:5864
- x64_sys_call+0x2ea0/0x3d90 arch/x86/include/generated/asm/syscalls_64.h:322
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1d0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
- free_pages_prepare mm/page_alloc.c:1056 [inline]
- free_unref_page+0x156/0x1320 mm/page_alloc.c:2657
- __free_pages+0xa3/0x1b0 mm/page_alloc.c:4838
- bpf_ringbuf_free kernel/bpf/ringbuf.c:226 [inline]
- ringbuf_map_free+0xff/0x1e0 kernel/bpf/ringbuf.c:235
- bpf_map_free kernel/bpf/syscall.c:838 [inline]
- bpf_map_free_deferred+0x17c/0x310 kernel/bpf/syscall.c:862
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa2b/0x1b60 kernel/workqueue.c:3310
- worker_thread+0xedf/0x1550 kernel/workqueue.c:3391
- kthread+0x535/0x6b0 kernel/kthread.c:389
- ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-CPU: 1 UID: 0 PID: 17276 Comm: syz.1.16450 Not tainted 6.12.0-05490-g9bb88c659673 #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-
-Fixes: be3d72a2896c ("bpf: move user_size out of bpf_test_init")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://patch.msgid.link/20250121150643.671650-1-syoshida@redhat.com
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241104171959.2938862-4-memxor@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 5da7e15fb5a1 ("net: Add rx_skb of kfree_skb to raw_tp_null_args[].")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ .../bpf/bpf_testmod/bpf_testmod-events.h      |  8 +++++
+ .../selftests/bpf/bpf_testmod/bpf_testmod.c   |  2 ++
+ .../selftests/bpf/prog_tests/raw_tp_null.c    | 25 +++++++++++++++
+ .../testing/selftests/bpf/progs/raw_tp_null.c | 32 +++++++++++++++++++
+ 4 files changed, 67 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/raw_tp_null.c
+ create mode 100644 tools/testing/selftests/bpf/progs/raw_tp_null.c
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 501ec4249fedc..8612023bec60d 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -660,12 +660,9 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
- 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
- 	void *data;
+diff --git a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod-events.h b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod-events.h
+index 6c3b4d4f173ac..aeef86b3da747 100644
+--- a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod-events.h
++++ b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod-events.h
+@@ -40,6 +40,14 @@ DECLARE_TRACE(bpf_testmod_test_nullable_bare,
+ 	TP_ARGS(ctx__nullable)
+ );
  
--	if (size < ETH_HLEN || size > PAGE_SIZE - headroom - tailroom)
-+	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
- 		return ERR_PTR(-EINVAL);
++struct sk_buff;
++
++DECLARE_TRACE(bpf_testmod_test_raw_tp_null,
++	TP_PROTO(struct sk_buff *skb),
++	TP_ARGS(skb)
++);
++
++
+ #undef BPF_TESTMOD_DECLARE_TRACE
+ #ifdef DECLARE_TRACE_WRITABLE
+ #define BPF_TESTMOD_DECLARE_TRACE(call, proto, args, size) \
+diff --git a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
+index 8835761d9a126..4e6a9e9c03687 100644
+--- a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
++++ b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
+@@ -380,6 +380,8 @@ bpf_testmod_test_read(struct file *file, struct kobject *kobj,
  
--	if (user_size > size)
--		return ERR_PTR(-EMSGSIZE);
--
- 	size = SKB_DATA_ALIGN(size);
- 	data = kzalloc(size + headroom + tailroom, GFP_USER);
- 	if (!data)
+ 	(void)bpf_testmod_test_arg_ptr_to_struct(&struct_arg1_2);
+ 
++	(void)trace_bpf_testmod_test_raw_tp_null(NULL);
++
+ 	struct_arg3 = kmalloc((sizeof(struct bpf_testmod_struct_arg_3) +
+ 				sizeof(int)), GFP_KERNEL);
+ 	if (struct_arg3 != NULL) {
+diff --git a/tools/testing/selftests/bpf/prog_tests/raw_tp_null.c b/tools/testing/selftests/bpf/prog_tests/raw_tp_null.c
+new file mode 100644
+index 0000000000000..6fa19449297e9
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/raw_tp_null.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2024 Meta Platforms, Inc. and affiliates. */
++
++#include <test_progs.h>
++#include "raw_tp_null.skel.h"
++
++void test_raw_tp_null(void)
++{
++	struct raw_tp_null *skel;
++
++	skel = raw_tp_null__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "raw_tp_null__open_and_load"))
++		return;
++
++	skel->bss->tid = sys_gettid();
++
++	if (!ASSERT_OK(raw_tp_null__attach(skel), "raw_tp_null__attach"))
++		goto end;
++
++	ASSERT_OK(trigger_module_test_read(2), "trigger testmod read");
++	ASSERT_EQ(skel->bss->i, 3, "invocations");
++
++end:
++	raw_tp_null__destroy(skel);
++}
+diff --git a/tools/testing/selftests/bpf/progs/raw_tp_null.c b/tools/testing/selftests/bpf/progs/raw_tp_null.c
+new file mode 100644
+index 0000000000000..457f34c151e32
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/raw_tp_null.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2024 Meta Platforms, Inc. and affiliates. */
++
++#include <vmlinux.h>
++#include <bpf/bpf_tracing.h>
++
++char _license[] SEC("license") = "GPL";
++
++int tid;
++int i;
++
++SEC("tp_btf/bpf_testmod_test_raw_tp_null")
++int BPF_PROG(test_raw_tp_null, struct sk_buff *skb)
++{
++	struct task_struct *task = bpf_get_current_task_btf();
++
++	if (task->pid != tid)
++		return 0;
++
++	i = i + skb->mark + 1;
++	/* The compiler may move the NULL check before this deref, which causes
++	 * the load to fail as deref of scalar. Prevent that by using a barrier.
++	 */
++	barrier();
++	/* If dead code elimination kicks in, the increment below will
++	 * be removed. For raw_tp programs, we mark input arguments as
++	 * PTR_MAYBE_NULL, so branch prediction should never kick in.
++	 */
++	if (!skb)
++		i += 2;
++	return 0;
++}
 -- 
 2.39.5
 
