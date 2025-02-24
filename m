@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-118706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1557CA4167A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:44:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D60A416B0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:52:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F41AE3A2B64
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 975701893F54
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FC218B482;
-	Mon, 24 Feb 2025 07:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="McTsKz6d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4546E1FE47F;
+	Mon, 24 Feb 2025 07:52:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1633E1BC3C;
-	Mon, 24 Feb 2025 07:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B1D13C3F6;
+	Mon, 24 Feb 2025 07:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740383013; cv=none; b=hBIuPNfwXLigOv47fKli8Nbaz+OMW9x+9LUvB2PWCPB78AaT3Mb+DYAXHMtuhmLPAnopruFP+057sWzq5LtLS1RAEcR74floTPq4NigJpkgCbFh0NW+/rR4OUCqy+y0sYCigQd7jBRfab7M/j7bFkneeL4zzbpNmfxKdFuWTL7c=
+	t=1740383530; cv=none; b=AYgTB+d+YuDzHCVE7EX6MXq826hobvEdLt1NRgVR0yg2CH5UuVGihcTFrDAV3vZeeWizBs1BQv7pkqB4RZ+C0zBjM1SQwfZC6tZ1iDMCyRQLHSDPh24vmZotss3SKotsTlp6zKG/AJFFo78ERl7IOm/gntQT3IHqJ+UbI5M88/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740383013; c=relaxed/simple;
-	bh=YGsuhljqccKPHTYpawWHibXzqUjkIgNy6z/pL7cScYk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rqhNViM3h+ksxudWBo4RT0h3s9e6pxoo2vecQh1/WVx1ciE4ccinNsXqL+8ScHCq+peTdQt2EsJZto4ZThLoMccax/5AAoVKZ0HCu7fFCiDVx8vjHfXIEnK6xWBjYxBdMbVt083KmDXDjFW+s5xjMMBhnzrp9QFj/CeRlGrhVcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=McTsKz6d; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=JBeRk
-	4co3+uSwf3WyPiW0R5ciRcTZIeouYHkX7tcL/M=; b=McTsKz6dcaZmybhL4zeys
-	KZLrr5bcTkC1DHyjwS0DFwmle2Q6erq8+CcKTpCFJDOeUQjZEMmN6G2Fse1KzGDX
-	Y9xVuSo/9cSUqMs5zZZFe47Mxel2qEqR0u8nJju4NpRoyYS12n9HLimCkWfvLI/A
-	h3ZsPElFwhTMpYQBcTAslk=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCXu_oSI7xnHWzkNg--.62438S4;
-	Mon, 24 Feb 2025 15:43:16 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: airlied@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1740383530; c=relaxed/simple;
+	bh=EQQrFz14F9++ckzMR6HGqVYAbV06QiwCF9ZWSjxIJSI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gnLGHonaIwcLyi4RCXNWUgk2j5f+FWIURJF4m5rcj1PuKt72Fo9amzz613quAHZ75LjjX+OZmbw71FsdOIHNSZnTo6yayHuoeqsvc6dieR70y0SX3w+ZROPYztDj0IH0QCRhix5CkEerW3tXZ+IJx+Qeb5MAo3fPbQXJwHvr+uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAAXH1sVJbxn1AryDw--.64440S2;
+	Mon, 24 Feb 2025 15:51:51 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: clm@fb.com,
+	josef@toxicpanda.com,
+	dsterba@suse.com,
+	jeffm@suse.com
+Cc: linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] agp: Fix a potential memory leak bug in agp_amdk7_probe()
-Date: Mon, 24 Feb 2025 15:43:13 +0800
-Message-Id: <20250224074313.2958696-1-haoxiang_li2024@163.com>
+Subject: [PATCH] btrfs: add a sanity check for btrfs root in btrfs_search_old_slot()
+Date: Mon, 24 Feb 2025 15:51:42 +0800
+Message-Id: <20250224075142.2959155-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,37 +51,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCXu_oSI7xnHWzkNg--.62438S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GF4DCF47tFyktw17JF17trb_yoWDXFb_G3
-	yUAr9293s5AFW8ur1akw4F9rWF9a1rXryku3ZFgwnxAFy3Zr4xXanrWFs5WF17ursrCFy7
-	t34DXr4Uuw1IyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRXyCLJUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkA39bme77loMFgABs9
+X-CM-TRANSID:rQCowAAXH1sVJbxn1AryDw--.64440S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KrWxZw1xGw4kJrW8Kw45Wrg_yoW8Jw43pF
+	4fCas0gw4kJr4qgrs8Ww40q34Sgw4qga1Uuasxt3yftw45t345WFykAw18Zr90kFWkJrW2
+	vF4jvw1UC3Z2kaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
+	VjvjDU0xZFpf9x0JUvg4fUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Variable "bridge" is allocated by agp_alloc_bridge() and
-have to be released by agp_put_bridge() if something goes
-wrong. In this patch, add the missing call of agp_put_bridge()
-in agp_amdk7_probe() to prevent potential memory leak bug.
+When searching the extent tree to gather the needed extent info,
+btrfs_search_old_slot() doesn't check if the target root is NULL or
+not, resulting the null-ptr-deref. Add sanity check for btrfs root
+before using it in btrfs_search_old_slot().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Found by code review.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Fixes: 0b246afa62b0 ("btrfs: root->fs_info cleanup, add fs_info convenience variables")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/char/agp/amd-k7-agp.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/ctree.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/agp/amd-k7-agp.c b/drivers/char/agp/amd-k7-agp.c
-index 795c8c9ff680..40e1fc462dca 100644
---- a/drivers/char/agp/amd-k7-agp.c
-+++ b/drivers/char/agp/amd-k7-agp.c
-@@ -441,6 +441,7 @@ static int agp_amdk7_probe(struct pci_dev *pdev,
- 			gfxcard = pci_get_class(PCI_CLASS_DISPLAY_VGA<<8, gfxcard);
- 			if (!gfxcard) {
- 				dev_info(&pdev->dev, "no AGP VGA controller\n");
-+				agp_put_bridge(bridge);
- 				return -ENODEV;
- 			}
- 			cap_ptr = pci_find_capability(gfxcard, PCI_CAP_ID_AGP);
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 3dc5a35dd19b..4e2e1c38d33a 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -2232,7 +2232,7 @@ ALLOW_ERROR_INJECTION(btrfs_search_slot, ERRNO);
+ int btrfs_search_old_slot(struct btrfs_root *root, const struct btrfs_key *key,
+ 			  struct btrfs_path *p, u64 time_seq)
+ {
+-	struct btrfs_fs_info *fs_info = root->fs_info;
++	struct btrfs_fs_info *fs_info;
+ 	struct extent_buffer *b;
+ 	int slot;
+ 	int ret;
+@@ -2241,6 +2241,10 @@ int btrfs_search_old_slot(struct btrfs_root *root, const struct btrfs_key *key,
+ 	int lowest_unlock = 1;
+ 	u8 lowest_level = 0;
+ 
++	if (!root)
++		return -EINVAL;
++
++	fs_info = root->fs_info;
+ 	lowest_level = p->lowest_level;
+ 	WARN_ON(p->nodes[0] != NULL);
+ 	ASSERT(!p->nowait);
 -- 
 2.25.1
 
