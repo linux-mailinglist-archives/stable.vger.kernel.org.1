@@ -1,100 +1,119 @@
-Return-Path: <stable+bounces-119382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20187A42626
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:24:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F11A4269D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAE4A1753F7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:17:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7223B3BABB0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FA3192D8F;
-	Mon, 24 Feb 2025 15:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43FD25D54B;
+	Mon, 24 Feb 2025 15:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="cNcBPN1R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ij222nex"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE792A1BA;
-	Mon, 24 Feb 2025 15:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DD925C714
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 15:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740410217; cv=none; b=iFum4WPDYMRF393AOGDZ7qzkaBjSr3o7uxXHr7PoDhwkxbno11jlw1uuOMdaV9I9PNC8zeaxe/4c/chQ87PkrsP1ocemxTt/QNSb/Cvf0wZRzPRLlx5Qw6SjZeDa0Ib32CkSVbTUtuslKrf+bRbaE1imnyYwJ68c8+NHu0GRW5c=
+	t=1740411017; cv=none; b=jrT/t7hAhoVcR9bzRbR4fdXaRidO6Z8J1NANWoZgCE3tr1brEkh/SrEbOyjt8qs233MAzy02ngi8HiXQVZbmZaL01lOozAWbOkHRMEhC8DJHU2R2VIzP7gfz3vBwYtTbVYs5f3BGbxPcC6Eo73yIJJr9EVOvbCctol372lCNWD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740410217; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=t++pUdpuGLQBWorTg5IftnIQMkAWsdluy0qxRxa41WK6dHr9cKar0zwwFO6wD8r4WB7/EVhBegE/549Vyq/7mnZLqS1zae+97M9Z5OV3b/ll3K2C70nVKtg7Q0nGvUJ3Xsi2A1oyrqRzetnQAt9j3KwjNRokKNm+0V59CmdjbwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=cNcBPN1R; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1740410212; x=1741015012; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=cNcBPN1RnKHGPWUWwpze7TtqhcSKEB+8VIEMcnTmZFPHmZ8g+mg0pEFGpCXjANHG
-	 L9rAsjPtSvCPc1cTFMFC0myYUjdeoOuCQrwxyDfFHYBu7FcEwa/eUxIyunwWZeFwQ
-	 pIXN5rmVnbm6Kj22pGcu/lS9zH096lGmU1T5Gj4vtK/z1TQWzvKN5LI3fLrO0kcO0
-	 Eb+bG7jQotDip+xHHNhzQJfgaM8ZDXXauN1yYBalPYgcsU/Nyrt+4r0KYx5AuQmNe
-	 UoZCemf0VcloOls5bkry9f0MLl2aP1NNIIlSg3KEzYfvgMEOW3UoI++Utw+WGuCcF
-	 06VS8T4ojiNV3HCsog==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.33.52]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0XD2-1tPQeG1CRY-010obm; Mon, 24
- Feb 2025 16:16:52 +0100
-Message-ID: <b253bc36-e350-4e5f-bab6-e1e62d37edfd@gmx.de>
-Date: Mon, 24 Feb 2025 16:16:51 +0100
+	s=arc-20240116; t=1740411017; c=relaxed/simple;
+	bh=0Ke9RI6kwlPndtmjx+XwIj2K2vwndqSEKty7im/QNvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XaEu2FhpvgA2YVmMEWJpGO93IbNXtC96mDTAAnY+DvdrI9qzeQ7weoWm2C7Ow1e7gmXxG0TKbz7/dUMPOeKwYHvi5fFiBz57CYnMsHsDbKeK0DQEKxwEGsb1zFUiX20iN5lqEi9c7VgKvEa8aZvFGDHL25gfoOP/+jCzSfGrQq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ij222nex; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740411015; x=1771947015;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0Ke9RI6kwlPndtmjx+XwIj2K2vwndqSEKty7im/QNvc=;
+  b=Ij222nex/nZhYoumzL70FenulycKo8oqwOdVwlYUa1j+TEc6lnVW1rxt
+   lYskXsn+HwV8eHcJ8kFecri7LTMp44bRLXgkqSA+e7G+Qc5b3vI0xeyPt
+   hgTVojjGS7cjYgi6VfpVFExVc1f12B3gf3bieBukfNcgQGYWcGB1dxGQr
+   Cy4ngtd5Efb0jd2f69FYUSbeJX14YxDSUCkt8TBXPdrRNJyf2vEtxAVLY
+   FaTUeqs/hASlAyF7XgNLU6muPWQGXl8zyk2yJhmJgc2sVb1CAlfuSov02
+   S7DsVzPA7f7B8ZFGthblsFJ6AutyhOU7RHcGY7KMPXeuQGRBsGwwhk1PV
+   w==;
+X-CSE-ConnectionGUID: Fx8nuxwfQPm4vIPxRhdHUw==
+X-CSE-MsgGUID: c6dGx9DaQ/KeD94bE7Whjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40358249"
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="40358249"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:30:12 -0800
+X-CSE-ConnectionGUID: aQP5QzvSRrC4lHenRyBdVA==
+X-CSE-MsgGUID: khLoQnt5SkeYlqsmZ/AzZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="116594669"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 07:30:10 -0800
+From: Imre Deak <imre.deak@intel.com>
+To: stable@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6.y] drm/i915/dsi: Use TRANS_DDI_FUNC_CTL's own port width macro
+Date: Mon, 24 Feb 2025 17:31:11 +0200
+Message-ID: <20250224153112.1959486-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <2025022418-frostlike-congrats-bf0d@gregkh>
+References: <2025022418-frostlike-congrats-bf0d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.13 000/138] 6.13.5-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:6RztO2AodvDOZMhplC3xZqVtgl2eYePouzjDoE64LMg83g+3yGy
- 1jF9J0OiXtySp2HGRzr8fSe8FQQOufiEQQIFiCHazjVk8lbXRJWzthXcCW74SaEu1YzI5cq
- TCGNfysgeEcJJg9w8rcqt1Cayi8zd93/0qyhwIT1rJjGmftg9kr8rb4TEyoT9UbBZCQLGMW
- HWYJIV3OHm3njpvuvAQhw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Erb33eZcZFM=;T5ve6Bm8nh2bdODwOmLVE4/0KaE
- 6KaGv+JAA1xJqlJIJBUGcLAallqlWivJyCa+wC4hK9Rq5FXLvuy5+NkkFYFXTX4CgYP6RUHuG
- dEDDsuOVrXFEE4mNVU10JFXVH2bSbluNK0J42wYH6dbyG6Bdl7cVol9ChYPl+giH9CLdv22Pw
- QZKu3/G8q8v4Ll+W6XBo65IbkE4Ha3JHg89IJwZ+2C0qfJZ0uiqx/TBKZZirhmMblRVPK70Dd
- 0nCCfb5vBmtg9d865oCViQt7y8UgyYLCZfQ12GUupTnTY4UuNJ0kdeyVVKKVq7LoEQTMdA625
- ZHpLg0LXHR9DsWB8QF6UHtNrYIMLOPlmMb3ZODaCUlVuIiyjLaqF9ccjjk/1jNjucJRy6iSz7
- 4u5c4w+q+RaMYOcqqPRA+0Kqtmnq7qtxNN3AAighZzjt5epTiqVBqA/QX9oUp7QfSsCDjSQG4
- pBlZ6QX9siroGetZb12Wv4shcGIi0AdozG1Tpl5fYuOJ1ntIEV4NDvogbxMv3VWBADBcWjXSi
- 5kQbU+NQDWWr+DW8nMjj5rDPWbiKMncDKcRi34iqM1mQkIdWMQwoyri2EIz7izhRV1mPXa6ff
- jPU9NB6hqRjVE7OF027ehWzUyFA2uIG8D/PoiJ38yRVWHpPqOfObfQTZFHvfqoil1F0ww02nx
- vDKVjyLgEJNy2r0zAH7V0VSML2FCv6VAg4SgfsQTszlp6rj+TRs/1dNcPK7S/3ObHZndVoKaB
- 8zPGAsgn45EzS+JthXpKL+vWnF17EWtukCisvPNTVQux+woizEnG9F7bKdcVZZnlg9kL8hVbT
- DFjKwAOsjtDhhcqfcwGxmVu3o21XOz/eFw+GtRfg3HM8rrXN3/lGSX+3Zsxp86gvv/MfP3jUp
- Az8geh2NfheExSlp595k/7hr2F9ZBFPV9f53mt4axLumQTCHcipoqZSKK5I6n1uzTFTOQh/2p
- xDzHlw9bO9yVfwxQEUeYQkogvOgTmJz8OE39Po4ikhxRXMYcN+n61/l+gVjpGgHcP9JaSdFwA
- eQh1CIVBI0AsDrH2uABDWhzXHTURB83jizcEhmnpMXYjZghFJ+t9bTONZ2haGhNWtQ/B//rXv
- EJwt8hkrpcKMnSUes87C75QNN+f7bubVqxOUtYn0Zm+G7V94mqzd9yHn+j9RlFZs+Ytfb3i4i
- ae/C/o+kRYRBSead3U9CXrtsdvFTbkrIrj4Hsu2y3p4e2qLbBwlkQGpwlNWRU/4Lvloj6mRcE
- BW/KetGP00WZLLts0wmmZXVce+2SL8AmCizT1p23Gc3ffjHvWOFEJc4XoObJzTSIsSVc4B1Ib
- 7VX8aN7br1Hx61z2cSw9oM3crVy3BRkGN4M2LdqhGoECjjwjUCZREROlvz1Ymrvmnmfm2UahC
- ldcZtHt+ZTCcamiIQZ5Iz86wbW4IJwyEBVPx9hiVKxTGfi+HL9L5DLuTJN
+Content-Transfer-Encoding: 8bit
 
-Hi Greg
+commit 76120b3a304aec28fef4910204b81a12db8974da upstream.
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+The format of the port width field in the DDI_BUF_CTL and the
+TRANS_DDI_FUNC_CTL registers are different starting with MTL, where the
+x3 lane mode for HDMI FRL has a different encoding in the two registers.
+To account for this use the TRANS_DDI_FUNC_CTL's own port width macro.
 
-Thanks
+Cc: <stable@vger.kernel.org> # v6.5+
+Fixes: b66a8abaa48a ("drm/i915/display/mtl: Fill port width in DDI_BUF_/TRANS_DDI_FUNC_/PORT_BUF_CTL for HDMI")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-2-imre.deak@intel.com
+(cherry picked from commit 76120b3a304aec28fef4910204b81a12db8974da)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 879f70382ff3e92fc854589ada3453e3f5f5b601)
+[Imre: Rebased on v6.6.y, due to upstream API changes for intel_de_read(),
+ TRANS_DDI_FUNC_CTL()]
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ drivers/gpu/drm/i915/display/icl_dsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
+index 5b8efe8e735a9..0a0efeeb790e2 100644
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -797,8 +797,8 @@ gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
+ 
+ 		/* select data lane width */
+ 		tmp = intel_de_read(dev_priv, TRANS_DDI_FUNC_CTL(dsi_trans));
+-		tmp &= ~DDI_PORT_WIDTH_MASK;
+-		tmp |= DDI_PORT_WIDTH(intel_dsi->lane_count);
++		tmp &= ~TRANS_DDI_PORT_WIDTH_MASK;
++		tmp |= TRANS_DDI_PORT_WIDTH(intel_dsi->lane_count);
+ 
+ 		/* select input pipe */
+ 		tmp &= ~TRANS_DDI_EDP_INPUT_MASK;
+-- 
+2.44.2
+
 
