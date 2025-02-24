@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-118998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FADA42363
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:41:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C6CA42462
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F061C7A15AB
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3F18445EFB
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74F825486D;
-	Mon, 24 Feb 2025 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D9A254868;
+	Mon, 24 Feb 2025 14:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKDThrW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ186IJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7476F24EF78;
-	Mon, 24 Feb 2025 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40014254863;
+	Mon, 24 Feb 2025 14:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407972; cv=none; b=FzU4ilHDI9sxTMLf6un/u2ecRv4u++1JsnscTpKTeXazug1pqEHQimnIxHXkPpUlOtKcPeNd9f52JG+Prb8ziOEZM4x4Dd/2RJtLc4Rqr5CPV0PywdhTA/K4Z9B9jLf7zwthif0VOcKioYUpKIkO0UAT37NZ2FHZyR8Q4eZLsWk=
+	t=1740408342; cv=none; b=IB78Lxsyq1zkL+kXOLEkNzsNdDRm85B5+UL19kcv/fiopmJYRHlmaatE9Wr7kWCO+qQzcKAT2/HkP5aZ/n/uXuDmKGrvoLjUY+Jn5mqNKvVPWQhrwBpoIy+4jjtmp4jw/PaXEmIDQreNBBjdOs+hH33PglnY5xIjvPxVv1KaHac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407972; c=relaxed/simple;
-	bh=r8sxdShY72+9IymeVMtkmV1pHdFI7k/4Vb4H66Wsv2w=;
+	s=arc-20240116; t=1740408342; c=relaxed/simple;
+	bh=TAYpFPzzjML0TRN2bysKfN4mDHrdKcOtFOhT1L+dgTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkui4w2t1ofxJTVfrqf14IyaSb2BE7kbvQ6Wk5+26Dj4teUZQ2/qEV3Wus8AYJOgM4aoOoZod/4i7cHqziF9+JT30i5q+cAzX1oFhP5EwaHJf8v4W9oWCeI5eFg+4ZaDpgsUdhDBv7l1CZ8PoLDpqpjNN8FfVw4ec4toCsgV4ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKDThrW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89F5C4CED6;
-	Mon, 24 Feb 2025 14:39:31 +0000 (UTC)
+	 MIME-Version; b=aqRYK1U7fdnMReNrV5zcUTwav54qCKNEUelAf1rnf+8hbQqqxldn77d9fVc9EKAQjG1RY+AAj0HjRym+y6NQHakweuzOAR22NE6O2D4u62Iwno0YsmgwsryALS9crmZBMG2AKvhtQrvUzXJmg11EpGWof1RiT12CxxbIemZ8T9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ186IJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BE5C4CED6;
+	Mon, 24 Feb 2025 14:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407972;
-	bh=r8sxdShY72+9IymeVMtkmV1pHdFI7k/4Vb4H66Wsv2w=;
+	s=korg; t=1740408341;
+	bh=TAYpFPzzjML0TRN2bysKfN4mDHrdKcOtFOhT1L+dgTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKDThrW/IGxyQis0JBjChwJXf05cElXZW13T2w2fDHVBM2nuEvQ8VSF2jdckqk/NL
-	 o8SaSXSdwnYz0LP5yzvNPapsnLV4BATt54k+oO5l1f5odCLJOuaT4H1UaKi3iaXVgj
-	 mfyD0j+CNgAKnO30xBzfvyQ2yLc/PxjsE238//XI=
+	b=CQ186IJRjpfRtHgZCfgw+bHhrJnsiZqNn5US1cGU7tEGMcBJbQ8ZOg30doDE+lTDe
+	 B3ma26uxir6uEFgiqpp7E4yHIiWsciWjenQZw+qfyUInYgTNp2bLy49dq+NN81ym0w
+	 MPjJT/GQneme/vhn1dcj5iZW9YepwF5A3Sua9ORM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Philipp Stanner <pstanner@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/140] md: simplify md_seq_ops
+Subject: [PATCH 6.12 030/154] PCI: Restore original INTX_DISABLE bit by pcim_intx()
 Date: Mon, 24 Feb 2025 15:33:49 +0100
-Message-ID: <20250224142604.192843945@linuxfoundation.org>
+Message-ID: <20250224142608.265870886@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,183 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit cf1b6d4441fffd0ba8ae4ced6a12f578c95ca049 ]
+[ Upstream commit d555ed45a5a10a813528c7685f432369d536ae3d ]
 
-Before this patch, the implementation is hacky and hard to understand:
+pcim_intx() tries to restore the INTx bit at removal via devres, but there
+is a chance that it restores a wrong value.
 
-1) md_seq_start set pos to 1;
-2) md_seq_show found pos is 1, then print Personalities;
-3) md_seq_next found pos is 1, then it update pos to the first mddev;
-4) md_seq_show found pos is not 1 or 2, show mddev;
-5) md_seq_next found pos is not 1 or 2, update pos to next mddev;
-6) loop 4-5 until the last mddev, then md_seq_next update pos to 2;
-7) md_seq_show found pos is 2, then print unused devices;
-8) md_seq_next found pos is 2, stop;
+Because the value to be restored is blindly assumed to be the negative of
+the enable argument, when a driver calls pcim_intx() unnecessarily for the
+already enabled state, it'll restore to the disabled state in turn.  That
+is, the function assumes the case like:
 
-This patch remove the magic value and use seq_list_start/next/stop()
-directly, and move printing "Personalities" to md_seq_start(),
-"unsed devices" to md_seq_stop():
+  // INTx == 1
+  pcim_intx(pdev, 0); // old INTx value assumed to be 1 -> correct
 
-1) md_seq_start print Personalities, and then set pos to first mddev;
-2) md_seq_show show mddev;
-3) md_seq_next update pos to next mddev;
-4) loop 2-3 until the last mddev;
-5) md_seq_stop print unsed devices;
+but it might be like the following, too:
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230927061241.1552837-3-yukuai1@huaweicloud.com
-Stable-dep-of: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
+  // INTx == 0
+  pcim_intx(pdev, 0); // old INTx value assumed to be 1 -> wrong
+
+Also, when a driver calls pcim_intx() multiple times with different enable
+argument values, the last one will win no matter what value it is.  This
+can lead to inconsistency, e.g.
+
+  // INTx == 1
+  pcim_intx(pdev, 0); // OK
+  ...
+  pcim_intx(pdev, 1); // now old INTx wrongly assumed to be 0
+
+This patch addresses those inconsistencies by saving the original INTx
+state at the first pcim_intx() call.  For that, get_or_create_intx_devres()
+is folded into pcim_intx() caller side; it allows us to simply check the
+already allocated devres and record the original INTx along with the
+devres_alloc() call.
+
+Link: https://lore.kernel.org/r/20241031134300.10296-1-tiwai@suse.de
+Fixes: 25216afc9db5 ("PCI: Add managed pcim_intx()")
+Link: https://lore.kernel.org/87v7xk2ps5.wl-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Philipp Stanner <pstanner@redhat.com>
+Cc: stable@vger.kernel.org	# v6.11+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 100 +++++++++++-------------------------------------
- 1 file changed, 22 insertions(+), 78 deletions(-)
+ drivers/pci/devres.c | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 836e8ed58c8ad..27a6a11b71ee4 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8260,105 +8260,46 @@ static int status_resync(struct seq_file *seq, struct mddev *mddev)
+diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+index 70f1a46d07c5e..643f85849ef64 100644
+--- a/drivers/pci/devres.c
++++ b/drivers/pci/devres.c
+@@ -419,19 +419,12 @@ static void pcim_intx_restore(struct device *dev, void *data)
+ 	pci_intx(pdev, res->orig_intx);
  }
  
- static void *md_seq_start(struct seq_file *seq, loff_t *pos)
-+	__acquires(&all_mddevs_lock)
+-static struct pcim_intx_devres *get_or_create_intx_devres(struct device *dev)
++static void save_orig_intx(struct pci_dev *pdev, struct pcim_intx_devres *res)
  {
--	struct list_head *tmp;
--	loff_t l = *pos;
--	struct mddev *mddev;
-+	struct md_personality *pers;
+-	struct pcim_intx_devres *res;
+-
+-	res = devres_find(dev, pcim_intx_restore, NULL, NULL);
+-	if (res)
+-		return res;
++	u16 pci_command;
  
--	if (l == 0x10000) {
--		++*pos;
--		return (void *)2;
--	}
--	if (l > 0x10000)
--		return NULL;
--	if (!l--)
--		/* header */
--		return (void*)1;
-+	seq_puts(seq, "Personalities : ");
-+	spin_lock(&pers_lock);
-+	list_for_each_entry(pers, &pers_list, list)
-+		seq_printf(seq, "[%s] ", pers->name);
+-	res = devres_alloc(pcim_intx_restore, sizeof(*res), GFP_KERNEL);
+-	if (res)
+-		devres_add(dev, res);
+-
+-	return res;
++	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
++	res->orig_intx = !(pci_command & PCI_COMMAND_INTX_DISABLE);
+ }
+ 
+ /**
+@@ -447,12 +440,23 @@ static struct pcim_intx_devres *get_or_create_intx_devres(struct device *dev)
+ int pcim_intx(struct pci_dev *pdev, int enable)
+ {
+ 	struct pcim_intx_devres *res;
++	struct device *dev = &pdev->dev;
+ 
+-	res = get_or_create_intx_devres(&pdev->dev);
+-	if (!res)
+-		return -ENOMEM;
++	/*
++	 * pcim_intx() must only restore the INTx value that existed before the
++	 * driver was loaded, i.e., before it called pcim_intx() for the
++	 * first time.
++	 */
++	res = devres_find(dev, pcim_intx_restore, NULL, NULL);
++	if (!res) {
++		res = devres_alloc(pcim_intx_restore, sizeof(*res), GFP_KERNEL);
++		if (!res)
++			return -ENOMEM;
 +
-+	spin_unlock(&pers_lock);
-+	seq_puts(seq, "\n");
-+	seq->poll_event = atomic_read(&md_event_count);
++		save_orig_intx(pdev, res);
++		devres_add(dev, res);
++	}
  
- 	spin_lock(&all_mddevs_lock);
--	list_for_each(tmp,&all_mddevs)
--		if (!l--) {
--			mddev = list_entry(tmp, struct mddev, all_mddevs);
--			if (!mddev_get(mddev))
--				continue;
--			spin_unlock(&all_mddevs_lock);
--			return mddev;
--		}
--	spin_unlock(&all_mddevs_lock);
--	if (!l--)
--		return (void*)2;/* tail */
--	return NULL;
-+
-+	return seq_list_start(&all_mddevs, *pos);
- }
- 
- static void *md_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- {
--	struct list_head *tmp;
--	struct mddev *next_mddev, *mddev = v;
--	struct mddev *to_put = NULL;
--
--	++*pos;
--	if (v == (void*)2)
--		return NULL;
--
--	spin_lock(&all_mddevs_lock);
--	if (v == (void*)1) {
--		tmp = all_mddevs.next;
--	} else {
--		to_put = mddev;
--		tmp = mddev->all_mddevs.next;
--	}
--
--	for (;;) {
--		if (tmp == &all_mddevs) {
--			next_mddev = (void*)2;
--			*pos = 0x10000;
--			break;
--		}
--		next_mddev = list_entry(tmp, struct mddev, all_mddevs);
--		if (mddev_get(next_mddev))
--			break;
--		mddev = next_mddev;
--		tmp = mddev->all_mddevs.next;
--	}
--	spin_unlock(&all_mddevs_lock);
--
--	if (to_put)
--		mddev_put(to_put);
--	return next_mddev;
--
-+	return seq_list_next(v, &all_mddevs, pos);
- }
- 
- static void md_seq_stop(struct seq_file *seq, void *v)
-+	__releases(&all_mddevs_lock)
- {
--	struct mddev *mddev = v;
--
--	if (mddev && v != (void*)1 && v != (void*)2)
--		mddev_put(mddev);
-+	status_unused(seq);
-+	spin_unlock(&all_mddevs_lock);
- }
- 
- static int md_seq_show(struct seq_file *seq, void *v)
- {
--	struct mddev *mddev = v;
-+	struct mddev *mddev = list_entry(v, struct mddev, all_mddevs);
- 	sector_t sectors;
- 	struct md_rdev *rdev;
- 
--	if (v == (void*)1) {
--		struct md_personality *pers;
--		seq_printf(seq, "Personalities : ");
--		spin_lock(&pers_lock);
--		list_for_each_entry(pers, &pers_list, list)
--			seq_printf(seq, "[%s] ", pers->name);
--
--		spin_unlock(&pers_lock);
--		seq_printf(seq, "\n");
--		seq->poll_event = atomic_read(&md_event_count);
-+	if (!mddev_get(mddev))
- 		return 0;
--	}
--	if (v == (void*)2) {
--		status_unused(seq);
--		return 0;
--	}
- 
-+	spin_unlock(&all_mddevs_lock);
- 	spin_lock(&mddev->lock);
- 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
- 		seq_printf(seq, "%s : %sactive", mdname(mddev),
-@@ -8429,6 +8370,9 @@ static int md_seq_show(struct seq_file *seq, void *v)
- 		seq_printf(seq, "\n");
- 	}
- 	spin_unlock(&mddev->lock);
-+	spin_lock(&all_mddevs_lock);
-+	if (atomic_dec_and_test(&mddev->active))
-+		__mddev_put(mddev);
+-	res->orig_intx = !enable;
+ 	pci_intx(pdev, enable);
  
  	return 0;
- }
 -- 
 2.39.5
 
