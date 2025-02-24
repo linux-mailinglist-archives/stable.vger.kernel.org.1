@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-118941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AA0A422D4
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBB7A422E7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F8C47A6664
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:20:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40B547A9348
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8286813B298;
-	Mon, 24 Feb 2025 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6A1386B4;
+	Mon, 24 Feb 2025 14:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="OkuAKoa2"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Itqc7o2K"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAD57CF16
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D714D28C
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 14:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740406910; cv=none; b=fZtXmm/JfhbwGWPh/la1C0u947WBLc7sgBSQ+IflCdue6UzaExk//GxslbjOZx6MbjEB3wBNGOPz/nZVBt7sEgDOJHhFiK31VyzqmguzINixcwgnEY50skXfGNHsHpmTdJa7OzybJklWUuCigziJXL/DIrz0aSGKbTKRRWo+Dy0=
+	t=1740407077; cv=none; b=mafUZQFD5HKQHfXsxxkKBTzspJ/HejCR2ewUqZbn8jUXnj0LZFXK1freeFfc3d2lQB60csz5fnkQ+dHCGQqspMeKoxupMo08FfxBYcN7lhqn2F1X/lu7fLwJzVD/2UO5MFrMeQQFiCPeICucML0hvlrgqQPqvXQunN1UUpNpj1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740406910; c=relaxed/simple;
+	s=arc-20240116; t=1740407077; c=relaxed/simple;
 	bh=FE1CWMi2CvPnvoketKsYWYlZ+VV76x1gP9YK33cjJrs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QZLWbKwNiVRvsLkfDLshZcK+eGu0AKXvR1oB4NbWEcJKO7THxgtqDfcxFH7JmwtcNNVYS34ZORfRyD1Twx4zqCjSqaG3Kspxv9nrDKY9EdjRg8cB3QvdGAKSyyBiaOLGPL3tguIku/EzN3+veIhmOEbEUt+ICGw9786DkFpObkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=OkuAKoa2; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version:Content-Type; b=d/IctcXS8fvVTtkEiKpROmRuQsAYg4BNnVSqCb2e4qpoMqWXTgMHuWxX6EjlJ2+M7Kozj51Zj8QuFFqRHZa+7bQNz/J9UpuBL5AmAG6AHkg/Oz23ct3fsYxNcu/jDmnb1ubDP2GzTOND90zCmJKQsNew+FnMLTpeo0W4TCxBpaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Itqc7o2K; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,16 +37,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JT5nI4XOfZ8xYdvgJxo/xc/goWo7FZySBnJH86XdU1Q=; b=OkuAKoa2rK9+QHl+Lcc1+dGNck
-	got84dy5qukEpHiZrzJqd8mdOAR+MyQqqy4+DpHhUua6Tn+CokaWvcXGgBm6eyc1vuKsfciWNjHVY
-	3lgyBrS/gRjKczDfhrSwE6nv83sblt828bVUbfi1yBPlyv8pmPae4sGeJAsNLPr7DZjNCaSeS+9Rp
-	IVx3f9g9CBe2d/EOWvFfQdgpWzkebWFSFjNrysjXiFTPMi+BXfuKwwytAGbd9OcU+l7LMYMKKYBB4
-	OuZeLVQbIJPiK0HyGvPvxIGK519I4FpBBoZdD4/wcC05AwOHqIeKdLAVIx7aaTS7ZeisskxyaH2Mj
-	15aMVAdg==;
+	bh=JT5nI4XOfZ8xYdvgJxo/xc/goWo7FZySBnJH86XdU1Q=; b=Itqc7o2K3EWNFNg/9dNvuDhCnD
+	1IL97IWawWWgKdIfpB/a3aqxrn85CaHbud8WQSbNQgGCUL1AwsYy+c5Y/5ADiZpwXeSx4yEjMe9Ho
+	CDvV2cCl7D6jIwapkt40y+a4+8QXFUhhscHJBLRhC988M9E/WSnUf/cjlr8r2aXds6DM3p+7KWTkL
+	Fs1Ekl8rvSy5n9UNA57pg/ElKIsntK8kwK1pzroBomdbk7ARwVQj5zWM0bf44fuqf1lxMuK9rF/5N
+	6qjuekNWHMr2EIUuQa5EoyCsvnOhMZmf5wD88OP0ukaimXw9BoqVxPAiV7/Ifiq8jfx5qB/d6j7W+
+	6raZtvuA==;
 Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost)
 	by fanzine2.igalia.com with utf8esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tmZKx-00HX3f-4n; Mon, 24 Feb 2025 15:21:41 +0100
+	id 1tmZNi-00HX75-SS; Mon, 24 Feb 2025 15:24:32 +0100
 From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
 To: Greg KH <greg@kroah.com>
 Cc: stable@vger.kernel.org, bigeasy@linutronix.de, revest@google.com,
@@ -57,8 +57,8 @@ In-Reply-To: <2025022454-dislike-unengaged-37e5@gregkh>
 References: <20250224-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v1-0-de5d47556d96@igalia.com>
  <20250224-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v1-1-de5d47556d96@igalia.com>
  <2025022454-dislike-unengaged-37e5@gregkh>
-Date: Mon, 24 Feb 2025 15:21:40 +0100
-Message-ID: <87frk3zamj.fsf@igalia.com>
+Date: Mon, 24 Feb 2025 15:24:32 +0100
+Message-ID: <87ecznzahr.fsf@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
