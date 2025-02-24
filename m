@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-119140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BCCA424AC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3862A424A5
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1D6177178
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:49:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7AEF1890CBC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05EE24EF92;
-	Mon, 24 Feb 2025 14:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FAE2063DD;
+	Mon, 24 Feb 2025 14:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11BCiyn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rE+JIIgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50E24EF8D;
-	Mon, 24 Feb 2025 14:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38FD19644B;
+	Mon, 24 Feb 2025 14:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408453; cv=none; b=oHsbBAkUsYOcqhMxxZLtWmqBoerIJ5QmSl4Gafsg/UpmNRATTwBRnydQoLKFigkwoE4N1rIF8pmsXoF6YHRwET6+a1MHKcbycpnzkk+RQ3yr/AEbtW7dKXL+elf8VkwNCrt2DKMQF8oyGKeXQMSQM6E+acaFjnx6Y8hq33nt22s=
+	t=1740408491; cv=none; b=KcDwXWEXsWj171FunDQhuYnHrRna9iA9O5R/mxA6BkncjE0LwRR/uA2HQrjvwxEdc+11vnXOgTxqVFCpmoMnhQKAXy0acSLYpEGIf5REIPohFXUqROD6gWRsVJNyl4x+ngiQu88GQcThAX4szqBa95b6z6Xmht/NshADu8DM+Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408453; c=relaxed/simple;
-	bh=meSylcJpSwzOXWatbzIydFjv94nrF+NrAfuHcvkUHNA=;
+	s=arc-20240116; t=1740408491; c=relaxed/simple;
+	bh=FS57OQUQK1IAUsjHr6y/CqOZf4S5HjAJcx3xutIWC8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/0X+kcW9FvoDy+t/VMI0uB/qJgyHuL1Uf3zaO0ZQWi0ysE7sylHP4bYJH5Tv/Ypw3MsdGnT8aAbrNPsWQ4VTSh1NhKupmOcINRz586C9GF76W29/qRvlMKRUhPJwo9l5s8ETDPXG3dBuW42JPwmCfo1UzfClKSFSrZXWa5xUY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11BCiyn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CBEC4CEE9;
-	Mon, 24 Feb 2025 14:47:32 +0000 (UTC)
+	 MIME-Version; b=H8GaIeubK+Qiu7HMszU231aAafylhUleDa4ozXbqCwj4G1ut3HrnMuI5O2EoTVEIkOU8zSTdwMC0PzOxXsuocTHyZxYtqVhccWjPwg1K3x5s7USJ0Xur9Tm3IxVT4Gbps/bcwE4nUvrLwx8TkLtxyNFlxaW0akPdyryO1r9xMyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rE+JIIgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBADC4CED6;
+	Mon, 24 Feb 2025 14:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408453;
-	bh=meSylcJpSwzOXWatbzIydFjv94nrF+NrAfuHcvkUHNA=;
+	s=korg; t=1740408491;
+	bh=FS57OQUQK1IAUsjHr6y/CqOZf4S5HjAJcx3xutIWC8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11BCiyn4TVrTh114cSyCmXJuQIJOwgp84HqnmHDQex3J85/UQfTpkthpjwk3+tDOL
-	 NK6U/Ui00MR3YnsDIA+oOAmluaVq3yA1MxjUkTVVEDnyobhE4nbsebDl7EkotlfKRE
-	 zGlKfHdBFB71hGJq4zUsk8B0iQGa+vz2LuYvhrbo=
+	b=rE+JIIgnxP85EfyQY3GT2hQ1nTxLxPu0csTUKP5Q8Vjg7VAZQzDwZvMNXtniFFQ9Y
+	 vssscEaSIpi3c2OBDLfE905gLRgVVssVjoMlo2tKqH2U2Ghkc8PKP1bjyizLQAnbRF
+	 Pue5JRMPCmolOTFpKSQ3sXtfsm8LUkn0I0oj926w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Julian Ruess <julianr@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/154] ALSA: seq: Drop UMP events when no UMP-conversion is set
-Date: Mon, 24 Feb 2025 15:34:14 +0100
-Message-ID: <20250224142609.244114249@linuxfoundation.org>
+Subject: [PATCH 6.12 056/154] s390/ism: add release function for struct device
+Date: Mon, 24 Feb 2025 15:34:15 +0100
+Message-ID: <20250224142609.280849632@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
 References: <20250224142607.058226288@linuxfoundation.org>
@@ -65,55 +69,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Julian Ruess <julianr@linux.ibm.com>
 
-[ Upstream commit e77aa4b2eaa7fb31b2a7a50214ecb946b2a8b0f6 ]
+[ Upstream commit 915e34d5ad35a6a9e56113f852ade4a730fb88f0 ]
 
-When a destination client is a user client in the legacy MIDI mode and
-it sets the no-UMP-conversion flag, currently the all UMP events are
-still passed as-is.  But this may confuse the user-space, because the
-event packet size is different from the legacy mode.
+According to device_release() in /drivers/base/core.c,
+a device without a release function is a broken device
+and must be fixed.
 
-Since we cannot handle UMP events in user clients unless it's running
-in the UMP client mode, we should filter out those events instead of
-accepting blindly.  This patch addresses it by slightly adjusting the
-conditions for UMP event handling at the event delivery time.
+The current code directly frees the device after calling device_add()
+without waiting for other kernel parts to release their references.
+Thus, a reference could still be held to a struct device,
+e.g., by sysfs, leading to potential use-after-free
+issues if a proper release function is not set.
 
-Fixes: 329ffe11a014 ("ALSA: seq: Allow suppressing UMP conversions")
-Link: https://lore.kernel.org/b77a2cd6-7b59-4eb0-a8db-22d507d3af5f@gmail.com
-Link: https://patch.msgid.link/20250217170034.21930-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 8c81ba20349d ("net/smc: De-tangle ism and smc device initialization")
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250214120137.563409-1-wintera@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_clientmgr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/s390/net/ism_drv.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
-index 77b6ac9b5c11b..9955c4d54e42a 100644
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -678,12 +678,18 @@ static int snd_seq_deliver_single_event(struct snd_seq_client *client,
- 					  dest_port->time_real);
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index e36e3ea165d3b..2f34761e64135 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -588,6 +588,15 @@ static int ism_dev_init(struct ism_dev *ism)
+ 	return ret;
+ }
  
- #if IS_ENABLED(CONFIG_SND_SEQ_UMP)
--	if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
--		if (snd_seq_ev_is_ump(event)) {
-+	if (snd_seq_ev_is_ump(event)) {
-+		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
- 			result = snd_seq_deliver_from_ump(client, dest, dest_port,
- 							  event, atomic, hop);
- 			goto __skip;
--		} else if (snd_seq_client_is_ump(dest)) {
-+		} else if (dest->type == USER_CLIENT &&
-+			   !snd_seq_client_is_ump(dest)) {
-+			result = 0; // drop the event
-+			goto __skip;
-+		}
-+	} else if (snd_seq_client_is_ump(dest)) {
-+		if (!(dest->filter & SNDRV_SEQ_FILTER_NO_CONVERT)) {
- 			result = snd_seq_deliver_to_ump(client, dest, dest_port,
- 							event, atomic, hop);
- 			goto __skip;
++static void ism_dev_release(struct device *dev)
++{
++	struct ism_dev *ism;
++
++	ism = container_of(dev, struct ism_dev, dev);
++
++	kfree(ism);
++}
++
+ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct ism_dev *ism;
+@@ -601,6 +610,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	dev_set_drvdata(&pdev->dev, ism);
+ 	ism->pdev = pdev;
+ 	ism->dev.parent = &pdev->dev;
++	ism->dev.release = ism_dev_release;
+ 	device_initialize(&ism->dev);
+ 	dev_set_name(&ism->dev, dev_name(&pdev->dev));
+ 	ret = device_add(&ism->dev);
+@@ -637,7 +647,7 @@ static int ism_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	device_del(&ism->dev);
+ err_dev:
+ 	dev_set_drvdata(&pdev->dev, NULL);
+-	kfree(ism);
++	put_device(&ism->dev);
+ 
+ 	return ret;
+ }
+@@ -682,7 +692,7 @@ static void ism_remove(struct pci_dev *pdev)
+ 	pci_disable_device(pdev);
+ 	device_del(&ism->dev);
+ 	dev_set_drvdata(&pdev->dev, NULL);
+-	kfree(ism);
++	put_device(&ism->dev);
+ }
+ 
+ static struct pci_driver ism_driver = {
 -- 
 2.39.5
 
