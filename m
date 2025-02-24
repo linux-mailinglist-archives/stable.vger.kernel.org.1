@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-118880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AA6A41D40
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:43:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4344AA41D58
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:45:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D83D7A97C6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:38:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2568D3B3013
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDE7219300;
-	Mon, 24 Feb 2025 11:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAFD21931C;
+	Mon, 24 Feb 2025 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5dKGLlG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMychr3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C7E2192F7;
-	Mon, 24 Feb 2025 11:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DEE21931D;
+	Mon, 24 Feb 2025 11:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740396046; cv=none; b=ezHHmKq9Jb2HyrlhYeaj6tmZIEKIPUBUxVYKl9NFqt3+WIWQOaPjiCz4Nd3EhFVTR7MySP/MaZqX1q+c0h+dzIulAPXYlpYnYwu3N18KnUEEFQa5lmtNmsPiP4PXlzwvhRGT2DT5LC8vi4Avm/J4qYfhjyDd89QGN9Q/i+C1k70=
+	t=1740396047; cv=none; b=HmfnBjmLytUt4BT4tClSfkOQaXT/AoixdCFR+iX0on1f491HPigQcGnXtNBjuVCnYYrnAfB60oTkfCRcpY2qExUjxOmJjUq28yUWyq5v8OwMl2+k4/wafNpqGyzShgUeXlZij+W0bDeiuMYWh7ROQa5eoG97WWytnTZVNmgC2AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740396046; c=relaxed/simple;
-	bh=rNoU090DacA4cJ1DmOPHPw14tb3y4AnAfJ1lxydMYtg=;
+	s=arc-20240116; t=1740396047; c=relaxed/simple;
+	bh=zMzkz1mI6jtcn7+HAEQsWDVeXJfP5TGwxGUXHph+jXA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j41WpaA23QJFOn0WFebtfW2BhvZUlKH2Vhrall0Z7WZgnfueAXZ0GAkkYbLh9QV0RcRp03cgLSipv5iCy02aGCszAM+tM9kz2X4HAA+83TRafWM7138j62Owg+U4CWgt4cxQ7ZgDcnIMX9ClknCQNQ8CbqqCDm2zpNI7EHcYNn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5dKGLlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBBCC4CED6;
-	Mon, 24 Feb 2025 11:20:44 +0000 (UTC)
+	 MIME-Version; b=B0BL/v3UXjJKqOtz/2kVQAjwhpNvIKiZ5oZ1XZZYo8pw8HtVkdqEYUsVhi8PboctfzqipcpWuEQvr711Oq/x6cwGagp+sbgJPy29ajSXA9yb7updnxwaagtlvA15pZRKG6NpXN8dCdJ+cSyoL0eHCFFbUICEXYuqabfuvv+1po8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMychr3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585BAC4CEE6;
+	Mon, 24 Feb 2025 11:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740396045;
-	bh=rNoU090DacA4cJ1DmOPHPw14tb3y4AnAfJ1lxydMYtg=;
+	s=k20201202; t=1740396047;
+	bh=zMzkz1mI6jtcn7+HAEQsWDVeXJfP5TGwxGUXHph+jXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5dKGLlGLozSWBbhBUOGsQGXQDebdYtUx1ZqAdQtM3WFioKk6JVRNvGa8qamgIg/n
-	 9gni8oEZj3E6GipJyN/oKRbor2MOOPklMSOd15F+USWBWfdyWx5dtsFtNsy1rTx70y
-	 jbli2viw4xHCnHZaJxyEHsgSMgrxO3dexAvOAE3s94a6EKwG+gmQsR53C5zJezZx/v
-	 OLyo1NQoBVGXos3/o+pSrYHE+uWODeTt/6u+zdBLmzlyY4N6tlTpittdvXO69Uh3e2
-	 0rwRO+Fjb2LSeDs+juEGix/gEnYq39NM68HE18b+eaSqTsucvLXZX3LWSQ9xOarOFd
-	 Kd+1rwmpPiMwA==
+	b=hMychr3tGyKTBzGIF1szi7Z2srViMK2Lnu6Nd5XxGFPmxtSUiHB36Q+WMTaqr7e8s
+	 Ou4JcprkgbFIRyiWCtvyTQjNXyGa4YYNxYRlD/WbPfvqd+BEbvOasOaafFYRMOW57P
+	 pK47OiNzPXp7EBLmy+Ty4Ii4ZL0BbGIDYfqcL/7U9XNsgZkekGqT6JiZxx5Zk3eMHM
+	 q+qW1MstYKY7y2Bm0iQ28WAPgL+vjQrg5WyTysF5LU9JhN0lxU/qsmqtVt1oddGclf
+	 TjBr395a13LTDhsUpW041hP6DTWejzYKZJF7NiOtZduim/ueu25hsy4K/FDta6FN+C
+	 TEA/HlAO7enkA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Ruozhu Li <david.li@jaguarmicro.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ryazanov.s.a@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 4/7] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
-Date: Mon, 24 Feb 2025 06:20:27 -0500
-Message-Id: <20250224112033.2214818-4-sashal@kernel.org>
+	kch@nvidia.com,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 5/7] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
+Date: Mon, 24 Feb 2025 06:20:28 -0500
+Message-Id: <20250224112033.2214818-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224112033.2214818-1-sashal@kernel.org>
 References: <20250224112033.2214818-1-sashal@kernel.org>
@@ -72,59 +67,77 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.178
 Content-Transfer-Encoding: 8bit
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Ruozhu Li <david.li@jaguarmicro.com>
 
-[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
+[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
 
-When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
-constantly being filled with errors related to a "sequence number glitch",
-e.g.:
+The queue state checking in nvmet_rdma_recv_done is not in queue state
+lock.Queue state can transfer to LIVE in cm establish handler between
+state checking and state lock here, cause a silent drop of nvme connect
+cmd.
+Recheck queue state whether in LIVE state in state lock to prevent this
+issue.
 
-	[ 1903.284538] sequence number glitch prev=16 curr=0
-	[ 1913.812205] sequence number glitch prev=50 curr=0
-	[ 1923.698219] sequence number glitch prev=142 curr=0
-	[ 2029.248276] sequence number glitch prev=1555 curr=0
-	[ 2046.333059] sequence number glitch prev=70 curr=0
-	[ 2076.520067] sequence number glitch prev=272 curr=0
-	[ 2158.704202] sequence number glitch prev=2655 curr=0
-	[ 2218.530776] sequence number glitch prev=2349 curr=0
-	[ 2225.579092] sequence number glitch prev=6 curr=0
-
-Internet connectivity is working fine, so this error seems harmless. It
-looks like modem does not preserve the sequence number when entering low
-power state; the amount of errors depends on how actively the modem is
-being used.
-
-A similar issue has also been seen on USB-based MBIM modems [1]. However,
-in cdc_ncm.c the "sequence number glitch" message is a debug message
-instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
-silence these errors when using the modem.
-
-[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
-
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index ef70bb7c88ad6..43c20deab3189 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -209,7 +209,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
- 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
- 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
- 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
--		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
-+		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
- 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
- 	}
- 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index 9561ba3d43138..3b4b2d134cf81 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -996,6 +996,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
+ 	nvmet_req_complete(&cmd->req, status);
+ }
+ 
++static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
++		struct nvmet_rdma_rsp *rsp)
++{
++	unsigned long flags;
++	bool ret = true;
++
++	spin_lock_irqsave(&queue->state_lock, flags);
++	/*
++	 * recheck queue state is not live to prevent a race condition
++	 * with RDMA_CM_EVENT_ESTABLISHED handler.
++	 */
++	if (queue->state == NVMET_RDMA_Q_LIVE)
++		ret = false;
++	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
++		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
++	else
++		nvmet_rdma_put_rsp(rsp);
++	spin_unlock_irqrestore(&queue->state_lock, flags);
++	return ret;
++}
++
+ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ {
+ 	struct nvmet_rdma_cmd *cmd =
+@@ -1037,17 +1058,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	rsp->req.port = queue->port;
+ 	rsp->n_rdma = 0;
+ 
+-	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
+-		unsigned long flags;
+-
+-		spin_lock_irqsave(&queue->state_lock, flags);
+-		if (queue->state == NVMET_RDMA_Q_CONNECTING)
+-			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
+-		else
+-			nvmet_rdma_put_rsp(rsp);
+-		spin_unlock_irqrestore(&queue->state_lock, flags);
++	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
++	    nvmet_rdma_recv_not_live(queue, rsp))
+ 		return;
+-	}
+ 
+ 	nvmet_rdma_handle_command(queue, rsp);
+ }
 -- 
 2.39.5
 
