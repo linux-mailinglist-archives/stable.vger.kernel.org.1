@@ -1,124 +1,120 @@
-Return-Path: <stable+bounces-119420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC38A42EEE
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 22:21:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF43A43014
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 23:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71C44189DFD2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 21:19:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9494816DF1F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 22:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0C61DC988;
-	Mon, 24 Feb 2025 21:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66C5205502;
+	Mon, 24 Feb 2025 22:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Rd55fAqS"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Upq0NF2r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AA31D7E42;
-	Mon, 24 Feb 2025 21:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF03D1C84D0
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 22:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740431966; cv=none; b=KkCX/wHsFfoTHsif0P3wFYyAMk1Jb/EXFGrx67vOUvbqx/jKDvrM2H2lQeF6zRs8eiPOdiVJz30wLH3yjxZd4InNkuba4GvN+UTMaBnhizoKPecbaJeKCPdcEbk58rpja/ukBZmQDKH56/jaehRnY+rdV9viy7XQQWC62spoo9Y=
+	t=1740436119; cv=none; b=h6glv5j8xQKcTmgWFohuWk865d9+JA5rHpvJnT19XJ1pFi4KlhSzoiC8nusfHOSwL3BuklRLsfO5em7kN0fFgdDB5SMZNCn9+bqndBuT/MSclVlkfmT29TNHaZ/m/o342sjzvhDL12b9vVgIeBkjcL+945kZLpOy5IvshfnJC6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740431966; c=relaxed/simple;
-	bh=YoEVxQm7GUNB/Pace/xv1ua8aa3MZ5wuQD3jL7sthmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LuOUiO60S6iUWAr2eqH3iri3B72SUPz+e3le3mgwevjkcc5pF1WSFQ0JG1AbTZvDQpI6M4VOIPr5erbNE36Q57AQgNimVW4k6uNuaro/KuXCAzz2UKJIbUv5/B87XWQPDzS1exzmiHj/pBUm0aH/E2BwHoFhCMyJXrDY86QkjU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Rd55fAqS; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f3ee8a119so2419631f8f.0;
-        Mon, 24 Feb 2025 13:19:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1740431963; x=1741036763; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RpeO2CI36Azm6aM6kCOPxfPUs3dzzjFPJf88qBzpQcg=;
-        b=Rd55fAqSNJ4lxCeUg8wOhHhdTaLqBpdfQ71vyjLVW92O8X0WBnboP3XJKDwOmvYNI1
-         WbJ0BKCPA2JUALL54LECPRDK7pk/g+9yFQk9wsht1TD0oJz+gi+e7EdLDn1jIAmJOMFq
-         E8GTe/xWR2fopiB34sCEpMTXkxPg4EssaZQYJsa4mieWxcbkEUaNIedeiDmfwwAhUCHf
-         EqyCrhNQ5kB15YenQHGwVMPVNhC3Wn338cKio01uaJep9ySlg/LOEc4Qa/Tythxt5h+t
-         hf+dvE8p5c8WGFffTJeRdek8qnWGmuH35thGeHqtA/RlU10+b2oSY9Xzl6CxPQlR6xge
-         wsmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740431963; x=1741036763;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RpeO2CI36Azm6aM6kCOPxfPUs3dzzjFPJf88qBzpQcg=;
-        b=ddN+NgXKwvP3L9d08XdB40OOl12ysM/2D2egvHFmlJS5FuHnwLHeS1njPTbWmTIgnA
-         1dXBcCPYAPsnwuBkk/rxyRp8DloJEH/5P9dFzK/4uaerbiL8kWRNBwJFXdY/w1dqNT/f
-         mq7hCEuAJEKSTareEs+B9MnOksYWznC31sIgtrd+/3MXP315vUL1MGKUkdsHvBfDkcQC
-         9skOTA5pRUp0voEd9HVwt8EX1diya/zbLCT5vQa2mQDhlHeFbz2G3Dcvozwz2bjZVogS
-         qRmTkzokmFps5XSc1R25szjJFUc0loOn7jPf2vpUGCFiqtEAXmDUiluAGFpZYa0iHH13
-         dqwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnMTZvC5On/4FRGdoJf+I5IyQKr4QdSE5Ghf6GAsDSgsX/D5Wgw2DWhEKUQlGYQJf4VzlMTyeU@vger.kernel.org, AJvYcCWz8YKvWA1KOnR8Ow4RwPTbd9i9LW7D47rUPqYJvDBLNPLgwupm5uliQ5ycmlUJ/MhECut3cQRohuUO/NE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoBUbPsbsdIzCCiGb92+MpOSwRSGBwDRMy3clgCTQv2bL4WqhY
-	1D5R6HOzNdvQzBvB5qzneM+vuVUK8Gu/gwc0ZP10nzy0XB9K2q0=
-X-Gm-Gg: ASbGncvH3eKvcpI7UU9lnL5NKg8WCCaX2msDYTkbImNpOauu1MIB3hZU6pOvwZs48VX
-	G71iCPVK59iiCtGwITPtr11+YvYFpQkMBQD7BdPmk8xjXm6FZOZz+o/kJXRwN8LFe83RvytUQdS
-	xZ2nFDdexPuviRzvZJJfKvuU5oLIZbv1wDz/2pFcpJ7sTXEZTCcNYU1IthiSE7priq/tMvZX/iD
-	vsY1aDe9Gjc4wm4q7teN3oyyUxYJEOsmfcaHYzhJ5/W+g8S1pWY2EKcxniaQf7kJvnZm+QvA6Uz
-	R1XZYQqrgxj43OGL559zTU0/ELg9h18ZZgKYWaqJnjmP6FmisDRG4rglnszJqnOMMhMnNcJZIlH
-	ktpI=
-X-Google-Smtp-Source: AGHT+IEYsevmMEoA+JE6owr4Lom17EkYScyptZxEaM2HX68zip8SRSjflN6YB00vNtpaXesHEnqkKg==
-X-Received: by 2002:a5d:6d08:0:b0:38f:4531:3989 with SMTP id ffacd0b85a97d-38f7085e028mr12832430f8f.51.1740431963449;
-        Mon, 24 Feb 2025 13:19:23 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4180.dip0.t-ipconnect.de. [91.43.65.128])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd866af3sm154293f8f.2.2025.02.24.13.19.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Feb 2025 13:19:22 -0800 (PST)
-Message-ID: <304185a2-5cd5-44b1-a098-3e193b433657@googlemail.com>
-Date: Mon, 24 Feb 2025 22:19:21 +0100
+	s=arc-20240116; t=1740436119; c=relaxed/simple;
+	bh=HUOZgKCB2hsLgwu+4UBAzkClY4TEAdyAHQwlsXPCkYY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qNIqHME6IT+SsqFvvMKGtD7j5x/Dsw1kBIxP3bSfMtYn0z2fuwz4z0v0Z+8qVH5a1bzdNM6lRYL6SYhGmMcaAPwM52INidKe6ZokityKt+XFQEw4YeUy7QoZIVoyGmeeTPWn6RqJY3ntfQy8ni3XjDqc2ahsdXj2xYOBu/Gm2II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Upq0NF2r; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2mE3DglGa17dXmDisT0py0i+F+3GkyW4peakrb1pdvs=; b=Upq0NF2reOIVb2QRDy/gmAs6PD
+	kY/CufDTKOQf40k1jzsXgOENfgeKTKekx3Ovo9v89gXk92Be456tV3de34VCPOf/ldw23Vgz4OMBV
+	hdAcZmIwhi+ECqde/oxedTIpd/3w1UEpX4uqvh0PA4zsHvchPlB8udQQcpe2ZIv+i8r0MDR9eR6s6
+	AoaPZUrDJl0mAzjsA0MoRmaWcjn+mRLlsukNucDvE9IzqflkAzvmhwvZD9j2yUL5urrWN+zWz6ZcX
+	DUyFqfCOMi11w3FoeXLDxKOU2cOcQUVRuc69FMMVGO6IK0+euSfTQKd3ffx282xcObR6NUjCIAzAC
+	nA4tp2Hw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <benh@debian.org>)
+	id 1tmgw9-000g9x-W4; Mon, 24 Feb 2025 22:28:30 +0000
+Message-ID: <29f96d04ceac67563df0b4b17fb8a887dff3eb04.camel@debian.org>
+Subject: Re: [PATCH 5.4,5.10 2/2] udf: Fix use of check_add_overflow() with
+ mixed type arguments
+From: Ben Hutchings <benh@debian.org>
+To: stable@vger.kernel.org
+Cc: Jan Kara <jack@suse.cz>
+Date: Mon, 24 Feb 2025 23:28:22 +0100
+In-Reply-To: <Z7yXm_Vo1Y0Gjx_X@decadent.org.uk>
+References: <Z7yXm_Vo1Y0Gjx_X@decadent.org.uk>
+Organization: Debian
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-z/2kx14fNOtla9rVE18o"
+User-Agent: Evolution 3.54.1-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.13 000/138] 6.13.5-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250224142604.442289573@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Am 24.02.2025 um 15:33 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.13.5 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+X-Debian-User: benh
 
 
-Beste Grüße,
-Peter Schneider
+--=-z/2kx14fNOtla9rVE18o
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+On Mon, 2025-02-24 at 17:00 +0100, Ben Hutchings wrote:
+> Commit ebbe26fd54a9 "udf: Avoid excessive partition lengths"
+> introduced a use of check_add_overflow() with argument types u32,
+> size_t, and u32 *.
+>=20
+> This was backported to the 5.x stable branches, where in 64-bit
+> configurations it results in a build error (with older compilers) or a
+> warning.  Before commit d219d2a9a92e "overflow: Allow mixed type
+> arguments", which went into Linux 6.1, mixed type arguments are not
+> supported.  That cannot be backported to 5.4 or 5.10 as it would raise
+> the minimum compiler version for these kernel versions.
+[....]
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+And for 5.15, I think it should be safe to backport commit
+d219d2a9a92e.  Otherwise this patch should be applied to fix the
+warning there.
+
+Ben.
+
+--=20
+Ben Hutchings - Debian developer, member of kernel, installer and LTS
+teams
+
+--=-z/2kx14fNOtla9rVE18o
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAme88oYACgkQ57/I7JWG
+EQnsEA//UTfIQnKYZNsZzvfWpyJF09lNY0BWXwixquUgQ0u1nZU45aRsaLrTuKqH
+u4bILlKUS2bkE36M3qxBrV8rjKnBuKJJZhKUP3tmZ6gpQBLimbzBE1fOlMi6/khM
+S3Qfx3HLExP6O318WIqYM31pCb3cEKskmBmlk+e4I0ems0++Ln3xDYU/4ucZpOA5
+cDw4IzMicmim0zfrWQ5urfiKEvlfvsryDATEKjhDY8l7BEM7gy7xYIEhL6M057ho
+8AD3hM8zZHMj1YceOIf/dkbW8rZ3p60gDPBYk6WMPyn4CSau1bKt84Xs1dJLK04X
+k3UABCIUntUtIOYtfgi2pdGk14pkBOcNF0j7o5ZDvPQpWBnps+/T8WZZTjOY5eaY
+N+EyIiO+4Dv3r5LVR6E27eMppL0dDxMAtXChVUtp2BlrdLRwkN0iZTvznKGM07Me
+DFuWoMlCAUy8Fpa3sDRtHJsMe2KtcDy27rZaRFETBI1UTOPimfPAJRqFw2clw7B2
+CZQHsL6lwTjoH8kq1Xg4LUi1f7geNpQFy/bgscKZJZXOY68Mog0E2pvJHmBMJGBt
++lc57nYKMKK3qP1vPAwzbaDKMK7LYhbWZYapKm9Av/k9Fr4ajvt050DnCe0BwG24
+wpchG0cHl458ONNvjjb3mN9Bdejr8BcC6cM+IPweCxxsq5VgIwM=
+=1rH+
+-----END PGP SIGNATURE-----
+
+--=-z/2kx14fNOtla9rVE18o--
 
