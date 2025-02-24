@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-118840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A58A41CE3
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:34:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95242A41CE7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 062503BD99D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C43EB3B340B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229DB267B6D;
-	Mon, 24 Feb 2025 11:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD686267B85;
+	Mon, 24 Feb 2025 11:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmyDgwrE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGOFre3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4AD25D55C;
-	Mon, 24 Feb 2025 11:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76089267B7C;
+	Mon, 24 Feb 2025 11:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395947; cv=none; b=eiWxjGn/JxK+rVnA9N0Wv82Gdq0+3/f+rzsp535Df69CvmBGj0q5MjU7muzJtt/NQKtlAULiypESYmHspU3WyDw7vkJxcq44eAkM4wvqxqKV5XMjdHBiVrNET7FrpF2KTMpd4AIOFQ6jK6hhLSWklckbt5SN+6EPMmRHY7Gfgzw=
+	t=1740395949; cv=none; b=bBLS+GvQIS0Vhe7uIUmvTtnfW9IoAZ2X9ZM6hC2e02EncDhxs5kSQTEt/qw8FON1ibiT1/FOHOsTgpxkmGmxZaFykNksDRyp8oHaZQnZ1Cb/CJaOlbu2yOUIOOvhDWliV4BLM5vOWt4NndquvIfr0kELd6gwwYOcx6CLJEhrREs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395947; c=relaxed/simple;
-	bh=G23AKcUUhcPBQNTXagmQkFOIFePG7LUUEUlJGCkB2o8=;
+	s=arc-20240116; t=1740395949; c=relaxed/simple;
+	bh=gE5uRHqVDZjkgOWqgS95Cm71TIS3auiXFOzMFuV0Ot4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u5vOa3eElpeUtgLqXR+iSIVq2x/3GWGL7mE3Kkdma6SNsW3BDwjYNOLkwx06qjaP28DniWN2APHv8Bh0mUHDfCk33LNB1jNGzLZYdi8Msf1La5eEA8ZUWxAJ1Z2AU2eK/+eCuTs/h2Q3ehU+iO8jPahG+K49XW5rwbYAHn+1q7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmyDgwrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009FAC4CEE6;
-	Mon, 24 Feb 2025 11:19:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=be/qwof1+dOUlqH/9kqnEvaxHsphbl+Aq+0k+QEL+XPO3ZpY3oEbCTwe5tTEPnQr4Gk55d4qYOx2uI+E6WMnK7bwUxJXYjkghJcW2Ddl4pSi/NaCnCrOJgijDNbKLARPYIwOmBHnVZTuEy4BvoyTplnMltd0dUvL7atEPsqooM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGOFre3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE834C4CEE8;
+	Mon, 24 Feb 2025 11:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395947;
-	bh=G23AKcUUhcPBQNTXagmQkFOIFePG7LUUEUlJGCkB2o8=;
+	s=k20201202; t=1740395948;
+	bh=gE5uRHqVDZjkgOWqgS95Cm71TIS3auiXFOzMFuV0Ot4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmyDgwrEuN3wRoi/6j8fSlveG6yK5hqsF2xtXm40I1SejK5WqtCyXUzOo/VurLChY
-	 GYT7BmVXmriyrN6WiH+rBv5zH17lC4ojzrdZmNjZnkru0RflQrTpVB1N0yLKRyI0wG
-	 ZdMWqBKNG57stU/7RrOPAnc6vx3bKNBE9wOyYtVWNKLVOkrJqCh/ATsZWf22D2uwDB
-	 XIYKJKqSqjgsNZYVt96SkG0RtfG04HOtYu8gbrEjg/7kBEeXiuEzqS6ZDezuva2ZTF
-	 Qfai7sm7AR5BZOpE1/ccinEx5p5voF4fNq7M9UB0JHMd71qjfInur4RdJf9q+2ThXw
-	 NeBVQJCDxwgFA==
+	b=MGOFre3MS6BIh7QJVFfUTb+Pu2jhulU/qyWX7yKRPaH1As0OcRLMK9m91FLyYhmae
+	 9hVWfJRg8EFEotcjXYVvpTdClEOctSjI/8fhAjTnZUGKqk2FxPf+ox3/VjloFicrfR
+	 TxK/i4AE49P/PNNuNHrgR0UWLeLeiPDhjLWj4klAxPhS+SentrJdgPr87xjqPymC0+
+	 nCZ2oxLxxsroc4GDqqUX+f8Zz9Y3INMAU2MOQIzTwYa1QuOV98LjtpqP2MTXw+jD7r
+	 B5Tk/a2gKIyVG2YT0D5R4WDVPPWBc7lHxsCM6LiisuUeGHiJIThOmfSznfW0b5esGK
+	 3Kx1tgc1t5jaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hector Martin <marcan@marcan.st>,
-	Neal Gompa <neal@gompa.dev>,
-	Sven Peter <sven@svenpeter.dev>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	j@jannau.net,
-	sagi@grimberg.me,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 24/28] apple-nvme: Release power domains when probe fails
-Date: Mon, 24 Feb 2025 06:17:55 -0500
-Message-Id: <20250224111759.2213772-24-sashal@kernel.org>
+	sfrench@samba.org,
+	linkinjeon@kernel.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.12 25/28] cifs: Treat unhandled directory name surrogate reparse points as mount directory nodes
+Date: Mon, 24 Feb 2025 06:17:56 -0500
+Message-Id: <20250224111759.2213772-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111759.2213772-1-sashal@kernel.org>
 References: <20250224111759.2213772-1-sashal@kernel.org>
@@ -67,45 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.16
 Content-Transfer-Encoding: 8bit
 
-From: Hector Martin <marcan@marcan.st>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit eefa72a15ea03fd009333aaa9f0e360b2578e434 ]
+[ Upstream commit b587fd128660d48cd2122f870f720ff8e2b4abb3 ]
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Reviewed-by: Sven Peter <sven@svenpeter.dev>
-Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+If the reparse point was not handled (indicated by the -EOPNOTSUPP from
+ops->parse_reparse_point() call) but reparse tag is of type name surrogate
+directory type, then treat is as a new mount point.
+
+Name surrogate reparse point represents another named entity in the system.
+
+From SMB client point of view, this another entity is resolved on the SMB
+server, and server serves its content automatically. Therefore from Linux
+client point of view, this name surrogate reparse point of directory type
+crosses mount point.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/apple.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/inode.c    | 13 +++++++++++++
+ fs/smb/common/smbfsctl.h |  3 +++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
-index b1387dc459a32..df054cd38c3e3 100644
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -1518,6 +1518,7 @@ static struct apple_nvme *apple_nvme_alloc(struct platform_device *pdev)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index fafc07e38663c..295afb73fcdd6 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1193,6 +1193,19 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 			rc = server->ops->parse_reparse_point(cifs_sb,
+ 							      full_path,
+ 							      iov, data);
++			/*
++			 * If the reparse point was not handled but it is the
++			 * name surrogate which points to directory, then treat
++			 * is as a new mount point. Name surrogate reparse point
++			 * represents another named entity in the system.
++			 */
++			if (rc == -EOPNOTSUPP &&
++			    IS_REPARSE_TAG_NAME_SURROGATE(data->reparse.tag) &&
++			    (le32_to_cpu(data->fi.Attributes) & ATTR_DIRECTORY)) {
++				rc = 0;
++				cifs_create_junction_fattr(fattr, sb);
++				goto out;
++			}
+ 		}
+ 		break;
+ 	}
+diff --git a/fs/smb/common/smbfsctl.h b/fs/smb/common/smbfsctl.h
+index 4b379e84c46b9..3253a18ecb5cb 100644
+--- a/fs/smb/common/smbfsctl.h
++++ b/fs/smb/common/smbfsctl.h
+@@ -159,6 +159,9 @@
+ #define IO_REPARSE_TAG_LX_CHR	     0x80000025
+ #define IO_REPARSE_TAG_LX_BLK	     0x80000026
  
- 	return anv;
- put_dev:
-+	apple_nvme_detach_genpd(anv);
- 	put_device(anv->dev);
- 	return ERR_PTR(ret);
- }
-@@ -1551,6 +1552,7 @@ static int apple_nvme_probe(struct platform_device *pdev)
- 	nvme_uninit_ctrl(&anv->ctrl);
- out_put_ctrl:
- 	nvme_put_ctrl(&anv->ctrl);
-+	apple_nvme_detach_genpd(anv);
- 	return ret;
- }
- 
++/* If Name Surrogate Bit is set, the file or directory represents another named entity in the system. */
++#define IS_REPARSE_TAG_NAME_SURROGATE(tag) (!!((tag) & 0x20000000))
++
+ /* fsctl flags */
+ /* If Flags is set to this value, the request is an FSCTL not ioctl request */
+ #define SMB2_0_IOCTL_IS_FSCTL		0x00000001
 -- 
 2.39.5
 
