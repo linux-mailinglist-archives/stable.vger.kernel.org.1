@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5BAA425D2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:14:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E036A42543
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E71F19E0091
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF97E426CBB
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551C9153808;
-	Mon, 24 Feb 2025 14:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF3D84A35;
+	Mon, 24 Feb 2025 14:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+WLB+Te"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INNyZGLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119441946DF;
-	Mon, 24 Feb 2025 14:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE01E18CC1C;
+	Mon, 24 Feb 2025 14:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740409072; cv=none; b=lrs1Mn0b4BtUFRNb0bKD0zIXCRLuQ9mWJ8pmSTvMd7VkrFq8OBrJU8UIbwGbb0+OTikrZ5wEgRuODE2YRiL179JCf5Q7MJXrulRrsVARcMb6tDYOwSwjSOz+rOhPiQZgnb18WL5Ztn8r8z+iQYr4LZHk3mbCkuxELCvQid/ondQ=
+	t=1740408655; cv=none; b=GQs5gfIRWcDVy80Zk2hTiOJPDdfr7H7safoGD48GvVrF+o+7FWgblekhgtx/uAirovmhtu5FNMrJMx41yHIVFgRFCXkT8mlB1YaV/sZ8G6TLCmcj/RLbaXwmUjzRuAjqF3ZPVfV/SdOsZdfXM1/I+W9vDLthUdLsU/lqfC33u94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740409072; c=relaxed/simple;
-	bh=6uVKfUras1NCQ9SS+yZ4abFOB3MTeoXY4pEhI+VZMsA=;
+	s=arc-20240116; t=1740408655; c=relaxed/simple;
+	bh=BMD234qbTTXKOnjcV5L4ZjpbvxbY/5u/2JqQ4SALw30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMUwu8tze0JDDo7cBEMmr2EPnommbMImd/JNFBkRj5de8pl5sdoocJToSfARpF9EP/Q3QakibSAwIJvFXpu/DZUhsQUgiC0VErxxvHqaG+vE+pyGLuaXN0++D3DFmVlSkcYpJp0Ps9wMDz2EzvSFZHlSd9JfJ1JDRjG3cJXl3FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+WLB+Te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F6AC4CED6;
-	Mon, 24 Feb 2025 14:57:51 +0000 (UTC)
+	 MIME-Version; b=eOSDnJgsndevW/XNCWsx1+m1Ov9E85Xpuj4geF55qT6SKHVw/4+xtoUzqcxj4/xc1li7nR8JHZZ0G/yF2832SYwbQkOAciHLv3lnw480lP5vkZFNyY1YNbdB8ESuwyXup4hDvhmqQtein0D8aXo/7bi7prD/fD62A45O7MBbxoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INNyZGLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10784C4CED6;
+	Mon, 24 Feb 2025 14:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740409071;
-	bh=6uVKfUras1NCQ9SS+yZ4abFOB3MTeoXY4pEhI+VZMsA=;
+	s=korg; t=1740408654;
+	bh=BMD234qbTTXKOnjcV5L4ZjpbvxbY/5u/2JqQ4SALw30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+WLB+TeJm7AuP04dA1dsZoRq3OGeq3+imLMVD1+ugvpSJnlpKJwxgOeZggHDyxFO
-	 PkvmGe0acgA196I+wIc8E51hErf+E2P5lSkku8YOfmLiucK1amSRn4C7S/f96fd/10
-	 3yK6WlsOUdtx0B0t4f+Gtn7bc+A1y9l/8hciXrsU=
+	b=INNyZGLxTi83Ysbr6DYYoFnAQHHh9e9EoDRYkWYxUQ4i48eJgsOfXWi9+8KsJcbuk
+	 fOL4Klgx/HeLHCeIxuxfr+ajFUlvCKIdDksT+7dXEtMocZF5fHiKoVe+1CyvK+ix95
+	 AAwFf82CkDNrtLzpLdm1iolEsyEXmHU2DIUxUoJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.13 087/138] drm: panel: jd9365da-h3: fix reset signal polarity
-Date: Mon, 24 Feb 2025 15:35:17 +0100
-Message-ID: <20250224142607.895293212@linuxfoundation.org>
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.12 120/154] arm64: dts: rockchip: Move uart5 pin configuration to px30 ringneck SoM
+Date: Mon, 24 Feb 2025 15:35:19 +0100
+Message-ID: <20250224142611.752460957@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 
-commit a8972d5a49b408248294b5ecbdd0a085e4726349 upstream.
+commit 4eee627ea59304cdd66c5d4194ef13486a6c44fc upstream.
 
-In jadard_prepare() a reset pulse is generated with the following
-statements (delays ommited for clarity):
+In the PX30-uQ7 (Ringneck) SoM, the hardware CTS and RTS pins for
+uart5 cannot be used for the UART CTS/RTS, because they are already
+allocated for different purposes. CTS pin is routed to SUS_S3#
+signal, while RTS pin is used internally and is not available on
+Q7 connector. Move definition of the pinctrl-0 property from
+px30-ringneck-haikou.dts to px30-ringneck.dtsi.
 
-    gpiod_set_value(jadard->reset, 1); --> Deassert reset
-    gpiod_set_value(jadard->reset, 0); --> Assert reset for 10ms
-    gpiod_set_value(jadard->reset, 1); --> Deassert reset
+This commit is a dependency to next commit in the patch series,
+that disables DMA for uart5.
 
-However, specifying second argument of "0" to gpiod_set_value() means to
-deassert the GPIO, and "1" means to assert it. If the reset signal is
-defined as GPIO_ACTIVE_LOW in the DTS, the above statements will
-incorrectly generate the reset pulse (inverted) and leave it asserted
-(LOW) at the end of jadard_prepare().
-
-Fix reset behavior by inverting gpiod_set_value() second argument
-in jadard_prepare(). Also modify second argument to devm_gpiod_get()
-in jadard_dsi_probe() to assert the reset when probing.
-
-Do not modify it in jadard_unprepare() as it is already properly
-asserted with "1", which seems to be the intended behavior.
-
-Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240927135306.857617-1-hugo@hugovil.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240927135306.857617-1-hugo@hugovil.com
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250121125604.3115235-2-lukasz.czechowski@thaumatec.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts |    1 -
+ arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi       |    4 ++++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-+++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-@@ -109,13 +109,13 @@ static int jadard_prepare(struct drm_pan
- 	if (jadard->desc->lp11_to_reset_delay_ms)
- 		msleep(jadard->desc->lp11_to_reset_delay_ms);
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
+@@ -226,7 +226,6 @@
+ };
  
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(5);
+ &uart5 {
+-	pinctrl-0 = <&uart5_xfer>;
+ 	rts-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ };
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+@@ -373,6 +373,10 @@
+ 	status = "okay";
+ };
  
--	gpiod_set_value(jadard->reset, 0);
-+	gpiod_set_value(jadard->reset, 1);
- 	msleep(10);
- 
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(130);
- 
- 	ret = jadard->desc->init(jadard);
-@@ -1130,7 +1130,7 @@ static int jadard_dsi_probe(struct mipi_
- 	dsi->format = desc->format;
- 	dsi->lanes = desc->lanes;
- 
--	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(jadard->reset)) {
- 		DRM_DEV_ERROR(&dsi->dev, "failed to get our reset GPIO\n");
- 		return PTR_ERR(jadard->reset);
++&uart5 {
++	pinctrl-0 = <&uart5_xfer>;
++};
++
+ /* Mule UCAN */
+ &usb_host0_ehci {
+ 	status = "okay";
 
 
 
