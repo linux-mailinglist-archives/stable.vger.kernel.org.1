@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-119237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB34A4253C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8668A425C6
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D881B3AB18B
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970A91899748
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E869A1519A5;
-	Mon, 24 Feb 2025 14:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EB718A95E;
+	Mon, 24 Feb 2025 15:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYYjhzQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ab2+ktfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51722571C3;
-	Mon, 24 Feb 2025 14:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0481818A6BD;
+	Mon, 24 Feb 2025 15:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408786; cv=none; b=uVcN63WNqkiqL12pMo/86l3gg8TfDzKUCJpDcwSzrkOoDZB05jS3XhiC/KQBYb0SJwrgM66du78wsjB0TESXsWGBh0mx//8gg1qek6wuw3ZuKnrwmk8qFUTqrUNsfAbGGwKQMqlzR7YnJ20Y/25TazqvfxKERvZXt48jNRbLNEA=
+	t=1740409217; cv=none; b=SKEaqGbJPAs7uz2716MNGfDmbm6SN2sl9nnw7T2hXDwOMbgxo8kjDR9WhQGUEBPsuFCXq7Z+UsabIGGt/RklqqHdpleuIYFBJ4mw6KiGB4/tG4S+mVzMCygExAvfVF9W4gzsp9tAkFkcNTpNzNv4gtK3Q/nf1QOklhaz+SGW90w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408786; c=relaxed/simple;
-	bh=U8DX4dHlNSrr9CMiHbX9UNVAwqz388wqdgPCNLz3XIY=;
+	s=arc-20240116; t=1740409217; c=relaxed/simple;
+	bh=5wc8+4A9UMX3IBGK4xEbU/kg6bH0b3eoky7GtudJ08A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pA9HKfl64CrjoU3kQ1axW/AVQBvRpabf/GGYok09xwTG25CbbVKD7OQ+UmAi29PVxwJWWYZXwpzVbB6/5lGikBcwft4PaCr/ACvW4oz/H4vAqxOFtfNm8QpCVXrBJmMyyrO7C1p3wa5Mfh64D5WA/VT0hUR+hErxmUn0IIUaujA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYYjhzQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDEEC4CED6;
-	Mon, 24 Feb 2025 14:53:04 +0000 (UTC)
+	 MIME-Version; b=DAqVVI8uzpIxu9+Q3ctfvhYnK/D3iFlT8RwbHtC9bHKQ1weaxZGNi3pKiYHNqHCy5JEhESbC4hsNbGqDdEVkW2n7Kad1YvSZkZca0Ko/y5f8/oRJu3JoAU575toYcWPalFNh6Jj/LsioxuKPfJEmetlP74aDsFGYPCg6+dS/53A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ab2+ktfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420E5C4CED6;
+	Mon, 24 Feb 2025 15:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408785;
-	bh=U8DX4dHlNSrr9CMiHbX9UNVAwqz388wqdgPCNLz3XIY=;
+	s=korg; t=1740409216;
+	bh=5wc8+4A9UMX3IBGK4xEbU/kg6bH0b3eoky7GtudJ08A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYYjhzQQyilchBDHlVfpPoviWBx7Nj0+anBi6otYpAtYThNlOjKhDlJYkO6m8Z8C3
-	 MO4iCWLGLjfxq+tRCjlauLvfLnq0FmIkE1dCoao6BGuJ7nSNz8hkzOOFS6+AvsMXe8
-	 eY/mzbyAkbC7+0VN4g31tuw0txWMKanBFl4CcEXY=
+	b=ab2+ktfUW2vn5Whui9r3rlWu+uLZw6BwvKr1F4L/VW2nfdD2wg7ndts6PdpQlyKkg
+	 7EAp3p3GQnIv59KNnD/ni/SjvSeDnXEmHokrHS2V/z5oMLStGyxPXpUHWGOohxB8R3
+	 JAauz2OOioEBDLzjHvwNNGwpsF+Joub78K0Jwvww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 130/154] ASoC: fsl_micfil: Enable default case in micfil_set_quality()
+	Arnd Bergmann <arnd@arndb.de>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 6.13 099/138] tee: optee: Fix supplicant wait loop
 Date: Mon, 24 Feb 2025 15:35:29 +0100
-Message-ID: <20250224142612.138518247@linuxfoundation.org>
+Message-ID: <20250224142608.370185385@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-commit a8c9a453387640dbe45761970f41301a6985e7fa upstream.
+commit 70b0d6b0a199c5a3ee6c72f5e61681ed6f759612 upstream.
 
-If 'micfil->quality' received from micfil_quality_set() somehow ends
-up with an unpredictable value, switch() operator will fail to
-initialize local variable qsel before regmap_update_bits() tries
-to utilize it.
+OP-TEE supplicant is a user-space daemon and it's possible for it
+be hung or crashed or killed in the middle of processing an OP-TEE
+RPC call. It becomes more complicated when there is incorrect shutdown
+ordering of the supplicant process vs the OP-TEE client application which
+can eventually lead to system hang-up waiting for the closure of the
+client application.
 
-While it is unlikely, play it safe and enable a default case that
-returns -EINVAL error.
+Allow the client process waiting in kernel for supplicant response to
+be killed rather than indefinitely waiting in an unkillable state. Also,
+a normal uninterruptible wait should not have resulted in the hung-task
+watchdog getting triggered, but the endless loop would.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+This fixes issues observed during system reboot/shutdown when supplicant
+got hung for some reason or gets crashed/killed which lead to client
+getting hung in an unkillable state. It in turn lead to system being in
+hung up state requiring hard power off/on to recover.
 
-Fixes: bea1d61d5892 ("ASoC: fsl_micfil: rework quality setting")
+Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250116142436.22389-1-n.zhandarovich@fintech.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_micfil.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tee/optee/supp.c |   35 ++++++++---------------------------
+ 1 file changed, 8 insertions(+), 27 deletions(-)
 
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -156,6 +156,8 @@ static int micfil_set_quality(struct fsl
- 	case QUALITY_VLOW2:
- 		qsel = MICFIL_QSEL_VLOW2_QUALITY;
- 		break;
-+	default:
-+		return -EINVAL;
+--- a/drivers/tee/optee/supp.c
++++ b/drivers/tee/optee/supp.c
+@@ -80,7 +80,6 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	struct optee *optee = tee_get_drvdata(ctx->teedev);
+ 	struct optee_supp *supp = &optee->supp;
+ 	struct optee_supp_req *req;
+-	bool interruptable;
+ 	u32 ret;
+ 
+ 	/*
+@@ -111,36 +110,18 @@ u32 optee_supp_thrd_req(struct tee_conte
+ 	/*
+ 	 * Wait for supplicant to process and return result, once we've
+ 	 * returned from wait_for_completion(&req->c) successfully we have
+-	 * exclusive access again.
++	 * exclusive access again. Allow the wait to be killable such that
++	 * the wait doesn't turn into an indefinite state if the supplicant
++	 * gets hung for some reason.
+ 	 */
+-	while (wait_for_completion_interruptible(&req->c)) {
++	if (wait_for_completion_killable(&req->c)) {
+ 		mutex_lock(&supp->mutex);
+-		interruptable = !supp->ctx;
+-		if (interruptable) {
+-			/*
+-			 * There's no supplicant available and since the
+-			 * supp->mutex currently is held none can
+-			 * become available until the mutex released
+-			 * again.
+-			 *
+-			 * Interrupting an RPC to supplicant is only
+-			 * allowed as a way of slightly improving the user
+-			 * experience in case the supplicant hasn't been
+-			 * started yet. During normal operation the supplicant
+-			 * will serve all requests in a timely manner and
+-			 * interrupting then wouldn't make sense.
+-			 */
+-			if (req->in_queue) {
+-				list_del(&req->link);
+-				req->in_queue = false;
+-			}
++		if (req->in_queue) {
++			list_del(&req->link);
++			req->in_queue = false;
+ 		}
+ 		mutex_unlock(&supp->mutex);
+-
+-		if (interruptable) {
+-			req->ret = TEEC_ERROR_COMMUNICATION;
+-			break;
+-		}
++		req->ret = TEEC_ERROR_COMMUNICATION;
  	}
  
- 	return regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
+ 	ret = req->ret;
 
 
 
