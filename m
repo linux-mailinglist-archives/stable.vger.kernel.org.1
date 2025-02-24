@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-119090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87480A42413
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:52:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDEEA423A1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1762017C496
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E4A3BC409
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA9B664C6;
-	Mon, 24 Feb 2025 14:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0E5192D84;
+	Mon, 24 Feb 2025 14:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUtCww+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixqU29Ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB31A26ADD;
-	Mon, 24 Feb 2025 14:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C218A6C5;
+	Mon, 24 Feb 2025 14:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408288; cv=none; b=Glq3oqsrgdTrje1dsm6Jgq9q9v2a2ywgZezd1GSt7293vrGxK8E7IupGCj1jdngSNl2evovJNDeslYnMAaPZnV2IVOJUmVvoFx7OhQpyp4MX2iPtpKCKhbuGs2AwvxRC2LTMavyZVoaWrV4oabkyWf1p0+ysd/Cs3km3tSpIQKo=
+	t=1740407803; cv=none; b=bCbHEvZpkYwweBzm6pdeLs+g57zen1954lWsk1t2q/j5mscigr2ULIvcdD5bVUW6QJtpc6oskZXtFP8mzTWM2Q7PLbGdC02kI16aPwIV79wq7P4iMnOSiO46k1Olyae1WzZApz/DzGlV0Tnk5JzncrQW2kSBijzNevrKLSWJ/FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408288; c=relaxed/simple;
-	bh=uRHW7RpTgz7jJsOvTGAgIao2Igv4QBtS6O0s/NsrIxg=;
+	s=arc-20240116; t=1740407803; c=relaxed/simple;
+	bh=qU5HrH2r33ezbco8TMWgz2HVUtUfXRRGXM1gjxKScDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SA2YQqbFu9f6r+Y1wvgFoAdGUFILd53kDLXH4oa8GAm3W3jEznD/XsVBF6nwlP/VHnjxjFOZe8mEMX2kjOLOPiIf4Vx0xIN6CVK0X79GMtjkOG8QckrcGfifnbhYpFvxD0Xd1FE5+QIBN/DPFwVw4Vj5LRTYsWqBVPmD/a1eeoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUtCww+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18942C4CED6;
-	Mon, 24 Feb 2025 14:44:47 +0000 (UTC)
+	 MIME-Version; b=adiN+gH/k6FeFslDdeuDXgdidz5t0krMqw++2LGCT7VVj3MIB0ceWnIOxpjG0lD3fA5hzE/CF/xvOHRvwlGw5PUSwoeIDrwN/QcGDL2kybAs5wqFEqE+gbHs1ufRhKFUFqtGi8NUEo4qDF5Uczi5aGrk4DrJT4sfiLNqlJeaQkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixqU29Ot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9BDC4CED6;
+	Mon, 24 Feb 2025 14:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408288;
-	bh=uRHW7RpTgz7jJsOvTGAgIao2Igv4QBtS6O0s/NsrIxg=;
+	s=korg; t=1740407802;
+	bh=qU5HrH2r33ezbco8TMWgz2HVUtUfXRRGXM1gjxKScDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUtCww+sXAqq+LzsHBTP/DZ2bMN2s/5RwJ3lBbRB3diThZ2DTq90TVDwtNwsB41r4
-	 JDmh5CAgrKa353FeosWR50zgr2/V+0k1/mos9dsVuftJ6nAalFsjvwunt8KOYnpPMv
-	 3aOjbm9dyF/HtAGvS9c6XV5/V7Obm8pEUAOSU8+s=
+	b=ixqU29OtNZRkaLExt9t8oJQD7teno5Ttc9B5cCAJSzWNCDB3DC1zQYrl8i0B8sLuJ
+	 Mgel8anwxIuE1uf+ASGpcoiZx77U+X1aqhGKcUNp6uWnBRkrlp5M+eUKkyFAJDCH4o
+	 zBfSpF0BpJpfLITfvmyplREYAFyUO0dpg/tX0eN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/154] btrfs: fix double accounting race when extent_writepage_io() failed
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 014/140] xfs: call xfs_bmap_exact_minlen_extent_alloc from xfs_bmap_btalloc
 Date: Mon, 24 Feb 2025 15:33:33 +0100
-Message-ID: <20250224142607.635074913@linuxfoundation.org>
+Message-ID: <20250224142603.569830545@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 8bf334beb3496da3c3fbf3daf3856f7eec70dacc ]
+commit 405ee87c6938f67e6ab62a3f8f85b3c60a093886 upstream.
 
-[BUG]
-If submit_one_sector() failed inside extent_writepage_io() for sector
-size < page size cases (e.g. 4K sector size and 64K page size), then
-we can hit double ordered extent accounting error.
+[backport: dependency of 6aac770]
 
-This should be very rare, as submit_one_sector() only fails when we
-failed to grab the extent map, and such extent map should exist inside
-the memory and has been pinned.
+xfs_bmap_exact_minlen_extent_alloc duplicates the args setup in
+xfs_bmap_btalloc.  Switch to call it from xfs_bmap_btalloc after
+doing the basic setup.
 
-[CAUSE]
-For example we have the following folio layout:
-
-    0  4K          32K    48K   60K 64K
-    |//|           |//////|     |///|
-
-Where |///| is the dirty range we need to writeback. The 3 different
-dirty ranges are submitted for regular COW.
-
-Now we hit the following sequence:
-
-- submit_one_sector() returned 0 for [0, 4K)
-
-- submit_one_sector() returned 0 for [32K, 48K)
-
-- submit_one_sector() returned error for [60K, 64K)
-
-- btrfs_mark_ordered_io_finished() called for the whole folio
-  This will mark the following ranges as finished:
-  * [0, 4K)
-  * [32K, 48K)
-    Both ranges have their IO already submitted, this cleanup will
-    lead to double accounting.
-
-  * [60K, 64K)
-    That's the correct cleanup.
-
-The only good news is, this error is only theoretical, as the target
-extent map is always pinned, thus we should directly grab it from
-memory, other than reading it from the disk.
-
-[FIX]
-Instead of calling btrfs_mark_ordered_io_finished() for the whole folio
-range, which can touch ranges we should not touch, instead
-move the error handling inside extent_writepage_io().
-
-So that we can cleanup exact sectors that ought to be submitted but failed.
-
-This provides much more accurate cleanup, avoiding the double accounting.
-
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ fs/xfs/libxfs/xfs_bmap.c |   61 ++++++++++-------------------------------------
+ 1 file changed, 13 insertions(+), 48 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 15cbb2a865e5e..660a5b9c08e9e 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1431,6 +1431,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	unsigned long range_bitmap = 0;
- 	bool submitted_io = false;
-+	bool error = false;
- 	const u64 folio_start = folio_pos(folio);
- 	u64 cur;
- 	int bit;
-@@ -1473,11 +1474,26 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			break;
- 		}
- 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
--		if (ret < 0)
--			goto out;
-+		if (unlikely(ret < 0)) {
-+			/*
-+			 * bio_ctrl may contain a bio crossing several folios.
-+			 * Submit it immediately so that the bio has a chance
-+			 * to finish normally, other than marked as error.
-+			 */
-+			submit_one_bio(bio_ctrl);
-+			/*
-+			 * Failed to grab the extent map which should be very rare.
-+			 * Since there is no bio submitted to finish the ordered
-+			 * extent, we have to manually finish this sector.
-+			 */
-+			btrfs_mark_ordered_io_finished(inode, folio, cur,
-+						       fs_info->sectorsize, false);
-+			error = true;
-+			continue;
-+		}
- 		submitted_io = true;
- 	}
--out:
-+
- 	/*
- 	 * If we didn't submitted any sector (>= i_size), folio dirty get
- 	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
-@@ -1485,8 +1501,11 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 	 *
- 	 * Here we set writeback and clear for the range. If the full folio
- 	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
-+	 *
-+	 * If we hit any error, the corresponding sector will still be dirty
-+	 * thus no need to clear PAGECACHE_TAG_DIRTY.
- 	 */
--	if (!submitted_io) {
-+	if (!submitted_io && !error) {
- 		btrfs_folio_set_writeback(fs_info, folio, start, len);
- 		btrfs_folio_clear_writeback(fs_info, folio, start, len);
- 	}
-@@ -1506,7 +1525,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -3390,28 +3390,17 @@ xfs_bmap_process_allocated_extent(
+ 
+ static int
+ xfs_bmap_exact_minlen_extent_alloc(
+-	struct xfs_bmalloca	*ap)
++	struct xfs_bmalloca	*ap,
++	struct xfs_alloc_arg	*args)
  {
- 	struct btrfs_inode *inode = BTRFS_I(folio->mapping->host);
- 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
--	const u64 page_start = folio_pos(folio);
- 	int ret;
- 	size_t pg_offset;
- 	loff_t i_size = i_size_read(&inode->vfs_inode);
-@@ -1549,10 +1567,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
- 
- 	bio_ctrl->wbc->nr_to_write--;
- 
--	if (ret)
--		btrfs_mark_ordered_io_finished(inode, folio,
--					       page_start, PAGE_SIZE, !ret);
+-	struct xfs_mount	*mp = ap->ip->i_mount;
+-	struct xfs_alloc_arg	args = { .tp = ap->tp, .mp = mp };
+-	xfs_fileoff_t		orig_offset;
+-	xfs_extlen_t		orig_length;
+-	int			error;
 -
- done:
- 	if (ret < 0)
- 		mapping_set_error(folio->mapping, ret);
-@@ -2312,11 +2326,8 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
- 		if (ret == 1)
- 			goto next_page;
+-	ASSERT(ap->length);
+-
+ 	if (ap->minlen != 1) {
+-		ap->blkno = NULLFSBLOCK;
+-		ap->length = 0;
++		args->fsbno = NULLFSBLOCK;
+ 		return 0;
+ 	}
  
--		if (ret) {
--			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
--						       cur, cur_len, !ret);
-+		if (ret)
- 			mapping_set_error(mapping, ret);
--		}
- 		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
- 		if (ret < 0)
- 			found_error = true;
--- 
-2.39.5
-
+-	orig_offset = ap->offset;
+-	orig_length = ap->length;
+-
+-	args.alloc_minlen_only = 1;
+-
+-	xfs_bmap_compute_alignments(ap, &args);
++	args->alloc_minlen_only = 1;
++	args->minlen = args->maxlen = ap->minlen;
++	args->total = ap->total;
+ 
+ 	/*
+ 	 * Unlike the longest extent available in an AG, we don't track
+@@ -3421,33 +3410,9 @@ xfs_bmap_exact_minlen_extent_alloc(
+ 	 * we need not be concerned about a drop in performance in
+ 	 * "debug only" code paths.
+ 	 */
+-	ap->blkno = XFS_AGB_TO_FSB(mp, 0, 0);
+-
+-	args.oinfo = XFS_RMAP_OINFO_SKIP_UPDATE;
+-	args.minlen = args.maxlen = ap->minlen;
+-	args.total = ap->total;
++	ap->blkno = XFS_AGB_TO_FSB(ap->ip->i_mount, 0, 0);
+ 
+-	args.alignment = 1;
+-	args.minalignslop = 0;
+-
+-	args.minleft = ap->minleft;
+-	args.wasdel = ap->wasdel;
+-	args.resv = XFS_AG_RESV_NONE;
+-	args.datatype = ap->datatype;
+-
+-	error = xfs_alloc_vextent_first_ag(&args, ap->blkno);
+-	if (error)
+-		return error;
+-
+-	if (args.fsbno != NULLFSBLOCK) {
+-		xfs_bmap_process_allocated_extent(ap, &args, orig_offset,
+-			orig_length);
+-	} else {
+-		ap->blkno = NULLFSBLOCK;
+-		ap->length = 0;
+-	}
+-
+-	return 0;
++	return xfs_alloc_vextent_first_ag(args, ap->blkno);
+ }
+ 
+ /*
+@@ -3706,8 +3671,11 @@ xfs_bmap_btalloc(
+ 	/* Trim the allocation back to the maximum an AG can fit. */
+ 	args.maxlen = min(ap->length, mp->m_ag_max_usable);
+ 
+-	if ((ap->datatype & XFS_ALLOC_USERDATA) &&
+-	    xfs_inode_is_filestream(ap->ip))
++	if (unlikely(XFS_TEST_ERROR(false, mp,
++			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
++		error = xfs_bmap_exact_minlen_extent_alloc(ap, &args);
++	else if ((ap->datatype & XFS_ALLOC_USERDATA) &&
++			xfs_inode_is_filestream(ap->ip))
+ 		error = xfs_bmap_btalloc_filestreams(ap, &args, stripe_align);
+ 	else
+ 		error = xfs_bmap_btalloc_best_length(ap, &args, stripe_align);
+@@ -4128,9 +4096,6 @@ xfs_bmapi_allocate(
+ 	if ((bma->datatype & XFS_ALLOC_USERDATA) &&
+ 	    XFS_IS_REALTIME_INODE(bma->ip))
+ 		error = xfs_bmap_rtalloc(bma);
+-	else if (unlikely(XFS_TEST_ERROR(false, mp,
+-			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
+-		error = xfs_bmap_exact_minlen_extent_alloc(bma);
+ 	else
+ 		error = xfs_bmap_btalloc(bma);
+ 	if (error)
 
 
 
