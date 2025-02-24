@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-119229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18759A425BB
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:12:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D20A425B9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A333ADD7F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40DC01898D9C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FD624169C;
-	Mon, 24 Feb 2025 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA601514CC;
+	Mon, 24 Feb 2025 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pb9H9eLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OL2pFSXZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7DB2571CE;
-	Mon, 24 Feb 2025 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6925884A35;
+	Mon, 24 Feb 2025 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408758; cv=none; b=ZfRKiTFRYzhde+kaIG7lBpt3i/T3nzQkZzh9erMsX7a8pb84ZSoHV6gziOxm/0d306JLYiPtRKhwGCF8QJIi6dorTsvT49FiM36eEJIOwAEP6tCMWJIYOywx2Tcqxg1A/xM9d6+BpWe/EWvVN6L1hR9v+2JnsjHFayAakvEFMxc=
+	t=1740409181; cv=none; b=Nm3nQLsHxXxlJdEORPfDkWwmibT4ATtT9GSRw3NyduE4zl8fdu9a1J/Pm2QZmbPUxLcPRoSB5weJvAFGyRWYTlJNpZm+2kDwZR2/fjnn3MGDyEP16kM7McDqQLs4VOKss9c9PoOLbsSbeLgujwM7lbRc83vBzjQ5Lm1QGbajHNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408758; c=relaxed/simple;
-	bh=rR9mji96kMIsxyuV9R9IRLepEy2FSDQMtXjTDmJW/rk=;
+	s=arc-20240116; t=1740409181; c=relaxed/simple;
+	bh=24j2EHkWWhFZQDCCytSoaU/od+457jD3SMkvq0URKPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuI17xweOm3od9lfsT4GokKcsYL/CNm6amkXm4zk+91ugsh/Neqout/UzSZlwS/RnMr0lYij6RnRKIe9w9fOsJswVNavBqo0Y4SqgNCcaqIMSsEbfvOtgBf9oL7fKZ5IQE0OK3/l0KbPEgnXskQwMBshWDWUCpty/l1aCqJtguU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pb9H9eLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47130C4CED6;
-	Mon, 24 Feb 2025 14:52:37 +0000 (UTC)
+	 MIME-Version; b=NXd805V7a3C31DeXr/RLy9aAwXbFuLUUVzCJppKeWIEO9HwtsKEs97EMYYDWgGF6KFX0WsRxiW3BstYNs0F3TcA6kRTFBDKAMTjV41EAh4OA4IQdrX7d1BAkS5i2QpYYMqa8FbJgX9sASiRoQt5Mj2qKZ9KHpjm8ffOgo15Onm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OL2pFSXZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3375C4CED6;
+	Mon, 24 Feb 2025 14:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408758;
-	bh=rR9mji96kMIsxyuV9R9IRLepEy2FSDQMtXjTDmJW/rk=;
+	s=korg; t=1740409181;
+	bh=24j2EHkWWhFZQDCCytSoaU/od+457jD3SMkvq0URKPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pb9H9eLSpXwsNtrzOM9iCZokhSkTrDF/EBigTAXKDN48R+HHSAMdCR5PdXku34nc1
-	 fdAaLOKWcPSmOxpGO7efJNOq/esCY0Lz105Vo6nOmBIg5/fqbcA8+jqrVScKsAvW5B
-	 BTVXY1z5s1VCcyG5aYT/VbOPWeOy0hSMXEbbXF9o=
+	b=OL2pFSXZwIAMnIEdgkd/kedbxGPGH4rJRdE5/yzXZyhs0nNDLa/tqJWdCfSeUARz8
+	 THQYf299p3S2gejASMX6kfk14+rNl+qKiXXYOXa7JMAKY2v2F90gspfgVopgd5m8ao
+	 iQP7a1Ak8BBf9hM5EytPEhdzg6zwp7CtAyR7PgPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Keith Lucas <keith.lucas@oracle.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yifei Liu <yifei.l.liu@oracle.com>
-Subject: [PATCH 6.12 151/154] selftests/mm: build with -O2
+	Zicheng Qu <quzicheng@huawei.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 120/138] acct: perform last write from workqueue
 Date: Mon, 24 Feb 2025 15:35:50 +0100
-Message-ID: <20250224142612.957453182@linuxfoundation.org>
+Message-ID: <20250224142609.190238859@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,59 +61,253 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Brodsky <kevin.brodsky@arm.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 46036188ea1f5266df23a6149dea0df1c77cd1c7 upstream.
+commit 56d5f3eba3f5de0efdd556de4ef381e109b973a9 upstream.
 
-The mm kselftests are currently built with no optimisation (-O0).  It's
-unclear why, and besides being obviously suboptimal, this also prevents
-the pkeys tests from working as intended.  Let's build all the tests with
--O2.
+In [1] it was reported that the acct(2) system call can be used to
+trigger NULL deref in cases where it is set to write to a file that
+triggers an internal lookup. This can e.g., happen when pointing acc(2)
+to /sys/power/resume. At the point the where the write to this file
+happens the calling task has already exited and called exit_fs(). A
+lookup will thus trigger a NULL-deref when accessing current->fs.
 
-[kevin.brodsky@arm.com: silence unused-result warnings]
-  Link: https://lkml.kernel.org/r/20250107170110.2819685-1-kevin.brodsky@arm.com
-Link: https://lkml.kernel.org/r/20241209095019.1732120-6-kevin.brodsky@arm.com
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: Keith Lucas <keith.lucas@oracle.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Yifei: This commit also fix the failure of pkey_sighandler_tests_64,
-  which is also in linux-6.12.y, thus backport this commit. ]
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+Reorganize the code so that the the final write happens from the
+workqueue but with the caller's credentials. This preserves the
+(strange) permission model and has almost no regression risk.
+
+This api should stop to exist though.
+
+Link: https://lore.kernel.org/r/20250127091811.3183623-1-quzicheng@huawei.com [1]
+Link: https://lore.kernel.org/r/20250211-work-acct-v1-1-1c16aecab8b3@kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Zicheng Qu <quzicheng@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/Makefile |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/acct.c |  120 +++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 70 insertions(+), 50 deletions(-)
 
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -33,9 +33,16 @@ endif
- # LDLIBS.
- MAKEFLAGS += --no-builtin-rules
+--- a/kernel/acct.c
++++ b/kernel/acct.c
+@@ -103,48 +103,50 @@ struct bsd_acct_struct {
+ 	atomic_long_t		count;
+ 	struct rcu_head		rcu;
+ 	struct mutex		lock;
+-	int			active;
++	bool			active;
++	bool			check_space;
+ 	unsigned long		needcheck;
+ 	struct file		*file;
+ 	struct pid_namespace	*ns;
+ 	struct work_struct	work;
+ 	struct completion	done;
++	acct_t			ac;
+ };
  
--CFLAGS = -Wall -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
-+CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
- LDLIBS = -lrt -lpthread -lm
+-static void do_acct_process(struct bsd_acct_struct *acct);
++static void fill_ac(struct bsd_acct_struct *acct);
++static void acct_write_process(struct bsd_acct_struct *acct);
  
-+# Some distributions (such as Ubuntu) configure GCC so that _FORTIFY_SOURCE is
-+# automatically enabled at -O1 or above. This triggers various unused-result
-+# warnings where functions such as read() or write() are called and their
-+# return value is not checked. Disable _FORTIFY_SOURCE to silence those
-+# warnings.
-+CFLAGS += -U_FORTIFY_SOURCE
+ /*
+  * Check the amount of free space and suspend/resume accordingly.
+  */
+-static int check_free_space(struct bsd_acct_struct *acct)
++static bool check_free_space(struct bsd_acct_struct *acct)
+ {
+ 	struct kstatfs sbuf;
+ 
+-	if (time_is_after_jiffies(acct->needcheck))
+-		goto out;
++	if (!acct->check_space)
++		return acct->active;
+ 
+ 	/* May block */
+ 	if (vfs_statfs(&acct->file->f_path, &sbuf))
+-		goto out;
++		return acct->active;
+ 
+ 	if (acct->active) {
+ 		u64 suspend = sbuf.f_blocks * SUSPEND;
+ 		do_div(suspend, 100);
+ 		if (sbuf.f_bavail <= suspend) {
+-			acct->active = 0;
++			acct->active = false;
+ 			pr_info("Process accounting paused\n");
+ 		}
+ 	} else {
+ 		u64 resume = sbuf.f_blocks * RESUME;
+ 		do_div(resume, 100);
+ 		if (sbuf.f_bavail >= resume) {
+-			acct->active = 1;
++			acct->active = true;
+ 			pr_info("Process accounting resumed\n");
+ 		}
+ 	}
+ 
+ 	acct->needcheck = jiffies + ACCT_TIMEOUT*HZ;
+-out:
+ 	return acct->active;
+ }
+ 
+@@ -189,7 +191,11 @@ static void acct_pin_kill(struct fs_pin
+ {
+ 	struct bsd_acct_struct *acct = to_acct(pin);
+ 	mutex_lock(&acct->lock);
+-	do_acct_process(acct);
++	/*
++	 * Fill the accounting struct with the exiting task's info
++	 * before punting to the workqueue.
++	 */
++	fill_ac(acct);
+ 	schedule_work(&acct->work);
+ 	wait_for_completion(&acct->done);
+ 	cmpxchg(&acct->ns->bacct, pin, NULL);
+@@ -202,6 +208,9 @@ static void close_work(struct work_struc
+ {
+ 	struct bsd_acct_struct *acct = container_of(work, struct bsd_acct_struct, work);
+ 	struct file *file = acct->file;
 +
- TEST_GEN_FILES = cow
- TEST_GEN_FILES += compaction_test
- TEST_GEN_FILES += gup_longterm
++	/* We were fired by acct_pin_kill() which holds acct->lock. */
++	acct_write_process(acct);
+ 	if (file->f_op->flush)
+ 		file->f_op->flush(file, NULL);
+ 	__fput_sync(file);
+@@ -430,13 +439,27 @@ static u32 encode_float(u64 value)
+  *  do_exit() or when switching to a different output file.
+  */
+ 
+-static void fill_ac(acct_t *ac)
++static void fill_ac(struct bsd_acct_struct *acct)
+ {
+ 	struct pacct_struct *pacct = &current->signal->pacct;
++	struct file *file = acct->file;
++	acct_t *ac = &acct->ac;
+ 	u64 elapsed, run_time;
+ 	time64_t btime;
+ 	struct tty_struct *tty;
+ 
++	lockdep_assert_held(&acct->lock);
++
++	if (time_is_after_jiffies(acct->needcheck)) {
++		acct->check_space = false;
++
++		/* Don't fill in @ac if nothing will be written. */
++		if (!acct->active)
++			return;
++	} else {
++		acct->check_space = true;
++	}
++
+ 	/*
+ 	 * Fill the accounting struct with the needed info as recorded
+ 	 * by the different kernel functions.
+@@ -484,64 +507,61 @@ static void fill_ac(acct_t *ac)
+ 	ac->ac_majflt = encode_comp_t(pacct->ac_majflt);
+ 	ac->ac_exitcode = pacct->ac_exitcode;
+ 	spin_unlock_irq(&current->sighand->siglock);
+-}
+-/*
+- *  do_acct_process does all actual work. Caller holds the reference to file.
+- */
+-static void do_acct_process(struct bsd_acct_struct *acct)
+-{
+-	acct_t ac;
+-	unsigned long flim;
+-	const struct cred *orig_cred;
+-	struct file *file = acct->file;
+-
+-	/*
+-	 * Accounting records are not subject to resource limits.
+-	 */
+-	flim = rlimit(RLIMIT_FSIZE);
+-	current->signal->rlim[RLIMIT_FSIZE].rlim_cur = RLIM_INFINITY;
+-	/* Perform file operations on behalf of whoever enabled accounting */
+-	orig_cred = override_creds(file->f_cred);
+ 
+-	/*
+-	 * First check to see if there is enough free_space to continue
+-	 * the process accounting system.
+-	 */
+-	if (!check_free_space(acct))
+-		goto out;
+-
+-	fill_ac(&ac);
+ 	/* we really need to bite the bullet and change layout */
+-	ac.ac_uid = from_kuid_munged(file->f_cred->user_ns, orig_cred->uid);
+-	ac.ac_gid = from_kgid_munged(file->f_cred->user_ns, orig_cred->gid);
++	ac->ac_uid = from_kuid_munged(file->f_cred->user_ns, current_uid());
++	ac->ac_gid = from_kgid_munged(file->f_cred->user_ns, current_gid());
+ #if ACCT_VERSION == 1 || ACCT_VERSION == 2
+ 	/* backward-compatible 16 bit fields */
+-	ac.ac_uid16 = ac.ac_uid;
+-	ac.ac_gid16 = ac.ac_gid;
++	ac->ac_uid16 = ac->ac_uid;
++	ac->ac_gid16 = ac->ac_gid;
+ #elif ACCT_VERSION == 3
+ 	{
+ 		struct pid_namespace *ns = acct->ns;
+ 
+-		ac.ac_pid = task_tgid_nr_ns(current, ns);
++		ac->ac_pid = task_tgid_nr_ns(current, ns);
+ 		rcu_read_lock();
+-		ac.ac_ppid = task_tgid_nr_ns(rcu_dereference(current->real_parent),
+-					     ns);
++		ac->ac_ppid = task_tgid_nr_ns(rcu_dereference(current->real_parent), ns);
+ 		rcu_read_unlock();
+ 	}
+ #endif
++}
++
++static void acct_write_process(struct bsd_acct_struct *acct)
++{
++	struct file *file = acct->file;
++	const struct cred *cred;
++	acct_t *ac = &acct->ac;
++
++	/* Perform file operations on behalf of whoever enabled accounting */
++	cred = override_creds(file->f_cred);
++
+ 	/*
+-	 * Get freeze protection. If the fs is frozen, just skip the write
+-	 * as we could deadlock the system otherwise.
++	 * First check to see if there is enough free_space to continue
++	 * the process accounting system. Then get freeze protection. If
++	 * the fs is frozen, just skip the write as we could deadlock
++	 * the system otherwise.
+ 	 */
+-	if (file_start_write_trylock(file)) {
++	if (check_free_space(acct) && file_start_write_trylock(file)) {
+ 		/* it's been opened O_APPEND, so position is irrelevant */
+ 		loff_t pos = 0;
+-		__kernel_write(file, &ac, sizeof(acct_t), &pos);
++		__kernel_write(file, ac, sizeof(acct_t), &pos);
+ 		file_end_write(file);
+ 	}
+-out:
++
++	revert_creds(cred);
++}
++
++static void do_acct_process(struct bsd_acct_struct *acct)
++{
++	unsigned long flim;
++
++	/* Accounting records are not subject to resource limits. */
++	flim = rlimit(RLIMIT_FSIZE);
++	current->signal->rlim[RLIMIT_FSIZE].rlim_cur = RLIM_INFINITY;
++	fill_ac(acct);
++	acct_write_process(acct);
+ 	current->signal->rlim[RLIMIT_FSIZE].rlim_cur = flim;
+-	revert_creds(orig_cred);
+ }
+ 
+ /**
 
 
 
