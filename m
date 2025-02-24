@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A193A4251C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185DAA423C4
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:48:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02A44435EA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:56:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1AE917106D
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BB418BC36;
-	Mon, 24 Feb 2025 14:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFEF1A239E;
+	Mon, 24 Feb 2025 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JShZQRbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qebIhH8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53B51514CC;
-	Mon, 24 Feb 2025 14:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0679192D9D;
+	Mon, 24 Feb 2025 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408900; cv=none; b=Ss3C7g2pY1by/sYbWQINDyUmK6AFjCCClvXABt5mkLD2kYK0rLDA+vb0MbAYlKJksY2k/CJSKQYU7C0VhLhEbtE1JB/Y26lZMQqKE8PlGSXuL0nlMP8bD1O8CLgr2V9Ixyi3SIWHP/mHuNvD1lg/iRfY9jrsEDRokCasTqnsln4=
+	t=1740408000; cv=none; b=lKuuQsz9FkV3rrKXJq+FSAwEhjPm8xc8QQaXTkR2dj1v63+e4FxCn7xBIJpuQJlUQsV7v/LnlaPDQbPLGLdlMSzDZ9H9UwHMGkaKbXN4PVotPpPIaRdM7LoMu0M3YJJmXOWL/K5OyafFdEhSB7C8JxVWAERoTu1I6Ad+WT3Y2qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408900; c=relaxed/simple;
-	bh=1PVJfqdDYbHEc3wlCntJHKj4FMMesY8M6EDLG18ErvI=;
+	s=arc-20240116; t=1740408000; c=relaxed/simple;
+	bh=wljYc+ZsNQBmtY1lnXNeSteLUWGLLDmKXwBFN3WnmCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glHvGBCKjnGvlmNnI2ZGHx4YzBJtDkxFXpAkp4baM3Jfpaug2okGUQLc4YSTXyz6nYotrpv0zoKldZbfoKzlU7krZt1vvkI3BXPpdW3CHjCG4amtqVlLb9HERZxkSEKrG4eXHMuKZz8ExfGqzAn2SksXLKuvTu9FYAdjDiqzwi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JShZQRbV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEE8C4CED6;
-	Mon, 24 Feb 2025 14:54:59 +0000 (UTC)
+	 MIME-Version; b=cIBkXr+cjHNVaPcgBNOvLeeZgRl81J1vqCXSSjiWEvSJZIz1U3ruop8dxvnFdN41R1LZkIU7a84Q0EiDydE7y3zwYseAbzWuuoNSxYP736tlwa1WmL5zht/hISw20BfX5v08zmexter2b/SeTItnVOYVzUuwqO/Ph2g4+ivN1wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qebIhH8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C89DC4CED6;
+	Mon, 24 Feb 2025 14:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408899;
-	bh=1PVJfqdDYbHEc3wlCntJHKj4FMMesY8M6EDLG18ErvI=;
+	s=korg; t=1740408000;
+	bh=wljYc+ZsNQBmtY1lnXNeSteLUWGLLDmKXwBFN3WnmCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JShZQRbVbjD93MwV6M2x6VTQ/6GqOR6+i64rDOSjpwdBdAGwNCRZ8OoqScPZr/kI2
-	 zu+CcfvVdLl98dIxUvNVMwUr27ZAh662zz4w0JO5S8loXLdl+IP8ODcgmL7gPNnXcZ
-	 kO/Y28ZyVqAjntGrBHVUaS0NzRZWjX73FmGj/GBI=
+	b=qebIhH8iVnlV93AP8qAiF9bIT2JsFlYTGFtBWt5Q9YCsDTAzFwdhLrTUxJUNazjib
+	 9ZczHT4Nr6xPX3QuRytvCAH2G9DIWJ/HAWG1XBfgp7ofdxOVpZ0B9ZsjYzF9FQ2f+i
+	 W+WfWocEYcrJ5y0ipkR2IgRticb2EJuN+TtqMNLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 039/138] net: pse-pd: pd692x0: Fix power limit retrieval
-Date: Mon, 24 Feb 2025 15:34:29 +0100
-Message-ID: <20250224142606.005100536@linuxfoundation.org>
+Subject: [PATCH 6.6 071/140] ALSA: hda/cirrus: Correct the full scale volume set logic
+Date: Mon, 24 Feb 2025 15:34:30 +0100
+Message-ID: <20250224142605.798900604@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
 
-[ Upstream commit f6093c5ec74d5cc495f89bd359253d9c738d04d9 ]
+[ Upstream commit 08b613b9e2ba431db3bd15cb68ca72472a50ef5c ]
 
-Fix incorrect data offset read in the pd692x0_pi_get_pw_limit callback.
-The issue was previously unnoticed as it was only used by the regulator
-API and not thoroughly tested, since the PSE is mainly controlled via
-ethtool.
+This patch corrects the full-scale volume setting logic. On certain
+platforms, the full-scale volume bit is required. The current logic
+mistakenly sets this bit and incorrectly clears reserved bit 0, causing
+the headphone output to be muted.
 
-The function became actively used by ethtool after commit 3e9dbfec4998
-("net: pse-pd: Split ethtool_get_status into multiple callbacks"),
-which led to the discovery of this issue.
-
-Fix it by using the correct data offset.
-
-Fixes: a87e699c9d33 ("net: pse-pd: pd692x0: Enhance with new current limit and voltage read callbacks")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20250217134812.1925345-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 342b6b610ae2 ("ALSA: hda/cs8409: Fix Full Scale Volume setting for all variants")
+Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250214210736.30814-1-vitalyr@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pse-pd/pd692x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_cs8409-tables.c |  6 +++---
+ sound/pci/hda/patch_cs8409.c        | 20 +++++++++++---------
+ sound/pci/hda/patch_cs8409.h        |  5 +++--
+ 3 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-index 9f00538f7e450..7cfc36cadb576 100644
---- a/drivers/net/pse-pd/pd692x0.c
-+++ b/drivers/net/pse-pd/pd692x0.c
-@@ -1012,7 +1012,7 @@ static int pd692x0_pi_get_pw_limit(struct pse_controller_dev *pcdev,
- 	if (ret < 0)
- 		return ret;
+diff --git a/sound/pci/hda/patch_cs8409-tables.c b/sound/pci/hda/patch_cs8409-tables.c
+index 759f48038273d..621f947e38174 100644
+--- a/sound/pci/hda/patch_cs8409-tables.c
++++ b/sound/pci/hda/patch_cs8409-tables.c
+@@ -121,7 +121,7 @@ static const struct cs8409_i2c_param cs42l42_init_reg_seq[] = {
+ 	{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 	{ CS42L42_MIXER_CHB_VOL, 0x3F },
+ 	{ CS42L42_MIXER_ADC_VOL, 0x3f },
+-	{ CS42L42_HP_CTL, 0x03 },
++	{ CS42L42_HP_CTL, 0x0D },
+ 	{ CS42L42_MIC_DET_CTL1, 0xB6 },
+ 	{ CS42L42_TIPSENSE_CTL, 0xC2 },
+ 	{ CS42L42_HS_CLAMP_DISABLE, 0x01 },
+@@ -315,7 +315,7 @@ static const struct cs8409_i2c_param dolphin_c0_init_reg_seq[] = {
+ 	{ CS42L42_ASP_TX_SZ_EN, 0x01 },
+ 	{ CS42L42_PWR_CTL1, 0x0A },
+ 	{ CS42L42_PWR_CTL2, 0x84 },
+-	{ CS42L42_HP_CTL, 0x03 },
++	{ CS42L42_HP_CTL, 0x0D },
+ 	{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 	{ CS42L42_MIXER_CHB_VOL, 0x3F },
+ 	{ CS42L42_MIXER_ADC_VOL, 0x3f },
+@@ -371,7 +371,7 @@ static const struct cs8409_i2c_param dolphin_c1_init_reg_seq[] = {
+ 	{ CS42L42_ASP_TX_SZ_EN, 0x00 },
+ 	{ CS42L42_PWR_CTL1, 0x0E },
+ 	{ CS42L42_PWR_CTL2, 0x84 },
+-	{ CS42L42_HP_CTL, 0x01 },
++	{ CS42L42_HP_CTL, 0x0D },
+ 	{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 	{ CS42L42_MIXER_CHB_VOL, 0x3F },
+ 	{ CS42L42_MIXER_ADC_VOL, 0x3f },
+diff --git a/sound/pci/hda/patch_cs8409.c b/sound/pci/hda/patch_cs8409.c
+index 892223d9e64ab..b003ac1990ba8 100644
+--- a/sound/pci/hda/patch_cs8409.c
++++ b/sound/pci/hda/patch_cs8409.c
+@@ -876,7 +876,7 @@ static void cs42l42_resume(struct sub_codec *cs42l42)
+ 		{ CS42L42_DET_INT_STATUS2, 0x00 },
+ 		{ CS42L42_TSRS_PLUG_STATUS, 0x00 },
+ 	};
+-	int fsv_old, fsv_new;
++	unsigned int fsv;
  
--	return pd692x0_pi_get_pw_from_table(buf.data[2], buf.data[3]);
-+	return pd692x0_pi_get_pw_from_table(buf.data[0], buf.data[1]);
- }
+ 	/* Bring CS42L42 out of Reset */
+ 	spec->gpio_data = snd_hda_codec_read(codec, CS8409_PIN_AFG, 0, AC_VERB_GET_GPIO_DATA, 0);
+@@ -893,13 +893,15 @@ static void cs42l42_resume(struct sub_codec *cs42l42)
+ 	/* Clear interrupts, by reading interrupt status registers */
+ 	cs8409_i2c_bulk_read(cs42l42, irq_regs, ARRAY_SIZE(irq_regs));
  
- static int pd692x0_pi_set_pw_limit(struct pse_controller_dev *pcdev,
+-	fsv_old = cs8409_i2c_read(cs42l42, CS42L42_HP_CTL);
+-	if (cs42l42->full_scale_vol == CS42L42_FULL_SCALE_VOL_0DB)
+-		fsv_new = fsv_old & ~CS42L42_FULL_SCALE_VOL_MASK;
+-	else
+-		fsv_new = fsv_old & CS42L42_FULL_SCALE_VOL_MASK;
+-	if (fsv_new != fsv_old)
+-		cs8409_i2c_write(cs42l42, CS42L42_HP_CTL, fsv_new);
++	fsv = cs8409_i2c_read(cs42l42, CS42L42_HP_CTL);
++	if (cs42l42->full_scale_vol) {
++		// Set the full scale volume bit
++		fsv |= CS42L42_FULL_SCALE_VOL_MASK;
++		cs8409_i2c_write(cs42l42, CS42L42_HP_CTL, fsv);
++	}
++	// Unmute analog channels A and B
++	fsv = (fsv & ~CS42L42_ANA_MUTE_AB);
++	cs8409_i2c_write(cs42l42, CS42L42_HP_CTL, fsv);
+ 
+ 	/* we have to explicitly allow unsol event handling even during the
+ 	 * resume phase so that the jack event is processed properly
+@@ -921,7 +923,7 @@ static void cs42l42_suspend(struct sub_codec *cs42l42)
+ 		{ CS42L42_MIXER_CHA_VOL, 0x3F },
+ 		{ CS42L42_MIXER_ADC_VOL, 0x3F },
+ 		{ CS42L42_MIXER_CHB_VOL, 0x3F },
+-		{ CS42L42_HP_CTL, 0x0F },
++		{ CS42L42_HP_CTL, 0x0D },
+ 		{ CS42L42_ASP_RX_DAI0_EN, 0x00 },
+ 		{ CS42L42_ASP_CLK_CFG, 0x00 },
+ 		{ CS42L42_PWR_CTL1, 0xFE },
+diff --git a/sound/pci/hda/patch_cs8409.h b/sound/pci/hda/patch_cs8409.h
+index 5e48115caf096..14645d25e70fd 100644
+--- a/sound/pci/hda/patch_cs8409.h
++++ b/sound/pci/hda/patch_cs8409.h
+@@ -230,9 +230,10 @@ enum cs8409_coefficient_index_registers {
+ #define CS42L42_PDN_TIMEOUT_US			(250000)
+ #define CS42L42_PDN_SLEEP_US			(2000)
+ #define CS42L42_INIT_TIMEOUT_MS			(45)
++#define CS42L42_ANA_MUTE_AB			(0x0C)
+ #define CS42L42_FULL_SCALE_VOL_MASK		(2)
+-#define CS42L42_FULL_SCALE_VOL_0DB		(1)
+-#define CS42L42_FULL_SCALE_VOL_MINUS6DB		(0)
++#define CS42L42_FULL_SCALE_VOL_0DB		(0)
++#define CS42L42_FULL_SCALE_VOL_MINUS6DB		(1)
+ 
+ /* Dell BULLSEYE / WARLOCK / CYBORG Specific Definitions */
+ 
 -- 
 2.39.5
 
