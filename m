@@ -1,190 +1,146 @@
-Return-Path: <stable+bounces-119395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC1AA429BA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 18:30:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F1A42A46
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 18:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB09916C4DD
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 17:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5ED816B352
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 17:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82CE1ACECC;
-	Mon, 24 Feb 2025 17:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oG5JBKWt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAD9264FA4;
+	Mon, 24 Feb 2025 17:46:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2043.outbound.protection.outlook.com [40.107.103.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B17262D37;
-	Mon, 24 Feb 2025 17:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740418041; cv=fail; b=ugdIqcT4JHkwixYj4EcisuzWUOArgVhPQw+Yg3eW7i/u6RFh71UTpu2z/NNOSIDwp0o0BZ3E8TpsPzu6hgnpc1x0F+ZyXWSoSk1f7PYPvjZzfPnkZ47oFDiVID5D4FKQbBUvewptGGNX1UOfgfYT1ZKnkKGu3+ypKx4VLluOBs8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740418041; c=relaxed/simple;
-	bh=5KCBV0ux8UGCD1/wmChbl/z+nPJjN19hatRf9RBQxM8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rupkq9CJzo9oaptiuCduATy1A7PL50rLHRKTZGiv5NZYxYLFoGgz2+oi3Gdll62eYMTAYzOUhTGGn+5QHOQgEtDtchng6HHroGZAPRA1MxiEvjRSzMQ2WtZ0wRihmIrULFjMkc1hCnccnGZZ4FPIBeOL50VyuQMXZZBo8ztDPsQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oG5JBKWt; arc=fail smtp.client-ip=40.107.103.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uBsaPIxfMOTv72ZbWcYLM2dZ/MTjsfC/Fa2edRUXnnTjsJJ9FfRZRTy0cDdh5y3UZCyXHRldmHrz+Mq7XnVYLky6rKoFBKcQ4ye2vPr6/UHWyrjdqP4OI0zD6+ijODXp+LtXa/UVOeW6MGLt1PYLSTp+rFPd8IYuxkm860NgjXm4+WLGjo/A6/jcgIXmGipzOEW0xc11P3Dpur+JASGK0QANfKgyAMWBOEnUbt/04mgnNrtkYRW/RMl4njaAtQJ0kMLOYoEDBIi9DJOtWoaaVC+UsPMEJIo3WD5g66cJXhsmYXfiG92rR+vxcNP/DpDA+WQsBfTnip99f2eanuj2qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5KCBV0ux8UGCD1/wmChbl/z+nPJjN19hatRf9RBQxM8=;
- b=wGgmgaE+aPNcT5uFfUeYLHnO21VffGnf6mPzEFeUqHl7UVkCwgWHtW8XfXyEIHA44RVWu0UjmuYN1hQy3i7+UKVa5NKaSR+BBq5v7C5gTt1hg4th2jT0OUetFjj3WV0LSidS0rLLLbMvAuZ9EvdMuwdZSjDbODj2FvlZaMMEwMJ/kb0Wmm/Rqm2F1o6QvhBmoaf9qMgpDjFP/DFk8dYjtgI8/SgmEXL03tqBGlCZu8uIPLQnY98fLQdxAWAnA/G0Ubk6cKoAWpTFGfNz5LH6ILlnwjDfEeWX6ls/y6m7Xn1jWKLzkYaTirKWM1un0xHmd5FXa8rhz6gr6eCGDzSTAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5KCBV0ux8UGCD1/wmChbl/z+nPJjN19hatRf9RBQxM8=;
- b=oG5JBKWtqp3axCbxgepowTu81vxInrO3NJNGhn0ySfZF/akRW70rudZpHAM3U6G7ki4TUJtIQt7Ee+RFICvgecBYxQUW6MqzXbyECjXdJM4I12AVGEPrP3fp/evUz/MMlphV/MuSIWaoORoJ9t1zl3fBqHH67N3cVvpoT3ExwujmcCgZLicteirx05c9VPJls77JdqIGW5cI8w/044RVijTaxOBlp9xC5jWnTy8TX29Awpw6S8vfUlRikNANV1pChGwjIvZDfxmmtmp0lLjYSMrTuX2aDsbShyqC+R7qnyj8W4pZ0ifkDNVqMAFpHD8fr8nOiTQyxBBkJjpAAYMEZg==
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
- by VI2PR04MB11169.eurprd04.prod.outlook.com (2603:10a6:800:299::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.26; Mon, 24 Feb
- 2025 17:27:13 +0000
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Mon, 24 Feb 2025
- 17:27:13 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: Ioana Ciornei <ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7965B264FBE;
+	Mon, 24 Feb 2025 17:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740419183; cv=none; b=NjTZEWHtOqskRtakp4MJ4hT3c7FIPSybSeWRwJsj+h6BGpJBLQmuZ05ANaK6lUS53KwTyK+FfNht//CEXDLHM6+/24aMMvaer0jyo1lSzL3xsJABwSrMGDNXLLl0dqmAt2RQdTH0LIBmU3RRGOnAV34spsVHQ8koF0dbLzoLpDQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740419183; c=relaxed/simple;
+	bh=h4vHkd7NvNOMcaOcKnN/iPLZ4J16YOGMpBWzbaz6Amg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FvCpd/5rECUAmj9SLUVSqqAVcvwBYskq3O/ZycHMDZ4KGAFelkKskYbHJkFai7wgwO89i/dyUbror6Cyu2r582km0D4MueMII2TaZcQ+FChZrAieUgEtRZ940TN+xdMW9Md6YpbV2yt4v1IPbxbpFMsBazoApF+iGNDtI2d2/zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: Jiri Kosina <jikos@kernel.org>
+CC: Daniil Dulov <d.dulov@aladdin.ru>, Benjamin Tissoires
+	<bentiss@kernel.org>, <linux-input@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
 	<stable@vger.kernel.org>
-Subject: RE: [PATCH v3 net 2/8] net: enetc: keep track of correct Tx BD count
- in enetc_map_tx_tso_buffs()
-Thread-Topic: [PATCH v3 net 2/8] net: enetc: keep track of correct Tx BD count
- in enetc_map_tx_tso_buffs()
-Thread-Index: AQHbhq9y+DDo2BO/uUaRTnlkOTNY5bNWtP4g
-Date: Mon, 24 Feb 2025 17:27:13 +0000
-Message-ID:
- <AS8PR04MB88498F1FED4B4BD367D4B9E996C02@AS8PR04MB8849.eurprd04.prod.outlook.com>
-References: <20250224111251.1061098-1-wei.fang@nxp.com>
- <20250224111251.1061098-3-wei.fang@nxp.com>
-In-Reply-To: <20250224111251.1061098-3-wei.fang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|VI2PR04MB11169:EE_
-x-ms-office365-filtering-correlation-id: c84e7b31-9fa6-48fa-00fb-08dd54f87a18
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?hVDTsSsyk6KNwrGWHUgHQDbWF6l6HBinnmwR99r8TbBNq/w8u2QtiBVZxAIA?=
- =?us-ascii?Q?Y0F/xnQwqUrPAaSvjuxaS7pRHOCy5Su8oRQnHvFfDDqjaxETcd03ghevSZu/?=
- =?us-ascii?Q?5Z83RuThgzef3C3TPUx+ARNdRuH5P00Di0C1bxq+O7i9bRVd29ppbu0bMEos?=
- =?us-ascii?Q?BxLbd48Rj+nwFG32kGmv7IdtNrhPzf4hm0ZzHMt3/631MvlZfHJohzKeJH/0?=
- =?us-ascii?Q?PrgakwVmxD42Q8f9/hV4LJm4AOqjlwkpAeC20Pxu3Mr0N6BvPWvUUA7YUPrd?=
- =?us-ascii?Q?uJywDS/HT5O4vGaaPUcWL4HgmEIgjXaQOx1jd+ukkJpJk30y+AMBvFh+91B9?=
- =?us-ascii?Q?APFF5yYhgyDgJ5ytnzobzyGWSxZJ+uptLyAcsdlEpubDzLRaHPGma4xU5vB1?=
- =?us-ascii?Q?utNSj/e4ub3YwlzYYvMflB1tBFwd3kBaYN1gpWZeYEoCxb02jRnHEnA9Gn2V?=
- =?us-ascii?Q?N6jLeYce0h418hIw81enRXBhFfAcdoiOlAjM8j6wNWjAyQPjt7xix0blHsSq?=
- =?us-ascii?Q?XatPYp1Zn24Qz8bQo+Mtzsnw3TSZik6lPViJ2T4VrxVY1Y80q/YzoJITZJHZ?=
- =?us-ascii?Q?SdfjbkVquUN55a6xUK7GwqNxP0yF5cuVfp1+GTmGrb65PNgIHSjpWifkM/99?=
- =?us-ascii?Q?Uts1GtTrfCT5cgRBd4mTHGP34XyjMbq7ELErmhLdKzgOQvTPjj0Re+hfknej?=
- =?us-ascii?Q?keSx2vj1p398dI/Z9c2eBS68Kk7zjzFEQHFXDCAea7R+Cz4OSFt8/vMW97r+?=
- =?us-ascii?Q?rgcdQ1MG1fd0icOXi+ftmLYE0boYmoB/zB4L2IHSB1/KFkCrGlqVC+J++MlU?=
- =?us-ascii?Q?PR3GLRYgBr9VWxmj8ttYlQhEVub2njbrKAIB1Q3TUbQ1+FjjKYJO2Og8kJBI?=
- =?us-ascii?Q?Lht1eWJhbk0LKJdPQCWW6vytLdNtiadqcYHdLQTFEIO8tqf1Q0PYwj7TfUTt?=
- =?us-ascii?Q?ERVBk9eRWtENPTWFE1vDHDu2O/0uYChBsEJoKx237UWD8ne8U215Wn891w5X?=
- =?us-ascii?Q?yy9nJq3BurLIKRgvzC7j6EATm4+3Z3FgTZNbaPH6vaFWuLQ7vrvwB18aD6cc?=
- =?us-ascii?Q?f3KAIsoUExRAfaza6O1sFhQdwgSNGu40f/GxfsR2Ohq+kRiFZlrX8cDBV9AF?=
- =?us-ascii?Q?tjq7fPMyMBz0RSgLc4qH63eKZze6dixgorjlJ08F8aActqnappq0nbuJ6Tm7?=
- =?us-ascii?Q?4eIu58CdNLMcLYtNQPrNLm4qIfwxGo/E7aussrF37YmyOM2nSoVu1hC0tpAG?=
- =?us-ascii?Q?U25HmemrQAQpnfYkxFgUh4gNSR/wbDPIzy9GLiM2hFeaJ5GVypxbIKAfH/9L?=
- =?us-ascii?Q?KTigLr95zShGlVwDD2xGjtSDzXaz1x4S9QuH00JPPQBLQi/Cgv0moFO2Oh/1?=
- =?us-ascii?Q?U+9STbbC0VxlQgNpDkzOjKzu0MAaEdrOP67btzB2Itdsxp9jl2NRC+Ekb3wO?=
- =?us-ascii?Q?bqQDP0tW6C8gq4I5LVLiqaL4gV05ci1J?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Iy4HqYjrCYQ+NAUGHnoHZszPtqrnl3IuDfF0gA+HkGZeu5+bgNczKHPohZpu?=
- =?us-ascii?Q?S/92g8I+11Zu2zQW5/NGhcHbJf7EITYKSCEmcX1sGCol44JHU3A0saglLLyd?=
- =?us-ascii?Q?7aCIjDKAD5PxGGjkXoGhg56TLFTDcZUCXtX+qu8F/sIlDdRjGd1ojY2qmwul?=
- =?us-ascii?Q?HUdWLX8GyoOpc4n8gBs5fI2m3LQ2lFO2kdRhtjq2+jRnpS+sVVkqKhmR39hB?=
- =?us-ascii?Q?yUlQyllWwkqYlRl6mVPzEuBjw+ClK8ld/DgZe0j9gMlf7n6ex5L7wRFgm4rh?=
- =?us-ascii?Q?YZwiwHavoJ0vmw2WM041mhNub0iNOSPNeQsftxkhU0uJ3nLWtqaKSnRnZ3Y/?=
- =?us-ascii?Q?jBrRKfatdS1pL2E6XIvkfdr5XHNCYpodUJB7rqYrut6O+5b1jTKYp8MJlyFG?=
- =?us-ascii?Q?mWBOg/9/vLeqcshcnmTY6nGnbyAt5YT7SEWNbr0IXK6GlZJUlEju3j83RDp9?=
- =?us-ascii?Q?nSjEQXxt/Q27Yfm297WG/Jr0dic58V8U4AIyj3DQGT2Is25hjZaDYenDeURZ?=
- =?us-ascii?Q?CLzWbyLn0I1Pf7hzwpeucbNMhZ+3bUZ09XlbzOpDx/Fo850acEh0zbh48Bcj?=
- =?us-ascii?Q?fcCaXMiTnG8ngxXR98VeOZCucCybWfrKSkIZTBMq09v9eLThKtIM+KJIzqsE?=
- =?us-ascii?Q?bRrh3KVI0NRwraAz0v3q/NOHED2vBpzwxD07SipNnzm1s6fc/4i2ERtTn5ki?=
- =?us-ascii?Q?Heilci935Aa/mabW62h9Ydfq9BM7Z1iOQBz6nerG6veU6z1Ysqhvfy9h5C5q?=
- =?us-ascii?Q?/eZPRWYa1UCyPNTayeBYSet4/qEKhjin6cpBOAL2G+/fkQBd2g8kIfSDagxR?=
- =?us-ascii?Q?Km3VpRX+gfo++dHXCETAZiaiTyrM0W1u3EwdnS7YlvDwEIeTrhhd4V2rxH+R?=
- =?us-ascii?Q?jpNUeAIsUUsDJwTJeMgw2v1tNr9/0mnuSpO218o0F3xPiOs2evbqUMsE9CER?=
- =?us-ascii?Q?G7tru6lfqtXw7X2sMs7kLPH/29atpYllf3VZUgGhQSel7vCb155Pl/MpkEKY?=
- =?us-ascii?Q?bSJ03oqz8xHtuoLmKukclskqL8+vm+LycpU1tBGO8p4zz9xQqpYPSFdYioAT?=
- =?us-ascii?Q?k80NAcpJ8xtkT3rhgz/cnzEEG8R9qxR+B/S4gQ/xdMbCmA0icz0m6RWE7GCd?=
- =?us-ascii?Q?d8MMWucRV8L9Q02nPuSPXKtkZy/ij7/r5H74+6N+HLGW+4p6BdTjPob3JYAz?=
- =?us-ascii?Q?zkr5tlSNf/R5HoJWgr9nzMTbe3QxtKaseWTxX9rJLYjrdPB+JeORVmkoDL5S?=
- =?us-ascii?Q?KIVHSBdrQRNZvbBm0RHXWEHFiKiAkTrE6Ycy/wY7ZSxcvYlULmQ+XwMokk+D?=
- =?us-ascii?Q?T2gjs0qzJARLhZQrmPI4v+NHQ5gkVYKzJD5FyGszDKN776JEwU15sTHxie1/?=
- =?us-ascii?Q?0hpGXUAHFcOFS0AN/RKeNQwK3vLUwNAjaWN8U4H8kr17OCLQRWuywG7Z053V?=
- =?us-ascii?Q?9Fo87hm7SsxQo117ZNFlVcc1pE8QT/DF8amwUGrnq4QXOLNsTOQhLDBCra46?=
- =?us-ascii?Q?KHPEHjJO4UzB8rDR7boWoeBZP/Ag1xjyQx46XZrFje9ALvUi4V3tpy5mglnV?=
- =?us-ascii?Q?21/wksfKM0ArzJsTcgEvBk1xKLrXBW9FPwK4aFxK?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH] HID: appleir: Fix potential NULL dereference at raw event handle
+Date: Mon, 24 Feb 2025 20:30:30 +0300
+Message-ID: <20250224173031.496048-1-d.dulov@aladdin.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c84e7b31-9fa6-48fa-00fb-08dd54f87a18
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 17:27:13.3234
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hk4UjGoMcB9RO9K59DXInwQrQIpGNk4UbIKgIb+tGaWuUaGDuGjJOS5v0j2uv3Gt7d+UU5249QEn7JbADOv41w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11169
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-2016-01.aladdin.ru (192.168.1.101) To
+ EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Monday, February 24, 2025 1:13 PM
-[...]
-> Subject: [PATCH v3 net 2/8] net: enetc: keep track of correct Tx BD count=
- in
-> enetc_map_tx_tso_buffs()
->=20
-> When creating a TSO header, if the skb is VLAN tagged, the extended BD
-> will be used and the 'count' should be increased by 2 instead of 1.
-> Otherwise, when an error occurs, less tx_swbd will be freed than the
-> actual number.
->=20
-> Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
+Syzkaller reports a NULL pointer dereference issue in input_event().
 
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: null-ptr-deref in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: null-ptr-deref in is_event_supported drivers/input/input.c:67 [inline]
+BUG: KASAN: null-ptr-deref in input_event+0x42/0xa0 drivers/input/input.c:395
+Read of size 8 at addr 0000000000000028 by task syz-executor199/2949
+
+CPU: 0 UID: 0 PID: 2949 Comm: syz-executor199 Not tainted 6.13.0-rc4-syzkaller-00076-gf097a36ef88d #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ kasan_report+0xd9/0x110 mm/kasan/report.c:602
+ check_region_inline mm/kasan/generic.c:183 [inline]
+ kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ is_event_supported drivers/input/input.c:67 [inline]
+ input_event+0x42/0xa0 drivers/input/input.c:395
+ input_report_key include/linux/input.h:439 [inline]
+ key_down drivers/hid/hid-appleir.c:159 [inline]
+ appleir_raw_event+0x3e5/0x5e0 drivers/hid/hid-appleir.c:232
+ __hid_input_report.constprop.0+0x312/0x440 drivers/hid/hid-core.c:2111
+ hid_ctrl+0x49f/0x550 drivers/hid/usbhid/hid-core.c:484
+ __usb_hcd_giveback_urb+0x389/0x6e0 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x396/0x450 drivers/usb/core/hcd.c:1734
+ dummy_timer+0x17f7/0x3960 drivers/usb/gadget/udc/dummy_hcd.c:1993
+ __run_hrtimer kernel/time/hrtimer.c:1739 [inline]
+ __hrtimer_run_queues+0x20a/0xae0 kernel/time/hrtimer.c:1803
+ hrtimer_run_softirq+0x17d/0x350 kernel/time/hrtimer.c:1820
+ handle_softirqs+0x206/0x8d0 kernel/softirq.c:561
+ __do_softirq kernel/softirq.c:595 [inline]
+ invoke_softirq kernel/softirq.c:435 [inline]
+ __irq_exit_rcu+0xfa/0x160 kernel/softirq.c:662
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0x90/0xb0 arch/x86/kernel/apic/apic.c:1049
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+ __mod_timer+0x8f6/0xdc0 kernel/time/timer.c:1185
+ add_timer+0x62/0x90 kernel/time/timer.c:1295
+ schedule_timeout+0x11f/0x280 kernel/time/sleep_timeout.c:98
+ usbhid_wait_io+0x1c7/0x380 drivers/hid/usbhid/hid-core.c:645
+ usbhid_init_reports+0x19f/0x390 drivers/hid/usbhid/hid-core.c:784
+ hiddev_ioctl+0x1133/0x15b0 drivers/hid/usbhid/hiddev.c:794
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+This happens due to the malformed report items sent by the emulated device
+which results in a report, that has no fields, being added to the report list.
+Due to this appleir_input_configured() is never called, hidinput_connect()
+fails which results in the HID_CLAIMED_INPUT flag is not being set. However,
+it  does not make appleir_probe() fail and lets the event callback to be
+called without the associated input device.
+
+Thus, add a check for the HID_CLAIMED_INPUT flag and leave the event hook
+early if the driver didn't claim any input_dev for some reason. Moreover,
+some other hid drivers accessing input_dev in their event callbacks do have
+similar checks, too.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 9a4a5574ce42 ("HID: appleir: add support for Apple ir devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+---
+ drivers/hid/hid-appleir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hid/hid-appleir.c b/drivers/hid/hid-appleir.c
+index 8deded185725..c45e5aa569d2 100644
+--- a/drivers/hid/hid-appleir.c
++++ b/drivers/hid/hid-appleir.c
+@@ -188,7 +188,7 @@ static int appleir_raw_event(struct hid_device *hid, struct hid_report *report,
+ 	static const u8 flatbattery[] = { 0x25, 0x87, 0xe0 };
+ 	unsigned long flags;
+ 
+-	if (len != 5)
++	if (len != 5 || !(hid->claimed & HID_CLAIMED_INPUT))
+ 		goto out;
+ 
+ 	if (!memcmp(data, keydown, sizeof(keydown))) {
+-- 
+2.34.1
+
 
