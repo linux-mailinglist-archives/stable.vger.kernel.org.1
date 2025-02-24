@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-119076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3B2A4241D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:53:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFE9A424EA
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D1816AB8D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BBA03B6EC3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B6F248867;
-	Mon, 24 Feb 2025 14:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E84C207E13;
+	Mon, 24 Feb 2025 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ithIhLO3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksDyBwqU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57993245037;
-	Mon, 24 Feb 2025 14:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFE9156F44;
+	Mon, 24 Feb 2025 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408240; cv=none; b=tqZ4jPymHrYqjl7Td0rXzYl3thW0CdmgHPELroXtZQosQmWNuO03OroHoSxlhYaObFFshWRwek/EmHgUx0hA9/GhpxJymiaGyCQ9cHmWkHv4s3/vbknOL0YJPiWsaz1iaxcl2PVjuDC3KOxdNnCcJtUs3xYVMFrPAsvXTRDq1c0=
+	t=1740408692; cv=none; b=ba2Qo2RmqN+IpQExrkMEK4IN/n996GqZGnVBapahHXf5aNMOfpUBSyQRmQ87aKJuzYaGnvZIkryryc2S+vD04+HkBoT6oC5LGfu5gJGvNDJ/tmxgv+zEK5MQZ5EhcLQonSc8tsDxj4v+J9Or0G/jHrYt590bkce2TedWF3yyw2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408240; c=relaxed/simple;
-	bh=S2AbNmFA9AtI22adQ/Xebu1QO75TFISrm+t7MbGUtbE=;
+	s=arc-20240116; t=1740408692; c=relaxed/simple;
+	bh=qJgL3RK7ny/nfuQMmQIM8BPzVBYFiogsP1Y6REmqQnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8qDs3NQWHHcflNPux4rR/WDZnllImuO7bpx6otKv/1wYiI2Sbyu2Uudh9D4IDzI7Gmq1/ZeZGhwW1bJ9CmsxxAfa84saMz/X8ut57nsVHKrk0KyMsUX6KoyjhtRWj/0OaeEPCb3uYncMKKvhjfc3qJS59XbBZJC+tU7/Ty+Tlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ithIhLO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88587C4CEE6;
-	Mon, 24 Feb 2025 14:43:59 +0000 (UTC)
+	 MIME-Version; b=lUYwCN+fUvVNV4TOmQljvHzhMqo/Xxx8gAYnJw7Tp1HcApwueIubcMoPv0bQs2GgyaCLgw0v5AMSQ4nSU5Jk2a/AIBSjpTF4jsoVxvNAJBgu7ymyiUuCzrDGmOiieJw1c/pEulCFXJYiQa16tNfqs/Roh4SFWGRFbvVDVXOS+PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksDyBwqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E8EC4CED6;
+	Mon, 24 Feb 2025 14:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408240;
-	bh=S2AbNmFA9AtI22adQ/Xebu1QO75TFISrm+t7MbGUtbE=;
+	s=korg; t=1740408691;
+	bh=qJgL3RK7ny/nfuQMmQIM8BPzVBYFiogsP1Y6REmqQnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ithIhLO3/C6uUdYtxxPQ9vN0cg4h1N/oIZCTSGX28oaG7F7RuQPydSfqKFUa82SwD
-	 LbJSX5Z5ha2uMYiRdHrAmmasMiT3s8KW6ChUodDIUtoNFAC8Fzxw8kFp4W3b0/A0FG
-	 5irOwMqPzG+8OuDLVC4/MnrWhJwYvG2gY679Ww4Q=
+	b=ksDyBwqUJ47V3o9X8L0OYznrtok52XjL+DAdikBWFv46B6xd2zMX+Jg/1BH/bgYP0
+	 khZ26TskgDBzRj5LOjKNVWhB1PnDpp2RnrGnqSQI0I6FJwhPWznmg6X+XgDr2Hu1Ex
+	 36z9YALeYZW1+akLR3HhoawBbYVsxHo9ahx66FC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.6 133/140] md: fix missing flush of sync_work
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 133/154] ASoC: SOF: pcm: Clear the susbstream pointer to NULL on close
 Date: Mon, 24 Feb 2025 15:35:32 +0100
-Message-ID: <20250224142608.234915384@linuxfoundation.org>
+Message-ID: <20250224142612.257744393@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit f2d87a759f6841a132e845e2fafdad37385ddd30 upstream.
+commit 46c7b901e2a03536df5a3cb40b3b26e2be505df6 upstream.
 
-Commit ac619781967b ("md: use separate work_struct for md_start_sync()")
-use a new sync_work to replace del_work, however, stop_sync_thread() and
-__md_stop_writes() was trying to wait for sync_thread to be done, hence
-they should switch to use sync_work as well.
+The spcm->stream[substream->stream].substream is set during open and was
+left untouched. After the first PCM stream it will never be NULL and we
+have code which checks for substream NULLity as indication if the stream is
+active or not.
+For the compressed cstream pointer the same has been done, this change will
+correct the handling of PCM streams.
 
-Noted that md_start_sync() from sync_work will grab 'reconfig_mutex',
-hence other contex can't held the same lock to flush work, and this will
-be fixed in later patches.
-
-Fixes: ac619781967b ("md: use separate work_struct for md_start_sync()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231205094215.1824240-2-yukuai1@huaweicloud.com
+Fixes: 090349a9feba ("ASoC: SOF: Add support for compress API for stream data/offset")
+Cc: stable@vger.kernel.org
+Reported-by: Curtis Malainey <cujomalainey@chromium.org>
+Closes: https://github.com/thesofproject/linux/pull/5214
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
+Link: https://patch.msgid.link/20250205135232.19762-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/pcm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4836,7 +4836,7 @@ static void stop_sync_thread(struct mdde
- 		return;
+--- a/sound/soc/sof/pcm.c
++++ b/sound/soc/sof/pcm.c
+@@ -511,6 +511,8 @@ static int sof_pcm_close(struct snd_soc_
+ 		 */
  	}
  
--	if (work_pending(&mddev->del_work))
-+	if (work_pending(&mddev->sync_work))
- 		flush_workqueue(md_misc_wq);
++	spcm->stream[substream->stream].substream = NULL;
++
+ 	return 0;
+ }
  
- 	set_bit(MD_RECOVERY_INTR, &mddev->recovery);
-@@ -6293,7 +6293,7 @@ static void md_clean(struct mddev *mddev
- static void __md_stop_writes(struct mddev *mddev)
- {
- 	set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
--	if (work_pending(&mddev->del_work))
-+	if (work_pending(&mddev->sync_work))
- 		flush_workqueue(md_misc_wq);
- 	if (mddev->sync_thread) {
- 		set_bit(MD_RECOVERY_INTR, &mddev->recovery);
 
 
 
