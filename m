@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-119157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB31DA424A6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CB0A4242B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFA321898DCB
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFBFD44302A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CC11459EA;
-	Mon, 24 Feb 2025 14:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6356B2629F;
+	Mon, 24 Feb 2025 14:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7pkUFIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uJ0fSCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6259D18A6BA;
-	Mon, 24 Feb 2025 14:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223DA146A6F;
+	Mon, 24 Feb 2025 14:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408512; cv=none; b=jmx1kIUcVPInHiJyC6k2JUSLeNmXiYIYpmTTJTmgWFWG/KeSo1UH0a9pZ2fS7PEzybwKrsZ5Lu8F3BVdkKGFe2pqEaFBG33rx89OpvJ3pRFpdt7zJBjUeE/nA75pd8fbBiz097OW+QrDEAMSBUCWD5TtBYkv5Q/V2jZmSXQtVuA=
+	t=1740408030; cv=none; b=Ncv5PjXWETTymWNV9pjlIwZnJNcyV82gZgF1uDgZdCN7ZDuyn/T0989SlLF5xRPbcMHiHE0YwgPKR/jcMmCYc9Y2tg2v4AaeuIneHa08+ceoHwgYqbGD6nCWt+ROCPJAfEiz+BN6AaMiivG0XhWpT4Ex6ZhrrRIn2n99Shk1hAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408512; c=relaxed/simple;
-	bh=Ncziw3ojDIUUWFrdLaxk5Eu0o35Xw73ShBNigKvS4IE=;
+	s=arc-20240116; t=1740408030; c=relaxed/simple;
+	bh=oKbYsIjMzdmGeP9g8gITjoLifZ6U10+fGWW2pT8w0nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8h24nEQXVpK4KRCcauaz7WvcPuKs3fiIBxqGghgvyVxC+5gWr3kFYhcEjzmCEbZPdocLUYiUZNIB4kbkxeCMGJry8HiiyKw8TpuYM/G5JqY2Ruqy3EAIlZVqRwTh/U/XiE0g22cBx69Qe5jp7FH//8S9ISYHWn8RdktgC4nnd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7pkUFIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B620AC4CEE9;
-	Mon, 24 Feb 2025 14:48:31 +0000 (UTC)
+	 MIME-Version; b=mRtFHbr1m4IrKiwx+HIDL4xH5rARXH0LShbnFJim7E45Bh9uhbZWJ4ZF5KHN3sUPpBHQpq9MlHRe3gO5D4ELm/ECTmCOqtXFOIlGrzje26V3VOXzmhe4coe0Pkek7Esan/NmVFyGlU+HKDoVjJLbXA3N3aNCgeCy2pJJbEmpuBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uJ0fSCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF59C4CED6;
+	Mon, 24 Feb 2025 14:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408512;
-	bh=Ncziw3ojDIUUWFrdLaxk5Eu0o35Xw73ShBNigKvS4IE=;
+	s=korg; t=1740408030;
+	bh=oKbYsIjMzdmGeP9g8gITjoLifZ6U10+fGWW2pT8w0nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7pkUFIvZ75uRRKpNLFzzdC1ojy2oY5z8SbzjlOTAuYEiU5lMEGmPJupGjNJOZuAE
-	 evQc8HmkJhkJJ+p9/fHxurukx3EIbE2Iu121ldMFfyohDTHXxXJJ2ICRhMjAWJcE4V
-	 QHMYj1mVs0aONm9ks2pTquX2ALa3Eqw1xcdIWlGk=
+	b=1uJ0fSCq4YJzhOsCDIdWFxUgJq5Lx2yw3pUF9kGfxyEXq9Cx5TgmLKd3H0i02rcKa
+	 FXnCmMoDY5K8XJOvhkWM0eQAjygO0dvrEGxXYi5FysCcHLbob/YcyFTx4dWg3sjTpD
+	 LG6gQ2Ne7rT7izQF/jdC3nn1VJLkn/m9QpWnJRMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <mrpre@163.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/154] bpf: Disable non stream socket for strparser
-Date: Mon, 24 Feb 2025 15:34:38 +0100
-Message-ID: <20250224142610.174186149@linuxfoundation.org>
+Subject: [PATCH 6.6 080/140] vsock/bpf: Warn on socket without transport
+Date: Mon, 24 Feb 2025 15:34:39 +0100
+Message-ID: <20250224142606.154732161@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 5459cce6bf49e72ee29be21865869c2ac42419f5 ]
+[ Upstream commit 857ae05549ee2542317e7084ecaa5f8536634dd9 ]
 
-Currently, only TCP supports strparser, but sockmap doesn't intercept
-non-TCP connections to attach strparser. For example, with UDP, although
-the read/write handlers are replaced, strparser is not executed due to
-the lack of a read_sock operation.
+In the spirit of commit 91751e248256 ("vsock: prevent null-ptr-deref in
+vsock_*[has_data|has_space]"), armorize the "impossible" cases with a
+warning.
 
-Furthermore, in udp_bpf_recvmsg(), it checks whether the psock has data,
-and if not, it falls back to the native UDP read interface, making
-UDP + strparser appear to read correctly. According to its commit history,
-this behavior is unexpected.
-
-Moreover, since UDP lacks the concept of streams, we intercept it directly.
-
-Fixes: 1fa1fe8ff161 ("bpf, sockmap: Test shutdown() correctly exits epoll and recv()=0")
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://patch.msgid.link/20250122100917.49845-4-mrpre@163.com
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c  | 3 +++
+ net/vmw_vsock/vsock_bpf.c | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 2f1be9baad057..82a14f131d00c 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -303,7 +303,10 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 618b18e80cea0..622875a6f787c 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1185,6 +1185,9 @@ static int vsock_read_skb(struct sock *sk, skb_read_actor_t read_actor)
+ {
+ 	struct vsock_sock *vsk = vsock_sk(sk);
  
- 	write_lock_bh(&sk->sk_callback_lock);
- 	if (stream_parser && stream_verdict && !psock->saved_data_ready) {
--		ret = sk_psock_init_strp(sk, psock);
-+		if (sk_is_tcp(sk))
-+			ret = sk_psock_init_strp(sk, psock);
-+		else
-+			ret = -EOPNOTSUPP;
- 		if (ret) {
- 			write_unlock_bh(&sk->sk_callback_lock);
- 			sk_psock_put(sk, psock);
++	if (WARN_ON_ONCE(!vsk->transport))
++		return -ENODEV;
++
+ 	return vsk->transport->read_skb(vsk, read_actor);
+ }
+ 
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index f201d9eca1df2..07b96d56f3a57 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -87,7 +87,7 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	lock_sock(sk);
+ 	vsk = vsock_sk(sk);
+ 
+-	if (!vsk->transport) {
++	if (WARN_ON_ONCE(!vsk->transport)) {
+ 		copied = -ENODEV;
+ 		goto out;
+ 	}
 -- 
 2.39.5
 
