@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87B6A4246D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D55CFA424CB
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14E2A4452ED
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090621897326
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E301624CF;
-	Mon, 24 Feb 2025 14:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38772191F66;
+	Mon, 24 Feb 2025 14:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN51EkBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6TXvU7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6087814012;
-	Mon, 24 Feb 2025 14:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC25614012;
+	Mon, 24 Feb 2025 14:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408043; cv=none; b=Xk8MbDGqK3/+Nb2A9Y9kcVJawTojgk2PavWN12Wwi77mSSQ3qBRszwGShzMgHb01uuoirQ88LwPIL59U7wMmDL4zgZQXyVCyD5u9TfvaGU8Zj5nGEtdlI/TAmkAXcrEu32iyvlVbdA3PrrzoZQiLYPSh5SPy13UDUFrRaNY04vk=
+	t=1740408526; cv=none; b=R7vAKN+vqk28PPIo8SHmq20lj5IlhB3G7XuTi9RmKZ0J8YWCTWWkiiM0I0dpRtVdDhJgJMieL6AyuxtTm+JFRCx1n96NYGGYZhkFZFKA2gxdt4VkFJ+sGc4KEZQTmz+SJ0h+kphHqqrIOg9lG8i58kd8OU0qUwFQ3B6AHr+xn1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408043; c=relaxed/simple;
-	bh=TX96pNPHaMlHU2klFSjacstrWXzUzqMYeKQlQWXyO3Q=;
+	s=arc-20240116; t=1740408526; c=relaxed/simple;
+	bh=eCI8lSAWwjb+rFDzsjq+ED/mH/KHtHRhWfMDk0lLuDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMgdbgoR8WsEk416oxECE8pFLHWJhewwUgJAwfNOSS54jwpVzg04gnP2BV2z/MJGyEa3Ky1UeDzO0MK7kjNJReOX4UHsTR+TECGQ4KIoMVZFij0hZlPFtk9AF119+q9IxfO2AyNLVc6ec5i9+Pc/SUIMa9c2/hRbhPc1BzsTPbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN51EkBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60F1C4CED6;
-	Mon, 24 Feb 2025 14:40:42 +0000 (UTC)
+	 MIME-Version; b=YGmt4/DoAVYviSQwDnzP4wszYUFtVvJC4lfdQfrbhAbAZWt3d87k8ELXbvVMRNF1jMG1iwkOHwKlIrkeZgs/Cwv9Cp55HbkoxP052iSF5LMXB99VMWDwt/q+aeTi3/XCPrOEQW8zLcxEUFAxyX2EdnVHKXptf17bGcClxh1HAL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6TXvU7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57188C4CED6;
+	Mon, 24 Feb 2025 14:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408043;
-	bh=TX96pNPHaMlHU2klFSjacstrWXzUzqMYeKQlQWXyO3Q=;
+	s=korg; t=1740408525;
+	bh=eCI8lSAWwjb+rFDzsjq+ED/mH/KHtHRhWfMDk0lLuDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kN51EkBsIPYDhubWxuNo1Vup/qW9Bj4YPtTVrgtHfH2iFqR84bwKZfGze3LMx3op+
-	 DjmMvWguyCdBnzADa+Rwz+bYmZDIPJzA9CzyjvhNYFzX0QVeOY7t5OaPCXJpyGfzSc
-	 h2utwT6koJH5UHUJLEZKqlFo8dh2hJ2Lcy+KbEzQ=
+	b=n6TXvU7zuRLcXQKjJp4F4y+GxUCGkRGxkjuql2fLlUWfCS5dMy31MR63Zvg5J6cuG
+	 W2r3Z8L9YoN1jGV2w57EqL/g/TKRZeCbCeHv6gH2gDoJSmUBLMCayQZ68k0qZf0jFA
+	 qj5c0vmxfiFRDqrMpah7L1r9MofWrqaGkFiR0MFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/140] geneve: Suppress list corruption splat in geneve_destroy_tunnels().
+Subject: [PATCH 6.12 083/154] power: supply: axp20x_battery: Fix fault handling for AXP717
 Date: Mon, 24 Feb 2025 15:34:42 +0100
-Message-ID: <20250224142606.272308978@linuxfoundation.org>
+Message-ID: <20250224142610.327708763@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 62fab6eef61f245dc8797e3a6a5b890ef40e8628 ]
+[ Upstream commit 98380110bd48fbfd6a798ee11fffff893d36062c ]
 
-As explained in the previous patch, iterating for_each_netdev() and
-gn->geneve_list during ->exit_batch_rtnl() could trigger ->dellink()
-twice for the same device.
+Correct the fault handling for the AXP717 by changing the i2c write
+from regmap_update_bits() to regmap_write_bits(). The update bits
+function does not work properly on a RW1C register where we must
+write a 1 back to an existing register to clear it.
 
-If CONFIG_DEBUG_LIST is enabled, we will see a list_del() corruption
-splat in the 2nd call of geneve_dellink().
+Additionally, as part of this testing I confirmed the behavior of
+errors reappearing, so remove comment about assumptions.
 
-Let's remove for_each_netdev() in geneve_destroy_tunnels() and delegate
-that part to default_device_exit_batch().
-
-Fixes: 9593172d93b9 ("geneve: Fix use-after-free in geneve_find_dev().")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250217203705.40342-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6625767049c2 ("power: supply: axp20x_battery: add support for AXP717")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250131231455.153447-2-macroalpha82@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/geneve.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/power/supply/axp20x_battery.c | 31 +++++++++++++--------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index c2066f19295d4..27761334e1bff 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -1961,14 +1961,7 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
- {
- 	struct geneve_net *gn = net_generic(net, geneve_net_id);
- 	struct geneve_dev *geneve, *next;
--	struct net_device *dev, *aux;
+diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
+index f71cc90fea127..57eba1ddb17ba 100644
+--- a/drivers/power/supply/axp20x_battery.c
++++ b/drivers/power/supply/axp20x_battery.c
+@@ -466,10 +466,9 @@ static int axp717_battery_get_prop(struct power_supply *psy,
  
--	/* gather any geneve devices that were moved into this ns */
--	for_each_netdev_safe(net, dev, aux)
--		if (dev->rtnl_link_ops == &geneve_link_ops)
--			geneve_dellink(dev, head);
--
--	/* now gather any other geneve devices that were created in this ns */
- 	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
- 		geneve_dellink(geneve->dev, head);
- }
+ 	/*
+ 	 * If a fault is detected it must also be cleared; if the
+-	 * condition persists it should reappear (This is an
+-	 * assumption, it's actually not documented). A restart was
+-	 * not sufficient to clear the bit in testing despite the
+-	 * register listed as POR.
++	 * condition persists it should reappear. A restart was not
++	 * sufficient to clear the bit in testing despite the register
++	 * listed as POR.
+ 	 */
+ 	case POWER_SUPPLY_PROP_HEALTH:
+ 		ret = regmap_read(axp20x_batt->regmap, AXP717_PMU_FAULT,
+@@ -480,26 +479,26 @@ static int axp717_battery_get_prop(struct power_supply *psy,
+ 		switch (reg & AXP717_BATT_PMU_FAULT_MASK) {
+ 		case AXP717_BATT_UVLO_2_5V:
+ 			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+-			regmap_update_bits(axp20x_batt->regmap,
+-					   AXP717_PMU_FAULT,
+-					   AXP717_BATT_UVLO_2_5V,
+-					   AXP717_BATT_UVLO_2_5V);
++			regmap_write_bits(axp20x_batt->regmap,
++					  AXP717_PMU_FAULT,
++					  AXP717_BATT_UVLO_2_5V,
++					  AXP717_BATT_UVLO_2_5V);
+ 			return 0;
+ 
+ 		case AXP717_BATT_OVER_TEMP:
+ 			val->intval = POWER_SUPPLY_HEALTH_HOT;
+-			regmap_update_bits(axp20x_batt->regmap,
+-					   AXP717_PMU_FAULT,
+-					   AXP717_BATT_OVER_TEMP,
+-					   AXP717_BATT_OVER_TEMP);
++			regmap_write_bits(axp20x_batt->regmap,
++					  AXP717_PMU_FAULT,
++					  AXP717_BATT_OVER_TEMP,
++					  AXP717_BATT_OVER_TEMP);
+ 			return 0;
+ 
+ 		case AXP717_BATT_UNDER_TEMP:
+ 			val->intval = POWER_SUPPLY_HEALTH_COLD;
+-			regmap_update_bits(axp20x_batt->regmap,
+-					   AXP717_PMU_FAULT,
+-					   AXP717_BATT_UNDER_TEMP,
+-					   AXP717_BATT_UNDER_TEMP);
++			regmap_write_bits(axp20x_batt->regmap,
++					  AXP717_PMU_FAULT,
++					  AXP717_BATT_UNDER_TEMP,
++					  AXP717_BATT_UNDER_TEMP);
+ 			return 0;
+ 
+ 		default:
 -- 
 2.39.5
 
