@@ -1,93 +1,137 @@
-Return-Path: <stable+bounces-118942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBB7A422E7
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:25:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028B9A422F9
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40B547A9348
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9521889784
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6A1386B4;
-	Mon, 24 Feb 2025 14:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9121519B9;
+	Mon, 24 Feb 2025 14:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Itqc7o2K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjBXn8nO"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D714D28C
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 14:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A1F13A244;
+	Mon, 24 Feb 2025 14:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407077; cv=none; b=mafUZQFD5HKQHfXsxxkKBTzspJ/HejCR2ewUqZbn8jUXnj0LZFXK1freeFfc3d2lQB60csz5fnkQ+dHCGQqspMeKoxupMo08FfxBYcN7lhqn2F1X/lu7fLwJzVD/2UO5MFrMeQQFiCPeICucML0hvlrgqQPqvXQunN1UUpNpj1E=
+	t=1740407118; cv=none; b=Wtigi7Tj16qbz5bseygH/Oe4UbyYFcvyE+vgoFrcQA6jWhjnfNS9jomopLWzxvB1ywnbZiUKWrWt0dPitQKOZqXItnbE4OGfnOeFC1rw8LePJ7LTYpO9e/xxawt4yM3WLyIirJaAPjDvdl0WE19+bm3t210I1YJtcp2ttxuBp20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407077; c=relaxed/simple;
-	bh=FE1CWMi2CvPnvoketKsYWYlZ+VV76x1gP9YK33cjJrs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=d/IctcXS8fvVTtkEiKpROmRuQsAYg4BNnVSqCb2e4qpoMqWXTgMHuWxX6EjlJ2+M7Kozj51Zj8QuFFqRHZa+7bQNz/J9UpuBL5AmAG6AHkg/Oz23ct3fsYxNcu/jDmnb1ubDP2GzTOND90zCmJKQsNew+FnMLTpeo0W4TCxBpaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Itqc7o2K; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JT5nI4XOfZ8xYdvgJxo/xc/goWo7FZySBnJH86XdU1Q=; b=Itqc7o2K3EWNFNg/9dNvuDhCnD
-	1IL97IWawWWgKdIfpB/a3aqxrn85CaHbud8WQSbNQgGCUL1AwsYy+c5Y/5ADiZpwXeSx4yEjMe9Ho
-	CDvV2cCl7D6jIwapkt40y+a4+8QXFUhhscHJBLRhC988M9E/WSnUf/cjlr8r2aXds6DM3p+7KWTkL
-	Fs1Ekl8rvSy5n9UNA57pg/ElKIsntK8kwK1pzroBomdbk7ARwVQj5zWM0bf44fuqf1lxMuK9rF/5N
-	6qjuekNWHMr2EIUuQa5EoyCsvnOhMZmf5wD88OP0ukaimXw9BoqVxPAiV7/Ifiq8jfx5qB/d6j7W+
-	6raZtvuA==;
-Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost)
-	by fanzine2.igalia.com with utf8esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tmZNi-00HX75-SS; Mon, 24 Feb 2025 15:24:32 +0100
-From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
-To: Greg KH <greg@kroah.com>
-Cc: stable@vger.kernel.org, bigeasy@linutronix.de, revest@google.com,
- kernel-dev@igalia.com
-Subject: Re: [PATCH 6.6 1/2] net: Reference bpf_redirect_info via
- task_struct on PREEMPT_RT.
-In-Reply-To: <2025022454-dislike-unengaged-37e5@gregkh>
-References: <20250224-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v1-0-de5d47556d96@igalia.com>
- <20250224-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v1-1-de5d47556d96@igalia.com>
- <2025022454-dislike-unengaged-37e5@gregkh>
-Date: Mon, 24 Feb 2025 15:24:32 +0100
-Message-ID: <87ecznzahr.fsf@igalia.com>
+	s=arc-20240116; t=1740407118; c=relaxed/simple;
+	bh=Fu3IjRZJNaESo9kXk4aiCl8GEmhNGVIn0NHb/78P/Cg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n0v1EUQREPKlzj2HywIN8K0/2Y7UTXyPEod2FUpve1GK8OOhfTrZ67a04dJkOXE67j2xDF2UnkwSR122bHnY4GhFQLdGJ+UD0mmpMgi9hSXjtZpmJmLVi0bD+bL+/61uKnE01kFAt3yXxZVbQc5naZvQYgQqDkTbGxJnD6c8mMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjBXn8nO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6A6C4CEE8;
+	Mon, 24 Feb 2025 14:25:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740407117;
+	bh=Fu3IjRZJNaESo9kXk4aiCl8GEmhNGVIn0NHb/78P/Cg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CjBXn8nOg9VmBgOPvGWV9WjXP3Qo4R6MXxAMcTFlRgCLEKR0c+fq+I8oSGsgj52FI
+	 lhHvqMd5E9B1lSgp++7fBsJMRiqJJoINfotbdGo49N6xSScHKBHZxIeNFwAXbjrSWk
+	 g99tRHI4Y2vTt/LGzYSPec5A8tG0q+JmBAT2dlWH1rTYjBhruGlwE3qnhgobc5Ko/y
+	 bJWZRlQMvxmRp1Ln7fuYLWriwlEST/Nlj3GjsMSDh0GUiIqB1Xdr5B+rwy1jkdIWm2
+	 zlRLZiSKWzKqmwv7qOfDkokIxIpJCQHLdRlCIc1OMt94jjXi/S+FQE7zIXbl8nHdxG
+	 +S4CgBfc9L2DA==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abb86beea8cso800255666b.1;
+        Mon, 24 Feb 2025 06:25:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUDwjLwwIz/ynUaJQ8NIt9Dyfm852R2AzVBbj1ZaVFqXH9+tak14HZ6mqMm+fK7qAcnlqjJmjUiMShd0qR6@vger.kernel.org, AJvYcCVPSjWhmULu/+j8Q96oLx2QXpl+EduqBWH3gprGeLTasF5sRy1gvnlNDxdXqldnqx8xk6fnoqMi@vger.kernel.org, AJvYcCWec0zbILkvKZta7DdAvWUmg1nppuSNTgESt1ycGTFr4WHkGWJRer+1DGxWj6pXWhzoXdXrhapuy+c3dQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylwYhI+Cv44UofutKXFGo35HjpmUY9sQMU5mYz9EpsUsT4enTl
+	0lowXhUwXOwPmlTJIyq0C4zHGIFRq12QM5vPBtLStpa4zYdna4LT8pnPCdwUeNWnQb6DHz2R/P5
+	DzEj919LcMNoPkVweF5H4df2bwvU=
+X-Google-Smtp-Source: AGHT+IG2MO2F44XNQKsXwhRvAAJ8CAvQkLvOkdUllcG08U3Kx54+D03Fsj3xR9fAIBrlUMxDJ+CCrRsBsdHJ4BNYWEM=
+X-Received: by 2002:a17:906:30d4:b0:ab7:eff8:f92e with SMTP id
+ a640c23a62f3a-abc09aa9d7amr1054883166b.21.1740407115708; Mon, 24 Feb 2025
+ 06:25:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250224075142.2959155-1-make24@iscas.ac.cn>
+In-Reply-To: <20250224075142.2959155-1-make24@iscas.ac.cn>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Mon, 24 Feb 2025 14:24:38 +0000
+X-Gmail-Original-Message-ID: <CAL3q7H5nq9jv59YdhPjUuMYVLgyVTG1fuurGdhiqtqCz2K6khQ@mail.gmail.com>
+X-Gm-Features: AWEUYZlAcNEwByHsVOvcRHftrsVYQLVGrvui_XCTwsz22yR_jiFpTocxAQnWipI
+Message-ID: <CAL3q7H5nq9jv59YdhPjUuMYVLgyVTG1fuurGdhiqtqCz2K6khQ@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: add a sanity check for btrfs root in btrfs_search_old_slot()
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: clm@fb.com, josef@toxicpanda.com, dsterba@suse.com, jeffm@suse.com, 
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg, thanks for having a look at it.
+On Mon, Feb 24, 2025 at 7:52=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
+>
+> When searching the extent tree to gather the needed extent info,
+> btrfs_search_old_slot() doesn't check if the target root is NULL or
+> not, resulting the null-ptr-deref. Add sanity check for btrfs root
+> before using it in btrfs_search_old_slot().
+>
+> Found by code review.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 0b246afa62b0 ("btrfs: root->fs_info cleanup, add fs_info convenien=
+ce variables")
 
-On Mon, Feb 24 2025 at 14:55:36, Greg KH <greg@kroah.com> wrote:
-> You did major changes to this and you didn't sign off and explain what
-> you did differently from the original commit?  You know we can't take
-> that...
+Besides what was already pointed out by Qu, that you should explain
+how can the root be NULL, etc, this is also a completely wrong commit
+in the Fixes tag.
 
-Yes, I needed to do some manual adjustments to the original upstream
-patch in order to apply it to stable... and I just noticed that I
-skipped a couple of lines in one of the chunks. My fault.
+You can only get a NULL extent root if the fs was mounted with
+ignorebadroots and there is a corruption in the extent tree (or maybe
+we got some transient error while attempting to read it like -ENOMEM).
 
-Except for that, which I'll fix in v2, I didn't introduce any functional
-changes to the patch itself, that's why I didn't sign it or explain the
-modifications. Except for the changes in the context (and that poorly
-edited chunk) the lines introduced by this patch and the upstream one
-are identical.
+So ignorebadroots was introduced in commit 42437a6386ff ("btrfs:
+introduce mount option rescue=3Dignorebadroots") which is dated from
+2020, but that commit you added in the Fixes tag is from 2016, back
+when we could never have successfully mounted the fs with a NULL
+extent root.
 
-In any case, I'll make the required fixes for v2 and I'll try again,
-this time explicitly mentioning that there was some manual work
-involved.
-
-Thanks!
-Ricardo
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  fs/btrfs/ctree.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+> index 3dc5a35dd19b..4e2e1c38d33a 100644
+> --- a/fs/btrfs/ctree.c
+> +++ b/fs/btrfs/ctree.c
+> @@ -2232,7 +2232,7 @@ ALLOW_ERROR_INJECTION(btrfs_search_slot, ERRNO);
+>  int btrfs_search_old_slot(struct btrfs_root *root, const struct btrfs_ke=
+y *key,
+>                           struct btrfs_path *p, u64 time_seq)
+>  {
+> -       struct btrfs_fs_info *fs_info =3D root->fs_info;
+> +       struct btrfs_fs_info *fs_info;
+>         struct extent_buffer *b;
+>         int slot;
+>         int ret;
+> @@ -2241,6 +2241,10 @@ int btrfs_search_old_slot(struct btrfs_root *root,=
+ const struct btrfs_key *key,
+>         int lowest_unlock =3D 1;
+>         u8 lowest_level =3D 0;
+>
+> +       if (!root)
+> +               return -EINVAL;
+> +
+> +       fs_info =3D root->fs_info;
+>         lowest_level =3D p->lowest_level;
+>         WARN_ON(p->nodes[0] !=3D NULL);
+>         ASSERT(!p->nowait);
+> --
+> 2.25.1
+>
+>
 
