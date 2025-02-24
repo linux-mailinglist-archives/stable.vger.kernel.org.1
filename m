@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-118807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA158A41C79
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D64A41C78
 	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:22:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B24E188F3CA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:22:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B414188BB30
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218CB26157F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A00E2627F6;
 	Mon, 24 Feb 2025 11:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FY7KiyEc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YE9ZfMko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B92627EA;
-	Mon, 24 Feb 2025 11:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B5D2627E9;
+	Mon, 24 Feb 2025 11:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395864; cv=none; b=sH2EZZR7dhJc0mfnvnckpShyD2qEkNlMp2S+Rr4bQ2kmZqOIDBgkdVdezvuDErHFa2R+dkjaUL+C+1RkCt7DhokL/1XIxdJ/cbQpAzNQMuiIEX8u9rMNonwPOBDQsrAmYbcrb2N9VhsCj0ox233RN0yC3UTeaRl5qeahFK8wuMQ=
+	t=1740395864; cv=none; b=j59p0p/7trR3K+39gvZMGMYdHQI5L5GFXSqi+RhgD3hekncXKKgU+UvWkk3uZ9swdOyYgONAxH2+BU5xa4wc1oQJtXKTKaunNmCoiqLqfwjiMsHpFZVR+fMdeGkmnQfP9a2gicDZnMAwABtwMEAjy2mCynTup/m1h0kHSt2UO6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740395864; c=relaxed/simple;
-	bh=+feFKXjzyb6cPuFwFoOgFVXkqXP4xv+KmHIxH9YIDQM=;
+	bh=UzEgT/HDpje1yJ5QuOfWqdM8zDdkO2fm180qnShmTvM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ib76O9FFRBXPl6IZvkHRrVQ4VxMhnp7lChPoaFAP4sqZ7iI4cB0eXXbTVTFkgyvLKX6K9S+DMQb+9exNqdxJ50RkKTrY3954cb2dyBdkYLUs1RG23wVkE90NsO3OELMT5gwPzbKeWf2p1G+Zch4bhKBOCaoZYyLVhEXDkwI4uec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FY7KiyEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7587BC4CED6;
-	Mon, 24 Feb 2025 11:17:42 +0000 (UTC)
+	 MIME-Version; b=UF56h/03fhLlycx52wWJFNRKy4esy9t1Lm/sKgnvuPaAMdTHsyAH7P7cNtttHIb6jEY1vZt5U4QmB3Nu5In2M7DjTFrIkEyiNDvEzJWrjw0EtFdLokkwL4p20Wf7iaw1OFhRhW8Ll2/seOizq5TLwTBhp39N+QPOp5ue1uMMDho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YE9ZfMko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8B5C4CEE6;
+	Mon, 24 Feb 2025 11:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395863;
-	bh=+feFKXjzyb6cPuFwFoOgFVXkqXP4xv+KmHIxH9YIDQM=;
+	s=k20201202; t=1740395864;
+	bh=UzEgT/HDpje1yJ5QuOfWqdM8zDdkO2fm180qnShmTvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FY7KiyEcFxDnrsQEgsIbzed1ECchMYx+90KsWmN6fKEBz3GbbxmWGww/5D6YK7WIO
-	 ECg6nvbs345wIFuGYq9jA9kSwagdN3sDEgW1/qd05wk+1JLSaFpp33yi16q5bezzOG
-	 7inEbfO3AkD/BI3C5lBcb41V1kZlWpLrcZnHRZLidMv0/tv1Lr4MdHdXkDrqhASU7M
-	 yo/Y7hIr7JXWth7RjxiHRR5f6J+CKQ5XD71D9u+NRS2QkDRJC9cnM7DR8njEPEO3Jp
-	 WOJBQc42yNBDK3GE8hLpE8aeOPLCRFMhhMGe2irD28d0ZsqzS+n/iRLLPO0sdQmOsV
-	 eynrrNEzDOurQ==
+	b=YE9ZfMko6DyGxbtxTmL10OZ/Axl6TJGvBui2QWKmW6W2Y+u4U6GzkjgRCE0IJJSg9
+	 pL8oDGjyBdwbOVq4AhkeKZzYeEeI3PhXZ0UNBfwmXF5snn8dACdnshNv9ZAc4DCJlT
+	 WnuoUzJ7x6lkTjyqGtx4mc5XYMM/axnnxMnY47ZGsVfXacZUOhL3SaeyfGpmpFL6pk
+	 Vw99TBWR/HV1b7olinZ0vaeRkBlXl9Gkrea31EyPPIadp3BcydGPKkiPf1ApVBy4vd
+	 KhckvBXVskL4Ui3sasGGe9g3rpLAQTuPaQxng+uyZVfhddtUjbxZnvBx9NbAx6anfJ
+	 g5OtzZZ2qiasg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Christopher Lentocha <christopherericlentocha@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	asml.silence@gmail.com,
-	io-uring@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 22/32] io-wq: backoff when retrying worker creation
-Date: Mon, 24 Feb 2025 06:16:28 -0500
-Message-Id: <20250224111638.2212832-22-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 23/32] nvme-pci: quirk Acer FA100 for non-uniqueue identifiers
+Date: Mon, 24 Feb 2025 06:16:29 -0500
+Message-Id: <20250224111638.2212832-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111638.2212832-1-sashal@kernel.org>
 References: <20250224111638.2212832-1-sashal@kernel.org>
@@ -66,191 +67,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.4
 Content-Transfer-Encoding: 8bit
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Christopher Lentocha <christopherericlentocha@gmail.com>
 
-[ Upstream commit 13918315c5dc5a515926c8799042ea6885c2b734 ]
+[ Upstream commit fcd875445866a5219cf2be3101e276b21fc843f3 ]
 
-When io_uring submission goes async for the first time on a given task,
-we'll try to create a worker thread to handle the submission. Creating
-this worker thread can fail due to various transient conditions, such as
-an outstanding signal in the forking thread, so we have retry logic with
-a limit of 3 retries. However, this retry logic appears to be too
-aggressive/fast - we've observed a thread blowing through the retry
-limit while having the same outstanding signal the whole time. Here's an
-excerpt of some tracing that demonstrates the issue:
+In order for two Acer FA100 SSDs to work in one PC (in the case of
+myself, a Lenovo Legion T5 28IMB05), and not show one drive and not
+the other, and sometimes mix up what drive shows up (randomly), these
+two lines of code need to be added, and then both of the SSDs will
+show up and not conflict when booting off of one of them. If you boot
+up your computer with both SSDs installed without this patch, you may
+also randomly get into a kernel panic (if the initrd is not set up) or
+stuck in the initrd "/init" process, it is set up, however, if you do
+apply this patch, there should not be problems with booting or seeing
+both contents of the drive. Tested with the btrfs filesystem with a
+RAID configuration of having the root drive '/' combined to make two
+256GB Acer FA100 SSDs become 512GB in total storage.
 
-First, signal 26 is generated for the process. It ends up getting routed
-to thread 92942.
+Kernel Logs with patch applied (`dmesg -t | grep -i nvm`):
 
- 0)   cbd-92284    /* signal_generate: sig=26 errno=0 code=-2 comm=psblkdASD pid=92934 grp=1 res=0 */
-
-This causes create_io_thread in the signalled thread to fail with
-ERESTARTNOINTR, and thus a retry is queued.
-
-13) task_th-92942  /* io_uring_queue_async_work: ring 000000007325c9ae, request 0000000080c96d8e, user_data 0x0, opcode URING_CMD, flags 0x8240001, normal queue, work 000000006e96dd3f */
-13) task_th-92942  io_wq_enqueue() {
-13) task_th-92942    _raw_spin_lock();
-13) task_th-92942    io_wq_activate_free_worker();
-13) task_th-92942    _raw_spin_lock();
-13) task_th-92942    create_io_worker() {
-13) task_th-92942      __kmalloc_cache_noprof();
-13) task_th-92942      __init_swait_queue_head();
-13) task_th-92942      kprobe_ftrace_handler() {
-13) task_th-92942        get_kprobe();
-13) task_th-92942        aggr_pre_handler() {
-13) task_th-92942          pre_handler_kretprobe();
-13) task_th-92942          /* create_enter: (create_io_thread+0x0/0x50) fn=0xffffffff8172c0e0 arg=0xffff888996bb69c0 node=-1 */
-13) task_th-92942        } /* aggr_pre_handler */
+```
 ...
-13) task_th-92942        } /* copy_process */
-13) task_th-92942      } /* create_io_thread */
-13) task_th-92942      kretprobe_rethook_handler() {
-13) task_th-92942        /* create_exit: (create_io_worker+0x8a/0x1a0 <- create_io_thread) arg1=0xfffffffffffffdff */
-13) task_th-92942      } /* kretprobe_rethook_handler */
-13) task_th-92942    queue_work_on() {
+nvme 0000:04:00.0: platform quirk: setting simple suspend
+nvme nvme0: pci function 0000:04:00.0
+nvme 0000:05:00.0: platform quirk: setting simple suspend
+nvme nvme1: pci function 0000:05:00.0
+nvme nvme1: missing or invalid SUBNQN field.
+nvme nvme1: allocated 64 MiB host memory buffer.
+nvme nvme0: missing or invalid SUBNQN field.
+nvme nvme0: allocated 64 MiB host memory buffer.
+nvme nvme1: 8/0/0 default/read/poll queues
+nvme nvme1: Ignoring bogus Namespace Identifiers
+nvme nvme0: 8/0/0 default/read/poll queues
+nvme nvme0: Ignoring bogus Namespace Identifiers
+nvme0n1: p1 p2
 ...
+```
 
-The CPU is then handed to a kworker to process the queued retry:
+Kernel Logs with patch not applied (`dmesg -t | grep -i nvm`):
 
-------------------------------------------
- 13) task_th-92942  => kworker-54154
-------------------------------------------
-13) kworker-54154  io_workqueue_create() {
-13) kworker-54154    io_queue_worker_create() {
-13) kworker-54154      task_work_add() {
-13) kworker-54154        wake_up_state() {
-13) kworker-54154          try_to_wake_up() {
-13) kworker-54154            _raw_spin_lock_irqsave();
-13) kworker-54154            _raw_spin_unlock_irqrestore();
-13) kworker-54154          } /* try_to_wake_up */
-13) kworker-54154        } /* wake_up_state */
-13) kworker-54154        kick_process();
-13) kworker-54154      } /* task_work_add */
-13) kworker-54154    } /* io_queue_worker_create */
-13) kworker-54154  } /* io_workqueue_create */
-
-And then we immediately switch back to the original task to try creating
-a worker again. This fails, because the original task still hasn't
-handled its signal.
-
------------------------------------------
- 13) kworker-54154  => task_th-92942
-------------------------------------------
-13) task_th-92942  create_worker_cont() {
-13) task_th-92942    kprobe_ftrace_handler() {
-13) task_th-92942      get_kprobe();
-13) task_th-92942      aggr_pre_handler() {
-13) task_th-92942        pre_handler_kretprobe();
-13) task_th-92942        /* create_enter: (create_io_thread+0x0/0x50) fn=0xffffffff8172c0e0 arg=0xffff888996bb69c0 node=-1 */
-13) task_th-92942      } /* aggr_pre_handler */
-13) task_th-92942    } /* kprobe_ftrace_handler */
-13) task_th-92942    create_io_thread() {
-13) task_th-92942      copy_process() {
-13) task_th-92942        task_active_pid_ns();
-13) task_th-92942        _raw_spin_lock_irq();
-13) task_th-92942        recalc_sigpending();
-13) task_th-92942        _raw_spin_lock_irq();
-13) task_th-92942      } /* copy_process */
-13) task_th-92942    } /* create_io_thread */
-13) task_th-92942    kretprobe_rethook_handler() {
-13) task_th-92942      /* create_exit: (create_worker_cont+0x35/0x1b0 <- create_io_thread) arg1=0xfffffffffffffdff */
-13) task_th-92942    } /* kretprobe_rethook_handler */
-13) task_th-92942    io_worker_release();
-13) task_th-92942    queue_work_on() {
-13) task_th-92942      clear_pending_if_disabled();
-13) task_th-92942      __queue_work() {
-13) task_th-92942      } /* __queue_work */
-13) task_th-92942    } /* queue_work_on */
-13) task_th-92942  } /* create_worker_cont */
-
-The pattern repeats another couple times until we blow through the retry
-counter, at which point we give up. All outstanding work is canceled,
-and the io_uring command which triggered all this is failed with
-ECANCELED:
-
-13) task_th-92942  io_acct_cancel_pending_work() {
+```
 ...
-13) task_th-92942  /* io_uring_complete: ring 000000007325c9ae, req 0000000080c96d8e, user_data 0x0, result -125, cflags 0x0 extra1 0 extra2 0  */
+nvme 0000:04:00.0: platform quirk: setting simple suspend
+nvme nvme0: pci function 0000:04:00.0
+nvme 0000:05:00.0: platform quirk: setting simple suspend
+nvme nvme1: pci function 0000:05:00.0
+nvme nvme0: missing or invalid SUBNQN field.
+nvme nvme1: missing or invalid SUBNQN field.
+nvme nvme0: allocated 64 MiB host memory buffer.
+nvme nvme1: allocated 64 MiB host memory buffer.
+nvme nvme0: 8/0/0 default/read/poll queues
+nvme nvme1: 8/0/0 default/read/poll queues
+nvme nvme1: globally duplicate IDs for nsid 1
+nvme nvme1: VID:DID 1dbe:5216 model:Acer SSD FA100 256GB firmware:1.Z.J.2X
+nvme0n1: p1 p2
+...
+```
 
-Finally, the task gets around to processing its outstanding signal 26,
-but it's too late.
-
-13) task_th-92942  /* signal_deliver: sig=26 errno=0 code=-2 sa_handler=59566a0 sa_flags=14000000 */
-
-Try to address this issue by adding a small scaling delay when retrying
-worker creation. This should give the forking thread time to handle its
-signal in the above case. This isn't a particularly satisfying solution,
-as sufficiently paradoxical scheduling would still have us hitting the
-same issue, and I'm open to suggestions for something better. But this
-is likely to prevent this (already rare) issue from hitting in practice.
-
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250208-wq_retry-v2-1-4f6f5041d303@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christopher Lentocha <christopherericlentocha@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index a38f36b680604..a2d577b099308 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -64,7 +64,7 @@ struct io_worker {
- 
- 	union {
- 		struct rcu_head rcu;
--		struct work_struct work;
-+		struct delayed_work work;
- 	};
- };
- 
-@@ -770,6 +770,18 @@ static inline bool io_should_retry_thread(struct io_worker *worker, long err)
- 	}
- }
- 
-+static void queue_create_worker_retry(struct io_worker *worker)
-+{
-+	/*
-+	 * We only bother retrying because there's a chance that the
-+	 * failure to create a worker is due to some temporary condition
-+	 * in the forking task (e.g. outstanding signal); give the task
-+	 * some time to clear that condition.
-+	 */
-+	schedule_delayed_work(&worker->work,
-+			      msecs_to_jiffies(worker->init_retries * 5));
-+}
-+
- static void create_worker_cont(struct callback_head *cb)
- {
- 	struct io_worker *worker;
-@@ -809,12 +821,13 @@ static void create_worker_cont(struct callback_head *cb)
- 
- 	/* re-create attempts grab a new worker ref, drop the existing one */
- 	io_worker_release(worker);
--	schedule_work(&worker->work);
-+	queue_create_worker_retry(worker);
- }
- 
- static void io_workqueue_create(struct work_struct *work)
- {
--	struct io_worker *worker = container_of(work, struct io_worker, work);
-+	struct io_worker *worker = container_of(work, struct io_worker,
-+						work.work);
- 	struct io_wq_acct *acct = io_wq_get_acct(worker);
- 
- 	if (!io_queue_worker_create(worker, acct, create_worker_cont))
-@@ -855,8 +868,8 @@ static bool create_io_worker(struct io_wq *wq, int index)
- 		kfree(worker);
- 		goto fail;
- 	} else {
--		INIT_WORK(&worker->work, io_workqueue_create);
--		schedule_work(&worker->work);
-+		INIT_DELAYED_WORK(&worker->work, io_workqueue_create);
-+		queue_create_worker_retry(worker);
- 	}
- 
- 	return true;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 99c2983dbe6c8..d2eeba15c73b3 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3715,6 +3715,8 @@ static const struct pci_device_id nvme_id_table[] = {
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1cc1, 0x5350),   /* ADATA XPG GAMMIX S50 */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x1dbe, 0x5216),   /* Acer/INNOGRIT FA100/5216 NVMe SSD */
++		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1dbe, 0x5236),   /* ADATA XPG GAMMIX S70 */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1e49, 0x0021),   /* ZHITAI TiPro5000 NVMe SSD */
 -- 
 2.39.5
 
