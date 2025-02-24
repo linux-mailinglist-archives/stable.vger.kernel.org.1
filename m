@@ -1,113 +1,124 @@
-Return-Path: <stable+bounces-119409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EFAA42CB4
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 20:26:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906A6A42CE2
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 20:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 737EC1896278
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 19:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84C81177A31
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 19:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBB21FECB5;
-	Mon, 24 Feb 2025 19:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F212054FA;
+	Mon, 24 Feb 2025 19:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C6XYyqfm"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ELpyTyVR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7781FDA79
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 19:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C798200138;
+	Mon, 24 Feb 2025 19:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740425146; cv=none; b=Iaw4xmyNEFVRp4iFf/J50/PSWIW9Y7/MBmLelLmRRqN7Hi03yJiEZ8Lgl2ZBUJfvdkP8Igj4m1bGnRNTli6sOY89T5ooIJzty200DadG7QI/sd9EULVwXO6HF+3MO+B7MIQBvII1n9IZXzVoDRpR3pwkxDTdgVlN6zPqqm+1LM4=
+	t=1740426095; cv=none; b=LAvYWZICHALdBMOGJks6oy3HupBsqwg6ZFFMmbMpFvAscXwlN2jMjlyVpAAV+Zjn9CDYUImyisSGKEGGVi9tNoNPkraXHM+wjMGx5DW9JT6KeqjA8e8nKGVdn6QYD0ETAhNn9eYPDZ5AOcQwdgl8XffrY5c06Zr/YphPa2AHoLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740425146; c=relaxed/simple;
-	bh=svW1exXQ03oPlgdg3UIMqaCxaaP9KNn31iqC5fizrmM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DujGU/cKourWeH9fhQqbZirVzS7u651OVUAQhF3cMGwUQzBpX8Dft0vZOauBi76CrMv4BXUqV2UeqH4s4gaHJmJ++E+BZcrzvk5Zf1jctKV3PtN6D+BcO5Uw4HGPVRy+cszhciaiQZgdBciyU7ocUuedGeQGMxXhyw0TC25NzYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C6XYyqfm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740425142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=raZeTMMykYsj1E6LPySnAyAC4pYT6HdMrvMqEuLWarA=;
-	b=C6XYyqfmvzS39fLetpq1YTDiavMeiu2bkX8AdyCiINUBIyhvpMYIHhz2PDkmY1Pu/0EJ2L
-	mopYlcLMrvl6MHfyMhVeZnqMHCqGLdPKYhSbjTeLhWGLxj7NcsOROQh16w+ThU8HvFzofl
-	D1ea89zLxpPEdDahLWIipr52wLUUGC8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-_a3eYmzEOaGuNnn4O_35hw-1; Mon,
- 24 Feb 2025 14:25:38 -0500
-X-MC-Unique: _a3eYmzEOaGuNnn4O_35hw-1
-X-Mimecast-MFC-AGG-ID: _a3eYmzEOaGuNnn4O_35hw_1740425137
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3DD9F18009A5;
-	Mon, 24 Feb 2025 19:25:34 +0000 (UTC)
-Received: from fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com (fs-i40c-03.mgmt.fast.eng.rdu2.dc.redhat.com [10.6.24.150])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 376891955BD4;
-	Mon, 24 Feb 2025 19:25:32 +0000 (UTC)
-From: Alexander Aring <aahringo@redhat.com>
-To: teigland@redhat.com
-Cc: stable@vger.kernel.org,
-	msmith626@gmail.com,
-	jakobkoschel@gmail.com,
-	gfs2@lists.linux.dev,
-	aahringo@redhat.com
-Subject: [PATCH] dlm: fix lkb timeout scanning lookup
-Date: Mon, 24 Feb 2025 14:25:28 -0500
-Message-ID: <20250224192528.411319-1-aahringo@redhat.com>
+	s=arc-20240116; t=1740426095; c=relaxed/simple;
+	bh=pIlWuwhv32Fy8JMLlSg+tD+gTMaQUC3yphF4Z1NQYtA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DTCrC2POp98Bzt+ylqdjfzL4gtsybEuNHCbKqMW3gu+UpV3vhyIeO0La8UTo+CKNaHaYj2PrsntHGphNrJamVwbl5YgjGpna4QKmyypJL3a1HjP5LtupAYeyGvjILmJLB2fq9pYghsrI+ZBmmwJ2ONda1zF5T5tkGDdr/T2vKAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ELpyTyVR; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-439946a49e1so30191255e9.0;
+        Mon, 24 Feb 2025 11:41:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1740426092; x=1741030892; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B+zMpSCX50TzWUIveAEPWDT1S6dupXFUyCvXOBadv3M=;
+        b=ELpyTyVRwzkwvsp08HkUFAVELXyoQ4yH2MtqDJFbQUVnr+bEO4jjA5WCgG0AzOGk2H
+         L9I9h5HDr7gp54m0kO1Zsl+sH13VbX/3Gx0ivDcg7vTCQ2CDnecLZYsbmuWBF445LQK0
+         sbgrxWcQYUGiDqCeC/wNEkCVvI3IGgsGImF95j8I4kMaYKgg7pmcwhwcu0m7ZZ1en4He
+         v1cR4g0G3IzyR7r/ZvVL9BTKE95BHlDkPq4/WhSnGmS/+WLgDfiqo+uIjk9aUNrZSQNd
+         VUtpTA147nc77oiO7gQ/UIgbdSYFv8rCsybYzI2ty/DfLJnyCgKKPBtdqg2Bt6awo5qu
+         XSTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740426092; x=1741030892;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B+zMpSCX50TzWUIveAEPWDT1S6dupXFUyCvXOBadv3M=;
+        b=EdF4l6TFly0LnaFoLYIvuzNU5+wPHOojqTwX/ZmLWQKh3fnfWQNd26FCHEWlRm4HY5
+         fyoK9MRH2c3e6JQwuU7YGo6W5+VPMlWFYDXzvVbt6e/+ge7vQC4vmdUUrwXJiZqzzfXI
+         Gmi+RqKJo2xngX29ZL1f1TE40ou5X1SmWocOlPrdrJN3dHUoxwlX6NT2dpxtRenROeYT
+         M8owBBwSDbsMATqlqvZX2nEm4VjpeoevLnYFJcw91WSfQN6nk6EFZxkzQVu2pd2IuEFs
+         Z7uHxCfgn8d4rkgKNijzH9fAgUMJ3mHpmdSKuSf0rTVFh9952bWyaEFwM3jvqQH7HqAn
+         LBsg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhS6AHyeUTd8thXPrKEvU/K7Y28dIiyL4gERKSaS+DY5XtNCe/RwfbUiGnzapBRQ+tML+1x+vF@vger.kernel.org, AJvYcCWy0W5vQnURaHCpB0CdYyl4qeygqdSBZA6+Ar0d8XdstwnK9N8V8NOkuWo+eCzK4VTBfiHJlu94lAT/SX0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL8lNuj9FL9tBNIG+WlWu+HNV0l3m/GXm1QeLRRezZW8l6bvHI
+	yZ1+aLS07vz/JJEi12G4QD/4PGdXRRRPcXrtT19TbjGX22cpCcg=
+X-Gm-Gg: ASbGncvwik4aKMestZf8NzJLWzGL3RegiRijEn4Ys89Ekys9fWswtwJhXa9PoD6Smct
+	RsaZBy3QcZfarmWblE0DO+qf4NckQRmyYx5XFfIWBDzU8E5OGyqG9b5iwGAIt3hE2DcdobYoNbO
+	H+Uz925xuuAFmt/dLHU1MG0Tmj0Zg5IugLB/PkyF8/BCVwIrLyhpi6lDK5iYgmCOQd/Cm+eUsn5
+	51tktVydigG8kqxrMsKiN18X3jKEAta26s7YYceZmHcVZ8IVgqu3CZyOc+kua17lmAj7BAqeIVI
+	IRjxAsFYgnlTBm+SBjnxiZGdLDntUKeLYW2TyQwpTPgsZt2bWTOcLbJyrf/EP5n4az9t7ATE7fV
+	fumc=
+X-Google-Smtp-Source: AGHT+IE53N4mkXuJ7fLpoJ5n0IdUhAPGRtSiEGaxYfcj5xCF7dklfjhVyZ7U1mE301X83KY4BJJ6Sg==
+X-Received: by 2002:a05:600c:1906:b0:439:8a62:db42 with SMTP id 5b1f17b1804b1-439ae1e62fbmr103998865e9.8.1740426090451;
+        Mon, 24 Feb 2025 11:41:30 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b4180.dip0.t-ipconnect.de. [91.43.65.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab1546fadsm1083775e9.18.2025.02.24.11.41.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 11:41:29 -0800 (PST)
+Message-ID: <5ab54053-bd9f-4481-aa7e-476dac292a30@googlemail.com>
+Date: Mon, 24 Feb 2025 20:41:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/140] 6.6.80-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250224142602.998423469@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-If a lkb is timed out when dlm_scan_timeout() kicks in and removes a
-timed out lkb from ls->ls_timeout list the next iteration can end in
-timeout the same lkb again that shouldn't happen. Since commit dc1acd5c9469
-("dlm: replace usage of found with dedicated list iterator variable")
-we don't set the lkb variable before the inner lookup loop to NULL. The
-outer loop will not stop and checks if there was a successful lookup with
-the lkb pointer of the last iteration that wasn't set to NULL. To stop this
-behavior we use the old condition "!do_cancel && !do_warn" which signals if
-there was a successful lookup and the lkb variable should be set with the
-lkb that was looked up to be timed out. If the condition is false there is
-no timed out lkb in ls->ls_timeout and the outer loop stops.
+Am 24.02.2025 um 15:33 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.80 release.
+> There are 140 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Cc: stable@vger.kernel.org
-Reported-by: Marc Smith <msmith626@gmail.com>
-Fixes: dc1acd5c9469 ("dlm: replace usage of found with dedicated list iterator variable")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
----
- fs/dlm/lock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 226822f49d30..1ff842be5891 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -1919,7 +1919,7 @@ void dlm_scan_timeout(struct dlm_ls *ls)
- 		}
- 		mutex_unlock(&ls->ls_timeout_mutex);
- 
--		if (!lkb)
-+		if (!do_cancel && !do_warn)
- 			break;
- 
- 		r = lkb->lkb_resource;
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.43.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
