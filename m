@@ -1,132 +1,83 @@
-Return-Path: <stable+bounces-118760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D617A41B10
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:31:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF786A41B7F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CD897A6622
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:29:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 396113B2CFE
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E652505B8;
-	Mon, 24 Feb 2025 10:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HW3n0tot"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CB825744A;
+	Mon, 24 Feb 2025 10:45:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out198-187.us.a.mail.aliyun.com (out198-187.us.a.mail.aliyun.com [47.90.198.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3552505B1
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 10:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576B4256C96;
+	Mon, 24 Feb 2025 10:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740392959; cv=none; b=ZF/+/DJo6gjMN5Ikh9lB+h0dtqtpFkbzKdeDxu9hiNKUqLlAdSg44FCQNsFDY+oCK/i5SNIf8f41IMSjTj9mFYweDoJo3XEI5Ux3meC95mClnbZegsRkTtltdhdIn8usTo3k9c9SqXKYsWjDZhC1ihrs3cbsIu8lCHa+38ju6GQ=
+	t=1740393915; cv=none; b=ZbCgfAFZNsTZyT/7IKbn+vTtEuJSXPdFTRSyGS3iFwYH2YDzNaaDABV7NOB1+2fJREGNSp5tSbYxSEGZxbfwdraVrRuZjkxZt20bspr+IQc0vBPnrW0cPmkLI6dG9tfgsZ3YoNpiY0WkeLR5e68HYenO7ZAYueUE7hXARnVzmPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740392959; c=relaxed/simple;
-	bh=0dw3tO0HsGLBKLEYo7b4Nxnw/zZGZtH3sw/XGhbvOZ4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MPArCatvyxEIg/XPA3d3AJFtxrxkiA++5KuvfM3AY62gxbVc5hxlrUlGXX5Zm1mbEfcKwmik8oFs7A2XhIUbeIuKhqrDrQpnmQTrLzMRB56W+NteyTAczQ87WMPipbZb3e7UAbE9mUlvOz3rmeT6vrY75VFiwGx6Kzp5uk70ecU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HW3n0tot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2196C4CED6;
-	Mon, 24 Feb 2025 10:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740392959;
-	bh=0dw3tO0HsGLBKLEYo7b4Nxnw/zZGZtH3sw/XGhbvOZ4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=HW3n0totE3S4Q+QqGAaS4Qc830/K+7wEsSt/rvL3UdTo/QZpUDBg/i8vrkbphbPLv
-	 EDRhdPZ4Vr4Q7pWG2SR5pbI+1ZWiosAviCq0Ip+ktpakwRrL5LSWKg4/bxUg1OFtkx
-	 dmd04fENo1/2uG6SZRuj14iyA4AXYox1Us6BXXvI=
-Subject: FAILED: patch "[PATCH] smb: client: fix chmod(2) regression with ATTR_READONLY" failed to apply to 6.6-stable tree
-To: pc@manguebit.com,horst.reiterer@fabasoft.com,stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Feb 2025 11:29:08 +0100
-Message-ID: <2025022408-skincare-aide-8932@gregkh>
+	s=arc-20240116; t=1740393915; c=relaxed/simple;
+	bh=OrRJDLSP8v7rCTbPUp4h3jGvBCAlXKK/YL2Biem0oWw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:Message-Id:
+	 MIME-Version:Content-Type; b=V2MyRU9bBETgSoE85UeBvcoiiIPGm3TBKzKUHdDJ4RoMi1D8pZF4MZvgrLCNBewqJmPtZ5VSkj3bOrDfYqgetIoo8fVGUBiYD8iJQ3VqeOYBjY67QYSACRZ8dP1XRj+OlWkBlp6mdxqHW+QelqNAYs4tiEZws0H0ecmcuF0+ta8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com; spf=pass smtp.mailfrom=e16-tech.com; arc=none smtp.client-ip=47.90.198.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e16-tech.com
+Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.bbPuEMW_1740392958 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 24 Feb 2025 18:29:18 +0800
+Date: Mon, 24 Feb 2025 18:29:19 +0800
+From: Wang Yugui <wangyugui@e16-tech.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Tomas Glozar <tglozar@redhat.com>
+Subject: Re: Linux 6.6.78
+Cc: linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org,
+ torvalds@linux-foundation.org,
+ stable@vger.kernel.org,
+ lwn@lwn.net,
+ jslaby@suse.cz
+In-Reply-To: <2025021711-elephant-decathlon-9b66@gregkh>
+References: <2025021711-elephant-decathlon-9b66@gregkh>
+Message-Id: <20250224182918.C75A.409509F4@e16-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver. 2.81.08 [en]
 
+Hi
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> I'm announcing the release of the 6.6.78 kernel.
+> 
+> All users of the 6.6 kernel series must upgrade.
+> 
+> The updated 6.6.y git tree can be found at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.6.y
+> and can be browsed at the normal kernel.org git web browser:
+> 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+> 
 
-To reproduce the conflict and resubmit, you may use the following commands:
+please revert these 2 patches.
+because the struct member kernel_workload is yet not defined.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 654292a0b264e9b8c51b98394146218a21612aa1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025022408-skincare-aide-8932@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+> Tomas Glozar (6):
+>       rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
+>       rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads
 
-Possible dependencies:
+Best Regards
+Wang Yugui (wangyugui@e16-tech.com)
+2025/02/24
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 654292a0b264e9b8c51b98394146218a21612aa1 Mon Sep 17 00:00:00 2001
-From: Paulo Alcantara <pc@manguebit.com>
-Date: Sun, 16 Feb 2025 18:02:47 -0300
-Subject: [PATCH] smb: client: fix chmod(2) regression with ATTR_READONLY
-
-When the user sets a file or directory as read-only (e.g. ~S_IWUGO),
-the client will set the ATTR_READONLY attribute by sending an
-SMB2_SET_INFO request to the server in cifs_setattr_{,nounix}(), but
-cifsInodeInfo::cifsAttrs will be left unchanged as the client will
-only update the new file attributes in the next call to
-{smb311_posix,cifs}_get_inode_info() with the new metadata filled in
-@data parameter.
-
-Commit a18280e7fdea ("smb: cilent: set reparse mount points as
-automounts") mistakenly removed the @data NULL check when calling
-is_inode_cache_good(), which broke the above case as the new
-ATTR_READONLY attribute would end up not being updated on files with a
-read lease.
-
-Fix this by updating the inode whenever we have cached metadata in
-@data parameter.
-
-Reported-by: Horst Reiterer <horst.reiterer@fabasoft.com>
-Closes: https://lore.kernel.org/r/85a16504e09147a195ac0aac1c801280@fabasoft.com
-Fixes: a18280e7fdea ("smb: cilent: set reparse mount points as automounts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 9cc31cf6ebd0..3261190e6f90 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1408,7 +1408,7 @@ int cifs_get_inode_info(struct inode **inode,
- 	struct cifs_fattr fattr = {};
- 	int rc;
- 
--	if (is_inode_cache_good(*inode)) {
-+	if (!data && is_inode_cache_good(*inode)) {
- 		cifs_dbg(FYI, "No need to revalidate cached inode sizes\n");
- 		return 0;
- 	}
-@@ -1507,7 +1507,7 @@ int smb311_posix_get_inode_info(struct inode **inode,
- 	struct cifs_fattr fattr = {};
- 	int rc;
- 
--	if (is_inode_cache_good(*inode)) {
-+	if (!data && is_inode_cache_good(*inode)) {
- 		cifs_dbg(FYI, "No need to revalidate cached inode sizes\n");
- 		return 0;
- 	}
 
 
