@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-119139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71319A4248F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:58:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30462A4235C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05EFA176087
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2471897DBD
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BBD24E4B7;
-	Mon, 24 Feb 2025 14:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B54024EF6E;
+	Mon, 24 Feb 2025 14:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpwKnaf6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPVQvTsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20EB24BBF3;
-	Mon, 24 Feb 2025 14:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FE424EF64;
+	Mon, 24 Feb 2025 14:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408450; cv=none; b=Zy0gDJ7ONklDKeFeJ8QNhzNsxaWT21ob0r/xCT2UgoboLyVM6OynF9qWr7qIPSa6wYtLUMI5expEfEFQcvcyyupEcdqdigaQ+1vo5T/YZ8DSM0xW/jqIwoj1LfbBJXNQlSu3NsStIMAeRLVJI3/smjG9ZVmQd+JQHev73SkUtOA=
+	t=1740407820; cv=none; b=aWs9OX0mBRwwS0D+FPHRhQWIHxCwLfGHOUJObHouc2VwptiJ+Wz3PPSacEe7Ff8azrL95MRvZ2NtB872Ox3lLK+yFKeI+iu3rJh+yuoHe1CwgmgP5pstTtHBW3j0Q2wCD7lvygonVg1oRXljQemPz/NNBRr88mjLy6fyb/YYDa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408450; c=relaxed/simple;
-	bh=0eKauHV07iX7OPd3EG2vg6PWQCPYFTF4FJ9ony823MU=;
+	s=arc-20240116; t=1740407820; c=relaxed/simple;
+	bh=9HRe/AFoY3x7BLm3xrute9XOdoAjHb7TtYfJqKPnBF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RyYqTVjpcHE+jeA8rqe7tKjURQ822hCD/2B5sAcrmGGWy2ifGCV3RTHp3n5duXyqN1F4fBWPu9nHWPXRiBmuTUa37uLrLSRpHiWZG7SV0VL9kYWbtAz5t2WRn/QJljvFjO3dOzTrUC4s9S6fCjbsa3kOm+mfiW7wbr3LVnzbCpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpwKnaf6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44878C4CEE9;
-	Mon, 24 Feb 2025 14:47:29 +0000 (UTC)
+	 MIME-Version; b=f8DZ0fVdQZP8OZXIAPiAQSMTwUvgMtmnhED1EPEJOnvJvNxAjKgsZfcyoF64+P+2Esnl2z7nU1OBnqZRX1c4i/MdtS7cO5rk+zKB6CLUcch9bLxij4PLR7iHWhc1B8UI5Of6abxAS+qNoJxZX3gzpKuWOeQ2YC/7O58JNOCKj8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPVQvTsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED7EC4CED6;
+	Mon, 24 Feb 2025 14:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408449;
-	bh=0eKauHV07iX7OPd3EG2vg6PWQCPYFTF4FJ9ony823MU=;
+	s=korg; t=1740407819;
+	bh=9HRe/AFoY3x7BLm3xrute9XOdoAjHb7TtYfJqKPnBF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpwKnaf61NJhp1O7HhQjhUYy1oXIwYumQxL+qGjHpaUo/1gUOJygMUTBZXfJh1p2B
-	 e/Jh37aTJiq1M4GfswqCL2k9UknJ4qbFh60D75zRSjmkCYrOeeLA+/gTjioUnotJ4t
-	 nvvlsWYTCpJl4Dk/ZrLvPb4G8iLEva4LdlA/6+z8=
+	b=YPVQvTsYbaOZNx1F9j1Pwu7M2vuJ/mkBnbXjBRjOBnsWPnbb/SsVinMeHxd6gD2M6
+	 WYeG5oucqllyKw85vC93EWVLX1vJyVPuKhWZQAwMjR8tJXAq6wyzfcL2P/Y9xETW1N
+	 epulVuRMa7JfYwtkEvrsjRAdFdM+TO7o9TEn8INk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Leung <martin.leung@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/154] drm/amd/display: update dcn351 used clock offset
+	xfs-stable@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 019/140] xfs: update the file system geometry after recoverying superblock buffers
 Date: Mon, 24 Feb 2025 15:33:38 +0100
-Message-ID: <20250224142607.832465070@linuxfoundation.org>
+Message-ID: <20250224142603.759712204@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,510 +65,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit a1fc2837f4960e84e9375e12292584ad2ae472da ]
+commit 6a18765b54e2e52aebcdb84c3b4f4d1f7cb2c0ca upstream.
 
-[why]
-hw register offset delta
+Primary superblock buffers that change the file system geometry after a
+growfs operation can affect the operation of later CIL checkpoints that
+make use of the newly added space and allocation groups.
 
-Reviewed-by: Martin Leung <martin.leung@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: f88192d2335b ("drm/amd/display: Correct register address in dcn35")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Apply the changes to the in-memory structures as part of recovery pass 2,
+to ensure recovery works fine for such cases.
+
+In the future we should apply the logic to other updates such as features
+bits as well.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/clk_mgr/Makefile   |   2 +-
- .../gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c  |   5 +-
- .../display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c | 140 ++++++++++++++++++
- .../display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 132 +++++++++++++----
- .../display/dc/clk_mgr/dcn35/dcn35_clk_mgr.h  |   4 +
- .../amd/display/dc/inc/hw/clk_mgr_internal.h  |  59 ++++++++
- 6 files changed, 308 insertions(+), 34 deletions(-)
- create mode 100644 drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c
+ fs/xfs/xfs_buf_item_recover.c |   52 ++++++++++++++++++++++++++++++++++++++++++
+ fs/xfs/xfs_log_recover.c      |    8 ------
+ 2 files changed, 52 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/Makefile b/drivers/gpu/drm/amd/display/dc/clk_mgr/Makefile
-index ab1132bc896a3..d9955c5d2e5ed 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/Makefile
-@@ -174,7 +174,7 @@ AMD_DISPLAY_FILES += $(AMD_DAL_CLK_MGR_DCN32)
- ###############################################################################
- # DCN35
- ###############################################################################
--CLK_MGR_DCN35 = dcn35_smu.o dcn35_clk_mgr.o
-+CLK_MGR_DCN35 = dcn35_smu.o dcn351_clk_mgr.o dcn35_clk_mgr.o
+--- a/fs/xfs/xfs_buf_item_recover.c
++++ b/fs/xfs/xfs_buf_item_recover.c
+@@ -22,6 +22,9 @@
+ #include "xfs_inode.h"
+ #include "xfs_dir2.h"
+ #include "xfs_quota.h"
++#include "xfs_alloc.h"
++#include "xfs_ag.h"
++#include "xfs_sb.h"
  
- AMD_DAL_CLK_MGR_DCN35 = $(addprefix $(AMDDALPATH)/dc/clk_mgr/dcn35/,$(CLK_MGR_DCN35))
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-index 0e243f4344d05..4c3e58c730b11 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-@@ -355,8 +355,11 @@ struct clk_mgr *dc_clk_mgr_create(struct dc_context *ctx, struct pp_smu_funcs *p
- 			BREAK_TO_DEBUGGER();
- 			return NULL;
- 		}
-+		if (ctx->dce_version == DCN_VERSION_3_51)
-+			dcn351_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
-+		else
-+			dcn35_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
- 
--		dcn35_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
- 		return &clk_mgr->base.base;
- 	}
- 	break;
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c
-new file mode 100644
-index 0000000000000..6a6ae618650b6
---- /dev/null
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c
-@@ -0,0 +1,140 @@
-+/*
-+ * Copyright 2024 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ * Authors: AMD
-+ *
-+ */
-+
-+#include "core_types.h"
-+#include "dcn35_clk_mgr.h"
-+
-+#define DCN_BASE__INST0_SEG1 0x000000C0
-+#define mmCLK1_CLK_PLL_REQ 0x16E37
-+
-+#define mmCLK1_CLK0_DFS_CNTL 0x16E69
-+#define mmCLK1_CLK1_DFS_CNTL 0x16E6C
-+#define mmCLK1_CLK2_DFS_CNTL 0x16E6F
-+#define mmCLK1_CLK3_DFS_CNTL 0x16E72
-+#define mmCLK1_CLK4_DFS_CNTL 0x16E75
-+#define mmCLK1_CLK5_DFS_CNTL 0x16E78
-+
-+#define mmCLK1_CLK0_CURRENT_CNT 0x16EFC
-+#define mmCLK1_CLK1_CURRENT_CNT 0x16EFD
-+#define mmCLK1_CLK2_CURRENT_CNT 0x16EFE
-+#define mmCLK1_CLK3_CURRENT_CNT 0x16EFF
-+#define mmCLK1_CLK4_CURRENT_CNT 0x16F00
-+#define mmCLK1_CLK5_CURRENT_CNT 0x16F01
-+
-+#define mmCLK1_CLK0_BYPASS_CNTL 0x16E8A
-+#define mmCLK1_CLK1_BYPASS_CNTL 0x16E93
-+#define mmCLK1_CLK2_BYPASS_CNTL 0x16E9C
-+#define mmCLK1_CLK3_BYPASS_CNTL 0x16EA5
-+#define mmCLK1_CLK4_BYPASS_CNTL 0x16EAE
-+#define mmCLK1_CLK5_BYPASS_CNTL 0x16EB7
-+
-+#define mmCLK1_CLK0_DS_CNTL 0x16E83
-+#define mmCLK1_CLK1_DS_CNTL 0x16E8C
-+#define mmCLK1_CLK2_DS_CNTL 0x16E95
-+#define mmCLK1_CLK3_DS_CNTL 0x16E9E
-+#define mmCLK1_CLK4_DS_CNTL 0x16EA7
-+#define mmCLK1_CLK5_DS_CNTL 0x16EB0
-+
-+#define mmCLK1_CLK0_ALLOW_DS 0x16E84
-+#define mmCLK1_CLK1_ALLOW_DS 0x16E8D
-+#define mmCLK1_CLK2_ALLOW_DS 0x16E96
-+#define mmCLK1_CLK3_ALLOW_DS 0x16E9F
-+#define mmCLK1_CLK4_ALLOW_DS 0x16EA8
-+#define mmCLK1_CLK5_ALLOW_DS 0x16EB1
-+
-+#define mmCLK5_spll_field_8 0x1B04B
-+#define mmDENTIST_DISPCLK_CNTL 0x0124
-+#define regDENTIST_DISPCLK_CNTL 0x0064
-+#define regDENTIST_DISPCLK_CNTL_BASE_IDX 1
-+
-+#define CLK1_CLK_PLL_REQ__FbMult_int__SHIFT 0x0
-+#define CLK1_CLK_PLL_REQ__PllSpineDiv__SHIFT 0xc
-+#define CLK1_CLK_PLL_REQ__FbMult_frac__SHIFT 0x10
-+#define CLK1_CLK_PLL_REQ__FbMult_int_MASK 0x000001FFL
-+#define CLK1_CLK_PLL_REQ__PllSpineDiv_MASK 0x0000F000L
-+#define CLK1_CLK_PLL_REQ__FbMult_frac_MASK 0xFFFF0000L
-+
-+#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL_MASK 0x00000007L
-+
-+// DENTIST_DISPCLK_CNTL
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_WDIVIDER__SHIFT 0x0
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_RDIVIDER__SHIFT 0x8
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_CHG_DONE__SHIFT 0x13
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_CHG_DONE__SHIFT 0x14
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_WDIVIDER__SHIFT 0x18
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_WDIVIDER_MASK 0x0000007FL
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_RDIVIDER_MASK 0x00007F00L
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_CHG_DONE_MASK 0x00080000L
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_CHG_DONE_MASK 0x00100000L
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_WDIVIDER_MASK 0x7F000000L
-+
-+#define CLK5_spll_field_8__spll_ssc_en_MASK 0x00002000L
-+
-+#define REG(reg) \
-+	(clk_mgr->regs->reg)
-+
-+#define BASE_INNER(seg) DCN_BASE__INST0_SEG ## seg
-+
-+#define BASE(seg) BASE_INNER(seg)
-+
-+#define SR(reg_name)\
-+		.reg_name = BASE(reg ## reg_name ## _BASE_IDX) +  \
-+					reg ## reg_name
-+
-+#define CLK_SR_DCN35(reg_name)\
-+	.reg_name = mm ## reg_name
-+
-+static const struct clk_mgr_registers clk_mgr_regs_dcn351 = {
-+	CLK_REG_LIST_DCN35()
-+};
-+
-+static const struct clk_mgr_shift clk_mgr_shift_dcn351 = {
-+	CLK_COMMON_MASK_SH_LIST_DCN32(__SHIFT)
-+};
-+
-+static const struct clk_mgr_mask clk_mgr_mask_dcn351 = {
-+	CLK_COMMON_MASK_SH_LIST_DCN32(_MASK)
-+};
-+
-+#define TO_CLK_MGR_DCN35(clk_mgr)\
-+	container_of(clk_mgr, struct clk_mgr_dcn35, base)
-+
-+
-+void dcn351_clk_mgr_construct(
-+		struct dc_context *ctx,
-+		struct clk_mgr_dcn35 *clk_mgr,
-+		struct pp_smu_funcs *pp_smu,
-+		struct dccg *dccg)
-+{
-+	/*register offset changed*/
-+	clk_mgr->base.regs = &clk_mgr_regs_dcn351;
-+	clk_mgr->base.clk_mgr_shift = &clk_mgr_shift_dcn351;
-+	clk_mgr->base.clk_mgr_mask = &clk_mgr_mask_dcn351;
-+
-+	dcn35_clk_mgr_construct(ctx,  clk_mgr, pp_smu, dccg);
-+
-+}
-+
-+
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index bbdc39ae57b9d..d8a4cdbb5495d 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -36,15 +36,11 @@
- #include "dcn20/dcn20_clk_mgr.h"
- 
- 
--
--
- #include "reg_helper.h"
- #include "core_types.h"
- #include "dcn35_smu.h"
- #include "dm_helpers.h"
- 
--/* TODO: remove this include once we ported over remaining clk mgr functions*/
--#include "dcn30/dcn30_clk_mgr.h"
- #include "dcn31/dcn31_clk_mgr.h"
- 
- #include "dc_dmub_srv.h"
-@@ -55,35 +51,102 @@
- #define DC_LOGGER \
- 	clk_mgr->base.base.ctx->logger
- 
-+#define DCN_BASE__INST0_SEG1 0x000000C0
-+#define mmCLK1_CLK_PLL_REQ 0x16E37
-+
-+#define mmCLK1_CLK0_DFS_CNTL 0x16E69
-+#define mmCLK1_CLK1_DFS_CNTL 0x16E6C
-+#define mmCLK1_CLK2_DFS_CNTL 0x16E6F
-+#define mmCLK1_CLK3_DFS_CNTL 0x16E72
-+#define mmCLK1_CLK4_DFS_CNTL 0x16E75
-+#define mmCLK1_CLK5_DFS_CNTL 0x16E78
-+
-+#define mmCLK1_CLK0_CURRENT_CNT 0x16EFB
-+#define mmCLK1_CLK1_CURRENT_CNT 0x16EFC
-+#define mmCLK1_CLK2_CURRENT_CNT 0x16EFD
-+#define mmCLK1_CLK3_CURRENT_CNT 0x16EFE
-+#define mmCLK1_CLK4_CURRENT_CNT 0x16EFF
-+#define mmCLK1_CLK5_CURRENT_CNT 0x16F00
-+
-+#define mmCLK1_CLK0_BYPASS_CNTL 0x16E8A
-+#define mmCLK1_CLK1_BYPASS_CNTL 0x16E93
-+#define mmCLK1_CLK2_BYPASS_CNTL 0x16E9C
-+#define mmCLK1_CLK3_BYPASS_CNTL 0x16EA5
-+#define mmCLK1_CLK4_BYPASS_CNTL 0x16EAE
-+#define mmCLK1_CLK5_BYPASS_CNTL 0x16EB7
-+
-+#define mmCLK1_CLK0_DS_CNTL 0x16E83
-+#define mmCLK1_CLK1_DS_CNTL 0x16E8C
-+#define mmCLK1_CLK2_DS_CNTL 0x16E95
-+#define mmCLK1_CLK3_DS_CNTL 0x16E9E
-+#define mmCLK1_CLK4_DS_CNTL 0x16EA7
-+#define mmCLK1_CLK5_DS_CNTL 0x16EB0
-+
-+#define mmCLK1_CLK0_ALLOW_DS 0x16E84
-+#define mmCLK1_CLK1_ALLOW_DS 0x16E8D
-+#define mmCLK1_CLK2_ALLOW_DS 0x16E96
-+#define mmCLK1_CLK3_ALLOW_DS 0x16E9F
-+#define mmCLK1_CLK4_ALLOW_DS 0x16EA8
-+#define mmCLK1_CLK5_ALLOW_DS 0x16EB1
-+
-+#define mmCLK5_spll_field_8 0x1B04B
-+#define mmDENTIST_DISPCLK_CNTL 0x0124
-+#define regDENTIST_DISPCLK_CNTL 0x0064
-+#define regDENTIST_DISPCLK_CNTL_BASE_IDX 1
-+
-+#define CLK1_CLK_PLL_REQ__FbMult_int__SHIFT 0x0
-+#define CLK1_CLK_PLL_REQ__PllSpineDiv__SHIFT 0xc
-+#define CLK1_CLK_PLL_REQ__FbMult_frac__SHIFT 0x10
-+#define CLK1_CLK_PLL_REQ__FbMult_int_MASK 0x000001FFL
-+#define CLK1_CLK_PLL_REQ__PllSpineDiv_MASK 0x0000F000L
-+#define CLK1_CLK_PLL_REQ__FbMult_frac_MASK 0xFFFF0000L
-+
-+#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL_MASK 0x00000007L
-+#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_DIV_MASK 0x000F0000L
-+// DENTIST_DISPCLK_CNTL
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_WDIVIDER__SHIFT 0x0
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_RDIVIDER__SHIFT 0x8
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_CHG_DONE__SHIFT 0x13
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_CHG_DONE__SHIFT 0x14
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_WDIVIDER__SHIFT 0x18
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_WDIVIDER_MASK 0x0000007FL
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_RDIVIDER_MASK 0x00007F00L
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DISPCLK_CHG_DONE_MASK 0x00080000L
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_CHG_DONE_MASK 0x00100000L
-+#define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_WDIVIDER_MASK 0x7F000000L
-+
-+#define CLK5_spll_field_8__spll_ssc_en_MASK 0x00002000L
-+
-+#define SMU_VER_THRESHOLD 0x5D4A00 //93.74.0
-+#undef FN
-+#define FN(reg_name, field_name) \
-+	clk_mgr->clk_mgr_shift->field_name, clk_mgr->clk_mgr_mask->field_name
- 
--#define regCLK1_CLK_PLL_REQ			0x0237
--#define regCLK1_CLK_PLL_REQ_BASE_IDX		0
-+#define REG(reg) \
-+	(clk_mgr->regs->reg)
- 
--#define CLK1_CLK_PLL_REQ__FbMult_int__SHIFT	0x0
--#define CLK1_CLK_PLL_REQ__PllSpineDiv__SHIFT	0xc
--#define CLK1_CLK_PLL_REQ__FbMult_frac__SHIFT	0x10
--#define CLK1_CLK_PLL_REQ__FbMult_int_MASK	0x000001FFL
--#define CLK1_CLK_PLL_REQ__PllSpineDiv_MASK	0x0000F000L
--#define CLK1_CLK_PLL_REQ__FbMult_frac_MASK	0xFFFF0000L
-+#define BASE_INNER(seg) DCN_BASE__INST0_SEG ## seg
- 
--#define regCLK1_CLK2_BYPASS_CNTL			0x029c
--#define regCLK1_CLK2_BYPASS_CNTL_BASE_IDX	0
-+#define BASE(seg) BASE_INNER(seg)
- 
--#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL__SHIFT	0x0
--#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_DIV__SHIFT	0x10
--#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL_MASK		0x00000007L
--#define CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_DIV_MASK		0x000F0000L
-+#define SR(reg_name)\
-+		.reg_name = BASE(reg ## reg_name ## _BASE_IDX) +  \
-+					reg ## reg_name
- 
--#define regCLK5_0_CLK5_spll_field_8				0x464b
--#define regCLK5_0_CLK5_spll_field_8_BASE_IDX	0
-+#define CLK_SR_DCN35(reg_name)\
-+	.reg_name = mm ## reg_name
- 
--#define CLK5_0_CLK5_spll_field_8__spll_ssc_en__SHIFT	0xd
--#define CLK5_0_CLK5_spll_field_8__spll_ssc_en_MASK		0x00002000L
-+static const struct clk_mgr_registers clk_mgr_regs_dcn35 = {
-+	CLK_REG_LIST_DCN35()
-+};
- 
--#define SMU_VER_THRESHOLD 0x5D4A00 //93.74.0
-+static const struct clk_mgr_shift clk_mgr_shift_dcn35 = {
-+	CLK_COMMON_MASK_SH_LIST_DCN32(__SHIFT)
-+};
- 
--#define REG(reg_name) \
--	(ctx->clk_reg_offsets[reg ## reg_name ## _BASE_IDX] + reg ## reg_name)
-+static const struct clk_mgr_mask clk_mgr_mask_dcn35 = {
-+	CLK_COMMON_MASK_SH_LIST_DCN32(_MASK)
-+};
- 
- #define TO_CLK_MGR_DCN35(clk_mgr)\
- 	container_of(clk_mgr, struct clk_mgr_dcn35, base)
-@@ -444,7 +507,6 @@ static int get_vco_frequency_from_reg(struct clk_mgr_internal *clk_mgr)
- 	struct fixed31_32 pll_req;
- 	unsigned int fbmult_frac_val = 0;
- 	unsigned int fbmult_int_val = 0;
--	struct dc_context *ctx = clk_mgr->base.ctx;
- 
- 	/*
- 	 * Register value of fbmult is in 8.16 format, we are converting to 314.32
-@@ -504,12 +566,12 @@ static void dcn35_dump_clk_registers(struct clk_state_registers_and_bypass *regs
- static bool dcn35_is_spll_ssc_enabled(struct clk_mgr *clk_mgr_base)
- {
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
--	struct dc_context *ctx = clk_mgr->base.ctx;
-+
- 	uint32_t ssc_enable;
- 
--	REG_GET(CLK5_0_CLK5_spll_field_8, spll_ssc_en, &ssc_enable);
-+	ssc_enable = REG_READ(CLK5_spll_field_8) & CLK5_spll_field_8__spll_ssc_en_MASK;
- 
--	return ssc_enable == 1;
-+	return ssc_enable != 0;
+ /*
+  * This is the number of entries in the l_buf_cancel_table used during
+@@ -685,6 +688,49 @@ xlog_recover_do_inode_buffer(
  }
  
- static void init_clk_states(struct clk_mgr *clk_mgr)
-@@ -634,10 +696,10 @@ static struct dcn35_ss_info_table ss_info_table = {
- 
- static void dcn35_read_ss_info_from_lut(struct clk_mgr_internal *clk_mgr)
- {
--	struct dc_context *ctx = clk_mgr->base.ctx;
--	uint32_t clock_source;
-+	uint32_t clock_source = 0;
+ /*
++ * Update the in-memory superblock and perag structures from the primary SB
++ * buffer.
++ *
++ * This is required because transactions running after growfs may require the
++ * updated values to be set in a previous fully commit transaction.
++ */
++static int
++xlog_recover_do_primary_sb_buffer(
++	struct xfs_mount		*mp,
++	struct xlog_recover_item	*item,
++	struct xfs_buf			*bp,
++	struct xfs_buf_log_format	*buf_f,
++	xfs_lsn_t			current_lsn)
++{
++	struct xfs_dsb			*dsb = bp->b_addr;
++	xfs_agnumber_t			orig_agcount = mp->m_sb.sb_agcount;
++	int				error;
 +
-+	clock_source = REG_READ(CLK1_CLK2_BYPASS_CNTL) & CLK1_CLK2_BYPASS_CNTL__CLK2_BYPASS_SEL_MASK;
- 
--	REG_GET(CLK1_CLK2_BYPASS_CNTL, CLK2_BYPASS_SEL, &clock_source);
- 	// If it's DFS mode, clock_source is 0.
- 	if (dcn35_is_spll_ssc_enabled(&clk_mgr->base) && (clock_source < ARRAY_SIZE(ss_info_table.ss_percentage))) {
- 		clk_mgr->dprefclk_ss_percentage = ss_info_table.ss_percentage[clock_source];
-@@ -1107,6 +1169,12 @@ void dcn35_clk_mgr_construct(
- 	clk_mgr->base.dprefclk_ss_divider = 1000;
- 	clk_mgr->base.ss_on_dprefclk = false;
- 	clk_mgr->base.dfs_ref_freq_khz = 48000;
-+	if (ctx->dce_version == DCN_VERSION_3_5) {
-+		clk_mgr->base.regs = &clk_mgr_regs_dcn35;
-+		clk_mgr->base.clk_mgr_shift = &clk_mgr_shift_dcn35;
-+		clk_mgr->base.clk_mgr_mask = &clk_mgr_mask_dcn35;
++	xlog_recover_do_reg_buffer(mp, item, bp, buf_f, current_lsn);
++
++	/*
++	 * Update the in-core super block from the freshly recovered on-disk one.
++	 */
++	xfs_sb_from_disk(&mp->m_sb, dsb);
++
++	/*
++	 * Initialize the new perags, and also update various block and inode
++	 * allocator setting based off the number of AGs or total blocks.
++	 * Because of the latter this also needs to happen if the agcount did
++	 * not change.
++	 */
++	error = xfs_initialize_perag(mp, orig_agcount,
++			mp->m_sb.sb_agcount, mp->m_sb.sb_dblocks,
++			&mp->m_maxagi);
++	if (error) {
++		xfs_warn(mp, "Failed recovery per-ag init: %d", error);
++		return error;
 +	}
++	mp->m_alloc_set_aside = xfs_alloc_set_aside(mp);
++	return 0;
++}
 +
++/*
+  * V5 filesystems know the age of the buffer on disk being recovered. We can
+  * have newer objects on disk than we are replaying, and so for these cases we
+  * don't want to replay the current change as that will make the buffer contents
+@@ -967,6 +1013,12 @@ xlog_recover_buf_commit_pass2(
+ 		dirty = xlog_recover_do_dquot_buffer(mp, log, item, bp, buf_f);
+ 		if (!dirty)
+ 			goto out_release;
++	} else if ((xfs_blft_from_flags(buf_f) & XFS_BLFT_SB_BUF) &&
++			xfs_buf_daddr(bp) == 0) {
++		error = xlog_recover_do_primary_sb_buffer(mp, item, bp, buf_f,
++				current_lsn);
++		if (error)
++			goto out_release;
+ 	} else {
+ 		xlog_recover_do_reg_buffer(mp, item, bp, buf_f, current_lsn);
+ 	}
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -3317,7 +3317,6 @@ xlog_do_recover(
+ 	struct xfs_mount	*mp = log->l_mp;
+ 	struct xfs_buf		*bp = mp->m_sb_bp;
+ 	struct xfs_sb		*sbp = &mp->m_sb;
+-	xfs_agnumber_t		orig_agcount = sbp->sb_agcount;
+ 	int			error;
  
- 	clk_mgr->smu_wm_set.wm_set = (struct dcn35_watermarks *)dm_helpers_allocate_gpu_mem(
- 				clk_mgr->base.base.ctx,
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.h b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.h
-index 1203dc605b12c..a12a9bf90806e 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.h
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.h
-@@ -60,4 +60,8 @@ void dcn35_clk_mgr_construct(struct dc_context *ctx,
+ 	trace_xfs_log_recover(log, head_blk, tail_blk);
+@@ -3366,13 +3365,6 @@ xlog_do_recover(
+ 	/* re-initialise in-core superblock and geometry structures */
+ 	mp->m_features |= xfs_sb_version_to_features(sbp);
+ 	xfs_reinit_percpu_counters(mp);
+-	error = xfs_initialize_perag(mp, orig_agcount, sbp->sb_agcount,
+-			sbp->sb_dblocks, &mp->m_maxagi);
+-	if (error) {
+-		xfs_warn(mp, "Failed post-recovery per-ag init: %d", error);
+-		return error;
+-	}
+-	mp->m_alloc_set_aside = xfs_alloc_set_aside(mp);
  
- void dcn35_clk_mgr_destroy(struct clk_mgr_internal *clk_mgr_int);
- 
-+void dcn351_clk_mgr_construct(struct dc_context *ctx,
-+		struct clk_mgr_dcn35 *clk_mgr,
-+		struct pp_smu_funcs *pp_smu,
-+		struct dccg *dccg);
- #endif //__DCN35_CLK_MGR_H__
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
-index c2dd061892f4d..7a1ca1e98059b 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
-@@ -166,6 +166,41 @@ enum dentist_divider_range {
-     CLK_SR_DCN32(CLK1_CLK4_CURRENT_CNT), \
-     CLK_SR_DCN32(CLK4_CLK0_CURRENT_CNT)
- 
-+#define CLK_REG_LIST_DCN35()	  \
-+	CLK_SR_DCN35(CLK1_CLK_PLL_REQ), \
-+	CLK_SR_DCN35(CLK1_CLK0_DFS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK1_DFS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK2_DFS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK3_DFS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK4_DFS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK5_DFS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK0_CURRENT_CNT), \
-+	CLK_SR_DCN35(CLK1_CLK1_CURRENT_CNT), \
-+	CLK_SR_DCN35(CLK1_CLK2_CURRENT_CNT), \
-+	CLK_SR_DCN35(CLK1_CLK3_CURRENT_CNT), \
-+	CLK_SR_DCN35(CLK1_CLK4_CURRENT_CNT), \
-+	CLK_SR_DCN35(CLK1_CLK5_CURRENT_CNT), \
-+	CLK_SR_DCN35(CLK1_CLK0_BYPASS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK1_BYPASS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK2_BYPASS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK3_BYPASS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK4_BYPASS_CNTL),\
-+	CLK_SR_DCN35(CLK1_CLK5_BYPASS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK0_DS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK1_DS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK2_DS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK3_DS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK4_DS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK5_DS_CNTL), \
-+	CLK_SR_DCN35(CLK1_CLK0_ALLOW_DS), \
-+	CLK_SR_DCN35(CLK1_CLK1_ALLOW_DS), \
-+	CLK_SR_DCN35(CLK1_CLK2_ALLOW_DS), \
-+	CLK_SR_DCN35(CLK1_CLK3_ALLOW_DS), \
-+	CLK_SR_DCN35(CLK1_CLK4_ALLOW_DS), \
-+	CLK_SR_DCN35(CLK1_CLK5_ALLOW_DS), \
-+	CLK_SR_DCN35(CLK5_spll_field_8), \
-+	SR(DENTIST_DISPCLK_CNTL), \
-+
- #define CLK_COMMON_MASK_SH_LIST_DCN32(mask_sh) \
- 	CLK_COMMON_MASK_SH_LIST_DCN20_BASE(mask_sh),\
- 	CLK_SF(CLK1_CLK_PLL_REQ, FbMult_int, mask_sh),\
-@@ -236,6 +271,7 @@ struct clk_mgr_registers {
- 	uint32_t CLK1_CLK2_DFS_CNTL;
- 	uint32_t CLK1_CLK3_DFS_CNTL;
- 	uint32_t CLK1_CLK4_DFS_CNTL;
-+	uint32_t CLK1_CLK5_DFS_CNTL;
- 	uint32_t CLK2_CLK2_DFS_CNTL;
- 
- 	uint32_t CLK1_CLK0_CURRENT_CNT;
-@@ -243,11 +279,34 @@ struct clk_mgr_registers {
-     uint32_t CLK1_CLK2_CURRENT_CNT;
-     uint32_t CLK1_CLK3_CURRENT_CNT;
-     uint32_t CLK1_CLK4_CURRENT_CNT;
-+	uint32_t CLK1_CLK5_CURRENT_CNT;
- 
- 	uint32_t CLK0_CLK0_DFS_CNTL;
- 	uint32_t CLK0_CLK1_DFS_CNTL;
- 	uint32_t CLK0_CLK3_DFS_CNTL;
- 	uint32_t CLK0_CLK4_DFS_CNTL;
-+	uint32_t CLK1_CLK0_BYPASS_CNTL;
-+	uint32_t CLK1_CLK1_BYPASS_CNTL;
-+	uint32_t CLK1_CLK2_BYPASS_CNTL;
-+	uint32_t CLK1_CLK3_BYPASS_CNTL;
-+	uint32_t CLK1_CLK4_BYPASS_CNTL;
-+	uint32_t CLK1_CLK5_BYPASS_CNTL;
-+
-+	uint32_t CLK1_CLK0_DS_CNTL;
-+	uint32_t CLK1_CLK1_DS_CNTL;
-+	uint32_t CLK1_CLK2_DS_CNTL;
-+	uint32_t CLK1_CLK3_DS_CNTL;
-+	uint32_t CLK1_CLK4_DS_CNTL;
-+	uint32_t CLK1_CLK5_DS_CNTL;
-+
-+	uint32_t CLK1_CLK0_ALLOW_DS;
-+	uint32_t CLK1_CLK1_ALLOW_DS;
-+	uint32_t CLK1_CLK2_ALLOW_DS;
-+	uint32_t CLK1_CLK3_ALLOW_DS;
-+	uint32_t CLK1_CLK4_ALLOW_DS;
-+	uint32_t CLK1_CLK5_ALLOW_DS;
-+	uint32_t CLK5_spll_field_8;
-+
- };
- 
- struct clk_mgr_shift {
--- 
-2.39.5
-
+ 	/* Normal transactions can now occur */
+ 	clear_bit(XLOG_ACTIVE_RECOVERY, &log->l_opstate);
 
 
 
