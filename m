@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-119221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEA3A42506
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855C6A424D3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CD7189EF31
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF3FA7AA174
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDAE2566EC;
-	Mon, 24 Feb 2025 14:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A631514CC;
+	Mon, 24 Feb 2025 14:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkOIhRZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbHYZoZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8AE165F16;
-	Mon, 24 Feb 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417E2571CA;
+	Mon, 24 Feb 2025 14:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408730; cv=none; b=QtVERB5zIYGXBomFr28H2K7R4lK2Gk0SvvUN4rrxrBhxImm3sl+40l23o4FKW9l6QVZnIpHy7MQRUGctWPXNttbZGM8d2mM+TT4Myly2TFN7tIN8IIb4uv53mTqVqiPeViHap2Tm3Et9lt8Cr2oCEXl731NAQJvlvWFfJejdgHw=
+	t=1740409161; cv=none; b=CAV2W40o9vyC3Z1dL0TPeyv0BlkkQ8NiQZHdxRZUP+Pn2XdpBNz8xA4PK3NXQWpfNzz1vHNgL929cdelDe+8BM+3jh2Xf+OLUf0HKHfNGN0WRd5p+YQ4rABXXJ0p7/l6oet9oNqNx/GrcpOQrzOK8baTMJW2rxEqscqlTMicOMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408730; c=relaxed/simple;
-	bh=l95zcIyWONg7qmYJyOmg05IdmFOojn3+Hrk1avmYINA=;
+	s=arc-20240116; t=1740409161; c=relaxed/simple;
+	bh=sJI9mIQPdX2TcJ60LNBwR8FoFRi0SqweWjitELoPujE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMdsyYdjBpOMzeMmSfO9z5Boq3nqz3EEziVQsDgGjbeEOYq0V2+Op4m6f4ZqchGaFwXSNgPj9iFrXHtDuuKSDhjI+UuCaVFmkssfeAXrgD01sRaWdUhzqVyJhdbtjpLy22of8JY+KbpWVqFeIKJJnePMRLuU6VScv+eoo40gBNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkOIhRZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27474C4CED6;
-	Mon, 24 Feb 2025 14:52:09 +0000 (UTC)
+	 MIME-Version; b=Mw2evkzBxoy3Nelz5oiQeo95yvTGhonOFz87Z1UU5W4bxEq3QMVRGWKknFhQg2UqPls9NCBkOrjV1xoap8bUWuGAamPnxjPD2MFAgxAOgueUGtKu/1MQ9XWcVUDfV8DhsjsdaWhL+xtCLpJ6osCGtJhUaZKzMMLDm6POdyexelA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbHYZoZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC8FC4CEE6;
+	Mon, 24 Feb 2025 14:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408730;
-	bh=l95zcIyWONg7qmYJyOmg05IdmFOojn3+Hrk1avmYINA=;
+	s=korg; t=1740409160;
+	bh=sJI9mIQPdX2TcJ60LNBwR8FoFRi0SqweWjitELoPujE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkOIhRZy5ZghMsYLm3iFSDnjV271zF38sfdF6vliW/LL0le19doav7k4WsLVFYz2h
-	 WsuZ2uXxvOB3ZqDf1Z6hd3AG03g6gwNhRR5nXVE7ZfVKrS47AKo8Bn3j+ZdTy6dMdh
-	 Mt52CGKQvysaWNMKN+tcTqgduzV3ZKwzMUyOxA2c=
+	b=dbHYZoZ6wrEQ36CH2cmx700JNt31HB7DWXhEmaKd0HWatDOSHwbqjlUUzoxNFnAIg
+	 5i3PXjo6PWSr037DfoK3I4Le17f1aBo5g+uwF5Bi5zykFyZFHcVo4paTDT4gaCA3BW
+	 +qY7nQdGd6bWDu/5azq5eSzJ20d1Bmdmotn+Jb0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 143/154] smb: client: Add check for next_buffer in receive_encrypted_standard()
-Date: Mon, 24 Feb 2025 15:35:42 +0100
-Message-ID: <20250224142612.649246054@linuxfoundation.org>
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 114/138] gve: set xdp redirect target only when it is available
+Date: Mon, 24 Feb 2025 15:35:44 +0100
+Message-ID: <20250224142608.958169629@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Joshua Washington <joshwash@google.com>
 
-commit 860ca5e50f73c2a1cef7eefc9d39d04e275417f7 upstream.
+commit 415cadd505464d9a11ff5e0f6e0329c127849da5 upstream.
 
-Add check for the return value of cifs_buf_get() and cifs_small_buf_get()
-in receive_encrypted_standard() to prevent null pointer dereference.
+Before this patch the NETDEV_XDP_ACT_NDO_XMIT XDP feature flag is set by
+default as part of driver initialization, and is never cleared. However,
+this flag differs from others in that it is used as an indicator for
+whether the driver is ready to perform the ndo_xdp_xmit operation as
+part of an XDP_REDIRECT. Kernel helpers
+xdp_features_(set|clear)_redirect_target exist to convey this meaning.
 
-Fixes: eec04ea11969 ("smb: client: fix OOB in receive_encrypted_standard()")
+This patch ensures that the netdev is only reported as a redirect target
+when XDP queues exist to forward traffic.
+
+Fixes: 39a7f4aa3e4a ("gve: Add XDP REDIRECT support for GQI-QPL format")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Jeroen de Borst <jeroendb@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Link: https://patch.msgid.link/20250214224417.1237818-1-joshwash@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/google/gve/gve.h      |   10 ++++++++++
+ drivers/net/ethernet/google/gve/gve_main.c |    6 +++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4991,6 +4991,10 @@ one_more:
- 			next_buffer = (char *)cifs_buf_get();
- 		else
- 			next_buffer = (char *)cifs_small_buf_get();
-+		if (!next_buffer) {
-+			cifs_server_dbg(VFS, "No memory for (large) SMB response\n");
-+			return -1;
-+		}
- 		memcpy(next_buffer, buf + next_cmd, pdu_length - next_cmd);
+--- a/drivers/net/ethernet/google/gve/gve.h
++++ b/drivers/net/ethernet/google/gve/gve.h
+@@ -1116,6 +1116,16 @@ static inline u32 gve_xdp_tx_start_queue
+ 	return gve_xdp_tx_queue_id(priv, 0);
+ }
+ 
++static inline bool gve_supports_xdp_xmit(struct gve_priv *priv)
++{
++	switch (priv->queue_format) {
++	case GVE_GQI_QPL_FORMAT:
++		return true;
++	default:
++		return false;
++	}
++}
++
+ /* gqi napi handler defined in gve_main.c */
+ int gve_napi_poll(struct napi_struct *napi, int budget);
+ 
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1903,6 +1903,8 @@ static void gve_turndown(struct gve_priv
+ 	/* Stop tx queues */
+ 	netif_tx_disable(priv->dev);
+ 
++	xdp_features_clear_redirect_target(priv->dev);
++
+ 	gve_clear_napi_enabled(priv);
+ 	gve_clear_report_stats(priv);
+ 
+@@ -1972,6 +1974,9 @@ static void gve_turnup(struct gve_priv *
+ 		napi_schedule(&block->napi);
  	}
  
++	if (priv->num_xdp_queues && gve_supports_xdp_xmit(priv))
++		xdp_features_set_redirect_target(priv->dev, false);
++
+ 	gve_set_napi_enabled(priv);
+ }
+ 
+@@ -2246,7 +2251,6 @@ static void gve_set_netdev_xdp_features(
+ 	if (priv->queue_format == GVE_GQI_QPL_FORMAT) {
+ 		xdp_features = NETDEV_XDP_ACT_BASIC;
+ 		xdp_features |= NETDEV_XDP_ACT_REDIRECT;
+-		xdp_features |= NETDEV_XDP_ACT_NDO_XMIT;
+ 		xdp_features |= NETDEV_XDP_ACT_XSK_ZEROCOPY;
+ 	} else {
+ 		xdp_features = 0;
 
 
 
