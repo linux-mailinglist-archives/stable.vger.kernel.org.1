@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-118797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA69EA41C6A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:20:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47DCA41C6F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 12:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AABD8188D4EE
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:19:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22CC87A9CAC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DCB25EF9C;
-	Mon, 24 Feb 2025 11:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B68625EFB9;
+	Mon, 24 Feb 2025 11:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLZ5ZWDB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6PeN0c9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A7A25A32A;
-	Mon, 24 Feb 2025 11:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B5E25EFB4;
+	Mon, 24 Feb 2025 11:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395836; cv=none; b=eWkMSH/WbT150Ad6o2nf+F7zJI7wQ0lKRiOA6Bzd+swJUHNdxgiDSnEZoB4Qfmud2TSnHwyXTOkuaNM8FCJK9YqpSMEbuS8BhbkW5fJZcferA+5DBPgjrJLt2KAZNRnRYED7te2cysu0tE86XxnVU8QZESpEuKf+xFFHQ7ZIivA=
+	t=1740395839; cv=none; b=RoFfy6/7kkzkeWlwYBeaRCdX+sloQ2pCj/C4ZgT1e68I7G0EPkDJAVvEgML1geUDf2CGSWSby0oFR988gy0MRfLGTBzadsoqxnx0Vx3btq4jL4FNRKPcMG4wGrsju9pOKwJifozz0rji2w/OAsGlRAexxdiUUJljgYy0OuhBmMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395836; c=relaxed/simple;
-	bh=JPBZxN+lmp2VLmxzq7m7gJ42HxerPkDN0//nHthpj0w=;
+	s=arc-20240116; t=1740395839; c=relaxed/simple;
+	bh=2nhtH0H8AIroL5FXjfMPwHjzqT4ySWaNy6Dvnhg90BU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tg9KW6nV0ISGSWveN5neYDr0qBnOoRu587Zh4go/UBFqmV/WjusKWF/lXzUWEQy/TL9Bs9BI2bePiMSUU3QMQyBK1eAo05BaGQJlNKa5I/ZoP5Z5HjGHa3wQX7SzcxWIsw10OF6PvFbqid/xQePx2eDDR7/p/cUlHuAHQVVXQj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLZ5ZWDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31808C4CED6;
-	Mon, 24 Feb 2025 11:17:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LFxsZnHuSeJp6/VDQmJC87CSAbjBMlM8IRPRCRa+fDFl9OKcDY7nKRgHUDex8V2xx7MDuanPVDN/dWblBTDtMh6HXriZOrFTWY2C5ssWi1/SL3K/BHZPLWVONmSgsu3127sJL29GZZwbV1tHwExgUDDbaECaRW0DDa52BDY5paA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6PeN0c9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37038C4CED6;
+	Mon, 24 Feb 2025 11:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740395835;
-	bh=JPBZxN+lmp2VLmxzq7m7gJ42HxerPkDN0//nHthpj0w=;
+	s=k20201202; t=1740395838;
+	bh=2nhtH0H8AIroL5FXjfMPwHjzqT4ySWaNy6Dvnhg90BU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLZ5ZWDBU6RIQqLlm8KG00YHgwiLKDI1gd1T5oZTZa2ppnMAhJjjEjOK15mG5ca42
-	 tOlBjM+hjDUoTJdQD8L2LG5idOEsWIGcp+AB4j33GnhZZoLcSbao+T2JRC8br0V7rD
-	 OAzDB5JTjDOCPNlt1duoAsN0fM8mojgUOVNClFQM1CiuEttK6IasaCizkGRz3cbk51
-	 Oel7zLCki5/4J9CeBt7oV7hj0ICRCYGapugan863Fz52xsqn4UBIiV67mpSSK449//
-	 4Zx2UM9/qlIn0/2VMTb1NuB4kt8CpVjIPG6nBUDuItYixrWgU+B2a0cx+E6ceVFavX
-	 9Qk443jOFY0WA==
+	b=W6PeN0c9Z1q+yjUF94Z7Bn9ezPYjDnRrNCyH2hZculOvByGbyDCTHRNHzTAS3B2Hd
+	 9PKTDhKVj0Y8beYQQSwkAPuuQd6Sx70xcohTSK9vpSIkkUpNEoxYVI73I/9/J9sApn
+	 dq1/CkCtGwQa10X/CAHjrFt2dy5e7WcEcBndOiNcCnDNNZI9RA8ofLd2P46rTBND1P
+	 DwigvLJej0k/Rt+j6VtEOJVTxani6QvS+3je53DNrKMUCI8x+IadwSX9f3UeWbjECw
+	 QJqFasqViTHHVZso+2mYnr5FZmk/xn5fMv/B7F45Ye8IWkswqcn9/XYAAbHZ8bwc0Q
+	 JcTIF/zJR4hiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
+Cc: Terry Cheong <htcheong@chromium.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Johny Lin <lpg76627@gmail.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	lgirdwood@gmail.com,
+	ranjani.sridharan@linux.intel.com,
+	daniel.baluta@nxp.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	rf@opensource.cirrus.com,
-	bartosz.golaszewski@linaro.org,
-	richard.leitner@linux.dev,
-	u.kleine-koenig@baylibre.com,
-	nicolas.ferre@microchip.com,
-	luca.ceresoli@bootlin.com,
-	patches@opensource.cirrus.com,
+	pierre-louis.bossart@linux.dev,
+	peterz@infradead.org,
+	sound-open-firmware@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 13/32] ASoC: arizona/madera: use fsleep() in up/down DAPM event delays.
-Date: Mon, 24 Feb 2025 06:16:19 -0500
-Message-Id: <20250224111638.2212832-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 14/32] ASoC: SOF: Intel: hda: add softdep pre to snd-hda-codec-hdmi module
+Date: Mon, 24 Feb 2025 06:16:20 -0500
+Message-Id: <20250224111638.2212832-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250224111638.2212832-1-sashal@kernel.org>
 References: <20250224111638.2212832-1-sashal@kernel.org>
@@ -71,177 +71,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.4
 Content-Transfer-Encoding: 8bit
 
-From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+From: Terry Cheong <htcheong@chromium.org>
 
-[ Upstream commit 679074942c2502a95842a80471d8fb718165ac77 ]
+[ Upstream commit 33b7dc7843dbdc9b90c91d11ba30b107f9138ffd ]
 
-Using `fsleep` instead of `msleep` resolves some customer complaints
-regarding the precision of up/down DAPM event timing. `fsleep()`
-automatically selects the appropriate sleep function, making the delay
-time more predictable.
+In enviornment without KMOD requesting module may fail to load
+snd-hda-codec-hdmi, resulting in HDMI audio not usable.
+Add softdep to loading HDMI codec module first to ensure we can load it
+correctly.
 
-Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250205160849.500306-1-vitalyr@opensource.cirrus.com
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Terry Cheong <htcheong@chromium.org>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Johny Lin <lpg76627@gmail.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250206094723.18013-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/arizona.c | 14 +++++++-------
- sound/soc/codecs/madera.c  | 10 +++++-----
- sound/soc/codecs/wm5110.c  |  8 ++++----
- 3 files changed, 16 insertions(+), 16 deletions(-)
+ sound/soc/sof/intel/hda-codec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/arizona.c b/sound/soc/codecs/arizona.c
-index 402b9a2ff0240..68cdb1027d0c0 100644
---- a/sound/soc/codecs/arizona.c
-+++ b/sound/soc/codecs/arizona.c
-@@ -967,7 +967,7 @@ int arizona_out_ev(struct snd_soc_dapm_widget *w,
- 		case ARIZONA_OUT3L_ENA_SHIFT:
- 		case ARIZONA_OUT3R_ENA_SHIFT:
- 			priv->out_up_pending++;
--			priv->out_up_delay += 17;
-+			priv->out_up_delay += 17000;
- 			break;
- 		case ARIZONA_OUT4L_ENA_SHIFT:
- 		case ARIZONA_OUT4R_ENA_SHIFT:
-@@ -977,7 +977,7 @@ int arizona_out_ev(struct snd_soc_dapm_widget *w,
- 			case WM8997:
- 				break;
- 			default:
--				priv->out_up_delay += 10;
-+				priv->out_up_delay += 10000;
- 				break;
- 			}
- 			break;
-@@ -999,7 +999,7 @@ int arizona_out_ev(struct snd_soc_dapm_widget *w,
- 			if (!priv->out_up_pending && priv->out_up_delay) {
- 				dev_dbg(component->dev, "Power up delay: %d\n",
- 					priv->out_up_delay);
--				msleep(priv->out_up_delay);
-+				fsleep(priv->out_up_delay);
- 				priv->out_up_delay = 0;
- 			}
- 			break;
-@@ -1017,7 +1017,7 @@ int arizona_out_ev(struct snd_soc_dapm_widget *w,
- 		case ARIZONA_OUT3L_ENA_SHIFT:
- 		case ARIZONA_OUT3R_ENA_SHIFT:
- 			priv->out_down_pending++;
--			priv->out_down_delay++;
-+			priv->out_down_delay += 1000;
- 			break;
- 		case ARIZONA_OUT4L_ENA_SHIFT:
- 		case ARIZONA_OUT4R_ENA_SHIFT:
-@@ -1028,10 +1028,10 @@ int arizona_out_ev(struct snd_soc_dapm_widget *w,
- 				break;
- 			case WM8998:
- 			case WM1814:
--				priv->out_down_delay += 5;
-+				priv->out_down_delay += 5000;
- 				break;
- 			default:
--				priv->out_down_delay++;
-+				priv->out_down_delay += 1000;
- 				break;
- 			}
- 			break;
-@@ -1053,7 +1053,7 @@ int arizona_out_ev(struct snd_soc_dapm_widget *w,
- 			if (!priv->out_down_pending && priv->out_down_delay) {
- 				dev_dbg(component->dev, "Power down delay: %d\n",
- 					priv->out_down_delay);
--				msleep(priv->out_down_delay);
-+				fsleep(priv->out_down_delay);
- 				priv->out_down_delay = 0;
- 			}
- 			break;
-diff --git a/sound/soc/codecs/madera.c b/sound/soc/codecs/madera.c
-index b24d6472ad5fc..fbfd7fb7f1685 100644
---- a/sound/soc/codecs/madera.c
-+++ b/sound/soc/codecs/madera.c
-@@ -2322,10 +2322,10 @@ int madera_out_ev(struct snd_soc_dapm_widget *w,
- 	case CS42L92:
- 	case CS47L92:
- 	case CS47L93:
--		out_up_delay = 6;
-+		out_up_delay = 6000;
- 		break;
- 	default:
--		out_up_delay = 17;
-+		out_up_delay = 17000;
- 		break;
- 	}
+diff --git a/sound/soc/sof/intel/hda-codec.c b/sound/soc/sof/intel/hda-codec.c
+index 568f3dfe822f5..2f9925830d1d5 100644
+--- a/sound/soc/sof/intel/hda-codec.c
++++ b/sound/soc/sof/intel/hda-codec.c
+@@ -454,6 +454,7 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
+ }
+ EXPORT_SYMBOL_NS_GPL(hda_codec_i915_exit, "SND_SOC_SOF_HDA_AUDIO_CODEC_I915");
  
-@@ -2356,7 +2356,7 @@ int madera_out_ev(struct snd_soc_dapm_widget *w,
- 		case MADERA_OUT3R_ENA_SHIFT:
- 			priv->out_up_pending--;
- 			if (!priv->out_up_pending) {
--				msleep(priv->out_up_delay);
-+				fsleep(priv->out_up_delay);
- 				priv->out_up_delay = 0;
- 			}
- 			break;
-@@ -2375,7 +2375,7 @@ int madera_out_ev(struct snd_soc_dapm_widget *w,
- 		case MADERA_OUT3L_ENA_SHIFT:
- 		case MADERA_OUT3R_ENA_SHIFT:
- 			priv->out_down_pending++;
--			priv->out_down_delay++;
-+			priv->out_down_delay += 1000;
- 			break;
- 		default:
- 			break;
-@@ -2392,7 +2392,7 @@ int madera_out_ev(struct snd_soc_dapm_widget *w,
- 		case MADERA_OUT3R_ENA_SHIFT:
- 			priv->out_down_pending--;
- 			if (!priv->out_down_pending) {
--				msleep(priv->out_down_delay);
-+				fsleep(priv->out_down_delay);
- 				priv->out_down_delay = 0;
- 			}
- 			break;
-diff --git a/sound/soc/codecs/wm5110.c b/sound/soc/codecs/wm5110.c
-index 502196253d42a..64eee0d2347da 100644
---- a/sound/soc/codecs/wm5110.c
-+++ b/sound/soc/codecs/wm5110.c
-@@ -302,7 +302,7 @@ static int wm5110_hp_pre_enable(struct snd_soc_dapm_widget *w)
- 		} else {
- 			wseq = wm5110_no_dre_left_enable;
- 			nregs = ARRAY_SIZE(wm5110_no_dre_left_enable);
--			priv->out_up_delay += 10;
-+			priv->out_up_delay += 10000;
- 		}
- 		break;
- 	case ARIZONA_OUT1R_ENA_SHIFT:
-@@ -312,7 +312,7 @@ static int wm5110_hp_pre_enable(struct snd_soc_dapm_widget *w)
- 		} else {
- 			wseq = wm5110_no_dre_right_enable;
- 			nregs = ARRAY_SIZE(wm5110_no_dre_right_enable);
--			priv->out_up_delay += 10;
-+			priv->out_up_delay += 10000;
- 		}
- 		break;
- 	default:
-@@ -338,7 +338,7 @@ static int wm5110_hp_pre_disable(struct snd_soc_dapm_widget *w)
- 			snd_soc_component_update_bits(component,
- 						      ARIZONA_SPARE_TRIGGERS,
- 						      ARIZONA_WS_TRG1, 0);
--			priv->out_down_delay += 27;
-+			priv->out_down_delay += 27000;
- 		}
- 		break;
- 	case ARIZONA_OUT1R_ENA_SHIFT:
-@@ -350,7 +350,7 @@ static int wm5110_hp_pre_disable(struct snd_soc_dapm_widget *w)
- 			snd_soc_component_update_bits(component,
- 						      ARIZONA_SPARE_TRIGGERS,
- 						      ARIZONA_WS_TRG2, 0);
--			priv->out_down_delay += 27;
-+			priv->out_down_delay += 27000;
- 		}
- 		break;
- 	default:
++MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
+ #endif
+ 
+ MODULE_LICENSE("Dual BSD/GPL");
 -- 
 2.39.5
 
