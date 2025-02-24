@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-119286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56361A425B5
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:12:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C7FA42521
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0019E19E1621
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:57:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA2C167CD5
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD4E19F42D;
-	Mon, 24 Feb 2025 14:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0442571CB;
+	Mon, 24 Feb 2025 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shH7Zu7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahstDnYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65A14012;
-	Mon, 24 Feb 2025 14:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A670824A3;
+	Mon, 24 Feb 2025 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408950; cv=none; b=inbJ6quRghy2wRKI95cihNLZS9Rkbpchl34hwMIHJsKjkAdk06yedLqo/1btQ7r4dcAMKeBxq3Qr1ad4ClBfE1ky2mwqB9+c20cLVeO37H6ptFIq8nifx0ux1qK0spg4JB/QrXEostohhXeTP2bdF9MUXb81ab1tA6cAN6JdRDk=
+	t=1740408529; cv=none; b=RxpUcIdNJnn54n16TKa67AzXOlwu4kbETd+r9x/uqhA3oAw9+dxAmVHLnoPj2kW2xB7mcunvYyhFprGcc/FCTVnY/PcB7tB4ZeFx86YrXeV0927mVM8EiIEErW3aRNHGByw0dG+yZ7H88SDFtLazT16Yewbr09cb6U+GNgxBsYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408950; c=relaxed/simple;
-	bh=bGCwoYCm/Gfm7PSokRBya+kluby/SsRBQpqEhb6iaPs=;
+	s=arc-20240116; t=1740408529; c=relaxed/simple;
+	bh=hvLopu9rYW3y5+Ez9k4j3CtxZ0xV4WjgZQ0KCyjXiBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2UsXwM1WN9sS7nVT7kjLHX914nqRc7lEk2pdow4K7WD6WHtELDUFdmrYgsB+qsg2jpuLavRE8zji79r+s87vT337IQ30Nc/Id7FaGmwN4phvB+HRulVeOGp3W3qmZNX6DJZgO87gtfbk50kCElRmbandlMa3h2KAQrRuktyKZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shH7Zu7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC240C4CEE6;
-	Mon, 24 Feb 2025 14:55:49 +0000 (UTC)
+	 MIME-Version; b=bqP+ra30btzoAVX5/wOjbgxE9JNc4O5EBrin2zR5mGBzLKcyBfiabTSLCOUOiQVzpaNu8XD+PqniKZFdWHiU+rKy90qRxyrHqfbk3miLi6lammeUNBf3mzEiP9f4cMDIYifluViinFBIXnISnxCnOcvpogAv/ty0p/yxH5ODo0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahstDnYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B1FC4CED6;
+	Mon, 24 Feb 2025 14:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408950;
-	bh=bGCwoYCm/Gfm7PSokRBya+kluby/SsRBQpqEhb6iaPs=;
+	s=korg; t=1740408529;
+	bh=hvLopu9rYW3y5+Ez9k4j3CtxZ0xV4WjgZQ0KCyjXiBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=shH7Zu7IKEuvxmTyKuSDqKGCjFYGURuJDdvpCSCsdI7ZmB2IqzUq4RhQO+Inq7bUY
-	 F7+iANNIAc0np5a/c27n2gZLlEaNkHgcf9wLHZX4Nj7tKpRv1Kqs2vAa+pHTgmEJV0
-	 zqMO2SeP2TXh9dbOgclwfRABRGq4miT0ov9ivKC0=
+	b=ahstDnYC1JuqHdF0mnF1mq8ACxnRAhT8QdlSqW0eIH4dFB5VfsWTonYvu5KGVU35E
+	 n/NNoqtFhNJ0JWWKAIcULrMGmVQv/S0mzj+ci3ZSv8NNK4blNq5usJMRgTyXw2SLhq
+	 OIWmmTw0bbVs3RGscu/LNtX27h5m943NhJQcf5q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 025/138] powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC
-Date: Mon, 24 Feb 2025 15:34:15 +0100
-Message-ID: <20250224142605.459018954@linuxfoundation.org>
+Subject: [PATCH 6.12 057/154] ibmvnic: Add stat for tx direct vs tx batched
+Date: Mon, 24 Feb 2025 15:34:16 +0100
+Message-ID: <20250224142609.319606832@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Nick Child <nnac123@linux.ibm.com>
 
-[ Upstream commit d262a192d38e527faa5984629aabda2e0d1c4f54 ]
+[ Upstream commit 2ee73c54a615b74d2e7ee6f20844fd3ba63fc485 ]
 
-Erhard reported the following KASAN hit while booting his PowerMac G4
-with a KASAN-enabled kernel 6.13-rc6:
+Allow tracking of packets sent with send_subcrq direct vs
+indirect. `ethtool -S <dev>` will now provide a counter
+of the number of uses of each xmit method. This metric will
+be useful in performance debugging.
 
-  BUG: KASAN: vmalloc-out-of-bounds in copy_to_kernel_nofault+0xd8/0x1c8
-  Write of size 8 at addr f1000000 by task chronyd/1293
-
-  CPU: 0 UID: 123 PID: 1293 Comm: chronyd Tainted: G        W          6.13.0-rc6-PMacG4 #2
-  Tainted: [W]=WARN
-  Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-  Call Trace:
-  [c2437590] [c1631a84] dump_stack_lvl+0x70/0x8c (unreliable)
-  [c24375b0] [c0504998] print_report+0xdc/0x504
-  [c2437610] [c050475c] kasan_report+0xf8/0x108
-  [c2437690] [c0505a3c] kasan_check_range+0x24/0x18c
-  [c24376a0] [c03fb5e4] copy_to_kernel_nofault+0xd8/0x1c8
-  [c24376c0] [c004c014] patch_instructions+0x15c/0x16c
-  [c2437710] [c00731a8] bpf_arch_text_copy+0x60/0x7c
-  [c2437730] [c0281168] bpf_jit_binary_pack_finalize+0x50/0xac
-  [c2437750] [c0073cf4] bpf_int_jit_compile+0xb30/0xdec
-  [c2437880] [c0280394] bpf_prog_select_runtime+0x15c/0x478
-  [c24378d0] [c1263428] bpf_prepare_filter+0xbf8/0xc14
-  [c2437990] [c12677ec] bpf_prog_create_from_user+0x258/0x2b4
-  [c24379d0] [c027111c] do_seccomp+0x3dc/0x1890
-  [c2437ac0] [c001d8e0] system_call_exception+0x2dc/0x420
-  [c2437f30] [c00281ac] ret_from_syscall+0x0/0x2c
-  --- interrupt: c00 at 0x5a1274
-  NIP:  005a1274 LR: 006a3b3c CTR: 005296c8
-  REGS: c2437f40 TRAP: 0c00   Tainted: G        W           (6.13.0-rc6-PMacG4)
-  MSR:  0200f932 <VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24004422  XER: 00000000
-
-  GPR00: 00000166 af8f3fa0 a7ee3540 00000001 00000000 013b6500 005a5858 0200f932
-  GPR08: 00000000 00001fe9 013d5fc8 005296c8 2822244c 00b2fcd8 00000000 af8f4b57
-  GPR16: 00000000 00000001 00000000 00000000 00000000 00000001 00000000 00000002
-  GPR24: 00afdbb0 00000000 00000000 00000000 006e0004 013ce060 006e7c1c 00000001
-  NIP [005a1274] 0x5a1274
-  LR [006a3b3c] 0x6a3b3c
-  --- interrupt: c00
-
-  The buggy address belongs to the virtual mapping at
-   [f1000000, f1002000) created by:
-   text_area_cpu_up+0x20/0x190
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x76e30
-  flags: 0x80000000(zone=2)
-  raw: 80000000 00000000 00000122 00000000 00000000 00000000 ffffffff 00000001
-  raw: 00000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   f0ffff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   f0ffff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >f1000000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-             ^
-   f1000080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   f1000100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ==================================================================
-
-f8 corresponds to KASAN_VMALLOC_INVALID which means the area is not
-initialised hence not supposed to be used yet.
-
-Powerpc text patching infrastructure allocates a virtual memory area
-using get_vm_area() and flags it as VM_ALLOC. But that flag is meant
-to be used for vmalloc() and vmalloc() allocated memory is not
-supposed to be used before a call to __vmalloc_node_range() which is
-never called for that area.
-
-That went undetected until commit e4137f08816b ("mm, kasan, kmsan:
-instrument copy_from/to_kernel_nofault")
-
-The area allocated by text_area_cpu_up() is not vmalloc memory, it is
-mapped directly on demand when needed by map_kernel_page(). There is
-no VM flag corresponding to such usage, so just pass no flag. That way
-the area will be unpoisonned and usable immediately.
-
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/20250112135832.57c92322@yea/
-Fixes: 37bc3e5fd764 ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/06621423da339b374f48c0886e3a5db18e896be8.1739342693.git.christophe.leroy@csgroup.eu
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241001163531.1803152-1-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: bdf5d13aa05e ("ibmvnic: Don't reference skb after sending to VIOS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/code-patching.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 23 ++++++++++++++++-------
+ drivers/net/ethernet/ibm/ibmvnic.h |  3 ++-
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 81c0f673eb252..f84e0337cc029 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -108,7 +108,7 @@ static int text_area_cpu_up(unsigned int cpu)
- 	unsigned long addr;
- 	int err;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 97425c06e1ed7..cca2ed6ad2899 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2310,7 +2310,7 @@ static void ibmvnic_tx_scrq_clean_buffer(struct ibmvnic_adapter *adapter,
+ 		tx_buff = &tx_pool->tx_buff[index];
+ 		adapter->netdev->stats.tx_packets--;
+ 		adapter->netdev->stats.tx_bytes -= tx_buff->skb->len;
+-		adapter->tx_stats_buffers[queue_num].packets--;
++		adapter->tx_stats_buffers[queue_num].batched_packets--;
+ 		adapter->tx_stats_buffers[queue_num].bytes -=
+ 						tx_buff->skb->len;
+ 		dev_kfree_skb_any(tx_buff->skb);
+@@ -2402,7 +2402,8 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	unsigned int tx_map_failed = 0;
+ 	union sub_crq indir_arr[16];
+ 	unsigned int tx_dropped = 0;
+-	unsigned int tx_packets = 0;
++	unsigned int tx_dpackets = 0;
++	unsigned int tx_bpackets = 0;
+ 	unsigned int tx_bytes = 0;
+ 	dma_addr_t data_dma_addr;
+ 	struct netdev_queue *txq;
+@@ -2575,6 +2576,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		if (lpar_rc != H_SUCCESS)
+ 			goto tx_err;
  
--	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
-+	area = get_vm_area(PAGE_SIZE, 0);
- 	if (!area) {
- 		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
- 			cpu);
++		tx_dpackets++;
+ 		goto early_exit;
+ 	}
+ 
+@@ -2603,6 +2605,8 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 			goto tx_err;
+ 	}
+ 
++	tx_bpackets++;
++
+ early_exit:
+ 	if (atomic_add_return(num_entries, &tx_scrq->used)
+ 					>= adapter->req_tx_entries_per_subcrq) {
+@@ -2610,7 +2614,6 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		netif_stop_subqueue(netdev, queue_num);
+ 	}
+ 
+-	tx_packets++;
+ 	tx_bytes += skb->len;
+ 	txq_trans_cond_update(txq);
+ 	ret = NETDEV_TX_OK;
+@@ -2640,10 +2643,11 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	rcu_read_unlock();
+ 	netdev->stats.tx_dropped += tx_dropped;
+ 	netdev->stats.tx_bytes += tx_bytes;
+-	netdev->stats.tx_packets += tx_packets;
++	netdev->stats.tx_packets += tx_bpackets + tx_dpackets;
+ 	adapter->tx_send_failed += tx_send_failed;
+ 	adapter->tx_map_failed += tx_map_failed;
+-	adapter->tx_stats_buffers[queue_num].packets += tx_packets;
++	adapter->tx_stats_buffers[queue_num].batched_packets += tx_bpackets;
++	adapter->tx_stats_buffers[queue_num].direct_packets += tx_dpackets;
+ 	adapter->tx_stats_buffers[queue_num].bytes += tx_bytes;
+ 	adapter->tx_stats_buffers[queue_num].dropped_packets += tx_dropped;
+ 
+@@ -3808,7 +3812,10 @@ static void ibmvnic_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+ 		memcpy(data, ibmvnic_stats[i].name, ETH_GSTRING_LEN);
+ 
+ 	for (i = 0; i < adapter->req_tx_queues; i++) {
+-		snprintf(data, ETH_GSTRING_LEN, "tx%d_packets", i);
++		snprintf(data, ETH_GSTRING_LEN, "tx%d_batched_packets", i);
++		data += ETH_GSTRING_LEN;
++
++		snprintf(data, ETH_GSTRING_LEN, "tx%d_direct_packets", i);
+ 		data += ETH_GSTRING_LEN;
+ 
+ 		snprintf(data, ETH_GSTRING_LEN, "tx%d_bytes", i);
+@@ -3873,7 +3880,9 @@ static void ibmvnic_get_ethtool_stats(struct net_device *dev,
+ 				      (adapter, ibmvnic_stats[i].offset));
+ 
+ 	for (j = 0; j < adapter->req_tx_queues; j++) {
+-		data[i] = adapter->tx_stats_buffers[j].packets;
++		data[i] = adapter->tx_stats_buffers[j].batched_packets;
++		i++;
++		data[i] = adapter->tx_stats_buffers[j].direct_packets;
+ 		i++;
+ 		data[i] = adapter->tx_stats_buffers[j].bytes;
+ 		i++;
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+index 94ac36b1408be..a189038d88df0 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.h
++++ b/drivers/net/ethernet/ibm/ibmvnic.h
+@@ -213,7 +213,8 @@ struct ibmvnic_statistics {
+ 
+ #define NUM_TX_STATS 3
+ struct ibmvnic_tx_queue_stats {
+-	u64 packets;
++	u64 batched_packets;
++	u64 direct_packets;
+ 	u64 bytes;
+ 	u64 dropped_packets;
+ };
 -- 
 2.39.5
 
