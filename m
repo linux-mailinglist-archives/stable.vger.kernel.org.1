@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-119167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66867A424AA
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:59:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3B7A423A0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38452426691
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 263A0189F165
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A8F158520;
-	Mon, 24 Feb 2025 14:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA81D25484F;
+	Mon, 24 Feb 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yeLcmdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyXpjNwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702B62837B;
-	Mon, 24 Feb 2025 14:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A01192B96;
+	Mon, 24 Feb 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408547; cv=none; b=BjRQl6lqobBFR+99NfHlUyF9lF9jRhXv/seXHdkxDuux8Zzj6mc1FQW4pO0g567U3KoYwZoSe+AwGjzpAiB4WCpjH2Z4rzjIe0pkvliw+6mnJZMYExmietFP+vFsSPTG0dO92UCFl87mwqMkiFuRt2GOE1/83KzUW9byJ0i3RQs=
+	t=1740407965; cv=none; b=TZ+AtbfouG586N5TL/z4jagORpLp2T5n1h5xuiove4POCuYAZEQPMOZE1yJrcdtxcm+B2OGsSvkgDGqVMjtgxJofcs4l7c+ZpH2dqSS5w9elVKTjGGRd45k+Tix7px2XYo4RNQ7t1jSbqYyB9uNFRMFYl4wrtDa/opUU8kKSGcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408547; c=relaxed/simple;
-	bh=VS/u5vIuj0oeQuKeeVl8MSr7QulcbOV6bVtuY54DDJ4=;
+	s=arc-20240116; t=1740407965; c=relaxed/simple;
+	bh=OKcU3RV+5ezdb72Wf4TRNpWOg0Wwb/RaSn7knm2gHpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4HCXrxzlgv+9qrHfeBzI4fl8qGrhUCKoNQZ35rs9p1Txqp7xPQ87AglQdOUlY7yrSP4hPyDYGI249lKXjS/x4K18hWZ8IHN1IZQ2znWctmxPNyluHvea9wOlgtDf2auhsrejllonzH4B1tx6tPTBBA27rj0WHInne6/91JPbT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yeLcmdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22C7C4CEE8;
-	Mon, 24 Feb 2025 14:49:06 +0000 (UTC)
+	 MIME-Version; b=foOdeQwOFkFtBbnJ5ZpG4ioL01dHXOrDgfZfl//Qma5pqLq2MTLLf7fQSmkG/JK4zcrjPk7ParyT0rzhtszCjj0KQCaepha8lYCk3zmTMUxtWft09SZhu8yEGzOCV+Kfw9bwO4/qmFUhGhqmKpC/HqUBssVsvMKq7fkyA7WZUaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyXpjNwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0474DC4CED6;
+	Mon, 24 Feb 2025 14:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408547;
-	bh=VS/u5vIuj0oeQuKeeVl8MSr7QulcbOV6bVtuY54DDJ4=;
+	s=korg; t=1740407965;
+	bh=OKcU3RV+5ezdb72Wf4TRNpWOg0Wwb/RaSn7knm2gHpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1yeLcmdNriLvnfeVH412vuVGUpNed6K5teUD/VZVh5G0hDBW7F/vu7SUh0a81d4bd
-	 GuwnRXiYiD4SHpA3vqz7VS2WQxzIEumhsmKoNTenqu1m+vzTEDaMY3Ql2+XBuSWRuA
-	 NW9L0QEVLk9ZAo1yna25Kj1EAj7ofWFCl/crlzKY=
+	b=PyXpjNwAdUKOJgdon0oDGWD92ZR+JIE8r4BmwJG5rBzcRtL6keFDa9VT9ki+p1lW4
+	 bMPI82PEF7vLfEgoTbf4+s8SQvmYwrcVLy940WdeYKxsnT6ukovnX3uUjYfFkdXFls
+	 7nZjlAsoYOLUCiUPsllBw1jR8nxyVc9eYn70Mkro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Child <nnac123@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/154] ibmvnic: Dont reference skb after sending to VIOS
-Date: Mon, 24 Feb 2025 15:34:17 +0100
-Message-ID: <20250224142609.357574738@linuxfoundation.org>
+Subject: [PATCH 6.6 059/140] nvmem: Simplify the ->add_cells() hook
+Date: Mon, 24 Feb 2025 15:34:18 +0100
+Message-ID: <20250224142605.333632488@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit bdf5d13aa05ec314d4385b31ac974d6c7e0997c9 ]
+[ Upstream commit 1b7c298a4ecbc28cc6ee94005734bff55eb83d22 ]
 
-Previously, after successfully flushing the xmit buffer to VIOS,
-the tx_bytes stat was incremented by the length of the skb.
+The layout entry is not used and will anyway be made useless by the new
+layout bus infrastructure coming next, so drop it. While at it, clarify
+the kdoc entry.
 
-It is invalid to access the skb memory after sending the buffer to
-the VIOS because, at any point after sending, the VIOS can trigger
-an interrupt to free this memory. A race between reading skb->len
-and freeing the skb is possible (especially during LPM) and will
-result in use-after-free:
- ==================================================================
- BUG: KASAN: slab-use-after-free in ibmvnic_xmit+0x75c/0x1808 [ibmvnic]
- Read of size 4 at addr c00000024eb48a70 by task hxecom/14495
- <...>
- Call Trace:
- [c000000118f66cf0] [c0000000018cba6c] dump_stack_lvl+0x84/0xe8 (unreliable)
- [c000000118f66d20] [c0000000006f0080] print_report+0x1a8/0x7f0
- [c000000118f66df0] [c0000000006f08f0] kasan_report+0x128/0x1f8
- [c000000118f66f00] [c0000000006f2868] __asan_load4+0xac/0xe0
- [c000000118f66f20] [c0080000046eac84] ibmvnic_xmit+0x75c/0x1808 [ibmvnic]
- [c000000118f67340] [c0000000014be168] dev_hard_start_xmit+0x150/0x358
- <...>
- Freed by task 0:
- kasan_save_stack+0x34/0x68
- kasan_save_track+0x2c/0x50
- kasan_save_free_info+0x64/0x108
- __kasan_mempool_poison_object+0x148/0x2d4
- napi_skb_cache_put+0x5c/0x194
- net_tx_action+0x154/0x5b8
- handle_softirqs+0x20c/0x60c
- do_softirq_own_stack+0x6c/0x88
- <...>
- The buggy address belongs to the object at c00000024eb48a00 which
-  belongs to the cache skbuff_head_cache of size 224
-==================================================================
-
-Fixes: 032c5e82847a ("Driver for IBM System i/p VNIC protocol")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250214155233.235559-1-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231215111536.316972-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 391b06ecb63e ("nvmem: imx-ocotp-ele: fix MAC address byte order")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvmem/core.c             | 2 +-
+ drivers/nvmem/layouts/onie-tlv.c | 3 +--
+ drivers/nvmem/layouts/sl28vpd.c  | 3 +--
+ include/linux/nvmem-provider.h   | 8 +++-----
+ 4 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index cca2ed6ad2899..61db00b2b33e4 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2408,6 +2408,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	dma_addr_t data_dma_addr;
- 	struct netdev_queue *txq;
- 	unsigned long lpar_rc;
-+	unsigned int skblen;
- 	union sub_crq tx_crq;
- 	unsigned int offset;
- 	bool use_scrq_send_direct = false;
-@@ -2522,6 +2523,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	tx_buff->skb = skb;
- 	tx_buff->index = bufidx;
- 	tx_buff->pool_index = queue_num;
-+	skblen = skb->len;
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index ec35886e921a8..ed8a1cba361e2 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -815,7 +815,7 @@ static int nvmem_add_cells_from_layout(struct nvmem_device *nvmem)
+ 	int ret;
  
- 	memset(&tx_crq, 0, sizeof(tx_crq));
- 	tx_crq.v1.first = IBMVNIC_CRQ_CMD;
-@@ -2614,7 +2616,7 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 		netif_stop_subqueue(netdev, queue_num);
+ 	if (layout && layout->add_cells) {
+-		ret = layout->add_cells(&nvmem->dev, nvmem, layout);
++		ret = layout->add_cells(&nvmem->dev, nvmem);
+ 		if (ret)
+ 			return ret;
  	}
+diff --git a/drivers/nvmem/layouts/onie-tlv.c b/drivers/nvmem/layouts/onie-tlv.c
+index 59fc87ccfcffe..defd42d4375cc 100644
+--- a/drivers/nvmem/layouts/onie-tlv.c
++++ b/drivers/nvmem/layouts/onie-tlv.c
+@@ -182,8 +182,7 @@ static bool onie_tlv_crc_is_valid(struct device *dev, size_t table_len, u8 *tabl
+ 	return true;
+ }
  
--	tx_bytes += skb->len;
-+	tx_bytes += skblen;
- 	txq_trans_cond_update(txq);
- 	ret = NETDEV_TX_OK;
- 	goto out;
+-static int onie_tlv_parse_table(struct device *dev, struct nvmem_device *nvmem,
+-				struct nvmem_layout *layout)
++static int onie_tlv_parse_table(struct device *dev, struct nvmem_device *nvmem)
+ {
+ 	struct onie_tlv_hdr hdr;
+ 	size_t table_len, data_len, hdr_len;
+diff --git a/drivers/nvmem/layouts/sl28vpd.c b/drivers/nvmem/layouts/sl28vpd.c
+index 05671371f6316..26c7cf21b5233 100644
+--- a/drivers/nvmem/layouts/sl28vpd.c
++++ b/drivers/nvmem/layouts/sl28vpd.c
+@@ -80,8 +80,7 @@ static int sl28vpd_v1_check_crc(struct device *dev, struct nvmem_device *nvmem)
+ 	return 0;
+ }
+ 
+-static int sl28vpd_add_cells(struct device *dev, struct nvmem_device *nvmem,
+-			     struct nvmem_layout *layout)
++static int sl28vpd_add_cells(struct device *dev, struct nvmem_device *nvmem)
+ {
+ 	const struct nvmem_cell_info *pinfo;
+ 	struct nvmem_cell_info info = {0};
+diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
+index 1b81adebdb8be..ecd580ee84db9 100644
+--- a/include/linux/nvmem-provider.h
++++ b/include/linux/nvmem-provider.h
+@@ -158,9 +158,8 @@ struct nvmem_cell_table {
+  *
+  * @name:		Layout name.
+  * @of_match_table:	Open firmware match table.
+- * @add_cells:		Will be called if a nvmem device is found which
+- *			has this layout. The function will add layout
+- *			specific cells with nvmem_add_one_cell().
++ * @add_cells:		Called to populate the layout using
++ *			nvmem_add_one_cell().
+  * @fixup_cell_info:	Will be called before a cell is added. Can be
+  *			used to modify the nvmem_cell_info.
+  * @owner:		Pointer to struct module.
+@@ -174,8 +173,7 @@ struct nvmem_cell_table {
+ struct nvmem_layout {
+ 	const char *name;
+ 	const struct of_device_id *of_match_table;
+-	int (*add_cells)(struct device *dev, struct nvmem_device *nvmem,
+-			 struct nvmem_layout *layout);
++	int (*add_cells)(struct device *dev, struct nvmem_device *nvmem);
+ 	void (*fixup_cell_info)(struct nvmem_device *nvmem,
+ 				struct nvmem_layout *layout,
+ 				struct nvmem_cell_info *cell);
 -- 
 2.39.5
 
