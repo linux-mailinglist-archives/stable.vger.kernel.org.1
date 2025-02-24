@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-119122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF4BA42465
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04511A4238A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 054D219C2474
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F4121189A671
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A2F38DD8;
-	Mon, 24 Feb 2025 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477892063DD;
+	Mon, 24 Feb 2025 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyoaTMAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZOaXNpm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7A52571CB;
-	Mon, 24 Feb 2025 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04224192D97;
+	Mon, 24 Feb 2025 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408391; cv=none; b=ltRxerT46P2MmhIC3cLx5oqFSMjPAOuE3DY6rdxgrOd+jqt+opOj7Ah0zaWYABs17cffbwwsxi70X+2apk8PnxMQ2uofvGGzh8s5GAw/g1v/Gx4Ys9TvmULAS2NKmzD7duFZJaCX6l46HmX7RFJAvQSIz17qS4m6VNnqEmbTcSo=
+	t=1740407910; cv=none; b=EI4eEDZzQBYxVuj2ySV005s2CBApLbdMweRlBwaKOQve0F/tF1j4QfhbFxtF1mmiNnfYPZ/sKnhw6hJmaQ5gKNgOKCqWbY87CHkh6o5NkZN9RUOiTBNsh47jgplFImkOSUj0W+f3Hj9FXdzkq7mpACo5Dhw79KMDJze2Ke+nXRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408391; c=relaxed/simple;
-	bh=qOrxJnsbdGXpRz7M9SgNZweEy9A/O4Ffpej3T7ECEEA=;
+	s=arc-20240116; t=1740407910; c=relaxed/simple;
+	bh=vORD/xnjTjwsBybsF4lqWHIe29xYZIV/XDvBJVBwG4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdhYgekItqAWstnCvp1wnUoU32xw86K8n4KcE23TJ4yJKVIxy2V5nHpCUf4eIS5OnfRsMIakACc35TvnnZWL0zUlMJUoJ/IE8XMbRaOfaLQG5hgKp3f+VtnfzEwLgkcg/6xBjwUBSL2hW/C284pQEt5Xx8ojRs/40sW/ZWBo9oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyoaTMAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB74C4CEE6;
-	Mon, 24 Feb 2025 14:46:30 +0000 (UTC)
+	 MIME-Version; b=S1LSQavbMiTaE4zCWgacjmv5stfXE1dWW+Ieo3yJVws/82dgTy8h3f1ahFAlTTeg7EVaMdy/FoIucnwGKk+C7BeoL9QvwLG8xF2Uw3ZyWcxrqaz3IFXARNf1nREPbTYJSW9QdbMgWMd86pnKI/msCQqDnKgij8n1ec6mj3FkXzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZOaXNpm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650B3C4CED6;
+	Mon, 24 Feb 2025 14:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408391;
-	bh=qOrxJnsbdGXpRz7M9SgNZweEy9A/O4Ffpej3T7ECEEA=;
+	s=korg; t=1740407909;
+	bh=vORD/xnjTjwsBybsF4lqWHIe29xYZIV/XDvBJVBwG4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyoaTMAXILw/wKIZ4NJmVA1sV5uEtXkk+bysh3Q1SFUE9ibCptxAZVVZsLIof0AGS
-	 IU9IOXegtCYbzasyriqDX/mvV319eizLIZVRXeFE77Pz76oiJa/SIpk9nzqLBdC1F4
-	 jrMrmzBj8OZQ6J6F1DClxNMgrKVeNFY4vEVkTsZ4=
+	b=FZOaXNpmh9Wksk1YhNWo1CxbTd6j3tNatF1SwCzCQlHFDCw4jDXZ9LszgvZcrTY/M
+	 Nbdvm75CJhQ+B+OtQZAGdYQV/gAghPxQ/oKW8lYUibbCuzyfgB0RyTFfP7hMQ/AAqY
+	 DyyEufL/mewdu79B/2jntvVSkBBq9yo+Mm92mXMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Mark Brown <broonie@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/154] ASoC: rockchip: i2s-tdm: fix shift config for SND_SOC_DAIFMT_DSP_[AB]
-Date: Mon, 24 Feb 2025 15:34:03 +0100
-Message-ID: <20250224142608.819419786@linuxfoundation.org>
+Subject: [PATCH 6.6 045/140] firmware: qcom: scm: Fix missing read barrier in qcom_scm_is_available()
+Date: Mon, 24 Feb 2025 15:34:04 +0100
+Message-ID: <20250224142604.780074626@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6b24e67b4056ba83b1e95e005b7e50fdb1cc6cf4 ]
+[ Upstream commit 0a744cceebd0480cb39587b3b1339d66a9d14063 ]
 
-Commit 2f45a4e289779 ("ASoC: rockchip: i2s_tdm: Fixup config for
-SND_SOC_DAIFMT_DSP_A/B") applied a partial change to fix the
-configuration for DSP A and DSP B formats.
+Commit 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq
+completion variable initialization") introduced a write barrier in probe
+function to store global '__scm' variable.  It also claimed that it
+added a read barrier, because as we all known barriers are paired (see
+memory-barriers.txt: "Note that write barriers should normally be paired
+with read or address-dependency barriers"), however it did not really
+add it.
 
-The shift control also needs updating to set the correct offset for
-frame data compared to LRCK.  Set the correct values.
+The offending commit used READ_ONCE() to access '__scm' global which is
+not a barrier.
 
-Fixes: 081068fd64140 ("ASoC: rockchip: add support for i2s-tdm controller")
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Link: https://patch.msgid.link/20250204161311.2117240-1-jkeeping@inmusicbrands.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The barrier is needed so the store to '__scm' will be properly visible.
+This is most likely not fatal in current driver design, because missing
+read barrier would mean qcom_scm_is_available() callers will access old
+value, NULL.  Driver does not support unbinding and does not correctly
+handle probe failures, thus there is no risk of stale or old pointer in
+'__scm' variable.
+
+However for code correctness, readability and to be sure that we did not
+mess up something in this tricky topic of SMP barriers, add a read
+barrier for accessing '__scm'.  Change also comment from useless/obvious
+what does barrier do, to what is expected: which other parts of the code
+are involved here.
+
+Fixes: 2e4955167ec5 ("firmware: qcom: scm: Fix __scm and waitq completion variable initialization")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-1-9061013c8d92@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/rockchip/rockchip_i2s_tdm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/qcom_scm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
-index acd75e48851fc..7feefeb6b876d 100644
---- a/sound/soc/rockchip/rockchip_i2s_tdm.c
-+++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
-@@ -451,11 +451,11 @@ static int rockchip_i2s_tdm_set_fmt(struct snd_soc_dai *cpu_dai,
- 			break;
- 		case SND_SOC_DAIFMT_DSP_A:
- 			val = I2S_TXCR_TFS_TDM_PCM;
--			tdm_val = TDM_SHIFT_CTRL(0);
-+			tdm_val = TDM_SHIFT_CTRL(2);
- 			break;
- 		case SND_SOC_DAIFMT_DSP_B:
- 			val = I2S_TXCR_TFS_TDM_PCM;
--			tdm_val = TDM_SHIFT_CTRL(2);
-+			tdm_val = TDM_SHIFT_CTRL(4);
- 			break;
- 		default:
- 			ret = -EINVAL;
+diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+index 7af59985f1c1f..4c5c2b73d42c2 100644
+--- a/drivers/firmware/qcom_scm.c
++++ b/drivers/firmware/qcom_scm.c
+@@ -1339,7 +1339,8 @@ static int qcom_scm_find_dload_address(struct device *dev, u64 *addr)
+  */
+ bool qcom_scm_is_available(void)
+ {
+-	return !!READ_ONCE(__scm);
++	/* Paired with smp_store_release() in qcom_scm_probe */
++	return !!smp_load_acquire(&__scm);
+ }
+ EXPORT_SYMBOL_GPL(qcom_scm_is_available);
+ 
+@@ -1457,7 +1458,7 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Let all above stores be available after this */
++	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
+ 	smp_store_release(&__scm, scm);
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
 -- 
 2.39.5
 
