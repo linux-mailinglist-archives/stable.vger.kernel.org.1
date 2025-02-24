@@ -1,139 +1,110 @@
-Return-Path: <stable+bounces-119401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9A1A42A5F
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 18:53:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F9EA42A98
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 19:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA4C01665A9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 17:53:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7292C3A783E
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 18:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B676264A60;
-	Mon, 24 Feb 2025 17:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0053E266B5A;
+	Mon, 24 Feb 2025 18:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwRTQcwG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F1uufqMm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF202561D8;
-	Mon, 24 Feb 2025 17:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E383E266B4D
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 18:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740419586; cv=none; b=gm2PQ565MJiRhLKnImpdp3NlODDdMd1jmCX/KAqHCH1FyECGjw/8HhSR2tfJp7u3Xs/zOZkkG/joq4mRlvzU4eJYSJ0T2XWi5F1jyk0emqhf053A8oqGzAGCoPpthlYykStW6SNpg/0UleRdnPsQgsdvZr31S6CqdHhIlcjIw8Y=
+	t=1740420208; cv=none; b=DRohwrrecaX6dotfin95kO8XRxW3/UgLEX4aFO0b0V16eQFysy6QtCvY3knEWmEFMtN8Tcpemm+a1EIQSUxsLhQvB1F7zxisfzr5+IT36GtpsO5Wwhhf2GPdlSwtRQPBczrgFQykY+hYo/4Id4z8jAhwXgQ3rG/pT84W/+Xf0tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740419586; c=relaxed/simple;
-	bh=SypH5F3wVUceAM6oLW8fAUMy59LCnOZGidtaq3tQLeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z2XF9brjLi8WOFtm8pFqL078lK3GbDnDD9ytjImFDJfxUgmWfSeBR2cjUaxZ4pCg9Z1JUNS0fETLQAwPPLEBvwBrDzlN6KXgSZ+Vrf++C8mv28RDH/oDsPz+UzwIBjfXcQ1hE4c90wz9jytBH15fHoYq5GIFghNbc5wIEFYlqLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwRTQcwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61420C4CED6;
-	Mon, 24 Feb 2025 17:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740419585;
-	bh=SypH5F3wVUceAM6oLW8fAUMy59LCnOZGidtaq3tQLeI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jwRTQcwG+0nHe4lgQJuX++cQT1hb8CZqL/QPGJswLS/RDlTZD/YWNkCRrHFfAjbFh
-	 wHsI5bhiR7K3lo599/s6gg6AE543iW8CsPmKB1XUruJI6pKQFJR0CC61pyABH8wa+E
-	 feQi416dNe4avOlhKiLwheqDm2mllJRhizmLrRBtd8RMsqS4UF7ezd3KS4jBg8FSh8
-	 mXdbldMAbPDe6aORojwRfjrXCtuFCIDYEU2fHXGHzK59nF4sHUv17lC582Z1B8nlz/
-	 iqV56XQwVOs+wobZvmW6lxvcGLDq8A63MZSaC5L5IDZZ5N96syNlmCfK0BwLCcgwg0
-	 SIsrVpmciCs2Q==
-Received: by pali.im (Postfix)
-	id 486F88A5; Mon, 24 Feb 2025 18:52:52 +0100 (CET)
-Date: Mon, 24 Feb 2025 18:52:52 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>, sfrench@samba.org,
-	linkinjeon@kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH AUTOSEL 6.12 25/28] cifs: Treat unhandled directory name
- surrogate reparse points as mount directory nodes
-Message-ID: <20250224175252.xuwl32zstd7ucaro@pali>
-References: <20250224111759.2213772-1-sashal@kernel.org>
- <20250224111759.2213772-25-sashal@kernel.org>
+	s=arc-20240116; t=1740420208; c=relaxed/simple;
+	bh=NI1xjoVbtgHgczdhbNULpZRkuzmAV2dauxiN8EyjFNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QNVXVu5EKpU40XTM++Mhl+5XFsVrlNZ1Da1k1tl2MCMK7Dw240/wyCMVwMRhHRem3e7vVIjq5Pu5zGdu3ky7RvjrPqS3sOd9ChbHGW0u4H+hhvWPI+k4cyBqNhipE7TjiL0njrwPwwBNus0Z/2sh+gp1GXb7PykMm+rG0S+eJDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F1uufqMm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740420205;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qsdz9u3pB5RtoviLF7GIZI2GctjAOYF/Iu7Vpi9c6vo=;
+	b=F1uufqMmimjZTgXXAi5WHPcudZBjSoWfwTI7urdVfDFWwdsVVNOtRlT+8Gzyb1dv9Qs3o3
+	hjMxwOPTQ4SuW8O8Cu3ZQ4EsUiMW0htx0Bbdj+Ddo7eiwSU1TW8+gUcNHox9p/v4cIE893
+	BrHaSKCUCFiL7uT0ECZdDosxfjzkOHk=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-ywjyD_HXO8KT7Z8pH3FeTg-1; Mon,
+ 24 Feb 2025 13:03:22 -0500
+X-MC-Unique: ywjyD_HXO8KT7Z8pH3FeTg-1
+X-Mimecast-MFC-AGG-ID: ywjyD_HXO8KT7Z8pH3FeTg_1740420201
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B2AED18EB2D3;
+	Mon, 24 Feb 2025 18:03:20 +0000 (UTC)
+Received: from cantor.redhat.com (unknown [10.2.16.143])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F0A7A180035E;
+	Mon, 24 Feb 2025 18:03:18 +0000 (UTC)
+From: Jerry Snitselaar <jsnitsel@redhat.com>
+To: iommu@lists.linux.dev
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iommu/vt-d: Remove device comparison in context_setup_pass_through_cb
+Date: Mon, 24 Feb 2025 11:03:16 -0700
+Message-ID: <20250224180316.140123-1-jsnitsel@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250224111759.2213772-25-sashal@kernel.org>
-User-Agent: NeoMutt/20180716
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-This patch depends on cad3fc0a4c8cef07b07ceddc137f582267577250 ("cifs:
-Throw -EOPNOTSUPP error on unsupported reparse point type from
-parse_reparse_point()". Please ensure that this dependency is included.
+Remove the device comparison check in context_setup_pass_through_cb.
+pci_for_each_dma_alias already makes a decision on whether the
+callback function should be called for a device. With the check
+in place it will fail to create context entries for aliases as
+it walks up to the root bus.
 
-On Monday 24 February 2025 06:17:56 Sasha Levin wrote:
-> From: Pali Rohár <pali@kernel.org>
-> 
-> [ Upstream commit b587fd128660d48cd2122f870f720ff8e2b4abb3 ]
-> 
-> If the reparse point was not handled (indicated by the -EOPNOTSUPP from
-> ops->parse_reparse_point() call) but reparse tag is of type name surrogate
-> directory type, then treat is as a new mount point.
-> 
-> Name surrogate reparse point represents another named entity in the system.
-> 
-> From SMB client point of view, this another entity is resolved on the SMB
-> server, and server serves its content automatically. Therefore from Linux
-> client point of view, this name surrogate reparse point of directory type
-> crosses mount point.
-> 
-> Signed-off-by: Pali Rohár <pali@kernel.org>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/smb/client/inode.c    | 13 +++++++++++++
->  fs/smb/common/smbfsctl.h |  3 +++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-> index fafc07e38663c..295afb73fcdd6 100644
-> --- a/fs/smb/client/inode.c
-> +++ b/fs/smb/client/inode.c
-> @@ -1193,6 +1193,19 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
->  			rc = server->ops->parse_reparse_point(cifs_sb,
->  							      full_path,
->  							      iov, data);
-> +			/*
-> +			 * If the reparse point was not handled but it is the
-> +			 * name surrogate which points to directory, then treat
-> +			 * is as a new mount point. Name surrogate reparse point
-> +			 * represents another named entity in the system.
-> +			 */
-> +			if (rc == -EOPNOTSUPP &&
-> +			    IS_REPARSE_TAG_NAME_SURROGATE(data->reparse.tag) &&
-> +			    (le32_to_cpu(data->fi.Attributes) & ATTR_DIRECTORY)) {
-> +				rc = 0;
-> +				cifs_create_junction_fattr(fattr, sb);
-> +				goto out;
-> +			}
->  		}
->  		break;
->  	}
-> diff --git a/fs/smb/common/smbfsctl.h b/fs/smb/common/smbfsctl.h
-> index 4b379e84c46b9..3253a18ecb5cb 100644
-> --- a/fs/smb/common/smbfsctl.h
-> +++ b/fs/smb/common/smbfsctl.h
-> @@ -159,6 +159,9 @@
->  #define IO_REPARSE_TAG_LX_CHR	     0x80000025
->  #define IO_REPARSE_TAG_LX_BLK	     0x80000026
->  
-> +/* If Name Surrogate Bit is set, the file or directory represents another named entity in the system. */
-> +#define IS_REPARSE_TAG_NAME_SURROGATE(tag) (!!((tag) & 0x20000000))
-> +
->  /* fsctl flags */
->  /* If Flags is set to this value, the request is an FSCTL not ioctl request */
->  #define SMB2_0_IOCTL_IS_FSCTL		0x00000001
-> -- 
-> 2.39.5
-> 
+Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
+Closes: https://lore.kernel.org/linux-iommu/82499eb6-00b7-4f83-879a-e97b4144f576@linux.intel.com/
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+---
+ drivers/iommu/intel/iommu.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index cc46098f875b..4d8d4593c9c8 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4378,9 +4378,6 @@ static int context_setup_pass_through_cb(struct pci_dev *pdev, u16 alias, void *
+ {
+ 	struct device *dev = data;
+ 
+-	if (dev != &pdev->dev)
+-		return 0;
+-
+ 	return context_setup_pass_through(dev, PCI_BUS_NUM(alias), alias & 0xff);
+ }
+ 
+-- 
+2.44.0
+
 
