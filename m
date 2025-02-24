@@ -1,316 +1,294 @@
-Return-Path: <stable+bounces-118697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AA1A41480
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 05:42:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64369A414BC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 06:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60151885A25
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 04:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB1D3B1030
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 05:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21881B21BF;
-	Mon, 24 Feb 2025 04:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A9D1A5B82;
+	Mon, 24 Feb 2025 05:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WJUFfAEZ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZyBRAGf3"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2045.outbound.protection.outlook.com [40.107.20.45])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2042.outbound.protection.outlook.com [40.107.220.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF294400;
-	Mon, 24 Feb 2025 04:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622F032C85
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 05:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740372155; cv=fail; b=eGA3tX7Nhr8zcxI4zvuaMzwv0N6GqxyySSnTZOZXy0qD/Q32YiK0EGdotMvJ6lh+R6jcmxxNdQtElkLqPFaC0f7nrmdJ/17/7i7IMs3+6l3UWajNPcsc7OdTMJPFicaR2vZmgTBFmMJ+e2BZ5LGTvpvA2f2jLBusiSBA+mFLBpo=
+	t=1740374821; cv=fail; b=PSd2WDhkSdrQO93OmyH5jN/oXRzsFnFS/GQ4WY8cPcfW6jZuhnuFb46vyD8etr1UN6J6KysD/l15sziyT21fQj4Cyc8PYPFsbSrsbbye0yC8bPQDfBJVea9EELAVVOmgu/xISGWRUKKXyUF3YYvU8D6w27BO92H5XL1PvOha1oI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740372155; c=relaxed/simple;
-	bh=3rhsFTLyMiRKg9ryY3mhM1a32PLUESJTSmRLCTxf1G0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ps+NH0K7neQXxhHNI8jwGIC2d3U/1ZYmR9+IQDG0Sk2fbrkM2KsEKAnktkMfrbctmnLKszLGUwTF+81JJGZV4aEs1Me5qdWn7zs09FPHtGX/Sh6O5dU1C2M1bljZmKMBGpfsMJnDHX8pcCq9D51tMsuGSyCKTIHkfYPIkQusNps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WJUFfAEZ; arc=fail smtp.client-ip=40.107.20.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1740374821; c=relaxed/simple;
+	bh=+5YeJ5paXff2u0dO7Qd85tfYNmGQsGaFhHF7CNJmKwk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=uMn/9b+QEd9u+UiT0lJ9snzC/4WQXAn7dnmT8w2A8dRjq9ufhMqntEU9bpXnzCLBrTP9MqMymmJH0/2fBQwa3jPBVqdVUb96oYmASX6HvJgtdTERYNErCVtS4DrP0h8ZIt5wDQRiWaHuqAl5oUif5UB8locUf3f+6ooQgszqeKY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZyBRAGf3; arc=fail smtp.client-ip=40.107.220.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WWrh++VgV7MqZXOJCB/Vblut+Y3YbPbaANdtwTSkTIWOkEhsL1tdVXHzkfTWSsPAkINsFKSd5nv45JJbkmpp65I63Sr1r/lAphQ48xtFYPa7e5Egoy0ucFeA6ueSIuA11AgdqtDt2ylkvtoHi7TtlD6kOFp8vajAR+c/spjagMTibXF0NLOyf8vXz976FikdovnKzE8nIBpl1NHpHxM/xDU/xLfhVTzdoI/q+cXxKn3kuc0rYW0j94MtLS4e2YZWkeFGC3+CxrHrQWBwddNuHgBszmeo6KK7Ug5+q/+RKdmxEbQiO9U34qJRDwR0EPqv4dAHSjsaaCeZCd/TJzMn3g==
+ b=lHGH23+mwr8NgwD5jPgxiBuTadLTamtSaGskiytaqHTn8FI2nJe6RezOofER3tJuE8LSY4go4tBxC5q501O2HiZXsNoV+nSqp3hun+oLIPw2Aw9E8xNGdh2zTtVzRoTy6J6Hl5PQryE3JoI8wFhVoXrgZarxBUPj+rHXQHKPn8Sp4PUj+P2aDDudLBbWyGD5CgK8jrE1gf1vNE2wr+EqC2vabqMgUjwmBe0s1V5h6LdR1BJBEirAyiU/iz2AgkJGS/zqyo+gl5C9Js8jHWbZFRp8iMNLPWASu10LZ7X2DjbHs7uSlcrcDDWEzHRML0qE89hY12sjSPfgwrgmDuOhEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xNbJj+c2ivj0Oh/FmLJuUa/K3dvM5X8j33mZZ2YUlec=;
- b=i5BgLiatz04ltdwIC3arI0Qg7WvhVeyTtJHxkSARSb97O9stkuhN6za5NQAl5gRFzdgkr/I77BejAU+OPtN8vdLDyCGUZ9q2M3jSwyrzh6idIQ0LKby1vBW8Z1n9Rn2Y9yavR3UbMN2hp3EGu1eePYuZd2Plc4vj7fmDGtiK0/XOt/h7mnZDjowlklWSft/LiYDRfXZD8YNyoFg6HdxWy/RnpGtlXkeHi/IlB+lL9D8ZVG1v9OxuOZjzGjQsQBlC7tl7+urrYU5bh6a5V05NkSXymKEDKUeh8hxdRXgAEZI7iqF/oFACCiV/yrdEdERWOgTdLMwQqEEFSZRhiRDBUA==
+ bh=yF8A0QwevwiRq2RBP9zJDLn0u1kEgzTytcok9aZFIeI=;
+ b=SYerh9j/jYhZZ3nqh5KaaVGBs/apX9Dgdo0k0P4HenXzNU7BVwW8MrWGmc7yVkjTK+UVLxmo6BezLNnnF+15uYxqouzOpg4f5nMG6V9new6KNl/fQV6vslSv4OfxAlmUxWBrBxkFvb9ZoE3G5Y2qLaSLI4P7knHx8uMKN56riifAFHku6S4PyNQZnKavl8VU2etK8MxHzqyFVONDA0KgD1RD0arJ7whCQuoAbIQmJ25MbcvFQwaiE8HTslJcG30hvClKLSFxNOKYf4ppjT8B0mt8EoKD2Sz5ctp5TgqN7eWTlk+4qxJTtYoDzl2EieF9wF106wEkhrOnYS+hmdpH9w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xNbJj+c2ivj0Oh/FmLJuUa/K3dvM5X8j33mZZ2YUlec=;
- b=WJUFfAEZ9F/n+DWBRMfsfRPyNLWrWABKRW4hzYj8B9/zbFzcwXGaadSuZU7RdvPRsw3XY2qWAR8vmdNyvaDqW289Nc1SJv0BkZET/miFZU2fRVj4rvhB7Cdf0ckhhrqTXw/00wLu9VU9iMx1SR9AfTWg8Nuqph7Y73i7Lw3HF8doM7pH3WYCgv+LyE2P5qgEr9KsaR/Sbih0A6kBzQ4I00O7/oAdWsHXS94qzy1PzQNksQPrhiQt/iwGBimusdh4Zj41gWBHRN20puCDRSjI8fuqdimeeZg5c2OYp9aB8ihHeiDbOZYQLxlYT7ncyyNi0qGomFMdeXta0rxIqnGW5w==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI2PR04MB10596.eurprd04.prod.outlook.com (2603:10a6:800:278::20) with
+ bh=yF8A0QwevwiRq2RBP9zJDLn0u1kEgzTytcok9aZFIeI=;
+ b=ZyBRAGf34hJbDDnUccznVi29yEITXDbol+OYeFUoX1NhlrEoVUdXx/D0FGkazRx9RflLg0Pdzxn8dAk1y/mwTgGyAmtBqHiSVcJKpgRmetj0rCdqxPHTjCcM88ZMpX33V13SiJX83aPJZ6hgWHUi4l/6sByrmOY9BnrxSZC1cyQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CYXPR12MB9425.namprd12.prod.outlook.com (2603:10b6:930:dc::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
- 2025 04:42:30 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Mon, 24 Feb 2025
- 04:42:30 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Topic: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Index: AQHbgpOTkcGlUe2F8Uqdee5IlYnyh7NQZPOegACoNSCAAHQsgIAEUdIA
-Date: Mon, 24 Feb 2025 04:42:30 +0000
-Message-ID:
- <PAXPR04MB8510A88FC949D501E5767FB888C02@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <20250220163226.42wlaewgfueeezj3@skbuf>
- <PAXPR04MB85108B76779CDD5C6F862A5B88C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250221093027.wo74lqkbycky2vu5@skbuf>
-In-Reply-To: <20250221093027.wo74lqkbycky2vu5@skbuf>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Mon, 24 Feb
+ 2025 05:26:53 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
+ 05:26:53 +0000
+Message-ID: <011bd073-b600-4db9-b371-05e443db6a9e@amd.com>
+Date: Sun, 23 Feb 2025 23:26:49 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: REGRESSION amdgpu 20241108 firmware breaks screen updating
+To: mail@tteles.dev
+Cc: "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
+ Alexander Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>, Xinhui Pan
+ <xinhui.pan@amd.com>, Airlied <airlied@gmail.com>, Simona <simona@ffwll.ch>,
+ Lijo Lazar <lijo.lazar@amd.com>, Tzimmermann <tzimmermann@suse.de>,
+ Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>,
+ Ahmad Rehman <ahmad.rehman@amd.com>, Shaoyun Liu <shaoyun.liu@amd.com>,
+ Ramesh Errabolu <ramesh.errabolu@amd.com>, Jun Ma2 <jun.ma2@amd.com>,
+ Daniel <daniel@makrotopia.org>, Linux Firmware <linux-firmware@kernel.org>,
+ Dri Devel <dri-devel@lists.freedesktop.org>,
+ Amd Gfx <amd-gfx@lists.freedesktop.org>, Stable <stable@vger.kernel.org>
+References: <OJnZDtd----9@tteles.dev>
+ <eabde17b-b5e5-456f-a499-cff132f1bf8a@amd.com> <OJpqNWx--F-9@tteles.dev>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI2PR04MB10596:EE_
-x-ms-office365-filtering-correlation-id: d62e899c-ff3d-4aa6-ed60-08dd548da59d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?6Evo0UJ3wN3lnTuLAhXtCq4OHrEuDXBsdAkoiGTRPlWmE9DNzk9xEPMDLIlF?=
- =?us-ascii?Q?D7dRhCj4xbylqOJ7+C9x+teXVIZdk7C8hbSUT89hX0zlA1IoMnAY0tv2rWI4?=
- =?us-ascii?Q?tKm7dtMqvjT+OU2MqU/0sbzPcLSJ6pHpIq7FvePTbIUjbBNYo86aj62cHoR+?=
- =?us-ascii?Q?LU0aOLndIPqhdwhvQk/Shvd2iaIK2OO0UZMFLP02d+nzo4oHxodNBgQoHr1B?=
- =?us-ascii?Q?gnaG+I+v9vFGfSCS3Sd0Tz6bmCSerCwrCIJUK5PFLBFvO3f+nNTIcnK/aOm6?=
- =?us-ascii?Q?Fg3PgwVPt6bntAdH016S4Nwu3sNXpqf00geLPpVdsAsmDLiqpC+ViboG1iNv?=
- =?us-ascii?Q?kX+rr7xsSM/GsAau6CnC/XsqdpVwmyP0tuFBT8GLDkieQpg8L8RNxTmR40EH?=
- =?us-ascii?Q?a0jpaY8o9VxsbQcuy4hMGL+D/PbX4Oj7DqSKO1T5nxUcaLOfz6L3NaCcz3Kn?=
- =?us-ascii?Q?3wkSsYge1N6RIlqNamoQANGq18+ctDmiD/fWsaG1NVFQ1gDlwVMw8A1lWxA7?=
- =?us-ascii?Q?MGlAvTzFch9FvdULmcE91ZHI+omUZCOsw11c3/LkWTYrJuFjJcphPQxDVd+t?=
- =?us-ascii?Q?iE7vZFdDnY4H/K+T4RjEGX6H5w9szutKG3ALsS/HgrDEhSfTeBqX9hUmpx4G?=
- =?us-ascii?Q?zhzJ7Ww+bbKXDGrtzIKsQ3IXvSLZEHD3Vx4UhG/lhkMPfSXp3G5N7T6Bpbma?=
- =?us-ascii?Q?/hB6YzWGcnghzHc5+nE4NdvXDdZtpCJHQNDii9yYqwwbu9T6mMoDEoOhtCtG?=
- =?us-ascii?Q?yqcTw8eKy0EUD2ZmAw1VKUHNEGSN4+Bn2LwQc/+qMUIYHB9oMyY2dIUWc7j6?=
- =?us-ascii?Q?ArP6uUvn+PGVaySnx1Yd5mZLMJgsmqNf3ljsmuktbzLOKPb+StN2CVXWt+Zd?=
- =?us-ascii?Q?5qaLknVTLHCOkLjoySmihepbJBWYntERdDrQm85wQZpLBHisFEjviTgecML3?=
- =?us-ascii?Q?7msZhCiwLzmplNwdLcd9NleP/mftG9WdP7Kv95ICBp0P2i+yHWCxxXCpY0gs?=
- =?us-ascii?Q?mhB6UwHI+EZD8PW2X009s/AmQ77xs5+/8P8AqMx6kY889EaXaKqV1Q8eDmXe?=
- =?us-ascii?Q?wO1tcRweANACWYri8x79iQF3PRPbT9PfSj/LauJ8lxZNjRJ0ySiF0+1FXStx?=
- =?us-ascii?Q?YFPr7mWXu6qUqxauNqK7216RKYi1YzmeqWcLZzioM6Jrm7wB1F/G7pZS98kM?=
- =?us-ascii?Q?SkKUwUskccjWOiwhtDMT9YGeCOI6hsza8e/TjkoWHy3ffrlkdeE0jGo5foqw?=
- =?us-ascii?Q?ZSkLBrU6hQf3rJd2BptaE84uevTuF7q8amCTtvsquaY1bDbKwWnJOIDjNvtn?=
- =?us-ascii?Q?iWwI2BTfou6vv1XnxuQhEGStIC8ie9aZ10FZleJGx8W1z82W4Sj4wl/ZWPMB?=
- =?us-ascii?Q?g9OFmns+9QF1jgLmffDQRiN9S4jJrGrCtdXLrwc7FU0nMFobRjw6QDEYPQ4S?=
- =?us-ascii?Q?xEI8JamPRF/0qP1ZNiHLJPDLRqYWvQXI?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?8FyQckGxPNaF+5GUBcJa/IJnQuUITNxC3lo7Qg0vhTesrY17gu8aKVJ7HofG?=
- =?us-ascii?Q?p5q7VFrLAO37QZJSXr98/VG2A5y1yy4ruUAkd3uFWqW/0azmDMFT5gNiicBa?=
- =?us-ascii?Q?0B1oMSuzd6Ug44mGjSuumvzefMxgRX71VmEvgEV0ej4jb3gwt9qq0LMF/eOC?=
- =?us-ascii?Q?mAVIAMIyBqMY3LZ9oLc6lcOL/ebu+e0Z5QAx04vaVxJdTt4+F/liPy99N22r?=
- =?us-ascii?Q?YrE/OhaYe01HlFbw3pqgpAZG1QHBaAAIzW5ytFLptFfRAiats8Ki+4aXuoee?=
- =?us-ascii?Q?hRrV6La1WpbbzBnUUmTfC+4riYyEvDUR0cgR8Y9Y9qJp7ntyu6TVGpIrsgB2?=
- =?us-ascii?Q?rlUyD2LRKNFb7uLLBibuZxgea5iin50QBgK2aXWqhC7aJ+yAQ0nWGBjjKq7g?=
- =?us-ascii?Q?YHhAfWv/UTtCeAKMZGlhh0hVqdiJjU77zuVbfm8GTqr/TPBlLYyMgMBc2s8Z?=
- =?us-ascii?Q?8DHmukhM95miT4UbLzUARnshkeX6JovKdOgX8MP2Ccgabub2X2kNmAksc2R2?=
- =?us-ascii?Q?EEIe7wAy7ukGeWz6M/CPL3eNvIwG407/7t9yZVeRmWHWws36ksCx+DcMqhoF?=
- =?us-ascii?Q?NFVOQ15WKxxIA81BJvWdO4ZBstGl4K5/EKpIAcYb6JtQ1a5LYIB8nVYAAXoE?=
- =?us-ascii?Q?UjRIR8le5Lo0nd9moyyVODWiGJ28fiqt67FhjaU7DdYDn2mZRoIQ1YvV8IHQ?=
- =?us-ascii?Q?6XUwxHFreAqz4i5cbFuB2PXEnIwoX5GNqANGfiZ1j/j7IdzSoMuM9okGHIzf?=
- =?us-ascii?Q?Qwk/9rR1UadsIZHJOOBW2NvKB3D/rYsmAsybDEerSuKA7ESaMOqRgePDYVtx?=
- =?us-ascii?Q?LXzUCH/6luoOL1r5k2lt6SbatHVKyIRHpR1jPPNlEanyhVQbHR2YDRCKrkbY?=
- =?us-ascii?Q?cUtDnlajPiAbJyRSDNXgBt1rqYwuBQUqC/iEaKt1cJnECWPBDHdxykCMA+Te?=
- =?us-ascii?Q?WU68dSJpNA7mfuq2NT7xm9zduSJiFI5K0OCCPSak5FQhQolDGjwhmw0w8TcF?=
- =?us-ascii?Q?RhhsJxGcJZr+OeqrvP4iJy5kjoNUERmPu5sdfu8IyY2IiikN8S4szjfTAkcp?=
- =?us-ascii?Q?24XfzilC5Ymas0VRasRzLPOGl6zbhNUPBwS4pkZm35mxlL5GsDJDqLu+zs+p?=
- =?us-ascii?Q?agWh6UXPiBRTG5Lu84hDiaXRqAzKuuM+U1R86gp+DjShg4/+4pIZUHJVp4Rb?=
- =?us-ascii?Q?mpGCjjxELGXM9aWegpO0Coal/wCIOfuRy4fUymzbsFphwAmAlCixP8/xG8b6?=
- =?us-ascii?Q?81yHV0JiZnX8pEFGYNvoDcNXmruB4kltmIvF2UHB6KwOuJneLnKbQM3sUzWQ?=
- =?us-ascii?Q?TOtVG+fImzMP3t2uQ04MvwH4UPHqSMEkvsdf+CPiwYEkFMsHthrTbNTqoFbp?=
- =?us-ascii?Q?/HQta/ViIKd3T/9Dims+d6P5dYcA13/O+jJMnQQUB/fF3Jh0kuKUI9mpNoAq?=
- =?us-ascii?Q?dM8+uePO9Jy3Cvu6ayNIxA89jlun77zMIBGkMYOvtIUlVWg6QHVeIcSwq6wI?=
- =?us-ascii?Q?J+35JljPx1EKEZjnRb3vtK0Sin5xhEy3zy4fTS15vNld9zRK3RoAW4kw1iXR?=
- =?us-ascii?Q?yOmauxv/ZVx9WNZh3tk=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <OJpqNWx--F-9@tteles.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN7PR04CA0206.namprd04.prod.outlook.com
+ (2603:10b6:806:126::31) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CYXPR12MB9425:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32b3a987-3d66-44d6-a67f-08dd5493d8ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WlJqRWtkcDY4eGVjdWxWd0VKeTJSZ2RjTEFGdzRnbThDRlN2a2ZGd1V0c2tU?=
+ =?utf-8?B?dTlFTWlNRTFTSnhtYkJYcllncC9wbUNMWDJ6bWpXWWZNbTRUQzMzeDdkWlJ5?=
+ =?utf-8?B?VFRNZjBjSm1aTWdIazRpcFgzSTNYUG95SFN0SThUMDUyK2VKeTBjenJhYkQv?=
+ =?utf-8?B?N0gxclZPNnpETkVRejVUckpUaGx3Sm5ZNHNON3BPamlFUlVXeTF2NnhBdGF4?=
+ =?utf-8?B?Z2ZqZHNIS3NUWEVTem8rWW1xWCtlWDlmS0hBdWNPYUlsVzR1VldzVHg3cWlK?=
+ =?utf-8?B?SEMybzdvWEN0RWRiQWRLWStyTFNwblljVUFtUUZMSnFnWkpuK3U1ZnIyQm9B?=
+ =?utf-8?B?UnRtc3BuRWswckNZUnc3WG5VNk11NUFXRFdPNkVkckl1NnhrOGdKQ3oyYXBP?=
+ =?utf-8?B?QURESW05VzhBSHJYb1AvV2czb2VRWS93OHNKZ3Mxbjd5UnRnMnV6c3M0S05B?=
+ =?utf-8?B?aWJxcmdlaWlwbk14VnZLWndvUmhNSkRCLzhKaHZnTk5tdjAzVVdoeGxIc0hn?=
+ =?utf-8?B?bGZORVlGU0cxeHlTYVFNdjQ5bTc1c3JoY1NVNDlZVmkxZmQwaDBUOUNrWTZU?=
+ =?utf-8?B?alBGbVF0bDlWU1J1QnVHY1dxdE80TkwrNWVRWFpteWlUOS84MENsbEpGd2Ry?=
+ =?utf-8?B?WVEzWkdpYUxoVStXZGp0eWxVR1BYbS9vUjVXdkpVenBzdFZSSVZOdTIrd2xH?=
+ =?utf-8?B?TVNZRWpTU1pYWXoyc3hQelRIeGxlVkZESzBtNk5PanFGVC81ek4xNXZsQ2Zs?=
+ =?utf-8?B?NTFtUDVhS0tvU0hqRjllaW1hNVd6UGRNZkMrbUptYkhNd1AzbW40V2QyeDk5?=
+ =?utf-8?B?WVhXdjdjMkE1bWpOKzFKck1OeFlmRm11OFF0c0JKZXFwNllrUnZWWUpPWE9R?=
+ =?utf-8?B?WXp2a3pWdm9ra3BXaHltSmZEQURBUk54ODd6Q2w5OWFJU1diMXRQRXFrUE0v?=
+ =?utf-8?B?S3NiYitmV1V6WjJaNjFWdmJDdkhPcTZySDNLZDJLU012R3JvTzVNdlNycG9D?=
+ =?utf-8?B?ZlZ3QUdLb2Rhb2NQSkJKNk1qRkx5bm1xeG5DT0FiWERzNENOYTBTbFYvdXRU?=
+ =?utf-8?B?dW9pVkp2ZVR1NmoyTWI2ZCtSeFFRQnRUNlI3M1hvYis4VzJiMFg5azJzRFEr?=
+ =?utf-8?B?RHE2RzR1bDNSbEM3Y1I3ZnZIUkM1bDVWQnUwUGlqMWJ2bnVwc2t2MDdXUHVw?=
+ =?utf-8?B?NG1XeGR3d2lVSGhrNUFEd2NsUitGQ0UzSlErUUNhekZCczhPY2hxNjFyT1lH?=
+ =?utf-8?B?aUxSbkN1OTluSWREY3hpNWg4emtBZXBQVDRFVkZUejArcWExTHgwOFJvZmV4?=
+ =?utf-8?B?cVFqMnZoZTNyWjZhWUVnZ3hJcW5hdDR5bzZRaHZQVXN6aHdGUy9WdHFqdm12?=
+ =?utf-8?B?RURFc0FsRmdLM0IrWnVQSGo2OEtQWFQzZC9MaktiZkN1VU5oT2s3Vk5SSWp6?=
+ =?utf-8?B?Q3pmMmZScHJpT1N6U2pmVFd5MmZxMTBYNmNMd3BIWGxpeGRmYkl6QVl0dVFq?=
+ =?utf-8?B?RXQ4VUc0WTVYVU5oTE9sYWhjdW91aG5JWTFXZi9Eb3lMRFYzUU4rdy9nSjhK?=
+ =?utf-8?B?NlVLSWZrU01ZaDlnWE5DRHBEeDM1Ri9FRzFzajJJU0pvUWlpUDh4NXBaT0xG?=
+ =?utf-8?B?M1V3R2RQQlptSmtZRUd1eCtjOTZMZEluMExGdmV1R3NGVyszU3RQTDJMZDhT?=
+ =?utf-8?B?ZmtvbTdhTXpNTHFrUkFXaVB3d0dnRWlqcGpLUmtrNktSdFVOQjluRksvQVBY?=
+ =?utf-8?B?TUJsSlR5NXAwTUFnOGtQekdGZHpJSXRQaEttcG5VRXFaU0pIQTd3dlZNU2U2?=
+ =?utf-8?B?UVZBallJMXNxSTh6Z09FUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bXl6SkJiN1VOK1hDM1RyU0RBeEFGYVZBanlXMVpjaUc5YkpGUWkxUy9WNHV1?=
+ =?utf-8?B?MmsydVVPQ2dmZ2RQTGhDV1dwaDZST3dwRVFOaDQ3dHlneXYwaXMwdXJmRkUw?=
+ =?utf-8?B?MFZNMWxGTXFjWU5lM1lzNEErMWRJcGxOL0RpZzRnK2dxdlo0ZTNSN3dLU01P?=
+ =?utf-8?B?b1cxQ2lKckxxVm05dGtqSy8ySkVoUW51Z3lhcHJlUVYrZFhLWXdzR1lmUmph?=
+ =?utf-8?B?SzltUHduTUNwVHpqVkpWdis5SUVCTUtITGJEZFNtOVBCTjlSS3hNWU9TbVlZ?=
+ =?utf-8?B?OHd5cmVHWnB6cE9yWWJFNTdRN1Q0Mmk3aWhra3BNNWJ1ZWR0US9CNHoxbzBW?=
+ =?utf-8?B?N2JuTVhDTm91SEFTVkQzd3cwczQxbUNZT3BLT0M5Z3FZNCswdGJEdkNxZUQ5?=
+ =?utf-8?B?dWxqNFVLcEtFRFd2T1hpV1VLMzNzanJtM0xBYk1CWmhUMDE0M0dYcGpZak1u?=
+ =?utf-8?B?dkREUWlERjhxUWhhTkZyTE8zMXFIS1Y1REdobzQrNElyNDFGMUlTbnQyV3Vx?=
+ =?utf-8?B?TG14ZWxOYmZGQWh5VlN3dW1BVCt6K1lwTy9rUW5oM056U2ZVaTRraDM1T1lS?=
+ =?utf-8?B?WkI1eCtHcGlQR0JPbkY3MGVOZWNsTUU5a3IyL2hLcjdWbHVJK0xGdVJpMlM1?=
+ =?utf-8?B?ZFg4WVAzOUQ4VzdHQ3hTVTZCZyt2SSt1WkUyekpyeG1VakExT2NwdktBSitq?=
+ =?utf-8?B?UTBsMS9DWU10S1JDWElXZzN5RFg0eEoyalZzUkZnSVBJMFcrOFdHU3BUaWZu?=
+ =?utf-8?B?TkwrS2JmdjRnRUFyWWJzZjJmVXpPY3JRcms4UnhMdno3T1gzQmZmdkg0YlhI?=
+ =?utf-8?B?RVA5K3dIYXJYaW1Ua2RPT0UxOVNwMzVoQkI3MmphYVRPVWZGekxnNHUzR0w0?=
+ =?utf-8?B?QVVFTTgvWlhXZ2tPM0ZzY09peENjbnNscktkRjlnWnFiZVA4RlJOOTlqK1Zm?=
+ =?utf-8?B?Qmg4QTBHSk9QckRLTVphK3Nwd0RBMGFVNXBVZUNQSlRad0JWMGFJRm9TV2NS?=
+ =?utf-8?B?QnF3SmNNQTIvazBNdjVqSDlaVFduWjJYVm9vWm05a2E2c0VoL3I0UndwVDdR?=
+ =?utf-8?B?UnVHV1lRdUxXY3NYK1REQllkaDdEVXdpb05EL0xLTE5sZHZNWENMeXNYQTc0?=
+ =?utf-8?B?elVWOER0d2RnT0kyQVVzeHdrRTREQWl5RlhzVU1TMzM4ZmVxMXRkOVRCTCt1?=
+ =?utf-8?B?VkdvbGlid0FQcVZGWkc5ZlB4VVgrUTN5cHl1TEhOR3NrSnU4Yjk4aGI3L29m?=
+ =?utf-8?B?aW9iSUVQWndvUnA0aUVnTWlaaWl5dHR2Y3hRTzB4ZUZ4Z3BQSGo3KzBKdm1X?=
+ =?utf-8?B?RitvVTBocHZYMGgvQjRhMnljSlRlM3k3cldJM2R5V1dldkMwZDVEQlRYK2ho?=
+ =?utf-8?B?alFCZWJSa3VUbDVUWFA5NU1DRWEvZmoxV0U2NUxnb2ZUNTJGNk9jT2JBUTJS?=
+ =?utf-8?B?OWwwTUVIL0JKZ1VoSXFrZE9tZGJTS3p5bkU3bkZLcVdaV1g0b0RBeTdieDNo?=
+ =?utf-8?B?dHJrazF0bTU2dk9abDdDbnNudWFXNUpNRFo2cXJCVUZXajVDa3JRbS9EZEg4?=
+ =?utf-8?B?alo1ZlBERnkzWEJCUVhPdDZqV0FpbUluZC9ybko0RXB5VFlQZ2JLYWhqMjli?=
+ =?utf-8?B?TWFNb2pBUFV5ZHhvRk5BbTA5bmVPdldIdnFzaW9LamxnLzR0a2E4MUVvK1ZG?=
+ =?utf-8?B?dEJ0c2lzZkhoYWpLN3liUWc0U0VMRE05ZDNVbHVqSDBuYWhuTEIyZk1Ld05P?=
+ =?utf-8?B?Z1NuWnZ5NzdHQ2hJeDg2aDczOXBjcExrbTNCbGs3T3ZUTGJzTmxjaFR6Mlk2?=
+ =?utf-8?B?YVpLNXRCdzc1R2JobFo2NVFucVJMYnhVQkxNMERTbkkvTlJ6WmMrN0hQWjYz?=
+ =?utf-8?B?OWE4RTY4T0JDOXZJQnpQNENOOUtmcEpEVnREOTZCaHQ4NkNCRHpvRGZnQnR5?=
+ =?utf-8?B?TDRhRTd5UUVhN01IRTlGd09EYXdUYktpNi9KOXIwOHJnZXdpNVZ0VVU0QllQ?=
+ =?utf-8?B?cCtnamxpRVFMM21zVVNnNytmaXNiSm5jMkVPWnRHRXR0WTh4dVJDTzY2UW54?=
+ =?utf-8?B?bkovaXVXS2VTZ2hpOHBxa0ZFZ1BrSWVrZ3NvNGtLSEEwZVo3ZHA4ekRneWlN?=
+ =?utf-8?Q?qMNZJIsZ8gfK2B3VpRFwtQ8Uf?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32b3a987-3d66-44d6-a67f-08dd5493d8ba
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d62e899c-ff3d-4aa6-ed60-08dd548da59d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 04:42:30.2043
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 05:26:53.1214
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Og6mKJgpTLyEy4l/dIuFpzHP3lgiDKj/l9c3qeGqbV79IPrW+0fc+kRzPjwK/yqvbx6YcPayuW65kGsadtxCxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10596
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jifJa1yVyQq6edPXRcrmlPoNWyIZ6CvKio/zMreK/E4PPMcZUWdguPzENMIKON+lbKMBfBx/5ulJTWSaOyHMZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9425
 
-> > > +/**
-> > > + * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buff=
-er
-> TX
-> > > frame
-> > > + * @tx_ring: Pointer to the TX ring on which the buffer descriptors =
-are
-> located
-> > > + * @count: Number of TX buffer descriptors which need to be unmapped
-> > > + * @i: Index of the last successfully mapped TX buffer descriptor
-> > > + */
-> > > +static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int cou=
-nt,
-> int i)
-> > > +{
-> > > +	while (count--) {
-> > > +		struct enetc_tx_swbd *tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > +
-> > > +		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > +		if (i =3D=3D 0)
-> > > +			i =3D tx_ring->bd_count;
-> > > +		i--;
-> > > +	}
-> > > +}
-> > > +
-> > >  /* Let H/W know BD ring has been updated */
-> > >  static void enetc_update_tx_ring_tail(struct enetc_bdr *tx_ring)
-> > >  {
-> > > @@ -399,13 +417,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb)
-> > >  dma_err:
-> > >  	dev_err(tx_ring->dev, "DMA map error");
-> > >
-> > > -	while (count--) {
-> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > -		if (i =3D=3D 0)
-> > > -			i =3D tx_ring->bd_count;
-> > > -		i--;
-> > > -	}
-> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
-> > >
-> > >  	return 0;
-> > >  }
-> > > @@ -752,7 +764,6 @@ static int enetc_lso_map_data(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb,
-> > >
-> > >  static int enetc_lso_hw_offload(struct enetc_bdr *tx_ring, struct sk=
-_buff
-> *skb)
-> > >  {
-> > > -	struct enetc_tx_swbd *tx_swbd;
-> > >  	struct enetc_lso_t lso =3D {0};
-> > >  	int err, i, count =3D 0;
-> > >
-> > > @@ -776,13 +787,7 @@ static int enetc_lso_hw_offload(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb)
-> > >  	return count;
-> > >
-> > >  dma_err:
-> > > -	do {
-> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > -		if (i =3D=3D 0)
-> > > -			i =3D tx_ring->bd_count;
-> > > -		i--;
-> > > -	} while (--count);
-> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
-> > >
-> > >  	return 0;
-> > >  }
-> > > @@ -877,13 +882,7 @@ static int enetc_map_tx_tso_buffs(struct
-> enetc_bdr
-> > > *tx_ring, struct sk_buff *skb
-> > >  	dev_err(tx_ring->dev, "DMA map error");
-> > >
-> > >  err_chained_bd:
-> > > -	while (count--) {
-> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > -		if (i =3D=3D 0)
-> > > -			i =3D tx_ring->bd_count;
-> > > -		i--;
-> > > -	}
-> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
-> > >
-> > >  	return 0;
-> > >  }
-> > >
-> > > With the definitions laid out explicitly in a kernel-doc, doesn't the
-> > > rest of the patch look a bit wrong? Why would you increment "count"
-> >
-> > Sorry, I don't understand what you mean " With the definitions laid ou
-> > explicitly in a kernel-doc", which kernel-doc?
->=20
-> This kernel-doc:
->=20
-> /**
->  * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer TX
-> frame
->  * @count: Number of TX buffer descriptors which need to be unmapped
->  * @i: Index of the last successfully mapped TX buffer descriptor
->=20
-> The definitions of "count" and "i" are what I'm talking about. It's
-> clear to me that the "i" that is passed is not the index of the last
-> successfully mapped TX BD.
->=20
-> > > before enetc_map_tx_tso_data() succeeds? Why isn't the problem that "=
-i"
-> > > needs to be rolled back on enetc_map_tx_tso_data() failure instead?
-> >
-> > The root cause of this issue as you said is that "I" and "count" are no=
-t
-> > synchronized. Either moving count++ before enetc_map_tx_tso_data()
-> > or rolling back 'i' after enetc_map_tx_tso_data() fails should solve th=
-e
-> > issue. There is no problem with the former, it just loops one more time=
-,
-> > and actually the loop does nothing.
->=20
-> Sorry, I don't understand "there is no problem, it just loops one more
-> time, actually the loop does nothing"? What do you mean, could you
-> explain more? Why wouldn't it be a problem, if the loop runs one more
-> time than TX BDs were added to the ring, that we try to unmap the DMA
-> buffer of a TXBD that was previously passed to hardware as part of a
-> previous enetc_update_tx_ring_tail()?
+On 2/23/2025 20:56, mail@tteles.dev wrote:
+> 
+> I can confirm amdgpu.dcdebugmask=0x200 fixes it, no more stutters.
+> 
 
-Based on your definitions of 'i' and 'count', you are right to say that it'=
-s
-necessary to roll back 'i' because the last 'i' did not successfully map th=
-e
-Tx BD.
+Thanks for confirming.
 
-Regarding to I said moving 'count++' to before enetc_map_tx_tso_data() is
-fine because the increment of 'i' and 'count' remain in sync, so 'i' will n=
-ot
-roll back to a value less than the initial value when err_map_data occurs.
-So it does not affect the DMA buffer of TXBD which was previously passed
-to the hardware as part of the previous enetc_update_tx_ring_tail().
+> It would be very beneficial to include the patch making this behavior default (https://lore.kernel.org/amd-gfx/20250221160145.1730752-3-zaeem.mohamed@amd.com/T/#u) in the relevant linux-stable trees, as this is a major issue for affected systems.
+> 
+> I CC'd stable@vger.kernel.org and ask for the patch to be included in linux-stable, even though it does not have a "Fixes:" tag, if the maintainers are okay with it.
+> 
+
+Yes; the patch has a stable tag, it should come back.
+
+> Thank you for the quick response!
+> Tiago
+> 
+> Feb 23, 2025, 17:26 by mario.limonciello@amd.com:
+> 
+>> Hello,
+>>
+>> This sounds like to me a problem with PSR-SU.  There have been a variety of these being reported the past few months.  Enough so that the policy to enable it by default is being rolled back for now.
+>>
+>> https://lore.kernel.org/amd-gfx/20250221160145.1730752-3-zaeem.mohamed@amd.com/T/#u
+>>
+>> To confirm that's the root cause you can disable it with amdgpu.dcdebugmask=0x200.
+>>
+>> Thanks,
+>>
+>> On 2/23/2025 10:08, mail@tteles.dev wrote:
+>>
+>>> Greetings,
+>>>
+>>> I wish to report a regression in amdgpu firmware introduced in commit c99eeb4d0e13f5831ae77f7ec521162594385d5f, the problem persists until git HEAD, and reverting to the previous commit fixes the issues with no further changes to the environment.
+>>>
+>>> The issue appears on a Lenovo IdeaPad Pro 5, with a Ryzen 8845HS processor, using the 780M iGPU (1002:1900 I believe). The screen on this laptop is 120Hz 2800x1800, supporting HDR.
+>>> This was tested on Archlinux 6.13.3.arch1-1, with amdgpu drivers, on both Wayland (Gnome and Hyprland) and Xorg (i3wm). I'm using amd-pstate-epp scaling driver, tested with both performance and powersave governers, to the same effect.
+>>>
+>>> I will list the symptoms and attempt to guess at what the issue may be.
+>>>
+>>> - The screen stops updating if no mouse input is given while watching low resolution video (wherever it is, Brave and mpv, regardless of software or hw decoding).
+>>>    Low resolution matters here, I can play 4k video fine, 1080p with mild stutters, but lower becomes very bad.
+>>>    Here is an example using mpv with 360p sample video, recorded on my phone as to not disturb the environment its running in. (https://youtu.be/kYHqBjPxM2s You can tell it is very choppy, the original video https://www.youtube.com/watch?v=1HrXwe6s4W8 is not choppy)
+>>>    mpv did not report any dropped frames despite there obviously being a huge amount.
+>>>
+>>> - In some programs, text does not get displayed instantly from when typing it, having to type 5 or 6 characters for the previous to finally show.
+>>>    All these new characters show up at the same time. This was extremely noticeable with gnome's default "Console", it also happened in Brave Browser's search bar, and Signal, it does not seem to happen with Ghostty.
+>>>
+>>> Constantly waving my cursor fixes all these issues. Connecting a secondary display seems to fix the issue on all displays.
+>>>
+>>>  From my limited knowledge this seems like a bug in damage detection for eDP + power management, where low enough power levels don't trigger redraws.
+>>>
+>>> I am confident the issue was introduced in that commit since I bisected linux-firmware commits affecting amdgpu until the issue was no longer found.
+>>>
+>>>
+>>> Extra info:
+>>> # dmesg | grep amd
+>>> [    0.414396] perf/amd_iommu: Detected AMD IOMMU #0 (2 banks, 4 counters/bank).
+>>> [    1.875492] [drm] amdgpu kernel modesetting enabled.
+>>> [    1.878563] amdgpu: Virtual CRAT table created for CPU
+>>> [    1.878573] amdgpu: Topology: Add CPU node
+>>> [    1.882607] amdgpu 0000:63:00.0: amdgpu: Fetched VBIOS from VFCT
+>>> [    1.882610] amdgpu: ATOM BIOS: 113-PHXGENERIC-001
+>>> [    1.909536] amdgpu 0000:63:00.0: vgaarb: deactivate vga console
+>>> [    1.909542] amdgpu 0000:63:00.0: amdgpu: Trusted Memory Zone (TMZ) feature enabled
+>>> [    1.909612] amdgpu 0000:63:00.0: amdgpu: VRAM: 4096M 0x0000008000000000 - 0x00000080FFFFFFFF (4096M used)
+>>> [    1.909614] amdgpu 0000:63:00.0: amdgpu: GART: 512M 0x00007FFF00000000 - 0x00007FFF1FFFFFFF
+>>> [    1.909829] [drm] amdgpu: 4096M of VRAM memory ready
+>>> [    1.909832] [drm] amdgpu: 13932M of GTT memory ready.
+>>> [    1.935030] amdgpu 0000:63:00.0: amdgpu: reserve 0x4000000 from 0x80f8000000 for PSP TMR
+>>> [    2.482626] amdgpu 0000:63:00.0: amdgpu: RAS: optional ras ta ucode is not available
+>>> [    2.491068] amdgpu 0000:63:00.0: amdgpu: RAP: optional rap ta ucode is not available
+>>> [    2.491071] amdgpu 0000:63:00.0: amdgpu: SECUREDISPLAY: securedisplay ta ucode is not available
+>>> [    2.521960] amdgpu 0000:63:00.0: amdgpu: SMU is initialized successfully!
+>>> [    2.601611] kfd kfd: amdgpu: Allocated 3969056 bytes on gart
+>>> [    2.601628] kfd kfd: amdgpu: Total number of KFD nodes to be created: 1
+>>> [    2.602048] amdgpu: Virtual CRAT table created for GPU
+>>> [    2.602191] amdgpu: Topology: Add dGPU node [0x1900:0x1002]
+>>> [    2.602193] kfd kfd: amdgpu: added device 1002:1900
+>>> [    2.602206] amdgpu 0000:63:00.0: amdgpu: SE 1, SH per SE 2, CU per SH 6, active_cu_number 12
+>>> [    2.602212] amdgpu 0000:63:00.0: amdgpu: ring gfx_0.0.0 uses VM inv eng 0 on hub 0
+>>> [    2.602215] amdgpu 0000:63:00.0: amdgpu: ring comp_1.0.0 uses VM inv eng 1 on hub 0
+>>> [    2.602216] amdgpu 0000:63:00.0: amdgpu: ring comp_1.1.0 uses VM inv eng 4 on hub 0
+>>> [    2.602217] amdgpu 0000:63:00.0: amdgpu: ring comp_1.2.0 uses VM inv eng 6 on hub 0
+>>> [    2.602219] amdgpu 0000:63:00.0: amdgpu: ring comp_1.3.0 uses VM inv eng 7 on hub 0
+>>> [    2.602220] amdgpu 0000:63:00.0: amdgpu: ring comp_1.0.1 uses VM inv eng 8 on hub 0
+>>> [    2.602221] amdgpu 0000:63:00.0: amdgpu: ring comp_1.1.1 uses VM inv eng 9 on hub 0
+>>> [    2.602222] amdgpu 0000:63:00.0: amdgpu: ring comp_1.2.1 uses VM inv eng 10 on hub 0
+>>> [    2.602223] amdgpu 0000:63:00.0: amdgpu: ring comp_1.3.1 uses VM inv eng 11 on hub 0
+>>> [    2.602224] amdgpu 0000:63:00.0: amdgpu: ring sdma0 uses VM inv eng 12 on hub 0
+>>> [    2.602225] amdgpu 0000:63:00.0: amdgpu: ring vcn_unified_0 uses VM inv eng 0 on hub 8
+>>> [    2.602226] amdgpu 0000:63:00.0: amdgpu: ring jpeg_dec uses VM inv eng 1 on hub 8
+>>> [    2.602227] amdgpu 0000:63:00.0: amdgpu: ring mes_kiq_3.1.0 uses VM inv eng 13 on hub 0
+>>> [    2.609481] amdgpu 0000:63:00.0: amdgpu: Runtime PM not available
+>>> [    2.610787] [drm] Initialized amdgpu 3.60.0 for 0000:63:00.0 on minor 1
+>>> [    2.617618] fbcon: amdgpudrmfb (fb0) is primary device
+>>> [    3.788332] amdgpu 0000:63:00.0: [drm] fb0: amdgpudrmfb frame buffer device
+>>> [    5.120419] kvm_amd: TSC scaling supported
+>>> [    5.120426] kvm_amd: Nested Virtualization enabled
+>>> [    5.120428] kvm_amd: Nested Paging enabled
+>>> [    5.120430] kvm_amd: LBR virtualization supported
+>>> [    5.120443] kvm_amd: Virtual GIF supported
+>>> [    5.120444] kvm_amd: Virtual NMI enabled
+>>> [    5.170720] snd_hda_intel 0000:63:00.1: bound 0000:63:00.0 (ops amdgpu_dm_audio_component_bind_ops [amdgpu])
+>>> [    5.191443] amd_atl: AMD Address Translation Library initialized
+>>>
+>>>
+>>> Thank you for your time,
+>>> Tiago Teles
+>>>
+> 
 
 
