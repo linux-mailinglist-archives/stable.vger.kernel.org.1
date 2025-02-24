@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-118944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63840A423B0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD22A42420
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:53:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BC0616C481
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FDF94232EC
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967642A8D0;
-	Mon, 24 Feb 2025 14:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B3F165F16;
+	Mon, 24 Feb 2025 14:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGZ761uh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjzKdHyB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525B418A6BA;
-	Mon, 24 Feb 2025 14:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2ED14D28C;
+	Mon, 24 Feb 2025 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407786; cv=none; b=rmJ2zl9k4sUEHRSphd6uJ4EroJumoG+Hebhl+rNmxUfRM376vpqCRe7Fd6Ory9FA41reZrf7SiIAixVMwnUDvH5r9kzHHFrK0Kszwhntm/pmMzwfeWAl9g/UMca598DSYYc9zkXfuOOgIdj2USvuI9MdYH4jOb240pNQAE1/qn8=
+	t=1740408271; cv=none; b=Fxnibxzv4vMGVQQBexC1OiHvGyROr26ROoTIJiUfAHPTf4hPMrvj7bn4YfWAWRBsY+TsRyMiYIhoI+TNh/CWrYS/eKLgRn00TA3jrAG9Hs5FC8pEkyyp+6FofAOxl+Ufshn1w5Zsy+MUNZsUsFA1v3DSgKF4RUK5ZjkA79++Cpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407786; c=relaxed/simple;
-	bh=PaiyGIV8LJHrjztEVL+mmmtKxB1CuNdVA9qGkui7RrE=;
+	s=arc-20240116; t=1740408271; c=relaxed/simple;
+	bh=AU0vY4o/kUK90hZexJ1wXpYfeTHgYzcKFLhrSHSu5Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=duR4jNltRItt2YJLetTFFTZwelWmGCR+aVidtMm9YoRcp2dZ1J7lM/w1ZcWFutVpRx7WbfKm3VQmFZcISS5cdUdoJnqIFFuY9MmCZi9weBR+Oa4IV7ZMtj/cjVA95X/VpXrPf7ZNufqZX46VY4RZtEg7twfWx4cc3IDDpuu1KVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGZ761uh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC8FC4CED6;
-	Mon, 24 Feb 2025 14:36:25 +0000 (UTC)
+	 MIME-Version; b=SLbH3Jt0QX7Vcta2sumtk+ucysi3+/6yrARoLcHkKEDIAdmG0Q/8QzCgIsghRJGq/Zg1Q7dAJfokU32IVtvBYzcDxptBRyQm/qMEsHBNQA/IWTaXbHQv5hqLVaXg63sAc1BtFORU+8vGZWIOgszDMkG5U2lt2jy1P/SWGZIG+7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjzKdHyB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB5FC4CED6;
+	Mon, 24 Feb 2025 14:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740407785;
-	bh=PaiyGIV8LJHrjztEVL+mmmtKxB1CuNdVA9qGkui7RrE=;
+	s=korg; t=1740408270;
+	bh=AU0vY4o/kUK90hZexJ1wXpYfeTHgYzcKFLhrSHSu5Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGZ761uhrhPRvN7dUrM5wmsyyNzP0Or0hjXN4Ny5Qh9lNfU29NEiAwfIlHzCOSe0x
-	 IuHjTMJqCEMr8tQ1YG+pIe39w+3iedHlFnmfXFSZeCenHIqg0m+hN6ec3+J1PTe6eU
-	 wj6gx4aGyY8ziKEBZl2cVrRGP5DgiClvGHZ3llV8=
+	b=gjzKdHyBBSESoEWWF6YSf3c+Vu8I0uS6Zye1+s7AaLme2RgldnI7K5NT9I7UEr+PI
+	 XQo1XWb+wfvxm27+EVLrKTR6a+ZCa1jPsWqhqxtZcI2kdgCPUyMfOcFZxggNpIc/0r
+	 vRLaouwonXO7OIYCOYVQOfpWzdfnAGcKpxnFzGRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"yang@os.amperecomputing.com, Naresh Kamboju" <naresh.kamboju@linaro.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: [PATCH 6.6 001/140] arm64: mte: Do not allow PROT_MTE on MAP_HUGETLB user mappings
+Subject: [PATCH 6.12 001/154] arm64: mte: Do not allow PROT_MTE on MAP_HUGETLB user mappings
 Date: Mon, 24 Feb 2025 15:33:20 +0100
-Message-ID: <20250224142603.060607734@linuxfoundation.org>
+Message-ID: <20250224142607.119951366@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/arm64/include/asm/mman.h
 +++ b/arch/arm64/include/asm/mman.h
-@@ -31,9 +31,12 @@ static inline unsigned long arch_calc_vm
+@@ -41,9 +41,12 @@ static inline unsigned long arch_calc_vm
  	 * backed by tags-capable memory. The vm_flags may be overridden by a
  	 * filesystem supporting MTE (RAM-based).
  	 */
