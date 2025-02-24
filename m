@@ -1,118 +1,119 @@
-Return-Path: <stable+bounces-118931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66841A420C5
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:35:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D07DA420D8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27AE43B6B10
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:30:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B958D167F1F
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE3A23372B;
-	Mon, 24 Feb 2025 13:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB11248864;
+	Mon, 24 Feb 2025 13:34:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B471B041E;
-	Mon, 24 Feb 2025 13:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538C3248878;
+	Mon, 24 Feb 2025 13:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740403838; cv=none; b=YFH4cubRP53YdeKS4Lb6Ukwo8591dJVxhRi5I3eDHpfgGoTJ9Hi1pkf+glha3sYo5NpmC3neXyv9aLq6pHWAbeHlXhm2coHUclwb9jv3CjUHGnIWpC8a69qnDOlX5SSHVs7gnF+z2q+e5o/ljqfqEbKU64M12+AKJgvsIbGRozM=
+	t=1740404045; cv=none; b=lB2K5iphctQSqn0yzgidAuzN28f+Nxtyl22FEggr1DPK3HlG27ZJLOk943yTktqjyinK19kYZTpKrmFljxFSmio13CQGDHzZ9ge9lXwXSqKRDqix7woRy3UgI/KTxm6znrEtOsBcYBu0tnFAS2Jpix66GfeAtekyDZUVHgqMLoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740403838; c=relaxed/simple;
-	bh=ABZeoDoCXyMZznzUxsqlycvSyByLRS8r9I1i4W5KKZ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G/T/mou8GGv9LrYmfeHDrfjtbJqX3Srr2bIMAiaR3KAyQZ0/C7v/bCU7E0S5JZd4jmBm+rp1N6fOpEfhkCw5WX31MWKav4TR4FOqR+e3wJC6Hd6lRNFbtqNyLg1MDAyg4ic2ogTeSEvhdnrsdRgBHJ6sGGGFBOkv8dDoZo91NvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAAnLAxldLxnkjsEEA--.4476S2;
-	Mon, 24 Feb 2025 21:30:17 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: miquel.raynal@bootlin.com,
-	richard@nod.at,
-	vigneshr@ti.com,
-	David.Woodhouse@intel.com,
-	jarkko.lavinen@nokia.com
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mtd: Fix potential UAF for mtdswap_dev pointers
-Date: Mon, 24 Feb 2025 21:30:07 +0800
-Message-Id: <20250224133007.3037357-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740404045; c=relaxed/simple;
+	bh=s8QE7q5gI2/gnbGI/Y0TO2qy/2W3oWz7FQ4HLFw+70g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pRG6SFyqR746HBn9BuFOirbI0DyjIdpgdNLw6rj/JfRqUjNcZsU1sZN9SAFq6S4q+RcdDHsxhwuJDEdCmuuK1Y8N2dbXaefSMJExzCYCdGeZLzvvC46bb1/gc2BCxF2ln5BoZaLK0vR5qTUC60zjcdm9euSrQV5+hO00A12XTsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-521b1b8cdb6so1076053e0c.2;
+        Mon, 24 Feb 2025 05:34:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740404042; x=1741008842;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n1H1EjANJHbfGOkZsEIuMwZQlIxdc83X+vl3h/blgS8=;
+        b=DbDSToWkrhwBFRCecMWAVDMLOl5hbN5jCe1ZcbqHic0DWAmKFUxODCt9i0iQfeHl1t
+         u+Sm0tfx7gFyItME0aUkD/9O4l+YEd1KekybMRrKGAeFXmPrOPR4X5IRq0LuqQITsmFY
+         YsYv8jE244pQYI/xGNv+9c3t59TOGbfcaMp09YWsIf3u0A/vHvdGwM9IbcITnUAwzhh6
+         2L2vZPkyFlTz1uYE31675MFCrcXZCksRNVZV+OvNlB2NdqdXE9o4QgqKqicDARhdKes8
+         NYEy8mJ41J9Jy/UVNLoMJTAR9oHF5Vq40EF9vk+G1+d+KTv7lWKttQ4WzEf/vjTac1DD
+         4hMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxdYsyPuTBZB4C94adELwWdMFCJmrn4lbfsPR68xZ39t0ZAE9CzVNr4DSPhFlh1Hl/sISjyX/3@vger.kernel.org, AJvYcCXEPb08a/QitvoumjCjYTi04Li1hv9nSTvZ36Nd1mO+2XC73o+1aVip7C4YIa1fzSp2Hd0LUFehnPK/gcM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMlPkLZXY5BexZEo6rxdPto6K4Ebi+HLDBbSeIftrpnz6pdHJP
+	tO9Qz1jrX1+2wCkfCCSrGDrV2E/EY/ggcLU8Elt02t9ujBVZJ3ykTjaVqQ37jyc=
+X-Gm-Gg: ASbGncuiEMy9Og/Mn5b/pwIbeUODI5hCOznKqQuSEGESjmUV8LbsjpR5k97PPvEbwKs
+	afZ1DdnuUGiftGxsQYTtKPNmGq3hGmUoJpYmQWikRnjNAyqbUsKQRzTd066V0x8DbSiQIn22vKb
+	4tZLWMe6MPvC5RFUDsLgeWwzviSFMKil0XhaV/oVYgUU4Cu39ekb7wpPqYE43eLqeIyhVar6VPx
+	2myYBssR5eXWCiMPFm7O8zVmWtkwZC9GvfEjGfEIK/emLcdQwYH1nZiQm6dJ5BGrNX7fOFu5HyN
+	lKDxg3gseBCRQx4VQBwzfIsqnR62/tEdMo3mc1XaQbzIcLjyngKebXFL0/5+jSdh
+X-Google-Smtp-Source: AGHT+IFwRC1DBWQIsl+ufZT/O3uyrXppKFzyXXKtTFeud7QSYhLgIGKlIhkgPU5zAhjqeXSh0eS+og==
+X-Received: by 2002:a05:6122:3711:b0:520:6773:e5ea with SMTP id 71dfb90a1353d-521ee4288bcmr6249730e0c.7.1740404042648;
+        Mon, 24 Feb 2025 05:34:02 -0800 (PST)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-520c02060f1sm3005508e0c.32.2025.02.24.05.34.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 05:34:02 -0800 (PST)
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4be625c5365so1404956137.2;
+        Mon, 24 Feb 2025 05:34:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUT5HeWNDL6VfY/9gYs7wYYKUBhrOzk6W3ckN5wFDmYZU8SYRphp3cTlhCfNdhy1R8XOIu3u1nI@vger.kernel.org, AJvYcCUey7/pjtmASP0NGnhdm+lNl9X1AThpubnKKYZ2GDqR/3o9MKsLrItjUY6FNHr2V01o6QjVHcUCUnatUQA=@vger.kernel.org
+X-Received: by 2002:a05:6102:6d6:b0:4b6:8d8b:82c6 with SMTP id
+ ada2fe7eead31-4bfc00afeefmr5875993137.15.1740404042031; Mon, 24 Feb 2025
+ 05:34:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAnLAxldLxnkjsEEA--.4476S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CFyrtr13trWrGF4ftry7Jrb_yoW8GF1UpF
-	Z8CrWay398Jw1fG3ZrAw4DAFyFkw15urW5Gr4rJ3y2vwn5A34fAr90vayY9Fy3KF4DKa4Y
-	qrsFqr98Wr1rGaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-	vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+References: <20250224101527.2971012-1-haoxiang_li2024@163.com> <Z7xnnPaoHfz7lYyi@smile.fi.intel.com>
+In-Reply-To: <Z7xnnPaoHfz7lYyi@smile.fi.intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 24 Feb 2025 14:33:49 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVYxruwpA92FykyEAwoSBxfb0Z1AmnyqLziGTpMC3d_gg@mail.gmail.com>
+X-Gm-Features: AWEUYZmDaUb1RlXfoOLr5mx6usNzPpvp7inE7zcz7NwEakWHhMlI5TGdHT4kHMs
+Message-ID: <CAMuHMdVYxruwpA92FykyEAwoSBxfb0Z1AmnyqLziGTpMC3d_gg@mail.gmail.com>
+Subject: Re: [PATCH v2] auxdisplay: hd44780: Fix an API misuse in hd44780.c
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, u.kleine-koenig@pengutronix.de, 
+	erick.archer@outlook.com, ojeda@kernel.org, w@1wt.eu, poeschel@lemonage.de, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-In the mtdswap_init(), if the allocations fail, the error handling
-path frees d->page_buf, d->eb_data, d->revmap and d->page_data without
-setting these pointers to NULL. This could lead to UAF if subsequent
-error handling or device reset operations attempt to release these
-pointers again.
+Hi Andy,
 
-Set d->page_buf, d->eb_data, d->revmap and d->page_data to NULL
-immediately after freeing them to prevent misuse. Release immediately
-and set to NULL, adhering to the 'release implies invalid' defensive
-programming principle.
+On Mon, 24 Feb 2025 at 13:35, Andy Shevchenko <andy@kernel.org> wrote:
+> On Mon, Feb 24, 2025 at 06:15:27PM +0800, Haoxiang Li wrote:
+> > Variable allocated by charlcd_alloc() should be released
+> > by charlcd_free(). The following patch changed kfree() to
+> > charlcd_free() to fix an API misuse.
+>
+> > Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
+> > Cc: stable@vger.kernel.org
+>
+> Okay, looking closer to the current state of affairs, the change
+> does not fix anything actually. OTOH it's correct semantically and
+> allows to do any further development in charlcd_alloc(), if any.
+>
+> That said, if Geert is okay with it, I would like to apply but without
+> Fixes/Cc: stable@ tags.
 
-Found by code review.
+I had mixed feelings about the Fixes-tag, too.
+Semantically, it's indeed a fix.  If any further cleanups are ever done
+and backported, but this patch would be  missed, it would introduce a bug.
 
-Cc: stable@vger.kernel.org
-Fixes: a32159024620 ("mtd: Add mtdswap block driver")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/mtd/mtdswap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/mtd/mtdswap.c b/drivers/mtd/mtdswap.c
-index 680366616da2..b315dab2a914 100644
---- a/drivers/mtd/mtdswap.c
-+++ b/drivers/mtd/mtdswap.c
-@@ -1318,12 +1318,16 @@ static int mtdswap_init(struct mtdswap_dev *d, unsigned int eblocks,
- 
- oob_buf_fail:
- 	kfree(d->page_buf);
-+	d->page_buf = NULL;
- page_buf_fail:
- 	vfree(d->eb_data);
-+	d->eb_data = NULL;
- eb_data_fail:
- 	vfree(d->revmap);
-+	d->revmap = NULL;
- revmap_fail:
- 	vfree(d->page_data);
-+	d->page_data = NULL;
- page_data_fail:
- 	printk(KERN_ERR "%s: init failed (%d)\n", MTDSWAP_PREFIX, ret);
- 	return ret;
+                        Geert
+
 -- 
-2.25.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
