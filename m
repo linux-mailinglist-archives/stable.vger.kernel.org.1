@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-119225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF46DA42559
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:08:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71960A425BF
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F861629F6
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6730F3BC9C3
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E25194A75;
-	Mon, 24 Feb 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541091607B7;
+	Mon, 24 Feb 2025 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxhcb9lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2P6wNXtk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44269664C6;
-	Mon, 24 Feb 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DAC38DD8;
+	Mon, 24 Feb 2025 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408744; cv=none; b=czdpHbrcT+n+LcGtIZl6T2aZJRcGXLL3g4Y1cqAOSy3/FdDN3B2W0qXGfByv7yZc46TgBj0jNGrW9UQCjQBP+VJppt91v1YwlHMBpTZklKH5R6/YWATm8uMeCiD7TnxrEO2O+XCx+2OAeVqE47lBauIE4h9crOWx7hDdSG9usDA=
+	t=1740409171; cv=none; b=drSu38m5mJn2Sdts8LEn/YONwmDGmAjYQQ8MscEVaxdpEScXp/6eNR8DmEHhLeYZ29BKpXGDAgvKKHq1lZyaC4RpW8eNSmK8JZ3Pu8NYzIrlGsNlC29NN04QyAkeYSiAk0djiSfrfiwGELcfVfiEUk+o0WdylWNUzd/O250UY6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408744; c=relaxed/simple;
-	bh=l4D67vfPmHcHJm9DVMBGNyzLjlp+rwoEXx72QtwXWf0=;
+	s=arc-20240116; t=1740409171; c=relaxed/simple;
+	bh=eO/36/dFk4EBe0xo0hCxzQvACHBFr6w64Z1jAFFpqY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2OHlEh4pMoJo8W9ul6teByQHCYn2tay87raKOOZxrFPYxW/iaqrJepDsagTyMKPxmClUANi8VF6+MeZeq6eHpMwDgvpdc3k6zvP5USvaIBwaRKU0OHm8m2Kk9ExsqgvNxWRWnvuqBi2tgcdwHpu6IYsx3AWMYLBDUgOwNC1t1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxhcb9lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5345C4CED6;
-	Mon, 24 Feb 2025 14:52:23 +0000 (UTC)
+	 MIME-Version; b=p2K6MOuS0gxElxjBDLisQiLx+NkTE3oMEpC/4Q4mhj70biezjNxcrj6SBO3RgjnmHRgzVPt9IDOAPIEX3kUszVdZsUtnT6DpG4xFIe44m2lRNgNwM4K3VfFfT2mWhNix4B8FH4z0cUIjHnO2aDkJKjcA6YhSOWyAbOwpzEGGe7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2P6wNXtk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764C5C4CED6;
+	Mon, 24 Feb 2025 14:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408744;
-	bh=l4D67vfPmHcHJm9DVMBGNyzLjlp+rwoEXx72QtwXWf0=;
+	s=korg; t=1740409170;
+	bh=eO/36/dFk4EBe0xo0hCxzQvACHBFr6w64Z1jAFFpqY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxhcb9lopOKEi8jl52XdxA0bk8uDOCI2E+8rbswoizIPI6lC+PGF06V8pt/UTI3w2
-	 6OQlzowl/G/rFNnWcTP7NrPa5Q05GD8rqMWmmobrh6dPDKkhXJP8r3q7YmnyWTKzLh
-	 3gjAu50bYuGMdRRu9JB154cqcygOYL+IhkPTG3t8=
+	b=2P6wNXtkSiMon66Ssuu5r7VCCs2ECo1oI0hjboLhBM+M5Q/k++d8r6+520YU5K1OE
+	 NcjbNZWo4UtYy6EdF3bHvUkM1MKcm4wxbH0xx414l4hP+Z0/V9O/wEnuloSs/XHbAX
+	 TSPjc0V23d4gsa548PRVb5FWn2Q8yKc0dM9O68sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 147/154] ftrace: Do not add duplicate entries in subops manager ops
-Date: Mon, 24 Feb 2025 15:35:46 +0100
-Message-ID: <20250224142612.802127470@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 117/138] ALSA: hda: Add error check for snd_ctl_rename_id() in snd_hda_create_dig_out_ctls()
+Date: Mon, 24 Feb 2025 15:35:47 +0100
+Message-ID: <20250224142609.073241449@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,47 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 8eb4b09e0bbd30981305643229fe7640ad41b667 upstream.
+commit 822b7ec657e99b44b874e052d8540d8b54fe8569 upstream.
 
-Check if a function is already in the manager ops of a subops. A manager
-ops contains multiple subops, and if two or more subops are tracing the
-same function, the manager ops only needs a single entry in its hash.
+Check the return value of snd_ctl_rename_id() in
+snd_hda_create_dig_out_ctls(). Ensure that failures
+are properly handled.
 
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Link: https://lore.kernel.org/20250220202055.226762894@goodmis.org
-Fixes: 4f554e955614f ("ftrace: Add ftrace_set_filter_ips function")
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ Note: the error cannot happen practically because the only error
+  condition in snd_ctl_rename_id() is the missing ID, but this is a
+  rename, hence it must be present.  But for the code consistency,
+  it's safer to have always the proper return check -- tiwai ]
+
+Fixes: 5c219a340850 ("ALSA: hda: Fix kctl->id initialization")
+Cc: stable@vger.kernel.org # 6.4+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250213074543.1620-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/hda_codec.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5758,6 +5758,9 @@ __ftrace_match_addr(struct ftrace_hash *
- 			return -ENOENT;
- 		free_hash_entry(hash, entry);
- 		return 0;
-+	} else if (__ftrace_lookup_ip(hash, ip) != NULL) {
-+		/* Already exists */
-+		return 0;
+--- a/sound/pci/hda/hda_codec.c
++++ b/sound/pci/hda/hda_codec.c
+@@ -2470,7 +2470,9 @@ int snd_hda_create_dig_out_ctls(struct h
+ 				break;
+ 			id = kctl->id;
+ 			id.index = spdif_index;
+-			snd_ctl_rename_id(codec->card, &kctl->id, &id);
++			err = snd_ctl_rename_id(codec->card, &kctl->id, &id);
++			if (err < 0)
++				return err;
+ 		}
+ 		bus->primary_dig_out_type = HDA_PCM_TYPE_HDMI;
  	}
- 
- 	entry = add_hash_entry(hash, ip);
 
 
 
