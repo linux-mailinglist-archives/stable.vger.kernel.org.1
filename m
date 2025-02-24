@@ -1,124 +1,145 @@
-Return-Path: <stable+bounces-118727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A9FA41AA2
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:19:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED66CA41ABF
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 11:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C303AC872
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:18:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66377161059
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 10:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD432505C1;
-	Mon, 24 Feb 2025 10:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D48823F439;
+	Mon, 24 Feb 2025 10:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ef7ZH6j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCB02505AE;
-	Mon, 24 Feb 2025 10:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04ED38DFC
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 10:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740392300; cv=none; b=bLMt1Bgkd5QZe8SEKSay+ROSC6D6Z3QPHa2HYYNHCZATDJbReb7B9AtVh89ADH0O8SIpgjmeoG4c8BpTXDL7lqpjL619J+WrpR6NqB0Bnt0KCfWBOUF7MptlzKTgfC6Mxgot3WwbNKeORtGvLTiktFh0k/ABvQFxWGrDxmLy+0E=
+	t=1740392451; cv=none; b=US02Y26XtwGPs2VfFZiA76d7aJHZZpvtWAlVdiIarhNfHx3pEXAQujl+wziR63SJB8xWzGK90V3R/qR5UgQelZ3ItCmt1uilLVIM+O8DWoUpE8ScU6LXjelj5ciCLbte95m7kPgyJfXfpzvFyL5VY2cWqtkCjGSEO43iunXv7mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740392300; c=relaxed/simple;
-	bh=/VpVHJ3s7Jn3EBgryl5k0MVY51tDK0uHrVOkZxmbga8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z7Y+xLqULBJSzqpT0+07XWmjjgZltrsYkZyIdy5UKxt7stPodXip1VrG4umlQycoXMD6F9dUBWiPcmyrcsUOJpP6mL+LPFpDAvSjrgM9UbNesBmVwwC0nu+XyT9V6KT7ONm/5Tyq4K+1jaUGKXehH5ZTbDQmwjlRpWIetrjkAeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4bd3c887545so2739994137.1;
-        Mon, 24 Feb 2025 02:18:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740392296; x=1740997096;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LrlRdIj2CimNW6XnmPiBdulQZl1isrHwMrX3fvUaveI=;
-        b=IuklKElCO1cQmsU5B5XQ6N2G2hxtkzMzTEK0SBW+2rbRlB3x5wyqyZPaOJvXLM2c2c
-         PA3UYdn7sKLjFAuosaSUXm5XIBwmkrcMMIYi78L4Jcc8lxYhnRW9o/UHwtAo2dZuaJfS
-         V/QFJqQRYHoFVNpCH3uNpR8XHINHMesLSSN2gpmaGbrFSSkH5n4pSYDFIlzyFnW11UNd
-         8QGR522CczsTzjpskohIDxfX8injGgt5A0g+5jNiiCdZUtM9KrYFcE6iusVyBOuCuz+m
-         PukEUVzR/1l7gub+4yDiGx5opSHh7l0KgSJgkt9CVDGxb4fDxPiV7dw2bGg/VXZbSh73
-         7oTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfD1sAENhLLe6Kw0NHFaA8wPsn9W3GALAsAb+ntJox50Wj8MHoy2rrV6PA6ugCMJ60I0Y8n+p9cdY=@vger.kernel.org, AJvYcCWe3xikpYZbHXCo2Rxiw+LQ+SGXXfreZbw1EckR7LbHat1cIphe5hf7Loh2gOs2gGLKcx3S9RRW@vger.kernel.org, AJvYcCXaRQA3BOmAz9FVMhIN3HlkTmge7WSVmiEA/wscX7qqxFVBekBHFdR8CUJvkXK/p6BE0x9N9rdE/zeNlmQJ/e7my80=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzACEuHYAXa+W95xm3EZzCB3FlcdvExVdUNvsttJF3kCuOhAemf
-	7RxGTXv4saMk2a6Z5EU7B9wFtbZWrmmtN5NlXhSiowVg7Qy818thPD9dxrwnk8g=
-X-Gm-Gg: ASbGncsfBHh/bAp+9l3pC+//wjNVcfj8skFjJWawWjGLCrarN3rgfwK2BkRZU1ms46L
-	QnqS+zm3Tj+yUTlzie/DOoxZFn55cH+jM6banIPzCgs1ZlIQTM7Yb8WY2mSVz2CzCxDfwN3u1nt
-	yYJWP1FDRi9g8K8fZ8u0yjClgLO3zYnk4envZdd+1Dqt4PBLddERvgEHgqtflOhdk21S7ydgbMc
-	1Q7ryuUZFsPpWiBfQWSbI8lwWI+QeZaXOE9XqrbySt4vRp28VZbq07VETE0qXwhcEfuWkamTJ2I
-	DA/2Ioa6o4ZkJLmQMboIMjU6F73v/uBvRMbV7pmjHEyohB7Z6eMpaz8ppx0JSlXx
-X-Google-Smtp-Source: AGHT+IFSsR6YRBwn2eCUt/iUKk8khjd2JXLS1qIEzGseREz6RFX5oXlqNj/AjvC4t5zMr7D13qeaiA==
-X-Received: by 2002:a05:6102:c14:b0:4bc:82f:b4bc with SMTP id ada2fe7eead31-4bfc02880aamr5662082137.22.1740392295965;
-        Mon, 24 Feb 2025 02:18:15 -0800 (PST)
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com. [209.85.217.42])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4be1a9a3822sm3502953137.16.2025.02.24.02.18.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Feb 2025 02:18:15 -0800 (PST)
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4bd3a8b88f3so2444952137.0;
-        Mon, 24 Feb 2025 02:18:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUwoDLcAodx3x6Ll7Ym2Q6TLc/tQ/n2nZJQddYrG2InlbzEsSiCPGZj74Mw7Igd4hZVfd7DOrheOP4=@vger.kernel.org, AJvYcCVdUVBcfwIuHMo3t+uARcv8sKYAeraPlgBIs2u+GlTx0T2erz3a05VHGMuZfgB+2cduCV3Seg45@vger.kernel.org, AJvYcCWj77JfsidKaXhIZhmvFzke17+6Uc4PKeAt69NywOVwK5S+iGt87Ekd7NQT/lMw5yIjHuIosbJ1M5myUTi/TwWO3mc=@vger.kernel.org
-X-Received: by 2002:a05:6102:3593:b0:4bb:d7f0:6e7b with SMTP id
- ada2fe7eead31-4bfbffd0cf1mr6338358137.2.1740392295077; Mon, 24 Feb 2025
- 02:18:15 -0800 (PST)
+	s=arc-20240116; t=1740392451; c=relaxed/simple;
+	bh=PYP0uIASOvy2ywGlbB3Znh8nT+DY/aCUWwXwwbA61cE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XDxdv0vTp2fhSaQYXlF9FL9HmoATPySDkci0CQVwgor2f7ITMOkvAOrlXivzQdsaxWVAt7q3YTM52y6CqrEYUoQMssdM5oi8qvTD+geSDiDbCRP24JIkFbxVnfk5WXmG+fQ5m+7YJIjRAZwCXoeNydn6GYzFLAnyKtYwgCwMoqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ef7ZH6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF705C4CED6;
+	Mon, 24 Feb 2025 10:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740392450;
+	bh=PYP0uIASOvy2ywGlbB3Znh8nT+DY/aCUWwXwwbA61cE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1ef7ZH6j9V3MxyGxkRGnSsTjqg0qBa+Z3ab7/TlNX/ckrgqL31HWFdfdZttbSNJny
+	 Q8o4+CoAImVr8xFHfB2dd941bqqUl8F57KXpNyNnUChn4SRGs+ZYJ67hp5kNcD9N2R
+	 e+L3zW/i/t8W+Qt1S/8sf9m966RMkTjG/3uOT13A=
+Subject: FAILED: patch "[PATCH] drm: panel: jd9365da-h3: fix reset signal polarity" failed to apply to 6.6-stable tree
+To: hvilleneuve@dimonoff.com,linus.walleij@linaro.org,neil.armstrong@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Feb 2025 11:20:41 +0100
+Message-ID: <2025022441-stallion-given-47fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250220094516.126598-1-biju.das.jz@bp.renesas.com> <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
-In-Reply-To: <20250220094516.126598-3-biju.das.jz@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 24 Feb 2025 11:18:03 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVYKPMshDretnZRCaz613p-ME_HxGGDiwk0iYkrL+GzBw@mail.gmail.com>
-X-Gm-Features: AWEUYZkygmUhDACpC7iEbloeV0w5GXdg3MO9FhTnEcknUdA1U1h62at_rEbRVv4
-Message-ID: <CAMuHMdVYKPMshDretnZRCaz613p-ME_HxGGDiwk0iYkrL+GzBw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] can: rcar_canfd: Fix page entries in the AFL list
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Rob Herring <robh@kernel.org>, Ulrich Hecht <ulrich.hecht+renesas@gmail.com>, 
-	linux-can@vger.kernel.org, 
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, Biju Das <biju.das.au@gmail.com>, 
-	linux-renesas-soc@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi Biju,
 
-On Thu, 20 Feb 2025 at 10:45, Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> There are a total of 96 AFL pages and each page has 16 entries with
-> registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
-> the rule entries (r = 0..15).
->
-> Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
-> which is incorrect as the testing on RZ/G3E shows ch1 and ch4
-> gets a start value of 0 and the register contents are overwritten.
->
-> Fix this issue by using rule_entry corresponding to the channel
-> to find the page entries in the AFL list.
->
-> Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks for your patch!
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I hope to give this a try on White Hawk and Gray Hawk Single, where
-I never got any channels beyond the first two to work...
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x a8972d5a49b408248294b5ecbdd0a085e4726349
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025022441-stallion-given-47fc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Gr{oetje,eeting}s,
+Possible dependencies:
 
-                        Geert
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a8972d5a49b408248294b5ecbdd0a085e4726349 Mon Sep 17 00:00:00 2001
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Date: Fri, 27 Sep 2024 09:53:05 -0400
+Subject: [PATCH] drm: panel: jd9365da-h3: fix reset signal polarity
+
+In jadard_prepare() a reset pulse is generated with the following
+statements (delays ommited for clarity):
+
+    gpiod_set_value(jadard->reset, 1); --> Deassert reset
+    gpiod_set_value(jadard->reset, 0); --> Assert reset for 10ms
+    gpiod_set_value(jadard->reset, 1); --> Deassert reset
+
+However, specifying second argument of "0" to gpiod_set_value() means to
+deassert the GPIO, and "1" means to assert it. If the reset signal is
+defined as GPIO_ACTIVE_LOW in the DTS, the above statements will
+incorrectly generate the reset pulse (inverted) and leave it asserted
+(LOW) at the end of jadard_prepare().
+
+Fix reset behavior by inverting gpiod_set_value() second argument
+in jadard_prepare(). Also modify second argument to devm_gpiod_get()
+in jadard_dsi_probe() to assert the reset when probing.
+
+Do not modify it in jadard_unprepare() as it is already properly
+asserted with "1", which seems to be the intended behavior.
+
+Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240927135306.857617-1-hugo@hugovil.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240927135306.857617-1-hugo@hugovil.com
+
+diff --git a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
+index 45d09e6fa667..7d68a8acfe2e 100644
+--- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
++++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
+@@ -109,13 +109,13 @@ static int jadard_prepare(struct drm_panel *panel)
+ 	if (jadard->desc->lp11_to_reset_delay_ms)
+ 		msleep(jadard->desc->lp11_to_reset_delay_ms);
+ 
+-	gpiod_set_value(jadard->reset, 1);
++	gpiod_set_value(jadard->reset, 0);
+ 	msleep(5);
+ 
+-	gpiod_set_value(jadard->reset, 0);
++	gpiod_set_value(jadard->reset, 1);
+ 	msleep(10);
+ 
+-	gpiod_set_value(jadard->reset, 1);
++	gpiod_set_value(jadard->reset, 0);
+ 	msleep(130);
+ 
+ 	ret = jadard->desc->init(jadard);
+@@ -1130,7 +1130,7 @@ static int jadard_dsi_probe(struct mipi_dsi_device *dsi)
+ 	dsi->format = desc->format;
+ 	dsi->lanes = desc->lanes;
+ 
+-	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(jadard->reset)) {
+ 		DRM_DEV_ERROR(&dsi->dev, "failed to get our reset GPIO\n");
+ 		return PTR_ERR(jadard->reset);
+
 
