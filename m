@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-119037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE23DA423D0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565EEA4248C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F38B19C443C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 043441896124
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B1D15442C;
-	Mon, 24 Feb 2025 14:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8125C2561A3;
+	Mon, 24 Feb 2025 14:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qd21p5mN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVnVvxPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0F426ADD;
-	Mon, 24 Feb 2025 14:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D68618CC1C;
+	Mon, 24 Feb 2025 14:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408105; cv=none; b=q8sH3+1FXPD5xiFJKP8ddDCBajUL4Z9N37EuuZuYVD69Jtxnr69+49h11v8gX4P/SfMDIeJD3cs3eJLjdvgJnz/pBO5EwdPEQ0AxvRZLVtc5Hbtwb9OYO75rF/d9j9PLAdYFPHCAe+o73XW4NitPCtdU6fhNxUPacVMrAi4CUQE=
+	t=1740408474; cv=none; b=HC7fCpinA95Fi4Zb2uAPUzWopmS06NuyhXMoZXWrM0dXyTv7wlwrvCAm/3VNmW0y1yYVXKykoQ8h1XewBVCSqUoG6NzTFtSk/PS50S9RnalnPgaawqYZDLNiw8Xd3aZVVBVKTJ+J6s2Ym3tLdfCxcFA6cGH0CKqJ8CX4FjvSD48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408105; c=relaxed/simple;
-	bh=pyQnuXzGD44kpYOEnKliAs3IxiTbUeNWD2BYGuDYR+0=;
+	s=arc-20240116; t=1740408474; c=relaxed/simple;
+	bh=Hm/M4wmB9BnekebSnIKmDpgUFEsPvg44Ri9OjkibPfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5RI2/nxFxAAZftfFdOywU2qyVILr8kCpurinpdj0H218E6+c/abLTZEnFqJ4Szyxfe/6XQ/ED1CgBGiDCTaES9MSYURwOjcWooLv7vOOiQ0O5xLynvWvWstx7/9F7N6/JEpIXpxcR/IIrza1AIUUIN3/u42Y3LtKZ/HEcA2G/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qd21p5mN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2274C4CED6;
-	Mon, 24 Feb 2025 14:41:44 +0000 (UTC)
+	 MIME-Version; b=UyUrgJtpsSr4Lde2CYk9OaaMSkcOgU5cvB/dhQV79ycr0qGml1HghbKiGbwHQ0mgR3tIWoKhc7wlM0IywOWZ5thycSE6qpwcyAlgF6FsasnC5fFoTa+pJ3+PfmmmdIk6lozioFm9yuBt7Br8zuDYShsusDxzLALdUHPVQieJKus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVnVvxPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC26C4CED6;
+	Mon, 24 Feb 2025 14:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408105;
-	bh=pyQnuXzGD44kpYOEnKliAs3IxiTbUeNWD2BYGuDYR+0=;
+	s=korg; t=1740408474;
+	bh=Hm/M4wmB9BnekebSnIKmDpgUFEsPvg44Ri9OjkibPfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qd21p5mNWHB8340K1WBnvoqpH+ubn7+VozvS1aD3/F9cODX50tyj8Y+Aa750ijkeU
-	 M7I0Nlz0P4ZgQsmqGFdFwmItdnbgZuaqKELljAb7b4MVq6L6RdH0xlHN7XuNaqum2c
-	 XVLomZDHsun4IgL2bezMBPtslmWGxv/DsUoyseH0=
+	b=dVnVvxPrbxL4lLVe1CxtadaV+FILDarv12HfHuIFSVw9Eg3g2pGftNkntusOXxwyq
+	 yyFLvS7HYd4xfDRblel7hgQqIOxOQzE4TsAY71g9nEcxotGUjASKV/p/PoDPKiwu0Z
+	 tdKIIakh0UnYoE68UIF22n87G40DnMwhXB6gxW4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	kuniyu@amazon.com,
+	ushankar@purestorage.com,
+	Eric Dumazet <edumazet@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/140] powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC
+Subject: [PATCH 6.12 069/154] net: Add non-RCU dev_getbyhwaddr() helper
 Date: Mon, 24 Feb 2025 15:34:28 +0100
-Message-ID: <20250224142605.720716716@linuxfoundation.org>
+Message-ID: <20250224142609.787413343@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit d262a192d38e527faa5984629aabda2e0d1c4f54 ]
+[ Upstream commit 4b5a28b38c4a0106c64416a1b2042405166b26ce ]
 
-Erhard reported the following KASAN hit while booting his PowerMac G4
-with a KASAN-enabled kernel 6.13-rc6:
+Add dedicated helper for finding devices by hardware address when
+holding rtnl_lock, similar to existing dev_getbyhwaddr_rcu(). This prevents
+PROVE_LOCKING warnings when rtnl_lock is held but RCU read lock is not.
 
-  BUG: KASAN: vmalloc-out-of-bounds in copy_to_kernel_nofault+0xd8/0x1c8
-  Write of size 8 at addr f1000000 by task chronyd/1293
+Extract common address comparison logic into dev_addr_cmp().
 
-  CPU: 0 UID: 123 PID: 1293 Comm: chronyd Tainted: G        W          6.13.0-rc6-PMacG4 #2
-  Tainted: [W]=WARN
-  Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-  Call Trace:
-  [c2437590] [c1631a84] dump_stack_lvl+0x70/0x8c (unreliable)
-  [c24375b0] [c0504998] print_report+0xdc/0x504
-  [c2437610] [c050475c] kasan_report+0xf8/0x108
-  [c2437690] [c0505a3c] kasan_check_range+0x24/0x18c
-  [c24376a0] [c03fb5e4] copy_to_kernel_nofault+0xd8/0x1c8
-  [c24376c0] [c004c014] patch_instructions+0x15c/0x16c
-  [c2437710] [c00731a8] bpf_arch_text_copy+0x60/0x7c
-  [c2437730] [c0281168] bpf_jit_binary_pack_finalize+0x50/0xac
-  [c2437750] [c0073cf4] bpf_int_jit_compile+0xb30/0xdec
-  [c2437880] [c0280394] bpf_prog_select_runtime+0x15c/0x478
-  [c24378d0] [c1263428] bpf_prepare_filter+0xbf8/0xc14
-  [c2437990] [c12677ec] bpf_prog_create_from_user+0x258/0x2b4
-  [c24379d0] [c027111c] do_seccomp+0x3dc/0x1890
-  [c2437ac0] [c001d8e0] system_call_exception+0x2dc/0x420
-  [c2437f30] [c00281ac] ret_from_syscall+0x0/0x2c
-  --- interrupt: c00 at 0x5a1274
-  NIP:  005a1274 LR: 006a3b3c CTR: 005296c8
-  REGS: c2437f40 TRAP: 0c00   Tainted: G        W           (6.13.0-rc6-PMacG4)
-  MSR:  0200f932 <VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24004422  XER: 00000000
+The context about this change could be found in the following
+discussion:
 
-  GPR00: 00000166 af8f3fa0 a7ee3540 00000001 00000000 013b6500 005a5858 0200f932
-  GPR08: 00000000 00001fe9 013d5fc8 005296c8 2822244c 00b2fcd8 00000000 af8f4b57
-  GPR16: 00000000 00000001 00000000 00000000 00000000 00000001 00000000 00000002
-  GPR24: 00afdbb0 00000000 00000000 00000000 006e0004 013ce060 006e7c1c 00000001
-  NIP [005a1274] 0x5a1274
-  LR [006a3b3c] 0x6a3b3c
-  --- interrupt: c00
+Link: https://lore.kernel.org/all/20250206-scarlet-ermine-of-improvement-1fcac5@leitao/
 
-  The buggy address belongs to the virtual mapping at
-   [f1000000, f1002000) created by:
-   text_area_cpu_up+0x20/0x190
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x76e30
-  flags: 0x80000000(zone=2)
-  raw: 80000000 00000000 00000122 00000000 00000000 00000000 ffffffff 00000001
-  raw: 00000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   f0ffff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   f0ffff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >f1000000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-             ^
-   f1000080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   f1000100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ==================================================================
-
-f8 corresponds to KASAN_VMALLOC_INVALID which means the area is not
-initialised hence not supposed to be used yet.
-
-Powerpc text patching infrastructure allocates a virtual memory area
-using get_vm_area() and flags it as VM_ALLOC. But that flag is meant
-to be used for vmalloc() and vmalloc() allocated memory is not
-supposed to be used before a call to __vmalloc_node_range() which is
-never called for that area.
-
-That went undetected until commit e4137f08816b ("mm, kasan, kmsan:
-instrument copy_from/to_kernel_nofault")
-
-The area allocated by text_area_cpu_up() is not vmalloc memory, it is
-mapped directly on demand when needed by map_kernel_page(). There is
-no VM flag corresponding to such usage, so just pass no flag. That way
-the area will be unpoisonned and usable immediately.
-
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/20250112135832.57c92322@yea/
-Fixes: 37bc3e5fd764 ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/06621423da339b374f48c0886e3a5db18e896be8.1739342693.git.christophe.leroy@csgroup.eu
+Cc: kuniyu@amazon.com
+Cc: ushankar@purestorage.com
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250218-arm_fix_selftest-v5-1-d3d6892db9e1@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4eae0ee0f1e6 ("arp: switch to dev_getbyhwaddr() in arp_req_set_public()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/code-patching.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/netdevice.h |  2 ++
+ net/core/dev.c            | 37 ++++++++++++++++++++++++++++++++++---
+ 2 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index b00112d7ad467..4426a77c8f063 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -105,7 +105,7 @@ static int text_area_cpu_up(unsigned int cpu)
- 	unsigned long addr;
- 	int err;
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 4f17b786828af..35b886385f329 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3064,6 +3064,8 @@ static inline struct net_device *first_net_device_rcu(struct net *net)
+ }
  
--	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
-+	area = get_vm_area(PAGE_SIZE, 0);
- 	if (!area) {
- 		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
- 			cpu);
+ int netdev_boot_setup_check(struct net_device *dev);
++struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
++				   const char *hwaddr);
+ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
+ 				       const char *hwaddr);
+ struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 2e0fe38d0e877..c761f862bc5a2 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1012,6 +1012,12 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
+ 	return ret;
+ }
+ 
++static bool dev_addr_cmp(struct net_device *dev, unsigned short type,
++			 const char *ha)
++{
++	return dev->type == type && !memcmp(dev->dev_addr, ha, dev->addr_len);
++}
++
+ /**
+  *	dev_getbyhwaddr_rcu - find a device by its hardware address
+  *	@net: the applicable net namespace
+@@ -1020,7 +1026,7 @@ int netdev_get_name(struct net *net, char *name, int ifindex)
+  *
+  *	Search for an interface by MAC address. Returns NULL if the device
+  *	is not found or a pointer to the device.
+- *	The caller must hold RCU or RTNL.
++ *	The caller must hold RCU.
+  *	The returned device has not had its ref count increased
+  *	and the caller must therefore be careful about locking
+  *
+@@ -1032,14 +1038,39 @@ struct net_device *dev_getbyhwaddr_rcu(struct net *net, unsigned short type,
+ 	struct net_device *dev;
+ 
+ 	for_each_netdev_rcu(net, dev)
+-		if (dev->type == type &&
+-		    !memcmp(dev->dev_addr, ha, dev->addr_len))
++		if (dev_addr_cmp(dev, type, ha))
+ 			return dev;
+ 
+ 	return NULL;
+ }
+ EXPORT_SYMBOL(dev_getbyhwaddr_rcu);
+ 
++/**
++ * dev_getbyhwaddr() - find a device by its hardware address
++ * @net: the applicable net namespace
++ * @type: media type of device
++ * @ha: hardware address
++ *
++ * Similar to dev_getbyhwaddr_rcu(), but the owner needs to hold
++ * rtnl_lock.
++ *
++ * Context: rtnl_lock() must be held.
++ * Return: pointer to the net_device, or NULL if not found
++ */
++struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
++				   const char *ha)
++{
++	struct net_device *dev;
++
++	ASSERT_RTNL();
++	for_each_netdev(net, dev)
++		if (dev_addr_cmp(dev, type, ha))
++			return dev;
++
++	return NULL;
++}
++EXPORT_SYMBOL(dev_getbyhwaddr);
++
+ struct net_device *dev_getfirstbyhwtype(struct net *net, unsigned short type)
+ {
+ 	struct net_device *dev, *ret = NULL;
 -- 
 2.39.5
 
