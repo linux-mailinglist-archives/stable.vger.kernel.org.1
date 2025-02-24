@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-119262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DF8A42549
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:07:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B223DA4258A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D46619C2D2D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1A516F744
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A77D24EF64;
-	Mon, 24 Feb 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BC01C84C8;
+	Mon, 24 Feb 2025 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1wQcu2o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vz4ebqMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2A724C689;
-	Mon, 24 Feb 2025 14:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B457019E965;
+	Mon, 24 Feb 2025 14:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408865; cv=none; b=aLpjP3nBsItZgUmaS5Py8yi0MCjay2jssbUhbhxuzt+sfWSsBbwYLhwDbPibNzMxdS7FGCkDIogFYlNsZLvlyZQC3MmO7AfmjvTkFqvHF3swa1L50WkKM1x2EgLtMCeiSgG5oZmIYCh6lXSU+3sV+sfK9+qt9pVTpwjp1ULwcYo=
+	t=1740408801; cv=none; b=fIMl745eKXtGcT2ocD2qdubp6CArlkfCpl514EV7kuafIl2TnfT/6Q/OWQbbfqjg++zcswRZ/1ZmOXfK1SiLnSkg3BSHzUUUgGZvh7C/rtQlTC77aYBRqZDb9y3OE45oFYfx9FLPbgh7f4W2k/Z1ubH56bMmp5xbO6YastntsAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408865; c=relaxed/simple;
-	bh=e37KHwi+ZSRYLImAhCMHixScSZtpB4l3Hw5fLqkqPRg=;
+	s=arc-20240116; t=1740408801; c=relaxed/simple;
+	bh=ZWQ1rxR65jYkiLS/ua7eFEZdtogQmyWmzWN0VAnwoRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rH2f+KSLK3wJHxSKk9XoY144/Mj9qP+3EGf4nRbrvwrmlr071Z6A3LmKCRJUejtE1jaL6cF0kz3Moh7aUm1xpgOgoJlWmUhBHKQTe4VQvEfFOqzbTNZNku3jP145y1r7opRqWOhaKFY01I8QQmrwCVt932Rh7xkf1FQMiwggyoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1wQcu2o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5049FC4CED6;
-	Mon, 24 Feb 2025 14:54:25 +0000 (UTC)
+	 MIME-Version; b=Mj2cKAvCO0rojU66MW2FogfgW0E7lRvcdUwebsuLyLG2W2kEsqu5IdT0Al8O2QEUgS7PT7u2lACAjJbCBpQsyDi0doNXKYfNzAG61Jz1DC5FugI4GGE00E/3r8E/ufOEzuY2W38544puey4Ry8RT5azxXdWcOWT3dPpOcbhZIgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vz4ebqMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8D9C4CED6;
+	Mon, 24 Feb 2025 14:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408865;
-	bh=e37KHwi+ZSRYLImAhCMHixScSZtpB4l3Hw5fLqkqPRg=;
+	s=korg; t=1740408801;
+	bh=ZWQ1rxR65jYkiLS/ua7eFEZdtogQmyWmzWN0VAnwoRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1wQcu2o5U5vQJbCFDRb7wUsFX3KwEXeuJA1djsJ/3gLog4F587MSqVzvaJMq7g7m
-	 lD5P9Veg5Jh5HXiTRd/T25p6peSpHMl3AIeHa5W/3ZfpZXhtyGdYPdO3WnJgBboNJR
-	 00vxOTK6m5JUdw79gbQqACGHNldFXeKELLb/wFcE=
+	b=vz4ebqMaFcuIWqoBO7z1Hd+vy2+A5/QJajv3ZGrOH7xHHnYvVDhzzUNK8oHFnI7pm
+	 2/h2Vsv2SKRYjJpM2scrsbr4bnkrf/byUkyPd5tLx5i7w6O8sB4fWyzvq+RU0ArNwG
+	 UxeK47gjae779ycHJ1i1NWDHjDFaSg9oNdc8cvPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 009/138] serial: sh-sci: Move runtime PM enable to sci_probe_single()
-Date: Mon, 24 Feb 2025 15:33:59 +0100
-Message-ID: <20250224142604.823545992@linuxfoundation.org>
+Subject: [PATCH 6.13 010/138] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+Date: Mon, 24 Feb 2025 15:34:00 +0100
+Message-ID: <20250224142604.863820805@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
 References: <20250224142604.442289573@linuxfoundation.org>
@@ -68,89 +67,121 @@ Content-Transfer-Encoding: 8bit
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 239f11209e5f282e16f5241b99256e25dd0614b6 ]
+[ Upstream commit 5f1017069933489add0c08659673443c9905659e ]
 
-Relocate the runtime PM enable operation to sci_probe_single(). This change
-prepares the codebase for upcoming fixes.
+The early_console_setup() function initializes sci_ports[0].port with an
+object of type struct uart_port obtained from the struct earlycon_device
+passed as an argument to early_console_setup().
 
-While at it, replace the existing logic with a direct call to
-devm_pm_runtime_enable() and remove sci_cleanup_single(). The
-devm_pm_runtime_enable() function automatically handles disabling runtime
-PM during driver removal.
+Later, during serial port probing, the serial port used as earlycon
+(e.g., port A) might be remapped to a different position in the sci_ports[]
+array, and a different serial port (e.g., port B) might be assigned to slot
+0. For example:
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+sci_ports[0] = port B
+sci_ports[X] = port A
+
+In this scenario, the new port mapped at index zero (port B) retains the
+data associated with the earlycon configuration. Consequently, after the
+Linux boot process, any access to the serial port now mapped to
+sci_ports[0] (port B) will block the original earlycon port (port A).
+
+To address this, introduce an early_console_exit() function to clean up
+sci_ports[0] when earlycon is exited.
+
+To prevent the cleanup of sci_ports[0] while the serial device is still
+being used by earlycon, introduce the struct sci_port::probing flag and
+account for it in early_console_exit().
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-3-claudiu.beznea.uj@bp.renesas.com
+Link: https://lore.kernel.org/r/20250116182249.3828577-5-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 651dee03696e ("serial: sh-sci: Increment the runtime usage counter for the earlycon device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ drivers/tty/serial/sh-sci.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 0050d6253c05d..fece52c7f8976 100644
+index fece52c7f8976..12215d4107d1c 100644
 --- a/drivers/tty/serial/sh-sci.c
 +++ b/drivers/tty/serial/sh-sci.c
-@@ -3057,10 +3057,6 @@ static int sci_init_single(struct platform_device *dev,
- 		ret = sci_init_clocks(sci_port, &dev->dev);
- 		if (ret < 0)
- 			return ret;
--
--		port->dev = &dev->dev;
--
--		pm_runtime_enable(&dev->dev);
- 	}
+@@ -166,6 +166,7 @@ static struct sci_port sci_ports[SCI_NPORTS];
+ static unsigned long sci_ports_in_use;
+ static struct uart_driver sci_uart_driver;
+ static bool sci_uart_earlycon;
++static bool sci_uart_earlycon_dev_probing;
  
- 	port->type		= p->type;
-@@ -3087,11 +3083,6 @@ static int sci_init_single(struct platform_device *dev,
- 	return 0;
- }
+ static inline struct sci_port *
+ to_sci_port(struct uart_port *uart)
+@@ -3386,7 +3387,8 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
+ static int sci_probe_single(struct platform_device *dev,
+ 				      unsigned int index,
+ 				      struct plat_sci_port *p,
+-				      struct sci_port *sciport)
++				      struct sci_port *sciport,
++				      struct resource *sci_res)
+ {
+ 	int ret;
  
--static void sci_cleanup_single(struct sci_port *port)
--{
--	pm_runtime_disable(port->port.dev);
--}
--
- #if defined(CONFIG_SERIAL_SH_SCI_CONSOLE) || \
-     defined(CONFIG_SERIAL_SH_SCI_EARLYCON)
- static void serial_console_putchar(struct uart_port *port, unsigned char ch)
-@@ -3261,8 +3252,6 @@ static void sci_remove(struct platform_device *dev)
- 	sci_ports_in_use &= ~BIT(port->port.line);
- 	uart_remove_one_port(&sci_uart_driver, &port->port);
- 
--	sci_cleanup_single(port);
--
- 	if (port->port.fifosize > 1)
- 		device_remove_file(&dev->dev, &dev_attr_rx_fifo_trigger);
- 	if (type == PORT_SCIFA || type == PORT_SCIFB || type == PORT_HSCIF)
-@@ -3426,6 +3415,11 @@ static int sci_probe_single(struct platform_device *dev,
- 	if (ret)
- 		return ret;
- 
-+	sciport->port.dev = &dev->dev;
-+	ret = devm_pm_runtime_enable(&dev->dev);
-+	if (ret)
-+		return ret;
-+
- 	sciport->gpios = mctrl_gpio_init(&sciport->port, 0);
- 	if (IS_ERR(sciport->gpios))
- 		return PTR_ERR(sciport->gpios);
-@@ -3439,13 +3433,7 @@ static int sci_probe_single(struct platform_device *dev,
+@@ -3433,6 +3435,14 @@ static int sci_probe_single(struct platform_device *dev,
  		sciport->port.flags |= UPF_HARD_FLOW;
  	}
  
--	ret = uart_add_one_port(&sci_uart_driver, &sciport->port);
--	if (ret) {
--		sci_cleanup_single(sciport);
--		return ret;
--	}
--
--	return 0;
-+	return uart_add_one_port(&sci_uart_driver, &sciport->port);
++	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
++		/*
++		 * Skip cleanup the sci_port[0] in early_console_exit(), this
++		 * port is the same as the earlycon one.
++		 */
++		sci_uart_earlycon_dev_probing = true;
++	}
++
+ 	return uart_add_one_port(&sci_uart_driver, &sciport->port);
  }
  
- static int sci_probe(struct platform_device *dev)
+@@ -3491,7 +3501,7 @@ static int sci_probe(struct platform_device *dev)
+ 
+ 	platform_set_drvdata(dev, sp);
+ 
+-	ret = sci_probe_single(dev, dev_id, p, sp);
++	ret = sci_probe_single(dev, dev_id, p, sp, res);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -3574,6 +3584,22 @@ sh_early_platform_init_buffer("earlyprintk", &sci_driver,
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg;
+ 
++static int early_console_exit(struct console *co)
++{
++	struct sci_port *sci_port = &sci_ports[0];
++
++	/*
++	 * Clean the slot used by earlycon. A new SCI device might
++	 * map to this slot.
++	 */
++	if (!sci_uart_earlycon_dev_probing) {
++		memset(sci_port, 0, sizeof(*sci_port));
++		sci_uart_earlycon = false;
++	}
++
++	return 0;
++}
++
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3591,6 +3617,8 @@ static int __init early_console_setup(struct earlycon_device *device,
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ 
+ 	device->con->write = serial_console_write;
++	device->con->exit = early_console_exit;
++
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 -- 
 2.39.5
 
