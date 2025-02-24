@@ -1,161 +1,118 @@
-Return-Path: <stable+bounces-118702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4362FA41581
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:37:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE64CA415C7
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 08:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBBB77A1E29
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 06:36:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 163267A516B
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 07:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9C61DB15B;
-	Mon, 24 Feb 2025 06:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB46240608;
+	Mon, 24 Feb 2025 07:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SyEIklq2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934991AB531;
-	Mon, 24 Feb 2025 06:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D036D2B9B7
+	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 07:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740379038; cv=none; b=naKswtc94TFUl/5w0PhCFjzcCwAvXWAi1crFLUo5vRoi2WHI/UhCC2SZ+ATC1bRkgRvBv0IDUGVq6Mu8ue6NzpCJL/dGt9H8M+I9P0VwzjarAO9o2EZ88on8E6PNFmZG4WxoMxp5c44JhqAOjz/Jfg22+IX5Nza5P1cpbvM2Jog=
+	t=1740380641; cv=none; b=QdegR7rAQUJFSm2gB839QFUqMMq409xG0kvwVqe/HFGoj8A5EZM527AeaVRm9C5NkjyAYpXMnB/XNC0/6beXfvkj4SiEI0opz5GGZtmp79l84lDpSe2sLPbI+gGn8moCooXh1Q+oP4ncey0NXlHlvBTrmwq6mKJSkS/D0XDj3zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740379038; c=relaxed/simple;
-	bh=Jc+2WNUmjLGHyuFYszJFy8/ImzfdaZ4fJ76+p/vwYoc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kqb845et3U3BmdG+RyCM+3o5iU3wn3mnbI/XJCEnb0WUE1yuZmH59KDQcrmT5v2x4eNAMO36/7P2glvI3EIZURw1nx0pivF10uW/VHCJh0ptLVqV3ETg9nMF6tLA8XRWVtb4coqZYDyROeQbeaZ0lbGSjIxo9x3ZwP7T6aTy+vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O5C2RX002897;
-	Sun, 23 Feb 2025 22:36:55 -0800
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 44yar7hp93-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Sun, 23 Feb 2025 22:36:54 -0800 (PST)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Sun, 23 Feb 2025 22:36:54 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Sun, 23 Feb 2025 22:36:50 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <cratiu@nvidia.com>, <saeedm@nvidia.com>, <leon@kernel.org>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <roid@nvidia.com>, <netdev@vger.kernel.org>,
-        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <dtatulea@nvidia.com>, <tariqt@nvidia.com>, <zhe.he@windriver.com>
-Subject: [PATCH 6.6.y] net/mlx5e: Don't call cleanup on profile rollback failure
-Date: Mon, 24 Feb 2025 14:36:50 +0800
-Message-ID: <20250224063650.2397912-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740380641; c=relaxed/simple;
+	bh=RPkr2Yle/AQxgRyUW8B77AJqlobQFEDPL71xwQL/gG4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ox/DaMlJIFTdBrc4jx9QiQY+wWVeHuHrh+BQpMU0NAMC2ulP7PkzQrR4cnhjENazkuHwgGd1t8h3GxJfbhn7+Lz3TatqCxhDEK8ufL4ZvYqFPtZLmtR/AVzu+/hzZlbnZFamDvDYgqIGdozd1wiaw2IcgFfQBnBvjzzYjEP3H/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SyEIklq2; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7c2303a56d6so58043185a.3
+        for <stable@vger.kernel.org>; Sun, 23 Feb 2025 23:03:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1740380638; x=1740985438; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HHRUOB722SP2pT9GOeb3cvEiqmLTG17HzDuBznymqOc=;
+        b=SyEIklq2FmUI7LQzbzRtYZcbCHQO0ZXYX1kPQbZxOoejwxVIBSWwRT8UtJjDqsDSRd
+         U4pTzLyIILWahG7P2cZa1RlQ/9Y5tx4klo8opq89SU/1Aw+VZwKdf2DI4vYzlhqpwmgY
+         7w+B2ujxMhEIXu6ByiraLTS62V6eYuP9SyV9A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740380638; x=1740985438;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HHRUOB722SP2pT9GOeb3cvEiqmLTG17HzDuBznymqOc=;
+        b=lQ+1vyr4jOGNZ513nY+vOQq2tK27CzNlsLx3tb5YYE9jzuC/CQXPzah8MT9RlGxsj8
+         LMq2L4DaZsSxwvl6R6+dZ8zCaXUWqup94yk1LaMUbP3JPUEK7mQ9uyGGRNh2l06XarQQ
+         Zx1Ft97hGM/xxMuXOdS4J3OeWvz/sO7lW2yA/xLRog8mr1zbfCPJqFjMOttunzB/4hri
+         MAkhY9BvYvLMLwKvGvRioFqJlB5Y5o/x3twBJjMb0bFs1ZP0nlbxvhQRABRYo8sR03h+
+         Dwz2pttCXtYHuEET97ovced0DDWSgKT8qEmuLOfAr0Wr9NSo3KZ/5uNSJ31Gdc/gA5vL
+         Rgsg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPaoFsDG0UmdNytQMRATKFmp8NH36hdnTNcy3fh451amH4Hk98Vfzyfar691B1iNna7k6Xm7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoaLGpQuGdNLscGDUmf1MQU5L91JQJ+MNKOoYjttUz+iyp5oy4
+	JnRAnI4PNhykkvKS17WlIrlRhXj3gdZRveQbfj3KJ9k2ikLBT2hoog69MPOYaiA14yQpwyEb/ey
+	c/A==
+X-Gm-Gg: ASbGncuHYi+WXLjdpawsI5odbZJj9ZhnCG0oJbsEcQD/6Q9zuKWC3Ufe12daCo6AoLq
+	OtSo1cmMwgAF06QkKg4GXBn+3iuwA8FQ6AWbL//xTUsbqs4OMeEswxsyKm6hg9rRLJ99r8RvU1j
+	cG6TZgJqkP/kgudObxZ9lrInJ4/agv8mHdS8ApA6BTVGfXOi6mbUKjQG+l1cDSTB7gMwUolo92t
+	h62BEBYBGlCalSzXuld9zpKX778jfST+Urkg32sEFXeDOgTbZquYsD+/L5sfW8UlwwjRP8fDHrh
+	ArzuVH4Bi7yF4AmONpZ3XB61lPr8necEm2mRDI+V1YdLx3wSnm6t/o+W/lDnXvaAyAlJNmgubAH
+	QMDA=
+X-Google-Smtp-Source: AGHT+IFkIZyKy46tv3pPOrC7t02hlkGCHtN8wPMQx/td4toBFnJF7+sLcSy9HQrjuNm68CaBgRk5CA==
+X-Received: by 2002:a05:620a:450c:b0:7c0:abe0:ce64 with SMTP id af79cd13be357-7c0cf8aec7emr1654304985a.9.1740380637686;
+        Sun, 23 Feb 2025 23:03:57 -0800 (PST)
+Received: from denia.c.googlers.com (15.237.245.35.bc.googleusercontent.com. [35.245.237.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c09bf81253sm977920485a.47.2025.02.23.23.03.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Feb 2025 23:03:56 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v2 0/2] media: nuvoton: Fix some reference handling issues
+Date: Mon, 24 Feb 2025 07:03:53 +0000
+Message-Id: <20250224-nuvoton-v2-0-8faaa606be01@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: woJEHtJ8A_wJquBsPPk-rp0fIpslxwCZ
-X-Authority-Analysis: v=2.4 cv=Be0i0qt2 c=1 sm=1 tr=0 ts=67bc1386 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=T2h4t0Lz3GQA:10 a=Ikd4Dj_1AAAA:8 a=20KFwNOVAAAA:8 a=t7CeM3EgAAAA:8 a=Ba9Sw2FB-nAdYA35_e8A:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: woJEHtJ8A_wJquBsPPk-rp0fIpslxwCZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-24_02,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- phishscore=0 suspectscore=0 spamscore=0 impostorscore=0 mlxscore=0
- malwarescore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
- definitions=main-2502240047
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANkZvGcC/2XMyw7CIBCF4VdpZi0GiLe48j1MF1yGMosyBlqia
+ Xh3sVuX/8nJt0HBTFjgPmyQsVIhTj30YQAXTZpQkO8NWuqzVFqJtFZeOImAt6t0FkOwF+jvV8Z
+ A7116jr0jlYXzZ4er+q3/RlVCCoXmFKTz1hv9cDHzTOt85DzB2Fr7AoP7C4ehAAAA
+To: Joseph Liu <kwliu@nuvoton.com>, Marvin Lin <kflin@nuvoton.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@xs4all.nl>, Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Marvin Lin <milkfafa@gmail.com>, linux-media@vger.kernel.org, 
+ openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.1
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+When trying out 6.13 cocci, some bugs were found.
 
-[ Upstream commit 4dbc1d1a9f39c3711ad2a40addca04d07d9ab5d0 ]
-
-When profile rollback fails in mlx5e_netdev_change_profile, the netdev
-profile var is left set to NULL. Avoid a crash when unloading the driver
-by not calling profile->cleanup in such a case.
-
-This was encountered while testing, with the original trigger that
-the wq rescuer thread creation got interrupted (presumably due to
-Ctrl+C-ing modprobe), which gets converted to ENOMEM (-12) by
-mlx5e_priv_init, the profile rollback also fails for the same reason
-(signal still active) so the profile is left as NULL, leading to a crash
-later in _mlx5e_remove.
-
- [  732.473932] mlx5_core 0000:08:00.1: E-Switch: Unload vfs: mode(OFFLOADS), nvfs(2), necvfs(0), active vports(2)
- [  734.525513] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
- [  734.557372] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
- [  734.559187] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: new profile init failed, -12
- [  734.560153] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
- [  734.589378] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
- [  734.591136] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
- [  745.537492] BUG: kernel NULL pointer dereference, address: 0000000000000008
- [  745.538222] #PF: supervisor read access in kernel mode
-<snipped>
- [  745.551290] Call Trace:
- [  745.551590]  <TASK>
- [  745.551866]  ? __die+0x20/0x60
- [  745.552218]  ? page_fault_oops+0x150/0x400
- [  745.555307]  ? exc_page_fault+0x79/0x240
- [  745.555729]  ? asm_exc_page_fault+0x22/0x30
- [  745.556166]  ? mlx5e_remove+0x6b/0xb0 [mlx5_core]
- [  745.556698]  auxiliary_bus_remove+0x18/0x30
- [  745.557134]  device_release_driver_internal+0x1df/0x240
- [  745.557654]  bus_remove_device+0xd7/0x140
- [  745.558075]  device_del+0x15b/0x3c0
- [  745.558456]  mlx5_rescan_drivers_locked.part.0+0xb1/0x2f0 [mlx5_core]
- [  745.559112]  mlx5_unregister_device+0x34/0x50 [mlx5_core]
- [  745.559686]  mlx5_uninit_one+0x46/0xf0 [mlx5_core]
- [  745.560203]  remove_one+0x4e/0xd0 [mlx5_core]
- [  745.560694]  pci_device_remove+0x39/0xa0
- [  745.561112]  device_release_driver_internal+0x1df/0x240
- [  745.561631]  driver_detach+0x47/0x90
- [  745.562022]  bus_remove_driver+0x84/0x100
- [  745.562444]  pci_unregister_driver+0x3b/0x90
- [  745.562890]  mlx5_cleanup+0xc/0x1b [mlx5_core]
- [  745.563415]  __x64_sys_delete_module+0x14d/0x2f0
- [  745.563886]  ? kmem_cache_free+0x1b0/0x460
- [  745.564313]  ? lockdep_hardirqs_on_prepare+0xe2/0x190
- [  745.564825]  do_syscall_64+0x6d/0x140
- [  745.565223]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- [  745.565725] RIP: 0033:0x7f1579b1288b
-
-Fixes: 3ef14e463f6e ("net/mlx5e: Separate between netdev objects and mlx5e profiles initialization")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
-Verified the build test.
----
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v2:
+- Squash fixes and port to cleanup.h.
+- Link to v1: https://lore.kernel.org/r/20250121-nuvoton-v1-0-1ea4f0cdbda2@chromium.org
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 6e431f587c23..b34f57ab9755 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -6110,7 +6110,9 @@ static void mlx5e_remove(struct auxiliary_device *adev)
- 	mlx5e_dcbnl_delete_app(priv);
- 	unregister_netdev(priv->netdev);
- 	mlx5e_suspend(adev, state);
--	priv->profile->cleanup(priv);
-+	/* Avoid cleanup if profile rollback failed. */
-+	if (priv->profile)
-+		priv->profile->cleanup(priv);
- 	mlx5e_destroy_netdev(priv);
- 	mlx5e_devlink_port_unregister(mlx5e_dev);
- 	mlx5e_destroy_devlink(mlx5e_dev);
+---
+Ricardo Ribalda (2):
+      media: nuvoton: Fix reference handling of ece_node
+      media: nuvoton: Fix reference handling of ece_pdev
+
+ drivers/media/platform/nuvoton/npcm-video.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: c2b96a6818159fba8a3bcc38262da9e77f9b3ec7
+change-id: 20250121-nuvoton-fe870cbeffb6
+
+Best regards,
 -- 
-2.25.1
+Ricardo Ribalda <ribalda@chromium.org>
 
 
