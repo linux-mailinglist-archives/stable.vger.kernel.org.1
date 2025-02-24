@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-119055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18A7A423EF
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AEAA424C0
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44287189806E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:44:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F03188B93C
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AFE18A95E;
-	Mon, 24 Feb 2025 14:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE1124FC1F;
+	Mon, 24 Feb 2025 14:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gys84mgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr6ZIiIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21427155308;
-	Mon, 24 Feb 2025 14:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D41514CC;
+	Mon, 24 Feb 2025 14:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408167; cv=none; b=MonaQU4hfCM23Lk+CQc064AwcAqmupr5Euxv+FdUK02iGO3YBOdMRJGnZq8OirlwoqM4gPsO35qn5MA1whv7LMERWaslVooZDC685/MLF7vRmm5pPOmus4RU0YsLQNhb2uWYNfskmoYzA6PcqR1q+8D+0zLyD00anwVuRMpjUco=
+	t=1740408651; cv=none; b=UFsL/GoUIaaIKv0CuBO0V22sOeooUCUzGdHWnujI0vzChAkuyb1b4IDmb4kqySQOlh5N7VdeR0qB99RVUuOCkmkpBEA1tfVlT45wggVtjmG0H7FZflVivIlGKqkUC4gaogQOPIkgk3gybREECS8OIBhoT3h34f+Blmg9f15YvsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408167; c=relaxed/simple;
-	bh=LKkzmXCqXaOHvTGoa2wHHl/62stn6ZZkzYmoyA23Y/4=;
+	s=arc-20240116; t=1740408651; c=relaxed/simple;
+	bh=zbXdLYQFr+XQzFb22Q1kps1e4bVRuKYk75VKWcaKzsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kge3OQho/9wdS1Sha8jQhVZB8TIiRk5xoVHi5cPXq4lb2OBfjT0KmSoio/B40aMbRsq5cMVZtrPYn28KDyuzjYKgIAxQL8NaOd5PHG1FqC7AEDJqXH9MjyK5+sAZKYINVVz+9T8fYUtuSiD3a995vQiNUcm0PKS09eZhgX+hsD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gys84mgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842BAC4CED6;
-	Mon, 24 Feb 2025 14:42:46 +0000 (UTC)
+	 MIME-Version; b=hG3EDJ9nsY5/SWwr1XB8lKLV0HL+7P8l1N7K293gu5olDkyqvKwf/9tNYYCQn6peOZ+OAKCXBUm6MvhTKtdG7uHEIPV6BpuLbuQndeGkbh8q/tSCstrXDBUPoUDZT4MTG0bRRMkSjeE40zZAzPQA/jR5+4tRdIwt8cnfFd7Souo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tr6ZIiIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0115EC4CED6;
+	Mon, 24 Feb 2025 14:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408167;
-	bh=LKkzmXCqXaOHvTGoa2wHHl/62stn6ZZkzYmoyA23Y/4=;
+	s=korg; t=1740408651;
+	bh=zbXdLYQFr+XQzFb22Q1kps1e4bVRuKYk75VKWcaKzsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gys84mgS8x8oBf59hMPjGbaC90DaEN/scWC4cJMc2HXHrvDuHOFV2655FMNv71Cjm
-	 LFJAicPO/s3exhz48rIFuhmG6cs1Q95s3mFnqKdhC/Kmd2ArKhGQ+Q+AAJJiPMuQec
-	 dElLSjCy6V5LyYNRc9EOjxRMbIaK0UHBIGzTwBMY=
+	b=Tr6ZIiIw/H19T2KnDoJfyIq+OY/LmjFq99jVPnZ7hYL29/L7Uyd9+AyLMMGLRfhDj
+	 6gvzSMGC519M8HSvikyJo13p8Rj6BWkdmAFoKcOaUXVonP7a9RElkex0vDdTDSUkNj
+	 HkNOBj6oEyPLZjKv+pVd3EcLWjlwzKo8yzyiTsLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 119/140] ALSA: hda: Add error check for snd_ctl_rename_id() in snd_hda_create_dig_out_ctls()
+	Dragan Simic <dsimic@manjaro.org>,
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.12 119/154] arm64: dts: rockchip: Fix broken tsadc pinctrl names for rk3588
 Date: Mon, 24 Feb 2025 15:35:18 +0100
-Message-ID: <20250224142607.693361759@linuxfoundation.org>
+Message-ID: <20250224142611.713598366@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
-References: <20250224142602.998423469@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-commit 822b7ec657e99b44b874e052d8540d8b54fe8569 upstream.
+commit 5c8f9a05336cf5cadbd57ad461621b386aadb762 upstream.
 
-Check the return value of snd_ctl_rename_id() in
-snd_hda_create_dig_out_ctls(). Ensure that failures
-are properly handled.
+The tsadc driver does not handle pinctrl "gpio" and "otpout".
+Let's use the correct pinctrl names "default" and "sleep".
+Additionally, Alexey Charkov's testing [1] has established that
+it is necessary for pinctrl state to reference the &tsadc_shut_org
+configuration rather than &tsadc_shut for the driver to function correctly.
 
-[ Note: the error cannot happen practically because the only error
-  condition in snd_ctl_rename_id() is the missing ID, but this is a
-  rename, hence it must be present.  But for the code consistency,
-  it's safer to have always the proper return check -- tiwai ]
+[1] https://lkml.org/lkml/2025/1/24/966
 
-Fixes: 5c219a340850 ("ALSA: hda: Fix kctl->id initialization")
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250213074543.1620-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 32641b8ab1a5 ("arm64: dts: rockchip: add rk3588 thermal sensor")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Link: https://lore.kernel.org/r/20250130053849.4902-1-eagle.alexander923@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_codec.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -2463,7 +2463,9 @@ int snd_hda_create_dig_out_ctls(struct h
- 				break;
- 			id = kctl->id;
- 			id.index = spdif_index;
--			snd_ctl_rename_id(codec->card, &kctl->id, &id);
-+			err = snd_ctl_rename_id(codec->card, &kctl->id, &id);
-+			if (err < 0)
-+				return err;
- 		}
- 		bus->primary_dig_out_type = HDA_PCM_TYPE_HDMI;
- 	}
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -2626,9 +2626,9 @@
+ 		rockchip,hw-tshut-temp = <120000>;
+ 		rockchip,hw-tshut-mode = <0>; /* tshut mode 0:CRU 1:GPIO */
+ 		rockchip,hw-tshut-polarity = <0>; /* tshut polarity 0:LOW 1:HIGH */
+-		pinctrl-0 = <&tsadc_gpio_func>;
+-		pinctrl-1 = <&tsadc_shut>;
+-		pinctrl-names = "gpio", "otpout";
++		pinctrl-0 = <&tsadc_shut_org>;
++		pinctrl-1 = <&tsadc_gpio_func>;
++		pinctrl-names = "default", "sleep";
+ 		#thermal-sensor-cells = <1>;
+ 		status = "disabled";
+ 	};
 
 
 
