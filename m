@@ -1,247 +1,216 @@
-Return-Path: <stable+bounces-118694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7278AA413D0
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 03:58:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FEFA413FA
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 04:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54443161530
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 02:57:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C13703A9DF8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 03:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD85127453;
-	Mon, 24 Feb 2025 02:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773861A23AA;
+	Mon, 24 Feb 2025 03:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tteles.dev header.i=@tteles.dev header.b="KWhUHEwM"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Mob3Ona6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.w14.tutanota.de (mail.w14.tutanota.de [185.205.69.214])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2073.outbound.protection.outlook.com [40.107.105.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A6F4C7D
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 02:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.205.69.214
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740365818; cv=none; b=Y2lC9++Fjvw7No4AyLeOlldBBtD+Df3bAfU44ODQ1zJmjMsuN2Xp/m1a3YF43QpS4UC0ZYmK7R2/aHEErWLnPotUvaaggmQLMd47bnnHIn8Wgrya7b6DNan/Hu9NT8KP6W3E9WwUskH4y7w+KiRwsCPUy94lkSCWABGZPgbOHFA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740365818; c=relaxed/simple;
-	bh=oKP9m3Mmzd4nKfrQHo51RQk2HKVI9ceOdIem+/M0ul8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=iNiP4J8p97DIQtbdilFC8DmGU+fk/RYf8rUAYRgUEHEbBbLW0L0N3zqS4WPnhH39nxUs1vBDDLPlfWVx7KPSStQX16ad/Ln6dq5Q9TROwOJ64KjCzwU2EZfRECjYAMHQr9SDpsISOzwUFU7unvKF+46gZ5cUi9F7Lxznf1ujgMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tteles.dev; spf=pass smtp.mailfrom=tteles.dev; dkim=pass (2048-bit key) header.d=tteles.dev header.i=@tteles.dev header.b=KWhUHEwM; arc=none smtp.client-ip=185.205.69.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tteles.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tteles.dev
-Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
-	by mail.w14.tutanota.de (Postfix) with ESMTP id 3A18463FF342;
-	Mon, 24 Feb 2025 03:56:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740365814;
-	s=s1; d=tteles.dev;
-	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
-	bh=wzUKVUkOHIzDyVJlm1rH9UeIF+LuRtjapviN0QSZFyQ=;
-	b=KWhUHEwM44VEvhrE6vB+ZBqV8Hp4DmWyDnc0qz0SVgYD5QktLpqIgE46C5T8dEvz
-	c+EDs/necnTdztpB08PC9q64v1HvLDPW+ht+ykZVKozNLzqjxY80uQGKIhuupAijNjM
-	Xo9ertfiW46x+M7gGU0sGLGs16pSrBt2R9ynbZaeJs2i/LB1OgdyLvcxsrU3SxmPxDv
-	voPsnZ1YobRaPSKsa5J6u4eHxt+Hr6RasaylG1aXJwrdU6HpDhjUT493FR7RwdM4ZG/
-	nzO7d8UjZWzF7DcMuq/vQ6JSFzWZfEm+Wy4BG9b14ldWFlAEJXsMXdUjTWagvBITZwX
-	zraggt+WSw==
-Date: Mon, 24 Feb 2025 03:56:54 +0100 (CET)
-From: mail@tteles.dev
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
-	Alexander Deucher <alexander.deucher@amd.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Xinhui Pan <xinhui.pan@amd.com>, Airlied <airlied@gmail.com>,
-	Simona <simona@ffwll.ch>, Lijo Lazar <lijo.lazar@amd.com>,
-	Tzimmermann <tzimmermann@suse.de>,
-	Rajneesh Bhardwaj <rajneesh.bhardwaj@amd.com>,
-	Ahmad Rehman <ahmad.rehman@amd.com>,
-	Shaoyun Liu <shaoyun.liu@amd.com>,
-	Ramesh Errabolu <ramesh.errabolu@amd.com>, Jun Ma2 <jun.ma2@amd.com>,
-	Daniel <daniel@makrotopia.org>,
-	Linux Firmware <linux-firmware@kernel.org>,
-	Dri Devel <dri-devel@lists.freedesktop.org>,
-	Amd Gfx <amd-gfx@lists.freedesktop.org>,
-	Stable <stable@vger.kernel.org>
-Message-ID: <OJpqNWx--F-9@tteles.dev>
-In-Reply-To: <eabde17b-b5e5-456f-a499-cff132f1bf8a@amd.com>
-References: <OJnZDtd----9@tteles.dev> <eabde17b-b5e5-456f-a499-cff132f1bf8a@amd.com>
-Subject: Re: REGRESSION amdgpu 20241108 firmware breaks screen updating
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129DC1F60A;
+	Mon, 24 Feb 2025 03:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740367635; cv=fail; b=bTaI3N1NLlsIdukS5Q8imsq0a6nzSvtQqL38lOmM34yvW/q1wVkPmMdhtfEI8kPBlt73ZYYCg0q2KD3JNoYOAMWw6NB4mkL+NkuiXu+/cAfBVCJtbCEw4dXNCdM1QJ+pnj1nHkYmDRon0Pj0rYXEd/RxlNgK74JSHqJWKLWuh68=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740367635; c=relaxed/simple;
+	bh=UO7I4C4xQKPZrMIaZCXJE3y1evwo9y9j3OTVgqB+IMg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PCFVVczYEZU0WSa4+WVQLZC9NJDLI6YDC+O+LsTdsxNAm+Tyt/KohrkUOxpr2QAFZRUz/jgKqWWjit1OCogQXs8k3z6ZV4f+mpncdAUgiQ+1eeAWEQwjLmYLHBdxka8piL9oj4ar7J2MikQ6GwHV+P0MfwA9TtH09TPonKsI5ME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Mob3Ona6; arc=fail smtp.client-ip=40.107.105.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eDhVhBRCPJGTMlfKYB7bRmVDjMQO4+1IYnuCvtYsVIveGXLNCIaZOQMq59eGbOdp4a/JSiFpAk4m1F2IzObM/hBpBnYRrmkPpsISTmdcrvLZvprw/8Ry3NvzM5xR+OO2SXov4ClS3ANwuLdypUk6Ur2ieovPSYb8EwGB6CLouAObU4U/44vqZUSGINHJI4e5hcwacuVEfeeqYFsIKKB3Vbgi6Wd/6S34pqYqi7ZQvCyRtnDmTnc17qmf5JlGvsBlGgzt7xn8V6O/mHg81AzpT2tPRFLe1Ffqw883NPpth0JTLMO+2fKTbBnTN+qWBxKnE4Aq+T0wK9sd45VovHsprw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UO7I4C4xQKPZrMIaZCXJE3y1evwo9y9j3OTVgqB+IMg=;
+ b=t2DzixT5NPB2d3IVTFE5r06SLZdXzC2c0kirZahChyfAr+6fP1N1nVdInwOp6gnMKQ4B8YKF+x02ntipclpNp9MhsdRSzNIjtnn3GxCOWjzxDASiBXZzerly8KFhdke9QkvkAi1kjqKt2UWFGIFE/VpUdf4X9nimYQN/uywzNyklYF0W2/+s7WzzJABlK2FwmyncGFgvcMy/Q/xCYSnLSo8KAbmmOy1XK5i7JyqFwQmNcz6XRFUlZi74hZtep0NBehHtuNpftGWYcwcQunOJ7+dteKzlKan1tina5ndgf98EcgyXjFUIHjsVE/Y9AqUZFVvyCUpOlavywVio1QLrwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UO7I4C4xQKPZrMIaZCXJE3y1evwo9y9j3OTVgqB+IMg=;
+ b=Mob3Ona6sebitd5+b0GJv4qcDRQ7/C4yX8D3qW7Wia87H3RuSLu3hlhO0xMxkaBE0tyjdfWK5E4EY6sv3bbeiriztISonGWXMRUMgV9whLLgQlkII3Q9+5fn0iPNcFP3snQkG5qDyh7tP6POpvmAhpF6QcsDa02Do5i3R2bCguA+xjLJxLBNs4CVXmgbchMLEj5Yg4J6iy04vj0S9fJ6YjWQZWpyAC6szDXTRSTErE30KpQTvW7hlvgpYpPlCbYHG+UVAqusIshSWjwWLe4sB1Cz1eyDMej/8htoRjUKYZ/4eXR1NZEZu8F3Lz4xbgr/MO+verPIQ8kBoewZRcGVCA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PA1PR04MB10555.eurprd04.prod.outlook.com (2603:10a6:102:48d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
+ 2025 03:27:10 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Mon, 24 Feb 2025
+ 03:27:10 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
+	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
+Thread-Topic: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
+Thread-Index: AQHbgpN/Xw1oIgK130OBsitj8eB9+LNQXDmAgACfT2CAAIJ7gIAEVFAg
+Date: Mon, 24 Feb 2025 03:27:10 +0000
+Message-ID:
+ <PAXPR04MB8510EA8BC58E151B178F684188C02@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250219054247.733243-1-wei.fang@nxp.com>
+ <20250219054247.733243-3-wei.fang@nxp.com>
+ <20250220160123.5evmuxlbuzo7djgr@skbuf>
+ <PAXPR04MB8510D3ACAB9DD6C86AC87E5488C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250221091835.g6ybtng4wiltg4ii@skbuf>
+In-Reply-To: <20250221091835.g6ybtng4wiltg4ii@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA1PR04MB10555:EE_
+x-ms-office365-filtering-correlation-id: ccd0df99-ff77-4971-bca6-08dd54831f73
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?FYOw/2fZ/Z6JMZrP5Y74JK21yT/G4SDQzrGbRIB4/FkeKgU8K0YYZf7H/j2L?=
+ =?us-ascii?Q?q2cktp8iUHAEoCuBGwULoXuIHdLsdCOEUBsuiPUdGEuQaS2eKYyauzNkV3U4?=
+ =?us-ascii?Q?7OEUhDOWv6zDnjT8KV3PoUlxQWijAYgEpL2por06OUdclGn/w8CiDs4cn2lA?=
+ =?us-ascii?Q?4VBmSyvfWCDH6ZLtx1cFlP58JHw+smdTgP+Xukw9A3r902oYXURH3+HxEPFy?=
+ =?us-ascii?Q?PF+VwgmeX/CRcZSG5O2rtVNLax9domzvLQQHr7dfML60nmnUtgUtM7pVxW7b?=
+ =?us-ascii?Q?S4tNhMuTWcXGFzKPvKlp/rKDALP+sN4m2zfnnUUQbpcPE+nIdahQ5EyTlqPf?=
+ =?us-ascii?Q?Nzi+8PP156hlLBkoCzx+P7qXOm68FK77GJyaVQKd+zNS+dK15AI1Rm9bZUPP?=
+ =?us-ascii?Q?PKp3GL7BQkUlkOkaTehAebggDfZ3V/a1qX6mzhiN1LEnEhHHi07iO0UshgId?=
+ =?us-ascii?Q?89XDsiwSLyhnWLbEz7GR5PSoxrystJu9icrbdxN9s4FQEliWfUR11DvxtnP/?=
+ =?us-ascii?Q?4/l6ooA/Jh/gosPDIWiO5glVErSd+8/SlPgxOYmSjZdr+Z5lD4Ydj8YGMCJj?=
+ =?us-ascii?Q?rSkLVAX+9W/+AUqMtJ1X6Gc1MqLRlHsllEacxAtty0qW/GNldsUjgkLdtNIs?=
+ =?us-ascii?Q?/G1DjrEL9SMdlgmX7K/XWNLTfS1YPVKKbUegy3ny6fU+RKoxe7zMwrF34nS/?=
+ =?us-ascii?Q?4DYpiGbUtnGi1kh4G/7YEfHudtTn7uEW57RauckeE4cQxBUTQheRHyzRmr4I?=
+ =?us-ascii?Q?Xqra6J7qwPvc5s4J/dxMeBYLPIk31XbZZsJAjmAlIrcZ3bPHiOEpdxbsyphc?=
+ =?us-ascii?Q?JsDh2tY6fCYgkoJQG/b3yRF1zJcJy66gwe4s7idxHlT4BrV7Yay//+74cZW0?=
+ =?us-ascii?Q?ZAUXmRa3gVztyZksraJnV6tqkvx1cbiDC1T+upxB1jfxO/U88yn0DQNybqxp?=
+ =?us-ascii?Q?98kkNOHOr8lSqHrUjffTqB9lijkn1Q96Af+ZEwtp07dHrvWuZoPYf3fPSNFZ?=
+ =?us-ascii?Q?SJjmpG+CQb/OqepIJ2RylmRKuwfZHKk7t9v2yCw9v7FzNmEPNTenyqEygJK6?=
+ =?us-ascii?Q?VyIAjp/JkYRUrVNh8R289zQe0ivNBDyVlTmsUJ9fIEiZxWcIXIHrflgm3nsu?=
+ =?us-ascii?Q?ysL2IXM2gIGYEfpA1o5Y1EzXZqds41V/iEIez3q4C0bbYb3hj39J44vL2Y2O?=
+ =?us-ascii?Q?wP/q+Dedr2UxICnF94cfPtKkN1A7ni805QQR31raQrC4kXm4B/uToLOvWDy7?=
+ =?us-ascii?Q?YnE7poW3Uv3ru1sLC5qhUyCrFHb0mbq2nehnt2FEcH/0BrUIVvidVtxUBra9?=
+ =?us-ascii?Q?yW89NAcc6WVXxyYLQnogsRoEXA9bAd7EeE6TGIpUj0Yx0GZWgega8Ta+HvwF?=
+ =?us-ascii?Q?UHRymD3RuWc9M95T4qrVsp/ymSKFl6rYUD3L0nbpN4O0NBmzCy1bC43pivzc?=
+ =?us-ascii?Q?JwI7SnxTsVSNBMY4Kw+At0zkUHn3hKQc?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?HAUO1z49CKP9KtakeCkxUMg1N93njy6hzNiqoS3J/6ZdarZlENVUlO0cWYhZ?=
+ =?us-ascii?Q?XSp4VQpL8wBcbsUdziC8NS2Bm7IgyQJINP9I10j/AIVe/1HBfbSBazD34fgb?=
+ =?us-ascii?Q?GEuJs7RWHGFGuAsD4ZOSaalLVjCy3TgLYVsf7lXm+9AW9Tf8UwN4n6GXFaPm?=
+ =?us-ascii?Q?NkCseppOIgDQ1LS1jGBkMBlVNLIR0ETDAoo7YuruhDj9GtBx6N4doGDXRP1R?=
+ =?us-ascii?Q?1SC7t7yk7mF7Pb3WG2t09WpOt+aTuvvqMay/ehgK+KcS4shu51XYSXiJH8Dj?=
+ =?us-ascii?Q?Xp+tnc0LDzLlVtfKQl8s1mIi/bBYgEiZ1S7okEQ3RG7IMMGiLVh7eVVSl8tt?=
+ =?us-ascii?Q?z3J/HOgMd3AP22gukcNEd/lLu9/a+WkzcGoKxwyB82QdM11+CfC2DnUiSFZl?=
+ =?us-ascii?Q?F2Pn9QVdA+AZ2JblFunznPwZ8BsxqpQsBwGyOEpUyB6rbaCbzcbqy0Uxtqps?=
+ =?us-ascii?Q?uO+pco2UTx+hXDsH9SEBcDFcykjiSdY16NF3oSzfvi6We3440Cd8w6j7+xqg?=
+ =?us-ascii?Q?s5ohHzT9abAF15wgPpxR80hm8KpNoE91XPATpfk2PsrZln8XWfgqIWVpU5mY?=
+ =?us-ascii?Q?+kt7AlVSe20WTtknl1H9QRVbrNhCg9o6gFFGwFDlYfhoCVLQqu9BW/21MNqz?=
+ =?us-ascii?Q?D9JNSmR7koATCtckUBda+bCcMcFTc30N1sGIS3qQP39DEGahYahWxBCPGE3w?=
+ =?us-ascii?Q?/VnRUWsGaLXg5jENzBBMOfcETrUt2/vGEGtzbDc/T53/3NcNLg1AMfSdtRh2?=
+ =?us-ascii?Q?85QQIk7kOqeGmMsDiqkApwrYf9PV+/QIWFJ8JQ/Ls/qzEzI5e68c7OwjhFAV?=
+ =?us-ascii?Q?VRW1BFpi7ewUUEeYNDKUBPHklBEUvqUh8j73T/Xbbdsxs0IhENY4RhQn9cVn?=
+ =?us-ascii?Q?M0bxBVddhjCuboHATPXgBD/ZdLLGsVUs/kxmAUMWMXDSU6Jk2v4h4lQT6+6X?=
+ =?us-ascii?Q?ayZ+Z3tymeFiQsJ/OCajL5WQHxAcI0geBClT3voO5fOzEXjXSNqSKTtpJ6YA?=
+ =?us-ascii?Q?QYjbfdOAPe+EHMtJAvQ3zWPYXQgqtMyLdXGmQRUTvNAhmepK5xQKVs1LVFVl?=
+ =?us-ascii?Q?kP813kT0+NViyIxTv2E+99YVONGUrgxY7Yf0p18BR5/ACgeUXQNnp/umwW6C?=
+ =?us-ascii?Q?ghdYj67H1Mz1mDlkWYjl8+sB8ZZLTIti7SOTp9cnx5s5rYZNCkYG4lSjFxip?=
+ =?us-ascii?Q?cuMNd3HGihTYSkPt5+TnN0XrsJGl/PISSZsaNC+lwIL9I8ZXCN9tiAAdqlzz?=
+ =?us-ascii?Q?1Vu1bA2Sv1kjcQga8mEY0tsUDQKtEAY+//XYy9Z1Nbq5IvvFaxgjPs3WvOlQ?=
+ =?us-ascii?Q?Aw+RR6hNBWj3Wu3RKAB8BYUn2FAfwZVtPT+SOmW4B6gNMQTQ8J+Ua79TqrpK?=
+ =?us-ascii?Q?VLgk7+qHB2VhKZr6SVHtmyhq6nuQVDuRs99IbfDi4rrLVaJEcZr5LRNx4oxr?=
+ =?us-ascii?Q?Um8oAkI+4Y0DRqC0IC8xklLw7q2GFYXDYGogyrSLZ2Zb9Wr13gSfAg9L8IBy?=
+ =?us-ascii?Q?pcIaFPeeQ95benOUv+rl4kJxW2cz781+ngYDZEHenItlylVGTP0C/eQ6CQrH?=
+ =?us-ascii?Q?vxtAiSZqhTftCnlcXrU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ccd0df99-ff77-4971-bca6-08dd54831f73
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 03:27:10.1293
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: D3n3R8SiO7fUYBZbgN1hQt3Fe/EG9h+CfhhIqEPtM9JJVtdgSobDrwZkt5sLWF/Z5vFEj9ghE/xzy8yb7sUSGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10555
 
+> On Fri, Feb 21, 2025 at 03:42:05AM +0200, Wei Fang wrote:
+> > > I'm not sure "correct the statistics" is the best way to describe thi=
+s
+> > > change. Maybe "keep track of correct TXBD count in
+> > > enetc_map_tx_tso_buffs()"?
+> >
+> > Hi Vladimir,
+> >
+> > Inspired by Michal, I think we don't need to keep the count variable, b=
+ecause
+> > we already have index "i", we just need to record the value of the init=
+ial i at
+> the
+> > beginning. So I plan to do this optimization on the net-next tree in th=
+e future.
+> > So I don't think it is necessary to modify enetc_map_tx_tso_hdr().
+>=20
+> You are saying this in reply to my observation that the title of the
+> change does not correctly represent the change. But I don't see how what
+> you're saying is connected to that. Currently there exists a "count"
+> variable based on which TX BDs are unmapped, and these patches are not
+> changing that fact.
+>=20
+> > > stylistic nitpick: I think this implementation choice obscures the fa=
+ct,
+> > > to an unfamiliar reader, that the requirement for an extended TXBD co=
+mes
+> > > from enetc_map_tx_tso_hdr(). This is because you repeat the condition
+> > > for skb_vlan_tag_present(), but it's not obvious it's correlated to t=
+he
+> > > other one. Something like the change below is more expressive in this
+> > > regard, in my opinion:
+>=20
+> It seems you were objecting to this other change suggestion instead.
+> Sure, I mean, ignore it if you want, but you're saying "well I'm going
+> to change the scheme for net-next, so no point in making the code more
+> obviously correct in stable branches", but the stable branches aren't
+> going to pick up the net-next patch - they are essentially frozen except
+> for bug fixes. I would still recommend writing code that makes the most
+> sense for stable (to the extent that this is logically part of fixing a
+> bug), and then writing code that makes most sense for net-next, even if
+> it implies changing some of it back the way it was.
 
-I can confirm=C2=A0amdgpu.dcdebugmask=3D0x200 fixes it, no more stutters.
-
-It would be very beneficial to include the patch making this behavior defau=
-lt (https://lore.kernel.org/amd-gfx/20250221160145.1730752-3-zaeem.mohamed@=
-amd.com/T/#u)=C2=A0in the relevant linux-stable trees, as this is a major i=
-ssue for affected systems.=C2=A0
-
-I CC'd=C2=A0stable@vger.kernel.org=C2=A0and ask for the patch to be include=
-d in linux-stable, even though it does not have a "Fixes:" tag, if the main=
-tainers are okay with it.
-
-Thank you for the quick response!
-Tiago
-
-Feb 23, 2025, 17:26 by mario.limonciello@amd.com:
-
-> Hello,
->
-> This sounds like to me a problem with PSR-SU.  There have been a variety =
-of these being reported the past few months.  Enough so that the policy to =
-enable it by default is being rolled back for now.
->
-> https://lore.kernel.org/amd-gfx/20250221160145.1730752-3-zaeem.mohamed@am=
-d.com/T/#u
->
-> To confirm that's the root cause you can disable it with amdgpu.dcdebugma=
-sk=3D0x200.
->
-> Thanks,
->
-> On 2/23/2025 10:08, mail@tteles.dev wrote:
->
->> Greetings,
->>
->> I wish to report a regression in amdgpu firmware introduced in commit c9=
-9eeb4d0e13f5831ae77f7ec521162594385d5f, the problem persists until git HEAD=
-, and reverting to the previous commit fixes the issues with no further cha=
-nges to the environment.
->>
->> The issue appears on a Lenovo IdeaPad Pro 5, with a Ryzen 8845HS process=
-or, using the 780M iGPU (1002:1900 I believe). The screen on this laptop is=
- 120Hz 2800x1800, supporting HDR.
->> This was tested on Archlinux 6.13.3.arch1-1, with amdgpu drivers, on bot=
-h Wayland (Gnome and Hyprland) and Xorg (i3wm). I'm using amd-pstate-epp sc=
-aling driver, tested with both performance and powersave governers, to the =
-same effect.
->>
->> I will list the symptoms and attempt to guess at what the issue may be.
->>
->> - The screen stops updating if no mouse input is given while watching lo=
-w resolution video (wherever it is, Brave and mpv, regardless of software o=
-r hw decoding).
->> =C2=A0 Low resolution matters here, I can play 4k video fine, 1080p with=
- mild stutters, but lower becomes very bad.
->> =C2=A0 Here is an example using mpv with 360p sample video, recorded on =
-my phone as to not disturb the environment its running in. (https://youtu.b=
-e/kYHqBjPxM2s You can tell it is very choppy, the original video https://ww=
-w.youtube.com/watch?v=3D1HrXwe6s4W8 is not choppy)
->> =C2=A0 mpv did not report any dropped frames despite there obviously bei=
-ng a huge amount.
->>
->> - In some programs, text does not get displayed instantly from when typi=
-ng it, having to type 5 or 6 characters for the previous to finally show.
->> =C2=A0 All these new characters show up at the same time. This was extre=
-mely noticeable with gnome's default "Console", it also happened in Brave B=
-rowser's search bar, and Signal, it does not seem to happen with Ghostty.
->>
->> Constantly waving my cursor fixes all these issues. Connecting a seconda=
-ry display seems to fix the issue on all displays.
->>
->> From my limited knowledge this seems like a bug in damage detection for =
-eDP + power management, where low enough power levels don't trigger redraws=
-.
->>
->> I am confident the issue was introduced in that commit since I bisected =
-linux-firmware commits affecting amdgpu until the issue was no longer found=
-.
->>
->>
->> Extra info:
->> # dmesg | grep amd
->> [=C2=A0=C2=A0=C2=A0 0.414396] perf/amd_iommu: Detected AMD IOMMU #0 (2 b=
-anks, 4 counters/bank).
->> [=C2=A0=C2=A0=C2=A0 1.875492] [drm] amdgpu kernel modesetting enabled.
->> [=C2=A0=C2=A0=C2=A0 1.878563] amdgpu: Virtual CRAT table created for CPU
->> [=C2=A0=C2=A0=C2=A0 1.878573] amdgpu: Topology: Add CPU node
->> [=C2=A0=C2=A0=C2=A0 1.882607] amdgpu 0000:63:00.0: amdgpu: Fetched VBIOS=
- from VFCT
->> [=C2=A0=C2=A0=C2=A0 1.882610] amdgpu: ATOM BIOS: 113-PHXGENERIC-001
->> [=C2=A0=C2=A0=C2=A0 1.909536] amdgpu 0000:63:00.0: vgaarb: deactivate vg=
-a console
->> [=C2=A0=C2=A0=C2=A0 1.909542] amdgpu 0000:63:00.0: amdgpu: Trusted Memor=
-y Zone (TMZ) feature enabled
->> [=C2=A0=C2=A0=C2=A0 1.909612] amdgpu 0000:63:00.0: amdgpu: VRAM: 4096M 0=
-x0000008000000000 - 0x00000080FFFFFFFF (4096M used)
->> [=C2=A0=C2=A0=C2=A0 1.909614] amdgpu 0000:63:00.0: amdgpu: GART: 512M 0x=
-00007FFF00000000 - 0x00007FFF1FFFFFFF
->> [=C2=A0=C2=A0=C2=A0 1.909829] [drm] amdgpu: 4096M of VRAM memory ready
->> [=C2=A0=C2=A0=C2=A0 1.909832] [drm] amdgpu: 13932M of GTT memory ready.
->> [=C2=A0=C2=A0=C2=A0 1.935030] amdgpu 0000:63:00.0: amdgpu: reserve 0x400=
-0000 from 0x80f8000000 for PSP TMR
->> [=C2=A0=C2=A0=C2=A0 2.482626] amdgpu 0000:63:00.0: amdgpu: RAS: optional=
- ras ta ucode is not available
->> [=C2=A0=C2=A0=C2=A0 2.491068] amdgpu 0000:63:00.0: amdgpu: RAP: optional=
- rap ta ucode is not available
->> [=C2=A0=C2=A0=C2=A0 2.491071] amdgpu 0000:63:00.0: amdgpu: SECUREDISPLAY=
-: securedisplay ta ucode is not available
->> [=C2=A0=C2=A0=C2=A0 2.521960] amdgpu 0000:63:00.0: amdgpu: SMU is initia=
-lized successfully!
->> [=C2=A0=C2=A0=C2=A0 2.601611] kfd kfd: amdgpu: Allocated 3969056 bytes o=
-n gart
->> [=C2=A0=C2=A0=C2=A0 2.601628] kfd kfd: amdgpu: Total number of KFD nodes=
- to be created: 1
->> [=C2=A0=C2=A0=C2=A0 2.602048] amdgpu: Virtual CRAT table created for GPU
->> [=C2=A0=C2=A0=C2=A0 2.602191] amdgpu: Topology: Add dGPU node [0x1900:0x=
-1002]
->> [=C2=A0=C2=A0=C2=A0 2.602193] kfd kfd: amdgpu: added device 1002:1900
->> [=C2=A0=C2=A0=C2=A0 2.602206] amdgpu 0000:63:00.0: amdgpu: SE 1, SH per =
-SE 2, CU per SH 6, active_cu_number 12
->> [=C2=A0=C2=A0=C2=A0 2.602212] amdgpu 0000:63:00.0: amdgpu: ring gfx_0.0.=
-0 uses VM inv eng 0 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602215] amdgpu 0000:63:00.0: amdgpu: ring comp_1.0=
-.0 uses VM inv eng 1 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602216] amdgpu 0000:63:00.0: amdgpu: ring comp_1.1=
-.0 uses VM inv eng 4 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602217] amdgpu 0000:63:00.0: amdgpu: ring comp_1.2=
-.0 uses VM inv eng 6 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602219] amdgpu 0000:63:00.0: amdgpu: ring comp_1.3=
-.0 uses VM inv eng 7 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602220] amdgpu 0000:63:00.0: amdgpu: ring comp_1.0=
-.1 uses VM inv eng 8 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602221] amdgpu 0000:63:00.0: amdgpu: ring comp_1.1=
-.1 uses VM inv eng 9 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602222] amdgpu 0000:63:00.0: amdgpu: ring comp_1.2=
-.1 uses VM inv eng 10 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602223] amdgpu 0000:63:00.0: amdgpu: ring comp_1.3=
-.1 uses VM inv eng 11 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602224] amdgpu 0000:63:00.0: amdgpu: ring sdma0 us=
-es VM inv eng 12 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.602225] amdgpu 0000:63:00.0: amdgpu: ring vcn_unif=
-ied_0 uses VM inv eng 0 on hub 8
->> [=C2=A0=C2=A0=C2=A0 2.602226] amdgpu 0000:63:00.0: amdgpu: ring jpeg_dec=
- uses VM inv eng 1 on hub 8
->> [=C2=A0=C2=A0=C2=A0 2.602227] amdgpu 0000:63:00.0: amdgpu: ring mes_kiq_=
-3.1.0 uses VM inv eng 13 on hub 0
->> [=C2=A0=C2=A0=C2=A0 2.609481] amdgpu 0000:63:00.0: amdgpu: Runtime PM no=
-t available
->> [=C2=A0=C2=A0=C2=A0 2.610787] [drm] Initialized amdgpu 3.60.0 for 0000:6=
-3:00.0 on minor 1
->> [=C2=A0=C2=A0=C2=A0 2.617618] fbcon: amdgpudrmfb (fb0) is primary device
->> [=C2=A0=C2=A0=C2=A0 3.788332] amdgpu 0000:63:00.0: [drm] fb0: amdgpudrmf=
-b frame buffer device
->> [=C2=A0=C2=A0=C2=A0 5.120419] kvm_amd: TSC scaling supported
->> [=C2=A0=C2=A0=C2=A0 5.120426] kvm_amd: Nested Virtualization enabled
->> [=C2=A0=C2=A0=C2=A0 5.120428] kvm_amd: Nested Paging enabled
->> [=C2=A0=C2=A0=C2=A0 5.120430] kvm_amd: LBR virtualization supported
->> [=C2=A0=C2=A0=C2=A0 5.120443] kvm_amd: Virtual GIF supported
->> [=C2=A0=C2=A0=C2=A0 5.120444] kvm_amd: Virtual NMI enabled
->> [=C2=A0=C2=A0=C2=A0 5.170720] snd_hda_intel 0000:63:00.1: bound 0000:63:=
-00.0 (ops amdgpu_dm_audio_component_bind_ops [amdgpu])
->> [=C2=A0=C2=A0=C2=A0 5.191443] amd_atl: AMD Address Translation Library i=
-nitialized
->>
->>
->> Thank you for your time,
->> Tiago Teles
->>
-
+Okay, agree with you, I will improve the patch.
 
