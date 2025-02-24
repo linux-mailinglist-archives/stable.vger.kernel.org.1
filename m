@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-119153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D679A42510
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F139A423B8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:47:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD4403BCAA9
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:51:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D42419C1F33
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DA22561B1;
-	Mon, 24 Feb 2025 14:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3684318BC36;
+	Mon, 24 Feb 2025 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGUxNX/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emolc6aG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4910718A6BD;
-	Mon, 24 Feb 2025 14:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E822B1519A5;
+	Mon, 24 Feb 2025 14:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408498; cv=none; b=G9IlBoO9Ub4eUrJV1ivWNNElFMjEvlVhFDS46FcX1k74VqjDlDH/U0gCUhO3V6CObqEIiQret3KmxRTFO0Gs2Y2A4ckLxwZuoNIMgizempWwIFZnVl4ZCJ8YDySEz49owcrFKmMACsuMxUZ2FnKI/gnZCuMg10ZtMjraSNDy5o8=
+	t=1740408014; cv=none; b=lwfzG4eFOvggm/fhXqhCSz0OUh9Jsu++97flFRvxsmOkvN5gdPDLZaLqfp/Pumd+xRjM9SpXGEv0h4X9CZqRDYeVH2CuFOrNhCaMab8dtGNtA0eOV45qJiKz96QBvQtEit07n/g9i6Fp1W5MHCw6jWGsMA76eQV/zOjAAzkSOpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408498; c=relaxed/simple;
-	bh=YdnzX3sui57deHZipnyddcq72f7Pof8EbHYRGOv8WNU=;
+	s=arc-20240116; t=1740408014; c=relaxed/simple;
+	bh=+Kk9DdLWwmc2WxKe53hrUsgCBIEJO1zNbe3mOPu4LNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3bPB1Cw9OFs1JaMvvZLkygIAEQApc9IT3mZhudWT8rnSy82hug6eSqiM2GJx8iSBCXBJ/K1UYtWmEpbOAHhyUXf5XCPCRk/JIz26bwbp2napUDEgbf9E+gpTaXh0gpM5ODa8Usjgmn1GCR4aVGPWB0vcyxf32UPiXZo4CgUqoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGUxNX/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99AAC4CED6;
-	Mon, 24 Feb 2025 14:48:17 +0000 (UTC)
+	 MIME-Version; b=hl07A22vZy6I+ov53jenVH99PvVT8txtdGEGIDEPVVC9XRBqM3auslzSO725wdtWbi+1x0Yqh670kVrG2Ry1Z6E6D94l99cXIUQ90y+rxSyFo2vwd/O9p3Vp6pWJlLB3wyy5PqsvxWVpOdPttJLpdPe07/Fz/uvJVqnoFHo9X1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emolc6aG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69089C4CED6;
+	Mon, 24 Feb 2025 14:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408498;
-	bh=YdnzX3sui57deHZipnyddcq72f7Pof8EbHYRGOv8WNU=;
+	s=korg; t=1740408013;
+	bh=+Kk9DdLWwmc2WxKe53hrUsgCBIEJO1zNbe3mOPu4LNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGUxNX/pczqkOi5mGDJwUZ6jauEeMzqe9P4E8VC31CzJGgRNs7zVAdsvrSvMZY1cX
-	 GR0QpJP3f2IQZb4ro/fh2lYAtul2bD3oFXucUmn9KELNoOGVlBxlC7eC/J6Kkl/W1V
-	 04uI3JX6YpL900F00sV8zgL5aNmk5HKKnn7NSa6M=
+	b=emolc6aGNpkVCMtKvjxWMafV6Lt37fhH740Dhhcex7nxYT8bKS2aVtf1Rp6B8FsZD
+	 OBPc75bxkZ/5eAE2wDtRPagxtijzi0TblAHRi30FG74zVwfh2O5ea6i9bxTGI26MmF
+	 GSYWbBfHMgmfiP1ug/5PluAcrzKWnYtSu/NwAfXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/154] bpf: unify VM_WRITE vs VM_MAYWRITE use in BPF map mmaping logic
+Subject: [PATCH 6.6 075/140] ibmvnic: Return error code on TX scrq flush fail
 Date: Mon, 24 Feb 2025 15:34:34 +0100
-Message-ID: <20250224142610.020088370@linuxfoundation.org>
+Message-ID: <20250224142605.956212818@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Nick Child <nnac123@linux.ibm.com>
 
-[ Upstream commit 98671a0fd1f14e4a518ee06b19037c20014900eb ]
+[ Upstream commit 5cb431dcf8048572e9ffc6c30cdbd8832cbe502d ]
 
-For all BPF maps we ensure that VM_MAYWRITE is cleared when
-memory-mapping BPF map contents as initially read-only VMA. This is
-because in some cases BPF verifier relies on the underlying data to not
-be modified afterwards by user space, so once something is mapped
-read-only, it shouldn't be re-mmap'ed as read-write.
+In ibmvnic_xmit() if ibmvnic_tx_scrq_flush() returns H_CLOSED then
+it will inform upper level networking functions to disable tx
+queues. H_CLOSED signals that the connection with the vnic server is
+down and a transport event is expected to recover the device.
 
-As such, it's not necessary to check VM_MAYWRITE in bpf_map_mmap() and
-map->ops->map_mmap() callbacks: VM_WRITE should be consistently set for
-read-write mappings, and if VM_WRITE is not set, there is no way for
-user space to upgrade read-only mapping to read-write one.
+Previously, ibmvnic_tx_scrq_flush() was hard-coded to return success.
+Therefore, the queues would remain active until ibmvnic_cleanup() is
+called within do_reset().
 
-This patch cleans up this VM_WRITE vs VM_MAYWRITE handling within
-bpf_map_mmap(), which is an entry point for any BPF map mmap()-ing
-logic. We also drop unnecessary sanitization of VM_MAYWRITE in BPF
-ringbuf's map_mmap() callback implementation, as it is already performed
-by common code in bpf_map_mmap().
+The problem is that do_reset() depends on the RTNL lock. If several
+ibmvnic devices are resetting then there can be a long wait time until
+the last device can grab the lock. During this time the tx/rx queues
+still appear active to upper level functions.
 
-Note, though, that in bpf_map_mmap_{open,close}() callbacks we can't
-drop VM_MAYWRITE use, because it's possible (and is outside of
-subsystem's control) to have initially read-write memory mapping, which
-is subsequently dropped to read-only by user space through mprotect().
-In such case, from BPF verifier POV it's read-write data throughout the
-lifetime of BPF map, and is counted as "active writer".
+FYI, we do make a call to netif_carrier_off() outside the RTNL lock but
+its calls to dev_deactivate() are also dependent on the RTNL lock.
 
-But its VMAs will start out as VM_WRITE|VM_MAYWRITE, then mprotect() can
-change it to just VM_MAYWRITE (and no VM_WRITE), so when its finally
-munmap()'ed and bpf_map_mmap_close() is called, vm_flags will be just
-VM_MAYWRITE, but we still need to decrement active writer count with
-bpf_map_write_active_dec() as it's still considered to be a read-write
-mapping by the rest of BPF subsystem.
+As a result, large amounts of retransmissions were observed in a short
+period of time, eventually leading to ETIMEOUT. This was specifically
+seen with HNV devices, likely because of even more RTNL dependencies.
 
-Similar reasoning applies to bpf_map_mmap_open(), which is called
-whenever mmap(), munmap(), and/or mprotect() forces mm subsystem to
-split original VMA into multiple discontiguous VMAs.
+Therefore, ensure the return code of ibmvnic_tx_scrq_flush() is
+propagated to the xmit function to allow for an earlier (and lock-less)
+response to a transport event.
 
-Memory-mapping handling is a bit tricky, yes.
-
-Cc: Jann Horn <jannh@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20250129012246.1515826-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: bc27c52eea18 ("bpf: avoid holding freeze_mutex during mmap operation")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416164128.387920-1-nnac123@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: bdf5d13aa05e ("ibmvnic: Don't reference skb after sending to VIOS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/ringbuf.c |  4 ----
- kernel/bpf/syscall.c | 10 ++++++++--
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/ringbuf.c b/kernel/bpf/ringbuf.c
-index e1cfe890e0be6..1499d8caa9a35 100644
---- a/kernel/bpf/ringbuf.c
-+++ b/kernel/bpf/ringbuf.c
-@@ -268,8 +268,6 @@ static int ringbuf_map_mmap_kern(struct bpf_map *map, struct vm_area_struct *vma
- 		/* allow writable mapping for the consumer_pos only */
- 		if (vma->vm_pgoff != 0 || vma->vm_end - vma->vm_start != PAGE_SIZE)
- 			return -EPERM;
--	} else {
--		vm_flags_clear(vma, VM_MAYWRITE);
- 	}
- 	/* remap_vmalloc_range() checks size and offset constraints */
- 	return remap_vmalloc_range(vma, rb_map->rb,
-@@ -289,8 +287,6 @@ static int ringbuf_map_mmap_user(struct bpf_map *map, struct vm_area_struct *vma
- 			 * position, and the ring buffer data itself.
- 			 */
- 			return -EPERM;
--	} else {
--		vm_flags_clear(vma, VM_MAYWRITE);
- 	}
- 	/* remap_vmalloc_range() checks size and offset constraints */
- 	return remap_vmalloc_range(vma, rb_map->rb, vma->vm_pgoff + RINGBUF_PGOFF);
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 368ae8d231d41..fa43f26ce0dac 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -966,15 +966,21 @@ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
- 	vma->vm_ops = &bpf_map_default_vmops;
- 	vma->vm_private_data = map;
- 	vm_flags_clear(vma, VM_MAYEXEC);
-+	/* If mapping is read-only, then disallow potentially re-mapping with
-+	 * PROT_WRITE by dropping VM_MAYWRITE flag. This VM_MAYWRITE clearing
-+	 * means that as far as BPF map's memory-mapped VMAs are concerned,
-+	 * VM_WRITE and VM_MAYWRITE and equivalent, if one of them is set,
-+	 * both should be set, so we can forget about VM_MAYWRITE and always
-+	 * check just VM_WRITE
-+	 */
- 	if (!(vma->vm_flags & VM_WRITE))
--		/* disallow re-mapping with PROT_WRITE */
- 		vm_flags_clear(vma, VM_MAYWRITE);
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 61685c3053ad7..e1e4dc81ad309 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2371,7 +2371,7 @@ static int ibmvnic_tx_scrq_flush(struct ibmvnic_adapter *adapter,
+ 		ibmvnic_tx_scrq_clean_buffer(adapter, tx_scrq);
+ 	else
+ 		ind_bufp->index = 0;
+-	return 0;
++	return rc;
+ }
  
- 	err = map->ops->map_mmap(map, vma);
- 	if (err)
+ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+@@ -2424,7 +2424,9 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		tx_dropped++;
+ 		tx_send_failed++;
+ 		ret = NETDEV_TX_OK;
+-		ibmvnic_tx_scrq_flush(adapter, tx_scrq);
++		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq);
++		if (lpar_rc != H_SUCCESS)
++			goto tx_err;
  		goto out;
+ 	}
  
--	if (vma->vm_flags & VM_MAYWRITE)
-+	if (vma->vm_flags & VM_WRITE)
- 		bpf_map_write_active_inc(map);
- out:
- 	mutex_unlock(&map->freeze_mutex);
+@@ -2439,8 +2441,10 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 		dev_kfree_skb_any(skb);
+ 		tx_send_failed++;
+ 		tx_dropped++;
+-		ibmvnic_tx_scrq_flush(adapter, tx_scrq);
+ 		ret = NETDEV_TX_OK;
++		lpar_rc = ibmvnic_tx_scrq_flush(adapter, tx_scrq);
++		if (lpar_rc != H_SUCCESS)
++			goto tx_err;
+ 		goto out;
+ 	}
+ 
 -- 
 2.39.5
 
