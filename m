@@ -1,184 +1,118 @@
-Return-Path: <stable+bounces-118930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE92A42084
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:26:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66841A420C5
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:35:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D36E43AB5A8
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27AE43B6B10
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 13:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D01E24EF8E;
-	Mon, 24 Feb 2025 13:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMsQ7rXv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE3A23372B;
+	Mon, 24 Feb 2025 13:30:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24DC24EF8C
-	for <stable@vger.kernel.org>; Mon, 24 Feb 2025 13:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B471B041E;
+	Mon, 24 Feb 2025 13:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740403396; cv=none; b=PcbcuqMcqnjez5/z3JTD1CImhKbRGtYoH48fsB62vwgYxqUUghCzszEp8EXmGOoPBKpFY6+pwFl8C5J/hWteTiCncAakJ4SKO/bUqb+wAWxn6ojJwKUNffMjwBv5tuf6K8RLcmiEY/WYc8ajID5khJjd9/5fAyNVv+8EWQHb0e8=
+	t=1740403838; cv=none; b=YFH4cubRP53YdeKS4Lb6Ukwo8591dJVxhRi5I3eDHpfgGoTJ9Hi1pkf+glha3sYo5NpmC3neXyv9aLq6pHWAbeHlXhm2coHUclwb9jv3CjUHGnIWpC8a69qnDOlX5SSHVs7gnF+z2q+e5o/ljqfqEbKU64M12+AKJgvsIbGRozM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740403396; c=relaxed/simple;
-	bh=UejWGehJ3IjdtisI9z3h1smjUDeJQWG9V1VGYxRDZH8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WKgfGi/b6Rm59Q9EZJfDhxai3scqs+GN3j7LzPsWoHlT76rmQRTyyz+Vh6puac9JK2c2dKN1N6KRGKrNz3CfOe6GUKmVOJaOojPwiKgCYrZqAjq7vDFnBGksNYrC8CTqalDeEDTzHjmcKhbltNeoyjUXwNmh7IlbeicbuaKwcGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMsQ7rXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8CAC4CEE6;
-	Mon, 24 Feb 2025 13:23:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740403396;
-	bh=UejWGehJ3IjdtisI9z3h1smjUDeJQWG9V1VGYxRDZH8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=oMsQ7rXvuAG377oaF5rdzWM73x1MHchcQw01yDPa1x2ReWOmfRjUHOvr/+ry/X1gH
-	 fWDjk55X9vCUSMmmejVQDUgIa6ZDRZHPOEaszgPfpf7ebImxID9tEyowpzFs21k4Pq
-	 JRvxHyWm1KuMcbImSxIsEGPDfFlBMyI6uPmwkcl4=
-Subject: FAILED: patch "[PATCH] xfs: fix mount hang during primary superblock recovery" failed to apply to 6.6-stable tree
-To: leo.lilong@huawei.com,cem@kernel.org,djwong@kernel.org,hch@lst.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Feb 2025 14:23:13 +0100
-Message-ID: <2025022413-skedaddle-gloss-62e4@gregkh>
+	s=arc-20240116; t=1740403838; c=relaxed/simple;
+	bh=ABZeoDoCXyMZznzUxsqlycvSyByLRS8r9I1i4W5KKZ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G/T/mou8GGv9LrYmfeHDrfjtbJqX3Srr2bIMAiaR3KAyQZ0/C7v/bCU7E0S5JZd4jmBm+rp1N6fOpEfhkCw5WX31MWKav4TR4FOqR+e3wJC6Hd6lRNFbtqNyLg1MDAyg4ic2ogTeSEvhdnrsdRgBHJ6sGGGFBOkv8dDoZo91NvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAAnLAxldLxnkjsEEA--.4476S2;
+	Mon, 24 Feb 2025 21:30:17 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: miquel.raynal@bootlin.com,
+	richard@nod.at,
+	vigneshr@ti.com,
+	David.Woodhouse@intel.com,
+	jarkko.lavinen@nokia.com
+Cc: linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mtd: Fix potential UAF for mtdswap_dev pointers
+Date: Mon, 24 Feb 2025 21:30:07 +0800
+Message-Id: <20250224133007.3037357-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAnLAxldLxnkjsEEA--.4476S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFyrtr13trWrGF4ftry7Jrb_yoW8GF1UpF
+	Z8CrWay398Jw1fG3ZrAw4DAFyFkw15urW5Gr4rJ3y2vwn5A34fAr90vayY9Fy3KF4DKa4Y
+	qrsFqr98Wr1rGaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+In the mtdswap_init(), if the allocations fail, the error handling
+path frees d->page_buf, d->eb_data, d->revmap and d->page_data without
+setting these pointers to NULL. This could lead to UAF if subsequent
+error handling or device reset operations attempt to release these
+pointers again.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Set d->page_buf, d->eb_data, d->revmap and d->page_data to NULL
+immediately after freeing them to prevent misuse. Release immediately
+and set to NULL, adhering to the 'release implies invalid' defensive
+programming principle.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Found by code review.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x efebe42d95fbba91dca6e3e32cb9e0612eb56de5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025022413-skedaddle-gloss-62e4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Cc: stable@vger.kernel.org
+Fixes: a32159024620 ("mtd: Add mtdswap block driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/mtd/mtdswap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From efebe42d95fbba91dca6e3e32cb9e0612eb56de5 Mon Sep 17 00:00:00 2001
-From: Long Li <leo.lilong@huawei.com>
-Date: Sat, 11 Jan 2025 15:05:44 +0800
-Subject: [PATCH] xfs: fix mount hang during primary superblock recovery
- failure
-
-When mounting an image containing a log with sb modifications that require
-log replay, the mount process hang all the time and stack as follows:
-
-  [root@localhost ~]# cat /proc/557/stack
-  [<0>] xfs_buftarg_wait+0x31/0x70
-  [<0>] xfs_buftarg_drain+0x54/0x350
-  [<0>] xfs_mountfs+0x66e/0xe80
-  [<0>] xfs_fs_fill_super+0x7f1/0xec0
-  [<0>] get_tree_bdev_flags+0x186/0x280
-  [<0>] get_tree_bdev+0x18/0x30
-  [<0>] xfs_fs_get_tree+0x1d/0x30
-  [<0>] vfs_get_tree+0x2d/0x110
-  [<0>] path_mount+0xb59/0xfc0
-  [<0>] do_mount+0x92/0xc0
-  [<0>] __x64_sys_mount+0xc2/0x160
-  [<0>] x64_sys_call+0x2de4/0x45c0
-  [<0>] do_syscall_64+0xa7/0x240
-  [<0>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-During log recovery, while updating the in-memory superblock from the
-primary SB buffer, if an error is encountered, such as superblock
-corruption occurs or some other reasons, we will proceed to out_release
-and release the xfs_buf. However, this is insufficient because the
-xfs_buf's log item has already been initialized and the xfs_buf is held
-by the buffer log item as follows, the xfs_buf will not be released,
-causing the mount thread to hang.
-
-  xlog_recover_do_primary_sb_buffer
-    xlog_recover_do_reg_buffer
-      xlog_recover_validate_buf_type
-        xfs_buf_item_init(bp, mp)
-
-The solution is straightforward, we simply need to allow it to be
-handled by the normal buffer write process. The filesystem will be
-shutdown before the submission of buffer_list in xlog_do_recovery_pass(),
-ensuring the correct release of the xfs_buf as follows:
-
-  xlog_do_recovery_pass
-    error = xlog_recover_process
-      xlog_recover_process_data
-        xlog_recover_process_ophdr
-          xlog_recovery_process_trans
-            ...
-              xlog_recover_buf_commit_pass2
-                error = xlog_recover_do_primary_sb_buffer
-                  //Encounter error and return
-                if (error)
-                  goto out_writebuf
-                ...
-              out_writebuf:
-                xfs_buf_delwri_queue(bp, buffer_list) //add bp to list
-                return  error
-            ...
-    if (!list_empty(&buffer_list))
-      if (error)
-        xlog_force_shutdown(log, SHUTDOWN_LOG_IO_ERROR); //shutdown first
-      xfs_buf_delwri_submit(&buffer_list); //submit buffers in list
-        __xfs_buf_submit
-          if (bp->b_mount->m_log && xlog_is_shutdown(bp->b_mount->m_log))
-            xfs_buf_ioend_fail(bp)  //release bp correctly
-
-Fixes: 6a18765b54e2 ("xfs: update the file system geometry after recoverying superblock buffers")
-Cc: stable@vger.kernel.org # v6.12
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-
-diff --git a/fs/xfs/xfs_buf_item_recover.c b/fs/xfs/xfs_buf_item_recover.c
-index b05d5b81f642..05a2f6927c12 100644
---- a/fs/xfs/xfs_buf_item_recover.c
-+++ b/fs/xfs/xfs_buf_item_recover.c
-@@ -1087,7 +1087,7 @@ xlog_recover_buf_commit_pass2(
- 		error = xlog_recover_do_primary_sb_buffer(mp, item, bp, buf_f,
- 				current_lsn);
- 		if (error)
--			goto out_release;
-+			goto out_writebuf;
+diff --git a/drivers/mtd/mtdswap.c b/drivers/mtd/mtdswap.c
+index 680366616da2..b315dab2a914 100644
+--- a/drivers/mtd/mtdswap.c
++++ b/drivers/mtd/mtdswap.c
+@@ -1318,12 +1318,16 @@ static int mtdswap_init(struct mtdswap_dev *d, unsigned int eblocks,
  
- 		/* Update the rt superblock if we have one. */
- 		if (xfs_has_rtsb(mp) && mp->m_rtsb_bp) {
-@@ -1104,6 +1104,15 @@ xlog_recover_buf_commit_pass2(
- 		xlog_recover_do_reg_buffer(mp, item, bp, buf_f, current_lsn);
- 	}
- 
-+	/*
-+	 * Buffer held by buf log item during 'normal' buffer recovery must
-+	 * be committed through buffer I/O submission path to ensure proper
-+	 * release. When error occurs during sb buffer recovery, log shutdown
-+	 * will be done before submitting buffer list so that buffers can be
-+	 * released correctly through ioend failure path.
-+	 */
-+out_writebuf:
-+
- 	/*
- 	 * Perform delayed write on the buffer.  Asynchronous writes will be
- 	 * slower when taking into account all the buffers to be flushed.
+ oob_buf_fail:
+ 	kfree(d->page_buf);
++	d->page_buf = NULL;
+ page_buf_fail:
+ 	vfree(d->eb_data);
++	d->eb_data = NULL;
+ eb_data_fail:
+ 	vfree(d->revmap);
++	d->revmap = NULL;
+ revmap_fail:
+ 	vfree(d->page_data);
++	d->page_data = NULL;
+ page_data_fail:
+ 	printk(KERN_ERR "%s: init failed (%d)\n", MTDSWAP_PREFIX, ret);
+ 	return ret;
+-- 
+2.25.1
 
 
