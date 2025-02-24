@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-119203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91740A4250A
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF2A42401
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CABDA3B247E
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07B444571A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A826254849;
-	Mon, 24 Feb 2025 14:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC2024EF75;
+	Mon, 24 Feb 2025 14:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3b1ycRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zauRuSbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC343190063;
-	Mon, 24 Feb 2025 14:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF7924EF74;
+	Mon, 24 Feb 2025 14:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408668; cv=none; b=UdSKt2c5eAZUltrAaGVk5BKi656LvpQkvsBKug+tglC1EDhxq0Iel8wItHBcP5cwfD+MPlNBuZ7jdbEJreutSFsT0jsV0eV08pG92LJ7oMLkcy2N7W1WXp2kXqyGM7/go/Elkfvp4yrBansm6ShedjqmqN4E6gyZNQMRi93ic1U=
+	t=1740408080; cv=none; b=Sn4jKyCEdIp4gKiXFIAaaXDgkYUBRYZ2BiVlZMfLHKo+sasTnqoi+DQQ+C8ekCRIsyHcChPSDy/zYaLGtqlpVNg6OXGFXmUXxXoKlYOK2HSkALyCDBoKpqUq25hM0n8TJktlEXNssHyxDBlREA6uaclg3o/I+RjBranSHFgkzgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408668; c=relaxed/simple;
-	bh=M/5cKXVjQUao2IXF2+B6QvfrL5LMzT2og+IEXME0FGI=;
+	s=arc-20240116; t=1740408080; c=relaxed/simple;
+	bh=weYpjvuyAHbYVGzfcVx6LDvFAXZO3VytMbSjm0toSLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/xiBScAp6d70kszCtTmKNAa5YhIWCzeWTgZPm4SuKV1x2Hry/lX4ntBPqG1D4RUSxPZEK7SE3PiGPHIC6s5+av/5Ux+obKJAgAQ6rtzh4mMztvHPbnW6qb2kY/4CDxA8GET7pkpY0pf6bRiERrOnRFpFFD5kYO6p673ZDBttDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3b1ycRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76ADCC4CED6;
-	Mon, 24 Feb 2025 14:51:07 +0000 (UTC)
+	 MIME-Version; b=KYirXFOGdz+KGVJepfUrUImPXxuJZp+4isghPDW1awPnbjhPkE/t4UOwOBYxLHIR4BdulPWeO1Qrx3jnI4o49MEB3klk4FE9J8yj7KKHyIaWMxf1+QBzkIsLHpiBbzKQ0MvjZDCHjaQMbYC6jZQhqsuI+WPQzjOvZFIZPLbJalU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zauRuSbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4402C4CED6;
+	Mon, 24 Feb 2025 14:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408667;
-	bh=M/5cKXVjQUao2IXF2+B6QvfrL5LMzT2og+IEXME0FGI=;
+	s=korg; t=1740408080;
+	bh=weYpjvuyAHbYVGzfcVx6LDvFAXZO3VytMbSjm0toSLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3b1ycRYRXURfvMxwMaUuj58XJau4T5hKzFZbkHkHyeNjHHIGFB6bqQDOEZrmc/vZ
-	 Q2Y4xLXEf3kWO/KdxVQDbv6NGsslbnA9Q26rmv7TgRK54GcpMSCJrvU/lvIfvVysdZ
-	 jCfCGD8iWb1z+9ZriVwYcZFynOgm4/8qraADYeyo=
+	b=zauRuSbOYiGiAICteGghItt8BNEH8/kW55BFlmJYP9p73Jjmljw8suMTnXqtOmrQ9
+	 jCn2a23Y8qzMqskT08WyOBDBaMjreIdtiZjPLyYXG3GdoxW9O34lpYf7t22mwhkzIz
+	 sv8MH3UHb7zzIPXJL4z78ks6WyACtil+H0GuXAm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Rob Clark <robdclark@chromium.org>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/154] drm/msm: Avoid rounding up to one jiffy
+Subject: [PATCH 6.6 093/140] drm/msm/gem: prevent integer overflow in msm_ioctl_gem_submit()
 Date: Mon, 24 Feb 2025 15:34:52 +0100
-Message-ID: <20250224142610.708851150@linuxfoundation.org>
+Message-ID: <20250224142606.669455071@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 669c285620231786fffe9d87ab432e08a6ed922b ]
+[ Upstream commit 3a47f4b439beb98e955d501c609dfd12b7836d61 ]
 
-If userspace is trying to achieve a timeout of zero, let 'em have it.
-Only round up if the timeout is greater than zero.
+The "submit->cmd[i].size" and "submit->cmd[i].offset" variables are u32
+values that come from the user via the submit_lookup_cmds() function.
+This addition could lead to an integer wrapping bug so use size_add()
+to prevent that.
 
-Fixes: 4969bccd5f4e ("drm/msm: Avoid rounding down to zero jiffies")
+Fixes: 198725337ef1 ("drm/msm: fix cmdstream size check")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/624696/
 Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/632264/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_drv.h | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_drv.h b/drivers/gpu/drm/msm/msm_drv.h
-index 2e28a13446366..9526b22038ab8 100644
---- a/drivers/gpu/drm/msm/msm_drv.h
-+++ b/drivers/gpu/drm/msm/msm_drv.h
-@@ -543,15 +543,12 @@ static inline int align_pitch(int width, int bpp)
- static inline unsigned long timeout_to_jiffies(const ktime_t *timeout)
- {
- 	ktime_t now = ktime_get();
--	s64 remaining_jiffies;
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 207b6ba1565d8..018b39546fc1d 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -885,8 +885,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ 			goto out;
  
--	if (ktime_compare(*timeout, now) < 0) {
--		remaining_jiffies = 0;
--	} else {
--		ktime_t rem = ktime_sub(*timeout, now);
--		remaining_jiffies = ktime_divns(rem, NSEC_PER_SEC / HZ);
--	}
-+	if (ktime_compare(*timeout, now) <= 0)
-+		return 0;
- 
-+	ktime_t rem = ktime_sub(*timeout, now);
-+	s64 remaining_jiffies = ktime_divns(rem, NSEC_PER_SEC / HZ);
- 	return clamp(remaining_jiffies, 1LL, (s64)INT_MAX);
- }
- 
+ 		if (!submit->cmd[i].size ||
+-			((submit->cmd[i].size + submit->cmd[i].offset) >
+-				obj->size / 4)) {
++		    (size_add(submit->cmd[i].size, submit->cmd[i].offset) > obj->size / 4)) {
+ 			SUBMIT_ERROR(submit, "invalid cmdstream size: %u\n", submit->cmd[i].size * 4);
+ 			ret = -EINVAL;
+ 			goto out;
 -- 
 2.39.5
 
