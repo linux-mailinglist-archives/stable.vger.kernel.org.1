@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-119173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C903A424EC
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:03:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573F4A42394
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2891897916
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:52:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 460B6189AE3A
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC91A248861;
-	Mon, 24 Feb 2025 14:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FE5248861;
+	Mon, 24 Feb 2025 14:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkH5EtEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cROWt3lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A73123BD1D;
-	Mon, 24 Feb 2025 14:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34348190063;
+	Mon, 24 Feb 2025 14:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408568; cv=none; b=pODHu5OGTTPKWObNTevr4TvfTctF0ET4lU5099uwxHMCfMcn7r/uZJTM7RMHhVgEMg3Y7xa7TVBv6CaKh3aXLIt5R88IOa9x/m18nlq0K5DzM44PMvhewI2akYTL3brBYAJIi/GLumTPiGgbWxIVP3OHeGwjrqEBdE+GXsYWaCE=
+	t=1740407948; cv=none; b=IJgB098qLYzK74W8SlXcmLJy3bz/EiFUiKVKhKsnRAQ+Ko5TEAMGRgkwKXoy1RSr9YU4A5vUYQp7LQcCdsVjZDw0yet+yLku7qKGtHbutlOjiMrumaET810H/g6KyAZ4nURFANHq8BBb6Jq/WBCbcUCr7zWIOiTQGO5Mgp+Veqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408568; c=relaxed/simple;
-	bh=t78vH593wOMIUWY0/hB+GDmchf+c63sB4Wh1KNAu1/0=;
+	s=arc-20240116; t=1740407948; c=relaxed/simple;
+	bh=3Qg/1SePnIqhOIu8ob6Hv3OXFkiyMkNIGKlSGZ+I9/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5qLMfRVW/Rm/uExHhSLBuxm13Za+p61PVqzDsS4O+sfrHuBYJBUIa+bmI/tEjd0hQY0TwOk0DNzXx+gS31lpOFo2oitdDxwRCEfkBiv2B8HXZcZwkIJUdB57d8MglEe43v+4K85DNczKIXf2iq4Udn1Qf38MWRSOgfjoxjx7Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkH5EtEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37F1C4CED6;
-	Mon, 24 Feb 2025 14:49:27 +0000 (UTC)
+	 MIME-Version; b=JQ+2wNCAxMMbqcjV7fepqCOrc+feG4ZrwBNGABh9sq56LQMV8YB0KopMLtSU68rcr+rXcBanQjpLiLddwbWl7hkrUAt7PRbDPzCCarVJawatjkG2xkJnoQc8xWZrZQZoUrgQYSwrpMe7KnnHGjFPv6F4lG064l8siWyuG1LAYIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cROWt3lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F505C4CED6;
+	Mon, 24 Feb 2025 14:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408568;
-	bh=t78vH593wOMIUWY0/hB+GDmchf+c63sB4Wh1KNAu1/0=;
+	s=korg; t=1740407948;
+	bh=3Qg/1SePnIqhOIu8ob6Hv3OXFkiyMkNIGKlSGZ+I9/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkH5EtEm2QV19GXv4u/lAsL6dsCU1xiDYFEwvK1V9RU7NSMJL4wh25Z2QoRRO3j0d
-	 Gakp2QnT5u6jYPS5fEGYr6TKd8RV4Z6E198i0JKkk0sf9KlBhtoS6wCdDLXSZfz0Jb
-	 0ND3rh5BRaIZLb2V5Txv+ZGsMSXH4LIKlRXy3Mhc=
+	b=cROWt3lhZGO/pyklLliTRFur7hPetGYIdGuqM8TW4z6oone+RL/pA9tjnQw1fenLU
+	 l9qgzPLsdBWrDb9QG4jzWj8GrjqGAX3O/D4Iu7ldE/dnkSQTQUL0KfyOptDDKw/Cf/
+	 LPAYWIP+yAnJ55oV69iTLZkvqcviVrOajR92sKtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Riteau <pierre@stackhpc.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/154] net/sched: cls_api: fix error handling causing NULL dereference
-Date: Mon, 24 Feb 2025 15:34:13 +0100
-Message-ID: <20250224142609.206347293@linuxfoundation.org>
+Subject: [PATCH 6.6 055/140] media: uvcvideo: Refactor iterators
+Date: Mon, 24 Feb 2025 15:34:14 +0100
+Message-ID: <20250224142605.176375325@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Riteau <pierre@stackhpc.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 071ed42cff4fcdd89025d966d48eabef59913bf2 ]
+[ Upstream commit 64627daf0c5f7838111f52bbbd1a597cb5d6871a ]
 
-tcf_exts_miss_cookie_base_alloc() calls xa_alloc_cyclic() which can
-return 1 if the allocation succeeded after wrapping. This was treated as
-an error, with value 1 returned to caller tcf_exts_init_ex() which sets
-exts->actions to NULL and returns 1 to caller fl_change().
+Avoid using the iterators after the list_for_each() constructs.
+This patch should be a NOP, but makes cocci, happier:
 
-fl_change() treats err == 1 as success, calling tcf_exts_validate_ex()
-which calls tcf_action_init() with exts->actions as argument, where it
-is dereferenced.
+drivers/media/usb/uvc/uvc_ctrl.c:1861:44-50: ERROR: invalid reference to the index variable of the iterator on line 1850
+drivers/media/usb/uvc/uvc_ctrl.c:2195:17-23: ERROR: invalid reference to the index variable of the iterator on line 2179
 
-Example trace:
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-CPU: 114 PID: 16151 Comm: handler114 Kdump: loaded Not tainted 5.14.0-503.16.1.el9_5.x86_64 #1
-RIP: 0010:tcf_action_init+0x1f8/0x2c0
-Call Trace:
- tcf_action_init+0x1f8/0x2c0
- tcf_exts_validate_ex+0x175/0x190
- fl_change+0x537/0x1120 [cls_flower]
-
-Fixes: 80cd22c35c90 ("net/sched: cls_api: Support hardware miss to tc action")
-Signed-off-by: Pierre Riteau <pierre@stackhpc.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250213223610.320278-1-pierre@stackhpc.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: d9fecd096f67 ("media: uvcvideo: Only save async fh if success")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index dfa3067084948..998ea3b5badfc 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -97,7 +97,7 @@ tcf_exts_miss_cookie_base_alloc(struct tcf_exts *exts, struct tcf_proto *tp,
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index ce70e96b8fb52..f78e0c02b3379 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1848,16 +1848,18 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+ 		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback,
+ 					     &err_ctrl);
+-		if (ret < 0)
++		if (ret < 0) {
++			if (ctrls)
++				ctrls->error_idx =
++					uvc_ctrl_find_ctrl_idx(entity, ctrls,
++							       err_ctrl);
+ 			goto done;
++		}
+ 	}
  
- 	err = xa_alloc_cyclic(&tcf_exts_miss_cookies_xa, &n->miss_cookie_base,
- 			      n, xa_limit_32b, &next, GFP_KERNEL);
--	if (err)
-+	if (err < 0)
- 		goto err_xa_alloc;
+ 	if (!rollback)
+ 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
+ done:
+-	if (ret < 0 && ctrls)
+-		ctrls->error_idx = uvc_ctrl_find_ctrl_idx(entity, ctrls,
+-							  err_ctrl);
+ 	mutex_unlock(&chain->ctrl_mutex);
+ 	return ret;
+ }
+@@ -2170,7 +2172,7 @@ static int uvc_ctrl_init_xu_ctrl(struct uvc_device *dev,
+ int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
+ 	struct uvc_xu_control_query *xqry)
+ {
+-	struct uvc_entity *entity;
++	struct uvc_entity *entity, *iter;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+ 	bool found;
+@@ -2180,16 +2182,16 @@ int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
+ 	int ret;
  
- 	exts->miss_cookie_node = n;
+ 	/* Find the extension unit. */
+-	found = false;
+-	list_for_each_entry(entity, &chain->entities, chain) {
+-		if (UVC_ENTITY_TYPE(entity) == UVC_VC_EXTENSION_UNIT &&
+-		    entity->id == xqry->unit) {
+-			found = true;
++	entity = NULL;
++	list_for_each_entry(iter, &chain->entities, chain) {
++		if (UVC_ENTITY_TYPE(iter) == UVC_VC_EXTENSION_UNIT &&
++		    iter->id == xqry->unit) {
++			entity = iter;
+ 			break;
+ 		}
+ 	}
+ 
+-	if (!found) {
++	if (!entity) {
+ 		uvc_dbg(chain->dev, CONTROL, "Extension unit %u not found\n",
+ 			xqry->unit);
+ 		return -ENOENT;
 -- 
 2.39.5
 
