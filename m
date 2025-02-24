@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-119269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E909A425A8
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E90A42537
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC6419C3D96
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:56:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E9A33ABDB1
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2B9165F09;
-	Mon, 24 Feb 2025 14:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDC225A321;
+	Mon, 24 Feb 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kI8XkC7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyR1m/cC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0C22571CE;
-	Mon, 24 Feb 2025 14:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C10F25487A;
+	Mon, 24 Feb 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408889; cv=none; b=Pw5KiTWC/V9GNln9isIiXGs/qFGKcPl2nDUHyFZj8QUYy4gejdxWwCpgweYcm0eWFcBJtiPLPVNymLGKj4yK3dfm0asIjdV9eb9mgt0qTQCFyZmBpHqkKaH0LtoLvpxZ9ZN8M8BgQUKQW9+5LrzR8VyM4Fj/xPzP/l8oY+saEL0=
+	t=1740408467; cv=none; b=QaxltRylZoiEjV55/V8Uab7qXO/512ZflIb2n9rBJ4z8bcXq1vxzifasqhXMjs+o/CuXYNSSz5MtRhLjpRRO5plMiRXYG/Mgpn4ZOVHK2Snq8ssCg2btSSIp0pJZDktPE22GSzW4MBLHsL8PBUPuRBXOTyIRYk3lSAMucgO76Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408889; c=relaxed/simple;
-	bh=2YZ8QHEHc/4/NUFyBG9Gic51xKxjWiJBT2I+63aQQcE=;
+	s=arc-20240116; t=1740408467; c=relaxed/simple;
+	bh=JI+o9aGrLvCESVrz4edoRTSxiEE8XNmZAenqRmDgiDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ixeo/W3tOauqgsPLNov0QT276NbIweaI/m/o+Ce1E0sygn4QF191x/RrPSU6iCdALQbFjXqRRM2VhIK9wfjXfefAqmeAqeNPsv8bRt8miIRoLsQ8ey4Ch3bvI7fyrhDhJZYXoo6wxHf9hDlPBJPdEPMz/DH/NCm+YGYZZ3N//h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kI8XkC7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAC1C4CED6;
-	Mon, 24 Feb 2025 14:54:48 +0000 (UTC)
+	 MIME-Version; b=RfYuhgA+QcsgZSNNgvMSfDfi1vW4z2RfOiAW9LomdjFXzLhGzMeJzFQh+dggjQ0VsuffHiv8XLhVxnYk4IMp/uk2eMfUKY7C3kd6c06ZWANPCBwmF1V9v69MmHCiIrB5YT3VfuEGvhOChI91iiEYUoGePCZcQlzZAFeztcEgkRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyR1m/cC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8017C4CEE6;
+	Mon, 24 Feb 2025 14:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408889;
-	bh=2YZ8QHEHc/4/NUFyBG9Gic51xKxjWiJBT2I+63aQQcE=;
+	s=korg; t=1740408467;
+	bh=JI+o9aGrLvCESVrz4edoRTSxiEE8XNmZAenqRmDgiDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kI8XkC7T1AueDjl4l+hD1KqLfWZZ7VBJvrONsXDzOQFkYTP5yeSeOUjuYgFey9AOc
-	 onnlILcE5SNErynEYjbZsL92c4aeTOR5odRUiAkVicG67xgiiFI4Jk+ATjhZXellI9
-	 PV7B5U8GDSHi1Pgku3LL6sK7CLvlTGCP/WTX6n+g=
+	b=UyR1m/cCi2HDe331ofESWO2hpBy+8uY1RROUie40FJyNGcSzsXNg2j8z6opU/ZtD/
+	 b3kFh+JzKYXCVgxYk+GAK5diXY0l6XClrdAdU50FxCToOo+ygkG0io4MKciteGo54w
+	 Aafc6Q0NIKxzjINDGBEPTMFu2S1I/iu9iJrszN8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 036/138] tcp: adjust rcvq_space after updating scaling ratio
+Subject: [PATCH 6.12 067/154] flow_dissector: Fix handling of mixed port and port-range keys
 Date: Mon, 24 Feb 2025 15:34:26 +0100
-Message-ID: <20250224142605.886488623@linuxfoundation.org>
+Message-ID: <20250224142609.708323659@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
-References: <20250224142604.442289573@linuxfoundation.org>
+In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
+References: <20250224142607.058226288@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +67,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit f5da7c45188eea71394bf445655cae2df88a7788 ]
+[ Upstream commit 3e5796862c692ea608d96f0a1437f9290f44953a ]
 
-Since commit under Fixes we set the window clamp in accordance
-to newly measured rcvbuf scaling_ratio. If the scaling_ratio
-decreased significantly we may put ourselves in a situation
-where windows become smaller than rcvq_space, preventing
-tcp_rcv_space_adjust() from increasing rcvbuf.
+This patch fixes a bug in TC flower filter where rules combining a
+specific destination port with a source port range weren't working
+correctly.
 
-The significant decrease of scaling_ratio is far more likely
-since commit 697a6c8cec03 ("tcp: increase the default TCP scaling ratio"),
-which increased the "default" scaling ratio from ~30% to 50%.
+The specific case was when users tried to configure rules like:
 
-Hitting the bad condition depends a lot on TCP tuning, and
-drivers at play. One of Meta's workloads hits it reliably
-under following conditions:
- - default rcvbuf of 125k
- - sender MTU 1500, receiver MTU 5000
- - driver settles on scaling_ratio of 78 for the config above.
-Initial rcvq_space gets calculated as TCP_INIT_CWND * tp->advmss
-(10 * 5k = 50k). Once we find out the true scaling ratio and
-MSS we clamp the windows to 38k. Triggering the condition also
-depends on the message sequence of this workload. I can't repro
-the problem with simple iperf or TCP_RR-style tests.
+tc filter add dev ens38 ingress protocol ip flower ip_proto udp \
+dst_port 5000 src_port 2000-3000 action drop
 
-Fixes: a2cbb1603943 ("tcp: Update window clamping condition")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20250217232905.3162187-1-kuba@kernel.org
+The root cause was in the flow dissector code. While both
+FLOW_DISSECTOR_KEY_PORTS and FLOW_DISSECTOR_KEY_PORTS_RANGE flags
+were being set correctly in the classifier, the __skb_flow_dissect_ports()
+function was only populating one of them: whichever came first in
+the enum check. This meant that when the code needed both a specific
+port and a port range, one of them would be left as 0, causing the
+filter to not match packets as expected.
+
+Fix it by removing the either/or logic and instead checking and
+populating both key types independently when they're in use.
+
+Fixes: 8ffb055beae5 ("cls_flower: Fix the behavior using port ranges with hw-offload")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250218043210.732959-2-xiyou.wangcong@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/core/flow_dissector.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 4811727b8a022..4ffebfb503269 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -243,9 +243,15 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 			do_div(val, skb->truesize);
- 			tcp_sk(sk)->scaling_ratio = val ? val : 1;
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 5db41bf2ed93e..c33af3ef0b790 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -853,23 +853,30 @@ __skb_flow_dissect_ports(const struct sk_buff *skb,
+ 			 void *target_container, const void *data,
+ 			 int nhoff, u8 ip_proto, int hlen)
+ {
+-	enum flow_dissector_key_id dissector_ports = FLOW_DISSECTOR_KEY_MAX;
+-	struct flow_dissector_key_ports *key_ports;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
++	struct flow_dissector_key_ports *key_ports = NULL;
++	__be32 ports;
  
--			if (old_ratio != tcp_sk(sk)->scaling_ratio)
--				WRITE_ONCE(tcp_sk(sk)->window_clamp,
--					   tcp_win_from_space(sk, sk->sk_rcvbuf));
-+			if (old_ratio != tcp_sk(sk)->scaling_ratio) {
-+				struct tcp_sock *tp = tcp_sk(sk);
+ 	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS;
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		dissector_ports = FLOW_DISSECTOR_KEY_PORTS_RANGE;
++		key_ports = skb_flow_dissector_target(flow_dissector,
++						      FLOW_DISSECTOR_KEY_PORTS,
++						      target_container);
+ 
+-	if (dissector_ports == FLOW_DISSECTOR_KEY_MAX)
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS_RANGE))
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
 +
-+				val = tcp_win_from_space(sk, sk->sk_rcvbuf);
-+				tcp_set_window_clamp(sk, val);
++	if (!key_ports && !key_ports_range)
+ 		return;
+ 
+-	key_ports = skb_flow_dissector_target(flow_dissector,
+-					      dissector_ports,
+-					      target_container);
+-	key_ports->ports = __skb_flow_get_ports(skb, nhoff, ip_proto,
+-						data, hlen);
++	ports = __skb_flow_get_ports(skb, nhoff, ip_proto, data, hlen);
 +
-+				if (tp->window_clamp < tp->rcvq_space.space)
-+					tp->rcvq_space.space = tp->window_clamp;
-+			}
- 		}
- 		icsk->icsk_ack.rcv_mss = min_t(unsigned int, len,
- 					       tcp_sk(sk)->advmss);
++	if (key_ports)
++		key_ports->ports = ports;
++
++	if (key_ports_range)
++		key_ports_range->tp.ports = ports;
+ }
+ 
+ static void
 -- 
 2.39.5
 
