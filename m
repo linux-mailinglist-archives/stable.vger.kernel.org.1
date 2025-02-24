@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-119130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2C5A42511
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:04:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEDDA424DF
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 16:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2FF93B3D8C
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:48:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91E09160BFD
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F08E165F16;
-	Mon, 24 Feb 2025 14:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3451915198B;
+	Mon, 24 Feb 2025 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6mruHBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyGISA+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF621664C6;
-	Mon, 24 Feb 2025 14:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48B92571CB;
+	Mon, 24 Feb 2025 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408418; cv=none; b=bohNrJI297E5zBlowxyeUNhDIjlVBhi6+IAb2GfU5wzSbdCzxNtVXT4t1PBw0+FUt8+yQoS2z79dQrSr6dFe9w3cjqBxEPeWxx6OgsjaN2XcPfzU6tQBmjt4NvOPbO26fL+m+sLpfv9CiPOEPVMv0KaEz1EE62dLVvRkMoWmKbo=
+	t=1740408843; cv=none; b=L2b3pgYtD9rgLYiq1Ga1KBfkgW0KNneHKDJL1Hu1jK7AiklGmuey5VEDyk0GQkDzQSaTDgy0PMTQprYlUgA96JwqScdDMbtz8rZvaAU8icseZQInbsruUqcpusrPx0LK4c/tCm5rJWNHQes/ocVNkQzZ10DqBlZmvgSqAZtPVBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408418; c=relaxed/simple;
-	bh=DinY9s/BBkhjBWWuS94CJ99BNm59EKnMtqChjsvk9RU=;
+	s=arc-20240116; t=1740408843; c=relaxed/simple;
+	bh=OngfjGcfhBoyAnbhzGotD5FuNHVc2RyyVsi/WhOw5Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JgP2YtnBouAHBioxXk/oK1C8EEbLqfpETlMoFMz/ZKzEylDWEtZvrqcI6raihxyIC7FCqgxG/BW1Z+Ykrmesz7LXlr39WBEU9oa3Yls9sVgHhlL83/4xny15mSEWlD7h74dCulv9Qhpi+riXc5Mc3RtIpHhNRc83Ts2HRBJuT/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6mruHBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DA3C4CED6;
-	Mon, 24 Feb 2025 14:46:57 +0000 (UTC)
+	 MIME-Version; b=YR/UGXuFJpPw11LjBdFA4gM+fU6iUvE4aBo1dtpgMQLlhH2pFlEqYjYvXYjAbx+PT5WDE80XYDeWBIqAy+r+Z80XyEji1817UvWtIBP85lI50Xrihub3JtQ36EEH76fDGYW8K62x2I51r2icXh0n0cP+uI6UUHxHCmr8+64fHVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyGISA+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313BEC4CED6;
+	Mon, 24 Feb 2025 14:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408418;
-	bh=DinY9s/BBkhjBWWuS94CJ99BNm59EKnMtqChjsvk9RU=;
+	s=korg; t=1740408842;
+	bh=OngfjGcfhBoyAnbhzGotD5FuNHVc2RyyVsi/WhOw5Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6mruHBXI89z/PFt5aqK4j9M2ah8oBNGNft1j+mEkgHT8AsiEChXPYfcDMrsq5ADJ
-	 gJYMUVvACExnkuk4V3kgMTzR0QzXzXOR9ElwN7LdowQ1hfpwcCzzjBGY4TbK5+d1Uq
-	 6ku/MdSoFPb0la1nAiISE9Coz69XtVZcsQEP5lw8=
+	b=ZyGISA+JFHxQKOcpqSbCsP6P5FNnHKOTjwiUjijRIVNP/iOCmYe925YvqmdQXfE8F
+	 1bKWUZRHWoU9M8jzwB+PssB/bINXzgnSuoJHX41aMv58i1QaYD6s+f1QNrBlC+Dg2e
+	 JXoj3l0CGHHpma5kIvxa3ojqcqdLvhWCj651EHDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Gao <ying01.gao@samsung.com>,
-	Junnan Wu <junnan01.wu@samsung.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/154] vsock/virtio: fix variables initialization during resuming
-Date: Mon, 24 Feb 2025 15:34:10 +0100
-Message-ID: <20250224142609.091197753@linuxfoundation.org>
+Subject: [PATCH 6.13 021/138] ASoC: SOF: ipc4-topology: Harden loops for looking up ALH copiers
+Date: Mon, 24 Feb 2025 15:34:11 +0100
+Message-ID: <20250224142605.301252562@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142604.442289573@linuxfoundation.org>
+References: <20250224142604.442289573@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junnan Wu <junnan01.wu@samsung.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 55eff109e76a14e5ed10c8c3c3978d20a35e2a4d ]
+[ Upstream commit 6fd60136d256b3b948333ebdb3835f41a95ab7ef ]
 
-When executing suspend to ram twice in a row,
-the `rx_buf_nr` and `rx_buf_max_nr` increase to three times vq->num_free.
-Then after virtqueue_get_buf and `rx_buf_nr` decreased
-in function virtio_transport_rx_work,
-the condition to fill rx buffer
-(rx_buf_nr < rx_buf_max_nr / 2) will never be met.
+Other, non DAI copier widgets could have the same  stream name (sname) as
+the ALH copier and in that case the copier->data is NULL, no alh_data is
+attached, which could lead to NULL pointer dereference.
+We could check for this NULL pointer in sof_ipc4_prepare_copier_module()
+and avoid the crash, but a similar loop in sof_ipc4_widget_setup_comp_dai()
+will miscalculate the ALH device count, causing broken audio.
 
-It is because that `rx_buf_nr` and `rx_buf_max_nr`
-are initialized only in virtio_vsock_probe(),
-but they should be reset whenever virtqueues are recreated,
-like after a suspend/resume.
+The correct fix is to harden the matching logic by making sure that the
+1. widget is a DAI widget - so dai = w->private is valid
+2. the dai (and thus the copier) is ALH copier
 
-Move the `rx_buf_nr` and `rx_buf_max_nr` initialization in
-virtio_vsock_vqs_init(), so we are sure that they are properly
-initialized, every time we initialize the virtqueues, either when we
-load the driver or after a suspend/resume.
-
-To prevent erroneous atomic load operations on the `queued_replies`
-in the virtio_transport_send_pkt_work() function
-which may disrupt the scheduling of vsock->rx_work
-when transmitting reply-required socket packets,
-this atomic variable must undergo synchronized initialization
-alongside the preceding two variables after a suspend/resume.
-
-Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
-Link: https://lore.kernel.org/virtualization/20250207052033.2222629-1-junnan01.wu@samsung.com/
-Co-developed-by: Ying Gao <ying01.gao@samsung.com>
-Signed-off-by: Ying Gao <ying01.gao@samsung.com>
-Signed-off-by: Junnan Wu <junnan01.wu@samsung.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250214012200.1883896-1-junnan01.wu@samsung.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a150345aa758 ("ASoC: SOF: ipc4-topology: add SoundWire/ALH aggregation support")
+Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Link: https://github.com/thesofproject/sof/pull/9652
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250206084642.14988-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ sound/soc/sof/ipc4-topology.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index b58c3818f284f..f0e48e6911fc4 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -670,6 +670,13 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
- 	};
- 	int ret;
+diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
+index b55eb977e443d..70b7bfb080f47 100644
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -765,10 +765,16 @@ static int sof_ipc4_widget_setup_comp_dai(struct snd_sof_widget *swidget)
+ 		}
  
-+	mutex_lock(&vsock->rx_lock);
-+	vsock->rx_buf_nr = 0;
-+	vsock->rx_buf_max_nr = 0;
-+	mutex_unlock(&vsock->rx_lock);
+ 		list_for_each_entry(w, &sdev->widget_list, list) {
+-			if (w->widget->sname &&
++			struct snd_sof_dai *alh_dai;
 +
-+	atomic_set(&vsock->queued_replies, 0);
++			if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
+ 			    strcmp(w->widget->sname, swidget->widget->sname))
+ 				continue;
+ 
++			alh_dai = w->private;
++			if (alh_dai->type != SOF_DAI_INTEL_ALH)
++				continue;
 +
- 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
- 	if (ret < 0)
- 		return ret;
-@@ -779,9 +786,6 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
+ 			blob->alh_cfg.device_count++;
+ 		}
  
- 	vsock->vdev = vdev;
+@@ -2061,11 +2067,13 @@ sof_ipc4_prepare_copier_module(struct snd_sof_widget *swidget,
+ 			list_for_each_entry(w, &sdev->widget_list, list) {
+ 				u32 node_type;
  
--	vsock->rx_buf_nr = 0;
--	vsock->rx_buf_max_nr = 0;
--	atomic_set(&vsock->queued_replies, 0);
+-				if (w->widget->sname &&
++				if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
+ 				    strcmp(w->widget->sname, swidget->widget->sname))
+ 					continue;
  
- 	mutex_init(&vsock->tx_lock);
- 	mutex_init(&vsock->rx_lock);
+ 				dai = w->private;
++				if (dai->type != SOF_DAI_INTEL_ALH)
++					continue;
+ 				alh_copier = (struct sof_ipc4_copier *)dai->private;
+ 				alh_data = &alh_copier->data;
+ 				node_type = SOF_IPC4_GET_NODE_TYPE(alh_data->gtw_cfg.node_id);
 -- 
 2.39.5
 
