@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-119092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-118952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145F9A4243D
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:54:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F60A42359
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 15:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2EB423022
-	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:45:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BA831894EA8
+	for <lists+stable@lfdr.de>; Mon, 24 Feb 2025 14:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D359A189905;
-	Mon, 24 Feb 2025 14:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B5E1624D5;
+	Mon, 24 Feb 2025 14:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x26IXd3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDt9sl1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAC821345;
-	Mon, 24 Feb 2025 14:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2233E1624D3;
+	Mon, 24 Feb 2025 14:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408295; cv=none; b=bejyymkdtB+Yh5jEmXQ/dxpJiLSofWmWJWpbVC9abKx5TAid8BPfnuKbFTRRPE/VeTP3MolZFzj2nNg7uChV8GEetAuXEyhkgbbuzXzTCVKJDsn0hLsQjJv0GXEQnGkZ6REp44Nu/GUCNtEWR1dlOjilLRfUjth5R/Yr7NDcRAs=
+	t=1740407813; cv=none; b=QOXrE35wTRcE6+sGsRAPfmocmHu+mLSCpn7tLYkYKQIjCxicodQNv2+qho4XDMZbYFJyBFEMRIsfg5QieyJg6C2BChrnAiDrtyvenoAwdm3FusqNSbXvUI1XEZGBP/q9yKLxcUW+IvMsNr6rn5pAwHm8wWyGA6BitHiSe/kH+7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408295; c=relaxed/simple;
-	bh=JjzpQcE4/Pjf62bhiqcBBhE+45zXHHUDJz3yt/uLYh8=;
+	s=arc-20240116; t=1740407813; c=relaxed/simple;
+	bh=Ds6k4LA48e/iO9G/NPyJC/DI3jikaYS2WgcP7qOAg4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVfxgqYFeGZkEzPSju2FyKoHzQxunUa536qSYtoo5ZdD3faAnfsAdUCwXHFfOSoPsj9I8HFDAynvdthlQj9E7zhStGOlCc25+Ep3XRXbjMOOUCmEHmxnhX8xp8Er9uKEK+MnwkyEJXXmld0iTDztTQdJmGuYfFTv213NMoJYui4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x26IXd3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CB5C4CED6;
-	Mon, 24 Feb 2025 14:44:54 +0000 (UTC)
+	 MIME-Version; b=b8uc8pn2Mgs4UqCMp+5yH+799aVbu89B4XIH1HXzyjfsGs+La6ZsHJxoOaAWwBRP05eFNB9dSLD7v6FXVv4EeOcf51XmfxLXHO2gSZj4Yw2p4HOXiu+tTLSB0LkKzWyNmCLPfDE8U7S62MPcWL1GxaDTGGd1vey5n1xMfuEHWKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDt9sl1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D06C4CED6;
+	Mon, 24 Feb 2025 14:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740408295;
-	bh=JjzpQcE4/Pjf62bhiqcBBhE+45zXHHUDJz3yt/uLYh8=;
+	s=korg; t=1740407812;
+	bh=Ds6k4LA48e/iO9G/NPyJC/DI3jikaYS2WgcP7qOAg4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x26IXd3kbaHBMVJpmG2al3nslXKz8X/vH2Uyek4W6F8AaKY2YvBBIOFmLtKCe33WU
-	 LYJEGGvU2K4LL8Nx3q6Ort+hqMDYGvxOfTnKX0SLj5xb6QhSgwy38cC+nUlpCZu7y+
-	 +2/LXxVM4M2op9LG20k231nRcxS5F0dN4a5ozBYo=
+	b=MDt9sl1WJ0ZtigPh+DdnXvigutGlr57OO6NMidD673BRSknUWtKvSX0qdregf1YmM
+	 02jmR8RXXBwCRNmyNFsl5f81NXb6p6ZtjEXkJdbRCGM2GUOOJb5EqlfGIE/dljhbNw
+	 qMurk9xOoZJ8ZCA2OM2RJugZr3ED6qs6stYDEPdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/154] KVM: x86: Inline kvm_get_apic_mode() in lapic.h
-Date: Mon, 24 Feb 2025 15:33:35 +0100
-Message-ID: <20250224142607.716290665@linuxfoundation.org>
+	xfs-stable@lists.linux.dev,
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 6.6 017/140] xfs: Remove empty declartion in header file
+Date: Mon, 24 Feb 2025 15:33:36 +0100
+Message-ID: <20250224142603.682689808@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250224142607.058226288@linuxfoundation.org>
-References: <20250224142607.058226288@linuxfoundation.org>
+In-Reply-To: <20250224142602.998423469@linuxfoundation.org>
+References: <20250224142602.998423469@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +65,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-[ Upstream commit adfec1f4591cf8c69664104eaf41e06b2e7b767e ]
+commit f6225eebd76f371dab98b4d1c1a7c1e255190aef upstream.
 
-Inline kvm_get_apic_mode() in lapic.h to avoid a CALL+RET as well as an
-export.  The underlying kvm_apic_mode() helper is public information, i.e.
-there is no state/information that needs to be hidden from vendor modules.
+The definition of xfs_attr_use_log_assist() has been removed since
+commit d9c61ccb3b09 ("xfs: move xfs_attr_use_log_assist out of xfs_log.c").
+So, Remove the empty declartion in header files.
 
-No functional change intended.
-
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20241009181742.1128779-5-seanjc@google.com
-Link: https://lore.kernel.org/r/20241101183555.1794700-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 04bc93cf49d1 ("KVM: nVMX: Defer SVI update to vmcs01 on EOI when L2 is active w/o VID")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.h | 6 +++++-
- arch/x86/kvm/x86.c   | 6 ------
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ fs/xfs/xfs_log.h |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
-index 441abc4f4afd9..fc4bd36d44cfc 100644
---- a/arch/x86/kvm/lapic.h
-+++ b/arch/x86/kvm/lapic.h
-@@ -120,7 +120,6 @@ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
- int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info);
- int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
- int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s);
--enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu);
- int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
+--- a/fs/xfs/xfs_log.h
++++ b/fs/xfs/xfs_log.h
+@@ -161,6 +161,5 @@ bool	  xlog_force_shutdown(struct xlog *
  
- u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
-@@ -270,6 +269,11 @@ static inline enum lapic_mode kvm_apic_mode(u64 apic_base)
- 	return apic_base & (MSR_IA32_APICBASE_ENABLE | X2APIC_ENABLE);
- }
+ void xlog_use_incompat_feat(struct xlog *log);
+ void xlog_drop_incompat_feat(struct xlog *log);
+-int xfs_attr_use_log_assist(struct xfs_mount *mp);
  
-+static inline enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_apic_mode(vcpu->arch.apic_base);
-+}
-+
- static inline u8 kvm_xapic_id(struct kvm_lapic *apic)
- {
- 	return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 36bedf235340c..b67a2f46e40b0 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -667,12 +667,6 @@ static void drop_user_return_notifiers(void)
- 		kvm_on_user_return(&msrs->urn);
- }
- 
--enum lapic_mode kvm_get_apic_mode(struct kvm_vcpu *vcpu)
--{
--	return kvm_apic_mode(vcpu->arch.apic_base);
--}
--EXPORT_SYMBOL_GPL(kvm_get_apic_mode);
--
- int kvm_set_apic_base(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- {
- 	enum lapic_mode old_mode = kvm_get_apic_mode(vcpu);
--- 
-2.39.5
-
+ #endif	/* __XFS_LOG_H__ */
 
 
 
