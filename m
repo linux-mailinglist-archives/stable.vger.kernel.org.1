@@ -1,192 +1,127 @@
-Return-Path: <stable+bounces-119438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061D6A43303
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 03:26:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DDDA43314
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 03:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7DCF175A9A
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 02:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0117C3B9036
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 02:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA21D136352;
-	Tue, 25 Feb 2025 02:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="As9BvsTN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DF754F8C;
+	Tue, 25 Feb 2025 02:32:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B1E38DD1;
-	Tue, 25 Feb 2025 02:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2BC3FE4;
+	Tue, 25 Feb 2025 02:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740450371; cv=none; b=rJSytPMUjHGUFPS2e7OHC1FvCZ4Y+FGPbYgsECROLUKu+pv3S/TIwrHqnxCa/UKN8/WjKA21r5myExDnPgtV9HVF3VBFsrTF4gPcCMhkmSkBFnP7ugpRIAWA2AbqT4Sz9mBfvQqEw8KGkkjwfamWP2OceTKCQvjgNDGJeJFU0kQ=
+	t=1740450721; cv=none; b=OdwDoR5z4VRPT7XaMN+yu9fobRxZo0RFTbRI9PLS8Ftebu7zmpiRQVd65/wiacWaFL2VBUzIIdsnL3vd0Y/pAyC3MBOrXQeblqoV8o6auhdmZDWFN+IGHSaD9YfIX7aw4p9UWuWfi7zDDhr2IWd40O7mrMI6Cxu4+gelrDOAkjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740450371; c=relaxed/simple;
-	bh=ZPlj2NexSxdf/IJflaJWyUmjLgF0OgMvZK0d3AzhWno=;
-	h=Date:To:From:Subject:Message-Id; b=nM5Z4AYAJWD3NAmWM435D7KZ1laLAkSZKSQwjYXSsce4KhdaWIO5BfLK4nhZtKhY/gGusWaa/hWqsyNkX/GK3wZxZS6N86gKY3gTxCVUm1cLMlPhqb7gDQC6l1l9EVOL1DTMqG4rweFPQvOjDvGNMKYtTpu5XCY6rPnCLr/2Ibk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=As9BvsTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EE3C4CED6;
-	Tue, 25 Feb 2025 02:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1740450370;
-	bh=ZPlj2NexSxdf/IJflaJWyUmjLgF0OgMvZK0d3AzhWno=;
-	h=Date:To:From:Subject:From;
-	b=As9BvsTNYEDDDhRt95bdXuafAYW9av1zKbU6Zc7TjPp1B4twPTpAvHnswozaFWUzC
-	 qHTV/3Qp5CE1fEfPSt35hZ+3AiV4sMZYA16ncoUo0cskLx9YbVObKKwmnTqWzwPy1B
-	 loYs9/QJFIMRolccD5lRU4zWCCt+W3r72GZZR59Q=
-Date: Mon, 24 Feb 2025 18:26:10 -0800
-To: mm-commits@vger.kernel.org,trond.myklebust@hammerspace.com,stable@vger.kernel.org,anna.schumaker@oracle.com,snitzer@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250225022610.B2EE3C4CED6@smtp.kernel.org>
+	s=arc-20240116; t=1740450721; c=relaxed/simple;
+	bh=sS6epZ/Q0dmr2tgVut1X+sY8gavr366YXLTOVDwcdzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sCuwcFoNKxv3au9B+BNEHAOxUO30IEUwjIMoDiLSU3EsDUb14oiKbg9i172b+E0AejC2OnLEzpoDkUDOz/oLP4oGAZCkGPiClTCTIcO8knd8So/jvC9d31Hc4xWHJ5pPmDGP3gtwejUpHl7p1A8X/pIyJvwVwnFd2JOnkEVhFuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowAAXHdGHK71ntYgzEA--.12478S2;
+	Tue, 25 Feb 2025 10:31:52 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jckuo@nvidia.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com
+Cc: linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 RESEND] phy: Fix error handling in tegra_xusb_port_init
+Date: Tue, 25 Feb 2025 10:31:34 +0800
+Message-Id: <20250225023134.3176171-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAXHdGHK71ntYgzEA--.12478S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw4DKFWkAF15tFW3Aw4fKrg_yoW8XFyDpa
+	1DGas8Kr9YgrWkKF4jvF409Fy5GF42k3yrur1rJ34akrn3W348tas8trWxXa4UArZ7uF4U
+	ArnxJa4kJFyUC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
+	4UJVW0owAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20x
+	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
+	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIx
+	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
+	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
+	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUAxhLUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-The patch titled
-     Subject: NFS: fix nfs_release_folio() to not call nfs_wb_folio() from kcompactd
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd.patch
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd.patch
+Found by code review.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Mike Snitzer <snitzer@kernel.org>
-Subject: NFS: fix nfs_release_folio() to not call nfs_wb_folio() from kcompactd
-Date: Mon, 24 Feb 2025 19:33:01 -0500
-
-Add PF_KCOMPACTD flag and current_is_kcompactd() helper to check for it so
-nfs_release_folio() can skip calling nfs_wb_folio() from kcompactd.
-
-Otherwise NFS can deadlock waiting for kcompactd induced writeback which
-recurses back to NFS (which triggers writeback to NFSD via NFS loopback
-mount on the same host, NFSD blocks waiting for XFS's call to
-__filemap_get_folio):
-
-6070.550357] INFO: task kcompactd0:58 blocked for more than 4435 seconds.
-
-{---
-[58] "kcompactd0"
-[<0>] folio_wait_bit+0xe8/0x200
-[<0>] folio_wait_writeback+0x2b/0x80
-[<0>] nfs_wb_folio+0x80/0x1b0 [nfs]
-[<0>] nfs_release_folio+0x68/0x130 [nfs]
-[<0>] split_huge_page_to_list_to_order+0x362/0x840
-[<0>] migrate_pages_batch+0x43d/0xb90
-[<0>] migrate_pages_sync+0x9a/0x240
-[<0>] migrate_pages+0x93c/0x9f0
-[<0>] compact_zone+0x8e2/0x1030
-[<0>] compact_node+0xdb/0x120
-[<0>] kcompactd+0x121/0x2e0
-[<0>] kthread+0xcf/0x100
-[<0>] ret_from_fork+0x31/0x40
-[<0>] ret_from_fork_asm+0x1a/0x30
----}
-
-Link: https://lkml.kernel.org/r/20250225003301.25693-1-snitzer@kernel.org
-Fixes: 96780ca55e3cb ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v2:
+- modified the bug description as suggestions.
+---
+ drivers/phy/tegra/xusb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- fs/nfs/file.c              |    3 ++-
- include/linux/compaction.h |    5 +++++
- include/linux/sched.h      |    2 +-
- mm/compaction.c            |    3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
-
---- a/fs/nfs/file.c~nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd
-+++ a/fs/nfs/file.c
-@@ -29,6 +29,7 @@
- #include <linux/pagemap.h>
- #include <linux/gfp.h>
- #include <linux/swap.h>
-+#include <linux/compaction.h>
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 79d4814d758d..c89df95aa6ca 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
  
- #include <linux/uaccess.h>
- #include <linux/filelock.h>
-@@ -457,7 +458,7 @@ static bool nfs_release_folio(struct fol
- 	/* If the private flag is set, then the folio is not freeable */
- 	if (folio_test_private(folio)) {
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
--		    current_is_kswapd())
-+		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
- 		if (nfs_wb_folio(folio->mapping->host, folio) < 0)
- 			return false;
---- a/include/linux/compaction.h~nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd
-+++ a/include/linux/compaction.h
-@@ -80,6 +80,11 @@ static inline unsigned long compact_gap(
- 	return 2UL << order;
- }
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
  
-+static inline int current_is_kcompactd(void)
-+{
-+	return current->flags & PF_KCOMPACTD;
-+}
-+
- #ifdef CONFIG_COMPACTION
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
  
- extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
---- a/include/linux/sched.h~nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd
-+++ a/include/linux/sched.h
-@@ -1701,7 +1701,7 @@ extern struct pid *cad_pid;
- #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
- #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
- #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
--#define PF__HOLE__00010000	0x00010000
-+#define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
- #define PF_KSWAPD		0x00020000	/* I am kswapd */
- #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
- #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
---- a/mm/compaction.c~nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd
-+++ a/mm/compaction.c
-@@ -3181,6 +3181,7 @@ static int kcompactd(void *p)
- 	long default_timeout = msecs_to_jiffies(HPAGE_FRAG_CHECK_INTERVAL_MSEC);
- 	long timeout = default_timeout;
- 
-+	tsk->flags | PF_KCOMPACTD;
- 	set_freezable();
- 
- 	pgdat->kcompactd_max_order = 0;
-@@ -3237,6 +3238,8 @@ static int kcompactd(void *p)
- 			pgdat->proactive_compact_trigger = false;
- 	}
- 
-+	tsk->flags &= ~PF_KCOMPACTD;
-+
  	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
  }
  
-_
-
-Patches currently in -mm which might be from snitzer@kernel.org are
-
-nfs-fix-nfs_release_folio-to-not-call-nfs_wb_folio-from-kcompactd.patch
+-- 
+2.25.1
 
 
