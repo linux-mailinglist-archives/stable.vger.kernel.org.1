@@ -1,232 +1,158 @@
-Return-Path: <stable+bounces-119567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17024A4508B
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 23:54:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29121A450DE
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 00:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C59189B5FA
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 22:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73539179E99
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 23:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19BE232368;
-	Tue, 25 Feb 2025 22:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694B523642E;
+	Tue, 25 Feb 2025 23:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GGRyYNPX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ihC2jObH"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED97231A3B;
-	Tue, 25 Feb 2025 22:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740524027; cv=fail; b=Ho6KtgTv4S2f5u1KybKvmtQrSyUcC2jXSLyCP4brTgbOIgbfOHKRNFqVMwEeyrqIMTSHcJ0vlVSYpi3MPoy8RDIFzcUxnQ8e9Rc5UH4F8hoSdRnYUuXkNBeiYnh2txqui7AMjr1wZTnwQuyKCDgwYYmBdmG1zCWa1DwqsYgqteM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740524027; c=relaxed/simple;
-	bh=0+0ePXH2WWfog4BFCNx9meawFI/MUpKMNfjJd07/k7U=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=k5uR2M0blFtsmya94a/0G1pNqjp1Jr6vqa92Wabzv4DEtYSr8z7XZdFxt7ASMuZsT5DfIFPhi+YDc+qdqY5mhXScTvZ/QDd7MCEhX411yTQpHt1QpUI7udM7ZfwRnZmdQyboXcJKc9dz4eOcrquAXIgfzSUWanl355h+MvxHqD8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GGRyYNPX; arc=fail smtp.client-ip=40.107.93.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ptri7EfJWajnyZF0yhFBC2uJ4hsfXWVxLoL2VtbvW1AyYF4JV64WWQ6jklaRqaSWuznzbwIM2W7C+3iw7w+as6VI2DnoNKPKx29E2mGt7MbG7hllruSC1997pgmdJJUfPj3ce/Hty4ag+j4zdr5M9uGObeo6zhn+jtiv94v4jrIYP6ChKDj7G7hURhSjj5Zi/0MCgLTjIyYpGZihLbvRR+fufG1uxfvpaNqR/AZaWkwSbgLAaZ0foccu7Zht0dw7AwJ6o4Wj2JVGIMN2BM+/97DItawAxn/nHvSfNyckxhMA9tGUrvXy5FkkV+HQB7mp31jqulkpFfdDdMPZkHggkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bpqbh9PSDDceGJUbLdPU4aqqlEy9oxTx2MTwOknxdPs=;
- b=Dt6atbKINY0R8p2kFE2tGP0NcjA7LL9jatW2Qt6vBSaKKz6mCn3BS6/UJbu9Y68OcxeLCWj93VQn2F6+pVFOMJPQ11V7CW5qen9/Xsmmn/ny/zbVh6R/RJOZvDOMTYeM0UcfWbb5ckdtaGJsyWVgfN88C76NtPIuUtG+kObwfIG0igxF2SNtqSnactMmfEqUGXFckNpu9V/f0n+n072a+e8AeZbUpi2jyUEZoy8aEbV3iA5kjBoggEkc4xfZp1vBwB4ZkDIPiQKASeO8Zu5nMDXSHmrf60CF38VLMVB9L+TwijpFlmYISs+GY/OzBnV+08H8OIHPurYKZ1wFLB/Ogg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bpqbh9PSDDceGJUbLdPU4aqqlEy9oxTx2MTwOknxdPs=;
- b=GGRyYNPX7DkPiBJh1Mq/yc6GziUMMuQXVnQNQ2eVFo8w2eUizyt21kdC/NeWQoUMHZws04/cdTuP3ySntqlwUTZySH+7a9qDcSMFu0ZT7Wu1Grx3Z87pZPRHIKCVXP35Y7urlZ1Y7GAecljs8caZBQJSMpfQPz+zq+pOpgz7SsU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
- by MN0PR12MB5761.namprd12.prod.outlook.com (2603:10b6:208:374::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Tue, 25 Feb
- 2025 22:53:43 +0000
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2ed6:28e6:241e:7fc1]) by DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2ed6:28e6:241e:7fc1%4]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 22:53:43 +0000
-Message-ID: <14852987-a774-4952-a166-b84880566564@amd.com>
-Date: Tue, 25 Feb 2025 15:53:38 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amd/display: Fix null check for pipe_ctx->plane_state
- in resource_build_scaling_params
-To: Ma Ke <make24@iscas.ac.cn>, harry.wentland@amd.com, sunpeng.li@amd.com,
- Rodrigo.Siqueira@amd.com, alexander.deucher@amd.com,
- christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
- simona@ffwll.ch, wenjing.liu@amd.com, dillon.varone@amd.com,
- Samson.Tam@amd.com, yi-lchen@amd.com, chris.park@amd.com,
- aurabindo.pillai@amd.com, george.shen@amd.com, gabe.teeger@amd.com,
- Yihan.Zhu@amd.com, Tony.Cheng@amd.com
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250224063218.2953217-1-make24@iscas.ac.cn>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20250224063218.2953217-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0087.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:4::20) To DM4PR12MB8476.namprd12.prod.outlook.com
- (2603:10b6:8:17e::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BE2151991;
+	Tue, 25 Feb 2025 23:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740525559; cv=none; b=Ixr5cfg73PfuKP6rpkbvnIgc3vetrQ/7ozksWMOObO/ndRfSbFG+EsJrXixEgJoi7gyTI44YjQA7UXDVwWCIJZNm/H4PNpokdcGEi/eWlrBT+WgxFxDwqDk2DGZ0v/OXy3RppOsCgXYNTDh4dnb4qgymBMexQgxAwZwSsIKKbmI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740525559; c=relaxed/simple;
+	bh=CM8cMgLsoifca4gB+YqGwkLQSiG8AImNJWvjycxeiOc=;
+	h=Date:To:From:Subject:Message-Id; b=AvrlpelYDmjNdPnFjmZynnPmVIKkwF937duKTuNYpuU828BQImwFDRe8//dK1S9fy1KUemeI3+lV2JF/tK1RC/PqJjEsXUzyoadz4BkiCgRyRcQzNT5+/GDuvEz7bKWgqEcyQZHL8v+KxAJJzf9Fu5ReMW3t8cABLJbzpCMr200=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ihC2jObH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F27DC4CEDD;
+	Tue, 25 Feb 2025 23:19:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1740525558;
+	bh=CM8cMgLsoifca4gB+YqGwkLQSiG8AImNJWvjycxeiOc=;
+	h=Date:To:From:Subject:From;
+	b=ihC2jObH/Sy+gNwvm/IPJa+AFizgP175SB8EeAZNC4Szy3KgSIt1pE1ZHQ7YRtxen
+	 f509dmcoilG1/TiA1c/NkVV7YEJiRHi8uYKxQmDjqqGYghOwiRFOgmfdhRmsSiyFdN
+	 pV7u0muvQltzw0M1MF9OYMza921dpJGp+dveytBE=
+Date: Tue, 25 Feb 2025 15:19:17 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250225231918.5F27DC4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|MN0PR12MB5761:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd1cfba9-64d8-4b7f-a89d-08dd55ef40aa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R2xESjVEc2NWNFFlb0hqbWtWV2ZWOE5NNGVWKzV3UUlKaks1UklIaWIvYSt2?=
- =?utf-8?B?b1hlSEpybHpOSXpTM0M4NEwxU1dhSVh6cDBnWFZEek8wdnRDWUhxS0I0NDYw?=
- =?utf-8?B?MUVuV0E0R1JDUU1jeEZlbERiY2dLaURwYVRLR2lyYS9hbHpNTDJsSE1HcGZ6?=
- =?utf-8?B?cU9Xbkt0dmZNWHp6dndheXdYVnFXS1k2bDdIL1NVR1BHdng5RkFGeW10SWN4?=
- =?utf-8?B?ZWpBWE5jS1luQmlRNk1pM3Q4WXZTNXVoaDY3VGlkUHFRTk9CeW9jdjhxbmNF?=
- =?utf-8?B?WU5iSlFiQmJxZTZIcjVoM3MwcEJVaXVaVTZMTXlOSFZPeVJGWVJMbHhhQzhF?=
- =?utf-8?B?RmNpYmpkZGZ1b01ieDVvOFRVYnF0R3JYRFQ1dzJkc0E3TlQvYVE3WlVvKzNO?=
- =?utf-8?B?bm1nWFFqc0ErTHUyQW4wWWdvMUZhci9HT1pqbW1RRzNobS9GY1R5YVJUV0hD?=
- =?utf-8?B?cVdYdEFBWGFackc0REZXNjd4M2NYU05kTEpQV1c0UzBZNGdzVFIzYUFvdVdr?=
- =?utf-8?B?VVdla1FoRUwyQWx2cnNRM0R3SjJLNjRWTmFRdnJDSG5iWnQyREhXYmN2Z0dF?=
- =?utf-8?B?Ky9IUTRIQ2l5d0VKb1orWHdrdUlRVzRtL21jNExMdGtVOWwxRWYyQ3h0RkFi?=
- =?utf-8?B?UmM0dS82QWM2L2xNeTUwcHhnRmhXTVEyYnRYd1E1OFVya04xOGQxK2ZaTENL?=
- =?utf-8?B?OElCRFAwV3ZKa0YrTmhXclRvdXViSE0vbmJZa1BWWHF6UUt3TTAyVU5xZmwr?=
- =?utf-8?B?SUlCeTVVUm5iTnlTc1QweGt5emhSVkpmdFdKSFdFU21reWc5NEw4S3U2cHNj?=
- =?utf-8?B?c0J6b3p1TG9INlJTVjhmdnk4RXlpVEl0OXYvTHpBOWUwVnlBNG96SHc5dHlu?=
- =?utf-8?B?dGNucXlBb2VyT2t4YmwzUlZVbmhleXNoWnlyaGd6eE5TRlJobThubStnd3pB?=
- =?utf-8?B?NC9yOEJDZVVsdy9zY2tMVFEyYVBISmhaZEdnKzlXSXlaQjlEOHpVVWc5NzQ2?=
- =?utf-8?B?MVAvVWczWVhhd0JHVmI0cW90a1E1Sk9sOXk5SXlwdWhscERCWEM2RFlZV3VJ?=
- =?utf-8?B?NXA3cGFKU05peE5mQnVKUUd6RlRxVmFPcjBOYUtQOTNWMEQwWFdoaU95clBo?=
- =?utf-8?B?MExXaDFtRk9ETWptSWxKbW8yRmxIMUVubEMyTjJQUEhVS2hpcjFLMTZvdFEy?=
- =?utf-8?B?aXJIRE5nMVM5Ly94TFVGZC9lK0d4TjJUcERqd3dPdU40KytsT05nZFZ5Z3dy?=
- =?utf-8?B?bUpLeUV5c0lhbWZJcWZBT3JBT2dYZmlUbWFLTjI1ekVvYkJ0SGhMRWJwcExG?=
- =?utf-8?B?MFp2QVdmNE9YL1YveHJxR3BFby9qd3ZaSGZCVE9wYWtvdk04SWVsMVVwTlNz?=
- =?utf-8?B?NCswMkdTTlBOS2E1OXBxckUrdlk1d0RZQTVkcDhOdEZLSDFBNkFPc0JjTm11?=
- =?utf-8?B?QlZLTkZmblVIWkxYTk1ldnBycUtKMkFJeDVUNGt2SnkvWTlOY3BWZzUyYW1o?=
- =?utf-8?B?RndMMnorUnN6UUtQS2kvZngxMWxKSlpJNlZJRGJQaDRGUnJtbTZWSWQ4TUJz?=
- =?utf-8?B?REM3UmFLR0VLR0xWaThNa2ZBYS8yYmtrZW44VHhDUndqU3p5SEFmUGRwbWhN?=
- =?utf-8?B?YlptT21lWVZkc2UxbVphbHhSY3lVZmhxcmYrT2ltVU5ZSTJVSHgvdllOeWsx?=
- =?utf-8?B?c1dzRXkrWi9HZ2lXZ0pSZm5MUzZ1ZldxNlhCUVpESTlYTFVTVGU3WDY1TXhZ?=
- =?utf-8?B?cEpNbFF5TmlBRlg1M2pwTEtsUyt1dEx0aTRsVkdXeWZjTmZzbjRBYjF2S1JL?=
- =?utf-8?B?dHE3WXZ2WHZ5ZGlRNWFLdkkyZGxvcGtSVXRkWnFkY0RZVDlRTGwyUkJXOUQ1?=
- =?utf-8?B?T2Z2SkpmT1pIejJCRUZYTnhwUnpiendQcGdhbDZYcnZEbEVuNEhaTjJsZ0tU?=
- =?utf-8?Q?L4fqDJdw/gI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB8476.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wnd1SUNzSTRVaTVhdndXRGdsaHRmSWJiQVZPSVFETjdaZXc3TzVYZTJCVlVk?=
- =?utf-8?B?bVNQbEVDVmV1YjhTMFFLMG5DMy83QThQQUpYK0pjNVBlZjdxUmZSUkprbC9L?=
- =?utf-8?B?L3VOUURUVVAzSGRKZ2VOdVBZTlNsNmgyT3lHL1ZtbGo2cUtHQkRSc3Q5ZWkv?=
- =?utf-8?B?ZkIwOFBnYXlpcnR2N09aSVloc2ttOU5VQ1lBVGNRdmN4YjJKbDFIbHhPbC9B?=
- =?utf-8?B?a1g2YXYwZEJ5cTJpeWRFYW0zUXBBRER3RGVnOXA3RnUzUW5QanM0U2VVQ1ZK?=
- =?utf-8?B?dHd0KzAwc2JJUjlweUh0NXZaM0xIOTVoOUNmSUJleFF0OG84ZlFzc28ySFhZ?=
- =?utf-8?B?aUgwVXZwMkRSdzV6OUVGbTVVVUJwOVQ0WGFzUmptdTJ6V3RqL3pVWDV4ZXF0?=
- =?utf-8?B?MDNsYXlpbEdYaWhQK0VVQXBWcmlXMW5Ta01ScXdiN1VDN0NtMEo2NTZ0WXhJ?=
- =?utf-8?B?MVRoZUcwaFRlc0lPdmtaZTBZQ0VxOVJHSzFLNkcyY1AreE03ZEY4TE13UWRW?=
- =?utf-8?B?RGpMRzlZb01reTlVL3NUbGlwVnMrcGF1dFM3bVFodEVOM0ZhYms5eDVneC94?=
- =?utf-8?B?QkN4OWFqaGROejI0NzhDNkxwU2hKOWc3dWJpbmxXQnpjVVpBa2pqaHlOT0NL?=
- =?utf-8?B?WVkvRHdlNGgrWWdyc3BUdzJvQmphZzFjYUNPSXMvSUZhd1k1WDFibDFuWndF?=
- =?utf-8?B?OFk2VlhENkE1bGlRNTc2RmdSWnRtb0VrV2d6MkhtcTdPSGRwN2o2dGtzSU5M?=
- =?utf-8?B?NWtBYmhTclA0czRYR0FFb3ppV2NVdG9HS3daRTl5R2d1UnhMRUt0NW5SdVJo?=
- =?utf-8?B?RFN4Ujd5YU5TcjZwMTFjVXdHTFhUMm9Bak91cng0Zkk1OXUzdnZLTml5MHFn?=
- =?utf-8?B?QWhEUVdhRzh0M3lGMUhwYjhkN3ZuSlJqbjZyclA3L0VIUnpxR1BKRFRzTGQ3?=
- =?utf-8?B?ZTR5RjRuVlRPSHlWdXhGd0pQWS92OW55UjY1cWdZck8wdXROQy9BbDIwTURF?=
- =?utf-8?B?dUluUUdLRlBPcG5aSlp4U0ZSMDBaZmpQYWhySWN3cWhTaE1aVThjeDUySUNm?=
- =?utf-8?B?UHAvMDRSYUFjbXNRYUd2eExONm5hbm1WTUdrN1liNVFNMWtUeklxNVllTFdG?=
- =?utf-8?B?aGRyWm9vc2pmOWhSUG5OUFQ2a0Fld3hGMkhML0tDYlU2OFhKR2tVNkp1UEI0?=
- =?utf-8?B?SldGeENnSlNhTCtpbmZEMUFxcThSWDFxSDdUYkFhaTlMVWdKS1BSUmZHY0Rk?=
- =?utf-8?B?eXlzR1JvWkRlK1BlLzNpbXRnVGR2a0kvQ3l1aDFSQi9HbTFvU3BESGwxdW9U?=
- =?utf-8?B?U2MvZWtsdmFpYU5QVlZRcDZFTVBDQSsrV2R0SmRsRGNUVnRmVURUQ3MxODVL?=
- =?utf-8?B?UFBtY3RTY0hUaWZLTnpwQlpRSVJMMWtTem5RWG0wdUl6eDBJdFZrejErZmVD?=
- =?utf-8?B?RURVVDJTZ3o5c1pVa05EUkY3MkVSWXV2YjBONkQ1QUIvamsxSHZGM0FCQzZR?=
- =?utf-8?B?czN3Q3JucVBaVXVkYVg2WmwvamJEaTZTVVNJUEdyZ25nSEVtWU9IVGQ5Smlt?=
- =?utf-8?B?RWRPWTd1WkRnd0RWWmdvbHUwWm8wMk44Y3RUVGFXZWhHV09rZFNzczJxT09l?=
- =?utf-8?B?Mnc2UUdyZlFRLzloSDZsMXRxK0tTUGJWMzVWV3dHNUEwMkNNWFl6VTQ4VmZV?=
- =?utf-8?B?Y1I5VkxUZkt1NDZjK0NxNDd3OGNYb0U2TzJzUWl5VldMZkkvbDhPQ2s2V0NJ?=
- =?utf-8?B?dWhsaVBaQ1ZyZzVEbE84TVQ0QWlEckJEMGk0NUJjVk44VUppSzFjeS9MaDNz?=
- =?utf-8?B?anZIUHJZQm1BLzlxMnlBV0VROGJlL1VPLzBWTG1mZktNWmE1WlVldjlrL0h0?=
- =?utf-8?B?S3orRGVRanFHZ0lvaFpFWExnNzhWeHhpMDdpSXJRK2VwUXdWL1MvZWd2dnYr?=
- =?utf-8?B?cUV1RXBiZWRxbHRtbVJ1R0ozT0MvNUNxWnRpTGNMK0tyZ1BGd3psREFFZUlO?=
- =?utf-8?B?Y2FwdWptRE8vRjc4ektmQU9ydHpMams0V0R0cDV2ODhOdThKUHFKdGxTcy9z?=
- =?utf-8?B?Y3kzeU9nazMyMVhXVVlxRzc1OXU0emhGc0plblFRRG1ueUc0VDVyZ0svVFJy?=
- =?utf-8?Q?XroDmDwuoZJ+zbB7jFFhL2y3M?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd1cfba9-64d8-4b7f-a89d-08dd55ef40aa
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 22:53:42.8971
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eWEgAXdZGGg/FHY0Ck117H0PZWuRraoqt3oP9kVwmzHmMKoKlwMg87W6A2GwLEQEWXfV/p5LD/Ed1+Lg07hPFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5761
 
 
+The patch titled
+     Subject: selftests/damon/damos_quota: make real expectation of quota exceeds
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds.patch
 
-On 2/23/25 23:32, Ma Ke wrote:
-> Null pointer dereference issue could occur when pipe_ctx->plane_state
-> is null. The fix adds a check to ensure 'pipe_ctx->plane_state' is not
-> null before accessing. This prevents a null pointer dereference.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 3be5262e353b ("drm/amd/display: Rename more dc_surface stuff to plane_state")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->   drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-> index 520a34a42827..88e8ae63a07f 100644
-> --- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-> +++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-> @@ -1452,6 +1452,9 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
->   	struct scaling_taps temp = {0};
->   	bool res = false;
->   
-> +	if (!plane_state)
-> +		return false;
-> +
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds.patch
 
-This if statement can be merged with the following one such as below, 
-and it also allows ASSERT to kick in instead of failing silently.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-         DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-         /* Invalid input */
--       if (!plane_state->dst_rect.width ||
--                       !plane_state->dst_rect.height ||
--                       !plane_state->src_rect.width ||
--                       !plane_state->src_rect.height) {
-+       if (!plane_state ||
-+           !plane_state->dst_rect.width ||
-+           !plane_state->dst_rect.height ||
-+           !plane_state->src_rect.width ||
-+           !plane_state->src_rect.height) {
-                 ASSERT(0);
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: selftests/damon/damos_quota: make real expectation of quota exceeds
+Date: Tue, 25 Feb 2025 14:23:31 -0800
+
+Patch series "selftests/damon: three fixes for false results".
+
+Fix three DAMON selftest bugs that cause two and one false positive
+failures and successes.
 
 
->   	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
->   
->   	/* Invalid input */
+This patch (of 3):
+
+damos_quota.py assumes the quota will always exceeded.  But whether quota
+will be exceeded or not depend on the monitoring results.  Actually the
+monitored workload has chaning access pattern and hence sometimes the
+quota may not really be exceeded.  As a result, false positive test
+failures happen.  Expect how much time the quota will be exceeded by
+checking the monitoring results, and use it instead of the naive
+assumption.
+
+Link: https://lkml.kernel.org/r/20250225222333.505646-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250225222333.505646-2-sj@kernel.org
+Fixes: 51f58c9da14b ("selftests/damon: add a test for DAMOS quota")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/damon/damos_quota.py |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+--- a/tools/testing/selftests/damon/damos_quota.py~selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds
++++ a/tools/testing/selftests/damon/damos_quota.py
+@@ -51,16 +51,19 @@ def main():
+         nr_quota_exceeds = scheme.stats.qt_exceeds
+ 
+     wss_collected.sort()
++    nr_expected_quota_exceeds = 0
+     for wss in wss_collected:
+         if wss > sz_quota:
+             print('quota is not kept: %s > %s' % (wss, sz_quota))
+             print('collected samples are as below')
+             print('\n'.join(['%d' % wss for wss in wss_collected]))
+             exit(1)
++        if wss == sz_quota:
++            nr_expected_quota_exceeds += 1
+ 
+-    if nr_quota_exceeds < len(wss_collected):
+-        print('quota is not always exceeded: %d > %d' %
+-              (len(wss_collected), nr_quota_exceeds))
++    if nr_quota_exceeds < nr_expected_quota_exceeds:
++        print('quota is exceeded less than expected: %d < %d' %
++              (nr_quota_exceeds, nr_expected_quota_exceeds))
+         exit(1)
+ 
+ if __name__ == '__main__':
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+selftests-damon-damos_quota_goal-handle-minimum-quota-that-cannot-be-further-reduced.patch
+selftests-damon-damos_quota-make-real-expectation-of-quota-exceeds.patch
+selftests-damon-damon_nr_regions-set-ops-update-for-merge-results-check-to-100ms.patch
+selftests-damon-damon_nr_regions-sort-collected-regiosn-before-checking-with-min-max-boundaries.patch
+mm-madvise-split-out-mmap-locking-operations-for-madvise.patch
+mm-madvise-split-out-madvise-input-validity-check.patch
+mm-madvise-split-out-madvise-behavior-execution.patch
+mm-madvise-remove-redundant-mmap_lock-operations-from-process_madvise.patch
+mm-damon-avoid-applying-damos-action-to-same-entity-multiple-times.patch
+mm-damon-core-unset-damos-walk_completed-after-confimed-set.patch
+mm-damon-core-do-not-call-damos_walk_control-walk-if-walk-is-completed.patch
+mm-damon-core-do-damos-walking-in-entire-regions-granularity.patch
+mm-damon-introduce-damos-filter-type-hugepage_size-fix.patch
+docs-mm-damon-design-fix-typo-on-damos-filters-usage-doc-link.patch
+docs-mm-damon-design-document-hugepage_size-filter.patch
+docs-damon-move-damos-filter-type-names-and-meaning-to-design-doc.patch
+docs-mm-damon-design-clarify-handling-layer-based-filters-evaluation-sequence.patch
+docs-mm-damon-design-categorize-damos-filter-types-based-on-handling-layer.patch
+mm-damon-implement-a-new-damos-filter-type-for-unmapped-pages.patch
+docs-mm-damon-design-document-unmapped-damos-filter-type.patch
 
 
