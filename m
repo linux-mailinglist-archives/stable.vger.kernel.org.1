@@ -1,192 +1,122 @@
-Return-Path: <stable+bounces-119443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369C2A43485
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 06:20:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDF8A434DB
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 06:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9753E189D128
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 05:20:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E80F43B4F9A
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 05:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67F1254B1C;
-	Tue, 25 Feb 2025 05:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4512561D6;
+	Tue, 25 Feb 2025 05:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tsjnC8eu"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="E6eCWB0J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D841662E7;
-	Tue, 25 Feb 2025 05:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C324F254856;
+	Tue, 25 Feb 2025 05:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740460840; cv=none; b=PvOGxP0v+2pIajKegda9PfKkxqVZrJq5qmVcYpnyHCQO0enMGO9DZHQF6eHpJd2uwLK899TtthwgZxsoDddHmW96a/DaAcplxMDRflXnUw0SorOlZzAhmOoQB8KNYRWL85XFj6zlCLeeEaQoU/MVifDKZNUIrLEVf48oU+esN9o=
+	t=1740463093; cv=none; b=Hf1yHSj6mfWoLiDZyhENRb0zGLUJi5gf/t0buKHSI0ezo5/11iXakOyxO9QchiTNmmWe3HLivsh7TF+VQ4bCq31VJtbITj3lZ1BcyIE/2XDL0PBHy9Z7KZE/gD+ZKjccueOSRIhnP0i1cwGPAk6rD9FjgOzp9l5mUjCj8LSLrDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740460840; c=relaxed/simple;
-	bh=+pdVw3nVCnP1BBHqxKg0W+TmqmyuT8v/Z8Xh3MhgkhM=;
-	h=Date:To:From:Subject:Message-Id; b=qb+j5lVe3N9/oP1T23b/X951/oTkakiuVDnGerGo8nQbvJCF1nrwPjWFwsI8aVF4hh7iBWj7kZu0fhH40oeK2vp6cNsKkzUOo93LmFjlR4lwyH2sGjK34w4MSiHCfy3dhlCT9rTuUXC6xqrzZeL6J6BvX3WB1c7ubG08UPdEfJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tsjnC8eu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C1FC4CEDD;
-	Tue, 25 Feb 2025 05:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1740460840;
-	bh=+pdVw3nVCnP1BBHqxKg0W+TmqmyuT8v/Z8Xh3MhgkhM=;
-	h=Date:To:From:Subject:From;
-	b=tsjnC8eu1WVX4p8gMh1D2+F3pxuK+JpLdEKFSORnm919zveZycI77lIN+FjZdjwtf
-	 ddNNSc1Ep0ra0L4On6iV649vK3sE6Az8r9qUUEPlmqcO7viFqS1r0s8dKuSSldczqK
-	 oZ6wjFCXtBAOleI4R2tw0j2igxcwuipgelUXev9g=
-Date: Mon, 24 Feb 2025 21:20:39 -0800
-To: mm-commits@vger.kernel.org,trond.myklebust@hammerspace.com,stable@vger.kernel.org,anna.schumaker@oracle.com,snitzer@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250225052039.E2C1FC4CEDD@smtp.kernel.org>
+	s=arc-20240116; t=1740463093; c=relaxed/simple;
+	bh=XFQddjupwHWDf1QiMntCRT3sbOOb0aS0zpeXx93gHx0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gm9dvARczmBwT40iVH6yQDqPLtvwsotYY73KQ1MsHnWtTuL4lyZMEenRXohWyaY0o/vDLPJDSzneoucIlch70s2rP05t2RBuz6dTNNRdLkLqnxc581nnAFuuZfyQawoVFRlEOYCjE1WKYzfMw9cIvTACtYFv5qZ8j+eE3uhl/hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=E6eCWB0J; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51P5vpku1682408
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 24 Feb 2025 23:57:51 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1740463071;
+	bh=Sa7ucSJKWasZ2KGuuAlceNV2b8JCAsYjJZF+dbJsVKo=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=E6eCWB0J1TLY5hBPfkrtc1a2eK8EFTk/UyJiTby3O9u/0pw/qwRsMItfJ80h2z3uw
+	 +qwXG1ZvE8PrNcO3YTTjFj8sNzEM4UKN+O+XsFh3j2FgLAig7jZYb6v8dMC57zoyex
+	 KcK5ejqvpwXouATTxqPcQcCK2OJSpzLyQ/rO+DBk=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51P5vp7g009513;
+	Mon, 24 Feb 2025 23:57:51 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 24
+ Feb 2025 23:57:51 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 24 Feb 2025 23:57:51 -0600
+Received: from [172.24.25.83] (lt5cd2489kgj.dhcp.ti.com [172.24.25.83])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51P5vlMG101472;
+	Mon, 24 Feb 2025 23:57:48 -0600
+Message-ID: <1c110279-ed22-4505-8fe2-2664b9880132@ti.com>
+Date: Tue, 25 Feb 2025 11:27:47 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: dts: ti: k3-j784s4-j742s2-main-common: Correct
+ the GICD size
+To: Keerthy <j-keerthy@ti.com>, <robh+dt@kernel.org>, <nm@ti.com>,
+        <vigneshr@ti.com>, <conor+dt@kernel.org>, <kristo@kernel.org>,
+        <krzk+dt@kernel.org>
+CC: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <u-kumar1@ti.com>
+References: <20250218052248.4734-1-j-keerthy@ti.com>
+Content-Language: en-US
+From: "Kumar, Udit" <u-kumar1@ti.com>
+In-Reply-To: <20250218052248.4734-1-j-keerthy@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
-The patch titled
-     Subject: NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback.patch
+On 2/18/2025 10:52 AM, Keerthy wrote:
+> Currently we get the warning:
+>
+> "GICv3: [Firmware Bug]: GICR region 0x0000000001900000 has
+> overlapping address"
+>
+> As per TRM GICD is 64 KB. Fix it by correcting the size of GICD.
+>
+> Fixes: 9cc161a4509c ("arm64: dts: ti: Refactor J784s4 SoC files to a common file")
+> Signed-off-by: Keerthy <j-keerthy@ti.com>
+> Cc: stable@vger.kernel.org
+> ---
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback.patch
+Acked-by: Udit Kumar <u-kumar1@ti.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Mike Snitzer <snitzer@kernel.org>
-Subject: NFS: fix nfs_release_folio() to not deadlock via kcompactd writeback
-Date: Mon, 24 Feb 2025 21:20:02 -0500
-
-Add PF_KCOMPACTD flag and current_is_kcompactd() helper to check for it so
-nfs_release_folio() can skip calling nfs_wb_folio() from kcompactd.
-
-Otherwise NFS can deadlock waiting for kcompactd enduced writeback which
-recurses back to NFS (which triggers writeback to NFSD via NFS loopback
-mount on the same host, NFSD blocks waiting for XFS's call to
-__filemap_get_folio):
-
-6070.550357] INFO: task kcompactd0:58 blocked for more than 4435 seconds.
-
-{---
-[58] "kcompactd0"
-[<0>] folio_wait_bit+0xe8/0x200
-[<0>] folio_wait_writeback+0x2b/0x80
-[<0>] nfs_wb_folio+0x80/0x1b0 [nfs]
-[<0>] nfs_release_folio+0x68/0x130 [nfs]
-[<0>] split_huge_page_to_list_to_order+0x362/0x840
-[<0>] migrate_pages_batch+0x43d/0xb90
-[<0>] migrate_pages_sync+0x9a/0x240
-[<0>] migrate_pages+0x93c/0x9f0
-[<0>] compact_zone+0x8e2/0x1030
-[<0>] compact_node+0xdb/0x120
-[<0>] kcompactd+0x121/0x2e0
-[<0>] kthread+0xcf/0x100
-[<0>] ret_from_fork+0x31/0x40
-[<0>] ret_from_fork_asm+0x1a/0x30
----}
-
-Link: https://lkml.kernel.org/r/20250225022002.26141-1-snitzer@kernel.org
-Fixes: 96780ca55e3cb ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nfs/file.c              |    3 ++-
- include/linux/compaction.h |    5 +++++
- include/linux/sched.h      |    2 +-
- mm/compaction.c            |    3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
-
---- a/fs/nfs/file.c~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/fs/nfs/file.c
-@@ -29,6 +29,7 @@
- #include <linux/pagemap.h>
- #include <linux/gfp.h>
- #include <linux/swap.h>
-+#include <linux/compaction.h>
- 
- #include <linux/uaccess.h>
- #include <linux/filelock.h>
-@@ -457,7 +458,7 @@ static bool nfs_release_folio(struct fol
- 	/* If the private flag is set, then the folio is not freeable */
- 	if (folio_test_private(folio)) {
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
--		    current_is_kswapd())
-+		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
- 		if (nfs_wb_folio(folio->mapping->host, folio) < 0)
- 			return false;
---- a/include/linux/compaction.h~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/include/linux/compaction.h
-@@ -80,6 +80,11 @@ static inline unsigned long compact_gap(
- 	return 2UL << order;
- }
- 
-+static inline int current_is_kcompactd(void)
-+{
-+	return current->flags & PF_KCOMPACTD;
-+}
-+
- #ifdef CONFIG_COMPACTION
- 
- extern unsigned int extfrag_for_order(struct zone *zone, unsigned int order);
---- a/include/linux/sched.h~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/include/linux/sched.h
-@@ -1701,7 +1701,7 @@ extern struct pid *cad_pid;
- #define PF_USED_MATH		0x00002000	/* If unset the fpu must be initialized before use */
- #define PF_USER_WORKER		0x00004000	/* Kernel thread cloned from userspace thread */
- #define PF_NOFREEZE		0x00008000	/* This thread should not be frozen */
--#define PF__HOLE__00010000	0x00010000
-+#define PF_KCOMPACTD		0x00010000	/* I am kcompactd */
- #define PF_KSWAPD		0x00020000	/* I am kswapd */
- #define PF_MEMALLOC_NOFS	0x00040000	/* All allocations inherit GFP_NOFS. See memalloc_nfs_save() */
- #define PF_MEMALLOC_NOIO	0x00080000	/* All allocations inherit GFP_NOIO. See memalloc_noio_save() */
---- a/mm/compaction.c~nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback
-+++ a/mm/compaction.c
-@@ -3181,6 +3181,7 @@ static int kcompactd(void *p)
- 	long default_timeout = msecs_to_jiffies(HPAGE_FRAG_CHECK_INTERVAL_MSEC);
- 	long timeout = default_timeout;
- 
-+	tsk->flags |= PF_KCOMPACTD;
- 	set_freezable();
- 
- 	pgdat->kcompactd_max_order = 0;
-@@ -3237,6 +3238,8 @@ static int kcompactd(void *p)
- 			pgdat->proactive_compact_trigger = false;
- 	}
- 
-+	tsk->flags &= ~PF_KCOMPACTD;
-+
- 	return 0;
- }
- 
-_
-
-Patches currently in -mm which might be from snitzer@kernel.org are
-
-nfs-fix-nfs_release_folio-to-not-deadlock-via-kcompactd-writeback.patch
-
+> Changes in V2:
+>
+> 	* Added the fixes tag
+> 	* Cc: stable
+>
+>   arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+> index 83bbf94b58d1..3b72fca158ad 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+> +++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+> @@ -193,7 +193,7 @@
+>   		ranges;
+>   		#interrupt-cells = <3>;
+>   		interrupt-controller;
+> -		reg = <0x00 0x01800000 0x00 0x200000>, /* GICD */
+> +		reg = <0x00 0x01800000 0x00 0x10000>, /* GICD */
+>   		      <0x00 0x01900000 0x00 0x100000>, /* GICR */
+>   		      <0x00 0x6f000000 0x00 0x2000>,   /* GICC */
+>   		      <0x00 0x6f010000 0x00 0x1000>,   /* GICH */
 
