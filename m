@@ -1,217 +1,130 @@
-Return-Path: <stable+bounces-119460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10A0A437C6
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 09:37:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A87BA438C3
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 10:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA810174F06
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 08:36:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B0F1887E00
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 09:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA99125E469;
-	Tue, 25 Feb 2025 08:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5375E266561;
+	Tue, 25 Feb 2025 09:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iMSj3EYj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TRxa2sAX";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lEJYeUeY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2GWcGaxb"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="B6wq9Mq3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A201C8607
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 08:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B212661B1
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 09:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740472612; cv=none; b=r9r4wEhRslQK9ws+ddbnZ5EKJgzMylkerNv/9GxHWAs0d5GVhmAJqas1/9Y1Rjg+zbG2IpPXkOtBb9DVgeArzxV+g8uyU6EEruEwf69bUFoO4vjcjRt3XVwI8+sUVyhRiP8IanJQQ2GycbZsJZaOH3ENdN0Kks1pdWS01ocRb7Q=
+	t=1740474056; cv=none; b=G8hkqFce+oVD/SrDLgXC9FD9V/4igZ1SVlb5zkTSv3NDeIjhecUxbrqvJT6l8fuunHNMM0JZpRvCYJyK3KoCiiLmwSt4uKR/2vBIsc0iizyu79U014fTWEe61e4tpfyTiVnDWwXnCa7X5brjTTmwEhKiwiOHvX546+RYfTFTjtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740472612; c=relaxed/simple;
-	bh=dYiNWNzutWIunK0YREZeye8mMXG++RLpRz2knUfjkfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nHGgIHcB+cH1nT6mYYjCJN/kmUiYRtSMHNFaEpxAUqC3cGbDnmxC6oh/lxCU8leZehwCYv8CHOJ8lGy1wh5G5yMDe6eCTdnl8npVJHXRsdulPFdN4+rAPGKk9c0VkGqE9llfp1QOBWEWIDCX/JH0ZKG+oqOqGQ2KB/nuBNrfgJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iMSj3EYj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TRxa2sAX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lEJYeUeY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2GWcGaxb; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3E4572118E;
-	Tue, 25 Feb 2025 08:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740472608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1740474056; c=relaxed/simple;
+	bh=PJqWQ/02kk6J61XSsGKz1EvoWTK5P+BFQ4HcbBAmqcc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OtRivr2ngSWaAuKsMhLL5Zaudf+QE3AuLJty3KR04+24JJjdMGhcFOA1wr0sKw3ZbTDkipstkUcBmQBa3z/dCO072mjwJjNkXjW2TDdn+EKqDrewTBLry7griUgDfbKrxRY0LXXjHcSbPzsQ2Eqy+qXpNvjg46TnFW5kzr20cY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=B6wq9Mq3; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <9cf9c128-9f66-488c-bd43-3f1752ec4eaa@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740474041;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ixIW4L2KK1/x1LlQODZCwvIbEcdT4VoLWaThdcRLEE8=;
-	b=iMSj3EYjCoNJ4Z740vMgD27ZXFtu3F3CLVZ3oDILVbMlw0tqBuyEub8EIZkyJoPcuaMSQ9
-	G3jhPBfdRxBTGbC20LgbOZ9u51YQKPTAb23mcV/JMQ+KUQ13ZpYxnu/wwU8mCM7oh/EB1+
-	9/aFr/JtHPWoIBmQ0mXyMnO6Q1YWMt0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740472608;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ixIW4L2KK1/x1LlQODZCwvIbEcdT4VoLWaThdcRLEE8=;
-	b=TRxa2sAXnPlD/UqrVIzRVclpxMU9HcFoA1CacAu9ubJK6QHEW5VpPrkxL2IbzRQuDLBuJx
-	PSNljU0qjUBar6AQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lEJYeUeY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2GWcGaxb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740472607; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ixIW4L2KK1/x1LlQODZCwvIbEcdT4VoLWaThdcRLEE8=;
-	b=lEJYeUeYu/5Ys8uFO5wUOLJGv1Rv9tujKpdmgBhdYZTXGkN0NDf0Mj+ZcBQ1KkU7/whuJz
-	3GlsRoHvKAJ18y3q3FOUDVilf+RTLuTme8ZLSYsm9BNGHP0n/5wW+Ig0uRN4IPqmcgH+E/
-	jIvpC9x9STl8fkDqE8rA3U18Vk39tsY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740472607;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ixIW4L2KK1/x1LlQODZCwvIbEcdT4VoLWaThdcRLEE8=;
-	b=2GWcGaxbapQTPy3/Te8CBxci5u/POnS2l69/xxK+ZEHnFiPzrSZYs0JYSoAu0ksLesZV+n
-	2Ewt3Q9+NjNBC0AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 770CA13A61;
-	Tue, 25 Feb 2025 08:36:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xlNQGh6BvWemAwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 25 Feb 2025 08:36:46 +0000
-Date: Tue, 25 Feb 2025 09:36:44 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	linux-kernel@vger.kernel.org, 42.hyeyoo@gmail.com, byungchul@sk.com,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	akpm@linux-foundation.org, stable@vger.kernel.org,
-	linux-mm@kvack.org, max.byungchul.park@sk.com,
-	max.byungchul.park@gmail.com
-Subject: Re: [PATCH] x86/vmemmap: Synchronize with global pgds if populating
- init_mm's pgd
-Message-ID: <Z72BHNv18NNq1e2F@localhost.localdomain>
-References: <20250220064105.808339-1-gwan-gyeong.mun@intel.com>
- <d1da214c-53d3-45ac-a8b6-51821c5416e4@intel.com>
+	bh=YyvddXJudmim1yoVeF2sZBvah7MinIT5ZBHD+XI91UM=;
+	b=B6wq9Mq3uylr8OfT/MoCcqJNqcVngx4TPD6UK0+RB4M0sFWDXL91l5ukvrfU6ywvlsS3ml
+	4qvMg0EmJFYFbI40yubALIDts/0glf0WXptuRXkY5cLq9ITuCrPkKo6uc9rNTFW00PilKj
+	b0A+ABQ+npLY2eBgHx6CdEK+gsDCmcw=
+Date: Tue, 25 Feb 2025 17:00:29 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d1da214c-53d3-45ac-a8b6-51821c5416e4@intel.com>
-X-Rspamd-Queue-Id: 3E4572118E
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[intel.com,vger.kernel.org,gmail.com,sk.com,linux.intel.com,kernel.org,infradead.org,linux-foundation.org,kvack.org];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,localhost.localdomain:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
-
-On Thu, Feb 20, 2025 at 10:02:54AM -0800, Dave Hansen wrote:
-> On 2/19/25 22:41, Gwan-gyeong Mun wrote:
-> > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> > index 01ea7c6df303..7935859bcc21 100644
-> > --- a/arch/x86/mm/init_64.c
-> > +++ b/arch/x86/mm/init_64.c
-> > @@ -1498,6 +1498,54 @@ static long __meminitdata addr_start, addr_end;
-> >  static void __meminitdata *p_start, *p_end;
-> >  static int __meminitdata node_start;
-> >  
-> > +static void * __meminit vmemmap_alloc_block_zero(unsigned long size, int node)
-> > +{
-> > +	void *p = vmemmap_alloc_block(size, node);
-> > +
-> > +	if (!p)
-> > +		return NULL;
-> > +	memset(p, 0, size);
-> > +
-> > +	return p;
-> > +}
-> 
-> This is a pure copy and paste of the generic function. I assume this is
-> because the mm/sparse-vmemmap.c is static. But this kind of copying is
-> really unfortunate.
-
-Agreed.
-
-> ...
-> > +pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
-> > +{
-> > +	pgd_t *pgd = pgd_offset_k(addr);
-> > +
-> > +	if (pgd_none(*pgd)) {
-> > +		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
-> > +
-> > +		if (!p)
-> > +			return NULL;
-> > +
-> > +		pgd_populate(&init_mm, pgd, p);
-> > +		sync_global_pgds(addr, addr);
-> > +	}
-> > +
-> > +	return pgd;
-> > +}
-> 
-> I'd _really_ like to find another way to do this. We really don't want
-> to add copy-and-paste versions of generic functions that we now need to
-> maintain on the x86 side.
-> 
-> The _best_ way is probably to create some p*d_populate_kernel() helpers:
-> 
-> void pgd_populate_kernel(unsigned long addr, pgd_t *pgd, p4d_t *p4d)
-> {
-> 	pgd_populate(&init_mm, pgd, p4d);
-> 	arch_sync_global_pgds(addr, addr+something);
-> }
-> 
-> and move over most of the callers of:
-> 
-> 	p*d_populate(&init_mm, ...);
-
-I think this makes more sense, yes.
-So for those that do not need the sync, arch_sync_* would be just a
-noop, so we could avoid all these code duplication.
+Subject: Re: [PATCH net-next v3 1/4] stmmac: loongson: Pass correct arg to PCI
+ function
+To: Philipp Stanner <phasta@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Yinggang Gu <guyinggang@loongson.cn>,
+ Feiyang Chen <chenfeiyang@loongson.cn>, Philipp Stanner
+ <pstanner@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Qing Zhang <zhangqing@loongson.cn>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250224135321.36603-2-phasta@kernel.org>
+ <20250224135321.36603-3-phasta@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yanteng Si <si.yanteng@linux.dev>
+In-Reply-To: <20250224135321.36603-3-phasta@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
 
--- 
-Oscar Salvador
-SUSE Labs
+在 2/24/25 9:53 PM, Philipp Stanner 写道:
+> pcim_iomap_regions() should receive the driver's name as its third
+> parameter, not the PCI device's name.
+>
+> Define the driver name with a macro and use it at the appropriate
+> places, including pcim_iomap_regions().
+>
+> Cc: stable@vger.kernel.org # v5.14+
+> Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+
+
+Thanks,
+
+Yanteng
+
+> ---
+>   drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> index bfe6e2d631bd..73a6715a93e6 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> @@ -11,6 +11,8 @@
+>   #include "dwmac_dma.h"
+>   #include "dwmac1000.h"
+>   
+> +#define DRIVER_NAME "dwmac-loongson-pci"
+> +
+>   /* Normal Loongson Tx Summary */
+>   #define DMA_INTR_ENA_NIE_TX_LOONGSON	0x00040000
+>   /* Normal Loongson Rx Summary */
+> @@ -555,7 +557,7 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+>   	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>   		if (pci_resource_len(pdev, i) == 0)
+>   			continue;
+> -		ret = pcim_iomap_regions(pdev, BIT(0), pci_name(pdev));
+> +		ret = pcim_iomap_regions(pdev, BIT(0), DRIVER_NAME);
+>   		if (ret)
+>   			goto err_disable_device;
+>   		break;
+> @@ -673,7 +675,7 @@ static const struct pci_device_id loongson_dwmac_id_table[] = {
+>   MODULE_DEVICE_TABLE(pci, loongson_dwmac_id_table);
+>   
+>   static struct pci_driver loongson_dwmac_driver = {
+> -	.name = "dwmac-loongson-pci",
+> +	.name = DRIVER_NAME,
+>   	.id_table = loongson_dwmac_id_table,
+>   	.probe = loongson_dwmac_probe,
+>   	.remove = loongson_dwmac_remove,
 
