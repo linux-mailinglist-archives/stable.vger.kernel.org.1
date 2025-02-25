@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-119475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755E5A43CDC
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:09:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC3FA43CD4
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE55442955
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:05:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A511734A8
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E6C268FC2;
-	Tue, 25 Feb 2025 11:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6FD268FDA;
+	Tue, 25 Feb 2025 11:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="GOLogiGy"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="k14C2U6n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4B51DF759
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 11:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3902D2676FA
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 11:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740481380; cv=none; b=OkZLMI7X66injxWd1She0XKs1rECSxsMYOmw3NL1SpCjlZU/f4utiWCZb2cyI16lzIS0ddKol3f3fudIZ66OTJ/RF2qIAHEIKUu2nfJzk3AN/2mPd6pvN9E/hUquvtQ3A5lU3EwanpfA5L5pKNi8oG9gpXNCwWRpGPuZuEKxOnw=
+	t=1740481382; cv=none; b=arTPpegZRmetLCu2/2v5y8a2mispgI6feWDtcFNt6AlGhY3V18OhnnLH669HCa4FCcqKPvR0dfqVUZXMQ4keR7C4r1mbZOLk5f7FHQmmR+TZUsa+9ccWhBVQ4DFnnjWF7D8v1AS9Iow1nwgI1YzdlYji5d8JLn7zDD5xrTfO28U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740481380; c=relaxed/simple;
-	bh=gQc+M1MxzMAK4raon5GNtplgYSMzzyLfAB8UOS9YtMU=;
+	s=arc-20240116; t=1740481382; c=relaxed/simple;
+	bh=EFoTjmBvFXfXjWb+GX1/FcvwY+PND4is0Ol1b2EMzJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kP1w4jPurQ7NFA1nfuWU9b24AuGC94b26L/64jOXxxMs9VipbGWIBRqvWNez3q3AM2In4u4x3qYEz2is/8g6QR8h8sGEew6h5GNkn0rDLQwQP+oc8KfpfxayCdQy+MEXKgyO1t0hzPEFid1R1TDBxDTyE2/iq2XYwbtYYMcJPjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=GOLogiGy; arc=none smtp.client-ip=209.85.221.42
+	 MIME-Version; b=qfL6lGyZjxqM1wsR3P/quZtN4JXHlYjwvoJo3PKIFcdoWaczxwD6f4FKJE7hr1GmUoTWyD9SiIjyhh+WWos886UZqCBzsFMFcuuRL6D0xvNs75TH6/9Lxz69Iz2K1WdAGWdjKzbkub/46V4wRDGOCCr/AkT/uSkJ9UNkjfn5MJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=k14C2U6n; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38f26a82d1dso2784491f8f.2
-        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 03:02:58 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-439846bc7eeso34040565e9.3
+        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 03:02:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1740481376; x=1741086176; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1740481378; x=1741086178; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cyShyny9G2/yY7DkjMFQ2r6rzy1CSrizU536iAKhGig=;
-        b=GOLogiGyWvjTaJcyC7f6K0r5ZP9Mb8CFXnYuEN/xjq2YpZhOd8sc+I2Zw9h6vSwuR0
-         ZQBdgV+cGtoZe55K2jGhTsPTyFvYpiBbs3vB+wpa6f23OQ6qDHQ6kd3bPzjMg4HM/ZWP
-         8F7UmYi5Ef/0VwI1ElmOMN19FY0Dj3WWHvBid2Tu7xwHaMorPxIEvHTJeZIubiJFipEp
-         sXqEAxa/ymuT4dYYbuJvf8clH13U2ggpInsxz8XxcuABqvkBQiVTLnt9v5ofkSQbxA0G
-         XLYrUhty4pWn5UjONMjugI2hREyDiHQ8TmSgczhn3OJKr8Z2PC3wH+z6o2KBwP/7PAGW
-         /zHg==
+        bh=1g90tifgQM9MVDjBzO/J2Q9Ytv3puck/TcrC4X2HffE=;
+        b=k14C2U6nGMHsF8/MEKTGyx66X/GNX/AXIuxMBjthOmHyCVh3Qs3d6RCIodf3FL2KB8
+         ZOEgIsQ5L9Yisrg4dL+bMYNoduIE2WpcEkyrlN3WZwoPLKL0EVjvxLWhcasXzjLWhXaH
+         8Dw+UHLTblJvNiXztWWwWvP+49ExEwDcWxFvOlpPxayZkWHXyz9yTXBHo/DLHowNO5Ls
+         C6A++u09CDhYP1b3aZx/MP7jurtIkfa3+p2T89o5IcUJirKjAVyYaMD7fXnDZvgH9lMS
+         xmKyYNs48gjm91WmA7YsSqYrnicAaIWdRBgeJpuKXL2mWdIaZtu1kNJsZoyCPaPPvVT0
+         7HcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740481376; x=1741086176;
+        d=1e100.net; s=20230601; t=1740481378; x=1741086178;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cyShyny9G2/yY7DkjMFQ2r6rzy1CSrizU536iAKhGig=;
-        b=UlpJoJEQM89drobAwMpYUvquXJDoy/EKrQGDePEdydrRK7MbKK1Npkfp1XV+/NPvga
-         slx5R3AoPAoSt8aitewQsvYTrcRQnajLGVDAxoKd7Qq5vIFHF1BXar+XS1G3H7eve7oM
-         WWy/ldLiCgWcMkahqjlQVS59grEpGdNqM+uuO/7jKvdfccnBANZC4Y0brDaopUFH5WKk
-         gmjkHtjoJc0EVzRcRaUly3E/Ve82bCSjPN32bw7lUBco6UGsge+NODJvUleOirNVOGAD
-         YZFEv9icgdIi5BsuK08P4Vrwuo7nGJx8oPFmgkmOK3WEwdPAfRWuvRf4IeoSxKd1bB9l
-         /qjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAHbAYvJDj4rV2fUoxct0L+2P9aKfM4jVvMeOkbE/0Nauc9dv0aFoxKFT+dM9D01KtJ2exSV8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBW6mJP/QvX7Br2X2It37XGR4zBkJ6BtA/VySsMdgMzgHndJ1H
-	7Vx93sRjTPezSfgpL47T/MCM4/5ICq4wBtScJ88My2asPTxdZFbnGN46orKSxBs=
-X-Gm-Gg: ASbGncslF3ZbJC6jkOZslyP5DFpTPwvee1/xK1t7AXm4EC2SCj+5v/tjbLaBC6lW6sr
-	OdEzF4bzCTxwqV5A4GHg8rV579mAEkJs5xuqTJLrHI13/DA3x5iDH3LcEtfxR73IvZTXriKnR3I
-	JRnMeoUQfifYE1Tq3nj/lWtInlbNEPgFcGBNKb0d0Sp2gA9dCFJHCiYLwtgTAZRfGy16ZNaiCaq
-	NFWOoOcrkpDEMqBvVkDeiVd4cGQ06UaI0fsw9BrhB9INJuGFJ7JvWAAtwNHPxh/sIExTdgLKBWz
-	v7abnH8YTV+bGeuRt/JgMihaHIe7otCyLqrpGuR19IKzlCkuoUxPLp8=
-X-Google-Smtp-Source: AGHT+IHGZ6gHlw9kSoahDWlxrbg/CLJ26q2dMB3XznLEbdWlGW9T87Nbkw4gSgN5rUEuHOYL93HXMQ==
-X-Received: by 2002:a05:6000:1541:b0:38f:38eb:fcff with SMTP id ffacd0b85a97d-390cc60a682mr2129316f8f.29.1740481376531;
-        Tue, 25 Feb 2025 03:02:56 -0800 (PST)
+        bh=1g90tifgQM9MVDjBzO/J2Q9Ytv3puck/TcrC4X2HffE=;
+        b=QrRQ4FJNQsraUvXe6Mboo2b/V1jWBkCNva7V0nPQbY2oDabTtfv4lmmuo9n519HvKD
+         4OlzEpp2+NHTncrwV4o3cfQp+r8S6Ik79GIPwhwl793g5siGD0xkCngvuvUgHIUTdC7O
+         C4JCMqpivS8rK0G5A8pG+kr7vEESfwPZIRxJ+8envbYRW3ZYMwJsVIzWlPz6kOZDmKws
+         dPmivxI+mqLzHxD24Gg01RSJprwA5ors20eZD2+VpoWmsooBc9nm44kTN6D14C3ObrGL
+         gzhI0fnIkw55mycgesT2ubvw8XZuFlycdklrtLVmk4YDOjS/1KXY5LCVBwqM1tqPE4cI
+         biJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrOcjPkO4rvq/zLkMVzUMxjpDWR7t/UuA/VaUyOKXgmUus8lSYsawrFBzC5es+tf+zcaK2q78=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwghQpvoOLrY2FNM+8d0Cxa6xKCJwniHB4vcLJV4PiBwTxH2SjX
+	TW8k6M4nY78Y7cbqFKiSWV6Z9sE8OdV5GbfvUx5TitgYYr79xGPCUeLXY596ar4=
+X-Gm-Gg: ASbGnctQlDLK8KDYaMPSCJ8OSA6xjZE/XBzuFvPCN9lltdCJhwPKILgmgMhIR4pv23b
+	9f7EsyIT5qFB3yKVPCwcOAYs9gC+TnRx5+Hn+8cLwmoOqEfqHojyiDeEVdfIUi8Kf6gy2Qm970h
+	i7gaT80Gu2fQGUgyC3efVvagAJpN2MvXyJ1PUF0JTm6LttlAFUOXPB/6LRZCth8J/r7cmVQVvPu
+	THSh2XjWXJmADGuDQ3J2X4v+bQJ37TJDtoFZgCItntMusQHEskDa6Sn93g5QOzrdNU4UGPVFkM7
+	O7XS6eLA4S2ipt2ni+D5fVY+LZOA6bmTBz7DqrXV7aYTx/6TsKQmrho=
+X-Google-Smtp-Source: AGHT+IH9p4vFb/WlIcpRZOBte7JgwwPLkhCZmRimhOlrCUbR7HFlC6wBkzx+vvYw/CKT/Zad3bHmmw==
+X-Received: by 2002:a05:600c:4f84:b0:439:955d:7ad9 with SMTP id 5b1f17b1804b1-439ae1f145cmr171014845e9.14.1740481378537;
+        Tue, 25 Feb 2025 03:02:58 -0800 (PST)
 Received: from claudiu-X670E-Pro-RS.. ([82.78.167.25])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab1532dccsm21972385e9.7.2025.02.25.03.02.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab1532dccsm21972385e9.7.2025.02.25.03.02.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 03:02:56 -0800 (PST)
+        Tue, 25 Feb 2025 03:02:58 -0800 (PST)
 From: Claudiu <claudiu.beznea@tuxon.dev>
 X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
 To: gregkh@linuxfoundation.org,
@@ -87,9 +87,9 @@ Cc: claudiu.beznea@tuxon.dev,
 	linux-kernel@vger.kernel.org,
 	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/3] usb: renesas_usbhs: Call clk_put()
-Date: Tue, 25 Feb 2025 13:02:46 +0200
-Message-ID: <20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH v2 2/3] usb: renesas_usbhs: Use devm_usb_get_phy()
+Date: Tue, 25 Feb 2025 13:02:47 +0200
+Message-ID: <20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250225110248.870417-1-claudiu.beznea.uj@bp.renesas.com>
 References: <20250225110248.870417-1-claudiu.beznea.uj@bp.renesas.com>
@@ -103,10 +103,13 @@ Content-Transfer-Encoding: 8bit
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
-clk_put() on priv->clks[0] on error path.
+The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
+never released. Use devm_usb_get_phy() to handle this scenario.
 
-Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
+This issue was identified through code investigation. No issue was found
+without this change.
+
+Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
 Cc: stable@vger.kernel.org
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
@@ -116,25 +119,22 @@ Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Changes in v2:
 - collected tags
 
- drivers/usb/renesas_usbhs/common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/renesas_usbhs/mod_gadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
-index 935fc496fe94..6c7857b66a21 100644
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device *dev, struct usbhs_priv *priv)
- 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
- 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
- 		priv->clks[1] = NULL;
--	else if (IS_ERR(priv->clks[1]))
-+	else if (IS_ERR(priv->clks[1])) {
-+		clk_put(priv->clks[0]);
- 		return PTR_ERR(priv->clks[1]);
-+	}
+diff --git a/drivers/usb/renesas_usbhs/mod_gadget.c b/drivers/usb/renesas_usbhs/mod_gadget.c
+index 105132ae87ac..e8e5723f5412 100644
+--- a/drivers/usb/renesas_usbhs/mod_gadget.c
++++ b/drivers/usb/renesas_usbhs/mod_gadget.c
+@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_priv *priv)
+ 		goto usbhs_mod_gadget_probe_err_gpriv;
+ 	}
  
- 	return 0;
- }
+-	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
++	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
+ 	dev_info(dev, "%stransceiver found\n",
+ 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
+ 
 -- 
 2.43.0
 
