@@ -1,181 +1,106 @@
-Return-Path: <stable+bounces-119497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD444A43EDE
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:09:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0208A43F0A
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5DC21888D76
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:08:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D81B1623A4
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02A3267B9C;
-	Tue, 25 Feb 2025 12:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9B725A2DB;
+	Tue, 25 Feb 2025 12:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="O0bl42Jf"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="e+uRd4ZU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-tydg10021701.me.com (pv50p00im-tydg10021701.me.com [17.58.6.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01120266F17
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 12:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262FF1E485
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 12:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740485311; cv=none; b=KtTfkqk9ZLR0BKAOLJczKg4OB7p0al6mBXJ1jwFg9HkDKrl6zNUh294WrUjHnMe3hvIvj6mnAEtvDKaBKQBqnw81u5/z+v4WaSoKCkhvBEyplG4KEjesFkw1a7ZqQoR7gB9iEACEGxgrsDl4HzjogD5OZggFvmeOneFOjSpgHVw=
+	t=1740485856; cv=none; b=KfwdVM+6BhjAWRNtjf1Yx0S+xsz1GN0z9Sz4ot1Y5VMipGiRkmhgx2n/EyDxCkOF70+Sw2HchQ9YcADUhEJTjFZ/vucd2ER1Z8ZUA9MNLe72z4lag2LCFW6CrxEZc6+aJYQEJKE1yRVD66AEiat8sNvF+af5yfri/XRlIVoYk6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740485311; c=relaxed/simple;
-	bh=Q9LTud62PiNP68Npcecb+Y8o1+UPT1AVOMCQPZBgGqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cMPoKTZrhal9jzjCOIs5gZcMhuwLkMShII4OViyybJGd8sOTG2pTTchVPP5JCv39x94tB4v6yMxIM/N6nhkTkC+3eFkLx3m/Fsvcw3313reRZlMJO/bimX6T5dzlppbwiH2ayOjEpvrnt6KlCz/7Prf5JrVmBa4+mOjLAJDB8Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=O0bl42Jf; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e04064af07so8530516a12.0
-        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 04:08:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1740485307; x=1741090107; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uSFcV+r5E4WxO2+xTlVlzsifVYmK0gkUHuM2wDK2xfs=;
-        b=O0bl42JfY9iW9MVVQmivUg+zLcrBvsDb1fxDe857MejbJOhKV++ywxFzxdGE5zAWS5
-         gzsaR+V9C+DnsxbwKuryVhd0Tl9f6rJyv50w8HY/Wt1b/VLiuJAMB70b71+sJNUypyWe
-         I0TgZUbKv4FfJxop1eTMAKrJ0T/vvwqlg8efNcDcXRtHSS7HCMFlxHE3Y7ftRSOnePhF
-         LQACcCDB+q8TFXvb0HQHUbtSBD4U4QWLcjsrgSJMmK1TnW5Tg0nUQH7PizlFwoOxvjTh
-         P+GnZyrCGT4CQemAhPQHglyZgG2S0qsSdWIbFuY87BlFpVuZ8C5NfjCu79cKcWoGR4nS
-         zE4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740485307; x=1741090107;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uSFcV+r5E4WxO2+xTlVlzsifVYmK0gkUHuM2wDK2xfs=;
-        b=Y6JUWk/ZKwft4cHEN58lAUtRDMQF08o4TVTkaYKAE3KzD2yYQZiDR2NKrYhrz4dHhG
-         lqEepX42/EYdm8pac3dyWBcdkfFpoYJXX+2SWIFwfrico0UakTNLSd53hguORR661aA3
-         DWavfhtKozo/F0ixiP8kP6JkNlof91NDV3ngFSYV7Qc+iZuyL3mMYv4snx1r6kvE/diU
-         +vMUdD/Ioip0dKXLEKxZti4vonW8IFe8UUwQ+zL7W2lFE6iy2PQBo4/A6OFGu7WFl23F
-         W3mYA91uIYCV9IqVx1ird/2aRQsOiYGvmzuoj4aH/BLvK26xb20tJ8XDY2drrxkNdtcZ
-         MEyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLrRr2y18+1CYqAZXpFNQmAnh3RKJK7p0Yhp9+oHWkg6XboYnnvq0V7Am/UiHFt9kXxWGZKZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuwMXQsxxucyC27+aaZ1UHm6zx7GgRq3UXf0c9O7CzmFwzbIp+
-	E1p5OIED5hHEUF1kV7mSPDnHnjLIw9MMYdRi7a+PX7wQLXtcUN0pThc3Cthhl1c=
-X-Gm-Gg: ASbGncsvkTqy//2WVFkNwjzRzQfHmevwVDG0xrTFBwVE8eLDY+hH1EIaMrzUcVKZXi6
-	RqXN4IRgiSULKo2yWSvdq1I1QkCO+K4WCUDsu7Z+eG1ps4FdmYrawCx6SDEJgzOMfhMqqjHNbFW
-	6am2op2c6O0P/CsJfv8KxQu2u6HopQpufijBG4XBHjY1Obf9vUA9jptclYt09tYtWNGCvzzUOBR
-	IUGZ5HBLEQGj3Rb0/Dw9jVe5dE+RncZJ5pGfrGu9wJh4wzuQb3F2RV5sng1//Fy041xH6Qf3ARC
-	GHEKq6bywdFIIR+dvX4/XQu+ba7jP+Fyme30FhFn/STzBSqRFNpnwyjSHGNz52hTWYnh9601np1
-	0tOirfXhdPkXWWy8=
-X-Google-Smtp-Source: AGHT+IH3gdzX3PeChiwCGAsoV3Kg3a9bzz9OmkI9aT6t+gpVTMMM2ymgKcITTcD1763s9dbf6zqhuA==
-X-Received: by 2002:a17:907:9686:b0:ab7:d7fd:6250 with SMTP id a640c23a62f3a-abed1015488mr297536566b.43.1740485306884;
-        Tue, 25 Feb 2025 04:08:26 -0800 (PST)
-Received: from jiri-mlt.client.nvidia.com (194-212-255-194.customers.tmcz.cz. [194.212.255.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed2057276sm131230566b.142.2025.02.25.04.08.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 04:08:26 -0800 (PST)
-Date: Tue, 25 Feb 2025 13:08:24 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>, 
-	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"Glaza, Jan" <jan.glaza@intel.com>, "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] dpll: Add a check before kfree() to match the existing
- check before kmemdup()
-Message-ID: <txrxpe7tmpsyiu4cwjd2gbs3udogmzdo5ertjwmhbeynu23iep@dcryfdoi7o5x>
-References: <20250223201709.4917-1-jiashengjiangcool@gmail.com>
- <DM6PR11MB4657A297365AE59DE960AA899BC02@DM6PR11MB4657.namprd11.prod.outlook.com>
- <kwdkfmt2adru7wk7qwyw67rp6b6e3s63rbx4dqijl6roegsg3f@erishkbcfmbm>
- <CANeGvZVoy20axVTOd4L=d0rwgMWvH_TJqV6ip=_TaDNPJVEqkQ@mail.gmail.com>
+	s=arc-20240116; t=1740485856; c=relaxed/simple;
+	bh=icoN91cmWBN01191An2uItH1mFg3GCSkgD5Hl99R4Ko=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AIRz1jYhtM1U5+tUn/BWNN1ZTCIioXsfPgGsZGyF2PwQI3+TCcZ87IqLNCIlzv6YcsNQVSqMghMG7sA2MkcMKNL/CvHfXIBAwBLrCvtT/OvlMfSLOT7SDlzvP/aoXYzUUWZiz7PNDly0UcI5smGgEm4RwzRsddHyQMU3D7hpVD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=e+uRd4ZU; arc=none smtp.client-ip=17.58.6.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=tQVDiJM72BgasMuPn0E8GujAR5KguG27heLo2tUkt5E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
+	b=e+uRd4ZU1VAu519YY62aDnwBuPiGbz+bWxHHbAjdrshEv4Kcxex2SYMGVfqezk73J
+	 ygl2jG3IJjwWNCQJDuTijwEP73BcKmDpsXY9dWTUMIiCIw2HfIPvW0ML+Bp1eDcN3q
+	 F/8OifILc0jpE5naSoXySxq9cjW49Cp+w39hqL2vtbOWy9n67r0c+fDCd1v5BeQNMY
+	 IJ3sUJnuAawDrU0UTfM2LMRHKhYdtrQZ7lgpyjL1MtLd6lJyv8sfYsUZ+aeNFGICwv
+	 xmNNQQaHwQYTR4vI4Xvma20mtK3cWNHiGEIQnuKbPXZfxZ50zM0apj/r5fznqVezNT
+	 2EKweQKkHkG5Q==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id 45652CC6951;
+	Tue, 25 Feb 2025 12:17:28 +0000 (UTC)
+Message-ID: <4e6ed786-4e72-4f22-9ce1-cdf6c384a5bb@icloud.com>
+Date: Tue, 25 Feb 2025 20:17:25 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANeGvZVoy20axVTOd4L=d0rwgMWvH_TJqV6ip=_TaDNPJVEqkQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/9] of: fix bugs about refcount
+To: Rob Herring <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@google.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Marc Zyngier <maz@kernel.org>,
+ Stefan Wiehler <stefan.wiehler@nokia.com>, Tony Lindgren <tony@atomide.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Julia Lawall <Julia.Lawall@lip6.fr>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+ stable@vger.kernel.org
+References: <20250209-of_irq_fix-v2-0-93e3a2659aa7@quicinc.com>
+ <20250224232645.GA117818-robh@kernel.org>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <20250224232645.GA117818-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: buODABNUr5CF9BrUMMIQ-7sGwBIbv_Rh
+X-Proofpoint-ORIG-GUID: buODABNUr5CF9BrUMMIQ-7sGwBIbv_Rh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-25_04,2025-02-25_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=834
+ spamscore=0 suspectscore=0 clxscore=1015 bulkscore=0 malwarescore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2502250086
 
-Mon, Feb 24, 2025 at 05:47:04PM +0100, jiashengjiangcool@gmail.com wrote:
->Hi Jiri,
->
->On Mon, Feb 24, 2025 at 7:04 AM Jiri Pirko <jiri@resnulli.us> wrote:
+On 2025/2/25 07:26, Rob Herring wrote:
+>> ---
+>> Zijun Hu (9):
+>>       of: unittest: Add a case to test if API of_irq_parse_one() leaks refcount
+>>       of/irq: Fix device node refcount leakage in API of_irq_parse_one()
+>>       of: unittest: Add a case to test if API of_irq_parse_raw() leaks refcount
+>>       of/irq: Fix device node refcount leakage in API of_irq_parse_raw()
+>>       of/irq: Fix device node refcount leakages in of_irq_count()
+>>       of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
+>>       of/irq: Fix device node refcount leakages in of_irq_init()
+>>       of/irq: Add comments about refcount for API of_irq_find_parent()
+>>       of: resolver: Fix device node refcount leakage in of_resolve_phandles()
 >>
->> Mon, Feb 24, 2025 at 10:31:27AM +0100, arkadiusz.kubalewski@intel.com wrote:
->> >Hi Jiasheng, many thanks for the patch!
->> >
->> >>From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
->> >>Sent: Sunday, February 23, 2025 9:17 PM
->> >>
->> >>When src->freq_supported is not NULL but src->freq_supported_num is 0,
->> >>dst->freq_supported is equal to src->freq_supported.
->> >>In this case, if the subsequent kstrdup() fails, src->freq_supported may
->> >
->> >The src->freq_supported is not being freed in this function,
->> >you ment dst->freq_supported?
->> >But also it is not true.
->> >dst->freq_supported is being freed already, this patch adds only additional
->> >condition over it..
->> >From kfree doc: "If @object is NULL, no operation is performed.".
->> >
->> >>be freed without being set to NULL, potentially leading to a
->> >>use-after-free or double-free error.
->> >>
->> >
->> >kfree does not set to NULL from what I know. How would it lead to
->> >use-after-free/double-free?
->> >Why the one would use the memory after the function returns -ENOMEM?
->> >
->> >I don't think this patch is needed or resolves anything.
->>
->> I'm sure it's not needed.
->>
->
->After "memcpy(dst, src, sizeof(*dst))", dst->freq_supported will point
->to the same memory as src->freq_supported.
->When src->freq_supported is not NULL but src->freq_supported_num is 0,
->dst->freq_supported still points to the same memory as src->freq_supported.
->Then, if the subsequent kstrdup() fails, dst->freq_supported is freed,
->and src->freq_supported becomes a Dangling Pointer,
->potentially leading to a use-after-free or double-free error.
+>>  drivers/of/irq.c                               | 34 ++++++++++---
+>>  drivers/of/resolver.c                          |  2 +
+>>  drivers/of/unittest-data/tests-interrupts.dtsi | 13 +++++
+>>  drivers/of/unittest.c                          | 67 ++++++++++++++++++++++++++
+>>  4 files changed, 110 insertions(+), 6 deletions(-)
+> I've applied the series. I made a few adjustments to use __free() 
+> cleanup and simplify things.
 
-Okay. This condition should not happen, driver is broken in that case.
-Better add an assertion for it.
-
-
->
->-Jiasheng
->
->> >
->> >Thank you!
->> >Arkadiusz
->> >
->> >>Fixes: 830ead5fb0c5 ("dpll: fix pin dump crash for rebound module")
->> >>Cc: <stable@vger.kernel.org> # v6.8+
->> >>Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
->> >>---
->> >> drivers/dpll/dpll_core.c | 3 ++-
->> >> 1 file changed, 2 insertions(+), 1 deletion(-)
->> >>
->> >>diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
->> >>index 32019dc33cca..7d147adf8455 100644
->> >>--- a/drivers/dpll/dpll_core.c
->> >>+++ b/drivers/dpll/dpll_core.c
->> >>@@ -475,7 +475,8 @@ static int dpll_pin_prop_dup(const struct
->> >>dpll_pin_properties *src,
->> >> err_panel_label:
->> >>      kfree(dst->board_label);
->> >> err_board_label:
->> >>-     kfree(dst->freq_supported);
->> >>+     if (src->freq_supported_num)
->> >>+             kfree(dst->freq_supported);
->> >>      return -ENOMEM;
->> >> }
->> >>
->> >>--
->> >>2.25.1
->> >
+thank you, LGTM for all adjustments but perhaps a mistake fixed by
+https://lore.kernel.org/all/20250225-fix_auto-v1-1-cf8b91a311dd@quicinc.com/
 
