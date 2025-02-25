@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-119436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318BDA432E0
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 03:15:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75BCA432FA
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 03:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 354D13B8237
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 02:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 346A5172007
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 02:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC1113C9B8;
-	Tue, 25 Feb 2025 02:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1B612C544;
+	Tue, 25 Feb 2025 02:24:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B3E2030A;
-	Tue, 25 Feb 2025 02:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966E1364D6;
+	Tue, 25 Feb 2025 02:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740449705; cv=none; b=IpCJKyh1HEQgEWTZ/48Oc52tFCD9AQ+D6q6wG1uRRHyjyrKZA06BgUewFI+ssJ7yR8R9NITCxztgvzHAfAfrZ/WvlRAHOOUUOP5b7JcTNglsQjehJ9vlM5L5ADw3q9hRlLnDjmOFCrQ6RD6azq5qAvsLgm+IqIhNPT77NFCr0eA=
+	t=1740450258; cv=none; b=XqtZ7+r8R/9T6dsTGn/ZF0Cxxs1JicoXGsSB0ST3f2CxqbIQ/Y471blv7Qwdf/Q8iW5ysUxrk4ElboMpvQF2L5OHu4rfSf8EWWQ28yqkuzaZuct1pmNWr5VOmvVXX2eLE4qTbShlvwRwNIBomzd3togLb/mL4LCT0t+MA43DbBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740449705; c=relaxed/simple;
-	bh=syPmBwmUMBo0QIBV7GdWdnT0SdfzyuqB5EAPVxcSIkY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X0pxrsdDI+WW6FQEcPaECxgWRTa1GQTIwpmwF4tBkdFlzB5rVE724hP1Q9mhVC9howAR0VIBCLB7TN3a2yABuOzsr6jUNLiH6sZJgCai8Lv8Ix8AYkEYEEGXtG0+QQkAnHSBS9JC53nh+Yj0tJBIUX2pZiyZAygxCJDffoOht/g=
+	s=arc-20240116; t=1740450258; c=relaxed/simple;
+	bh=8xOjutctvz7dst4tkZ4ofSTIOfEjqCOXV1LpbhwVBUY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QVTs3T9v+uFNcPY3czlFLUaL5k4caAyq2hXfENeOQXneND6nrAiiMjfYvBkqnGwfgiyky0vPjcrwxInOS2eHM5MeWssj9ffj0OQBf9qsWVT2NiUS8/PptJqpQWnAK9Ddej9jZJHQoxu/pd+17a3Rms+eVhKhfo+TDrdu3yGb4nw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowABXXW2SJ71n8sQyEA--.3132S2;
-	Tue, 25 Feb 2025 10:14:52 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAAHNPu4Kb1nmzAzEA--.46683S2;
+	Tue, 25 Feb 2025 10:24:02 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: bhelgaas@google.com,
-	arnd@arndb.de,
-	treding@nvidia.com
-Cc: linux-pci@vger.kernel.org,
+To: linux@armlinux.org.uk,
+	elder@kernel.org,
+	sumit.garg@linaro.org,
+	make24@iscas.ac.cn,
+	gregkh@linuxfoundation.org
+Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 RESEND] PCI: fix reference leak in pci_register_host_bridge()
-Date: Tue, 25 Feb 2025 10:14:40 +0800
-Message-Id: <20250225021440.3130264-1-make24@iscas.ac.cn>
+Subject: [PATCH v5 RESEND] [ARM] fix reference leak in locomo_init_one_child()
+Date: Tue, 25 Feb 2025 10:23:51 +0800
+Message-Id: <20250225022351.3146049-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -51,60 +52,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABXXW2SJ71n8sQyEA--.3132S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFy3ZF43Jrb_yoWkArXEgr
-	109Fy7Zr4rG3Zagr13ArnxZr10k3ZFgrWfGr48tFZ7ZayrXFZIg3ZxZFWYyr17Ca1DCr1U
-	J3WDXr4DCr1I9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
-	evJa73UjIFyTuYvjfUY3kuUUUUU
+X-CM-TRANSID:qwCowAAHNPu4Kb1nmzAzEA--.46683S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryrKw13CF4fuFW7AryDGFg_yoW8Wry7pa
+	s7Cas8trWUWr4vgFW0qFn7ZFyUGayIkw45GrW8C340g3s0vrWIqFy0ga429w1UXrWkAFnY
+	vF4xXw4UG3WUCaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUAxhLUUUUU=
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
 Once device_register() failed, we should call put_device() to
 decrement reference count for cleanup. Or it could cause memory leak.
 
-device_register() includes device_add(). As comment of device_add()
-says, 'if device_add() succeeds, you should call device_del() when you
-want to get rid of it. If device_add() has not succeeded, use only
-put_device() to drop the reference count'.
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v5:
+- modified the bug description as suggestions;
+Changes in v4:
+- deleted the redundant initialization;
+Changes in v3:
+- modified the patch as suggestions;
 Changes in v2:
-- modified the patch description.
+- modified the patch as suggestions.
 ---
- drivers/pci/probe.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/common/locomo.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 246744d8d268..7b1d7ce3a83e 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1018,8 +1018,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	name = dev_name(&bus->dev);
+diff --git a/arch/arm/common/locomo.c b/arch/arm/common/locomo.c
+index cb6ef449b987..45106066a17f 100644
+--- a/arch/arm/common/locomo.c
++++ b/arch/arm/common/locomo.c
+@@ -223,10 +223,8 @@ locomo_init_one_child(struct locomo *lchip, struct locomo_dev_info *info)
+ 	int ret;
  
- 	err = device_register(&bus->dev);
--	if (err)
-+	if (err) {
-+		put_device(&bus->dev);
- 		goto unregister;
-+	}
+ 	dev = kzalloc(sizeof(struct locomo_dev), GFP_KERNEL);
+-	if (!dev) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	if (!dev)
++		return -ENOMEM;
  
- 	pcibios_add_bus(bus);
+ 	/*
+ 	 * If the parent device has a DMA mask associated with it,
+@@ -254,10 +252,9 @@ locomo_init_one_child(struct locomo *lchip, struct locomo_dev_info *info)
+ 			NO_IRQ : lchip->irq_base + info->irq[0];
+ 
+ 	ret = device_register(&dev->dev);
+-	if (ret) {
+- out:
+-		kfree(dev);
+-	}
++	if (ret)
++		put_device(&dev->dev);
++
+ 	return ret;
+ }
  
 -- 
 2.25.1
