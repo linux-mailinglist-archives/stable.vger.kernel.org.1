@@ -1,161 +1,237 @@
-Return-Path: <stable+bounces-119553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7710A44B66
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 20:35:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB80A44BDB
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 20:52:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96EA13B5FA8
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 19:33:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1D4916D7D8
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 19:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C155F183CB0;
-	Tue, 25 Feb 2025 19:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3939B20C033;
+	Tue, 25 Feb 2025 19:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dWAteAa5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kMjeqMJA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D551990A2;
-	Tue, 25 Feb 2025 19:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCB617E015;
+	Tue, 25 Feb 2025 19:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740511985; cv=none; b=adD8fHYsAaSoYOCnTTP5leYREKd6vx5LqSeIDlTfFjKYQuSMscUBdkvj9KLJdm4Vjottf3JZ2X2Trlm+Gs7nwBMgwEajqQnxGKSKqc3NlsfGi1cBY4wcjew3Lodswvo6RQehC5SaQxz0qIStTEcmywWC2XdZFSqDmOdlZeGLG24=
+	t=1740513163; cv=none; b=UgY9XgG1Vc/SZkg/sKsgHLBmze6XupNXgL5oiGhnkUujPwtrFTInq/3qo2VcIK1Bu5KQe7GjHprubd2Oz5sWSrJRBuOYwucHFiOfJ3pRUZxLmIWEOggAN2y9tb1r0pR7Fzc1TeRH1vM0pefdLKpyeiJsI8mSB1AgC1r7rxDDekA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740511985; c=relaxed/simple;
-	bh=L1/3SKc8l7iQDSrFmOoDCO3JUgx4ujK+IIIgTIEi5vc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VAm5OxfIE0NJ3O2KG0h1J7VLnTaFH8e75VcNNylNSci8KLfmqhogQ/sID9Esa8VXClr6/djcmlhNFhKd1C1xwuK23Z05NmlzJmu6o9JajSbSyhY8yAzmR6otmL53TJkoblDvmGNE1oaoGFWkRcCQblyZ0r3y3qCFN/xnNlqSOzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dWAteAa5; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-727295a84c3so1631763a34.3;
-        Tue, 25 Feb 2025 11:33:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740511983; x=1741116783; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Miko2TmZIyxQH+Gi61JnK9vZXA4QBkP1Yh5ec2O1TNc=;
-        b=dWAteAa5e9uybwRQveMo4+ZvveI3KPllLSCvM6sce/oe2s0nmEVUnQHzASy+fFMXRy
-         f9g7GeczbHHyhMPWPeBLHhQn6K4kME8OB2iapLRUPnxJAgN2GhmVpP0mRzL5BIP9RK4q
-         LmoY7BSluUew0tcKlfXgSfmkrZZDLWk2oQck6JWtfLdVGohN+u2Z+Ef+zXNIrONLMtyD
-         3vlT1BRy1k9+8qkZeV7YMf3Abw7kEucx1+KSfxaPx4uLw9unNG5NteGTa29GIwI7GOpo
-         +4/FRuk0PzkcwrW24MElOnUhTCzGE0HY8Lv/kKaZSfyV7gpD9YfTNnKmavrj7Yel9yIC
-         U3uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740511983; x=1741116783;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Miko2TmZIyxQH+Gi61JnK9vZXA4QBkP1Yh5ec2O1TNc=;
-        b=GlzOoQV9+4KU5KpEO5dP2YLCaaPGjJb33An2K/p/178BmFRcaUywYu7tIYC/cAOYVJ
-         3zM7/A1LNbei7/B/DUi0H3pY5VuovBp6M2GFoEo8UUXmRiGwh+Hrpod701L/sVhMayn/
-         ipU/SyvC85FVu0qjHMxGhlIGdy23nYYwrgnoffovGU1rKZM5llc/btivarN3HJPj96l6
-         panEYSnUnYTKfoJj08/X5S+L1vTs5F3gAW8W+1bnMX8R6mjwmEmyJ12NHv3+ELNzPFES
-         Rbn8wBHBtYMuO7UxovOlBi34r483VaT1hOTIBzl8WpNF7+Pw85Q02QO0n+OpjmPHiKAx
-         UO2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWjD30YysPI0WNdGVBVYxzUF4+SFurBgyxw02wnqPy5vlkh0qk+DLQwZO+zPzSdvGry4djEwac7CYuzrkI=@vger.kernel.org, AJvYcCX68XnCOWt15blqx3ggRf5r5H76afHIx+lAqTYoA60p9Vll6EYs3OZ+dKUWu7+11Oaai++BmYdW@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx05hJ7NjUZWlGFFx4MPk8TrI7yYk/fdN6JGAWSFwRtq/6tuQQb
-	8CbaVIK83YEGiOfi6t1UUebrvTjzvffF36T9Mi8dXwFBKcQ7I5dtJjoIKg==
-X-Gm-Gg: ASbGncvu5U/Jru2bkoelSS5v9wn7lefBfuS2DCZoTSChpCKS1D73lZmEmtF7bamLPJG
-	3fnpQotfJs/gIDM9DIPjou/tUhcRB9gyE3iPzwQzWTVk92q3lwyrZlCJDVd42M9ukCmfAoU6uuG
-	jZX55m86eacQUS3wVlTPATWcx6z45RA2YM2pZW9da7JLPCEIvWu4Gpecj6u62lKXfRkyWjzMHIX
-	STUx5xEMzBMh2ELx7os+Qc+AG7WE0JGOdAc4Ucd7h9SV7cYkjfIJJnNHDA00jZ9+GwbuwJtETBs
-	msoFTGemg1WoqmM5DWghPJJJ74a+mPcscEL65EOxsw==
-X-Google-Smtp-Source: AGHT+IHQ3RLf2c8orAvsF44RAiI7PLXG4mCbFCPUQWf5N1ah5oJ3kD0yAmfLigtS2jv5wP03VEOwQg==
-X-Received: by 2002:a05:6830:3590:b0:727:3692:149d with SMTP id 46e09a7af769-7289d0f181cmr3630523a34.12.1740511983028;
-        Tue, 25 Feb 2025 11:33:03 -0800 (PST)
-Received: from [10.69.73.201] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c1111f4c55sm515413fac.2.2025.02.25.11.33.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 11:33:01 -0800 (PST)
-Message-ID: <2dba0ec1-52e4-4ca6-9cc1-14243c310765@gmail.com>
-Date: Tue, 25 Feb 2025 11:32:59 -0800
+	s=arc-20240116; t=1740513163; c=relaxed/simple;
+	bh=oIhL+Qdbu1UaNBgkh+rV4EwGPx0L/bL4d+e/qgMhUKA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=UQatmhuAfNKsR6Z7Mq3eMg5alRLBS+ofqn2ssRJADjVJRWooJ/GRbZUwgNqukNrQ7pVdofl10j3/SWVbSBP3Y9oZpQ02nNyOPDuemwWFv4cAsUd4Fpt6Z0wzl3rTyrIyTPsjlyLpVyh2+SG1UZyO/WOIg2Jok5GWody89evUWbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kMjeqMJA; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51PHinoW013301;
+	Tue, 25 Feb 2025 19:52:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=RrPOkSjYbqRM3KAmIfVN6s
+	d80ddpWeBNzJEAuPYvib4=; b=kMjeqMJAeRyUkJVceGzPvk/pEL2c2+wy81Wujd
+	VHM1g1w/bdUAML21OSwy96QL0BrdgGJ6V5WeLidYD1lUWkv7XLFswC3HfKSSj3uw
+	Q2+sipoaVwOrS3ETV77d+58YvJay87V3dfEP0kLYPGInf9N28wHKRFsT5yoE41kc
+	ksdASu1L/RiDQKfL8CNY7thlAJ8Elz2wwsl5fwfQDJwpz4bY0XAlV+F/WcOJenG+
+	KyGxlvDMIuBMv92NzxwujM9Qj8SXzAMncTDZZRFwif67ztaJqLM3BM9MjeuqsV9j
+	x7GMnac9mOr6JJFOqLM5JajYuZfda3S+cKwrvsptj1UPXZ+g==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44y5wgt44k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Feb 2025 19:52:32 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51PJqU6F016222
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Feb 2025 19:52:30 GMT
+Received: from [10.213.111.143] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Feb
+ 2025 11:52:26 -0800
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Date: Wed, 26 Feb 2025 01:22:14 +0530
+Subject: [PATCH v2] drm/msm/a6xx: Fix stale rpmh votes from GPU
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 000/137] 6.13.5-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250225064750.953124108@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250225064750.953124108@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20250226-adreno-sys-suspend-fix-v2-1-cc9628d583ed@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAG0fvmcC/3WOwW7CMAyGX6XyeZ7iLGkZp70H4pA4LuRAyuJSg
+ VDffVk5c/x+y5++J6jULAr77glVlqx5Kg3sRwd8DuUkmFNjsMZ6Q2QwpCplQn0o6k2vUhKO+Y7
+ sIw9RJBh20J6vVdq8iQ/HF1f5vTX//BohBhXk6XLJ874bbDJhdIE5ffc+8ZcdvXHOmTS4dnGJd
+ nEcdgT/rnPWeaqPrXmhTbblWdu/y1sICY13tqcYA5H7aS2cC3+2Ajiu6/oHLYmcDAoBAAA=
+X-Change-ID: 20250110-adreno-sys-suspend-fix-c5bc7beea0c4
+To: Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        "Konrad
+ Dybcio" <konradybcio@kernel.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Marijn Suijten
+	<marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>,
+        Jordan Crouse <jordan@cosmicpenguin.net>
+CC: <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, Akhil P Oommen <quic_akhilpo@quicinc.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740513146; l=4190;
+ i=quic_akhilpo@quicinc.com; s=20240726; h=from:subject:message-id;
+ bh=oIhL+Qdbu1UaNBgkh+rV4EwGPx0L/bL4d+e/qgMhUKA=;
+ b=092qsXfcOFw3ETYPgMSy1zSqbQyxWUM+17l4lMjbcOTzy8M9zEEc5eWnScMMw1/fLfEi9QJmy
+ S7HVwvjy79vDuHI5llfILigpY8ug9Zo+XgHic3WM8y62flP9kQKVZfk
+X-Developer-Key: i=quic_akhilpo@quicinc.com; a=ed25519;
+ pk=lmVtttSHmAUYFnJsQHX80IIRmYmXA4+CzpGcWOOsfKA=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 7KmwKPSKBkTJoDMNo38VqcOc9byaNS9R
+X-Proofpoint-ORIG-GUID: 7KmwKPSKBkTJoDMNo38VqcOc9byaNS9R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-25_06,2025-02-25_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ clxscore=1011 adultscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502250120
 
+It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
+BCM nodes were not removed after GPU suspend. This was because we
+skipped sending 'prepare-slumber' request to gmu during suspend sequence
+in some cases. So, make sure we always call prepare-slumber hfi during
+suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
+messes up gmu firmware's internal state. So, do that when required.
 
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+---
+Changes in v2:
+- Minor update to commit text and CC'ed Stable
+- Link to v1: https://lore.kernel.org/r/20250226-adreno-sys-suspend-fix-v1-1-054261bba114@quicinc.com
+---
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 72 +++++++++++++++++++----------------
+ 1 file changed, 39 insertions(+), 33 deletions(-)
 
-On 2/24/2025 10:49 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.5 release.
-> There are 137 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 27 Feb 2025 06:47:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.5-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 699b0dd34b18f0ec811e975779ba95991d485098..38c94915d4c9d6d33354502651a77c1f9e4648df 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1169,49 +1169,50 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+ 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+ 	u32 val;
++	int ret;
+ 
+ 	/*
+-	 * The GMU may still be in slumber unless the GPU started so check and
+-	 * skip putting it back into slumber if so
++	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
++	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
++	 * required
+ 	 */
+-	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
++	if (adreno_gpu->base.needs_hw_init) {
++		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
++			goto force_off;
+ 
+-	if (val != 0xf) {
+-		int ret = a6xx_gmu_wait_for_idle(gmu);
++		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
++	}
+ 
+-		/* If the GMU isn't responding assume it is hung */
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
++	ret = a6xx_gmu_wait_for_idle(gmu);
+ 
+-		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
++	/* If the GMU isn't responding assume it is hung */
++	if (ret)
++		goto force_off;
+ 
+-		/* tell the GMU we want to slumber */
+-		ret = a6xx_gmu_notify_slumber(gmu);
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
++	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
+ 
+-		ret = gmu_poll_timeout(gmu,
+-			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
+-			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
+-			100, 10000);
++	/* tell the GMU we want to slumber */
++	ret = a6xx_gmu_notify_slumber(gmu);
++	if (ret)
++		goto force_off;
+ 
+-		/*
+-		 * Let the user know we failed to slumber but don't worry too
+-		 * much because we are powering down anyway
+-		 */
++	ret = gmu_poll_timeout(gmu,
++		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
++		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
++		100, 10000);
+ 
+-		if (ret)
+-			DRM_DEV_ERROR(gmu->dev,
+-				"Unable to slumber GMU: status = 0%x/0%x\n",
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
+-	}
++	/*
++	 * Let the user know we failed to slumber but don't worry too
++	 * much because we are powering down anyway
++	 */
++
++	if (ret)
++		DRM_DEV_ERROR(gmu->dev,
++			"Unable to slumber GMU: status = 0%x/0%x\n",
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
+ 
+ 	/* Turn off HFI */
+ 	a6xx_hfi_stop(gmu);
+@@ -1221,6 +1222,11 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
+ 
+ 	/* Tell RPMh to power off the GPU */
+ 	a6xx_rpmh_stop(gmu);
++
++	return;
++
++force_off:
++	a6xx_gmu_force_off(gmu);
+ }
+ 
+ 
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+---
+base-commit: 72d0af4accd965dc32f504440d74d0a4d18bf781
+change-id: 20250110-adreno-sys-suspend-fix-c5bc7beea0c4
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Best regards,
 -- 
-Florian
+Akhil P Oommen <quic_akhilpo@quicinc.com>
 
 
