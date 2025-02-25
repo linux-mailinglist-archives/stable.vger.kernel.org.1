@@ -1,118 +1,100 @@
-Return-Path: <stable+bounces-119505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F0A4413E
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 14:47:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A51A44142
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 14:47:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76CDF163700
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:43:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52C877AAB8F
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82869269896;
-	Tue, 25 Feb 2025 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB032698AE;
+	Tue, 25 Feb 2025 13:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gPVryRjn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XF2rjCgP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676310A1F;
-	Tue, 25 Feb 2025 13:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32F2269837
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 13:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740490984; cv=none; b=c5M50qyPLBzS+6X8NWYyCpYW/RQYTXMvZzzBs1MoG0ov3GF+1lCEMe0Ng1M8hBoTaL+vu3i7WEEHlS4ci0+Wd3+Qr4DVo8AgPyM98TPZkZZJ9Ho3Bsfyi137qhh1qzvVBZXN3qS9xBVFlyty9KyQpBSR1954wcRsEvkjP7lf1GY=
+	t=1740491210; cv=none; b=U4gP1vvr7BJt1oGGEO8TDytqdzUZSt/jdLYgkEHrQUPUTcRMQDfPNTndXUu9FLDtdqJnzeLcR/DlCnx73obfbzYfxSfI1bxKVX9aPS9DmYNeeQdHzOa7S45ifOllIvb3I5nwdznsrbYQllrvs7gBxhgDeRtJ07YKRY/Rs1MznGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740490984; c=relaxed/simple;
-	bh=OVlSr9TTVKbfm0Bm43NuK4bn/qbhZ1XT6FUhxrm7yfM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DxNzLtdO73XUHKTTamM+iXwc0O+CuYiPS5wxUFmUJNyAZkjxjgEqt+Ze1wcLb/p5Q3flXDT3EDC4otDbRpDkt7S3YAJD9owwW5gtLyp9qwjSLxatvsye3zHcq8bONB4dZi9qlAqZkH0IuRu6IEIK/IQmoP1lJRoNojEwZFMjyeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gPVryRjn; arc=none smtp.client-ip=192.198.163.19
+	s=arc-20240116; t=1740491210; c=relaxed/simple;
+	bh=Km2KIT046jnyJlSCBZuePZUSvEIIe9O957LoKl3ShyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=KMjUS/LYVbSSxyiJIAHk256ZHGXOmbXmkjEV+8jZjzONb8G+3RjlMsKyce4EzpbEGaT/AVsYuoHsCmV1C8A8VW0p/8T+YnxF1gvXpq98qElxrGgsJYY1aejZ65697U0+0l0dr4eLlHe1+w4WHaJWfl9ZLJMs8AKjh6DW/zE3eBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XF2rjCgP; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740490982; x=1772026982;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OVlSr9TTVKbfm0Bm43NuK4bn/qbhZ1XT6FUhxrm7yfM=;
-  b=gPVryRjnCHZ2JB8CWb9fW/8uqexcqX/lgKhJRhjE/nPSBOIYqWyT1nhV
-   xt0JXbYgr2ZkGGvFJPjtp8smMU/28bqqQ2kDx5jyJMvWQYx/CmzjM9uhR
-   Qb4NR5zDtxKmLB3o4rJpZeIaFghKsscPKRD7YrK1t8rWZCLlLlOVYMYd0
-   hVEv4mR7Z6gvJfFX6kEkWG6+04PFCehWoDFO8fyebDF95qeQVvDkQ3r2Y
-   fV+XjY70uYSrUNeXPgQ/qq7CJC0WSSAOf6Ief70c1Px0DJXfQ9Z3ZJbru
-   NqLq6knqrfvm2G4MKJoyEzmKayqEacTeloSXTb6V9X+5MDPuc8+5Tgaa4
-   Q==;
-X-CSE-ConnectionGUID: lO1gEWivQXK6RfciHnlhTw==
-X-CSE-MsgGUID: zTunTWbqRP6OYDCzeiY1sQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="40481740"
+  t=1740491209; x=1772027209;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Km2KIT046jnyJlSCBZuePZUSvEIIe9O957LoKl3ShyE=;
+  b=XF2rjCgPwB//rUjMOFd0s/yyHtu3J5MfGbT30Div5dnOXFXC6eiMPjsy
+   doRWTCwicjq3pC8Q1PE/7wkn5L48eTBOXSd8a2imeQRVYsynr5M7NWo99
+   HBR6BzRXzeMKVJPcmQYEcf3WE5mnmLAJLngSofzUkQFLMgkSNWz5hcrIE
+   l+HQCHbCBXqWnaEFOVcIHEx1LipDuHFKXNWnQ2yjAa9dfJIRBKi59nE4x
+   jQM2eeDAut+JtS8qEEh/m3nVIcrCsX7INLniu4Mpw9kt2YKGzQKwI3dQh
+   rnNuanW7+UydlRIWfF0t6OQOx9TJFiXRnGjJsH/dVENeqczKk4uz4w1zj
+   g==;
+X-CSE-ConnectionGUID: mhrtxVr2RqaO/nWaGrZMaQ==
+X-CSE-MsgGUID: zhAk9RZ6RT+xhZHyH8Y2qA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="51931935"
 X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
-   d="scan'208";a="40481740"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 05:43:01 -0800
-X-CSE-ConnectionGUID: CArEIRulTeSH62qTCm6yDA==
-X-CSE-MsgGUID: D2wzeHMyQbuik53TiYByuQ==
+   d="scan'208";a="51931935"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 05:46:48 -0800
+X-CSE-ConnectionGUID: QE0qsuZ/RGire+pe1QDxdA==
+X-CSE-MsgGUID: FXoFclDjSva8ZgRoep5M9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
-   d="scan'208";a="116409321"
-Received: from pg15swiplab1181.png.altera.com ([10.244.232.167])
-  by fmviesa007.fm.intel.com with ESMTP; 25 Feb 2025 05:42:59 -0800
-From: niravkumar.l.rabara@intel.com
-To: Dinh Nguyen <dinguyen@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	niravkumar.l.rabara@intel.com,
-	nirav.rabara@altera.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH RESEND v2] arm64: dts: socfpga: agilex: Add dma channel id for spi
-Date: Tue, 25 Feb 2025 21:39:19 +0800
-Message-Id: <20250225133919.4128252-1-niravkumar.l.rabara@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117320515"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 25 Feb 2025 05:46:46 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tmvGm-000AJ6-1N;
+	Tue, 25 Feb 2025 13:46:44 +0000
+Date: Tue, 25 Feb 2025 21:45:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: niravkumar.l.rabara@intel.com
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH RESEND v2] arm64: dts: socfpga: agilex: Add dma channel
+ id for spi
+Message-ID: <Z73JlgLQHLTupk_y@37ee6694ac45>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225133919.4128252-1-niravkumar.l.rabara@intel.com>
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Hi,
 
-Add DMA channel ids for spi0 and spi1 nodes in device tree.
+Thanks for your patch.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
----
- arch/arm64/boot/dts/intel/socfpga_agilex.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-index 1235ba5a9865..616259447c6f 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
-@@ -457,6 +457,8 @@ spi0: spi@ffda4000 {
- 			reg-io-width = <4>;
- 			num-cs = <4>;
- 			clocks = <&clkmgr AGILEX_L4_MAIN_CLK>;
-+			dmas = <&pdma 16>, <&pdma 17>;
-+			dma-names = "tx", "rx";
- 			status = "disabled";
- 		};
- 
-@@ -471,6 +473,8 @@ spi1: spi@ffda5000 {
- 			reg-io-width = <4>;
- 			num-cs = <4>;
- 			clocks = <&clkmgr AGILEX_L4_MAIN_CLK>;
-+			dmas = <&pdma 20>, <&pdma 21>;
-+			dma-names = "tx", "rx";
- 			status = "disabled";
- 		};
- 
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH RESEND v2] arm64: dts: socfpga: agilex: Add dma channel id for spi
+Link: https://lore.kernel.org/stable/20250225133919.4128252-1-niravkumar.l.rabara%40intel.com
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
