@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4503DA445AA
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 17:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F89CA445AE
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 17:16:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD94E188BCE0
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 16:14:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86B5188C27B
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 16:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E1F18DB17;
-	Tue, 25 Feb 2025 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5511018DB2C;
+	Tue, 25 Feb 2025 16:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DiV8LcFB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRbOqjPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F7518DB14
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AA818DB18
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740500033; cv=none; b=cqzB2f5FZgUTrtBXLfTLCmZJprJEbNeaZqCoZAhXf2Yz7ZMGt7m37EBB6PMgCSbQhwvufQC88yFoi6iCqjyDS2PDyZ/K64h1by3PN+qWdiFiwAaJJiaNbzmF6vrSE9R4wz1o6Laz5a6OrnjZ1W937rtasUMcv9qRfgP71NEydaQ=
+	t=1740500035; cv=none; b=HvX/EtVzTwcChmPC/0kzRIXT0nYaQhr4701ZsDoes8bNSiR2BsaESIAyajDNDpBiiNPKTNri4dCnoteSLIrGX8uIPTsSD/2UlXMwn+lZGOI07GfUlGZ0WjcL81/VUKws5ySztJdziDyQw8czyqOtRn3Midf1HWymt/Y7matHFm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740500033; c=relaxed/simple;
-	bh=ke5hMVG1I/vAU33DXxLQiR5mnIwxzX8mHa3FsYi868I=;
+	s=arc-20240116; t=1740500035; c=relaxed/simple;
+	bh=/pZ9zK6d6ZWmp/GlE+cKBE3wcUSr8bscVhK9BEA8zHI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tY7F7Somojs/9alEXXmBNVJvnuV24bttS1wvZ7n/cHm6F4KukOkF7T+eBfAQs1sveR1n5tTNRqrQdsttz2S9I47X25jZhQ37hhbsMW52cZzgRN/kd9bTF8B0dGbPC/19yktdw8dakeYenuWq399AbD/ReTGf46pRNw1Kd+Me2/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DiV8LcFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E15C4CEE6;
-	Tue, 25 Feb 2025 16:13:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=od1QzStTRNIX9x78M/V1Z5Pp8efnkYTPvWziBypbQz7J10vE8rzzl6IhntdEdC9+Jq+I6jfqwTBrLygLyOP3+4xwKFPjmyTARAvpOOeXGZZ2hDYUnJXNp8tqIGL77YYIDpujokjRdFSl40WRe1YX+nTlJagsf1yrpAKrUvtmyw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRbOqjPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E15C4CEE8;
+	Tue, 25 Feb 2025 16:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740500033;
-	bh=ke5hMVG1I/vAU33DXxLQiR5mnIwxzX8mHa3FsYi868I=;
+	s=k20201202; t=1740500034;
+	bh=/pZ9zK6d6ZWmp/GlE+cKBE3wcUSr8bscVhK9BEA8zHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiV8LcFB7F7XhySmRYRr7FGhOuqxzt0WpcDmvhG20nNRlaxuzgPw2g6IjQJs1U9NR
-	 sdo1acJeAZ6fPOhPv2TysV6/TCiuwU0QZXhSxxx5pM9vVPTiLFVAtOWmvJChq3d5yt
-	 7z4VCaEgxDxgKWBIAZNYR+L9mD8JrEsiy9YghROtVqfe4MiWo07PAR1p9CYVQenqeq
-	 iZw5nsw7MrQvl4OONBeN3yZxJ0bGYzCLdQ2dMVFwx+bBJ/FL50758CIUosNExvYWRV
-	 1S8lZerLFni0UL8H9nS9D6aECcENZZxY4MXSVa/fo/h1a8bYuhh7urpDC7xDNhBn7K
-	 TZhlUwtaMg0Tw==
+	b=qRbOqjPjg/k5IgW8HWpPtJBRWJdqLKus3y7z4gGUKlLXSLDjwKvEqR1J2t8QR0HDZ
+	 NVc5iR+DRJILH+9wtOutLlmH4bLZFO/VWlQEQ0NGsnneflziE5vdidYGgZzbWN53iw
+	 nYpHiCRXF00u3PfwNvG0eUsda5xhVzHZ2o4aOq2BAz5TB5Hb2xC9GqEBHBdVPNInlU
+	 iaXf/uof2NafjBcduqswz6U3bwKTwCBS4fOljJkjsVyWf+Xvo+DWCixjiZMfXhpckA
+	 +ngJ3eB4dF0ZN8BjZ3NJjatQv+FwAgju66H9g+Qb1SAg6ZaIvk9VRzx6H68EsluzjS
+	 lkmyQx/zvskUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	joshwash@google.com
+	rcn@igalia.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] gve: set xdp redirect target only when it is available
-Date: Tue, 25 Feb 2025 11:13:51 -0500
-Message-Id: <20250225103916-7c666ca3f8493440@stable.kernel.org>
+Subject: Re: [PATCH 6.6 2/2] tun: Assign missing bpf_net_context.
+Date: Tue, 25 Feb 2025 11:13:53 -0500
+Message-Id: <20250225102057-3a1bd7b02915f4fd@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250224195238.961070-1-joshwash@google.com>
+In-Reply-To:  <20250224-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v1-2-de5d47556d96@igalia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,45 +65,66 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+ℹ️ This is part 2/2 of a series
+⚠️ Found follow-up fixes in mainline
 
-Found matching upstream commit: 415cadd505464d9a11ff5e0f6e0329c127849da5
+The upstream commit SHA1 provided is correct: fecef4cd42c689a200bdd39e6fffa71475904bc1
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?=<rcn@igalia.com>
+Commit author: Sebastian Andrzej Siewior<bigeasy@linutronix.de>
+
+Found fixes commits:
+9da49aa80d68 tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
 
 Note: The patch differs from the upstream commit:
 ---
-1:  415cadd505464 ! 1:  f1af823cbe6e3 gve: set xdp redirect target only when it is available
-    @@ Commit message
-         Signed-off-by: Joshua Washington <joshwash@google.com>
-         Link: https://patch.msgid.link/20250214224417.1237818-1-joshwash@google.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit 415cadd505464d9a11ff5e0f6e0329c127849da5)
-    +    Signed-off-by: Joshua Washington <joshwash@google.com>
+1:  fecef4cd42c68 ! 1:  9762804adc3c4 tun: Assign missing bpf_net_context.
+    @@ Metadata
+      ## Commit message ##
+         tun: Assign missing bpf_net_context.
      
-      ## drivers/net/ethernet/google/gve/gve.h ##
-     @@ drivers/net/ethernet/google/gve/gve.h: static inline u32 gve_xdp_tx_start_queue_id(struct gve_priv *priv)
-    @@ drivers/net/ethernet/google/gve/gve.h: static inline u32 gve_xdp_tx_start_queue_
-     +	}
-     +}
+    +    [ Upstream commit fecef4cd42c689a200bdd39e6fffa71475904bc1 ]
+    +
+         During the introduction of struct bpf_net_context handling for
+         XDP-redirect, the tun driver has been missed.
+         Jakub also pointed out that there is another call chain to
+    @@ drivers/net/tun.c: static int tun_sendmsg(struct socket *sock, struct msghdr *m,
+      ## net/core/dev.c ##
+     @@ net/core/dev.c: static DEFINE_STATIC_KEY_FALSE(generic_xdp_needed_key);
+      
+    - int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **pskb)
+    + int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
+      {
+     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
      +
-    - /* gqi napi handler defined in gve_main.c */
-    - int gve_napi_poll(struct napi_struct *napi, int budget);
-    - 
-    + /* buffers */
-    + int gve_alloc_page(struct gve_priv *priv, struct device *dev,
-    + 		   struct page **page, dma_addr_t *dma,
-     
-      ## drivers/net/ethernet/google/gve/gve_main.c ##
-     @@ drivers/net/ethernet/google/gve/gve_main.c: static void gve_turndown(struct gve_priv *priv)
-    @@ drivers/net/ethernet/google/gve/gve_main.c: static void gve_turndown(struct gve_
-      	gve_clear_report_stats(priv);
+    @@ net/core/dev.c: static DEFINE_STATIC_KEY_FALSE(generic_xdp_needed_key);
+      		int err;
       
-     @@ drivers/net/ethernet/google/gve/gve_main.c: static void gve_turnup(struct gve_priv *priv)
-    - 		napi_schedule(&block->napi);
-    + 		}
-      	}
-      
-     +	if (priv->num_xdp_queues && gve_supports_xdp_xmit(priv))
+     +		bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
+    - 		act = netif_receive_generic_xdp(pskb, &xdp, xdp_prog);
+    + 		act = netif_receive_generic_xdp(skb, &xdp, xdp_prog);
+      		if (act != XDP_PASS) {
+      			switch (act) {
+    -@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **pskb)
+    - 				generic_xdp_tx(*pskb, xdp_prog);
+    +@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
+    + 				generic_xdp_tx(skb, xdp_prog);
+      				break;
+      			}
+     +			bpf_net_ctx_clear(bpf_net_ctx);
+    @@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **p
+      	return XDP_PASS;
+      out_redir:
+     +	bpf_net_ctx_clear(bpf_net_ctx);
+    - 	kfree_skb_reason(*pskb, SKB_DROP_REASON_XDP);
+    + 	kfree_skb_reason(skb, SKB_DROP_REASON_XDP);
+      	return XDP_DROP;
+      }
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
