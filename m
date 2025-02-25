@@ -1,181 +1,101 @@
-Return-Path: <stable+bounces-119469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFA7A43A9C
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:04:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CE7A43BDA
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954843A7F0C
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 10:02:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A25188724C
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 10:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A8E267AEF;
-	Tue, 25 Feb 2025 09:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230DB26158D;
+	Tue, 25 Feb 2025 10:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LiUOpQw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtYJ9t6b"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D21F264A7E;
-	Tue, 25 Feb 2025 09:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DA01C8625;
+	Tue, 25 Feb 2025 10:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740477518; cv=none; b=bgnYAdJLkDdeCUpAOHre0sJA9GqQEfeHcnFt9FaCth8CxYZNdKZmfmFHIcG9O/l1N58mImHJLHZzKiHMW8FFEVzEExhtkLpL5MuygtzQxBBeRT+YJR2Z3AOejKOKH81yc3LaZq7o4SE6nWguaamS5WiQ2Ko3HBtRLc0/UGE37gI=
+	t=1740479612; cv=none; b=McfNer5x4I4PJ+nXWMdhIGk2ZKWf7fwTq3lJCvw2WPZjUM97nxOhCiriKIQDv+VHP4/HWk96H6DQe5Q1tz4jBiqchdC3lC/616AFxD44/Y7VsG+4HyqT1/y6K8C0D9h+mgfmUPfvHsndjkVu6QK3AQiG9YLXKclnB2fXIQElg6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740477518; c=relaxed/simple;
-	bh=yO83EuW0ggiRy9HujzEC+k9Mmk9GdbJ1j7rWWpFn+qs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3KXa4te6OYgqfv9JgeGfFbMp7HE59vEPRZDRBmtpd1Zv4uLmWyiFMlzBn3UQcvFCqtoTe/ZSMl1iUhjk6DMW6BM8Q5q4AQc4xhS5wV0nX3LOxJWLc3QpULSAEQ+6D0jkRznPioDa0dmj332tHwDhCXzfIe9sBbRDX/q5K3r5b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LiUOpQw1; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740477518; x=1772013518;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yO83EuW0ggiRy9HujzEC+k9Mmk9GdbJ1j7rWWpFn+qs=;
-  b=LiUOpQw10oKYs9ldMDVZ0xHf47tSBmmEL/EPUk0QXzWzzzSHIgg2uByN
-   FluLYrzXPzazfZVmzFq8W8M9w5Mg78C8TczF/9TBQRpKMdGOiO5E/MskW
-   q5c5rpa1Ds/KL6SE8uIPaFVylRqNJdzjNcx9vGeiXpXfKkcrdZyld49dP
-   c7NVuTggNcNKCN7FYv9M398lBX5SGvuK68zPvXKkPY8rgXaL1fFMk6o7p
-   DU4zyv6nokPY5YhsICyId55Pfr34oVnR7Lh9k9RtDqEGdkLTcLGjb9cpn
-   8FdDu5YYuqGmwgwcI+qmytPdQTiFt9J7RDty1gLo5w0P1w3cFEC7E4m7L
-   g==;
-X-CSE-ConnectionGUID: DltSWBlXSAGW9F44HXVZgw==
-X-CSE-MsgGUID: josQdxzyRpGKcXgHTaD4ZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="45059900"
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
-   d="scan'208";a="45059900"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 01:58:37 -0800
-X-CSE-ConnectionGUID: U3BhY+crQQe/0A3MqIGAzQ==
-X-CSE-MsgGUID: 4aw723bzTfmUBfYPvi9qSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
-   d="scan'208";a="116966858"
-Received: from unknown (HELO mattu-haswell.fi.intel.com) ([10.237.72.199])
-  by fmviesa009.fm.intel.com with ESMTP; 25 Feb 2025 01:58:35 -0800
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	stable@vger.kernel.org,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 1/1] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
-Date: Tue, 25 Feb 2025 11:59:27 +0200
-Message-ID: <20250225095927.2512358-2-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250225095927.2512358-1-mathias.nyman@linux.intel.com>
-References: <20250225095927.2512358-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1740479612; c=relaxed/simple;
+	bh=NasLaFCTh8OVIdznOnAP+iiGwnp+cgpHZ9eZS5tukHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fWGXOhe1YMGPDgJRtaX2YhbY+wafjO9zmWkijor7cNg4qetzN2hiYHA97wLuLLmfYq/8O9aD+yEK8XMCkQOzqBIm/r2z6Pt2P6U1DHJkcPYwB976lPs1gl9tMrcZ7cV4uyjt8qvfHhgFrmmOi5GkpeMqONiKwuvepFLfzHaWKOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtYJ9t6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B5FC4CEDD;
+	Tue, 25 Feb 2025 10:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740479612;
+	bh=NasLaFCTh8OVIdznOnAP+iiGwnp+cgpHZ9eZS5tukHc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YtYJ9t6boa1zdSHm0JT0wqm4N0mW/bGXnuMbBC7tPuW8GN2vit4kDkNJRb7bDuIWR
+	 jdmdBtNdB39ygnMHwgozRkEfh0oDrsIQqWLTPV8z0tizz6x53L01FDrtL4aGWkcZK2
+	 NZZG2mNiKqlh0630ixm6GueFEc8UoMoVMCMKQdBw=
+Date: Tue, 25 Feb 2025 11:32:22 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6.13 000/137] 6.13.5-rc2 review
+Message-ID: <2025022514-malt-decade-1518@gregkh>
+References: <20250225064750.953124108@linuxfoundation.org>
+ <e8372ca2-1f23-447e-a8c9-7afc7a19bc74@rnnvmail204.nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e8372ca2-1f23-447e-a8c9-7afc7a19bc74@rnnvmail204.nvidia.com>
 
-From: Michal Pecio <michal.pecio@gmail.com>
+On Tue, Feb 25, 2025 at 01:30:08AM -0800, Jon Hunter wrote:
+> On Tue, 25 Feb 2025 07:49:18 +0100, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.13.5 release.
+> > There are 137 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 27 Feb 2025 06:47:33 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.5-rc2.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> All tests passing for Tegra ...
+> 
+> Test results for stable-v6.13:
+>     10 builds:	10 pass, 0 fail
+>     26 boots:	26 pass, 0 fail
+>     116 tests:	116 pass, 0 fail
+> 
+> Linux version:	6.13.5-rc2-g1a0f764e17e3
+> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+>                 tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+>                 tegra20-ventana, tegra210-p2371-2180,
+>                 tegra210-p3450-0000, tegra30-cardhu-a04
+> 
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Raspberry Pi is a major user of those chips and they discovered a bug -
-when the end of a transfer ring segment is reached, up to four TRBs can
-be prefetched from the next page even if the segment ends with link TRB
-and on page boundary (the chip claims to support standard 4KB pages).
-
-It also appears that if the prefetched TRBs belong to a different ring
-whose doorbell is later rung, they may be used without refreshing from
-system RAM and the endpoint will stay idle if their cycle bit is stale.
-
-Other users complain about IOMMU faults on x86 systems, unsurprisingly.
-
-Deal with it by using existing quirk which allocates a dummy page after
-each transfer ring segment. This was seen to resolve both problems. RPi
-came up with a more efficient solution, shortening each segment by four
-TRBs, but it complicated the driver and they ditched it for this quirk.
-
-Also rename the quirk and add VL805 device ID macro.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Link: https://github.com/raspberrypi/linux/issues/4685
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215906
-CC: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci-mem.c |  3 ++-
- drivers/usb/host/xhci-pci.c | 10 +++++++---
- drivers/usb/host/xhci.h     |  2 +-
- 3 files changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 92703efda1f7..fdf0c1008225 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2437,7 +2437,8 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
- 	 * and our use of dma addresses in the trb_address_map radix tree needs
- 	 * TRB_SEGMENT_SIZE alignment, so we pick the greater alignment need.
- 	 */
--	if (xhci->quirks & XHCI_ZHAOXIN_TRB_FETCH)
-+	if (xhci->quirks & XHCI_TRB_OVERFETCH)
-+		/* Buggy HC prefetches beyond segment bounds - allocate dummy space at the end */
- 		xhci->segment_pool = dma_pool_create("xHCI ring segments", dev,
- 				TRB_SEGMENT_SIZE * 2, TRB_SEGMENT_SIZE * 2, xhci->page_size * 2);
- 	else
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index ad0ff356f6fa..54460d11f7ee 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -38,6 +38,8 @@
- #define PCI_DEVICE_ID_ETRON_EJ168		0x7023
- #define PCI_DEVICE_ID_ETRON_EJ188		0x7052
- 
-+#define PCI_DEVICE_ID_VIA_VL805			0x3483
-+
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-@@ -418,8 +420,10 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 			pdev->device == 0x3432)
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 
--	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
-+	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
- 		xhci->quirks |= XHCI_LPM_SUPPORT;
-+		xhci->quirks |= XHCI_TRB_OVERFETCH;
-+	}
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
- 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-@@ -467,11 +471,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 		}
- 
- 		if (pdev->device == 0x9203)
--			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-+			xhci->quirks |= XHCI_TRB_OVERFETCH;
- 	}
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_CDNS &&
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 8c164340a2c3..779b01dee068 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1632,7 +1632,7 @@ struct xhci_hcd {
- #define XHCI_EP_CTX_BROKEN_DCS	BIT_ULL(42)
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
--#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
--- 
-2.43.0
-
+Wonderful, thanks for the quick testing!
 
