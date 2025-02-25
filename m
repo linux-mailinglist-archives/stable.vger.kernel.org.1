@@ -1,116 +1,259 @@
-Return-Path: <stable+bounces-119480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E87A43CCC
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:07:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD79A43D09
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91000188D1CE
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:07:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E31B7188BAB5
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B3E26BDBB;
-	Tue, 25 Feb 2025 11:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747F7267AF1;
+	Tue, 25 Feb 2025 11:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sLxyZl6r"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA5B26B95B;
-	Tue, 25 Feb 2025 11:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9B2267735;
+	Tue, 25 Feb 2025 11:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740481393; cv=none; b=puwB6eI62vRu3xiNrN/H42yBg/cWdp1KjpgBftjIhvD5vEJAPOGxPTqR8HV8gpKXm2FLpUkKEsjCqFZQM6HlEjU4yoezldY1Ce3unNWNiPsPHDv0Iwrfi1hTpmiFI+AQY4Evo0m1tW5U/wECxfDRhrz24C2dUWBGiANngKgf+rw=
+	t=1740481772; cv=none; b=BhNqO34pQbuD/1EcB9rGcj1FfuBmFHk+xbE7jVwSGUExRdKZwnYFWlnywRbv5r0FfLx6vs+KzsVAxCZKligMRsXEWakCGL4G15NQ9NFxV3Nr/hsvFzdsCRpHI4xo61H6D/2AGFcXVxD4GXAImYVBXUaVUeCjz4NJbYYXRSdEx4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740481393; c=relaxed/simple;
-	bh=kuyAoXoEizfJHvbMf6KawxUhc/ebmChaHrOEd1RtrHU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oG3rTgWoOYc4uNmZyq4bV/+nmB0jYKtWSvDtSrgXNh7uGFAfPBqr3PLmEFhNoh1tP+07r8sN7v3Av/BIQHJwrMO9FUH5JYJpP3v3vwsbEF4CcGEMY2XExQUogOxnKl+p5et0HxizApLUx3ZnLH9AkC8Ykn2qt3SwSSBrcpb/oD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO iyokan2-ex.css.socionext.com) ([172.31.9.54])
-  by mx.socionext.com with ESMTP; 25 Feb 2025 20:03:01 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by iyokan2-ex.css.socionext.com (Postfix) with ESMTP id DC8E820090C2;
-	Tue, 25 Feb 2025 20:03:01 +0900 (JST)
-Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Tue, 25 Feb 2025 20:03:01 +0900
-Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan2.css.socionext.com (Postfix) with ESMTP id 3CBA93730;
-	Tue, 25 Feb 2025 20:03:01 +0900 (JST)
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Krzysztof Wilczynski" <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	stable@vger.kernel.org,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH v4 4/6] misc: pci_endpoint_test: Fix irq_type to convey the correct type
-Date: Tue, 25 Feb 2025 20:02:50 +0900
-Message-Id: <20250225110252.28866-5-hayashi.kunihiko@socionext.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250225110252.28866-1-hayashi.kunihiko@socionext.com>
-References: <20250225110252.28866-1-hayashi.kunihiko@socionext.com>
+	s=arc-20240116; t=1740481772; c=relaxed/simple;
+	bh=t9qneLykygfAbID/WX0+KCumjhrXOkT2wxUtSWsbx2w=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G789qiVbHlPtxfi22A3gF4TF+6j+gyW5LOSxxrbffdb8JAmtyIGjSFBapgv8NAnH4vKyl1gDAIXX5ZEowbsLOKkQwmKv5A1cl9CINh5ZF8bluyrTzru+oEE/O1BSmIZwzaM7ajPnrrWsM6/+jUcjkVBJN9U9tA8EMM3glXs03is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sLxyZl6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A069EC4CEDD;
+	Tue, 25 Feb 2025 11:09:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740481771;
+	bh=t9qneLykygfAbID/WX0+KCumjhrXOkT2wxUtSWsbx2w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sLxyZl6r8i5Lk65IXR51iqFnQyGz8UidZHli3Rua9KW3hMMzYjCNgdJfIu9AXjjxG
+	 52jML8H+93kMsBWHBO/me8Mu0zFde+YNgFgqUxLQte4+W9aT7UiRbhQ1UT1whUn/7r
+	 9gBa9o/WWeIoY38EmdwCnm7ZJJVzjpe57n/V+H9M85+wpK8jnwJmAqZkHPlygQhyre
+	 0BIjpFk+HQFrbhuwJoYoYDwty1dr5newkRGZtOkBT1C+0wNEKfcVEDO1cE3PQMUvsX
+	 p2yNgUvwaLXswXB5bS0iz/o3xbcXyjmwB4aLM57dbgY1Vsah6ORxgzbACQg2lGlqmR
+	 NFp4zmL/X3YFw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tmsoa-007jON-Kh;
+	Tue, 25 Feb 2025 11:09:29 +0000
+Date: Tue, 25 Feb 2025 11:09:27 +0000
+Message-ID: <86h64iqo0o.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: kvmarm@lists.linux.dev,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] KVM: arm64: Set HCR_EL2.TID1 unconditionally
+In-Reply-To: <20250225005401.679536-2-oliver.upton@linux.dev>
+References: <20250225005401.679536-1-oliver.upton@linux.dev>
+	<20250225005401.679536-2-oliver.upton@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, sebott@redhat.com, broonie@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, "irq_type" as global and test->irq_type.
+On Tue, 25 Feb 2025 00:53:57 +0000,
+Oliver Upton <oliver.upton@linux.dev> wrote:
+> 
+> commit 90807748ca3a ("KVM: arm64: Hide SME system registers from
+> guests") added trap handling for SMIDR_EL1, treating it as UNDEFINED as
+> KVM does not support SME. This is right for the most part, however KVM
+> needs to set HCR_EL2.TID1 to _actually_ trap the register.
+> 
+> Unfortunately, this comes with some collateral damage as TID1 forces
+> REVIDR_EL1 and AIDR_EL1 to trap as well. KVM has long treated these
+> registers as "invariant" which is an awful term for the following:
+> 
+>  - Userspace sees the boot CPU values on all vCPUs
+> 
+>  - The guest sees the hardware values of the CPU on which a vCPU is
+>    scheduled
+> 
+> Keep the plates spinning by adding trap handling for the affected
+> registers and repaint all of the "invariant" crud into terms of
+> identifying an implementation. Yes, at this point we only need to
+> set TID1 on SME hardware, but REVIDR_EL1 and AIDR_EL1 are about to
+> become mutable anyway.
+> 
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
+> Fixes: 90807748ca3a ("KVM: arm64: Hide SME system registers from guests")
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  arch/arm64/include/asm/kvm_arm.h |   4 +-
+>  arch/arm64/kvm/sys_regs.c        | 175 ++++++++++++++++---------------
+>  2 files changed, 94 insertions(+), 85 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
+> index 8d94a6c0ed5c..b01c01e55de5 100644
+> --- a/arch/arm64/include/asm/kvm_arm.h
+> +++ b/arch/arm64/include/asm/kvm_arm.h
+> @@ -92,12 +92,12 @@
+>   * SWIO:	Turn set/way invalidates into set/way clean+invalidate
+>   * PTW:		Take a stage2 fault if a stage1 walk steps in device memory
+>   * TID3:	Trap EL1 reads of group 3 ID registers
+> - * TID2:	Trap CTR_EL0, CCSIDR2_EL1, CLIDR_EL1, and CSSELR_EL1
+> + * TID1:	Trap REVIDR_EL1, AIDR_EL1, and SMIDR_EL1
+>   */
+>  #define HCR_GUEST_FLAGS (HCR_TSC | HCR_TSW | HCR_TWE | HCR_TWI | HCR_VM | \
+>  			 HCR_BSU_IS | HCR_FB | HCR_TACR | \
+>  			 HCR_AMO | HCR_SWIO | HCR_TIDCP | HCR_RW | HCR_TLOR | \
+> -			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3)
+> +			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3 | HCR_TID1)
+>  #define HCR_HOST_NVHE_FLAGS (HCR_RW | HCR_API | HCR_APK | HCR_ATA)
+>  #define HCR_HOST_NVHE_PROTECTED_FLAGS (HCR_HOST_NVHE_FLAGS | HCR_TSC)
+>  #define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H)
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index f6cd1ea7fb55..f25a157622e3 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -2483,6 +2483,93 @@ static bool access_mdcr(struct kvm_vcpu *vcpu,
+>  	return true;
+>  }
+>  
+> +/*
+> + * For historical (ahem ABI) reasons, KVM treats MIDR_EL1, REVIDR_EL1, and
+> + * AIDR_EL1 as "invariant" registers, meaning userspace cannot change them.
 
-The global is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+For consistency, using the past tense would make a lot more sense.
 
-The type set in this function isn't reflected in the global "irq_type",
-so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+> + * The values made visible to userspace were the register values of the boot
+> + * CPU.
+> + *
+> + * At the same time, reads from these registers at EL1 previously were not
+> + * trapped, allowing the guest to read the actual hardware value. On big-little
+> + * machines, this means the VM can see different values depending on where a
+> + * given vCPU got scheduled.
+> + *
+> + * These registers are now trapped as collateral damage from SME, and what
+> + * follows attempts to give a user / guest view consistent with the existing
+> + * ABI.
+> + */
+> +static bool access_imp_id_reg(struct kvm_vcpu *vcpu,
+> +			      struct sys_reg_params *p,
+> +			      const struct sys_reg_desc *r)
+> +{
+> +	if (p->is_write)
+> +		return write_to_read_only(vcpu, p, r);
+> +
+> +	switch (reg_to_encoding(r)) {
+> +	case SYS_REVIDR_EL1:
+> +		p->regval = read_sysreg(revidr_el1);
+> +		break;
+> +	case SYS_AIDR_EL1:
+> +		p->regval = read_sysreg(aidr_el1);
+> +		break;
+> +	default:
+> +		WARN_ON_ONCE(1);
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static u64 __ro_after_init boot_cpu_midr_val;
+> +static u64 __ro_after_init boot_cpu_revidr_val;
+> +static u64 __ro_after_init boot_cpu_aidr_val;
+> +
+> +static void init_imp_id_regs(void)
+> +{
+> +	boot_cpu_midr_val = read_sysreg(midr_el1);
+> +	boot_cpu_revidr_val = read_sysreg(revidr_el1);
+> +	boot_cpu_aidr_val = read_sysreg(aidr_el1);
+> +}
+> +
+> +static int get_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
+> +			  u64 *val)
+> +{
+> +	switch (reg_to_encoding(r)) {
+> +	case SYS_MIDR_EL1:
+> +		*val = boot_cpu_midr_val;
+> +		break;
+> +	case SYS_REVIDR_EL1:
+> +		*val = boot_cpu_revidr_val;
+> +		break;
+> +	case SYS_AIDR_EL1:
+> +		*val = boot_cpu_aidr_val;
+> +		break;
+> +	default:
+> +		WARN_ON_ONCE(1);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int set_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
+> +			  u64 val)
+> +{
+> +	u64 expected;
+> +	int ret;
+> +
+> +	ret = get_imp_id_reg(vcpu, r, &expected);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return (expected == val) ? 0 : -EINVAL;
+> +}
+> +
+> +#define IMPLEMENTATION_ID(reg) {			\
+> +	SYS_DESC(SYS_##reg),				\
+> +	.access = access_imp_id_reg,			\
+> +	.get_user = get_imp_id_reg,			\
+> +	.set_user = set_imp_id_reg,			\
+> +}
+>  
+>  /*
+>   * Architected system registers.
+> @@ -2532,7 +2619,9 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  
+>  	{ SYS_DESC(SYS_DBGVCR32_EL2), undef_access, reset_val, DBGVCR32_EL2, 0 },
+>  
+> +	IMPLEMENTATION_ID(MIDR_EL1),
+>  	{ SYS_DESC(SYS_MPIDR_EL1), NULL, reset_mpidr, MPIDR_EL1 },
+> +	IMPLEMENTATION_ID(REVIDR_EL1),
+>  
+>  	/*
+>  	 * ID regs: all ID_SANITISED() entries here must have corresponding
+> @@ -2804,6 +2893,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	  .set_user = set_clidr, .val = ~CLIDR_EL1_RES0 },
+>  	{ SYS_DESC(SYS_CCSIDR2_EL1), undef_access },
+>  	{ SYS_DESC(SYS_SMIDR_EL1), undef_access },
+> +	IMPLEMENTATION_ID(AIDR_EL1),
+>  	{ SYS_DESC(SYS_CSSELR_EL1), access_csselr, reset_unknown, CSSELR_EL1 },
+>  	ID_FILTERED(CTR_EL0, ctr_el0,
+>  		    CTR_EL0_DIC_MASK |
 
-As a result, the wrong type is displayed in old "pcitest" as follows:
+I don't think this is enough. You also need to augment the cp15[]
+table to handle trapping for the 32bit versions of REVIDR/AIDR.
 
-    # pcitest -i 0
-    SET IRQ TYPE TO LEGACY:         OKAY
-    # pcitest -I
-    GET IRQ TYPE:           MSI
+Thanks,
 
-And new "pcitest" in kselftest results in an error as follows:
+	M.
 
-    #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
-    # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
-    # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
-
-Fix this issue by propagating the current type to the global "irq_type".
-
-Cc: stable@vger.kernel.org
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
----
- drivers/misc/pci_endpoint_test.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index acf3d8dab131..896392c428de 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -833,6 +833,7 @@ static int pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
- 		return ret;
- 	}
- 
-+	irq_type = test->irq_type;
- 	return 0;
- }
- 
 -- 
-2.25.1
-
+Without deviation from the norm, progress is not possible.
 
