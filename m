@@ -1,66 +1,93 @@
-Return-Path: <stable+bounces-119464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B933BA439A9
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 10:36:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2EFA43A0F
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 10:46:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD5527A50E2
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 09:35:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E034A1752E8
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 09:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92B1266B4F;
-	Tue, 25 Feb 2025 09:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F10B2676E9;
+	Tue, 25 Feb 2025 09:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JQLnok9r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [195.16.41.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9862661A3;
-	Tue, 25 Feb 2025 09:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.16.41.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD712676EA;
+	Tue, 25 Feb 2025 09:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740476108; cv=none; b=lVx3BB+IqJFZ4At0qfAMmYGb7csNGL2dGNoo3naaqIdkgVTmJWWEH2ayiuhVbprwZc91MKo6WFE830u+/U1MbVXDSG8fzTvzJARJDaQo6ZiP8RBfsdYHZkDFGt4aZeNs6CyMi84tmvlMYzpynbYe0bOY8v3w+l0XtrSVWEOw54o=
+	t=1740476520; cv=none; b=gWivCpwEJX/Al3yVdvmqzl6+iJbWum+FI8JhF7EDYCoCZg3ZBZ1ErlOijM7xsj/lM/HbeQyg2BY+CzP+/S74ZURwZkoxN+yG7Jfe7OupMAaio487n/oF/r7j35xqhsJ6IuwFtiZcXbOtuu1vFzgRXLYv20PJmt0M5T7vuOFmXmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740476108; c=relaxed/simple;
-	bh=VKVpn9QhnPv0kuUhUfzxMejbN/ieb227EPXkOuggSWY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azOy6Pev9TvfZSbSBIv1xKvar+TnooOQ85I/5/zyx1pd6ibAAMPZckUYlxz4i6qsn4b2l9ft7x89GVx+EgonNkxQDXpv0wDHvvEjCuvjph7BSO5fFQjPEn+maLbSAq409t5r6tetQfDQ8GrEjz0VCZKZO/zQjuYmmhVY3htxG6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=195.16.41.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from gca-msk-a-srv-ksmg02.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 560E21F9E5;
-	Tue, 25 Feb 2025 12:35:00 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail03.astralinux.ru [10.177.185.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Tue, 25 Feb 2025 12:34:59 +0300 (MSK)
-Received: from localhost.localdomain (unknown [10.177.20.114])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4Z2CBB2cPRz1h0Mh;
-	Tue, 25 Feb 2025 12:34:58 +0300 (MSK)
-From: Anastasia Belova <abelova@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Anastasia Belova <abelova@astralinux.ru>,
-	Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
+	s=arc-20240116; t=1740476520; c=relaxed/simple;
+	bh=1rX3Tw5OEZ9iVi69R/Vz5QGBAg03OkLYqvziaLFw+lE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GI8Jpvtv13McvD638J1nApl7MhiooOJ2fVgemgWuxTqI3yGJ9Ro2yDYGLY2jgqgASrv3xZ+B2mLaOXMnLi6s/EDhwHEiOcRRsSt1GE/qZBXY1zueBkgThljvmjkel/Juo5+8+KiKfln3CCIMGbvIOJQf6OnquuYWDD9bnN4dGeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JQLnok9r; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2217875d103so12386975ad.3;
+        Tue, 25 Feb 2025 01:41:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740476518; x=1741081318; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xl+Y1l5voHQwtJP92LWp/7002pAoHO14kkZNlQkkxFE=;
+        b=JQLnok9rnpqSsFLMPMTHuMsGj5JwiFRVYM4GIMP/CKER6QfjdZIPmr0NcXYSIbeYzV
+         CQwqd0aNk9XfL0V+HzLN3R1gMBKcJ6NGzBsaokACMLnrqYeC95ekBYoBnY7JQyAbA5sK
+         e6zcS+3b+10wvfpAjgwwkAxxKjjwOsbTp8sBKYlfMDMab0Ax27YGamTMzO1PSzpdXXnY
+         60ziJIy0t5tWSU2u0HvQgnqWmBGyZJI1yqiat6oZeXu2F/BtKPRYgfUJ2svGjeWP0yw0
+         Szce6O8heqJaZVEt/tcODL7iVHQ/0QIl3tpvYbAo9PnTvMngQt28Rp0WmROugcPm/8GN
+         lBJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740476518; x=1741081318;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xl+Y1l5voHQwtJP92LWp/7002pAoHO14kkZNlQkkxFE=;
+        b=S4O73sBzMTOFULiPeqKH9nRmupHG20cWPajPGvUW3g71k7ai3jZcW+yFXyVjQBUZzi
+         rYhp8JQTCjAHiYIksAFq98RQVUIBd4comVFyn0u0ZtRrGvCn3dJnPU6oLZAVuAXLmrgr
+         Kn2IftE8MjKtAegWsKkB1ESEpGeSmbL7l/2Uchb34f+uxW26/CbBBAIMztx3bklnko7w
+         CzRXdWvgJwTo+w170B5xW5TaBILcY/fjpxwMTUz3DP6O9WlnXY0u7NESAxESkAWcxAzn
+         Fpv2758Hp9/z72OgKCjO8/IMmTVqkkbrZhqRwyZhF1txM9Crau8TnW/VGWLWLFPcStL3
+         ruCA==
+X-Forwarded-Encrypted: i=1; AJvYcCW4flXJIa6enKzyJYIIfPdqtQgObLz0h8hXcRzuussVuvQZDhYbovgq06/tJQZKijxR/fO/gu8ZujlljiM=@vger.kernel.org, AJvYcCWroyHgZ630GE09Tijqvb32Hq9qoK5eL5/WqCvUYMe1DkQPCW2yxvrRK0baPG57UoXbSFFm/b1w@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxj3l0D62vunp1sng3xEQN/NJtDaLn/bwC06h1NVTBsTLnabRYp
+	m7Kld2+nqiw8DVhoqCotwpCKrWnz5IjS1PQKiL5plV32EP5WdHb1
+X-Gm-Gg: ASbGncsX9g/gVNwN3tGK6Gc/VCr23XzGHGNhqDBjGTR+k9UaPpzjxLV5FwHLYMI8hlW
+	tn9hcJ+sgo6gP0pDv8/+ZQpxar/x+j5NQdsyI5ryRGnTqMs+X8ekNJLJ2M+AEwC5h2+iO1su6xA
+	bN+rAUp0dZdDGbZqOJlyFrIMTZmPBalq3ic+GWY6+e2kIGTtdQK+6Bxw0AcYNyjkeHPUuyE26J2
+	/qs6r+nsZEDXxwkHwooJos2SaUhlf+e3i833cFOxeHdqPQisM9MNS+KzulTJCoTcSxLQkkyAQRg
+	1JA9topc93E5LfXLCmqscXFAVGG+tVcahbbvREr6Sg==
+X-Google-Smtp-Source: AGHT+IGtCeMHEORvZ0nZqeqoPBF/JydV8dIFt56d4Ce/z/GzK8FrT+PFRSwZV3bo/lzU5Od9Izv+Zw==
+X-Received: by 2002:a17:902:dace:b0:221:7854:7618 with SMTP id d9443c01a7336-2219ff78bafmr97636405ad.8.1740476517699;
+        Tue, 25 Feb 2025 01:41:57 -0800 (PST)
+Received: from localhost.localdomain ([182.148.13.61])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a0b0d61sm9986085ad.240.2025.02.25.01.41.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 01:41:57 -0800 (PST)
+From: Qianyi Liu <liuqianyi125@gmail.com>
+To: matthew.brost@intel.com,
+	airlied@gmail.com,
+	ckoenig.leichtzumerken@gmail.com,
+	dakr@kernel.org,
+	daniel@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	phasta@kernel.org,
+	tzimmermann@suse.de
+Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	lvc-patches@linuxtesting.org,
-	Tom Talpey <tom@talpey.com>,
-	Jianhong Yin <jiyin@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.10/5.15 2/2] smb: client: fix NULL ptr deref in crypto_aead_setkey()
-Date: Tue, 25 Feb 2025 12:34:24 +0300
-Message-ID: <20250225093428.611253-3-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250225093428.611253-1-abelova@astralinux.ru>
-References: <20250225093428.611253-1-abelova@astralinux.ru>
+	liuqianyi125@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH V2] drm/sched: fix fence reference count leak
+Date: Tue, 25 Feb 2025 17:41:25 +0800
+Message-Id: <20250225094125.224580-1-liuqianyi125@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,141 +95,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 191262 [Feb 25 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.11
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/02/25 08:32:00 #27449984
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: qianyi liu <liuqianyi125@gmail.com>
 
-commit 4bdec0d1f658f7c98749bd2c5a486e6cfa8565d2 upstream.
+We leaked last_scheduled fences when the entity was being killed and the
+fence callback add fails.
 
-Neither SMB3.0 or SMB3.02 supports encryption negotiate context, so
-when SMB2_GLOBAL_CAP_ENCRYPTION flag is set in the negotiate response,
-the client uses AES-128-CCM as the default cipher.  See MS-SMB2
-3.3.5.4.
+To fix this, we should decrement the reference count of prev when
+dma_fence_add_callback() fails, ensuring proper balance.
 
-Commit b0abcd65ec54 ("smb: client: fix UAF in async decryption") added
-a @server->cipher_type check to conditionally call
-smb3_crypto_aead_allocate(), but that check would always be false as
-@server->cipher_type is unset for SMB3.02.
+v2:
+ * Make commit message more clearly. (Philipp and Matt)
+ * Add "Fixes: " tag and put the stable kernel on Cc. (Philipp)
+ * Correct subject line from "drm/scheduler" to "drm/sched". (Philipp)
 
-Fix the following KASAN splat by setting @server->cipher_type for
-SMB3.02 as well.
+Cc: stable@vger.kernel.org
+Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
 
-mount.cifs //srv/share /mnt -o vers=3.02,seal,...
-
-BUG: KASAN: null-ptr-deref in crypto_aead_setkey+0x2c/0x130
-Read of size 8 at addr 0000000000000020 by task mount.cifs/1095
-CPU: 1 UID: 0 PID: 1095 Comm: mount.cifs Not tainted 6.12.0 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-3.fc41
-04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5d/0x80
- ? crypto_aead_setkey+0x2c/0x130
- kasan_report+0xda/0x110
- ? crypto_aead_setkey+0x2c/0x130
- crypto_aead_setkey+0x2c/0x130
- crypt_message+0x258/0xec0 [cifs]
- ? __asan_memset+0x23/0x50
- ? __pfx_crypt_message+0x10/0x10 [cifs]
- ? mark_lock+0xb0/0x6a0
- ? hlock_class+0x32/0xb0
- ? mark_lock+0xb0/0x6a0
- smb3_init_transform_rq+0x352/0x3f0 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- smb_send_rqst+0x144/0x230 [cifs]
- ? __pfx_smb_send_rqst+0x10/0x10 [cifs]
- ? hlock_class+0x32/0xb0
- ? smb2_setup_request+0x225/0x3a0 [cifs]
- ? __pfx_cifs_compound_last_callback+0x10/0x10 [cifs]
- compound_send_recv+0x59b/0x1140 [cifs]
- ? __pfx_compound_send_recv+0x10/0x10 [cifs]
- ? __create_object+0x5e/0x90
- ? hlock_class+0x32/0xb0
- ? do_raw_spin_unlock+0x9a/0xf0
- cifs_send_recv+0x23/0x30 [cifs]
- SMB2_tcon+0x3ec/0xb30 [cifs]
- ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- ? __pfx_lock_release+0x10/0x10
- ? do_raw_spin_trylock+0xc6/0x120
- ? lock_acquire+0x3f/0x90
- ? _get_xid+0x16/0xd0 [cifs]
- ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
- ? cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
- cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
- ? __pfx_cifs_get_smb_ses+0x10/0x10 [cifs]
- ? cifs_get_tcp_session+0xaa0/0xca0 [cifs]
- cifs_mount_get_session+0x8a/0x210 [cifs]
- dfs_mount_share+0x1b0/0x11d0 [cifs]
- ? __pfx___lock_acquire+0x10/0x10
- ? __pfx_dfs_mount_share+0x10/0x10 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- ? find_held_lock+0x8a/0xa0
- ? hlock_class+0x32/0xb0
- ? lock_release+0x203/0x5d0
- cifs_mount+0xb3/0x3d0 [cifs]
- ? do_raw_spin_trylock+0xc6/0x120
- ? __pfx_cifs_mount+0x10/0x10 [cifs]
- ? lock_acquire+0x3f/0x90
- ? find_nls+0x16/0xa0
- ? smb3_update_mnt_flags+0x372/0x3b0 [cifs]
- cifs_smb3_do_mount+0x1e2/0xc80 [cifs]
- ? __pfx_vfs_parse_fs_string+0x10/0x10
- ? __pfx_cifs_smb3_do_mount+0x10/0x10 [cifs]
- smb3_get_tree+0x1bf/0x330 [cifs]
- vfs_get_tree+0x4a/0x160
- path_mount+0x3c1/0xfb0
- ? kasan_quarantine_put+0xc7/0x1d0
- ? __pfx_path_mount+0x10/0x10
- ? kmem_cache_free+0x118/0x3e0
- ? user_path_at+0x74/0xa0
- __x64_sys_mount+0x1a6/0x1e0
- ? __pfx___x64_sys_mount+0x10/0x10
- ? mark_held_locks+0x1a/0x90
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Cc: Tom Talpey <tom@talpey.com>
-Reported-by: Jianhong Yin <jiyin@redhat.com>
-Cc: stable@vger.kernel.org # v6.12
-Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Signed-off-by: qianyi liu <liuqianyi125@gmail.com>
 ---
- fs/cifs/smb2pdu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/sched_entity.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 245e2dd5a194..4197096e7fdb 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -963,7 +963,9 @@ SMB2_negotiate(const unsigned int xid, struct cifs_ses *ses)
- 	 * SMB3.0 supports only 1 cipher and doesn't have a encryption neg context
- 	 * Set the cipher type manually.
- 	 */
--	if (server->dialect == SMB30_PROT_ID && (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
-+	if ((server->dialect == SMB30_PROT_ID ||
-+	     server->dialect == SMB302_PROT_ID) &&
-+	    (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
- 		server->cipher_type = SMB2_ENCRYPTION_AES128_CCM;
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 69bcf0e99d57..1c0c14bcf726 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -259,9 +259,12 @@ static void drm_sched_entity_kill(struct drm_sched_entity *entity)
+ 		struct drm_sched_fence *s_fence = job->s_fence;
  
- 	security_blob = smb2_get_data_area_len(&blob_offset, &blob_length,
+ 		dma_fence_get(&s_fence->finished);
+-		if (!prev || dma_fence_add_callback(prev, &job->finish_cb,
+-					   drm_sched_entity_kill_jobs_cb))
++		if (!prev ||
++		    dma_fence_add_callback(prev, &job->finish_cb,
++					   drm_sched_entity_kill_jobs_cb)) {
++			dma_fence_put(prev);
+ 			drm_sched_entity_kill_jobs_cb(NULL, &job->finish_cb);
++		}
+ 
+ 		prev = &s_fence->finished;
+ 	}
 -- 
-2.43.0
+2.25.1
 
 
