@@ -1,259 +1,136 @@
-Return-Path: <stable+bounces-119481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD79A43D09
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:12:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55435A43D65
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E31B7188BAB5
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB97E3AE7F8
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747F7267AF1;
-	Tue, 25 Feb 2025 11:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99E32638AE;
+	Tue, 25 Feb 2025 11:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sLxyZl6r"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="h2zTm26M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9B2267735;
-	Tue, 25 Feb 2025 11:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB311FCFD9
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 11:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740481772; cv=none; b=BhNqO34pQbuD/1EcB9rGcj1FfuBmFHk+xbE7jVwSGUExRdKZwnYFWlnywRbv5r0FfLx6vs+KzsVAxCZKligMRsXEWakCGL4G15NQ9NFxV3Nr/hsvFzdsCRpHI4xo61H6D/2AGFcXVxD4GXAImYVBXUaVUeCjz4NJbYYXRSdEx4M=
+	t=1740482214; cv=none; b=tJVjz0wz1A2XZYBkkAltEmZQ9fIB2eu3/Dn3pFts9o1h8vSqYT9sQRnFF698NayOhKnjU1YuMtTudiqpZgW7Z6GFxl6HN676ML2TK9QVTVCZG3Jzvdsx+dmJlRJmB7EBizLP8DrXlYAw/laGVsgr1xQ6gbm8Tjs+XDMp/0+qv0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740481772; c=relaxed/simple;
-	bh=t9qneLykygfAbID/WX0+KCumjhrXOkT2wxUtSWsbx2w=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G789qiVbHlPtxfi22A3gF4TF+6j+gyW5LOSxxrbffdb8JAmtyIGjSFBapgv8NAnH4vKyl1gDAIXX5ZEowbsLOKkQwmKv5A1cl9CINh5ZF8bluyrTzru+oEE/O1BSmIZwzaM7ajPnrrWsM6/+jUcjkVBJN9U9tA8EMM3glXs03is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sLxyZl6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A069EC4CEDD;
-	Tue, 25 Feb 2025 11:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740481771;
-	bh=t9qneLykygfAbID/WX0+KCumjhrXOkT2wxUtSWsbx2w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sLxyZl6r8i5Lk65IXR51iqFnQyGz8UidZHli3Rua9KW3hMMzYjCNgdJfIu9AXjjxG
-	 52jML8H+93kMsBWHBO/me8Mu0zFde+YNgFgqUxLQte4+W9aT7UiRbhQ1UT1whUn/7r
-	 9gBa9o/WWeIoY38EmdwCnm7ZJJVzjpe57n/V+H9M85+wpK8jnwJmAqZkHPlygQhyre
-	 0BIjpFk+HQFrbhuwJoYoYDwty1dr5newkRGZtOkBT1C+0wNEKfcVEDO1cE3PQMUvsX
-	 p2yNgUvwaLXswXB5bS0iz/o3xbcXyjmwB4aLM57dbgY1Vsah6ORxgzbACQg2lGlqmR
-	 NFp4zmL/X3YFw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tmsoa-007jON-Kh;
-	Tue, 25 Feb 2025 11:09:29 +0000
-Date: Tue, 25 Feb 2025 11:09:27 +0000
-Message-ID: <86h64iqo0o.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: kvmarm@lists.linux.dev,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sebastian Ott <sebott@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] KVM: arm64: Set HCR_EL2.TID1 unconditionally
-In-Reply-To: <20250225005401.679536-2-oliver.upton@linux.dev>
-References: <20250225005401.679536-1-oliver.upton@linux.dev>
-	<20250225005401.679536-2-oliver.upton@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1740482214; c=relaxed/simple;
+	bh=nq0EPGLmAEGxwapDdA7JGX7A1kQwUZXc+8FAGQqLWgA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FjpKkGqwtO0V2yMvRfg/0lnz1dofvE9pg0DBtIief0+xgmIivODfqu5uNORofmxQh+nhGtOuNx5nVDx0cnol4Jkym91eTTXpXNW8HxDlx1jdzwpvL5hF/eAk9nJMqEKhaBoWfKDNC3gSwR24Ca1+6gmArYQwyxvWjvPWsCPVuI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=h2zTm26M; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2f9b9c0088fso9303607a91.0
+        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 03:16:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1740482212; x=1741087012; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BidLeBZkJUtIcxcRlqcE1G4NM4e2prFwhePG6wNNgOU=;
+        b=h2zTm26MfBnP0qdlVQiKrSWub/s8lNXSjEED8ZyGgauXYOPSIqmmxPfdsliXGPK6OK
+         s/isxuM0AN6tEv3lWJayOETrXuksoneVL2/Iqz/UtgYpHRDMQUcXv41NYiRootQJjI7x
+         1twFrsXkLZQg/zCoPGTPmeSTDlk2J6bxW99AfTT8nnSsDX4IBoFQ4t51Jlbb6qlV8xml
+         yUaYGbm36CaAR7iDe5X4PdHpw90Yg7AyViewUaRUkyITOdm3hIaPhkWEiaifxmBCzsjy
+         kKqMPqIgYzgE/nIhD3YGML062KzPaS6iM0mFPeK5N5TaevDXXIzqDhyAxnXqOKKYa3YV
+         o+iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740482212; x=1741087012;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BidLeBZkJUtIcxcRlqcE1G4NM4e2prFwhePG6wNNgOU=;
+        b=OnZDzGPUMscFWjZ6gtqxnxrVKATJ6b0P0GSxy7xRE0xhaGqq0kX5bW3xM3ap3ndypo
+         6ZT5c/9tHwlC0n69FoIP6TT8siEncwozJZEsnk1UJ2+av/qIYieGUj2xqQXdtkktbyiV
+         BbjOC4mZvhL4lJDZYOpld/jDU0fNY122jcXfsUL5FELN94UGz96jWvdWoq1hiR6BzTfQ
+         jfnYW62BvTjoke6TZ7teC31NejhwYx6jXVUt2yOaGQdpAzEzxgjemcNzT9f937oBHidU
+         Eccoywn/n9U3jcmgDq6aIexqakRv+2lrQXcg4VfIR9cFfjXj5YJ3KEeXqUsUJt+vIzTD
+         nmOw==
+X-Gm-Message-State: AOJu0YyOmSM6tD2wH7LjzfkAxGMWvl+8sd1q2owGIKlWDgL++k7ke2Cy
+	ySuPVOtqx79eTegocRMfvv/Jsd2QlwMYYHslfkWb4pKyRoCawk7AtswuQX2hluj05UierncOKN2
+	FJZDWDbkG6VOLQSEKAqTFi/+WK2syECwYA4nN8A==
+X-Gm-Gg: ASbGnctFCaKN8KozT0YZFyLJniFFjdcUJfJ+5aH2ntuH92wFtkE2S0hJBpiDzmP9/F/
+	l+iOLuuyOCTNmXjtO/anDUwTMGBgM/696hTc0zpmqnLJkV6fGt6u3aB8zcPBL7Hoja5Y4mv2MHN
+	u/ySauLkQ=
+X-Google-Smtp-Source: AGHT+IE4zNCtApjgCW7IVrMKgxaqKv83HSY9BzzaaRBtqgzD3CudAd5vQ1VyBcJ2Xih314sYh+MeRB44yJsTo17Xs3M=
+X-Received: by 2002:a17:90b:3e4e:b0:2f9:d0cd:3403 with SMTP id
+ 98e67ed59e1d1-2fce7b738ecmr27861132a91.16.1740482211795; Tue, 25 Feb 2025
+ 03:16:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, sebott@redhat.com, broonie@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20250225064750.953124108@linuxfoundation.org>
+In-Reply-To: <20250225064750.953124108@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 25 Feb 2025 20:16:35 +0900
+X-Gm-Features: AWEUYZlymfn4SR6NJFuWVJLjUbbiu8b-EdVKox624pmhyRoWSWfGeNS-etq0fYI
+Message-ID: <CAKL4bV4VvXMJgrtWGdBNOWzfn09S6NAaokR0PO=JO_u4E5mtmg@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/137] 6.13.5-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 25 Feb 2025 00:53:57 +0000,
-Oliver Upton <oliver.upton@linux.dev> wrote:
-> 
-> commit 90807748ca3a ("KVM: arm64: Hide SME system registers from
-> guests") added trap handling for SMIDR_EL1, treating it as UNDEFINED as
-> KVM does not support SME. This is right for the most part, however KVM
-> needs to set HCR_EL2.TID1 to _actually_ trap the register.
-> 
-> Unfortunately, this comes with some collateral damage as TID1 forces
-> REVIDR_EL1 and AIDR_EL1 to trap as well. KVM has long treated these
-> registers as "invariant" which is an awful term for the following:
-> 
->  - Userspace sees the boot CPU values on all vCPUs
-> 
->  - The guest sees the hardware values of the CPU on which a vCPU is
->    scheduled
-> 
-> Keep the plates spinning by adding trap handling for the affected
-> registers and repaint all of the "invariant" crud into terms of
-> identifying an implementation. Yes, at this point we only need to
-> set TID1 on SME hardware, but REVIDR_EL1 and AIDR_EL1 are about to
-> become mutable anyway.
-> 
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
-> Fixes: 90807748ca3a ("KVM: arm64: Hide SME system registers from guests")
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> ---
->  arch/arm64/include/asm/kvm_arm.h |   4 +-
->  arch/arm64/kvm/sys_regs.c        | 175 ++++++++++++++++---------------
->  2 files changed, 94 insertions(+), 85 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
-> index 8d94a6c0ed5c..b01c01e55de5 100644
-> --- a/arch/arm64/include/asm/kvm_arm.h
-> +++ b/arch/arm64/include/asm/kvm_arm.h
-> @@ -92,12 +92,12 @@
->   * SWIO:	Turn set/way invalidates into set/way clean+invalidate
->   * PTW:		Take a stage2 fault if a stage1 walk steps in device memory
->   * TID3:	Trap EL1 reads of group 3 ID registers
-> - * TID2:	Trap CTR_EL0, CCSIDR2_EL1, CLIDR_EL1, and CSSELR_EL1
-> + * TID1:	Trap REVIDR_EL1, AIDR_EL1, and SMIDR_EL1
->   */
->  #define HCR_GUEST_FLAGS (HCR_TSC | HCR_TSW | HCR_TWE | HCR_TWI | HCR_VM | \
->  			 HCR_BSU_IS | HCR_FB | HCR_TACR | \
->  			 HCR_AMO | HCR_SWIO | HCR_TIDCP | HCR_RW | HCR_TLOR | \
-> -			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3)
-> +			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3 | HCR_TID1)
->  #define HCR_HOST_NVHE_FLAGS (HCR_RW | HCR_API | HCR_APK | HCR_ATA)
->  #define HCR_HOST_NVHE_PROTECTED_FLAGS (HCR_HOST_NVHE_FLAGS | HCR_TSC)
->  #define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H)
-> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-> index f6cd1ea7fb55..f25a157622e3 100644
-> --- a/arch/arm64/kvm/sys_regs.c
-> +++ b/arch/arm64/kvm/sys_regs.c
-> @@ -2483,6 +2483,93 @@ static bool access_mdcr(struct kvm_vcpu *vcpu,
->  	return true;
->  }
->  
-> +/*
-> + * For historical (ahem ABI) reasons, KVM treats MIDR_EL1, REVIDR_EL1, and
-> + * AIDR_EL1 as "invariant" registers, meaning userspace cannot change them.
+Hi Greg
 
-For consistency, using the past tense would make a lot more sense.
+On Tue, Feb 25, 2025 at 3:55=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.13.5 release.
+> There are 137 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Feb 2025 06:47:33 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.13.5-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.13.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> + * The values made visible to userspace were the register values of the boot
-> + * CPU.
-> + *
-> + * At the same time, reads from these registers at EL1 previously were not
-> + * trapped, allowing the guest to read the actual hardware value. On big-little
-> + * machines, this means the VM can see different values depending on where a
-> + * given vCPU got scheduled.
-> + *
-> + * These registers are now trapped as collateral damage from SME, and what
-> + * follows attempts to give a user / guest view consistent with the existing
-> + * ABI.
-> + */
-> +static bool access_imp_id_reg(struct kvm_vcpu *vcpu,
-> +			      struct sys_reg_params *p,
-> +			      const struct sys_reg_desc *r)
-> +{
-> +	if (p->is_write)
-> +		return write_to_read_only(vcpu, p, r);
-> +
-> +	switch (reg_to_encoding(r)) {
-> +	case SYS_REVIDR_EL1:
-> +		p->regval = read_sysreg(revidr_el1);
-> +		break;
-> +	case SYS_AIDR_EL1:
-> +		p->regval = read_sysreg(aidr_el1);
-> +		break;
-> +	default:
-> +		WARN_ON_ONCE(1);
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +static u64 __ro_after_init boot_cpu_midr_val;
-> +static u64 __ro_after_init boot_cpu_revidr_val;
-> +static u64 __ro_after_init boot_cpu_aidr_val;
-> +
-> +static void init_imp_id_regs(void)
-> +{
-> +	boot_cpu_midr_val = read_sysreg(midr_el1);
-> +	boot_cpu_revidr_val = read_sysreg(revidr_el1);
-> +	boot_cpu_aidr_val = read_sysreg(aidr_el1);
-> +}
-> +
-> +static int get_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
-> +			  u64 *val)
-> +{
-> +	switch (reg_to_encoding(r)) {
-> +	case SYS_MIDR_EL1:
-> +		*val = boot_cpu_midr_val;
-> +		break;
-> +	case SYS_REVIDR_EL1:
-> +		*val = boot_cpu_revidr_val;
-> +		break;
-> +	case SYS_AIDR_EL1:
-> +		*val = boot_cpu_aidr_val;
-> +		break;
-> +	default:
-> +		WARN_ON_ONCE(1);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int set_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
-> +			  u64 val)
-> +{
-> +	u64 expected;
-> +	int ret;
-> +
-> +	ret = get_imp_id_reg(vcpu, r, &expected);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return (expected == val) ? 0 : -EINVAL;
-> +}
-> +
-> +#define IMPLEMENTATION_ID(reg) {			\
-> +	SYS_DESC(SYS_##reg),				\
-> +	.access = access_imp_id_reg,			\
-> +	.get_user = get_imp_id_reg,			\
-> +	.set_user = set_imp_id_reg,			\
-> +}
->  
->  /*
->   * Architected system registers.
-> @@ -2532,7 +2619,9 @@ static const struct sys_reg_desc sys_reg_descs[] = {
->  
->  	{ SYS_DESC(SYS_DBGVCR32_EL2), undef_access, reset_val, DBGVCR32_EL2, 0 },
->  
-> +	IMPLEMENTATION_ID(MIDR_EL1),
->  	{ SYS_DESC(SYS_MPIDR_EL1), NULL, reset_mpidr, MPIDR_EL1 },
-> +	IMPLEMENTATION_ID(REVIDR_EL1),
->  
->  	/*
->  	 * ID regs: all ID_SANITISED() entries here must have corresponding
-> @@ -2804,6 +2893,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
->  	  .set_user = set_clidr, .val = ~CLIDR_EL1_RES0 },
->  	{ SYS_DESC(SYS_CCSIDR2_EL1), undef_access },
->  	{ SYS_DESC(SYS_SMIDR_EL1), undef_access },
-> +	IMPLEMENTATION_ID(AIDR_EL1),
->  	{ SYS_DESC(SYS_CSSELR_EL1), access_csselr, reset_unknown, CSSELR_EL1 },
->  	ID_FILTERED(CTR_EL0, ctr_el0,
->  		    CTR_EL0_DIC_MASK |
+6.13.5-rc2 tested.
 
-I don't think this is enough. You also need to augment the cp15[]
-table to handle trapping for the 32bit versions of REVIDR/AIDR.
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Thanks,
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-	M.
+[    0.000000] Linux version 6.13.5-rc2rv-g1a0f764e17e3
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250207, GNU ld (GNU
+Binutils) 2.44) #1 SMP PREEMPT_DYNAMIC Tue Feb 25 19:28:03 JST 2025
 
--- 
-Without deviation from the norm, progress is not possible.
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
