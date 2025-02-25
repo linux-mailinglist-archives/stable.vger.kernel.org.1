@@ -1,164 +1,98 @@
-Return-Path: <stable+bounces-119500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE28A43F76
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:33:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53416A43F8F
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833BC19C101C
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 889E63AB7E9
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2114A268C47;
-	Tue, 25 Feb 2025 12:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2118C267F58;
+	Tue, 25 Feb 2025 12:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="o8dGidXs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvNrR1dg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8A32686B8;
-	Tue, 25 Feb 2025 12:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDABE2054F1;
+	Tue, 25 Feb 2025 12:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740486750; cv=none; b=YKgaiRqm1ObYyOmG5qtFApABimL5t0VpFW9SQtfJhn93odTuDGbpWicGQvlYPQErUP3fRcCgX/pJb2DK4UUsIpY/5i8m++Hgb1s1tA7QpwK+WUxWk8aTnoFn3/zFQvNZyfZNvtIGhHpbZ7q3N3hwe8H21g0OS5Ktq8pww0P/dwM=
+	t=1740487090; cv=none; b=cnp2OPJ5t2kKnb7djbkl4mypBivC/vPJKasQnH/1q/PPqUlSe7nlU3BL4D8qeRGYtR49QjC9g+qmwa6Y7pHJXk4/HVXVj/EZzvPsv0BPK3xQR8fUR1ER1b0WLHAjFV4DLWnFjdBp5yzG7R8k4MRpsLSUIWFZ1dghHLaBmO31+mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740486750; c=relaxed/simple;
-	bh=twedXejbs0nq+ksMdQ1vMCmEi4SWHyHVxLXcEmDOJL4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gpV0YKQLe5Nw/Lq/Gcu34jdoWz0t+oHRN6UyXjOQ32bhap95LJRbCLTJNkmLVDyfnIu4iAwFcmBEBfHU1rxpMZAu8CcFH66YbJMIhe6zOO8Me7SIUXZhgQxX/Djw529akUUf++mPutgdhwWS/ydIuqT8kJlBvhg3DPhs/S2ZCVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=o8dGidXs; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1740486736;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HJwIHBMCpWGqDSfH1Y+aSqVcFdIzOTc9QCQgARpEMGU=;
-	b=o8dGidXsz0V+1HWLVWM54KwkrcQs9fFq2tWeObizgwMb++P/7N3Qzb/ZdeLhW+mWj0804A
-	9ZGbWf3CfqYu7S8dhG0sFsyDRa7e9NYGrPmEP8ATGZ1xzsbjKDrG4mwqsiSMqs73WqOmU0
-	4JRJ6fhOD1K4S8oXGuxgKnoLu59XJak=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-	Vitaly Chikunov <vt@altlinux.org>
-Subject: [PATCH 5.10] crypto: tcrypt - Fix missing return value check
-Date: Tue, 25 Feb 2025 15:32:14 +0300
-Message-ID: <20250225123215.26154-1-arefev@swemel.ru>
+	s=arc-20240116; t=1740487090; c=relaxed/simple;
+	bh=evE3qQk56fSwtr7XXclA0YrzLLmkVx35PNXiBipGRKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWPB70m7RJ84d8YDqCdXHh6RV1I5NELdzhYFm51BdrqwS9ZYTzrWRkmACTCUuo0fEBp4tRD4i92SLjAGd4oMQVCEMkrQc46w1DlmX4aJ5pHJCy6ETqT9mbeiw1giLMCOvlvjtYheNdai2x9dHHlFOlc2WiS8x5XIKwGym71LzZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvNrR1dg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F160AC4CEDD;
+	Tue, 25 Feb 2025 12:38:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740487089;
+	bh=evE3qQk56fSwtr7XXclA0YrzLLmkVx35PNXiBipGRKU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HvNrR1dgZWMWWTrLSTvJRh+2mysYDFQNES3xLLXMVx905ZSFXdwa3YnFSbpy6fQme
+	 uXFyXBGqyl3VBSU5IK4eMv0MUHyE1em9UpOm8/VZavOAOQyFoYelFrRCnVLDzQALBe
+	 5mGyXftgc8IUD6D+FSKk4KyZgyi/3DyhaUo1kymCmH7LLZa65IilPgViBorqdAE1LB
+	 xPuRJF3AjOy42ULpBm24U2A/lPsNMAHE+vNaogdGoZwVkzXHRIM7iaU5gQ12zvKDu+
+	 lCmx4UF1fDazjfCy+Vj/ma7eGoO+feJsKcytuhq1ju08I4Wr2CNuBqh23xXDW5Of2m
+	 //WvlxVtVwmug==
+Date: Tue, 25 Feb 2025 12:38:03 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.12 000/153] 6.12.17-rc2 review
+Message-ID: <535f548f-c5ad-4fd8-bceb-8063f360a4cc@sirena.org.uk>
+References: <20250225064751.133174920@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Zpn3ZcMiMiv7Yser"
+Content-Disposition: inline
+In-Reply-To: <20250225064751.133174920@linuxfoundation.org>
+X-Cookie: I'm not available for comment..
 
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 
-commit 7b3d52683b3a47c0ba1dfd6b5994a3a795b06972 upstream.
+--Zpn3ZcMiMiv7Yser
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-There are several places where the return value check of crypto_aead_setkey
-and crypto_aead_setauthsize were lost. It is necessary to add these checks.
+On Tue, Feb 25, 2025 at 07:49:14AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.17 release.
+> There are 153 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-At the same time, move the crypto_aead_setauthsize() call out of the loop,
-and only need to call it once after load transform.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Fixes: 53f52d7aecb4 ("crypto: tcrypt - Added speed tests for AEAD crypto alogrithms in tcrypt test suite")
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Reviewed-by: Vitaly Chikunov <vt@altlinux.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[Denis: minor fix to resolve merge conflict.]                                           
-Signed-off-by: Denis Arefev <arefev@swemel.ru> 
----
- crypto/tcrypt.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+--Zpn3ZcMiMiv7Yser
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/crypto/tcrypt.c b/crypto/tcrypt.c
-index 7972d2784b3b..580c50afa587 100644
---- a/crypto/tcrypt.c
-+++ b/crypto/tcrypt.c
-@@ -290,6 +290,11 @@ static void test_mb_aead_speed(const char *algo, int enc, int secs,
- 	}
- 
- 	ret = crypto_aead_setauthsize(tfm, authsize);
-+	if (ret) {
-+		pr_err("alg: aead: Failed to setauthsize for %s: %d\n", algo,
-+		       ret);
-+		goto out_free_tfm;
-+	}
- 
- 	for (i = 0; i < num_mb; ++i)
- 		if (testmgr_alloc_buf(data[i].xbuf)) {
-@@ -315,7 +320,7 @@ static void test_mb_aead_speed(const char *algo, int enc, int secs,
- 	for (i = 0; i < num_mb; ++i) {
- 		data[i].req = aead_request_alloc(tfm, GFP_KERNEL);
- 		if (!data[i].req) {
--			pr_err("alg: skcipher: Failed to allocate request for %s\n",
-+			pr_err("alg: aead: Failed to allocate request for %s\n",
- 			       algo);
- 			while (i--)
- 				aead_request_free(data[i].req);
-@@ -565,13 +570,19 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
- 	sgout = &sg[9];
- 
- 	tfm = crypto_alloc_aead(algo, 0, 0);
--
- 	if (IS_ERR(tfm)) {
- 		pr_err("alg: aead: Failed to load transform for %s: %ld\n", algo,
- 		       PTR_ERR(tfm));
- 		goto out_notfm;
- 	}
- 
-+	ret = crypto_aead_setauthsize(tfm, authsize);
-+	if (ret) {
-+		pr_err("alg: aead: Failed to setauthsize for %s: %d\n", algo,
-+		       ret);
-+		goto out_noreq;
-+	}
-+
- 	crypto_init_wait(&wait);
- 	printk(KERN_INFO "\ntesting speed of %s (%s) %s\n", algo,
- 			get_driver_name(crypto_aead, tfm), e);
-@@ -607,8 +618,13 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
- 					break;
- 				}
- 			}
-+
- 			ret = crypto_aead_setkey(tfm, key, *keysize);
--			ret = crypto_aead_setauthsize(tfm, authsize);
-+			if (ret) {
-+				pr_err("setkey() failed flags=%x: %d\n",
-+					crypto_aead_get_flags(tfm), ret);
-+				goto out;
-+			}
- 
- 			iv_len = crypto_aead_ivsize(tfm);
- 			if (iv_len)
-@@ -618,15 +634,8 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
- 			printk(KERN_INFO "test %u (%d bit key, %d byte blocks): ",
- 					i, *keysize * 8, *b_size);
- 
--
- 			memset(tvmem[0], 0xff, PAGE_SIZE);
- 
--			if (ret) {
--				pr_err("setkey() failed flags=%x\n",
--						crypto_aead_get_flags(tfm));
--				goto out;
--			}
--
- 			sg_init_aead(sg, xbuf, *b_size + (enc ? 0 : authsize),
- 				     assoc, aad_size);
- 
--- 
-2.43.0
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAme9uaoACgkQJNaLcl1U
+h9BAiwf/dw3Untav5Mhl1tP3LHClqo8SBTdvNZ70K3+Kdp+NxtTctxK8eeFlqwAW
+Bz8hU4iUuawiuLrP+wNNTFsLEPkR0aJeHyVMjDUqQb/1RqTUbxDaQhMu9p2B9mLw
+UMsL8MxKhjBt7mmaoGkt6U5dTMOjJ8A6IkgYTHXcV3Ey/aMLpa5Mzx6op6j6bajm
+OmiTZgwrywvD6lJrCqiy6H8HvR0diIzUJaZBCjrWD0Fo4rhq3zb2YHwN/5eQoExD
+ax9nj0mxMPbraHrMEeYOYDZI+e1Z2XHyWmQI8I986lh2U5C7CQhfXuPhO/ClgLxM
+0BoIyfJaF+BvP3bmd7jHgEdD6dC0UA==
+=ks4s
+-----END PGP SIGNATURE-----
+
+--Zpn3ZcMiMiv7Yser--
 
