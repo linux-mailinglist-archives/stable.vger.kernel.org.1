@@ -1,149 +1,125 @@
-Return-Path: <stable+bounces-119457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A84CA43636
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 08:34:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7D8A4362C
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 08:29:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BD351899304
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 07:34:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD977188C9BB
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 07:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239E618B484;
-	Tue, 25 Feb 2025 07:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FCF25A2C8;
+	Tue, 25 Feb 2025 07:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="yeBdoqTK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pkp2YFwJ"
 X-Original-To: stable@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB5B2571CD;
-	Tue, 25 Feb 2025 07:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5728A25A2BE
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 07:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740468868; cv=none; b=dCZk1EgSEjIGTOIuDHeKpel/xPD9BO6Tfnfx6t1hspo0+XyL8ZBEfM1nTYtaTFf+jF87/QfVrZDeRh/uVKueu+t5SF5BHQPHJ3wlSztwnCQkp+EoHtUlxb+r9RGQKvQm9mjhFREjtuuKyaRXhsKhB0wGcf4aaMv23fXiotppDjU=
+	t=1740468559; cv=none; b=GbV/OCq7jF3tn355ZRnJ/wqY5hg3yoChXOPP485q/+A5qbFPm2PRvdMEDQ2C6K9wSCoPa3R2I0ls7peEDMK2NSnihArjLs5xUYgaTxSXw/QljexC2rg/WSBp4GU3nAYnlLBNWAWeTLXYOjGMyHbhkKThI/uJh0x2vTZPwNHhr4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740468868; c=relaxed/simple;
-	bh=+JalhccGD3dfKX7N9TtFSk3UBg6wqIoop1+xyjVxPsc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bXjYp2QnYS2+sAPd+OH67aravKD7pTebmmLIFln4kv2N2fUThm/IbxxIpHG+0RL0evB3kairLNYY6grm+QrCXuLUYJhTWBq5yDKBFzinn+2PMrwzdiMCLqyH+gJgaw6pLKuSuemlS0T8nZKQ/067zZGqJEbR3Rl8BXue0zDgeO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=yeBdoqTK; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 75B8F20099;
-	Tue, 25 Feb 2025 07:28:54 +0000 (UTC)
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.155])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id D91BC200C2;
-	Tue, 25 Feb 2025 07:28:45 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 09D753E917;
-	Tue, 25 Feb 2025 07:28:38 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 26F6A40078;
-	Tue, 25 Feb 2025 07:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1740468516; bh=+JalhccGD3dfKX7N9TtFSk3UBg6wqIoop1+xyjVxPsc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=yeBdoqTKWCxFwETv4ogWkB7Q50+lbpJs7iCgHkzukBIH2zdOJLp8/uIy6PiPGQ26d
-	 lL+Oum+a/dnd67OEHIQyhMfoQurMEOkot1KfpGT/ES4uaYJiH8UtreGZ4R0PaAJ5Kt
-	 dMrge6+74qs+MG43sHeEvQktU9wGb5+3T0SLiduM=
-Received: from [172.29.0.1] (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 028F243C7E;
-	Tue, 25 Feb 2025 07:28:28 +0000 (UTC)
-Message-ID: <7db41baa-c435-4478-baef-d3d658b050b4@aosc.io>
-Date: Tue, 25 Feb 2025 15:28:24 +0800
+	s=arc-20240116; t=1740468559; c=relaxed/simple;
+	bh=zIvaaoQGm7KtfdZ12vZ6A5bV0odA8xANuXpTVcfAHfY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j+QjnFMKdpPBkyLW05Hh4EMJmsPnY6QmnF/MfRw1tEnsqKUR+Ca9DmQ/kyZIzOtktZpLCplb+SDmBZ1b6oyTP54uWmrEJGOehHquEGS/60oqHgbIJ2Lx7HDatQQno0t6H1yWA1VVraLY2q48OFeMbwfC0Fv03esIBNafd0CxXU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pkp2YFwJ; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6fcf90d09c6so13776187b3.0
+        for <stable@vger.kernel.org>; Mon, 24 Feb 2025 23:29:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740468557; x=1741073357; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YmLM7oHR00hoPy5F7b3VDNoInC9XlQISOKmVVqo7gNI=;
+        b=pkp2YFwJ8UdySUpGyfT32apwslskcRIbjO6kPfuP/yOZjJ93xrqIe7WHQ/m4OmhJpE
+         ZGfuwhBgoiMw+w+h74fGzUkWrtrSfbfBC5YwoHIo9g/Yt3yaMJoT4HreeBq3O6QHOk3M
+         ODA5W/Fox1jpqsGrCK9U0iuBEHXGgA+fzXMRflaYAHJ9VIA7E4F5nhCh87y4hdsW1UbN
+         QTbe0F90jC8RNXP08kkujpAHQ5M5nsBTrlmVFZ/0bwjSBNGxXsZABTXHIbnODFSkfj5C
+         1xUnJ3fQsHSBDxa9QILsCqr3K4MMOZzLuvS/Uk81yo1WKu6K1MPtYwGdKQSaDNfZXDfo
+         Assg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740468557; x=1741073357;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YmLM7oHR00hoPy5F7b3VDNoInC9XlQISOKmVVqo7gNI=;
+        b=wM3vlPQmI6u33ZcBVZK7XfQXrVr4LFBesqcck38t8j5cFUsGEomQQvtFgnv/lvvZGo
+         oA9ijZom8WWt1qG3p8unLPKQudnt5tXDB8aMbUYKR5Jzgkx1R/v0gffAjTOUZgfMo+5Y
+         LxOahY8jevWMJCSFK7RFhLM/jI/WCj2qscChdfrz1v9hhw1rcIZDiW7Y/LVa8XQvgLSK
+         S5HcZNtgn+hIr2ttM/eCRPiT7r7cHCwWLOPKxMR6/0Z5AydPhLSMtcRzoPx3EgtBinRf
+         LGeYjTzJ/XfU5VkMEKA+VTx1DEo+bNvbIFMxg2oebBhbTuJgQI/0/tCSIWzfH655PmRw
+         Itbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXG+42Q1ij4vU4rEb2zfnJX8RxHEbOsgnAFpXI/3lhZNLwrNz67B8ZO/ebcIZAd97pJDz+RaCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwSMECoCD8Ph1u1NTGTgrdr7lwFY8uE8OwmvKMtw6qLiFtAIA5
+	yVIqTZZ1b6p9VMnFA12iDrvY5rVGEgROxLReofdInkt2lhuio60prDg5oUwb8j287P3SozupHiZ
+	Zcf+n4lpNpfG9Gp0Fsxoclb95Kn+FaHrMQ1zUsA==
+X-Gm-Gg: ASbGncu4owgLaOYltwWEZ6/RFVWeUm2vUplLxkd2FPs1G+Giy6YWKF5uB1HFGntq5ny
+	C8+JvM6I0Mt2uIf1j1DE8pCmu+YNfDGUKmzAqF7BKUPiZu4qnvorcEnipypXJDaRphJObbxhD/n
+	yD90MihU4uYAWtEzJdyPy7Kd2mlnJ04wCrXfEYVYw=
+X-Google-Smtp-Source: AGHT+IF9jdcF1gQYWcqJRP7dskBg5Xa5PlysLeHiljmo+uvVBKR+01JJ5+3ZW148YC22+F7vV3ocHacmYQVxaxc3wzI=
+X-Received: by 2002:a05:690c:3687:b0:6f9:4c00:53ae with SMTP id
+ 00721157ae682-6fbcbc8c426mr119358127b3.8.1740468557236; Mon, 24 Feb 2025
+ 23:29:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] drm/xe/regs: remove a duplicate definition for
- RING_CTL_SIZE(size)
-To: linux-kernel@vger.kernel.org
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, stable@vger.kernel.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Matt Roper <matthew.d.roper@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
- Ilia Levi <ilia.levi@intel.com>, Gustavo Sousa <gustavo.sousa@intel.com>,
- =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-References: <20250225071832.864133-1-jeffbai@aosc.io>
-Content-Language: en-US
-From: Mingcong Bai <jeffbai@aosc.io>
-In-Reply-To: <20250225071832.864133-1-jeffbai@aosc.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 26F6A40078
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [-0.10 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,stable.vger.kernel.org:server fail];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[aosc.io,vger.kernel.org,intel.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,lists.freedesktop.org];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
+References: <20250224142604.442289573@linuxfoundation.org> <9a18b229-f8b7-4ce2-8fe0-4fabd7aa6bd2@sirena.org.uk>
+ <CACMJSeuQkzvi5j975bbb6gF=+NMz0Aw-X5xLXR=8rMUjeQUoZg@mail.gmail.com> <2025022548-swiftness-supervise-ae80@gregkh>
+In-Reply-To: <2025022548-swiftness-supervise-ae80@gregkh>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Date: Tue, 25 Feb 2025 08:29:06 +0100
+X-Gm-Features: AWEUYZnvrzYRtYLYeSfKngXkQZhA38Ce1zhEnS7-WwuvLBTGBLkn-dt-SFzkyZ4
+Message-ID: <CACMJSesFVOp2t5C0mhB-=8m3reUtuBnMrcTShj-duEpPX1iocg@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/138] 6.13.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+On Tue, 25 Feb 2025 at 07:47, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Feb 24, 2025 at 08:57:10PM +0100, Bartosz Golaszewski wrote:
+> > On Mon, 24 Feb 2025 at 20:52, Mark Brown <broonie@kernel.org> wrote:
+> > >
+> > > On Mon, Feb 24, 2025 at 03:33:50PM +0100, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.13.5 release.
+> > > > There are 138 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > >
+> > > This and 6.12 are broken on several platforms by "gpiolib: check the
+> > > return value of gpio_chip::get_direction()", as reported upstream
+> > > several drivers break the expectations that this commit has.
+> > > 96fa9ec477ff60bed87e1441fd43e003179f3253 "gpiolib: don't bail out if
+> > > get_direction() fails in gpiochip_add_data()" was merged upstream which
+> > > makes this non-fatal, but it's probably as well to just not backport
+> > > this to stable at all.
+> >
+> > Agreed, this can be dropped. It never worked before so it's not a
+> > regression fix.
+>
+> Ok, thanks, I'll drop it from all stable queues and push out some new
+> -rc2 releases.
+>
+> greg k-h
 
-在 2025/2/25 15:18, Mingcong Bai 写道:
-> Commit b79e8fd954c4 ("drm/xe: Remove dependency on intel_engine_regs.h")
-> introduced an internal set of engine registers, however, as part of this
-> change, it has also introduced two duplicate `define' lines for
-> `RING_CTL_SIZE(size)'. This commit was introduced to the tree in v6.8-rc1.
-> 
-> While this is harmless as the definitions did not change, so no compiler
-> warning was observed.
-> 
-> Drop this line anyway for the sake of correctness.
-> 
-> Cc: <stable@vger.kernel.org> # v6.8-rc1+
-> Fixes: b79e8fd954c4 ("drm/xe: Remove dependency on intel_engine_regs.h")
-> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-> ---
->   drivers/gpu/drm/xe/regs/xe_engine_regs.h | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/regs/xe_engine_regs.h b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-> index d86219dedde2a..b732c89816dff 100644
-> --- a/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-> +++ b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
-> @@ -53,7 +53,6 @@
->   
->   #define RING_CTL(base)				XE_REG((base) + 0x3c)
->   #define   RING_CTL_SIZE(size)			((size) - PAGE_SIZE) /* in bytes -> pages */
-> -#define   RING_CTL_SIZE(size)			((size) - PAGE_SIZE) /* in bytes -> pages */
->   
->   #define RING_START_UDW(base)			XE_REG((base) + 0x48)
->   
+My bad, I should have just queued it for v6.15 without the stable tag.
 
-Sorry about the series header, this was meant to be a single patch. I'm 
-re-sending a copy now.
-
-Best Regards,
-Mingcong Bai
+Bartosz
 
