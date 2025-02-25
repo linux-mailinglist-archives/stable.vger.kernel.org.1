@@ -1,199 +1,302 @@
-Return-Path: <stable+bounces-119449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FB8A4356C
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 07:37:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E23A43593
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 07:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9A41189874E
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 06:37:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEC787A5410
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 06:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8AF2561CE;
-	Tue, 25 Feb 2025 06:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE059257436;
+	Tue, 25 Feb 2025 06:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="z/ZRdX9l"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="lViuGvPN";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="lViuGvPN"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2057.outbound.protection.outlook.com [40.107.94.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038FB254AE0
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 06:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740465459; cv=fail; b=rFl6jYCIV064E7YiVhHnuhF7WHBib8vEvvK+8tS88DfRJqHFt2uC7pkMCSCtgtvFe0GT3qdV3mtPCoy3sTrK0xK6Wu2m1vpQ/xNhgrG6uIeftbWdeK5Na6f95Pu+Zdne3yqVEvx3Xw4eSukC49FbJGxXKgYgOLpMYAWtPM+g4so=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740465459; c=relaxed/simple;
-	bh=25zSj7RiM+GzxvjmZdtt6h0kqHGnu27FKzC1jl0h/p8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eS/39GEzytEF14RZzhjh/H3n5A99TP3JLVp/iUYpVYExn3wCH+N6Rl3yiZWGgmYIvNWd/LiBoyNGPfCr0XJ7OemXDNClhHq2B+XbZSJ97mOmisN/brL7MvKe73UkCuqT9D+uKNFJ38J2KIDuCJL/3NU+rjPaNpM6eXItNxpFVoQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z/ZRdX9l; arc=fail smtp.client-ip=40.107.94.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CxWbSHP7cKlnnb6wrKxRpmD7wMNyTFywOpX9GW1/Y9v79+h9HWYmB1WTbNcSQLQHkfuaUj6AxJ/QRJPTwZ2u2Fsd/tuN3iRphG0tWrzX/4UeyZ+FUH7OFcXp2t89qWAgic2ckDdk93yPcTV3YLAqw2kP3cS9w6G0zdRPCEEjpKTP7gIG1az3bF7bGVDDMvegCfEfIRr6yz4mVfPQI+mjycBaqikySFxr7SSyqD1MSuOtb2K18sDQo5DusF1euvGlAN6Luv3miHccVQetJEjS2uF/YZCSdWpinIg/HN8rvVs4RtceDxbDrRDA7V+BY7cGbcr9pAVTaBRM/NnO/Cw3Fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wMEphiOhCPZELIKEtyrN9yNw5wP3Jq6q7NtHPFNQKYo=;
- b=gskdLMVb6fSw4BytTh/wsv+XRLG0tFYSM+t7JPBuCbKXKd3v19g42VVVsRBMj1ktEdUzk6ZTiqI9ZZhKVemjIfaZ4WpEPZyzKP/Woi01Rzl88yhEssRd/Y+9G4FBxVl+ck2kuol9wH77/3EYFhvJKDzc6xw5pqXLfee6xoTEyv1FPPDtH8RYTMmgAfpM6gK9zjgWAR2R0bd5rSUTP03jManuaDLu567uTfPFCIMADyfu8NqY7W1KXwAOq29YwXHFSjKblRV7GMGs3lWz2YQKmvWkF06qL/WdMXnGcRtMmYnFevEmfY+wVd/1Fh86Kla0PyhJRjRHV12urqP+gukfhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wMEphiOhCPZELIKEtyrN9yNw5wP3Jq6q7NtHPFNQKYo=;
- b=z/ZRdX9ldPaRK/KpPrLhXouqxJJI1YTOdX+38AH6WDRlm9o8JFfM2nruYejfv0KVXVjieTkFRXwWIKVhdEu7YqnRvVkxQ5jwBspAhvSC75pJt504DZ7I7xkbp+7iGzxAnJfAWO8kyG3ni2drPvhN9TeK05qG/tluCa3XrVNWXGE=
-Received: from BYAPR02CA0064.namprd02.prod.outlook.com (2603:10b6:a03:54::41)
- by BL1PR12MB5825.namprd12.prod.outlook.com (2603:10b6:208:394::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.21; Tue, 25 Feb
- 2025 06:37:33 +0000
-Received: from SJ5PEPF000001F7.namprd05.prod.outlook.com
- (2603:10b6:a03:54:cafe::d7) by BYAPR02CA0064.outlook.office365.com
- (2603:10b6:a03:54::41) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.21 via Frontend Transport; Tue,
- 25 Feb 2025 06:37:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SJ5PEPF000001F7.mail.protection.outlook.com (10.167.242.75) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8489.16 via Frontend Transport; Tue, 25 Feb 2025 06:37:33 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 25 Feb
- 2025 00:37:32 -0600
-Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 25 Feb 2025 00:37:26 -0600
-From: Wayne Lin <Wayne.Lin@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Zaeem Mohamed <zaeem.mohamed@amd.com>, Solomon Chiu
-	<solomon.chiu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Alex Hung
-	<alex.hung@amd.com>, Ausef Yousof <Ausef.Yousof@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
-	<stable@vger.kernel.org>, Alvin Lee <alvin.lee2@amd.com>
-Subject: [PATCH 12/27] drm/amd/display: wait for outstanding hw updates
-Date: Tue, 25 Feb 2025 14:35:55 +0800
-Message-ID: <20250225063610.631461-13-Wayne.Lin@amd.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20250225063610.631461-1-Wayne.Lin@amd.com>
-References: <20250225063610.631461-1-Wayne.Lin@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52065254AEB
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 06:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740465879; cv=none; b=aUA3hBY/b11sIqBW41MVaWES7hQI0g/wZgpAx+PliC7vLXLllBe48ErW9g/mf8RFzI6u5sRjJM22Q31mFktJFdMM8qTJv3o49bdiCpzMxxAqrwBI3Hm7PkmzMtqgk/B2Qoba7Yj0Qti29exaxsnK9SbjuPrxynFp9Mb3ZDwdEz0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740465879; c=relaxed/simple;
+	bh=aJ57MWWerwy8jbvz1VnuUo8jX2WAH3BouZ7bJ4EUWvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mbX4KBxi7CRbLWhEfNVQWoHNYtPPWlBjzk5HjkunIwsxgwyzbDWKgz9X96kqtF32IVp7PmmRAj35u6xTehm5roA6zr2avVLJNniEKUvpmqDFBa1/+Cr8JrNgzH4u7a7mNIiCEkRHTPfalaoJsfv+x4b6jLne9C4sFCIGL6zssIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=lViuGvPN; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=lViuGvPN; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3463E1F44E;
+	Tue, 25 Feb 2025 06:44:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1740465874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aJ57MWWerwy8jbvz1VnuUo8jX2WAH3BouZ7bJ4EUWvg=;
+	b=lViuGvPN5CdBpdWPn7XiVkDLZFOZoZtA9E4nZGJeUjYHjBZ8Z28sFFZ6U+wz92zZytMc0b
+	zJsRmSK1fpNZMiLBij7ypvTHdkqOtWe5W7eTWPkQxS+jwxRXdZS7onMgpQSGquilEQQYVm
+	cu7OlNvQmJjzzgDoT1muTdJTvWrYGyo=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1740465874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=aJ57MWWerwy8jbvz1VnuUo8jX2WAH3BouZ7bJ4EUWvg=;
+	b=lViuGvPN5CdBpdWPn7XiVkDLZFOZoZtA9E4nZGJeUjYHjBZ8Z28sFFZ6U+wz92zZytMc0b
+	zJsRmSK1fpNZMiLBij7ypvTHdkqOtWe5W7eTWPkQxS+jwxRXdZS7onMgpQSGquilEQQYVm
+	cu7OlNvQmJjzzgDoT1muTdJTvWrYGyo=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5443C13A61;
+	Tue, 25 Feb 2025 06:44:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8bLgEtFmvWcoXwAAD6G6ig
+	(envelope-from <jgross@suse.com>); Tue, 25 Feb 2025 06:44:33 +0000
+Message-ID: <9e6ee367-41c6-47b2-ac64-1bdb0794cb47@suse.com>
+Date: Tue, 25 Feb 2025 07:44:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: Wayne.Lin@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F7:EE_|BL1PR12MB5825:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65e2af2f-e22d-4fad-6a96-08dd5566e29b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vRBmZ3OXOiPs/KVZqT9CSGjCR+nfiqLNCAIo3yk3bkitmsdnjM+LjDkFXhOc?=
- =?us-ascii?Q?SkpwsKd1Sp07TSjH3ycAoVzISA1o6sl7spJFAakBes6E1Vv6RdtSq0yuNRwO?=
- =?us-ascii?Q?ycbd/Gq3T8GXV19VMzeYY/fTGvW+6S6gGvfAf0elpio7ay9+oWp46kHcLeU8?=
- =?us-ascii?Q?oWhEfilzZBBtWRVLfMXArCzkkN3YcUf37c2CEAXsTQz1FyAHLH9iTU7uRS1L?=
- =?us-ascii?Q?ylqU7oso+oYVW4VeMC27XvvjIwM4yjVsV31Fxt8zpBuq4G3JCjvAh2/X3CLX?=
- =?us-ascii?Q?ZGjzeBYMHA03bZkos+f73R1iSdYWEK7xGJJGfQ5+QPVllDV8y2759Dy8tRg2?=
- =?us-ascii?Q?bcEC3TJWbuUrr1WldrD47Sf0K1NLJgsNwxuiBRvmVJRNrn6pgp5q76sLnQzl?=
- =?us-ascii?Q?wir1DALgF9IXd4KttKEtzcCEdzORjUk3Z0lkLFw32F8IdMrIcJ5yeYNpx9+S?=
- =?us-ascii?Q?zb4ecGW+CzDi7+4ptmmyfT/ejouAKgc9DSYBnZGrCuRxgjNf1LapPXIswjOG?=
- =?us-ascii?Q?OVN9XRXXQQgrbyz83ACfVJ6PIwEzgdEh465INtzO+v1bbY5YZH1VaRpHeFjQ?=
- =?us-ascii?Q?G4fgNAjB/iMcsOR/DyhZ9/Ov22H6A/MvtFAl1zEbx4MWmEiBQS/dYl4hIbrm?=
- =?us-ascii?Q?VakbnTTg+g2/MXMfWorDn6DNs+L3QzD7yHUPC914dBtC+VdziJ2OPyeLgflB?=
- =?us-ascii?Q?IsnJH0h8lQNj1rILhtPLL4oTyXOaL5phEqN+gCWglDDRZe4kA/4M29dfXqrp?=
- =?us-ascii?Q?eVgl427HykNPu05++myR/4bKoflJF0l5PVeJCxxdPZlOmxgFO7nhbOT7GP3n?=
- =?us-ascii?Q?ehneNW8uwlAs+tZpsda1o9lAc884yxPGQheedcTy3eu/+AzlyvzxpTPT8LwC?=
- =?us-ascii?Q?9h0gyFObtkMX1ndfcXBbgDEoRfTVhWB6Ve9MaVnRzAJN56ZZb8hGyzEqzvxk?=
- =?us-ascii?Q?T3cGQ7TPW7GT9cF7AYL0bFIJRQiVeDy7sxwQOOQPOs+802uC5GLrQRwMpvwE?=
- =?us-ascii?Q?bbmeRfgiXcFHydlT2yviEPG07ta4Xbgwj8aZtkdEgzKABw2phfrRTxi6m9J7?=
- =?us-ascii?Q?jGnX+Q2jGIg7ykAiVK6vmonD9BY9zbIf76vB5CNZ0xESZgJp7oCdCuZDLcIv?=
- =?us-ascii?Q?iTwZHuOlo89Hdcj/rStqe1QV0HzGa5F84kNBa5oc0Hgcyf45QCIXvkRK8Udw?=
- =?us-ascii?Q?0YL9OEa/Jd2QujdoUYBk+jymI3q6I426mLcsIgF6kX0//m5Mo5j9Be73bDqX?=
- =?us-ascii?Q?LvWagy0c3Ej2XjD5CyP+6FjnKhsVoXcL5DrXx8wK0s2GMy4O88TfQkBEakZh?=
- =?us-ascii?Q?e2knGcGUrEpXXX/5CCHLZx8auvs3ked4XUsQyNCTCY8yPQzfCEOAqUOzvl8f?=
- =?us-ascii?Q?G8tc6n8tILCIaZupAN/Hdtw6Chruvgh0OEZIk5N139Na0bFwSUXKw305vX14?=
- =?us-ascii?Q?f1+SC84cOWvzPK4MfAnhO6wnARhr3WCeeUZp+tSdW0p+v1QNdumL7517cDti?=
- =?us-ascii?Q?jGmSRvd1dsCx9XQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 06:37:33.1777
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65e2af2f-e22d-4fad-6a96-08dd5566e29b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F7.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5825
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/3] x86/paravirt: Move halt paravirt calls under
+ CONFIG_PARAVIRT
+To: Vishal Annapurve <vannapurve@google.com>, dave.hansen@linux.intel.com,
+ kirill.shutemov@linux.intel.com, ajay.kaher@broadcom.com,
+ ak@linux.intel.com, tony.luck@intel.com, thomas.lendacky@amd.com
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+ pbonzini@redhat.com, seanjc@google.com, kai.huang@intel.com,
+ chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, erdemaktas@google.com,
+ ackerleytng@google.com, jxgao@google.com, sagis@google.com,
+ afranji@google.com, kees@kernel.org, jikos@kernel.org, peterz@infradead.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com,
+ stable@vger.kernel.org
+References: <20250225004704.603652-1-vannapurve@google.com>
+ <20250225004704.603652-2-vannapurve@google.com>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20250225004704.603652-2-vannapurve@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------pnbruyTI4GTVWPP0fmZ500Q5"
+X-Spam-Score: -3.70
+X-Spamd-Result: default: False [-3.70 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-0.997];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_UNKNOWN(0.10)[application/pgp-keys];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[31];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~,5:~];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	HAS_ATTACHMENT(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linutronix.de,redhat.com,alien8.de,zytor.com,google.com,intel.com,linux.intel.com,gmail.com,kernel.org,infradead.org,vger.kernel.org,lists.linux.dev,broadcom.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------pnbruyTI4GTVWPP0fmZ500Q5
+Content-Type: multipart/mixed; boundary="------------uC69IAV8I5aywmdzvN8W0iDw";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Vishal Annapurve <vannapurve@google.com>, dave.hansen@linux.intel.com,
+ kirill.shutemov@linux.intel.com, ajay.kaher@broadcom.com,
+ ak@linux.intel.com, tony.luck@intel.com, thomas.lendacky@amd.com
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+ pbonzini@redhat.com, seanjc@google.com, kai.huang@intel.com,
+ chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, erdemaktas@google.com,
+ ackerleytng@google.com, jxgao@google.com, sagis@google.com,
+ afranji@google.com, kees@kernel.org, jikos@kernel.org, peterz@infradead.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com,
+ stable@vger.kernel.org
+Message-ID: <9e6ee367-41c6-47b2-ac64-1bdb0794cb47@suse.com>
+Subject: Re: [PATCH v6 1/3] x86/paravirt: Move halt paravirt calls under
+ CONFIG_PARAVIRT
+References: <20250225004704.603652-1-vannapurve@google.com>
+ <20250225004704.603652-2-vannapurve@google.com>
+In-Reply-To: <20250225004704.603652-2-vannapurve@google.com>
 
-[why&how]
-seeing display corruption as a result of not waiting for certain values
-to latch and attempting otg locking/programming before waiting for them,
-there is code in place for this but dcn35 does not initialize these
-functions.
+--------------uC69IAV8I5aywmdzvN8W0iDw
+Content-Type: multipart/mixed; boundary="------------cezvHZFFUI52uLonVBOaTcBZ"
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
----
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c | 1 +
- drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c | 3 +++
- 2 files changed, 4 insertions(+)
+--------------cezvHZFFUI52uLonVBOaTcBZ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-index 6a82a865209c..7be72fd88477 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-@@ -128,6 +128,7 @@ static const struct hw_sequencer_funcs dcn35_funcs = {
- 	.enable_plane = dcn20_enable_plane,
- 	.update_dchubp_dpp = dcn20_update_dchubp_dpp,
- 	.post_unlock_reset_opp = dcn20_post_unlock_reset_opp,
-+	.wait_for_all_pending_updates = dcn30_wait_for_all_pending_updates
- };
- 
- static const struct hwseq_private_funcs dcn35_private_funcs = {
-diff --git a/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c
-index b86fe2b094f8..eb29e852dedb 100644
---- a/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c
-@@ -493,6 +493,9 @@ static struct timing_generator_funcs dcn35_tg_funcs = {
- 		.set_long_vtotal = optc35_set_long_vtotal,
- 		.is_two_pixels_per_container = optc1_is_two_pixels_per_container,
- 		.read_otg_state = optc31_read_otg_state,
-+		.get_optc_double_buffer_pending = optc3_get_optc_double_buffer_pending,
-+		.get_pipe_update_pending = optc3_get_pipe_update_pending,
-+		.get_otg_double_buffer_pending = optc3_get_otg_update_pending,
- };
- 
- void dcn35_timing_generator_init(struct optc *optc1)
--- 
-2.37.3
+T24gMjUuMDIuMjUgMDE6NDcsIFZpc2hhbCBBbm5hcHVydmUgd3JvdGU6DQo+IEZyb206ICJL
+aXJpbGwgQS4gU2h1dGVtb3YiIDxraXJpbGwuc2h1dGVtb3ZAbGludXguaW50ZWwuY29tPg0K
+PiANCj4gQ09ORklHX1BBUkFWSVJUX1hYTCBpcyBtYWlubHkgZGVmaW5lZC91c2VkIGJ5IFhF
+TiBQViBndWVzdHMuIEZvcg0KPiBvdGhlciBWTSBndWVzdCB0eXBlcywgZmVhdHVyZXMgc3Vw
+cG9ydGVkIHVuZGVyIENPTkZJR19QQVJBVklSVA0KPiBhcmUgc2VsZiBzdWZmaWNpZW50LiBD
+T05GSUdfUEFSQVZJUlQgbWFpbmx5IHByb3ZpZGVzIHN1cHBvcnQgZm9yDQo+IFRMQiBmbHVz
+aCBvcGVyYXRpb25zIGFuZCB0aW1lIHJlbGF0ZWQgb3BlcmF0aW9ucy4NCj4gDQo+IEZvciBU
+RFggZ3Vlc3QgYXMgd2VsbCwgcGFyYXZpcnQgY2FsbHMgdW5kZXIgQ09ORklHX1BBUlZJUlQg
+bWVldHMNCj4gbW9zdCBvZiBpdHMgcmVxdWlyZW1lbnQgZXhjZXB0IHRoZSBuZWVkIG9mIEhM
+VCBhbmQgU0FGRV9ITFQNCj4gcGFyYXZpcnQgY2FsbHMsIHdoaWNoIGlzIGN1cnJlbnRseSBk
+ZWZpbmVkIHVuZGVyDQo+IENPTkZJR19QQVJBVklSVF9YWEwuDQo+IA0KPiBTaW5jZSBlbmFi
+bGluZyBDT05GSUdfUEFSQVZJUlRfWFhMIGlzIHRvbyBibG9hdGVkIGZvciBURFggZ3Vlc3QN
+Cj4gbGlrZSBwbGF0Zm9ybXMsIG1vdmUgSExUIGFuZCBTQUZFX0hMVCBwYXJhdmlydCBjYWxs
+cyB1bmRlcg0KPiBDT05GSUdfUEFSQVZJUlQuDQo+IA0KPiBNb3ZpbmcgSExUIGFuZCBTQUZF
+X0hMVCBwYXJhdmlydCBjYWxscyBhcmUgbm90IGZhdGFsIGFuZCBzaG91bGQgbm90DQo+IGJy
+ZWFrIGFueSBmdW5jdGlvbmFsaXR5IGZvciBjdXJyZW50IHVzZXJzIG9mIENPTkZJR19QQVJB
+VklSVC4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IEZpeGVzOiBiZmU2
+ZWQwYzY3MjcgKCJ4ODYvdGR4OiBBZGQgSExUIHN1cHBvcnQgZm9yIFREWCBndWVzdHMiKQ0K
+PiBDby1kZXZlbG9wZWQtYnk6IEt1cHB1c3dhbXkgU2F0aHlhbmFyYXlhbmFuIDxzYXRoeWFu
+YXJheWFuYW4ua3VwcHVzd2FteUBsaW51eC5pbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6
+IEt1cHB1c3dhbXkgU2F0aHlhbmFyYXlhbmFuIDxzYXRoeWFuYXJheWFuYW4ua3VwcHVzd2Ft
+eUBsaW51eC5pbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEtpcmlsbCBBLiBTaHV0ZW1v
+diA8a2lyaWxsLnNodXRlbW92QGxpbnV4LmludGVsLmNvbT4NCj4gUmV2aWV3ZWQtYnk6IEFu
+ZGkgS2xlZW4gPGFrQGxpbnV4LmludGVsLmNvbT4NCj4gUmV2aWV3ZWQtYnk6IFRvbnkgTHVj
+ayA8dG9ueS5sdWNrQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogVmlzaGFsIEFubmFw
+dXJ2ZSA8dmFubmFwdXJ2ZUBnb29nbGUuY29tPg0KDQpSZXZpZXdlZC1ieTogSnVlcmdlbiBH
+cm9zcyA8amdyb3NzQHN1c2UuY29tPg0KDQoNCkp1ZXJnZW4NCg==
+--------------cezvHZFFUI52uLonVBOaTcBZ
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------cezvHZFFUI52uLonVBOaTcBZ--
+
+--------------uC69IAV8I5aywmdzvN8W0iDw--
+
+--------------pnbruyTI4GTVWPP0fmZ500Q5
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAme9ZtAFAwAAAAAACgkQsN6d1ii/Ey+2
+Mgf+Nj1RQjrY8eSVYR+alThmNaZ8u6i77FwJyYUu2lKVh83EA9iV6KEvdDMUPunHQi2e+lqMGsKE
+uEclDp0TynVXXuMNbXChM1vRHPijTnj7eDuzmnwsgaS35BDAEfSfjbu82t3rRP3MGUOxrloirHmw
+OWUhRonp2UCHxnpniyzdyp6xj72bZsDtt2rO+MVLkUg2u9mHQWLXUzwawpt83t+RSD2i7B6GWYVi
+Xlka3lfvBasl763PvNwZk7PwulHTleMXJyX+g77nUVxhG2DkXJbQQRwSwZOdXunvLj60wq/lxCUP
+3YAOIAiEwZDHTwNI37Thu+IHy807VItItg9rTsdzeA==
+=fEtj
+-----END PGP SIGNATURE-----
+
+--------------pnbruyTI4GTVWPP0fmZ500Q5--
 
