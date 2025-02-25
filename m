@@ -1,189 +1,114 @@
-Return-Path: <stable+bounces-119441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7BDA43349
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 03:47:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 515DBA43363
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 04:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700DB176072
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 02:47:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 205F33B2F84
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 03:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2F015199C;
-	Tue, 25 Feb 2025 02:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hacrBWY1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F36215852E;
+	Tue, 25 Feb 2025 03:09:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD951420A8;
-	Tue, 25 Feb 2025 02:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BAB151991;
+	Tue, 25 Feb 2025 03:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740451653; cv=none; b=r1aM5Tfq790YWMqS5NBo/b7krYp7FfkhT4LiuQmSO4wMeGwdWBOwUrgBC453JCPNJfAPidEilDJ45lTDTNK+erM5Gnsvbvcr/WUfSeDRC/Ym1yVRu5L2ouE6Mr3Ti8is2kE0gTsIbzd5QYebLDn42kmwWS+qJPDURb4zFIstMcQ=
+	t=1740452952; cv=none; b=GtpVwRhCRkn8+6dyCTkc7iTUzYj/t2BW7MOB8MwOMSCZAGhiyOkTDPQtgrxCYVNwFMp+Fu6mO/1IhRMR4hFfvSias2camQmXq0lCVwWBjV+6d7yb7w4MWmnSR8WS54kSVSmALvBwMWzzp5y4x7vj2r7g+jAKFw1WRw7zv8j4jjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740451653; c=relaxed/simple;
-	bh=x1KS6AqtfOZwtRXInSRfYPkWUb1M714+osbFq+Q48Ns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ai5EXzx82ZEzkFKTExo2dzpyLYWvcmxwWir7X1S5yRsvvQyIe7bba/AurEFMuc7EqOG1boQkmx2UaYDFV6BQaGn+G0v3nORx3OrF8CUWYHkOZTsNmM4d/KFp+NDtkbGvkcxKr5pSXcHl7Xai9op7ofaBnWQKttjLwfrVPgauNnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hacrBWY1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OKOJjv013314;
-	Tue, 25 Feb 2025 02:46:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aA6tZ8v8e+BA012PmW+ETz2ZzpvDZAOrVhEY0i8GYNk=; b=hacrBWY1XvmsWtnC
-	iGejnx8L5eArOUtID8tzu5q4BN6O8UM33Dz63A4llf987DRUYBYTpBKxEEXjA6aZ
-	vf+vz5nnHxx4jC6gZIB0qWenWDZOE537ecYmUCc35QLZuj9FTAnt45EwiGEAsaZI
-	FBZ7nkEeu4xHTi1JXTtA/CCh9t+MzS68MHZyJx2qdwD0GhmhmKe7GfrUQkox12Ut
-	y/7aoF3UiGrW6viMs8rfdwATPpM8ZAcJzIXjv+SVEMN0SCjIxu/4i/zHTGWh63gd
-	MH9ACP7kCLHKXl/U0glV6TEDg271mNnhP0+7zVSRUSlvg9LL7JBUgNQedlFK9FOd
-	t23gGQ==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44y5wgq9gj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Feb 2025 02:46:59 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51P2kwPs020687
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Feb 2025 02:46:58 GMT
-Received: from [10.133.33.36] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 24 Feb
- 2025 18:46:54 -0800
-Message-ID: <97ac58b1-e37c-4106-b32b-74e041d7db44@quicinc.com>
-Date: Tue, 25 Feb 2025 10:46:51 +0800
+	s=arc-20240116; t=1740452952; c=relaxed/simple;
+	bh=qtwoiW+wjxdwfniv8ENqabrlCk5LMOdfrqjAEX8Z+1U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r8pTCQYMWQOxdnORL4pkjfqzgyPmMmbu2TpyAVlL8fN+6K2GYAEAAE6jnW/Yk9dWinlxlTHUBeHuik2FagPUHRwEJ2sch8gU6c0cUvPT9LhOI1nUidRUXOV+stIVR3C+eNEL5/r+FHKfP1g+rnmkpDPLU6RbNAsse8Qt3KjwFYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51P2DuUF002099;
+	Mon, 24 Feb 2025 19:08:52 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 44yar7juc7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 24 Feb 2025 19:08:52 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 24 Feb 2025 19:08:51 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 24 Feb 2025 19:08:48 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <mchehab@kernel.org>, <fullwaywang@outlook.com>,
+        <gregkh@linuxfoundation.org>, <linux-kernel@vger.kernel.org>,
+        <tiffany.lin@mediatek.com>, <andrew-ct.chen@mediatek.com>,
+        <yunfei.dong@mediatek.com>, <matthias.bgg@gmail.com>,
+        <linux-media@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 6.1.y] media: mtk-vcodec: potential null pointer deference in SCP
+Date: Tue, 25 Feb 2025 11:08:47 +0800
+Message-ID: <20250225030847.3829454-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/14] of: reserved-memory: Fix using wrong number of
- cells to get property 'alignment'
-To: William McVicker <willmcvicker@google.com>, Rob Herring <robh@kernel.org>
-CC: Zijun Hu <zijun_hu@icloud.com>, Saravana Kannan <saravanak@google.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Marc Zyngier <maz@kernel.org>,
-        Andreas Herrmann <andreas.herrmann@calxeda.com>,
-        Marek Szyprowski
-	<m.szyprowski@samsung.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Mike
- Rapoport" <rppt@kernel.org>,
-        Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, <kernel-team@android.com>
-References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
- <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
- <20250113232551.GB1983895-robh@kernel.org> <Z70aTw45KMqTUpBm@google.com>
-Content-Language: en-US
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-In-Reply-To: <Z70aTw45KMqTUpBm@google.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 0Y2V9zzDINZ_WQjiCfZNtwDTgE_RxUPw
-X-Proofpoint-ORIG-GUID: 0Y2V9zzDINZ_WQjiCfZNtwDTgE_RxUPw
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: jbfNddqTegbxnga7WbzmBe77Awe98qSA
+X-Authority-Analysis: v=2.4 cv=Be0i0qt2 c=1 sm=1 tr=0 ts=67bd3444 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=t7CeM3EgAAAA:8 a=7f2alXSBUxmpNkzq_swA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: jbfNddqTegbxnga7WbzmBe77Awe98qSA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-24_12,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- clxscore=1011 adultscore=0 phishscore=0 mlxlogscore=999 spamscore=0
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502250017
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ phishscore=0 suspectscore=0 spamscore=0 impostorscore=0 mlxscore=0
+ malwarescore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1011
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
+ definitions=main-2502250020
 
-On 2/25/2025 9:18 AM, William McVicker wrote:
-> Hi Zijun and Rob,
-> 
-> On 01/13/2025, Rob Herring wrote:
->> On Thu, Jan 09, 2025 at 09:27:00PM +0800, Zijun Hu wrote:
->>> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>>
->>> According to DT spec, size of property 'alignment' is based on parent
->>> node’s #size-cells property.
->>>
->>> But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
->>> the property obviously.
->>>
->>> Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
->>
->> I wonder if changing this might break someone. It's been this way for 
->> a long time. It might be better to change the spec or just read 
->> 'alignment' as whatever size it happens to be (len / 4). It's not really 
->> the kernel's job to validate the DT. We should first have some 
->> validation in place to *know* if there are any current .dts files that 
->> would break. That would probably be easier to implement in dtc than 
->> dtschema. Cases of #address-cells != #size-cells should be pretty rare, 
->> but that was the default for OpenFirmware.
->>
->> As the alignment is the base address alignment, it can be argued that 
->> "#address-cells" makes more sense to use than "#size-cells". So maybe 
->> the spec was a copy-n-paste error.
-> 
-> Yes, this breaks our Pixel downstream DT :( Also, the upstream Pixel 6 device
-> tree has cases where #address-cells != #size-cells.
-> 
+From: Fullway Wang <fullwaywang@outlook.com>
 
-it seems upstream upstream Pixel 6 has no property 'alignment'
-git grep alignment arch/arm64/boot/dts/exynos/google/
-so it should not be broken.
+[ Upstream commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b ]
 
-> I would prefer to not have this change, but if that's not possible, could we
-> not backport it to all the stable branches? That way we can just force new
-> devices to fix this instead of existing devices on older LTS kernels?
-> 
+The return value of devm_kzalloc() needs to be checked to avoid
+NULL pointer deference. This is similar to CVE-2022-3113.
 
-the fix have stable and fix tags. not sure if we can control its
-backporting. the fix has been backported to 6.1/6.6/6.12/6.13 automatically.
+Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+[ To fix CVE-2024-40973, change the file path from drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
+ to drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c and minor conflict resolution ]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test.
+---
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
-> Thanks,
-> Will
-> 
->>
->>>
->>> Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->>> ---
->>>  drivers/of/of_reserved_mem.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
->>> index 45517b9e57b1add36bdf2109227ebbf7df631a66..d2753756d7c30adcbd52f57338e281c16d821488 100644
->>> --- a/drivers/of/of_reserved_mem.c
->>> +++ b/drivers/of/of_reserved_mem.c
->>> @@ -409,12 +409,12 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
->>>  
->>>  	prop = of_get_flat_dt_prop(node, "alignment", &len);
->>>  	if (prop) {
->>> -		if (len != dt_root_addr_cells * sizeof(__be32)) {
->>> +		if (len != dt_root_size_cells * sizeof(__be32)) {
->>>  			pr_err("invalid alignment property in '%s' node.\n",
->>>  				uname);
->>>  			return -EINVAL;
->>>  		}
->>> -		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
->>> +		align = dt_mem_next_cell(dt_root_size_cells, &prop);
->>>  	}
->>>  
->>>  	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
->>>
->>> -- 
->>> 2.34.1
->>>
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+index d8e66b645bd8..27f08b1d34d1 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+@@ -65,6 +65,8 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_init(struct mtk_vcodec_dev *dev)
+ 	}
+ 
+ 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
++	if (!fw)
++		return ERR_PTR(-ENOMEM);
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
+-- 
+2.25.1
 
 
