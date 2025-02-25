@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-119508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5E7A4416C
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 14:55:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0ABA44173
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 14:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA14A3AA9EE
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE1D53BDBB1
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 13:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D10269B01;
-	Tue, 25 Feb 2025 13:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7885A26A0F1;
+	Tue, 25 Feb 2025 13:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1HhI4sM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O5towRUc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA17426A0D9
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 13:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1A326B08C
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 13:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740491612; cv=none; b=OBdBM0Zk6y62h5jHNXW6PcgY3SG8KH69YFAHDkntvuHn7nDXg4XHx9/EmcBKDz2AFL0kK6SBvlcQVW/PgnLIeNl9uYup4VLfiM1WHbjDabDP6ahQexLuQtHA6y3nFAubJbasG7KqhrQQxZEwpbB0ElWlGLo+iJ963oHl9CXZDro=
+	t=1740491615; cv=none; b=clkqDDJf6lSWKhMlhmLfNIIRt6l1yNkdClYqoYZB06UlYm4IFZUzkD7mh+V6n94O6OfmYLYEeqUe/Rn3WJTjstpXZm4dlBaTp+iCcJrtWknvRa1R6FXA0qXtbkGJ0kEOrwdEEcf3wdv/p5oariL4yxyJpjAiCw9iLhlwJPI3tuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740491612; c=relaxed/simple;
-	bh=x/SoOsEwIXJ2I0lj9eU01Zsi70t8jH5vF9VB2AzqcGY=;
+	s=arc-20240116; t=1740491615; c=relaxed/simple;
+	bh=8zEi33RXfYP0HhWqJFTJ6Tlu12/ujgIsgVPx2Gh/YyI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jMNsVHxHDksGNr4bH1vGaX5ZbTa7JzAlFT5D6IvphVcK2ZEyExVB89BwEUuZ0sZdLi+/lLhpEUHvXmQr0QWRrLcyPJ0TJda0xkgt2k2bhmVIuC2fHUoksXgiXhRjKeUVlGB2C/HmOYiVUFtAqDZMU3qTTd/+weA7nV+28+Qm8Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1HhI4sM; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:To:Cc; b=VjTgY1s9tSD78p2dnNiP+6C/782P3xUfWm8VAUVQRlNVFvMicCrLBlrOd1mMS6b4Pk6DkeEaOuy1x34IoKgvFu3lPgbOzzL5ZGCWwy16rZqTN4XyupT9y+94rrJCSMlE72UrPTfBw79Et4jtIzVWSaxYK/3gmsS98DlTjHB9uKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O5towRUc; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740491609;
+	s=mimecast20190719; t=1740491611;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WH6EQRTJAnG11oWI3qxrXzca9/GHK8AUiMHw+Fd1YXc=;
-	b=h1HhI4sM96sxD4FRXwLNqPGzlvCRdL41OdVnBWb+k03e3nX0Hb2voEiiOiP/qwOV/4tp+w
-	BI7mNytFavn5T8D5xlfC1FUkYordqmtsIwKbONSrQyvdlM9OgExggA4JsLQt22W9NefGIB
-	7PRjD3HEC3xKjB77AQWys1oQu1zccY0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=a7vU3VhhoMgC9nQunbGAAKfjutxoGbUF5vj7yk2CWAI=;
+	b=O5towRUcf0cgmMZea7yEHTKSksdTFoe0t6cnGKSy+AMf04X0SRVQT9KVRfLIaKP+dMF4Ti
+	LXLsThZfprHWpIk2b3YqYH4eLRjchrbFeftkk6GDoivXuoDA2WZZjIub1pUukpkuzwrJ9U
+	G6EZluiV+MDLBKaKRi7SFpObkW8OFa0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-5hGb7ThvMECjZPm_zF1xEQ-1; Tue, 25 Feb 2025 08:53:28 -0500
-X-MC-Unique: 5hGb7ThvMECjZPm_zF1xEQ-1
-X-Mimecast-MFC-AGG-ID: 5hGb7ThvMECjZPm_zF1xEQ_1740491607
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4399d2a1331so27717565e9.1
-        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 05:53:28 -0800 (PST)
+ us-mta-632-n6gFskU6MFOv_SNLngS5bA-1; Tue, 25 Feb 2025 08:53:30 -0500
+X-MC-Unique: n6gFskU6MFOv_SNLngS5bA-1
+X-Mimecast-MFC-AGG-ID: n6gFskU6MFOv_SNLngS5bA_1740491609
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-38f45a86efdso2889393f8f.2
+        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 05:53:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740491607; x=1741096407;
+        d=1e100.net; s=20230601; t=1740491609; x=1741096409;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WH6EQRTJAnG11oWI3qxrXzca9/GHK8AUiMHw+Fd1YXc=;
-        b=nrU6V54HFjhsQBa+2bhcxkPvl6TxcBACur4BnrsGUhEyREyYUwyx1GKd2qZvmb5WNY
-         PRYXjzLj9utOrt5cxCGLqA580uEKN1tkCXcg6KE4dq4Z8Pl7WOIqIm0N07oafMHU26N8
-         Z1KGCVDSHp4y4eIy68lrkGD1ONY9RQhT3gKGwtFCikGSr6qveXqa0+m1dSgBgLJNxIM9
-         F+1YoX7bc8l2K6Oq5T0ixuPPTjPQwgZgyNjy8Q4KqnIUQnQaEd6t1YtHJT/ElLQum5ih
-         suaZXA2y5cwQqSBko8aHQXC0EpYKFm5qrVOZQe7jhmaHV2gZxaquSDi9go2EFlY9MguS
-         UO5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUBnsB2hAWNQ1mdqb4z6OolbOr2RR8S7UerSHQq+aKeGCMauJoHqQ3nDmO1QHnepY/5H2v314E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNMP4hYYdrUm/32Emaud6YJz4bDwlDArCqZPYoisTf9a5tv4yc
-	UAlXhTJqgzAWqUzGL2V+uMUZE9/W7gLjm3uwHq/C3+w0+QpoB0wrWfDQjrDZDC67f/RHbfSfvv1
-	sDd1Y9ax6mkJPHZN/dyom0t+eyLBATBn7valtyqMy/y4Mzn9UhAjNIhDpDhoz0W2p
-X-Gm-Gg: ASbGncs+Vi/T+Dk30Khh88rKf7WOaPXzCgjkQdkjotRSreovq8BUtuGYDcjybyr/K51
-	NYea2WwdYOjWo629+wTiHlQSRSYYBTxgGIFnK4TNy09G5EvixNX8/qbN9AhtUZuVWBtq009Q3it
-	w96zeliIBJmPR0DMCt8dBLZ/iTLcAam5KYqwJ6A1f4PsOESrQH2XWyyvN4DNhp6UDfLTwbvFlTD
-	kdl/yKuEskvPibjJ4Re1CSsIVkH50RRrn2WAyvIrdqbqsfY7ecwFijCCMARRi0yK964UdSjMP+O
-	6Va5HNIhkmDuZwMb93LGd6eGMZMWsqw2yCiy05zVocq1G7anZ2JdKsdcZH9Jc6uarYrwL3g=
-X-Received: by 2002:a05:600c:1c9d:b0:439:5b03:586d with SMTP id 5b1f17b1804b1-439a30b0150mr170223505e9.8.1740491607008;
+        bh=a7vU3VhhoMgC9nQunbGAAKfjutxoGbUF5vj7yk2CWAI=;
+        b=vhZT13nvAmPNj5SCUKpf+LmY7bZ1Hd94SWFvHs+df8hySFUocgqn8++neKSWdXTuhx
+         RW/Se8WtiTPpncIBQEeu4yubABZZGPTFaL8Mw3vTGfbPhX+45XX+LWLGSFpc7lrhN6vm
+         eUyp1e6GVZLVaqUQNuITyb0M/XsSNUWJZVsrnSrsvW7A8gYtDKy3IEF+V7D7HXLZCTfQ
+         unQg3vsLiW4JILx+LPVdGKJGO9cls8B0UjS2tKEnrHU4OdotwMkOob0bBIDKUki+0uGd
+         gygXaJiRlJrK/41IpfczGxYib8DlDlnhxGV+pK4BJTnxMnkJFM2gmx56zJTvWBI98x4/
+         WZwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqajyq1ID2PneVTtF/r7v65Gh7aMhrBCxezJcM2mRjEj6+V6KDJaMBzMesgywfH3+0vUvmyVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxC3wloK0lzyXE2h612hK/P8d3HcrSgxWTDXr/jmYhUNv6DMW3I
+	+YcO5rY/kVD/aDi6p3jJxxo38q+I6kHyz963bSJlsa/t+emrmFHoJELQ45rid8GTmXv2P7Nsskn
+	X5ePyaXZ99GCCoIG9EwaQJKY9fvZGWw5cSGot37vbmB0fzn3NKu6QNw==
+X-Gm-Gg: ASbGncuP1TxXzXvOT00OmFuvQTQzNbkh13qjxsjRieIdPsBjIxRnfYGVt4oDGbS+oST
+	Vj+RG8lSx10p1WsBSmd47QSAjK22r5YpfkQ1JfJ/YNhCwHE8MRrpmGvMJYBpIW7GQ9GLG/n0/Ms
+	inPahp4WcJqhRJy5EjK7oj5tWqotT22CY6+RIk3KmNCScBkJsYx0Z+w+rVRCCVBfH0TsYS9oHdz
+	c7no4yb0m01ttIIP0NG47528V/enUTVFqXIm1ELju5bQEpnXqV4mzVGb1/b/d7i2K1sNeqNebIg
+	BcTXWM6eSiAnEdtELPFrwqwhDad7sOkKRlgH/KOY4BYenJIVQmoMID8kHvZpSmEr4W352E8=
+X-Received: by 2002:a5d:6d0a:0:b0:38d:dd70:d70d with SMTP id ffacd0b85a97d-38f6e947399mr16386837f8f.18.1740491607632;
         Tue, 25 Feb 2025 05:53:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFZsVP2UNIiau/kTPlc6LMB+QMxcs5i8rv2UwsyDwm3iae2GWcDcenWQDcz1hG4lVKVdYIHHQ==
-X-Received: by 2002:a05:600c:1c9d:b0:439:5b03:586d with SMTP id 5b1f17b1804b1-439a30b0150mr170223245e9.8.1740491606557;
-        Tue, 25 Feb 2025 05:53:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEE0hz+LKA/haja8pKaprGKWKdGy/Wlzx4irRIbGpJPs+xk+gUHSZ8ipl87Yyg96z4+tcagMg==
+X-Received: by 2002:a5d:6d0a:0:b0:38d:dd70:d70d with SMTP id ffacd0b85a97d-38f6e947399mr16386818f8f.18.1740491607238;
+        Tue, 25 Feb 2025 05:53:27 -0800 (PST)
 Received: from lleonard-thinkpadp16vgen1.rmtit.csb (nat-pool-brq-t.redhat.com. [213.175.37.10])
         by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd86ca9csm2362323f8f.22.2025.02.25.05.53.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 25 Feb 2025 05:53:26 -0800 (PST)
 From: Luigi Leonardi <leonardi@redhat.com>
-Date: Tue, 25 Feb 2025 14:53:15 +0100
-Subject: [PATCH PATCH 5.15.y 1/3] bpf, vsock: Invoke proto::close on
- close()
+Date: Tue, 25 Feb 2025 14:53:16 +0100
+Subject: [PATCH PATCH 5.15.y 2/3] vsock: Keep the binding until socket
+ destruction
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,150 +91,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250225-backport_fix_5_15-v1-1-479a1cce11a8@redhat.com>
+Message-Id: <20250225-backport_fix_5_15-v1-2-479a1cce11a8@redhat.com>
 References: <20250225-backport_fix_5_15-v1-0-479a1cce11a8@redhat.com>
 In-Reply-To: <20250225-backport_fix_5_15-v1-0-479a1cce11a8@redhat.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, Michal Luczaj <mhal@rbox.co>, 
  stable@vger.kernel.org
-Cc: Luigi Leonardi <leonardi@redhat.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>
+Cc: Luigi Leonardi <leonardi@redhat.com>, Jakub Kicinski <kuba@kernel.org>
 X-Mailer: b4 0.14.2
 
 From: Michal Luczaj <mhal@rbox.co>
 
-commit 135ffc7becc82cfb84936ae133da7969220b43b2 upstream.
+commit fcdd2242c0231032fc84e1404315c245ae56322a upstream.
 
-vsock defines a BPF callback to be invoked when close() is called. However,
-this callback is never actually executed. As a result, a closed vsock
-socket is not automatically removed from the sockmap/sockhash.
+Preserve sockets bindings; this includes both resulting from an explicit
+bind() and those implicitly bound through autobind during connect().
 
-Introduce a dummy vsock_close() and make vsock_release() call proto::close.
+Prevents socket unbinding during a transport reassignment, which fixes a
+use-after-free:
 
-Note: changes in __vsock_release() look messy, but it's only due to indent
-level reduction and variables xmas tree reorder.
+    1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
+    2. transport->release() calls vsock_remove_bound() without checking if
+       sk was bound and moved to bound list (refcnt=1)
+    3. vsock_bind() assumes sk is in unbound list and before
+       __vsock_insert_bound(vsock_bound_sockets()) calls
+       __vsock_remove_bound() which does:
+           list_del_init(&vsk->bound_table); // nop
+           sock_put(&vsk->sk);               // refcnt=0
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
+BUG: KASAN: slab-use-after-free in __vsock_bind+0x62e/0x730
+Read of size 4 at addr ffff88816b46a74c by task a.out/2057
+ dump_stack_lvl+0x68/0x90
+ print_report+0x174/0x4f6
+ kasan_report+0xb9/0x190
+ __vsock_bind+0x62e/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Allocated by task 2057:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ __kasan_slab_alloc+0x85/0x90
+ kmem_cache_alloc_noprof+0x131/0x450
+ sk_prot_alloc+0x5b/0x220
+ sk_alloc+0x2c/0x870
+ __vsock_create.constprop.0+0x2e/0xb60
+ vsock_create+0xe4/0x420
+ __sock_create+0x241/0x650
+ __sys_socket+0xf2/0x1a0
+ __x64_sys_socket+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 2057:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ kasan_save_free_info+0x37/0x60
+ __kasan_slab_free+0x4b/0x70
+ kmem_cache_free+0x1a1/0x590
+ __sk_destruct+0x388/0x5a0
+ __vsock_bind+0x5e1/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 7 PID: 2057 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
+RIP: 0010:refcount_warn_saturate+0xce/0x150
+ __vsock_bind+0x66d/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 7 PID: 2057 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
+RIP: 0010:refcount_warn_saturate+0xee/0x150
+ vsock_remove_bound+0x187/0x1e0
+ __vsock_release+0x383/0x4a0
+ vsock_release+0x90/0x120
+ __sock_release+0xa3/0x250
+ sock_close+0x14/0x20
+ __fput+0x359/0xa80
+ task_work_run+0x107/0x1d0
+ do_exit+0x847/0x2560
+ do_group_exit+0xb8/0x250
+ __x64_sys_exit_group+0x3a/0x50
+ x64_sys_call+0xfec/0x14f0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://lore.kernel.org/r/20241118-vsock-bpf-poll-close-v1-3-f1b9669cacdc@rbox.co
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-[LL: There is no sockmap support for this kernel version. This patch has
-been backported because it helps reduce conflicts on future backports]
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250128-vsock-transport-vs-autobind-v3-1-1cf57065b770@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
 ---
- net/vmw_vsock/af_vsock.c | 67 +++++++++++++++++++++++++++++-------------------
- 1 file changed, 40 insertions(+), 27 deletions(-)
+ net/vmw_vsock/af_vsock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 943d58b07a559d7ff82bd6fa5770bce4f4bba86b..4fae775ce8a05714d5224ad0b13679f36dbbf0cc 100644
+index 4fae775ce8a05714d5224ad0b13679f36dbbf0cc..f922c4681dd9075ab01d1783178f1fe4f491260c 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
-@@ -113,12 +113,14 @@
- static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr);
- static void vsock_sk_destruct(struct sock *sk);
- static int vsock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb);
-+static void vsock_close(struct sock *sk, long timeout);
+@@ -330,7 +330,10 @@ EXPORT_SYMBOL_GPL(vsock_find_connected_socket);
  
- /* Protocol family. */
- static struct proto vsock_proto = {
- 	.name = "AF_VSOCK",
- 	.owner = THIS_MODULE,
- 	.obj_size = sizeof(struct vsock_sock),
-+	.close = vsock_close,
- };
- 
- /* The default peer timeout indicates how long we will wait for a peer response
-@@ -800,39 +802,37 @@ static bool sock_type_connectible(u16 type)
- 
- static void __vsock_release(struct sock *sk, int level)
+ void vsock_remove_sock(struct vsock_sock *vsk)
  {
--	if (sk) {
--		struct sock *pending;
--		struct vsock_sock *vsk;
--
--		vsk = vsock_sk(sk);
--		pending = NULL;	/* Compiler warning. */
-+	struct vsock_sock *vsk;
-+	struct sock *pending;
+-	vsock_remove_bound(vsk);
++	/* Transport reassignment must not remove the binding. */
++	if (sock_flag(sk_vsock(vsk), SOCK_DEAD))
++		vsock_remove_bound(vsk);
++
+ 	vsock_remove_connected(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_remove_sock);
+@@ -815,12 +818,13 @@ static void __vsock_release(struct sock *sk, int level)
+ 	 */
+ 	lock_sock_nested(sk, level);
  
--		/* When "level" is SINGLE_DEPTH_NESTING, use the nested
--		 * version to avoid the warning "possible recursive locking
--		 * detected". When "level" is 0, lock_sock_nested(sk, level)
--		 * is the same as lock_sock(sk).
--		 */
--		lock_sock_nested(sk, level);
-+	vsk = vsock_sk(sk);
-+	pending = NULL;	/* Compiler warning. */
- 
--		if (vsk->transport)
--			vsk->transport->release(vsk);
--		else if (sock_type_connectible(sk->sk_type))
--			vsock_remove_sock(vsk);
-+	/* When "level" is SINGLE_DEPTH_NESTING, use the nested
-+	 * version to avoid the warning "possible recursive locking
-+	 * detected". When "level" is 0, lock_sock_nested(sk, level)
-+	 * is the same as lock_sock(sk).
-+	 */
-+	lock_sock_nested(sk, level);
- 
--		sock_orphan(sk);
--		sk->sk_shutdown = SHUTDOWN_MASK;
-+	if (vsk->transport)
-+		vsk->transport->release(vsk);
-+	else if (sock_type_connectible(sk->sk_type))
-+		vsock_remove_sock(vsk);
- 
--		skb_queue_purge(&sk->sk_receive_queue);
 +	sock_orphan(sk);
-+	sk->sk_shutdown = SHUTDOWN_MASK;
- 
--		/* Clean up any sockets that never were accepted. */
--		while ((pending = vsock_dequeue_accept(sk)) != NULL) {
--			__vsock_release(pending, SINGLE_DEPTH_NESTING);
--			sock_put(pending);
--		}
-+	skb_queue_purge(&sk->sk_receive_queue);
- 
--		release_sock(sk);
--		sock_put(sk);
-+	/* Clean up any sockets that never were accepted. */
-+	while ((pending = vsock_dequeue_accept(sk)) != NULL) {
-+		__vsock_release(pending, SINGLE_DEPTH_NESTING);
-+		sock_put(pending);
- 	}
 +
-+	release_sock(sk);
-+	sock_put(sk);
- }
+ 	if (vsk->transport)
+ 		vsk->transport->release(vsk);
+ 	else if (sock_type_connectible(sk->sk_type))
+ 		vsock_remove_sock(vsk);
  
- static void vsock_sk_destruct(struct sock *sk)
-@@ -899,9 +899,22 @@ s64 vsock_stream_has_space(struct vsock_sock *vsk)
- }
- EXPORT_SYMBOL_GPL(vsock_stream_has_space);
+-	sock_orphan(sk);
+ 	sk->sk_shutdown = SHUTDOWN_MASK;
  
-+/* Dummy callback required by sockmap.
-+ * See unconditional call of saved_close() in sock_map_close().
-+ */
-+static void vsock_close(struct sock *sk, long timeout)
-+{
-+}
-+
- static int vsock_release(struct socket *sock)
- {
--	__vsock_release(sock->sk, 0);
-+	struct sock *sk = sock->sk;
-+
-+	if (!sk)
-+		return 0;
-+
-+	sk->sk_prot->close(sk, 0);
-+	__vsock_release(sk, 0);
- 	sock->sk = NULL;
- 	sock->state = SS_FREE;
- 
+ 	skb_queue_purge(&sk->sk_receive_queue);
 
 -- 
 2.48.1
