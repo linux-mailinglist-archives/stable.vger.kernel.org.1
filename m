@@ -1,124 +1,148 @@
-Return-Path: <stable+bounces-119519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBE1A442A8
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 15:27:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558B1A442C3
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 15:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25DA43ADFEE
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 14:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F071417B1D3
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 14:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABE5126C18;
-	Tue, 25 Feb 2025 14:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBB326A0A9;
+	Tue, 25 Feb 2025 14:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="bKo/+XI2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AtQoT+J7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E188726770B;
-	Tue, 25 Feb 2025 14:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E30269803
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 14:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740493524; cv=none; b=VtEEcjaFS7233tT4dhsUqTVU2rtF0C+GI7FgC+BDQ/kYtSdzRQPVPGI0oQ8V0NrrTHGRgj3vMX++YzGfC4b3cxD8fXfsEz6v4xHifImJfHXPSutb3zjByqB3jbGNqvanfZSwr20rz7utRvvd6AJua+yjqMXk5VSvPiJYa24b5wM=
+	t=1740493607; cv=none; b=aPRJaLR9Nvcwjc6ESYFT6nKo4odAJDVVzs3nHTMs0zq0XyXkulpOVYLvyu+I7w8w7Iy6q0g3i9zqJlMGCxs9fEl4qi5VkpROfH+2TDFB4jRt5l5CW7C4xy8LqSW+aMWnCafLkLtlXOL4d85DI8nxXJpq72cLQycsWRfOsG8migQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740493524; c=relaxed/simple;
-	bh=Q3RJil+VHeqSzKmw90XF0Ub/vSs2FGhiO8M1TWVwjXY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MKZh4biwZ1DxlhTKoGROFGZXRZLQ7/yLAXohfvzItqvsz5ATabphmio4vRtG/Bi9+AdOI9PU72pKofe1XHTFk4Ma2Fafy/aPdLYk3JtaoQjWFZXfh977wzp7fuS7WTYallOKkNnR9EdmISczr8u8eqUZTfJeOjwdwmIMFn8fR8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=bKo/+XI2; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso57208065e9.1;
-        Tue, 25 Feb 2025 06:25:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1740493521; x=1741098321; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AZf/o+N6Kz1RJg00ifbZNFSz2scXP1N3IPoo+w/Gz88=;
-        b=bKo/+XI2aLEcD29B3+8d/h0kkJFq+X4Y3g5QOYNCRWXSnOLF5QGqzdqlHZ+Z+dSbWE
-         LbWWJSYpl4wIjr24sux+/+/VE4j+c6FUAZsoIw/rQAtryaxAWaGgMC1Zup8XncTHQqeP
-         vrpgZ2i3AFBgBQy6eGrnAV1CyfJHmZsRqAVwaH2/XphMaA8qAmr2Wtnu/9Oj3lxFY+pe
-         ypyTqRV5gDHu8nGE0u4gaXDruxCRn6DgZT4B+3sPg0PURABm1ATagOyOyN6jWxjXYYlS
-         epPHHlxRTrVYQX5oAkUJAyULqwYtX+hR1e5jLhh8pm2Cliyi8n1fkVdyMKC1t29ihW7J
-         EzAw==
+	s=arc-20240116; t=1740493607; c=relaxed/simple;
+	bh=ws73LzdVsospmUQsBLIeuEHPV8IfNXtt9Hvu2wKtG2M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QkTSVCMtuITbEwr/H5RCvwRcrOyNa3RPJP/OYCoDV5EYxs9KEzmnDsggjSYUNU6CZIAKrOUvhUmmEz+q8ZxvxZSN9C60UgsXkd0iOeiIoYhVTvACuEJzj9bM5dA+KRLHlDDzq317nxfdd1Pv8q/m07wq/xZVueCIL0RfimWE73g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AtQoT+J7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740493604;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pBGhrYWkFeITUmL5WYiMfvc7l/ZEvi+A9fqUKd4jHSg=;
+	b=AtQoT+J7jeGod4xsmYiqfKZ493bu/+r10jdb8K9H+GUNf9DlUSdrQ8Noe8vlnDYSCVbOPr
+	/W1Pc3VHkKSmMMBHLHe1KnNJt10YP/M5I+wvDigbAKp0NptUhF6fYerbRgzD13tdao6ZMn
+	eNlMziC3hl8eE1KlV1ByAZr+LGNOP1o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-u_sY8weVNoyJld231Hs7Ug-1; Tue, 25 Feb 2025 09:26:42 -0500
+X-MC-Unique: u_sY8weVNoyJld231Hs7Ug-1
+X-Mimecast-MFC-AGG-ID: u_sY8weVNoyJld231Hs7Ug_1740493602
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43988b9ecfbso27247035e9.0
+        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 06:26:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740493521; x=1741098321;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AZf/o+N6Kz1RJg00ifbZNFSz2scXP1N3IPoo+w/Gz88=;
-        b=FG7U4IK27ojM0+c6Q183yVv1S3bS0LV/KXOR16Sp/S3VqiqHUzzGshVNRvjvJBwSwt
-         z8WrgospxNgypiTYzPhvd06AXznlUq9bLkcTfSCSu60FwQAFf1qCKPHNoJvev0qdIKTJ
-         tSEvl+FVa03DsevPBsRPnBepRQYtN7Q5wKpY2MRr0tYh0IjygaC+f5uvSD7E2KwCk4Cj
-         W/+nCmHzF4iOWoBVmjEWodskuMkA0ETpcv5R9j1njx2jT8prNhCMa0osledn8ZYf40dE
-         zlWxkzOSK9KvHRE96HPKqcuZAij5CqG7yPF2+f3ZB8hupOcIVZiFefQNrTTu41LpsQoa
-         3G3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUOv8mMYkbSPpi8MHxPDBFN20FATBC0lpSSYAoYcizhqef8Wm11K8fZ9CQzNBDFn+lx6Hg2naPF8BS6pl4=@vger.kernel.org, AJvYcCVeI0cJeD1HbydKCUOD1hi5NNisN50gn9i+Ij+qyh0mydPyNokw6OO12CsbmZZxGsghauGUya7J@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdeflfRmRGFQbv4EDUKZzFrYoL/yrRFgCfGq54XRECf1H3CzlJ
-	Lan7H6dvxbsM/zhNyJNwI+oGPExSB5295p3FvNJ4f1YxORGmN4jQHxP0IxD0Cw==
-X-Gm-Gg: ASbGnctrwTXDFuneYeOqbWVVupJq0NOYjDT/3jJHSZthuqPbD61MfwYtk+/BAZjSvmG
-	zWpqMz7f1olyz8I8ibmy6XbfWSYSePxvc+onKpGFNYxP0vWdP6mCaFftdLrH79cNn0q/f9NEHV4
-	HJprpfgHXH70wq5BYOU2asCvaBZea/7khre+pajsQZOO5dKM49N6LTA/8DSKn+yn8vu1ZIrWjww
-	WrAruRKZtm44g+BZUISnK3NmJ87netXTGo65fUAa89PrQ5CG76M3wQ6g3dHTPov4g4FBsNdJ67t
-	oc0jPQmVAMN+WPmF+lYIiix9b0bMrfZqF7id6on9Ozq7XgdsctNQTw7xpYUJYlK3CnXYvJoN5R5
-	MGRdM
-X-Google-Smtp-Source: AGHT+IGhdhiXQ4ECqTY9URWLiprLLnF779OXP/tKMzgBk9NQek5Qvqkfk5EpfkDRo1p5zSibaF4ZuQ==
-X-Received: by 2002:a05:600c:4446:b0:439:9274:81cd with SMTP id 5b1f17b1804b1-43ab0f2566emr37255015e9.4.1740493520894;
-        Tue, 25 Feb 2025 06:25:20 -0800 (PST)
-Received: from [192.168.1.3] (p5b2aca7c.dip0.t-ipconnect.de. [91.42.202.124])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439b02e6cffsm142049515e9.19.2025.02.25.06.25.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 06:25:20 -0800 (PST)
-Message-ID: <8301ce47-ce5b-498e-b2e3-412a0741c4a3@googlemail.com>
-Date: Tue, 25 Feb 2025 15:25:19 +0100
+        d=1e100.net; s=20230601; t=1740493602; x=1741098402;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pBGhrYWkFeITUmL5WYiMfvc7l/ZEvi+A9fqUKd4jHSg=;
+        b=xNaqfef3+OIwKttIAspSDWdNVEXTcyFhs3b807rPvFnXI1tUWfO3hNZrcj9OzKrwCX
+         tWstqsnWrRQuq7wllapa6eikPSvy9VJokFSg/jsZ5HTv97HYdst7aI/8AvYLmmcpfjj+
+         ut16VWUL//SdN/u5RxAzrEXNy/PrMfcjthOwuHpUi9006B4EEsgM4sqvrfHfqxsfvtVl
+         CgUXRmmct1dboSIpck5pRNt9jre/NqCDP0fRna/dKsMzXc6PU4EdsI3yffrEm21FoKlK
+         YrHOD93dcK8LnPAGTqzomJErWqHmURSeZ5BCSYpZ1gbN36olJITmhpXj1gkps39aYiMm
+         XG7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVGmEU3noB5na8clJah4Tlxz1ms7efuXedCdqlh5QW0UYrMHBlL5EVg8qy5ZSSPdDvERJ9p/8k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEoPf2eCoueXQs8yEOG4eTIYUHjETdM264wtldV2A1drrroK6e
+	tIKjVEFLLa+keFZtE7SkgPZGTYks8Hw9PC1nHhM+MiIIh0y4utYufPpqCylB3LvduGFGHivztn7
+	3cvFDdmHQfScDIc9mZIMNkoxAW5SAPbdtyQgSHieMpKt2gUd10ccCaw==
+X-Gm-Gg: ASbGnctJPulRgoHnD47fDBEqpSqHniHHH0S9lrZqNmzmsLrcHLdEhq2TBPdgkXI1drr
+	otNxfBRCi9h447oiSLVKswcAc2XtsARX+bNiPFdLm8JZkWxr+16sxJ4FZ5bs0H404AzfgP24SER
+	78McYorvecsnAYihCbZm+rbkMvaTfq0WYoKUY8YXYfr2m2BWDMruZZQzAGBki3SmW7XDmxeTmo6
+	WftCHKiEw0ukPGy2uOofmC6X5LlMXYAE+vtnI/SGqCwJ2TNg0S/+O6o+yhdY0JWQMUMS5PTVmSG
+	hymffa8QZtAe0dwJTzZ7Rb1Io2R5tOYlbYLu2NGYW0J3yXPVvO24eb0BBq9x1MtdHg+ChrU=
+X-Received: by 2002:a05:6000:4009:b0:38f:286c:9acc with SMTP id ffacd0b85a97d-38f6e97a0b1mr11479405f8f.32.1740493601726;
+        Tue, 25 Feb 2025 06:26:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGjaDfgW2LADqlJLYOFtRq9ZRwJAy9nvbKohHaJpmlGfR6SrchEJHJ6cEa21q1LfSEB7TyhCA==
+X-Received: by 2002:a05:6000:4009:b0:38f:286c:9acc with SMTP id ffacd0b85a97d-38f6e97a0b1mr11479374f8f.32.1740493601420;
+        Tue, 25 Feb 2025 06:26:41 -0800 (PST)
+Received: from lleonard-thinkpadp16vgen1.rmtit.csb (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8e7108sm2494009f8f.69.2025.02.25.06.26.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 06:26:41 -0800 (PST)
+From: Luigi Leonardi <leonardi@redhat.com>
+Subject: [PATCH 5.10.y 0/3] vsock: fix use-after free and null-ptr-deref
+Date: Tue, 25 Feb 2025 15:26:27 +0100
+Message-Id: <20250225-backport_fix_5_10-v1-0-055dfd7be521@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/153] 6.12.17-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250225064751.133174920@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250225064751.133174920@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABPTvWcC/x2MQQqAIBAAvxJ7zlhNIfpKhJittQQVGlFEf086D
+ sPMA4kiU4K2eCDSyYm3NYMsC/CzWycSPGYGhcqgUigG55d9i4cNfFljJQp01JjQ1HrwGnK3R8r
+ uf3ZgKonVDf37fqKoudlrAAAA
+X-Change-ID: 20250220-backport_fix_5_10-0ae85f834bc4
+To: Stefano Garzarella <sgarzare@redhat.com>, Michal Luczaj <mhal@rbox.co>, 
+ stable@vger.kernel.org
+Cc: Luigi Leonardi <leonardi@redhat.com>, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+ syzbot+9d55b199192a4be7d02c@syzkaller.appspotmail.com
+X-Mailer: b4 0.14.2
 
-Am 25.02.2025 um 07:49 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.17 release.
-> There are 153 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi all,
 
-Like -rc1, no problems with -rc2 here. Builds, boots and works on my 2-socket Ivy Bridge 
-Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+This series backports three upstream commits:
+- 135ffc7 "bpf, vsock: Invoke proto::close on close()"
+- fcdd224 "vsock: Keep the binding until socket destruction"
+- 78dafe1 "vsock: Orphan socket after transport release"
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Although this version of the kernel does not support sockmap, I think
+backporting this patch can be useful to reduce conflicts in future
+backports [1]. It does not harm the system. The comment it introduces in
+the code can be misleading. I added some words in the commit to explain
+the situation.
 
+The other two commits are untouched, fixing a use-after free[2] and a
+null-ptr-deref[3] respectively.
 
-Beste Grüße,
-Peter Schneider
+[1]https://lore.kernel.org/stable/f7lr3ftzo66sl6phlcygh4xx4spga4b6je37fhawjrsjtexzne@xhhwaqrjznlp/
+[2]https://lore.kernel.org/all/20250128-vsock-transport-vs-autobind-v3-0-1cf57065b770@rbox.co/
+[3]https://lore.kernel.org/all/20250210-vsock-linger-nullderef-v3-0-ef6244d02b54@rbox.co/
 
+Cheers,
+Luigi
+
+To: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+To: stable@vger.kernel.org
+
+Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+---
+Michal Luczaj (3):
+      bpf, vsock: Invoke proto::close on close()
+      vsock: Keep the binding until socket destruction
+      vsock: Orphan socket after transport release
+
+ net/vmw_vsock/af_vsock.c | 77 +++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 50 insertions(+), 27 deletions(-)
+---
+base-commit: f0a53361993a94f602df6f35e78149ad2ac12c89
+change-id: 20250220-backport_fix_5_10-0ae85f834bc4
+
+Best regards,
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Luigi Leonardi <leonardi@redhat.com>
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
