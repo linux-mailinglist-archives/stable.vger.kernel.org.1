@@ -1,136 +1,146 @@
-Return-Path: <stable+bounces-119482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55435A43D65
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:22:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D973A43D6F
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 12:23:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB97E3AE7F8
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:16:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA023ADA8D
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 11:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99E32638AE;
-	Tue, 25 Feb 2025 11:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="h2zTm26M"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD412673AA;
+	Tue, 25 Feb 2025 11:18:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB311FCFD9
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 11:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3A81A2391;
+	Tue, 25 Feb 2025 11:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740482214; cv=none; b=tJVjz0wz1A2XZYBkkAltEmZQ9fIB2eu3/Dn3pFts9o1h8vSqYT9sQRnFF698NayOhKnjU1YuMtTudiqpZgW7Z6GFxl6HN676ML2TK9QVTVCZG3Jzvdsx+dmJlRJmB7EBizLP8DrXlYAw/laGVsgr1xQ6gbm8Tjs+XDMp/0+qv0A=
+	t=1740482307; cv=none; b=it45fDCXER2FXmAUWebtlaxKeOyvS4/p24XwjGQTRfF0uAGbhAhLqC9ha3BM0AVxRWm3aP8cG1m9hdqRsJKo1mC5EbU9c7aOUE0Ay9uukG/SoeCFZ1XC5LXeoBR/6lOs1mqsSATWphEeFL8jA7dELQtiDBgCTqzWgQwJw7cnwIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740482214; c=relaxed/simple;
-	bh=nq0EPGLmAEGxwapDdA7JGX7A1kQwUZXc+8FAGQqLWgA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FjpKkGqwtO0V2yMvRfg/0lnz1dofvE9pg0DBtIief0+xgmIivODfqu5uNORofmxQh+nhGtOuNx5nVDx0cnol4Jkym91eTTXpXNW8HxDlx1jdzwpvL5hF/eAk9nJMqEKhaBoWfKDNC3gSwR24Ca1+6gmArYQwyxvWjvPWsCPVuI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=h2zTm26M; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2f9b9c0088fso9303607a91.0
-        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 03:16:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1740482212; x=1741087012; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BidLeBZkJUtIcxcRlqcE1G4NM4e2prFwhePG6wNNgOU=;
-        b=h2zTm26MfBnP0qdlVQiKrSWub/s8lNXSjEED8ZyGgauXYOPSIqmmxPfdsliXGPK6OK
-         s/isxuM0AN6tEv3lWJayOETrXuksoneVL2/Iqz/UtgYpHRDMQUcXv41NYiRootQJjI7x
-         1twFrsXkLZQg/zCoPGTPmeSTDlk2J6bxW99AfTT8nnSsDX4IBoFQ4t51Jlbb6qlV8xml
-         yUaYGbm36CaAR7iDe5X4PdHpw90Yg7AyViewUaRUkyITOdm3hIaPhkWEiaifxmBCzsjy
-         kKqMPqIgYzgE/nIhD3YGML062KzPaS6iM0mFPeK5N5TaevDXXIzqDhyAxnXqOKKYa3YV
-         o+iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740482212; x=1741087012;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BidLeBZkJUtIcxcRlqcE1G4NM4e2prFwhePG6wNNgOU=;
-        b=OnZDzGPUMscFWjZ6gtqxnxrVKATJ6b0P0GSxy7xRE0xhaGqq0kX5bW3xM3ap3ndypo
-         6ZT5c/9tHwlC0n69FoIP6TT8siEncwozJZEsnk1UJ2+av/qIYieGUj2xqQXdtkktbyiV
-         BbjOC4mZvhL4lJDZYOpld/jDU0fNY122jcXfsUL5FELN94UGz96jWvdWoq1hiR6BzTfQ
-         jfnYW62BvTjoke6TZ7teC31NejhwYx6jXVUt2yOaGQdpAzEzxgjemcNzT9f937oBHidU
-         Eccoywn/n9U3jcmgDq6aIexqakRv+2lrQXcg4VfIR9cFfjXj5YJ3KEeXqUsUJt+vIzTD
-         nmOw==
-X-Gm-Message-State: AOJu0YyOmSM6tD2wH7LjzfkAxGMWvl+8sd1q2owGIKlWDgL++k7ke2Cy
-	ySuPVOtqx79eTegocRMfvv/Jsd2QlwMYYHslfkWb4pKyRoCawk7AtswuQX2hluj05UierncOKN2
-	FJZDWDbkG6VOLQSEKAqTFi/+WK2syECwYA4nN8A==
-X-Gm-Gg: ASbGnctFCaKN8KozT0YZFyLJniFFjdcUJfJ+5aH2ntuH92wFtkE2S0hJBpiDzmP9/F/
-	l+iOLuuyOCTNmXjtO/anDUwTMGBgM/696hTc0zpmqnLJkV6fGt6u3aB8zcPBL7Hoja5Y4mv2MHN
-	u/ySauLkQ=
-X-Google-Smtp-Source: AGHT+IE4zNCtApjgCW7IVrMKgxaqKv83HSY9BzzaaRBtqgzD3CudAd5vQ1VyBcJ2Xih314sYh+MeRB44yJsTo17Xs3M=
-X-Received: by 2002:a17:90b:3e4e:b0:2f9:d0cd:3403 with SMTP id
- 98e67ed59e1d1-2fce7b738ecmr27861132a91.16.1740482211795; Tue, 25 Feb 2025
- 03:16:51 -0800 (PST)
+	s=arc-20240116; t=1740482307; c=relaxed/simple;
+	bh=JomRQni8mtKMJrVY4O7G/UiG3MTsVhu0cW37KZeUnKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iMvtulf/9FgkLU5BddHOUs99xP1sEdO+j9mky2VRgK8vfEGXb7SxElA0XQqiH1E1SIQygyTo0BDQmnMEfIHF5414Yy3Y5nt+hpDS1AC/2NdZSxO0YpSEAEnCskuebQhXao8Siq/X8Nxh15YbT1ZfV+RfhtNH/Oqwhst4+GNHxBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91719C4CEDD;
+	Tue, 25 Feb 2025 11:18:24 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] LoongArch: Use polling play_dead() when resuming from hibernation
+Date: Tue, 25 Feb 2025 19:18:12 +0800
+Message-ID: <20250225111812.3065545-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250225064750.953124108@linuxfoundation.org>
-In-Reply-To: <20250225064750.953124108@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 25 Feb 2025 20:16:35 +0900
-X-Gm-Features: AWEUYZlymfn4SR6NJFuWVJLjUbbiu8b-EdVKox624pmhyRoWSWfGeNS-etq0fYI
-Message-ID: <CAKL4bV4VvXMJgrtWGdBNOWzfn09S6NAaokR0PO=JO_u4E5mtmg@mail.gmail.com>
-Subject: Re: [PATCH 6.13 000/137] 6.13.5-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Greg
+When CONFIG_RANDOM_KMALLOC_CACHES or other randomization infrastructrue
+enabled, the idle_task's stack may different between the booting kernel
+and target kernel. So when resuming from hibernation, an ACTION_BOOT_CPU
+IPI wakeup the idle instruction in arch_cpu_idle_dead() and jump to the
+interrupt handler. But since the stack pointer is changed, the interrupt
+handler cannot restore correct context.
 
-On Tue, Feb 25, 2025 at 3:55=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.13.5 release.
-> There are 137 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 27 Feb 2025 06:47:33 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.13.5-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.13.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+So rename the current arch_cpu_idle_dead() to idle_play_dead(), make it
+as the default version of play_dead(), and the new arch_cpu_idle_dead()
+call play_dead() directly. For hibernation, implement an arch-specific
+hibernate_resume_nonboot_cpu_disable() to use the polling version (idle
+instruction is replace by nop, and irq is disabled) of play_dead(), i.e.
+poll_play_dead(), to avoid IPI handler corrupting the idle_task's stack
+when resuming from hibernation.
 
-6.13.5-rc2 tested.
+This solution is a little similar to commit 406f992e4a372dafbe3c ("x86 /
+hibernate: Use hlt_play_dead() when resuming from hibernation").
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kernel/smp.c | 40 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index fbf747447f13..308478f29278 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -19,6 +19,7 @@
+ #include <linux/smp.h>
+ #include <linux/threads.h>
+ #include <linux/export.h>
++#include <linux/suspend.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/time.h>
+ #include <linux/tracepoint.h>
+@@ -423,7 +424,7 @@ void loongson_cpu_die(unsigned int cpu)
+ 	mb();
+ }
+ 
+-void __noreturn arch_cpu_idle_dead(void)
++static void __noreturn idle_play_dead(void)
+ {
+ 	register uint64_t addr;
+ 	register void (*init_fn)(void);
+@@ -447,6 +448,43 @@ void __noreturn arch_cpu_idle_dead(void)
+ 	BUG();
+ }
+ 
++static void __noreturn poll_play_dead(void)
++{
++	register uint64_t addr;
++	register void (*init_fn)(void);
++
++	idle_task_exit();
++	__this_cpu_write(cpu_state, CPU_DEAD);
++
++	__smp_mb();
++	do {
++		__asm__ __volatile__("nop\n\t");
++		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
++	} while (addr == 0);
++
++	init_fn = (void *)TO_CACHE(addr);
++	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
++
++	init_fn();
++	BUG();
++}
++
++static void (*play_dead)(void) = idle_play_dead;
++
++void __noreturn arch_cpu_idle_dead(void)
++{
++	play_dead();
++	BUG(); /* play_dead() doesn't return */
++}
++
++#ifdef CONFIG_HIBERNATION
++int hibernate_resume_nonboot_cpu_disable(void)
++{
++	play_dead = poll_play_dead;
++	return suspend_disable_secondary_cpus();
++}
++#endif
++
+ #endif
+ 
+ /*
+-- 
+2.47.1
 
-[    0.000000] Linux version 6.13.5-rc2rv-g1a0f764e17e3
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250207, GNU ld (GNU
-Binutils) 2.44) #1 SMP PREEMPT_DYNAMIC Tue Feb 25 19:28:03 JST 2025
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
