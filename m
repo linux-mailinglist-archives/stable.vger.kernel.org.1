@@ -1,108 +1,159 @@
-Return-Path: <stable+bounces-119543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DD3A44797
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 18:14:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A9AA448C8
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 18:47:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CABB3B960D
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 17:05:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4336882F58
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 17:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F167F1946A2;
-	Tue, 25 Feb 2025 17:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0200119922F;
+	Tue, 25 Feb 2025 17:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tidylabs.net header.i=@tidylabs.net header.b="My/Ik8yQ";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="v2j+qGVg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g+67o0g6"
 X-Original-To: stable@vger.kernel.org
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E893198E65
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 17:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D82197A7E
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 17:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740503111; cv=none; b=kdczmNkJDeiWYglQyjQ42/3/KBC+5AdmVY5DAyV87H2pPyKA7dIZUIoxbIRvc1XDSuMkWZvq3YPaEblMDREKvXIuz2fy30p5RzyK69J3o8IVqs0AFBYOkXGzXkxcTa9kV2W9Tf01Xag/Lml4fE2q9TrPl97neWjnHG1fW23DyUw=
+	t=1740504642; cv=none; b=id7cqfOPBBZAnRwI5YLaX5mjmu6desW1MzsVhdp4P96D9BGaYdGSkFe5/aweuz08Sj0S/4AwVGsTFd41DeVEr+3RQmtRSmKX4TMiIwE3qoPXM7ug30w4TW5cUXeHFztG4fKGwqTDR2aTGeMHMuhdmmInUBCUX7V7XGfvZzJwS4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740503111; c=relaxed/simple;
-	bh=DNXWRytIBbFeyPrIFkAaBq4o0JbNSGPn9DG6QfsZ6tE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KVi9NMuM8bfXiINR4dScR/I7t68Xi2A/IQtXDhgEmYuH/oSuHpQWd8OHobsKjIWWFdsT0gc4BjCbrLroa19FFsAU6XiUIAUUrER/yI8KhkNQMeOsg78HbODqZfAKtG43rYrscunRapbyMKa/O38wBYdLQjFK7byrMRMSnXWLURY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tidylabs.net; spf=pass smtp.mailfrom=tidylabs.net; dkim=pass (2048-bit key) header.d=tidylabs.net header.i=@tidylabs.net header.b=My/Ik8yQ; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=v2j+qGVg; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tidylabs.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tidylabs.net
-DKIM-Signature: a=rsa-sha256; b=My/Ik8yQXNApV1SCoUvMv/++qdBQ8pG74OekpLZgHMUC2V6KGYr7n+RXw8f9YulbQoIer0bWzY3zdFfJoGYplwqTPwzY4AStkYxHa1jLoy8NBOPpPLg+WV2EhqhRUYE5R+im1U7PK7W9QrTZyxlt8OXrv+Jht1n4IlGt65cCazMxgfZdnDLJmm0cMboMztI89zXmf5VW2ItrnnJC0pblrCWWUuCA1GOWTd/Bd4Wlyf0o1Hqe34ROXaFejQdDjTCFzdaft/MP7DURmLJqBMd6iy49F7knj1RO7K/Z4Pi5qDDoZSApJfIXLR5y7UUT3zKP5p9ycmv2wxawE9/VwrqNqw==; s=purelymail2; d=tidylabs.net; v=1; bh=DNXWRytIBbFeyPrIFkAaBq4o0JbNSGPn9DG6QfsZ6tE=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=v2j+qGVgbCn4uxsEoPb+dkK1Eg89ymYijpb+93nCXlovjwyJ4TUQFDZOIxS4m9cmpSXKLKqeYGKglZSJwyf7nasa+QHw2ojpNbgRDfGCld3dLsQYcKIpOibih4K8lKIMVhIFAFYYaI2c51scKP5WJOKy51O6zgbzsnHSekWBvFC/wecleZF/I1pT+Z8SiB3T5pUOjtRQ2oKzvAXPLIRh84aUVvCyWL0dyZvMNsvNqXA3Kp0HO6pNGWflDt076pUAO8B9MQNkPSOI6wXDcc3S7VFA2mpIIF+QDHh40VnMyG64lxBPuQXsH7Iy1Tdjeg4057gy979ZmAl81bL8flGY2A==; s=purelymail2; d=purelymail.com; v=1; bh=DNXWRytIBbFeyPrIFkAaBq4o0JbNSGPn9DG6QfsZ6tE=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 81901:11097:null:purelymail
-X-Pm-Original-To: stable@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 594455725;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Tue, 25 Feb 2025 17:04:31 +0000 (UTC)
-From: Justin Klaassen <justin@tidylabs.net>
-To: Tianling Shen <cnsztl@gmail.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Johan Jonker <jbx6244@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Justin Klaassen <justin@tidylabs.net>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
-Date: Tue, 25 Feb 2025 17:03:58 +0000
-Message-ID: <20250225170420.3898-1-justin@tidylabs.net>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <48c705e65cc8e8d4716b41a4a87170e3@manjaro.org>
-References: <48c705e65cc8e8d4716b41a4a87170e3@manjaro.org>
+	s=arc-20240116; t=1740504642; c=relaxed/simple;
+	bh=qVre7epAnWHLovr7ts5O9ztnvBU3rzLXD/XcD7+ERRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CqBcP955EW/WqzyCXVRUxdox0scrHMmdI1IKqGPhh3TXBoRhnUyo4Tfo/7OMXNTCVvfHKQYTfox7Jipak8FEQcCwoMFf7JqQix7XvSIm6nhoVLzjsM9WBX3f4TI8aySB+ZhwccNOLSQuIHZGSsxDMbaEnFrikPwLKnHFlyBwK0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g+67o0g6; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740504641; x=1772040641;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=qVre7epAnWHLovr7ts5O9ztnvBU3rzLXD/XcD7+ERRs=;
+  b=g+67o0g6RRETc20gt7ERKPl7GjmiSXSofW/c44tngTYRHvDOnDBIa5OA
+   LDZx5kot2L7/lz9yeYOj2NqGE4gbDdskikbVFc6who/zFfIwIPJbgOPxV
+   SgraPcrZ5v69EOe0i8iY7vy6srh2L3aFjinzBkWztq9kAa7muWW3Fhyvk
+   H/mjE4ksI+ZYq3pg7m5J1ee3U5pF7Na3AaP+CQFj5aiLFj6Fq4JAm61dJ
+   64SjKe73DUjG6PLzPl46jcqDIypOdMkyKqBid3EIrpODdZw0nYpBTqTSS
+   luu8toGVQQt78lvbKuRH+3wv70e4xZO5xfNguEWjK3+0cK21BPNZgf3lJ
+   g==;
+X-CSE-ConnectionGUID: dV89tso8RjeimxuX9Lt6Wg==
+X-CSE-MsgGUID: unE9uu5ERByxi4dRrDCJww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41525563"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="41525563"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 09:30:40 -0800
+X-CSE-ConnectionGUID: DMBSrcnhSe+H//oBhwNplw==
+X-CSE-MsgGUID: h2kDOgo8Rw+vn7zsb4NwsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,314,1732608000"; 
+   d="scan'208";a="116441136"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 09:30:39 -0800
+Date: Tue, 25 Feb 2025 19:31:40 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 6.6.y] drm/i915/dsi: Use TRANS_DDI_FUNC_CTL's own port
+ width macro
+Message-ID: <Z73-fBszCDsobXWJ@ideak-desk.fi.intel.com>
+Reply-To: imre.deak@intel.com
+References: <20250224153112.1959486-1-imre.deak@intel.com>
+ <20250225093241-e9a9066e5762eeb7@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250225093241-e9a9066e5762eeb7@stable.kernel.org>
 
-The u2phy1_host should always have the same status as usb_host1_ehci
-and usb_host1_ohci, otherwise the EHCI and OHCI drivers may be
-initialized for a disabled usb port.
+Hi,
 
-Per the NanoPi R4S schematic, the phy-supply for u2phy1_host is set to
-the vdd_5v regulator.
+On Tue, Feb 25, 2025 at 11:13:59AM -0500, Sasha Levin wrote:
+> [ Sasha's backport helper bot ]
+> 
+> Hi,
+> 
+> Summary of potential issues:
+> ⚠️ Provided upstream commit SHA1 does not match found commit
+> 
+> The claimed upstream commit SHA1 (76120b3a304aec28fef4910204b81a12db8974da) was not found.
+> However, I found a matching commit: 879f70382ff3e92fc854589ada3453e3f5f5b601
 
-Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi =
-R4S")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Klaassen <justin@tidylabs.net>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
----
-v1 -> v2: Updated commit message, added Fixes: and Cc: stable tags
+thanks for the report. The original commit is 76120b3a304a (see [1]),
+but indeed it's not upstream yet, as it was merged to the drm-intel-next
+branch which will be only part of a later drm pull request.
 
- arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Since the change is a fix it was also cherry-picked to drm-intel-fixes
+as 879f70382ff3 and merged upstream via an earlier drm-fixes pull
+request.
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi b/arch/arm=
-64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
-index b1c9bd0e63ef..8d94d9f91a5c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
-@@ -115,7 +115,7 @@ &u2phy0_host {
- };
-=20
- &u2phy1_host {
--=09status =3D "disabled";
-+=09phy-supply =3D <&vdd_5v>;
- };
-=20
- &uart0 {
---=20
-2.47.1
+The same happened in two other backports I sent (see [2] and [3]).
+
+> Note: The patch differs from the upstream commit:
+
+The patches differ from the upstream ones, as they had to be rebased due
+to upstream changes that are not in the stable trees.
+
+Is it ok if I resend this and [2], [3], with the commit ... upstream
+lines changed to the SHA1 actually upstream (166ce267ae3f for [2] and
+879f70382ff3 for this and [3])?
+
+Thanks,
+Imre
+
+[1] https://cgit.freedesktop.org/drm-intel/commit/?h=drm-intel-next&id=76120b3a304aec28fef4910204b81a12db8974da
+[2] https://lore.kernel.org/stable/20250225091539-d02fffb8792ca6dd@stable.kernel.org
+[3] https://lore.kernel.org/stable/20250225092150-aa652f5ea80fe710@stable.kernel.org
+
+> ---
+> 1:  879f70382ff3e ! 1:  b3874f246c67b drm/i915/dsi: Use TRANS_DDI_FUNC_CTL's own port width macro
+>     @@ Metadata
+>       ## Commit message ##
+>          drm/i915/dsi: Use TRANS_DDI_FUNC_CTL's own port width macro
+>      
+>     +    commit 76120b3a304aec28fef4910204b81a12db8974da upstream.
+>     +
+>          The format of the port width field in the DDI_BUF_CTL and the
+>          TRANS_DDI_FUNC_CTL registers are different starting with MTL, where the
+>          x3 lane mode for HDMI FRL has a different encoding in the two registers.
+>     @@ Commit message
+>          Link: https://patchwork.freedesktop.org/patch/msgid/20250214142001.552916-2-imre.deak@intel.com
+>          (cherry picked from commit 76120b3a304aec28fef4910204b81a12db8974da)
+>          Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>     +    (cherry picked from commit 879f70382ff3e92fc854589ada3453e3f5f5b601)
+>     +    [Imre: Rebased on v6.6.y, due to upstream API changes for intel_de_read(),
+>     +     TRANS_DDI_FUNC_CTL()]
+>     +    Signed-off-by: Imre Deak <imre.deak@intel.com>
+>      
+>       ## drivers/gpu/drm/i915/display/icl_dsi.c ##
+>      @@ drivers/gpu/drm/i915/display/icl_dsi.c: gen11_dsi_configure_transcoder(struct intel_encoder *encoder,
+>     + 
+>       		/* select data lane width */
+>     - 		tmp = intel_de_read(display,
+>     - 				    TRANS_DDI_FUNC_CTL(display, dsi_trans));
+>     + 		tmp = intel_de_read(dev_priv, TRANS_DDI_FUNC_CTL(dsi_trans));
+>      -		tmp &= ~DDI_PORT_WIDTH_MASK;
+>      -		tmp |= DDI_PORT_WIDTH(intel_dsi->lane_count);
+>      +		tmp &= ~TRANS_DDI_PORT_WIDTH_MASK;
+> ---
+> 
+> Results of testing on various branches:
+> 
+> | Branch                    | Patch Apply | Build Test |
+> |---------------------------|-------------|------------|
+> | stable/linux-6.6.y        |  Success    |  Success   |
 
 
