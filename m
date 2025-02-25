@@ -1,375 +1,177 @@
-Return-Path: <stable+bounces-119434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45C9A43220
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 01:55:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86F2A4325D
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 02:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 693883B2FB6
-	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 00:54:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64CE218998F3
+	for <lists+stable@lfdr.de>; Tue, 25 Feb 2025 01:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B839BA3F;
-	Tue, 25 Feb 2025 00:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E120B4C8E;
+	Tue, 25 Feb 2025 01:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wcz25GPd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r+cWg46f"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12A22BB13
-	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 00:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E1555887
+	for <stable@vger.kernel.org>; Tue, 25 Feb 2025 01:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740444858; cv=none; b=mAfcN4tnv7XGkIMpYavxxDAOmen9vFNPC8H8IhY/vZHWrFRJALh8M6hdMvSyRtA6DMv26QMTj0DwrEpszvPNcPqAZdj7tpJIr9J8vPxggua1cAInw7JXwxDZaJE1mt4m+h+AgIXF2NUzhH9s8EZA/FkDmBQOuhdKCwTGQavv6N8=
+	t=1740446293; cv=none; b=Gb+oggU0CQaiwShMiGccL/HCeSs3eZ5yLJOgHweBdEwCFqOJCuCgiGYZvV60BqJOqYRgEuE/yrVrtjoMHVgwbNii9maIYQ54EMJLxBD6oxfkwbBdvyl/B5+6QjK6vPilFqHWzShExRkFdmzHX03do6RV66fedo22WrTRO2UBiZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740444858; c=relaxed/simple;
-	bh=jX358/drsVUwdw1yDkxSNR41zGknlh8tPhZAUBN+8ac=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I+38mPKio9OUe7sA0bnZrPtxRu6WfWlAiJLxtLulLqAlIrmnw/Irmb/Tk7mjPBbHkxyeKujYAQyU1VV76j82HXa7xByfcAUlMinZshUJmEgQd5QnncSf7XuHjl70u77GAUviShI/QercUO6bt6u2Wmq/ApwUmIx9tkFDBFAJzg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wcz25GPd; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740444853;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8s0LIzrPyVSxQ+WJZZ25t8SXrQ9VHzO5ErBedCIuyJw=;
-	b=wcz25GPdPPhF+K9bJQHSAermXpN+tctxfzhqbUwPWK/Pgj5Oz4JDLJwvSRwqlAujZqCxNU
-	CO69MQ1r3qe1lmn6W98I3Rqja9qc9lGWC3H7vLLTxcZHf8a2ggcltqooq21HTlWtb7+TQW
-	mPexs4vEtufsmBxtCvrjP/FdZGuCIGo=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev
-Cc: Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sebastian Ott <sebott@redhat.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/5] KVM: arm64: Set HCR_EL2.TID1 unconditionally
-Date: Mon, 24 Feb 2025 16:53:57 -0800
-Message-Id: <20250225005401.679536-2-oliver.upton@linux.dev>
-In-Reply-To: <20250225005401.679536-1-oliver.upton@linux.dev>
-References: <20250225005401.679536-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1740446293; c=relaxed/simple;
+	bh=k7RxcH2w6BLVcDkvvfbxCz8aU3QD7i5OIMJK4UUqP34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pTP3jnnIu63ac20hDSmnoNjaEpwh1SKYpRQsPWFxl80oVjMutyoNvbZQAxE7jQWVI8G8KL4s5s1rFVISwxVpHB2rWcGUykrKvjXyk1BpaFcMaZaBtPdpHwtT5YjGIkpKKyOZvkmLaVXBSt9ewgNcxDSvMUTF1X63b5wxx0heoMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r+cWg46f; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fcb6c42c47so7868269a91.1
+        for <stable@vger.kernel.org>; Mon, 24 Feb 2025 17:18:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740446291; x=1741051091; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HrkUpGxkfweDpfOc7IojBxbKtQVwxTf19v4lwy5uqNA=;
+        b=r+cWg46fSBP1YfTBfhm9cx9ROU8vMNycaOToNKj8UZokdwJslGV7ST2c5H8bTFxRwI
+         9BHhgNd/z88BR7hWour38s0/G/PAQyQvUCJe1WFgj6CnXhNF2IUapFfFE8vYsywyHzQA
+         b5KsP30kXqGupxHVTQcFiV/fK92xFRkdpG9k8qnF6KmjZnVxbBQb8F9Wm9d3nsVoEL5M
+         ydMTi1ZuhrMuFnYUcKPLhTziUYgw0wCHS+xJsd9n1ZoXzcZJm01ZuPeeDr/swb4Ari0o
+         gVRetM8FWkWgPZc3FLy1xTY/tOOIFJjDhoXFE00iUCbE90bmt2YFZzRiBVsbD9+dxOVx
+         Jwow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740446291; x=1741051091;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HrkUpGxkfweDpfOc7IojBxbKtQVwxTf19v4lwy5uqNA=;
+        b=B2rR+tSXed1jVCpMHDqSLyQHcVB90NaPAKu88V0qVt4w2Ce0Q3+/XJJLU+p7FW3gv2
+         KEIrIvwmxdDK/lfDttTT3AFdgOUx8IJOS4YoYG6tKJCwhjoh3IcddhcHfJ824eKtcvz8
+         1UpAcp3QiB00revXp3wLQ3SxJ2b22k5j1FgY8GmojyFs4BjiTs6plY2iXTcKiea4YkJi
+         Ly5682GH6wiiNpEMFEEheBkzKKf8qno+hwHRVzQ4Z2WJMC+LihU7HMs4YnIIIJhOP0sG
+         wXnMyBzBZvB1ZovTks6xpkoLWsaCm8ocBj2VG58B/fjPJioKTynXqViuiuYOXfhJ89q7
+         QQ1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWj0q2GYJAclF7QJ7yJ79gYB1nfqhouVT9hE8+Z/MbdtQBdlpi8rAkAnTql5xgUMUTXO/BwJHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXzyRZN3Wq4Zng9vEQxPjAOIeiD8sBy5RONyXTOl6X1qXjC2p0
+	Io5WdlF78ZvqA+O5vcGDyemWbSIfjJItwLEij9dQ1kKrdW2+7vajaON7pTOTlw==
+X-Gm-Gg: ASbGncsqIVUef6hivY3tlghea9E+c787hAR06jjl3KneIzPJLSkmSG3WssgM8vCU3Wq
+	wruY2lq0O+5A7WzimiiNQ4JjFXffuqHeHsTZE6AIa3+CIDyDVFtC3L8DdYz0vkP0jV7W4wyWrkq
+	2HEMxqG++E355UqNOM3SSR1VoSkelgxtyTNm3z2CWVTB7dp16wcqY2bPhi5bS81upJpTPminFqV
+	dXwragXP4AHgvfkvTfouyrgXttYFjlIjjrvMDkFfGwP5irZ/uJLjwWWy/Ex607hy46Bbqy6DevE
+	VqufUAu271fXmJhs0LrSRnI4V1d8H462gl/ltr6CergNCT4NaiYgqXSon00Yn5/BdStlBWT9
+X-Google-Smtp-Source: AGHT+IGC+5UuIMA2luvrb/xdZ77BEUaeWoPZIqYpskI9rBAFjELx2efx+n+6aJmTxIlE6O1zhZ1gWg==
+X-Received: by 2002:a17:90b:4a41:b0:2ee:4b8f:a5b1 with SMTP id 98e67ed59e1d1-2fe68cf3fc4mr2256107a91.24.1740446291241;
+        Mon, 24 Feb 2025 17:18:11 -0800 (PST)
+Received: from google.com (198.103.247.35.bc.googleusercontent.com. [35.247.103.198])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fceae302e7sm7350586a91.0.2025.02.24.17.18.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 17:18:10 -0800 (PST)
+Date: Mon, 24 Feb 2025 17:18:07 -0800
+From: William McVicker <willmcvicker@google.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, Saravana Kannan <saravanak@google.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Marc Zyngier <maz@kernel.org>,
+	Andreas Herrmann <andreas.herrmann@calxeda.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org,
+	kernel-team@android.com
+Subject: Re: [PATCH v4 09/14] of: reserved-memory: Fix using wrong number of
+ cells to get property 'alignment'
+Message-ID: <Z70aTw45KMqTUpBm@google.com>
+References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
+ <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
+ <20250113232551.GB1983895-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20250113232551.GB1983895-robh@kernel.org>
 
-commit 90807748ca3a ("KVM: arm64: Hide SME system registers from
-guests") added trap handling for SMIDR_EL1, treating it as UNDEFINED as
-KVM does not support SME. This is right for the most part, however KVM
-needs to set HCR_EL2.TID1 to _actually_ trap the register.
+Hi Zijun and Rob,
 
-Unfortunately, this comes with some collateral damage as TID1 forces
-REVIDR_EL1 and AIDR_EL1 to trap as well. KVM has long treated these
-registers as "invariant" which is an awful term for the following:
+On 01/13/2025, Rob Herring wrote:
+> On Thu, Jan 09, 2025 at 09:27:00PM +0800, Zijun Hu wrote:
+> > From: Zijun Hu <quic_zijuhu@quicinc.com>
+> > 
+> > According to DT spec, size of property 'alignment' is based on parent
+> > node’s #size-cells property.
+> > 
+> > But __reserved_mem_alloc_size() wrongly uses @dt_root_addr_cells to get
+> > the property obviously.
+> > 
+> > Fix by using @dt_root_size_cells instead of @dt_root_addr_cells.
+> 
+> I wonder if changing this might break someone. It's been this way for 
+> a long time. It might be better to change the spec or just read 
+> 'alignment' as whatever size it happens to be (len / 4). It's not really 
+> the kernel's job to validate the DT. We should first have some 
+> validation in place to *know* if there are any current .dts files that 
+> would break. That would probably be easier to implement in dtc than 
+> dtschema. Cases of #address-cells != #size-cells should be pretty rare, 
+> but that was the default for OpenFirmware.
+> 
+> As the alignment is the base address alignment, it can be argued that 
+> "#address-cells" makes more sense to use than "#size-cells". So maybe 
+> the spec was a copy-n-paste error.
 
- - Userspace sees the boot CPU values on all vCPUs
+Yes, this breaks our Pixel downstream DT :( Also, the upstream Pixel 6 device
+tree has cases where #address-cells != #size-cells.
 
- - The guest sees the hardware values of the CPU on which a vCPU is
-   scheduled
+I would prefer to not have this change, but if that's not possible, could we
+not backport it to all the stable branches? That way we can just force new
+devices to fix this instead of existing devices on older LTS kernels?
 
-Keep the plates spinning by adding trap handling for the affected
-registers and repaint all of the "invariant" crud into terms of
-identifying an implementation. Yes, at this point we only need to
-set TID1 on SME hardware, but REVIDR_EL1 and AIDR_EL1 are about to
-become mutable anyway.
+Thanks,
+Will
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Fixes: 90807748ca3a ("KVM: arm64: Hide SME system registers from guests")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
----
- arch/arm64/include/asm/kvm_arm.h |   4 +-
- arch/arm64/kvm/sys_regs.c        | 175 ++++++++++++++++---------------
- 2 files changed, 94 insertions(+), 85 deletions(-)
-
-diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
-index 8d94a6c0ed5c..b01c01e55de5 100644
---- a/arch/arm64/include/asm/kvm_arm.h
-+++ b/arch/arm64/include/asm/kvm_arm.h
-@@ -92,12 +92,12 @@
-  * SWIO:	Turn set/way invalidates into set/way clean+invalidate
-  * PTW:		Take a stage2 fault if a stage1 walk steps in device memory
-  * TID3:	Trap EL1 reads of group 3 ID registers
-- * TID2:	Trap CTR_EL0, CCSIDR2_EL1, CLIDR_EL1, and CSSELR_EL1
-+ * TID1:	Trap REVIDR_EL1, AIDR_EL1, and SMIDR_EL1
-  */
- #define HCR_GUEST_FLAGS (HCR_TSC | HCR_TSW | HCR_TWE | HCR_TWI | HCR_VM | \
- 			 HCR_BSU_IS | HCR_FB | HCR_TACR | \
- 			 HCR_AMO | HCR_SWIO | HCR_TIDCP | HCR_RW | HCR_TLOR | \
--			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3)
-+			 HCR_FMO | HCR_IMO | HCR_PTW | HCR_TID3 | HCR_TID1)
- #define HCR_HOST_NVHE_FLAGS (HCR_RW | HCR_API | HCR_APK | HCR_ATA)
- #define HCR_HOST_NVHE_PROTECTED_FLAGS (HCR_HOST_NVHE_FLAGS | HCR_TSC)
- #define HCR_HOST_VHE_FLAGS (HCR_RW | HCR_TGE | HCR_E2H)
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index f6cd1ea7fb55..f25a157622e3 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2483,6 +2483,93 @@ static bool access_mdcr(struct kvm_vcpu *vcpu,
- 	return true;
- }
- 
-+/*
-+ * For historical (ahem ABI) reasons, KVM treats MIDR_EL1, REVIDR_EL1, and
-+ * AIDR_EL1 as "invariant" registers, meaning userspace cannot change them.
-+ * The values made visible to userspace were the register values of the boot
-+ * CPU.
-+ *
-+ * At the same time, reads from these registers at EL1 previously were not
-+ * trapped, allowing the guest to read the actual hardware value. On big-little
-+ * machines, this means the VM can see different values depending on where a
-+ * given vCPU got scheduled.
-+ *
-+ * These registers are now trapped as collateral damage from SME, and what
-+ * follows attempts to give a user / guest view consistent with the existing
-+ * ABI.
-+ */
-+static bool access_imp_id_reg(struct kvm_vcpu *vcpu,
-+			      struct sys_reg_params *p,
-+			      const struct sys_reg_desc *r)
-+{
-+	if (p->is_write)
-+		return write_to_read_only(vcpu, p, r);
-+
-+	switch (reg_to_encoding(r)) {
-+	case SYS_REVIDR_EL1:
-+		p->regval = read_sysreg(revidr_el1);
-+		break;
-+	case SYS_AIDR_EL1:
-+		p->regval = read_sysreg(aidr_el1);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+	}
-+
-+	return true;
-+}
-+
-+static u64 __ro_after_init boot_cpu_midr_val;
-+static u64 __ro_after_init boot_cpu_revidr_val;
-+static u64 __ro_after_init boot_cpu_aidr_val;
-+
-+static void init_imp_id_regs(void)
-+{
-+	boot_cpu_midr_val = read_sysreg(midr_el1);
-+	boot_cpu_revidr_val = read_sysreg(revidr_el1);
-+	boot_cpu_aidr_val = read_sysreg(aidr_el1);
-+}
-+
-+static int get_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
-+			  u64 *val)
-+{
-+	switch (reg_to_encoding(r)) {
-+	case SYS_MIDR_EL1:
-+		*val = boot_cpu_midr_val;
-+		break;
-+	case SYS_REVIDR_EL1:
-+		*val = boot_cpu_revidr_val;
-+		break;
-+	case SYS_AIDR_EL1:
-+		*val = boot_cpu_aidr_val;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int set_imp_id_reg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r,
-+			  u64 val)
-+{
-+	u64 expected;
-+	int ret;
-+
-+	ret = get_imp_id_reg(vcpu, r, &expected);
-+	if (ret)
-+		return ret;
-+
-+	return (expected == val) ? 0 : -EINVAL;
-+}
-+
-+#define IMPLEMENTATION_ID(reg) {			\
-+	SYS_DESC(SYS_##reg),				\
-+	.access = access_imp_id_reg,			\
-+	.get_user = get_imp_id_reg,			\
-+	.set_user = set_imp_id_reg,			\
-+}
- 
- /*
-  * Architected system registers.
-@@ -2532,7 +2619,9 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 
- 	{ SYS_DESC(SYS_DBGVCR32_EL2), undef_access, reset_val, DBGVCR32_EL2, 0 },
- 
-+	IMPLEMENTATION_ID(MIDR_EL1),
- 	{ SYS_DESC(SYS_MPIDR_EL1), NULL, reset_mpidr, MPIDR_EL1 },
-+	IMPLEMENTATION_ID(REVIDR_EL1),
- 
- 	/*
- 	 * ID regs: all ID_SANITISED() entries here must have corresponding
-@@ -2804,6 +2893,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
- 	  .set_user = set_clidr, .val = ~CLIDR_EL1_RES0 },
- 	{ SYS_DESC(SYS_CCSIDR2_EL1), undef_access },
- 	{ SYS_DESC(SYS_SMIDR_EL1), undef_access },
-+	IMPLEMENTATION_ID(AIDR_EL1),
- 	{ SYS_DESC(SYS_CSSELR_EL1), access_csselr, reset_unknown, CSSELR_EL1 },
- 	ID_FILTERED(CTR_EL0, ctr_el0,
- 		    CTR_EL0_DIC_MASK |
-@@ -4568,65 +4658,6 @@ id_to_sys_reg_desc(struct kvm_vcpu *vcpu, u64 id,
- 	return r;
- }
- 
--/*
-- * These are the invariant sys_reg registers: we let the guest see the
-- * host versions of these, so they're part of the guest state.
-- *
-- * A future CPU may provide a mechanism to present different values to
-- * the guest, or a future kvm may trap them.
-- */
--
--#define FUNCTION_INVARIANT(reg)						\
--	static u64 reset_##reg(struct kvm_vcpu *v,			\
--			       const struct sys_reg_desc *r)		\
--	{								\
--		((struct sys_reg_desc *)r)->val = read_sysreg(reg);	\
--		return ((struct sys_reg_desc *)r)->val;			\
--	}
--
--FUNCTION_INVARIANT(midr_el1)
--FUNCTION_INVARIANT(revidr_el1)
--FUNCTION_INVARIANT(aidr_el1)
--
--/* ->val is filled in by kvm_sys_reg_table_init() */
--static struct sys_reg_desc invariant_sys_regs[] __ro_after_init = {
--	{ SYS_DESC(SYS_MIDR_EL1), NULL, reset_midr_el1 },
--	{ SYS_DESC(SYS_REVIDR_EL1), NULL, reset_revidr_el1 },
--	{ SYS_DESC(SYS_AIDR_EL1), NULL, reset_aidr_el1 },
--};
--
--static int get_invariant_sys_reg(u64 id, u64 __user *uaddr)
--{
--	const struct sys_reg_desc *r;
--
--	r = get_reg_by_id(id, invariant_sys_regs,
--			  ARRAY_SIZE(invariant_sys_regs));
--	if (!r)
--		return -ENOENT;
--
--	return put_user(r->val, uaddr);
--}
--
--static int set_invariant_sys_reg(u64 id, u64 __user *uaddr)
--{
--	const struct sys_reg_desc *r;
--	u64 val;
--
--	r = get_reg_by_id(id, invariant_sys_regs,
--			  ARRAY_SIZE(invariant_sys_regs));
--	if (!r)
--		return -ENOENT;
--
--	if (get_user(val, uaddr))
--		return -EFAULT;
--
--	/* This is what we mean by invariant: you can't change it. */
--	if (r->val != val)
--		return -EINVAL;
--
--	return 0;
--}
--
- static int demux_c15_get(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
- {
- 	u32 val;
-@@ -4708,15 +4739,10 @@ int kvm_sys_reg_get_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
- int kvm_arm_sys_reg_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	void __user *uaddr = (void __user *)(unsigned long)reg->addr;
--	int err;
- 
- 	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
- 		return demux_c15_get(vcpu, reg->id, uaddr);
- 
--	err = get_invariant_sys_reg(reg->id, uaddr);
--	if (err != -ENOENT)
--		return err;
--
- 	return kvm_sys_reg_get_user(vcpu, reg,
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
-@@ -4752,15 +4778,10 @@ int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
- int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	void __user *uaddr = (void __user *)(unsigned long)reg->addr;
--	int err;
- 
- 	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
- 		return demux_c15_set(vcpu, reg->id, uaddr);
- 
--	err = set_invariant_sys_reg(reg->id, uaddr);
--	if (err != -ENOENT)
--		return err;
--
- 	return kvm_sys_reg_set_user(vcpu, reg,
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
-@@ -4849,23 +4870,14 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
- 
- unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
- {
--	return ARRAY_SIZE(invariant_sys_regs)
--		+ num_demux_regs()
-+	return num_demux_regs()
- 		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
- }
- 
- int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
--	unsigned int i;
- 	int err;
- 
--	/* Then give them all the invariant registers' indices. */
--	for (i = 0; i < ARRAY_SIZE(invariant_sys_regs); i++) {
--		if (put_user(sys_reg_to_index(&invariant_sys_regs[i]), uindices))
--			return -EFAULT;
--		uindices++;
--	}
--
- 	err = walk_sys_regs(vcpu, uindices);
- 	if (err < 0)
- 		return err;
-@@ -5091,15 +5103,12 @@ int __init kvm_sys_reg_table_init(void)
- 	valid &= check_sysreg_table(cp14_64_regs, ARRAY_SIZE(cp14_64_regs), true);
- 	valid &= check_sysreg_table(cp15_regs, ARRAY_SIZE(cp15_regs), true);
- 	valid &= check_sysreg_table(cp15_64_regs, ARRAY_SIZE(cp15_64_regs), true);
--	valid &= check_sysreg_table(invariant_sys_regs, ARRAY_SIZE(invariant_sys_regs), false);
- 	valid &= check_sysreg_table(sys_insn_descs, ARRAY_SIZE(sys_insn_descs), false);
- 
- 	if (!valid)
- 		return -EINVAL;
- 
--	/* We abuse the reset function to overwrite the table itself. */
--	for (i = 0; i < ARRAY_SIZE(invariant_sys_regs); i++)
--		invariant_sys_regs[i].reset(NULL, &invariant_sys_regs[i]);
-+	init_imp_id_regs();
- 
- 	ret = populate_nv_trap_config();
- 
--- 
-2.39.5
-
+> 
+> > 
+> > Fixes: 3f0c82066448 ("drivers: of: add initialization code for dynamic reserved memory")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> > ---
+> >  drivers/of/of_reserved_mem.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> > index 45517b9e57b1add36bdf2109227ebbf7df631a66..d2753756d7c30adcbd52f57338e281c16d821488 100644
+> > --- a/drivers/of/of_reserved_mem.c
+> > +++ b/drivers/of/of_reserved_mem.c
+> > @@ -409,12 +409,12 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
+> >  
+> >  	prop = of_get_flat_dt_prop(node, "alignment", &len);
+> >  	if (prop) {
+> > -		if (len != dt_root_addr_cells * sizeof(__be32)) {
+> > +		if (len != dt_root_size_cells * sizeof(__be32)) {
+> >  			pr_err("invalid alignment property in '%s' node.\n",
+> >  				uname);
+> >  			return -EINVAL;
+> >  		}
+> > -		align = dt_mem_next_cell(dt_root_addr_cells, &prop);
+> > +		align = dt_mem_next_cell(dt_root_size_cells, &prop);
+> >  	}
+> >  
+> >  	nomap = of_get_flat_dt_prop(node, "no-map", NULL) != NULL;
+> > 
+> > -- 
+> > 2.34.1
+> > 
 
