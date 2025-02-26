@@ -1,163 +1,151 @@
-Return-Path: <stable+bounces-119718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D88A466AC
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 17:34:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EF8A4667A
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 17:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29FCC19C68C7
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 16:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F8193AC955
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 16:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AB621E086;
-	Wed, 26 Feb 2025 16:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9BF22068B;
+	Wed, 26 Feb 2025 16:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwjNQvUu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XfCtt16T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71A721D59C;
-	Wed, 26 Feb 2025 16:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3FC21E0BF
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 16:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740586861; cv=none; b=NQDZux7XYT5klb4FuWoY3+HpewHWcj4HVNyxLm4nxty+kHUB09MbbSQd7EbtI5yC/ydtom9Tr5vAMJM1KOBJCGvMyf2P7IF3tFe9q68LrBR5QjoD4Zde55tCwI8FCau3iSdVo/RTZGVD3ZMgzTgdr51bwA7Br3gDiHBwnhUQUKE=
+	t=1740587027; cv=none; b=Nv4RkYGslowT5bICYp9ZmC9tqPJpSihWvWERxDtc3IacANoTkjOeZKJq0WmtAO9JG+gAR74kIRmX2he7bL1MtXxfNJbpr0qSLfdF/j41Ez1pGjDfwAaMQbTjdUHwXWnDILrfKao7kO5rJ0Qgll7J0i8Xk4CRvomHI3kLt9Qw+I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740586861; c=relaxed/simple;
-	bh=B7wmgAzFnku3MeqsLmtBEQfnYgh2HljTjjUa/HNrSvo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kCqnpVITqtZcRwnDy5UjZ4QX7H02GeqwKlKzXjrdJBrw0c84HCcWyLJov0HvoIJsDV21vqo+fhMudE00Pzz32fLD+yFOnhk+fugegOA9qG4bnapwVBKO0MikUXwYzTyYCW9uZLZ5Mi9US2cNbVxR9LgpVfiglIzojHeztCGX8zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwjNQvUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210C7C4CED6;
-	Wed, 26 Feb 2025 16:21:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740586861;
-	bh=B7wmgAzFnku3MeqsLmtBEQfnYgh2HljTjjUa/HNrSvo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wwjNQvUuC4P4+7vCSKAHsP3s8Lb7nm6TZHBRBzfKJIHCG1IooDoHUpgZhTmKXVXV1
-	 4yKJEla/Y11lMtJuYnPP0kLzCh1Bk0IvzoRMtx1mO9nvJk9Yep+mF42hQJwmzt8Xjn
-	 lpDXUK0uhy9gPCZEdFD57NBVGZKYA8jW8HLaqiJQ=
-Date: Wed, 26 Feb 2025 08:19:52 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: Takashi Iwai <tiwai@suse.de>, regressions@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] Chrome and VSCode breakage with the commit
- b9b588f22a0c
-Message-ID: <2025022600-nutlike-vagabond-ef64@gregkh>
-References: <874j0lvy89.wl-tiwai@suse.de>
- <dede396a-4424-4e0f-a223-c1008d87a6a8@oracle.com>
- <87jz9d5cdp.wl-tiwai@suse.de>
- <263acb8f-2864-4165-90f7-6166e68180be@oracle.com>
- <87h64g4wr1.wl-tiwai@suse.de>
- <7a4072d6-3e66-4896-8f66-5871e817d285@oracle.com>
- <2025022657-credit-undrilled-81f1@gregkh>
- <ed3bb539-df59-40a2-bbd9-0d2efd36ba07@oracle.com>
- <2025022627-portable-malt-41c1@gregkh>
+	s=arc-20240116; t=1740587027; c=relaxed/simple;
+	bh=40fHOJaclUGDk2yZBiDnH2nN4+0I24hmqSzejuEcnXo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZZ+Mt3LrV7ri1m/quxVVCoUxVvfktDXkoaC4n3w+wxOu6UkjoNAA2h8L7GPnTF2Y1F+itgkyJfQNSo+h/AyE9hzzmlHi9i966W2QcqORP2oU7L3OGMG34RlGHtzs0DFneEZ7FSkAy8GG1SLH/g2sdC/JSmZkO+50bcwYxqfMQRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XfCtt16T; arc=none smtp.client-ip=209.85.219.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-6e659664db8so697726d6.2
+        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 08:23:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740587025; x=1741191825; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1iZBOUn5TfaKdJ8fUW/ohyeEciVeQe808dYANdbYN7A=;
+        b=XfCtt16TXVL1tMQTOpTFfPKMl+joh7tggd5Z9pWOjByztV1gDsun8i1baaCz0uy7e0
+         S1EADGNLGZHypZd2BM9k3jY7o31gV7W1FoM1bZhHcJnaQr8Qedn9xEQ5fLAZE2rtelMX
+         FNfgjMUg+F7Z8tS/PDPsd2yESKjjBsJZITgGNVIlvZYOfSTCFBorom9pVvaG3rczt1LK
+         D+A1RpODiNvI1LE5e1be7U7luIb3ZIyIiPG3wZPqXOQQ4wXK7oI7NMtoqz9qDPI25yFH
+         B72AbcZd8s41WtKUZd09CKE+AWSx7/RrcsJewfd1C+uss0/oDY0pjgJmU36i5iypsIm1
+         6O8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740587025; x=1741191825;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1iZBOUn5TfaKdJ8fUW/ohyeEciVeQe808dYANdbYN7A=;
+        b=tp0J7W2jIti6u7giUkqE0CS25AJbj0cATjm5DWUTomgbPIr/3IcV1yi2cxmIbIbRzH
+         JG1MYc7A9/oaJR50CI+/J/MSxgDN+QTVPNrbhalpyCThb75V7KBiwfmArWKm0nbpIAEJ
+         0cAv6IfQGYOALu8P8HzpE/FjIfTLsBIxX/jqUkYCLVH7dUy7YxRHh9/QCZ4vM1iWBs/2
+         qXbpDj87R8w0w9jq3pbIO/zdAzfq/NRWpoZnoFxou5unjWMwzF972vRiseFPg6cjCRWb
+         aa/3YmQxP9QWBVF+7k0iaG/xDigD/wYVJdCVLqbieWJgXXyDLOx1G1VKnu0O5S2AyTA7
+         GGKA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMp4u1TaMrpcn+mpBuP3hvRr51u5+VL3Iskbg2hP53eKfEPu8gD7O8se63UyRQM57K5vJc6FU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytjDrN47vqiLg1Ql+Frrs5To+0f7VJYZTR9SQv+XWsCQJZyWK7
+	Lkhqb3jWISsM7vixG8kzuJHOsGRPLGPmFB83JiwSYXPsJ6a0aCmcoAXJFL2FkoXNA26KGdyDnT3
+	2Hmrj8g==
+X-Google-Smtp-Source: AGHT+IGETZUu141OjsGUsrKL/0fxcfLOq3YpRMsVuVapIyy/5BXoaepYsdLR4P7IA7Dg0sPqBGRJHRWtp8Cd
+X-Received: from qvbml23.prod.google.com ([2002:a05:6214:5857:b0:6dd:d16:e8ab])
+ (user=bgeffon job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6214:130b:b0:6d4:c6d:17fe
+ with SMTP id 6a1803df08f44-6e87ab52085mr112509186d6.25.1740587024722; Wed, 26
+ Feb 2025 08:23:44 -0800 (PST)
+Date: Wed, 26 Feb 2025 11:23:41 -0500
+In-Reply-To: <20250226114815.758217-1-bgeffon@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025022627-portable-malt-41c1@gregkh>
+Mime-Version: 1.0
+References: <20250226114815.758217-1-bgeffon@google.com>
+X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
+Message-ID: <20250226162341.915535-1-bgeffon@google.com>
+Subject: [PATCH v2] mm: fix finish_fault() handling for large folios
+From: Brian Geffon <bgeffon@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zi Yan <ziy@nvidia.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, 
+	Brian Geffon <bgeffon@google.com>, stable@vger.kernel.org, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Marek Maslanka <mmaslanka@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 26, 2025 at 08:18:37AM -0800, Greg KH wrote:
-> On Wed, Feb 26, 2025 at 10:56:46AM -0500, Chuck Lever wrote:
-> > On 2/26/25 9:26 AM, Greg KH wrote:
-> > > On Wed, Feb 26, 2025 at 09:20:20AM -0500, Chuck Lever wrote:
-> > >> On 2/26/25 9:16 AM, Takashi Iwai wrote:
-> > >>> On Wed, 26 Feb 2025 15:11:04 +0100,
-> > >>> Chuck Lever wrote:
-> > >>>>
-> > >>>> On 2/26/25 3:38 AM, Takashi Iwai wrote:
-> > >>>>> On Sun, 23 Feb 2025 16:18:41 +0100,
-> > >>>>> Chuck Lever wrote:
-> > >>>>>>
-> > >>>>>> On 2/23/25 3:53 AM, Takashi Iwai wrote:
-> > >>>>>>> [ resent due to a wrong address for regression reporting, sorry! ]
-> > >>>>>>>
-> > >>>>>>> Hi,
-> > >>>>>>>
-> > >>>>>>> we received a bug report showing the regression on 6.13.1 kernel
-> > >>>>>>> against 6.13.0.  The symptom is that Chrome and VSCode stopped working
-> > >>>>>>> with Gnome Scaling, as reported on openSUSE Tumbleweed bug tracker
-> > >>>>>>>   https://bugzilla.suse.com/show_bug.cgi?id=1236943
-> > >>>>>>>
-> > >>>>>>> Quoting from there:
-> > >>>>>>> """
-> > >>>>>>> I use the latest TW on Gnome with a 4K display and 150%
-> > >>>>>>> scaling. Everything has been working fine, but recently both Chrome
-> > >>>>>>> and VSCode (installed from official non-openSUSE channels) stopped
-> > >>>>>>> working with Scaling.
-> > >>>>>>> ....
-> > >>>>>>> I am using VSCode with:
-> > >>>>>>> `--enable-features=UseOzonePlatform --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto` and for Chrome, I select `Preferred Ozone platform` == `Wayland`.
-> > >>>>>>> """
-> > >>>>>>>
-> > >>>>>>> Surprisingly, the bisection pointed to the backport of the commit
-> > >>>>>>> b9b588f22a0c049a14885399e27625635ae6ef91 ("libfs: Use d_children list
-> > >>>>>>> to iterate simple_offset directories").
-> > >>>>>>>
-> > >>>>>>> Indeed, the revert of this patch on the latest 6.13.4 was confirmed to
-> > >>>>>>> fix the issue.  Also, the reporter verified that the latest 6.14-rc
-> > >>>>>>> release is still affected, too.
-> > >>>>>>>
-> > >>>>>>> For now I have no concrete idea how the patch could break the behavior
-> > >>>>>>> of a graphical application like the above.  Let us know if you need
-> > >>>>>>> something for debugging.  (Or at easiest, join to the bugzilla entry
-> > >>>>>>> and ask there; or open another bug report at whatever you like.)
-> > >>>>>>>
-> > >>>>>>> BTW, I'll be traveling tomorrow, so my reply will be delayed.
-> > >>>>>>>
-> > >>>>>>>
-> > >>>>>>> thanks,
-> > >>>>>>>
-> > >>>>>>> Takashi
-> > >>>>>>>
-> > >>>>>>> #regzbot introduced: b9b588f22a0c049a14885399e27625635ae6ef91
-> > >>>>>>> #regzbot monitor: https://bugzilla.suse.com/show_bug.cgi?id=1236943
-> > >>>>>>
-> > >>>>>> We received a similar report a few days ago, and are likewise puzzled at
-> > >>>>>> the commit result. Please report this issue to the Chrome development
-> > >>>>>> team and have them come up with a simple reproducer that I can try in my
-> > >>>>>> own lab. I'm sure they can quickly get to the bottom of the application
-> > >>>>>> stack to identify the misbehaving interaction between OS and app.
-> > >>>>>
-> > >>>>> Do you know where to report to?
-> > >>>>
-> > >>>> You'll need to drive this, since you currently have a working
-> > >>>> reproducer.
-> > >>>
-> > >>> No, I don't have, I'm merely a messenger.
-> > >>
-> > >> Whoever was the original reporter has the ability to reproduce this and
-> > >> answer any questions the Chrome team might have. Please have them drive
-> > >> this. I'm already two steps removed, so it doesn't make sense for me to
-> > >> report a problem for which I have no standing.
-> > > 
-> > > Ugh, no.  The bug was explictly bisected to the offending commit.  We
-> > > should just revert that commit for now and it can come back in the
-> > > future if the root-cause is found.
-> > > 
-> > > As the revert seems to be simple, and builds here for me, I guess I'll
-> > > have to send it in. {sigh}
-> > 
-> > Note that reverting also reintroduces a CVE.
-> 
-> That's fine, regressions are more important :)
+When handling faults for anon shmem finish_fault() will attempt to install
+ptes for the entire folio. Unfortunately if it encounters a single
+non-pte_none entry in that range it will bail, even if the pte that
+triggered the fault is still pte_none. When this situation happens the
+fault will be retried endlessly never making forward progress.
 
-And, to be explicit, when a CVE-assigned-commit is reverted, the CVE is
-semi-automatically revoked (I have to remember to run the script to
-check for it.)  So this is fine, the CVE will just "go away" from all
-systems that attempt to account for them, and then will come back when
-the real fix happens.
+This patch fixes this behavior and if it detects that a pte in the range
+is not pte_none it will fall back to setting a single pte.
 
-thanks,
+Cc: stable@vger.kernel.org
+Cc: Hugh Dickins <hughd@google.com>
+Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
+Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Marek Maslanka <mmaslanka@google.com>
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+---
+ mm/memory.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-greg k-h
+diff --git a/mm/memory.c b/mm/memory.c
+index b4d3d4893267..b6c467fdbfa4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5183,7 +5183,11 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
+ 		      !(vma->vm_flags & VM_SHARED);
+ 	int type, nr_pages;
+-	unsigned long addr = vmf->address;
++	unsigned long addr;
++	bool needs_fallback = false;
++
++fallback:
++	addr = vmf->address;
+ 
+ 	/* Did we COW the page? */
+ 	if (is_cow)
+@@ -5222,7 +5226,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 	 * approach also applies to non-anonymous-shmem faults to avoid
+ 	 * inflating the RSS of the process.
+ 	 */
+-	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) {
++	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
++			unlikely(needs_fallback)) {
+ 		nr_pages = 1;
+ 	} else if (nr_pages > 1) {
+ 		pgoff_t idx = folio_page_idx(folio, page);
+@@ -5258,9 +5263,9 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 		ret = VM_FAULT_NOPAGE;
+ 		goto unlock;
+ 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
+-		update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
+-		ret = VM_FAULT_NOPAGE;
+-		goto unlock;
++		needs_fallback = true;
++		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		goto fallback;
+ 	}
+ 
+ 	folio_ref_add(folio, nr_pages - 1);
+-- 
+2.48.1.711.g2feabab25a-goog
+
 
