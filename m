@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-119648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B396DA45A69
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 10:39:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D21A45A70
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 10:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A72A1168E20
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 09:39:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E84A7A7F7B
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 09:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A10F238148;
-	Wed, 26 Feb 2025 09:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4606F238169;
+	Wed, 26 Feb 2025 09:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ZmYX98x1"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="rJdCG2KU"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFF6238140
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 09:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C79238140
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 09:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740562783; cv=none; b=pxH6itBypA+BOjvvWtus8LdltJFj8XFbPnbMIMqCxPw5iimn1xnjnTq2aKCwNmwEUjrckMhxYXoGSa8MqMm3g/S8dl5qjVsW/2wBZbUGbjzpqrCAuuuO9DP/VZasJhAbtkA9FWMCtjeJ0BjAOCiItvPGOX8dY7xIDrRZckUg5dM=
+	t=1740562789; cv=none; b=NNOdn7Gn3oDyuf51WZa9kkEWcCbgxqzqGVKrJhtpFIUvjIKqI5TxNGRnTc9phKIpbS2X/k6YImD7l7x6CAG78Tb5G7QcnIQAmcLRt4c7wJ8LFg4PZjg8TV6mjZQs63moQAhsQd6vffLt6MD05HkczsHZhsBv/2WxX6iL3IxMRdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740562783; c=relaxed/simple;
-	bh=IEQ6uGPDvtf1Uqs79Cda6UYPVcr523SjM4RrddmLdoQ=;
+	s=arc-20240116; t=1740562789; c=relaxed/simple;
+	bh=6YPsw0PHRr+1Brne5rbZcoFybVsOWAbQoIlobJgdaDg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l4D6CqVb7YUrOyUyQah56GO1HqJK1eDP0a0S6aWiCpVsTCbyNIDqXOtlDkWtIstWfRRC9iVbdJjUMRDnhmTGB0mkPDzJncioFdv8es8grUKWj5FlEdiMmewtF1khUAG/Ag55IqIYISkZEkGnhKLbdLSTEkjTu/0dCyy23qhKXBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ZmYX98x1; arc=none smtp.client-ip=178.60.130.6
+	 In-Reply-To:To:Cc; b=XlcCYV+GP0bwGH+75qkf2QvGsKl9SqKJtJQr8G/rcC2BYKhUGEnQTxni+hkYajsTKkGMH6CrihGIN83ueznP54dS5GvnUb1iaZGvE9Akhvk+6541YCcsOthyWeRHMJGH1e8b+9AvTNI9sPWxA2U1HAYuCpqwyN95HTuiPJBeZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=rJdCG2KU; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,19 +37,20 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=wRY6f+CK/nRdK+FEU7dDQAV9bNOog/6KnnQXl5mgWNw=; b=ZmYX98x1wzifFQnFqL35fFpSG/
-	us9lj5/GwUBa9WfbJjUo7pLb46HoW2fKijz+xuzpLBPpWK67FJ+D7fcsb2yxTvxRXPBr9jBy3dbYo
-	mIMMeDdsxtXBbOii8bEuZHt2C6V/bZTTitcwxM/gL0pEVfWMeHSFvzPphDSJy5CFnoCL7WnD5ZWCu
-	agxsoLSnUAfRr59MVt6jqohAHrUP4SeuzhrCrCYrbLVB8f7EURl/Z0sWMOoiPID4zPCs/dPfijwJM
-	j4RVzGC16fXqUMkdQ0rMltrI3co10km7dD+QB7ysd9zltXOXkrX2tDFvXtmp5fPVRWg5x7n/osY7r
-	kAgfL7iQ==;
+	bh=RcW4yUFJVfuyzc0Bf6QmpM2zxcUxohNg/8XDyfLGdZo=; b=rJdCG2KUxOgSmA9lgCHrgn/h/7
+	xPEnu72oeNYLnWF90n9I0OJQM0eBZ/Xvrc6YzfPqnbZwqPlgDI70yqnAJZ/mciQ8XnUBnSxNwb7g/
+	6a1NUrtcZcpmOIoHraU84gAw6AcqubkYnkT2YuSupynpJNgzvHzLfDeHAzWvM67AuPgRIutBNgSST
+	weWJ1HTfQ7k/+ZjqWPcKRZKd6amndc+CvW/wBLiTfJTzojA3lef6k/58bWIkoa9shYT5XU3epFp7j
+	CrG7XjBe+bGpBV6z2J3eEs/Ww1uHwaM/uF58f0EHsTr/kECHr310sduPX6X/KMnP0/Jll2elV8K9Z
+	h+4ynfpw==;
 Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost.localdomain)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tnDt4-000seA-Cv; Wed, 26 Feb 2025 10:39:36 +0100
+	id 1tnDt4-000seA-UD; Wed, 26 Feb 2025 10:39:36 +0100
 From: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
-Date: Wed, 26 Feb 2025 10:39:06 +0100
-Subject: [PATCH 6.6 v3 2/3] tun: Assign missing bpf_net_context.
+Date: Wed, 26 Feb 2025 10:39:07 +0100
+Subject: [PATCH 6.6 v3 3/3] tun: Add missing bpf_net_ctx_clear() in
+ do_xdp_generic()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,145 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-2-360efec441ba@igalia.com>
+Message-Id: <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-3-360efec441ba@igalia.com>
 References: <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com>
 In-Reply-To: <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com>
 To: stable@vger.kernel.org, 
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: revest@google.com, kernel-dev@igalia.com, 
- syzbot+0b5c75599f1d872bea6f@syzkaller.appspotmail.com, 
- syzbot+5ae46b237278e2369cac@syzkaller.appspotmail.com, 
- syzbot+c1e04a422bbc0f0f2921@syzkaller.appspotmail.com, 
- Jakub Kicinski <kuba@kernel.org>
+ Jeongjun Park <aha310510@gmail.com>, 
+ syzbot+44623300f057a28baf1e@syzkaller.appspotmail.com, 
+ Jason Wang <jasowang@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+ syzbot+3c2b6d5d4bec3b904933@syzkaller.appspotmail.com, 
+ syzbot+707d98c8649695eaf329@syzkaller.appspotmail.com, 
+ syzbot+c226757eb784a9da3e8b@syzkaller.appspotmail.com, 
+ syzbot+61a1cfc2b6632363d319@syzkaller.appspotmail.com, 
+ syzbot+709e4c85c904bcd62735@syzkaller.appspotmail.com, 
+ "David S. Miller" <davem@davemloft.net>
 X-Mailer: b4 0.14.2
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit fecef4cd42c689a200bdd39e6fffa71475904bc1 ]
+[ Upstream commit 9da49aa80d686582bc3a027112a30484c9be6b6e ]
 
-During the introduction of struct bpf_net_context handling for
-XDP-redirect, the tun driver has been missed.
-Jakub also pointed out that there is another call chain to
-do_xdp_generic() originating from netif_receive_skb() and drivers may
-use it outside from the NAPI context.
+There are cases where do_xdp_generic returns bpf_net_context without
+clearing it. This causes various memory corruptions, so the missing
+bpf_net_ctx_clear must be added.
 
-Set the bpf_net_context before invoking BPF XDP program within the TUN
-driver. Set the bpf_net_context also in do_xdp_generic() if a xdp
-program is available.
-
-Reported-by: syzbot+0b5c75599f1d872bea6f@syzkaller.appspotmail.com
-Reported-by: syzbot+5ae46b237278e2369cac@syzkaller.appspotmail.com
-Reported-by: syzbot+c1e04a422bbc0f0f2921@syzkaller.appspotmail.com
-Fixes: 401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20240704144815.j8xQda5r@linutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[rcn: Backport the patch to address minor differences in the context lines.
-These differences are introduced by upstream commits
-4d2bb0bfe874 ("xdp: rely on skb pointer reference in do_xdp_generic and
-netif_receive_generic_xdp") and 7cd1107f48e2a ("bpf, xdp: constify some
-bpf_prog * function arguments"), which change the parameters in
-do_xdp_generic() and in calls to netif_receive_generic_xdp(),
-kfree_skb_reason() and generic_xdp_tx(). These changes aren't
-significant to the purpose of the patch.]
+Reported-by: syzbot+44623300f057a28baf1e@syzkaller.appspotmail.com
+Fixes: fecef4cd42c6 ("tun: Assign missing bpf_net_context.")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reported-by: syzbot+3c2b6d5d4bec3b904933@syzkaller.appspotmail.com
+Reported-by: syzbot+707d98c8649695eaf329@syzkaller.appspotmail.com
+Reported-by: syzbot+c226757eb784a9da3e8b@syzkaller.appspotmail.com
+Reported-by: syzbot+61a1cfc2b6632363d319@syzkaller.appspotmail.com
+Reported-by: syzbot+709e4c85c904bcd62735@syzkaller.appspotmail.com
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[rcn: trivial backport edit to adapt the patch context.]
 Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
 ---
- drivers/net/tun.c | 7 +++++++
- net/core/dev.c    | 5 +++++
- 2 files changed, 12 insertions(+)
+ net/core/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index c1fdf8804d60b6776b7fb78c41ac041b6aeb5a88..f28f57abe59dc1afca310de8f7a0a69107ec33db 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1668,6 +1668,7 @@ static struct sk_buff *tun_build_skb(struct tun_struct *tun,
- 				     int len, int *skb_xdp)
- {
- 	struct page_frag *alloc_frag = &current->task_frag;
-+	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
- 	struct bpf_prog *xdp_prog;
- 	int buflen = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
- 	char *buf;
-@@ -1707,6 +1708,7 @@ static struct sk_buff *tun_build_skb(struct tun_struct *tun,
- 
- 	local_bh_disable();
- 	rcu_read_lock();
-+	bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
- 	xdp_prog = rcu_dereference(tun->xdp_prog);
- 	if (xdp_prog) {
- 		struct xdp_buff xdp;
-@@ -1735,12 +1737,14 @@ static struct sk_buff *tun_build_skb(struct tun_struct *tun,
- 		pad = xdp.data - xdp.data_hard_start;
- 		len = xdp.data_end - xdp.data;
- 	}
-+	bpf_net_ctx_clear(bpf_net_ctx);
- 	rcu_read_unlock();
- 	local_bh_enable();
- 
- 	return __tun_build_skb(tfile, alloc_frag, buf, buflen, len, pad);
- 
- out:
-+	bpf_net_ctx_clear(bpf_net_ctx);
- 	rcu_read_unlock();
- 	local_bh_enable();
- 	return NULL;
-@@ -2577,6 +2581,7 @@ static int tun_sendmsg(struct socket *sock, struct msghdr *m, size_t total_len)
- 
- 	if (m->msg_controllen == sizeof(struct tun_msg_ctl) &&
- 	    ctl && ctl->type == TUN_MSG_PTR) {
-+		struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
- 		struct tun_page tpage;
- 		int n = ctl->num;
- 		int flush = 0, queued = 0;
-@@ -2585,6 +2590,7 @@ static int tun_sendmsg(struct socket *sock, struct msghdr *m, size_t total_len)
- 
- 		local_bh_disable();
- 		rcu_read_lock();
-+		bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
- 
- 		for (i = 0; i < n; i++) {
- 			xdp = &((struct xdp_buff *)ctl->ptr)[i];
-@@ -2599,6 +2605,7 @@ static int tun_sendmsg(struct socket *sock, struct msghdr *m, size_t total_len)
- 		if (tfile->napi_enabled && queued > 0)
- 			napi_schedule(&tfile->napi);
- 
-+		bpf_net_ctx_clear(bpf_net_ctx);
- 		rcu_read_unlock();
- 		local_bh_enable();
- 
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 24460c630d3cdfa2490d15969b7ab62b6ce42003..a6a63f5b6b8364d2d24553180d4e2138b13614b9 100644
+index a6a63f5b6b8364d2d24553180d4e2138b13614b9..3d1bf7be1ab1cc74f50a2e5b8bf05d21def3c5a2 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -5051,11 +5051,14 @@ static DEFINE_STATIC_KEY_FALSE(generic_xdp_needed_key);
- 
- int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
- {
-+	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-+
- 	if (xdp_prog) {
- 		struct xdp_buff xdp;
- 		u32 act;
- 		int err;
- 
-+		bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
- 		act = netif_receive_generic_xdp(skb, &xdp, xdp_prog);
- 		if (act != XDP_PASS) {
- 			switch (act) {
-@@ -5069,11 +5072,13 @@ int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
- 				generic_xdp_tx(skb, xdp_prog);
- 				break;
- 			}
-+			bpf_net_ctx_clear(bpf_net_ctx);
+@@ -5075,6 +5075,7 @@ int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
+ 			bpf_net_ctx_clear(bpf_net_ctx);
  			return XDP_DROP;
  		}
++		bpf_net_ctx_clear(bpf_net_ctx);
  	}
  	return XDP_PASS;
  out_redir:
-+	bpf_net_ctx_clear(bpf_net_ctx);
- 	kfree_skb_reason(skb, SKB_DROP_REASON_XDP);
- 	return XDP_DROP;
- }
 
 -- 
 2.48.1
