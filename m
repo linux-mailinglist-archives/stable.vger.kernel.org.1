@@ -1,79 +1,94 @@
-Return-Path: <stable+bounces-119605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52ECA45380
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:57:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8144A453B8
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 04:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071AE3A93CF
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD0B316CB6B
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEF821C183;
-	Wed, 26 Feb 2025 02:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2679225405;
+	Wed, 26 Feb 2025 03:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gj8Gh0iL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194A21C192;
-	Wed, 26 Feb 2025 02:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060DC18A6A6;
+	Wed, 26 Feb 2025 03:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740538639; cv=none; b=UaBfVgldahe0l8F7Q6zuU+igk49k2+cct6l9p/eHHa35WF/qoC5zYnwio9WbAm2II6L2XekQE7t3fZ6yYKZnradXr/knsawGjytCJh2OxKYPU5xx+NyYhQr624Som2QfqbAbkxrNwwuQ5QwDUpMbp1JisbFeO6P+ShP5lq2nP9Q=
+	t=1740539378; cv=none; b=oXfS+CoJrlaVHwd2KqCrY/kEQq6IV/P5DRua5sSwZ1vjZQmdkI7nHbsF5jex6zVSZvCh1imqyGRxEhdxr4DlOcI2MKTaWkgBZ9/bgxAFY6D3pBkfnyxtmu6+Fm8c6hYwtK1pEdkjX3W7yGyKuv2oz0ksjfzoH/oyY8wT6VvUgSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740538639; c=relaxed/simple;
-	bh=Yk8LWT4MDFrRDksF8SvP0T2kh44WZgon5tQvuMZn8Co=;
+	s=arc-20240116; t=1740539378; c=relaxed/simple;
+	bh=3cFHXH3/oJVY2LF35AS3JhelpUSBST3QH3X63TIStX8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nLmudUEadEeQ3iXoKupLPx5+36yPPvbAO9Wpc1YSPFT9VDdSd5E/zWTusev2CCoLSkmELM0bwuEUBu4eGj5wi/WD6FJtuSUP9Ws6qhJxI6hZ7Nkp24OGy2tYy8IGtEmrUCqw51f2waYbWZEud4hmYQ92/z6yidvCeI0fqTcOsTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+	 MIME-Version; b=EMZtdaVm5E8gLFWNYnPgqT+SQjnMb+8I4mFh1KmEAa1PYVHYLM5NIDZWZnddmLjZW1+k4w80VRVLG1q60D6Uk6EeeczSMUU5J+z/CLhDfTLtvMGm/J3VY3DW6CUJjE8icAv2wpkk3F5v7nYFhl6s4wQxlXm1SAayqDLKRy6fitU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gj8Gh0iL; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7273f35b201so3322277a34.1;
-        Tue, 25 Feb 2025 18:57:17 -0800 (PST)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6fcd8090fe7so33501867b3.2;
+        Tue, 25 Feb 2025 19:09:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740539376; x=1741144176; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IyZj4C9K1d8odw/tqUKy0+IlH8OYCthaQSH+++9eU+4=;
+        b=gj8Gh0iLfyF4BAxHZZTkmF1keGrYIa8Ddug6NhPlJV3uiFOsIgPR2t4J8tYek2YQIA
+         cYptWRniZNqp+xW+6QCcysDO1H2EbqQzGE5cQM3Wij6JOgqYk/SAPU99vlWmUESs+ShH
+         oAJ+XroHxF0siOI1yL/C0XdgpWNSLVQ9Xcc17JXTLHQD4ZCP3ROrceRJ40mgOfZs/lcE
+         cSexnxU4qpfzySf20Un03LpWpu61Cgugq5HQJgs3ZS3gebmsSkPOn6qrJUgq4KIBFrUW
+         Lba9lgVMWVg0FbVnzPCTe4am14D2eh2DdLH70X4TuvhhneMCCyv05eEutFEvkXcbi/Db
+         q2yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740538637; x=1741143437;
+        d=1e100.net; s=20230601; t=1740539376; x=1741144176;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V4Gi5oLcnu13m4QqfB45wOY6IeSYSo6Ivw3GwbQxIL4=;
-        b=fF12mJGz8/WNsUpcJyHsTADw2zQrIE8wzxHPNKfvSXHTzryjcwkA+A2RQz9AogUbyK
-         pwyzx1GyICi6640pQUVhOJAoP6OBjkQvQXjfcKj1RLuZi1If90iI1kRJ9NI/92TaFi2h
-         3aAEqPDegoitHpYLlz/n6QpfZBwbBEzkbPYowJQmV1ne2Uevt1oKVHon1UwOS5lpnKrQ
-         L4pNpYrIScIISJdH7m6u4+KdvlI2shUC28kUy0tilMr29z2qydEJL1dzfITisXz0BrDc
-         Uy09IxjaDjt9jjW3z6VJtJbDUZoXVuzUWhEbswNxoNBGSOg+hCLKfSfCS16KMAHnp16N
-         47WA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7lT8FZc15+zZ8OB0CEU6zt3cM+w/X9PglxUX5WmphvgD32EsF55swSBl7MGV5yvVrGEDWyY2ETivoba5DeQ==@vger.kernel.org, AJvYcCW/ykgSzq09X34Ano7y3IILCd+/oaWAtlxQQrExy+DXKWXAvPNxpIFs2OWSNge5vL/47+a4JK7u@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxi8Z5OO8e9qhtYWjspd+g9bjTKL2SMUUEerz9KvGORXq5LcvN3
-	lJdSXrgBRgc1Lpag2Wh2lhbziHoWw88Ostt9tHLx51Z06GQ9Ttir
-X-Gm-Gg: ASbGncv7fr21sSX0VyirvUt9lpT8LCoE3GtsSjd16iLpm179yC2zlp2sOmwZFUeyvpF
-	RCq4BILxlzcGBdBAKqvMIGoRgMgAF3zicrxtXHLltZGKhNNPTp2un05A2I6cS451k4t6Wh4EJvu
-	MH+lbxqGAcaEU1w59ed4VWsXxUg+Mk1BghQvSgP9V1hts9rsne/FU+hOIvaRHfvPJJL+1hFai2q
-	uC9t5zpcNxjGtoXMHahOCDiJv78FNqQaAiKWsOimMeIJILi0xh/UbgesNIMbyX8y4UXM2OgFi5X
-	W58THgGqn2iYnjXS20eFughiJKOpnkK5gIFp8jHI9q4=
-X-Google-Smtp-Source: AGHT+IGsp1z/zREzEGPS570DiATvLdI7NdTqzP+4QxfZKU3Y/BqW1Jyn1C1SsdTmTBZv6xAjGL3bww==
-X-Received: by 2002:a05:6830:6706:b0:727:f9a:8aea with SMTP id 46e09a7af769-728a50c73bamr1093423a34.4.1740538635443;
-        Tue, 25 Feb 2025 18:57:15 -0800 (PST)
-Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c1113f0135sm676360fac.27.2025.02.25.18.57.12
+        bh=IyZj4C9K1d8odw/tqUKy0+IlH8OYCthaQSH+++9eU+4=;
+        b=tXjkuVmttnDfOx0hrymnMPFtGKuEY2UzGssEYxM58IfevNFObffxtoTNwjc4iAPRXb
+         nP+MN8Z58m6oRXvu0X8eVStTyomYO1OvY4bDryeInyVkFbaeKEJhloiAuK3m4dTVrBx6
+         8zHLagVdq/ep1UFyOW/qpqXxfxoijEk5jN/F1iyAx2y+tLDUJDdkp/bOmZU7s1R26gcO
+         ++/jVWrr6//3eDuCB6aG6W9lyg0mCz7c5TGQpFMdJveX0LZxitIQpxNEZ2yydA7dSqRC
+         uQgxEfOiVptZeMCZkAsWhzLpABSGaD0z1RAmxsFnqwd5IgyVY22on/s56CPa/roYPhMn
+         aGkA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+gxCKxFoiibZRXOvBbfPn7kQb8oEXMr4MclZjs4JmfH6BWX+MXbjqiQoJBDFh1RarbpAZ0O+Q4AOM6D4=@vger.kernel.org, AJvYcCUJ7z5bqSeE/770e20/0V/aJJDLyzWYAaym1asQOlOL9xrnks+xLyMou+zitzrc0Cuj2OLV/QHz@vger.kernel.org, AJvYcCX94dlEXA7g0avlkgrruNhoKasx1mrDwtlqAw8B9Oze+8HVQ/b/g1E6CJyUOQBuq2lGfprZNM7f@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY2fUvhL+r7GnsEfgJbuuzqN25LmfBw1QAUxGFbzzD3GHNW0Lg
+	S3oYazT1kmPZqL2oL5/bc3+OBG7VhWrqpfNlDV8n/fmrHYpI8mK3UnTXPQ==
+X-Gm-Gg: ASbGncvfgoCiGVZ1H3jxKaHSRVzEVvCnxNWZmNsm4OzTa605kFhiiZx511EuE1SwtI3
+	RtpU8chUr3GqeRwej4LlRrzFD9zSlZNwR6a70iJ409kMp/kO63PFe7Tep5lHD76Z1G+hF26Uskm
+	Bmrk2YWG1TH024nfAo6zcKs+4ap/wmyIUXvvCyU+CFw9wfqkUItlx2djUpHfoyOpRJi8zYFgkC6
+	STisfx4Zv5jd2YfxhT4PonOO8bdlkLzZNzV+txPaYvvyyxK52ldn9nukDayLexYpH14hMrXDBjc
+	mWpMaVt1MQMLh40qpK2GHvSfiDRLiHVtI9pMgp04qoLm49Sk
+X-Google-Smtp-Source: AGHT+IFFKcNLWVfI7M4avlepQKeUTdEOtQy14361siRLOko8JW4UoQuFMSAmlw/9Dggv5KZGXJ9H2w==
+X-Received: by 2002:a05:690c:3803:b0:6ef:48ac:9d21 with SMTP id 00721157ae682-6fd10ae9ec2mr48590927b3.24.1740539374446;
+        Tue, 25 Feb 2025 19:09:34 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6fd2cf2f01csm449317b3.103.2025.02.25.19.09.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 18:57:14 -0800 (PST)
-From: sean.wang@kernel.org
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
+        Tue, 25 Feb 2025 19:09:34 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: jiri@resnulli.us
+Cc: arkadiusz.kubalewski@intel.com,
+	davem@davemloft.net,
+	jan.glaza@intel.com,
+	jiashengjiangcool@gmail.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	przemyslaw.kitszel@intel.com,
 	stable@vger.kernel.org,
-	Caleb Jorden <cjorden@gmail.com>
-Subject: [PATCH v4 6/6] wifi: mt76: mt7925: update the power-saving flow
-Date: Tue, 25 Feb 2025 18:56:47 -0800
-Message-Id: <20250226025647.102904-6-sean.wang@kernel.org>
+	vadim.fedorenko@linux.dev
+Subject: [PATCH v2] dpll: Add an assertion to check freq_supported_num
+Date: Wed, 26 Feb 2025 03:09:30 +0000
+Message-Id: <20250226030930.20574-1-jiashengjiangcool@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250226025647.102904-1-sean.wang@kernel.org>
-References: <20250226025647.102904-1-sean.wang@kernel.org>
+In-Reply-To: <txrxpe7tmpsyiu4cwjd2gbs3udogmzdo5ertjwmhbeynu23iep@dcryfdoi7o5x>
+References: <txrxpe7tmpsyiu4cwjd2gbs3udogmzdo5ertjwmhbeynu23iep@dcryfdoi7o5x>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,208 +97,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Since the driver is broken in the case that src->freq_supported is not
+NULL but src->freq_supported_num is 0, add an assertion for it.
 
-After joining MLO, ensure that all links are setup before
-enabling power-saving.
-
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Tested-by: Caleb Jorden <cjorden@gmail.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Fixes: 830ead5fb0c5 ("dpll: fix pin dump crash for rebound module")
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 ---
-v2:
-  1) generate the patch based on the latest mt76 tree
-  2) update the commit message
-v3:
-  1) fixed the merge conflict
-v4:
-  1) added tested-by tag
----
- .../net/wireless/mediatek/mt76/mt7925/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 65 ++++++++++++++++---
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  9 +++
- 4 files changed, 67 insertions(+), 9 deletions(-)
+Changelog:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index f41ca4248497..a2bb36dab231 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -244,6 +244,7 @@ int mt7925_register_device(struct mt792x_dev *dev)
- 	dev->mt76.tx_worker.fn = mt792x_tx_worker;
- 
- 	INIT_DELAYED_WORK(&dev->pm.ps_work, mt792x_pm_power_save_work);
-+	INIT_DELAYED_WORK(&dev->mlo_pm_work, mt7925_mlo_pm_work);
- 	INIT_WORK(&dev->pm.wake_work, mt792x_pm_wake_work);
- 	spin_lock_init(&dev->pm.wake.lock);
- 	mutex_init(&dev->pm.mutex);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 4a9f393b45ba..395c3d5d7954 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -427,6 +427,7 @@ mt7925_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	mvif->bss_conf.vif = mvif;
- 	mvif->sta.vif = mvif;
- 	mvif->deflink_id = IEEE80211_LINK_UNSPECIFIED;
-+	mvif->mlo_pm_state = MT792x_MLO_LINK_DISASSOC;
- 
- 	ret = mt7925_mac_link_bss_add(dev, &vif->bss_conf, &mvif->sta.deflink);
- 	if (ret < 0)
-@@ -1284,6 +1285,8 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		mvif->wep_sta = NULL;
- 		ewma_rssi_init(&mvif->bss_conf.rssi);
- 	}
-+
-+	mvif->mlo_pm_state = MT792x_MLO_LINK_DISASSOC;
- }
- EXPORT_SYMBOL_GPL(mt7925_mac_sta_remove);
- 
-@@ -1355,6 +1358,38 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return ret;
- }
- 
-+static void
-+mt7925_mlo_pm_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
-+{
-+	struct mt792x_dev *dev = priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	unsigned long valid = ieee80211_vif_is_mld(vif) ?
-+				    mvif->valid_links : BIT(0);
-+	struct ieee80211_bss_conf *bss_conf;
-+	int i;
-+
-+	if (mvif->mlo_pm_state != MT792x_MLO_CHANGED_PS)
-+		return;
-+
-+	mt792x_mutex_acquire(dev);
-+	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+	}
-+	mt792x_mutex_release(dev);
-+}
-+
-+void mt7925_mlo_pm_work(struct work_struct *work)
-+{
-+	struct mt792x_dev *dev = container_of(work, struct mt792x_dev,
-+					      mlo_pm_work.work);
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+
-+	ieee80211_iterate_active_interfaces(hw,
-+					    IEEE80211_IFACE_ITER_RESUME_ALL,
-+					    mt7925_mlo_pm_iter, dev);
-+}
-+
- static bool is_valid_alpha2(const char *alpha2)
+v1 -> v2:
+
+1. Replace the check with an assertion.
+---
+ drivers/dpll/dpll_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index 32019dc33cca..3296776c1ebb 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -443,8 +443,9 @@ static void dpll_pin_prop_free(struct dpll_pin_properties *prop)
+ static int dpll_pin_prop_dup(const struct dpll_pin_properties *src,
+ 			     struct dpll_pin_properties *dst)
  {
- 	if (!alpha2)
-@@ -1904,6 +1939,9 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
- 		mt7925_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
- 		mt7925_mcu_set_beacon_filter(dev, vif, vif->cfg.assoc);
-+
-+		if (ieee80211_vif_is_mld(vif))
-+			mvif->mlo_pm_state = MT792x_MLO_LINK_ASSOC;
- 	}
- 
- 	if (changed & BSS_CHANGED_ARP_FILTER) {
-@@ -1914,9 +1952,19 @@ static void mt7925_vif_cfg_changed(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & BSS_CHANGED_PS) {
--		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
--			bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		if (hweight16(mvif->valid_links) < 2) {
-+			/* legacy */
-+			bss_conf = &vif->bss_conf;
- 			mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+		} else {
-+			if (mvif->mlo_pm_state == MT792x_MLO_LINK_ASSOC) {
-+				mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS_PENDING;
-+			} else if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS) {
-+				for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+					bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+					mt7925_mcu_uni_bss_ps(dev, bss_conf);
-+				}
-+			}
- 		}
- 	}
- 
-@@ -1967,11 +2015,12 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
- 		mt7925_mcu_set_tx(dev, info);
- 
--	if (changed & BSS_CHANGED_BSSID) {
--		if (ieee80211_vif_is_mld(vif) &&
--		    hweight16(mvif->valid_links) == 2)
--			/* Indicate the secondary setup done */
--			mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+	if (mvif->mlo_pm_state == MT792x_MLO_CHANGED_PS_PENDING) {
-+		/* Indicate the secondary setup done */
-+		mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+
-+		ieee80211_queue_delayed_work(hw, &dev->mlo_pm_work, 5 * HZ);
-+		mvif->mlo_pm_state = MT792x_MLO_CHANGED_PS;
- 	}
- 
- 	mt792x_mutex_release(dev);
-@@ -2055,8 +2104,6 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			goto free;
- 
- 		if (mconf != &mvif->bss_conf) {
--			mt7925_mcu_set_bss_pm(dev, link_conf, true);
--
- 			err = mt7925_set_mlo_roc(phy, &mvif->bss_conf,
- 						 vif->active_links);
- 			if (err < 0)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index fd5f9d4ea4a7..cb7b1a49fbd1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -268,6 +268,7 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
-+void mt7925_mlo_pm_work(struct work_struct *work);
- void mt7925_scan_work(struct work_struct *work);
- void mt7925_roc_work(struct work_struct *work);
- int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 32ed01a96bf7..6e25a4421e12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -81,6 +81,13 @@ enum mt792x_reg_power_type {
- 	MT_AP_VLP,
- };
- 
-+enum mt792x_mlo_pm_state {
-+	MT792x_MLO_LINK_DISASSOC,
-+	MT792x_MLO_LINK_ASSOC,
-+	MT792x_MLO_CHANGED_PS_PENDING,
-+	MT792x_MLO_CHANGED_PS,
-+};
-+
- DECLARE_EWMA(avg_signal, 10, 8)
- 
- struct mt792x_link_sta {
-@@ -134,6 +141,7 @@ struct mt792x_vif {
- 	struct mt792x_phy *phy;
- 	u16 valid_links;
- 	u8 deflink_id;
-+	enum mt792x_mlo_pm_state mlo_pm_state;
- 
- 	struct work_struct csa_work;
- 	struct timer_list csa_timer;
-@@ -239,6 +247,7 @@ struct mt792x_dev {
- 	const struct mt792x_irq_map *irq_map;
- 
- 	struct work_struct ipv6_ns_work;
-+	struct delayed_work mlo_pm_work;
- 	/* IPv6 addresses for WoWLAN */
- 	struct sk_buff_head ipv6_ns_list;
- 
++	BUG_ON(src->freq_supported && !src->freq_supported_num);
+ 	memcpy(dst, src, sizeof(*dst));
+-	if (src->freq_supported && src->freq_supported_num) {
++	if (src->freq_supported) {
+ 		size_t freq_size = src->freq_supported_num *
+ 				   sizeof(*src->freq_supported);
+ 		dst->freq_supported = kmemdup(src->freq_supported,
 -- 
 2.25.1
 
