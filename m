@@ -1,120 +1,114 @@
-Return-Path: <stable+bounces-119653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C05A45B6B
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:15:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64B4A45B78
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B490188A96F
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 10:14:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D7F63A4E6D
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 10:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8B224DFEB;
-	Wed, 26 Feb 2025 10:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB1B24DFF1;
+	Wed, 26 Feb 2025 10:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="S+MHqDdN"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZE8aq+Mp"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E05F226D02;
-	Wed, 26 Feb 2025 10:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BB0226D1B;
+	Wed, 26 Feb 2025 10:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740564813; cv=none; b=hcftKkIxgNuq/k2c3C7fn+Td4PEb9EPd8+LHiBKHWcnikRwTebXCVQXkxHBo2tXdNcIl6VZL/jYv1ip64wEq9iLOjE/x7xgQ5gb96UFf0vpT1ajoI78efYjX0aLMJLQZLbi9lnznQRAHJagpYm5YkPxYZ9ZSLRHOG1GtkYOt1ng=
+	t=1740564887; cv=none; b=lCSu/iXsG1iRPMJpWSG6JySrzmRLftuyBTBxvAAZXHXTFBrMMWkoS9QsQu8wMSdqsz1PM+EFH7K4JHW+jEAGil3L18Ol9hlHr4PV4k2n2MKZxp0SBgwNbIKJ0n7EsnOG/fTq3WXNmsL0paMNXbMgbeHvegbig1grNz2xjjzeDyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740564813; c=relaxed/simple;
-	bh=wX6dPQiYKQr65TtTejA4CV3J0CpQjoNYdCwxgXtX9lQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W+ZzwWONlKU/s/7k/snzqmWgT2JdGpMHJ66iEMFw4SbS5P6LaNpqtE+SxjcHb3cy6IYzNq+wZTdCWsJAWJvcYdIxKUB53zeCxZYUKnTGfOpswBnVVnJYkvgSBbGu9g5AJZ3R5wOoKMnWDsEVnjvrX5K6hSzELb+JGGp5vrtMGNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=S+MHqDdN; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=CbQtw
-	XuFlmtrkGlidPFjKUyUoT7NfEQyjqPCU9PcbW4=; b=S+MHqDdNo8tNjl0Tk3ECj
-	UaoradQplO9Owt4n8BkgmMx/NtMU8uowdGH0uViQyZ45b8z/4SoOCDNKzlJgu/Fe
-	7/OtLI/7AuXraEg6AgTsdsW58SeihKFcoW/MUwp7yk5Y5RkOtqxQlrMZWXmuRvVn
-	lQeA8+ON/1K6I1LJFglFhk=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDn70UA6b5nShOUOw--.3815S4;
-	Wed, 26 Feb 2025 18:12:17 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: andy@kernel.org,
-	geert@linux-m68k.org,
-	u.kleine-koenig@pengutronix.de,
-	erick.archer@outlook.com,
-	haoxiang_li2024@163.com,
-	ojeda@kernel.org,
-	w@1wt.eu,
-	poeschel@lemonage.de
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3] auxdisplay: hd44780: Fix a potential memory leak in hd44780.c
-Date: Wed, 26 Feb 2025 18:12:13 +0800
-Message-Id: <20250226101213.3593835-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1740564887; c=relaxed/simple;
+	bh=FG9HEH37ejEz2PMsrXdh/tIzU2XkG5MKx8b1kjL0n9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fJqxFH7Qd9oH1oNHQWsyLKFYWjBLhlwvgzJEb5138qZL3bK7igrjSYuTAika/9UKvOpFa8Rd8TKnRjotKP3b6AugzQqz/Gs/a1WCaV2ObPKe2/ZbKYNLW6enhZFA9Q9gN0zVLYobFzZvui7JFm4/pFe7vjQ1DHK98JgiPxZ+Dkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZE8aq+Mp; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95AC610382F09;
+	Wed, 26 Feb 2025 11:14:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1740564876;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5K7X/VeRrYr1fVy6pp2dNORRAK7lJe1oeIlcNT/7St4=;
+	b=ZE8aq+MpMKeKJ0d3E13KKHcPTOVtjfkApr145qI7qNwMuhl1QSC0bQ2xgZVjdemL/uzWUe
+	ZgXPx9sr6wzArwaeNWuYtSOX58UAcjuweJv9TvNmAcA7TBbuqDk+X8+uD1HO+sJeu+kJe3
+	d0Ow+PPd8U8rc0KCfZgRtoX3cP8KfpUWBWL3IGq5WTgeodI/cyuwso6mJ0yM0tpUQP47W5
+	BLElELLZ+SAHGou5ivrpDttMSZWx6MaxvFLWbn7kXohXQ4akL68RfEiuV+iP4KYNPNqlqU
+	ZMGX7dfS9xQ7He3JwluuSCu5/KnAwJK6O6b3UWVkw+Sf98ZzOSRU5v9dhTAZ/A==
+Date: Wed, 26 Feb 2025 11:14:28 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.13 000/137] 6.13.5-rc2 review
+Message-ID: <Z77phGUkfIuOCikC@duo.ucw.cz>
+References: <20250225064750.953124108@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn70UA6b5nShOUOw--.3815S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tFyxKr1UGr4xWF1UAFykuFg_yoW8Ar1xpF
-	srWa4Fka18JF1vga4DGw1xXFyYkan7A34jgr9Fk3sa9ry3JFWIy34Yyryq9w47WrWfG3WY
-	v3W2vrWSyFsrAFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0hb9bme8gkvYZQADs7
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1o7EVEPHhNeoFG6k"
+Content-Disposition: inline
+In-Reply-To: <20250225064750.953124108@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-At the 'fail2' label in hd44780_probe(), the 'lcd' variable is
-freed via kfree(), but this does not actually release the memory
-allocated by charlcd_alloc(), as that memory is a container for lcd.
-As a result, a memory leak occurs. Replace kfree() with charlcd_free()
-to fix a potential memory leak.
-Same replacement is done in hd44780_remove().
 
-Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
-Changes in v3:
-- modify the patch description.
-Thanks for the review! I think Fixes-tag should be added because
-the previous version causes a memory leak. I modified the patch
-description to illustrate it. Thanks again!
-Changes in v2:
-- Merge the two patches into one.
-- Modify the patch description.
-Sorry Geert, I didn't see your reply until after I sent the
-second patch. I've merged the two patches into one, hoping
-to make your work a bit easier! Thanks a lot!
----
- drivers/auxdisplay/hd44780.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--1o7EVEPHhNeoFG6k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
-index 0526f0d90a79..9d0ae9c02e9b 100644
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -313,7 +313,7 @@ static int hd44780_probe(struct platform_device *pdev)
- fail3:
- 	kfree(hd);
- fail2:
--	kfree(lcd);
-+	charlcd_free(lcd);
- fail1:
- 	kfree(hdc);
- 	return ret;
-@@ -328,7 +328,7 @@ static void hd44780_remove(struct platform_device *pdev)
- 	kfree(hdc->hd44780);
- 	kfree(lcd->drvdata);
- 
--	kfree(lcd);
-+	charlcd_free(lcd);
- }
- 
- static const struct of_device_id hd44780_of_match[] = {
--- 
-2.25.1
+Hi!
 
+> This is the start of the stable review cycle for the 6.13.5 release.
+> There are 137 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.13.y
+
+6.12 passes our testing, too:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.12.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--1o7EVEPHhNeoFG6k
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ77phAAKCRAw5/Bqldv6
+8mDSAJ42EyYaFz1K1budFqDuZCB2XkFnQACfY4HcD0p2mTMQnAXSs6yDyBU2dtM=
+=KLRt
+-----END PGP SIGNATURE-----
+
+--1o7EVEPHhNeoFG6k--
 
