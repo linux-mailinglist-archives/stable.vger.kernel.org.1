@@ -1,168 +1,215 @@
-Return-Path: <stable+bounces-119677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F336A46187
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 15:00:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBDCA46189
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 15:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F42273B38AA
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 723B01668BF
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44F522155C;
-	Wed, 26 Feb 2025 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52BA221545;
+	Wed, 26 Feb 2025 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AJty9foa"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oawCbxDY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xYg1qcCv";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0hJn7xJn";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KHuW2BlK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE97221542
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F388D221555
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740578356; cv=none; b=KNeK67OieBww9LyS9sghsw1cQYibfzsyJfC8sGa7hpGxUUl24IEEUzDGhv7PtI+xv2LtqcSyIox1aZLWOr1NftOvmQ5pOGQeyjovWJzLIJenesypH74kwgLBu5hnM+hawCW/yMu9D7qEL0kpVNqoe+up7DZXQ1sYlvK6v1YjlFo=
+	t=1740578382; cv=none; b=FVm6T8aPM1fJdBtqX4r+kUjjM91zEK9M7rpmAbJTqo9c7jnU02vJG2sDAzGIaSAqRj0044v4tqgYSeOcGO/R3JBpACI+g7mhJ3FKggtvY/tSs9bHI/N4dZJ6GmRlDZvqzTw97rqFJfgQJkYITIjIQeQZlKnRC4UNIYwfYJFpcIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740578356; c=relaxed/simple;
-	bh=B6vNRR24vZm7iSTdEc4QXuLRyq/IRPqoeXQGjK0c00E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DtqkVrYCzVim8xtJB0hMmVfx59TMBDUL+I0LWiR1Q2Gn8HvJHuwx0Fe1gr+AiTWCG0rCgOmOnsqqI/QY1Ztv9ruZZ8Bjws2s58GHDqdMpOWLhO/zOpHO7Oib5r5gg5Y/4u73wjMdXoOMIXewlfPvOlidxJzZDMAj6+njB5O8ZSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AJty9foa; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e0373c7f55so10446005a12.0
-        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 05:59:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740578352; x=1741183152; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=436GsJyLmwRgLe/Pi/bM1GPjpxKDesYcznC8EJvTAV0=;
-        b=AJty9foaOFCNTcFISDPOiUln1DzprL/0pvfUnI4hP/loPrclGot4zA3rANemzNkXLW
-         At/kJmMf+ASZyzFMurB56acxTTvx4+jG+Yo2oImY7mCAAmCrDhCqgWZYPM7fegBkHpjR
-         VVKK7AUNHZ8QHoqRkQhh0V7NREkjgfx7NIIwwHa8S2uQIXCso+u/bIi6yAEoG4wFo077
-         lVl+umbE0gC/nOjI0G9MflIyJi1g2LUh+AZ0UnsaQgbSOlzete1zsMYz5QlqKyKkdaRO
-         WS98/aBa26lAiPTXX7Lon6MPjiTt6TDMY3LDbk4HHycPkAOnckio8hkF43xbta5UeKTA
-         lAkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740578352; x=1741183152;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=436GsJyLmwRgLe/Pi/bM1GPjpxKDesYcznC8EJvTAV0=;
-        b=RTCLNghujykARpDFTVkQmu7DDL0wZV2LW7QyOsYGql3NXYmBZbJwmws24aj300u7/f
-         LJzoLifWCGf/fRrpPfxXW+NE8D8LTtMT5Ddc2jpqoJY9ZO3DrY5kcQgLng7k8FtITTqA
-         5bj1/ImvQ0qPMfVgRwoXnlUSptQEqLl7fK8fczJd2ysPD6CTTyis+yXpBRv4cJMfwhHC
-         SjYGY15hRUtIakDSQYemck48tMRzbbdTsv3J9SjNTAS/dY3//xcf0cUeAwSTXPtapuJE
-         JGhYM1mROiMoPw2DH2L6kJ+F61D22Jqi8Mi5fQ1nnjR3Fx99U5jYMArjz/F9Y4HyQG2m
-         IZfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVhg9MiBZNHPxMHH3+g1U9V9zw2QYzXL2mhqCcC57ONp0LtoVmhnhOnhcV8+5RrSYHeWkFS+ME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEutC+AmholYTJ0FxK/KpvvrP6ANl3hiXnNhhwBtjN5HY80fCZ
-	uMhtSfZQqU+sA8125IUAJTWYyYjLPA/JSrM+QXkap8aOhr7lBTlppl7xQpMtVNg=
-X-Gm-Gg: ASbGncs0TrTVKnjE+uzr+lhwNbc1KhkKRhVYlQjPrSViKU7nX/MQ2XxWLD7+jQWszjP
-	6sIUk96m9MeDrlSk5nUgw4/dIicYcTh4eNV20ffdGyx4c4rwUbwbPU9DrjFjznrDcemTqDgkI4c
-	fI9WOl34ufSI8m1R9MgCb1CJ0euJuctcl/wkXQkMDRLa7d8Jk5t5gzC+FFcfmlOdCD9vTH8xu/s
-	27xgjg1aprE7RrojUqgmfrklOGLNr0fHAFgoXkQWpvnM5ophoE/OL142oJHUZk9iAzEDiABlTgc
-	ogNL2EnAUFL+xyVLZ9DC5xpJ
-X-Google-Smtp-Source: AGHT+IE5ZCJikWYBQYNCfYeCZ7i01fPaQ1YL5PYutRrdkWV8ZfElsYhJmfpfgT7H3II/AP9b0v/4mA==
-X-Received: by 2002:a17:907:7706:b0:abb:c7d2:3a65 with SMTP id a640c23a62f3a-abeeef64485mr389483966b.39.1740578351780;
-        Wed, 26 Feb 2025 05:59:11 -0800 (PST)
-Received: from [127.0.1.1] ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1d59391sm335378766b.56.2025.02.26.05.59.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 05:59:11 -0800 (PST)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Wed, 26 Feb 2025 15:58:55 +0200
-Subject: [PATCH v2 2/2] leds: rgb: leds-qcom-lpg: Fix calculation of best
- period Hi-Res PWMs
+	s=arc-20240116; t=1740578382; c=relaxed/simple;
+	bh=Or1vhAzrLXj8sBtJvVnR3Zqn6OKOqLEBPTIBcNae0+s=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Op9naJes5iifoVQC6Cn22/KZevRAmlrp1riiAUV5Fx+lfJcf/j1y30Pex7oQmj7YmEH3UeXfvzPnNvFz7PIFXZVKcuTIYAH0erJt+94HXaw/p5vW2NPQfTU0EGNQPbcaSDtYdTyspVlYooMoe82sAT+6OJ1jEKbnrqrNSrkKMjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oawCbxDY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xYg1qcCv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0hJn7xJn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KHuW2BlK; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 019CD1F387;
+	Wed, 26 Feb 2025 13:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740578379; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=47WruSlvITW/87soN26JYKTh1c5Xgaylhx0YYHmlUME=;
+	b=oawCbxDYOFdTZZh1bHpEQkdkOOMGq+pe9cjU5Jw6jQh03yKsHAMmHjUGJ08zns9n1jOn6e
+	dAzMFmgzYPmADruWpUoYLQIDSl3DrCl01r05bES2iLqvrd4dYM02oLESVdoH0j98sh/aHv
+	/B9esBgs5F6vcUX0Pns2XMM5tav24HM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740578379;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=47WruSlvITW/87soN26JYKTh1c5Xgaylhx0YYHmlUME=;
+	b=xYg1qcCvpmJQWQ1XhMi/UQloO81E/db1iIbqz7wjXb1i/tenB6judPXo9I4Q1YikGu6C64
+	MDt+nwygxj/Xp3AA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0hJn7xJn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KHuW2BlK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740578378; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=47WruSlvITW/87soN26JYKTh1c5Xgaylhx0YYHmlUME=;
+	b=0hJn7xJnr1L7TmqNBGWX6jLWZePpWzxuT7wVrnQviTodIANGp2tjTI5aY9GzdOLv2VO+R+
+	t862Somj7qKpWu/sMS3pmG4h57l5I59bEZfoYSATp40FB/bMFywlXNW4W0Uzj4z9VtrS3K
+	Wq/xlnBsVu3sEzHAPFj9BoWjmyRzksA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740578378;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=47WruSlvITW/87soN26JYKTh1c5Xgaylhx0YYHmlUME=;
+	b=KHuW2BlKXeq+Uk0gtrJRPOmZOPvy15mM8P99Us8usZEm8BvRbhcQpx/bdcols9u3eYfjlu
+	B5Qkl3R3rcgEX9Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD80213A53;
+	Wed, 26 Feb 2025 13:59:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jyFcMUkev2cgOgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 26 Feb 2025 13:59:37 +0000
+Date: Wed, 26 Feb 2025 14:59:36 +0100
+Message-ID: <87o6yo4xiv.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Adrien =?ISO-8859-1?Q?Verg=E9?= <adrienverge@gmail.com>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Joshua Grisham <josh@joshuagrisham.com>,
+	Athaariq Ardhiansyah <foss@athaariq.my.id>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Chris Chiu <chris.chiu@canonical.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda/realtek: Fix microphone regression on ASUS N705UD
+In-Reply-To: <20250226135515.24219-1-adrienverge@gmail.com>
+References: <20250226135515.24219-1-adrienverge@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-2-7af5ef5d220b@linaro.org>
-References: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
-In-Reply-To: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Anjelique Melendez <quic_amelende@quicinc.com>
-Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, 
- Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
- linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2125; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=B6vNRR24vZm7iSTdEc4QXuLRyq/IRPqoeXQGjK0c00E=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnvx4qQlcZWrwEMBg5/sca45Aic4oiGh3wo+wat
- QxqpZiktruJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ78eKgAKCRAbX0TJAJUV
- VpcOD/9avCUtmDTMHZbfSFIgp5PcEQzz734ZCCgByqtIk66s8J7P8Ssk5NGSJ2FdPbW1rnKkd9k
- qUdvQBApJpc6D23MzZURiVTANNCrnK6g/VyPHRPHI3LHwBN6pmgPUzaDQe8zPPqOEouXXToFcxm
- bHGP8OaM+isg2DJyL5+KXRCG1LuMOqFVDOBQT1g9TeMdE1QXwWj4uQfUOL73tAhXaYjXRMiButy
- tPMx9Tk8lDmfpKqJJ3T9BXv0NRkLJLsbhRnEzhWqvcpu1Dpa95OkzfduDzMmD9zkpc+9NmMPhyA
- BBBxRHYNuU6xuIEhTjentojQGNJyN6FSvh4QPF/bZX4QG404U+Hp/vfpZEvaT92IcUtx9sWZB/4
- mdvPjal7XDY1u5hW7HD1d9nfLNvv/v9DPyL7MBYDXcv55JeIabLdQM2oaTQ+wg4HPoqWglAJkIq
- bLIAGRbwuEcYFjbbjPYL28XzWKKYtRUpoU3UZdHVWyet8HpOAtf7M7eSPmAHMHXLzmD7jEnqlRp
- b8b6ijyCibnOMivunZWBbFA34qMVdi+a6+jEYN8YuLHIXs4dNQxq9R8tISx39iKxE5PZ5jzpCSn
- yi0XbiH2/NC/yC2MpdR89E111LpqkptQuElxYqIf78UohQyelGaoqXm9LbwMm9fnDj9nZ1CoMnc
- afCK0DsTY7N4UyQ==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 019CD1F387
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[perex.cz,suse.com,realtek.com,opensource.cirrus.com,joshuagrisham.com,athaariq.my.id,gmail.com,canonical.com,vger.kernel.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,canonical.com:email,suse.de:dkim,suse.de:mid];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
+X-Spam-Flag: NO
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+On Wed, 26 Feb 2025 14:55:15 +0100,
+Adrien Vergé wrote:
+> 
+> This fixes a regression introduced a few weeks ago in stable kernels
+> 6.12.14 and 6.13.3. The internal microphone on ASUS Vivobook N705UD /
+> X705UD laptops is broken: the microphone appears in userspace (e.g.
+> Gnome settings) but no sound is detected.
+> I bisected it to commit 3b4309546b48 ("ALSA: hda: Fix headset detection
+> failure due to unstable sort").
+> 
+> I figured out the cause:
+> 1. The initial pins enabled for the ALC256 driver are:
+>        cfg->inputs == {
+>          { pin=0x19, type=AUTO_PIN_MIC,
+>            is_headset_mic=1, is_headphone_mic=0, has_boost_on_pin=1 },
+>          { pin=0x1a, type=AUTO_PIN_MIC,
+>            is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 } }
+> 2. Since 2017 and commits c1732ede5e8 ("ALSA: hda/realtek - Fix headset
+>    and mic on several ASUS laptops with ALC256") and 28e8af8a163 ("ALSA:
+>    hda/realtek: Fix mic and headset jack sense on ASUS X705UD"), the
+>    quirk ALC256_FIXUP_ASUS_MIC is also applied to ASUS X705UD / N705UD
+>    laptops.
+>    This added another internal microphone on pin 0x13:
+>        cfg->inputs == {
+>          { pin=0x13, type=AUTO_PIN_MIC,
+>            is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 },
+>          { pin=0x19, type=AUTO_PIN_MIC,
+>            is_headset_mic=1, is_headphone_mic=0, has_boost_on_pin=1 },
+>          { pin=0x1a, type=AUTO_PIN_MIC,
+>            is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 } }
+>    I don't know what this pin 0x13 corresponds to. To the best of my
+>    knowledge, these laptops have only one internal microphone.
+> 3. Before 2025 and commit 3b4309546b48 ("ALSA: hda: Fix headset
+>    detection failure due to unstable sort"), the sort function would let
+>    the microphone of pin 0x1a (the working one) *before* the microphone
+>    of pin 0x13 (the phantom one).
+> 4. After this commit 3b4309546b48, the fixed sort function puts the
+>    working microphone (pin 0x1a) *after* the phantom one (pin 0x13). As
+>    a result, no sound is detected anymore.
+> 
+> It looks like the quirk ALC256_FIXUP_ASUS_MIC is not needed anymore for
+> ASUS Vivobook X705UD / N705UD laptops. Without it, everything works
+> fine:
+> - the internal microphone is detected and records actual sound,
+> - plugging in a jack headset is detected and can record actual sound
+>   with it,
+> - unplugging the jack headset makes the system go back to internal
+>   microphone and can record actual sound.
+> 
+> Cc: stable@vger.kernel.org
+> Cc: Kuan-Wei Chiu <visitorckw@gmail.com>
+> Cc: Chris Chiu <chris.chiu@canonical.com>
+> Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+> Tested-by: Adrien Vergé <adrienverge@gmail.com>
+> Signed-off-by: Adrien Vergé <adrienverge@gmail.com>
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed.
+Thanks, applied now.
 
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
- drivers/leds/rgb/leds-qcom-lpg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 146cd9b447787bf170310321e939022dfb176e9f..5d8e27e2e7ae71c19637b90cc15eb363c53317d9 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -461,7 +461,7 @@ static int lpg_calc_freq(struct lpg_channel *chan, uint64_t period)
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
- 
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -482,7 +482,7 @@ static int lpg_calc_freq(struct lpg_channel *chan, uint64_t period)
- 	 */
- 
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
- 
-@@ -1291,7 +1291,7 @@ static int lpg_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
-
--- 
-2.34.1
-
+Takashi
 
