@@ -1,131 +1,182 @@
-Return-Path: <stable+bounces-119771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED89A46F60
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 00:26:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB5BA46FA5
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 00:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBA0D188D271
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 23:26:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2C87188CDD5
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 23:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B93F25DAFE;
-	Wed, 26 Feb 2025 23:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235F921129E;
+	Wed, 26 Feb 2025 23:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="oi7wnh+G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwR6SWup"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10011301.me.com (pv50p00im-ztdg10011301.me.com [17.58.6.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1413B25BAC2
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 23:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64535270028;
+	Wed, 26 Feb 2025 23:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740612365; cv=none; b=HVvABCsz1SWNSgCe5uOUiL3JzvF+zXQvmAg1adcgwQfdTmUlbZQukTt1KQMK/lsTA/+luOworipBfyLOI+cfqZfvxtgYXmQg5s24OtKF25Ib87QvwvrQ1BQSZXBeFmeXwNsp/1eUr2qaDcJDfI4HbfG31BxmwxU1jUyJHhe3gUs=
+	t=1740613640; cv=none; b=ZvgycWVeANK9t7aJFK+M0GIl99fpyZ53mEgH2LqNLRDaHQ80Kdo+T/9qyLF5fmjNtSutruUadXUf4+8XhkTteDAYYsMtfvZ+Xj2AgU1a2Mf4Wc+UPZs74YW/zWf0xqJwcdwgttXHtpYdAj5csAVkT2tcDYoGix5PeitcE9tc9RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740612365; c=relaxed/simple;
-	bh=s4ncgw8Lea9rtYWCv4yfRyXlV4HCrm7tRPtcwpzOc94=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o/lLKSM2NDptmi430N+fD253f1qNX17aErYfk2So6CToXDcnhcjtl20CXMBDwI/2LGF8GxfzqAINCFg08rxYzpx63Lu9n+H47OAUydUZmBWDtFVqPFUXUpZWT2S00cF+DzctIRAxc7Xrmgxlpz95enlwadPJOpNBMYSSqYgSviY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=oi7wnh+G; arc=none smtp.client-ip=17.58.6.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=SLGhhg9zZBS351ed44ROn6vuM4DND2a8FR0tSO6T5zo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=oi7wnh+GSG4IVh6zEGl2hvunJAT5gfh2Y2V0M7YmZzWEdj82iSUw4fsB80HEBcMOL
-	 D+T5Ke5/SGfjGayNyViYFQdNguxb3zxX0IROZ9fQca3L/i77ErQhzV24Z19MbRgo4d
-	 a46qVwJUJjhCb+nbTx5fxyNGEpa7sbWV79xORe/8Md8NPzS2LVepJnM6h+GhW8WNh6
-	 bvEGn/TK7XwkqcQzOoLbZjsYdkt2748Tt2vtJTW5krjPyn/jyVZZjkpoc0liAk3BvT
-	 V98umIK7+2rewTgu28soRQ85gCvjLXjubHU2+g01mzTbrQdXdBcvtxZmai4bi5pcAW
-	 /ggw11PBRp2Nw==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10011301.me.com (Postfix) with ESMTPSA id C123B180415;
-	Wed, 26 Feb 2025 23:25:52 +0000 (UTC)
-Message-ID: <b3a103b8-7774-49c5-9d8a-04a9dae2c210@icloud.com>
-Date: Thu, 27 Feb 2025 07:25:48 +0800
+	s=arc-20240116; t=1740613640; c=relaxed/simple;
+	bh=oUksBLA91DdVi78/wu0jy/FINTrgnDiQpK5Zeurc1JQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l2fOR0EJa15BTM6U1tVp3U8Hhdn1XPKpLRjErRAGcZhxcxuIaL2BhzHCs6Hp28NiQPHX/N2ynbTzM/7QsFZGtyaTvkTO1KyvawzuDzoiWKNNR0Eo8FqhTkrqeiHPOTRPnGPOmsopMiAV86IYz7hqU3SD+JZNZA9dq/+UpP2ICTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwR6SWup; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c04df48a5bso38653985a.2;
+        Wed, 26 Feb 2025 15:47:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740613638; x=1741218438; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=liXUNycYFC9vjDNrycuN+V1sVb9jvR/WsQuvQlMOVkM=;
+        b=TwR6SWupl06DrAtG+1ZpLd2u3ldgpB7d0GHCL1SfPZrgSbOUcu6osyBl2xuDpjSGGN
+         7jazpU0tFhBU6r/6r5Xd9wIT3auNbqlIT/Fnc0n8ejMn9FDI8zuSljo20dat/6FAZrSO
+         YBvvSwA1DIo6CwwWsXo8rrp898FKYCjeJDyxS/4dssMx3jidNxTe0p4cIBOSPmnZ6ahG
+         Nwwv5NTEzOd1edPsp7FiLRMnxYDWO+ShLoW9kXQwyhCyQ1vOJZHrCzoq9Puf5nam0sI9
+         /SiBpIsrXD9v41H0A4V040pcf+9x756Nr0543Gjvwir20zBX8PAwuhCHLfGiKiaopy4j
+         apxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740613638; x=1741218438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=liXUNycYFC9vjDNrycuN+V1sVb9jvR/WsQuvQlMOVkM=;
+        b=i8y/k67bOCuGqhFdW3t/M8+Nm8x4t+mr0gEZUqOnU6j4jYRiDFYZREUpffPFk++G8Q
+         VHRdaLY6uT4s+5ksymwsSrTDr39PMxVL4XiR6k/aKD6stg0+LZxTve2sKjZQ/a7DPdSU
+         0/rUM2HHwvYXglxr3lFLZD/s0k6PG74AXth5KfAc5I73Oke5QICOTM0Xa9c1CT4OwMjo
+         sPSndQ8tmr4oi5pUC7JFZe3LwfADrxr00nY9OWgfnTi8cnPq+jg6H0K79ltvtNSNCiI4
+         qk7uXrqSIlBAVCG/vSiQHocBXQz4fQKG1fgtAK1W0TKB6XXHZmYvWu/5QlU1K8T8ToZw
+         v32Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU3VSL5KTz/RmynDujcBO1J6NgsGndacAbxS53BXYt3eETFfogS1aiDyjkOLsnb7Q7EEoKBeHdedCUXCR1d@vger.kernel.org, AJvYcCUZtuDIkxaXP5jJoiRJncYQaLHOP9Z+HTNZ5X706Ua2uetqkaFGF8aXF5aFxM8o5i9DKGJs0jppwK4iyXw=@vger.kernel.org, AJvYcCWjKlbb8J4qbVbNIL7AkRaW9Hoh+D3b4gSZyWH7a4ElmjdfAXefNtVTYB7R2oAOs4IFL5z0ogmb@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLFrYg2BowzBx0x+Fd76QFH1QMqO00OdH6rcCPWmtuBJYfKzpF
+	uZOOWMe694PGkj4OOP2+3OJRcUfVI6UWOBcwpisRjpDpeZ1zzSAkHWYotXUrvEsnzEno5astF86
+	m7JGZUhhvzGOPJb4mEZQo/TLjJOU=
+X-Gm-Gg: ASbGncscFH9Mcku+bo4p8n6ohBzot6IkDuWxvix67lfShGwYSXEJxx7JYTZ0ngdAMfi
+	tiGTRUYKhUsJ2gZ4TuCwCZyKVR+/6fyM8Q58OqslvOCwqQVto9v/DpH2h+v+7eKsiX8hE06zXPh
+	32XLuhosfR6nLFUaHYU2Jvea0=
+X-Google-Smtp-Source: AGHT+IFaza/mzOY4P7cX85X8N+cye/wkhSM/zT8ahz1vKD1VMVe06emD5Zm7qAX9AxwOYAPP284uKjDZVdQ8M6xLzmo=
+X-Received: by 2002:a05:620a:4441:b0:7c0:99b9:c8a3 with SMTP id
+ af79cd13be357-7c247fe7836mr819662585a.58.1740613638270; Wed, 26 Feb 2025
+ 15:47:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/14] of: reserved-memory: Fix using wrong number of
- cells to get property 'alignment'
-To: William McVicker <willmcvicker@google.com>, Rob Herring <robh@kernel.org>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, Saravana Kannan
- <saravanak@google.com>, Maxime Ripard <mripard@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Grant Likely
- <grant.likely@secretlab.ca>, Marc Zyngier <maz@kernel.org>,
- Andreas Herrmann <andreas.herrmann@calxeda.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Mike Rapoport <rppt@kernel.org>,
- Oreoluwa Babatunde <quic_obabatun@quicinc.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel-team@android.com
-References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
- <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
- <20250113232551.GB1983895-robh@kernel.org> <Z70aTw45KMqTUpBm@google.com>
- <97ac58b1-e37c-4106-b32b-74e041d7db44@quicinc.com>
- <Z74CDp6FNm9ih3Nf@google.com> <20250226194505.GA3407277-robh@kernel.org>
- <f81e6906-499c-4be3-a922-bcd6378768c4@icloud.com>
- <CAL_Jsq+P=sZu6Wnqq7uEnGMnAQGNEDf_B+VgO8E8ob4RX8b=QA@mail.gmail.com>
- <Z7-JY1jQnEVzEley@google.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <Z7-JY1jQnEVzEley@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: A6veUJNcRRIgOhpTKso4hHeD8JCvsce9
-X-Proofpoint-ORIG-GUID: A6veUJNcRRIgOhpTKso4hHeD8JCvsce9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-26_07,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0 clxscore=1015
- phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2502260182
+References: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+ <20250226200016.GB3949421@google.com> <Z796VjPjno2PLTut@google.com>
+ <20250226211628.GD3949421@google.com> <Z7-GaVJHC_1ynigx@google.com>
+In-Reply-To: <Z7-GaVJHC_1ynigx@google.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 26 Feb 2025 15:47:06 -0800
+X-Gm-Features: AQ5f1JqW3YIJaViBWFvZwwc9Y_BLX9n108G7cgjKGJSx-48v7AmcKBwq4pCS8uY
+Message-ID: <CAKEwX=O8zQj3Vj=2G6aCjK7e2DDs+VBUhRd25AefTdcvFOT-=A@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Eric Biggers <ebiggers@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, 
+	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/2/27 05:36, William McVicker wrote:
->> Every time this code is touched, it breaks. This is not even the only
->> breakage right now[1].
-> You can find the Pixel 6/7/8/9 device trees on android.googlesource.com.
-> You can see for zuma based devices (Pixel 9 for example) they have this [1]:
-> 
->   &reserved_memory {
->         #address-cells = <2>;
->         #size-cells = <1>;
->         vstream: vstream {
->                 compatible = "shared-dma-pool";
->                 reusable;
->                 size = <0x4800000>;
->                 alignment = <0x0 0x00010000>;
->                 alloc-ranges = <0x9 0x80000000 0x80000000>,
->                                <0x9 0x00000000 0x80000000>,
->                                <0x8 0x80000000 0x80000000>,
->                                <0x0 0x80000000 0x80000000>;
->         };
-> 
-> I understand this code is downstream, but as a general principle we shouldn't
-> break backwards compatibilty.
+On Wed, Feb 26, 2025 at 1:23=E2=80=AFPM Yosry Ahmed <yosry.ahmed@linux.dev>=
+ wrote:
+>
+> On Wed, Feb 26, 2025 at 09:16:28PM +0000, Eric Biggers wrote:
+> > On Wed, Feb 26, 2025 at 08:32:22PM +0000, Yosry Ahmed wrote:
+> > > On Wed, Feb 26, 2025 at 08:00:16PM +0000, Eric Biggers wrote:
+> > > > On Wed, Feb 26, 2025 at 06:56:25PM +0000, Yosry Ahmed wrote:
+> > > > > Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while =
+holding
+> > > > > the per-CPU acomp_ctx mutex. crypto_free_acomp() then holds scomp=
+_lock
+> > > > > (through crypto_exit_scomp_ops_async()).
+> > > > >
+> > > > > On the other hand, crypto_alloc_acomp_node() holds the scomp_lock
+> > > > > (through crypto_scomp_init_tfm()), and then allocates memory.
+> > > > > If the allocation results in reclaim, we may attempt to hold the =
+per-CPU
+> > > > > acomp_ctx mutex.
+> > > >
+> > > > The bug is in acomp.  crypto_free_acomp() should never have to wait=
+ for a memory
+> > > > allocation.  That is what needs to be fixed.
+> > >
+> > > crypto_free_acomp() does not explicitly wait for an allocation, but i=
+t
+> > > waits for scomp_lock (in crypto_exit_scomp_ops_async()), which may be
+> > > held while allocating memory from crypto_scomp_init_tfm().
+> > >
+> > > Are you suggesting that crypto_exit_scomp_ops_async() should not be
+> > > holding scomp_lock?
+> >
+> > I think the solution while keeping the bounce buffer in place would be =
+to do
+> > what the patch
+> > https://lore.kernel.org/linux-crypto/Z6w7Pz8jBeqhijut@gondor.apana.org.=
+au/ does,
+> > i.e. make the actual allocation and free happen outside the lock.
+>
+> I am fine with a solution like that if Herbert is fine with it. Although
+> as I mentioned, I think this patch is nice to have anyway.
+>
+> >
+> > > > But really the bounce buffering in acomp (which is what is causing =
+this problem)
+> > > > should not exist at all.  There is really no practical use case for=
+ it; it's
+> > > > just there because of the Crypto API's insistence on shoehorning ev=
+erything into
+> > > > scatterlists for no reason...
+> > >
+> > > I am assuming this about scomp_scratch logic, which is what we need t=
+o
+> > > hold the scomp_lock for, resulting in this problem.
+> >
+> > Yes.
+> >
+> > > If this is something that can be done right away I am fine with dropp=
+ing
+> > > this patch for an alternative fix, although it may be nice to reduce =
+the
+> > > lock critical section in zswap_cpu_comp_dead() to the bare minimum
+> > > anyway.
+> >
+> > Well, unfortunately the whole Crypto API philosophy of having a single =
+interface
+> > for software and for hardware offload doesn't really work.  This is jus=
+t yet
+> > another example of that; it's a problem caused by shoehorning software
+> > compression into an interface designed for hardware offload.  zcomp rea=
+lly
+> > should just use the compression libs directly (like most users of compr=
+ession in
+> > the kernel already do), and have an alternate code path specifically fo=
+r
+> > hardware offload (using acomp) for the few people who really want that.
+>
+> zcomp is for zram, zswap does not use it. If zswap is not going to use
+> the crypto API we'll want something like zcomp or maybe reuse zcomp
+> itself. That's a problem for another day :)
 
-this is not backward compatibility issue. it is a downstream bug instead.
+I'm actually thinking whether we should expose the zcomp API and use
+it for zswap. There are a couple of parameters for zstd I wanna play
+with, which zcomp/zram seems to already support, but not the crypto
+API (zstd level, dictionary, etc.).
 
-normally, you need to write DTS according to relevant DT binding spec or
-DT spec.
-
-i can't access the link you shared due to my country's GFW.
-does google kernel have extra binding spec about size of property
-'alignment'?
-
-IMO, downstream maintainers may needs to fix this issue by if the
-upstream fix is picked up.
-- alignment = <0x0 0x00010000>;
-+ alignment = <0x00010000>;
-
-actually, "The importance of getting code into the mainline" within
-Documentation/process/1.Intro.rst encourages upstream your code to
-avoid such issue.
-
+But yes, a different problem for another day :)
 
