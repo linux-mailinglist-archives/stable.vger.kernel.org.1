@@ -1,108 +1,106 @@
-Return-Path: <stable+bounces-119751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B11A46C7C
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 21:31:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7073AA46C7F
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 21:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991843ADE51
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 20:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5347E3AE514
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 20:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4BF20F060;
-	Wed, 26 Feb 2025 20:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B78226D01;
+	Wed, 26 Feb 2025 20:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="vwRELQfF"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pizpSgxd"
 X-Original-To: stable@vger.kernel.org
-Received: from ms11p00im-qufo17291201.me.com (ms11p00im-qufo17291201.me.com [17.58.38.41])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4CB1632F2
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 20:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.38.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FD94438B
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 20:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740601874; cv=none; b=QZCFlo+HIWgJgOd13v6pCzSi01OtlAlxWNklkA+ESvtRKkrtamwH780E+tBTBDMpcUXILCHBvWvEVhn7jUGJwg6neZrFgjrqsqLs9Z2Bsy8LZ/NvY11NcZr6Vfaatp1vUyIs9AR90KBJhS7uqC7pPgAU5LfLyyMZJB2G0UV/CBk=
+	t=1740601954; cv=none; b=s8nv9Kf28pKwb4xYpALfJWC90kSMvQaaF22xNwu+LYEWZzmMx6DWxWRn+eSKCX9dFZPW3/t9sCHhGdZNMFIz5cFkvDVlC5+GDXbSMki1UoQRd5wmELwqW0ha5AwT8/gbsf5XKGd1FJV55Ypi9Sw0ivUhrPppJh9l7Jt/O8yzj18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740601874; c=relaxed/simple;
-	bh=xiJdXY+liRZWQBSJGmolnEALIPZZmEVT3jBhiygzaCg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jEDatcCN3OF+Ul69RK0haomxpvYMTs2k1XVF8y3ZTvwt4ebnTsRn2A3y/IDsrPDkTB9/DXbtu4IIvn8Q/c6CdS9WNFqkANduA4iOkNhjS/DDwbppLBkvT1i3mxkzilGFJRVEh/21K/oODkwlseW3g285L45eQ2Re5EI1fZcpUl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=vwRELQfF; arc=none smtp.client-ip=17.58.38.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=Dgi7QNmZYJ2u237nJLmJytv4f1TM0UW/fOBb+6DRM4s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=vwRELQfFht4gQtTLr7NivqqLGzh3KYy559SRxXdXntb/BMhHWwuSsB25ulbXHyszl
-	 aU0CpG9pnWwtGbuPG/PMO++l9hUzW08WfUl6ZcDwqK/QXWgI45vUix2ksNZrE4jue6
-	 EvT764q549OFsHKgGErZ2Aqg/2KLBz4WdRG7iVHL50YgzAah0vr2/bpsnpahyOqLKM
-	 cZ/eP4bm8GLKyNx1Mu3GlTDVMC69W5KUpmeEOLm25SQ7hnAmS6nTr1xg+3lil3hG0p
-	 HALKMEilRvapwkpd1ASq+4B62eNBnxSPlDeqLR08If5pzYzEfeu59goNG+2OIPpd0g
-	 7QZDPf8Mlh7/A==
-Received: from [192.168.1.26] (ms11p00im-dlb-asmtpmailmevip.me.com [17.57.154.19])
-	by ms11p00im-qufo17291201.me.com (Postfix) with ESMTPSA id 26DBAC80315;
-	Wed, 26 Feb 2025 20:31:05 +0000 (UTC)
-Message-ID: <f81e6906-499c-4be3-a922-bcd6378768c4@icloud.com>
-Date: Thu, 27 Feb 2025 04:31:02 +0800
+	s=arc-20240116; t=1740601954; c=relaxed/simple;
+	bh=dJmtlXj6WfvY6I3NJoeb6ZT+VL6nQiUOWiXKDXFSg9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MEalHzVjoI6Cfwn/foog5WqaedZfbgroNOK/Tst9eHCSb2RsXdtKSNtRlDawXB8roixJ8cp8s2oX63z+UIDk5fG674KAosAh099vHjKygpg6KvmFNgZGtaQfUgrX8FlNHp7naPtkgIR8JOOs1lOdw6P/bSLk81kNXuH8b2HTp/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pizpSgxd; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Wed, 26 Feb 2025 20:32:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740601949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YwKQQagVy4d7sPBKa/BO0IpJPH7lXzoPFfwUhxzxnZE=;
+	b=pizpSgxdCb0Mj6HEOWUuTJ1W8pbQ7bCrYI18B58ul1/EvUVVxfUCQX6c0w/se9Jq/6XLMe
+	ULVoKZB2bQEEENYOdwkXknnhu5X6QR35mSZcsFswdHTsltbulwuT0RLHzFKyJIAgyxmURH
+	PC0bPCNoqGnxk7pEjgH90quatMZ4m7c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm: zswap: fix crypto_free_acomp() deadlock in
+ zswap_cpu_comp_dead()
+Message-ID: <Z796VjPjno2PLTut@google.com>
+References: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+ <20250226200016.GB3949421@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/14] of: reserved-memory: Fix using wrong number of
- cells to get property 'alignment'
-To: Rob Herring <robh@kernel.org>, William McVicker <willmcvicker@google.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, Saravana Kannan
- <saravanak@google.com>, Maxime Ripard <mripard@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Grant Likely
- <grant.likely@secretlab.ca>, Marc Zyngier <maz@kernel.org>,
- Andreas Herrmann <andreas.herrmann@calxeda.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Mike Rapoport <rppt@kernel.org>,
- Oreoluwa Babatunde <quic_obabatun@quicinc.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kernel-team@android.com
-References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
- <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
- <20250113232551.GB1983895-robh@kernel.org> <Z70aTw45KMqTUpBm@google.com>
- <97ac58b1-e37c-4106-b32b-74e041d7db44@quicinc.com>
- <Z74CDp6FNm9ih3Nf@google.com> <20250226194505.GA3407277-robh@kernel.org>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20250226194505.GA3407277-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Bj0_CHyiMYshBhB0UNMQQCSmPdYk2pfI
-X-Proofpoint-ORIG-GUID: Bj0_CHyiMYshBhB0UNMQQCSmPdYk2pfI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-26_06,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- clxscore=1011 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2502260161
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226200016.GB3949421@google.com>
+X-Migadu-Flow: FLOW_OUT
 
-On 2025/2/27 03:45, Rob Herring wrote:
->> Right, I think it's already backported to the LTS kernels, but if it breaks any
->> in-tree users then we'd have to revert it. I just like Rob's idea to instead
->> change the spec for obvious reasons 🙂
-> While if it is downstream, it doesn't exist, I'm reverting this for now. 
+On Wed, Feb 26, 2025 at 08:00:16PM +0000, Eric Biggers wrote:
+> On Wed, Feb 26, 2025 at 06:56:25PM +0000, Yosry Ahmed wrote:
+> > Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
+> > the per-CPU acomp_ctx mutex. crypto_free_acomp() then holds scomp_lock
+> > (through crypto_exit_scomp_ops_async()).
+> > 
+> > On the other hand, crypto_alloc_acomp_node() holds the scomp_lock
+> > (through crypto_scomp_init_tfm()), and then allocates memory.
+> > If the allocation results in reclaim, we may attempt to hold the per-CPU
+> > acomp_ctx mutex.
+> 
+> The bug is in acomp.  crypto_free_acomp() should never have to wait for a memory
+> allocation.  That is what needs to be fixed.
 
-perhaps, it is better for us to slow down here.
+crypto_free_acomp() does not explicitly wait for an allocation, but it
+waits for scomp_lock (in crypto_exit_scomp_ops_async()), which may be
+held while allocating memory from crypto_scomp_init_tfm().
 
-1) This change does not break any upstream code.
-   is there downstream code which is publicly visible and is broken by
-   this change ?
+Are you suggesting that crypto_exit_scomp_ops_async() should not be
+holding scomp_lock?
 
-2) IMO, the spec may be right.
-   The type of size is enough to express any alignment wanted.
-   For several kernel allocators. type of 'alignment' should be the type
-   of 'size', NOT the type of 'address'
+> 
+> But really the bounce buffering in acomp (which is what is causing this problem)
+> should not exist at all.  There is really no practical use case for it; it's
+> just there because of the Crypto API's insistence on shoehorning everything into
+> scatterlists for no reason...
 
+I am assuming this about scomp_scratch logic, which is what we need to
+hold the scomp_lock for, resulting in this problem.
 
-> We need the tools to check this and look at other projects to see what 
-> they expect. Then we can think about changing the spec.
-
+If this is something that can be done right away I am fine with dropping
+this patch for an alternative fix, although it may be nice to reduce the
+lock critical section in zswap_cpu_comp_dead() to the bare minimum
+anyway.
 
