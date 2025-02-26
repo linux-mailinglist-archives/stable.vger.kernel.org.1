@@ -1,251 +1,361 @@
-Return-Path: <stable+bounces-119733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A0DA468CF
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 19:03:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D17BA468E9
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 19:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B593AF46E
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 18:02:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42EC1173BAD
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 18:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F060E221DAA;
-	Wed, 26 Feb 2025 18:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D23223373D;
+	Wed, 26 Feb 2025 18:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j3u2nELr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ejtr0WiV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1B22A7EE
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 18:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D827233723;
+	Wed, 26 Feb 2025 18:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740592982; cv=none; b=HJ+Txq9/0waPUu6H3+LhabfLgiXxTGW+pqglXHs6OES5eVIaMLxt9G8qGJ0ARNZvNtCUSua4TK3xf3lwHvY3aeILJb+CBKuWr1mOXTI/xDhPCQ95C5tC+UGeSgepQA8/y/28xfc2v0h2PeFzF4FNS9coInnLGK5cTeuXlzaPG60=
+	t=1740593166; cv=none; b=E1S++he4OiYGLfcpmCbk+vNcR/5j9w/XaX35cjq9xuFDydJETa1IKAz3NdhyIcOfFI5kJ2+jLyj8z5qPOW2WuiuRRsUMgUS+7p6IDE17UB62D4q7x3cUBV+Z5EqOOf7xo8/2J57PxGyOLLY6sT41+OJN1UgpBw2u8SWT9La4MN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740592982; c=relaxed/simple;
-	bh=RRbGFMocuFGh6eLh6bjULqTSsOkDmWDQy+xqOsyhb1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFBHcoibn6olAApMiRxHfAQ2udheT+o6NoWi45vS4dwXp0Ijrw4UpFAwCVvFivfquxZ5bcbzOBCSk//0fg5Ik8OR/B2m/umj1u9R5/9QFu6equn6TkO/iX8W0UxVVeDSly2BfrmDFBlolavHIyyTz24nDGNqbLEKNTjziB52OBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j3u2nELr; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2211acda7f6so571285ad.3
-        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 10:03:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740592980; x=1741197780; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AailFqvAJn1Kor0z2g0aaD8SdfRqoWZtRxdnH0Mpydk=;
-        b=j3u2nELrSis0KWXX5W7+zugwU/SFtPxf8P4hH4OkcrSSfK1BcN12lsBoktbqHZhdWX
-         aBOsG72aWKfBxvrrsKVguDIOAkR2o7aq3UGnglj95RccIga484Lc+CCcAHAH8AJbqZAL
-         W1NXWoqU5qrNfI1UdqpG/7ev0wgC6a77ImVQhPDSjM9yBqPRgZ2s7VhYgz7nIo0mfZP7
-         YOzV/kV6w5WpTO37/MAKaHqaOLiApITeVHvHm2hT8ip4hnZ9Ri2Z+cCCgpBAqFWgltWb
-         i8Ylbg5qHY4ekFq/he+8Tt+lOsy+nPNZV6tjoRaLwp9iucc8bvXv051YXMUYoSOgEAeO
-         EaSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740592980; x=1741197780;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AailFqvAJn1Kor0z2g0aaD8SdfRqoWZtRxdnH0Mpydk=;
-        b=TUjZlWtacUmiulpd0UfXI+quUVH3BHSyeHLVlqzMCNLLpyVcYvYhXS4y9Wco6kVuFR
-         c3bdmGLhCKNTa8VphuCeEpp+y0U7ZQ56wM8wuU3ExBP8g8KVmHKtefCeE5BpBO11a534
-         Z3zjN/+KurBEHL7MxuNI8x828mAEaaa+khyL4VSSDE2wlrPN368jijTE6ag0Bd8HQo3Q
-         ONvgxOsrPY6JTGF/XVG3amXHGa/+PhxEz65iXTCQ+Dgwa5kjqK5r95XcvsflMEAQc3WX
-         j74wqRBJjdDh0ipMGZM9bfN2VE1tUE2eJg5ymQUU3eXbwn+qANHSYDm79VNaeUiSA80l
-         nxzw==
-X-Gm-Message-State: AOJu0YxK2VYODuZ0FgVTy1s6mFkSDrb/r6NToZ7yoLT8ePR3ASe0/wcx
-	3jwYBvmHCYlZrRw3B+CCT6L8pL80bUS2Ahb/bVkyNirm5D5asbQ8nwYumw==
-X-Gm-Gg: ASbGncvLRQGBAuKGFZPNkhLg6pahiuAjmh4yrfq0YpaOZCjIBY1I9rGq0StZDX2ZK8i
-	yvmM7shscG/V/FakPI7Ih/4YSeymPfrS6Abr1GDReKomDrB4XF0LaqmbgAndsNfXmHgKpshGCA6
-	vvRtw/pb0mBbX5ducR8TIB8DQOvhGQoJuIlpY9oqKobAqHyevMjEFD0FYHN5z4IFKLjqhvQ/yvw
-	z/RAXHwooI7fjh+/Qzd7Pug8dRqECwgFrwJb5inO2rUZJUiBuwjHvuEy1w4hYVeRK0HsSwmlPCz
-	Ad7VP1iRMUmGrRSIUQPB3LhUCnA+70aNj/oPHcU2PmPDgRXDkhOAjTD9oDs4xNpl2Q==
-X-Google-Smtp-Source: AGHT+IHw9F6k7vXrecF4IwGFeLsQkZcLLS18IyDQmdKT05efgaBuLlQluQg3de0rrGEenN1pTuuu+g==
-X-Received: by 2002:a17:902:cf06:b0:220:bdf2:e51e with SMTP id d9443c01a7336-223200b302amr56786935ad.26.1740592980024;
-        Wed, 26 Feb 2025 10:03:00 -0800 (PST)
-Received: from carrot.. (i118-19-4-47.s41.a014.ap.plala.or.jp. [118.19.4.47])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a000995sm35747655ad.46.2025.02.26.10.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 10:02:59 -0800 (PST)
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 5.10 5.15 6.1 3/3] nilfs2: handle errors that nilfs_prepare_chunk() may return
-Date: Thu, 27 Feb 2025 03:00:23 +0900
-Message-ID: <20250226180247.4950-4-konishi.ryusuke@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250226180247.4950-1-konishi.ryusuke@gmail.com>
-References: <20250226180247.4950-1-konishi.ryusuke@gmail.com>
+	s=arc-20240116; t=1740593166; c=relaxed/simple;
+	bh=boaa1rKuGkNF7eS2wMk8VzWuW0fhOvb8sYxWDEMTkvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oBNWvFoRATQPdu5zTuNqX9E7MVCihqkBk29ZZvDbTSfdtPx0BeTxGyWR5Mqb/yHY+HHt8TgPpk4qwOiw/9qajnhQxtK3DTLGt3OvUSupEreGCedKh8+UQWB43dVAhu/pMbCAGVfjAtKi56Z58I0malr/4Qyyo8ewW1vwdxw0dBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ejtr0WiV; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740593164; x=1772129164;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=boaa1rKuGkNF7eS2wMk8VzWuW0fhOvb8sYxWDEMTkvw=;
+  b=ejtr0WiVyhnPoQpFF8JHPoiMasIr6OkD96tHeQw2Ct85381+45K96LO3
+   ZUkXIkbO0/hNZedkBVg6i4HeYAwixK2FLaG9zAramaVNweuBa8v9QI0hM
+   vNe6+bVz/c6noiw/7ImDPopD89XWPiFMZ0el/EZylikViFEJ8HQ4Gqvu5
+   /rGQ9mLTYPUvubgrRoFB30TztGfPJnXC34/2AwJ4ZPxaitB2He/qOTC76
+   KAH/TJy3CH211LF1QlBmpz8/VrGEfkLTrcmlnB+QmFRXwM9EVb7jBJ6jF
+   +GRikMhTVg4GoqoyQVURJ7VmkT+ypCDuSEiswKZK428SL8v8K8g2br+m8
+   Q==;
+X-CSE-ConnectionGUID: +AYIuAijQaqluvqi8kneQw==
+X-CSE-MsgGUID: KMOPhjv5SduZxzjnlsXpkg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41653946"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="41653946"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 10:06:04 -0800
+X-CSE-ConnectionGUID: 5peu6zjNR4eePUvGme2ghw==
+X-CSE-MsgGUID: QqTddDsIRJy4z9CjhFwz9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="116641759"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.245.27]) ([10.245.245.27])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 10:05:58 -0800
+Message-ID: <cc402132-2e82-41d2-8981-f1b9a795c1a1@intel.com>
+Date: Wed, 26 Feb 2025 18:05:55 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] drm/xe/bo: fix alignment with non-4K kernel page
+ sizes
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, jeffbai@aosc.io,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>,
+ Zhanjun Dong <zhanjun.dong@intel.com>, Matt Roper
+ <matthew.d.roper@intel.com>, Mateusz Naklicki <mateusz.naklicki@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>,
+ Shang Yatsen <429839446@qq.com>, stable@vger.kernel.org,
+ Haien Liang <27873200@qq.com>, Shirong Liu <lsr1024@qq.com>,
+ Haofeng Wu <s2600cw2@126.com>
+References: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
+ <20250226-xe-non-4k-fix-v1-1-80f23b5ee40e@aosc.io>
+ <wcfp3i6jbsmvpokvbvs5n2yxffhrgu6jyoan3e3m6tb7wbjaq6@tbsit7ignlef>
+ <Z76WIgGvvhlbYl/j@lstrano-desk.jf.intel.com>
+ <af689d4b-204d-495b-a7e8-0f7632b43153@intel.com>
+ <Z78vTt8Ph9opzJmf@lstrano-desk.jf.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <Z78vTt8Ph9opzJmf@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-commit ee70999a988b8abc3490609142f50ebaa8344432 upstream.
+On 26/02/2025 15:12, Matthew Brost wrote:
+> On Wed, Feb 26, 2025 at 10:38:40AM +0000, Matthew Auld wrote:
+>> On 26/02/2025 04:18, Matthew Brost wrote:
+>>> On Tue, Feb 25, 2025 at 09:13:09PM -0600, Lucas De Marchi wrote:
+>>>> On Wed, Feb 26, 2025 at 10:00:18AM +0800, Mingcong Bai via B4 Relay wrote:
+>>>>> From: Mingcong Bai <jeffbai@aosc.io>
+>>>>>
+>>>>> The bo/ttm interfaces with kernel memory mapping from dedicated GPU
+>>>>> memory. It is not correct to assume that SZ_4K would suffice for page
+>>>>> alignment as there are a few hardware platforms that commonly uses non-4K
+>>>>> pages - for instance, currently, Loongson 3A5000/6000 devices (of the
+>>>>> LoongArch architecture) commonly uses 16K kernel pages.
+>>>>>
+>>>>> Per my testing Intel Xe/Arc families of GPUs works on at least
+>>>>> Loongson 3A6000 platforms so long as "Above 4G Decoding" and "Resizable
+>>>>> BAR" were enabled in the EFI firmware settings. I tested this patch series
+>>>>> on my Loongson XA61200 (3A6000) motherboard with an Intel Arc A750 GPU.
+>>>>>
+>>>>> Without this fix, the kernel will hang at a kernel BUG():
+>>>>>
+>>>>> [    7.425445] ------------[ cut here ]------------
+>>>>> [    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
+>>>>> [    7.435330] Oops - BUG[#1]:
+>>>>> [    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
+>>>>> [    7.449511] Tainted: [E]=UNSIGNED_MODULE
+>>>>> [    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
+>>>>> [    7.467144] Workqueue: events work_for_cpu_fn
+>>>>> [    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
+>>>>> [    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
+>>>>> [    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
+>>>>> [    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
+>>>>> [    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
+>>>>> [    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
+>>>>> [    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
+>>>>> [    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
+>>>>> [    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
+>>>>> [    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
+>>>>> [    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+>>>>> [    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+>>>>> [    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+>>>>> [    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+>>>>> [    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
+>>>>> [    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+>>>>> [    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
+>>>>> [    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
+>>>>> [    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
+>>>>> [    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
+>>>>> [    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
+>>>>> [    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
+>>>>> [    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
+>>>>> [    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
+>>>>> [    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
+>>>>> [    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
+>>>>> [    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
+>>>>> [    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
+>>>>> [    7.701165]         ...
+>>>>> [    7.703588] Call Trace:
+>>>>> [    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
+>>>>> [    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
+>>>>> [    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
+>>>>> [    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
+>>>>> [    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
+>>>>> [    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
+>>>>> [    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
+>>>>> [    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
+>>>>> [    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
+>>>>> [    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
+>>>>> [    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
+>>>>> [    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
+>>>>> [    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
+>>>>> [    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
+>>>>> [    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
+>>>>> [    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
+>>>>> [    7.805591] [<90000000002bacac>] kthread+0x114/0x138
+>>>>> [    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
+>>>>> [    7.816489]
+>>>>> [    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
+>>>>> [    7.827651]
+>>>>> [    7.829140] ---[ end trace 0000000000000000 ]---
+>>>>>
+>>>>> Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
+>>>>> `drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
+>>>>> before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
+>>>>> fix the above error.
+>>>>>
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
+>>>>> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+>>>>> Tested-by: Mingcong Bai <jeffbai@aosc.io>
+>>>>> Tested-by: Haien Liang <27873200@qq.com>
+>>>>> Tested-by: Shirong Liu <lsr1024@qq.com>
+>>>>> Tested-by: Haofeng Wu <s2600cw2@126.com>
+>>>>> Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c32410a077b3ddb6dca3f28223360
+>>>>> Co-developed-by: Shang Yatsen <429839446@qq.com>
+>>>>> Signed-off-by: Shang Yatsen <429839446@qq.com>
+>>>>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+>>>>> ---
+>>>>> drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
+>>>>> 1 file changed, 4 insertions(+), 4 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+>>>>> index 3f5391d416d469c636d951dd6f0a2b3b5ae95dab..dd03c581441f352eff51d0eafe1298fca7d9653d 100644
+>>>>> --- a/drivers/gpu/drm/xe/xe_bo.c
+>>>>> +++ b/drivers/gpu/drm/xe/xe_bo.c
+>>>>> @@ -1441,9 +1441,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>>>>> 		flags |= XE_BO_FLAG_INTERNAL_64K;
+>>>>> 		alignment = align >> PAGE_SHIFT;
+>>>>> 	} else {
+>>>
+>>> } else if (type == ttm_bo_type_device) {
+>>> 	new code /w PAGE_SIZE
+>>> } else {
+>>> 	old code /w SZ_4K (or maybe XE_PAGE_SIZE now)?
+>>> }
+>>>
+>>> See below for further explaination.
+>>>
+>>>>> -		aligned_size = ALIGN(size, SZ_4K);
+>>>>> +		aligned_size = ALIGN(size, PAGE_SIZE);
+>>>>
+>>>> in the very beginning of the driver we were set to use XE_PAGE_SIZE
+>>>> for things like this. It seems thing went side ways though.
+>>>>
+>>>> Thanks for fixing these. XE_PAGE_SIZE is always 4k, but I think we should
+>>>> uxe XE_PAGE_SIZE for clarity.  For others in Cc...  any thoughts?
+>>>>
+>>>
+>>> It looks like you have a typo here, Lucas. Could you please clarify?
+>>>
+>>> However, XE_PAGE_SIZE should always be 4k, as it refers to the GPU page
+>>> size, which is fixed.
+>>>
+>>> I think using PAGE_SIZE makes sense in some cases. See my other
+>>> comments.
+>>>
+>>>>> 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
+>>>>> -		alignment = SZ_4K >> PAGE_SHIFT;
+>>>>> +		alignment = PAGE_SIZE >> PAGE_SHIFT;
+>>>>> 	}
+>>>>>
+>>>>> 	if (type == ttm_bo_type_device && aligned_size != size)
+>>>>> @@ -1457,7 +1457,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>>>>>
+>>>>> 	bo->ccs_cleared = false;
+>>>>> 	bo->tile = tile;
+>>>>> -	bo->size = size;
+>>>>> +	bo->size = aligned_size;
+>>>>
+>>>> the interface of this function is that the caller needs to pass the
+>>>> correct size, it's not really expected the function will adjust it and
+>>>> the check is there to gurantee to return the appropriate error. There
+>>>
+>>> Let me expand further on Lucas's comment. We reject user BOs that are
+>>> unaligned here in ___xe_bo_create_locked.
+>>>
+>>> 1490         if (type == ttm_bo_type_device && aligned_size != size)
+>>> 1491                 return ERR_PTR(-EINVAL);
+>>>
+>>> What we allow are kernel BOs (!= ttm_bo_type_device), which are never
+>>> mapped to the CPU or the PPGTT (user GPU mappings), to be a smaller
+>>> size. Examples of this include memory for GPU page tables, LRC state,
+>>> etc. Memory for GPU page tables is always allocated in 4k blocks, so
+>>> changing the allocation to the CPU page size of 16k or 64k would be
+>>> wasteful.
+>>>
+>>> AFAIK, kernel memory is always a VRAM allocation, so we don't have any
+>>> CPU page size requirements. If this is not true (I haven't checked), or
+>>> perhaps just to future-proof, change the snippet in my first comment to:
+>>>
+>>> } else if (type == ttm_bo_type_device || flags & XE_BO_FLAG_SYSTEM)) {
+>>> 	new code /w PAGE_SIZE
+>>> } else {
+>>> 	old code /w SZ_4K
+>>> }
+>>>
+>>> Then change BO assignment size too:
+>>>
+>>> bo->size = flags & XE_BO_FLAG_SYSTEM ? aligned_size : size;
+>>>
+>>> This should enable kernel VRAM allocations to be smaller than the CPU
+>>> page size (I think). Can you try out this suggestion and see if the Xe
+>>> boots with non-4k pages?
+>>
+>> The vram allocator chunk size is PAGE_SIZE so that would also need some
+>> attention, I think.
+>>
+> 
+> Agree. So I think __xe_ttm_vram_mgr_init should be called with
+> s/PAGE_SIZE/SZ_4K?
 
-Patch series "nilfs2: fix issues with rename operations".
+Should be fine from allocator pov. But also need to update the upper 
+layers in the VRAM manager itself, I think.
 
-This series fixes BUG_ON check failures reported by syzbot around rename
-operations, and a minor behavioral issue where the mtime of a child
-directory changes when it is renamed instead of moved.
+> 
+>> But I think we also then need to deal with the assert in: https://elixir.bootlin.com/linux/v6.14-rc4/source/drivers/gpu/drm/drm_gem.c#L181.
+>>
+> 
+> Yep. I think that would need to be adjusted as well to be bypassed if we
+> are never going to CPU map the BO—specifically, CPU map it to user space
+> or if the BO is not in VRAM. For kernel VRAM mapping, this resolves to
+> an offset within an existing large PCIe BAR mapping, so allocations
+> unaligned to PAGE_SIZE should work.
 
-This patch (of 2):
+Yeah, agree. I thinks it's possible.
 
-The directory manipulation routines nilfs_set_link() and
-nilfs_delete_entry() rewrite the directory entry in the folio/page
-previously read by nilfs_find_entry(), so error handling is omitted on the
-assumption that nilfs_prepare_chunk(), which prepares the buffer for
-rewriting, will always succeed for these.  And if an error is returned, it
-triggers the legacy BUG_ON() checks in each routine.
+> 
+> Maybe export __drm_gem_private_object_init, which skips the BUG_ON, and
+> call this in Xe to avoid interfering with other drivers' expectations?
 
-This assumption is wrong, as proven by syzbot: the buffer layer called by
-nilfs_prepare_chunk() may call nilfs_get_block() if necessary, which may
-fail due to metadata corruption or other reasons.  This has been there all
-along, but improved sanity checks and error handling may have made it more
-reproducible in fuzzing tests.
+Some other places I spotted are the VRAM manager, and stuff like 
+xe_bo_vmap() and then into TTM itself. So it might be quite widespread.
 
-Fix this issue by adding missing error paths in nilfs_set_link(),
-nilfs_delete_entry(), and their caller nilfs_rename().
-
-[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
-Link: https://lkml.kernel.org/r/20250111143518.7901-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250111143518.7901-2-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=32c3706ebf5d95046ea1
-Reported-by: syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1097e95f134f37d9395c
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
- fs/nilfs2/dir.c   | 13 ++++++++++---
- fs/nilfs2/namei.c | 29 +++++++++++++++--------------
- fs/nilfs2/nilfs.h |  4 ++--
- 3 files changed, 27 insertions(+), 19 deletions(-)
-
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index de040ab05d37..0f3753af1674 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -444,7 +444,7 @@ int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
- 	return 0;
- }
- 
--void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
- 		    struct page *page, struct inode *inode)
- {
- 	unsigned int from = (char *)de - (char *)page_address(page);
-@@ -454,11 +454,15 @@ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
- 
- 	lock_page(page);
- 	err = nilfs_prepare_chunk(page, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		unlock_page(page);
-+		return err;
-+	}
- 	de->inode = cpu_to_le64(inode->i_ino);
- 	nilfs_set_de_type(de, inode);
- 	nilfs_commit_chunk(page, mapping, from, to);
- 	dir->i_mtime = dir->i_ctime = current_time(dir);
-+	return 0;
- }
- 
- /*
-@@ -590,7 +594,10 @@ int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct page *page)
- 		from = (char *)pde - (char *)page_address(page);
- 	lock_page(page);
- 	err = nilfs_prepare_chunk(page, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		unlock_page(page);
-+		goto out;
-+	}
- 	if (pde)
- 		pde->rec_len = nilfs_rec_len_to_disk(to - from);
- 	dir->inode = 0;
-diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
-index bbd27238b0e6..67d66207fae1 100644
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -406,8 +406,10 @@ static int nilfs_rename(struct user_namespace *mnt_userns,
- 			err = PTR_ERR(new_de);
- 			goto out_dir;
- 		}
--		nilfs_set_link(new_dir, new_de, new_page, old_inode);
-+		err = nilfs_set_link(new_dir, new_de, new_page, old_inode);
- 		nilfs_put_page(new_page);
-+		if (unlikely(err))
-+			goto out_dir;
- 		nilfs_mark_inode_dirty(new_dir);
- 		new_inode->i_ctime = current_time(new_inode);
- 		if (dir_de)
-@@ -430,28 +432,27 @@ static int nilfs_rename(struct user_namespace *mnt_userns,
- 	 */
- 	old_inode->i_ctime = current_time(old_inode);
- 
--	nilfs_delete_entry(old_de, old_page);
--
--	if (dir_de) {
--		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
--		nilfs_put_page(dir_page);
--		drop_nlink(old_dir);
-+	err = nilfs_delete_entry(old_de, old_page);
-+	if (likely(!err)) {
-+		if (dir_de) {
-+			err = nilfs_set_link(old_inode, dir_de, dir_page,
-+					     new_dir);
-+			drop_nlink(old_dir);
-+		}
-+		nilfs_mark_inode_dirty(old_dir);
- 	}
--	nilfs_put_page(old_page);
--
--	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
- 
--	err = nilfs_transaction_commit(old_dir->i_sb);
--	return err;
--
- out_dir:
- 	if (dir_de)
- 		nilfs_put_page(dir_page);
- out_old:
- 	nilfs_put_page(old_page);
- out:
--	nilfs_transaction_abort(old_dir->i_sb);
-+	if (likely(!err))
-+		err = nilfs_transaction_commit(old_dir->i_sb);
-+	else
-+		nilfs_transaction_abort(old_dir->i_sb);
- 	return err;
- }
- 
-diff --git a/fs/nilfs2/nilfs.h b/fs/nilfs2/nilfs.h
-index b577ca0575d7..dadafad2fae7 100644
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -240,8 +240,8 @@ nilfs_find_entry(struct inode *, const struct qstr *, struct page **);
- extern int nilfs_delete_entry(struct nilfs_dir_entry *, struct page *);
- extern int nilfs_empty_dir(struct inode *);
- extern struct nilfs_dir_entry *nilfs_dotdot(struct inode *, struct page **);
--extern void nilfs_set_link(struct inode *, struct nilfs_dir_entry *,
--			   struct page *, struct inode *);
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+		   struct page *page, struct inode *inode);
- 
- static inline void nilfs_put_page(struct page *page)
- {
--- 
-2.43.5
+> 
+> Matt
+> 
+>>>
+>>> Also others in Cc... thoughts / double check my input?
+>>>
+>>>> are other places that would need some additional fixes leading to this
+>>>> function. Example:
+>>>>
+>>>> xe_gem_create_ioctl()
+>>>> {
+>>>> 	...
+>>>> 	if (XE_IOCTL_DBG(xe, args->size & ~PAGE_MASK))
+>>>> 		return -EINVAL;
+>>>
+>>> This actually looks right, the minimum allocation size for user BOs
+>>> should be PAGE_SIZE aligned. The last patch in the series fixes the
+>>> query for this.
+>>>
+>>> Matt
+>>>
+>>>> 	...
+>>>> }
+>>>> 	
+>>>>
+>>>> Lucas De Marchi
+>>>>
+>>>>> 	bo->flags = flags;
+>>>>> 	bo->cpu_caching = cpu_caching;
+>>>>> 	bo->ttm.base.funcs = &xe_gem_object_funcs;
+>>>>> @@ -1468,7 +1468,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>>>>> #endif
+>>>>> 	INIT_LIST_HEAD(&bo->vram_userfault_link);
+>>>>>
+>>>>> -	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
+>>>>> +	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
+>>>>>
+>>>>> 	if (resv) {
+>>>>> 		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
+>>>>>
+>>>>> -- 
+>>>>> 2.48.1
+>>>>>
+>>>>>
+>>
 
 
