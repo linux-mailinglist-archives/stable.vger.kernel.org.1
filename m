@@ -1,155 +1,141 @@
-Return-Path: <stable+bounces-119596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944B5A45315
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:30:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F91A45336
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44EA3A9978
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:30:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB3A188E16F
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC9F19D8A4;
-	Wed, 26 Feb 2025 02:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DD921C9E4;
+	Wed, 26 Feb 2025 02:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GaMr4gz9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NA7iMfZx"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6379142070;
-	Wed, 26 Feb 2025 02:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E5EEAFA;
+	Wed, 26 Feb 2025 02:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740537034; cv=none; b=GtqQublfYCG/HrpwmWqZQO2/+peduo8u8LttcUOnwida3MKEU+eB6erIJBGdf3+1gJXwE2btVyu/6BPOte3ggguWKgX22V5gyA+x/EBbIUr2r3ViI2+GftjFGFgDtoMo20rnpiZPH+3loOKAi3UXCUWxFTj8ASBfxGjuLuqet2A=
+	t=1740537740; cv=none; b=M+2CU00PP1pSbhotlAC4VbM2L7mAa5e0AGonYnTGHHFnE+RwquwSA7/BVgiaUEPDXcatDf2XENuO07m1PP3Hum4t2wM41MEswX3FrzvnxvWIsR/Sqg8VYQybf65q7SGOBgn77ROApizf2R0nsWVJTq7klOaWDihPyG18bEpFlHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740537034; c=relaxed/simple;
-	bh=+90yNPjsMEWcUbvNlu4BZgb5cOPVUBBZJc5R9mmwxaE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t3/LXwz8E5GMRSGdcEO7GGtbZVev+uUguQHd6bnM1F+UddoM0RB8gDTVj2mJq0VIz6k2SfXCst5itBm47eVEZZgG26HLDZlKvQXLmYrhu6/zhWKN+N0ThLqWgmOjsIhKdhOF5tMG7dCOENLUgKFhA0nbV3bLSr0xDBvchyxlM+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GaMr4gz9; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 51Q2UAP402922898, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1740537011; bh=+90yNPjsMEWcUbvNlu4BZgb5cOPVUBBZJc5R9mmwxaE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=GaMr4gz97cIBxI3fq9ODf5M0x7phGSvO0BpE/q1wkBvHhIqZcjfu72y/TaIvplJs2
-	 eWo0J25LY0RPS4HgTumHE+wMP3ozKi0DNihShMJyQd1DVQTjZXsANnFfvpmnlzZbwS
-	 pYLZGDOqfLQdgvil5YGQbR/cYNQ//MM3fndwKKzdS4qxzFPg/5Lvi9SuUHWmVkQw3R
-	 IooK6g7gfS0Oc/h56xYlIVNA6rSQJ4x6f8teyzvStQkzYdG6t2rUoSuQoEynEAQvYi
-	 oIPTYZtAMKbvJ3DWwWvy/w+0/yVzF/u4lOSqXqZWh37D9cG3/BPt0nGPn7Os+9dDdP
-	 5bXHB0rMl6SZA==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 51Q2UAP402922898
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Feb 2025 10:30:10 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 26 Feb 2025 10:30:11 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 26 Feb 2025 10:30:10 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b]) by
- RTEXMBS04.realtek.com.tw ([fe80::f515:f604:42fb:a42b%5]) with mapi id
- 15.01.2507.035; Wed, 26 Feb 2025 10:30:10 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "sean.wang@kernel.org" <sean.wang@kernel.org>,
-        "nbd@nbd.name"
-	<nbd@nbd.name>,
-        "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>
-CC: "sean.wang@mediatek.com" <sean.wang@mediatek.com>,
-        "deren.wu@mediatek.com"
-	<deren.wu@mediatek.com>,
-        "mingyen.hsieh@mediatek.com"
-	<mingyen.hsieh@mediatek.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org"
-	<linux-mediatek@lists.infradead.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v3 2/6] wifi: mt76: mt7925: fix the wrong link_idx when has p2p_device
-Thread-Topic: [PATCH v3 2/6] wifi: mt76: mt7925: fix the wrong link_idx when
- has p2p_device
-Thread-Index: AQHbh+aUICP8KIOQfU6sKUM7AN9pCbNY3Hfg
-Date: Wed, 26 Feb 2025 02:30:09 +0000
-Message-ID: <f48ecd507a4b403fbdfc7166aeb6b10b@realtek.com>
-References: <20250226003556.82644-1-sean.wang@kernel.org>
- <20250226003556.82644-2-sean.wang@kernel.org>
-In-Reply-To: <20250226003556.82644-2-sean.wang@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1740537740; c=relaxed/simple;
+	bh=InW+IK7VHo43o9VPaLYHULMbSes36obf0v5JILCw6w4=;
+	h=Date:To:From:Subject:Message-Id; b=OzRIv6q1rDkEa+qJmrbu3+VOwLJQ1xXCXrcskcnSMScH366XDmfh6EkSi93KDvbzJfo1uQ9ySMAhHFoquNRMiBine06Z4CI6JY5r2DoK1m8fc8pqAq5uVBkLG2c6XMfUQj55jYTgzLnMvJjOetAGcgmvnrnI2XbhJRM2uk/gNr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NA7iMfZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC05C4CEDD;
+	Wed, 26 Feb 2025 02:42:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1740537740;
+	bh=InW+IK7VHo43o9VPaLYHULMbSes36obf0v5JILCw6w4=;
+	h=Date:To:From:Subject:From;
+	b=NA7iMfZxbKv006PVmIdnp9GBqZwEzatlDkr1AnDcEFhuccnS/hRHxPIhTZTzmScnN
+	 LLzOkvazk/l/VGjh2XaLcExzFQLjnW2tZ0T8BC+iCosCTgjBrPFIrsPg+Thb735wMz
+	 MgO4PXTigyjYVKf73pKl0nA13/ufUKw23M5Mtn2M=
+Date: Tue, 25 Feb 2025 18:42:19 -0800
+To: mm-commits@vger.kernel.org,yosry.ahmed@linux.dev,stable@vger.kernel.org,davem@davemloft.net,herbert@gondor.apana.org.au,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250226024220.2FC05C4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-sean.wang@kernel.org <sean.wang@kernel.org> wrote:
 
-[...]
+The patch titled
+     Subject: mm: zswap: fix crypto_free_acomp deadlock in zswap_cpu_comp_dead
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead.patch
 
->  .../net/wireless/mediatek/mt76/Makefile.orig  |   42 +
->  drivers/net/wireless/mediatek/mt76/dma.c.orig |  994 +++++
->  .../wireless/mediatek/mt76/mac80211.c.orig    | 1793 +++++++++
->  drivers/net/wireless/mediatek/mt76/mt76.h     |    1 +
->  .../net/wireless/mediatek/mt76/mt76.h.orig    | 1876 +++++++++
->  .../mediatek/mt76/mt76_connac_mac.c.orig      | 1196 ++++++
->  .../wireless/mediatek/mt76/mt76_connac_mcu.c  |    4 +-
->  .../mediatek/mt76/mt76_connac_mcu.c.orig      | 3200 +++++++++++++++
->  .../wireless/mediatek/mt76/mt7921/dma.c.orig  |  314 ++
->  .../wireless/mediatek/mt76/mt7921/init.c.orig |  326 ++
->  .../wireless/mediatek/mt76/mt7921/mac.c.orig  | 1121 ++++++
->  .../wireless/mediatek/mt76/mt7921/main.c.orig | 1838 +++++++++
->  .../wireless/mediatek/mt76/mt7921/mcu.c.orig  | 1357 +++++++
->  .../mediatek/mt76/mt7921/mt7921.h.orig        |  561 +++
->  .../wireless/mediatek/mt76/mt7921/pci.c.orig  |  497 +++
->  .../mediatek/mt76/mt7921/pci_mac.c.orig       |  348 ++
->  .../wireless/mediatek/mt76/mt7921/sdio.c.orig |  322 ++
->  .../mediatek/mt76/mt7921/sdio_mac.c.orig      |  142 +
->  .../net/wireless/mediatek/mt76/mt7925/main.c  |   14 +-
->  .../wireless/mediatek/mt76/mt7925/main.c.orig | 2209 +++++++++++
->  .../wireless/mediatek/mt76/mt7925/mcu.c.orig  | 3506 +++++++++++++++++
->  .../wireless/mediatek/mt76/mt7925/mcu.c.rej   |   35 +
->  22 files changed, 21690 insertions(+), 6 deletions(-)
->  create mode 100644 drivers/net/wireless/mediatek/mt76/Makefile.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/dma.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mac80211.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76.h.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c.=
-orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c.=
-orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/dma.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/init.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mac.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/main.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mcu.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h.or=
-ig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c.o=
-rig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/sdio.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c.=
-orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/main.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mcu.c.orig
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7925/mcu.c.rej
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead.patch
 
-Obviously add wrong conflict files.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Herbert Xu <herbert@gondor.apana.org.au>
+Subject: mm: zswap: fix crypto_free_acomp deadlock in zswap_cpu_comp_dead
+Date: Tue, 25 Feb 2025 16:53:58 +0800
+
+Call crypto_free_acomp outside of the mutex in zswap_cpu_comp_dead() as
+otherwise this could deadlock as the allocation path may lead back into
+zswap while holding the same lock.  Zap the pointers to acomp and buffer
+after freeing.
+
+Also move the NULL check on acomp_ctx so that it takes place before
+the mutex dereference.
+
+Link: https://lkml.kernel.org/r/Z72FJnbA39zWh4zS@gondor.apana.org.au
+Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
+Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zswap.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+
+--- a/mm/zswap.c~mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead
++++ a/mm/zswap.c
+@@ -881,18 +881,23 @@ static int zswap_cpu_comp_dead(unsigned
+ {
+ 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+ 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
++	struct crypto_acomp *acomp = NULL;
++
++	if (IS_ERR_OR_NULL(acomp_ctx))
++		return 0;
+ 
+ 	mutex_lock(&acomp_ctx->mutex);
+-	if (!IS_ERR_OR_NULL(acomp_ctx)) {
+-		if (!IS_ERR_OR_NULL(acomp_ctx->req))
+-			acomp_request_free(acomp_ctx->req);
+-		acomp_ctx->req = NULL;
+-		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+-			crypto_free_acomp(acomp_ctx->acomp);
+-		kfree(acomp_ctx->buffer);
+-	}
++	if (!IS_ERR_OR_NULL(acomp_ctx->req))
++		acomp_request_free(acomp_ctx->req);
++	acomp_ctx->req = NULL;
++	acomp = acomp_ctx->acomp;
++	acomp_ctx->acomp = NULL;
++	kfree(acomp_ctx->buffer);
++	acomp_ctx->buffer = NULL;
+ 	mutex_unlock(&acomp_ctx->mutex);
+ 
++	crypto_free_acomp(acomp);
++
+ 	return 0;
+ }
+ 
+_
+
+Patches currently in -mm which might be from herbert@gondor.apana.org.au are
+
+mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead.patch
 
 
