@@ -1,201 +1,423 @@
-Return-Path: <stable+bounces-119612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24CDA45450
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 05:10:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4108EA45486
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 05:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08B8C3A9FA9
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 04:10:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F8C189C283
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 04:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D1E254AED;
-	Wed, 26 Feb 2025 04:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B88F21ABD7;
+	Wed, 26 Feb 2025 04:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gRDzGBDO";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="gRDzGBDO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DWY3tXUk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C81A08B8
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 04:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740543051; cv=none; b=Y5Tm7OVFtP19miEzW+Sdhx1ZhlrXqgnezcEofYW4bUF+perAPFC+fDGhibjwncOIhKZ2tDklt7WtHRDGqAG62PphBrprNad8rASPQ07wXDY6v0JlKu7dddXzECdQhtsGnXSUBecCGY4yDv3+sNZxs2Sio1Le9meeyWoZZCt8hfQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740543051; c=relaxed/simple;
-	bh=coBkDB9n0r1jpLAaB42tNqk/pJRlFyDN+Y9+BMGHq7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ak0xgxFuhkZo3RrpJxQBlH+SZRRc0G3lTZOJLfQNXDIv5ZUGc8x+b9+xj78TLRS7OEjDboknmkwprGOJd/dKwZs5GsZE6FIXxESSgYHxleYsu986kauyEjrVjdq2Kzxo4pMIiQH2njxbLfnSdKRthMTxLBE1CRfp8Eas3aVka9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gRDzGBDO; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=gRDzGBDO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 083962118D;
-	Wed, 26 Feb 2025 04:10:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1740543043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d+V4KTRT5MUI9x14wC6uGTEtGtf2wXvVLjU/Vh5BAxw=;
-	b=gRDzGBDOWuytyxCtKy15/2nDDlm/kpc3lO4Sjo25qTlFmTSiLNVMMcASV1ApYlrKQ8yaNz
-	bvizYqGfwfuN/j+liKblPCndNs7Wvuf7Az9ZbqcLEcboVXpqOgeZNZZhhxX3uYpwXs0LvA
-	wiEmvp2BydibZLa2bcm/DFtvOdEXmY4=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1740543043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d+V4KTRT5MUI9x14wC6uGTEtGtf2wXvVLjU/Vh5BAxw=;
-	b=gRDzGBDOWuytyxCtKy15/2nDDlm/kpc3lO4Sjo25qTlFmTSiLNVMMcASV1ApYlrKQ8yaNz
-	bvizYqGfwfuN/j+liKblPCndNs7Wvuf7Az9ZbqcLEcboVXpqOgeZNZZhhxX3uYpwXs0LvA
-	wiEmvp2BydibZLa2bcm/DFtvOdEXmY4=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F0F0B1377F;
-	Wed, 26 Feb 2025 04:10:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qCSUK0GUvmcgfQAAD6G6ig
-	(envelope-from <wqu@suse.com>); Wed, 26 Feb 2025 04:10:41 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 1/3] btrfs: subpage: do not hold subpage spin lock when clearing folio writeback
-Date: Wed, 26 Feb 2025 14:40:20 +1030
-Message-ID: <b6b9986b1f012f7e989b1d65aade0579cf202e14.1740542375.git.wqu@suse.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1740542375.git.wqu@suse.com>
-References: <cover.1740542375.git.wqu@suse.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1DF1662EF;
+	Wed, 26 Feb 2025 04:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740543478; cv=fail; b=a+CoXUY49alhEJgqnHUlSsZWl6/BKfrdTKMMu5ULakKeMm79BxAVIMYnhK2iVpWgi/idBdv7r4me2rlyV2mpZSqZ4cHlgzPHRCAWzhqMM9CXZCOg9Ul2s1XxOGTj1x/dMnjSrgYk7S5Y0PTdvyQHaqL3sCeohyKPWTyOrL4HibQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740543478; c=relaxed/simple;
+	bh=8/IhRKwL5N5w8DLc3UYAmiEJTp7ALrcYkaxLRcbzcv0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WEw9rLDkzCTDAY+8e9/JM3iSgBDAoUyuzInq1nKSNdD732KIayJd87wGgVai5QVivkaG4aabXQODqT6E7JkR8kEL8o1AjXcLdjGhbU+NaXLXUhACJweSRP2cy2oLY2gBLaSFp3sWQ0WrsJfsGkhiLfQQikZAcn+KkGQST7Dhztk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DWY3tXUk; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740543477; x=1772079477;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=8/IhRKwL5N5w8DLc3UYAmiEJTp7ALrcYkaxLRcbzcv0=;
+  b=DWY3tXUkgkA9sYylR63bhFYI5HyUKkg9Tltp6T3H3G04N75261Jk8WyM
+   bzIQQDYGomCXhKSEfDLyjIoz+TOgOh9w1Ul6Xxu4ieJWAWkITvVkOHFB9
+   RHbH1G0FNqYCf5taC2YkvX7bvJ1rZ+iST/TJ2kANez0tFt8FF/grzJlKY
+   itChGKTrnzMZgrXZvt56Cnxo9W+z3QhgTD0vZNqSRSGVgJCtB3PSPVE7v
+   9MdMViq6GiqDGYX+oGYLGf21iWg1pUSmrTYBT9DpwbIK/p981Ib0elB1G
+   4+rfZLWfuDhgnw+WA2y+rzMJdtQouqalSOcr5HwctFDVqsxdHZ8AThnN2
+   A==;
+X-CSE-ConnectionGUID: AGymLM/TQf+XsggNc+kvuQ==
+X-CSE-MsgGUID: UlMw6kLfSZew9HYbfMuLuA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="52772413"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
+   d="scan'208";a="52772413"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 20:17:56 -0800
+X-CSE-ConnectionGUID: Dftf0Ov0T4qjzYPOwbg80A==
+X-CSE-MsgGUID: PgL6zTTiRky1j/K+3K6y2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="153763064"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 20:17:56 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.14; Tue, 25 Feb 2025 20:17:55 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 25 Feb 2025 20:17:55 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 25 Feb 2025 20:17:55 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V2P8JlhPjMLJmhytKs1AE6lPe41G0xO1kom9ONxRNZi/9kLaJsoV4IZeqKC5faANZcpsH3SDjsN7bpL50u1gfYx03UnUjBAkmpWlg8fn6togItytM681CXWjlln3rSS5ds97NqqmCirFTeH/REfZIr2cx3EUaZTqINWo6vXQCTOpgsh6jds1s7oVTElp8y6LP+zdfi2mtq1gThYfPmlKII5G7FJJawVgYzo4GODnZPkXJfYC1TQianzhNM98uaT8dcYRUyA+J4dWo5nioUBOsSYG7yj9CVVKcXP5DnP5qQJDGGYXhO5txyepcjvJHXmg0ot217+9zal+yLROGSH8iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H6HZHH3aVaxut5qhn+mIpAGwY8Zg08+6O0fkQJCLkL4=;
+ b=wxtyGZ9P4+3OjauKEW7NMxK8fppjm/MBHeIXsZszCa89IGPi+zDrPnSHe2sKTJrbEwkc9RRxem/j+8AKTFohyAS2+h6Klko/4POErtN7pNRcecev9wZpN2MiQPKDDC5UDMil8q9KYnKSCdLA2JPsrXduw9dAsrYvhMPaO0N7nq3N/AjKGqKP4biXl+bIQ23yXOG5+KUvyzVQ1vW73NKtl2PsAzNp2bRPnX9bknIfHCynEq+b2XFqq18ya984xXVrgFxmsZx3UiGLs5vW3DfBQ5Bbytvo6g573XYZ8Mx5kyowfewVFyzoXk5Ab7j9L0PMVJwUtwIjckOD8SuwLtUtbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by LV2PR11MB5974.namprd11.prod.outlook.com (2603:10b6:408:14c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.18; Wed, 26 Feb
+ 2025 04:17:39 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.8466.016; Wed, 26 Feb 2025
+ 04:17:39 +0000
+Date: Tue, 25 Feb 2025 20:18:42 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+CC: <jeffbai@aosc.io>, Thomas =?iso-8859-1?Q?Hellstr=F6m?=
+	<thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	"=?iso-8859-1?Q?Jos=E9?= Roberto de Souza" <jose.souza@intel.com>, Francois
+ Dugast <francois.dugast@intel.com>, Alan Previn
+	<alan.previn.teres.alexis@intel.com>, Zhanjun Dong <zhanjun.dong@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>, Mateusz Naklicki
+	<mateusz.naklicki@intel.com>, Mauro Carvalho Chehab
+	<mauro.chehab@linux.intel.com>, Zbigniew =?utf-8?Q?Kempczy=C5=84ski?=
+	<zbigniew.kempczynski@intel.com>, <intel-xe@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>, "Kexy
+ Biscuit" <kexybiscuit@aosc.io>, Shang Yatsen <429839446@qq.com>,
+	<stable@vger.kernel.org>, Haien Liang <27873200@qq.com>, Shirong Liu
+	<lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>
+Subject: Re: [PATCH 1/5] drm/xe/bo: fix alignment with non-4K kernel page
+ sizes
+Message-ID: <Z76WIgGvvhlbYl/j@lstrano-desk.jf.intel.com>
+References: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
+ <20250226-xe-non-4k-fix-v1-1-80f23b5ee40e@aosc.io>
+ <wcfp3i6jbsmvpokvbvs5n2yxffhrgu6jyoan3e3m6tb7wbjaq6@tbsit7ignlef>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <wcfp3i6jbsmvpokvbvs5n2yxffhrgu6jyoan3e3m6tb7wbjaq6@tbsit7ignlef>
+X-ClientProxiedBy: MW4PR03CA0129.namprd03.prod.outlook.com
+ (2603:10b6:303:8c::14) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|LV2PR11MB5974:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cf8504c-c4f5-48c3-e3e6-08dd561c81a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?xjOcdPvfT9g9d6OdA5Hv59wx/u4obNcuGFFg/qKgPYrd29cCTjv0/xBYFyye?=
+ =?us-ascii?Q?5S5U29lwu7fN8Bf8ABqZJlgQYDJnM+h16rsjNnzMuzE61AnekPZ+DEBdJJyS?=
+ =?us-ascii?Q?OHLzSVGWJALuGX5UUlZ1BoUADhDulJdIPifoDIo7hUjyQyRy7ccDcqQ+sedh?=
+ =?us-ascii?Q?g4U1jIYEVzemOPTz+P8Z+1JuUtFh65W2uB87YG2OuxB6UUkkC9RdjU13X21x?=
+ =?us-ascii?Q?lX8z+AnUJ/wHF3oViPaLsRXVnzLCAK9LstZARCfaTpN3ZddHuRDhSPVHOX+k?=
+ =?us-ascii?Q?+UIahRh8ivV7R1VH0MwDGZjIH4v5+x3ZnQD++eYajn2LmEhisCuwV1U48LOJ?=
+ =?us-ascii?Q?yuLAppoPWKdtnSeGxugXAyoCyLZ2svH/OEH3ReYz1Cigi8+T9xGtCQPFrT70?=
+ =?us-ascii?Q?ZMY6x+H4a23GNbCWCowGid6BphqhrJau+eIFvkOMYl2oo9yonVY9Fj+rktaf?=
+ =?us-ascii?Q?GO9Qmkxt6l7uzt+bLkTRM7y9PRnfbdocM8OnV9TSEneTs5q4GWjSTmbW6PXq?=
+ =?us-ascii?Q?xiOLjqrfsYVxBPujh3DWLixB4HSERl6jvCOqwU1YqfbxjbCK3BsrEVg+McO3?=
+ =?us-ascii?Q?pLDyq973v3jykWGyAB+M6T2xh17zNOQxGCYG5zhAhaBa6nZZMDdYg4PlnLm8?=
+ =?us-ascii?Q?06e8XCBPoX5n4M18yS1JAIXAIUpip9GLd6SH/d0EfAiPCSz1hRO4+0dR9AIl?=
+ =?us-ascii?Q?E6e+rqN49Lh6oJnfrDkkAKgmyScVVzzGKGAcYlnsb7m7kb4JI1Do808U3Vn2?=
+ =?us-ascii?Q?dzT4CdjLVbFe4hJ8iuOZfVF5VWlEDCpwRL7brmAF25XndxiekQPtPIkIX9d1?=
+ =?us-ascii?Q?c+VKBDs0VEv9tT0q0Z20ggiGD2KDf1FKowgkPchnnPAFePGyf5MpPa9Erq8b?=
+ =?us-ascii?Q?rI6csji3o7jjj0R/3dx74Qi+4xT9iFS9p6/I+NEE7+lS3yHaXZiNkksod3Jl?=
+ =?us-ascii?Q?wlCKMNfaWNOvNG+jaLUsTbLGbPS3hn4nIXSNUuZ1SQ80HatTR/0UAxnFDG2p?=
+ =?us-ascii?Q?beVa+D9fbGAN02XbLlhQDevS58GffBVRiOIcT5XdRtZDlAAd0ZyokQjCU2Fb?=
+ =?us-ascii?Q?wfxkwPC3wqMsK2jov1nyykcJ1XI/aLf2CY6b2fUR6+udwPJgT/+XDAdEcu5w?=
+ =?us-ascii?Q?Gf6QL9Nr+B4+SBGZYd55eL0ZvAJLZ2Rg83leSuWrF7txOxTqyyetsMVdaURz?=
+ =?us-ascii?Q?pMA4zqCmz2rZIqqdTmrM2hgp6IPv7jKMhOLf8D7J8VJdDP5dWngLQk1Ec9Jx?=
+ =?us-ascii?Q?x0p0rMGp5Y+gOBEJfYuG6Rgww7U3PzVWsU/3chXIut8+BzQ/rK7s1b+fU/4j?=
+ =?us-ascii?Q?OS8LUgRTjLOTAqcEBwv9g3gZmfAZ3QhYnCBJ8Xp1v/WrT8Yjxvt2y4G2XDfF?=
+ =?us-ascii?Q?urK6NBO4MKh9qG1q5rdswoJ3cyyo?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?E5DgbbRW5+6vKuO8e7jN+WssXT9djLGEjzByOGT9VvZhaP5Yl3ekG6XFETEm?=
+ =?us-ascii?Q?KD9IIbkGq9v7zbiTAIusnJ9oh9+6t1hYzKJUrCvDh32JWeacwTVkq02VycEO?=
+ =?us-ascii?Q?+NtyRtzCBl9QCmPZaN7ipOBn9rpEWyb794F8kjJjgTWcbnnETyfH/B33CUf/?=
+ =?us-ascii?Q?oJjBfEhn6dPPtZxN7AkM6wdVgzH5BAlvmEg/Vyx6svXcN3lsSGt34AL4s6RW?=
+ =?us-ascii?Q?aFSOa4xpNa4XRfQ3d5Qb7PuiWMVfC7jpzZbGp7A4aSFIH/dxyyee54ApxQnJ?=
+ =?us-ascii?Q?5s43zM4Gt5W4PCEU2Bni6/PushWZKvP/XK6OS1trmAF8NjB+4cn9+720kaxV?=
+ =?us-ascii?Q?sf9iStylsyctcU2BBvehspgLsNHeS5lDZP9mtBFW49+MWj78WmMmY+6y73Xy?=
+ =?us-ascii?Q?a1UTQtSSEK7wQ9nMF7VttQDcxihveMi80LacQPrZ65kb6/LLsD2extfyCb4B?=
+ =?us-ascii?Q?6blWMDNrGyyVeUxVUhCBrTZM542tqIbYWaSGGbwl5mj67cxk3s36sz1H0GQ7?=
+ =?us-ascii?Q?p9je/r70jq650glkV7LHUKbOK+Bw6/Dt63L+/LiU6oI3WedM6FpG2ldf9k+Z?=
+ =?us-ascii?Q?L0BHAa8sF9taqQNP4832sSBZCWAXXepl4JAeCXsyBm2JJ0XFLFGbmSLtfGCz?=
+ =?us-ascii?Q?YudA3LAUQeblibpTSl58hJ8HqMyj3suHHMRITc8lv0v8W2Jwg3PWu+S1K5eX?=
+ =?us-ascii?Q?A+zLg/IlkgCd5mzBA2Zspe3KKDycIwMXD3z4WUF0wMxeW700gewAGr+8J55j?=
+ =?us-ascii?Q?qcjyCVW3oW1olnYrKrMFCyiKzo39hHIz24nkcDkmtf9O/mHMKCzGzXNGbZdZ?=
+ =?us-ascii?Q?T9ReGmZoDTXIkBA8WCxVP7s3WU1ArH93rzS+xAHKnSXvqaJG8vCrE040mBkU?=
+ =?us-ascii?Q?VkdnKoLO1wauSduDCW2JjYT6MYSKUcbfAI72YBrmrxmPRRkrNrTykHWQo27A?=
+ =?us-ascii?Q?MKD4GRy+aB7KYoEPB3Pf/sFa08glNT9Cp8E3W0y9WiY0IGfhKTGMDvgbwIUf?=
+ =?us-ascii?Q?I77uZzWXObwrLW2MFqcgePtQDjcUJN1w3zGmafjN1PGHJ9KYMKMRXNDU/gWl?=
+ =?us-ascii?Q?2y5+mvxbhI8j5NP+ZQiqTAHLjtMb6K7+tBTqCexAPbl2r7QfGDHCcGS3LRm7?=
+ =?us-ascii?Q?0x2i/uVEB+f37O+3XmCva2HST8ZcbwNiFLvVVmVhRvnG08TfN3ggGV5dykGB?=
+ =?us-ascii?Q?n72JGsy63wOavgCbTqeEgxGGuLU19Ct7q9x58XJjHUmo0nPD/5kJ4mJKyRyt?=
+ =?us-ascii?Q?TL8CvLSoC6Xj1Q2MpDPo0/4htjajhwgZj9+Fr4SpkaueaVNLRKqZZWVoANhv?=
+ =?us-ascii?Q?ys7ESts0ReJNoDPV4sqJoIMDLhhIgOAqVJtro5gRoZSu6Iwr7us3DuiFcres?=
+ =?us-ascii?Q?ekg7+kQ8WOW0fgkq9ecpFW7MKhZpQOBpHcS9MVqKagtHkxOui4q4p0I5CiyX?=
+ =?us-ascii?Q?RMLELRVrWqLOVXlcSzDQ1FROwCaMh/y82AqQeBfLi3/xHCNBQZahYHhZZxq4?=
+ =?us-ascii?Q?1DTaLzKAqbrBY0coSFW5JvrWbQgVyNo3MJEL5dc8+tHr5A7ygP7QztDkPdmU?=
+ =?us-ascii?Q?1N4zgbgMbJK8fPTB8cW2Zwa25LICYJdTL95svA8TnjaKBD7FSFuM2wE4Iu48?=
+ =?us-ascii?Q?vg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cf8504c-c4f5-48c3-e3e6-08dd561c81a5
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 04:17:39.1947
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6WBQlvuB0pRhkF3DJi/BrLFETqNicP6wuhaVEafYlZbt6W02nnyopgaoQR69sIlEXZ6cz2CprKsWOE4vPZxSew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB5974
+X-OriginatorOrg: intel.com
 
-[BUG]
-When testing subpage block size btrfs (block size < page size), I hit
-the following spin lock hang on x86_64, with the experimental 2K block
-size support:
+On Tue, Feb 25, 2025 at 09:13:09PM -0600, Lucas De Marchi wrote:
+> On Wed, Feb 26, 2025 at 10:00:18AM +0800, Mingcong Bai via B4 Relay wrote:
+> > From: Mingcong Bai <jeffbai@aosc.io>
+> > 
+> > The bo/ttm interfaces with kernel memory mapping from dedicated GPU
+> > memory. It is not correct to assume that SZ_4K would suffice for page
+> > alignment as there are a few hardware platforms that commonly uses non-4K
+> > pages - for instance, currently, Loongson 3A5000/6000 devices (of the
+> > LoongArch architecture) commonly uses 16K kernel pages.
+> > 
+> > Per my testing Intel Xe/Arc families of GPUs works on at least
+> > Loongson 3A6000 platforms so long as "Above 4G Decoding" and "Resizable
+> > BAR" were enabled in the EFI firmware settings. I tested this patch series
+> > on my Loongson XA61200 (3A6000) motherboard with an Intel Arc A750 GPU.
+> > 
+> > Without this fix, the kernel will hang at a kernel BUG():
+> > 
+> > [    7.425445] ------------[ cut here ]------------
+> > [    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
+> > [    7.435330] Oops - BUG[#1]:
+> > [    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
+> > [    7.449511] Tainted: [E]=UNSIGNED_MODULE
+> > [    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
+> > [    7.467144] Workqueue: events work_for_cpu_fn
+> > [    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
+> > [    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
+> > [    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
+> > [    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
+> > [    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
+> > [    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
+> > [    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
+> > [    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
+> > [    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
+> > [    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
+> > [    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+> > [    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+> > [    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+> > [    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+> > [    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
+> > [    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+> > [    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
+> > [    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
+> > [    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
+> > [    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
+> > [    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
+> > [    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
+> > [    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
+> > [    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
+> > [    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
+> > [    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
+> > [    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
+> > [    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
+> > [    7.701165]         ...
+> > [    7.703588] Call Trace:
+> > [    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
+> > [    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
+> > [    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
+> > [    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
+> > [    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
+> > [    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
+> > [    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
+> > [    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
+> > [    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
+> > [    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
+> > [    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
+> > [    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
+> > [    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
+> > [    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
+> > [    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
+> > [    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
+> > [    7.805591] [<90000000002bacac>] kthread+0x114/0x138
+> > [    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
+> > [    7.816489]
+> > [    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
+> > [    7.827651]
+> > [    7.829140] ---[ end trace 0000000000000000 ]---
+> > 
+> > Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
+> > `drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
+> > before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
+> > fix the above error.
+> > 
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
+> > Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> > Tested-by: Mingcong Bai <jeffbai@aosc.io>
+> > Tested-by: Haien Liang <27873200@qq.com>
+> > Tested-by: Shirong Liu <lsr1024@qq.com>
+> > Tested-by: Haofeng Wu <s2600cw2@126.com>
+> > Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c32410a077b3ddb6dca3f28223360
+> > Co-developed-by: Shang Yatsen <429839446@qq.com>
+> > Signed-off-by: Shang Yatsen <429839446@qq.com>
+> > Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+> > ---
+> > drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
+> > 1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+> > index 3f5391d416d469c636d951dd6f0a2b3b5ae95dab..dd03c581441f352eff51d0eafe1298fca7d9653d 100644
+> > --- a/drivers/gpu/drm/xe/xe_bo.c
+> > +++ b/drivers/gpu/drm/xe/xe_bo.c
+> > @@ -1441,9 +1441,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+> > 		flags |= XE_BO_FLAG_INTERNAL_64K;
+> > 		alignment = align >> PAGE_SHIFT;
+> > 	} else {
 
-  <TASK>
-  _raw_spin_lock_irq+0x2f/0x40
-  wait_subpage_spinlock+0x69/0x80 [btrfs]
-  btrfs_release_folio+0x46/0x70 [btrfs]
-  folio_unmap_invalidate+0xcb/0x250
-  folio_end_writeback+0x127/0x1b0
-  btrfs_subpage_clear_writeback+0xef/0x140 [btrfs]
-  end_bbio_data_write+0x13a/0x3c0 [btrfs]
-  btrfs_bio_end_io+0x6f/0xc0 [btrfs]
-  process_one_work+0x156/0x310
-  worker_thread+0x252/0x390
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xef/0x250
-  ? finish_task_switch.isra.0+0x8a/0x250
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x34/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+} else if (type == ttm_bo_type_device) {
+	new code /w PAGE_SIZE
+} else {
+	old code /w SZ_4K (or maybe XE_PAGE_SIZE now)?
+}
 
-[CAUSE]
-It's a self deadlock with the following sequence:
+See below for further explaination.
 
-btrfs_subpage_clear_writeback()
-|- spin_lock_irqsave(&subpage->lock);
-|- folio_end_writeback()
-   |- folio_end_dropbehind_write()
-      |- folio_unmap_invalidate()
-         |- btrfs_release_folio()
-	    |- wait_subpage_spinlock()
-	       |- spin_lock_irq(&subpage->lock);
-	          !! DEADLOCK !!
+> > -		aligned_size = ALIGN(size, SZ_4K);
+> > +		aligned_size = ALIGN(size, PAGE_SIZE);
+> 
+> in the very beginning of the driver we were set to use XE_PAGE_SIZE
+> for things like this. It seems thing went side ways though.
+> 
+> Thanks for fixing these. XE_PAGE_SIZE is always 4k, but I think we should
+> uxe XE_PAGE_SIZE for clarity.  For others in Cc...  any thoughts?
+> 
 
-We're trying to acquire the same spin lock already held by ourselves.
+It looks like you have a typo here, Lucas. Could you please clarify?
 
-This has never been reproducibled on aarch64 as it looks like some x86_64
-specific folio reclaim behavior?
+However, XE_PAGE_SIZE should always be 4k, as it refers to the GPU page
+size, which is fixed.
 
-[FIX]
-Move the folio_end_writeback() call out of the spin lock critical
-section.
+I think using PAGE_SIZE makes sense in some cases. See my other
+comments.
 
-And since we no longer have all the bitmap operation and the writeback
-flag clearing happening inside the critical section, we must do extra
-checks to make sure only the last one clearing the writeback bitmap can
-clear the folio writeback flag.
+> > 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
+> > -		alignment = SZ_4K >> PAGE_SHIFT;
+> > +		alignment = PAGE_SIZE >> PAGE_SHIFT;
+> > 	}
+> > 
+> > 	if (type == ttm_bo_type_device && aligned_size != size)
+> > @@ -1457,7 +1457,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+> > 
+> > 	bo->ccs_cleared = false;
+> > 	bo->tile = tile;
+> > -	bo->size = size;
+> > +	bo->size = aligned_size;
+> 
+> the interface of this function is that the caller needs to pass the
+> correct size, it's not really expected the function will adjust it and
+> the check is there to gurantee to return the appropriate error. There
 
-Fixes: 3470da3b7d87 ("btrfs: subpage: introduce helpers for writeback status")
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/subpage.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Let me expand further on Lucas's comment. We reject user BOs that are
+unaligned here in ___xe_bo_create_locked.
 
-diff --git a/fs/btrfs/subpage.c b/fs/btrfs/subpage.c
-index 4d1bf1124ba0..3ce3d7093ddb 100644
---- a/fs/btrfs/subpage.c
-+++ b/fs/btrfs/subpage.c
-@@ -466,15 +466,21 @@ void btrfs_subpage_clear_writeback(const struct btrfs_fs_info *fs_info,
- 	struct btrfs_subpage *subpage = folio_get_private(folio);
- 	unsigned int start_bit = subpage_calc_start_bit(fs_info, folio,
- 							writeback, start, len);
-+	bool was_writeback;
-+	bool last = false;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&subpage->lock, flags);
-+	was_writeback = !subpage_test_bitmap_all_zero(fs_info, folio, writeback);
- 	bitmap_clear(subpage->bitmaps, start_bit, len >> fs_info->sectorsize_bits);
--	if (subpage_test_bitmap_all_zero(fs_info, folio, writeback)) {
-+	if (subpage_test_bitmap_all_zero(fs_info, folio, writeback) &&
-+	    was_writeback) {
- 		ASSERT(folio_test_writeback(folio));
--		folio_end_writeback(folio);
-+		last = true;
- 	}
- 	spin_unlock_irqrestore(&subpage->lock, flags);
-+	if (last)
-+		folio_end_writeback(folio);
- }
- 
- void btrfs_subpage_set_ordered(const struct btrfs_fs_info *fs_info,
--- 
-2.48.1
+1490         if (type == ttm_bo_type_device && aligned_size != size)
+1491                 return ERR_PTR(-EINVAL);
 
+What we allow are kernel BOs (!= ttm_bo_type_device), which are never
+mapped to the CPU or the PPGTT (user GPU mappings), to be a smaller
+size. Examples of this include memory for GPU page tables, LRC state,
+etc. Memory for GPU page tables is always allocated in 4k blocks, so
+changing the allocation to the CPU page size of 16k or 64k would be
+wasteful.
+
+AFAIK, kernel memory is always a VRAM allocation, so we don't have any
+CPU page size requirements. If this is not true (I haven't checked), or
+perhaps just to future-proof, change the snippet in my first comment to:
+
+} else if (type == ttm_bo_type_device || flags & XE_BO_FLAG_SYSTEM)) {
+	new code /w PAGE_SIZE
+} else {
+	old code /w SZ_4K
+}
+
+Then change BO assignment size too:
+
+bo->size = flags & XE_BO_FLAG_SYSTEM ? aligned_size : size;
+
+This should enable kernel VRAM allocations to be smaller than the CPU
+page size (I think). Can you try out this suggestion and see if the Xe
+boots with non-4k pages?
+
+Also others in Cc... thoughts / double check my input? 
+
+> are other places that would need some additional fixes leading to this
+> function. Example:
+> 
+> xe_gem_create_ioctl()
+> {
+> 	...
+> 	if (XE_IOCTL_DBG(xe, args->size & ~PAGE_MASK))
+> 		return -EINVAL;
+
+This actually looks right, the minimum allocation size for user BOs
+should be PAGE_SIZE aligned. The last patch in the series fixes the
+query for this.
+
+Matt 
+
+> 	...
+> }
+> 	
+> 
+> Lucas De Marchi
+> 
+> > 	bo->flags = flags;
+> > 	bo->cpu_caching = cpu_caching;
+> > 	bo->ttm.base.funcs = &xe_gem_object_funcs;
+> > @@ -1468,7 +1468,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+> > #endif
+> > 	INIT_LIST_HEAD(&bo->vram_userfault_link);
+> > 
+> > -	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
+> > +	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
+> > 
+> > 	if (resv) {
+> > 		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
+> > 
+> > -- 
+> > 2.48.1
+> > 
+> > 
 
