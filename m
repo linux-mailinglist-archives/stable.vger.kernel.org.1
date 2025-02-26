@@ -1,370 +1,349 @@
-Return-Path: <stable+bounces-119624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4DCA456C6
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 08:37:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEB3A45698
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 08:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4211176EFC
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 07:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E773A8225
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 07:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A90326A0A6;
-	Wed, 26 Feb 2025 07:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D1126AAB6;
+	Wed, 26 Feb 2025 07:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="sHkZr6Gu";
-	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="qzo5Dqqe"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="HOG4A9qP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0014ca01.pphosted.com (mx0b-0014ca01.pphosted.com [208.86.201.193])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5693B17F7;
-	Wed, 26 Feb 2025 07:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.86.201.193
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740555428; cv=fail; b=dO0wm+3ZqXOnTDT5EkPT5Wi0CA6U/Y1u47nNNdPTc6exa7JIcPqG3HKF75DDhWk6B+2i40i7YP2PaGvFKmaAeeM7S89Y9zr10Z7/eUFjeoBxGoc3wXj0Eq4TR6zs39vKk3ca7Duz1snJbf9YLiNtEAC3JW5Wt+BmN6Edu3MlkTA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740555428; c=relaxed/simple;
-	bh=ySXvUdmBxQtnUwWVFfGDzaEjneJ85OlMj4qTvEPXUeY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YgE3sGitpctacAIO3dC1BPJY/XdjGz+IjznTahsui3LiHRfYe7v1uwkYbjEwtcwh1Drc/jehjsmp/AvRwzBVvNIpx+IoHTPZTFYDWYuQk29fcLH1GcDjA+j0r8qtmXhFVjlOruVMBJ1SSW+MrchLc17+KcIA9ZZmUasoKQ4H8Mo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cadence.com; spf=pass smtp.mailfrom=cadence.com; dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b=sHkZr6Gu; dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b=qzo5Dqqe; arc=fail smtp.client-ip=208.86.201.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cadence.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
-Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
-	by mx0b-0014ca01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51PMaPuB026070;
-	Tue, 25 Feb 2025 23:23:20 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=proofpoint;
-	 bh=47jMKvR8HipXl5NHGPOJmBB8zM07WqqZFNER8e4HeUg=; b=sHkZr6GuwcCq
-	5RwehOcyQhsW92NTBpufAooQxbDAh1MDp5Bftcu16nQ8nGN16xA3p9U16DO+3N2U
-	PAY3vR/Ue0+f8OVU9bKX9KunmxkirA7n/C2+H5PEr5sGjOZqtRk5xeA//XuQdzAB
-	+IxxNAzPurDkC/dhp2VjODOoCibU8/kvp0zCSbFhQnh6gXa90QMvq8NP2qQ86Wxb
-	vNqP5doNHXt+M9TEaFF/FzsI2OATG8kCWJh37n/sHC+MeuhHyxcZdH862ikx/l+N
-	ZPPoAP4On309jus2xztE5AjqU8XgbTjG1jjZzAwwbq3YL+uIFMvgxmIxclMXHvsN
-	eyC6TEdRvw==
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazlp17012032.outbound.protection.outlook.com [40.93.1.32])
-	by mx0b-0014ca01.pphosted.com (PPS) with ESMTPS id 451pt7hka8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Feb 2025 23:23:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QD0/hDw6/hMauupB8VZYUrMLmK2v7gHPS4eU8uR8x1JN1F+n4MQv82Qw+Zr7jrByfhvh3ZU9bbeIwujaO8C20w78rBqeqni1dYpqDUUbsjCicnytFgdLPL0wNMEkjl5XIZby04GLBAie4Lw2ZIu/T7brOZJuAu+AKoAn3Nk54ZWVk1CTRhaf34jlepewUL34dsfJj8lR5gghud0Ntm0+qw495D5IOb8a6pxVvFWLmfBjOfj0zZMioI/DpmTnt437ubsIPIM2JOVflSmiAFPVHOKZFnhgXcUWAw4eGazDue1BgVIESNx1m9aBo17PozLHFqaYiYGPyZOKXBCOTeRA4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=47jMKvR8HipXl5NHGPOJmBB8zM07WqqZFNER8e4HeUg=;
- b=U8QNnFp5LQo4JkkESpARzmBLL+xorAZC+Bk9IkJb3LIO8fJ/xhCGzP/10B9qILzmQyUPrGHSw6f9y/6+GNc2oPswqGkZktNOXr0iMd84CzKxqj9nZmhKHwasmm0PDDE0z2XS6VAZsfuQJz8Uxp2i9xnK5ye0hRbfOzyrhZ+uf3mwPIAp0zKk9sK2X4n/WQiTREcCol4SsGcjXyf397+NLUxoyx4OPDAOm+PhmCdnFXM4O172+k0gE5U8u5/KDWYsVQc33Hl88LY+R8YIiPVaFL5hJiyWBnrfX1d/sr0gRYiHhsrxBJ9NWjgnrn3+HHDulEYlqkiX5ExC4kjs2zR/oA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
- dkim=pass header.d=cadence.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=47jMKvR8HipXl5NHGPOJmBB8zM07WqqZFNER8e4HeUg=;
- b=qzo5DqqeM4d/EFAM71+3ZM5na5GyhB1xSAuSsAS6nI8kuFGO8LyoXmu/YlaRdui7TSIOjvyDrx65F5qqfWwt4If6/a+OtNuX5eQA5P119RzHxBvkYAufXA93TW1pGcZMlIyKzhdOo64wl92zBQim6zjozi+BO59ByPlyVze2JtM=
-Received: from PH7PR07MB9538.namprd07.prod.outlook.com (2603:10b6:510:203::19)
- by DM6PR07MB7209.namprd07.prod.outlook.com (2603:10b6:5:214::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.18; Wed, 26 Feb
- 2025 07:23:17 +0000
-Received: from PH7PR07MB9538.namprd07.prod.outlook.com
- ([fe80::5dbd:49e3:4dc:ccc7]) by PH7PR07MB9538.namprd07.prod.outlook.com
- ([fe80::5dbd:49e3:4dc:ccc7%7]) with mapi id 15.20.8466.020; Wed, 26 Feb 2025
- 07:23:16 +0000
-From: Pawel Laszczak <pawell@cadence.com>
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC: "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "javier.carrasco@wolfvision.net" <javier.carrasco@wolfvision.net>,
-        "make_ruc2021@163.com" <make_ruc2021@163.com>,
-        "peter.chen@nxp.com"
-	<peter.chen@nxp.com>,
-        "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        Pawel Eichler <peichler@cadence.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH v2] usb: xhci: lack of clearing xHC resources
-Thread-Topic: [PATCH v2] usb: xhci: lack of clearing xHC resources
-Thread-Index: AQHbiB5tjmnPswcsHkKXQ8kMhVwcYrNZLX9w
-Date: Wed, 26 Feb 2025 07:23:16 +0000
-Message-ID:
- <PH7PR07MB95385E2766D01F3741D418ABDDC22@PH7PR07MB9538.namprd07.prod.outlook.com>
-References: <20250226071646.4034220-1-pawell@cadence.com>
-In-Reply-To: <20250226071646.4034220-1-pawell@cadence.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-dg-ref:
- =?us-ascii?Q?PG1ldGE+PGF0IGFpPSIwIiBubT0iYm9keS50eHQiIHA9ImM6XHVzZXJzXHBh?=
- =?us-ascii?Q?d2VsbFxhcHBkYXRhXHJvYW1pbmdcMDlkODQ5YjYtMzJkMy00YTQwLTg1ZWUt?=
- =?us-ascii?Q?NmI4NGJhMjllMzViXG1zZ3NcbXNnLTg5Y2JjMDUyLWY0MTItMTFlZi1hOGNi?=
- =?us-ascii?Q?LTAwYmU0MzE0MTUxZVxhbWUtdGVzdFw4OWNiYzA1NC1mNDEyLTExZWYtYThj?=
- =?us-ascii?Q?Yi0wMGJlNDMxNDE1MWVib2R5LnR4dCIgc3o9IjY3OTIiIHQ9IjEzMzg1MDI4?=
- =?us-ascii?Q?MTk0MDE5NTAyNiIgaD0ieFZwV2dHL0YyeHFOWkIzd2pnWDhaVnVBMWxBPSIg?=
- =?us-ascii?Q?aWQ9IiIgYmw9IjAiIGJvPSIxIiBjaT0iY0FBQUFFUkhVMVJTUlVGTkNnVUFB?=
- =?us-ascii?Q?R0FJQUFEU2xpRk1INGpiQWNzTWFuQ0VQTmtueXd4cWNJUTgyU2NLQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUhBQUFBQXNCZ0FBbkFZQUFNUUJBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUVBQVFBQkFBQUFoRlY4eVFBQUFBQUFBQUFBQUFBQUFKNEFBQUJq?=
- =?us-ascii?Q?QUdFQVpBQmxBRzRBWXdCbEFGOEFZd0J2QUc0QVpnQnBBR1FBWlFCdUFIUUFh?=
- =?us-ascii?Q?UUJoQUd3QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBRUFBQUFBQUFBQUFnQUFBQUFBbmdBQUFHTUFaQUJ1QUY4QWRnQm9B?=
- =?us-ascii?Q?R1FBYkFCZkFHc0FaUUI1QUhjQWJ3QnlBR1FBY3dBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFB?=
- =?us-ascii?Q?QUFDQUFBQUFBQ2VBQUFBWXdCdkFHNEFkQUJsQUc0QWRBQmZBRzBBWVFCMEFH?=
- =?us-ascii?Q?TUFhQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBTkFBQUFBQUFBQUFBQUFBQUJBQUFBQUFBQUFBSUFBQUFBQUo0QUFB?=
- =?us-ascii?Q?QnpBRzhBZFFCeUFHTUFaUUJqQUc4QVpBQmxBRjhBWVFCekFHMEFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
-x-dg-rorf: true
-x-dg-refone:
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFu?=
- =?us-ascii?Q?Z0FBQUhNQWJ3QjFBSElBWXdCbEFHTUFid0JrQUdVQVh3QmpBSEFBY0FBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFjd0J2QUhVQWNn?=
- =?us-ascii?Q?QmpBR1VBWXdCdkFHUUFaUUJmQUdNQWN3QUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQkFB?=
- =?us-ascii?Q?QUFBQUFBQUFJQUFBQUFBSjRBQUFCekFHOEFkUUJ5QUdNQVpRQmpBRzhBWkFC?=
- =?us-ascii?Q?bEFGOEFaZ0J2QUhJQWRBQnlBR0VBYmdBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFB?=
- =?us-ascii?Q?QW5nQUFBSE1BYndCMUFISUFZd0JsQUdNQWJ3QmtBR1VBWHdCcUFHRUFkZ0Jo?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQWN3QnZBSFVB?=
- =?us-ascii?Q?Y2dCakFHVUFZd0J2QUdRQVpRQmZBSEFBZVFCMEFHZ0Fid0J1QUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
-x-dg-reftwo:
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFKNEFBQUJ6QUc4?=
- =?us-ascii?Q?QWRRQnlBR01BWlFCakFHOEFaQUJsQUY4QWNnQjFBR0lBZVFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBRUFBQUFBQUFBQUFnQUFBQUFBeEFFQUFBQUFBQUFJQUFBQUFBQUFBQWdB?=
- =?us-ascii?Q?QUFBQUFBQUFDQUFBQUFBQUFBQ2tBUUFBQ2dBQUFESUFBQUFBQUFBQVl3QmhB?=
- =?us-ascii?Q?R1FBWlFCdUFHTUFaUUJmQUdNQWJ3QnVBR1lBYVFCa0FHVUFiZ0IwQUdrQVlR?=
- =?us-ascii?Q?QnNBQUFBTEFBQUFBQUFBQUJqQUdRQWJnQmZBSFlBYUFCa0FHd0FYd0JyQUdV?=
- =?us-ascii?Q?QWVRQjNBRzhBY2dCa0FITUFBQUFrQUFBQURRQUFBR01BYndCdUFIUUFaUUJ1?=
- =?us-ascii?Q?QUhRQVh3QnRBR0VBZEFCakFHZ0FBQUFtQUFBQUFBQUFBSE1BYndCMUFISUFZ?=
- =?us-ascii?Q?d0JsQUdNQWJ3QmtBR1VBWHdCaEFITUFiUUFBQUNZQUFBQUFBQUFBY3dCdkFI?=
- =?us-ascii?Q?VUFjZ0JqQUdVQVl3QnZBR1FBWlFCZkFHTUFjQUJ3QUFBQUpBQUFBQUFBQUFC?=
- =?us-ascii?Q?ekFHOEFkUUJ5QUdNQVpRQmpBRzhBWkFCbEFGOEFZd0J6QUFBQUxnQUFBQUFB?=
- =?us-ascii?Q?QUFCekFHOEFkUUJ5QUdNQVpRQmpBRzhBWkFCbEFGOEFaZ0J2QUhJQWRBQnlB?=
- =?us-ascii?Q?R0VBYmdBQUFDZ0FBQUFBQUFBQWN3QnZBSFVBY2dCakFHVUFZd0J2QUdRQVpR?=
- =?us-ascii?Q?QmZBR29BWVFCMkFHRUFBQUFzQUFBQUFBQUFBSE1BYndCMUFISUFZd0JsQUdN?=
- =?us-ascii?Q?QWJ3QmtBR1VBWHdCd0FIa0FkQUJvQUc4QWJnQUFBQ2dBQUFBQUFBQUFjd0J2?=
- =?us-ascii?Q?QUhVQWNnQmpBR1VBWXdCdkFHUUFaUUJmQUhJQWRRQmlBSGtBQUFBPSIvPjwv?=
- =?us-ascii?Q?bWV0YT4=3D?=
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR07MB9538:EE_|DM6PR07MB7209:EE_
-x-ms-office365-filtering-correlation-id: 3ac8168b-eb5b-4581-62b2-08dd5636702b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?kwIev2ytvB8HfiNmj6kKMJOoqvVawTDwZKorBf8Bqch4LGOezLJipKiYAcF4?=
- =?us-ascii?Q?1hpCtfB+psqvK1/fQKedHcHEhc2QICif2hi+1wWiFwzGKMHRXhMJYQU57OQJ?=
- =?us-ascii?Q?Zy+cZsUl61LLs717bupwpJLTnhOmQkccl5lEaRu36a2ph7pYKxn/u/I/R7j+?=
- =?us-ascii?Q?Mazd4qAYIP1IWn8hTyCfmPBS+TqSmmsIXfEpgh7PISope0QbAcdFLUpRPqAV?=
- =?us-ascii?Q?qzYuAMoBYe8P7rFioVP5bnTteiiKDJ4OyCoiZHgrqLe6Ew9Z8sn/BKd8GjW1?=
- =?us-ascii?Q?rMVvAHGMXwKRby2g+r7jVtWbq7IlyVu83u/NkqqX1t529/6IsKxBbBvBr9eZ?=
- =?us-ascii?Q?9V6CO3FQcsPXz15QxZ9ymh4tk20kS7/g8yIcmRB2o+YMu3+w4HSe9zyWipiy?=
- =?us-ascii?Q?JONKkKEupxhCnEAMEqgH/PWc4NXK0ChCeFnq8NpEZezV+eQ/XHDbUlaKJ5TN?=
- =?us-ascii?Q?q8YwgOXg5Ii7Hif8mbeZwbmofN8VAhj1OthaDJLm0m+3Ew8F7pWZVIBfXQpm?=
- =?us-ascii?Q?tc+8n8gPEVpGNKNHnnzLAf4t+I1WBbKBeWcs9ITJ4I3ojNwQ1Uxid/N/8HMZ?=
- =?us-ascii?Q?Ht9cMKZrK9nCcVS9ZL077hWaaOMHKCL845o4IeOSfT11/LN1Y+OvxULSOdJB?=
- =?us-ascii?Q?I0X8vyqD4eNVd0Cdj1fyuYkjlcNX9JZzCztOA/suA7Olf16c5zydPO04BbH9?=
- =?us-ascii?Q?LgyanVo1ICPJpTCFxju004yZaLadUPWq88+gNtWdu4iOG2o/CBIYMo3sUMjd?=
- =?us-ascii?Q?unR87QmAi+X16G6Pawyzd/WrzqpIHxySxf5sPAeNcXSTQcOcuWMws+0jycjv?=
- =?us-ascii?Q?mUoOaQYo03lUPL6+ukNrpMRXI/pfkTlwm1xwH4dWUiMTkkeT/ZBgieln31fS?=
- =?us-ascii?Q?TRLOsMLt7QDFzwNR1423v3kPaUyyysPi93fe3mjbK2f96VhLU3LvZxI74RP1?=
- =?us-ascii?Q?T1O7SVzmJ/6xYWrLON0Z6b7IXDASDM5YBe01ijGg7eXAazbFTDvXC4o+nbNR?=
- =?us-ascii?Q?kHinHLt6HwMmu46NN9CSc/x3L7CAAcaBwdK6gFt9FqvpMd09okwv2fKtnPl9?=
- =?us-ascii?Q?8DVlX84cskxX8ew66vd1nZzeQr1i4hmOMDKK8uTy0sUqVMpkhoDQtuxeH8+H?=
- =?us-ascii?Q?GPqBEWwPq1G766eE5R2LN6df3Gi/4TkHUqUr132V3DGE83xY0JX2ht9QOFbK?=
- =?us-ascii?Q?TjpyuE5JlIJuMxz6sMMFBbIr5IOImUwPEiyRotxG1liKsttKK80rGZ6+Kzi5?=
- =?us-ascii?Q?BPE+hQYK+pjB9P1FWLK3HoHteo83zn24M5xyUBS0h3I3UnqSSOuVhHj1JjB7?=
- =?us-ascii?Q?f2yFEeMST5jmJJW0y2ZFpb5Vwt9Sn6ZGouZU7wm6eaIw8S+YBXmeCzHM84Je?=
- =?us-ascii?Q?KRekWayEJqOM9GUxzoywNztYoLSB08vfGLiSbVIhXsefIV0QIeExugsqUNAH?=
- =?us-ascii?Q?hjSD+xERDmmExb/eAJ3wIixn+nLLvZNu?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR07MB9538.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+BvgWJqWPYxsYYaHmslpyORWX/8UOr/6BRiEzkRSGszcZ5kTjoEPpXRsZwbS?=
- =?us-ascii?Q?yec0ePE3DekBF2UlCnT3dJfh9/85nU5oVgVP1RoZtT/h0tx4HDS+X0AZGQQ2?=
- =?us-ascii?Q?z8CK5D9RbtK5/VobekYMNiO+kypDJhdYdol3UbGfqWUqkfe4ghxyWB/EZ58m?=
- =?us-ascii?Q?IT2NfFVggvdy33VNYNK7a9BB0VZBImxp2QtDzCNGZc0Xd7srXNn12UNTZDFx?=
- =?us-ascii?Q?I7s4dD3CsAxsvpgOvEdjY55yxMAUIu9Yss8HayWEQGZDJ3+B7ceu3RxLmg/Q?=
- =?us-ascii?Q?7kGwJg8obkNJLhtv5vvPMWOP62xERa71HnXseKFPNhJZFamx62OQmMDrPAd1?=
- =?us-ascii?Q?1vstD4MBa54OGtWU2y8B3n0twliLNwt2uZWdsMLsIddqj6mO+1++N/NLRXHz?=
- =?us-ascii?Q?wKrTCIRXOyqA9zicCDmU6l0bY7P1BeUf72Qn7wFs/28MBDQtvUSlr3FXMU65?=
- =?us-ascii?Q?I2xXxVlfArFWJPOsjWQPnflKOKK0Ckyu/3kO1rwaIdxgkfV1TT4gTraqkjwM?=
- =?us-ascii?Q?173G0Z2wUm+liA2WlupktK57LHMGq57ISkzXdYO5tkeB7BmV3ib/R70o8kp7?=
- =?us-ascii?Q?TOtSt7QFh/rw4lLlO0tOMN5Ludj6xVhmHEDqlc+zpOYf2+ZJ/Ib0+cmpwqSD?=
- =?us-ascii?Q?lWS+aG2G0qEDJsbD2WWXTt5Bx9XHQ/MFQkbEAwLSuAnBH5lavgl/pFNFStPy?=
- =?us-ascii?Q?4Xh7gawec2qpMUzMjSyQyttszc1uuRdKzihVr2wP4y+AKwndxItypBIxodyc?=
- =?us-ascii?Q?ixN2avfy+jjzoMdd3y+SH3PMrh67IN3hxYLCH57ook9iQGYrYpJGO9aqf/nm?=
- =?us-ascii?Q?U4/47DvjLXa/ilNFL5fiSwOgo5LU1DrsC/Gv5GQMuO9yfkddYk0p8W5JGDCq?=
- =?us-ascii?Q?AGSYO1g6m5xw2tKyIJgpvwAPM5B9gL+YhwW2XdsDtqqoW/l/+oP3mKRkNbFl?=
- =?us-ascii?Q?y1c1xKedp1SQFPBsm5JXPu+QCLuQWgTPiMPNiNGwPSgdyXbik9PkPTU8WjoB?=
- =?us-ascii?Q?5WVhorOczN35qhdxMp9Zd0+ZFzvXOKenBvesP5qIc+xbh6CqeH1PaOQi7nDn?=
- =?us-ascii?Q?5ncuiiVE320dKiSHFKRc3f8Sky1iieGqt0BQM9uDVBc/zoQ34W00sfXneGlp?=
- =?us-ascii?Q?YT6aCTsunolQy8J7HVMZcpjMpgXAx8y7dxy4ATwNXNV4OCZkWVzx4R4RjIWV?=
- =?us-ascii?Q?E/uXEE72e+z+gSkoJA8OgaD0T1mrO2rPJAC1dHVomnvMtI+LH0PI+5RVi05b?=
- =?us-ascii?Q?Q+E7Gcb5mRz81VZSmeXF/6L12PCnMR34YFzg4D2DIt86padam45Cl7WaIyrc?=
- =?us-ascii?Q?hCvbLqPCXQBAbXxfiMYsgPPc3D8+/YVMXEL60SXx3d9BdL4wXyEIIMHOQ9WN?=
- =?us-ascii?Q?zrWB3FbYYdIa6wrBfAumimNLokyx18fD9dNGcgaPT8Mx3yYVaC9M8I5djqcj?=
- =?us-ascii?Q?0Cx9C6ZBfsB4CCmdtq+5vWDfWPDNn186jzwFGZxqCwMP02EiNTlPLwcd9F4X?=
- =?us-ascii?Q?hY2CqPKZrW8qgovDBaLtAIG2w5xEVic+NB+K8GIag/Xk8qho2rjCx4yl1vk5?=
- =?us-ascii?Q?Y1uqkqguhL7gqUe8D5WGO70eRCDOGYl0R1OSu4BV?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4D026B08F;
+	Wed, 26 Feb 2025 07:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740554745; cv=none; b=NHXdwzhkhL4OOKNUBCXD4/k6jmct605QwGg2iJ9l+F54Qg9VsZBadeLh0XHjjeOvVpvp3SjbI9Pnr91DbXmXkeUH9snhFDgsAJ9yQQRw+IV2Cm3GvrFS49ufvV02uFc3yP0R//H70jNRwWO27hJkqT40Z9Wbf22VOwAOZ8mpn/w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740554745; c=relaxed/simple;
+	bh=KQaiyjQIlXbO0NoUOY2/uzTyuJvUs9Xde1pv2XxZchc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JqtOSqGG5eoe1sW0fx15Dav1zYhmu5xaQR56Xk1xvPMH6ZPBEVUyIOIanDYIHFC7NJr7tYvfrRg6psZxF7YJjaXs9X/g8lIGAVEpiff5bQUbkAQa/SkWf5OgCr5hjrSRW80OEJDM8odrNvoraOJYARC/+RSW7vV4zgybfk0sB8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=HOG4A9qP; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.100])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 9AB60260EB;
+	Wed, 26 Feb 2025 07:25:34 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay1.mymailcheap.com (Postfix) with ESMTPS id C100E3E953;
+	Wed, 26 Feb 2025 07:25:26 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id A652B4023E;
+	Wed, 26 Feb 2025 07:25:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1740554725; bh=KQaiyjQIlXbO0NoUOY2/uzTyuJvUs9Xde1pv2XxZchc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HOG4A9qPov2vkUmv7tOQcwMDciCed7o8s3B60n5ysxJ68SFMSxZ9QyaLBAi1i3cF9
+	 TE63XFHZPNvVizMOTg+D0vH8lUMwlIoP3ZzjZj66Ty11t1lua65aeDw1bt6CyOGXiq
+	 +mK9zdrmY1wRCySH7xae4wXK/x5+DOYL/PUJDSP0=
+Received: from [172.29.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id B1FD34364B;
+	Wed, 26 Feb 2025 07:25:15 +0000 (UTC)
+Message-ID: <4c5e9f7e-670f-4abe-be22-bd6e36674de3@aosc.io>
+Date: Wed, 26 Feb 2025 15:25:11 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: cadence.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR07MB9538.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ac8168b-eb5b-4581-62b2-08dd5636702b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Feb 2025 07:23:16.6061
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wZ9tyVUcCjvQh/ue91xLMbmVjDMa99+9/YYOmIuK+zgVCYbvPGWM1S50B1rgt6RFvBPDuAGtqWpjU7h+rUEhVhSKPPz/uG5oco1FfNhSRm0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR07MB7209
-X-Proofpoint-ORIG-GUID: Pi22OaxRAKm5tdp-UaYo2mgBX6XPeD5u
-X-Authority-Analysis: v=2.4 cv=B8xD0PtM c=1 sm=1 tr=0 ts=67bec168 cx=c_pps a=fM4bIjZpJamw6RFag0UgWw==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=T2h4t0Lz3GQA:10 a=Zpq2whiEiuAA:10
- a=VwQbUJbxAAAA:8 a=Br2UW1UjAAAA:8 a=fAtflJM7RsOH10yn2owA:9 a=CjuIK1q_8ugA:10 a=WmXOPjafLNExVIMTj843:22
-X-Proofpoint-GUID: Pi22OaxRAKm5tdp-UaYo2mgBX6XPeD5u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-25_08,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 impostorscore=0
- mlxscore=0 phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=709
- clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0
- adultscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502260057
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] drm/xe/bo: fix alignment with non-4K kernel page
+ sizes
+To: Matthew Brost <matthew.brost@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>,
+ Zhanjun Dong <zhanjun.dong@intel.com>, Matt Roper
+ <matthew.d.roper@intel.com>, Mateusz Naklicki <mateusz.naklicki@intel.com>,
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>,
+ Shang Yatsen <429839446@qq.com>, stable@vger.kernel.org,
+ Haien Liang <27873200@qq.com>, Shirong Liu <lsr1024@qq.com>,
+ Haofeng Wu <s2600cw2@126.com>
+References: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
+ <20250226-xe-non-4k-fix-v1-1-80f23b5ee40e@aosc.io>
+ <wcfp3i6jbsmvpokvbvs5n2yxffhrgu6jyoan3e3m6tb7wbjaq6@tbsit7ignlef>
+ <Z76WIgGvvhlbYl/j@lstrano-desk.jf.intel.com>
+Content-Language: en-US
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <Z76WIgGvvhlbYl/j@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: A652B4023E
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [0.14 / 10.00];
+	BAYES_SPAM(0.24)[66.67%];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[stable.vger.kernel.org:server fail,lsr1024.qq.com:server fail,429839446.qq.com:server fail,jeffbai.aosc.io:server fail,27873200.qq.com:server fail];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com,qq.com];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linux.intel.com,intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org,aosc.io,qq.com,126.com];
+	RCVD_TLS_ALL(0.00)[]
 
-The xHC resources allocated for USB devices are not released in correct
-order after resuming in case when while suspend device was reconnected.
+Hi Matt,
 
-This issue has been detected during the fallowing scenario:
-- connect hub HS to root port
-- connect LS/FS device to hub port
-- wait for enumeration to finish
-- force host to suspend
-- reconnect hub attached to root port
-- wake host
+在 2025/2/26 12:18, Matthew Brost 写道:
+> On Tue, Feb 25, 2025 at 09:13:09PM -0600, Lucas De Marchi wrote:
+>> On Wed, Feb 26, 2025 at 10:00:18AM +0800, Mingcong Bai via B4 Relay wrote:
+>>> From: Mingcong Bai <jeffbai@aosc.io>
+>>>
+>>> The bo/ttm interfaces with kernel memory mapping from dedicated GPU
+>>> memory. It is not correct to assume that SZ_4K would suffice for page
+>>> alignment as there are a few hardware platforms that commonly uses non-4K
+>>> pages - for instance, currently, Loongson 3A5000/6000 devices (of the
+>>> LoongArch architecture) commonly uses 16K kernel pages.
+>>>
+>>> Per my testing Intel Xe/Arc families of GPUs works on at least
+>>> Loongson 3A6000 platforms so long as "Above 4G Decoding" and "Resizable
+>>> BAR" were enabled in the EFI firmware settings. I tested this patch series
+>>> on my Loongson XA61200 (3A6000) motherboard with an Intel Arc A750 GPU.
+>>>
+>>> Without this fix, the kernel will hang at a kernel BUG():
+>>>
+>>> [    7.425445] ------------[ cut here ]------------
+>>> [    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
+>>> [    7.435330] Oops - BUG[#1]:
+>>> [    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
+>>> [    7.449511] Tainted: [E]=UNSIGNED_MODULE
+>>> [    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
+>>> [    7.467144] Workqueue: events work_for_cpu_fn
+>>> [    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
+>>> [    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
+>>> [    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
+>>> [    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
+>>> [    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
+>>> [    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
+>>> [    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
+>>> [    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
+>>> [    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
+>>> [    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
+>>> [    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+>>> [    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+>>> [    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+>>> [    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+>>> [    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
+>>> [    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+>>> [    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
+>>> [    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
+>>> [    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
+>>> [    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
+>>> [    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
+>>> [    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
+>>> [    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
+>>> [    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
+>>> [    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
+>>> [    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
+>>> [    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
+>>> [    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
+>>> [    7.701165]         ...
+>>> [    7.703588] Call Trace:
+>>> [    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
+>>> [    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
+>>> [    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
+>>> [    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
+>>> [    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
+>>> [    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
+>>> [    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
+>>> [    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
+>>> [    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
+>>> [    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
+>>> [    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
+>>> [    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
+>>> [    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
+>>> [    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
+>>> [    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
+>>> [    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
+>>> [    7.805591] [<90000000002bacac>] kthread+0x114/0x138
+>>> [    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
+>>> [    7.816489]
+>>> [    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
+>>> [    7.827651]
+>>> [    7.829140] ---[ end trace 0000000000000000 ]---
+>>>
+>>> Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
+>>> `drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
+>>> before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
+>>> fix the above error.
+>>>
+>>> Cc: <stable@vger.kernel.org>
+>>> Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
+>>> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+>>> Tested-by: Mingcong Bai <jeffbai@aosc.io>
+>>> Tested-by: Haien Liang <27873200@qq.com>
+>>> Tested-by: Shirong Liu <lsr1024@qq.com>
+>>> Tested-by: Haofeng Wu <s2600cw2@126.com>
+>>> Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c32410a077b3ddb6dca3f28223360
+>>> Co-developed-by: Shang Yatsen <429839446@qq.com>
+>>> Signed-off-by: Shang Yatsen <429839446@qq.com>
+>>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+>>> ---
+>>> drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
+>>> 1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+>>> index 3f5391d416d469c636d951dd6f0a2b3b5ae95dab..dd03c581441f352eff51d0eafe1298fca7d9653d 100644
+>>> --- a/drivers/gpu/drm/xe/xe_bo.c
+>>> +++ b/drivers/gpu/drm/xe/xe_bo.c
+>>> @@ -1441,9 +1441,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>>> 		flags |= XE_BO_FLAG_INTERNAL_64K;
+>>> 		alignment = align >> PAGE_SHIFT;
+>>> 	} else {
+> 
+> } else if (type == ttm_bo_type_device) {
+> 	new code /w PAGE_SIZE
+> } else {
+> 	old code /w SZ_4K (or maybe XE_PAGE_SIZE now)?
+> }
+> 
+> See below for further explaination.
+> 
+>>> -		aligned_size = ALIGN(size, SZ_4K);
+>>> +		aligned_size = ALIGN(size, PAGE_SIZE);
+>>
+>> in the very beginning of the driver we were set to use XE_PAGE_SIZE
+>> for things like this. It seems thing went side ways though.
+>>
+>> Thanks for fixing these. XE_PAGE_SIZE is always 4k, but I think we should
+>> uxe XE_PAGE_SIZE for clarity.  For others in Cc...  any thoughts?
+>>
+> 
+> It looks like you have a typo here, Lucas. Could you please clarify?
+> 
+> However, XE_PAGE_SIZE should always be 4k, as it refers to the GPU page
+> size, which is fixed.
+> 
+> I think using PAGE_SIZE makes sense in some cases. See my other
+> comments.
+> 
+>>> 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
+>>> -		alignment = SZ_4K >> PAGE_SHIFT;
+>>> +		alignment = PAGE_SIZE >> PAGE_SHIFT;
+>>> 	}
+>>>
+>>> 	if (type == ttm_bo_type_device && aligned_size != size)
+>>> @@ -1457,7 +1457,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>>>
+>>> 	bo->ccs_cleared = false;
+>>> 	bo->tile = tile;
+>>> -	bo->size = size;
+>>> +	bo->size = aligned_size;
+>>
+>> the interface of this function is that the caller needs to pass the
+>> correct size, it's not really expected the function will adjust it and
+>> the check is there to gurantee to return the appropriate error. There
+> 
+> Let me expand further on Lucas's comment. We reject user BOs that are
+> unaligned here in ___xe_bo_create_locked.
+> 
+> 1490         if (type == ttm_bo_type_device && aligned_size != size)
+> 1491                 return ERR_PTR(-EINVAL);
+> 
+> What we allow are kernel BOs (!= ttm_bo_type_device), which are never
+> mapped to the CPU or the PPGTT (user GPU mappings), to be a smaller
+> size. Examples of this include memory for GPU page tables, LRC state,
+> etc. Memory for GPU page tables is always allocated in 4k blocks, so
+> changing the allocation to the CPU page size of 16k or 64k would be
+> wasteful.
+> 
+> AFAIK, kernel memory is always a VRAM allocation, so we don't have any
+> CPU page size requirements. If this is not true (I haven't checked), or
+> perhaps just to future-proof, change the snippet in my first comment to:
+> 
+> } else if (type == ttm_bo_type_device || flags & XE_BO_FLAG_SYSTEM)) {
+> 	new code /w PAGE_SIZE
+> } else {
+> 	old code /w SZ_4K
+> }
+> 
+> Then change BO assignment size too:
+> 
+> bo->size = flags & XE_BO_FLAG_SYSTEM ? aligned_size : size;
+> 
+> This should enable kernel VRAM allocations to be smaller than the CPU
+> page size (I think). Can you try out this suggestion and see if the Xe
+> boots with non-4k pages?
+> 
+> Also others in Cc... thoughts / double check my input?
 
-For this scenario during enumeration of USB LS/FS device the Cadence xHC
-reports completion error code for xHC commands because the xHC resources
-used for devices has not been property released.
-XHCI specification doesn't mention that device can be reset in any order
-so, we should not treat this issue as Cadence xHC controller bug.
-Similar as during disconnecting in this case the device resources should
-be cleared starting form the last usb device in tree toward the root hub.
-To fix this issue usbcore driver should call hcd->driver->reset_device
-for all USB devices connected to hub which was reconnected while
-suspending.
+Noted, I will try out this snippet on non-4KiB kernels and report back 
+with results.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD=
- Driver")
-cc: <stable@vger.kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Best Regards,
+Mingcong Bai
 
----
-Changelog:
-v2:
-- Replaced disconnection procedure with releasing only the xHC resources
-
- drivers/usb/core/hub.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index a76bb50b6202..d3f89528a414 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -6065,6 +6065,36 @@ void usb_hub_cleanup(void)
- 	usb_deregister(&hub_driver);
- } /* usb_hub_cleanup() */
-=20
-+/**
-+ * hub_hc_release_resources - clear resources used by host controller
-+ * @pdev: pointer to device being released
-+ *
-+ * Context: task context, might sleep
-+ *
-+ * Function releases the host controller resources in correct order before
-+ * making any operation on resuming usb device. The host controller resour=
-ces
-+ * allocated for devices in tree should be released starting from the last
-+ * usb device in tree toward the root hub. This function is used only duri=
-ng
-+ * resuming device when usb device require reinitialization - that is, whe=
-n
-+ * flag udev->reset_resume is set.
-+ *
-+ * This call is synchronous, and may not be used in an interrupt context.
-+ */
-+static void hub_hc_release_resources(struct usb_device *udev)
-+{
-+	struct usb_hub *hub =3D usb_hub_to_struct_hub(udev);
-+	struct usb_hcd *hcd =3D bus_to_hcd(udev->bus);
-+	int i;
-+
-+	/* Release up resources for all children before this device */
-+	for (i =3D 0; i < udev->maxchild; i++)
-+		if (hub->ports[i]->child)
-+			hub_hc_release_resources(hub->ports[i]->child);
-+
-+	if (hcd->driver->reset_device)
-+		hcd->driver->reset_device(hcd, udev);
-+}
-+
- /**
-  * usb_reset_and_verify_device - perform a USB port reset to reinitialize =
-a device
-  * @udev: device to reset (not in SUSPENDED or NOTATTACHED state)
-@@ -6131,6 +6161,9 @@ static int usb_reset_and_verify_device(struct usb_dev=
-ice *udev)
-=20
- 	mutex_lock(hcd->address0_mutex);
-=20
-+	if (udev->reset_resume)
-+		hub_hc_release_resources(udev);
-+
- 	for (i =3D 0; i < PORT_INIT_TRIES; ++i) {
- 		if (hub_port_stop_enumerate(parent_hub, port1, i)) {
- 			ret =3D -ENODEV;
---=20
-2.43.0
+> 
+>> are other places that would need some additional fixes leading to this
+>> function. Example:
+>>
+>> xe_gem_create_ioctl()
+>> {
+>> 	...
+>> 	if (XE_IOCTL_DBG(xe, args->size & ~PAGE_MASK))
+>> 		return -EINVAL;
+> 
+> This actually looks right, the minimum allocation size for user BOs
+> should be PAGE_SIZE aligned. The last patch in the series fixes the
+> query for this.
+> 
+> Matt
+> 
+>> 	...
+>> }
+>> 	
+>>
+>> Lucas De Marchi
+>>
+>>> 	bo->flags = flags;
+>>> 	bo->cpu_caching = cpu_caching;
+>>> 	bo->ttm.base.funcs = &xe_gem_object_funcs;
+>>> @@ -1468,7 +1468,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
+>>> #endif
+>>> 	INIT_LIST_HEAD(&bo->vram_userfault_link);
+>>>
+>>> -	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
+>>> +	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
+>>>
+>>> 	if (resv) {
+>>> 		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
+>>>
+>>> -- 
+>>> 2.48.1
+>>>
+>>>
+> 
 
 
