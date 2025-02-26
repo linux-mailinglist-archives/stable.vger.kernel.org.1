@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-119675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D947A4617E
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:59:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA3FA46184
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36AB9188E8D1
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:59:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB81A188C011
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719A7220693;
-	Wed, 26 Feb 2025 13:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE084221704;
+	Wed, 26 Feb 2025 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SxeTb02k"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y9uykdne"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6774A1C
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D0E221543
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740578352; cv=none; b=oDtcW6UvjY0/T1lKE/dt2ecdkbioVvuaGuD0KjlMUL+GflrtwHLR4IhLCbTBJe2OQPpnhXH3SR8rQ1AH10Lf2qAvnfd5PVcjXZ7nrveOA8EZpoNyIxbWQgMa1+ehEwaIkiCIWdnVt8a/Tb8L/p81WIwN0g4+9dGEhGpbSt4a7pw=
+	t=1740578355; cv=none; b=ft60s5q4hu41gcBwmDkUbsYcPAEGiMnS5pp/dPGlLJU64svUl0gF/s7kQLqGkUoWORVBRn50e98g/6tWU7OrwzWt6LwC4hgt68RD5i3PWu4YmGDgdwZuiootuVuunlUWUN33miU5nsWgRxS0oAvE9HUsnfJYEBS8GK1lp7rIXhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740578352; c=relaxed/simple;
-	bh=dpudgvnbUcleNul+hZceK0VKC5IVn5ot1Wf/pV1Rlms=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nTl/uy4EtxyQ4Oi1vrxv//641FfbPwxbXmc+VMK87m9xnrprElV7itEo94ZPIpjHQbGhdRwmpsFArvR/VgY37E0ktF6R4f0FL0dTncb7Af9pubKO5v+Q3GnFbmrTYxT2t/j7Btl3JB0h0hbs9ITIzStSQTWIVqGid+87dP+GQDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SxeTb02k; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1740578355; c=relaxed/simple;
+	bh=XYRfpTjP9qW9moSWCxxYfrR+hnJkds8ER5//VmmAb7E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XpzOX8t9Md+nwaKzMkgS7NchCiti7S7+uk5IFdXyEvLGR4KSjGoXFScZiX047T14VKyeuqYzgz2TmIxRqg4YLRvpLrE6tdKK823DZgkqf2sduLfRBmq1fF8XcGWoEM/xC9ldfXtz3fvkkSRU6X9DkjyEesuNsfaAOW3RduI0m74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y9uykdne; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abec925a135so332930466b.0
-        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 05:59:10 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abb7f539c35so1321519566b.1
+        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 05:59:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740578349; x=1741183149; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RCyJrcyE+zDY5d7yM/G99bmmgj+BdOtnhD+8xJaSKWs=;
-        b=SxeTb02kHoSSzQYEEo0ZFmiAoqNFxVtrLnSK9axuXLqcl36BedEIM2uRzrUXr0ckeR
-         fLWFjSk+aW04wjRCa59FLIc4B51Yf35QGj4uVL7BAhFZXFN5vrbOCknjH0TN+n4En0O2
-         fWMxPVCe0vgffOTdq7FGMHYmp6GkwP15d7RHgYaEz2UmkWcmO3RGxk3xkaDROqLL4KIZ
-         7IxRqEJZxsyxqt9qWLTRb6MjqK80AwXy0187MVPFiSwAHm/XzTS9peTjVSux+djqaKCD
-         KrhzV9xRqYDC5P/X1arny4/qdi4HmphzhtHzedKwxV/d97cNr1HWUYKCVdXVMzHXv/ck
-         pYlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740578349; x=1741183149;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1740578352; x=1741183152; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RCyJrcyE+zDY5d7yM/G99bmmgj+BdOtnhD+8xJaSKWs=;
-        b=WddPT4yDTdi8Vlv7/VXi1AeLrwYDb8i4T1OhbHXvhF4QVCpaNkJ1GWWcAVEXWizg0O
-         bdVv/Lzv7C6YgAUkmKW5Ib9F3+BsRuylCwndT81i5LsQe6CKg1fXzD197BbewwKlpYSs
-         dAV17ygluQCd4fGcvM29xYh1OgimOFnA/hXxkMnPqE61rL280ccHpKHiLkyohZa1bd6A
-         E1Im33BjS6tB9g88qddQAkrX/9ikajsTFoGBbUxtWQUtJTZ8LbiQPC6SgVbGEUNYt9wJ
-         0U+A5szHZ58qzsqqwV54HJvjM8JFbzeFOtTUXEQkDeaFGEMwDuQnSQST3bGXZCAE65Y0
-         oy5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXMF3YGyyVO/IuO+laYwZ1DE2QYV/fxCS9ML0Bq6xf2sAaCaFZ8+nu/PVmr5p9Ztv1MywYUyyA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq7DPHZ3phsaFbv95ShJP6dydzBBZ9No2rCLEPA0ho9nPlreKg
-	l1ingkKnS0Bt5twf0L5reBMHpP5GxOrBW+y8EBPzO40nBd0KdHo5pZcfxXg9mL4=
-X-Gm-Gg: ASbGncvicWYSO1W0k7PXXK0p8cfxVhmoOWz567Lr5zlA1lZA4QOilfOBBkTCPTqfqeR
-	mysQgrQhrl1jqvmNr7peFU/YBbHr/gJKPcC1+olR61SwK++/XJGHxiPU/cBK2VxMvpZGz1waO8O
-	QAsbrwCBpO+btkqjpCjzZez5LwCiOnUtT/uj5Rkhjoh3CDMWwx7LUfmJLmgXXufcfhr3ec8cWM7
-	p5UHDXeVH5byRvnctSDUf6CVPuI3OY2YwL5SvOrCSwB6+mwGneh1htc9PSAdjTSIhbYQajOWIVi
-	j2LtkgYUdiCaaarafsEXHtUP
-X-Google-Smtp-Source: AGHT+IGq1MD2BDjxaTNyMW9AYMWQfWuRsIcBB0Qs6fRE/nNI8ikyhvYQIfVztbGPD1jUdmJkn3n44g==
-X-Received: by 2002:a17:907:c407:b0:abb:c647:a4bf with SMTP id a640c23a62f3a-abeeedd14c4mr424666866b.23.1740578348617;
-        Wed, 26 Feb 2025 05:59:08 -0800 (PST)
+        bh=sJer/KBt7SDqr/LxaHmlrgDfxoYGiPXLElseSBTXWLs=;
+        b=y9uykdne47Vq34AJJ+nfp2BH2HX2vAs2gxh5LGjdNJkBf1ztNqKl+TZGOzxfxJ+A+F
+         wNqH4pMaVPqB2510AuWiEdtWsX+4geKmZ1x5pZDwdk21wgs7Dqe8p2OhqaDB/Z5ndhzp
+         vy1mQTKb1YfEXXQwbBWleww099TDf3iyUiDaChbPKAg7xJreP82rE2hpWdd42UzX2VpO
+         inRoMDeyKeDflyAxTYtTOxGYWMRGyzLsUyuo/A1+fyzMWzaliB1OeL2YmyngLxSIstSF
+         2m8CchQpqv7Uw6WuILWSVkeyaiSus69Ff0I2ox/lfCw/bgUhGDi8/Fkqs2u+Gmvwj4br
+         WhWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740578352; x=1741183152;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sJer/KBt7SDqr/LxaHmlrgDfxoYGiPXLElseSBTXWLs=;
+        b=Iq78co0iVnh7dxn3iVf/5k9oTcQ74SkXF4iiTYZO4axms8Ycsb7WzQWI9P2rY3bZ9h
+         OlKR8RDsFXD5z+Dnrz4YihekoFHeWBb76I0bmcIwwva3YB9JtWWaM2DW4YKmbR+FYFxe
+         Mlsg8H3yiv+n4KhOtis8UcHN5KTI/FIxDUw098hFGY14BgK0VDbF9wDfqS6CJ32ZJEoe
+         w5d/0/8Qr0UBUnaat5VrIMTSMZOjfXvSebZHg+kv/AwEcdlW2eRr7pBUn7mgc3wUoL1W
+         fD2D9bishCPTUxo3+3wLbq4P2IDZIJiDpN2AVOB+cMXOhvplAeyfQ7YA/kt78V8LhR9V
+         vZUw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6J4UiJJQd6Y870NJbfpIwZbQn54l/La114d0fqz+j/7jLWbX+2xvTIJ7D9aoSDFhjLQXTxbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykxcKRX7IcuTc0HRj3MNZjxeCCjeKhysk4Z5ja3UaExglSvSTM
+	lgRca3TcJZhZApvpvDNbjR7pGjcq/G5gekvWzYvfspdXq/2bCN0JpC/Kc/NzWjg=
+X-Gm-Gg: ASbGnctuVQBKR2MMMD9DhWe3Mc9xZvHEAhhC5g7khcAbKkDkYLw4M1U9Y27DKWQ8v6b
+	5ph5+iPcG9Zr+9E1Dikz9lRW82305B94BNzObyJ4svcO393YNVyYEUQTzeXW7K3wpRzr+Hv1iwx
+	zLDS8TklmfjpC0iyibpTg2ohv7jJ4JiR7tFithH0jeqz8aB/SinQ7S3tYcdxSakK74+MqvZWLAb
+	5psp4F/JsMBYv4PX6ben4L9IDKX/rNiXG2sD68cPrxPgV1+a91e4s+WcPxs3s8eZkk3TSpk5c5d
+	OMGnJ+f+XUcSLeZLCMe/jE/j
+X-Google-Smtp-Source: AGHT+IFQ0RYtUdet2mfByZW8v1Tgu/DzOE5jK5heIX6l9OiqSL8gXpox0Omb5YSgBd21e6oHoQtBow==
+X-Received: by 2002:a17:907:1ca4:b0:ab6:d575:9540 with SMTP id a640c23a62f3a-abed1076c86mr934130366b.50.1740578350230;
+        Wed, 26 Feb 2025 05:59:10 -0800 (PST)
 Received: from [127.0.1.1] ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1d59391sm335378766b.56.2025.02.26.05.59.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1d59391sm335378766b.56.2025.02.26.05.59.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 05:59:08 -0800 (PST)
+        Wed, 26 Feb 2025 05:59:09 -0800 (PST)
 From: Abel Vesa <abel.vesa@linaro.org>
-Subject: [PATCH v2 0/2] leds: rgb: leds-qcom-lpg: Fixes for Hi-Res PWMs
-Date: Wed, 26 Feb 2025 15:58:53 +0200
-Message-Id: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
+Date: Wed, 26 Feb 2025 15:58:54 +0200
+Subject: [PATCH v2 1/2] leds: rgb: leds-qcom-lpg: Fix pwm resolution max
+ for Hi-Res PWMs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,11 +84,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB0ev2cC/5WNQQ6CMBBFr0Jm7Zi2CRRdeQ/DosIIk0ALU1Mxh
- LtbuYHL9/Pz3gaRhCnCtdhAKHHk4DOYUwHt4HxPyF1mMMqUyhiFI3URlzZMOM49PnnFya04vyc
- MHgdGoYiqslTb2jh7eUA2zUL5eFTuTeaB4yvI54gm/Vv/8yeNGp2uNLWVVeTK28jeSTgH6aHZ9
- /0Ljx58x9cAAAA=
-X-Change-ID: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
+Message-Id: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-1-7af5ef5d220b@linaro.org>
+References: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
+In-Reply-To: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
 To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
  Anjelique Melendez <quic_amelende@quicinc.com>
 Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, 
@@ -97,58 +97,60 @@ Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>,
  linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
 X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1336; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=dpudgvnbUcleNul+hZceK0VKC5IVn5ot1Wf/pV1Rlms=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnvx4f+K5OoGjex7nW/4xpB3UQMVg2ciOnq4MZt
- AtkYDMMfzaJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ78eHwAKCRAbX0TJAJUV
- Vr0OEACaW6bstCuhhC51Fa4BY2tM329x00NpUmyHEZEHxBIZse/iKDaEO/WV6VUbrmq/X03T434
- NnIhP8ysLwmkeEv9WWhs8zMq5a9J/EyWwlFdjaVfZ48BljECe29OdcyKHECnjL80XELXXGmlrVM
- BuSMsfb6tfeDAThAy5DzGtix4gsfI02MxRNevm4m0M5O2Hcy3lOMuDJrHuvO/hYQFexC/jcCopZ
- kE4Kg2UOcvYzRF1ybaqrKkNG+Qvb498LI/Km9cgsxnzPJG9sIaLvN/fJua0b5gBm9PNMLBakZ/q
- GZ+aYOrUgf6gQq3derUoneVLK5ULDArBDqnzmVeqHwXiYxNiNWJKvPuY+K3AbcnwQIBFG7FK7Qg
- nu2yLM9/w5oT+P3keIPs/2oJ/bs/8Jn5vOxKEfAVsMvS3qsr0cvXenDBkcCurgrnYzCSpCAsl9C
- Hxs0mY8SNPdBqmN8MftLsPYdmFumvMnE/illVRHx5ZcDkReetHIfhXmwp6GgwD509Xk5ajL2wLn
- SmdEtJ65L2fyETHmOtpf8sMAsxAq3EdtUJpmPjz5QfeNahRY0nKOiTEl6IvqhDeR6xcD0f+4xj6
- 6oeI1+fs95RP9IcOxYMPmszqMlB47Iaii/3nnkiIZvEBjgs9LgvtJT/c48sUOC8xu2qVXoirPbC
- jMi/DoM2CeEg2Aw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1674; i=abel.vesa@linaro.org;
+ h=from:subject:message-id; bh=XYRfpTjP9qW9moSWCxxYfrR+hnJkds8ER5//VmmAb7E=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnvx4oO2+aiOnRV48CWCNrMcM3UwN/AvNbfSnSI
+ SdlHZOzZwmJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ78eKAAKCRAbX0TJAJUV
+ VpeNEACp3RRwESa0LKp5fHhA1psTMkZcIR1AsQa5/rcN5lgabpDB2eRjmN1V66CeQtMZT82rY76
+ Blf7KTt1sl/gF1o9DTjTTsk7rs5jajzjazNNMmRVT8gN1znTP20+3ELGCadjJER5+S3XSNtG0IS
+ 0zsLg1UUcijYfi4hhDY+w4VJ8tSoGHkyaS+RdyMEmIwnN/5utYTByGyO3veQ8IvOVgaHtk82rnr
+ k2aNCaNKwHBh9KKTWEDNTvdwZxzL4nhsh1Y/huDiwJhsi/cnSYlCAhjTr3P25rL+m2d9IoF4OeM
+ TCH6DrVadrzAbEivcbJTWyHB6tJ0cKVOJiI+7cfLAKvAJhJoYWaqb1ml+fSeQemTuYuNZfJUJEC
+ lZN73Mz6iXneLFthncCmXLnMUlXdVBsdv96CQmV2mFeCMvL2DXEW4RyZr9nGMs1JXSO0qhuUPix
+ TGgmvM1OrnjiDHbrjUhORYVlqxxAUjYYY/U3PujFEhqnfKX7sGFmsyfd3VRsusmNYdKdzs7lqcZ
+ shaeTPDgtEzl1YIKbdvnsnzjLFsFM7AecNY/97rg3lPU2vD+87AINHWDUkbeWnJnc5BHvpL9Idn
+ XXco0Zs0/vPVqIi/PRJKqEnE8tMWU8xyE4w62pbzJlJwzMAuaWDrGs747eI+MGWbZzzGoHW+JEK
+ 8kIXhWqWf0/yl1Q==
 X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
  fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
 
-The PWM Hi-Res allow configuring the PWM resolution from 8 bits PWM
-values up to 15 bits values. The current implementation loops through
-all possible resolutions (PWM sizes) on top of the already existing
-process of determining the prediv, exponent and refclk.
+Ideally, the requested duty cycle should never translate to a PWM
+value higher than the selected resolution (PWM size), but currently the
+best matched period is never reported back to the PWM consumer, so the
+consumer will still be using the requested period which is higher than
+the best matched one. This will result in PWM consumer requesting
+duty cycle values higher than the allowed PWM value.
 
-The first issue is that the maximum value used for capping is wrongly
-hardcoded.
+Currently, the consumer driver known to fail this way is the PWM backlight
+(pwm_bl) and should be reworked in such a way that the best matched period
+is used instead.
 
-The second issue is that it uses the wrong maximum possible PWM
-value for determining the best matched period.
+As for the current implementation of the duty cycle calculation, it is
+capping the max value, fix that by using the resolution to figure out the
+maximum allowed PWM value.
 
-Fix both.
-
+Cc: stable@vger.kernel.org    # 6.4
+Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
 Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 ---
-Changes in v2:
-- Re-worded the commit to drop the details that are not important
-  w.r.t. what the patch is fixing.
-- Added another patch which fixes the resolution used for determining
-  best matched period and PWM config.
-- Link to v1: https://lore.kernel.org/r/20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org
+ drivers/leds/rgb/leds-qcom-lpg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Abel Vesa (2):
-      leds: rgb: leds-qcom-lpg: Fix pwm resolution max for Hi-Res PWMs
-      leds: rgb: leds-qcom-lpg: Fix calculation of best period Hi-Res PWMs
+diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+index f3c9ef2bfa572f9ee86c8b8aa37deb8231965490..146cd9b447787bf170310321e939022dfb176e9f 100644
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -529,7 +529,7 @@ static void lpg_calc_duty(struct lpg_channel *chan, uint64_t duty)
+ 	unsigned int clk_rate;
+ 
+ 	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
+-		max = LPG_RESOLUTION_15BIT - 1;
++		max = BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
+ 		clk_rate = lpg_clk_rates_hi_res[chan->clk_sel];
+ 	} else {
+ 		max = LPG_RESOLUTION_9BIT - 1;
 
- drivers/leds/rgb/leds-qcom-lpg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
----
-base-commit: 8433c776e1eb1371f5cd40b5fd3a61f9c7b7f3ad
-change-id: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
-
-Best regards,
 -- 
-Abel Vesa <abel.vesa@linaro.org>
+2.34.1
 
 
