@@ -1,101 +1,131 @@
-Return-Path: <stable+bounces-119657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FFAA45D06
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:27:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E7CA45D0D
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3DB81895618
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:27:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29CB27A5A05
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A5B2153FD;
-	Wed, 26 Feb 2025 11:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E673F21517D;
+	Wed, 26 Feb 2025 11:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2xnckHw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EyQxRAVp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6A321504E;
-	Wed, 26 Feb 2025 11:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA984258CD9
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 11:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740569243; cv=none; b=qgBpeiWBxxm62g3UVxn0Yn7/sEtHeIShY06aJYdc07On1wR6sQKjffOmnco4bEy30BaXi5UmVDBuPTUpj5s0DWG/fmak+yQTrm4Kcr0hl04SV3AJQPZyvT8IxI+wtcaUeYj9yctz2uwR+Nd5jGvYyC6/80RLhQBrQ/zsCbcTzuA=
+	t=1740569361; cv=none; b=s8V9C0HWFfCoceOcMDTq6uuJQXFzvaVbc9eTXmkOPSWJPOxtuL09kCxDo+H96z624T+d7MMUECM737qq0a4iNKfL0Ne5jJcKS71kAtSygWhV3fDYVdSc17rtrQotvCkcnTlnVv6QMXbhUznQXeNz2X3IY3Z4ifrmpAVKKA/Cq9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740569243; c=relaxed/simple;
-	bh=qwvqSfT1lFNy/9NdzeDks+gFqld8ltqBx1YYsUg/OBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=fCCdyOBTDC4TEVy4+dVIvY8GgNxYeabK6wiZEnTlGCFZO50BXbVwL07fo17sRyzSmft2x5M1RWfgLiJtmm/vYUkLBOqurYpUMonAGnlDqTsLh62td37Po7Lb0UH6pxOjzl4wCyRVQig9IVNdwhW8SxyiDGV1SDpNbeS1K4q+eNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2xnckHw; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso41360225e9.0;
-        Wed, 26 Feb 2025 03:27:21 -0800 (PST)
+	s=arc-20240116; t=1740569361; c=relaxed/simple;
+	bh=LA0Cvsrq+8BiKo6ol0t+mnrkriJeADHplK/m/Yv3P2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ka+C/cAsOMsyd1thb55hwK2QRrw5JoqZies/8CWcV6TQB2UCR5SvlTWa/dMXtaOkW4yEqj4SUgo636EPH9T0R8t9F0ecJapIsJVDdDJIP8G5ShcCBafJglaGEOaqK6yBcPmtkkJruOSjOKLxM+0+F0r/BrBZwr1orFksX2EO5Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EyQxRAVp; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5dc191ca8baso1586873a12.1
+        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 03:29:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740569240; x=1741174040; darn=vger.kernel.org;
-        h=content-disposition:mime-version:reply-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qwvqSfT1lFNy/9NdzeDks+gFqld8ltqBx1YYsUg/OBk=;
-        b=M2xnckHwhNrPbvZITddWFRF7oU0i3F1oJN8vdtrXkMNTn4dDn2a59hi45fuSuwuqZM
-         dv4W/xZ0jd04ulOOdBLmPOU2rYXIT2xxNuIgISpYSPIWMEq9Y2m9M34vr/JBNUSaUIcn
-         47iH7zI6/8aF8MVvGcO8Bzinh9WKISNN72Z/JAx+GYyMonZ8rQJsj+m1OG5RgEdNXPQS
-         hum+oGlVC/iVd6eww9rtqwO9eJCHmGyWTtehYbW9rTNVq3L0QbTN9/DdQfR/tlMoXzY1
-         VK7zfyXjX6PCU3M7Cxmeg02+XpEECF6L8pY067BGbX/cq4+2YEgxeJ8fgnlfYjPL9RRo
-         pP1Q==
+        d=linaro.org; s=google; t=1740569358; x=1741174158; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s/LD16G1ckmo606r8mTAAXLS++qBREtl47/upA6EvrE=;
+        b=EyQxRAVpiJvtjEplkmTMnyNi0OwYgp9+GtZo975owiswoF0HcyZnvRlLp+F7riwg6n
+         1CiyKJvlIFJomsTktLtqI2sri0+GNrOGbzsf0aYMPKVvo5AtWpazYAIOBOEpAsYCFg9n
+         k4kMgDZQqm5GH1CSJ7TXfolA24HgnYvspPm9fj9Jod+nNb21vDjSHXWF3rc/2OCgYIT/
+         updspicA2sGDmadm+Ls0Jv7AQBUOR1mitV84/zPBDICn1Q/4S6CYBvtRn+XytM4eJwnX
+         POdTCae5J3WqYbiK9rAbfJANUv0jJvMQImg2re299GyQ0TnMCUKR/tp6JWSmdqdxgafa
+         1N3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740569240; x=1741174040;
-        h=content-disposition:mime-version:reply-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1740569358; x=1741174158;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qwvqSfT1lFNy/9NdzeDks+gFqld8ltqBx1YYsUg/OBk=;
-        b=rKS3rD0rFWbowrKM2geIzh1SaIFAIr6QjvRl2zLa4676gtrcbh4ZwN+J2Yg8TIlY1p
-         pVMWrQiiIDzBaA+5Ymtgvzx8RGlTDxVkG0IdybMqbUNiWlivWmaGplA/55edAI7BruLW
-         vK5/E1WCrPTd1a+AxvILQ0dEh5cHlULKrHCIW8bOFvuxwrBJKOgKwV/j/VlUR3QHVdMj
-         y6fHHRPPisbo+ABCOnBWqVQ25RreVL6vhpt1eaAYtcDck4idBIa273evp6o7j59JNTgy
-         Jq8JTjE2gEytR7i5qiBg+XX7qiY5WQjih7SI5Nge6G0JSc+v6pTmLSxGKBDdBVnn29Mf
-         /DVA==
-X-Forwarded-Encrypted: i=1; AJvYcCUDIwhAzarEj6ACj5i/fEgINUG7weQNfPq9zgGqjHoxlJmQC+1e/N991896hHyQ01JwoUo7CqGH@vger.kernel.org, AJvYcCVNIUtdG1kXJTpGs3wxadEadMRW8YorV+N/EpTwotr7ebaNIqoKVXdIiHxRx1GQZ0sE5GYX6Wji@vger.kernel.org, AJvYcCXGuXzqYhLrpov9WsEMrAPQXMndGw4KJ/MFySFT3GLW/lu8MNx0ohULp9TE0+Os21Z2zMYad7MdvgVEe1Y=@vger.kernel.org, AJvYcCXXqHEpojIhGWZuc6+SevBccMvv+5MyqPg/e6ZGcOI7UKixnQKKcDGkwMDGk98zij0sKisEV1r5AF+d@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGsFiUzrG4XPImFe2jjru3u+29GejI3zKb9s1m7Ktq0+SjnIME
-	hGkOKLXu2Ck0W8rAHUpvzwpZoDc9xSBJZxi2cR6ZUo7+fDtK5YmN
-X-Gm-Gg: ASbGnctZBKeT/ALDal1YJD3clW4a4ZhGknb9OtCjFWsHxg7C7fGjxSLhW+vOJQyjb2X
-	Jx9596D+IyZtMNsflR8GmsWNZMYYDtm6Sq1DjPIo8gEJFDmzNMpkTksbOE56SUhiiQ3G8hyxoj5
-	O7rz17RzTP2Uuxs3RZe9vjYXEDZNCcw0qvA49/ie42Knaf6rKRGmx/SxDj4QJeqRX0acGrqK5SJ
-	gjD2A+oFS4vnU3WAEQTfstSWTdaTZ1OzU5b8wWHf/b692+VgSJbayyvU9+hmE2X+xC4QYoif9tD
-	uufXECSSnwJAXbaKHCmxCHwRqKen
-X-Google-Smtp-Source: AGHT+IFKfUEsVvfSXYEsCwQADOJ2i91RasJteBc0xV5dUODflc4/l4UG2nuGlo6Fve6SSYO1wjpXEA==
-X-Received: by 2002:adf:f511:0:b0:38f:2766:758d with SMTP id ffacd0b85a97d-390cc631000mr4428234f8f.37.1740569239771;
-        Wed, 26 Feb 2025 03:27:19 -0800 (PST)
-Received: from qasdev.system ([2a02:c7c:6696:8300:4b1:eb67:8b45:9659])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390d6a32299sm1701605f8f.55.2025.02.26.03.27.19
+        bh=s/LD16G1ckmo606r8mTAAXLS++qBREtl47/upA6EvrE=;
+        b=oOfXco3eRTC8s4timr9c+nk/CZkGunIFBkdWRaJCqjqQ8SKAwjxl1TZwLAITXES41P
+         XmWINEze+d91eCGG4iiXCU2QpZz0HLs/HRjG1+Fgpu/BgkuHeBZYLDlltxCCFksiXT1d
+         /eQt9Ftx/1BwRxoEhLnnxkKUGBdV1vIbscfPN1gMATkwKd53FXWPcpDeMfk50gHnTrHn
+         DNBUGSlk7uNzpaRgK+dI/3zkK2aHYqlR6kx24RUIpdurJ2Ipsfp+7rGmsFBXY4Bdynbx
+         A4irK+746k1uhaWffNM6+oLNbrojGJYEcR5GafxXHDThiMjcufDTSBLPy6FfLe2BAa3r
+         bPNw==
+X-Forwarded-Encrypted: i=1; AJvYcCXTfL15B+zlsBcafZwBzUGwSlVq5v3VVCLgP2cT/uKaA2RDGv7FrtoKF1DmpPtuZn2FxTrq9e8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/GXeQtbtgCVFsVQtd5AXkC5quK2E56aS02XNuPmXzyzHabHE+
+	NzfMtAAoaUnc/JwqMrzqhpUEiCjh1U8o5Qg02hB5bK89JaETEu+kcb1rxIj1xNA=
+X-Gm-Gg: ASbGncsXs6baOnyszLNKLAA+qsHvYxZvnJZ4JNHRX/NmdH+JWVCmv7QP5UE+U5vNedd
+	20dmMwGlf5wUV1wyTF7cOO+8o4VV/gbfCZAs0Vcp9F/+kPfpGPqNPbDnu6AJ1yQyaIj7LDUU99/
+	V7UCfN7BQiYJSC44lCXceKJd2hWPrkvysK/b6NVRI/gWxPgILYbTrj8X1uenXbBtZ43zzaXYCF9
+	HVMJhrklc9hYJPgtBn/99eWyj+DoZW9+gg/qNAFGnUNuVFoEKfQ52RU5NokHwV5yC5MHIw56kMR
+	3GMHiP9HMkHbN2b4gooA1yfWY/J/QMggdwalkflvtIllSSt9a9xnCXvZEqdcdrk7uroChlDhYXQ
+	=
+X-Google-Smtp-Source: AGHT+IEfpVAmUdzqLH8Eb8qd4lEgmjl7ga6R1U3aAJPOZ5WOBG4ayDyk9a/gfYM6yY4U7qdRUnbeng==
+X-Received: by 2002:a50:ee19:0:b0:5e4:afaa:8d6a with SMTP id 4fb4d7f45d1cf-5e4afaa8f65mr292393a12.0.1740569358168;
+        Wed, 26 Feb 2025 03:29:18 -0800 (PST)
+Received: from krzk-bin.. (78-11-220-99.static.ip.netia.com.pl. [78.11.220.99])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e45b7174cesm2610049a12.34.2025.02.26.03.29.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 03:27:19 -0800 (PST)
-Date: Wed, 26 Feb 2025 11:27:12 +0000
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com,
+        Wed, 26 Feb 2025 03:29:17 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Tao Zhang <quic_taozha@quicinc.com>,
+	linux-arm-msm@vger.kernel.org,
+	coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] net: fix uninitialised access in mii_nway_restart()
-Message-ID: <Z776kB1bbI48k9Cx@qasdev.system>
-Reply-To: cf0d2929-d854-48ce-97eb-69747f0833f2@lunn.ch
+Subject: [PATCH 1/2] dt-bindings: coresight: qcom,coresight-tpda: Fix too many 'reg'
+Date: Wed, 26 Feb 2025 12:29:13 +0100
+Message-ID: <20250226112914.94361-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi Andrew,
+Binding listed variable number of IO addresses without defining them,
+however example DTS code, all in-tree DTS and Linux kernel driver
+mention only one address space, so drop the second to make binding
+precise and correctly describe the hardware.
 
-Just following up on my patch from Feb 18 regarding the uninitialised access fix in mii_nway_restart(). Any further feedback would be appreciated.
+Fixes: a8fbe1442c2b ("dt-bindings: arm: Adds CoreSight TPDA hardware definitions")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks,
-Qasim
+diff --git a/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml b/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
+index b748cf21a4d7..4539a67d8bf8 100644
+--- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
+@@ -55,8 +55,7 @@ properties:
+       - const: arm,primecell
+ 
+   reg:
+-    minItems: 1
+-    maxItems: 2
++    maxItems: 1
+ 
+   clocks:
+     maxItems: 1
+-- 
+2.43.0
 
 
