@@ -1,77 +1,79 @@
-Return-Path: <stable+bounces-119646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EFCA459CB
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 10:17:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FE2A45A32
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 10:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90EB616707E
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 09:17:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94F217A69FA
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 09:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2240A226CF4;
-	Wed, 26 Feb 2025 09:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07335226CF2;
+	Wed, 26 Feb 2025 09:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Z+a0qJfL"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="aFUYyq1n"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F8E1E1DFA
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 09:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8664642D;
+	Wed, 26 Feb 2025 09:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740561436; cv=none; b=a7eG1CNRY/JdsL5DXhuP2lAEZpnUZFQ0ZLtkI9hCsiTbPQMY+aRZbCEPJDIubYAwcq5BvIjlJ5XKlhkUGjJbOji3zf/qPX01JB0moyhgjLj+FU/RHBTu89TM9NbMESFjaWvP+scMVn0cbc1IACrcPCXDvLOf6UeE2VLV3IjDBko=
+	t=1740562608; cv=none; b=AXRaZEy28oCKHsazltqxvXdqMfXTcbb1dzPxfjp3rNjTHouazFj4yzuSfJIKI0SbfSC0i7Pm+EhY3yVcAJpY2EyFVZKh6BKbEGy5ebRannNgSveAvWoZplwfksATOOB2xaNthnu0sQOKu3ZX4SEa7tX+lfaeGIbPzLAcQC0qkak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740561436; c=relaxed/simple;
-	bh=K8trgH+bKZ3J0FPxvu/QhYIqzG/Cc5AlaY+HesaHsp4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dc5amfr58vFwJGYU887kp1IwxJxIz4WDop218CXD4Xtu1F4QwmwY6TRepYf5mlhqKSe1QLTk+Rp/YKr4zsuRC4aIrYxcOIXNbOnf7l6GOgZErbXjYXvhuREp0XkExfqbXEVPGII2en6sA9j+9bemm949ur0tuxjr/Kryn5bTY0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Z+a0qJfL; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=K8trgH+bKZ3J0FPxvu/QhYIqzG/Cc5AlaY+HesaHsp4=; b=Z+a0qJfLavDXvH6GvnPs7uDpOV
-	9aW1nSALVh09X7/Sa+dJItWLg1DIAQ/8Ek/TAYHdjuhDczc/vwNMs2IHt68YsotKHGhB2zS+ZkdTi
-	r4Cy9BwJ97bYrgzBF9pF9ctv1JdlXDBzKzA1g21BOs0xBsJSWnbYoEEGofd+5Kbnm719aOzA2bWFo
-	NSk51AGFSIik7MoaSA46RQLHvo1wFFs7bNPt3VuASK/EeZ7tho3NMoWOB01uDb4Q0mzEHrS5wVsUh
-	PZ6uU4G24YxkkRHUg3Mj/09bV2oleu1t2Oa+cgEjtfxOz5UIPMO1mOl8pNDVplhQ9ctkTcLGYZPNM
-	wVs5GdZw==;
-Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost)
-	by fanzine2.igalia.com with utf8esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tnDXO-000s6f-Cs; Wed, 26 Feb 2025 10:17:12 +0100
-From: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 v2 2/2] tun: Assign missing bpf_net_context.
-In-Reply-To: <20250225110429-9120aedc655f1a8f@stable.kernel.org>
-References: <20250225110429-9120aedc655f1a8f@stable.kernel.org>
-Date: Wed, 26 Feb 2025 10:17:11 +0100
-Message-ID: <8734g1ysiw.fsf@igalia.com>
+	s=arc-20240116; t=1740562608; c=relaxed/simple;
+	bh=n2WAbQXSXaGvM32JXh/SdBxTvg3DTs4VP0FUGSg+rI4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CyEcyTvosYQ8JJ4iL0dYszXKlVK4wCKkBa35oaomYIw//3DS1NmR2ou0zJoK3z0V76YJtYnUFOLL6SL/hzvSxFuJ0y6vy7t6OhIARtLg8fkuC1ekraltDWbqP6F8L9B7zjBXrmhXZKoFSOOGctG49a3NDaI9lUxQMc0m546suaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=aFUYyq1n; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=n2WAbQXSXaGvM32JXh/SdBxTvg3DTs4VP0FUGSg+rI4=;
+	t=1740562607; x=1741772207; b=aFUYyq1nNFV0N/HcjKyQxbEeyHmsG9ccMjJuCSlmLAGcs0k
+	vAxsmHjSVDMjHdStOUDtt4xtdTPphhe0j1Ck6pyU0WIxP1H5UOeiHZbACNNHa9oEXUq+KawaDbIrX
+	Yro30f3fKKieEplf3FE632alVUKaa61mUlr9JqNczS9f4aDYNwvsnOpxUAPhX1zkapZSGFksoQbLR
+	F5eLL/OIMnvzU1XfAyIKvHYa3zkfjOjBhhUDn9fpfNqB8sFrWSS+zkvNoHou8yuz3QX/F+UMkAgRe
+	UaT43Swdrus7x6vsLz1bWlTsgh5HEAq5hbRJZpAeq8m2lisgLVUHiTgUg66HYG7w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tnDqH-0000000BLoK-3nhb;
+	Wed, 26 Feb 2025 10:36:38 +0100
+Message-ID: <cb87ed76c1cd85611f0a7c1ce1f248bbe0e2d978.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 1/6] Revert "wifi: mt76: mt7925: Update
+ mt7925_mcu_uni_[tx,rx]_ba for MLO"
+From: Johannes Berg <johannes@sipsolutions.net>
+To: sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
+ mingyen.hsieh@mediatek.com, 	linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, 	stable@vger.kernel.org, Caleb Jorden
+ <cjorden@gmail.com>
+Date: Wed, 26 Feb 2025 10:36:36 +0100
+In-Reply-To: <20250226025647.102904-1-sean.wang@kernel.org>
+References: <20250226025647.102904-1-sean.wang@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Hi,
+Dunno if this is because of the tree it got applied to (Felix please
+send me your tree info!), or something else, but check out the automatic
+checks here:
 
-On Tue, Feb 25 2025 at 11:13:47, Sasha Levin <sashal@kernel.org> wrote:
-> Found fixes commits:
-> 9da49aa80d68 tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
+https://patchwork.kernel.org/project/linux-wireless/list/?series=3D937821
 
-Thanks for catching this, this one _should_ be part of the series as
-well. I'll prepare a v3 with it.
-
-Cheers,
-Ricardo
+johannes
 
