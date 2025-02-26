@@ -1,129 +1,101 @@
-Return-Path: <stable+bounces-119656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00207A45C8A
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:05:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FFAA45D06
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84AD73ABFE3
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:05:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3DB81895618
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68738217F5C;
-	Wed, 26 Feb 2025 11:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A5B2153FD;
+	Wed, 26 Feb 2025 11:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rCAZLL5N";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RdAshiKD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2xnckHw"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B96215182;
-	Wed, 26 Feb 2025 11:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6A321504E;
+	Wed, 26 Feb 2025 11:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740567846; cv=none; b=MXs/4tnYbscIZwsUw9wljUaYVzY7H/qyPq7kVEa6mzyhnmtKxREAwBvf9QCBFgRpUT8lrbWGDHYY2yvdlYBJ2lXtF5kM2jcmoWo5nrVhr+HKTDNai69YuvrbzKRaHDICyBkgSfhgJdjZ2BuRjEH2kRNSHz2Mi6jgiIuedojyARA=
+	t=1740569243; cv=none; b=qgBpeiWBxxm62g3UVxn0Yn7/sEtHeIShY06aJYdc07On1wR6sQKjffOmnco4bEy30BaXi5UmVDBuPTUpj5s0DWG/fmak+yQTrm4Kcr0hl04SV3AJQPZyvT8IxI+wtcaUeYj9yctz2uwR+Nd5jGvYyC6/80RLhQBrQ/zsCbcTzuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740567846; c=relaxed/simple;
-	bh=zuYrg4E4BlhaoX0PKHydxZDiSBMtIJBgx3YqE+XFGUM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=E5g+mmgoewoxK4TKWCWwHKSTctsJc/lw1JHtpIlX5i8a5r4VN0uNJrJIWfdVa/YVlmrq5inaFAiug+1pMpiVJguWQFCADYkzNrtlpZbfkIkgw7UBAR8ubWRC4s6S76LUc0GG2b2pOuQsUI1/dNRGJvfG6KPu1cpIavYylctUMxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rCAZLL5N; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RdAshiKD; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Feb 2025 11:04:02 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740567842;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QElXmYTq2r8LqrMwkRyrZKl2yKkMcZ6a/EqFy31ulQU=;
-	b=rCAZLL5NJsVs0aj/lF6bILY+2W62FHk3pAKTM5OcGjLE6ersKOAnfQ55pvfzz9yOw2/ld5
-	iN7F8AbpX4FKuCiToSMyU2D4mS7DyHu0IWiCKa9y3VATXnfJfKjthKWV8ItloZMs1SXRe3
-	CtvB700bcQFwJ0bz9uK69A036D7MAdH4VX24ursdoJkmlKpvq7YhEkYpmX7FpUWEtInNY9
-	w7tRYsLfI9637RLyRb1muYyZFK679ePdVtzHmg3fOGR4O9wgfEShP55u/0dphMEFXc48xk
-	CwYYUjaGQ7jV4D/dwnAqtOBuFmsgjwBXrnopgrXmI+t98imIMyQCu+AdGtyUDg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740567842;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QElXmYTq2r8LqrMwkRyrZKl2yKkMcZ6a/EqFy31ulQU=;
-	b=RdAshiKDBLmiYqRr/T/jY2uR8eDn5cHgAaqft++pXxDILcECF225WEK6ars1Dnu7+wYVm6
-	zqcfkGb9ojB3GPBw==
-From: "tip-bot2 for Biju Das" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/renesas-rzv2h: Fix wrong variable usage in
- rzv2h_tint_set_type()
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
- Biju Das <biju.das.jz@bp.renesas.com>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250224131253.134199-3-biju.das.jz@bp.renesas.com>
-References: <20250224131253.134199-3-biju.das.jz@bp.renesas.com>
+	s=arc-20240116; t=1740569243; c=relaxed/simple;
+	bh=qwvqSfT1lFNy/9NdzeDks+gFqld8ltqBx1YYsUg/OBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fCCdyOBTDC4TEVy4+dVIvY8GgNxYeabK6wiZEnTlGCFZO50BXbVwL07fo17sRyzSmft2x5M1RWfgLiJtmm/vYUkLBOqurYpUMonAGnlDqTsLh62td37Po7Lb0UH6pxOjzl4wCyRVQig9IVNdwhW8SxyiDGV1SDpNbeS1K4q+eNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2xnckHw; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso41360225e9.0;
+        Wed, 26 Feb 2025 03:27:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740569240; x=1741174040; darn=vger.kernel.org;
+        h=content-disposition:mime-version:reply-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qwvqSfT1lFNy/9NdzeDks+gFqld8ltqBx1YYsUg/OBk=;
+        b=M2xnckHwhNrPbvZITddWFRF7oU0i3F1oJN8vdtrXkMNTn4dDn2a59hi45fuSuwuqZM
+         dv4W/xZ0jd04ulOOdBLmPOU2rYXIT2xxNuIgISpYSPIWMEq9Y2m9M34vr/JBNUSaUIcn
+         47iH7zI6/8aF8MVvGcO8Bzinh9WKISNN72Z/JAx+GYyMonZ8rQJsj+m1OG5RgEdNXPQS
+         hum+oGlVC/iVd6eww9rtqwO9eJCHmGyWTtehYbW9rTNVq3L0QbTN9/DdQfR/tlMoXzY1
+         VK7zfyXjX6PCU3M7Cxmeg02+XpEECF6L8pY067BGbX/cq4+2YEgxeJ8fgnlfYjPL9RRo
+         pP1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740569240; x=1741174040;
+        h=content-disposition:mime-version:reply-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qwvqSfT1lFNy/9NdzeDks+gFqld8ltqBx1YYsUg/OBk=;
+        b=rKS3rD0rFWbowrKM2geIzh1SaIFAIr6QjvRl2zLa4676gtrcbh4ZwN+J2Yg8TIlY1p
+         pVMWrQiiIDzBaA+5Ymtgvzx8RGlTDxVkG0IdybMqbUNiWlivWmaGplA/55edAI7BruLW
+         vK5/E1WCrPTd1a+AxvILQ0dEh5cHlULKrHCIW8bOFvuxwrBJKOgKwV/j/VlUR3QHVdMj
+         y6fHHRPPisbo+ABCOnBWqVQ25RreVL6vhpt1eaAYtcDck4idBIa273evp6o7j59JNTgy
+         Jq8JTjE2gEytR7i5qiBg+XX7qiY5WQjih7SI5Nge6G0JSc+v6pTmLSxGKBDdBVnn29Mf
+         /DVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDIwhAzarEj6ACj5i/fEgINUG7weQNfPq9zgGqjHoxlJmQC+1e/N991896hHyQ01JwoUo7CqGH@vger.kernel.org, AJvYcCVNIUtdG1kXJTpGs3wxadEadMRW8YorV+N/EpTwotr7ebaNIqoKVXdIiHxRx1GQZ0sE5GYX6Wji@vger.kernel.org, AJvYcCXGuXzqYhLrpov9WsEMrAPQXMndGw4KJ/MFySFT3GLW/lu8MNx0ohULp9TE0+Os21Z2zMYad7MdvgVEe1Y=@vger.kernel.org, AJvYcCXXqHEpojIhGWZuc6+SevBccMvv+5MyqPg/e6ZGcOI7UKixnQKKcDGkwMDGk98zij0sKisEV1r5AF+d@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGsFiUzrG4XPImFe2jjru3u+29GejI3zKb9s1m7Ktq0+SjnIME
+	hGkOKLXu2Ck0W8rAHUpvzwpZoDc9xSBJZxi2cR6ZUo7+fDtK5YmN
+X-Gm-Gg: ASbGnctZBKeT/ALDal1YJD3clW4a4ZhGknb9OtCjFWsHxg7C7fGjxSLhW+vOJQyjb2X
+	Jx9596D+IyZtMNsflR8GmsWNZMYYDtm6Sq1DjPIo8gEJFDmzNMpkTksbOE56SUhiiQ3G8hyxoj5
+	O7rz17RzTP2Uuxs3RZe9vjYXEDZNCcw0qvA49/ie42Knaf6rKRGmx/SxDj4QJeqRX0acGrqK5SJ
+	gjD2A+oFS4vnU3WAEQTfstSWTdaTZ1OzU5b8wWHf/b692+VgSJbayyvU9+hmE2X+xC4QYoif9tD
+	uufXECSSnwJAXbaKHCmxCHwRqKen
+X-Google-Smtp-Source: AGHT+IFKfUEsVvfSXYEsCwQADOJ2i91RasJteBc0xV5dUODflc4/l4UG2nuGlo6Fve6SSYO1wjpXEA==
+X-Received: by 2002:adf:f511:0:b0:38f:2766:758d with SMTP id ffacd0b85a97d-390cc631000mr4428234f8f.37.1740569239771;
+        Wed, 26 Feb 2025 03:27:19 -0800 (PST)
+Received: from qasdev.system ([2a02:c7c:6696:8300:4b1:eb67:8b45:9659])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390d6a32299sm1701605f8f.55.2025.02.26.03.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 03:27:19 -0800 (PST)
+Date: Wed, 26 Feb 2025 11:27:12 +0000
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: fix uninitialised access in mii_nway_restart()
+Message-ID: <Z776kB1bbI48k9Cx@qasdev.system>
+Reply-To: cf0d2929-d854-48ce-97eb-69747f0833f2@lunn.ch
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174056784235.10177.6372519878853772273.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The following commit has been merged into the irq/drivers branch of tip:
+Hi Andrew,
 
-Commit-ID:     72310650788ad3d3afe3810735656dd291fea885
-Gitweb:        https://git.kernel.org/tip/72310650788ad3d3afe3810735656dd291fea885
-Author:        Biju Das <biju.das.jz@bp.renesas.com>
-AuthorDate:    Mon, 24 Feb 2025 13:11:18 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 26 Feb 2025 11:59:49 +01:00
+Just following up on my patch from Feb 18 regarding the uninitialised access fix in mii_nway_restart(). Any further feedback would be appreciated.
 
-irqchip/renesas-rzv2h: Fix wrong variable usage in rzv2h_tint_set_type()
+Thanks,
+Qasim
 
-The variable tssel_n is used for selecting TINT source and titsel_n for
-setting the interrupt type. The variable titsel_n is wrongly used for
-enabling the TINT interrupt in rzv2h_tint_set_type(). Fix this issue by
-using the correct variable tssel_n.
-
-While at it, move the tien variable assignment near to tssr.
-
-Fixes: 0d7605e75ac2 ("irqchip: Add RZ/V2H(P) Interrupt Control Unit (ICU) driver")
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250224131253.134199-3-biju.das.jz@bp.renesas.com
-Closes: https://lore.kernel.org/CAMuHMdU3xJpz-jh=j7t4JreBat2of2ksP_OR3+nKAoZBr4pSxg@mail.gmail.com
----
- drivers/irqchip/irq-renesas-rzv2h.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesas-rzv2h.c
-index fe2d29e..f636324 100644
---- a/drivers/irqchip/irq-renesas-rzv2h.c
-+++ b/drivers/irqchip/irq-renesas-rzv2h.c
-@@ -301,10 +301,10 @@ static int rzv2h_tint_set_type(struct irq_data *d, unsigned int type)
- 
- 	tssr_k = ICU_TSSR_K(tint_nr);
- 	tssel_n = ICU_TSSR_TSSEL_N(tint_nr);
-+	tien = ICU_TSSR_TIEN(tssel_n);
- 
- 	titsr_k = ICU_TITSR_K(tint_nr);
- 	titsel_n = ICU_TITSR_TITSEL_N(tint_nr);
--	tien = ICU_TSSR_TIEN(titsel_n);
- 
- 	guard(raw_spinlock)(&priv->lock);
- 
 
