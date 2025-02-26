@@ -1,111 +1,154 @@
-Return-Path: <stable+bounces-119673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64751A46166
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:56:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D947A4617E
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F0B17816A
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:56:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36AB9188E8D1
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CE621B1B5;
-	Wed, 26 Feb 2025 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719A7220693;
+	Wed, 26 Feb 2025 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BW+PK5AL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SxeTb02k"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4678F84A2B
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6774A1C
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740578195; cv=none; b=P12WcZwgtELATFqhbjgmm77AskuYeG9QzRy1MW50RBU11It+FyNzBSJNsFgLqGgGL6P1MYheT4exHf8zhW1OB1hC30KRTqO1bsiPdLNDgrCbIQ3HW/NLizSDnhef3wd0bHzcsNXlckF9H6CSZp8VMZFZjMVMTrBW5cy6IwIb1zg=
+	t=1740578352; cv=none; b=oDtcW6UvjY0/T1lKE/dt2ecdkbioVvuaGuD0KjlMUL+GflrtwHLR4IhLCbTBJe2OQPpnhXH3SR8rQ1AH10Lf2qAvnfd5PVcjXZ7nrveOA8EZpoNyIxbWQgMa1+ehEwaIkiCIWdnVt8a/Tb8L/p81WIwN0g4+9dGEhGpbSt4a7pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740578195; c=relaxed/simple;
-	bh=jTAjUk+9joQGZFsQkt+L+5w+ujSUZbOYL2BHWr7t3WI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KvyHDIkw2jQoLKEeemNo+A4uvM/QGj7TaM9hd7b9T2VL4eeVaSFpGID1g5Ny89ekR6/h7J3+JIfT6Fcmh1fi9D8Gqzm+3Hv+urPzZi+5SeDIa8EnskdSBU4BEVN0H0p6eRRm6k/M8tDfmZavp6QXVxjU5q5Xbj/VU+7zSjRwjRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BW+PK5AL; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740578194; x=1772114194;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=jTAjUk+9joQGZFsQkt+L+5w+ujSUZbOYL2BHWr7t3WI=;
-  b=BW+PK5ALSFkDqz48rJ6K0GKtfLRGLp6lAE0HTnjWqltrSa1Q1vgRYQne
-   dQM0XoBUblM8IAtro7q7jUw5HuYkmGu15g5ZNqHzu7lO0dVeE1VNaY2Ho
-   qmYW4Urn7qDOV20EMvDcSrCryfRleHA6xzGG8y3xv7UzEPxq8aQuHnxwy
-   N3WU61Pxc719oKSQSjebtl1GGBHbiRSuQoO8e7CR0TTxj5vNb2+KCdgd+
-   6QDTEDVT98PSbnb/CMyGLsoyHb6DxZcRKKTmP9doS+muvbMxfMYgI8v74
-   e8OEv2FwA7PePUmqUHXc7M4JgjSAqLRaJe7o29EzsfiphCHHLMVYbNpAs
-   g==;
-X-CSE-ConnectionGUID: v7XoRh0PS1yncPDB1QMrOA==
-X-CSE-MsgGUID: Ue9g3uMGS1uMcUOxw3S3Jw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="40657622"
-X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
-   d="scan'208";a="40657622"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 05:56:33 -0800
-X-CSE-ConnectionGUID: 2rkWMhOESB2zubNhmYZHyg==
-X-CSE-MsgGUID: 1zNCwnNERpyxNwXOGRwzFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
-   d="scan'208";a="121804012"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.123])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 05:56:31 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	stable@vger.kernel.org,
-	Imre Deak <imre.deak@intel.com>,
-	Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: [PATCH] drm/i915/mst: update max stream count to match number of pipes
-Date: Wed, 26 Feb 2025 15:56:26 +0200
-Message-Id: <20250226135626.1956012-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1740578352; c=relaxed/simple;
+	bh=dpudgvnbUcleNul+hZceK0VKC5IVn5ot1Wf/pV1Rlms=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nTl/uy4EtxyQ4Oi1vrxv//641FfbPwxbXmc+VMK87m9xnrprElV7itEo94ZPIpjHQbGhdRwmpsFArvR/VgY37E0ktF6R4f0FL0dTncb7Af9pubKO5v+Q3GnFbmrTYxT2t/j7Btl3JB0h0hbs9ITIzStSQTWIVqGid+87dP+GQDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SxeTb02k; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abec925a135so332930466b.0
+        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 05:59:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740578349; x=1741183149; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RCyJrcyE+zDY5d7yM/G99bmmgj+BdOtnhD+8xJaSKWs=;
+        b=SxeTb02kHoSSzQYEEo0ZFmiAoqNFxVtrLnSK9axuXLqcl36BedEIM2uRzrUXr0ckeR
+         fLWFjSk+aW04wjRCa59FLIc4B51Yf35QGj4uVL7BAhFZXFN5vrbOCknjH0TN+n4En0O2
+         fWMxPVCe0vgffOTdq7FGMHYmp6GkwP15d7RHgYaEz2UmkWcmO3RGxk3xkaDROqLL4KIZ
+         7IxRqEJZxsyxqt9qWLTRb6MjqK80AwXy0187MVPFiSwAHm/XzTS9peTjVSux+djqaKCD
+         KrhzV9xRqYDC5P/X1arny4/qdi4HmphzhtHzedKwxV/d97cNr1HWUYKCVdXVMzHXv/ck
+         pYlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740578349; x=1741183149;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RCyJrcyE+zDY5d7yM/G99bmmgj+BdOtnhD+8xJaSKWs=;
+        b=WddPT4yDTdi8Vlv7/VXi1AeLrwYDb8i4T1OhbHXvhF4QVCpaNkJ1GWWcAVEXWizg0O
+         bdVv/Lzv7C6YgAUkmKW5Ib9F3+BsRuylCwndT81i5LsQe6CKg1fXzD197BbewwKlpYSs
+         dAV17ygluQCd4fGcvM29xYh1OgimOFnA/hXxkMnPqE61rL280ccHpKHiLkyohZa1bd6A
+         E1Im33BjS6tB9g88qddQAkrX/9ikajsTFoGBbUxtWQUtJTZ8LbiQPC6SgVbGEUNYt9wJ
+         0U+A5szHZ58qzsqqwV54HJvjM8JFbzeFOtTUXEQkDeaFGEMwDuQnSQST3bGXZCAE65Y0
+         oy5g==
+X-Forwarded-Encrypted: i=1; AJvYcCXMF3YGyyVO/IuO+laYwZ1DE2QYV/fxCS9ML0Bq6xf2sAaCaFZ8+nu/PVmr5p9Ztv1MywYUyyA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq7DPHZ3phsaFbv95ShJP6dydzBBZ9No2rCLEPA0ho9nPlreKg
+	l1ingkKnS0Bt5twf0L5reBMHpP5GxOrBW+y8EBPzO40nBd0KdHo5pZcfxXg9mL4=
+X-Gm-Gg: ASbGncvicWYSO1W0k7PXXK0p8cfxVhmoOWz567Lr5zlA1lZA4QOilfOBBkTCPTqfqeR
+	mysQgrQhrl1jqvmNr7peFU/YBbHr/gJKPcC1+olR61SwK++/XJGHxiPU/cBK2VxMvpZGz1waO8O
+	QAsbrwCBpO+btkqjpCjzZez5LwCiOnUtT/uj5Rkhjoh3CDMWwx7LUfmJLmgXXufcfhr3ec8cWM7
+	p5UHDXeVH5byRvnctSDUf6CVPuI3OY2YwL5SvOrCSwB6+mwGneh1htc9PSAdjTSIhbYQajOWIVi
+	j2LtkgYUdiCaaarafsEXHtUP
+X-Google-Smtp-Source: AGHT+IGq1MD2BDjxaTNyMW9AYMWQfWuRsIcBB0Qs6fRE/nNI8ikyhvYQIfVztbGPD1jUdmJkn3n44g==
+X-Received: by 2002:a17:907:c407:b0:abb:c647:a4bf with SMTP id a640c23a62f3a-abeeedd14c4mr424666866b.23.1740578348617;
+        Wed, 26 Feb 2025 05:59:08 -0800 (PST)
+Received: from [127.0.1.1] ([62.231.96.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1d59391sm335378766b.56.2025.02.26.05.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 05:59:08 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+Subject: [PATCH v2 0/2] leds: rgb: leds-qcom-lpg: Fixes for Hi-Res PWMs
+Date: Wed, 26 Feb 2025 15:58:53 +0200
+Message-Id: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB0ev2cC/5WNQQ6CMBBFr0Jm7Zi2CRRdeQ/DosIIk0ALU1Mxh
+ LtbuYHL9/Pz3gaRhCnCtdhAKHHk4DOYUwHt4HxPyF1mMMqUyhiFI3URlzZMOM49PnnFya04vyc
+ MHgdGoYiqslTb2jh7eUA2zUL5eFTuTeaB4yvI54gm/Vv/8yeNGp2uNLWVVeTK28jeSTgH6aHZ9
+ /0Ljx58x9cAAAA=
+X-Change-ID: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Anjelique Melendez <quic_amelende@quicinc.com>
+Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, 
+ Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
+ Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
+ linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1336; i=abel.vesa@linaro.org;
+ h=from:subject:message-id; bh=dpudgvnbUcleNul+hZceK0VKC5IVn5ot1Wf/pV1Rlms=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnvx4f+K5OoGjex7nW/4xpB3UQMVg2ciOnq4MZt
+ AtkYDMMfzaJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ78eHwAKCRAbX0TJAJUV
+ Vr0OEACaW6bstCuhhC51Fa4BY2tM329x00NpUmyHEZEHxBIZse/iKDaEO/WV6VUbrmq/X03T434
+ NnIhP8ysLwmkeEv9WWhs8zMq5a9J/EyWwlFdjaVfZ48BljECe29OdcyKHECnjL80XELXXGmlrVM
+ BuSMsfb6tfeDAThAy5DzGtix4gsfI02MxRNevm4m0M5O2Hcy3lOMuDJrHuvO/hYQFexC/jcCopZ
+ kE4Kg2UOcvYzRF1ybaqrKkNG+Qvb498LI/Km9cgsxnzPJG9sIaLvN/fJua0b5gBm9PNMLBakZ/q
+ GZ+aYOrUgf6gQq3derUoneVLK5ULDArBDqnzmVeqHwXiYxNiNWJKvPuY+K3AbcnwQIBFG7FK7Qg
+ nu2yLM9/w5oT+P3keIPs/2oJ/bs/8Jn5vOxKEfAVsMvS3qsr0cvXenDBkcCurgrnYzCSpCAsl9C
+ Hxs0mY8SNPdBqmN8MftLsPYdmFumvMnE/illVRHx5ZcDkReetHIfhXmwp6GgwD509Xk5ajL2wLn
+ SmdEtJ65L2fyETHmOtpf8sMAsxAq3EdtUJpmPjz5QfeNahRY0nKOiTEl6IvqhDeR6xcD0f+4xj6
+ 6oeI1+fs95RP9IcOxYMPmszqMlB47Iaii/3nnkiIZvEBjgs9LgvtJT/c48sUOC8xu2qVXoirPbC
+ jMi/DoM2CeEg2Aw==
+X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
+ fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
 
-We create the stream encoders and attach connectors for each pipe we
-have. As the number of pipes has increased, we've failed to update the
-topology manager maximum number of payloads to match that. Bump up the
-max stream count to match number of pipes, enabling the fourth stream on
-platforms that support four pipes.
+The PWM Hi-Res allow configuring the PWM resolution from 8 bits PWM
+values up to 15 bits values. The current implementation loops through
+all possible resolutions (PWM sizes) on top of the already existing
+process of determining the prediv, exponent and refclk.
 
-Cc: stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+The first issue is that the maximum value used for capping is wrongly
+hardcoded.
+
+The second issue is that it uses the wrong maximum possible PWM
+value for determining the best matched period.
+
+Fix both.
+
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp_mst.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v2:
+- Re-worded the commit to drop the details that are not important
+  w.r.t. what the patch is fixing.
+- Added another patch which fixes the resolution used for determining
+  best matched period and PWM config.
+- Link to v1: https://lore.kernel.org/r/20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-index 167e4a70ab12..822218d8cfd4 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-@@ -1896,7 +1896,8 @@ intel_dp_mst_encoder_init(struct intel_digital_port *dig_port, int conn_base_id)
- 	/* create encoders */
- 	mst_stream_encoders_create(dig_port);
- 	ret = drm_dp_mst_topology_mgr_init(&intel_dp->mst_mgr, display->drm,
--					   &intel_dp->aux, 16, 3, conn_base_id);
-+					   &intel_dp->aux, 16,
-+					   INTEL_NUM_PIPES(display), conn_base_id);
- 	if (ret) {
- 		intel_dp->mst_mgr.cbs = NULL;
- 		return ret;
+---
+Abel Vesa (2):
+      leds: rgb: leds-qcom-lpg: Fix pwm resolution max for Hi-Res PWMs
+      leds: rgb: leds-qcom-lpg: Fix calculation of best period Hi-Res PWMs
+
+ drivers/leds/rgb/leds-qcom-lpg.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+---
+base-commit: 8433c776e1eb1371f5cd40b5fd3a61f9c7b7f3ad
+change-id: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
+
+Best regards,
 -- 
-2.39.5
+Abel Vesa <abel.vesa@linaro.org>
 
 
