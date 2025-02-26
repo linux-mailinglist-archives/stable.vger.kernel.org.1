@@ -1,86 +1,58 @@
-Return-Path: <stable+bounces-119685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9F7A462A1
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 15:26:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E882FA462CC
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 15:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781501896F15
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD199174219
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EE8221736;
-	Wed, 26 Feb 2025 14:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34A6221D90;
+	Wed, 26 Feb 2025 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="wn0+bHMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnlSJqAb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E316F22154E
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 14:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A599622170B;
+	Wed, 26 Feb 2025 14:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740579894; cv=none; b=CXhcg7I1mN2dFtFwOjUGFF35e+DRvjAGUsZCLPBXVq/7kbns/GpRLh63xP/zjCAOX2rt430nafWM+iNx1xUPRNJZSFaFdLsoOjrkeTe+kWmWzbm8UI6n2p41IxWPWwXGM1HpQP97bmPfewcY88sjKPAycj16ZKPLt62ykv8/+1s=
+	t=1740580073; cv=none; b=RatO5sVk+Tyi3tljJrKi12Qh602ubQ9RhQmXR9PkWXwHAIL+UJqcjNkHCri9j6Z9U4SI7jFimD71JDr6KldhSHvZb/vvWEQIGovFBfgcVnOyalQJGedHTYiZRyxoiJVx2Lf+Imf8Q8gRUC1rYLjb/5hCwRVwwgNO/bzW9PrSBz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740579894; c=relaxed/simple;
-	bh=j5EgVv6d+kyiKhWyckDkYkwqFgiVsmt9E6yGrK9raLo=;
+	s=arc-20240116; t=1740580073; c=relaxed/simple;
+	bh=URbrqijczCz9YHLmftvryXYUcHZaC1Q8rW1h0dJ02CI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYeFWCnHPMM6AwK98ITQeoAjegDMfXbGa2hCal59Vyn6PLRWxCng0wVpjjO6TITcbhRHxUeoWlt/VVq+A9/teGkbmKDHZ1gyeWKpdTYKBozqnPKJB2V6HADy57cizzhKRtjFDvGlHtC/bkN9tWSS0wOlfXa05fcXUGyH5k3kS9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=wn0+bHMy; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e050b1491eso1645743a12.0
-        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 06:24:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1740579889; x=1741184689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UaKzYJ1iRW+gT1IZX66/MBk7evQghVEHdi8TUh6olgc=;
-        b=wn0+bHMy3ra6Dk9RtKWvrsP7lII4rG/KOiK6T66XlsdGHZOTY3vYwT/0LhB1F4gc6o
-         zyaz6h2VrXi0SrvSFLBIBcsam1AObaP2pPNqGCMsxrgVJW3mTrqzIXcYkY6MoAEz+GIo
-         Ol5AayWAQ1YTS4wxVdLwIG06gJ8g+e6dHhvWmCcDNfl/8TB0Xfc+/DQJ981m2wrryZxX
-         42GtnI4C5Q0poB++czsb8p/dcrhgavfHRc1pFJtfl/DqLLcm6FuE9eDmMPE6D/hQE385
-         PbsfIcm2ev9frgkqU0me93x/R+6JftNGlG4iOrrWhlTJYvjPeoPfCQtNkoNhr7m4sBcS
-         NB6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740579889; x=1741184689;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UaKzYJ1iRW+gT1IZX66/MBk7evQghVEHdi8TUh6olgc=;
-        b=UpjydVosGRA/sr1V0xxhbfKV7JrQCDkXq8BXDHDo729sdB99ZpfAUq1AH3SFFa7i9A
-         IWMA8357JmgkKzNKP69hw6c6FvOp55iY6epe9IwOYcSxyBb7dFJtm+xHNHzQy+okFLFY
-         kMuhZ02JYyCvRkz2+WvQiAY+vlNSlZrpyiWl/9Wc4hcwxIIMXGPf59zdwkjuUAuXme61
-         FxTwxuNqdQZXHOgsVIBqt6of5p+wZfM57o6S7F8cA4lH6Dr98kTOdWhhpRjnM9/WhDZB
-         c+UZyN/1BtHtZpmS3A1p37X6tPYEyiJ/2c9snNypPv99W2UFN91DyyHQpPAmUt2927tb
-         vsdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNktnTL1T2sfmBbLFCnJl/uIGJUpNMiG4qgG3+Cs3V6nPtcJWW85eOktdzqFputGOvdQEGZb8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP3KYV6zl+d6KP6oBK+TfkcsdmvMoLYaqI9W2qu8Qs9cRAI48C
-	aDid3UUVy7VbOMppywEyHeZNrVYpUCntUU/fUmjbJJbs7wuOZgsrPiNvNl0lACA=
-X-Gm-Gg: ASbGncvQm97N7EL8mny+T5YO7EVEJLXCYWhpd0Zu0vhJ+FqdHqoWjA+97JDXKRlfum5
-	/eJ2RnYInggcXC+FHsD45RI++JQan0I0nOQTsd+ippNgXRRO6+3DWhnxOgQGIa/TOqtEH80egQF
-	106UG2+4OVsZOWwDlyJHxI5dVxCLJel4fzpwema807Kzu36QiEz2zxWJl5mRA9FXK2hPbvCbAiI
-	lyARTesxi4kVPZNyTJe8yHIFVqRJg1L28BHn7dJL1EQyVSFwUunmvw33My3PoyYdl/JMitUhHqi
-	X2Zh76SFPQJH5SQgnjJHwid+kqM0H/V2qo7VavnvGvc2UqpKGzDWeg==
-X-Google-Smtp-Source: AGHT+IGJIqgQNaPZX0a6W5ewvuM4Gn2WI+QaD2er9M4fEBIE83GKmsFVhaLQNCuycoVnCTpaVnktFA==
-X-Received: by 2002:a17:907:3e0b:b0:aba:620a:acf7 with SMTP id a640c23a62f3a-abc0ae5728bmr2420097366b.10.1740579888970;
-        Wed, 26 Feb 2025 06:24:48 -0800 (PST)
-Received: from jiri-mlt.client.nvidia.com ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1d54e08sm334745166b.41.2025.02.26.06.24.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 06:24:48 -0800 (PST)
-Date: Wed, 26 Feb 2025 15:24:45 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: arkadiusz.kubalewski@intel.com, davem@davemloft.net, 
-	jan.glaza@intel.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	przemyslaw.kitszel@intel.com, stable@vger.kernel.org, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH v2] dpll: Add an assertion to check freq_supported_num
-Message-ID: <74xcws6rns5hrmkf4hsfuittgzsddsc3hnqj6jbfsfu3o2vvol@gy32jyg75gmd>
-References: <txrxpe7tmpsyiu4cwjd2gbs3udogmzdo5ertjwmhbeynu23iep@dcryfdoi7o5x>
- <20250226030930.20574-1-jiashengjiangcool@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UrXVEaCsUz0FiwBYC8s1gidRBI5c9pgZFseTHDZz8NcRGJf6BA6MMRQEp6zp90WIVK7Uw6Xhd3PN+33ZbFgLpImpZkjXXnckEK5R8BiTdQ7qo/mRdmksgVvxJOaTE488QyO0RCZwYJ5rxDmD2IlkeRZCS96KI7IgET+guqz3AbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnlSJqAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11993C4CED6;
+	Wed, 26 Feb 2025 14:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740580073;
+	bh=URbrqijczCz9YHLmftvryXYUcHZaC1Q8rW1h0dJ02CI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pnlSJqAb9TG22fWNHv9q/yx3p/zGg1pkLIfYrJQEfG0XJ1uuV7yWxbqRmforSct4n
+	 dyk7HeNoa5uNgZlWuxE6CiO3DlBxUnDWoa8wZemWlMRuwkEBIND0d76jvFh+xvrauW
+	 c4ZFfGx9+EqDDEMqxpAEZYGWJL61qGRWcy9r4ODU=
+Date: Wed, 26 Feb 2025 15:26:44 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: Takashi Iwai <tiwai@suse.de>, regressions@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] Chrome and VSCode breakage with the commit
+ b9b588f22a0c
+Message-ID: <2025022657-credit-undrilled-81f1@gregkh>
+References: <874j0lvy89.wl-tiwai@suse.de>
+ <dede396a-4424-4e0f-a223-c1008d87a6a8@oracle.com>
+ <87jz9d5cdp.wl-tiwai@suse.de>
+ <263acb8f-2864-4165-90f7-6166e68180be@oracle.com>
+ <87h64g4wr1.wl-tiwai@suse.de>
+ <7a4072d6-3e66-4896-8f66-5871e817d285@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,50 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250226030930.20574-1-jiashengjiangcool@gmail.com>
+In-Reply-To: <7a4072d6-3e66-4896-8f66-5871e817d285@oracle.com>
 
-Wed, Feb 26, 2025 at 04:09:30AM +0100, jiashengjiangcool@gmail.com wrote:
->Since the driver is broken in the case that src->freq_supported is not
->NULL but src->freq_supported_num is 0, add an assertion for it.
->
->Fixes: 830ead5fb0c5 ("dpll: fix pin dump crash for rebound module")
+On Wed, Feb 26, 2025 at 09:20:20AM -0500, Chuck Lever wrote:
+> On 2/26/25 9:16 AM, Takashi Iwai wrote:
+> > On Wed, 26 Feb 2025 15:11:04 +0100,
+> > Chuck Lever wrote:
+> >>
+> >> On 2/26/25 3:38 AM, Takashi Iwai wrote:
+> >>> On Sun, 23 Feb 2025 16:18:41 +0100,
+> >>> Chuck Lever wrote:
+> >>>>
+> >>>> On 2/23/25 3:53 AM, Takashi Iwai wrote:
+> >>>>> [ resent due to a wrong address for regression reporting, sorry! ]
+> >>>>>
+> >>>>> Hi,
+> >>>>>
+> >>>>> we received a bug report showing the regression on 6.13.1 kernel
+> >>>>> against 6.13.0.  The symptom is that Chrome and VSCode stopped working
+> >>>>> with Gnome Scaling, as reported on openSUSE Tumbleweed bug tracker
+> >>>>>   https://bugzilla.suse.com/show_bug.cgi?id=1236943
+> >>>>>
+> >>>>> Quoting from there:
+> >>>>> """
+> >>>>> I use the latest TW on Gnome with a 4K display and 150%
+> >>>>> scaling. Everything has been working fine, but recently both Chrome
+> >>>>> and VSCode (installed from official non-openSUSE channels) stopped
+> >>>>> working with Scaling.
+> >>>>> ....
+> >>>>> I am using VSCode with:
+> >>>>> `--enable-features=UseOzonePlatform --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto` and for Chrome, I select `Preferred Ozone platform` == `Wayland`.
+> >>>>> """
+> >>>>>
+> >>>>> Surprisingly, the bisection pointed to the backport of the commit
+> >>>>> b9b588f22a0c049a14885399e27625635ae6ef91 ("libfs: Use d_children list
+> >>>>> to iterate simple_offset directories").
+> >>>>>
+> >>>>> Indeed, the revert of this patch on the latest 6.13.4 was confirmed to
+> >>>>> fix the issue.  Also, the reporter verified that the latest 6.14-rc
+> >>>>> release is still affected, too.
+> >>>>>
+> >>>>> For now I have no concrete idea how the patch could break the behavior
+> >>>>> of a graphical application like the above.  Let us know if you need
+> >>>>> something for debugging.  (Or at easiest, join to the bugzilla entry
+> >>>>> and ask there; or open another bug report at whatever you like.)
+> >>>>>
+> >>>>> BTW, I'll be traveling tomorrow, so my reply will be delayed.
+> >>>>>
+> >>>>>
+> >>>>> thanks,
+> >>>>>
+> >>>>> Takashi
+> >>>>>
+> >>>>> #regzbot introduced: b9b588f22a0c049a14885399e27625635ae6ef91
+> >>>>> #regzbot monitor: https://bugzilla.suse.com/show_bug.cgi?id=1236943
+> >>>>
+> >>>> We received a similar report a few days ago, and are likewise puzzled at
+> >>>> the commit result. Please report this issue to the Chrome development
+> >>>> team and have them come up with a simple reproducer that I can try in my
+> >>>> own lab. I'm sure they can quickly get to the bottom of the application
+> >>>> stack to identify the misbehaving interaction between OS and app.
+> >>>
+> >>> Do you know where to report to?
+> >>
+> >> You'll need to drive this, since you currently have a working
+> >> reproducer.
+> > 
+> > No, I don't have, I'm merely a messenger.
+> 
+> Whoever was the original reporter has the ability to reproduce this and
+> answer any questions the Chrome team might have. Please have them drive
+> this. I'm already two steps removed, so it doesn't make sense for me to
+> report a problem for which I have no standing.
 
-It's not a real bug in current kernel. I don't think it's worth "fixes"
-line and -net tree. I think it should be just sent to -net-next.
+Ugh, no.  The bug was explictly bisected to the offending commit.  We
+should just revert that commit for now and it can come back in the
+future if the root-cause is found.
+
+As the revert seems to be simple, and builds here for me, I guess I'll
+have to send it in. {sigh}
+
+Takashi, thanks for the report and the bisection, much appreciated.
+
+greg k-h
 
 
->Cc: <stable@vger.kernel.org> # v6.8+
->Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
->---
->Changelog:
->
->v1 -> v2:
->
->1. Replace the check with an assertion.
->---
-> drivers/dpll/dpll_core.c | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
->
->diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
->index 32019dc33cca..3296776c1ebb 100644
->--- a/drivers/dpll/dpll_core.c
->+++ b/drivers/dpll/dpll_core.c
->@@ -443,8 +443,9 @@ static void dpll_pin_prop_free(struct dpll_pin_properties *prop)
-> static int dpll_pin_prop_dup(const struct dpll_pin_properties *src,
-> 			     struct dpll_pin_properties *dst)
-> {
->+	BUG_ON(src->freq_supported && !src->freq_supported_num);
-
-Warnon-return please.
-
-
-> 	memcpy(dst, src, sizeof(*dst));
->-	if (src->freq_supported && src->freq_supported_num) {
->+	if (src->freq_supported) {
-> 		size_t freq_size = src->freq_supported_num *
-> 				   sizeof(*src->freq_supported);
-> 		dst->freq_supported = kmemdup(src->freq_supported,
->-- 
->2.25.1
->
 
