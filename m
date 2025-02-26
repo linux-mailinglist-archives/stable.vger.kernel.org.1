@@ -1,180 +1,138 @@
-Return-Path: <stable+bounces-119739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC58A46A4A
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 19:56:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF18A46ABB
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 20:16:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D3D97A26AA
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 18:55:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DACE7A75FF
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 19:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB745236A99;
-	Wed, 26 Feb 2025 18:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6591222540A;
+	Wed, 26 Feb 2025 19:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YaNvZkTn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lMWDKE+0"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6273236A74
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 18:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6EC41C71;
+	Wed, 26 Feb 2025 19:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740596204; cv=none; b=R4Z8ymfihpV2UtzZMKS4vxAwLlx0kSxeMuEABCu5Cxm4kEyRi7K+1qToCODKis0yxaKtH1OJVNvGZJM/X2W87dHufTePXvg//1ANbkYT2MRvWAf4YtegVXRIqV376qyLADDKhljnlFWS4pJpEt6ZxVC7FNWkg3GZzpPxcdpesnc=
+	t=1740597407; cv=none; b=kr2qiRiIs0HDXZTYIwSi2StYPXmxYKGbNL1+SWBim7WPvHfBJnpawfxyDNrz2pfGFtIfdthJqR1tAAniN6ZQufLBgnu1Tu0e9RHr8RXpCbu69cloTEhjxrBzi4eAjBwIcGk5a/jtmI6Y7MOZUHSt5V58AZ+Odk/piQ4lpm+1VvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740596204; c=relaxed/simple;
-	bh=BfvB7Ae2SjINcTkge75atqrzDzgDgJ2AfU3Icy8j8D0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qf6enloTOK3HcQ9LMWz0I2FSjGmVNDjzJZyEuk6bfVLCsfaql++qJQC/2qz0lA/Lt06S3bBBt9NzGDRpxzshkiJQqS2QOKJbSkbFMc1dN+9Xf6QgJdzzCdiYnesNvxCsKfT0p5ZSib7DmJZuKJqwJUtU993o625omYB0bBwwkrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YaNvZkTn; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740596200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=N8k5YcDw/4VVVoJt0g7ZtdcJRICdTIVq9GtV33GN43Q=;
-	b=YaNvZkTnOHDLxyQIGgKvqM0HAojGOASBbcB6efdVyccFg/kHmuLMQSGnAfjxgT7154Nqss
-	Gyq8YeI88LRUDOrnIYbtZGZGksf58O/nV3chzVwf2utfExIgizxXtT0eOVYUb2tGAAx4v/
-	14L6ljsqjbvbLMdzmnP0hqDnEJvp+zg=
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
-Date: Wed, 26 Feb 2025 18:56:25 +0000
-Message-ID: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+	s=arc-20240116; t=1740597407; c=relaxed/simple;
+	bh=WQUaj7X7NpJYCAvtzOtOiiMuzqCHQE0yCubMbtYl564=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oFN2zCCBJLiRpZE38KOzM7HmamROYbUZ8cqdtXjNS34aVffP+iX3u9fQaldGpnh2bNXY+lwAAfA6s5Y8MSsQGTjU9ogKBIKDGuIg1EXw+AgLwfz4ddmp7PtXwVyvQCwM2HOlmpJpLIbhS8UjaRZDA3dwqlsG8PtAl+ZCYi/JCvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lMWDKE+0; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2fc29ac55b5so46545a91.2;
+        Wed, 26 Feb 2025 11:16:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740597405; x=1741202205; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VjtNitstYYf60IMnZQOoZ5YL1+sKrxwbs6AgHj0hDAQ=;
+        b=lMWDKE+0R5f8EZvPq7WgSO/SNfpI/ROBA8PFZIWFBKioqvGR0DaIJRM+irbZD3LKyc
+         bDk2VjvzMEdRaxEvUZr2diQc6P0oLmIEa9MElf0kz4YoyjmayRQkcvGD/EFFGk8Fox5E
+         06aee3BiiDAesmrFvdU06oy8nQ9+inS7hJxeZflKzC9L/HzyZ5ru3RGHaimWS2ewJ6Ld
+         esAdXhfnPATk1C1l79RKn48UX1tpX6dKZn3LojQzT7anAMN6iwBVDHHu/umVS6VwNfCs
+         QZVojjOAqiLOZ3IAaiTRSGFuFZwEz0ir00ow1kO1/IIi/K1TfGkZy9Ua5xxWubds0pd5
+         /hNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740597405; x=1741202205;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VjtNitstYYf60IMnZQOoZ5YL1+sKrxwbs6AgHj0hDAQ=;
+        b=GsVIR7CoW0pT3s3pvaEJx8uT0WF60iDFMhM4o2ozL4OT/66jjzPFHPdWBC3AzBfoFz
+         AFH7MSJIylEOOePRDVDIgzRI937aQfUcN5SEJka7d21lccoz4gC57ENVibIdXQ0/2/K5
+         0OMBN2f4F/fuVmZt4+Wp5BMd5MoKsRenM5qmNFOgk4m7Pip4bQgZ0P2tm0CV1YCZTwEr
+         tNoRwNRgMuvB8UeEis2DTatd+BlhgPes59EAMtpe+223rl9sHhfQlrUkkC+sSml9GXGx
+         lm5B1jjIhnsX34IoFKqYbN7sxOMCsXAn9FObOctw+rdy7XSbBkqMqdAaPI8oagFuVY/X
+         Whhw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVVl7QjuLS3xG4itrosfZwN3tW+dN9sGTgNrCWqUbJqW4ebCvB3SFOckEuvqdTfYXf0a8Z2h5Z@vger.kernel.org, AJvYcCWwQTvTdSKE4MaEk+LL5WkdmX95z6kBIKeNAGpngwASFDOQ3tbctFJPoniZoJLY93fBjG70ucs4WamvAlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxXC4KYCtY6Ypac3sfwthlYdOqCtTAeGjqGV/pa9lnScN/6lrV
+	BhSelr/CbuJcqG5QyDzVuy2iwgvuMFbyY7CYrItpXGXQg1T3fQl6wlTWGlll+zbXmdEICfWgePT
+	ilWWNK1U1tC9H1kK8TyoRBLn4V6Uj2w==
+X-Gm-Gg: ASbGncsKzxXz4K/ti23eVHBf1Yh1Uq2t3QJDV02kbC1HP/3zf5Xcswrx3ZvJ/SprW1z
+	i/GRKTjmCSWkZjiP+1VDWr9M3ni3HVosfh4jnoorihQHCcl1PGXLNkhgLYwpxKjWVPv77uVHX9G
+	cWdk9qfEU=
+X-Google-Smtp-Source: AGHT+IHgWo4yFmzqB/Z9FUw87haS2aL6MUTOk2Od04bWbhTEwvhKuzoJHg77mviLKvY13jtSsscAzch+iDPY4BA442c=
+X-Received: by 2002:a17:90b:3848:b0:2ee:cbc9:d50b with SMTP id
+ 98e67ed59e1d1-2fce7aef973mr14367404a91.4.1740597404926; Wed, 26 Feb 2025
+ 11:16:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20250226083731.3584509-1-make24@iscas.ac.cn> <749a1601-fa9f-468b-92d1-1a1548a08471@amd.com>
+In-Reply-To: <749a1601-fa9f-468b-92d1-1a1548a08471@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Wed, 26 Feb 2025 14:16:33 -0500
+X-Gm-Features: AQ5f1JqZKQbC5NjwnQBDg9bLvkGO3Y_FuwCdAgPbNdvGDi3qHR2ihJQAqXVMKn0
+Message-ID: <CADnq5_NJKwmiGfcP2RwK+pZD7YXA_pbe7VtsWYoNt_nVRFO5iw@mail.gmail.com>
+Subject: Re: [PATCH v2] drm/amd/display: Fix null check for
+ pipe_ctx->plane_state in resource_build_scaling_params
+To: Alex Hung <alex.hung@amd.com>
+Cc: Ma Ke <make24@iscas.ac.cn>, dillon.varone@amd.com, Samson.Tam@amd.com, 
+	chris.park@amd.com, aurabindo.pillai@amd.com, george.shen@amd.com, 
+	gabe.teeger@amd.com, Yihan.Zhu@amd.com, Tony.Cheng@amd.com, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
-the per-CPU acomp_ctx mutex. crypto_free_acomp() then holds scomp_lock
-(through crypto_exit_scomp_ops_async()).
+Applied.  Thanks!
 
-On the other hand, crypto_alloc_acomp_node() holds the scomp_lock
-(through crypto_scomp_init_tfm()), and then allocates memory.
-If the allocation results in reclaim, we may attempt to hold the per-CPU
-acomp_ctx mutex.
+Alex
 
-The above dependencies can cause an ABBA deadlock. For example in the
-following scenario:
-
-(1) Task A running on CPU #1:
-    crypto_alloc_acomp_node()
-      Holds scomp_lock
-      Enters reclaim
-      Reads per_cpu_ptr(pool->acomp_ctx, 1)
-
-(2) Task A is descheduled
-
-(3) CPU #1 goes offline
-    zswap_cpu_comp_dead(CPU #1)
-      Holds per_cpu_ptr(pool->acomp_ctx, 1))
-      Calls crypto_free_acomp()
-      Waits for scomp_lock
-
-(4) Task A running on CPU #2:
-      Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
-      DEADLOCK
-
-Since there is no requirement to call crypto_free_acomp() with the
-per-CPU acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the
-mutex is unlocked. Also move the acomp_request_free() and kfree() calls
-for consistency and to avoid any potential sublte locking dependencies
-in the future.
-
-With this, only setting acomp_ctx fields to NULL occurs with the mutex
-held. This is similar to how zswap_cpu_comp_prepare() only initializes
-acomp_ctx fields with the mutex held, after performing all allocations
-before holding the mutex.
-
-Opportunistically, move the NULL check on acomp_ctx so that it takes
-place before the mutex dereference.
-
-Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
-Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@google.com/
-Cc: <stable@vger.kernel.org>
-Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
----
-
-v1 -> v2:
-- Explained the problem more clearly in the commit message.
-- Moved all freeing calls outside the lock critical section.
-v1: https://lore.kernel.org/all/Z72FJnbA39zWh4zS@gondor.apana.org.au/
-
----
- mm/zswap.c | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index ac9d299e7d0c1..adf745c66aa1d 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -881,18 +881,32 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
-+	struct acomp_req *req;
-+	struct crypto_acomp *acomp;
-+	u8 *buffer;
-+
-+	if (IS_ERR_OR_NULL(acomp_ctx))
-+		return 0;
- 
- 	mutex_lock(&acomp_ctx->mutex);
--	if (!IS_ERR_OR_NULL(acomp_ctx)) {
--		if (!IS_ERR_OR_NULL(acomp_ctx->req))
--			acomp_request_free(acomp_ctx->req);
--		acomp_ctx->req = NULL;
--		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
--			crypto_free_acomp(acomp_ctx->acomp);
--		kfree(acomp_ctx->buffer);
--	}
-+	req = acomp_ctx->req;
-+	acomp = acomp_ctx->acomp;
-+	buffer = acomp_ctx->buffer;
-+	acomp_ctx->req = NULL;
-+	acomp_ctx->acomp = NULL;
-+	acomp_ctx->buffer = NULL;
- 	mutex_unlock(&acomp_ctx->mutex);
- 
-+	/*
-+	 * Do the actual freeing after releasing the mutex to avoid subtle
-+	 * locking dependencies causing deadlocks.
-+	 */
-+	if (!IS_ERR_OR_NULL(req))
-+		acomp_request_free(req);
-+	if (!IS_ERR_OR_NULL(acomp))
-+		crypto_free_acomp(acomp);
-+	kfree(buffer);
-+
- 	return 0;
- }
- 
--- 
-2.48.1.658.g4767266eb4-goog
-
+On Wed, Feb 26, 2025 at 2:04=E2=80=AFPM Alex Hung <alex.hung@amd.com> wrote=
+:
+>
+> Reviewed-by: Alex Hung <alex.hung@amd.com>
+>
+> On 2/26/25 01:37, Ma Ke wrote:
+> > Null pointer dereference issue could occur when pipe_ctx->plane_state
+> > is null. The fix adds a check to ensure 'pipe_ctx->plane_state' is not
+> > null before accessing. This prevents a null pointer dereference.
+> >
+> > Found by code review.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 3be5262e353b ("drm/amd/display: Rename more dc_surface stuff to =
+plane_state")
+> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> > ---
+> > Changes in v2:
+> > - modified the patch as suggestions.
+> > ---
+> >   drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/driver=
+s/gpu/drm/amd/display/dc/core/dc_resource.c
+> > index 520a34a42827..a45037cb4cc0 100644
+> > --- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+> > +++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+> > @@ -1455,7 +1455,8 @@ bool resource_build_scaling_params(struct pipe_ct=
+x *pipe_ctx)
+> >       DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+> >
+> >       /* Invalid input */
+> > -     if (!plane_state->dst_rect.width ||
+> > +     if (!plane_state ||
+> > +                     !plane_state->dst_rect.width ||
+> >                       !plane_state->dst_rect.height ||
+> >                       !plane_state->src_rect.width ||
+> >                       !plane_state->src_rect.height) {
+>
 
