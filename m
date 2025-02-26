@@ -1,238 +1,193 @@
-Return-Path: <stable+bounces-119598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF539A4535E
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:48:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDAA2A45350
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CBAB1897592
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:44:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F76172DD1
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C106C21CFE8;
-	Wed, 26 Feb 2025 02:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E980121CA0C;
+	Wed, 26 Feb 2025 02:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="POyxGPPr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dSqaQ/TT"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88AC21CC5A;
-	Wed, 26 Feb 2025 02:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5441D1DFE12;
+	Wed, 26 Feb 2025 02:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740537851; cv=none; b=IcNoM4k9Ol2W22QOb25LLKF08Fhix7gDg5H82nSYJybL0MiajRmgfWG9tuAekly1ByDTiONHDpIEApjrFPPIfJi5zdOeZlWlFML7wVoyIRc9sbW8VyhonTN9054u+oPJKy2s5uNy+5ccavONDhnMHjimWY6fTq1dF1Jg12xW2Ic=
+	t=1740537867; cv=none; b=YFjq8BKXJ5YZhLxy1B2P5/EExbSBHDOGT86kQWuDS67v0SzOm74Ej7cq8+WdxRQvD6xrK7osg6a48PSqN6w3CuzdqkNTOUfVPvapGenWiDK3u3PB/bxvjbTtvWSod6cZxHM2PUHcUqfEmG87+aWOK3Ts41+DUydM/wl5KeLNQ2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740537851; c=relaxed/simple;
-	bh=Glmz1TNrS3BzF+5a1LdAgA57m1NmDcbNNA1zLBAduxc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cHfO0JPCBBdDa+eK2BNzQ0rMYxoTMjCDe48CtucwD+NLr1GIEMnwKPHXmKVSyy30u/iV9cZVvupkHPoPfzXpAPUp9mBSHL3diaeeZSp7GA4xuPU9XOImJ2AQzhJOVIyyfCkjFvQoJjf1BFahAtW3F/kjllJV7X5ghKGghlKfd1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=POyxGPPr; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51PMWrmg023829;
-	Wed, 26 Feb 2025 02:44:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2wIKriGBX+sHrIHzlsy0OEKo8NO62mQnjA/3UsYUr/c=; b=POyxGPPrmwwYDPg7
-	7HWaXHyQlEO/A8601pP8ue8kjCQIca/v6tH6u1xyHPpGppO6RCsL4Uy91mVOna3M
-	ZDejeXG0YKJv6j1iBHJYqM1c94sz3rOmF2EnPQnGGF+t0LNhkaCGFRE/UoztzdF1
-	6XFbZCxHbmvUnyyP+qDetQUKJRvk2AmaRZqNU3zcaRU1EekeoUAE30vZ2WcvCYtE
-	NQyGr2E1GaTQA+AkfEwcCwkBdw3wfIJScY/h7jN/u8XENX4J1QTeCu5aWPoM40K4
-	W0dY9gvqFiSrx7X1J3qEM8Rcz6WAOGjSGDvpWo2FGbC8EvyVF9pfSorKLkugymv4
-	6Ib+oA==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prmgfqu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 02:44:01 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51Q2i0re021618
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 02:44:00 GMT
-Received: from hu-sibis-blr.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 25 Feb 2025 18:43:56 -0800
-From: Sibi Sankar <quic_sibis@quicinc.com>
-To: <sudeep.holla@arm.com>, <cristian.marussi@arm.com>, <johan@kernel.org>,
-        <dmitry.baryshkov@linaro.org>, <maz@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <arm-scmi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>, <quic_sibis@quicinc.com>,
-        <konradybcio@kernel.org>, <stable@vger.kernel.org>,
-        Johan Hovold <johan+linaro@kernel.org>
-Subject: [RFC V6 1/2] firmware: arm_scmi: Ensure that the message-id supports fastchannel
-Date: Wed, 26 Feb 2025 08:13:37 +0530
-Message-ID: <20250226024338.3994701-2-quic_sibis@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250226024338.3994701-1-quic_sibis@quicinc.com>
-References: <20250226024338.3994701-1-quic_sibis@quicinc.com>
+	s=arc-20240116; t=1740537867; c=relaxed/simple;
+	bh=/SsM2lvIy+4I5ZCHTuMAYaqGMvZ9KXloNa1qv9ctxBU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EOD3Y/lqvkUQn8/SM8iEnzmuyv5tnj/yFaITvulKCsw5tyOu29GyP9jRdPFTFHwbW2uPg87d0/Fy88aZgiOlKEqSNMZ5iCOYhE2pLEOfcygYScwbs6JC595q3m4IY6YTW19R4shy29d9HHmJV7Sl+FyNy267r3u7pM9JCDE9A8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dSqaQ/TT; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-220c665ef4cso110954695ad.3;
+        Tue, 25 Feb 2025 18:44:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740537865; x=1741142665; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c+uXOnMgJWi0E4hYshfQG3k7XndxyGiWTLCTuagC7Zs=;
+        b=dSqaQ/TTu7O1v0144ArpZzJQ3wa0PKYQuCe1OLStuiEARdyWNPSHCnq+YrfUkc4/aV
+         UJr8tlu7ltrfvyJYp0UETP6BToAUBJCPJat1bRv6mADiX27f+22cuX4MSMRxHfEgm69e
+         qFFJLVEk81QdOmdXI+E/d2GuelrXvsMjUmUfUJcY9jZDoUoZU2C/4F/pS6gfXXDtS40l
+         EYXoLzWzKFUqjzFvaPuMrhyS/QvydDJyXDMG8MlCsrOwlYg4JS8GMrfP5Du6WWSBQufG
+         zMMIGmJutyHTXK+Y2AMOLxUI8s9xa8Xg1k6Npvv3XiynUGLQX/F1nyLy0WrZu92+70u8
+         D6dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740537865; x=1741142665;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c+uXOnMgJWi0E4hYshfQG3k7XndxyGiWTLCTuagC7Zs=;
+        b=PplP7+VhWp80YgcdI+HCw34W5CzWJHp5ongd18kLJF5skRxvjnPS8cFuBONAIenc/O
+         mV7JR4M8JxpOy9o+AGenizLY6/SWZfcagxRgRMclTY2XH5FP3zeiZdUK06YKhCcttdf1
+         DptWazB+L6SOpHQi22kIbbCuOBn8gOmcB5kVbu0VqMVdrxXZDa/OJZd3dUMSl6+TctsH
+         en1g8wBcdDtdwS4tSt8yVoEPWdYvGWEMOCQdWCh9UUUs40Au9bQ28a9X8laa/0xLC3Rm
+         RADx4dm9fRMVi79J23LQyXiBsG+7N5KbsPNK8rwfY5ZcXtgO3W6F7l5P7Q835ihKWOCs
+         /VEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvqdpk4qcBbRh0yctzFHEjBbNpw+FpR/vBnHw7e9vFQBBFGuuVI4p7YYKRhSAwb04ktUqB+nAK@vger.kernel.org, AJvYcCWwYsWENq+NPMmJtxVBopMz4gDioqXcXYjy4hHQgV3nXiOMAxNsCWuWiHoBqUf3B8n0KmOF0x23W09tM/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFsE9RlAgG5BpcRYtSFZj5RhkG/704G0To8dwoAIzjTyViBQXS
+	8ZdfdEJbdhsryeo1719we0AVajfbX67vPIb4yBHXJPHMiyBtW4Ev
+X-Gm-Gg: ASbGncvKBhL6OfzvpieG+nPnh18YBvKHFkYe17KvmqMg5u6orvTc4cLfT7KKvvCTjfy
+	RQNmM8ETNiAAZlcJGO2Jsbw8KPWrf1sdfsLhsBC9LQ20+DJ1fhYa33NASpkkoHPLvRyHEJi7HfL
+	Fh0zmbqRKvcOR5GxVVlHX8l8gxosg+HMVevC7wLe36Y2GGGLDFAwCnuTQ9nHywjOVQ71l7t03bd
+	gx63VaUebUU/je8sIwZ5fTbBrU6wYbLZ5kYc/pHJv9bU21Ul1O/wEoetLrxfGT1AJen88r7n8rB
+	Pjb8D3G8IR4izhQiQLLKGuecSbqyPIl9Z18WwXmC4A==
+X-Google-Smtp-Source: AGHT+IG1fRtUBVAiDJJoWtLf7D3sCM2/eafgzX/Bc/o0aMgJXWae3BE9C/HTxwJmx8C5S+M/UIUHdA==
+X-Received: by 2002:a17:902:e546:b0:221:7b4a:474b with SMTP id d9443c01a7336-2219ffb857dmr380479915ad.24.1740537865641;
+        Tue, 25 Feb 2025 18:44:25 -0800 (PST)
+Received: from Barrys-MBP.hub ([118.92.30.135])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a00ab82sm21797685ad.70.2025.02.25.18.44.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 25 Feb 2025 18:44:25 -0800 (PST)
+From: Barry Song <21cnbao@gmail.com>
+To: peterx@redhat.com,
+	akpm@linux-foundation.org
+Cc: 21cnbao@gmail.com,
+	Liam.Howlett@oracle.com,
+	aarcange@redhat.com,
+	axelrasmussen@google.com,
+	bgeffon@google.com,
+	brauner@kernel.org,
+	david@redhat.com,
+	hughd@google.com,
+	jannh@google.com,
+	kaleshsingh@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lokeshgidra@google.com,
+	mhocko@suse.com,
+	ngeoffray@google.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shuah@kernel.org,
+	stable@vger.kernel.org,
+	surenb@google.com,
+	v-songbaohua@oppo.com,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org,
+	zhangpeng362@huawei.com,
+	zhengtangquan@oppo.com
+Subject: Re: [PATCH v2] mm: Fix kernel BUG when userfaultfd_move encounters swapcache
+Date: Wed, 26 Feb 2025 15:44:11 +1300
+Message-Id: <20250226024411.47092-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <Z75nokRl5Bp0ywiX@x1.local>
+References: <Z75nokRl5Bp0ywiX@x1.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qikTurWgaXKSJzl33b3hRrqwBVvlvdRy
-X-Proofpoint-ORIG-GUID: qikTurWgaXKSJzl33b3hRrqwBVvlvdRy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-25_08,2025-02-25_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- priorityscore=1501 adultscore=0 spamscore=0 mlxlogscore=999
- lowpriorityscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502100000 definitions=main-2502260019
 
-Currently the perf and powercap protocol relies on the protocol domain
-attributes, which just ensures that one fastchannel per domain, before
-instantiating fastchannels for all possible message-ids. Fix this by
-ensuring that each message-id supports fastchannel before initialization.
+On Wed, Feb 26, 2025 at 2:00 PM Peter Xu <peterx@redhat.com> wrote:
+>
+> Acked-by: Peter Xu <peterx@redhat.com>
+>
 
-Logs:
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
+Thanks!
 
-CC: stable@vger.kernel.org
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
-Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Some nitpicks below, maybe no worth for a repost..
+
+Hi Andrew,
+
+Could you please help squash the below change?
+
+From 42273506ba00723151e3a08b4ffd3f2c303e7ccc Mon Sep 17 00:00:00 2001
+From: Barry Song <v-songbaohua@oppo.com>
+Date: Wed, 26 Feb 2025 15:22:17 +1300
+Subject: [PATCH] minor cleanup according to Peter Xu
+
+According to Peter Xu:
+1. Unnecessary line move.
+2. Can drop this folio check as it just did check
+   "!IS_ERR_OR_NULL(folio)"
+3. Not sure if it can do any harm, but maybe still nicer
+   to put swap before locking folio.
+
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
 ---
- drivers/firmware/arm_scmi/driver.c    | 72 +++++++++++++++------------
- drivers/firmware/arm_scmi/protocols.h |  2 +
- 2 files changed, 41 insertions(+), 33 deletions(-)
+ mm/userfaultfd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 60050da54bf2..9313b9020fc1 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1734,6 +1734,39 @@ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
- 	return info->desc->max_msg_size;
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 2df5d100e76d..2955e20f86bf 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1101,8 +1101,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+-
+ 	double_pt_unlock(dst_ptl, src_ptl);
++
+ 	return 0;
  }
  
-+/**
-+ * scmi_protocol_msg_check  - Check protocol message attributes
-+ *
-+ * @ph: A reference to the protocol handle.
-+ * @message_id: The ID of the message to check.
-+ * @attributes: A parameter to optionally return the retrieved message
-+ *		attributes, in case of Success.
-+ *
-+ * An helper to check protocol message attributes for a specific protocol
-+ * and message pair.
-+ *
-+ * Return: 0 on SUCCESS
-+ */
-+static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
-+				   u32 message_id, u32 *attributes)
-+{
-+	int ret;
-+	struct scmi_xfer *t;
-+
-+	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
-+			    sizeof(__le32), 0, &t);
-+	if (ret)
-+		return ret;
-+
-+	put_unaligned_le32(message_id, t->tx.buf);
-+	ret = do_xfer(ph, t);
-+	if (!ret && attributes)
-+		*attributes = get_unaligned_le32(t->rx.buf);
-+	xfer_put(ph, t);
-+
-+	return ret;
-+}
-+
- /**
-  * struct scmi_iterator  - Iterator descriptor
-  * @msg: A reference to the message TX buffer; filled by @prepare_message with
-@@ -1875,6 +1908,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
- 	int ret;
- 	u32 flags;
- 	u64 phys_addr;
-+	u32 attributes;
- 	u8 size;
- 	void __iomem *addr;
- 	struct scmi_xfer *t;
-@@ -1883,6 +1917,11 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
- 	struct scmi_msg_resp_desc_fc *resp;
- 	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
- 
-+	/* Check if the MSG_ID supports fastchannel */
-+	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
-+	if (!ret && !MSG_SUPPORTS_FASTCHANNEL(attributes))
-+		return;
-+
- 	if (!p_addr) {
- 		ret = -EINVAL;
- 		goto err_out;
-@@ -2010,39 +2049,6 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
- #endif
- }
- 
--/**
-- * scmi_protocol_msg_check  - Check protocol message attributes
-- *
-- * @ph: A reference to the protocol handle.
-- * @message_id: The ID of the message to check.
-- * @attributes: A parameter to optionally return the retrieved message
-- *		attributes, in case of Success.
-- *
-- * An helper to check protocol message attributes for a specific protocol
-- * and message pair.
-- *
-- * Return: 0 on SUCCESS
-- */
--static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
--				   u32 message_id, u32 *attributes)
--{
--	int ret;
--	struct scmi_xfer *t;
--
--	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
--			    sizeof(__le32), 0, &t);
--	if (ret)
--		return ret;
--
--	put_unaligned_le32(message_id, t->tx.buf);
--	ret = do_xfer(ph, t);
--	if (!ret && attributes)
--		*attributes = get_unaligned_le32(t->rx.buf);
--	xfer_put(ph, t);
--
--	return ret;
--}
--
- static const struct scmi_proto_helpers_ops helpers_ops = {
- 	.extended_name_get = scmi_common_extended_name_get,
- 	.get_max_msg_size = scmi_common_get_max_msg_size,
-diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
-index aaee57cdcd55..d62c4469d1fd 100644
---- a/drivers/firmware/arm_scmi/protocols.h
-+++ b/drivers/firmware/arm_scmi/protocols.h
-@@ -31,6 +31,8 @@
- 
- #define SCMI_PROTOCOL_VENDOR_BASE	0x80
- 
-+#define MSG_SUPPORTS_FASTCHANNEL(x)	((x) & BIT(0))
-+
- enum scmi_common_cmd {
- 	PROTOCOL_VERSION = 0x0,
- 	PROTOCOL_ATTRIBUTES = 0x1,
+@@ -1369,7 +1369,7 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 			folio = filemap_get_folio(swap_address_space(entry),
+ 					swap_cache_index(entry));
+ 		if (!IS_ERR_OR_NULL(folio)) {
+-			if (folio && folio_test_large(folio)) {
++			if (folio_test_large(folio)) {
+ 				err = -EBUSY;
+ 				folio_put(folio);
+ 				goto out;
+@@ -1380,10 +1380,10 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+ 				pte_unmap(&orig_src_pte);
+ 				pte_unmap(&orig_dst_pte);
+ 				src_pte = dst_pte = NULL;
+-				/* now we can block and wait */
+-				folio_lock(src_folio);
+ 				put_swap_device(si);
+ 				si = NULL;
++				/* now we can block and wait */
++				folio_lock(src_folio);
+ 				goto retry;
+ 			}
+ 		}
 -- 
-2.34.1
+2.39.3 (Apple Git-146)
+
+> Peter Xu
+>
+
+Thanks
+Barry
 
 
