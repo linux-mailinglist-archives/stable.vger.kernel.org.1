@@ -1,91 +1,143 @@
-Return-Path: <stable+bounces-119766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625D5A46E72
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 23:27:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EC8A46E8E
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 23:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C6A73ACE62
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 22:26:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 274CD7A5F21
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 22:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E108A25CC88;
-	Wed, 26 Feb 2025 22:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5D425D8E9;
+	Wed, 26 Feb 2025 22:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3cGzaSm"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rPKJSJNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB625CC80;
-	Wed, 26 Feb 2025 22:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA18525D8E6;
+	Wed, 26 Feb 2025 22:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740608815; cv=none; b=GYIrOFMHMGqAU2UxrgfBbTM1pRZL+hy8/+6TvtiXu3kXdc1tFZ7T7WbT7u5/HHu+wjaW4A9nZmNrLkhzrQWXMN3KNYoqlH69dqWFMTnS+6caWLEe2ddyE2lyrb4VYgruZGfNB8Odf0G3cpSY56B8jFAx69B5ahGnd/jJNx0fW/w=
+	t=1740608893; cv=none; b=sQFEEUDp4P2pGVY7nqo3pQSjZU8fG5QEqGVhCwT8hffKzZ0uhVcPAnjtPAiosJG6lnWeQdmL6kygZvQqq1iqxzLwS8ppnrM8yu4YuB1/b7OOPaztPDAA1798JUOsWug8f9WlS5oVmlGpkltvVQX8KQtTu4absgHdh02RfHrdMsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740608815; c=relaxed/simple;
-	bh=S5TieZVBNIX4Pm01SOcANxsHKiEhgQMhpaQC/of4bQA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rpPd7WG27zsn09tlDquMynfc9ipkxbkov8iSvOhHa9emfNVsIdCvhf19HEpHLM9emDmYFeMQ76FagNkwnaVjUJXANrU2cqOQ/YzFv/A7m+zEYoiAYctuO76TKvvsf8VyqRRRfBXD4yt3HguLqtICLoZ/00eqK5laHCJ2aHeM4KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3cGzaSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6575AC4CEE7;
-	Wed, 26 Feb 2025 22:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740608815;
-	bh=S5TieZVBNIX4Pm01SOcANxsHKiEhgQMhpaQC/of4bQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q3cGzaSmqZDe6gag31VlyicAPh8XBMuagX3JSEh8lZ6JwK9I4Wq8VR6t2KgLRCMU6
-	 oOeJeDmkIoEaqqv3I/OWwZoa9ftGoZFHqeBV+lHwqK9Wjkt+DI5pX6I6HnGQK3lfds
-	 GKxlMPYpYJ0GMRxW65cxkC36znzkT+UEJ0VijN5NyoWPGaez56ZoA3Z66GKZx2g3TG
-	 1hWApsiR3btZHhQrWRwk7hQdAb+HXfkZ0dw0XfO6zGFkzmSlYPUirliFeWndcME4Gl
-	 uOZJLXbScbSZiwEUAm2ENun1XSAhipbFH4t8YXdZhtQB7M2jCR0O9lhfQRY4IoQv95
-	 fu8FCQ4IZaJNw==
-Date: Wed, 26 Feb 2025 23:26:51 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, 
-	Huacai Chen <chenhuacai@loongson.cn>, Wolfram Sang <wsa@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	linux-i2c@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, 
-	Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, stable@vger.kernel.org, 
-	Hongliang Wang <wanghongliang@loongson.cn>
-Subject: Re: [PATCH v3] i2c: ls2x: Fix frequency division register access
-Message-ID: <pqcakeyxoktpsix6gnp7nhy4ykk7nyq2ay7o67nvdlaa7fxsyl@ezcisdrxiaw3>
-References: <20250220125612.1910990-1-zhoubinbin@loongson.cn>
+	s=arc-20240116; t=1740608893; c=relaxed/simple;
+	bh=BMeDzl1zxvxT6RodstGj8AYYyAqmq+zj0xWxdFig3kE=;
+	h=Date:To:From:Subject:Message-Id; b=Ztkt0QGI9TRiCsj2AHmQREb6SoqRZal4BgT0KO9VVtKoMrdSAH0vNyAh5WN3NXJ72H9lk6O7EJgB66vALB1g7xVJvI7R2TBxCwBzMbSkUdSYWi7uV1tMEhdrhqn7lzGN+PXZW1IfOInu/TKooSAVJcTy1hsGzznuhhFnB4O9fos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rPKJSJNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBD2C4CED6;
+	Wed, 26 Feb 2025 22:28:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1740608893;
+	bh=BMeDzl1zxvxT6RodstGj8AYYyAqmq+zj0xWxdFig3kE=;
+	h=Date:To:From:Subject:From;
+	b=rPKJSJNpcVJT+64akyKhnX6Azk6oDvRRLyLI8BfRuJxMznwzANgdxLUWIC4LWwekG
+	 EPv9WO9awftOY2g//Wz/sfUZaPH95Pwk2wteDq73DYk+vEWruOZt2LmdCitgU11Ndq
+	 Tndc2cee/2uMwv4Aon67Cnc9dDSkvqcg0NzITYG4=
+Date: Wed, 26 Feb 2025 14:28:12 -0800
+To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hch@infradead.org,catalin.marinas@arm.com,anshuman.khandual@arm.com,ryan.roberts@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-dont-skip-arch_sync_kernel_mappings-in-error-paths.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250226222813.1EBD2C4CED6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220125612.1910990-1-zhoubinbin@loongson.cn>
 
-Hi Binbin,
 
-On Thu, Feb 20, 2025 at 08:56:12PM +0800, Binbin Zhou wrote:
-> According to the chip manual, the I2C register access type of
-> Loongson-2K2000/LS7A is "B", so we can only access registers in byte
-> form (readb()/writeb()).
-> 
-> Although Loongson-2K0500/Loongson-2K1000 do not have similar
-> constraints, register accesses in byte form also behave correctly.
-> 
-> Also, in hardware, the frequency division registers are defined as two
-> separate registers (high 8-bit and low 8-bit), so we just access them
-> directly as bytes.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 015e61f0bffd ("i2c: ls2x: Add driver for Loongson-2K/LS7A I2C controller")
-> Co-developed-by: Hongliang Wang <wanghongliang@loongson.cn>
-> Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
-> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+The patch titled
+     Subject: mm: don't skip arch_sync_kernel_mappings() in error paths
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-dont-skip-arch_sync_kernel_mappings-in-error-paths.patch
 
-merged to i2c/i2c-host-fixes.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-dont-skip-arch_sync_kernel_mappings-in-error-paths.patch
 
-Thanks Andy for the review!
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Andi
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: don't skip arch_sync_kernel_mappings() in error paths
+Date: Wed, 26 Feb 2025 12:16:09 +0000
+
+Fix callers that previously skipped calling arch_sync_kernel_mappings() if
+an error occurred during a pgtable update.  The call is still required to
+sync any pgtable updates that may have occurred prior to hitting the error
+condition.
+
+These are theoretical bugs discovered during code review.
+
+Link: https://lkml.kernel.org/r/20250226121610.2401743-1-ryan.roberts@arm.com
+Fixes: 2ba3e6947aed ("mm/vmalloc: track which page-table levels were modified")
+Fixes: 0c95cba49255 ("mm: apply_to_pte_range warn and fail if a large pte is encountered")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christop Hellwig <hch@infradead.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c  |    6 ++++--
+ mm/vmalloc.c |    4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+--- a/mm/memory.c~mm-dont-skip-arch_sync_kernel_mappings-in-error-paths
++++ a/mm/memory.c
+@@ -3051,8 +3051,10 @@ static int __apply_to_page_range(struct
+ 		next = pgd_addr_end(addr, end);
+ 		if (pgd_none(*pgd) && !create)
+ 			continue;
+-		if (WARN_ON_ONCE(pgd_leaf(*pgd)))
+-			return -EINVAL;
++		if (WARN_ON_ONCE(pgd_leaf(*pgd))) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (!pgd_none(*pgd) && WARN_ON_ONCE(pgd_bad(*pgd))) {
+ 			if (!create)
+ 				continue;
+--- a/mm/vmalloc.c~mm-dont-skip-arch_sync_kernel_mappings-in-error-paths
++++ a/mm/vmalloc.c
+@@ -586,13 +586,13 @@ static int vmap_small_pages_range_noflus
+ 			mask |= PGTBL_PGD_MODIFIED;
+ 		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+ 		if (err)
+-			return err;
++			break;
+ 	} while (pgd++, addr = next, addr != end);
+ 
+ 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+ 		arch_sync_kernel_mappings(start, end);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /*
+_
+
+Patches currently in -mm which might be from ryan.roberts@arm.com are
+
+mm-dont-skip-arch_sync_kernel_mappings-in-error-paths.patch
+mm-ioremap-pass-pgprot_t-to-ioremap_prot-instead-of-unsigned-long.patch
+
 
