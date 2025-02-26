@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-119584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295FBA45281
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:58:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F14FA452AB
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A957E7A3096
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 01:57:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85A8F3A2AC6
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 02:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EB519D081;
-	Wed, 26 Feb 2025 01:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB81212D65;
+	Wed, 26 Feb 2025 02:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="T07tFiD8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXvAFZjw"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.113.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DE51A5BAE;
-	Wed, 26 Feb 2025 01:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.113.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EE11B0F23;
+	Wed, 26 Feb 2025 02:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740535077; cv=none; b=iXf5ZmKopwnbgENwjmS4LGEiatkOYILCAbH/8i3i36d2nIRRcS0iW4g9Cw4/xhD7kOzfNK7aaM0BLumgkmm0wzuKuqW5N3vla144NMw6+6oZaHFDe7fwVllS6MP0zixxwMgVESs+nkkvkcXxrPxcSzKweAF9WVe50fHmEPwV6fo=
+	t=1740535220; cv=none; b=HlfVWofR8d2ula6YqD7HiAKMwqFSXmP3sR7QuaZukhVCR6/Z+JKB5UlQCu6YkIgakM4J+F9dyO/IzPih12fMrcE3aFuM6v6XFmYv8cUaNGlWL8R9rUQt0GiYvCiW7CjQYp3j4sVjldZx6Cdif2kDas3WVgacEPoQHCqZP/sWi2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740535077; c=relaxed/simple;
+	s=arc-20240116; t=1740535220; c=relaxed/simple;
 	bh=A9ejl1O+HrZTCsb9J1JPq9c6GX36Sh+YgeDcLZTKdjY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tedtHhiK45hTw/ZRKm5QrrWFNVtAUZcXIogQswr380JNUwhcfslyRMQm8a26MBFti+FPGqTnGOUcC+WHdsLPO1CnsDsHT4orrmcngYYoaX+b8HJxfQOXNhIAkuVFBYzXmq6YxncdoPfFbHWCNk7MRJLNnGk5xcgVANFKf6VByGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=T07tFiD8; arc=none smtp.client-ip=217.182.113.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 7101B3E8A5;
-	Wed, 26 Feb 2025 01:57:53 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 9E3634023E;
-	Wed, 26 Feb 2025 01:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1740535072; bh=A9ejl1O+HrZTCsb9J1JPq9c6GX36Sh+YgeDcLZTKdjY=;
-	h=From:Subject:Date:To:Cc:From;
-	b=T07tFiD8k3l+F1ihE5Y+v9JsjZTKcsFlbU0Jt61MrK7i4nAcoTug0UrTZCcly7mnK
-	 zeIcc6jZR0Eu0Tc/fZWSIhjZMNhWUCOcxPKd64BKDicM44nJubx22MEMV2j5Ak3KDP
-	 nzdbYJt5BzXhy+FaPBgf0GyWFzEIi57WYVPclEZo=
-Received: from [172.29.0.32] (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 90274404F6;
-	Wed, 26 Feb 2025 01:57:42 +0000 (UTC)
-From: Mingcong Bai <jeffbai@aosc.io>
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NV0BNOUjBnSlMbHi8wdm9FV2xKTxJ5CXsB1h/rYNhuHJlKGCIBaK6pUFydjgHushWcTITFqZYQhgOQgoG1rAGZ7MEHSR2GQzW68ZswShPF9UtFH0FqGieJ4y4Bm2wiRDroKFr/Xk4RlbuVTfxcc5LYIHLeG8XwYpbinE2zOoO+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXvAFZjw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F662C4CEE7;
+	Wed, 26 Feb 2025 02:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740535220;
+	bh=A9ejl1O+HrZTCsb9J1JPq9c6GX36Sh+YgeDcLZTKdjY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=pXvAFZjwN+HM6hznjlhTfvY6FGpDbDbVafPkehz/HHhNLimgYKdPwBzZ59NU6tgOP
+	 eGEHQeGyNmgVv//FcrSJMQELzvTJU/0FpnqGjzxvbbOPJ1f3lL5iDtL9Bs7U+amPrr
+	 8f/G4l0FdIYX15nIxzkvcWrHJMZ5rx+xBpSmoQwlmeCZYULg8+XzOlKO8OvaywUSTp
+	 WVfZwfuIypVTtN/dWjng/CV6cECE/KjtCBCqwck4zpMFS2ecrNMyukcMGWLjipzUCJ
+	 v8EpknhRjcRlgatjQdI0p2r8iiO4LEZa/Qj+WT8hELKPLwUNV4UJVgTdvXCiHqoYjO
+	 z+/UcqS94lTbQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DBCDC021BF;
+	Wed, 26 Feb 2025 02:00:20 +0000 (UTC)
+From: Mingcong Bai via B4 Relay <devnull+jeffbai.aosc.io@kernel.org>
 Subject: [PATCH 0/5] drm/xe: enable driver usage on non-4KiB kernels
-Date: Wed, 26 Feb 2025 09:57:31 +0800
-Message-Id: <20250226-xe-non-4k-fix-v1-0-e61660b93cc3@aosc.io>
+Date: Wed, 26 Feb 2025 10:00:17 +0800
+Message-Id: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,7 +55,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAt1vmcC/x2MQQqAIBAAvyJ7bsEW9dBXooPlVkugoRCC9Pek4
+X-B4-Tracking: v=1; b=H4sIALF1vmcC/x2MQQqAIBAAvyJ7bsEW9dBXooPlVkugoRCC9Pek4
  wzMNCichQtMqkHmR4qk2GEcFGynjwejhM5AmqwmclgZY4poLtyloluJAwftrTPQmztz1/9vXt7
  3A+VGO45fAAAA
 X-Change-ID: 20250226-xe-non-4k-fix-6b2eded0a564
@@ -85,36 +80,17 @@ Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
  stable@vger.kernel.org, Haien Liang <27873200@qq.com>, 
  Shirong Liu <lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740535062; l=4506;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740535218; l=4506;
  i=jeffbai@aosc.io; s=20250225; h=from:subject:message-id;
  bh=A9ejl1O+HrZTCsb9J1JPq9c6GX36Sh+YgeDcLZTKdjY=;
- b=h1P5B1NsPwC752Eq4QwdLC/ar+9y08WwQAliWRHpeTAe2zGDgTLcx28irCVGWb4zz+NP3K1Vw
- UOoshffMQFlCNBgYA+DmqFPwV+PEJNnG+gn3zo/6ogCJXs4fFsl6D2A
+ b=p9NnNXi4quZqnKVTwOpkskDHDTalG5zIr5IMx0pjwy4MMb3Qu3KeRPlKHo+p2JevzvuVTYXEB
+ DJIL+X2VFm8AtaW88Z7RVxswmG86MttPx1Aixfi0/s/jptw8bLFwecj
 X-Developer-Key: i=jeffbai@aosc.io; a=ed25519;
  pk=PShXLX1m130BHsde1t/EjBugyyOjSVdzV0dYuYejXYU=
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Queue-Id: 9E3634023E
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.14 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	BAYES_HAM(-0.04)[59.07%];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[intel.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	MID_RHS_MATCH_FROM(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,429839446.qq.com:server fail,kexybiscuit.aosc.io:server fail];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com,qq.com];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,intel.com,lists.freedesktop.org,vger.kernel.org,aosc.io,qq.com,126.com];
-	TO_DN_SOME(0.00)[]
+X-Endpoint-Received: by B4 Relay for jeffbai@aosc.io/20250225 with
+ auth_id=349
+X-Original-From: Mingcong Bai <jeffbai@aosc.io>
+Reply-To: jeffbai@aosc.io
 
 This patch series attempts to enable the use of xe DRM driver on non-4KiB
 kernel page platforms. This involves fixing the ttm/bo interface, as well
@@ -210,5 +186,6 @@ change-id: 20250226-xe-non-4k-fix-6b2eded0a564
 Best regards,
 -- 
 Mingcong Bai <jeffbai@aosc.io>
+
 
 
