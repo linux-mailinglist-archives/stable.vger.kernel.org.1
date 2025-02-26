@@ -1,237 +1,153 @@
-Return-Path: <stable+bounces-119630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AF2A457F3
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 09:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3546A45814
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 09:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9331A3A529E
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 08:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1D393A746A
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 08:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6C41E1DEC;
-	Wed, 26 Feb 2025 08:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620591A7045;
+	Wed, 26 Feb 2025 08:26:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935F7189B94
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 08:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740557842; cv=fail; b=pENAq1HRAKOqIsC7DMg1zh95QcpJO1xIURQbyH6dQIfpdOiCJZf/AhlElTQXa7RYh9FOtynzY8ioRVGdq7RQGsd1nkMrnESDR8w0PrLxM6TdLdmIoDGirDhspg9YIChMCk4s5zw+y+HO1Dfqz12Cx9pjh/rAtTmbbZH7LzUa55E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740557842; c=relaxed/simple;
-	bh=+t3Rfd7RDKON2yO5rZGB352FR4CspQ1WuQ+EKQFl03c=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=c58mwPro4DgNdriZ/eYbfR1yrwdyHo7Pw2vzcHvPWgbrJmIj+DZPNgmosOKsnAUgJiXKAek+9DJhRxifbZpInyT+Ot47y1MtkrsfTXdY063VIPmTRYnD5c+Y0d/3/Z4/R0h5w8oW9/CE4E+BlEDo2q/f/0bQlu8UaKruiPVpEmA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q5GIoY010894;
-	Wed, 26 Feb 2025 00:17:01 -0800
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2174.outbound.protection.outlook.com [104.47.73.174])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 451ptmgfan-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 00:17:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sZeEmTnSEOAjCuLjIp5Iv4LM2E7WgC0oBuhdcItv90W/DB9hySQJ9+nzZvx8dXVy2WaivckcCtkaVdqPzoGWgehkUDWaB+6eU8cih/ZaUYtp54DoBFmKjYKFBzZbyHHBPDWxl/4tobawUm2+DbEG80cPat25RebFeN3srLAWF+tKSzlhFik5EipLTmZmJQ4hY0h9oErB6aKodfVrjiG9xl+GNIckIaA6U0J9NsnThGZTmWimj1lxMH2++oLjThkSyZUbWx3KiAo5x1kJuvrQB947wuyl2b7ZMyj9zUYutW0dOreCnedkCIxLLe5W4eUK7skjzlgWaZHBqDSGFKbQxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6LUf7bR/3Z04An9bJptoRwOrCMq8HdcjBM25et5d9J0=;
- b=tAP++n6LXTp/HdgR3IR6pwALNoX5gkX8sp5XLnxaC985P6mWvgUhfXTAPLbNxqBcI6qR2TvAV5wVGKvL9WrAYrvdHGNVk4hpPJzJwQ6rvUu6whS/DgQQxnwNdXwgQMavmLqAgvLJHMoJsprtgQtf9tsibE67QliQ/QAreWFcXdX8Gvf6YW1pzvpYnnD7jdWxwCXJE+/6lZzoblg5jYsflL2USF7pXz7BgNnLRYGxUQvbvVWgDcDkWeKvTSNbU4VIQyByJcbqhk1rM7gD5NxPna0lvJbmg69lIc/oWT+5EAOOZk5b1FBxP1Kh5BSJETnNkqVeXbZbCrszY09EUOkn2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
- by CH0PR11MB5316.namprd11.prod.outlook.com (2603:10b6:610:bf::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.23; Wed, 26 Feb
- 2025 08:16:57 +0000
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3%7]) with mapi id 15.20.8466.016; Wed, 26 Feb 2025
- 08:16:57 +0000
-From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-To: phillip@squashfs.org.uk, akpm@linux-foundation.org
-Cc: brauner@kernel.org, stable@vger.kernel.org, gregkh@linuxfoundation.org
-Subject: [PATCH 6.1] Squashfs: check the inode number is not the invalid value of zero
-Date: Wed, 26 Feb 2025 16:16:46 +0800
-Message-Id: <20250226081646.1983643-1-xiangyu.chen@eng.windriver.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0009.APCP153.PROD.OUTLOOK.COM (2603:1096::19) To
- MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519161E1E16;
+	Wed, 26 Feb 2025 08:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740558397; cv=none; b=Iv6A2elLINJ9Wp95Jf+1/HVKhvPcTIO0XeZE5aW+sZJlFUKo5CJUR1TP5xDgGUw72oydaOzuThSgykjCiLBskuwKrzyVaDsSZNkUh2s0IklTeOvVVWdjUkjXz6nu4eoTJ62yxNu0AxRbIbrCFrlSozujm9OOpORXqECjrBuNiwk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740558397; c=relaxed/simple;
+	bh=b4i82R2FmV9k63Z7EvIxIr6sSAnBi+ov3WqHM/p8D6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RcMLrBGRhcoCjYH9HQlpVMO/BFir+tD/t8ygLt33/3MYJymS92oNltmHJdq6iBgrEUnzX4xAP7KN/kz9QU6j+PPjTnWTEAktpxIWVIESXYLqYPvxqaZpMrLaaAYvW+UQfaTw6Ic1rWtXEHknTZgCppvh9ewtqzMZdRHxqQXglCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from localhost.localdomain (178.207.205.146) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 26 Feb
+ 2025 11:26:19 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: Dave Kleikamp <shaggy@kernel.org>
+CC: Roman Smirnov <r.smirnov@omp.ru>, Ghanshyam Agrawal
+	<ghanshyam1898@gmail.com>, Edward Adam Davis <eadavis@qq.com>,
+	<jfs-discussion@lists.sourceforge.net>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, syzbot
+	<syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] jfs: add index corruption check to DT_GETPAGE()
+Date: Wed, 26 Feb 2025 11:25:22 +0300
+Message-ID: <20250226082523.112081-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|CH0PR11MB5316:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d879a24-efdc-4a46-0096-08dd563df006
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|7053199007|13003099007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v4gaTDqgM22tDj2AMTQPvjXhCtQ6hllFmubmGIisbdMWO25xltRVDl5v+5Gl?=
- =?us-ascii?Q?6nWoZsMUmwcJyGu8YWVtThFi8qW9Fg9JgR+w5a0CayE7jK5SVlMiCea7y4hR?=
- =?us-ascii?Q?dM9/OxwNiA/WSJUW71Mz5ZQRF7nWWPdPlgH3FiQdWNNBOYZqh9Lnnw5bgl7H?=
- =?us-ascii?Q?auu6WovtnRTTJCJI78vGQAJ1WUOouJdI6yGlLSa8nczYH6X5lO8zCEzt64jj?=
- =?us-ascii?Q?UE6zmWzoLvKlF4yOOKX+LhmohTQlBUuBzk+aOP2X5PfJ6mrCivRanACTlMu3?=
- =?us-ascii?Q?yLoR+kv0T3L9PPLyPlDk3BNjykoQdiRq+1I/2CJF4YJbq19OrOq/gw6ngBrW?=
- =?us-ascii?Q?H+jOb1dj9dMKp/2ABVLTTnQ2qEAhfuGsJSENkXX5ki10LY+k8d8RXUva+3Ap?=
- =?us-ascii?Q?OdK9b5fuCddjkHi5xEFbIZJHETI2rg9SQZOAsipCrGCvEiV6B8zOEEhrolKM?=
- =?us-ascii?Q?bhiM7ET7BIUUWD3X5cq94tWS2tEtuIcMEfyXScKR4AVVSlEgzGxJ6xgW+ZXs?=
- =?us-ascii?Q?sRSvA+2dsW1Y+9pQZgv1tp0ANf/29Kwa1HHauaIpTGAzoJbFAiCXoqLpZPtx?=
- =?us-ascii?Q?4u1KkuBsNX7cA40yuUG3F15qTWpXGzzl0u2SQvZe+x4hwD8lCOf8xtseU4Ch?=
- =?us-ascii?Q?lBAWlWIX3Tutz4kfP9rgteCSIuUWmxsn+fmStztd3zmrwXB392FAnj1cCzEQ?=
- =?us-ascii?Q?DSpVk00M/p96SI7i8piAtdXaINK7FSEkAqY9soPZDXMrXWFB+psTtRddQKM9?=
- =?us-ascii?Q?zbvdv+ZyWb1F/41EutVpLphagm//igIRFzroVDO6BMCt4U9Rf9nOB6e1cCdw?=
- =?us-ascii?Q?9nr/JgUY1h6EYiJyS4kiJU1p+8yuxeT4W9UkL3SiNqjLY429atX7GOlPfwe6?=
- =?us-ascii?Q?NvUokyWBYUXMkwgZ/mMMFYexZr7ownf7m2t7bkhT3Dnj8F0Wwr9Fd0lnuXY2?=
- =?us-ascii?Q?FPQq3LC806v4Sr21qgMGkjPduvtYJpzc34LyPbypjxfGhqD+W954qMWL82MV?=
- =?us-ascii?Q?WXw7iMzxBhRjCjTONV5XXfgGRVLzD/b3crVoqoeLcoxaWHRltW1dexgESW3I?=
- =?us-ascii?Q?HwQTArby5yWplfpoZ/fnMXgskTvOCU6d+0L7XGRaNVl6FeHJZLX/7E4VPTWc?=
- =?us-ascii?Q?eB1X6AY4Ngyh/Q/+n3NzHHZCWBHNtQRoUybnLWTDC3P0vcdhdWsS73oETxjJ?=
- =?us-ascii?Q?gaaodCzqPo02FMiG1V+Ly60wtinZbIg7PM3wsyY0PvaUwWCySEAFU4hHrVKu?=
- =?us-ascii?Q?D9GPOcvgXMqvt7Sw98kVETEnvXbhAdrfhMBVmOmHk3Y5gWIm/7O6hURE2S47?=
- =?us-ascii?Q?vIn/fcG6b1kaTSj9DYSsMhnv1YZiGK3LzaPHzGicGWw6vVgdLJj7xpM9sp5W?=
- =?us-ascii?Q?giXYy6AD3StkcRafZoU+ha4C3wcm9zJJzGBuYUqGUnDpfJoLuTC9O9laLfcw?=
- =?us-ascii?Q?8nMNgDtMdStkVY5wS6iZT7N54wANKGy3?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(7053199007)(13003099007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?INwkDG1X16Oc/nxqflbX/ePyz/al4p9Vj+qNkpTXppNNk6/ztKjw/NbUhd2U?=
- =?us-ascii?Q?DPZtYX2ZUMr/7ap+Abew8Mp+Kog7CD6PBvKnBkjZEZd0BEqMoYI9T9opUR60?=
- =?us-ascii?Q?VVI2HFB/FFng/laC6plEyDgSLtvzkKmU3DzJf6Vgca5fXGBS4941UODtwU9Q?=
- =?us-ascii?Q?+Bq9zRZ29aXy0vomfWhT5q8fmp405ygfkBlNnYhFRI1XnZUi9GA2qxVV6OTr?=
- =?us-ascii?Q?rZAexxZ3sAmMITSLUV7v4brPA6S2+32XS7N+9VZMhEC9z7PR9s7FUIw5d+fy?=
- =?us-ascii?Q?gVPDoc+oA3OR7Hx+FX2whKWo8+bzq+z5NwKuP/ZcVnDutAwFxv6VJW/I26oH?=
- =?us-ascii?Q?7+Njhvlg1bl6hNGYCXceosrSe/ifTFkETKHAuP2CW8qRX3XtVYQ2FyJ4BSwT?=
- =?us-ascii?Q?Vs/RDI1tkYm0kaDRSwoSAYi6cGFnkCeFpSxtpFE7kt6/VvMLQOzJna5cyX4l?=
- =?us-ascii?Q?9z3Av4yb2ikPPu9dFSGBmmVuySzKwIDvK/k1vvQSDbl1Tcy3tkpljsyXUOKM?=
- =?us-ascii?Q?+zZTd4mbjbB7cxx3KxCS/yDtqvaCwN40qH14rjOjl4aZbdFMGzw1mgnCY8hK?=
- =?us-ascii?Q?Bup62NmT5qdZuvSI/3uDpjMwKYrmWXG0cpVhUqkG4FSaHl/CfeUA/EfPvKHj?=
- =?us-ascii?Q?oeUhrRJhBzD+cGTjXsjdaxkjmUfE1o8cDRvvRJkmQuQ4n0WfDd3ZsG4S+iTq?=
- =?us-ascii?Q?nrP0sFLPcEuhcuC3tMf9zdJzDhnsExQ258AZiFp3jJGWGxVX8uCJt7srqaim?=
- =?us-ascii?Q?VpNUZxdEmvVeuohuBwCfn2W/jiTZW73t8K0naZmiogQwU2CfgC0e/nHBlURD?=
- =?us-ascii?Q?PMbClZpf0ccxVMCYye/3igA9ozJtdn4FcNJL53cn/KFntjsvsx3p76nOIDzl?=
- =?us-ascii?Q?c3AGJaUNJoknvXgs5zkBrvqayp7LYQo7+NyDrmUFpURp3sH7Z+Uj0FJpaZSy?=
- =?us-ascii?Q?kySNCj6TX7KD/vTGYG2C3hgxswS7Qamg6OjYjPa0Fxegj8SJMqtbyL/3irSq?=
- =?us-ascii?Q?k2JC2xn16aySlO0iR0x//C6Q8q80vGb37CIo51edl1oIBNkqlD9UDFWlVBzj?=
- =?us-ascii?Q?vC9AEc0ivG3LvOy2ezjnhQGVI0v1rR1h3fCBygkkhjSNv0flsyt94a8M6H4C?=
- =?us-ascii?Q?jmV4Dw5KW9N9l9Fk33jWT1ywQPuTW4fHuOk5/vv1d5Ey8beZUNyA+iX90YNQ?=
- =?us-ascii?Q?nSI7pW/tCAUuXMNe4gop+f1dJ5mWfceFS0SzSOWm8b0fYUVqyR87+KFg+lNJ?=
- =?us-ascii?Q?fFN5Q5IyIDU1f1O3vzDF8i4gMnEIvtKR59SCC4gpf8fq3suq0bYoAeqo1A58?=
- =?us-ascii?Q?NFS4hkX1nuJKeSweTfQHELrVFC8KyBGYpWcw1SqfaKa1DwU2rExEjl90EBxh?=
- =?us-ascii?Q?RpL+XgvVxGdqc4O5qCiWB2GtIv7ZcVCchlXba+TvDO4SWEv0f3MJOCs5rl5P?=
- =?us-ascii?Q?jcYrZsoi6m9Cs/jDBgWrn8zP8w2PvHd1i4PToPnb8LkUgmQJJvQmZxjTNTC9?=
- =?us-ascii?Q?IcQ6wF3ofH/tilJ0GiuDdIGkhQp5xTMvn11nkbpscYBS0siSggT3Sk3mVr+P?=
- =?us-ascii?Q?NtY1LPj63wmobXI/abzhm0xwP+Hc6KXCLTWWJvuwrtHMlsYECXXiciehWLPQ?=
- =?us-ascii?Q?KQ=3D=3D?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d879a24-efdc-4a46-0096-08dd563df006
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 08:16:57.8299
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o0pXadc1kPr2UC2nY/GfGNXJTvXjGRH3sUZymLrDvTkSg3/bOMODjF5/1SLGjB4pA0J7hwX03fPvHjGWvusBZJm4uE+4aG8X/UUQHAoyDzA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5316
-X-Proofpoint-ORIG-GUID: wauQ-umKuzP9ZBnGDMKFkG8nSoIIUpLS
-X-Authority-Analysis: v=2.4 cv=UK8nHDfy c=1 sm=1 tr=0 ts=67becdfd cx=c_pps a=yneE0G6ieORTwLKR6pgPXw==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=XJTnSpgKjpJfBdNX:21 a=xqWC_Br6kY4A:10 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8
- a=FXvPX3liAAAA:8 a=1T6qrdwwAAAA:8 a=Z4Rwk6OoAAAA:8 a=t7CeM3EgAAAA:8 a=ec9I0riOweQitel0d58A:9 a=UObqyxdv-6Yh2QiB9mM_:22 a=pdM9UVT-CToajMN3hxJJ:22 a=HkZW87K1Qel5hWWM3VKY:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
-X-Proofpoint-GUID: wauQ-umKuzP9ZBnGDMKFkG8nSoIIUpLS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-26_01,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 phishscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
- malwarescore=0 impostorscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502100000
- definitions=main-2502260065
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 02/26/2025 08:15:02
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 191305 [Feb 26 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 51 0.3.51
+ 68896fb0083a027476849bf400a331a2d5d94398
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_one_url}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.207.205.146 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info:
+	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2;syzkaller.appspot.com:7.1.1,5.0.1
+X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.207.205.146
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 02/26/2025 08:17:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 2/26/2025 7:40:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+If the file system is corrupted, the header.stblindex variable
+may become greater than 127. Because of this, an array access out
+of bounds may occur:
 
-[ upstream commit 9253c54e01b6505d348afbc02abaa4d9f8a01395 ]
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:3096:10
+index 237 is out of range for type 'struct dtslot[128]'
+CPU: 0 UID: 0 PID: 5822 Comm: syz-executor740 Not tainted 6.13.0-rc4-syzkaller-00110-g4099a71718b0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
+ dtReadFirst+0x622/0xc50 fs/jfs/jfs_dtree.c:3096
+ dtReadNext fs/jfs/jfs_dtree.c:3147 [inline]
+ jfs_readdir+0x9aa/0x3c50 fs/jfs/jfs_dtree.c:2862
+ wrap_directory_iterator+0x91/0xd0 fs/readdir.c:65
+ iterate_dir+0x571/0x800 fs/readdir.c:108
+ __do_sys_getdents64 fs/readdir.c:403 [inline]
+ __se_sys_getdents64+0x1e2/0x4b0 fs/readdir.c:389
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+---[ end trace ]---
 
-Syskiller has produced an out of bounds access in fill_meta_index().
+Add a stblindex check for corruption.
 
-That out of bounds access is ultimately caused because the inode
-has an inode number with the invalid value of zero, which was not checked.
-
-The reason this causes the out of bounds access is due to following
-sequence of events:
-
-1. Fill_meta_index() is called to allocate (via empty_meta_index())
-   and fill a metadata index.  It however suffers a data read error
-   and aborts, invalidating the newly returned empty metadata index.
-   It does this by setting the inode number of the index to zero,
-   which means unused (zero is not a valid inode number).
-
-2. When fill_meta_index() is subsequently called again on another
-   read operation, locate_meta_index() returns the previous index
-   because it matches the inode number of 0.  Because this index
-   has been returned it is expected to have been filled, and because
-   it hasn't been, an out of bounds access is performed.
-
-This patch adds a sanity check which checks that the inode number
-is not zero when the inode is created and returns -EINVAL if it is.
-
-[phillip@squashfs.org.uk: whitespace fix]
-  Link: https://lkml.kernel.org/r/20240409204723.446925-1-phillip@squashfs.org.uk
-Link: https://lkml.kernel.org/r/20240408220206.435788-1-phillip@squashfs.org.uk
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Reported-by: "Ubisectech Sirius" <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Reported-by: syzbot <syzbot+9120834fc227768625ba@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=9120834fc227768625ba
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
 ---
-Verified on qemux86-64. 
-The test code from https://lore.kernel.org/lkml/87f5c007-b8a5-41ae-8b57-431e924c5915.bugreport@ubisectech.com/
-Test code would trigger a kernel crash (crash point at read_blocklist) and the crash won't happen anymore after
-applying this commit.
----
- fs/squashfs/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dtree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index f31649080a88..95a9ff9e2399 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -48,6 +48,10 @@ static int squashfs_new_inode(struct super_block *sb, struct inode *inode,
- 	gid_t i_gid;
- 	int err;
- 
-+	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
-+	if (inode->i_ino == 0)
-+		return -EINVAL;
-+
- 	err = squashfs_get_id(sb, le16_to_cpu(sqsh_ino->uid), &i_uid);
- 	if (err)
- 		return err;
-@@ -58,7 +62,6 @@ static int squashfs_new_inode(struct super_block *sb, struct inode *inode,
- 
- 	i_uid_write(inode, i_uid);
- 	i_gid_write(inode, i_gid);
--	inode->i_ino = le32_to_cpu(sqsh_ino->inode_number);
- 	inode->i_mtime.tv_sec = le32_to_cpu(sqsh_ino->mtime);
- 	inode->i_atime.tv_sec = inode->i_mtime.tv_sec;
- 	inode->i_ctime.tv_sec = inode->i_mtime.tv_sec;
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 8f85177f284b..93db6eec4465 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -117,7 +117,8 @@ do {									\
+ 	if (!(RC)) {							\
+ 		if (((P)->header.nextindex >				\
+ 		     (((BN) == 0) ? DTROOTMAXSLOT : (P)->header.maxslot)) || \
+-		    ((BN) && ((P)->header.maxslot > DTPAGEMAXSLOT))) {	\
++		    ((BN) && (((P)->header.maxslot > DTPAGEMAXSLOT) ||	\
++		    ((P)->header.stblindex >= DTPAGEMAXSLOT)))) {	\
+ 			BT_PUTPAGE(MP);					\
+ 			jfs_error((IP)->i_sb,				\
+ 				  "DT_GETPAGE: dtree page corrupt\n");	\
 -- 
-2.25.1
+2.34.1
 
 
