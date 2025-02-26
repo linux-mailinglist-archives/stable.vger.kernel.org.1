@@ -1,138 +1,159 @@
-Return-Path: <stable+bounces-119660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5D6A45D9E
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:49:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA91EA45DC3
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 965987A1D94
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:48:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E09162DDC
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 11:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8964621858F;
-	Wed, 26 Feb 2025 11:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EA2217655;
+	Wed, 26 Feb 2025 11:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bASzfkXc"
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="Y+3lYlte";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="34ZhmKcj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C268321773E
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 11:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D89216E19;
+	Wed, 26 Feb 2025 11:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740570504; cv=none; b=Wn7O3wGM/BujxIcJVYHix8z4UrLyb/O8ge68nmM9kICyZeSkgiqnF4hCiAPFAy5KCx5L86GIaymXfaTL0j4yR/iE/Sf7y3+e76sWl8oFO/A2xikjK8X9viMidCtyNzQpDIDU2mBOtMeMuC6pUXkhStFl7vuNXicZcmPSaIjCXCU=
+	t=1740570588; cv=none; b=DQ4KezbwnYoDOpYEWRlcK7N9Uk3YfJYM3dYpMtAtwN4Er8CHcZIHaWfSs7T41UrrT3XDYRMeiE2agX/PBpqg/O12Nk7ETmf9kkygC8de9bk0X4+yGEuAt2d6BJCMTSLK/NPuTp/eVfTTLB6oFi56u2gTH1WSQqWQPr1MQTeMDzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740570504; c=relaxed/simple;
-	bh=NluUjPQ1lcXSGNSXHKkI9g2tFhg8Z04LMSmLkLhacJg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RoUQ21dEE9/VuJd45ccvSs1Ig40Zc+y0o0XQW+gcJhcflvoxPbR+cmGj09u6/AJ91CPAlf2c8fgOLvCiy07tjlz2kNhekd/7PTAcG3Lg8/su63wNy/PeH8+125BGssIfJCgHXCaeYurHtsKdOsZOuS+yR/j+BkTzRTJ6A/F+D2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bASzfkXc; arc=none smtp.client-ip=209.85.219.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-6e65a429164so135575126d6.3
-        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 03:48:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740570501; x=1741175301; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BW2sDZbGgcaHae82O3nWDg50TbU9r5oNGjDpd8Bq0yg=;
-        b=bASzfkXcq6uDxnM3z9vcz2+aGdJN4NKqtup4GK2vxVtnyP+fgJVvuMkARXpYDOpwk8
-         IeNYqrWvf2DvIibDUErf/peL/5JR+W9MCyRE6yhQJnLeK3CKy/x59dcxKjwcuVNwsTyr
-         N9cvyW5v6B+ZL/nO3JO7WfqoA6zYqOA1Gors36mb/aD1SK1A9ZGR5+ql1u6NOuOR4ycd
-         0WPia3G/HXFZw2qyfV7W9si6O0hS9uu9fsHffeiDPgwtmSVeEunBS+hDcRkFsGS75+uv
-         1rnj3tcxDuZzymkpiv/xNQAcVzWjlsvlzDZdmerOMPVKVdt5LUA7ZhjyA+89UjSISl1h
-         vqsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740570501; x=1741175301;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BW2sDZbGgcaHae82O3nWDg50TbU9r5oNGjDpd8Bq0yg=;
-        b=R4ogr78Wn+on8ekgnr3l/FLD08JPYXwwvDGpP+vRPmdcdqES+B7HFtPxbkjTmmi+45
-         tF3/34Eb/4Mqopr5+TGYMYdmxuKuwTE8cNMETGHdaDv1DsYECi0aQlH/0njDtt38ufUl
-         d3FZpRHDdLDVqqa2GTHBZH/irJJSeSeEYzGcJFy/6qdyCDf1bPjwCrWnu1tGXatr2U6L
-         YHFPdDmZiOk+tcYitSDzXofdIW3M/V+KgIEPelHL8k9xXHgQHK+k0azrX2t+7kZOi7rE
-         33xbcQv3pLUrMFxTh0FToykU3tXjDC5M6C1GDVXNkHPAJKDZOR0S2oIPvaTQre2/bv3B
-         LmxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXXV7xSvxxNRL9aKlgsaU/kHbFeGMq9DrxWz0BFIG3Qhe+5nLNMXLvrUyZhywFRUEit4D73b0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoPGAaOHerznLXQMVBkOMOU83cBrgg1f1Ge9ssThza4s/sEH/6
-	CDM007FhW8hVeP7OwozvKnyLFbQ+qS/py+yj4cyMJu94amI0P8YvcT01pPOpRyb9Tu/NNSfZylL
-	1cjdySw==
-X-Google-Smtp-Source: AGHT+IHJUITF5zclnwhhjHbh20BakF71z5r6tgDhP0AK9kt5E28tAnRR/N6wBQQHHEoX4jc66xvFWRnCg9Rw
-X-Received: from qvbkh18.prod.google.com ([2002:a05:6214:5152:b0:6e6:62c7:9f79])
- (user=bgeffon job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6214:4119:b0:6d8:99cf:d2db
- with SMTP id 6a1803df08f44-6e6b01c6a01mr279510756d6.38.1740570501527; Wed, 26
- Feb 2025 03:48:21 -0800 (PST)
-Date: Wed, 26 Feb 2025 06:48:15 -0500
+	s=arc-20240116; t=1740570588; c=relaxed/simple;
+	bh=VpmMUY7wY/BS7Pk+f5B3auP2ZypMNupjv4juq8FsjbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O6xPQqH4BENk0jkBp2aS6mP5oUd8DfFCpak9yT7DPmyyiQgJH6SLhUMUKPmpJkM0puS/YWvndMdR5oCljm3OggHgMQEsO9iJ4BusZTZe9E0c70VA5Oj3ElHq9SpU6z8WKer7cPh406BGq1eNWiPRcjIKpy+vnWR7CCk8G61r6QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=Y+3lYlte; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=34ZhmKcj; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 8A77011401BD;
+	Wed, 26 Feb 2025 06:49:45 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 26 Feb 2025 06:49:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1740570585; x=
+	1740656985; bh=NUV6XQ7b1xL3JnX+3WnfxkiyKE8c72Tyb0qS0broJwE=; b=Y
+	+3lYlte5EmJcJWEt2f+7MS4Os164ocN+bPsGNY/MYlMGWulxvxPfJdtvl2fDv9ik
+	bTXyQScCciCHsr1LCCauwhbpedXl5l03/ApwRcwr/HP6sphRpH2K25aPLn0Qyqzy
+	VHaGthhvGNNbq84N/Sgo92KE45v7ywb1MFpm2n6CMvNmo0bLxVbQ9kAM7MpqRyj1
+	9HpUYZLFqQDqeQTcFuKPcHIxNUWxEq0GN/c2yxkP6aVVaKVz6fwr7f7gWOvAtcim
+	U+6MkxWj1bAxCgRaEh04GJfBOIx2P3Q1h5rEfFBHTATBapXynS8DeZMlC151RjhU
+	P7/QqIHw5MW9dO/+6R5Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1740570585; x=1740656985; bh=NUV6XQ7b1xL3JnX+3WnfxkiyKE8c72Tyb0q
+	S0broJwE=; b=34ZhmKcjT4ByBDZWw2nHG1CfFp0CXR9QQuD2S5LS7RiK1aRryuk
+	U9nq1PdX8Ng6nAo4KydzMu4ExzgBvxfxV+6uu6N4R5jbpSc9Awe7/X/9MT7bn+G0
+	inT4pSBexS4Dtnj/nvWpdx69Tv29q93HvCx8scG0MH9L1m7oA6sL9jlcmlKW/fYE
+	bvjcQW9QrsQhD2crdRf1+uzjFdlwArmRBPWJFLU82CJKHWii3WOGP+t2WdW1cR3g
+	/4/uf80M4/9+rwc+XQRljMCINZAHIidlqP/rXr/jWHb2pEHYOVACOjDG1h4cmQgr
+	r3MO3u+lSJfRghYCESD7zHbrzwT91VJ1FKw==
+X-ME-Sender: <xms:2P--Z0xjIADr4gf4kqZzE6XbVlHMc9jNVZdNJA85a7RR6x3I6qzHYg>
+    <xme:2P--Z4SrBuFVusf8FOAmIWtrw9nGZmL4KRzW-cPAzeVzAohRQu5-Izo0J3QFqxjLs
+    9Ls09odPimvYmbv5oY>
+X-ME-Received: <xmr:2P--Z2X3_1pSDndN3W4CcUAt6CG4kHsSzNyVcHPeaNNpTblmw2lW3vE5HQ1-ZlMm39uZrA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekgeehtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffh
+    ffevlefhteefveevkeelveejudduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepvhgrnhhnrghpuhhrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopegu
+    rghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepkh
+    hirhhilhhlrdhshhhuthgvmhhovheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphht
+    thhopehjghhrohhsshesshhushgvrdgtohhmpdhrtghpthhtoheprghjrgihrdhkrghhvg
+    hrsegsrhhorggutghomhdrtghomhdprhgtphhtthhopegrkheslhhinhhugidrihhnthgv
+    lhdrtghomhdprhgtphhtthhopehtohhnhidrlhhutghksehinhhtvghlrdgtohhmpdhrtg
+    hpthhtohepthhhohhmrghsrdhlvghnuggrtghkhiesrghmugdrtghomhdprhgtphhtthho
+    pehtghhlgieslhhinhhuthhrohhnihigrdguvg
+X-ME-Proxy: <xmx:2P--ZyiAQKOFRnxyOzpeqCouZL8yXR5O0Z1uAGDl2AzgePchztVPLA>
+    <xmx:2P--Z2BFvoasHzlVzsB6ZwmpavJNmNunVnf_ozZVmCxuQcwxCQ7a7g>
+    <xmx:2P--ZzJmvgbpt5_9r6nXFhFSK3m76UBuDJRveiN9f9YKuSIEO60fsg>
+    <xmx:2P--Z9AAmPPQje4t-8vfSh04lk6sCU__6b4u3BnCegBa-MQ6XPC8TQ>
+    <xmx:2f--Z-a27CiKqq2ElAYuuRFNsyxas3XqkH1PFWDhpzTloP3iA4ZefGzk>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 26 Feb 2025 06:49:34 -0500 (EST)
+Date: Wed, 26 Feb 2025 13:49:31 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: dave.hansen@linux.intel.com, kirill.shutemov@linux.intel.com, 
+	jgross@suse.com, ajay.kaher@broadcom.com, ak@linux.intel.com, tony.luck@intel.com, 
+	thomas.lendacky@amd.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	hpa@zytor.com, pbonzini@redhat.com, seanjc@google.com, kai.huang@intel.com, 
+	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, afranji@google.com, kees@kernel.org, jikos@kernel.org, 
+	peterz@infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, virtualization@lists.linux.dev, 
+	bcm-kernel-feedback-list@broadcom.com, stable@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] x86/tdx: Fix arch_safe_halt() execution for TDX
+ VMs
+Message-ID: <pvbwlmkknw7cwln4onmi5mujpykyaxisb73khlriq7pzqhgno2@nvu3cbchp4am>
+References: <20250225004704.603652-1-vannapurve@google.com>
+ <20250225004704.603652-3-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
-Message-ID: <20250226114815.758217-1-bgeffon@google.com>
-Subject: [PATCH] mm: fix finish_fault() handling for large folios
-From: Brian Geffon <bgeffon@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Brian Geffon <bgeffon@google.com>, stable@vger.kernel.org, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
-	Marek Maslanka <mmaslanka@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225004704.603652-3-vannapurve@google.com>
 
-When handling faults for anon shmem finish_fault() will attempt to install
-ptes for the entire folio. Unfortunately if it encounters a single
-non-pte_none entry in that range it will bail, even if the pte that
-triggered the fault is still pte_none. When this situation happens the
-fault will be retried endlessly never making forward progress.
+On Tue, Feb 25, 2025 at 12:47:03AM +0000, Vishal Annapurve wrote:
+> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+> to hypervisor via TDCALL. If HLT is executed in STI-shadow, resulting #VE
+> handler will enable interrupts before TDCALL is routed to hypervisor
+> leading to missed wakeup events.
+> 
+> Current TDX spec doesn't expose interruptibility state information to
+> allow #VE handler to selectively enable interrupts. To bypass this
+> issue, TDX VMs need to replace "sti;hlt" execution with direct TDCALL
+> followed by explicit interrupt flag update.
+> 
+> Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+> prevented the idle routines from executing HLT instruction in STI-shadow.
+> But it missed the paravirt routine which can be reached like this as an
+> example:
+>         acpi_safe_halt() =>
+>         raw_safe_halt()  =>
+>         arch_safe_halt() =>
+>         irq.safe_halt()  =>
+>         pv_native_safe_halt()
 
-This patch fixes this behavior and if it detects that a pte in the range
-is not pte_none it will fall back to setting just the pte for the
-address that triggered the fault.
+I would rather use paravirt spinlock example. It is less controversial.
+I still see no point in ACPI cpuidle be a thing in TDX guests.
 
-Cc: stable@vger.kernel.org
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Hugh Dickins <hughd@google.com>
-Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
-Reported-by: Marek Maslanka <mmaslanka@google.com>
-Signed-off-by: Brian Geffon <bgeffon@google.com>
----
- mm/memory.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+> 
+> To reliably handle arch_safe_halt() for TDX VMs, introduce explicit
+> dependency on CONFIG_PARAVIRT and override paravirt halt()/safe_halt()
+> routines with TDX-safe versions that execute direct TDCALL and needed
+> interrupt flag updates. Executing direct TDCALL brings in additional
+> benefit of avoiding HLT related #VEs altogether.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
 
-diff --git a/mm/memory.c b/mm/memory.c
-index b4d3d4893267..32de626ec1da 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5258,9 +5258,22 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 		ret = VM_FAULT_NOPAGE;
- 		goto unlock;
- 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
--		update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
--		ret = VM_FAULT_NOPAGE;
--		goto unlock;
-+		/*
-+		 * We encountered a set pte, let's just try to install the
-+		 * pte for the original fault if that pte is still pte none.
-+		 */
-+		pgoff_t idx = (vmf->address - addr) / PAGE_SIZE;
-+
-+		if (!pte_none(ptep_get_lockless(vmf->pte + idx))) {
-+			update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
-+			ret = VM_FAULT_NOPAGE;
-+			goto unlock;
-+		}
-+
-+		vmf->pte = vmf->pte + idx;
-+		page = folio_page(folio, idx);
-+		addr = vmf->address;
-+		nr_pages = 1;
- 	}
- 
- 	folio_ref_add(folio, nr_pages - 1);
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+
 -- 
-2.48.1.711.g2feabab25a-goog
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
