@@ -1,109 +1,87 @@
-Return-Path: <stable+bounces-119670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D53A45FB4
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:49:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2124FA460E1
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 14:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A35C1890394
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 12:50:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C5517AADF
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 13:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5F6207640;
-	Wed, 26 Feb 2025 12:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nzYbAjZS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A00B21D3F0;
+	Wed, 26 Feb 2025 13:27:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C3E2CAB;
-	Wed, 26 Feb 2025 12:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4090021B9D2;
+	Wed, 26 Feb 2025 13:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740574191; cv=none; b=bJBpYs/2FUlaC8tGjYd7enjd3RvDPoEWUeNu4vNRolsRex9waMT+ed09DUIF6oEwlazOCusmarSMJZFpeLlaSZk6rv7i8l6j/PvF94wFPdkZp6TNZo7Epurd1mVUW/lSpTQKb8HU5W866nVP5aNyM6ReHwhzEx1f8dh8cyEGGGg=
+	t=1740576460; cv=none; b=r4hn11LD4rSgrnMmtxYeW9n0i0VWDlJ/kUOmPkmaQkfoTTivp3j7p1QDN89yPvuIFzb6IPoSw/hTBDPPYZiojJ1j//L9B7aK6DhYf48UtdQiTEEOa3W48ECZDaJPn9svTR59K8ZGj7Qnjee555AKU5kewmxGsC9LtYzcuNpsips=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740574191; c=relaxed/simple;
-	bh=dITrfhYfSkTRNCxmowtpI3OCz2F+YfFl9lEZ/TAdmKo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F6aYL9YfTJIq+MA7oDtORBSHCZMpmoiiqWQz90vvI7MneaOfaqZ/LBNGPPUJTE51epHpQQS1vFmFxHzgsdXjR2furH/dfiMAzICvlh5VUJfRRaprFHM0orq5xWhwVe0A8j7iTAElUdY5rHHrldjYkPeIMBVpw3iJLin4L8YDg3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nzYbAjZS; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=QbUGY
-	YPk+RS02VOby7U4Hzj9A50xV95MDQb2+4Sc4fk=; b=nzYbAjZSLXuN1R9HpRduk
-	uTi7yN3OH3OxCDyQ4CIFx11vTfVfj80XAWeV+SMaQ+XPyqQ1ARm5DeX3Tp//JsCN
-	aHxstxpfZhN1iQqB4CoevWtcCaRIvk+FcVgQxLQ0JRpHbZ3F5GuDekN51UgNUfAD
-	RV8hafKmGoC8mBmuuzf+eY=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDX767UDb9nemzXOA--.48555S4;
-	Wed, 26 Feb 2025 20:49:25 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: devarsht@ti.com,
-	mchehab@kernel.org,
-	hverkuil@xs4all.nl,
-	d-huang@ti.com,
-	benjamin.gaignard@collabora.com,
-	sebastian.fricke@collabora.com
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
+	s=arc-20240116; t=1740576460; c=relaxed/simple;
+	bh=ZUwPDeojIM8ZR4NgP45zcqpCKyZ98Qjn+9vfobavu2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pMY+mMBujOO880Yu7eZVMEmTKYngRFEZk97PFWMd39cVD4dwTjYkJXGxhZ+KHDf64KUJeJdGsYGaT6Kg8c6qcnA19F4GnNW9o6EppF7zKTHzCuRxHMCgLIgIyzGdU9FVHG1dJx52u+nzb0nx9f+sbX1jvZdYVeeoBkHs//bT2hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: yegpXBg+SRS+TSD/v7PD7w==
+X-CSE-MsgGUID: ojROo2MVTW+qkYDKU4N3ug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="45332309"
+X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
+   d="scan'208";a="45332309"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 05:27:38 -0800
+X-CSE-ConnectionGUID: 864gnXZ8S86Vm4AYh7hhGg==
+X-CSE-MsgGUID: DTuR2PDQSxSv0zs4Wq/Iow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="117624304"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 05:27:36 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy@kernel.org>)
+	id 1tnHRl-0000000FKmU-0LKu;
+	Wed, 26 Feb 2025 15:27:33 +0200
+Date: Wed, 26 Feb 2025 15:27:32 +0200
+From: Andy Shevchenko <andy@kernel.org>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: geert@linux-m68k.org, u.kleine-koenig@pengutronix.de,
+	erick.archer@outlook.com, ojeda@kernel.org, w@1wt.eu,
+	poeschel@lemonage.de, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] media: imagination: fix a potential memory leak in e5010_probe()
-Date: Wed, 26 Feb 2025 20:49:22 +0800
-Message-Id: <20250226124922.3601755-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+Subject: Re: [PATCH v3] auxdisplay: hd44780: Fix a potential memory leak in
+ hd44780.c
+Message-ID: <Z78WxDiEIaYSaQfz@smile.fi.intel.com>
+References: <20250226101213.3593835-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX767UDb9nemzXOA--.48555S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KF17GF4kZw48XrWUXFW5Jrb_yoW8XF1rpa
-	1DJay3tFWUKrsFqwsrJF4UZF98Kw1S9ayrKrsrCwn3u3s3ZasxJw45JFy0q34rJFWIk3W8
-	Xr9rtF4rAF4jvaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqA0Abme-B1eUmgAAsN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226101213.3593835-1-haoxiang_li2024@163.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Add video_device_release() to release the memory allocated by
-video_device_alloc() if something goes wrong.
+On Wed, Feb 26, 2025 at 06:12:13PM +0800, Haoxiang Li wrote:
+> At the 'fail2' label in hd44780_probe(), the 'lcd' variable is
+> freed via kfree(), but this does not actually release the memory
+> allocated by charlcd_alloc(), as that memory is a container for lcd.
+> As a result, a memory leak occurs. Replace kfree() with charlcd_free()
+> to fix a potential memory leak.
+> Same replacement is done in hd44780_remove().
 
-Fixes: a1e294045885 ("media: imagination: Add E5010 JPEG Encoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/media/platform/imagination/e5010-jpeg-enc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+The v2 was already applied.
 
-diff --git a/drivers/media/platform/imagination/e5010-jpeg-enc.c b/drivers/media/platform/imagination/e5010-jpeg-enc.c
-index c194f830577f..53e501b5ac0a 100644
---- a/drivers/media/platform/imagination/e5010-jpeg-enc.c
-+++ b/drivers/media/platform/imagination/e5010-jpeg-enc.c
-@@ -1057,8 +1057,11 @@ static int e5010_probe(struct platform_device *pdev)
- 	e5010->vdev->lock = &e5010->mutex;
- 
- 	ret = v4l2_device_register(dev, &e5010->v4l2_dev);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to register v4l2 device\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to register v4l2 device\n");
-+		goto fail_after_video_device_alloc;
-+	}
-+
- 
- 	e5010->m2m_dev = v4l2_m2m_init(&e5010_m2m_ops);
- 	if (IS_ERR(e5010->m2m_dev)) {
-@@ -1118,6 +1121,8 @@ static int e5010_probe(struct platform_device *pdev)
- 	v4l2_m2m_release(e5010->m2m_dev);
- fail_after_v4l2_register:
- 	v4l2_device_unregister(&e5010->v4l2_dev);
-+fail_after_video_device_alloc:
-+	video_device_release(e5010->vdev);
- 	return ret;
- }
- 
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
 
