@@ -1,361 +1,208 @@
-Return-Path: <stable+bounces-119734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D17BA468E9
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 19:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C08A46A15
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 19:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42EC1173BAD
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 18:07:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B1716D4C5
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D23223373D;
-	Wed, 26 Feb 2025 18:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0714E2356D0;
+	Wed, 26 Feb 2025 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ejtr0WiV"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WumaBWk5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2081.outbound.protection.outlook.com [40.107.212.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D827233723;
-	Wed, 26 Feb 2025 18:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740593166; cv=none; b=E1S++he4OiYGLfcpmCbk+vNcR/5j9w/XaX35cjq9xuFDydJETa1IKAz3NdhyIcOfFI5kJ2+jLyj8z5qPOW2WuiuRRsUMgUS+7p6IDE17UB62D4q7x3cUBV+Z5EqOOf7xo8/2J57PxGyOLLY6sT41+OJN1UgpBw2u8SWT9La4MN0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740593166; c=relaxed/simple;
-	bh=boaa1rKuGkNF7eS2wMk8VzWuW0fhOvb8sYxWDEMTkvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oBNWvFoRATQPdu5zTuNqX9E7MVCihqkBk29ZZvDbTSfdtPx0BeTxGyWR5Mqb/yHY+HHt8TgPpk4qwOiw/9qajnhQxtK3DTLGt3OvUSupEreGCedKh8+UQWB43dVAhu/pMbCAGVfjAtKi56Z58I0malr/4Qyyo8ewW1vwdxw0dBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ejtr0WiV; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740593164; x=1772129164;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=boaa1rKuGkNF7eS2wMk8VzWuW0fhOvb8sYxWDEMTkvw=;
-  b=ejtr0WiVyhnPoQpFF8JHPoiMasIr6OkD96tHeQw2Ct85381+45K96LO3
-   ZUkXIkbO0/hNZedkBVg6i4HeYAwixK2FLaG9zAramaVNweuBa8v9QI0hM
-   vNe6+bVz/c6noiw/7ImDPopD89XWPiFMZ0el/EZylikViFEJ8HQ4Gqvu5
-   /rGQ9mLTYPUvubgrRoFB30TztGfPJnXC34/2AwJ4ZPxaitB2He/qOTC76
-   KAH/TJy3CH211LF1QlBmpz8/VrGEfkLTrcmlnB+QmFRXwM9EVb7jBJ6jF
-   +GRikMhTVg4GoqoyQVURJ7VmkT+ypCDuSEiswKZK428SL8v8K8g2br+m8
-   Q==;
-X-CSE-ConnectionGUID: +AYIuAijQaqluvqi8kneQw==
-X-CSE-MsgGUID: KMOPhjv5SduZxzjnlsXpkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="41653946"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="41653946"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 10:06:04 -0800
-X-CSE-ConnectionGUID: 5peu6zjNR4eePUvGme2ghw==
-X-CSE-MsgGUID: QqTddDsIRJy4z9CjhFwz9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116641759"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.245.27]) ([10.245.245.27])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 10:05:58 -0800
-Message-ID: <cc402132-2e82-41d2-8981-f1b9a795c1a1@intel.com>
-Date: Wed, 26 Feb 2025 18:05:55 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54331A317C;
+	Wed, 26 Feb 2025 18:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740595676; cv=fail; b=nrLwkpo5J292xE2QnBtHiD/7aLQMCL5QGvZY78hG+ZOln3lSS/7Pt0MPk/PIPvA7FxMPqy12iAJg/Aklyamt83N6QLI9Vfa1rpZEBOhFDWkpHASHZreYQFG/9zOmxWPbnrW5iFmt/1JPkJUaqoyGloacb8nx7kLJHkCwtWXiJwY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740595676; c=relaxed/simple;
+	bh=BjZbihMkvhIjUkU1Gc7tWFdZY5lrsilh388kiQRYhCs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rlr8Otkrn1j5GqlHS+hIwCH5vRtROVLJlggSL5vLAFQzWzki8j/l7It5um9tleE/Bs22Qur4zCRr6J0amaIGd0nlDXp18Mn7ZUqwuAYE/S58xsEKeX7TMev8xJJX6eynJoazE/G1AF3WHH6pIaO3eOS4IG3lM89TIfCG5zSa9rE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WumaBWk5; arc=fail smtp.client-ip=40.107.212.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GayRiyoArYhfOA3wy9QwEFTqMmNDhiRTII6BwnG5AXwwA1ocL1Nat737Thpp3DjmgV1moqJkcZYMVsYtkQL5RN/BeQgRuZw64bqIytcdbjC1y0nLhud/rqCvuFPHMG4zu8Zrab8AEYYmqDNci8xqkC/rY6ekDzFImumczMqECyz0H7lrR66L8RwysflLryXsvyFfwJvFHvNTOGrIugv5rR27k4TfjP74FsXtEKyKpSb/g//RpskbUfurXCZGeGsmoFETg6A7k5ruf22/SKb8AB7OKidJm3iFfrYEZ7deJ43O3XX5bBuJejP4SJoDoPjQtUkWVny9qppJv5u5K1o50Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3yOxEDnsDskv3juzcK+EYT613AdVeyzWA3PEv9FVfec=;
+ b=Axv5t9/QdqkfSZDG7D/HnrjL0mx7GkRTLMTFoFc4wy3rwg0AoDjEF2P+jsalJ8kyUK2RslheL3uRgQIG+VnEFxmuSir9UibRyY67AHOzkQxEwBHJeBerqxYIOU/te8rzyplKUDBjtjDLRK1VvdLxzYy2tN/vwCKwqk33b59XC1xydaex8BedTKlNFdZR8/byn+5ei4xSRMcyp5AUvZy1CJGytNK9ut3wLFp0vOXn/rsPhyJverkxwDWn1y6plSB+gstBKXXKoSMNO61tE0HMo+ge2Meu+JFFxX2qfvVQoSxHgGSt5PmbYGYDwmDEyzV/v0cEkDAdzr/2tosoUrOZ4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3yOxEDnsDskv3juzcK+EYT613AdVeyzWA3PEv9FVfec=;
+ b=WumaBWk5t/kCesdH7EkA/KzBukMesp+V9OSa+0Tr3UE+YMxyzJXk9pihCz0hTA4dYNsFbcw5aHoRfVGxhmoNu2qOkw/RlXr6CafVoVuLvGqQmtZ6ClZq0WDdd8gcHPGy2yn+lazpQQ9Cd0kZ2TS6dwsviI1kvJFdAgRZ7xR1Jj0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
+ by PH8PR12MB6771.namprd12.prod.outlook.com (2603:10b6:510:1c6::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Wed, 26 Feb
+ 2025 18:47:51 +0000
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2ed6:28e6:241e:7fc1]) by DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2ed6:28e6:241e:7fc1%4]) with mapi id 15.20.8489.019; Wed, 26 Feb 2025
+ 18:47:51 +0000
+Message-ID: <749a1601-fa9f-468b-92d1-1a1548a08471@amd.com>
+Date: Wed, 26 Feb 2025 11:47:48 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/amd/display: Fix null check for
+ pipe_ctx->plane_state in resource_build_scaling_params
+To: Ma Ke <make24@iscas.ac.cn>, dillon.varone@amd.com, Samson.Tam@amd.com,
+ chris.park@amd.com, aurabindo.pillai@amd.com, george.shen@amd.com,
+ gabe.teeger@amd.com, Yihan.Zhu@amd.com, Tony.Cheng@amd.com
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250226083731.3584509-1-make24@iscas.ac.cn>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20250226083731.3584509-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YT1P288CA0032.CANP288.PROD.OUTLOOK.COM (2603:10b6:b01::45)
+ To DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] drm/xe/bo: fix alignment with non-4K kernel page
- sizes
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, jeffbai@aosc.io,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Alan Previn <alan.previn.teres.alexis@intel.com>,
- Zhanjun Dong <zhanjun.dong@intel.com>, Matt Roper
- <matthew.d.roper@intel.com>, Mateusz Naklicki <mateusz.naklicki@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>,
- Shang Yatsen <429839446@qq.com>, stable@vger.kernel.org,
- Haien Liang <27873200@qq.com>, Shirong Liu <lsr1024@qq.com>,
- Haofeng Wu <s2600cw2@126.com>
-References: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
- <20250226-xe-non-4k-fix-v1-1-80f23b5ee40e@aosc.io>
- <wcfp3i6jbsmvpokvbvs5n2yxffhrgu6jyoan3e3m6tb7wbjaq6@tbsit7ignlef>
- <Z76WIgGvvhlbYl/j@lstrano-desk.jf.intel.com>
- <af689d4b-204d-495b-a7e8-0f7632b43153@intel.com>
- <Z78vTt8Ph9opzJmf@lstrano-desk.jf.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <Z78vTt8Ph9opzJmf@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|PH8PR12MB6771:EE_
+X-MS-Office365-Filtering-Correlation-Id: 149ab81b-5a5b-4d55-dccb-08dd569612a7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SWZrcWxJWTIvS0dqdVN2ckhMUSs5enNsaDZsTHE4cVRNOEdmZHAydERiVkYv?=
+ =?utf-8?B?MXY0UHlnSklsZUtqMlJuK2Y3Wm9nckFyQnVtYncxU2lrVU8ycmVHaGhsUGky?=
+ =?utf-8?B?K1NLalhFWERkKy9HUDhEdTM1STlodFUvOXg1UHdhcnZKT2RieEhmV1dKMEx6?=
+ =?utf-8?B?NGVHQXE2T2JzMERaSUI4Y0pFVk1jL3I0NjdNamRFVnRobjRhK2dNeVpxWWFC?=
+ =?utf-8?B?SzdKNk1tclFMUjA5L240UDZzR2Y3T1ZFczJyL0hOYW83eGtnUjdKZWZ0bkVo?=
+ =?utf-8?B?anVFalgvR1Z1M2pJbmMrczVpR0t0NTNsaCtKSTkrQWs2T2Q5aTgxMEk1K2Jz?=
+ =?utf-8?B?YTFtMVVQcWorZXR1WEFrOU1LM0VROVFZVm5DRVNFeDN3QWVtOHBCa3VXM1lr?=
+ =?utf-8?B?MnJYekVWcGxaSUt5SFlmMWozc0cvTGhnaDVudTVERElmb1VrdDhTSm5OemRP?=
+ =?utf-8?B?TVdIREFZSzJWUG1JRFdaRFFEeDZraFRlTjlWLzA5Sy9RdXdsR3BmQU9QVHRU?=
+ =?utf-8?B?NnRGUG5mWGM5dlFMWUd2SXMwOUg5MTJhdHovMThFUi84cHpiT1FISURnaWpD?=
+ =?utf-8?B?cWRHYnFlMUVMdm9KS3VXaER3NVlvUnVNUjRXTWZPTXZNQXB0bVR2NnlsamxJ?=
+ =?utf-8?B?eENGR1E2YmpOMVlXU3c2d1dYZHdjVzU1OHB5ZVNRWGFZNjhacW5HMVpSdlh5?=
+ =?utf-8?B?Rm05RXl6TVNUWW0wNkdWZ2tFNGZhenNGU2dLR1NDQlROcktIc3J0MW9vVnNN?=
+ =?utf-8?B?eWxrMWhVWWE4eEViTzhNSS9nZHJhWUF5T3BGbFhlODdtREE4dlZOWEhXN0xG?=
+ =?utf-8?B?aVgvMmlzc0ZkRXRpckdoeTBLMFprM09DVEo0enBmc3crRjNqbTZKVWtOM2VS?=
+ =?utf-8?B?eGg1RW9uNENMVXRpVElNNjAvOVhKdWgyUEZ1THljbXlCTjJYZFRIeGw0TjdS?=
+ =?utf-8?B?S1czcndzZEZMZWxvTmljQ3JuSVhaQ1dpTCtHOWJnOTJDVWQxbXM3OVpLSEkw?=
+ =?utf-8?B?aWJUdEttY3BLVzZ1anBtaW5yajA5N2RmTU9oZXF4VUNWaVYxeDBlUVBuL1d5?=
+ =?utf-8?B?Tzk4bmZTSlZhbHdwTXphN0l4NCtBMWlqNDhVOWd5RjNGNnNCTUIwMkZMR0Vh?=
+ =?utf-8?B?UTFraDVCSUpJdlB4akZrd0ZMY0FkNXIyME1hZnNaN0dId1NwTnZSRUE2cWZK?=
+ =?utf-8?B?MzNCcS9RRis4T0lwb2RMVjMrdjh0bEdmUVRKVklqNWNNbmx2SU55dmZCRjJX?=
+ =?utf-8?B?U1ZZOURlUkRFTWt3RTA2Zk9lcUlKWEdmTzduZVMvUmZXT1dkMlArMGVMR2R0?=
+ =?utf-8?B?R1VDOCtOb09HWkd1aWRxM0NlZWlUZjdvcGF5WXFVblIvZzhEV3Vua3BySTFz?=
+ =?utf-8?B?OTdJSEVTRkhpbWZ3RFhPV2I5Q0dFN2wxN0NzNkJjaXVsdjR3TlFLVFg1ancy?=
+ =?utf-8?B?d1VaZm9yV01DbDArcFZoeENIcjNIMjh6aWVNeG5tZURuR21tdnQ0MTEvWFBw?=
+ =?utf-8?B?UGU0aXZ5ZlhMYWVkTTRXN0E3K0JJVEIxNHlibjlqaWx1a2cwSG10RTEzSG55?=
+ =?utf-8?B?UnA2VzlxcEFmbjYrb0VTdTh2bjlOb0hJVjBnRGRFVzM0bUhreWlhMTlIaFhj?=
+ =?utf-8?B?cjVVNUtaZ0FhamZ1SjZhSDVZZ0l3WndWK2U1VlpZS29IMFdhem5CRzZNN3ZX?=
+ =?utf-8?B?YzZXemxUNkRLMW9ndzhreDd3UTYyUEUvMnBxNE9aRks5M3BsejlZbFBObkhU?=
+ =?utf-8?B?bm1TVU1MOGRQL29uZlBndEpNanFCYnc5VUFqNFZVQXcxUnQvaTFvc0JwUVhD?=
+ =?utf-8?B?SXowNW5zM3F0NVZVOWR0b2lqZnBjODJOVE1YQUNPSTl2Uk1KeFlCWkZtTHlS?=
+ =?utf-8?Q?Uph7w5N54nhii?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB8476.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WmhhZzNLbkNVSWNMOHhWdXRGQlRQMVF0RlkzdG1MazgzV0s1eTdlZlJsQ2Qx?=
+ =?utf-8?B?a3NtZTFtRkJzS1NmYy9aY29oUjNkek9tTXdjK2VRR3RSSUd6aU9kTEs3bXd6?=
+ =?utf-8?B?ZlBtaldTLzRuc0tFY2RZU0R3TEhFdnMzTUpIcEZrWmtXWUZaWFlmSW1mcWs4?=
+ =?utf-8?B?TzlRQ28wb1hnYUd1TjI2N203Y0RmM0xiVG1oeXRHMTZzUkl4SGk4RlBPWmUw?=
+ =?utf-8?B?Z1J2UXdOTmVjL3c4YWlONFE4T1ZwSXBrNVF2T3pMaVVOVzI1eUQyeC9Dc2J4?=
+ =?utf-8?B?OVBOV1N1bDJQRmFiNmR6NnlFVnBxNGY2ZW90WitZR3pUSGpBQ1YyQnRlTHN1?=
+ =?utf-8?B?NTE0YitHblJpT1JCejl1UktJTG82NmhEeUU1c3NLVW9MMWgyVGFpWk9rUmRh?=
+ =?utf-8?B?Ym94aUtmc3dnS2M2Tll4ZE9sSEJkaHhNYjRPRThXTk5Ya0g4c3ZCdGUwUnN3?=
+ =?utf-8?B?NVZqWDVrcmZvQkpJNHZLSUFNQTRBQXpyTHNhdmw5Nm5JNnE5cUtPcDZTNW55?=
+ =?utf-8?B?Um16MkE1TCtndVhlQ01XVWp5ZVVoZ0l3c3ZOUmRUQ09NRHJZUkk5SS9kSi9K?=
+ =?utf-8?B?eTZyWDN2WHhUdWJ1UHplVExibUFVM0k4dklBRGRUeWJnR2IzTmJ1R1pBSDhl?=
+ =?utf-8?B?SkVPczBVRUxDMTNIR01UUXZlNVl3bGtST0tIOXdMeDYvYWlqVDN2ekRSZXkv?=
+ =?utf-8?B?b2dWbXN4RElNTWJibGZnNWhISkFyeXpsVmtoeGszWjVEdUlPTGNuT01NaG13?=
+ =?utf-8?B?alRZcXBPcHFNaFg5cDE0eVltL2tCR3hkckZpaFZRNjg0WDJxcjJyMkgrTmNr?=
+ =?utf-8?B?bU50R0dqK0tUcEVTbTNGVFdCK21HeXY1WTNXQjZDK2NXVzh6bnM3YTEyRGNl?=
+ =?utf-8?B?UXJrYy9OL1JqSExTZTlRbmRYY3dLN2xBOURDR1BFOVZuRUVKMjZ4ajBKTEtL?=
+ =?utf-8?B?dWF0ZTcxcTZReVNyeWpzL0c0c3JoZ3pXcGlycXE2Y3MxMHJ4dkJVTEtWN0dM?=
+ =?utf-8?B?L0xlU2dsb3ZzQTJGM2ZzYm9Scm4rL0xWVlZhQ1hqQWl0QXROU0Y4cVBiOGxM?=
+ =?utf-8?B?d0Mrb0w5SnJzTE40K1diQ2NqeERDZHB3bjFRWTlERC9hWGNobElLY3hISWVw?=
+ =?utf-8?B?ZmxDNHkxSlBJVHlzMEUzMjZmaW5ObFk1YVE2UHZyWlIyLzRQSE9weE9TL3FD?=
+ =?utf-8?B?M1RQL04weWFrK1Q1cmYrVzQvdktXeVBqVGgvQ3dvYlVrb1F4UDk3OGRvdCtj?=
+ =?utf-8?B?M2FUd3o4ckJTVHdTRGNCZWE4M3pBNmM4NUpXYVVOU2l4dlVBT2Rkb0Izckox?=
+ =?utf-8?B?cE5ZSjZkZnZ3ME5JZkRqSkhnRTV0aEFLSGhzRCtFUG5BcE5RNFRoNkNvQmZ5?=
+ =?utf-8?B?bW9VU0g4RHdMRTVZQ3pFSU9pZkkvUmNKeVZIQWplRnBvWUQ2dFRuVlljY3Vt?=
+ =?utf-8?B?c3pWUGlsbFR1dnlDeUNwVFhWaFV1dlRKcmIvR2NhZklBTDV0ZzJnNjNZd2xv?=
+ =?utf-8?B?M1JjbzhMeVR6ZkNkMGE3dDJZZ0diaTFHRlg3TjFQRVFSS003S0tSbnJOSS9h?=
+ =?utf-8?B?cm84REtuY1h1TGhXd3RiZGRCYjByOE1UK2lJRXpDdmxEMzJtajVtS2NhS0d5?=
+ =?utf-8?B?M1BMaElPN3VoRGtwRGJ6T0tLVmF3UzUyWDB4NlJWYUt3UXN5M1pHb2VDa2Na?=
+ =?utf-8?B?ZldzYmUwTkw2SFZXSmkwV3o2cGlRQW5tUm9EVW9qWHgxNkFHNzR0a3V2dmp6?=
+ =?utf-8?B?aDZpdk8xU3drOUt2QUZhT09ueG45S1l3R1J5MFdndzFJY2NLK0VXVUhQY0dm?=
+ =?utf-8?B?bC9ObkxRclZrb0tDRVBVY3Q2VGp6Y1pKb2o4bDI5cmhnWnliTlUrSmpFaVhp?=
+ =?utf-8?B?cW9kTnZEY0hGcDJwK2NTTUgxNnJYdHFDdTBNNnNoTVZwOFpxZnRNU0ZVdFBB?=
+ =?utf-8?B?c3gzTk5kalVFSzBUVDRQRnpDNkJwSGpvUC8yNWN1OEN2KzNUWk16Mjg4Uzla?=
+ =?utf-8?B?TjFJQWNTcHNlK253dC9PZGkreEJCY1N4c21ibTJOVVpTZFlKRzNTYmVtRmdB?=
+ =?utf-8?B?WVNQK1BHNDJSQi82cm1uMDlhVUMvc2lCUWl1RnZYUUxoZlVJeDRtckVtQ3BT?=
+ =?utf-8?Q?H6utNtJ9ovz7XSLE1Vp7zPY0P?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 149ab81b-5a5b-4d55-dccb-08dd569612a7
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 18:47:51.6171
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oibc533VW0VoaY5eE7BlLtlZmA27mQADjI0OxzUbkKwi6t0xr7wk7ebWo1SGGp8bfTSjpbGbpQSHUac9raSNfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6771
 
-On 26/02/2025 15:12, Matthew Brost wrote:
-> On Wed, Feb 26, 2025 at 10:38:40AM +0000, Matthew Auld wrote:
->> On 26/02/2025 04:18, Matthew Brost wrote:
->>> On Tue, Feb 25, 2025 at 09:13:09PM -0600, Lucas De Marchi wrote:
->>>> On Wed, Feb 26, 2025 at 10:00:18AM +0800, Mingcong Bai via B4 Relay wrote:
->>>>> From: Mingcong Bai <jeffbai@aosc.io>
->>>>>
->>>>> The bo/ttm interfaces with kernel memory mapping from dedicated GPU
->>>>> memory. It is not correct to assume that SZ_4K would suffice for page
->>>>> alignment as there are a few hardware platforms that commonly uses non-4K
->>>>> pages - for instance, currently, Loongson 3A5000/6000 devices (of the
->>>>> LoongArch architecture) commonly uses 16K kernel pages.
->>>>>
->>>>> Per my testing Intel Xe/Arc families of GPUs works on at least
->>>>> Loongson 3A6000 platforms so long as "Above 4G Decoding" and "Resizable
->>>>> BAR" were enabled in the EFI firmware settings. I tested this patch series
->>>>> on my Loongson XA61200 (3A6000) motherboard with an Intel Arc A750 GPU.
->>>>>
->>>>> Without this fix, the kernel will hang at a kernel BUG():
->>>>>
->>>>> [    7.425445] ------------[ cut here ]------------
->>>>> [    7.430032] kernel BUG at drivers/gpu/drm/drm_gem.c:181!
->>>>> [    7.435330] Oops - BUG[#1]:
->>>>> [    7.438099] CPU: 0 UID: 0 PID: 102 Comm: kworker/0:4 Tainted: G            E      6.13.3-aosc-main-00336-g60829239b300-dirty #3
->>>>> [    7.449511] Tainted: [E]=UNSIGNED_MODULE
->>>>> [    7.453402] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
->>>>> [    7.467144] Workqueue: events work_for_cpu_fn
->>>>> [    7.471472] pc 9000000001045fa4 ra ffff8000025331dc tp 90000001010c8000 sp 90000001010cb960
->>>>> [    7.479770] a0 900000012a3e8000 a1 900000010028c000 a2 000000000005d000 a3 0000000000000000
->>>>> [    7.488069] a4 0000000000000000 a5 0000000000000000 a6 0000000000000000 a7 0000000000000001
->>>>> [    7.496367] t0 0000000000001000 t1 9000000001045000 t2 0000000000000000 t3 0000000000000000
->>>>> [    7.504665] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
->>>>> [    7.504667] t8 0000000000000000 u0 90000000029ea7d8 s9 900000012a3e9360 s0 900000010028c000
->>>>> [    7.504668] s1 ffff800002744000 s2 0000000000000000 s3 0000000000000000 s4 0000000000000001
->>>>> [    7.504669] s5 900000012a3e8000 s6 0000000000000001 s7 0000000000022022 s8 0000000000000000
->>>>> [    7.537855]    ra: ffff8000025331dc ___xe_bo_create_locked+0x158/0x3b0 [xe]
->>>>> [    7.544893]   ERA: 9000000001045fa4 drm_gem_private_object_init+0xcc/0xd0
->>>>> [    7.551639]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
->>>>> [    7.557785]  PRMD: 00000004 (PPLV0 +PIE -PWE)
->>>>> [    7.562111]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
->>>>> [    7.566870]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
->>>>> [    7.571628] ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
->>>>> [    7.577163]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
->>>>> [    7.583128] Modules linked in: xe(E+) drm_gpuvm(E) drm_exec(E) drm_buddy(E) gpu_sched(E) drm_suballoc_helper(E) drm_display_helper(E) loongson(E) r8169(E) cec(E) rc_core(E) realtek(E) i2c_algo_bit(E) tpm_tis_spi(E) led_class(E) hid_generic(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E) drm_kms_helper(E) sunrpc(E) la_ow_syscall(E) i2c_dev(E)
->>>>> [    7.613049] Process kworker/0:4 (pid: 102, threadinfo=00000000bc26ebd1, task=0000000055480707)
->>>>> [    7.621606] Stack : 0000000000000000 3030303a6963702b 000000000005d000 0000000000000000
->>>>> [    7.629563]         0000000000000001 0000000000000000 0000000000000000 8e1bfae42b2f7877
->>>>> [    7.637519]         000000000005d000 900000012a3e8000 900000012a3e9360 0000000000000000
->>>>> [    7.645475]         ffffffffffffffff 0000000000000000 0000000000022022 0000000000000000
->>>>> [    7.653431]         0000000000000001 ffff800002533660 0000000000022022 9000000000234470
->>>>> [    7.661386]         90000001010cba28 0000000000001000 0000000000000000 000000000005c300
->>>>> [    7.669342]         900000012a3e8000 0000000000000000 0000000000000001 900000012a3e8000
->>>>> [    7.677298]         ffffffffffffffff 0000000000022022 900000012a3e9498 ffff800002533a14
->>>>> [    7.685254]         0000000000022022 0000000000000000 900000000209c000 90000000010589e0
->>>>> [    7.693209]         90000001010cbab8 ffff8000027c78c0 fffffffffffff000 900000012a3e8000
->>>>> [    7.701165]         ...
->>>>> [    7.703588] Call Trace:
->>>>> [    7.703590] [<9000000001045fa4>] drm_gem_private_object_init+0xcc/0xd0
->>>>> [    7.712496] [<ffff8000025331d8>] ___xe_bo_create_locked+0x154/0x3b0 [xe]
->>>>> [    7.719268] [<ffff80000253365c>] __xe_bo_create_locked+0x228/0x304 [xe]
->>>>> [    7.725951] [<ffff800002533a10>] xe_bo_create_pin_map_at_aligned+0x70/0x1b0 [xe]
->>>>> [    7.733410] [<ffff800002533c7c>] xe_managed_bo_create_pin_map+0x34/0xcc [xe]
->>>>> [    7.740522] [<ffff800002533d58>] xe_managed_bo_create_from_data+0x44/0xb0 [xe]
->>>>> [    7.747807] [<ffff80000258d19c>] xe_uc_fw_init+0x3ec/0x904 [xe]
->>>>> [    7.753814] [<ffff80000254a478>] xe_guc_init+0x30/0x3dc [xe]
->>>>> [    7.759553] [<ffff80000258bc04>] xe_uc_init+0x20/0xf0 [xe]
->>>>> [    7.765121] [<ffff800002542abc>] xe_gt_init_hwconfig+0x5c/0xd0 [xe]
->>>>> [    7.771461] [<ffff800002537204>] xe_device_probe+0x240/0x588 [xe]
->>>>> [    7.777627] [<ffff800002575448>] xe_pci_probe+0x6c0/0xa6c [xe]
->>>>> [    7.783540] [<9000000000e9828c>] local_pci_probe+0x4c/0xb4
->>>>> [    7.788989] [<90000000002aa578>] work_for_cpu_fn+0x20/0x40
->>>>> [    7.794436] [<90000000002aeb50>] process_one_work+0x1a4/0x458
->>>>> [    7.800143] [<90000000002af5a0>] worker_thread+0x304/0x3fc
->>>>> [    7.805591] [<90000000002bacac>] kthread+0x114/0x138
->>>>> [    7.810520] [<9000000000241f64>] ret_from_kernel_thread+0x8/0xa4
->>>>> [    7.816489]
->>>>> [    7.817961] Code: 4c000020  29c3e2f9  53ff93ff <002a0001> 0015002c  03400000  02ff8063  29c04077  001500f7
->>>>> [    7.827651]
->>>>> [    7.829140] ---[ end trace 0000000000000000 ]---
->>>>>
->>>>> Revise all instances of `SZ_4K' with `PAGE_SIZE' and revise the call to
->>>>> `drm_gem_private_object_init()' in `*___xe_bo_create_locked()' (last call
->>>>> before BUG()) to use `size_t aligned_size' calculated from `PAGE_SIZE' to
->>>>> fix the above error.
->>>>>
->>>>> Cc: <stable@vger.kernel.org>
->>>>> Fixes: 4e03b584143e ("drm/xe/uapi: Reject bo creation of unaligned size")
->>>>> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
->>>>> Tested-by: Mingcong Bai <jeffbai@aosc.io>
->>>>> Tested-by: Haien Liang <27873200@qq.com>
->>>>> Tested-by: Shirong Liu <lsr1024@qq.com>
->>>>> Tested-by: Haofeng Wu <s2600cw2@126.com>
->>>>> Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c32410a077b3ddb6dca3f28223360
->>>>> Co-developed-by: Shang Yatsen <429839446@qq.com>
->>>>> Signed-off-by: Shang Yatsen <429839446@qq.com>
->>>>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
->>>>> ---
->>>>> drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
->>>>> 1 file changed, 4 insertions(+), 4 deletions(-)
->>>>>
->>>>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
->>>>> index 3f5391d416d469c636d951dd6f0a2b3b5ae95dab..dd03c581441f352eff51d0eafe1298fca7d9653d 100644
->>>>> --- a/drivers/gpu/drm/xe/xe_bo.c
->>>>> +++ b/drivers/gpu/drm/xe/xe_bo.c
->>>>> @@ -1441,9 +1441,9 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->>>>> 		flags |= XE_BO_FLAG_INTERNAL_64K;
->>>>> 		alignment = align >> PAGE_SHIFT;
->>>>> 	} else {
->>>
->>> } else if (type == ttm_bo_type_device) {
->>> 	new code /w PAGE_SIZE
->>> } else {
->>> 	old code /w SZ_4K (or maybe XE_PAGE_SIZE now)?
->>> }
->>>
->>> See below for further explaination.
->>>
->>>>> -		aligned_size = ALIGN(size, SZ_4K);
->>>>> +		aligned_size = ALIGN(size, PAGE_SIZE);
->>>>
->>>> in the very beginning of the driver we were set to use XE_PAGE_SIZE
->>>> for things like this. It seems thing went side ways though.
->>>>
->>>> Thanks for fixing these. XE_PAGE_SIZE is always 4k, but I think we should
->>>> uxe XE_PAGE_SIZE for clarity.  For others in Cc...  any thoughts?
->>>>
->>>
->>> It looks like you have a typo here, Lucas. Could you please clarify?
->>>
->>> However, XE_PAGE_SIZE should always be 4k, as it refers to the GPU page
->>> size, which is fixed.
->>>
->>> I think using PAGE_SIZE makes sense in some cases. See my other
->>> comments.
->>>
->>>>> 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
->>>>> -		alignment = SZ_4K >> PAGE_SHIFT;
->>>>> +		alignment = PAGE_SIZE >> PAGE_SHIFT;
->>>>> 	}
->>>>>
->>>>> 	if (type == ttm_bo_type_device && aligned_size != size)
->>>>> @@ -1457,7 +1457,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->>>>>
->>>>> 	bo->ccs_cleared = false;
->>>>> 	bo->tile = tile;
->>>>> -	bo->size = size;
->>>>> +	bo->size = aligned_size;
->>>>
->>>> the interface of this function is that the caller needs to pass the
->>>> correct size, it's not really expected the function will adjust it and
->>>> the check is there to gurantee to return the appropriate error. There
->>>
->>> Let me expand further on Lucas's comment. We reject user BOs that are
->>> unaligned here in ___xe_bo_create_locked.
->>>
->>> 1490         if (type == ttm_bo_type_device && aligned_size != size)
->>> 1491                 return ERR_PTR(-EINVAL);
->>>
->>> What we allow are kernel BOs (!= ttm_bo_type_device), which are never
->>> mapped to the CPU or the PPGTT (user GPU mappings), to be a smaller
->>> size. Examples of this include memory for GPU page tables, LRC state,
->>> etc. Memory for GPU page tables is always allocated in 4k blocks, so
->>> changing the allocation to the CPU page size of 16k or 64k would be
->>> wasteful.
->>>
->>> AFAIK, kernel memory is always a VRAM allocation, so we don't have any
->>> CPU page size requirements. If this is not true (I haven't checked), or
->>> perhaps just to future-proof, change the snippet in my first comment to:
->>>
->>> } else if (type == ttm_bo_type_device || flags & XE_BO_FLAG_SYSTEM)) {
->>> 	new code /w PAGE_SIZE
->>> } else {
->>> 	old code /w SZ_4K
->>> }
->>>
->>> Then change BO assignment size too:
->>>
->>> bo->size = flags & XE_BO_FLAG_SYSTEM ? aligned_size : size;
->>>
->>> This should enable kernel VRAM allocations to be smaller than the CPU
->>> page size (I think). Can you try out this suggestion and see if the Xe
->>> boots with non-4k pages?
->>
->> The vram allocator chunk size is PAGE_SIZE so that would also need some
->> attention, I think.
->>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+
+On 2/26/25 01:37, Ma Ke wrote:
+> Null pointer dereference issue could occur when pipe_ctx->plane_state
+> is null. The fix adds a check to ensure 'pipe_ctx->plane_state' is not
+> null before accessing. This prevents a null pointer dereference.
 > 
-> Agree. So I think __xe_ttm_vram_mgr_init should be called with
-> s/PAGE_SIZE/SZ_4K?
-
-Should be fine from allocator pov. But also need to update the upper 
-layers in the VRAM manager itself, I think.
-
+> Found by code review.
 > 
->> But I think we also then need to deal with the assert in: https://elixir.bootlin.com/linux/v6.14-rc4/source/drivers/gpu/drm/drm_gem.c#L181.
->>
+> Cc: stable@vger.kernel.org
+> Fixes: 3be5262e353b ("drm/amd/display: Rename more dc_surface stuff to plane_state")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+> Changes in v2:
+> - modified the patch as suggestions.
+> ---
+>   drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Yep. I think that would need to be adjusted as well to be bypassed if we
-> are never going to CPU map the BO—specifically, CPU map it to user space
-> or if the BO is not in VRAM. For kernel VRAM mapping, this resolves to
-> an offset within an existing large PCIe BAR mapping, so allocations
-> unaligned to PAGE_SIZE should work.
-
-Yeah, agree. I thinks it's possible.
-
-> 
-> Maybe export __drm_gem_private_object_init, which skips the BUG_ON, and
-> call this in Xe to avoid interfering with other drivers' expectations?
-
-Some other places I spotted are the VRAM manager, and stuff like 
-xe_bo_vmap() and then into TTM itself. So it might be quite widespread.
-
-> 
-> Matt
-> 
->>>
->>> Also others in Cc... thoughts / double check my input?
->>>
->>>> are other places that would need some additional fixes leading to this
->>>> function. Example:
->>>>
->>>> xe_gem_create_ioctl()
->>>> {
->>>> 	...
->>>> 	if (XE_IOCTL_DBG(xe, args->size & ~PAGE_MASK))
->>>> 		return -EINVAL;
->>>
->>> This actually looks right, the minimum allocation size for user BOs
->>> should be PAGE_SIZE aligned. The last patch in the series fixes the
->>> query for this.
->>>
->>> Matt
->>>
->>>> 	...
->>>> }
->>>> 	
->>>>
->>>> Lucas De Marchi
->>>>
->>>>> 	bo->flags = flags;
->>>>> 	bo->cpu_caching = cpu_caching;
->>>>> 	bo->ttm.base.funcs = &xe_gem_object_funcs;
->>>>> @@ -1468,7 +1468,7 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
->>>>> #endif
->>>>> 	INIT_LIST_HEAD(&bo->vram_userfault_link);
->>>>>
->>>>> -	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, size);
->>>>> +	drm_gem_private_object_init(&xe->drm, &bo->ttm.base, aligned_size);
->>>>>
->>>>> 	if (resv) {
->>>>> 		ctx.allow_res_evict = !(flags & XE_BO_FLAG_NO_RESV_EVICT);
->>>>>
->>>>> -- 
->>>>> 2.48.1
->>>>>
->>>>>
->>
+> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+> index 520a34a42827..a45037cb4cc0 100644
+> --- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+> +++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+> @@ -1455,7 +1455,8 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
+>   	DC_LOGGER_INIT(pipe_ctx->stream->ctx->logger);
+>   
+>   	/* Invalid input */
+> -	if (!plane_state->dst_rect.width ||
+> +	if (!plane_state ||
+> +			!plane_state->dst_rect.width ||
+>   			!plane_state->dst_rect.height ||
+>   			!plane_state->src_rect.width ||
+>   			!plane_state->src_rect.height) {
 
 
