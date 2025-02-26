@@ -1,450 +1,353 @@
-Return-Path: <stable+bounces-119610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA431A45412
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 04:38:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FFEA45415
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 04:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDECD3A47DE
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:38:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88CF218888B6
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 03:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D4325A34C;
-	Wed, 26 Feb 2025 03:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2620C25A34F;
+	Wed, 26 Feb 2025 03:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n0Dri8A0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ipyhk/Ls"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7E925A343
-	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 03:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740541110; cv=none; b=Ah3hm6LtlGLIrRu2qVvTTGNHhWZHvm5+isALL62WyTSy93oxkXTEn0/XcSAa8+ERkU8jUTJUVBJTHSYqP9Cqo6URq33JImEQENgfo70SLFqXwlnAFVuxXHpfBGkJC9NXQH6+0USWLhsZOeR1S3+tNbxHMKIXxZBidqlNAqULKNw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740541110; c=relaxed/simple;
-	bh=LnIZPYQ+a3MjyqHIBhvT1JL42T7dbCJp68sK4dUK8Tk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hZ0MFYU2sbjJzirT1QpCBASPZYkeLhKMpdnMpFEyVYzJTBCYQeYMiP/z3vHA+BqXRhvqvpPkycD8Ghw+kiNfO28AQVndZT8dEVOAsJHUKwmplxUWLAkxkkMSzDUkiTYeLKOJtbLOSXoAzheVMtiH3Rts+H1IxJZuswT/po58Yvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n0Dri8A0; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-472098e6e75so115661cf.1
-        for <stable@vger.kernel.org>; Tue, 25 Feb 2025 19:38:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740541107; x=1741145907; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lIjFTs8XaVhd/5sHwJKhguYA1os9aCgi4nK7ADGd+ew=;
-        b=n0Dri8A0JUU9eWCVbdB+AyCNlHlRNIuSPUFuAzKQrun67Q3UOdA1td8obIS1ZrMrZR
-         5rRM8mryl9XUpoLXne5w0psH/AnPqi2nt0nj9xWJzPYZylpovQd+GGy+MKiP2uJvNLT0
-         RcewWLjeCqbcGNvGSC3vqrzoSH0VRbA7C14B+xgoqRP7zD6XGwJK3mF1G9sn1GY9ge6W
-         VNX3XUIvuinbUBYMQU3LZesjBO1R9X0KpLPcLq830mZyhyI93VGxTgANW3JUdkVE1kfM
-         j2pIN5WAXAxbfVvXVocMkQTmQW0a8uAMOZBAkdq3xE0Rr73t7GcR5r6EHthi2qz5XnI2
-         Si5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740541107; x=1741145907;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lIjFTs8XaVhd/5sHwJKhguYA1os9aCgi4nK7ADGd+ew=;
-        b=IBNbHza3c4pnR9sxAMpSDQ6irVZr/fBQSSkRlVQIisvHd52cgh3Os8CPd+SCse5nk4
-         W8p/Prl56xFezwXEET+ulWwbLGm4/8zLe9Ik1i+q/Xw7GmMMTuOv8Cb0RSFTiPgQzzQ8
-         mfM42qb77cOMYAImLrkutlFs0GhrNp2WvG0ad/6Slr4zxgN4NL2QPrsqAEJU0Vo/H1Il
-         wIID7yKRM/Sw69iw+bPXkJVF63FFqsjRxz/ttTySDDet90rHFWXMJGxJf124dtoSRd4V
-         Bl1qXgwTyvpLlv4a7+ozy+a8KRWDQLyMmaCPAVNHzTjs4URxU4TbFUlwyzBsg5XufDrx
-         dx6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWj8qSdcQ0MoweFkH8eH3ONHC51AOlx9whhTq1BpUvO8Qlm6xHy0rftRKgRVEr2rdTTISNyE28=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznmCJWmMl+bDrfapAheTxjxmqg6w4Ogbj05ZJUA3OzDtzVtxyq
-	j1FV7SmiYEz4Uvm0ApbhgYoMtzLA1qTLO726hiaEwq27AOrpEBB4GS64QAbgEYi3FlXp9qh+wCt
-	tfy2H7RoRSSm0epwyCTIBckRguxugK40vzoH8
-X-Gm-Gg: ASbGncvP9p+WnCNUL5A+B3zHg/UmH+EuHbHhM40QIvOJ4W9kg8O+2QrZL4I3oMpecQv
-	gtleRtvYpQvmQfkw0fUslwVvVGsuMOliC+87vViz3py4z3NkjF+C2ynJ7Gs027GFd31ed8iEa7g
-	Uo1PDzS50=
-X-Google-Smtp-Source: AGHT+IF/QvaqsRSMVSCz6PAVAXCNN4lg2WeWrhIDLcOH5mZ+gaYtyv9Dcg0xYSSEEbvk8/e3LQPjmGC4iEVC30PW2Fg=
-X-Received: by 2002:ac8:58c2:0:b0:471:e982:c73d with SMTP id
- d75a77b69052e-47376e6f26amr7297951cf.11.1740541107210; Tue, 25 Feb 2025
- 19:38:27 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25A521CA0A;
+	Wed, 26 Feb 2025 03:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740541163; cv=fail; b=Jz6VXH62zeVwSVAOZEn5VMvkkDseEaR9BVu7IvS9xS+gUkHreHS6qSPmtg/4zgBkDP3yBjRoNu4dhXN2duIAW7X6THCwkBXv3G50/73hRs88C8f3xuwqVFt1j7/kPue9ocDuQ2xNnDRb6Tz9BPpOikw8N84VjP+NqaDIiGuJXrw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740541163; c=relaxed/simple;
+	bh=lqCL90qbwCXf/ZG+coSqmo6Vf06x0JE7IIyeY6JzOO8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CE5ZjBuvpXmGu5sX3vdbZFm5Qa8QgTwopTQ6BH3+heYN5KJQ40lh5Y60eaoSOHTqlpj5C69b5OcjFKjjwWhwlbvGE4YlTfJRw/OFCSqUr/8UTOpnlhIACdVyfZ5GWzH4gbLPjUeswIB6KreOXUmH2Ojuy3BpDeMItkiFZI9WlrA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ipyhk/Ls; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740541162; x=1772077162;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=lqCL90qbwCXf/ZG+coSqmo6Vf06x0JE7IIyeY6JzOO8=;
+  b=ipyhk/LsCI1sP8eNVZmDaHYvdjoyAaRiToKzL9QI7Ccohn7hfEbSCMTt
+   rSsSkFuJqBzz7I5dgVBTRJeCMCLZOXP+GGQyYbE007a1oWIxp5mJ4UIsF
+   PitKtSLjBqZMuKMuJVaq+s+NqquyY3mxGv63tHYePutnfUpKy4uBVfD9f
+   +cN9F8VldJA4ByJYs4NTLIBlkP7LUKkn/CBvYV0DoP+nSvXzWDTU3tCd3
+   /Vvky+6nCPK115pEGNljv0tFw0B8VkGleNKxtx8BKTE7Tp55RtNoJyn8V
+   H/JIVUoh8GmiBZeWlWYYE7e+mglSYzMUUMdl35QvIG6+HYKbj8fBQNipS
+   Q==;
+X-CSE-ConnectionGUID: /Tz6ReGXTjS1GUiaxnR6sg==
+X-CSE-MsgGUID: r3mc6YzoQH6FBmXiqAhn9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="52009175"
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
+   d="scan'208";a="52009175"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 19:39:21 -0800
+X-CSE-ConnectionGUID: aHwqv7d7TQS3GJhlzj7o1w==
+X-CSE-MsgGUID: W7AffQ0uTz+QtKxxyS4Ybg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
+   d="scan'208";a="139810400"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 25 Feb 2025 19:39:20 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 25 Feb 2025 19:39:20 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Tue, 25 Feb 2025 19:39:20 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 25 Feb 2025 19:39:18 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XMTKRUUamtQmm5UUb2hCcKshL6yQMlEC5C/VL9dJ7tgGysCgSSRtquTL0P6jQDhGUs3A5ezKhR3ZpQuJEL9sEkb2oQzGNLl66lZM13P1ucvHW1hnA+Oy2yt0fCUAz1XpH0SKTt26cMpiUNcGeJNaBFF4f1QE0LoDmYPbSFug+9OaYsp2h8+EsvD5Hm5T2LrL4lY1j0BcyqdyFZ4zJYAsrWvZl6rYHfqZ+t075FpjSocT+d5rjvab28+KddqYfVKV8eYogjyQ5NCw9kqxYb55yl/mbDOPVlXgz+gZJPuhP3AcnlcSnlFBvU8OW+2XGmx7Hz1M1aXl39F6oLqmBLEyBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kW0iNTlFTqM/xqv/qdZfu1cMDhVfK+Fbe2KxPV8nhqY=;
+ b=CzmHFILc+5IReF/eC1AgONUJjN0pVyfkzb7X2QDgoUQrt5sldOmD+Yd4rYfKYexipRf7kX4m8gMefPTQABFfa8JJLyb9ysKsqo94YebRnVpRabKcqjiLP1o5tfNDBTSlHWCuDOdFju9bIhScQlphLyCTaGoWdhNHYfdbFNSOB+oPX1mT6jLfL3UuCWuFF1N1ABEhb5fYU8KM7HLzx2eMD4VuGD0LoVuJi6kESQ60T30UW9qc4S0r6Ne5bodnsryi9/A0yEiFYL2G0Lp/nBROFo62tcx/SIKeVLmt05k4+IvywlzUoaK6Y+g/DKP+jn5wnhAue83zUHO5iRwtliUKwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by CH3PR11MB8185.namprd11.prod.outlook.com (2603:10b6:610:159::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Wed, 26 Feb
+ 2025 03:38:44 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.8466.016; Wed, 26 Feb 2025
+ 03:38:44 +0000
+Date: Tue, 25 Feb 2025 19:39:47 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: <jeffbai@aosc.io>
+CC: Lucas De Marchi <lucas.demarchi@intel.com>, Thomas
+ =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi
+	<rodrigo.vivi@intel.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, =?iso-8859-1?Q?Jos=E9?= Roberto de Souza
+	<jose.souza@intel.com>, Francois Dugast <francois.dugast@intel.com>, "Alan
+ Previn" <alan.previn.teres.alexis@intel.com>, Zhanjun Dong
+	<zhanjun.dong@intel.com>, Matt Roper <matthew.d.roper@intel.com>, "Mateusz
+ Naklicki" <mateusz.naklicki@intel.com>, Mauro Carvalho Chehab
+	<mauro.chehab@linux.intel.com>, Zbigniew =?utf-8?Q?Kempczy=C5=84ski?=
+	<zbigniew.kempczynski@intel.com>, <intel-xe@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>, "Kexy
+ Biscuit" <kexybiscuit@aosc.io>, Shang Yatsen <429839446@qq.com>,
+	<stable@vger.kernel.org>, Haien Liang <27873200@qq.com>, Shirong Liu
+	<lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>
+Subject: Re: [PATCH 3/5] drm/xe/regs: fix RING_CTL_SIZE(size) calculation
+Message-ID: <Z76NAyPR6sDVQWfo@lstrano-desk.jf.intel.com>
+References: <20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io>
+ <20250226-xe-non-4k-fix-v1-3-80f23b5ee40e@aosc.io>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250226-xe-non-4k-fix-v1-3-80f23b5ee40e@aosc.io>
+X-ClientProxiedBy: MW4PR02CA0025.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::11) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250226001400.9129-1-21cnbao@gmail.com> <Z75nokRl5Bp0ywiX@x1.local>
-In-Reply-To: <Z75nokRl5Bp0ywiX@x1.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 25 Feb 2025 19:38:15 -0800
-X-Gm-Features: AWEUYZk_cLD-qefIHA6n47oBNOgE_qb3rukF4ShR7mhbPbxyd6C35f7Uwi5jMkk
-Message-ID: <CAJuCfpFfvZy5M57FY8RDDd08Jx1Ym1va54i3nTgQ9DiHL192yg@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: Fix kernel BUG when userfaultfd_move encounters swapcache
-To: Peter Xu <peterx@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
-	Andrea Arcangeli <aarcange@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Brian Geffon <bgeffon@google.com>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Jann Horn <jannh@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Lokesh Gidra <lokeshgidra@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nicolas Geoffray <ngeoffray@google.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Shuah Khan <shuah@kernel.org>, ZhangPeng <zhangpeng362@huawei.com>, 
-	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CH3PR11MB8185:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81e9ab70-6a06-4de7-e067-08dd561711ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?U8JO1ZhppFj1tKm482AjVAgDBirPqkYokYi/CI1dPxRgfo0CmU6XREmn3UEs?=
+ =?us-ascii?Q?loqmBD9uwE0gr7terYxLo1Ar8KyNOzWRwqSfza0ZXVxi4MKgRzWBfwqDUQLP?=
+ =?us-ascii?Q?xjYdy9ldcOgFftmrxtFXU+epa1bLtauwt5n6FEjGEinPlfvfZ7HgOnChO+F4?=
+ =?us-ascii?Q?YM28QgdLt/CY+uUO/YK6nCCZiDP7zlXU9lmTj8ehfXtmb9iBWK7u6xx6mKf1?=
+ =?us-ascii?Q?cKMuvVVR9n+wgt+u+4VygPDC+j6dcYVHju5Q9YXqo/jZ2S0kaMGUbMJ/EyV3?=
+ =?us-ascii?Q?t8Nr+UDel/aSTke6W3c0kMQ/USeAhua8CG1vOYnRM21ZRpfeqfMFEVPb+T1W?=
+ =?us-ascii?Q?0oXUO2lH+TxbShGkGQKIZN5X6f71xJtqryuXX66+Gtd2Ouf1UhFHN0cz3NTF?=
+ =?us-ascii?Q?yHVWS1VwqjUrsrT/G2tY5Z707ZOxVDCCPCqcuSWWOdYt4hZTuNLaJwJMhbJt?=
+ =?us-ascii?Q?lJi5DKGXixpXFssQz41rErgRlDSNgJpzhvQbS8EGYeNeZ+2Qd6kX7g9TBFy3?=
+ =?us-ascii?Q?HtzFV524jA6BaHk8SSqEwTgTrc0k7kqDhwkNddIadK81BoAeCNe5AwMqS3d1?=
+ =?us-ascii?Q?nVisr4UFaGD9Kn57g8Kg6tN+U5/IsId6J5hZLsOKkyTn0DcDuDOcZHpa1RuC?=
+ =?us-ascii?Q?fam2lXSWxnCgfh7RlQF+0v7+WHzTLKrBqf4eqosyuo3Yqqy8sV/snjnvHjv6?=
+ =?us-ascii?Q?eS/ymZ7PbJInK3ww5CqjxLxUlmb8MyYZ7uE8v45CevTNvewU0ONuDTIlGrri?=
+ =?us-ascii?Q?ePh9ROPTDRrpKpmhN2bPrqMiRfPzdWrENN/lNxFBS98CtfkhgDiP7PNrhWWi?=
+ =?us-ascii?Q?t0lIGrhEiZLU2NRSd717aX6wl/5sv93zGHZ83YqmssNAy6tIRcnqapvpbtNf?=
+ =?us-ascii?Q?15lH4S0f7lLgHURggIM5C94JBPTIjUsntavRS9W4JdAdOhByZbdjJAxLdtRb?=
+ =?us-ascii?Q?X8XKGbOAC4FNCb1jww/xwljwWTyBxKnvDssApU/umBdjQH7o96RTK41cxh9U?=
+ =?us-ascii?Q?JFuoxwdENTm2IjPFpg3+wokJvors5uOIqKbo53fKS4JtKIsRCumYgAHbXK4B?=
+ =?us-ascii?Q?CvGmfJfDPVK9HUJM+8AQ4HtPZQYDltYTroo2VyYX4BiE8qiQGECb0dTOiR3i?=
+ =?us-ascii?Q?lV21A9i6BXigmBaico3CvOkzHjEa0Vu0Zn1VdalGcG4Bvdh9E8GV3hDexjeL?=
+ =?us-ascii?Q?4ugHJOyiapbC4zI29zjTT3N3jUqEFuUyJKG4ciqI5B0har7dFU4nupya6mRc?=
+ =?us-ascii?Q?CZQHtgF4W0k2t5UCkz/UpTOQKs4XkNkguz0KZcvzfi4mMiblnxZInAs9ePtE?=
+ =?us-ascii?Q?ha0pBOxv1Par8aDhWSbfKtql9w+gSHdiOrxwnjrlLq3i9zXrMELryeSRYJoA?=
+ =?us-ascii?Q?zbmeYsh8PP99qNZycuYA7a6Z9s2h?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?k0UGBdTNz+sfhwqZawY7/+NSvnMe9umZ3T+u+zpT43jxi+0Kc6gUev/zPutv?=
+ =?us-ascii?Q?bsWcXYq9NilnnbWBBHzE8YlzyZz63XZYMtCLjH1skfmenfoUIqLutpVpOXRY?=
+ =?us-ascii?Q?yXrX7SOueei4nehuelWj+lGihNC+JzOX0Y/m5eDRranvjrD4LP3SoJuetx7W?=
+ =?us-ascii?Q?nWKLysNTIANY4lCIez7NFmbnlJgkG2OA9vzCS2FD9Q5sDIRsQeD4Xgwu81vV?=
+ =?us-ascii?Q?AvmtRRPxmSM5CapJw/vUqFVAoEWd8XxQj00y6GS8CEaWLcZQH29eAWzZXBKG?=
+ =?us-ascii?Q?YSHHTAqXmvnuVMCzzKjXKe8Wzz6K3tBIaSirdrsVPRZwiCA6zF8WvWl2GMhO?=
+ =?us-ascii?Q?q27nFAP9Kdih6l7mv4KzxZDvnSt+grjH559JJlsEHirB3nI4/i2XvFqoNlWg?=
+ =?us-ascii?Q?zPQL+lnj4UKwG2pjSDfWh4JJPU8h5Thetbeyb1waGBUenx2EqrjQsLo8/C5z?=
+ =?us-ascii?Q?9u7gmiPaFjz/bHHJ652/uR1+dMtpWYWbqzoyhAw+r+DafezoxYEIwonvKIUw?=
+ =?us-ascii?Q?k7VGfAbiUCSkSCBeF5J3DoinBUxQIdz1ln5Zu48oGuuMISFPEB1Hq9Cwxlt+?=
+ =?us-ascii?Q?3L4AWXEtzjvxK/8NIYq/6CWz+BeVyG/GoBA+/vHXYy6Jmuk6dONemNP0VWjg?=
+ =?us-ascii?Q?AecBJyME7jMBWFLKTA1C+BhuRLQtBYdyIwp4njxqLgbiM+1ahiw77bD/9Z0H?=
+ =?us-ascii?Q?+K6IAdIuagAL1miK6o+xZRialTpJ9yExniNrB7x8pd8lAqVS6EozXNNE/jDm?=
+ =?us-ascii?Q?lLrJYx/hIQWobPfOOf7RhVbhwn0IDKbWMYCcNZRw5y4ko//f1LPXXzG9F4h4?=
+ =?us-ascii?Q?9B0lK60yKC5GhGK23BS7IvF2wdoReW5mHJKB7fSwjdUw4XqqUlt63RludO7H?=
+ =?us-ascii?Q?zY44tQ4DgLeBt2qo/s67uCHxRhdLikCeeykYfh3zZe6CkyDUrXhyOAnWKH96?=
+ =?us-ascii?Q?Fp81jfPQX651susJgINI5EO8aNFa4ovD9j4tadnO9rrSIZXgQI8nKByNH+bh?=
+ =?us-ascii?Q?vKJxz9kN2R3t2PBU293IQZqzFWW2v6eJ0MVCFCMnm0wAmLPtr/q2PfraYrsn?=
+ =?us-ascii?Q?8esLxa4PidPis6PmOXQM1E9/EWJR/GKLuzFlkhoiXyAAXMVzk+cNtpkAaclh?=
+ =?us-ascii?Q?eUKUFl1Lca3B6SFvApHY/+OGv/crT9J1H/4NdrUBH8iDAYxfENOPT+ZpUmNI?=
+ =?us-ascii?Q?MErbrC1d2BHs/UzPD6zXDohSMNPumflHjoIwXqZRvzzzljFIbZsH3Iu+2ZQG?=
+ =?us-ascii?Q?NXlSn9c5j/zLG6NGBXjsvMgj/YLNZl9nkH0qAepFv6OM/RuUulDJySBkGahQ?=
+ =?us-ascii?Q?9a6cQ9X9NG0ZxiMa3wjHP19h+eG5vzWRkmTKDO66UItwvgW3v5mxGBK8Qqt3?=
+ =?us-ascii?Q?naRJvNGwXJXUtQowODogO7cC5lPxvPxgYqVdhgeiySb1DK1nS6HCdfW3xCnC?=
+ =?us-ascii?Q?HHwbYNApbq1GuwCqiogaUaRZmz+61Rg5BTaHnbQ+Z/43iVhW4t/Z5MWiA4sN?=
+ =?us-ascii?Q?KcIbbgiYa5J+QiiIpeCy3p+3TY8SKqbM+zmhouRQ91GoxGpYW+SeSqpfcNaH?=
+ =?us-ascii?Q?5gxrPqf4OmN6PoB1L4yhbNiqzxflfs3eAYzeOsel78ohJHXReFxyp41UJpCa?=
+ =?us-ascii?Q?UA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81e9ab70-6a06-4de7-e067-08dd561711ca
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 03:38:44.0920
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lMpjN1lA10TRSzd30C7yjltnAL6X7nN3hik7LsjWpPTlVCxsavNT1kIwXUpR6ntaL15JxZHVUUUowu6S7kGG9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8185
+X-OriginatorOrg: intel.com
 
-On Tue, Feb 25, 2025 at 5:00=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> On Wed, Feb 26, 2025 at 01:14:00PM +1300, Barry Song wrote:
-> > From: Barry Song <v-songbaohua@oppo.com>
-> >
-> > userfaultfd_move() checks whether the PTE entry is present or a
-> > swap entry.
-> >
-> > - If the PTE entry is present, move_present_pte() handles folio
-> >   migration by setting:
-> >
-> >   src_folio->index =3D linear_page_index(dst_vma, dst_addr);
-> >
-> > - If the PTE entry is a swap entry, move_swap_pte() simply copies
-> >   the PTE to the new dst_addr.
-> >
-> > This approach is incorrect because, even if the PTE is a swap entry,
-> > it can still reference a folio that remains in the swap cache.
-> >
-> > This creates a race window between steps 2 and 4.
-> >  1. add_to_swap: The folio is added to the swapcache.
-> >  2. try_to_unmap: PTEs are converted to swap entries.
-> >  3. pageout: The folio is written back.
-> >  4. Swapcache is cleared.
-> > If userfaultfd_move() occurs in the window between steps 2 and 4,
-> > after the swap PTE has been moved to the destination, accessing the
-> > destination triggers do_swap_page(), which may locate the folio in
-> > the swapcache. However, since the folio's index has not been updated
-> > to match the destination VMA, do_swap_page() will detect a mismatch.
-> >
-> > This can result in two critical issues depending on the system
-> > configuration.
-> >
-> > If KSM is disabled, both small and large folios can trigger a BUG
-> > during the add_rmap operation due to:
-> >
-> >  page_pgoff(folio, page) !=3D linear_page_index(vma, address)
-> >
-> > [   13.336953] page: refcount:6 mapcount:1 mapping:00000000f43db19c ind=
-ex:0xffffaf150 pfn:0x4667c
-> > [   13.337520] head: order:2 mapcount:1 entire_mapcount:0 nr_pages_mapp=
-ed:1 pincount:0
-> > [   13.337716] memcg:ffff00000405f000
-> > [   13.337849] anon flags: 0x3fffc0000020459(locked|uptodate|dirty|owne=
-r_priv_1|head|swapbacked|node=3D0|zone=3D0|lastcpupid=3D0xffff)
-> > [   13.338630] raw: 03fffc0000020459 ffff80008507b538 ffff80008507b538 =
-ffff000006260361
-> > [   13.338831] raw: 0000000ffffaf150 0000000000004000 0000000600000000 =
-ffff00000405f000
-> > [   13.339031] head: 03fffc0000020459 ffff80008507b538 ffff80008507b538=
- ffff000006260361
-> > [   13.339204] head: 0000000ffffaf150 0000000000004000 0000000600000000=
- ffff00000405f000
-> > [   13.339375] head: 03fffc0000000202 fffffdffc0199f01 ffffffff00000000=
- 0000000000000001
-> > [   13.339546] head: 0000000000000004 0000000000000000 00000000ffffffff=
+On Wed, Feb 26, 2025 at 10:00:20AM +0800, Mingcong Bai via B4 Relay wrote:
+> From: Mingcong Bai <jeffbai@aosc.io>
+>=20
+> Similar to the preceding patch for GuC (and with the same references),
+> Intel DG1 and DG2 GPUs expects command buffers to align to 4K boundaries.
+>=20
+> Current code uses `PAGE_SIZE' as an assumed alignment reference but 4K
+> kernel page sizes is by no means a guarantee. On 16K-paged kernels, this
+> causes driver failures during boot up:
+>=20
+> [   14.018975] ------------[ cut here ]------------
+> [   14.023562] xe 0000:09:00.0: [drm] GT0: Kernel-submitted job timed out
+> [   14.030084] WARNING: CPU: 3 PID: 564 at drivers/gpu/drm/xe/xe_guc_subm=
+it.c:1181 guc_exec_queue_timedout_job+0x1c0/0xacc [xe]
+> [   14.041300] Modules linked in: nf_conntrack_netbios_ns(E) nf_conntrack=
+_broadcast(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nf=
+t_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E=
+) nft_chain_nat(E) ip6table_nat(E) ip6table_mangle(E) ip6table_raw(E) ip6ta=
+ble_security(E) iptable_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) =
+nf_defrag_ipv4(E) rfkill(E) iptable_mangle(E) iptable_raw(E) iptable_securi=
+ty(E) ip_set(E) nf_tables(E) ip6table_filter(E) ip6_tables(E) iptable_filte=
+r(E) snd_hda_codec_conexant(E) snd_hda_codec_generic(E) snd_hda_codec_hdmi(=
+E) nls_iso8859_1(E) snd_hda_intel(E) snd_intel_dspcfg(E) qrtr(E) nls_cp437(=
+E) snd_hda_codec(E) spi_loongson_pci(E) rtc_efi(E) snd_hda_core(E) loongson=
+3_cpufreq(E) spi_loongson_core(E) snd_hwdep(E) snd_pcm(E) snd_timer(E) snd(=
+E) soundcore(E) gpio_loongson_64bit(E) input_leds(E) rtc_loongson(E) i2c_ls=
+2x(E) mousedev(E) sch_fq_codel(E) fuse(E) nfnetlink(E) dmi_sysfs(E) ip_tabl=
+es(E) x_tables(E) xe(E) d
+>  rm_gpuvm(E) drm_buddy(E) gpu_sched(E)
+> [   14.041369]  drm_exec(E) drm_suballoc_helper(E) drm_display_helper(E) =
+cec(E) rc_core(E) hid_generic(E) tpm_tis_spi(E) r8169(E) realtek(E) led_cla=
+ss(E) loongson(E) i2c_algo_bit(E) drm_ttm_helper(E) ttm(E) drm_client_lib(E=
+) drm_kms_helper(E) sunrpc(E) i2c_dev(E)
+> [   14.153910] CPU: 3 UID: 0 PID: 564 Comm: kworker/u32:2 Tainted: G     =
+       E      6.14.0-rc4-aosc-main-gbad70b1cd8b0-dirty #7
+> [   14.165325] Tainted: [E]=3DUNSIGNED_MODULE
+> [   14.169220] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-=
+EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.0575=
+6-prestab
+> [   14.182970] Workqueue: gt-ordered-wq drm_sched_job_timedout [gpu_sched=
+]
+> [   14.189549] pc ffff8000024f3760 ra ffff8000024f3760 tp 900000012f15000=
+0 sp 900000012f153ca0
+> [   14.197853] a0 0000000000000000 a1 0000000000000000 a2 000000000000000=
+0 a3 0000000000000000
+> [   14.206156] a4 0000000000000000 a5 0000000000000000 a6 000000000000000=
+0 a7 0000000000000000
+> [   14.214458] t0 0000000000000000 t1 0000000000000000 t2 000000000000000=
+0 t3 0000000000000000
+> [   14.222761] t4 0000000000000000 t5 0000000000000000 t6 000000000000000=
+0 t7 0000000000000000
+> [   14.231064] t8 0000000000000000 u0 900000000195c0c8 s9 900000012e4dcf4=
+8 s0 90000001285f3640
+> [   14.239368] s1 90000001004f8000 s2 ffff8000026ec000 s3 000000000000000=
+0 s4 900000012e4dc028
+> [   14.247672] s5 90000001009f5e00 s6 000000000000137e s7 000000000000000=
+1 s8 900000012f153ce8
+> [   14.255975]    ra: ffff8000024f3760 guc_exec_queue_timedout_job+0x1c0/=
+0xacc [xe]
+> [   14.263379]   ERA: ffff8000024f3760 guc_exec_queue_timedout_job+0x1c0/=
+0xacc [xe]
+> [   14.270777]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=3DCC DACM=3DCC -WE)
+> [   14.276927]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+> [   14.281258]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+> [   14.286024]  ECFG: 00071c1d (LIE=3D0,2-4,10-12 VS=3D7)
+> [   14.290790] ESTAT: 000c0000 [BRK] (IS=3D ECode=3D12 EsubCode=3D0)
+> [   14.296329]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
+> [   14.302299] CPU: 3 UID: 0 PID: 564 Comm: kworker/u32:2 Tainted: G     =
+       E      6.14.0-rc4-aosc-main-gbad70b1cd8b0-dirty #7
+> [   14.302302] Tainted: [E]=3DUNSIGNED_MODULE
+> [   14.302302] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-=
+EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.0575=
+6-prestab
+> [   14.302304] Workqueue: gt-ordered-wq drm_sched_job_timedout [gpu_sched=
+]
+> [   14.302307] Stack : 900000012f153928 d84a6232d48f1ac7 900000000023eb34=
+ 900000012f150000
+> [   14.302310]         900000012f153900 0000000000000000 900000012f153908=
+ 9000000001c31c70
+> [   14.302313]         0000000000000000 0000000000000000 0000000000000000=
  0000000000000000
-> > [   13.339736] page dumped because: VM_BUG_ON_PAGE(page_pgoff(folio, pa=
-ge) !=3D linear_page_index(vma, address))
-> > [   13.340190] ------------[ cut here ]------------
-> > [   13.340316] kernel BUG at mm/rmap.c:1380!
-> > [   13.340683] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMP=
-T SMP
-> > [   13.340969] Modules linked in:
-> > [   13.341257] CPU: 1 UID: 0 PID: 107 Comm: a.out Not tainted 6.14.0-rc=
-3-gcf42737e247a-dirty #299
-> > [   13.341470] Hardware name: linux,dummy-virt (DT)
-> > [   13.341671] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BT=
-YPE=3D--)
-> > [   13.341815] pc : __page_check_anon_rmap+0xa0/0xb0
-> > [   13.341920] lr : __page_check_anon_rmap+0xa0/0xb0
-> > [   13.342018] sp : ffff80008752bb20
-> > [   13.342093] x29: ffff80008752bb20 x28: fffffdffc0199f00 x27: 0000000=
-000000001
-> > [   13.342404] x26: 0000000000000000 x25: 0000000000000001 x24: 0000000=
-000000001
-> > [   13.342575] x23: 0000ffffaf0d0000 x22: 0000ffffaf0d0000 x21: fffffdf=
-fc0199f00
-> > [   13.342731] x20: fffffdffc0199f00 x19: ffff000006210700 x18: 0000000=
-0ffffffff
-> > [   13.342881] x17: 6c203d2120296567 x16: 6170202c6f696c6f x15: 6628666=
-66f67705f
-> > [   13.343033] x14: 6567617028454741 x13: 2929737365726464 x12: ffff800=
-083728ab0
-> > [   13.343183] x11: ffff800082996bf8 x10: 0000000000000fd7 x9 : ffff800=
-08011bc40
-> > [   13.343351] x8 : 0000000000017fe8 x7 : 00000000fffff000 x6 : ffff800=
-0829eebf8
-> > [   13.343498] x5 : c0000000fffff000 x4 : 0000000000000000 x3 : 0000000=
-000000000
-> > [   13.343645] x2 : 0000000000000000 x1 : ffff0000062db980 x0 : 0000000=
-00000005f
-> > [   13.343876] Call trace:
-> > [   13.344045]  __page_check_anon_rmap+0xa0/0xb0 (P)
-> > [   13.344234]  folio_add_anon_rmap_ptes+0x22c/0x320
-> > [   13.344333]  do_swap_page+0x1060/0x1400
-> > [   13.344417]  __handle_mm_fault+0x61c/0xbc8
-> > [   13.344504]  handle_mm_fault+0xd8/0x2e8
-> > [   13.344586]  do_page_fault+0x20c/0x770
-> > [   13.344673]  do_translation_fault+0xb4/0xf0
-> > [   13.344759]  do_mem_abort+0x48/0xa0
-> > [   13.344842]  el0_da+0x58/0x130
-> > [   13.344914]  el0t_64_sync_handler+0xc4/0x138
-> > [   13.345002]  el0t_64_sync+0x1ac/0x1b0
-> > [   13.345208] Code: aa1503e0 f000f801 910f6021 97ff5779 (d4210000)
-> > [   13.345504] ---[ end trace 0000000000000000 ]---
-> > [   13.345715] note: a.out[107] exited with irqs disabled
-> > [   13.345954] note: a.out[107] exited with preempt_count 2
-> >
-> > If KSM is enabled, Peter Xu also discovered that do_swap_page() may
-> > trigger an unexpected CoW operation for small folios because
-> > ksm_might_need_to_copy() allocates a new folio when the folio index
-> > does not match linear_page_index(vma, addr).
-> >
-> > This patch also checks the swapcache when handling swap entries. If a
-> > match is found in the swapcache, it processes it similarly to a present
-> > PTE.
-> > However, there are some differences. For example, the folio is no longe=
-r
-> > exclusive because folio_try_share_anon_rmap_pte() is performed during
-> > unmapping.
-> > Furthermore, in the case of swapcache, the folio has already been
-> > unmapped, eliminating the risk of concurrent rmap walks and removing th=
-e
-> > need to acquire src_folio's anon_vma or lock.
-> >
-> > Note that for large folios, in the swapcache handling path, we directly
-> > return -EBUSY since split_folio() will return -EBUSY regardless if
-> > the folio is under writeback or unmapped. This is not an urgent issue,
-> > so a follow-up patch may address it separately.
-> >
-> > Fixes: adef440691bab ("userfaultfd: UFFDIO_MOVE uABI")
-> > Cc: Andrea Arcangeli <aarcange@redhat.com>
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Al Viro <viro@zeniv.linux.org.uk>
-> > Cc: Axel Rasmussen <axelrasmussen@google.com>
-> > Cc: Brian Geffon <bgeffon@google.com>
-> > Cc: Christian Brauner <brauner@kernel.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Hugh Dickins <hughd@google.com>
-> > Cc: Jann Horn <jannh@google.com>
-> > Cc: Kalesh Singh <kaleshsingh@google.com>
-> > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > Cc: Lokesh Gidra <lokeshgidra@google.com>
-> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > Cc: Michal Hocko <mhocko@suse.com>
-> > Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-> > Cc: Nicolas Geoffray <ngeoffray@google.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> > Cc: Shuah Khan <shuah@kernel.org>
-> > Cc: ZhangPeng <zhangpeng362@huawei.com>
-> > Cc: Tangquan Zheng <zhengtangquan@oppo.com>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
->
-> Acked-by: Peter Xu <peterx@redhat.com>
->
-> Some nitpicks below, maybe no worth for a repost..
+> [   14.302315]         0000000000000000 d84a6232d48f1ac7 0000000000000000=
+ 0000000000000000
+> [   14.302318]         0000000000000000 0000000000000000 0000000000000000=
+ 0000000000000000
+> [   14.302320]         0000000000000000 0000000000000000 00000000072b4000=
+ 900000012e4dcf48
+> [   14.302323]         9000000001eb8000 0000000000000000 9000000001c31c70=
+ 0000000000000004
+> [   14.302325]         0000000000000004 0000000000000000 000000000000137e=
+ 0000000000000001
+> [   14.302328]         900000012f153ce8 9000000001c31c70 9000000000244174=
+ 0000555581840b98
+> [   14.302331]         00000000000000b0 0000000000000004 0000000000000000=
+ 0000000000071c1d
+> [   14.302333]         ...
+> [   14.302335] Call Trace:
+> [   14.302336] [<9000000000244174>] show_stack+0x3c/0x16c
+> [   14.302341] [<900000000023eb30>] dump_stack_lvl+0x84/0xe0
+> [   14.302346] [<9000000000288208>] __warn+0x8c/0x174
+> [   14.302350] [<90000000017c1918>] report_bug+0x1c0/0x22c
+> [   14.302354] [<90000000017f66e8>] do_bp+0x280/0x344
+> [   14.302359]
+> [   14.302360] ---[ end trace 0000000000000000 ]---
+>=20
+> Revise calculation of `RING_CTL_SIZE(size)' to use `SZ_4K' to fix the
+> aforementioned issue.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: b79e8fd954c4 ("drm/xe: Remove dependency on intel_engine_regs.h")
+> Tested-by: Mingcong Bai <jeffbai@aosc.io>
+> Tested-by: Haien Liang <27873200@qq.com>
+> Tested-by: Shirong Liu <lsr1024@qq.com>
+> Tested-by: Haofeng Wu <s2600cw2@126.com>
+> Link: https://github.com/FanFansfan/loongson-linux/commit/22c55ab3931c324=
+10a077b3ddb6dca3f28223360
+> Co-developed-by: Shang Yatsen <429839446@qq.com>
+> Signed-off-by: Shang Yatsen <429839446@qq.com>
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
 
-With Peter's nits addressed,
+This conflict with previously submited patch [1] but this one LGTM too,
+with that:
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
-Thanks!
-
->
-> > ---
-> >  mm/userfaultfd.c | 76 ++++++++++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 67 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index 867898c4e30b..2df5d100e76d 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -18,6 +18,7 @@
-> >  #include <asm/tlbflush.h>
-> >  #include <asm/tlb.h>
-> >  #include "internal.h"
-> > +#include "swap.h"
-> >
-> >  static __always_inline
-> >  bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long ds=
-t_end)
-> > @@ -1072,16 +1073,14 @@ static int move_present_pte(struct mm_struct *m=
-m,
-> >       return err;
-> >  }
-> >
-> > -static int move_swap_pte(struct mm_struct *mm,
-> > +static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *=
-dst_vma,
-> >                        unsigned long dst_addr, unsigned long src_addr,
-> >                        pte_t *dst_pte, pte_t *src_pte,
-> >                        pte_t orig_dst_pte, pte_t orig_src_pte,
-> >                        pmd_t *dst_pmd, pmd_t dst_pmdval,
-> > -                      spinlock_t *dst_ptl, spinlock_t *src_ptl)
-> > +                      spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > +                      struct folio *src_folio)
-> >  {
-> > -     if (!pte_swp_exclusive(orig_src_pte))
-> > -             return -EBUSY;
-> > -
-> >       double_pt_lock(dst_ptl, src_ptl);
-> >
-> >       if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src=
-_pte,
-> > @@ -1090,10 +1089,20 @@ static int move_swap_pte(struct mm_struct *mm,
-> >               return -EAGAIN;
-> >       }
-> >
-> > +     /*
-> > +      * The src_folio resides in the swapcache, requiring an update to=
- its
-> > +      * index and mapping to align with the dst_vma, where a swap-in m=
-ay
-> > +      * occur and hit the swapcache after moving the PTE.
-> > +      */
-> > +     if (src_folio) {
-> > +             folio_move_anon_rmap(src_folio, dst_vma);
-> > +             src_folio->index =3D linear_page_index(dst_vma, dst_addr)=
-;
-> > +     }
-> > +
-> >       orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_pte);
-> >       set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
-> > -     double_pt_unlock(dst_ptl, src_ptl);
-> >
-> > +     double_pt_unlock(dst_ptl, src_ptl);
->
-> Unnecessary line move.
->
-> >       return 0;
-> >  }
-> >
-> > @@ -1137,6 +1146,7 @@ static int move_pages_pte(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd,
-> >                         __u64 mode)
-> >  {
-> >       swp_entry_t entry;
-> > +     struct swap_info_struct *si =3D NULL;
-> >       pte_t orig_src_pte, orig_dst_pte;
-> >       pte_t src_folio_pte;
-> >       spinlock_t *src_ptl, *dst_ptl;
-> > @@ -1318,6 +1328,8 @@ static int move_pages_pte(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd,
-> >                                      orig_dst_pte, orig_src_pte, dst_pm=
-d,
-> >                                      dst_pmdval, dst_ptl, src_ptl, src_=
-folio);
-> >       } else {
-> > +             struct folio *folio =3D NULL;
-> > +
-> >               entry =3D pte_to_swp_entry(orig_src_pte);
-> >               if (non_swap_entry(entry)) {
-> >                       if (is_migration_entry(entry)) {
-> > @@ -1331,9 +1343,53 @@ static int move_pages_pte(struct mm_struct *mm, =
-pmd_t *dst_pmd, pmd_t *src_pmd,
-> >                       goto out;
-> >               }
-> >
-> > -             err =3D move_swap_pte(mm, dst_addr, src_addr, dst_pte, sr=
-c_pte,
-> > -                                 orig_dst_pte, orig_src_pte, dst_pmd,
-> > -                                 dst_pmdval, dst_ptl, src_ptl);
-> > +             if (!pte_swp_exclusive(orig_src_pte)) {
-> > +                     err =3D -EBUSY;
-> > +                     goto out;
-> > +             }
-> > +
-> > +             si =3D get_swap_device(entry);
-> > +             if (unlikely(!si)) {
-> > +                     err =3D -EAGAIN;
-> > +                     goto out;
-> > +             }
-> > +             /*
-> > +              * Verify the existence of the swapcache. If present, the=
- folio's
-> > +              * index and mapping must be updated even when the PTE is=
- a swap
-> > +              * entry. The anon_vma lock is not taken during this proc=
-ess since
-> > +              * the folio has already been unmapped, and the swap entr=
-y is
-> > +              * exclusive, preventing rmap walks.
-> > +              *
-> > +              * For large folios, return -EBUSY immediately, as split_=
-folio()
-> > +              * also returns -EBUSY when attempting to split unmapped =
-large
-> > +              * folios in the swapcache. This issue needs to be resolv=
-ed
-> > +              * separately to allow proper handling.
-> > +              */
-> > +             if (!src_folio)
-> > +                     folio =3D filemap_get_folio(swap_address_space(en=
-try),
-> > +                                     swap_cache_index(entry));
-> > +             if (!IS_ERR_OR_NULL(folio)) {
-> > +                     if (folio && folio_test_large(folio)) {
->
-> Can drop this folio check as it just did check "!IS_ERR_OR_NULL(folio)"..
->
-> > +                             err =3D -EBUSY;
-> > +                             folio_put(folio);
-> > +                             goto out;
-> > +                     }
-> > +                     src_folio =3D folio;
-> > +                     src_folio_pte =3D orig_src_pte;
-> > +                     if (!folio_trylock(src_folio)) {
-> > +                             pte_unmap(&orig_src_pte);
-> > +                             pte_unmap(&orig_dst_pte);
-> > +                             src_pte =3D dst_pte =3D NULL;
-> > +                             /* now we can block and wait */
-> > +                             folio_lock(src_folio);
-> > +                             put_swap_device(si);
-> > +                             si =3D NULL;
->
-> Not sure if it can do any harm, but maybe still nicer to put swap before
-> locking folio.
->
-> Thanks,
->
-> > +                             goto retry;
-> > +                     }
-> > +             }
-> > +             err =3D move_swap_pte(mm, dst_vma, dst_addr, src_addr, ds=
-t_pte, src_pte,
-> > +                             orig_dst_pte, orig_src_pte, dst_pmd, dst_=
-pmdval,
-> > +                             dst_ptl, src_ptl, src_folio);
-> >       }
-> >
-> >  out:
-> > @@ -1350,6 +1406,8 @@ static int move_pages_pte(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd,
-> >       if (src_pte)
-> >               pte_unmap(src_pte);
-> >       mmu_notifier_invalidate_range_end(&range);
-> > +     if (si)
-> > +             put_swap_device(si);
-> >
-> >       return err;
-> >  }
-> > --
-> > 2.39.3 (Apple Git-146)
-> >
->
-> --
-> Peter Xu
->
+> ---
+>  drivers/gpu/drm/xe/regs/xe_engine_regs.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/xe/regs/xe_engine_regs.h b/drivers/gpu/drm/x=
+e/regs/xe_engine_regs.h
+> index d86219dedde2a6dcd8701c7bf2e90d95ec7244e2..e48bf80d144a1a954f6d9f5d4=
+05e1d759b86134f 100644
+> --- a/drivers/gpu/drm/xe/regs/xe_engine_regs.h
+> +++ b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
+> @@ -52,8 +52,7 @@
+>  #define RING_START(base)			XE_REG((base) + 0x38)
+> =20
+>  #define RING_CTL(base)				XE_REG((base) + 0x3c)
+> -#define   RING_CTL_SIZE(size)			((size) - PAGE_SIZE) /* in bytes -> page=
+s */
+> -#define   RING_CTL_SIZE(size)			((size) - PAGE_SIZE) /* in bytes -> page=
+s */
+> +#define   RING_CTL_SIZE(size)			((size) - SZ_4K) /* in bytes -> pages */
+> =20
+>  #define RING_START_UDW(base)			XE_REG((base) + 0x48)
+> =20
+>=20
+> --=20
+> 2.48.1
+>=20
+>=20
 
