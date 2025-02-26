@@ -1,197 +1,183 @@
-Return-Path: <stable+bounces-119761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBE5A46D87
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 22:32:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6514A46D94
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 22:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F3316C285
-	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 21:32:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E573F188A72B
+	for <lists+stable@lfdr.de>; Wed, 26 Feb 2025 21:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE28C25A33D;
-	Wed, 26 Feb 2025 21:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC91D25A2DB;
+	Wed, 26 Feb 2025 21:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Pjbe2Iqc"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BkDdi7dT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891742745E;
-	Wed, 26 Feb 2025 21:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FDB25A33E
+	for <stable@vger.kernel.org>; Wed, 26 Feb 2025 21:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740605535; cv=none; b=b5OQxmvdBRPA6JguZksDOJDlOm7dEDE4qeS9eZ9AfXAnK3sMggLua1rfkzj7nREHMctTVquJOaoz3NSINVr9KtEM+RFqh38sQWJEdLm5/RoePffm3l+kCfRm6MCdLTMenbi/FAmjSk0m66KICl5m1wC3HCOrtViLut/rN5L8/B8=
+	t=1740605804; cv=none; b=ZzQpgRTmvbDy5VEIuAj6uyDCF2wm9K0pLlSlIBnhyOfd+rE6TbOBf+lPJ/oCKsRe9FDG7Q0ULrz0HQfJXLtkYPSkzvjg5gJEBo65O7GuYAsNsK+s+unXuD7M66pkZ7T2a4f4iNzIuGao8rs8br92ksFJYAAXdIJSQ431CO7GbDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740605535; c=relaxed/simple;
-	bh=uXSePFVCUMGaYm5BxxVJKlXEJQpALJXdsJNqK5bnCZw=;
-	h=Date:To:From:Subject:Message-Id; b=nVnfpiPH31JbE2T3R5Ow16rco/57njh7L1EXDG3EpByeUMArVYjLwgrVBnm0VsCPf35kHNW9WKTT5Vju+Scu1kHzjWmrJO63SooW4XHaTWPWSaeKb+sp3zH4RbKuwDfZT14kMjxE6vVueLSame2KX+RhSBRXPSOGOH3OT+DRVfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Pjbe2Iqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF780C4CEE9;
-	Wed, 26 Feb 2025 21:32:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1740605535;
-	bh=uXSePFVCUMGaYm5BxxVJKlXEJQpALJXdsJNqK5bnCZw=;
-	h=Date:To:From:Subject:From;
-	b=Pjbe2IqcfG16Uv5TMqb+PJzeMGnzXuo6oWZkB0swPQ0WQ6j3UoQYVaVzler01HPe5
-	 HZxDsQimtpO28XyMZosjzTtnydZyNmVVvWvzr4R/zaaY6QZsoXYe1ZpTgxe+J/VFeZ
-	 DwZekMilnurbQ/dkxHbuOjC+pvIG4SsFrJ5GTzXE=
-Date: Wed, 26 Feb 2025 13:32:14 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,v-songbaohua@oppo.com,stable@vger.kernel.org,peterx@redhat.com,lorenzo.stoakes@oracle.com,lokeshgidra@google.com,Liam.Howlett@Oracle.com,kaleshsingh@google.com,jannh@google.com,hughd@google.com,david@redhat.com,aarcange@redhat.com,21cnbao@gmail.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250226213214.EF780C4CEE9@smtp.kernel.org>
+	s=arc-20240116; t=1740605804; c=relaxed/simple;
+	bh=5c954FZ1IsL2zYxnLVV42fDVvzLlL/UhkP5UBwhFIrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G4liix2DD1WkWyzT/Twl0kgiQ7lPkv/21JMO+qOwFivtWhVgssA8srkYt1yB+O4YQlznLOKkoc4FOMvE7qS+8eVkAiIDJEqfzEVgdAfclcLq1h6kN8wzw6PcmupUl+EXxWwF/hU73cuovtMKLzYx3ER58gGb3isFdWRqGb6xcYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BkDdi7dT; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223480ea43aso5415795ad.1
+        for <stable@vger.kernel.org>; Wed, 26 Feb 2025 13:36:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740605801; x=1741210601; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J3EjXP+NiLIXMW4dRj4K5uwF3K6wA15u88DzQQtavhw=;
+        b=BkDdi7dTlC+arHf/AGIf0Qt082w4RW1u4r++hgbGlhrarFED0YvZPnmuyXsB7W9z8U
+         PYEZgxVlWmJrBoQewXIj9IplP3DX4YVuAxUeX261ZSrEYsgDxOs39c545T1Dw5UdtWCw
+         qQJrj66LTIreTbWRJLweLxnhl8ECvkAx35wXyoSdPJ89OeXDTeE2nTNQqk3nxGy2O0uA
+         QkNKBQ8w6se+EBmxBIpclaR316brpu0GN3l9ASz+D/+JNmhAZi3L8TfkilOhscI887Zc
+         CtG0TV8YZwYva+WZKxy5l6plQyI/bYSane2u2K30792GhkLCxu/RvP9FK7SBURLr1T3l
+         LJ3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740605801; x=1741210601;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J3EjXP+NiLIXMW4dRj4K5uwF3K6wA15u88DzQQtavhw=;
+        b=gMy0/He98VNnmKXKbFTrVTdKBbqHhq907GUFI9Rx8iXKQrCKU0XgXd6Ev0N2E0LEk6
+         EqOhLtjz1JXBs4FalD0lQUb7WaSEaIS31g7JnxH/Sh9vj137PcSAoxbG4m6ivXEFHC/j
+         D9pjjRxQWpgSYGxh8uOst6IDOgWu7/CCmnBsikRXnoQ90QLB9UkH6PXQQkWwJTkzf8qg
+         ox1TXeM1hokgymHvqoy2XpFZgaPQpMXjxwl6j9eT6Va5o9Anr+fvzrPke17HbiSw9bg6
+         +LlMxqduRX9rTIRv4wXmF6N/GYEhobwHLp5IrPQ8HRzBwwnRiLr/D81NNqSa/JgNXb3V
+         MDqA==
+X-Forwarded-Encrypted: i=1; AJvYcCXX+pF0ntRHDp2TYkG1SCFcTZn8bBpqkDZAiq9hK6r52SCWINishui4erzS/iFCQ3SqTi7YDrc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaV+H3WQqJYx1krn3qQdk1wozj1bx1+OLmffwRTRJEUcHmHKtJ
+	tqz0o+mMJmH02v5wcF1RW/MhNYDQrO0b0HJhuUHeM04vjnD9gCLPjB97uRveCg==
+X-Gm-Gg: ASbGncvSbWHvsY9vStF/+cYyA2jzMxwGEz/wbVMgQx/tLyu1RZhYE9aisZOe2vuBeDr
+	JxG8ymqJ325kzeGbWf88+UPVdODA0/4rKmnf1nSbuDb9rMr+5KBLFwR5PI/5vOQDWMYIU8mPx8q
+	SQs5t6ItqwEr1yisRrJzvhxhFDCIvxtDG7E1Bg5fr+yvBnzhLOteafylZCBnsQkbHXUYvrAaglN
+	dQ6Ot/Zfj1wLujHEDu7mqoFkHUPvKDCmLtaT4yWZj87vD06XTpfO4HjX0jDKgZuMNyW8N3xD+o2
+	4GQoMu24+WJeTw/avJzfjZAeUE/rMc09xk781XfsWTPbgsk0cl/VcK+G7aUs/XqufwQG2WHs
+X-Google-Smtp-Source: AGHT+IGlj+AkHNM5ogaSILuA9Lcd5E/pZaPJQMHMy8ybuI24p8eRv0xMkCx0vWI/wdKBYp78UuaZ/g==
+X-Received: by 2002:a05:6a00:1813:b0:732:6221:7180 with SMTP id d2e1a72fcca58-73426c943c4mr37186690b3a.5.1740605801093;
+        Wed, 26 Feb 2025 13:36:41 -0800 (PST)
+Received: from google.com (198.103.247.35.bc.googleusercontent.com. [35.247.103.198])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7349fe51432sm21196b3a.70.2025.02.26.13.36.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 13:36:40 -0800 (PST)
+Date: Wed, 26 Feb 2025 13:36:35 -0800
+From: William McVicker <willmcvicker@google.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, Zijun Hu <quic_zijuhu@quicinc.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Marc Zyngier <maz@kernel.org>,
+	Andreas Herrmann <andreas.herrmann@calxeda.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, kernel-team@android.com
+Subject: Re: [PATCH v4 09/14] of: reserved-memory: Fix using wrong number of
+ cells to get property 'alignment'
+Message-ID: <Z7-JY1jQnEVzEley@google.com>
+References: <20250109-of_core_fix-v4-0-db8a72415b8c@quicinc.com>
+ <20250109-of_core_fix-v4-9-db8a72415b8c@quicinc.com>
+ <20250113232551.GB1983895-robh@kernel.org>
+ <Z70aTw45KMqTUpBm@google.com>
+ <97ac58b1-e37c-4106-b32b-74e041d7db44@quicinc.com>
+ <Z74CDp6FNm9ih3Nf@google.com>
+ <20250226194505.GA3407277-robh@kernel.org>
+ <f81e6906-499c-4be3-a922-bcd6378768c4@icloud.com>
+ <CAL_Jsq+P=sZu6Wnqq7uEnGMnAQGNEDf_B+VgO8E8ob4RX8b=QA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_Jsq+P=sZu6Wnqq7uEnGMnAQGNEDf_B+VgO8E8ob4RX8b=QA@mail.gmail.com>
 
+> I thought downstream kept kernels and DTs in sync, so the dts could be
+> fixed?
 
-The patch titled
-     Subject: userfaultfd: fix PTE unmapping stack-allocated PTE copies
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies.patch
+For Pixel the kernel and DT are in sync, but I'm not sure about other devices.
+The problem in general though is now everyone would need to do a special
+coordination when updating to the newer LTS version to make sure their kernel
+matches the new DT.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies.patch
+On 02/26/2025, Rob Herring wrote:
+> On Wed, Feb 26, 2025 at 2:31 PM Zijun Hu <zijun_hu@icloud.com> wrote:
+> >
+> > On 2025/2/27 03:45, Rob Herring wrote:
+> > >> Right, I think it's already backported to the LTS kernels, but if it breaks any
+> > >> in-tree users then we'd have to revert it. I just like Rob's idea to instead
+> > >> change the spec for obvious reasons 🙂
+> > > While if it is downstream, it doesn't exist, I'm reverting this for now.
+> >
+> > perhaps, it is better for us to slow down here.
+> >
+> > 1) This change does not break any upstream code.
+> >    is there downstream code which is publicly visible and is broken by
+> >    this change ?
+> 
+> We don't know that unless you tested every dts file. We only know that
+> no one has reported an issue yet.
+> 
+> Even if we did test everything, there are DT's that aren't in the
+> kernel tree. It's not like this downstream DT is using some
+> undocumented binding or questionable things. It's a standard binding.
+> 
+> Every time this code is touched, it breaks. This is not even the only
+> breakage right now[1].
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+You can find the Pixel 6/7/8/9 device trees on android.googlesource.com.
+You can see for zuma based devices (Pixel 9 for example) they have this [1]:
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+  &reserved_memory {
+        #address-cells = <2>;
+        #size-cells = <1>;
+        vstream: vstream {
+                compatible = "shared-dma-pool";
+                reusable;
+                size = <0x4800000>;
+                alignment = <0x0 0x00010000>;
+                alloc-ranges = <0x9 0x80000000 0x80000000>,
+                               <0x9 0x00000000 0x80000000>,
+                               <0x8 0x80000000 0x80000000>,
+                               <0x0 0x80000000 0x80000000>;
+        };
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+I understand this code is downstream, but as a general principle we shouldn't
+break backwards compatibilty.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Thanks,
+Will
 
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: userfaultfd: fix PTE unmapping stack-allocated PTE copies
-Date: Wed, 26 Feb 2025 10:55:09 -0800
+[1] https://android.googlesource.com/kernel/devices/google/zuma/+/refs/heads/android-gs-shusky-6.1-android16-dp/dts/gs101-dma-heap.dtsi#147
 
-Current implementation of move_pages_pte() copies source and destination
-PTEs in order to detect concurrent changes to PTEs involved in the move. 
-However these copies are also used to unmap the PTEs, which will fail if
-CONFIG_HIGHPTE is enabled because the copies are allocated on the stack. 
-Fix this by using the actual PTEs which were kmap()ed.
-
-Link: https://lkml.kernel.org/r/20250226185510.2732648-3-surenb@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/userfaultfd.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
---- a/mm/userfaultfd.c~userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies
-+++ a/mm/userfaultfd.c
-@@ -1290,8 +1290,8 @@ retry:
- 			spin_unlock(src_ptl);
- 
- 			if (!locked) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				/* now we can block and wait */
- 				folio_lock(src_folio);
-@@ -1307,8 +1307,8 @@ retry:
- 		/* at this point we have src_folio locked */
- 		if (folio_test_large(src_folio)) {
- 			/* split_folio() can block */
--			pte_unmap(&orig_src_pte);
--			pte_unmap(&orig_dst_pte);
-+			pte_unmap(src_pte);
-+			pte_unmap(dst_pte);
- 			src_pte = dst_pte = NULL;
- 			err = split_folio(src_folio);
- 			if (err)
-@@ -1333,8 +1333,8 @@ retry:
- 				goto out;
- 			}
- 			if (!anon_vma_trylock_write(src_anon_vma)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				/* now we can block and wait */
- 				anon_vma_lock_write(src_anon_vma);
-@@ -1352,8 +1352,8 @@ retry:
- 		entry = pte_to_swp_entry(orig_src_pte);
- 		if (non_swap_entry(entry)) {
- 			if (is_migration_entry(entry)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				migration_entry_wait(mm, src_pmd, src_addr);
- 				err = -EAGAIN;
-@@ -1396,8 +1396,8 @@ retry:
- 			src_folio = folio;
- 			src_folio_pte = orig_src_pte;
- 			if (!folio_trylock(src_folio)) {
--				pte_unmap(&orig_src_pte);
--				pte_unmap(&orig_dst_pte);
-+				pte_unmap(src_pte);
-+				pte_unmap(dst_pte);
- 				src_pte = dst_pte = NULL;
- 				/* now we can block and wait */
- 				folio_lock(src_folio);
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-userfaultfd-do-not-block-on-locking-a-large-folio-with-raised-refcount.patch
-userfaultfd-fix-pte-unmapping-stack-allocated-pte-copies.patch
-mm-avoid-extra-mem_alloc_profiling_enabled-checks.patch
-alloc_tag-uninline-code-gated-by-mem_alloc_profiling_key-in-slab-allocator.patch
-alloc_tag-uninline-code-gated-by-mem_alloc_profiling_key-in-page-allocator.patch
-mm-introduce-vma_start_read_locked_nested-helpers.patch
-mm-move-per-vma-lock-into-vm_area_struct.patch
-mm-mark-vma-as-detached-until-its-added-into-vma-tree.patch
-mm-introduce-vma_iter_store_attached-to-use-with-attached-vmas.patch
-mm-mark-vmas-detached-upon-exit.patch
-types-move-struct-rcuwait-into-typesh.patch
-mm-allow-vma_start_read_locked-vma_start_read_locked_nested-to-fail.patch
-mm-move-mmap_init_lock-out-of-the-header-file.patch
-mm-uninline-the-main-body-of-vma_start_write.patch
-refcount-provide-ops-for-cases-when-objects-memory-can-be-reused.patch
-refcount-provide-ops-for-cases-when-objects-memory-can-be-reused-fix.patch
-refcount-introduce-__refcount_addinc_not_zero_limited_acquire.patch
-mm-replace-vm_lock-and-detached-flag-with-a-reference-count.patch
-mm-replace-vm_lock-and-detached-flag-with-a-reference-count-fix.patch
-mm-move-lesser-used-vma_area_struct-members-into-the-last-cacheline.patch
-mm-debug-print-vm_refcnt-state-when-dumping-the-vma.patch
-mm-remove-extra-vma_numab_state_init-call.patch
-mm-prepare-lock_vma_under_rcu-for-vma-reuse-possibility.patch
-mm-make-vma-cache-slab_typesafe_by_rcu.patch
-mm-make-vma-cache-slab_typesafe_by_rcu-fix.patch
-docs-mm-document-latest-changes-to-vm_lock.patch
-
+> 
+> > 2) IMO, the spec may be right.
+> >    The type of size is enough to express any alignment wanted.
+> >    For several kernel allocators. type of 'alignment' should be the type
+> >    of 'size', NOT the type of 'address'
+> 
+> As I said previously, it can be argued either way.
+> 
+> Rob
+> 
+> [1] https://lore.kernel.org/all/20250226115044.zw44p5dxlhy5eoni@pengutronix.de/
 
