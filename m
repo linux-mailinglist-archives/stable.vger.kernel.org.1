@@ -1,195 +1,117 @@
-Return-Path: <stable+bounces-119851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24D9A4836E
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 16:46:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F27A48578
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 17:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 317783B9B2E
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 15:45:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD94A1770C2
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 16:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9052326B96C;
-	Thu, 27 Feb 2025 15:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABA81ACEB5;
+	Thu, 27 Feb 2025 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UtoEvgtt"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tMbnI/RH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gqyi57sL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859312222BA
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 15:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA361A38E3
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 16:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740671081; cv=none; b=eGlsHZf10Ui7+gpcm95FcWKGFsZ+AD4RM0o7cqZVw6hbFGRCXz87TgSw2GDDedAYe8YRCl4s0EXePCzYAFvYwFCdnnU1qpdIQ8gbExFOBg5hR/RRbAyoYZBDumgpic3EO04N+uw30CVzbijlmdSfGHrZtJSYyihzxioRMACU2yU=
+	t=1740673887; cv=none; b=D6oHoTmhPYZYTskl3vE2oTWgvC6hZviXrDKJUWr30kU8p/00hka7lozGBjkJsaSuceTMDWQUpZD6XYUbE24jm+bkqIfB+Rbl2+nfd3FB3irUJp9Gw4lXd9NJ5EMGAvm94aYLBG1kmglOfWtNY/f/dw2nWE5gqGCcreKaoLJdxK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740671081; c=relaxed/simple;
-	bh=cmwlWgUGiBrxzsSi0XMsM6LX8XwWPXdEMltCjcZNrhI=;
+	s=arc-20240116; t=1740673887; c=relaxed/simple;
+	bh=mwJBHwkHwdNM/VutVuXI6pqXHE8qIZjhH8Jat4VDczY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PTpudXdxSII2p9+R9XzSsOEy6PX/ikjfFCISBrhHZh//3V7ZnOG6k8RTVn0kz48ABpwZCjWJim+/nAjip1bvsmpozqUnEB0+3eMc0peNd35ONZK31QzAt/QLnR3y8L7+972J7Drlb5ZMcHevpWxcVfFaoWoJYU4rWLbs9z66maI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UtoEvgtt; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abbec6a0bfeso169227766b.2
-        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 07:44:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740671078; x=1741275878; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Rdmeu/qUg5UZArZwBy9tn4KHSIQpe0IPJEdQzsJhtnE=;
-        b=UtoEvgttIDDtwvp5W7t/F6Xfh0UCahrcyQIXbHwRF6UFL1QJsUYh2FePUiHMucozxF
-         fep38u9LeM9cjRgVJIlqrd8z56d4vIrhfYBsoLVdHRdAolnAz4DBuGJsfBXpb2QNjZls
-         oI00rGwc+0gUixFODCRQBWMrjz150D67eUWAN7UxNP2Bii5P6pWHNcwPlgTmHqIv8/E2
-         FzwlxN9s6SUhK9pX+jnGAT0p5iE6F5UDzb6OLa2c+wkdUjENKVSY5PAwM5JArl5B/3z9
-         iDDWiZ1My9H8YZ95prlWJkIM6K2QYpjGCl20imBQQ53XNiKG0bu4W3k/TEFlotlxHxo7
-         aKRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740671078; x=1741275878;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rdmeu/qUg5UZArZwBy9tn4KHSIQpe0IPJEdQzsJhtnE=;
-        b=SluWtAiUtkO/oxieXdupaxaMl6RvMNn88pXw1qvrNZy8J9caUjtDIlYuNAtym34dmK
-         5PR2AkdYFrFaauy/61oV1NKZt5qQUsbBsDHmDQcPmGloEUdjXUN+u+IkwU2vZP5Livf3
-         DxAM8Qa8bmqOrzqNSjZOLFCoHe3+gx0UlWT4KKPzTgCP7n51COjorqkgpe3jDkcqX/p3
-         FRdAPRduDzcTqP6vWXpYLQazFuUqx8S1g9ihi2cBJTzabtsvlH+1jsoLSfHYaGacZvtL
-         PtIy2u8ZekmYR/vSAKrNBNfxLoIe/Jz802CVuFdYgzNz2S4I7W9v96KrkiwmxFJJTIY1
-         r8mg==
-X-Forwarded-Encrypted: i=1; AJvYcCWwDKkqYqeKdHHd7dNd8Vd0ses1tO4IqDDYjtT9AgP9FRobKaq6xC08EOJe0ZmNia1obCCQu3o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmVCYNVubbaqLKnKmEx6gH9DazpHQVg/vaybgsZL8xQA3AOGIf
-	tmXIkYGgcAWKhU53WiZlochi6WTNb1YjoqDbW9nQT5GEe3UddzZbkdpj2qXRmWQ=
-X-Gm-Gg: ASbGnctxh4slRmCjbybh1MTy5sJ/CIJqsUAE9mJ+Kamn+pqFOhRX609YaRaVUK6DU3x
-	6yNwCeZTMh8ZS6L65CuqXJ57+smjCeLMrR3MFBc3Rx0BAJKs+0JEEbjUScxMHFnhZWLD8P25or+
-	8m1va3qqySBrhSgXUXHft0a4QCzgPwpIKYJNgLE5yYamXljHM2wLQalBCjv2MWn3dbw7PDYowmB
-	kwOrFtISu5sew8SZe+GBoG9LVoWkO30Zw2HlxLcue3uBq6k2ArzWDG5ouqckt14LwwJgppGeG5D
-	dbxU4KaSXdpR9te4GETYgUc=
-X-Google-Smtp-Source: AGHT+IFPlvCas/g5XVwHNkkiLI/oKN1mfrZ2+ELWC+zipz3ozWe8GTuEuVMg9ijMVFp68LOxNM0W1A==
-X-Received: by 2002:a17:906:6a19:b0:abb:6e95:b272 with SMTP id a640c23a62f3a-abc09a8091emr2789728166b.30.1740671077777;
-        Thu, 27 Feb 2025 07:44:37 -0800 (PST)
-Received: from linaro.org ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c755e0asm138697266b.133.2025.02.27.07.44.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 07:44:37 -0800 (PST)
-Date: Thu, 27 Feb 2025 17:44:35 +0200
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Anjelique Melendez <quic_amelende@quicinc.com>,
-	Kamal Wadhwa <quic_kamalw@quicinc.com>,
-	Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Johan Hovold <johan@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
- PWMs
-Message-ID: <Z8CIY2OJUMqIOHGU@linaro.org>
-References: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
- <dfthocttum7dscotngi6l2hz6bpdwfgrdxpvkcv6bdux3lt66d@iqfvmntvzyut>
- <Z7zVgeM+7P7SLWIu@linaro.org>
- <vc7irlp7nuy5yvkxwb5m7wy7j7jzgpg73zmajbmq2zjcd67pd2@cz2dcracta6w>
- <Z7161SzdxhLITsW3@linaro.org>
- <5euqboshlfwweie7tlaffajzg3siiy6bm3j4evr572ko54gtbv@7lan3vizskt3>
- <Z8B2Bl/9uD3jPvQi@linaro.org>
- <j55de6bbipoavqx25w2s6qr7n6fv6w7bj3lrgyag4dlvvddbqv@shn22aqcqeci>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EO0IGFDI9SK7PQBWWsy+8pGq98dGNljy3grOz0jTsx6vIr0BMIC3/i+/lHAQ9OVqhdoiL/8/LKKNkKmLLUyc8LDS7y0kRpgF1xsRMixRReFN009CuWLmWiFjp+YubjxP6OCnLfTnY1LjgWHt+unHqAiev2MCOSRUEhFP1GqH9CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tMbnI/RH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gqyi57sL; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 27 Feb 2025 17:31:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740673883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwJBHwkHwdNM/VutVuXI6pqXHE8qIZjhH8Jat4VDczY=;
+	b=tMbnI/RHFUh2uLlNpZea3oZ+4mLIKeOIL/fhhRpN5BTr76GWs5NAKFCA16WUjCitwlB5pv
+	ZBKSsH63O2JZdrKuPJ3TCZnnadthOKERlUh9aBQdehgynTAuoa0tPQB7p+O56RDeWimhQj
+	/1vhIyQAlA53oCmyEbAiy5XrKAIfCVcZvAei/HUIt/UXhpfXhfuT7fdFy/InzCQNJfxsdb
+	rrai1EG13IRoR8rc2zvCfzgTdvtxGCpsxr8y38ie4xqa6Xnw5YCnIppp2BcslKvflFRDDi
+	XDaiRo9n2CuVIypZOMm1L1t45wtdo/RabOmO5bWCSizkilVmQGC/a9RpOKmL0g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740673883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwJBHwkHwdNM/VutVuXI6pqXHE8qIZjhH8Jat4VDczY=;
+	b=gqyi57sL/sk9TVflqB5ofTWiZtXE8YFgSHOaARvcl1pyvrd8jIvXMMYsZGLoFznbPGee8H
+	BR3SgTCz41OU53BQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
+Cc: stable@vger.kernel.org, revest@google.com, kernel-dev@igalia.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>, Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+0b5c75599f1d872bea6f@syzkaller.appspotmail.com,
+	syzbot+5ae46b237278e2369cac@syzkaller.appspotmail.com,
+	syzbot+c1e04a422bbc0f0f2921@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	syzbot+44623300f057a28baf1e@syzkaller.appspotmail.com,
+	Jason Wang <jasowang@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	syzbot+3c2b6d5d4bec3b904933@syzkaller.appspotmail.com,
+	syzbot+707d98c8649695eaf329@syzkaller.appspotmail.com,
+	syzbot+c226757eb784a9da3e8b@syzkaller.appspotmail.com,
+	syzbot+61a1cfc2b6632363d319@syzkaller.appspotmail.com,
+	syzbot+709e4c85c904bcd62735@syzkaller.appspotmail.com,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 6.6 v3 0/3] Set the bpf_net_context before invoking BPF
+ XDP in the TUN driver
+Message-ID: <20250227163121.w3MmV3vF@linutronix.de>
+References: <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <j55de6bbipoavqx25w2s6qr7n6fv6w7bj3lrgyag4dlvvddbqv@shn22aqcqeci>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com>
 
-On 25-02-27 16:25:06, Uwe Kleine-König wrote:
-> Hello Abel,
-> 
-> On Thu, Feb 27, 2025 at 04:26:14PM +0200, Abel Vesa wrote:
-> > On 25-02-27 10:58:47, Uwe Kleine-König wrote:
-> > > Can you please enable CONFIG_PWM_DEBUG, enable pwm tracing (
-> > > 
-> > > 	echo 1 > /sys/kernel/debug/tracing/events/pwm/enable
-> > > 
-> > > ) then reproduce the problem and provide the output of
-> > > 
-> > > 	cat /sys/kernel/debug/tracing/trace
-> > > 
-> > > .
-> > 
-> > $ cat trace
-> > # tracer: nop
-> > #
-> > # entries-in-buffer/entries-written: 13/13   #P:12
-> > #
-> > #                                _-----=> irqs-off/BH-disabled
-> > #                               / _----=> need-resched
-> > #                              | / _---=> hardirq/softirq
-> > #                              || / _--=> preempt-depth
-> > #                              ||| / _-=> migrate-disable
-> > #                              |||| /     delay
-> > #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
-> > #              | |         |   |||||     |         |
-> >         modprobe-203     [000] .....     0.938668: pwm_get: pwmchip0.0: period=1066407 duty_cycle=533334 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.938775: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=0 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.938821: pwm_get: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.938936: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.938982: pwm_get: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.939274: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=921458 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.939320: pwm_get: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.939434: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
-> >         modprobe-203     [000] .....     0.939480: pwm_get: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
-> >  systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=5000000 polarity=0 enabled=1 err=0
-> >  systemd-backlig-724     [006] .....     9.079585: pwm_get: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
-> >  systemd-backlig-724     [006] .....     9.079698: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
-> >  systemd-backlig-724     [006] .....     9.079750: pwm_get: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
-> > $
-> > 
-> > > 
-> > > I didn't take a deeper dive in this driver combination, but here is a
-> > > description about what *should* happen:
-> > > 
-> > > You're talking about period in MHz, the PWM abstraction uses
-> > > nanoseconds. So your summary translated to the PWM wording is (to the
-> > > best of my understanding):
-> > > 
-> > >   1. PWM backlight driver requests PWM with .period = 200 ns and
-> > >      .duty_cycle = 200 ns.
-> > > 
-> > >   2. leds-qcom-lpg cannot pick 200 ns exactly and then chooses .period =
-> > >      1000000000 / 4.26666 MHz = 234.375 ns
-> > >      
-> > >   3. leds-qcom-lpg then determines setting for requested .duty_cycle
-> > >      based on .period = 200 ns which then ends up with something bogus.
-> 
-> The trace looks better than what I expected. 2. is fine here because it
-> seems when Sebastian wrote "driver requests PWM with 5 MHz period" that
-> meant period = 5000000 ns. That was then rounded down to 4266537 ns. And
-> the request for period = 5000000 ns + duty_cycle = 5000000 ns was
-> serviced by configuring period = 4266537 ns + duty_cycle = 4266537 ns.
-> So that's a 100 % relative duty configuration as intended.
-> 
-> So just from the traces I don't spot a problem. Do these logs not match
-> what actually happens on the signal?
+On 2025-02-26 10:39:04 [+0100], Ricardo Ca=C3=B1uelo Navarro wrote:
+> Both patches needed some manual work in order to be applied on stable,
+> mostly related to changes in the context lines:
 
-What I do not get is why do we expect 2 pwm_get() and 2 pwm_apply()
-calls each time ?
+Did the same rebase and came to the same set of patches so
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Need to dig a bit further.
+Based on KASAN report Ricardo provided it is the dst->dev dereference in
+dev_map_enqueue(). This originates from bpf_redirect_info::tgt_value
+which is a per-CPU variable. It is assigned in __bpf_xdp_redirect_map().=20
+Since it is claimed that this patches fix it, the bot must have found a
+way to share the per-CPU data with another instance/ thread.
+Haven't figured out how=E2=80=A6
 
-But meanwhile, if the first pwm_apply() call goes all the way to the
-provider, then the duty cycle value, when translated to the actual PWM
-value that gets written to reg, will overflow. So this is what is wrong.
-And this is what actually happens.
+> Signed-off-by: Ricardo Ca=C3=B1uelo Navarro <rcn@igalia.com>
 
-> 
-> Best regards
-> Uwe
-
-
+Sebastian
 
