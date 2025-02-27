@@ -1,289 +1,159 @@
-Return-Path: <stable+bounces-119857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600F7A4877D
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 19:12:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59A1A4881D
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 19:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9A8B188FEA9
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 18:12:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45289188A804
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 18:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E7D1EFF9F;
-	Thu, 27 Feb 2025 18:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8841EFF90;
+	Thu, 27 Feb 2025 18:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="U59ib/nN"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ZFP/lvFL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E50A1EB5FF
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 18:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843D7234984
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 18:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740679787; cv=none; b=MfmHNjTOeOAsEXiLqndwVBpFhi1efVQgAVQYqxTT0wsnbQ0+cW4RqQvDj0fyYg5phpa+zr721f6MIbpb34/9uEoVIpaKZyHN9IqK7Y+Qof37MfAXzoq3PrS47PAsTdqXapGCB059tEIRTq21gSYaKlkFXUwt18TLmMDAZiwFl8M=
+	t=1740682038; cv=none; b=IUqfwL7t6AiS2hmvrWAlzT7ZzJrVSqgBD1eFXxeKizh/Xx38TIuqAE6un8sfxZEu6lEUWT628yUhcQbqLeIa26BXpCL8DMJuCaaMzCJebgrZigEFlvEG/kxVH2SWn15E1eOvB9A6MmUJxEeVW7MlLHQ3BSzlQokkxYIwqwsElt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740679787; c=relaxed/simple;
-	bh=xdChzCxZLgxBax8Z0/iBsu5xox6O3W/RGdDinFxDb9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IUnaUjTiCpHTta/YVtRj8fLYpVKpa3VRpapacDO6KlILi7CWDzDNuTvLL29ueEwtNwRyIE606gi/tFP6tuKlK2XaIWJXwEPjUfwfcuK2BHqtH6fqfTEAx0KyKI14z/epgHzhcURJtIGUmvVqbyojN42EGAm8VG08nfbeuA7KLDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=U59ib/nN; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abb7a6ee2deso191933066b.0
-        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 10:09:44 -0800 (PST)
+	s=arc-20240116; t=1740682038; c=relaxed/simple;
+	bh=5SPcYAb4oPwW2TOd6VG5gIHdoNJn4lVLOkrv5u+C6Vk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=buIcTB+abIodawiXz4LW5hSum6Jd7R7BNw0zvXyZRNikvGIShRDfHP2CeZ7OGEUQf58Z+RjhhA7QDLe7SHj7hX/bIZa3R5Rail2wG+KQ9AeJ4+ji6jCJFU05LxeLi31JB0Czzc7gUkyMyebjkGgyRLsaiiOwEcv1qED30nQuEek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ZFP/lvFL; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6e897847086so8062716d6.3
+        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 10:47:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740679783; x=1741284583; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VfjpGp1L26OhdaNqt/gYg8OwWNQRpw6uVt+zy1eXaNU=;
-        b=U59ib/nNARlrKFR8mHOnfDsq/hWYqQri9rMx4rJlDZLJhdTvv68qQQu6+By17g8eUx
-         5MrNsm2krTGjM/10dLbBCdeXEl59o0PplSPigAIOpq2zpyzchVopxIO0XIz4NmT5UVDM
-         IBXXpIEybBkMuOG5mT34UsCo8wSC71UdJgcdmMUF8CMpvdRzTTyazrbdWfbu8BGBmoA9
-         WheLGhN9rbxsEt8GDKsYkezjJKt/UhIB1MkkVn2zq9ZkhHOu7dpnLpcNc4+ttY+rjoLa
-         jiiH/JymZ7n006IChsJMobyNasIVSGpdiZkiCMaKpoU3bfjMRLfX0n5v3Azg57+QRmFu
-         epPA==
+        d=bytedance.com; s=google; t=1740682035; x=1741286835; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CgI8ZXoxqtIF/44cBOq0qi/g6VHw9sfjjXJgPa3P4vA=;
+        b=ZFP/lvFL72hYcg9DXXbbe/sqXIGpgZ7AxxOXk2+ghBlSLhflGP4UbfcQbFmj6bMII3
+         Td5iolMXfPh7IKu6XLYbJiOtEwhdSNbkBm3KVexDX13hJVfdZIQAd/UXQMI6iPxwBjKH
+         WXqB6LaXKyJepWfdT4EyihlQ2AZd/2vl9iSW/pF2Mn2vHdEOb5y3fiW5FgmRr6RfEwAc
+         U4OTGw2knc178UT7KB3O9M9RbP2ekaGO4R9RRdBuIAzpXmRF/KSubCHS4ibA7en3aYlz
+         pVGBu5LTGMIrBkXP/cVTLl1cmdUnk3Xg+aLqIrdegyeQuPqohNfF8CODiDC1oTRx2Q0n
+         Bmcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740679783; x=1741284583;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VfjpGp1L26OhdaNqt/gYg8OwWNQRpw6uVt+zy1eXaNU=;
-        b=v7eCnBvE30T1DLg5jTot0QDqTENQkUeU46zW6r3fHX+Wy7zABd+7oWoX4J+hOq37+z
-         eIwNBY3goCDR7la4KBdtxOcTDZv7EW0K9HMjqmxqSpmOa+EFeXPydzbUK4DInJIr1jST
-         j7sMLj4mcNvsNgruSG8/ZPgsTEn64pzMk7+snLvzX3TsPCs0RzkM6aAXO6vCw6dqIG/4
-         Reic+yNrxgPh9xLwZKfJ5deFyefAMK0kVSbGuoRi2eCzGCD1hHyyvcdevgAKnNk8dAK3
-         La6scCz9s1idh/6kpHuIGqyUp3QdTnhHI6yp3uPAShgRWQWEf3VBUnuR2s8gN7GZk1xl
-         Eb6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXpVr/FaHeoIJcnQ5bqmkcgD6vt9QgP2vNTSowQoIYnelT/ylNmrPvwhzmDDsAXF6U/fEI2LNY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/o9J9ZB4FDBMjL4DPbZDMdxAAirASLybyxnDvaHIf6g/a1Xev
-	dS6vUWwe20tDbcm/TMwcYAsUQDiQYzNCmhU22wxtlXaFAzkoFil78tjtYNBBVQI=
-X-Gm-Gg: ASbGncv5uCf2eKp6h3AESadX+J/Ewxkp9hQnD5HkRBdgrU9YnRacGJtioqxPVlod7J/
-	uQquQ/1m0rvOA8p2zk01Zngbti+ZUsonYvHeNkG2e+o1EGC9rv6mpDHKjtqbiOqM/nn5YN1lxOM
-	enEw2m1DdyTaxseLB16VzgMkPAjOa1xZTHtYplFivfYb2ORTikUUNWgc0glU5eHGcjVkzSI/J+t
-	0Rxpo2w9PKS7CBk6bY+Yl7WCgOdRcryc/H3KQnGfJaZQxM8rzQA/HMGxYYFVxLBpsbOjMeAv15U
-	PrFNL6vK1sBEUEoJs7JIrqwlfvGCUXgaoHhB3Vlarb+rb9PCnj/DwI9+lyuAHWrE
-X-Google-Smtp-Source: AGHT+IG5jhPAhA4gLbl+6jNfxZsQy6dhnuwfbakZ2ECzbDoT+qIk3FvugKFPtllN44+P1qWPzxitZQ==
-X-Received: by 2002:a17:907:988:b0:abe:ff13:d0c4 with SMTP id a640c23a62f3a-abf261cd53cmr53791366b.32.1740679783111;
-        Thu, 27 Feb 2025 10:09:43 -0800 (PST)
-Received: from localhost (p200300f65f2c000400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f2c:4::1b9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0b9a90sm159028166b.34.2025.02.27.10.09.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 10:09:41 -0800 (PST)
-Date: Thu, 27 Feb 2025 19:09:39 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Anjelique Melendez <quic_amelende@quicinc.com>, 
-	Kamal Wadhwa <quic_kamalw@quicinc.com>, Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Johan Hovold <johan@kernel.org>, Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
- PWMs
-Message-ID: <ioater5m23lhkmyik3hurozol6vtyx6ovac3phmvcphrmmprwb@igggmox3jz5m>
-References: <dfthocttum7dscotngi6l2hz6bpdwfgrdxpvkcv6bdux3lt66d@iqfvmntvzyut>
- <Z7zVgeM+7P7SLWIu@linaro.org>
- <vc7irlp7nuy5yvkxwb5m7wy7j7jzgpg73zmajbmq2zjcd67pd2@cz2dcracta6w>
- <Z7161SzdxhLITsW3@linaro.org>
- <5euqboshlfwweie7tlaffajzg3siiy6bm3j4evr572ko54gtbv@7lan3vizskt3>
- <Z8B2Bl/9uD3jPvQi@linaro.org>
- <j55de6bbipoavqx25w2s6qr7n6fv6w7bj3lrgyag4dlvvddbqv@shn22aqcqeci>
- <Z8CIY2OJUMqIOHGU@linaro.org>
- <Z8CTqdFafLY17C25@linaro.org>
- <Z8CbSvlG856oxQRw@linaro.org>
+        d=1e100.net; s=20230601; t=1740682035; x=1741286835;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CgI8ZXoxqtIF/44cBOq0qi/g6VHw9sfjjXJgPa3P4vA=;
+        b=N12V4YuzHl974zo5RAVbXHJ1HTpkcmeY5NEHJF0ox25e739wjsvmkbaIyBka9x+Jh+
+         uZmZer2EBXLK9JAUp1lpMc4w2WhuoEaUbvsLmUtnsGDzsGMftRUwd0hhdtQ078HzF+rk
+         bWFq+WTG9EETIjrT2a1Nsz2ppOIm7reaTwvepZb5bAHc4kcaSTz4F3IghIEez1A87lV1
+         Wgkc3yzc8ZUae+MeUUOsxN5GEn9YYi0Bjrik8EuLhvgfgxGz/ZRb1kS7PGcKPYLf8H4n
+         3Suns+zvmrjq/mKoxjJhexkwUk1QoHqdGCIlb9ji7HoYBBTQ6k2NLadefzWeaZnlXXjy
+         gqFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvIyYWyt+s89jm3PK/xbTi05r1Mw3ZjTnzg799mHspckvzlLSEohlOXDG9NIA4dAaYgFM6uGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxl6jGMbBlFDz/N3k9YK078haxkNd7jRS1Xy7akVMweL6Sw9WHu
+	K5JZRIzQKA3PhwDmiu/0zFmvS2PywKPUdXXWXCfjFq/BOPWQnLyG/v6BASjJjAY=
+X-Gm-Gg: ASbGncvaZtw4g/2TyDfaYzDIKix7jx5UcPfds3+6m+o+oRFd++y3DugIz6bEx9r4LZg
+	q7hNh5r5l1eUIj816Zn9Is5LdEUoFxdErHwiZTTIHlW3mKVfIL65PYnXpQxMrw/rgy01gmRdf3m
+	JjKT0dqpvsVdgOIkUzX1baayskiu0AvTYIpthRS8TqGPLSKh0RouEDuUTtlw0jnnREDu7GvDjsA
+	kMkLMLnVnEV0Ekq3pCBr5oGuLAHHLQzrGMpWWPzkKibh2U9u+Q07S47jm8RnPZcmGT30EAZMdOs
+	d9D40gt8ngV+rAQnK6gtZErlkXfQoQtTtdkN9bd7kXb2HYdr
+X-Google-Smtp-Source: AGHT+IG/nZiB295Oky1mvAJCOoNJO4stizczIvgW8MkBaBJAYiXALUtUxHKjRSqb2HBjt6oTAcvQWg==
+X-Received: by 2002:a05:6214:2683:b0:6e8:a091:1a3a with SMTP id 6a1803df08f44-6e8a0d0f44bmr8676186d6.19.1740682035300;
+        Thu, 27 Feb 2025 10:47:15 -0800 (PST)
+Received: from [10.73.223.214] ([72.29.204.230])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e897634a8dsm12682036d6.7.2025.02.27.10.47.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Feb 2025 10:47:15 -0800 (PST)
+Message-ID: <e96da1d5-db98-464a-8006-615ab086d4d2@bytedance.com>
+Date: Thu, 27 Feb 2025 10:47:11 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="coiu4r2gfvk33wam"
-Content-Disposition: inline
-In-Reply-To: <Z8CbSvlG856oxQRw@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 238/676] bpf, sockmap: Several fixes to
+ bpf_msg_pop_data
+To: Tianchen Ding <dtcccc@linux.alibaba.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: patches@lists.linux.dev, John Fastabend <john.fastabend@gmail.com>,
+ Martin KaFai Lau <martin.lau@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ stable@vger.kernel.org, Levi Zim <rsworktech@outlook.com>,
+ Daniel Borkmann <daniel@iogearbox.net>
+References: <20241206143653.344873888@linuxfoundation.org>
+ <20241206143702.627526560@linuxfoundation.org>
+ <445cf95d-b695-4e8d-b4ba-6ca0c12b1c52@linux.alibaba.com>
+Content-Language: en-US
+From: Zijian Zhang <zijianzhang@bytedance.com>
+In-Reply-To: <445cf95d-b695-4e8d-b4ba-6ca0c12b1c52@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+More background about it, this patch series includes some fixes to
+test_sockmap itself, and it exposes some problems in sockhash test
+with SENDPAGE and ktls with SENDPAGE. This might be the reason
+for the kernel crash.
+
+The problem I observed,
+1. In sockhash test, a NULL pointer kernel BUG will be reported for
+nearly every cork test. More inspections are needed for
+splice_to_socket.
+
+2. txmsg_pass are not set before, and some tests are skipped. Now after
+the fixes, we have some failure cases now. More fixes are needed either
+for the selftest or the ktls kernel code.
+
+More details in 
+https://lore.kernel.org/all/20241024202917.3443231-1-zijianzhang@bytedance.com/
 
 
---coiu4r2gfvk33wam
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
- PWMs
-MIME-Version: 1.0
+On 2/27/25 1:40 AM, Tianchen Ding wrote:
+> Hi,
+> 
+> On 12/6/24 10:30 PM, Greg Kroah-Hartman wrote:
+>> 6.6-stable review patch.  If anyone has any objections, please let me 
+>> know.
+>>
+>> ------------------
+>>
+>> From: Zijian Zhang <zijianzhang@bytedance.com>
+>>
+>> [ Upstream commit 5d609ba262475db450ba69b8e8a557bd768ac07a ]
+>>
+>> Several fixes to bpf_msg_pop_data,
+>> 1. In sk_msg_shift_left, we should put_page
+>> 2. if (len == 0), return early is better
+>> 3. pop the entire sk_msg (last == msg->sg.size) should be supported
+>> 4. Fix for the value of variable "a"
+>> 5. In sk_msg_shift_left, after shifting, i has already pointed to the 
+>> next
+>> element. Addtional sk_msg_iter_var_next may result in BUG.
+>>
+>> Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
+>> Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+>> Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+>> Link: https://lore.kernel.org/r/20241106222520.527076-8- 
+>> zijianzhang@bytedance.com
+>> Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> We found the kernel crashed when running kselftests (bpf/test_sockmap) 
+> in kernel 6.6 LTS, which is introduced by this commit. I guess all other 
+> stable kernels (containing this commit) are also affected.
+> 
+> Please consider backporting the following 2 commits:
+> fdf478d236dc ("skmsg: Return copied bytes in sk_msg_memcopy_from_iter")
+> 5153a75ef34b ("tcp_bpf: Fix copied value in tcp_bpf_sendmsg")
+> 
+> Thanks.
 
-Hello,
-
-On Thu, Feb 27, 2025 at 07:05:14PM +0200, Abel Vesa wrote:
-> On 25-02-27 18:32:41, Abel Vesa wrote:
-> > On 25-02-27 17:44:35, Abel Vesa wrote:
-> > > On 25-02-27 16:25:06, Uwe Kleine-K=F6nig wrote:
-> > > > Hello Abel,
-> > > >=20
-> > > > On Thu, Feb 27, 2025 at 04:26:14PM +0200, Abel Vesa wrote:
-> > > > > On 25-02-27 10:58:47, Uwe Kleine-K=F6nig wrote:
-> > > > > > Can you please enable CONFIG_PWM_DEBUG, enable pwm tracing (
-> > > > > >=20
-> > > > > > 	echo 1 > /sys/kernel/debug/tracing/events/pwm/enable
-> > > > > >=20
-> > > > > > ) then reproduce the problem and provide the output of
-> > > > > >=20
-> > > > > > 	cat /sys/kernel/debug/tracing/trace
-> > > > > >=20
-> > > > > > .
-> > > > >=20
-> > > > > $ cat trace
-> > > > > # tracer: nop
-> > > > > #
-> > > > > # entries-in-buffer/entries-written: 13/13   #P:12
-> > > > > #
-> > > > > #                                _-----=3D> irqs-off/BH-disabled
-> > > > > #                               / _----=3D> need-resched
-> > > > > #                              | / _---=3D> hardirq/softirq
-> > > > > #                              || / _--=3D> preempt-depth
-> > > > > #                              ||| / _-=3D> migrate-disable
-> > > > > #                              |||| /     delay
-> > > > > #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
-> > > > > #              | |         |   |||||     |         |
-> > > > >         modprobe-203     [000] .....     0.938668: pwm_get: pwmch=
-ip0.0: period=3D1066407 duty_cycle=3D533334 polarity=3D0 enabled=3D1 err=3D0
-> > > > >         modprobe-203     [000] .....     0.938775: pwm_apply: pwm=
-chip0.0: period=3D5000000 duty_cycle=3D0 polarity=3D0 enabled=3D1 err=3D0
-> > > > >         modprobe-203     [000] .....     0.938821: pwm_get: pwmch=
-ip0.0: period=3D4266537 duty_cycle=3D0 polarity=3D0 enabled=3D1 err=3D0
-> > > > >         modprobe-203     [000] .....     0.938936: pwm_apply: pwm=
-chip0.0: period=3D4266537 duty_cycle=3D0 polarity=3D0 enabled=3D1 err=3D0
-> > > > >         modprobe-203     [000] .....     0.938982: pwm_get: pwmch=
-ip0.0: period=3D4266537 duty_cycle=3D0 polarity=3D0 enabled=3D1 err=3D0
-> > > > >         modprobe-203     [000] .....     0.939274: pwm_apply: pwm=
-chip0.0: period=3D5000000 duty_cycle=3D921458 polarity=3D0 enabled=3D1 err=
-=3D0
-> > > > >         modprobe-203     [000] .....     0.939320: pwm_get: pwmch=
-ip0.0: period=3D4266537 duty_cycle=3D921355 polarity=3D0 enabled=3D1 err=3D0
-> > > > >         modprobe-203     [000] .....     0.939434: pwm_apply: pwm=
-chip0.0: period=3D4266537 duty_cycle=3D921355 polarity=3D0 enabled=3D1 err=
-=3D0
-> > > > >         modprobe-203     [000] .....     0.939480: pwm_get: pwmch=
-ip0.0: period=3D4266537 duty_cycle=3D921355 polarity=3D0 enabled=3D1 err=3D0
-> > > > >  systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwm=
-chip0.0: period=3D5000000 duty_cycle=3D5000000 polarity=3D0 enabled=3D1 err=
-=3D0
-> > > > >  systemd-backlig-724     [006] .....     9.079585: pwm_get: pwmch=
-ip0.0: period=3D4266537 duty_cycle=3D4266537 polarity=3D0 enabled=3D1 err=
-=3D0
-> > > > >  systemd-backlig-724     [006] .....     9.079698: pwm_apply: pwm=
-chip0.0: period=3D4266537 duty_cycle=3D4266537 polarity=3D0 enabled=3D1 err=
-=3D0
-> > > > >  systemd-backlig-724     [006] .....     9.079750: pwm_get: pwmch=
-ip0.0: period=3D4266537 duty_cycle=3D4266537 polarity=3D0 enabled=3D1 err=
-=3D0
-> > > > > $
-> > > > >=20
-> > > > > >=20
-> > > > > > I didn't take a deeper dive in this driver combination, but her=
-e is a
-> > > > > > description about what *should* happen:
-> > > > > >=20
-> > > > > > You're talking about period in MHz, the PWM abstraction uses
-> > > > > > nanoseconds. So your summary translated to the PWM wording is (=
-to the
-> > > > > > best of my understanding):
-> > > > > >=20
-> > > > > >   1. PWM backlight driver requests PWM with .period =3D 200 ns =
-and
-> > > > > >      .duty_cycle =3D 200 ns.
-> > > > > >=20
-> > > > > >   2. leds-qcom-lpg cannot pick 200 ns exactly and then chooses =
-=2Eperiod =3D
-> > > > > >      1000000000 / 4.26666 MHz =3D 234.375 ns
-> > > > > >     =20
-> > > > > >   3. leds-qcom-lpg then determines setting for requested .duty_=
-cycle
-> > > > > >      based on .period =3D 200 ns which then ends up with someth=
-ing bogus.
-> > > >=20
-> > > > The trace looks better than what I expected. 2. is fine here becaus=
-e it
-> > > > seems when Sebastian wrote "driver requests PWM with 5 MHz period" =
-that
-> > > > meant period =3D 5000000 ns. That was then rounded down to 4266537 =
-ns. And
-> > > > the request for period =3D 5000000 ns + duty_cycle =3D 5000000 ns w=
-as
-> > > > serviced by configuring period =3D 4266537 ns + duty_cycle =3D 4266=
-537 ns.
-> > > > So that's a 100 % relative duty configuration as intended.
-> > > >=20
-> > > > So just from the traces I don't spot a problem. Do these logs not m=
-atch
-> > > > what actually happens on the signal?
-> > >=20
-> > > What I do not get is why do we expect 2 pwm_get() and 2 pwm_apply()
-> > > calls each time ?
-> >=20
-> > OK, so the second pwm_apply() is due to CONFIG_PWM_DEBUG.
-
-ack. This is done just for the tests implemented in CONFIG_PWM_DEBUG, as
-are the two pwm_get()s.
-
-> > But still, the first pwm_apply() requests duty cycle of 5MHz:
-
-5 ms, yes. But it cannot give you 5 ms and so you get 4.266 ns.
-
-> > systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwmchip0.0=
-: period=3D5000000 duty_cycle=3D5000000 polarity=3D0 enabled=3D1 err=3D0
-> >=20
-> > So since the period is 4.26MHz, due to the knobs selected by the
-> > provider, this duty cycle will result in a PWM value that is above the
-> > selected resolution, as I already mentioned.
-
-"above the selected resolution"? Do you mean you don't get the exact
-value that you requested?
-
-> On top of that, the duty cycle in debugfs is also reported as 5000000ns
-> when in fact it is 4266666ns, as the trace shows.
-
-Yes. Consider that a relict from the times when there was no
-pwm_get_state_hw(). Both values are interesting in different situations.
-So just telling the real parameters isn't the optimal way forward
-either.
-
-Something like the patch I showed in
-https://lore.kernel.org/all/7bcnckef23w6g47ll5l3bktygedrcfvr7fk3qjuq2swtoff=
-hec@zs4w4tuh6qvm/
-would make you a bit luckier I guess. Feel free to polish that one a bit
-(e.g.  by checking the return value of pwm_get_state_hw() and acting
-sensible in reply to it) and send a proper patch. (A Suggested-by for me
-is enough for such a patch, grab authorship yourself.)
-
-> > > Need to dig a bit further.
-> > >=20
-> > > But meanwhile, if the first pwm_apply() call goes all the way to the
-> > > provider, then the duty cycle value, when translated to the actual PWM
-> > > value that gets written to reg, will overflow.
-
-No it will not. The .duty_cycle value (also 5000000 ns) will reach the
-lowlevel PWM driver together with .period =3D 5000000 ns. Both are rounded
-down to 4266666ns. I see no overflow.=20
-
-Best regards
-Uwe
-
---coiu4r2gfvk33wam
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfAqmEACgkQj4D7WH0S
-/k59Lwf/c53g1pFJpL0c/xEQriO8AL4IHT0MyM5FXUa7J9I1fDnHwffLa/y4ul2C
-XbhoexOvuSO4NCktkZ8qWHGofl0MFX5NeNkgI4z972nPSpoQwXb1qyrhX9igA9nS
-OlUyWmqG0kBTOUgnm8rb14NHtHl50p5PR2kxs2pqNnm5m4QYsvc/HWkQCjKWx6WO
-Z6TiBcVTByGFdJ3EFIhE0kydakv0cKthMTFbgUGRlR3k3u35DUoWyOicT3uvaUMB
-zyhZTK9kFV7HbXW+XceARMrE3+19oMa65csNYv9X6Ta+MXOzrwV86U8wPmfIi+E0
-UaCwkC2Gd7Es8lxpkY/unI0K++ytTQ==
-=IqCH
------END PGP SIGNATURE-----
-
---coiu4r2gfvk33wam--
 
