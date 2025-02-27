@@ -1,151 +1,97 @@
-Return-Path: <stable+bounces-119841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6891A47F4C
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 14:37:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0BEA47F4E
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 14:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12D461658FA
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 13:32:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 704063A96FD
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 13:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBF4221574;
-	Thu, 27 Feb 2025 13:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAD622FE05;
+	Thu, 27 Feb 2025 13:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PZ5Cer2V"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="hLOyH1Az"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7D022D7A0
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 13:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90022206AC;
+	Thu, 27 Feb 2025 13:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740663161; cv=none; b=Vj8HIyJYDFqGdJ6z2ZyHBktRt+AH11ZKk+fM6pNXqmAt3YXn6kMwFesnvBeN/VcUytry9kDzF6gtrxmAf8kudTsz6YEPoAV7x+qt/by5j/Wxi8QgpQ1jBbcHTSWs4XqPtTdYTt+peZzJSv/m+HYakpuyNmGVdORP/CaCz2B02/Q=
+	t=1740663497; cv=none; b=CgE+PmiqQ1xwaa2bsh4k59nMb34y1dyO6Bb68fTRRv+D6LUPAli44CPvWr9f1/DfXsQisoE9PWEG4NXN+Zarhrg8G0MtYQagbkh9QBV7ZQQbnw2pkWgTF4L33aG8cGrVTqpxEhi1Cz7OZH63L31kfhjDerhyOp24oXZs4P/4zGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740663161; c=relaxed/simple;
-	bh=ZkqjquJmqyKCF3YVGXF3s6NPgWRXSZRfFKpweGnRmXM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FoCiRn8ZYpg4I0waFdtm4zeY/rNz0l4WhfwSqq7KMfm4bnVEEPy439qnzKh9PiR96nCdC70Q69cxSsoWLMlQWSUokaDG/huZjmDGueus0nZ6Skrm2f81bY+vo5RjI5PtTEHjl82KOFut/B8RKV1REsdfh4Q+GtmUvH0Gc2OqAi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PZ5Cer2V; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bgeffon.bounces.google.com
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-47220fab76eso32312151cf.3
-        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 05:32:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740663158; x=1741267958; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyfS+UvHxKI14QQn8t0ml/VJXb1kYrctFLX+Mu/t1JE=;
-        b=PZ5Cer2VvgawBAiwj32e9OgWrX0Wc/394uBq8zscQBGuxPx+G3JcasoxLfxmnNxGKB
-         nHfvWjIfcacTtvsNFpK7Ohv9QpDnHZTScQseyAxAorFzDzvultHWOpWwSh0y7VpEeby3
-         xdOwH0IBEJS4LcH55uubqIdfAFB7en2Ztd37U2i6Agt6tW1MmZm4UkxY7gW38j8djDED
-         yr6WAWavJsNA6B69QZH2WW7CcS8uqNQVl94ZC0BmjYd/HSgmr8rLbHsXK4S2IIX2pF+6
-         V/ZHlv2d89OBWciWU2/GNJZQm+MXcbWU8+xE4Ym73yMKrHPmg8BkZlWRyPBtE6u3anxM
-         xt1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740663158; x=1741267958;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyfS+UvHxKI14QQn8t0ml/VJXb1kYrctFLX+Mu/t1JE=;
-        b=LEgHRjo3Dg3eO3GarHkQBq4B2F3UXnkjt298ZIcXuTZIy+gJHTj6E2NeaimPi+VXnP
-         UykvAxwh+9isADzQF2kMEIcOSyXyf5cYQyONeP1cWdEuFpRm+tGmJi0J/KDxW0D7NqYU
-         YKgg8oldGllOPDk4BFAUJLoi4w5glqkym0YLU99K7vx1aDfpiV+UQVnzQ5k3unOi9FCV
-         +tsO01R5bdpZyl9FlN82mWSWfl1RPubSRg9Wa0VxtD+7onxwgloji3dvVh++vscY2GwO
-         fI7/63m1L4VwU3zxlgMQZYwVK6LbjV69WuDEZKjol3jsoY2EI3cE1fvicoPs1hTUv/KC
-         +XLg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlqJ2NKi35B0QtQQfyH1UM9T7picTT7xAhr/jkmC/a9MlIkrSlLNQ3z39A2DEeCW1AAliv2kE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMn3snVaQFVuQS/Yb//K9LamOaoihi6oiA040a8/AQMCjwrrs8
-	W6CFsJ8YHUxQN/Y4nnRyVSENVJG0Of9Pv6m190z/OCFG8J/R8U4R4j9svdXlfVSYG7uMEBjVwdd
-	bkYlqZA==
-X-Google-Smtp-Source: AGHT+IHvETM3+pn2QTpJ1tsLr3mG9ApdH9Fim1Cx8ibw/PLC8WURMDcwwL5DzLuRErYfJClH2Bb5qxGCi7L2
-X-Received: from qtbcm27.prod.google.com ([2002:a05:622a:251b:b0:472:122b:3255])
- (user=bgeffon job=prod-delivery.src-stubby-dispatcher) by 2002:ac8:5d16:0:b0:472:1573:fa9c
- with SMTP id d75a77b69052e-47377118705mr141991131cf.6.1740663158655; Thu, 27
- Feb 2025 05:32:38 -0800 (PST)
-Date: Thu, 27 Feb 2025 08:32:36 -0500
-In-Reply-To: <20250226114815.758217-1-bgeffon@google.com>
+	s=arc-20240116; t=1740663497; c=relaxed/simple;
+	bh=GoGIx0y0QIsWlsoPTEiEb5OWZb/coqE1PmOfG35RZOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XAT9GPhO+ennMbiD1YPRehz8Ltb+ZnxUd5g0MHHH1UXWPgfsUDw8BM1MoxrtI/03+m2ADT+I8l4OkNnSkQmG9XHokcnCI0PKEIkPhiPoStuHFDDbULR5Kyp1apv9ZfwwwDO04oVIozMnaYgwqQUfxhWJVFSMCnqEaTdoX4uGIU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=hLOyH1Az; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=sKbx/cqIDw+mrJ09vJ4uQbWUy/6eW7Ss2IOLFOIIZiQ=; b=hLOyH1AzsaVOtJabG8mG67QlJ6
+	7l0t367OmRHtPWZTs0hRlXKULI9VKDLR/i1TDZ55QKzF5o4KlIUQVeZq4HIt9tO28kcapCIoh7ODN
+	QhmNVhr68L9PH34GxdT16pqLriYXJbRUPSXHe2q4nSHn+n3Tm95wCeIYZcdg+yN2Qy8WcDgRPw2Ep
+	uHZp+VrMbJ3eR8Tgh4X8pFunfLNvyffpj8+BrSapZNPU1bsjmi5//Ou/Eu3klI2Afio4V0lMvJvS/
+	FhJ7NyzwF1Q//cvMyXCwtwgujbdEMvEpEs+EjW2t25ssCn8kMb6TEZYqsoEGAEjc4jb6o5FHj2nn9
+	NATY2wRw==;
+Received: from i53875b47.versanet.de ([83.135.91.71] helo=localhost.localdomain)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1tne5Z-00018T-DE; Thu, 27 Feb 2025 14:38:09 +0100
+From: Heiko Stuebner <heiko@sntech.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Farouk Bouabid <farouk.bouabid@theobroma-systems.com>,
+	Quentin Schulz <foss+kernel@0leil.net>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] arm64: dts: rockchip: pinmux fixes for PX30 Ringneck
+Date: Thu, 27 Feb 2025 14:37:53 +0100
+Message-ID: <174066344878.4164500.4996137094609435540.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250225-ringneck-dtbos-v3-0-853a9a6dd597@cherry.de>
+References: <20250225-ringneck-dtbos-v3-0-853a9a6dd597@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250226114815.758217-1-bgeffon@google.com>
-X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
-Message-ID: <20250227133236.1296853-1-bgeffon@google.com>
-Subject: [PATCH v3] mm: fix finish_fault() handling for large folios
-From: Brian Geffon <bgeffon@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, 
-	Brian Geffon <bgeffon@google.com>, stable@vger.kernel.org, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Marek Maslanka <mmaslanka@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-When handling faults for anon shmem finish_fault() will attempt to install
-ptes for the entire folio. Unfortunately if it encounters a single
-non-pte_none entry in that range it will bail, even if the pte that
-triggered the fault is still pte_none. When this situation happens the
-fault will be retried endlessly never making forward progress.
 
-This patch fixes this behavior and if it detects that a pte in the range
-is not pte_none it will fall back to setting a single pte.
+On Tue, 25 Feb 2025 12:53:28 +0100, Quentin Schulz wrote:
+> This fixes incorrect pinmux on UART0 and UART5 for PX30 Ringneck on
+> Haikou.
+> 
+> 
 
-Cc: stable@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>
-Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support large folio")
-Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Marek Maslanka <mmaslanka@google.com>
-Signed-off-by: Brian Geffon <bgeffon@google.com>
----
- mm/memory.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+Applied, thanks!
 
-diff --git a/mm/memory.c b/mm/memory.c
-index b4d3d4893267..f3054bbb3c1e 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5183,7 +5183,11 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
- 		      !(vma->vm_flags & VM_SHARED);
- 	int type, nr_pages;
--	unsigned long addr = vmf->address;
-+	unsigned long addr;
-+	bool needs_fallback = false;
-+
-+fallback:
-+	addr = vmf->address;
- 
- 	/* Did we COW the page? */
- 	if (is_cow)
-@@ -5222,7 +5226,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	 * approach also applies to non-anonymous-shmem faults to avoid
- 	 * inflating the RSS of the process.
- 	 */
--	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) {
-+	if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
-+	    unlikely(needs_fallback)) {
- 		nr_pages = 1;
- 	} else if (nr_pages > 1) {
- 		pgoff_t idx = folio_page_idx(folio, page);
-@@ -5258,9 +5263,9 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 		ret = VM_FAULT_NOPAGE;
- 		goto unlock;
- 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
--		update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
--		ret = VM_FAULT_NOPAGE;
--		goto unlock;
-+		needs_fallback = true;
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		goto fallback;
- 	}
- 
- 	folio_ref_add(folio, nr_pages - 1);
+[1/2] arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
+      commit: 2db7d29c7b1629ced3cbab3de242511eb3c22066
+[2/2] arm64: dts: rockchip: fix pinmux of UART5 for PX30 Ringneck on Haikou
+      commit: 55de171bba1b8c0e3dd18b800955ac4b46a63d4b
+
+Best regards,
 -- 
-2.48.1.711.g2feabab25a-goog
-
+Heiko Stuebner <heiko@sntech.de>
 
