@@ -1,117 +1,127 @@
-Return-Path: <stable+bounces-119824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A60A479B0
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 11:00:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FD0A479E4
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 11:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D9216746D
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 10:00:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2783E3A45ED
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 10:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CBB229B23;
-	Thu, 27 Feb 2025 10:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21866227EA8;
+	Thu, 27 Feb 2025 10:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CCvvIGtX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="i47imt6/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A6D228CB0
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 10:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABC021B9EE
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 10:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740650402; cv=none; b=kf6xRT8yAuunNbUkXJ1LK18TafOdLJThMUrYiqi1Qm+c3EZmUmF0Q/9q8DxF0zXFH1xnG0MdvSXZntynumD5FSOoI1o6d70Nn+UHxHFUxHeHKHkJlKNB8dWWHHcMZ3JGELQL5SNZLVJCo0GJa7auiM+aCbpEgloPtu06OoXa0m4=
+	t=1740651199; cv=none; b=T+Ii++3zcn1aEmz6tkPNLj/x2hvvdirdpZkDPoYdZohPfHknfb1x9LaGvus8Omv2XcDRzKrefenoKekK1BaWOKAneTL1zeR0mN8YPlMjD7DBTtWYdhDbchLP8yDEv+oCj49Topxadr6zMtvLY+AN05pNkDPGO+C+DG13H0ZvgTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740650402; c=relaxed/simple;
-	bh=Hxy4zLP7nPAij63gn8nYyXPjhnD7qhC4nNggf0uoN4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ogrpAuqY2VgtntOCfG9VRTMtRxRsMv/fGSdvA/Z8Dlo14SIs7BCyp8G6NzCZAGsN9cMQDFZrwZkkR350o4yRlqUhky6BQRiVh6txbqoG8CwK41krAzo49iN8wULy8RK5iRIlunyPxngw5ANo1P3fx5xvWi7SSTRbLvcTTwPvijo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CCvvIGtX; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e0813bd105so1073223a12.1
-        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 02:00:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740650399; x=1741255199; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sIHFyw4DJimMnpIl8i0OzzVtEtYlzfhRkm9JXG7+7wU=;
-        b=CCvvIGtX5w7qsr8/mf52TKi5Y/qRxLm3tRtlJbxHQcMpPUZ3FQDYp2T5FngSmF9PUG
-         gN0edsAS0GU40gb/7tt4Y8t7PZvo3iHwBUNybjI3KWgh2i2liOdEjbZo+cANl7GPRhKk
-         8oLHlrHf4l4d/69xhJtnSAeDIJWw3h3sbiviUpJYNfb/YOPMewF0CdNXmaYTdRRhuhaJ
-         0pMAQSdAke6hrQbSv50DFa4y4OuT/NHcM63P8EMBCUUcsa2P0D+Co9FQcgogDlQR2t6Y
-         kAFIMunJ899aiQGbg5IwDTK2xHSLV7LY+r7wDNiYrHVRwnIVAgIhqRnEHlgYD7HzComc
-         h3Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740650399; x=1741255199;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sIHFyw4DJimMnpIl8i0OzzVtEtYlzfhRkm9JXG7+7wU=;
-        b=KNNoo1OxA+lcKCQOQ4mJGrpVwpVqqdKRZz0ol3TcuTeuvzEZX/cGGF8jPKLkS2CvII
-         +pQ/Qn6SbpDNhz70TvG+9RQO7Cctui94Ws30MH6UaQhNqdrr3m+1iGijDlsMR6kkxps0
-         WkrxrlW6wqxjWAfV8Tpb45m16er/HeswD8y6k856157Vv5ayisCxHRfw2ZniVHSoR9+D
-         v8PSJCj2r++sfZ4nXbkXrr1RUxUwpFBaaDWlbpQB0UbUdVA2OdCJlexuUNY/VdkS1W1I
-         f1seb/yvIJRCVr+LyiyRXFlJxk8nohthi8R1aU1I+bw3uSVpWCoVyGA7+C3g2q7tr+z6
-         5e4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU3BC0jPmI/RosUVogif3R1f0oVlQBy6MWC9MlEjnxm3H1pE68jcQ0RRgiIfKFmQA0CPpboOuc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA7qe3hHdq70OFrGLwHO37Qvq6orKMBf+wA0vYitIF+qH2crrX
-	C2FP2K/GDTmiJAiEFA3ViFJ3f+B9635HbB+0jfJyOUusXsX9X+oLGtSRwzk0sfQ=
-X-Gm-Gg: ASbGncut51KP6VW+gSjcUBuceRGghZbliWsnuiA5x1cSU4FQqdhnaIFh4Ncs4OOpm7e
-	4D5Fyw5UN0Anje7TCOtMTP+3q37gjP46I85oRZm/Hr2YxJt8Rc4oe4rlzPARZTNJYfiU+1kTEG1
-	Lt29EUKbkhUD69Pi7APc+LK/nBBASPYcVjyL+n4U8V0QuVDbVGRmVp8DMJrRkEE8iX3fNGngZYB
-	61nGLgxjQKToE2y0ICr4kMe9Twa9BqaKSpDIuQbhHsmJOGnYdjR0UgrCmQq2k2VZmEgNo1gNogb
-	hP+nDraW2ZrDLgBlF5rb1TC2+k3OjFM=
-X-Google-Smtp-Source: AGHT+IHunHmqDDk/8KV7z25yVlfx9n1ZmOsivVdt03USwowQNbi9YBZAEFtlG6SH7Vi2b3fPs6n3vQ==
-X-Received: by 2002:a17:906:7cd8:b0:ab7:b5d9:525a with SMTP id a640c23a62f3a-abc09c1a653mr2285136866b.37.1740650399043;
-        Thu, 27 Feb 2025 01:59:59 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abf0c0dc21csm96948866b.42.2025.02.27.01.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 01:59:58 -0800 (PST)
-Date: Thu, 27 Feb 2025 12:59:51 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: slongerbeam@gmail.com, p.zabel@pengutronix.de, mchehab@kernel.org,
-	gregkh@linuxfoundation.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	hverkuil@xs4all.nl, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1740651199; c=relaxed/simple;
+	bh=0/A6b87m5LKyyCeOX32OodEXm8zJ9st+hvPe9+Yr7ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fcFRwdE+jJWlXLpSSmLAxC/8o6Pjtdyv41m43DL8FGRf4MO22d+GXILSmB4edkXTiKSeby8BLOfnvlXP1NZslYble6u/u4w6tj1ZoAYPqf549mI6c08FVch6FwDcG8OaPiVbbpC3Up6w1ubTraV1xf+vYbzYL5E1TRy53tfLgO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=i47imt6/; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=b5rjD/6rk3kLB1xTS7IjbgH0k4asvfCmUk0GKGIxGC0=; b=i47imt6/ZcxbhNbY+5TMxY+snT
+	WQVTqzO1Se964bDbd5KHyYhybKhfGBH8FVyVInJRRktYlwwV2SzrVcVazuL91yigRVatbtPNI8/O2
+	W/hulgTJRhXNTthbghNAyNAxRLs12YWh6ZBiQx/hUmTcCUxIVrawB91cxtHPMfQohHD10vMuO+aJU
+	uUvkjBZT17vyAL+jrUJaTIYc52fAVSXvTweESP43y/hddIdM3TodaEhgrYX6zaObatCIPOLsCdd5L
+	BY8Sy8/TzrtgPLccB61mD/pHgjHZoJhtAzgp8JvFM7eGTvXf2tZmtcF+Ew+izxe4RsKsmFmAhgGBc
+	BH75v1cQ==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tnat3-001XVh-HM; Thu, 27 Feb 2025 11:13:07 +0100
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: intel-xe@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] media: imx: fix a potential memory leak in
- imx_media_csc_scaler_device_init()
-Message-ID: <d09ac514-be27-46eb-8b2a-1a397e3321d6@stanley.mountain>
-References: <20250227074451.3698971-1-haoxiang_li2024@163.com>
+Subject: [PATCH 1/5] drm/xe: Fix GT "for each engine" workarounds
+Date: Thu, 27 Feb 2025 10:13:00 +0000
+Message-ID: <20250227101304.46660-2-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.48.0
+In-Reply-To: <20250227101304.46660-1-tvrtko.ursulin@igalia.com>
+References: <20250227101304.46660-1-tvrtko.ursulin@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227074451.3698971-1-haoxiang_li2024@163.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 27, 2025 at 03:44:51PM +0800, Haoxiang Li wrote:
-> Add video_device_release() in label 'err_m2m' to release the memory
-> allocated by video_device_alloc() and prevent potential memory leaks.
-> Remove the reduntant code in label 'err_m2m'.
-> 
-> Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
-> Changes in v2:
-> - Remove the reduntant code. Thanks, Dan!
+Any rules using engine matching are currently broken due RTP processing
+happening too in early init, before the list of hardware engines has been
+initialised.
 
-Thanks!
+Fix this by moving workaround processing to later in the driver probe
+sequence, to just before the processed list is used for the first time.
 
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Looking at the debugfs gt0/workarounds on ADL-P we notice 14011060649
+should be present while we see, before:
 
-regards,
-dan carpenter
+ GT Workarounds
+     14011059788
+     14015795083
+
+And with the patch:
+
+ GT Workarounds
+     14011060649
+     14011059788
+     14015795083
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v6.11+
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ drivers/gpu/drm/xe/xe_gt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 650a0ee56e97..d59c03bc05b7 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -361,9 +361,7 @@ int xe_gt_init_early(struct xe_gt *gt)
+ 	if (err)
+ 		return err;
+ 
+-	xe_wa_process_gt(gt);
+ 	xe_wa_process_oob(gt);
+-	xe_tuning_process_gt(gt);
+ 
+ 	xe_force_wake_init_gt(gt, gt_to_fw(gt));
+ 	spin_lock_init(&gt->global_invl_lock);
+@@ -450,6 +448,8 @@ static int all_fw_domain_init(struct xe_gt *gt)
+ 	}
+ 
+ 	xe_gt_mcr_set_implicit_defaults(gt);
++	xe_wa_process_gt(gt);
++	xe_tuning_process_gt(gt);
+ 	xe_reg_sr_apply_mmio(&gt->reg_sr, gt);
+ 
+ 	err = xe_gt_clock_init(gt);
+-- 
+2.48.0
 
 
