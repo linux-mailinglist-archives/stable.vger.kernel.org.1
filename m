@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCDBA47509
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 06:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B00D4A4750A
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 06:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACFA53AD915
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 05:08:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC38A3AD93F
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 05:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712ED1E5216;
-	Thu, 27 Feb 2025 05:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA061E8355;
+	Thu, 27 Feb 2025 05:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+fQDpJc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ub9Zv1Nc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FF61E8355
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 05:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B601E8336
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 05:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740632903; cv=none; b=qAYfJtiH95QFfaZKu2U0795iAGJJiZzyr4iAYyCfrMlNJiOSA5/Anv/JEz7XfqjI8r/rxSoRdW+cKMf+mAY5pQJiNPgD2NdHIfvk3oDrZ3+07zJvZ5tINDh79rY2+6NB2gisITYXBxh6ZYgjlh8RxBXY+nw8nRg9gOcRSFoHQos=
+	t=1740632904; cv=none; b=XFwwdf++b8Nfqmapz4v3WQp0RWLsPGsUo48JJDJTLAczlZBEW3TfFKCxBBwOPCVnPvVAB54jezrRUxhZJtFOVoA3+hp6Q1hch4X2ozZwoZTCD8l9aJVcGFiRbvc/deccSu0pogT+6ts7aNwmtdm5K09TjBeosULkkQMC1xWLVXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740632903; c=relaxed/simple;
-	bh=Q0WcUwsbgFyCPGraCumCb8obRBF4xSwo9og7fyZ4l8s=;
+	s=arc-20240116; t=1740632904; c=relaxed/simple;
+	bh=pw9JhtJNbC913XV0YKY7hGW+0yzkaGhedsGiOCTCrQE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P3Uwe2HbtfjD/WVEujunA99bGNs45GwmBgCkT+AQQpr10MpIYGziJUvN53AkJ5z+fxOnKNpUA6xG7384UU8wWjDh0pvMyFdyM2OYRkoxIyUl5xfpMnF8r55uo5P6+lumMsfIxlbM4+C6fBUKT8SyAyuGzhHxhmRj12HKszwMa4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+fQDpJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5648FC4CEDD;
-	Thu, 27 Feb 2025 05:08:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tcsy6rQWubDSMe874ZEubvW3S2oJ4CbpGeyjw5tFnC5+HGfg538x39fd59x5qckubSBheyYInkmocspQDH0ODOeTtvPrLbxCLVi8Lu+EBmsLddwmLgO1SKxVKXI1xBuzv2IVIvvf+5vDHQHFApN9S4zmcKJdQ2SvpgYGh0FjLYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ub9Zv1Nc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED51AC4CEDD;
+	Thu, 27 Feb 2025 05:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740632902;
-	bh=Q0WcUwsbgFyCPGraCumCb8obRBF4xSwo9og7fyZ4l8s=;
+	s=k20201202; t=1740632904;
+	bh=pw9JhtJNbC913XV0YKY7hGW+0yzkaGhedsGiOCTCrQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+fQDpJcmAB7ePCZlxtjmkMQTgx2TTYzcl4lGlALS59LcjujRNGwNld67oPdHgw5l
-	 MA7J19EybfcT+f5bCRUE5KtQIkzJeUUwpi0arTeCjC9WBNpR2DQHG18d+ifV2qUtxq
-	 pSeLknxEiSPkUyD1HxHWLNV5aPaok55MMSgGmZtp96dBN9ZKdHN1TWzspAJN+t1Lf8
-	 9UxzMqWlbsO+DmhwwaLyDlNuwZD5Z3aKqq+O46L1hywfeu6pEeVKJCfoXhUzK3ePHk
-	 g1OCQtv1GdRsYeSQ4+18yQxJmGSBcbhgQ8HavsxEeYCWAh2uhalVZDDFaCYBa+4Wfo
-	 Nb2bj4tRlgxRg==
+	b=Ub9Zv1NcmcmPRXk2E9ZkX8MpRJh0ylAWNIXIWt6VkYdU8N7prqIysHh7mVwiaBsfN
+	 v2mikV3cLAVHe509kw/UvDzUuXKbabcgwtIQEftkAWslvRvgRKTzCoDkj6vIW4j1KA
+	 oz1ZMjH1gRRTjZZ0ct25CLD/kXoq8yhnfxkG/JF5WdwNhdiR7cromrnAyIK4XYGax5
+	 8y3OVj/TjldYFzXZGd15hq1Scz+E9PW6XFHkUjWTZYpwOcFJtt0SaZnEpVlPVtbbe6
+	 gOlE2c7i2fNr0XxsXhJhBwA2f8AhjLrHeAt19OmEkuVTpf3xCVYsntf1BSWXDJh1rC
+	 lMcjFGrYaE2sg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	rcn@igalia.com
+	konishi.ryusuke@gmail.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 v3 2/3] tun: Assign missing bpf_net_context.
-Date: Thu, 27 Feb 2025 00:08:21 -0500
-Message-Id: <20250226153714-51148a08a89df8bc@stable.kernel.org>
+Subject: Re: [PATCH 5.4 5.10 5.15 6.1 1/3] nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
+Date: Thu, 27 Feb 2025 00:08:22 -0500
+Message-Id: <20250226161106-5742204c21fe46f5@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-2-360efec441ba@igalia.com>
+In-Reply-To:  <20250226180247.4950-2-konishi.ryusuke@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,86 +65,113 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-ℹ️ This is part 2/3 of a series
-⚠️ Found follow-up fixes in mainline
+ℹ️ Patch is missing in 6.13.y (ignore if backport was sent)
+⚠️ Commit missing in all newer stable branches
 
-The upstream commit SHA1 provided is correct: fecef4cd42c689a200bdd39e6fffa71475904bc1
+The upstream commit SHA1 provided is correct: 584db20c181f5e28c0386d7987406ace7fbd3e49
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?=<rcn@igalia.com>
-Commit author: Sebastian Andrzej Siewior<bigeasy@linutronix.de>
-
-Found fixes commits:
-9da49aa80d68 tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Not found
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fecef4cd42c68 ! 1:  d614f795c4a67 tun: Assign missing bpf_net_context.
+1:  584db20c181f5 ! 1:  da857438e7bd2 nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
     @@ Metadata
       ## Commit message ##
-         tun: Assign missing bpf_net_context.
+         nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
      
-    +    [ Upstream commit fecef4cd42c689a200bdd39e6fffa71475904bc1 ]
+    +    commit 584db20c181f5e28c0386d7987406ace7fbd3e49 upstream.
     +
-         During the introduction of struct bpf_net_context handling for
-         XDP-redirect, the tun driver has been missed.
-         Jakub also pointed out that there is another call chain to
-    @@ Commit message
-         Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-         Link: https://patch.msgid.link/20240704144815.j8xQda5r@linutronix.de
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    [rcn: Backport the patch to address minor differences in the context lines.
-    +    These differences are introduced by upstream commits
-    +    4d2bb0bfe874 ("xdp: rely on skb pointer reference in do_xdp_generic and
-    +    netif_receive_generic_xdp") and 7cd1107f48e2a ("bpf, xdp: constify some
-    +    bpf_prog * function arguments"), which change the parameters in
-    +    do_xdp_generic() and in calls to netif_receive_generic_xdp(),
-    +    kfree_skb_reason() and generic_xdp_tx(). These changes aren't
-    +    significant to the purpose of the patch.]
-    +    Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+         Patch series "nilfs2: Folio conversions for directory paths".
      
-      ## drivers/net/tun.c ##
-     @@ drivers/net/tun.c: static struct sk_buff *tun_build_skb(struct tun_struct *tun,
-    @@ drivers/net/tun.c: static int tun_sendmsg(struct socket *sock, struct msghdr *m,
-      ## net/core/dev.c ##
-     @@ net/core/dev.c: static DEFINE_STATIC_KEY_FALSE(generic_xdp_needed_key);
-      
-    - int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **pskb)
-    + int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
-      {
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-     +
-    @@ net/core/dev.c: static DEFINE_STATIC_KEY_FALSE(generic_xdp_needed_key);
-      		int err;
-      
-     +		bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
-    - 		act = netif_receive_generic_xdp(pskb, &xdp, xdp_prog);
-    + 		act = netif_receive_generic_xdp(skb, &xdp, xdp_prog);
-      		if (act != XDP_PASS) {
-      			switch (act) {
-    -@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **pskb)
-    - 				generic_xdp_tx(*pskb, xdp_prog);
-    +@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
-    + 				generic_xdp_tx(skb, xdp_prog);
-      				break;
-      			}
-     +			bpf_net_ctx_clear(bpf_net_ctx);
-    @@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **p
-      	return XDP_PASS;
-      out_redir:
-     +	bpf_net_ctx_clear(bpf_net_ctx);
-    - 	kfree_skb_reason(*pskb, SKB_DROP_REASON_XDP);
-    + 	kfree_skb_reason(skb, SKB_DROP_REASON_XDP);
-      	return XDP_DROP;
+         This series applies page->folio conversions to nilfs2 directory
+    @@ Commit message
+         sizes, both on machines with and without highmem mapping.  No issues
+         found.
+     
+    -
+         This patch (of 17):
+     
+         In a few directory operations, the call to nilfs_put_page() for a page
+    @@ Commit message
+         Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+         Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    +    Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
+     
+      ## fs/nilfs2/dir.c ##
+     @@ fs/nilfs2/dir.c: static inline unsigned int nilfs_chunk_size(struct inode *inode)
+    @@ fs/nilfs2/dir.c: static inline unsigned int nilfs_chunk_size(struct inode *inode
+      /*
+       * Return the offset into page `page_nr' of the last valid
+       * byte in that page, plus one.
+    -@@ fs/nilfs2/dir.c: ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+    - 	return res;
+    +@@ fs/nilfs2/dir.c: int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
+    + 	return 0;
       }
+      
+     -/* Releases the page */
+    @@ fs/nilfs2/dir.c: void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *
+      	nilfs_set_de_type(de, inode);
+      	nilfs_commit_chunk(page, mapping, from, to);
+     -	nilfs_put_page(page);
+    - 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+    + 	dir->i_mtime = dir->i_ctime = current_time(dir);
+      }
+      
+     @@ fs/nilfs2/dir.c: int nilfs_add_link(struct dentry *dentry, struct inode *inode)
+    @@ fs/nilfs2/dir.c: int nilfs_add_link(struct dentry *dentry, struct inode *inode)
+      {
+     @@ fs/nilfs2/dir.c: int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct page *page)
+      	nilfs_commit_chunk(page, mapping, from, to);
+    - 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+    + 	inode->i_ctime = inode->i_mtime = current_time(inode);
+      out:
+     -	nilfs_put_page(page);
+      	return err;
+    @@ fs/nilfs2/namei.c: static int nilfs_do_unlink(struct inode *dir, struct dentry *
+      	if (err)
+      		goto out;
+      
+    -@@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
+    - 		if (!new_de)
+    +@@ fs/nilfs2/namei.c: static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
+      			goto out_dir;
+    + 		}
+      		nilfs_set_link(new_dir, new_de, new_page, old_inode);
+     +		nilfs_put_page(new_page);
+      		nilfs_mark_inode_dirty(new_dir);
+    - 		inode_set_ctime_current(new_inode);
+    + 		new_inode->i_ctime = current_time(new_inode);
+      		if (dir_de)
+    -@@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
+    - 	inode_set_ctime_current(old_inode);
+    +@@ fs/nilfs2/namei.c: static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
+    + 	old_inode->i_ctime = current_time(old_inode);
+      
+      	nilfs_delete_entry(old_de, old_page);
+     +	nilfs_put_page(old_page);
+    @@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
+      		drop_nlink(old_dir);
+      	}
+      	nilfs_mark_inode_dirty(old_dir);
+    -@@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
+    +@@ fs/nilfs2/namei.c: static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
+      	return err;
+      
+      out_dir:
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
