@@ -1,174 +1,216 @@
-Return-Path: <stable+bounces-119854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C7A485A0
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 17:49:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB60A4864E
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 18:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEDD23AC14A
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 16:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFB5D16380A
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 17:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728D81D5CFF;
-	Thu, 27 Feb 2025 16:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7536A1BD000;
+	Thu, 27 Feb 2025 17:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tfOjuzLe"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ww5FgaNi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9841A9B5B
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 16:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503931D5AC3
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 17:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740674863; cv=none; b=rQz0DPTYaSnz6mA3LHktO7hx+OWCw3miuaeZCT16UZOYgullKhHkGHzN6+3Ju7ySbYjRVN6uuQP0xznwXQ+Bte218yb1Q+pw6XdEhPFiGYRZNUqQaMv1cFEJdNMZ50kMQ071KWWTdabEnN4S+4Dhy4rZnUhw0aeFesjh/JhMJPQ=
+	t=1740675921; cv=none; b=Oadg+yDwspXMpfg7id8jHamLsjLGz8sYKYTtRz8Sscve0a2L2YCPQLGfyKSMdnm/IpMTKVFCzyc1s2uUGMjqaXOmirlB/6ch4/iGGwwOgAOhNZUmRvwGMtZrLMefkmza4wvnZHMIlUiY0E5DbuOXTDUjfOdbxK48XaPoRxrC720=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740674863; c=relaxed/simple;
-	bh=A0O7VaCBvhIde6HUIo2weVzpqQbN5OmJVjtijzFCX4U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=thQgtcmHWkM+YACBJ3SuMIzz8QxDn0xD0b4kv2kbIWn4ZNOT+TSkjfkc2zZN/C68f5zEnc9EP04Z4SPo2IELsYS3oaoZ+8BSa9AYgWTbSwxxyyO8tPBgDTs2znzvMYP5D3fb5ehcUD5iZF4oRMLbpgyBbiYlkwzbq7inQQ0qvCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tfOjuzLe; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-221ac1f849fso159275ad.1
-        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 08:47:40 -0800 (PST)
+	s=arc-20240116; t=1740675921; c=relaxed/simple;
+	bh=7XChtsa0NQK2jNQqByJFv42QLQZfG/59qbf5QMzlocg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rB+qeBcXSbKTRfiIX+bXxw7y8mXdXGejtHhB/F0iNN1fYBRqE8Fx6BTBaOCgUhgqWrpRjp213sATQ+1F5D/AmBDrW/Mre89tRCHA0TgLMPqbPe6Eb/MfINJ9RhHyZzZ13KHGKrStzJ1kUOo/Qb8co9WOyr3KDVAO/3k0zbdHGio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ww5FgaNi; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aaec111762bso200544566b.2
+        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 09:05:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740674860; x=1741279660; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cjQglI5Jx4hFLotBiZ0PYZgwKxX6om4t0kw+FgWAq7w=;
-        b=tfOjuzLeg+lf3R98BJBKMP5KLYX8Y1V6Kvb8r08S9mBE42q1hMf80GB5ZoXq2ltLKC
-         F8vsvF/xtRIraFBD+6kOh/UG0h379xDZnbbibHC0wf6cImU//+yNPtfOOmRbhvauA9dE
-         MEiHwLotuFklhLfB6Xh9dFju/w1f1rfX60QirXhhcg/oROjdhvdlLPYNopmoroOXXREY
-         6VWSrpraCoy4qt7vL8zJr+MbeY/IiwJP+On7BJbPsZwZQvOT9KhO+lCq49egNx/zeAC+
-         wQS2/99CdB0YLhXQqmwWm14N5FQeigMPlqnOsEabF6FXwzVTLHM9RfVxp6LmjulCF73o
-         nj7Q==
+        d=linaro.org; s=google; t=1740675917; x=1741280717; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=K6Y8JQULavsNlLpEQIX3xqjGtKxhdLW9C1hzs6N6L9o=;
+        b=Ww5FgaNiNbH0Z21miuSO3vXT1jgydSjnpMGuH+EJC4ev26qbHHcfOQ2waCoRyE8x9g
+         AU6pQ8lNE7Sj//4JCzvkHec91jMaGPoemEfPZWuPZquRo0SDyKAnHH6EA/oZAoTp85HR
+         AI33fY7zKxiDKiLCPd4uqQxpi/+kLXMFrLCSb9g+OnZchauEowdwQSTZTLAU2p+ywsDH
+         zxzvjImMyqFlcachADC2ftJpqkulwVUNLbJ9fN44EysKwGI7IiaCjUbZjzFLth0Z4g7a
+         QiaSzvuOQqaBjGVFf57Jf6rSxNxe8FEuNjikpQa5TQVvjpIUTMVG8Skxaj71No3aGgqa
+         wUTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740674860; x=1741279660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cjQglI5Jx4hFLotBiZ0PYZgwKxX6om4t0kw+FgWAq7w=;
-        b=oJJjLemE05055/EkuamqdD+YNzdJRCWssV26tmQ6lpCBJKS8iQCV+cwY9wy4lmWi2O
-         X7NGxy2Ed39FvLynB+E15Q4fQ+8XPY4hjGWyYDk2QWJjNyjvSTUO/ZVZ60J2Fe6a3h3H
-         tNA5ztKosfDD12n7bJLHK6Kmn8fUjrCPs4wA2NBrcC2P4uKZse2nyofhxC8ebqhTGl4A
-         ujkRYmi4zJa9qrCkVKC4RZ5FR2MKaPN3bTSDqB63vpUEXq8wvcBviUsqP/xggNudKZ8c
-         mWRwqTqE3K2/ziE0IGczfvU1k+nvfA8sBroLtcbv9X6lIulpax6bVl0Ze0pKMDwfmzcY
-         OopA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFYGrZNBno8PdK1B54P+ElE6jZ3CTIhw71n2DKdAWC1tnr30WG9QsThaia5FNWdKIg4nHItLg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIILD2MG90gTmszDzW3CJPjXdTSm8bjR/v/qVrVtQaE1cnefq1
-	88TlT2gCh+6/vJ0nkYwuDUi9c2vNWANnSZikCuQo+F4VuUpwA8i35+Ju59JFcc6eyBk0McTKZ4G
-	OEoC5WzbpTI2tIcxSlBhVNlUP4+B3CTGHp1kq
-X-Gm-Gg: ASbGnctdEJ8Q2MWVfCMau/FunW+2FOnLY49KcJ6p7pdZxUNs+EI56P1euOcnqOM6GFv
-	6p8cZBWoaK9pppcLlpB7duKA+dTJab2TVB9/6uoZQhZb7EI9BxfRs9E1y/x/ubKq4+MXUNM2BmH
-	1fy70FLQ==
-X-Google-Smtp-Source: AGHT+IGbh2l4ajVTrlNsPmTCm4a8bZF9mLdxtA25l6wpBcMDhLAicmrXnr5nMHmIUgLPCdLGS7Du7gykIKVTKfuq8/g=
-X-Received: by 2002:a17:903:2647:b0:21f:631c:7fc9 with SMTP id
- d9443c01a7336-2234d3abb47mr3241885ad.0.1740674859774; Thu, 27 Feb 2025
- 08:47:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740675917; x=1741280717;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K6Y8JQULavsNlLpEQIX3xqjGtKxhdLW9C1hzs6N6L9o=;
+        b=XKZzDO2KwMwrb2R7zXkDg8JwKYrxXvvIHT2NcgsqKkd6e/PX9Nb3qV3lP1SkIK8ZkX
+         qhOrP9i4SJB/M+rvoYKZ3AkE1WvCFPj+7bTrJeeKYZls+3B44xOGX6MdGltmi5u3bJO7
+         mUQG5vplHcEPSeHk0lpDe4wYg/gdbBMD3c94UTdqBeqLxtZjULL6Xf+IJ6P3OdQtbEmg
+         p+FGNXsFb94WUMIHPdQSUxjp0DYkN/EAEoygbVtZb5V/BLQJxG5DZUAbvmYsCf1wgPsj
+         tCgWXi8vR0V64/cOzXUvA0gzUOAwvB7WbQgAerJfYBOXbrEPBUfXBDQxOpa6n0NyE5x6
+         IBrw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/E/HCOiYQ1io7krspRD7NZeJfIQR6Xm4lX9r+mZpth9BpBX4qoW1nsue8kSMC5Ly4Samzt/0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9MZSYyCecQXbcW87anDCenHBvWC5d4iv0phDafs4qhZuKuqQ7
+	GPgyUxGtpLswkSEXeBfl7NgFcAnH/CVfqG9pj+ij3NOOmHzbYeewg/yChdPzj90=
+X-Gm-Gg: ASbGnctqg1vuMSeCn+omR4qTYIUCEuoxaNJHLXxau59dT+loXAP9A1gTmIMKGJWOCXc
+	U2799f5mZ8diFQ5+uV/kw+l1u84NemWBqGEL6uqnbgg2ykRl+NX2AU/ou//khrDb4eE7IDA0anb
+	+JN0DhZoAWmEQraqsbUp/FTaX+DkaTWs4VxQRpV4rcUrEFVUdr8MNKdiim59/sIlc7Fvs4SotxE
+	U+r9t6BZNb8+wse+FE9EqrPG2akf3Nfa1awkDA7v1Z9kAqhtFqp7PduJrBNGUts8hngImlfptnt
+	8idPcpr7MByde2ktL8PIV0w=
+X-Google-Smtp-Source: AGHT+IEqzm7n+9CgLAtGOBByJjji4KY3D/kBRSRdTZK29CzMh0eKvJAC98wBTDUbj6GZHbvPXAzgOQ==
+X-Received: by 2002:a17:906:d542:b0:ab7:beeb:d1f1 with SMTP id a640c23a62f3a-abf26837fcemr20886166b.51.1740675916853;
+        Thu, 27 Feb 2025 09:05:16 -0800 (PST)
+Received: from linaro.org ([62.231.96.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0b9990sm150354966b.35.2025.02.27.09.05.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 09:05:16 -0800 (PST)
+Date: Thu, 27 Feb 2025 19:05:14 +0200
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Anjelique Melendez <quic_amelende@quicinc.com>,
+	Kamal Wadhwa <quic_kamalw@quicinc.com>,
+	Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
+ PWMs
+Message-ID: <Z8CbSvlG856oxQRw@linaro.org>
+References: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
+ <dfthocttum7dscotngi6l2hz6bpdwfgrdxpvkcv6bdux3lt66d@iqfvmntvzyut>
+ <Z7zVgeM+7P7SLWIu@linaro.org>
+ <vc7irlp7nuy5yvkxwb5m7wy7j7jzgpg73zmajbmq2zjcd67pd2@cz2dcracta6w>
+ <Z7161SzdxhLITsW3@linaro.org>
+ <5euqboshlfwweie7tlaffajzg3siiy6bm3j4evr572ko54gtbv@7lan3vizskt3>
+ <Z8B2Bl/9uD3jPvQi@linaro.org>
+ <j55de6bbipoavqx25w2s6qr7n6fv6w7bj3lrgyag4dlvvddbqv@shn22aqcqeci>
+ <Z8CIY2OJUMqIOHGU@linaro.org>
+ <Z8CTqdFafLY17C25@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250226114815.758217-1-bgeffon@google.com> <20250226162341.915535-1-bgeffon@google.com>
- <19624e55-ba41-41e7-ba11-38b6ab3b96e5@linux.alibaba.com>
-In-Reply-To: <19624e55-ba41-41e7-ba11-38b6ab3b96e5@linux.alibaba.com>
-From: Brian Geffon <bgeffon@google.com>
-Date: Thu, 27 Feb 2025 11:47:02 -0500
-X-Gm-Features: AQ5f1JrSljmPZJRVpwmBaun-Y2rCm8rPURUzFaXgFgfmntTS2L4B3GhyxYNcs0U
-Message-ID: <CADyq12zgFigdBHiCv=AkZNLfbrmnCe2AVVOkjxNy9PwvJZsETQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: fix finish_fault() handling for large folios
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, 
-	David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	Marek Maslanka <mmaslanka@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z8CTqdFafLY17C25@linaro.org>
 
-On Thu, Feb 27, 2025 at 2:34=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 2025/2/27 00:23, Brian Geffon wrote:
-> > When handling faults for anon shmem finish_fault() will attempt to inst=
-all
-> > ptes for the entire folio. Unfortunately if it encounters a single
-> > non-pte_none entry in that range it will bail, even if the pte that
-> > triggered the fault is still pte_none. When this situation happens the
-> > fault will be retried endlessly never making forward progress.
-> >
-> > This patch fixes this behavior and if it detects that a pte in the rang=
-e
-> > is not pte_none it will fall back to setting a single pte.
-> >
-> > Cc: stable@vger.kernel.org
-> > Cc: Hugh Dickins <hughd@google.com>
-> > Fixes: 43e027e41423 ("mm: memory: extend finish_fault() to support larg=
-e folio")
-> > Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Reported-by: Marek Maslanka <mmaslanka@google.com>
-> > Signed-off-by: Brian Geffon <bgeffon@google.com>
-> > ---
-> >   mm/memory.c | 15 ++++++++++-----
-> >   1 file changed, 10 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index b4d3d4893267..b6c467fdbfa4 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -5183,7 +5183,11 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
-> >       bool is_cow =3D (vmf->flags & FAULT_FLAG_WRITE) &&
-> >                     !(vma->vm_flags & VM_SHARED);
-> >       int type, nr_pages;
-> > -     unsigned long addr =3D vmf->address;
-> > +     unsigned long addr;
-> > +     bool needs_fallback =3D false;
-> > +
-> > +fallback:
-> > +     addr =3D vmf->address;
-> >
-> >       /* Did we COW the page? */
-> >       if (is_cow)
-> > @@ -5222,7 +5226,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
-> >        * approach also applies to non-anonymous-shmem faults to avoid
-> >        * inflating the RSS of the process.
-> >        */
-> > -     if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) =
-{
-> > +     if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma)) |=
-|
-> > +                     unlikely(needs_fallback)) {
->
-> Nit: can you align the code? Otherwise look good to me.
+On 25-02-27 18:32:41, Abel Vesa wrote:
+> On 25-02-27 17:44:35, Abel Vesa wrote:
+> > On 25-02-27 16:25:06, Uwe Kleine-König wrote:
+> > > Hello Abel,
+> > > 
+> > > On Thu, Feb 27, 2025 at 04:26:14PM +0200, Abel Vesa wrote:
+> > > > On 25-02-27 10:58:47, Uwe Kleine-König wrote:
+> > > > > Can you please enable CONFIG_PWM_DEBUG, enable pwm tracing (
+> > > > > 
+> > > > > 	echo 1 > /sys/kernel/debug/tracing/events/pwm/enable
+> > > > > 
+> > > > > ) then reproduce the problem and provide the output of
+> > > > > 
+> > > > > 	cat /sys/kernel/debug/tracing/trace
+> > > > > 
+> > > > > .
+> > > > 
+> > > > $ cat trace
+> > > > # tracer: nop
+> > > > #
+> > > > # entries-in-buffer/entries-written: 13/13   #P:12
+> > > > #
+> > > > #                                _-----=> irqs-off/BH-disabled
+> > > > #                               / _----=> need-resched
+> > > > #                              | / _---=> hardirq/softirq
+> > > > #                              || / _--=> preempt-depth
+> > > > #                              ||| / _-=> migrate-disable
+> > > > #                              |||| /     delay
+> > > > #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+> > > > #              | |         |   |||||     |         |
+> > > >         modprobe-203     [000] .....     0.938668: pwm_get: pwmchip0.0: period=1066407 duty_cycle=533334 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.938775: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.938821: pwm_get: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.938936: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.938982: pwm_get: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.939274: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=921458 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.939320: pwm_get: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.939434: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
+> > > >         modprobe-203     [000] .....     0.939480: pwm_get: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
+> > > >  systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=5000000 polarity=0 enabled=1 err=0
+> > > >  systemd-backlig-724     [006] .....     9.079585: pwm_get: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
+> > > >  systemd-backlig-724     [006] .....     9.079698: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
+> > > >  systemd-backlig-724     [006] .....     9.079750: pwm_get: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
+> > > > $
+> > > > 
+> > > > > 
+> > > > > I didn't take a deeper dive in this driver combination, but here is a
+> > > > > description about what *should* happen:
+> > > > > 
+> > > > > You're talking about period in MHz, the PWM abstraction uses
+> > > > > nanoseconds. So your summary translated to the PWM wording is (to the
+> > > > > best of my understanding):
+> > > > > 
+> > > > >   1. PWM backlight driver requests PWM with .period = 200 ns and
+> > > > >      .duty_cycle = 200 ns.
+> > > > > 
+> > > > >   2. leds-qcom-lpg cannot pick 200 ns exactly and then chooses .period =
+> > > > >      1000000000 / 4.26666 MHz = 234.375 ns
+> > > > >      
+> > > > >   3. leds-qcom-lpg then determines setting for requested .duty_cycle
+> > > > >      based on .period = 200 ns which then ends up with something bogus.
+> > > 
+> > > The trace looks better than what I expected. 2. is fine here because it
+> > > seems when Sebastian wrote "driver requests PWM with 5 MHz period" that
+> > > meant period = 5000000 ns. That was then rounded down to 4266537 ns. And
+> > > the request for period = 5000000 ns + duty_cycle = 5000000 ns was
+> > > serviced by configuring period = 4266537 ns + duty_cycle = 4266537 ns.
+> > > So that's a 100 % relative duty configuration as intended.
+> > > 
+> > > So just from the traces I don't spot a problem. Do these logs not match
+> > > what actually happens on the signal?
+> > 
+> > What I do not get is why do we expect 2 pwm_get() and 2 pwm_apply()
+> > calls each time ?
+> 
+> OK, so the second pwm_apply() is due to CONFIG_PWM_DEBUG.
+> 
+> But still, the first pwm_apply() requests duty cycle of 5MHz:
+> 
+> systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=5000000 polarity=0 enabled=1 err=0
+> 
+> So since the period is 4.26MHz, due to the knobs selected by the
+> provider, this duty cycle will result in a PWM value that is above the
+> selected resolution, as I already mentioned.
+> 
 
-I mailed a v3 with adjusted alignment, I'll let Andrew decide which
-variation he prefers.
+On top of that, the duty cycle in debugfs is also reported as 5000000ns
+when in fact it is 4266666ns, as the trace shows.
 
->
-> >               nr_pages =3D 1;
-> >       } else if (nr_pages > 1) {
-> >               pgoff_t idx =3D folio_page_idx(folio, page);
-> > @@ -5258,9 +5263,9 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
-> >               ret =3D VM_FAULT_NOPAGE;
-> >               goto unlock;
-> >       } else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
-> > -             update_mmu_tlb_range(vma, addr, vmf->pte, nr_pages);
-> > -             ret =3D VM_FAULT_NOPAGE;
-> > -             goto unlock;
-> > +             needs_fallback =3D true;
-> > +             pte_unmap_unlock(vmf->pte, vmf->ptl);
-> > +             goto fallback;
-> >       }
-> >
-> >       folio_ref_add(folio, nr_pages - 1);
-
-Thanks for looking
-Brian
+> > 
+> > Need to dig a bit further.
+> > 
+> > But meanwhile, if the first pwm_apply() call goes all the way to the
+> > provider, then the duty cycle value, when translated to the actual PWM
+> > value that gets written to reg, will overflow. So this is what is wrong.
+> > And this is what actually happens.
+> > 
+> > > 
+> > > Best regards
+> > > Uwe
+> > 
+> > 
+> > 
+> 
 
