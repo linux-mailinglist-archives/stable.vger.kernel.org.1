@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-119784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A746A473C9
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 04:51:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7AFA473DF
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 04:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 326E216B34B
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 03:51:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B17B7A25D9
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 03:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FF31E51EF;
-	Thu, 27 Feb 2025 03:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CF31D90DB;
+	Thu, 27 Feb 2025 03:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="W7/AXjWO"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2203F17A300;
-	Thu, 27 Feb 2025 03:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF90270031;
+	Thu, 27 Feb 2025 03:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740628299; cv=none; b=nKlr8CuBaisKzf1pASEmdvcYqdEZRW1xDSIq1HJtS+wVMQ7+WkU2Rj3J5r4bFgxsFYDlkNHSl3q7d5WGll/jB2wTQwlOeAHTqHxxyBL+hP/TdcH9cO5fVi1nZAhEeQhmUKmjQUT8KKwvI3JQ8snaYrJYVTJX65DyNBtZsg8nGs0=
+	t=1740628788; cv=none; b=s/XcU45BX6lNM53w2a/iahLNMXL+G2VT/oeR19Q8vj3Wo7trf6b66/8VXe3JyTlG0QspQTwFTOO2D72RQ3RBudnkO8hu7EqfgTKG7mwAVWLlXTzk0AxNx7bGhfYQKJxMcZ3nnYQXfea9YhN3XbFiwXnpRhymML0jarFOoayRMqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740628299; c=relaxed/simple;
-	bh=3oh9lEpSsnhMJBwfR+eU55Pw3Lvex7Rob+/9aI21bmA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tEYnqkNEwYkifibfo/M/4cs0xL/AZBNLYWhavUSkRUe/ESlDeLKrsXVGxnhOF7bxjuKYWEzkfUUSeQC/EGspiVR5uj2L+cDyw8MKjRn3TA8+VeTGD7IYO94i5CWiLyT2nfFDWkgzVm/nZ42zFI4JmqnOiSsmOj9+Z3Gp5TCdvnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 078241515;
-	Wed, 26 Feb 2025 19:51:51 -0800 (PST)
-Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.40.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AEA443F6A8;
-	Wed, 26 Feb 2025 19:51:30 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	robh@kernel.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
+	s=arc-20240116; t=1740628788; c=relaxed/simple;
+	bh=CTbn3mDU1q2bd4YekBgaUFA9rOPCxfYb+qhX0gJiXmw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KmfCfFNZDnm1+nKBA/PpM43Bvuz5I9dLdG8/yioWPbbaL8k442h3M/AGU0EKWKI6dFecU3kSIC7XhLms9UPMgDXSlKek6EshC5UISCddkEW/7jDSi7Hjmtax93vGi/R014dew/bM6/AkoIbhYAsmtMxSm55ppSRYV8SRbO8U8a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=W7/AXjWO; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Hn/CJ
+	t9Yrsg1ucTjtdL991VMH20VtNJuTV1fblUx8lI=; b=W7/AXjWO9sBuU2jjR6NAV
+	EMDpwzSYG05pI+mTZbozJ1G7WojV/FEuo5uy7Pdpy+GtZZo4YxXexhG6hyYijWWh
+	WKR+rWXzFg5b58AlFE2PtA2vKYa4Fyfozi2vO//Nd/HGgaH26vWgDbZ+TJfFxAjS
+	3Tm1KmSN+gfU8SYilu7hgg=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDX79EF479nOIz7Ow--.31489S4;
+	Thu, 27 Feb 2025 11:59:02 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: mporter@kernel.crashing.org,
+	alex.bou9@gmail.com,
+	haoxiang_li2024@163.com,
+	error27@gmail.com,
+	akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH V3] arm64/boot: Enable EL2 requirements for FEAT_PMUv3p9
-Date: Thu, 27 Feb 2025 09:21:19 +0530
-Message-Id: <20250227035119.2025171-1-anshuman.khandual@arm.com>
+Subject: [PATCH] rapidio: fix an API misues when rio_add_net() fails
+Date: Thu, 27 Feb 2025 11:58:59 +0800
+Message-Id: <20250227035859.3675795-1-haoxiang_li2024@163.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,134 +56,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDX79EF479nOIz7Ow--.31489S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XF1ktr15GrW8Jw1UXrWUArb_yoWfZrgEkw
+	48urn7Xws5AF4rJ345Wwn3ZF4F9F1xtrZ5ZF4jqFZ3GrZ3XF9Fgr1DXFs5tw15ZF1xZF97
+	Za40gr1rCw47GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sREs2atUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0hsBbme-4c0gOwAAsJ
 
-FEAT_PMUv3p9 registers such as PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1
-access from EL1 requires appropriate EL2 fine grained trap configuration
-via FEAT_FGT2 based trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2.
-Otherwise such register accesses will result in traps into EL2.
+rio_add_net() calls device_register() and fails when device_register()
+fails. Thus, put_device() should be used rather than kfree().
 
-Add a new helper __init_el2_fgt2() which initializes FEAT_FGT2 based fine
-grained trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2 (setting the
-bits nPMICNTR_EL0, nPMICFILTR_EL0 and nPMUACR_EL1) to enable access into
-PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 registers.
-
-Also update booting.rst with SCR_EL3.FGTEn2 requirement for all FEAT_FGT2
-based registers to be accessible in EL2.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kvmarm@lists.linux.dev
-Fixes: 0bbff9ed8165 ("perf/arm_pmuv3: Add PMUv3.9 per counter EL0 access control")
-Fixes: d8226d8cfbaf ("perf: arm_pmuv3: Add support for Armv9.4 PMU instruction counter")
+Fixes: e8de370188d0 ("rapidio: add mport char device driver")
 Cc: stable@vger.kernel.org
-Tested-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
-Changes in V3:
+ drivers/rapidio/devices/rio_mport_cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- Added 'MDCR_EL3.EnPM2 = 0b1' as a booting requirement per Mark
-- Added 'Fixes:' and 'CC: stable' tags per Mark
-
-Changes in V2:
-
-https://lore.kernel.org/all/20250203050828.1049370-8-anshuman.khandual@arm.com/
-
- Documentation/arch/arm64/booting.rst | 22 ++++++++++++++++++++++
- arch/arm64/include/asm/el2_setup.h   | 25 +++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
-
-diff --git a/Documentation/arch/arm64/booting.rst b/Documentation/arch/arm64/booting.rst
-index cad6fdc96b98..dee7b6de864f 100644
---- a/Documentation/arch/arm64/booting.rst
-+++ b/Documentation/arch/arm64/booting.rst
-@@ -288,6 +288,12 @@ Before jumping into the kernel, the following conditions must be met:
- 
-     - SCR_EL3.FGTEn (bit 27) must be initialised to 0b1.
- 
-+  For CPUs with the Fine Grained Traps 2 (FEAT_FGT2) extension present:
-+
-+  - If EL3 is present and the kernel is entered at EL2:
-+
-+    - SCR_EL3.FGTEn2 (bit 59) must be initialised to 0b1.
-+
-   For CPUs with support for HCRX_EL2 (FEAT_HCX) present:
- 
-   - If EL3 is present and the kernel is entered at EL2:
-@@ -382,6 +388,22 @@ Before jumping into the kernel, the following conditions must be met:
- 
-     - SMCR_EL2.EZT0 (bit 30) must be initialised to 0b1.
- 
-+  For CPUs with the Performance Monitors Extension (FEAT_PMUv3p9):
-+
-+ - If EL3 is present:
-+
-+    - MDCR_EL3.EnPM2 (bit 7) must be initialised to 0b1.
-+
-+ - If the kernel is entered at EL1 and EL2 is present:
-+
-+    - HDFGRTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
-+    - HDFGRTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
-+    - HDFGRTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
-+
-+    - HDFGWTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
-+    - HDFGWTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
-+    - HDFGWTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
-+
-   For CPUs with Memory Copy and Memory Set instructions (FEAT_MOPS):
- 
-   - If the kernel is entered at EL1 and EL2 is present:
-diff --git a/arch/arm64/include/asm/el2_setup.h b/arch/arm64/include/asm/el2_setup.h
-index 25e162651750..1a0071faf57e 100644
---- a/arch/arm64/include/asm/el2_setup.h
-+++ b/arch/arm64/include/asm/el2_setup.h
-@@ -233,6 +233,30 @@
- .Lskip_fgt_\@:
- .endm
- 
-+.macro __init_el2_fgt2
-+	mrs	x1, id_aa64mmfr0_el1
-+	ubfx	x1, x1, #ID_AA64MMFR0_EL1_FGT_SHIFT, #4
-+	cmp	x1, #ID_AA64MMFR0_EL1_FGT_FGT2
-+	b.lt	.Lskip_fgt2_\@
-+
-+	mov	x0, xzr
-+	mrs	x1, id_aa64dfr0_el1
-+	ubfx	x1, x1, #ID_AA64DFR0_EL1_PMUVer_SHIFT, #4
-+	cmp	x1, #ID_AA64DFR0_EL1_PMUVer_V3P9
-+	b.lt	.Lskip_pmuv3p9_\@
-+
-+	orr	x0, x0, #HDFGRTR2_EL2_nPMICNTR_EL0
-+	orr	x0, x0, #HDFGRTR2_EL2_nPMICFILTR_EL0
-+	orr	x0, x0, #HDFGRTR2_EL2_nPMUACR_EL1
-+.Lskip_pmuv3p9_\@:
-+	msr_s   SYS_HDFGRTR2_EL2, x0
-+	msr_s   SYS_HDFGWTR2_EL2, x0
-+	msr_s   SYS_HFGRTR2_EL2, xzr
-+	msr_s   SYS_HFGWTR2_EL2, xzr
-+	msr_s   SYS_HFGITR2_EL2, xzr
-+.Lskip_fgt2_\@:
-+.endm
-+
- .macro __init_el2_gcs
- 	mrs_s	x1, SYS_ID_AA64PFR1_EL1
- 	ubfx	x1, x1, #ID_AA64PFR1_EL1_GCS_SHIFT, #4
-@@ -283,6 +307,7 @@
- 	__init_el2_nvhe_idregs
- 	__init_el2_cptr
- 	__init_el2_fgt
-+	__init_el2_fgt2
-         __init_el2_gcs
- .endm
- 
+diff --git a/drivers/rapidio/devices/rio_mport_cdev.c b/drivers/rapidio/devices/rio_mport_cdev.c
+index 27afbb9d544b..cfff1c82fb25 100644
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -1742,7 +1742,7 @@ static int rio_mport_add_riodev(struct mport_cdev_priv *priv,
+ 		err = rio_add_net(net);
+ 		if (err) {
+ 			rmcd_debug(RDEV, "failed to register net, err=%d", err);
+-			kfree(net);
++			put_device(&net->dev);
+ 			goto cleanup;
+ 		}
+ 	}
 -- 
 2.25.1
 
