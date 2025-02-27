@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00D4A4750A
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 06:08:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF64A4750F
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 06:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC38A3AD93F
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 05:08:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A416616AA5F
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 05:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA061E8355;
-	Thu, 27 Feb 2025 05:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44ADD1E8341;
+	Thu, 27 Feb 2025 05:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ub9Zv1Nc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/LAP5QD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B601E8336
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 05:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035A01E8336
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 05:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740632904; cv=none; b=XFwwdf++b8Nfqmapz4v3WQp0RWLsPGsUo48JJDJTLAczlZBEW3TfFKCxBBwOPCVnPvVAB54jezrRUxhZJtFOVoA3+hp6Q1hch4X2ozZwoZTCD8l9aJVcGFiRbvc/deccSu0pogT+6ts7aNwmtdm5K09TjBeosULkkQMC1xWLVXs=
+	t=1740632906; cv=none; b=OK11ok1WwivS4IriwfwHlIV/HCfeuwnCCZ7P4KJKVgoz/fmVI44VX9cj5pGc3ICBpldf9AuKEvbhT7B2Z2te1RmmbRb/OdvVKlkNs1bAK65yft1kuQRxETAebQ97Lms5AE8VuK11DmQ5ftL1x3V4BZP5QkkZSNeoTryAqPnBf/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740632904; c=relaxed/simple;
-	bh=pw9JhtJNbC913XV0YKY7hGW+0yzkaGhedsGiOCTCrQE=;
+	s=arc-20240116; t=1740632906; c=relaxed/simple;
+	bh=zyW+3Vh8iKDfKoqjHjZ4AdTJ2MSRyj6IQImcN7tAfPc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tcsy6rQWubDSMe874ZEubvW3S2oJ4CbpGeyjw5tFnC5+HGfg538x39fd59x5qckubSBheyYInkmocspQDH0ODOeTtvPrLbxCLVi8Lu+EBmsLddwmLgO1SKxVKXI1xBuzv2IVIvvf+5vDHQHFApN9S4zmcKJdQ2SvpgYGh0FjLYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ub9Zv1Nc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED51AC4CEDD;
-	Thu, 27 Feb 2025 05:08:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LCZc49STn40UPOG/j0rLmQZSVaZsgKNqRsk/D0xMikPSaVEssVVpuJcmQ7XwMxszka6Du1MdsFF6B1rXshb3aIokc6GASrV3CMKmkPla6J1xNcWpcdXDQhyZQWA78vNFeLfaV6G6pein00IwWa9ns9Ue1aZiouEGjsbWN1QHxUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/LAP5QD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880CAC4CEE5;
+	Thu, 27 Feb 2025 05:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740632904;
-	bh=pw9JhtJNbC913XV0YKY7hGW+0yzkaGhedsGiOCTCrQE=;
+	s=k20201202; t=1740632905;
+	bh=zyW+3Vh8iKDfKoqjHjZ4AdTJ2MSRyj6IQImcN7tAfPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ub9Zv1NcmcmPRXk2E9ZkX8MpRJh0ylAWNIXIWt6VkYdU8N7prqIysHh7mVwiaBsfN
-	 v2mikV3cLAVHe509kw/UvDzUuXKbabcgwtIQEftkAWslvRvgRKTzCoDkj6vIW4j1KA
-	 oz1ZMjH1gRRTjZZ0ct25CLD/kXoq8yhnfxkG/JF5WdwNhdiR7cromrnAyIK4XYGax5
-	 8y3OVj/TjldYFzXZGd15hq1Scz+E9PW6XFHkUjWTZYpwOcFJtt0SaZnEpVlPVtbbe6
-	 gOlE2c7i2fNr0XxsXhJhBwA2f8AhjLrHeAt19OmEkuVTpf3xCVYsntf1BSWXDJh1rC
-	 lMcjFGrYaE2sg==
+	b=U/LAP5QDfZqogK6HrfKjMrs8q85FUXObkAYO0MjQrNFn2Uwzjp4G3S7QLqXkvqRTe
+	 3lSsAKIRf/8+JbcLaKvlP0hStWMWZhBUG1Gj0kVgc+NunB9OcafWgbP2Yv823sMrpH
+	 tD9r7vpj3xBGORfaL5bEblCRRcZZnirbpFBJMoWl/9dALalPS72HgEXQm8ojgxy3U0
+	 kd+5Zr3B8vZ0mukCi9FSiR1exVbj8+sxNDPa+h97zsQSjgTXR+WYU2YYRqjvbKfUqu
+	 a7LImqCOaAIqChJcOIpU0kQW5Q+byy1WtAR66ZjDf00f39ibFSIeTrnCfo+lvQb2uG
+	 1iimdl5aYt0sA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	konishi.ryusuke@gmail.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4 5.10 5.15 6.1 1/3] nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
-Date: Thu, 27 Feb 2025 00:08:22 -0500
-Message-Id: <20250226161106-5742204c21fe46f5@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 v3 3/3] tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
+Date: Thu, 27 Feb 2025 00:08:24 -0500
+Message-Id: <20250226154300-244b0b8a28dc49ee@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250226180247.4950-2-konishi.ryusuke@gmail.com>
+In-Reply-To:  <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-3-360efec441ba@igalia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,114 +64,45 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ Patch is missing in 6.13.y (ignore if backport was sent)
-⚠️ Commit missing in all newer stable branches
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 584db20c181f5e28c0386d7987406ace7fbd3e49
+The upstream commit SHA1 provided is correct: 9da49aa80d686582bc3a027112a30484c9be6b6e
 
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Not found
-6.1.y | Not found
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?=<rcn@igalia.com>
+Commit author: Jeongjun Park<aha310510@gmail.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  584db20c181f5 ! 1:  da857438e7bd2 nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
+1:  9da49aa80d686 ! 1:  f295380a77d57 tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
     @@ Metadata
       ## Commit message ##
-         nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
+         tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
      
-    +    commit 584db20c181f5e28c0386d7987406ace7fbd3e49 upstream.
+    +    [ Upstream commit 9da49aa80d686582bc3a027112a30484c9be6b6e ]
     +
-         Patch series "nilfs2: Folio conversions for directory paths".
-     
-         This series applies page->folio conversions to nilfs2 directory
+         There are cases where do_xdp_generic returns bpf_net_context without
+         clearing it. This causes various memory corruptions, so the missing
+         bpf_net_ctx_clear must be added.
     @@ Commit message
-         sizes, both on machines with and without highmem mapping.  No issues
-         found.
+         Reported-by: syzbot+61a1cfc2b6632363d319@syzkaller.appspotmail.com
+         Reported-by: syzbot+709e4c85c904bcd62735@syzkaller.appspotmail.com
+         Signed-off-by: David S. Miller <davem@davemloft.net>
+    +    [rcn: trivial backport edit to adapt the patch context.]
+    +    Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
      
-    -
-         This patch (of 17):
-     
-         In a few directory operations, the call to nilfs_put_page() for a page
-    @@ Commit message
-         Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-         Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
-     
-      ## fs/nilfs2/dir.c ##
-     @@ fs/nilfs2/dir.c: static inline unsigned int nilfs_chunk_size(struct inode *inode)
-    @@ fs/nilfs2/dir.c: static inline unsigned int nilfs_chunk_size(struct inode *inode
-      /*
-       * Return the offset into page `page_nr' of the last valid
-       * byte in that page, plus one.
-    -@@ fs/nilfs2/dir.c: ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
-    - 	return res;
-    +@@ fs/nilfs2/dir.c: int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
-    + 	return 0;
-      }
-      
-     -/* Releases the page */
-    @@ fs/nilfs2/dir.c: void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *
-      	nilfs_set_de_type(de, inode);
-      	nilfs_commit_chunk(page, mapping, from, to);
-     -	nilfs_put_page(page);
-    - 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
-    + 	dir->i_mtime = dir->i_ctime = current_time(dir);
-      }
-      
-     @@ fs/nilfs2/dir.c: int nilfs_add_link(struct dentry *dentry, struct inode *inode)
-    @@ fs/nilfs2/dir.c: int nilfs_add_link(struct dentry *dentry, struct inode *inode)
-      {
-     @@ fs/nilfs2/dir.c: int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct page *page)
-      	nilfs_commit_chunk(page, mapping, from, to);
-    - 	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-    + 	inode->i_ctime = inode->i_mtime = current_time(inode);
-      out:
-     -	nilfs_put_page(page);
-      	return err;
-    @@ fs/nilfs2/namei.c: static int nilfs_do_unlink(struct inode *dir, struct dentry *
-      	if (err)
-      		goto out;
-      
-    -@@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
-    - 		if (!new_de)
-    +@@ fs/nilfs2/namei.c: static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
-      			goto out_dir;
-    + 		}
-      		nilfs_set_link(new_dir, new_de, new_page, old_inode);
-     +		nilfs_put_page(new_page);
-      		nilfs_mark_inode_dirty(new_dir);
-    - 		inode_set_ctime_current(new_inode);
-    + 		new_inode->i_ctime = current_time(new_inode);
-      		if (dir_de)
-    -@@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
-    - 	inode_set_ctime_current(old_inode);
-    +@@ fs/nilfs2/namei.c: static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
-    + 	old_inode->i_ctime = current_time(old_inode);
-      
-      	nilfs_delete_entry(old_de, old_page);
-     +	nilfs_put_page(old_page);
-    @@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
-      		drop_nlink(old_dir);
-      	}
-      	nilfs_mark_inode_dirty(old_dir);
-    -@@ fs/nilfs2/namei.c: static int nilfs_rename(struct mnt_idmap *idmap,
-    +@@ fs/nilfs2/namei.c: static int nilfs_rename(struct inode *old_dir, struct dentry *old_dentry,
-      	return err;
-      
-      out_dir:
+      ## net/core/dev.c ##
+    -@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **pskb)
+    +@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
+      			bpf_net_ctx_clear(bpf_net_ctx);
+      			return XDP_DROP;
+      		}
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
-| stable/linux-5.10.y       |  Success    |  Success   |
-| stable/linux-5.15.y       |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
