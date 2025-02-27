@@ -1,121 +1,209 @@
-Return-Path: <stable+bounces-119848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BF2A482B2
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 16:16:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC29A48304
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 16:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 526511888D68
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 15:12:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8ED217260C
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 15:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9B026A1B1;
-	Thu, 27 Feb 2025 15:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4BD25F7BB;
+	Thu, 27 Feb 2025 15:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="XXUlFRJo"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OkCQuVNk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2076.outbound.protection.outlook.com [40.107.94.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCE425EF95
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 15:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740669142; cv=none; b=eTpwGeD8r/ejhf89yHZR+Nn4Y9VxjDOpjpooVtp1nbkdNclaoOXJQxxIAMhrL4DU7eGC+9mykNMeh7sR/XBOr36kj/BV7M2+W76yiy2hw0s27+SaMB9gGo+P+9lw+eKWLAvVAzTaAWvMwPyVV+pSZ2E9nZJkgrMR95FTsRYiJlA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740669142; c=relaxed/simple;
-	bh=biSojK3aYrH5alpEFwNMM02JPcIaJeMqtWJC7TMKk3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gz5+N5Dk0zmoyIldV/R9mCmywetHazsNRXIpIgKmjHtkv/PWtRD4Ewu66VYj+rV4xm/HZxEge5aJWWTnamyy2niM8b1Vhx/4sDqjSGvbENRqxQMuTM7H0irfDE6Bsw4iHU7dedobu6ffghwLKV4YCYWr+wbnNzYuoYCFsOUERAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=XXUlFRJo; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-47210a94356so7837381cf.3
-        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 07:12:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1740669139; x=1741273939; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LNx8YZQIjNLm0mZInU+TMEOrRGJoGKSTKhShcPs50Ok=;
-        b=XXUlFRJoW4wPfZjg4H8o/bL1jqKGTsvAQDXVcpbrlaItWHmXnPWFTqZTFxFjRzz0Ih
-         D//Q3WhQV9YpUiT/tPuD0pgcK0b0HkQVaf/LcQFWYVy8Ir+ru0QjL/y04FTgXMmeGs/t
-         LCESLlrl9zCZYwhyZveCY9ojGPNKloFFTaH7j86/2pfpRwgoZmGnV00QDNg14XeEZZnY
-         mC3it7/dD7NCFBM3Kae4RVxNJA2xRl7EEiGOTWP2bJGsLhRN+TESQAul5PqCuyBUBNO+
-         dQVcOpNmtKMwODMO4sK+5VWWymcGamp9SVW0W2XB4WlWPJWQgxwNyv7ED2jHotrvikI8
-         DJkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740669139; x=1741273939;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LNx8YZQIjNLm0mZInU+TMEOrRGJoGKSTKhShcPs50Ok=;
-        b=o0oNdjcLWltNXnxOhEoQ2zZ2Cg191Ht0GvsIMKcevvKvcToJ77gIs70aAADIUCOhj8
-         zQMLVdbMKbA8l/B3rNbMzxnnobJ8Ujo37/TXXVpN95IFHuHY3EONwnrwJ8nlwm2Q2rIU
-         PggG7ZB5e9WzdQLH6jTF8fxbhIPJa4LNduxo5VJkDVJMS2puGJpVhP2uKnDePReMbXVm
-         Fd/l9atXH1n0+JElpDbc9PevA2VAxeqP0+L7wYF6kNR24hIkCQ3ES0HfeG40D15+aVtJ
-         w5jKme9QXgnSEoTjDNONDe4pG/RL1JQSagXkNQ2vw2AM9jAtYu8J02BXhSE/3+cgTLMD
-         PKgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWR1EtLZubPkHjEHCIJe9IFPnX+et2lk1o5qBid6hLE6FO+0FHol+80+tCySOFyiyn+UpTzHdc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzEmlSLdwsLdp0UNKscXL4faGOXtKazPjRlmfLzkIufZnhZbRL
-	9w9JpCQHJAVXi380M7dQL+QLpJ2dIc7TTHiAK+mhrsK+QQLurRgzUXEkm3hICw==
-X-Gm-Gg: ASbGncvk9QmywCKU/Ql7CEAq30/eC30aUODR+r+GpmlZzPtiTsTaK1VYxDVQtAZ3D96
-	TvLWWI+cgovoPPW5TbQtKh1HzKhK+ynQvb4PSWwyqV6jfQGsmhc09lafrKbyUZKi59EnFRt4j12
-	2cji3TnKTfla0bNKdC2evWq9yX8QABv1KoxmObBacKUzJoHdRXxNyeEBiIhPJeFf9dF7btkJ4Zv
-	uzxQA3+8URFnDQ1j8VtaKbLKH96WmX0hP+d1yiYejaaaab9+vozgHBF12/GvgeQAuMUOcO04sGD
-	WDlEipn2au55CnXaG8/aWrHddhekbbRUCfMY6oCPlyod
-X-Google-Smtp-Source: AGHT+IFpyrujk1OpBqdflL1MiDLfKUylvOBhU5A06YFvWgA27FYmaDjkhww5yqqypilPXGwM0RZvjQ==
-X-Received: by 2002:ac8:598f:0:b0:471:f272:9861 with SMTP id d75a77b69052e-4737725c45emr159740651cf.33.1740669139443;
-        Thu, 27 Feb 2025 07:12:19 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4746b5ee0f4sm11952951cf.30.2025.02.27.07.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 07:12:19 -0800 (PST)
-Date: Thu, 27 Feb 2025 10:12:16 -0500
-From: "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-	"christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-	"javier.carrasco@wolfvision.net" <javier.carrasco@wolfvision.net>,
-	"make_ruc2021@163.com" <make_ruc2021@163.com>,
-	"peter.chen@nxp.com" <peter.chen@nxp.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Pawel Eichler <peichler@cadence.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] usb: xhci: lack of clearing xHC resources
-Message-ID: <6034ee47-7f95-4917-b4c5-fa9ab6078f73@rowland.harvard.edu>
-References: <20250226071646.4034220-1-pawell@cadence.com>
- <PH7PR07MB95385E2766D01F3741D418ABDDC22@PH7PR07MB9538.namprd07.prod.outlook.com>
- <a78164bc-67c4-4f31-bbe1-609e19134ddf@rowland.harvard.edu>
- <PH7PR07MB9538F28D5F4F6706363CC78EDDCD2@PH7PR07MB9538.namprd07.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A612222BA;
+	Thu, 27 Feb 2025 15:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740670328; cv=fail; b=TzDhO3ReHdx3nf7ekTXvdMklWDOq3M3zIKdg9PVjzCgkD1LPswY9JIxDPdaoCVFuerGOXnyZeoSioOc1Wa1m6aRwjtzk1q1nnu3ZgE0JlRPvtvyDSv2IOoWcCxsNdCZ7irsucpxA+HjzN89FS2OvIFHR/h+Hk9k+ZKVqoHyL/H4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740670328; c=relaxed/simple;
+	bh=6FMfUgubD8dGtE0bnyXffThAaDwN3noTV4XYFFnGIY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Os8nrt8qRrukU8sbV2yYK3ky1kU9cSMID2DNP8UyeD2upAwuUw0GlM9pG3cF2O7oG9MNVjPp+MzCUbZheOBjcSE9vKrK1+QxCywWVeCWYAWocKNVfJsNSzUkjKX2y1VoDk9GVRFhBdImzRooWE8NnwqDUEkms+E90Xo1NdjAX7Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OkCQuVNk; arc=fail smtp.client-ip=40.107.94.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qk8QpzXceadSdA7o0cGWhnRaGArfecSppharQRXTHWTxm2dzUdGadpzRUHMYCxBzKVIelMJhnlJoNPWUcoiylYJ1FlTx6iZblwcnf7vlSUujYUBQzPsWs9/YWS6jmyBg/TvCbXK7PVm3JhNwzS66vx9pH3b+SjWTyeU1dkQDTGgBexba78MQWX3wDtJHlg0n2jXMT/laWlOgUYAUyewmiJFG1UXycfokORATebsCTvg+C9n6dHoRQFWyvUQY9S1MWPfH4DU+s8aDc6+MXssTMTyRMheUEas8lU1r7ZRINujJ3DDbQHqJAn7046g6v9bkiKvlnryylidhXMkmG2v8oQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9nMM1yqvMNfokV5I8KePf2SbPLDoME1nwtdBMKk5wmY=;
+ b=PieLisN/NNDvcRDyiaI0R0/ycosfX+9PM0GUooX2Jej/Cu1TBgTGg0N3BeHM2LFsbVWDhQBgTJT+jlXUWCKIAKGoMJK+5sf8FKaFsBItq67GqQb+CPBdwjGWDdMr+4htpEEzqXfJ9Xxy+wMqdo0cdMltugT4PQc+eOxr4lain9RC9foYC67D80Egfju/ZigDhqNVyzib8Z7rhJGaBODomxjluxLNl/kB4cxxN0wj7zD30mwN2ghLpn7hUG8TeVa7sP3O/aCiZL6+bV4kT9HcheT4F3+gyGDx3Sc0aLITzjf1KwIGuqezq5u88e2lcMJCgMoSwdWzAJ//ct/4TtVBzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9nMM1yqvMNfokV5I8KePf2SbPLDoME1nwtdBMKk5wmY=;
+ b=OkCQuVNkm0MuUnuVvj4Yk8JjFTohM/i3ISyNWGxjQ1j0uhS4iGmcxa/W2jSS0yW3ROZbo0VZY4SEyHpx5/6yYd4h6BI50WHAva/MwvVfIvkM5U1uNoROrT9dWzrhsKfXT+0HE13aqeTzRQHIJjWAtuTXnF5X6k9qRStzyXe/E/g=
+Received: from MW4PR04CA0041.namprd04.prod.outlook.com (2603:10b6:303:6a::16)
+ by PH7PR12MB8594.namprd12.prod.outlook.com (2603:10b6:510:1b3::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Thu, 27 Feb
+ 2025 15:32:01 +0000
+Received: from SJ1PEPF00001CEB.namprd03.prod.outlook.com
+ (2603:10b6:303:6a:cafe::ee) by MW4PR04CA0041.outlook.office365.com
+ (2603:10b6:303:6a::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.21 via Frontend Transport; Thu,
+ 27 Feb 2025 15:32:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00001CEB.mail.protection.outlook.com (10.167.242.27) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8489.16 via Frontend Transport; Thu, 27 Feb 2025 15:32:01 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Feb
+ 2025 09:31:59 -0600
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Feb
+ 2025 09:31:17 -0600
+Received: from [172.31.223.240] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Thu, 27 Feb 2025 09:31:16 -0600
+Message-ID: <8a046a27-c0bc-42ec-accb-17a36135563f@amd.com>
+Date: Thu, 27 Feb 2025 10:19:53 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR07MB9538F28D5F4F6706363CC78EDDCD2@PH7PR07MB9538.namprd07.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xen/pciback: Make missing GSI non-fatal
+To: Jan Beulich <jbeulich@suse.com>
+CC: <stable@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
+	<linux-kernel@vger.kernel.org>, Juergen Gross <jgross@suse.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Jiqian Chen <Jiqian.Chen@amd.com>, Huang Rui
+	<ray.huang@amd.com>
+References: <20250226200134.29759-1-jason.andryuk@amd.com>
+ <22a46f43-d60c-465d-9ae7-4d84ca9108d4@suse.com>
+Content-Language: en-US
+From: Jason Andryuk <jason.andryuk@amd.com>
+In-Reply-To: <22a46f43-d60c-465d-9ae7-4d84ca9108d4@suse.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CEB:EE_|PH7PR12MB8594:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45f243da-50a4-4da6-ce12-08dd5743e15a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QVFwR1ZKNnNUYjVnMXBTTWl5SURHVUhiNTFpM1I3bUQ2MVRWNm56MWgwRnNl?=
+ =?utf-8?B?OTR6ZmpTei9Wd1VkUEU2VWxXcmlFMDAxTVlISEVKMU8zeE9SM0hPeTcvcnNj?=
+ =?utf-8?B?aGF3RGh1Z0xzSFZpOTVSbDIzRWo0S0pGYlUwbVZvQ0VpV1RENVJmbmxsTmJl?=
+ =?utf-8?B?ZmU5MlhJUU1KajNXNzNLZlJwVllJbnlEZ0FCWFlXcGpZUjdXYUVWQ21oMjVV?=
+ =?utf-8?B?VDJMeEtUeEwvdWxNRlp3bHo2T3Z3OHRwamJ1cVJoUjZvTUVmV0k0cTVXQVV1?=
+ =?utf-8?B?cGpycy9hSjZldDFIY0Q5SFlTL2grejhiVFVzd3JlVC9CVUxzbW9Rb3R2OHEw?=
+ =?utf-8?B?eGo5YzhDU2M4Um1JQ2NFQldueldHTWU0ODd2V0hnL2FveS9qYWxqc21Lakk4?=
+ =?utf-8?B?ZU4vODhORHpvbGNRaDJZaWx3OVc3VWVoVk9mTEFSMnFycHdkWitPMXZ2UVVH?=
+ =?utf-8?B?aWJRMHQ3L0Npdjkxd1c0bnpUalp2YVdlU2JMU2RRaUJqT3RKRU1XSFp1YjdY?=
+ =?utf-8?B?SVREdTJUWU90L3dyWUo1N2hoWUVRUHlpMDVhY1RtRmt3QTJzbjhpUzZuQm1L?=
+ =?utf-8?B?L3NpR3NsZzVlT0h1YVFBNFYvTE9xa1ZvSTYwNnNwa3M5cEk1Q0Jab2pmdW80?=
+ =?utf-8?B?VkYyU211QXplbUxuWlFiYWsxQk8vdkxYRFdEN3ZvbmdHcnFhRklWU3hYNXJZ?=
+ =?utf-8?B?RHJvS202MlBiZ1lRLzdDWjFUY2NCdGdtcWFHZG9sR1pHUDc3SXJ6SndFbDVR?=
+ =?utf-8?B?YTRyV0NFaGw3cUVRWXFoRFNESkxub1kwclNnbWhiZE1acUZEVThkSTI5djYr?=
+ =?utf-8?B?OSs5TGUxY1BQQzdqVVR6eHpucFNZVnBZcXRkV0lBSDZob1NWM3JhMzhFNWRx?=
+ =?utf-8?B?bll1TUhRNXNrR0t2OEUwVDRTbGZIUTVCQ3RzMFJBRUZrTG5TWGFnL3pMbExs?=
+ =?utf-8?B?cHZnZ0RVUmQ1bFBsM3A5MFBOeWFCcVpBUGd6OGNoekJXOTFOZW45ZmRjTXhq?=
+ =?utf-8?B?NDE2Y0xqQkZhQU1ZZXlCdUh5blJlWmhSZS9nUE9JbCthaTJwOEViRVZranpq?=
+ =?utf-8?B?MDVTN25LNnFlbm9WczBBSnR4SzlXTHFnR0JqeS8zQkVMWlVZVnVaRDZjTzRJ?=
+ =?utf-8?B?WkV0K280OGhkenh4LzlPOWVvYjBmZGw2MlV2L3Q0RmlPMkJncXh6OGNUcE1B?=
+ =?utf-8?B?U08vUUVTeGc4WW0vSGhFR0tvM2Z1M1BPMnc2QklSTGlRV2JheWkxN0NKMFpP?=
+ =?utf-8?B?NHlrOG1qUzJuclhJaFgvbjU0czNCSzA3RDNnaC9qT3FVd1YwTTZibTBQVmtY?=
+ =?utf-8?B?Nk1Nd21taXdlUWpRZ3dXeHZtYUtHcTk4aVNTdUxYUTVMR0NHMFZWalhJb0tS?=
+ =?utf-8?B?UVpubHJ2NitwQUw4VUlGMlNpYmFVaTlYLzBneDNCRWNXZk4vL21WMEY0RmF2?=
+ =?utf-8?B?d3QzUTlEWEt0S3Y0RkNkaEtTYm01ampuNmFjQXRGTGNhSWE2QnlSUWE3STlk?=
+ =?utf-8?B?RXVOaDNBZFduUDBGdUVTUnVVNC9KNjRCQmZzTDdQWGNvWVp2eEE3c1MwMW54?=
+ =?utf-8?B?MlJyR0pkU3lOQ3FlVVJWUzJDS3hNTWUvSjVud2NwdklwZlZhcDBHZFZ6NmRw?=
+ =?utf-8?B?UGtCN1creWVpaWVFZ3hJeG1sZ2Y0YnhFMFExaW9CKzJNTzh4VGovR1M4TEVm?=
+ =?utf-8?B?RzI5ZGhhUU1nZkdkQ2UzQTJCTC9td1lLUUNXMmZjR2g0Q3N4eEszQkpiaVMy?=
+ =?utf-8?B?Vzc0RzFhaG5QVDB0dkdvOFhjWkY3OXlla2wyMmx1QzVrdUJhRmluOWpIZXIw?=
+ =?utf-8?B?dklaU2xXTzZDUlVuM005UnVPYWsxclZsL1poL2lVOHQwbVA1cmhGbzhvT1o3?=
+ =?utf-8?B?Ty9TbHkzUmZzQzVPWHZ2dG9qT1B2TUFwOTRLWlp4L1UrZ2g4QnBpWlljd1RQ?=
+ =?utf-8?B?R281Z3FxcnlNL2d1YmtWK1VxVlA0WlhnaitwQzhsSGhxMnhxMmVCU2sxMDJ3?=
+ =?utf-8?Q?7X1JIjJexLBvB6jaGRVUciSu6K7tls=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 15:32:01.0165
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45f243da-50a4-4da6-ce12-08dd5743e15a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CEB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8594
 
-BTW, since the patch doesn't touch the xHCI driver, the Subject: 
-shouldn't say "usb: xhci: ...".  It would be better to put "usb: hub: 
-..."
-
-On Thu, Feb 27, 2025 at 07:05:17AM +0000, Pawel Laszczak wrote:
-> >Doing it this way, you will call hcd->driver->reset_device() multiple times for the
-> >same device: once for the hub(s) above the device and then once for the device
-> >itself.  But since this isn't a hot path, maybe that doesn't matter.
+On 2025-02-27 03:23, Jan Beulich wrote:
+> On 26.02.2025 21:01, Jason Andryuk wrote:
 > 
-> Yes, it true but the function xhci_discover_or_reset_device which is associated with
-> hcd->driver->reset_device() include the checking whether device is in SLOT_STATE_DISABLED.
-> It allows to detect whether device has been already reset and do not repeat the
-> reset procedure.
+>> --- a/drivers/xen/acpi.c
+>> +++ b/drivers/xen/acpi.c
+>> @@ -101,7 +101,7 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
+>>   
+>>   	pin = dev->pin;
+>>   	if (!pin)
+>> -		return -EINVAL;
+>> +		return -ENOENT;
+>>   
+>>   	entry = acpi_pci_irq_lookup(dev, pin);
+>>   	if (entry) {
+> 
+> While I can understand this change, ...
+> 
+>> @@ -116,7 +116,7 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
+>>   		gsi = -1;
+>>   
+>>   	if (gsi < 0)
+>> -		return -EINVAL;
+>> +		return -ENOENT;
+>>   
+>>   	*gsi_out = gsi;
+>>   	*trigger_out = trigger;
+> 
+> ... I'd expect this needs to keep using an error code other than ENOENT.
+> Aiui this path means the device has a pin-based interrupt, just that it's
+> not configured correctly. In which case we'd better not allow the device
+> to be handed to a guest. Unless there's logic in place (somewhere) to
+> make sure it then would get to see a device without pin-based interrupt.
 
-Okay.  Please resubmit the patch with the changes we discussed (and fix 
-the kerneldoc problem pointed out by the kernel build checker).
+This is actually the case that fails for me.
 
-Alan Stern
+05:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. 
+RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 06)
+         Interrupt: pin A routed to IRQ -2147483648
+
+Interrupt Pin is 0x01, and Interrupt Line is 0xff
+
+I'll have to check the existing code to see what it does.
+
+Also, thanks for catching the commit message typos.
+
+Regards,
+Jason
 
