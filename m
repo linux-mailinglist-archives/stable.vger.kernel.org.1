@@ -1,125 +1,166 @@
-Return-Path: <stable+bounces-119864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EB6A489B8
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 21:21:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFCDA489B2
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 21:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB3AB162EAC
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 20:21:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCAB17A3B2E
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 20:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8665026E95D;
-	Thu, 27 Feb 2025 20:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5B26A0FD;
+	Thu, 27 Feb 2025 20:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvlEYPyq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OP2kf5q0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RbjwaJxd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1B71D6182;
-	Thu, 27 Feb 2025 20:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF601A841B;
+	Thu, 27 Feb 2025 20:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740687707; cv=none; b=fRmdOzSz19kx0mO5iA6DVQKhnOCxdgc8GN0j/KHWkdGWF93wWQP1ffaU5KSyRXIeqDUxUOzB+iKZUe2V26pfG2bqqWE5eFbXEnGfwxDSt0+TqBMlKVogUYsqYvJxkxo9hYvzyizS0lMRm2kYTJnw7Na+yRGC97gXHyfmHfR2EJA=
+	t=1740687665; cv=none; b=Q6GkgkvCqzdHjm3cpWMit/yc1v/CWWkuT5YNyJvjZT8Kv52MJgsLNHTCno8mAb8+sLeHh3pCS6L+LaNxBF/UT58XYOo19uy2zr8qg3OjrA7B4BNzw+xQdSuMEojLP/bbVbHXBM9F1i+ZwOD8G+CAz57v6sYgX8pqVxwKO5PzONo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740687707; c=relaxed/simple;
-	bh=yJLvp2oI0sbx31hYDIXLNAAq0hg/gtAY3C68UTWPF8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HBCpu4gmKEoAR8/g1CAH2WRHFlaKJ0J8L5n2HrQN47GrlzEO0iosB89Tw73hm0SwKRJha2OmYnVX0BzSR3Wa15O3Ur1WSGF+ofYuphxFYLslqCNhtOmiA26X0Sbw4PZhshp4RS+Z4ZjUaK3V3M0vRKtMvJDWbSoCKiDGwgsIujI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvlEYPyq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CCFC4CEDD;
-	Thu, 27 Feb 2025 20:21:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740687706;
-	bh=yJLvp2oI0sbx31hYDIXLNAAq0hg/gtAY3C68UTWPF8A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CvlEYPyqID3xG6JZnddwKCBj86r3Ccp80AYP8Ur+fzaXY/aU9kwpIhJiV7j0AEFfC
-	 ikcFpnhFkTSSMgHP+SXGqfjt9zHxjNb7cz9GA8d1V9by1Vo7X4ytcXHk0q7Rxzzs97
-	 f0YbwqkoW1aVPUHeNo9CPAAGczlcJVUYyF5h0YEk=
-Date: Thu, 27 Feb 2025 12:20:36 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] xhci: Restrict USB4 tunnel detection for USB3 devices to
- Intel hosts
-Message-ID: <2025022709-unread-mystified-ddf1@gregkh>
-References: <20250227194529.2288718-1-maz@kernel.org>
+	s=arc-20240116; t=1740687665; c=relaxed/simple;
+	bh=MtJTpeWFMmC6NvtMRah9y80RKfrLTo6oD9RpFUOhNG0=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ItmObFcbgayCt7eJBr531UCuLrjviwqsk1DTK200FZe29H6dIYfunegfzzx80oBXr0O1zHAunoQwoC5eEF7yUgzr35fliELDmWyGLAixzE4L8eSYsrtOC4xaVX3BOfBr7dqPGAOhCO3IpDgLASOENwbj5Lf9ZAnsG+8pe8EH7ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OP2kf5q0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RbjwaJxd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 27 Feb 2025 20:20:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740687659;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=N5GBxKj2vN1YefaqwaNRI9BMN2xaspLBJCa8Im2OHcY=;
+	b=OP2kf5q0IVeIGBHGUNHPGQaoASvAs2GP1C6inMAcWzKuUXpeaU7gBRXqaVy65B4Lx7tcOK
+	+gi6unj2/buKh8hZJmQ6cp9sZQDZC0uKOpaaXWkU3v85bZfy81D+sKNkJCmOioVZlEQbcr
+	VnlcXybIxNX1sMg3LlWpVVqsrE3gcTHbKcRXDQnHE04k5Wr2VLcWayzhEOsH6+wq74bjoh
+	QgzaHKPBL0GNBONeD786XYKdtFhbNsGEQkYGNU8tRtapXVjZiZtFxzxqQKEH3FnqLXRNp0
+	uzJnGMmfZncEFXSc+bwcNXqnxRb1TOa+SWQGcVw+u0VOYqSK1f2VIHz0eMv/2Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740687659;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=N5GBxKj2vN1YefaqwaNRI9BMN2xaspLBJCa8Im2OHcY=;
+	b=RbjwaJxdXIQx/ehHvdy0foLj6BocsnX5q679cM3v5zSwK7xNE+ujmDI4IWvY6dqpunzXKO
+	onqB0mUADF5uj3CA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/urgent] sched/core: Prevent rescheduling when interrupts
+ are disabled
+Cc: David Woodhouse <dwmw@amazon.co.uk>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227194529.2288718-1-maz@kernel.org>
+Message-ID: <174068765743.10177.15505690433402162747.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 27, 2025 at 07:45:29PM +0000, Marc Zyngier wrote:
-> When adding support for USB3-over-USB4 tunnelling detection, a check
-> for an Intel-specific capability was added. This capability, which
-> goes by ID 206, is used without any check that we are actually
-> dealing with an Intel host.
-> 
-> As it turns out, the Cadence XHCI controller *also* exposes an
-> extended capability numbered 206 (for unknown purposes), but of
-> course doesn't have the Intel-specific registers that the tunnelling
-> code is trying to access. Fun follows.
-> 
-> The core of the problems is that the tunnelling code blindly uses
-> vendor-specific capabilities without any check (the Intel-provided
-> documentation I have at hand indicates that 192-255 are indeed
-> vendor-specific).
-> 
-> Restrict the detection code to Intel HW for real, preventing any
-> further explosion on my (non-Intel) HW.
-> 
-> Cc: Mathias Nyman <mathias.nyman@linux.intel.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: stable@vger.kernel.org
-> Fixes: 948ce83fbb7df ("xhci: Add USB4 tunnel detection for USB3 devices on Intel hosts")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  drivers/usb/host/xhci-hub.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-> index 9693464c05204..69c278b64084b 100644
-> --- a/drivers/usb/host/xhci-hub.c
-> +++ b/drivers/usb/host/xhci-hub.c
-> @@ -12,6 +12,7 @@
->  #include <linux/slab.h>
->  #include <linux/unaligned.h>
->  #include <linux/bitfield.h>
-> +#include <linux/pci.h>
->  
->  #include "xhci.h"
->  #include "xhci-trace.h"
-> @@ -770,9 +771,16 @@ static int xhci_exit_test_mode(struct xhci_hcd *xhci)
->  enum usb_link_tunnel_mode xhci_port_is_tunneled(struct xhci_hcd *xhci,
->  						struct xhci_port *port)
->  {
-> +	struct usb_hcd *hcd;
->  	void __iomem *base;
->  	u32 offset;
->  
-> +	/* Don't try and probe this capability for non-Intel hosts */
-> +	hcd = xhci_to_hcd(xhci);
-> +	if (!dev_is_pci(hcd->self.controller) ||
-> +	    to_pci_dev(hcd->self.controller)->vendor != PCI_VENDOR_ID_INTEL)
-> +		return USB_LINK_UNKNOWN;
+The following commit has been merged into the sched/urgent branch of tip:
 
-Ugh, nice catch.
+Commit-ID:     82c387ef7568c0d96a918a5a78d9cad6256cfa15
+Gitweb:        https://git.kernel.org/tip/82c387ef7568c0d96a918a5a78d9cad6256cfa15
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 16 Dec 2024 14:20:56 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 27 Feb 2025 21:13:57 +01:00
 
-Mathias, want me to just take this directly for now and not wait for you
-to resend it?
+sched/core: Prevent rescheduling when interrupts are disabled
 
-thanks,
+David reported a warning observed while loop testing kexec jump:
 
-greg k-h
+  Interrupts enabled after irqrouter_resume+0x0/0x50
+  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
+   kernel_kexec+0xf6/0x180
+   __do_sys_reboot+0x206/0x250
+   do_syscall_64+0x95/0x180
+
+The corresponding interrupt flag trace:
+
+  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
+  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+
+That means __up_console_sem() was invoked with interrupts enabled. Further
+instrumentation revealed that in the interrupt disabled section of kexec
+jump one of the syscore_suspend() callbacks woke up a task, which set the
+NEED_RESCHED flag. A later callback in the resume path invoked
+cond_resched() which in turn led to the invocation of the scheduler:
+
+  __cond_resched+0x21/0x60
+  down_timeout+0x18/0x60
+  acpi_os_wait_semaphore+0x4c/0x80
+  acpi_ut_acquire_mutex+0x3d/0x100
+  acpi_ns_get_node+0x27/0x60
+  acpi_ns_evaluate+0x1cb/0x2d0
+  acpi_rs_set_srs_method_data+0x156/0x190
+  acpi_pci_link_set+0x11c/0x290
+  irqrouter_resume+0x54/0x60
+  syscore_resume+0x6a/0x200
+  kernel_kexec+0x145/0x1c0
+  __do_sys_reboot+0xeb/0x240
+  do_syscall_64+0x95/0x180
+
+This is a long standing problem, which probably got more visible with
+the recent printk changes. Something does a task wakeup and the
+scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
+invokes schedule() from a completely bogus context. The scheduler
+enables interrupts after context switching, which causes the above
+warning at the end.
+
+Quite some of the code paths in syscore_suspend()/resume() can result in
+triggering a wakeup with the exactly same consequences. They might not
+have done so yet, but as they share a lot of code with normal operations
+it's just a question of time.
+
+The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
+models. Full preemption is not affected as cond_resched() is disabled and
+the preemption check preemptible() takes the interrupt disabled flag into
+account.
+
+Cure the problem by adding a corresponding check into cond_resched().
+
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
+---
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9aecd91..6718990 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7285,7 +7285,7 @@ out_unlock:
+ #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
+ int __sched __cond_resched(void)
+ {
+-	if (should_resched(0)) {
++	if (should_resched(0) && !irqs_disabled()) {
+ 		preempt_schedule_common();
+ 		return 1;
+ 	}
 
