@@ -1,96 +1,116 @@
-Return-Path: <stable+bounces-119871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5E6A48BF8
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 23:47:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF97A48C75
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 00:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78F916CF08
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 22:46:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6411416B672
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 23:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0E277818;
-	Thu, 27 Feb 2025 22:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147AC272914;
+	Thu, 27 Feb 2025 23:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="nUGY9cHs"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VBKJ4HTQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6250277811
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 22:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B785627290C;
+	Thu, 27 Feb 2025 23:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740696408; cv=none; b=tMey/6E5gbknLOteCXkHVio8UIn66nxkV1cmqhniSEMpqtjLMSdK5fZWMxVDhBQpr+xJWanmufnlGiaOaE1UKMpn0rCEzWi/1REfBtbOZyw4imfcXADceog9v1PjIjwRgbuGmetYEaJVihsGwgmsCgikXqOTd8WeixAiJbVm/iI=
+	t=1740697963; cv=none; b=FBZCl5WeHFAJqgKoF7eMCScJG39NxWnSB5nMr8LoI6VGv+L9ctV3Vaf9n8quKsVCNPFJtzpDuM9tc8fMqUX8wcHnRKL8R89IooxfF3sD1A3/MgxxEY1uKKltxZ6nMFwd+O7swQOSnoM0elv0jCYhuvuAWsh8AKILdwhVSdDJl2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740696408; c=relaxed/simple;
-	bh=KoAelO3UQhx4BiU0JlCnoBne078B35Gbito6xzKiVTs=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Dn7bC4zVnf04ORm4I4MNxe7aHjcvTvdruYP8xGftkE9A12ybOfuo6jy2znESNIvUIBluhMbq3EkT8IxT1BCv7h92fSz3vfl33UzHtR35BxoZ2xrap7TjEJsY18kNfiLPMUV3UidMKcaJQvYQjaQoF6p5xIBJkvuSw5i+JdvQ7x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=nUGY9cHs; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 05059240027
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:46:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-	t=1740696404; bh=KoAelO3UQhx4BiU0JlCnoBne078B35Gbito6xzKiVTs=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:From;
-	b=nUGY9cHsWABKWbLI5zl/nQWidunG/8rw1VBANAHdnKyr1IqnZm0km3RyA566lpHKc
-	 4PWt1840vUR15MN+wh7Sn1qOAl8PVJFQ6AnHK7lW6VrPOPRZAK6I9mBVF/SccaGPz1
-	 XnR0IUxslnuHh+eL86Egp/+SaKQV6xqtZ4trrugbmAqRKOFmmlyzCK1nlvBtDT+N2B
-	 LQvnaq4wQ4Tz4qDAaAsw8aN3em1YfeJEmsG9zBMd2OM9LZSoJ4T3NhyB2Ff6oAdLLV
-	 3rh1I8YjqGt0P4RXSIVR+qRqKbKkwS3LmkEeVFtsI83gDZQDbsXIjDmbDaHB4dspM5
-	 xM9IWSUiGG9OQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Z3mfq5GN8z9rxF
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:46:43 +0100 (CET)
-Received: by df1tl.local.here (Postfix, from userid 200)
-	id 7CCDB54A3AD; Thu, 27 Feb 2025 23:46:43 +0100 (CET)
-Date: Thu, 27 Feb 2025 22:46:43 +0000
-From: Klaus Dittrich <kladit@posteo.de>
-To: stable@vger.kernel.org
-Subject: Unknown bug in linux-6.13.x running qemu
-Message-ID: <Z8DrUymWnXQkJgVt@df1tl.local.here>
+	s=arc-20240116; t=1740697963; c=relaxed/simple;
+	bh=KQbmUdVsqrK/03QDZ/3krl9iUybFdWvx7ljg3WtUVJU=;
+	h=Date:To:From:Subject:Message-Id; b=UfMOA3sfDPrlGBoFeH1dS1I4MuEGLhnkkFs52hVKQde7yHn9ASvZwPl7ug7yGw6irxJi3+Lu5Q4Uyjj9WEkvSN7yrvTCWFGwkxvX4qhdYvYmdmWRnFk/vPg5JPFG6lycHngWqp9gJEXlc9OsR2SiYNPeIOIouTnQ1XMhLy+sPYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VBKJ4HTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339A2C4CEE5;
+	Thu, 27 Feb 2025 23:12:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1740697963;
+	bh=KQbmUdVsqrK/03QDZ/3krl9iUybFdWvx7ljg3WtUVJU=;
+	h=Date:To:From:Subject:From;
+	b=VBKJ4HTQMFgrLTBxBdOrgLYEXM3kfK/2+E0uvHiLJMJLzZW0Uh1Auxq8UOQpl4fX0
+	 MfaG9/GVECeHZQJwvXlsSXKof/Ghw4S8Z6RBuVpSB3u2BGV+Chin+QA8JkcIz7BCew
+	 1W9wUugRMIjeiRndh53uZ8CByYT51XV7IkzNgnsA=
+Date: Thu, 27 Feb 2025 15:12:42 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mporter@kernel.crashing.org,dan.carpenter@linaro.org,alex.bou9@gmail.com,haoxiang_li2024@163.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + rapidio-fix-an-api-misues-when-rio_add_net-fails.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250227231243.339A2C4CEE5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 
-I discovered a bug that appears in any 6.13 kernel within quemu
-but not in any 6.12 kernel.
 
-I use quemu-9.2.2 to run windows10 in it and there I use a program
-called sprint-layout-6.0.
+The patch titled
+     Subject: rapidio: fix an API misues when rio_add_net() fails
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     rapidio-fix-an-api-misues-when-rio_add_net-fails.patch
 
-This program saves and loads his files via samba,
-so I have them on my linux-ext4 disk and not in the
-disk-file quemu uses.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/rapidio-fix-an-api-misues-when-rio_add_net-fails.patch
 
-It worked for years now and it still works with all 6.12.x
-kernels up to now.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-But it does not work with any 6.13.x kernel up to date.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-The bug shows up when I try to load a file from within this program,
-then the emulated windows10 pops up a window with "exeption 8000004".
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-I do not know what this is trying to tell me, but under any 6.12.x
-and older kernels this did not happen.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-So I assume a bug in 6.13.x kernel is the cause.
+------------------------------------------------------
+From: Haoxiang Li <haoxiang_li2024@163.com>
+Subject: rapidio: fix an API misues when rio_add_net() fails
+Date: Thu, 27 Feb 2025 15:34:09 +0800
 
-I also reported this to qemu but got now answer up to now.
+rio_add_net() calls device_register() and fails when device_register()
+fails.  Thus, put_device() should be used rather than kfree().  Add
+"mport->net = NULL;" to avoid a use after free issue.
 
-Any help is welcome, thanks.
+Link: https://lkml.kernel.org/r/20250227073409.3696854-1-haoxiang_li2024@163.com
+Fixes: e8de370188d0 ("rapidio: add mport char device driver")
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
--- 
-Best regards
-Klaus
+ drivers/rapidio/devices/rio_mport_cdev.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/drivers/rapidio/devices/rio_mport_cdev.c~rapidio-fix-an-api-misues-when-rio_add_net-fails
++++ a/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -1742,7 +1742,8 @@ static int rio_mport_add_riodev(struct m
+ 		err = rio_add_net(net);
+ 		if (err) {
+ 			rmcd_debug(RDEV, "failed to register net, err=%d", err);
+-			kfree(net);
++			put_device(&net->dev);
++			mport->net = NULL;
+ 			goto cleanup;
+ 		}
+ 	}
+_
+
+Patches currently in -mm which might be from haoxiang_li2024@163.com are
+
+m68k-sun3-add-check-for-__pgd_alloc.patch
+rapidio-fix-an-api-misues-when-rio_add_net-fails.patch
+
 
