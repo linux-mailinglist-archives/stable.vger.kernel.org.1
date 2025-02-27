@@ -1,87 +1,88 @@
-Return-Path: <stable+bounces-119866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94158A489D6
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 21:26:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFA9A48A62
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 22:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18BF3ACE6D
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 20:26:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 380411883746
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 21:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4465426FA70;
-	Thu, 27 Feb 2025 20:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D58270EC8;
+	Thu, 27 Feb 2025 21:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZemE8IaV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ld55pj4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F156726E97A;
-	Thu, 27 Feb 2025 20:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0189726FA68;
+	Thu, 27 Feb 2025 21:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740687978; cv=none; b=MkHU4ap1ziJyG64bEtnsKYJbnFhn1uIg4JtFteuitdUzEhGjH8p7eNh4ExMf5oTk+Tu5bUvtwUev+2LAAkncHG+mvBClF/lCdFLHZcD+MNOEvtRrChq1IPa45wE2cR1Hx8uEGzaCQqvk3NqRNcE64GdXVbBgjnD5yHndszzhRq0=
+	t=1740691444; cv=none; b=iYxXUiE0E2BpexTiCeC9bO876D7PpfvNzZBStiYzttU4PemdkkH/fs9Er5/Mt0PF3RHcCNiZnn/UNLtEkVS8hLR1ObdZhjF1r0XLjqSG/JF6yQoIJv1Ueo3B3blsDaUU5w6n7pwTnLm/ajK36uFl5bWba5Ll0pJ+F6IcUgGAnlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740687978; c=relaxed/simple;
-	bh=HS/AUV6+Qpsw3N32uy3TyW+OGn3hvfruRaKt+iFFMg8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BN0LTCuzY6z6rT0wyQPl+uOLDclDtBGm/fHtb+n1SCWBfJ8WpakolMcJ9KtnzjRcFwjogtFks/8zztdCVeNZijJRsPFw1GmzmjgbVfBSOKlMdJGo3oyG1BDnRwn63tXANo7W/pJ6Bht62wXrnBIwhzgtWGrVV+wMQCLyZSSJ6Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZemE8IaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1400C4CEDD;
-	Thu, 27 Feb 2025 20:26:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740687977;
-	bh=HS/AUV6+Qpsw3N32uy3TyW+OGn3hvfruRaKt+iFFMg8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZemE8IaVZyzzWcQTcjHDhHLYPWMeFwP1iQShD2UV29ukIaVc4ZdPLRyAjiFEkLqfj
-	 zIdeHsqImXcpaPaYqCwTPzCt5FsfMiy8OKpek/aWRahy22rfTTg6WB2djdN7QvVSLW
-	 n2V2EjAf+JZhtXZuJpPyrtMRYSDwJKGQJ4Ubzzz0=
-Date: Thu, 27 Feb 2025 12:25:07 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christian Heusel <christian@heusel.eu>
-Cc: Arnd Bergmann <arnd@arndb.de>, Sean Rhodes <sean@starlabs.systems>,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org, qf <quintafeira@tutanota.com>
-Subject: Re: [PATCH] Revert "drivers/card_reader/rtsx_usb: Restore interrupt
- based detection"
-Message-ID: <2025022758-traps-nebulizer-5356@gregkh>
-References: <20250224-revert-sdcard-patch-v1-1-d1a457fbb796@heusel.eu>
- <0944ac33-c460-4d3b-9ec8-db70d11ee9c1@heusel.eu>
+	s=arc-20240116; t=1740691444; c=relaxed/simple;
+	bh=vD8RUpJ0yAedJRgQfUTf+GMBbYOFPmK1x7iiFwnW3Fg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rG45vl3iS+4I/kb9TMeKJNMC2g5nKURQ8OLbJgm8Ytfivy90VX9Ceh6Cg0zs0okL/vhmNrxJuLx7t7QDZ/0FMGd/aVAYFSFucZp69OJPgyruZ0AtxQzDBzaVFY9UAAjy+m94TwXzykyLkJnMyIeQHsO/QBcNSyY23/wTsxQAeOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ld55pj4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C323C4CEDD;
+	Thu, 27 Feb 2025 21:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740691443;
+	bh=vD8RUpJ0yAedJRgQfUTf+GMBbYOFPmK1x7iiFwnW3Fg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ld55pj4bFuPsOkON+H2nuyZvN0PedfTwaoPB4SGghCybDpYfWimkHPVYIHe3BP17u
+	 DHeK+UQ+rLFEdd8ZD3CmaotrWR7EE7wZkbYft6Tn4ttVYPfkVcHWQMT45m3Vv+Vz5W
+	 bcsiufUXD7hA22Urm7yD+baM6ktDtKT5XPi7IR8Zfll7oyJfgrYXIwbYj3IhbNk+En
+	 AoyNw1owA8ZXK7Xf5m6++KMzsY+grs/n5KyIK2vplpNCZ/fuaVnWnMZ3CCClzHSAIz
+	 GBwW9TMSy5pJfLgu9uaBh6RCl07TdZLcCwyvjRT7KIxDyHZZ5MQ17h4lmWd2nhDtHk
+	 /WFdG7cWY3lsQ==
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] f2fs: fix the missing write pointer correction
+Date: Thu, 27 Feb 2025 21:24:01 +0000
+Message-ID: <20250227212401.152977-1-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0944ac33-c460-4d3b-9ec8-db70d11ee9c1@heusel.eu>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 27, 2025 at 02:40:04PM +0100, Christian Heusel wrote:
-> On 25/02/24 09:32AM, Christian Heusel wrote:
-> > This reverts commit 235b630eda072d7e7b102ab346d6b8a2c028a772.
-> > 
-> > This commit was found responsible for issues with SD card recognition,
-> > as users had to re-insert their cards in the readers and wait for a
-> > while. As for some people the SD card was involved in the boot process
-> > it also caused boot failures.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Link: https://bbs.archlinux.org/viewtopic.php?id=303321
-> > Fixes: 235b630eda07 ("drivers/card_reader/rtsx_usb: Restore interrupt based detection")
-> > Reported-by: qf <quintafeira@tutanota.com>
-> > Closes: https://lore.kernel.org/all/1de87dfa-1e81-45b7-8dcb-ad86c21d5352@heusel.eu
-> > Signed-off-by: Christian Heusel <christian@heusel.eu>
-> 
-> Hey Arnd, hey greg,
-> 
-> could one of you pick this up? Sean said in the other thread that going
-> with the revert for now seems like the best option and that he'll
-> revisit this once he has time...
+If checkpoint was disabled, we missed to fix the write pointers.
 
-Yes, will go queue this up right now, thanks.
+Cc: <stable@vger.kernel.org>
+Fixes: 1015035609e4 ("f2fs: fix changing cursegs if recovery fails on zoned device")
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ fs/f2fs/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-greg k-h
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index f5c69cc2de72..7a8fcc1e278c 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4752,8 +4752,10 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 	if (err)
+ 		goto free_meta;
+ 
+-	if (unlikely(is_set_ckpt_flags(sbi, CP_DISABLED_FLAG)))
++	if (unlikely(is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))) {
++		skip_recovery = true;
+ 		goto reset_checkpoint;
++	}
+ 
+ 	/* recover fsynced data */
+ 	if (!test_opt(sbi, DISABLE_ROLL_FORWARD) &&
+-- 
+2.48.1.711.g2feabab25a-goog
+
 
