@@ -1,212 +1,198 @@
-Return-Path: <stable+bounces-119798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFE4A4753B
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 06:31:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B6FA4758C
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 06:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A48F3A6DE7
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 05:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6941D16FE7B
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 05:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5211FECC3;
-	Thu, 27 Feb 2025 05:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA99217654;
+	Thu, 27 Feb 2025 05:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="NCDI+h+X";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="NCDI+h+X"
 X-Original-To: stable@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221511E5210;
-	Thu, 27 Feb 2025 05:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E5B1FF618
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 05:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740634274; cv=none; b=H5Z5kK7dQGAI9sgNuXwFoeK2z2boVYUulf6CMVLFeE+1u5ybMYx3RLpNpvsl7fVvgwNoUxF9IABl9KCKwqL3G2fY3jGSxW5Fv9e0BmHUMOu6z5rtWe4Pjj3zPsKHe3dBViXTiGjRXXGzEYol4/ry2H6uThihM4jVfu5+7rMYLI0=
+	t=1740635712; cv=none; b=tyuraE4oAuk39rEXK+ezUZkgJDnS5MqstS2yXNZpy3h4jtheWjG7lknszrfBYohbUzQoXD7AuBwpQ2NLzbIyQ7aHGBJ9mHShv2NE10cj+GV1WhCjskMpepJ5B44Vw9wHTGbXUXK5A8cERZLwz4klGJv9MqlhAoQxp4zNm1FLwqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740634274; c=relaxed/simple;
-	bh=Ubkpo2yfm2TxLNOmS+RA8sofbSaJ0lFhErUT9aL6IP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CbA6bf7+MaIOraQZ3RJyaAKe0LUNMW0Oxc2p5G00+rUyLrAWG40LMtFEOe/FzxrXgFSwHc+KRS3ifiA1vOz8WeZfxLeuTjG5muI8z5hyQ9z/qsdb2C3Q2c3UgvLqBE1FCsAf5KSH8LrB6Y9EbC/PLCaso5yMKwiIQRUl/fIle6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	s=arc-20240116; t=1740635712; c=relaxed/simple;
+	bh=fVjyhviJxkdrJBzCSmMukavoH5zEdmQUKdWMAER1LZo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fwqguooGxvy3UsPi1h/wVfq99y2DpUyPJ/Y6ecbDwyRA/9udcKaSl+GwwF5bjjSIU7wrZhVS4ocFbNqq9dOF70mYC3oQ5o7DlJCr2lTzstYpdHfNkL6SQFjuRP5runCBIw1yao5lDGUPbUvzINGQzZmYQQX8vw4O7HUnpxCw8h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=NCDI+h+X; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=NCDI+h+X; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id C767B2800B484;
-	Thu, 27 Feb 2025 06:31:08 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id C0E0B1AAC71; Thu, 27 Feb 2025 06:31:08 +0100 (CET)
-Date: Thu, 27 Feb 2025 06:31:08 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	Joel Mathew Thomas <proxy0@tutamail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI/bwctrl: Disable PCIe BW controller during reset
-Message-ID: <Z7_4nMod6jWd-Bi1@wunner.de>
-References: <20250217165258.3811-1-ilpo.jarvinen@linux.intel.com>
- <Z7RL7ZXZ_vDUbncw@wunner.de>
- <14797a5a-6ded-bf8f-aa0c-128668ba608f@linux.intel.com>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 54EDF1F38F;
+	Thu, 27 Feb 2025 05:55:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1740635708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F9QIe7BBpCfyu3f39k3PTijSvbPVGTjj30e9JDFZYsY=;
+	b=NCDI+h+X3SO41+jjYgiGTVdvkoTY7HY1I125nUNHB1rdAyxYm9MGN5sEb8MN53wf4A8xLY
+	cJYk5J/WMWrdEYtwuB6w1XdfSGHfjsbe6PX2uNjuCLovDENcd4f0kPCFSKek02awHPGMp/
+	Lgyp39voIxrlFtb14C6lXHtl9fd78+c=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1740635708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F9QIe7BBpCfyu3f39k3PTijSvbPVGTjj30e9JDFZYsY=;
+	b=NCDI+h+X3SO41+jjYgiGTVdvkoTY7HY1I125nUNHB1rdAyxYm9MGN5sEb8MN53wf4A8xLY
+	cJYk5J/WMWrdEYtwuB6w1XdfSGHfjsbe6PX2uNjuCLovDENcd4f0kPCFSKek02awHPGMp/
+	Lgyp39voIxrlFtb14C6lXHtl9fd78+c=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4963E1376A;
+	Thu, 27 Feb 2025 05:55:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kLRJAzv+v2ebUgAAD6G6ig
+	(envelope-from <wqu@suse.com>); Thu, 27 Feb 2025 05:55:07 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2 2/8] btrfs: subpage: do not hold subpage spin lock when clearing folio writeback
+Date: Thu, 27 Feb 2025 16:24:40 +1030
+Message-ID: <5d724635289a10a39164b767bdbee81e9e82e7d7.1740635497.git.wqu@suse.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1740635497.git.wqu@suse.com>
+References: <cover.1740635497.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <14797a5a-6ded-bf8f-aa0c-128668ba608f@linux.intel.com>
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Mon, Feb 24, 2025 at 05:13:15PM +0200, Ilpo Järvinen wrote:
-> On Tue, 18 Feb 2025, Lukas Wunner wrote:
-> > On Mon, Feb 17, 2025 at 06:52:58PM +0200, Ilpo Järvinen wrote:
-> > > PCIe BW controller enables BW notifications for Downstream Ports by
-> > > setting Link Bandwidth Management Interrupt Enable (LBMIE) and Link
-> > > Autonomous Bandwidth Interrupt Enable (LABIE) (PCIe Spec. r6.2 sec.
-> > > 7.5.3.7).
-> > > 
-> > > It was discovered that performing a reset can lead to the device
-> > > underneath the Downstream Port becoming unavailable if BW notifications
-> > > are left enabled throughout the reset sequence (at least LBMIE was
-> > > found to cause an issue).
-> > 
-> > What kind of reset?  FLR?  SBR?  This needs to be specified in the
-> > commit message so that the reader isn't forced to sift through a
-> > bugzilla with dozens of comments and attachments.
-> 
-> Heh, I never really tried to figure out it because the reset disable 
-> patch was just a stab into the dark style patch. To my surprise, it ended 
-> up working (after the initial confusion was resolved) and I just started 
-> to prepare this patch from that knowledge.
+[BUG]
+When testing subpage block size btrfs (block size < page size), I hit
+the following spin lock hang on x86_64, with the experimental 2K block
+size support:
 
-If the present patch is of the type "changing this somehow makes the
-problem go away" instead of a complete root-cause analysis, it would
-have been appropriate to mark it as an RFC.
+  <TASK>
+  _raw_spin_lock_irq+0x2f/0x40
+  wait_subpage_spinlock+0x69/0x80 [btrfs]
+  btrfs_release_folio+0x46/0x70 [btrfs]
+  folio_unmap_invalidate+0xcb/0x250
+  folio_end_writeback+0x127/0x1b0
+  btrfs_subpage_clear_writeback+0xef/0x140 [btrfs]
+  end_bbio_data_write+0x13a/0x3c0 [btrfs]
+  btrfs_bio_end_io+0x6f/0xc0 [btrfs]
+  process_one_work+0x156/0x310
+  worker_thread+0x252/0x390
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xef/0x250
+  ? finish_task_switch.isra.0+0x8a/0x250
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x34/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-I've started to dig into the bugzilla and the very first attachment
-(dmesg for the non-working case) shows:
+[CAUSE]
+It's a self deadlock with the following sequence:
 
-  vfio-pci 0000:01:00.0: timed out waiting for pending transaction; performing function level reset anyway
+ btrfs_subpage_clear_writeback()
+ |- spin_lock_irqsave(&subpage->lock);
+ |- folio_end_writeback()
+    |- folio_end_dropbehind_write()
+       |- folio_unmap_invalidate()
+          |- btrfs_release_folio()
+             |- wait_subpage_spinlock()
+                |- spin_lock_irq(&subpage->lock);
+                   !! DEADLOCK !!
 
-That message is emitted by pcie_flr().  Perhaps the Nvidia GPU takes
-more time than usual to finish pending transactions, so the first
-thing I would have tried would be to raise the timeout significantly
-and see if that helps.  Yet I'm not seeing any patch or comment in
-the bugzilla where this was attempted.  Please provide a patch for
-the reporter to verify this hypothesis.
+We're trying to acquire the same spin lock already held by ourselves.
 
+[FIX]
+Move the folio_end_writeback() call out of the spin lock critical
+section.
 
-> Logs do mention this:
-> 
-> [   21.560206] pcieport 0000:00:01.1: unlocked secondary bus reset via: pciehp_reset_slot+0x98/0x140
-> 
-> ...so it seems to be SBR.
+And since we no longer have all the bitmap operation and the writeback
+flag clearing happening inside the critical section, we must do extra
+checks to make sure only the last one clearing the writeback bitmap can
+clear the folio writeback flag.
 
-Looking at the vfio code, vfio_pci_core_enable() (which is called on
-binding the vfio driver to the GPU) invokes pci_try_reset_function().
-This will execute the reset method configured via sysfs.  The same
-is done on unbind via vfio_pci_core_disable().
+Fixes: 3470da3b7d87 ("btrfs: subpage: introduce helpers for writeback status")
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+ fs/btrfs/subpage.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-So you should have asked the reporter for the contents of:
-/sys/bus/pci/devices/0000:01:00.0/reset_method
-/sys/bus/pci/devices/0000:01:00.1/reset_method
+diff --git a/fs/btrfs/subpage.c b/fs/btrfs/subpage.c
+index ebb40f506921..bedb5fac579b 100644
+--- a/fs/btrfs/subpage.c
++++ b/fs/btrfs/subpage.c
+@@ -466,15 +466,21 @@ void btrfs_subpage_clear_writeback(const struct btrfs_fs_info *fs_info,
+ 	struct btrfs_subpage *subpage = folio_get_private(folio);
+ 	unsigned int start_bit = subpage_calc_start_bit(fs_info, folio,
+ 							writeback, start, len);
++	bool was_writeback;
++	bool last = false;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&subpage->lock, flags);
++	was_writeback = !subpage_test_bitmap_all_zero(fs_info, folio, writeback);
+ 	bitmap_clear(subpage->bitmaps, start_bit, len >> fs_info->sectorsize_bits);
+-	if (subpage_test_bitmap_all_zero(fs_info, folio, writeback)) {
++	if (subpage_test_bitmap_all_zero(fs_info, folio, writeback) &&
++	    was_writeback) {
+ 		ASSERT(folio_test_writeback(folio));
+-		folio_end_writeback(folio);
++		last = true;
+ 	}
+ 	spin_unlock_irqrestore(&subpage->lock, flags);
++	if (last)
++		folio_end_writeback(folio);
+ }
+ 
+ void btrfs_subpage_set_ordered(const struct btrfs_fs_info *fs_info,
+-- 
+2.48.1
 
-In particular, I would like to know whether the contents differ across
-different kernel versions.
-
-There's another way to perform a reset:   Via an ioctl.  This ends up
-calling vfio_pci_dev_set_hot_reset(), which invokes pci_reset_bus()
-to perform an SBR.
-
-Looking at dmesg output in log_linux_6.13.2-arch1-1_pcie_port_pm_off.log
-it seems that vfio first performs a function reset of the GPU on bind...
-
-[   40.171564] vfio-pci 0000:01:00.0: resetting
-[   40.276485] vfio-pci 0000:01:00.0: reset done
-
-...and then goes on to perform an SBR both of the GPU and its audio
-device...
-
-[   40.381082] vfio-pci 0000:01:00.0: resetting
-[   40.381180] vfio-pci 0000:01:00.1: resetting
-[   40.381228] pcieport 0000:00:01.1: unlocked secondary bus reset via: pciehp_reset_slot+0x98/0x140
-[   40.620442] vfio-pci 0000:01:00.0: reset done
-[   40.620479] vfio-pci 0000:01:00.1: reset done
-
-...which is odd because the audio device apparently wasn't bound to
-vfio-pci, otherwise there would have been a function reset.  So why
-does vfio think it can safely reset it?
-
-Oddly, there is a third function reset of only the GPU:
-
-[   40.621894] vfio-pci 0000:01:00.0: resetting
-[   40.724430] vfio-pci 0000:01:00.0: reset done
-
-The reporter writes that pcie_port_pm=off avoids the PME messages.
-If the reset_method is "pm", I could imagine that the Nvidia GPU
-signals a PME event during the D0 -> D3hot -> D0 transition.
-
-I also note that the vfio-pci driver allows runtime PM.  So both the
-GPU and its audio device may runtime suspend to D3hot.  This in turn
-lets the Root Port runtime suspend to D3hot.  It looks like the
-reporter is using a laptop with an integrated AMD GPU and a
-discrete Nvidia GPU.  On such products the platform often allows
-powering down the discrete GPU and this is usually controlled
-through ACPI Power Resources attached to the Root Port.
-Those are powered off after the Root Port goes to D3hot.
-You should have asked the reporter for an acpidump.
-
-pcie_bwnotif_irq() accesses the Link Status register without
-acquiring a runtime PM reference on the PCIe port.  This feels
-wrong and may also contribute to the issue reported here.
-Acquiring a runtime PM ref may sleep, so I think you need to
-change the driver to use a threaded IRQ handler.
-
-Nvidia GPUs are known to hide the audio device if no audio-capable
-display is attached (e.g. HDMI).  quirk_nvidia_hda() unhides the
-audio device on boot and resume.  It might be necessary to also run
-the quirk after resetting the GPU.  Knowing which reset_method
-was used is important to decide if that's necessary, and also
-whether a display was attached.
-
-Moreover Nvidia GPUs are known to change the link speed on idle
-to reduce power consumption.  Perhaps resetting the GPU causes
-a change of link speed and thus execution of pcie_bwnotif_irq()?
-
-
-> > This approach won't work if the reset is performed without software
-> > intervention.  E.g. if a DPC event occurs, the device likewise undergoes
-> > a reset but there is no prior system software involvement.  Software only
-> > becomes involved *after* the reset has occurred.
-> > 
-> > I think it needs to be tested if that same issue occurs with DPC.
-> > It's easy to simulate DPC by setting the Software Trigger bit:
-> > 
-> > setpci -s 00:01.1 ECAP_DPC+6.w=40:40
-> > 
-> > If the issue does occur with DPC then this fix isn't sufficient.
-> 
-> Looking into lspci logs, I don't see DPC capability being there for 
-> 00:01.1?!
-
-Hm, so we can't verify whether your approach is safe for DPC.
-
-
-> > Instead of putting this in the PCI core, amend pcie_portdrv_err_handler
-> > with ->reset_prepare and ->reset_done callbacks which call down to all
-> > the port service drivers, then amend bwctrl.c to disable/enable
-> > interrupts in these callbacks.
-> 
-> Will it work? I mean if the port itself is not reset (0000:00:01.1 in this 
-> case), do these callbacks get called for it?
-
-Never mind, indeed this won't work.
-
-Thanks,
-
-Lukas
 
