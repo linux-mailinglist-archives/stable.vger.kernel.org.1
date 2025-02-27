@@ -1,109 +1,90 @@
-Return-Path: <stable+bounces-119869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C571A48B10
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 23:04:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99343A48BE6
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 23:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 224B27A6386
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 22:03:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D406E1883006
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 22:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0B2272911;
-	Thu, 27 Feb 2025 22:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fxZTLGnN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28745229B07;
+	Thu, 27 Feb 2025 22:44:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout03.t-online.de (mailout03.t-online.de [194.25.134.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1FE27290B;
-	Thu, 27 Feb 2025 22:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F47927781A
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 22:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.25.134.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740693859; cv=none; b=HpjrQTsM6oDH3pZ8VTqa5BF/oHqWKbOXfFdSd8EQhIa4yMHIybdRRcIp8P/yKwdR1BqHXxCMm/4jSZKELsgP6XSNCgQ2kEH3MYDiuImEYzD9yUad5h7bc18f1NEVkK/fidJqc0xXi7Mpa06w7wjlnRsGOGxCqlWheYDhsPpaMD4=
+	t=1740696259; cv=none; b=u79Vj4uNLuJVGIwCJd6co84QJ67o0+gJMV99FaKTqe0Mk2/prLUNrgV9nYWhWx9/4bh95RRfppLfg2Uxj2KcRk50m1Pt3pMD6qqthq0sMjKkf0nGZeUSJqeCxF4xun6jz+nJUh2RDd9gjvUxZCoDNOEzR4ZvB2SWAIdNqfxFhNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740693859; c=relaxed/simple;
-	bh=8OhUuNJoGvKBi/xXdJRzG3+310qxdtLu5DkmfSui/14=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=aNuLuZ7m0AD+OI6vuABUlYC6gkMEDvoLswiGbnw1odLfIpfaC+y4xsG2/CO4pR+XPykmmBj6wX5QqVzVNokgv3dT6PmK0RzOcUmzLpYNeU/HSTNGS4mhSSXqjeDAKAd8TIvVRIfoSwJ8j3yUCAvYUkVIuvbOAp+NHR/RRxbSqv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fxZTLGnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD15C4CEE7;
-	Thu, 27 Feb 2025 22:04:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740693858;
-	bh=8OhUuNJoGvKBi/xXdJRzG3+310qxdtLu5DkmfSui/14=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=fxZTLGnNlY+00IW2BFMKDuRednd+97WhfqcyApcmqe0DvNvAfk1Px72s3tOaVyul7
-	 j29swFKRllBJhTpoJMf8smYzsLJvYVztY/7hfNs83DKdifJ5sfshCf9+2MfFBkmA8C
-	 gw8kO65IInHWiXFY2o0LoeE//7eATetkqT/3s1mYrT2Zl57C0aBoFCaosAxGEvGpmf
-	 Q0L5N2Tz8mWD/vW2s8OPNvYfSqoF+0Z1Zn9PAeZDEtE6JH3xXPA3T+atI8sKsgwL8M
-	 2K7q6RbgYae0/KjHV1QyzHrr/2nn5H8S2TYlwn2BXHf90yEsAsJ1ckf5N7dTg23b9X
-	 pkTTDClv2Rc3A==
-Date: Thu, 27 Feb 2025 16:04:17 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: bhelgaas@google.com, rafael.j.wysocki@intel.com, yinghai@kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: fix reference leak in pci_alloc_child_bus()
-Message-ID: <20250227220417.GA19880@bhelgaas>
+	s=arc-20240116; t=1740696259; c=relaxed/simple;
+	bh=KoAelO3UQhx4BiU0JlCnoBne078B35Gbito6xzKiVTs=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=bfm5pcgbKTp2haQmFG3NIxEn0NyHCe7HiskJmgxi+tVHW9sqdJ9nmjmz2ZN8Gx1UBRMkAV+maYqbFaPT3kgdLrkSrM92CmlViTIcdqPs1cHVsOxOjaNvefz09BrKg1N1zU+dcJd8GicBlA3yZBfJuPb0c0qT7i3Sr/nLYywxbbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=t-online.de; spf=pass smtp.mailfrom=t-online.de; arc=none smtp.client-ip=194.25.134.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=t-online.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-online.de
+Received: from fwd79.aul.t-online.de (fwd79.aul.t-online.de [10.223.144.105])
+	by mailout03.t-online.de (Postfix) with SMTP id 06BE915FA
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:35:37 +0100 (CET)
+Received: from df1tl.local.here ([93.220.88.198]) by fwd79.t-online.de
+	with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+	esmtp id 1tnmTd-24T8eP0; Thu, 27 Feb 2025 23:35:33 +0100
+Received: from [192.168.168.33] (df1tl.local.here [192.168.168.33])
+	by df1tl.local.here (Postfix) with ESMTP id 6540354A3AC
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:35:33 +0100 (CET)
+Message-ID: <abfeb45a-2af0-4754-9fff-35d96c1182c1@t-online.de>
+Date: Thu, 27 Feb 2025 23:35:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250202062357.872971-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Reply-To: kladit@t-online.de
+Content-Language: de-DE
+To: stable@vger.kernel.org
+From: Klaus Dittrich <kladit@t-online.de>
+Subject: Unknown bug in linux-6.13.x running qemu
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TOI-EXPURGATEID: 150726::1740695733-91FF897D-4B73868E/0/0 CLEAN NORMAL
+X-TOI-MSGID: fbb6f419-06de-4ba6-9627-be54144027c5
 
-On Sun, Feb 02, 2025 at 02:23:57PM +0800, Ma Ke wrote:
-> When device_register(&child->dev) failed, we should call put_device()
-> to explicitly release child->dev.
-> 
-> As comment of device_register() says, 'NOTE: _Never_ directly free
-> @dev after calling this function, even if it returned an error! Always
-> use put_device() to give up the reference initialized in this function
-> instead.'
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+I discovered a bug that appears in any 6.13 kernel within quemu
+but not in any 6.12 kernel.
 
-Applied with Ilpo's reviewed-by to pci/enumeration for v6.15, thanks!
+I use quemu-9.2.2 to run windows10 in it and there I use a program
+called sprint-layout-6.0.
 
-> ---
-> Changes in v3:
-> - modified the description as suggestions.
-> Changes in v2:
-> - added the bug description about the comment of device_add();
-> - fixed the patch as suggestions;
-> - added Cc and Fixes table.
-> ---
->  drivers/pci/probe.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 2e81ab0f5a25..51b78fcda4eb 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
->  add_dev:
->  	pci_set_bus_msi_domain(child);
->  	ret = device_register(&child->dev);
-> -	WARN_ON(ret < 0);
-> +	if (WARN_ON(ret < 0)) {
-> +		put_device(&child->dev);
-> +		return NULL;
-> +	}
->  
->  	pcibios_add_bus(child);
->  
-> -- 
-> 2.25.1
-> 
+This program saves and loads his files via samba,
+so I have them on my linux-ext4 disk and not in the
+disk-file quemu uses.
+
+It worked for years now and it still works with all 6.12.x
+kernels up to now.
+
+But it does not work with any 6.13.x kernel up to date.
+
+The bug shows up when I try to load a file from within this program,
+then the emulated windows10 pops up a window with "exeption 8000004".
+
+I do not know what this is trying to tell me, but under any 6.12.x
+and older kernels this did not happen.
+
+So I assume a bug in 6.13.x kernel is the cause.
+
+I also reported this to qemu but got now answer up to now.
+
+Any help is welcome, thanks.
+
+-- 
+Best regards
+Klaus
+
 
