@@ -1,151 +1,186 @@
-Return-Path: <stable+bounces-119777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D04A47190
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 02:48:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D79A47300
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 03:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B43B97A529F
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 01:47:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEEC9188721C
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 02:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9E46A8D2;
-	Thu, 27 Feb 2025 01:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1AF1B2EF2;
+	Thu, 27 Feb 2025 02:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Q/X48syr"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tKpN6NKg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DF813DBA0;
-	Thu, 27 Feb 2025 01:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD48E1AAA05
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 02:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740620887; cv=none; b=CpD0R/rcpha0pp7w1sR7toN0eZLWT8WlAWdu7yeFv+UJ7dcHKsJvyrPXhfByRQUpMRTZqvpW5l/vn4hCZ6pKnH5dfiQ8U4lLuJzc96bsoeNIOBCwT4Vo6sZIXx0Ed1mjaXrRNHHVMJlycaOjcNxDpRF3dMysBH6A4Pk6BIbec2Q=
+	t=1740623106; cv=none; b=Nw+sv4TfESCxQpLVQ8X3WLV8AIRmh1CMlJUnrHGVnt2N1F2DFa32JwVIZLnVZT9zbxlUX+F5Tgi8oIXz72nize/dM4H095nuuRt6rPKTCvqLT5Z3ieAgWHl0z/BX5ye4ez8d0whPtapXpI1hKgcnWW4+dLij+wCASyQrk1vjxHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740620887; c=relaxed/simple;
-	bh=c3jHSH5/Ic2hfTlW1xxDY80EJf3Z4p+MfLyYQXVfbks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mkZEU9CuXT/70a8J9QZiasiKdbNgxFgZiOGj6GPfOFMuDb2jM+QUpt2WA6P0p5R43+Kbh63REkA0W+Jav7amxhQIf97KiRh/aqBLEhxPTeqci3Vsria+y87sXaXSCQxZ2X7h6Fc1QonDWL8/Iu9eIUTXNIW9glZPJ4Lh8KxwcmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Q/X48syr; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51QL41QN015804;
-	Thu, 27 Feb 2025 01:47:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9TtABugFltVHuLEvIWfL7aCH1UmuOTxK96s6ajxC5MI=; b=Q/X48syrI/YkpBLF
-	S+Aq9csrQC5yiPnWh2W8qJenS9LuqFJaJ/1GTHYCanA8VbN8rpRVYh831IW1HqfW
-	qvQSHHtO65GNEBhcxRoXsncyRXhc8z6Vb8fLMgDyglM+FcTGKbwGh3JrhdrUep9O
-	ci1QmlPmOMV1HZPma8PPJS2Emuo2q8pOWQrtIf3VRo3677/VsUicHHXohDspR8+i
-	cCGJsA4Qu450rHO9WUl5XasZcWMiPm8tGkVZdQv1V+YPj3DzQ22yeiTuiUV2JG0n
-	NfIkxGfYKgibZrFO5mKPrBbGQDy6x5mO0Vv/IJe1dnBEkFxRyErJY3KOLftgEhcB
-	Wna6cQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 451prnkw4n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Feb 2025 01:47:57 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51R1luVM009349
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Feb 2025 01:47:56 GMT
-Received: from [10.110.36.175] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Feb
- 2025 17:47:55 -0800
-Message-ID: <c328c258-6e26-4727-98d8-c9d551358bbd@quicinc.com>
-Date: Wed, 26 Feb 2025 17:47:55 -0800
+	s=arc-20240116; t=1740623106; c=relaxed/simple;
+	bh=TQZmTPuXrWsBWP0UxIH5CePpJDuK/lT0ld31ANrFZnk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lm/2gpRv28Aa2DKIA6iEGes1NuDlSBeOOYvk1LonHKCbnMzQrYOrmaum4a9OzlWDL6W9SOKWWQJfErbVlQUXov0xEWdYGedy9N8DIFWlPzESF1ODxBvwsGjfESca8CtJbG5b+wMvR01aD+0sQxFM4Viwl3ZaN6KH7EOjrz/Islo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tKpN6NKg; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <08e2e50a-f289-4019-9d74-62ecc45473e3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740623089;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GKRxFCKu4oxfV1QzoclFLAwqr7hAo95BPBl9HIQDinE=;
+	b=tKpN6NKg6sJnT/SzcNzMIeFUIPKyWoXRe0iH44xHowIwU/Ny37tt8fimJE5m7BcPcOtea2
+	qc6c81VOr1vWbV++NsLtU0KJFDBgbiE/kgExIxSUb3sKf9/r5uoC336vrmADpaCL9ITq/B
+	k7Sgu+7h80pHH5nZi8V9RtUTEtnKBu4=
+Date: Thu, 27 Feb 2025 10:24:40 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] leds: rgb: leds-qcom-lpg: Fix pwm resolution max
- for Hi-Res PWMs
-To: Abel Vesa <abel.vesa@linaro.org>, Lee Jones <lee@kernel.org>,
-        Pavel Machek
-	<pavel@kernel.org>
-CC: Kamal Wadhwa <quic_kamalw@quicinc.com>,
-        Jishnu Prakash
-	<jishnu.prakash@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Johan Hovold <johan@kernel.org>, Sebastian Reichel <sre@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>, <linux-leds@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-0-7af5ef5d220b@linaro.org>
- <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-1-7af5ef5d220b@linaro.org>
-Content-Language: en-US
-From: Anjelique Melendez <quic_amelende@quicinc.com>
-In-Reply-To: <20250226-leds-qcom-lpg-fix-max-pwm-on-hi-res-v2-1-7af5ef5d220b@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH v2] mm: zswap: fix crypto_free_acomp() deadlock in
+ zswap_cpu_comp_dead()
+To: Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzkaller-bugs@googlegroups.com,
+ syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: EhxmHmq6o0X-OBGGrJXaMKRw28hXHADL
-X-Proofpoint-ORIG-GUID: EhxmHmq6o0X-OBGGrJXaMKRw28hXHADL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-27_01,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- mlxscore=0 mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1011
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502270013
+X-Migadu-Flow: FLOW_OUT
 
+On 2025/2/27 02:56, Yosry Ahmed wrote:
+> Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
+> the per-CPU acomp_ctx mutex. crypto_free_acomp() then holds scomp_lock
+> (through crypto_exit_scomp_ops_async()).
+> 
+> On the other hand, crypto_alloc_acomp_node() holds the scomp_lock
+> (through crypto_scomp_init_tfm()), and then allocates memory.
+> If the allocation results in reclaim, we may attempt to hold the per-CPU
+> acomp_ctx mutex.
+> 
+> The above dependencies can cause an ABBA deadlock. For example in the
+> following scenario:
+> 
+> (1) Task A running on CPU #1:
+>      crypto_alloc_acomp_node()
+>        Holds scomp_lock
+>        Enters reclaim
+>        Reads per_cpu_ptr(pool->acomp_ctx, 1)
+> 
+> (2) Task A is descheduled
+> 
+> (3) CPU #1 goes offline
+>      zswap_cpu_comp_dead(CPU #1)
+>        Holds per_cpu_ptr(pool->acomp_ctx, 1))
+>        Calls crypto_free_acomp()
+>        Waits for scomp_lock
+> 
+> (4) Task A running on CPU #2:
+>        Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
+>        DEADLOCK
+> 
+> Since there is no requirement to call crypto_free_acomp() with the
+> per-CPU acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the
+> mutex is unlocked. Also move the acomp_request_free() and kfree() calls
+> for consistency and to avoid any potential sublte locking dependencies
+> in the future.
+> 
+> With this, only setting acomp_ctx fields to NULL occurs with the mutex
+> held. This is similar to how zswap_cpu_comp_prepare() only initializes
+> acomp_ctx fields with the mutex held, after performing all allocations
+> before holding the mutex.
+> 
+> Opportunistically, move the NULL check on acomp_ctx so that it takes
+> place before the mutex dereference.
+> 
+> Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
+> Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@google.com/
+> Cc: <stable@vger.kernel.org>
+> Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
 
+Looks good to me:
 
-On 2/26/2025 5:58 AM, Abel Vesa wrote:
-> Ideally, the requested duty cycle should never translate to a PWM
-> value higher than the selected resolution (PWM size), but currently the
-> best matched period is never reported back to the PWM consumer, so the
-> consumer will still be using the requested period which is higher than
-> the best matched one. This will result in PWM consumer requesting
-> duty cycle values higher than the allowed PWM value.
-> 
-> Currently, the consumer driver known to fail this way is the PWM backlight
-> (pwm_bl) and should be reworked in such a way that the best matched period
-> is used instead.
-> 
-> As for the current implementation of the duty cycle calculation, it is
-> capping the max value, fix that by using the resolution to figure out the
-> maximum allowed PWM value.
-> 
-> Cc: stable@vger.kernel.org    # 6.4
-> Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+
+Thanks!
+
 > ---
->   drivers/leds/rgb/leds-qcom-lpg.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-> index f3c9ef2bfa572f9ee86c8b8aa37deb8231965490..146cd9b447787bf170310321e939022dfb176e9f 100644
-> --- a/drivers/leds/rgb/leds-qcom-lpg.c
-> +++ b/drivers/leds/rgb/leds-qcom-lpg.c
-> @@ -529,7 +529,7 @@ static void lpg_calc_duty(struct lpg_channel *chan, uint64_t duty)
->   	unsigned int clk_rate;
+> v1 -> v2:
+> - Explained the problem more clearly in the commit message.
+> - Moved all freeing calls outside the lock critical section.
+> v1: https://lore.kernel.org/all/Z72FJnbA39zWh4zS@gondor.apana.org.au/
+> 
+> ---
+>   mm/zswap.c | 30 ++++++++++++++++++++++--------
+>   1 file changed, 22 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index ac9d299e7d0c1..adf745c66aa1d 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -881,18 +881,32 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+>   {
+>   	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+>   	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+> +	struct acomp_req *req;
+> +	struct crypto_acomp *acomp;
+> +	u8 *buffer;
+> +
+> +	if (IS_ERR_OR_NULL(acomp_ctx))
+> +		return 0;
 >   
->   	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
-> -		max = LPG_RESOLUTION_15BIT - 1;
-> +		max = BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
->   		clk_rate = lpg_clk_rates_hi_res[chan->clk_sel];
->   	} else {
-
-I have a patch under review, 
-https://lore.kernel.org/all/20250213003533.1684131-1-anjelique.melendez@oss.qualcomm.com/, 
-which adds support for 6-bit resolution for regular PWM so this capping 
-problem will also become an issue for regular PWM.
-I think it would make sense for you to include fixing the max for 
-regular PWM here. Thoughts?
-
->   		max = LPG_RESOLUTION_9BIT - 1;
-> 
-
+>   	mutex_lock(&acomp_ctx->mutex);
+> -	if (!IS_ERR_OR_NULL(acomp_ctx)) {
+> -		if (!IS_ERR_OR_NULL(acomp_ctx->req))
+> -			acomp_request_free(acomp_ctx->req);
+> -		acomp_ctx->req = NULL;
+> -		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+> -			crypto_free_acomp(acomp_ctx->acomp);
+> -		kfree(acomp_ctx->buffer);
+> -	}
+> +	req = acomp_ctx->req;
+> +	acomp = acomp_ctx->acomp;
+> +	buffer = acomp_ctx->buffer;
+> +	acomp_ctx->req = NULL;
+> +	acomp_ctx->acomp = NULL;
+> +	acomp_ctx->buffer = NULL;
+>   	mutex_unlock(&acomp_ctx->mutex);
+>   
+> +	/*
+> +	 * Do the actual freeing after releasing the mutex to avoid subtle
+> +	 * locking dependencies causing deadlocks.
+> +	 */
+> +	if (!IS_ERR_OR_NULL(req))
+> +		acomp_request_free(req);
+> +	if (!IS_ERR_OR_NULL(acomp))
+> +		crypto_free_acomp(acomp);
+> +	kfree(buffer);
+> +
+>   	return 0;
+>   }
+>   
 
