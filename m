@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-119870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99343A48BE6
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 23:44:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5E6A48BF8
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 23:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D406E1883006
-	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 22:44:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78F916CF08
+	for <lists+stable@lfdr.de>; Thu, 27 Feb 2025 22:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28745229B07;
-	Thu, 27 Feb 2025 22:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0E277818;
+	Thu, 27 Feb 2025 22:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="nUGY9cHs"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout03.t-online.de (mailout03.t-online.de [194.25.134.81])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F47927781A
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 22:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.25.134.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6250277811
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 22:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740696259; cv=none; b=u79Vj4uNLuJVGIwCJd6co84QJ67o0+gJMV99FaKTqe0Mk2/prLUNrgV9nYWhWx9/4bh95RRfppLfg2Uxj2KcRk50m1Pt3pMD6qqthq0sMjKkf0nGZeUSJqeCxF4xun6jz+nJUh2RDd9gjvUxZCoDNOEzR4ZvB2SWAIdNqfxFhNo=
+	t=1740696408; cv=none; b=tMey/6E5gbknLOteCXkHVio8UIn66nxkV1cmqhniSEMpqtjLMSdK5fZWMxVDhBQpr+xJWanmufnlGiaOaE1UKMpn0rCEzWi/1REfBtbOZyw4imfcXADceog9v1PjIjwRgbuGmetYEaJVihsGwgmsCgikXqOTd8WeixAiJbVm/iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740696259; c=relaxed/simple;
+	s=arc-20240116; t=1740696408; c=relaxed/simple;
 	bh=KoAelO3UQhx4BiU0JlCnoBne078B35Gbito6xzKiVTs=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=bfm5pcgbKTp2haQmFG3NIxEn0NyHCe7HiskJmgxi+tVHW9sqdJ9nmjmz2ZN8Gx1UBRMkAV+maYqbFaPT3kgdLrkSrM92CmlViTIcdqPs1cHVsOxOjaNvefz09BrKg1N1zU+dcJd8GicBlA3yZBfJuPb0c0qT7i3Sr/nLYywxbbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=t-online.de; spf=pass smtp.mailfrom=t-online.de; arc=none smtp.client-ip=194.25.134.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=t-online.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-online.de
-Received: from fwd79.aul.t-online.de (fwd79.aul.t-online.de [10.223.144.105])
-	by mailout03.t-online.de (Postfix) with SMTP id 06BE915FA
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:35:37 +0100 (CET)
-Received: from df1tl.local.here ([93.220.88.198]) by fwd79.t-online.de
-	with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
-	esmtp id 1tnmTd-24T8eP0; Thu, 27 Feb 2025 23:35:33 +0100
-Received: from [192.168.168.33] (df1tl.local.here [192.168.168.33])
-	by df1tl.local.here (Postfix) with ESMTP id 6540354A3AC
-	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:35:33 +0100 (CET)
-Message-ID: <abfeb45a-2af0-4754-9fff-35d96c1182c1@t-online.de>
-Date: Thu, 27 Feb 2025 23:35:33 +0100
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Dn7bC4zVnf04ORm4I4MNxe7aHjcvTvdruYP8xGftkE9A12ybOfuo6jy2znESNIvUIBluhMbq3EkT8IxT1BCv7h92fSz3vfl33UzHtR35BxoZ2xrap7TjEJsY18kNfiLPMUV3UidMKcaJQvYQjaQoF6p5xIBJkvuSw5i+JdvQ7x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=nUGY9cHs; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 05059240027
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:46:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+	t=1740696404; bh=KoAelO3UQhx4BiU0JlCnoBne078B35Gbito6xzKiVTs=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:From;
+	b=nUGY9cHsWABKWbLI5zl/nQWidunG/8rw1VBANAHdnKyr1IqnZm0km3RyA566lpHKc
+	 4PWt1840vUR15MN+wh7Sn1qOAl8PVJFQ6AnHK7lW6VrPOPRZAK6I9mBVF/SccaGPz1
+	 XnR0IUxslnuHh+eL86Egp/+SaKQV6xqtZ4trrugbmAqRKOFmmlyzCK1nlvBtDT+N2B
+	 LQvnaq4wQ4Tz4qDAaAsw8aN3em1YfeJEmsG9zBMd2OM9LZSoJ4T3NhyB2Ff6oAdLLV
+	 3rh1I8YjqGt0P4RXSIVR+qRqKbKkwS3LmkEeVFtsI83gDZQDbsXIjDmbDaHB4dspM5
+	 xM9IWSUiGG9OQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Z3mfq5GN8z9rxF
+	for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:46:43 +0100 (CET)
+Received: by df1tl.local.here (Postfix, from userid 200)
+	id 7CCDB54A3AD; Thu, 27 Feb 2025 23:46:43 +0100 (CET)
+Date: Thu, 27 Feb 2025 22:46:43 +0000
+From: Klaus Dittrich <kladit@posteo.de>
+To: stable@vger.kernel.org
+Subject: Unknown bug in linux-6.13.x running qemu
+Message-ID: <Z8DrUymWnXQkJgVt@df1tl.local.here>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: kladit@t-online.de
-Content-Language: de-DE
-To: stable@vger.kernel.org
-From: Klaus Dittrich <kladit@t-online.de>
-Subject: Unknown bug in linux-6.13.x running qemu
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TOI-EXPURGATEID: 150726::1740695733-91FF897D-4B73868E/0/0 CLEAN NORMAL
-X-TOI-MSGID: fbb6f419-06de-4ba6-9627-be54144027c5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
 I discovered a bug that appears in any 6.13 kernel within quemu
 but not in any 6.12 kernel.
@@ -86,5 +93,4 @@ Any help is welcome, thanks.
 -- 
 Best regards
 Klaus
-
 
