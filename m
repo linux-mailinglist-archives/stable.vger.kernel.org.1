@@ -1,263 +1,291 @@
-Return-Path: <stable+bounces-119917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDFEA493E4
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 09:47:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ED8A49432
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 09:59:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2444B18948C1
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:47:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD8D7A5572
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E4E2505CA;
-	Fri, 28 Feb 2025 08:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244CB254AE6;
+	Fri, 28 Feb 2025 08:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lNtYs5Vk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vR/k2l7J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8169C276D3B
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 08:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98A425484A
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 08:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740732429; cv=none; b=ZZz+mVeNpaYtcci3jl6xPhOofzMaWbx3OZ3iZFeMRhdeYMHoq/Z2Pmgh9GLocI4lTUszSqsA65yZagesgsWs9DhSyn6kPf9uITsKoqUDq3+FNc64NC+Oql0O0u2DKFvWbkvpBTjA/hAzkKauGJJPQldKzrNBfHeu6gWckn9f884=
+	t=1740733155; cv=none; b=QQwGqgNkNgXdhDKH1aBfXBFaH/xwXp+rpc8a4I0din0GxeSBecOPfFJ54Bj54pLEWGT+meOOcComRFha59huB5vw3s0ujgYJXYX7PpGaH9hKz6EHpoIJQUBZW19ILoY6MXL/Ee5Q4GcewK6KnOXd+aK8TLDlsF+0V0i2fh//mKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740732429; c=relaxed/simple;
-	bh=dOzV03jTg9szaB/b+9CICAYPBTA8TNg//ViI5A0YU9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MD2GlCWhRXLWsWCX0wd89jpekLyhLr5mBhIEq8g4IGdCuapjgkBJGFlkNUIAPW3oAO0iL52bknQqB3jABO900/QGiDlkb7RsfO5MWwZ69O8vbIDXIi/KTxvZHFLxkutawJ6UmUkUdMtb81hmpHLOZ+nKqQ+g4Gp4BfunSftn/dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lNtYs5Vk; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4721f53e6ecso18898711cf.1
-        for <stable@vger.kernel.org>; Fri, 28 Feb 2025 00:47:06 -0800 (PST)
+	s=arc-20240116; t=1740733155; c=relaxed/simple;
+	bh=bLEtAyE5Aa/xsQIBOnXYf2Hy93VCBG3sU+stkJWUAMQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJzma/3pAT5xbKeVM4kqvHJqZmeaQuGfuZcVZxosKAFbIC8dxQJyu1kNh/LJNAhyRvNDTeUIEy5C1tEA2n3JkjKmjQS3jJH4aTyc+Z/jWxWHEyOriGi84+n1FWaiorywzfAG5m8r/YrpqsMOBAWM7l7iAI9U70Zv314D81jQU1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vR/k2l7J; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abbd96bef64so306570866b.3
+        for <stable@vger.kernel.org>; Fri, 28 Feb 2025 00:59:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1740732425; x=1741337225; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O5BmX2o+z2Vqlg7EUbRT9/1VFodmumg7eQ23GqBAoxY=;
-        b=lNtYs5VkR1qETzPrT/c4puoreC3PztIZn7snbhI6VXiUZIJzENQtkHAiOmFRcEbZBz
-         DjoeHtA2EdkeBvZUP1P/EjXQrtU67YZPSd3QUl05PfVxv9h1d4d+jASBwmiGvJjXV7EU
-         8txWpp64LLolbyM2sdZKaFOVDxkAVaQiPBIqQ=
+        d=linaro.org; s=google; t=1740733152; x=1741337952; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mo2JWZvfARQxbztcC0oXWR4xyuLy9YblRRhrM00mM5o=;
+        b=vR/k2l7J/j5J2Hi8B4DtGrAlElh7t1Lq91fovjRQ6yxzQpXca7TKBNsiBx8mlW023o
+         d7dVqaFFSMsGHcR4R4g5u+h+tw9T/Wj4cMYZkKa5RaDVWEBeQosxWgrEULN3GHSeIjFt
+         MpJXougfTFrJMyY4MG3LyoZuzTx9V5sIAr9w/9wFTXTIFNRVmQhERkG/J+36daVqu6uI
+         F+mYZq9UeDv0rIfefAUWafW0SkS1SqPPs/sTaCU+sNRaV6nE/J0EjJ7cHAeQEhUF5Z9W
+         7LFEAX8kNxASWxQ2Y3oAdCNllZqqIYXTOmkzXT0yYvWgmkTtS5S+Ibz0N2ibmm8AV4Bj
+         cR8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740732425; x=1741337225;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O5BmX2o+z2Vqlg7EUbRT9/1VFodmumg7eQ23GqBAoxY=;
-        b=Zw7wj73CAgfRFh3Vd9Oza8VE4db24NTqcU8ntX88YEaN4oLE3diQYhE8N1bce3N7Xl
-         lgVe/RyviGwpxNp4iaA8Cu6495Nm2EaC/5kvUgPsWbPfrDMeMkttLNHJU2sb8taxq8c9
-         slmDYkqMLJsGN+jer8e80zlPejtm3oREmZmmCw01Nf2Czo86ymQyjTxjGZ7H7k7dB7Wk
-         i3QpyL+4EKSpgv+piJDXXzKCK5XKi7AOL+mxB6CDsmEohFALHEkOUl6qggX68cEzNErg
-         YrKj2flIu8G4bvKHVjJoJnW3j8Tmff16dV+qy1t7qvB5HnX15z09icKE6lkYf/jY+NoF
-         JhTw==
-X-Gm-Message-State: AOJu0YwgZ1VcR58QpAoSs+RTxLObz/ZMPf4OFYQHdUTxlPyFBPYDO7bo
-	oIjLprhkog2i8toy/459V0o+MUWL/quI93+Ma7TaScPJitc+MCOUbfBhSurVAk3cR5ViauoSjbL
-	rzQ==
-X-Gm-Gg: ASbGnctD01i5KkCWlA8BAIbq63vpF4kKntzKlFqGgkZoarkF5Vf2i8GaOlm4/M/k+PG
-	UPv9PLefmgRjM3R9DJE44tt7WDdOYVdox0XAWl1pBxjTFgOTKm6RsoDmf8ISvtmSfvjI4YwDrc7
-	LUl3iiFDiu4Xv6B3ZXrDSKo0+sZKHzRosFMHqg5vW7BgZGEattOGA2IY9LVDLVoFwxec2ypmz+k
-	Y0hKrh3l0ZmpRCVrsgRUQUvzlNbFet0HjrmIGOMYuM6U3966DSci2hxYZ/b3Ai/+vgHpL6J+9cM
-	0bNlmWcdwvF2kmU9aZBLCdHwPvU5pKh4A+oH9uEORwjZ6moEob2PbA3V/XTJmGd4XyyZ1ZXWfbU
-	FrLKn2xym
-X-Google-Smtp-Source: AGHT+IGn7O+2+pTlX0yLM4Nqtdi/7ZIRoCjy7d3lSD12ntAvtLer0lJO0C09nCrDlYJfJgnkoyLFpg==
-X-Received: by 2002:a05:622a:1349:b0:472:108e:2a18 with SMTP id d75a77b69052e-474bc0f4beemr35670901cf.38.1740732425063;
-        Fri, 28 Feb 2025 00:47:05 -0800 (PST)
-Received: from denia.c.googlers.com.com (15.237.245.35.bc.googleusercontent.com. [35.245.237.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4747243102bsm21912531cf.76.2025.02.28.00.47.02
+        d=1e100.net; s=20230601; t=1740733152; x=1741337952;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mo2JWZvfARQxbztcC0oXWR4xyuLy9YblRRhrM00mM5o=;
+        b=KIeeEYwLmklq7XA2VxC5Qixf4kI133pc2HmFV2MXyJNTWGLcxfeAZttajHVYTYoB4T
+         2T115cNZ/JWWnTWHA9wEUXI304ypW45FAz6pDIWZaSNjYSTxH0v7s6sDJGVKU03bBJMO
+         yNIXoO3Ncj2qReW0gMGTBe1OB9T02S0SIsY0+ZOe98fuRlgC5+09xybYb0CK4GFLxmqy
+         lXfustJZGXDhk8ahmVlek1Nxkcsg+tksc/ERrL90HRF5/9tDUeWO0Ct/nIY3cOLWufzO
+         yqwsbMUvBWVpR9MQRPrN5fpBZO5WxjZdflDbieaT7AVS/xq0M+Rn/8EaUqfD+e6hCJcB
+         X3Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUDo9kZ/NCCTnit8Ky8aIqRT8Gj8vxPGoe1S1yNXnvHO4VUWFarZ60JwqtYq1TXFDWGEL2XsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWcjFY0wksRZRx5xmiM09/eucMfOgw+pgziBe++2cnHKqzt51s
+	bNS9MRAgyU91FSYqxbTII3iD8uMpGPH4cbOvkhCGC1L7tfWeSYlm6qRjnHcSvI8=
+X-Gm-Gg: ASbGncsveBI/o9xDaBCpvQNzEsqkXijDDXVi9db/0X/1HPWlPnMRdIjJgpXaoHrp97K
+	E/Yb1dCuYGTtC5BG1jOqL3BFfri+0w1ZirUZ8yKYO+EpUjWvnU49Er5of18nLpK30TEE3IWPjIv
+	Zgi7jSV556vDcIhPUo+3wGykiaydZJJIJIuRp7/ojYPRFg0DKS2u2rcK399Sxk+O1S6kCvJWC4X
+	8XFQOCScpcYEJutRycPfddbqJjkSvYRytVcVRBSeNWnqGjyXXc7K4msiVuPmqW6XuF8b1wqmRs9
+	3RyVnTXU20lroViXWrWl3wk=
+X-Google-Smtp-Source: AGHT+IG+ohc2Pb9yFbQaY7IHiQEBgBBf60B3jiO2zg3pP45+H+r70TxRLEMjkL+Z5vuXly0heAE9eQ==
+X-Received: by 2002:a17:907:7f22:b0:abb:b209:aba6 with SMTP id a640c23a62f3a-abf25da2d4amr224744566b.3.1740733151822;
+        Fri, 28 Feb 2025 00:59:11 -0800 (PST)
+Received: from linaro.org ([62.231.96.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf3e117114sm24695766b.147.2025.02.28.00.59.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 00:47:03 -0800 (PST)
-From: Ricardo Ribalda <ribalda@chromium.org>
-To: stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1.y] media: uvcvideo: Remove dangling pointers
-Date: Fri, 28 Feb 2025 08:46:59 +0000
-Message-ID: <20250228084659.2752002-1-ribalda@chromium.org>
-X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
-In-Reply-To: <2025021036-footwork-entryway-f39c@gregkh>
-References: <2025021036-footwork-entryway-f39c@gregkh>
+        Fri, 28 Feb 2025 00:59:11 -0800 (PST)
+Date: Fri, 28 Feb 2025 10:59:09 +0200
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Anjelique Melendez <quic_amelende@quicinc.com>,
+	Kamal Wadhwa <quic_kamalw@quicinc.com>,
+	Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
+ PWMs
+Message-ID: <Z8F63fS/RDnF8+oU@linaro.org>
+References: <Z7zVgeM+7P7SLWIu@linaro.org>
+ <vc7irlp7nuy5yvkxwb5m7wy7j7jzgpg73zmajbmq2zjcd67pd2@cz2dcracta6w>
+ <Z7161SzdxhLITsW3@linaro.org>
+ <5euqboshlfwweie7tlaffajzg3siiy6bm3j4evr572ko54gtbv@7lan3vizskt3>
+ <Z8B2Bl/9uD3jPvQi@linaro.org>
+ <j55de6bbipoavqx25w2s6qr7n6fv6w7bj3lrgyag4dlvvddbqv@shn22aqcqeci>
+ <Z8CIY2OJUMqIOHGU@linaro.org>
+ <Z8CTqdFafLY17C25@linaro.org>
+ <Z8CbSvlG856oxQRw@linaro.org>
+ <ioater5m23lhkmyik3hurozol6vtyx6ovac3phmvcphrmmprwb@igggmox3jz5m>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ioater5m23lhkmyik3hurozol6vtyx6ovac3phmvcphrmmprwb@igggmox3jz5m>
 
-When an async control is written, we copy a pointer to the file handle
-that started the operation. That pointer will be used when the device is
-done. Which could be anytime in the future.
+On 25-02-27 19:09:39, Uwe Kleine-König wrote:
+> Hello,
+> 
+> On Thu, Feb 27, 2025 at 07:05:14PM +0200, Abel Vesa wrote:
+> > On 25-02-27 18:32:41, Abel Vesa wrote:
+> > > On 25-02-27 17:44:35, Abel Vesa wrote:
+> > > > On 25-02-27 16:25:06, Uwe Kleine-König wrote:
+> > > > > Hello Abel,
+> > > > > 
+> > > > > On Thu, Feb 27, 2025 at 04:26:14PM +0200, Abel Vesa wrote:
+> > > > > > On 25-02-27 10:58:47, Uwe Kleine-König wrote:
+> > > > > > > Can you please enable CONFIG_PWM_DEBUG, enable pwm tracing (
+> > > > > > > 
+> > > > > > > 	echo 1 > /sys/kernel/debug/tracing/events/pwm/enable
+> > > > > > > 
+> > > > > > > ) then reproduce the problem and provide the output of
+> > > > > > > 
+> > > > > > > 	cat /sys/kernel/debug/tracing/trace
+> > > > > > > 
+> > > > > > > .
+> > > > > > 
+> > > > > > $ cat trace
+> > > > > > # tracer: nop
+> > > > > > #
+> > > > > > # entries-in-buffer/entries-written: 13/13   #P:12
+> > > > > > #
+> > > > > > #                                _-----=> irqs-off/BH-disabled
+> > > > > > #                               / _----=> need-resched
+> > > > > > #                              | / _---=> hardirq/softirq
+> > > > > > #                              || / _--=> preempt-depth
+> > > > > > #                              ||| / _-=> migrate-disable
+> > > > > > #                              |||| /     delay
+> > > > > > #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+> > > > > > #              | |         |   |||||     |         |
+> > > > > >         modprobe-203     [000] .....     0.938668: pwm_get: pwmchip0.0: period=1066407 duty_cycle=533334 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.938775: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.938821: pwm_get: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.938936: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.938982: pwm_get: pwmchip0.0: period=4266537 duty_cycle=0 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.939274: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=921458 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.939320: pwm_get: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.939434: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
+> > > > > >         modprobe-203     [000] .....     0.939480: pwm_get: pwmchip0.0: period=4266537 duty_cycle=921355 polarity=0 enabled=1 err=0
+> > > > > >  systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=5000000 polarity=0 enabled=1 err=0
+> > > > > >  systemd-backlig-724     [006] .....     9.079585: pwm_get: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
+> > > > > >  systemd-backlig-724     [006] .....     9.079698: pwm_apply: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
+> > > > > >  systemd-backlig-724     [006] .....     9.079750: pwm_get: pwmchip0.0: period=4266537 duty_cycle=4266537 polarity=0 enabled=1 err=0
+> > > > > > $
+> > > > > > 
+> > > > > > > 
+> > > > > > > I didn't take a deeper dive in this driver combination, but here is a
+> > > > > > > description about what *should* happen:
+> > > > > > > 
+> > > > > > > You're talking about period in MHz, the PWM abstraction uses
+> > > > > > > nanoseconds. So your summary translated to the PWM wording is (to the
+> > > > > > > best of my understanding):
+> > > > > > > 
+> > > > > > >   1. PWM backlight driver requests PWM with .period = 200 ns and
+> > > > > > >      .duty_cycle = 200 ns.
+> > > > > > > 
+> > > > > > >   2. leds-qcom-lpg cannot pick 200 ns exactly and then chooses .period =
+> > > > > > >      1000000000 / 4.26666 MHz = 234.375 ns
+> > > > > > >      
+> > > > > > >   3. leds-qcom-lpg then determines setting for requested .duty_cycle
+> > > > > > >      based on .period = 200 ns which then ends up with something bogus.
+> > > > > 
+> > > > > The trace looks better than what I expected. 2. is fine here because it
+> > > > > seems when Sebastian wrote "driver requests PWM with 5 MHz period" that
+> > > > > meant period = 5000000 ns. That was then rounded down to 4266537 ns. And
+> > > > > the request for period = 5000000 ns + duty_cycle = 5000000 ns was
+> > > > > serviced by configuring period = 4266537 ns + duty_cycle = 4266537 ns.
+> > > > > So that's a 100 % relative duty configuration as intended.
+> > > > > 
+> > > > > So just from the traces I don't spot a problem. Do these logs not match
+> > > > > what actually happens on the signal?
+> > > > 
+> > > > What I do not get is why do we expect 2 pwm_get() and 2 pwm_apply()
+> > > > calls each time ?
+> > > 
+> > > OK, so the second pwm_apply() is due to CONFIG_PWM_DEBUG.
+> 
+> ack. This is done just for the tests implemented in CONFIG_PWM_DEBUG, as
+> are the two pwm_get()s.
+> 
+> > > But still, the first pwm_apply() requests duty cycle of 5MHz:
+> 
+> 5 ms, yes. But it cannot give you 5 ms and so you get 4.266 ns.
+> 
+> > > systemd-backlig-724     [006] .....     9.079538: pwm_apply: pwmchip0.0: period=5000000 duty_cycle=5000000 polarity=0 enabled=1 err=0
+> > > 
+> > > So since the period is 4.26MHz, due to the knobs selected by the
+> > > provider, this duty cycle will result in a PWM value that is above the
+> > > selected resolution, as I already mentioned.
+> 
+> "above the selected resolution"? Do you mean you don't get the exact
+> value that you requested?
 
-If the user closes that file descriptor, its structure will be freed,
-and there will be one dangling pointer per pending async control, that
-the driver will try to use.
+I think I understand your point now.
 
-Clean all the dangling pointers during release().
+You expectation is that the provider would remap the entire range of the
+period to whatever the HW can do.
 
-To avoid adding a performance penalty in the most common case (no async
-operation), a counter has been introduced with some logic to make sure
-that it is properly handled.
+So in this case, when 5ms is requested as duty cycle from consumer, the 
+provider will select the max value.
 
-Cc: stable@vger.kernel.org
-Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-3-26c867231118@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-(cherry picked from commit 221cd51efe4565501a3dbf04cc011b537dcce7fb)
----
- drivers/media/usb/uvc/uvc_ctrl.c | 59 ++++++++++++++++++++++++++++++--
- drivers/media/usb/uvc/uvc_v4l2.c |  2 ++
- drivers/media/usb/uvc/uvcvideo.h |  9 ++++-
- 3 files changed, 67 insertions(+), 3 deletions(-)
+What the current implementation of the leds-qcom-lpg does is that will
+expect a duty cycle request of up to 4.26ms. And according to you, even
+if the consumer requests 5ms, the leds-qcom-lpg driver should write the
+value of 255 (which is what the selected resolution allows (1 << 8) ) and
+not compute a higher value.
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 96b747bf0494..f133c203cb88 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1470,6 +1470,40 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
- 	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
- }
- 
-+static void uvc_ctrl_set_handle(struct uvc_fh *handle, struct uvc_control *ctrl,
-+				struct uvc_fh *new_handle)
-+{
-+	lockdep_assert_held(&handle->chain->ctrl_mutex);
-+
-+	if (new_handle) {
-+		if (ctrl->handle)
-+			dev_warn_ratelimited(&handle->stream->dev->udev->dev,
-+					     "UVC non compliance: Setting an async control with a pending operation.");
-+
-+		if (new_handle == ctrl->handle)
-+			return;
-+
-+		if (ctrl->handle) {
-+			WARN_ON(!ctrl->handle->pending_async_ctrls);
-+			if (ctrl->handle->pending_async_ctrls)
-+				ctrl->handle->pending_async_ctrls--;
-+		}
-+
-+		ctrl->handle = new_handle;
-+		handle->pending_async_ctrls++;
-+		return;
-+	}
-+
-+	/* Cannot clear the handle for a control not owned by us.*/
-+	if (WARN_ON(ctrl->handle != handle))
-+		return;
-+
-+	ctrl->handle = NULL;
-+	if (WARN_ON(!handle->pending_async_ctrls))
-+		return;
-+	handle->pending_async_ctrls--;
-+}
-+
- void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 			   struct uvc_control *ctrl, const u8 *data)
- {
-@@ -1480,7 +1514,8 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
- 	mutex_lock(&chain->ctrl_mutex);
- 
- 	handle = ctrl->handle;
--	ctrl->handle = NULL;
-+	if (handle)
-+		uvc_ctrl_set_handle(handle, ctrl, NULL);
- 
- 	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
- 		s32 value = __uvc_ctrl_get_value(mapping, data);
-@@ -1754,7 +1789,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 
- 		if (!rollback && handle &&
- 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			ctrl->handle = handle;
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
- 	return 0;
-@@ -2664,6 +2699,26 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
- 	return 0;
- }
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
-+{
-+	struct uvc_entity *entity;
-+
-+	guard(mutex)(&handle->chain->ctrl_mutex);
-+
-+	if (!handle->pending_async_ctrls)
-+		return;
-+
-+	list_for_each_entry(entity, &handle->chain->dev->entities, list) {
-+		for (unsigned int i = 0; i < entity->ncontrols; ++i) {
-+			if (entity->controls[i].handle != handle)
-+				continue;
-+			uvc_ctrl_set_handle(handle, &entity->controls[i], NULL);
-+		}
-+	}
-+
-+	WARN_ON(handle->pending_async_ctrls);
-+}
-+
- /*
-  * Cleanup device controls.
-  */
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index 950b42d78a10..bd4677a6e653 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -607,6 +607,8 @@ static int uvc_v4l2_release(struct file *file)
- 
- 	uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
- 
-+	uvc_ctrl_cleanup_fh(handle);
-+
- 	/* Only free resources if this is a privileged handle. */
- 	if (uvc_has_privileges(handle))
- 		uvc_queue_release(&stream->queue);
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 33e7475d4e64..56ebab339fd6 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -330,7 +330,11 @@ struct uvc_video_chain {
- 	struct uvc_entity *processing;		/* Processing unit */
- 	struct uvc_entity *selector;		/* Selector unit */
- 
--	struct mutex ctrl_mutex;		/* Protects ctrl.info */
-+	struct mutex ctrl_mutex;		/*
-+						 * Protects ctrl.info,
-+						 * ctrl.handle and
-+						 * uvc_fh.pending_async_ctrls
-+						 */
- 
- 	struct v4l2_prio_state prio;		/* V4L2 priority state */
- 	u32 caps;				/* V4L2 chain-wide caps */
-@@ -584,6 +588,7 @@ struct uvc_fh {
- 	struct uvc_video_chain *chain;
- 	struct uvc_streaming *stream;
- 	enum uvc_handle_state state;
-+	unsigned int pending_async_ctrls;
- };
- 
- struct uvc_driver {
-@@ -768,6 +773,8 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
- int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
- 		      struct uvc_xu_control_query *xqry);
- 
-+void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
-+
- /* Utility functions */
- struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
- 					    u8 epaddr);
--- 
-2.48.1.711.g2feabab25a-goog
+I think this is wrong though. The fact that the pwm generic framework
+reports 5ms when it is actually 4.26ms should be considered wrong.
+For cases where the exact value of the duty cycle matters, this would
+not even make sense.
+
+Correct me if I'm wrong, but the pwm API should behave more like:
+The consumer should ask for the closest period the HW can actually do
+and then use that closest period from there on for every duty cycle
+request. This way, if the consumer initially wants 5ms but the provider
+can do only 4.26ms instead, at least the consumer would be able to
+correct its duty cycle requests based on what the HW says it can do.
+
+> 
+> > On top of that, the duty cycle in debugfs is also reported as 5000000ns
+> > when in fact it is 4266666ns, as the trace shows.
+> 
+> Yes. Consider that a relict from the times when there was no
+> pwm_get_state_hw(). Both values are interesting in different situations.
+> So just telling the real parameters isn't the optimal way forward
+> either.
+> 
+> Something like the patch I showed in
+> https://lore.kernel.org/all/7bcnckef23w6g47ll5l3bktygedrcfvr7fk3qjuq2swtoffhec@zs4w4tuh6qvm/
+
+And this patchset only adds the info of actual value that the HW is actually doing.
+So basically, the already existing state in this case will represent the
+"desired" state.
+
+> would make you a bit luckier I guess. Feel free to polish that one a bit
+> (e.g.  by checking the return value of pwm_get_state_hw() and acting
+> sensible in reply to it) and send a proper patch. (A Suggested-by for me
+> is enough for such a patch, grab authorship yourself.)
+> 
+> > > > Need to dig a bit further.
+> > > > 
+> > > > But meanwhile, if the first pwm_apply() call goes all the way to the
+> > > > provider, then the duty cycle value, when translated to the actual PWM
+> > > > value that gets written to reg, will overflow.
+> 
+> No it will not. The .duty_cycle value (also 5000000 ns) will reach the
+> lowlevel PWM driver together with .period = 5000000 ns. Both are rounded
+> down to 4266666ns. I see no overflow. 
+
+Again, the consumer is being lied to. It expects 5ms and gets 4.26ms
+instead.
+
+Imagine a device that is controlled via PWM and needs exact duty cycle
+values in ms, what would the consumer driver do in this case?
+
+And to make things worse, when the consumer is asking for duty cycle of
+4ms while the period requested is 5ms (which would be 80%), the period
+the provider will do is actually 4.26ms while the duty cycle would be
+~3.41ms, which if the pwm step (reg value) doesn't allow, it will probably
+result in an actual value that is even further than what the consumer
+is expecting.
+
+So I'm thinking maybe the pwm should probably even ask the provider
+for what duty cycle it will provide based on provider's provided period
+and then decide if the resulting duty cycle is what it really wants.
+
+IIRC, this is more in line with what the CCF (common clocks framework)
+currently does.
+
+> 
+> Best regards
+> Uwe
+
 
 
