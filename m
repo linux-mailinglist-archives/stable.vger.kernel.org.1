@@ -1,159 +1,127 @@
-Return-Path: <stable+bounces-119894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCF7A49209
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F4192A4922F
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A4C21683D8
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 07:19:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFCFE16C55E
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 07:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D421C5D52;
-	Fri, 28 Feb 2025 07:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907CC1C5499;
+	Fri, 28 Feb 2025 07:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CcqH9r+n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B91276D12;
-	Fri, 28 Feb 2025 07:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7491B70825
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 07:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740727155; cv=none; b=Tq2Bg0Fl7ArZD+XtA5rUPmnD2J6Ifns2HJBDeMyRZ88RXRBdTYb4bQOLVgO/3aI8ClhMUBxYwQHifG4DnVxp4RpGvw2Qw1QcazmavZJkzLRoTrVNk+FpJARrq3ezVljkl/zYWXob3dWQYzG8YtGXf3fsWn6GM+B6ixQ3pi0QdpI=
+	t=1740727876; cv=none; b=s+V623z/a2l/21oCjL+WotpovmmEgDMm7XU2TF9g8TU1bKpyA8udS0GTrwuip0bBuGtsSzNMCEoianSneMwR3j2siKKxryhZNNWHULmAUha4GvWBKpzfv60eW8O0JW0wDFBfJVe5HaDaY6Hu1GuML2DjFJnMFDeI3VllAGnnM28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740727155; c=relaxed/simple;
-	bh=6owDAMkr5e1jMDchDZzOuBuh5wYNshJ/TkcS+/opak4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8YQ0ZCGDh3uG6JmJ8H3DsOjoyXzXdW7X00PGlJ52DSXeg/4FmdV5tbFcSOdtyn/bt+qkiD0syP/9vnpfcjt06S9q2BE4TLUd0NthkPqTwhXV1QgzxI0eg3XC4ikF1V9op7odg/HYm98gC8H2TAbDtCM78pY7dTjDKY68471Oq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62661C4CED6;
-	Fri, 28 Feb 2025 07:19:11 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>
-Subject: [PATCH V2] LoongArch: Use polling play_dead() when resuming from hibernation
-Date: Fri, 28 Feb 2025 15:18:48 +0800
-Message-ID: <20250228071848.1763966-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1740727876; c=relaxed/simple;
+	bh=CEkfLAZp/UoSi/lc1J+/rutqDaJvRm0Fzr05Jy05b/E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d1KDTgQCWf2U0aWx1n9057qeG/iz0qyH9SZKBjpnDpk+1JksZKBl6o2i7CMg5ieARpfEgzrD/SgFMUQmK8PBHQNJrtl/fALS0C34Sw+OVAs56s+yR8oCdmOAhowYTNIySbupfr87E7GDJl2Z45Z+sKp3VdM5RGkn9suAEd5w8cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CcqH9r+n; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740727875; x=1772263875;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=CEkfLAZp/UoSi/lc1J+/rutqDaJvRm0Fzr05Jy05b/E=;
+  b=CcqH9r+nu3Yhc8+PsTDCqTZ9C6ZuJpoN/mPL19RTVC9c8uNxioiMhBDd
+   WcnX130vyqiTMd3Xq4CR4DBtiMQ963nKLz7ix1MkVK6NmmTkk4Vbxodwq
+   1KkBZk778C567qXlM+ohsICU9LJSqH+zBy+FAMYXNcPnOpX3FjqEljj7e
+   Z2m2Z0gcVM0H9tM6WqE8P1ou1WL+utuAbyWCRlrksbCY8iVB3oTssXZuq
+   Cv91aoEgCC4p3pQqi3MdmArUh2Sz7a0URf1DXIHa4N3jg+Xwrfud1WHNG
+   y9/Z9Mr/NJAjQjbZNX1WcACZ57/7nrJJCCfN4B7HtRR/6a59BrULJwyje
+   Q==;
+X-CSE-ConnectionGUID: DAwOUL4XRICoKtMSsXPwXw==
+X-CSE-MsgGUID: /iavKNt/SveclCxBXo/Kxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="45297764"
+X-IronPort-AV: E=Sophos;i="6.13,321,1732608000"; 
+   d="scan'208";a="45297764"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 23:31:14 -0800
+X-CSE-ConnectionGUID: YBEkS2DcTAWhDShtRRsoRg==
+X-CSE-MsgGUID: 49WHmvn0SwGv6g/GbSa9bg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="121386223"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO fedora..) ([10.245.246.232])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 23:31:12 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/4] drm/xe/vm: Validate userptr during gpu vma prefetching
+Date: Fri, 28 Feb 2025 08:30:55 +0100
+Message-ID: <20250228073058.59510-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250228073058.59510-1-thomas.hellstrom@linux.intel.com>
+References: <20250228073058.59510-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When CONFIG_RANDOM_KMALLOC_CACHES or other randomization infrastructrue
-enabled, the idle_task's stack may different between the booting kernel
-and target kernel. So when resuming from hibernation, an ACTION_BOOT_CPU
-IPI wakeup the idle instruction in arch_cpu_idle_dead() and jump to the
-interrupt handler. But since the stack pointer is changed, the interrupt
-handler cannot restore correct context.
+If a userptr vma subject to prefetching was already invalidated
+or invalidated during the prefetch operation, the operation would
+repeatedly return -EAGAIN which would typically cause an infinite
+loop.
 
-So rename the current arch_cpu_idle_dead() to idle_play_dead(), make it
-as the default version of play_dead(), and the new arch_cpu_idle_dead()
-call play_dead() directly. For hibernation, implement an arch-specific
-hibernate_resume_nonboot_cpu_disable() to use the polling version (idle
-instruction is replace by nop, and irq is disabled) of play_dead(), i.e.
-poll_play_dead(), to avoid IPI handler corrupting the idle_task's stack
-when resuming from hibernation.
+Validate the userptr to ensure this doesn't happen.
 
-This solution is a little similar to commit 406f992e4a372dafbe3c ("x86 /
-hibernate: Use hlt_play_dead() when resuming from hibernation").
+v2:
+- Don't fallthrough from UNMAP to PREFETCH (Matthew Brost)
 
-Cc: stable@vger.kernel.org
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 5bd24e78829a ("drm/xe/vm: Subclass userptr vmas")
+Fixes: 617eebb9c480 ("drm/xe: Fix array of binds")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.9+
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
-V2: Fix build for !HIBERNATION and restore to idle_play_dead() if fails.
+ drivers/gpu/drm/xe/xe_vm.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
- arch/loongarch/kernel/smp.c | 47 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
-
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index fbf747447f13..4b24589c0b56 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -19,6 +19,7 @@
- #include <linux/smp.h>
- #include <linux/threads.h>
- #include <linux/export.h>
-+#include <linux/suspend.h>
- #include <linux/syscore_ops.h>
- #include <linux/time.h>
- #include <linux/tracepoint.h>
-@@ -423,7 +424,7 @@ void loongson_cpu_die(unsigned int cpu)
- 	mb();
- }
- 
--void __noreturn arch_cpu_idle_dead(void)
-+static void __noreturn idle_play_dead(void)
- {
- 	register uint64_t addr;
- 	register void (*init_fn)(void);
-@@ -447,6 +448,50 @@ void __noreturn arch_cpu_idle_dead(void)
- 	BUG();
- }
- 
-+#ifdef CONFIG_HIBERNATION
-+static void __noreturn poll_play_dead(void)
-+{
-+	register uint64_t addr;
-+	register void (*init_fn)(void);
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 996000f2424e..6fdc17be619e 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2306,8 +2306,17 @@ static int vm_bind_ioctl_ops_parse(struct xe_vm *vm, struct drm_gpuva_ops *ops,
+ 			break;
+ 		}
+ 		case DRM_GPUVA_OP_UNMAP:
++			xe_vma_ops_incr_pt_update_ops(vops, op->tile_mask);
++			break;
+ 		case DRM_GPUVA_OP_PREFETCH:
+-			/* FIXME: Need to skip some prefetch ops */
++			vma = gpuva_to_vma(op->base.prefetch.va);
 +
-+	idle_task_exit();
-+	__this_cpu_write(cpu_state, CPU_DEAD);
++			if (xe_vma_is_userptr(vma)) {
++				err = xe_vma_userptr_pin_pages(to_userptr_vma(vma));
++				if (err)
++					return err;
++			}
 +
-+	__smp_mb();
-+	do {
-+		__asm__ __volatile__("nop\n\t");
-+		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
-+	} while (addr == 0);
-+
-+	init_fn = (void *)TO_CACHE(addr);
-+	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
-+
-+	init_fn();
-+	BUG();
-+}
-+#endif
-+
-+static void (*play_dead)(void) = idle_play_dead;
-+
-+void __noreturn arch_cpu_idle_dead(void)
-+{
-+	play_dead();
-+	BUG(); /* play_dead() doesn't return */
-+}
-+
-+#ifdef CONFIG_HIBERNATION
-+int hibernate_resume_nonboot_cpu_disable(void)
-+{
-+	int ret;
-+
-+	play_dead = poll_play_dead;
-+	ret = suspend_disable_secondary_cpus();
-+	play_dead = idle_play_dead;
-+
-+	return ret;
-+}
-+#endif
-+
- #endif
- 
- /*
+ 			xe_vma_ops_incr_pt_update_ops(vops, op->tile_mask);
+ 			break;
+ 		default:
 -- 
-2.47.1
+2.48.1
 
 
