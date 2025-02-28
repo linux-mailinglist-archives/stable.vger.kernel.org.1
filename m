@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F10A490AC
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 06:00:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53ECCA490AD
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 06:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFA6A188F844
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 05:00:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD2E3B7A87
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 04:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D1B1ADC79;
-	Fri, 28 Feb 2025 05:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CB61ADFE0;
+	Fri, 28 Feb 2025 05:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXfBACvM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CRYd/jSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6E31B041F
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 05:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CEF1ADC90
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 05:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740718802; cv=none; b=UAAk0hvv+MDHwN2PpllUorQtmEPhdj+JnJV6MpxB0InO3XLQblP0RtVOZm/1rbEGbc8X8wrI+THRrDZW4SPyBTZArG1BUTTohdAD9V7ju2b+lJ2zqoGee8b9OCJPy9U+2BzV6kH1dyf2fvkpy6emQB1Pt9huiAmof6fWzDDZHQw=
+	t=1740718804; cv=none; b=bo16be9iHp8ugHBuQwXfNhQHzOwBnq8WgSA2xtlF1yrHSam0Fm86NCSg9x/FfcCnzcA6DwLJ32vEgj7sVRZj/76qw3Gf8USCu6ORtG7plAMX6koali1tKVIBxpo9TWF+9/xzDoAmaAC7AXf1XVRkiDbXqgEdLaePzliDM99teIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740718802; c=relaxed/simple;
-	bh=rD8sup9Ol6XcfCblXXhPO4qRx4Ut30I8PKYhTb9aVlo=;
+	s=arc-20240116; t=1740718804; c=relaxed/simple;
+	bh=iuXAtEaQoX5igi2lQssHtBtYMl1bu8PHr7BodhwxuF8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lwdH8Msii+AycEDcgcnYN6PmOxBHmZL4uL9seo3Ht8DDNVCV7ZdrnbseJI4IMJXDdIRapxxwU0hCLGtc4aj2Y6n1XIzBxQNuoUoXx1FPvlrQzDLJWLF1Hq+J9JP2A6FKsrYES3l2dqXjMCxUE1t8rHrunZRQk1tMEetbcN1Zp+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXfBACvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F52C4CED6;
-	Fri, 28 Feb 2025 05:00:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AJlQ4M3+KsOBqQhCzFKwaSXlQzhapluH3BiUYlM75zX0EpTzYuqD6+4bqdVTOLvqAaprgmPu4yYy03v4WIiW/ymZ/M7pDlmBYAFPfsc/OBiSR4uOz8HRD1/Se2d7liiyfj9TrWFArsmolLHO52bL/37X4WQj1C6mSGuhl0xmqIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CRYd/jSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A03EC4CED6;
+	Fri, 28 Feb 2025 05:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740718801;
-	bh=rD8sup9Ol6XcfCblXXhPO4qRx4Ut30I8PKYhTb9aVlo=;
+	s=k20201202; t=1740718803;
+	bh=iuXAtEaQoX5igi2lQssHtBtYMl1bu8PHr7BodhwxuF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXfBACvMe1Bx97V3Eb49JGQdlruIlnozq9YHhezXfgPB/rSVnE4Y9xWplZPqHOPC7
-	 /rDLg7JD0+o0NSznei8GNXsXFO2CSF3uRMikt9qfTj6X9Rn0nmWzED/HXMDRfb4/BR
-	 XKnnUzW+YkfrL1k+qMTWXeWe6JHJm52X7fQoEvEt23UjaFS2qPsR//noSAwexidQgK
-	 d3qzRDm4gTLPAnw1QQpqh3/Ve8Xw1zh4YW3WxBduQKo3MRCQvjUPW+lE/zsnMkMuk0
-	 Qdh3cOo3H8iThHmHdK6Q/4FhPf+iFi4A9kI8E6BjuluQnAaMF3r0FVW9B1ltIIDwd2
-	 PJaD4ZxQIilwQ==
+	b=CRYd/jSoBkobzm++LJu6zVJkoVDKXgNV5SlWQlyWXjf3aD7ldRYK7gn+iNNXPs5J1
+	 gElR+KzyBy5xxei9+zKELG/pnlEZkJwPBtUIzMshb9hPGAvFYmV9TUuiysKiYm45iE
+	 TA9Xil7NxoypoI/c9K5Ra0+YAMrbQBEeqPa6hvOGWlZrxgIGnXc0O+xl0p5l8bc0yT
+	 iEnnpZb347kZDzuQ+RG99OA59KtPIjiylWGPdyTOoRngEFIIXN9JeZMGH6QWhntjdA
+	 6gFsSgGP0qh3qPLAoiKoeIiNSdSL3wOpIF67a+PM+TD+9kMI+lLBOAplKBJYFBZkna
+	 UmTYZjNk+dCyA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	rcn@igalia.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 v3 1/3] net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.
-Date: Thu, 27 Feb 2025 23:56:16 -0500
-Message-Id: <20250227151347-22577fd86acd09c2@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
+Date: Thu, 27 Feb 2025 23:56:18 -0500
+Message-Id: <20250227133645-9b43abeb6f84ccfa@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-1-360efec441ba@igalia.com>
+In-Reply-To:  <20250227032633.4176866-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,258 +64,63 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 401cb7dae8130fd34eb84648e02ab4c506df7d5e
+The upstream commit SHA1 provided is correct: 0484e05d048b66d01d1f3c1d2306010bb57d8738
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?=<rcn@igalia.com>
-Commit author: Sebastian Andrzej Siewior<bigeasy@linutronix.de>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Sohaib Nadeem<sohaib.nadeem@amd.com>
 
-Found fixes commits:
-55e802468e1d sfc: Don't invoke xdp_do_flush() from netpoll.
-157f29152b61 netkit: Assign missing bpf_net_context
-fecef4cd42c6 tun: Assign missing bpf_net_context.
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 71783d1ff652)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  401cb7dae8130 ! 1:  9cf6145a4dcd5 net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.
+1:  0484e05d048b6 ! 1:  9365664c803ec drm/amd/display: fixed integer types and null check locations
     @@ Metadata
       ## Commit message ##
-         net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.
+         drm/amd/display: fixed integer types and null check locations
      
-    +    [ Upstream commit 401cb7dae8130fd34eb84648e02ab4c506df7d5e ]
+    +    [ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
     +
-         The XDP redirect process is two staged:
-         - bpf_prog_run_xdp() is invoked to run a eBPF program which inspects the
-           packet and makes decisions. While doing that, the per-CPU variable
+         [why]:
+         issues fixed:
+         - comparison with wider integer type in loop condition which can cause
     @@ Commit message
-         Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-         Link: https://patch.msgid.link/20240620132727.660738-15-bigeasy@linutronix.de
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    [rcn: the backport addresses the differences in
-    +    net/core/dev.c:napi_threaded_poll(), busy_poll_stop(), napi_busy_loop()
-    +    and net_rx_action() between upstream and stable. This allows the patch
-    +    to be applied without bringing additional dependencies, such as
-    +    dad6b9770263 ("net: Allow to use SMP threads for backlog NAPI."). These
-    +    changes allow applying the patch on stable without bringing the whole
-    +    related series.
-    +    The rest of the changes are made to adapt context lines and are
-    +    unrelated to the purpose of the patch.]
-    +    Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+         Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    +    [ To fix CVE-2024-26767, delete changes made in drivers/gpu/drm/amd/display/dc/link/link_validation.c
+    +     for this file is deleted in linux-6.1 ]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-      ## include/linux/filter.h ##
-     @@ include/linux/filter.h: struct bpf_nh_params {
-    @@ net/bpf/test_run.c: static int bpf_test_run(struct bpf_prog *prog, void *ctx, u3
-     
-      ## net/core/dev.c ##
-     @@ net/core/dev.c: sch_handle_ingress(struct sk_buff *skb, struct packet_type **pt_prev, int *ret,
-    + 		   struct net_device *orig_dev, bool *another)
-      {
-      	struct bpf_mprog_entry *entry = rcu_dereference_bh(skb->dev->tcx_ingress);
-    - 	enum skb_drop_reason drop_reason = SKB_DROP_REASON_TC_INGRESS;
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-      	int sch_ret;
-      
-    @@ net/core/dev.c: sch_handle_ingress(struct sk_buff *skb, struct packet_type **pt_
-     +		bpf_net_ctx_clear(bpf_net_ctx);
-      		return NULL;
-      	case TC_ACT_SHOT:
-    - 		kfree_skb_reason(skb, drop_reason);
-    + 		kfree_skb_reason(skb, SKB_DROP_REASON_TC_INGRESS);
-      		*ret = NET_RX_DROP;
-     +		bpf_net_ctx_clear(bpf_net_ctx);
-      		return NULL;
-    @@ net/core/dev.c: sch_handle_ingress(struct sk_buff *skb, struct packet_type **pt_
-      
-      	return skb;
-      }
-    -@@ net/core/dev.c: sch_handle_egress(struct sk_buff *skb, int *ret, struct net_device *dev)
-    +@@ net/core/dev.c: static __always_inline struct sk_buff *
-    + sch_handle_egress(struct sk_buff *skb, int *ret, struct net_device *dev)
-      {
-      	struct bpf_mprog_entry *entry = rcu_dereference_bh(dev->tcx_egress);
-    - 	enum skb_drop_reason drop_reason = SKB_DROP_REASON_TC_EGRESS;
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-      	int sch_ret;
-      
-    @@ net/core/dev.c: sch_handle_egress(struct sk_buff *skb, int *ret, struct net_devi
-     +		bpf_net_ctx_clear(bpf_net_ctx);
-      		return NULL;
-      	case TC_ACT_SHOT:
-    - 		kfree_skb_reason(skb, drop_reason);
-    + 		kfree_skb_reason(skb, SKB_DROP_REASON_TC_EGRESS);
-      		*ret = NET_XMIT_DROP;
-     +		bpf_net_ctx_clear(bpf_net_ctx);
-      		return NULL;
-    @@ net/core/dev.c: sch_handle_egress(struct sk_buff *skb, int *ret, struct net_devi
-      
-      	return skb;
-      }
-    -@@ net/core/dev.c: enum {
-    - static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
-    - 			   unsigned flags, u16 budget)
-    +@@ net/core/dev.c: static void __busy_poll_stop(struct napi_struct *napi, bool skip_schedule)
-    + static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock, bool prefer_busy_poll,
-    + 			   u16 budget)
-      {
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-      	bool skip_schedule = false;
-      	unsigned long timeout;
-      	int rc;
-    -@@ net/core/dev.c: static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
-    +@@ net/core/dev.c: static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock, bool
-      	clear_bit(NAPI_STATE_IN_BUSY_POLL, &napi->state);
-      
-      	local_bh_disable();
-     +	bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
-      
-    - 	if (flags & NAPI_F_PREFER_BUSY_POLL) {
-    + 	if (prefer_busy_poll) {
-      		napi->defer_hard_irqs_count = READ_ONCE(napi->dev->napi_defer_hard_irqs);
-    -@@ net/core/dev.c: static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock,
-    +@@ net/core/dev.c: static void busy_poll_stop(struct napi_struct *napi, void *have_poll_lock, bool
-      	netpoll_poll_unlock(have_poll_lock);
-      	if (rc == budget)
-      		__busy_poll_stop(napi, skip_schedule);
-    @@ net/core/dev.c: static void busy_poll_stop(struct napi_struct *napi, void *have_
-      	local_bh_enable();
-      }
-      
-    -@@ net/core/dev.c: static void __napi_busy_loop(unsigned int napi_id,
-    +@@ net/core/dev.c: void napi_busy_loop(unsigned int napi_id,
-      {
-      	unsigned long start_time = loop_end ? busy_loop_current_time() : 0;
-      	int (*napi_poll)(struct napi_struct *napi, int budget);
-    @@ net/core/dev.c: static void __napi_busy_loop(unsigned int napi_id,
-      	void *have_poll_lock = NULL;
-      	struct napi_struct *napi;
-      
-    -@@ net/core/dev.c: static void __napi_busy_loop(unsigned int napi_id,
-    +@@ net/core/dev.c: void napi_busy_loop(unsigned int napi_id,
-      		int work = 0;
-      
-      		local_bh_disable();
-    @@ net/core/dev.c: static void __napi_busy_loop(unsigned int napi_id,
-      		if (!napi_poll) {
-      			unsigned long val = READ_ONCE(napi->state);
-      
-    -@@ net/core/dev.c: static void __napi_busy_loop(unsigned int napi_id,
-    +@@ net/core/dev.c: void napi_busy_loop(unsigned int napi_id,
-    + 		if (work > 0)
-      			__NET_ADD_STATS(dev_net(napi->dev),
-      					LINUX_MIB_BUSYPOLLRXPACKETS, work);
-    - 		skb_defer_free_flush(this_cpu_ptr(&softnet_data));
-     +		bpf_net_ctx_clear(bpf_net_ctx);
-      		local_bh_enable();
-      
-      		if (!loop_end || loop_end(loop_end_arg, start_time))
-    -@@ net/core/dev.c: static int napi_thread_wait(struct napi_struct *napi)
-    +@@ net/core/dev.c: static void skb_defer_free_flush(struct softnet_data *sd)
-      
-    - static void napi_threaded_poll_loop(struct napi_struct *napi)
-    + static int napi_threaded_poll(void *data)
-      {
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-    + 	struct napi_struct *napi = data;
-      	struct softnet_data *sd;
-    - 	unsigned long last_qs = jiffies;
+      ## drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c ##
+     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_firmware_info_v3_2(
+    @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_in
+      	info->gpu_cap_info =
+      	le32_to_cpu(info_v2_2->gpucapinfo);
+      	/*
+    -
+    - ## drivers/gpu/drm/amd/display/dc/link/link_validation.c ##
+    -@@ drivers/gpu/drm/amd/display/dc/link/link_validation.c: bool link_validate_dpia_bandwidth(const struct dc_stream_state *stream, const un
+    - 	struct dc_link *dpia_link[MAX_DPIA_NUM] = {0};
+    - 	int num_dpias = 0;
     - 
-    -@@ net/core/dev.c: static void napi_threaded_poll_loop(struct napi_struct *napi)
-    - 		void *have;
-    - 
-    - 		local_bh_disable();
-    -+		bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
-    -+
-    - 		sd = this_cpu_ptr(&softnet_data);
-    - 		sd->in_napi_threaded_poll = true;
-    - 
-    -@@ net/core/dev.c: static void napi_threaded_poll_loop(struct napi_struct *napi)
-    - 			net_rps_action_and_irq_enable(sd);
-    - 		}
-    - 		skb_defer_free_flush(sd);
-    -+		bpf_net_ctx_clear(bpf_net_ctx);
-    - 		local_bh_enable();
-    - 
-    - 		if (!repoll)
-    + 	void *have;
-    +@@ net/core/dev.c: static int napi_threaded_poll(void *data)
-    + 			bool repoll = false;
-    + 
-    + 			local_bh_disable();
-    ++			bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
-    + 			sd = this_cpu_ptr(&softnet_data);
-    + 			sd->in_napi_threaded_poll = true;
-    + 
-    +@@ net/core/dev.c: static int napi_threaded_poll(void *data)
-    + 				net_rps_action_and_irq_enable(sd);
-    + 			}
-    + 			skb_defer_free_flush(sd);
-    ++			bpf_net_ctx_clear(bpf_net_ctx);
-    + 			local_bh_enable();
-    + 
-    + 			if (!repoll)
-     @@ net/core/dev.c: static __latent_entropy void net_rx_action(struct softirq_action *h)
-      	struct softnet_data *sd = this_cpu_ptr(&softnet_data);
-      	unsigned long time_limit = jiffies +
-    - 		usecs_to_jiffies(READ_ONCE(net_hotdata.netdev_budget_usecs));
-    + 		usecs_to_jiffies(READ_ONCE(netdev_budget_usecs));
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-    - 	int budget = READ_ONCE(net_hotdata.netdev_budget);
-    + 	int budget = READ_ONCE(netdev_budget);
-      	LIST_HEAD(list);
-      	LIST_HEAD(repoll);
-      
-    @@ net/core/filter.c: static const struct bpf_func_proto bpf_clone_redirect_proto =
-     -DEFINE_PER_CPU(struct bpf_redirect_info, bpf_redirect_info);
-     -EXPORT_PER_CPU_SYMBOL_GPL(bpf_redirect_info);
-     -
-    - static struct net_device *skb_get_peer_dev(struct net_device *dev)
-    - {
-    - 	const struct net_device_ops *ops = dev->netdev_ops;
-    -@@ net/core/filter.c: static struct net_device *skb_get_peer_dev(struct net_device *dev)
-    - 
-      int skb_do_redirect(struct sk_buff *skb)
-      {
-     -	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
-    @@ net/core/filter.c: static const struct bpf_func_proto bpf_redirect_peer_proto =
-      
-      	if (unlikely((plen && plen < sizeof(*params)) || flags))
-      		return TC_ACT_SHOT;
-    -@@ net/core/filter.c: void xdp_do_check_flushed(struct napi_struct *napi)
-    +@@ net/core/filter.c: void xdp_do_flush(void)
-      }
-    - #endif
-    + EXPORT_SYMBOL_GPL(xdp_do_flush);
-      
-     -void bpf_clear_redirect_map(struct bpf_map *map)
-     -{
-    @@ net/core/lwt_bpf.c: static inline struct bpf_lwt *bpf_lwt_lwtunnel(struct lwtunn
-     +	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-      	int ret;
-      
-    - 	/* Disabling BH is needed to protect per-CPU bpf_redirect_info between
-    - 	 * BPF prog and skb_do_redirect().
-    + 	/* Migration disable and BH disable are needed to protect per-cpu
-    +@@ net/core/lwt_bpf.c: static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_prog *lwt,
-      	 */
-    + 	migrate_disable();
-      	local_bh_disable();
-     +	bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
-      	bpf_compute_data_pointers(skb);
-    @@ net/core/lwt_bpf.c: static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_p
-      
-     +	bpf_net_ctx_clear(bpf_net_ctx);
-      	local_bh_enable();
-    + 	migrate_enable();
-      
-    - 	return ret;
+    --	for (uint8_t i = 0; i < num_streams; ++i) {
+    -+	for (unsigned int i = 0; i < num_streams; ++i) {
+    - 		if (stream[i].signal == SIGNAL_TYPE_DISPLAY_PORT) {
+    - 			/* new dpia sst stream, check whether it exceeds max dpia */
+    - 			if (num_dpias >= MAX_DPIA_NUM)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
