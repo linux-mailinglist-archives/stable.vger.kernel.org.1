@@ -1,89 +1,92 @@
-Return-Path: <stable+bounces-119879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF86A48EAF
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 03:35:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3006AA48F1D
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 04:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADCE3A7CED
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 02:35:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB15A7A7B71
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 03:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8418C70814;
-	Fri, 28 Feb 2025 02:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E6816F265;
+	Fri, 28 Feb 2025 03:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmMjitD8"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HYG69VvP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381A5276D38;
-	Fri, 28 Feb 2025 02:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29BE14A4DF;
+	Fri, 28 Feb 2025 03:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740710148; cv=none; b=pHphiUm79qf18wOLIf5Ju5WY7+X8SVQJrvZUloplLQRfTv8Qe6YdoMGRNdgRuLfv7terjOEJrWUUtmd5iyWdQnrinEvtadv0YRpJtph7C7IHuoCTnZLqCJbckLOb1bgg8ay1cb8p9tTp9E3ia1fjBZNuLBta48HgnX7jsh4Os+0=
+	t=1740713256; cv=none; b=uR8Awiu0VlmJQEOfB+7mELw3fiRoD94d2I4kbbaZvTFDMQJzfBjo38oq+JEa8XzR7KjDq0nzVFiZJeGrJQ0tuXHKIyShShuy1MHDVcPAUstgFLOxZKFUklyveXsT8kMLPAYgrxSczeNn5rQSoWL1+9l5E9gmoIkxOLVpRrgJQec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740710148; c=relaxed/simple;
-	bh=mPYw4QtWI6b6bDDohPnfGl05s5iuP5VCTsCxQaqOyug=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ay+k2MWQN5ApsvCrx5CE/RAY/CJdoWKRbMyHeh0RNyM7kAQbVK+QD0pfRCFimQYL2RJ6rRmgT6HcK/mdJLF/9Fs4IvbptYsXS67/g+TJVjm4vndjPC/OPnUOlB/CF4Hr4Ejylt6vkYAIfXZz9gyfyYjmDfdvylWb8T4MRO8DHb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmMjitD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E87C4CEDD;
-	Fri, 28 Feb 2025 02:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740710147;
-	bh=mPYw4QtWI6b6bDDohPnfGl05s5iuP5VCTsCxQaqOyug=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jmMjitD8MqAkQdJCrpH+yb2ZxSj8PoHtWyuVi+skqgrhC6ZsN3oeGtzNuCPWU8qav
-	 zEl4D/HDfuzf+Sa98HT0ZvZzBapAJt2XI0Kqxep7tI59wF4hCrT7LlJjTDr5AaN4aw
-	 E5ayk3NKMZfmjmREG+tHx+wqGFazG79fThpFTs4N1wdakDR+MUr/1G+A6GWdVDUbQV
-	 AdRBoZxSdGnIA9/FMnmbWDQEQkfBy8Wj5zOKDrTIp1kngbmor7OnZkbVsCi9n21JCU
-	 b5p8lEHBQ/yGgVTBkh08Zp9YGlNbDhOfVihj2w2yoNQaQ1b6Fleu1hj4yu5MEMAVJT
-	 EyQEwxqBVUQmw==
-Date: Thu, 27 Feb 2025 18:35:45 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, Huacai Chen <chenhuacai@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>, Yinggang Gu <guyinggang@loongson.cn>,
- Feiyang Chen <chenfeiyang@loongson.cn>, Philipp Stanner
- <pstanner@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, Qing Zhang
- <zhangqing@loongson.cn>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Henry Chen
- <chenx97@aosc.io>
-Subject: Re: [PATCH net-next v4 1/4] stmmac: loongson: Pass correct arg to
- PCI function
-Message-ID: <20250227183545.0848dd61@kernel.org>
-In-Reply-To: <20250226085208.97891-2-phasta@kernel.org>
-References: <20250226085208.97891-1-phasta@kernel.org>
-	<20250226085208.97891-2-phasta@kernel.org>
+	s=arc-20240116; t=1740713256; c=relaxed/simple;
+	bh=42jlYnLuKDhskB3kk6Sbtyrl5aakp19MNrnmogmDXzY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lB0wtfWQ1Fuabzjy/vtK0W9hzuGTeDRpnQUxS1DfUQ7X5s5ca+Tm4qUdG1NkK7s/Q9C2opkrUZto7tfq3NG/7CYFOHaaI3ULyPRn0oXK9eRR3PmbMmdltrZmTRRyBU041KAFvoVbBNzBxsrXwi9OMjQGcaVOmUcoFmab5QmAQfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HYG69VvP; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=P95FE
+	Xvftqpy2CJ7poGrPUvDjDKXYMp27W5tWezeZeI=; b=HYG69VvPoLP4yawKaEQFs
+	gITM2Hp0Z8UP++caJNFIKpx0myNHOQXclysZtZpcr+sgE/ADlafsmTU+d8RKxrSq
+	0jnOh5Auou4x8hME3Ha7XxfsysJui2Y+njcXH9F39LvQ5vYUyXnjK4ji72jDjDrk
+	f3nRBFQYP8GtTTY7Hv6ISM=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wBnq08ZLcFnrvq6PA--.50291S4;
+	Fri, 28 Feb 2025 11:27:22 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: morbidrsa@gmail.com,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mcb: fix a double free bug in chameleon_parse_gdd()
+Date: Fri, 28 Feb 2025 11:27:20 +0800
+Message-Id: <20250228032720.3745459-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBnq08ZLcFnrvq6PA--.50291S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWruFyDGryrKF15uw48ZF13urg_yoW3KFg_Gr
+	409rW7ZF40kFW3Kry3Jr1Svry8tanFgrZ5ur47t393Ars5WryqqryrZF1fKrykWF1xuFyU
+	Ca4DKryIkrW2gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRWGQhUUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0goCbmfBJpfOVAAAs5
 
-On Wed, 26 Feb 2025 09:52:05 +0100 Philipp Stanner wrote:
-> pcim_iomap_regions() should receive the driver's name as its third
-> parameter, not the PCI device's name.
-> 
-> Define the driver name with a macro and use it at the appropriate
-> places, including pcim_iomap_regions().
-> 
-> Cc: stable@vger.kernel.org # v5.14+
-> Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
+would be released in mcb_device_register() via put_device().
+Thus, goto 'err' label and free 'mdev' again causes a double free.
+Just return if mcb_device_register() fails.
 
-Since you sent this as a fix (which.. yea.. I guess.. why not..)
-I'll apply it to the fixes tree. But then the other patches have 
-to wait and be reposted next Thu. The fixes are merged with net-next
-every Thu, but since this series was tagged as net-next I missed
-it in today's cross merge :(
+Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ drivers/mcb/mcb-parse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mcb/mcb-parse.c b/drivers/mcb/mcb-parse.c
+index 02a680c73979..bf0d7d58c8b0 100644
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -96,7 +96,7 @@ static int chameleon_parse_gdd(struct mcb_bus *bus,
+ 
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+-		goto err;
++		return ret;
+ 
+ 	return 0;
+ 
+-- 
+2.25.1
+
 
