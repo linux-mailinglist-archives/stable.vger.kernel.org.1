@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-119970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250EEA4A001
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 18:12:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB251A4A00D
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 18:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F20CE176F05
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 17:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB553BD76C
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 17:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380711F4CA0;
-	Fri, 28 Feb 2025 17:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B960C1D88DB;
+	Fri, 28 Feb 2025 17:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GBucXGUl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Neb2MXZO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DAF1F4C96;
-	Fri, 28 Feb 2025 17:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EF41F4CB8;
+	Fri, 28 Feb 2025 17:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740762717; cv=none; b=FD5tlL4Ts93St/e+PG3e44nY5XlCABBljJUR6+B0wxoBEpTSLcmPoNwQmGJgu9SEMCRlpEZ3LaKk/F728hqmWQyKklssFGzSRcEmRNomtH6gufwDhzSFKRM7kIDTCWAGFVk3sGDw4vhjhWc63k8d70SgMKoyIsjglQQbY5RnsJo=
+	t=1740762908; cv=none; b=EB4OnXdw0hQQbYJbiKmxKFUCCKOzaA0DAY1S5ojOcN8Vdw5dTVMwgfd86891m4SKSHuNr819xQNSbRWsUU7/tT/Pz6vvBa/e0us7O65uSOc9GPS+D8YEPG1t4a9SCR2M24dNJS3fDlFZ99NM7NvfM7EHVG6wqkJSUVpjyAeIeBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740762717; c=relaxed/simple;
-	bh=34GoB2luaawFWdu1l7ZA4a8soc8d3PcRfzxudMjW4xQ=;
+	s=arc-20240116; t=1740762908; c=relaxed/simple;
+	bh=yw56OOcc4mOBuuj6ITPf/bufZr7+wEV6mWmgXwpcuAQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FpWWZRyyT3Z2u/AqyvHKnE8D8r177LElsvi5kVG9lEbIhloL7oEFi7Y832XSpqGANRH8Qn+S6AF+m+TgBflvCn4DJ6K8R36CE3jRx+NmxVc/kJIniHcYaD1BVfaK2MfxFDv4431e/FfJN1J6un0EWJY/wzEIi8kUcmFFq4yKnAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GBucXGUl; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version:Content-Type; b=A56NWSrX6w9/NikfWXyGo8RgRn2b9uQ1EIhJITfy/r8JdY/vEpp/cNXXkCQwZ/oahLZtTTJCHlAzzX0ICZ3gTrPpQnwfjbtxAHLgG3yR2/wqdNJbosP1p1JSKxz61pRsJz0j4mHL4Inw9Wn3S+nraIa98nYiZe2oR4zMnerR3dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Neb2MXZO; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-abf45d8db04so61642766b.1;
-        Fri, 28 Feb 2025 09:11:54 -0800 (PST)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso334597266b.1;
+        Fri, 28 Feb 2025 09:15:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740762713; x=1741367513; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740762904; x=1741367704; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j6ets5aVNLOO0bxti3imRnUSklZXl6EEfSVuw5+1snM=;
-        b=GBucXGUleTdGN8VnrJNl1gJtDe1+82sUO6iZOZG/D+YF3BHN0+M79XDytR6bcbWJfl
-         2Ecf8yMon7her8cDQd94HoHlIU6oeVN0VkiJk7OkJJ052rf5EfOMLsblPNfLs3JSkqNx
-         ivpOr02hptTd9bWvb9MwIss+WDPG99dA961AVXkGARctMpc2GrJiCfoPPVsdZ6mg+gRI
-         ch4s0oRNGMZ0h0XTt1GE+0YuGmQHzaORPMpI5BA196/dWKiAnIs2MWwxmJZtWm/vIDn5
-         Uiel7MVhebq1uShXnKbbZL4NXVGXp3wHKw8AlmJn1/ohJaEWNRwXOv/gQ/C8HiqKNMHg
-         btKA==
+        bh=afeonSAlFod4Wwm3A9Q0iIl/boL2tdt0YRRgmGv2+Wc=;
+        b=Neb2MXZOBiQOHw2W4MtkDC712Qs1vTzhK9tgByQLumV+FiPiEYlioMsW59rtBwAk1Q
+         NqGaV1TypMnXVSu+XAbNMK7AX/NyWJO48oCEaOlU4cDhg6LIsdH1O+CNZ1fjB/lMGNln
+         sOtCyhlg7Ctiq+J30Vz9cXI640mKtNb1YXAAKih1y8zmB/p122n6wc0mUblNlWu9zLSp
+         HUAFDYyDGvmYh2RL2H2d7MOsA3/5oTwOWuMYFWL1fSQPlnkMuuXEz5Gs6FSQIIVASNv0
+         ZxqahzUZi1oOT3P7ANS9S4HVUXeNEa2Szf9JHgqM/NoLnil+Ni0Csxhuj/DZbUwcMfXG
+         rf0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740762713; x=1741367513;
+        d=1e100.net; s=20230601; t=1740762904; x=1741367704;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j6ets5aVNLOO0bxti3imRnUSklZXl6EEfSVuw5+1snM=;
-        b=F7YVO8sH+JUJqVIQtBl3teLhhMw3rA853FEjVN5TDNW95VrLgK2SPHHUOsSq7Z+MCI
-         V/Lv9agWjn1fu3/6KIy1WdsiqGWriYeLL7bSPM7jVuDqZ0ZSf0zDQWcE3KVWNWrsTsLx
-         e3xeqjRyTD5oR99T2FMsZCFLCwwKJOvH1gWov6+nqSZ27SFfRBWoL5QMTKObWwl3J7/E
-         Ar9Z/AjfDdjr7ptYJSR7dWyheyJTccZYY087YaEc6Wv303jiaLw1wTZ4ag1Mw+9gYsTT
-         4ijpq1qzbWe2X4YfqDPOQP6+P9OIFFaRNePdUSvPAVhAfA0xJUTXhrTDXXoJNGNWjH9m
-         Y7jg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3Mg0vTEkzNfDYS+bosFkRbS1IHjEtcSlimN0r9WNO27wppIMOgFbI5pUKUIS8hHhprDqvABP9vEyy@vger.kernel.org, AJvYcCUrGJQmDieXYt3IJDXVy0blsLZlVjn43xnZXBhw0x/tbt/j/4WxxKObUadB2B5wOPfXV51j/OaJ+4cHcgc=@vger.kernel.org, AJvYcCVI9FvMhT7VTcIihBEhWOQQ6n1p4k3zmB1tfK++IqaXoNVwZRgLlYX/o145SKT5s7pF1quFGnm6@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWjLhKi7kjCq1Q1dNf4gh34rWg/5Fe74oTq/d8i5hmdBp7McdS
-	Zh2VGSd21caxMhN7L1GBno4WUE2YjQfaCLp8gGA6DLHNLGJTga38tq4HSw==
-X-Gm-Gg: ASbGncvhYhNpE95rpgAILIdUD5285nZzsXxcAglR+fFKE5w+7REwCCiP12HwGKx0m6F
-	sbWBUmarbL7dfAkoGCk6KTVedyjtf8CWecmwEe+8Za9E/cez84Dnk6K6YsePJ1yUVkMbmBW5NNd
-	0Vq1NkhSJsb/BsSJFWkLajVL4K9tljIBlm222GG7bS5CdlHrUuwFvtt9+G23pprNYqvtXk15W+T
-	xjZHLJsagU21ve8BS/tbrbZKVY3Na+Ra0MJv5JoeqkNGyN1bV1oPt+r5v86WyhRjC2lRFUTzHlE
-	tjVq/RyMZH1UtH+w7MfWX6yPDHFy8B2dsL0E0e4N
-X-Google-Smtp-Source: AGHT+IHZ3OgXJcoyK5UfrZxguUKxf5uKY3BVB81jJHZQfRIoF319w4NjdEB5itkEizbZibkQjuK/Mg==
-X-Received: by 2002:a17:907:60d0:b0:ab7:f245:fbc1 with SMTP id a640c23a62f3a-abf261f9dffmr409006366b.3.1740762713099;
-        Fri, 28 Feb 2025 09:11:53 -0800 (PST)
+        bh=afeonSAlFod4Wwm3A9Q0iIl/boL2tdt0YRRgmGv2+Wc=;
+        b=Xr9h9BcAIA/IpdBGCLyxUdvBL5b5mG5Qe6UPHtvg85F1K8KWeEisUs1iX89771468c
+         5Q5LIJ2H0PeZ+9KKhO575Wrb6+B/iqdfxy56qQTmdEy58QAwBdZ3+KONzpNrmxxg0fd4
+         pMTssKbD9bTL3+FQxg0takAmVKlc0VTcPpL5x9Ib5cpWweVPUgl18nMCpcrR6Cpp11LX
+         G2zkhBcZunc8WObA4AS2kbpDu+HZXvh+WuK1jVHtaZm1RMB6thWZllxvx1HNZAHCHrEw
+         kMqA8446MH6nXLoaEPkcsDzpIUhg7Zu/7in9zqMJ07S62wpYlCQGR/n0ywwd4TOqHifd
+         tT0g==
+X-Forwarded-Encrypted: i=1; AJvYcCW2vIHAYHkco+aON0PmKqurOrI1jlrZBqHx5LHwnJk4d5RWLlnqgy/cvs8lXU5JJH6R+rBFNagF@vger.kernel.org, AJvYcCXWDRnomg6u+UTtIJlm4gu4k6g3ogUJ9pZGlXMxClrKmlxBNAIKJnuZAeF3pFyrVx5R5oxk+cZQ5OZBRxM=@vger.kernel.org, AJvYcCXcDnn5XqzoI806pd2wQu80mR5SrsQ5bt9uCQ8TMCUkRbq7y0bDuz8w82Kye9tzlLQGqURlhjCNLCac@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYR+nvaftkojlQDIqhoyoD2NrTYaEoWtG0FhShZ/FfgSIqzwkB
+	by4EXxCtW8F6u5UPm2Vr00qSrg3ok6yf/JHflV2D+VmKHALrUg2O
+X-Gm-Gg: ASbGncsQxSLdV1SznRtCcuQR54C3+z1ldjhJb1s2rK6YRL9EPJp7sK1Hlx4tBfwx0hm
+	pWHFwbNzt5u27a8dlY03plDLy/yvf8rXmE+abOoinVU3hqwHN/vd9eslcJvjcc3w2tku7YLmNBn
+	ZY7v6+6h6LhWhFv7D3tNdC//N4LR+ebOFqsQSEHSiPedp5vzWZRU+FYJUVHrwUUZnORDaxtGVNb
+	RLqZ/QeB/MhStArVtRyxeTGxH5uQnw+PmkuLSbG/sKVULZ1dv3+36MoB+cfcR8ceFl/ngctYAyR
+	ag+bypVhhPmC2NLaPhsVmj8ecQ3T/b12vt5zsCSm
+X-Google-Smtp-Source: AGHT+IFcwu5SgE7uaz6+ha2R6PQoBv6tsHMNfhGt4zl4vNELvAtuToKwfhdiqEMFcNgr+0yERYGfAA==
+X-Received: by 2002:a17:907:96a5:b0:ab7:eaf7:2bd6 with SMTP id a640c23a62f3a-abf269b8941mr492833766b.49.1740762903970;
+        Fri, 28 Feb 2025 09:15:03 -0800 (PST)
 Received: from foxbook (adqi59.neoplus.adsl.tpnet.pl. [79.185.142.59])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c74c766sm315767266b.127.2025.02.28.09.11.50
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c75d31csm316464266b.157.2025.02.28.09.15.02
         (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Fri, 28 Feb 2025 09:11:52 -0800 (PST)
-Date: Fri, 28 Feb 2025 18:11:46 +0100
+        Fri, 28 Feb 2025 09:15:03 -0800 (PST)
+Date: Fri, 28 Feb 2025 18:14:59 +0100
 From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
 To: Mathias Nyman <mathias.nyman@linux.intel.com>
 Cc: Kuangyi Chiang <ki.chiang65@gmail.com>, gregkh@linuxfoundation.org,
@@ -80,8 +80,8 @@ Cc: Kuangyi Chiang <ki.chiang65@gmail.com>, gregkh@linuxfoundation.org,
  mathias.nyman@intel.com, stable@vger.kernel.org
 Subject: Re: [PATCH] usb: xhci: Handle quirky SuperSpeed isoc error
  reporting by Etron HCs
-Message-ID: <20250228181146.5188fcdb@foxbook>
-In-Reply-To: <41847336-9111-4aaa-b3dc-f3c18bb03508@linux.intel.com>
+Message-ID: <20250228181459.2ec1d29c@foxbook>
+In-Reply-To: <20250228181146.5188fcdb@foxbook>
 References: <20250205234205.73ca4ff8@foxbook>
 	<b19218ab-5248-47ba-8111-157818415247@linux.intel.com>
 	<20250210095736.6607f098@foxbook>
@@ -89,6 +89,7 @@ References: <20250205234205.73ca4ff8@foxbook>
 	<CAHN5xi05h+4Fz2SwD=4xjU=Yq7=QuQfnnS01C=Ur3SqwTGxy9A@mail.gmail.com>
 	<20250212091254.50653eee@foxbook>
 	<41847336-9111-4aaa-b3dc-f3c18bb03508@linux.intel.com>
+	<20250228181146.5188fcdb@foxbook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,46 +99,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 28 Feb 2025 18:13:50 +0200, Mathias Nyman wrote:
-> On 12.2.2025 10.12, Micha=C5=82 Pecio wrote:
-> > Maybe I will seriously look into decoupling giveback and dequeue ptr
-> > tracking, not only for those spurious Etron events but everywhere.
-> >=20
-> > Mathias is right that HW has no sensible reason to touch DMA buffers
-> > after an error, I will look if the spec is very explicit about it.
-> > If so, we could give back TDs after the first event and merely keep
-> > enough information to recognize and silently ignore further events.
-> > =20
+On Fri, 28 Feb 2025 18:11:46 +0100, Micha=C5=82 Pecio wrote:
+> What are your thoughts about killing error_mid_td completely and using
+> a similar mechanism to deal with those final events?
 >=20
-> This issue was left hanging, I'll clean up my proposal and send it as
-> a proper RFT PATCH.
+> 1. The events would be taken care of.
+>=20
+> 2. It should be OK wrt DMA, because the HC has no reason to touch data
+> buffers after an error. Short Packet is done this way and it works.
+>=20
+> 3. A remaining problem is that dequeue is advanced to end_trb too soon
+> and "tail" of the TD could be overwritten. Already a problem with
+> Short Packet and I think it can be solved by replacing most
+> xhci_dequeue_td() calls with xhci_td_cleanup() and adding to
+> handle_tx_event():
+>=20
+>     ep_ring->dequeue =3D ep_trb;
+>     ep_ring->deq_seg =3D ep_seg;
 
-I think it would be more pragmatic to have 'next_comp_code' instead of
-'last_comp_code', because then you don't need this new helper function
-which basically duplicates the switch statement from process_isoc_td().
+Forgot to add:
 
-And as long as Success is the only 'next_comp_code' supported, it can
-be a simple boolean flag. So, basically, rename 'last_td_was_short' to
-'expect_success_event', set it in process_isoc_td() and that's all.
+4. Guaranteed low latency of error reporting.
 
-
-What are your thoughts about killing error_mid_td completely and using
-a similar mechanism to deal with those final events?
-
-1. The events would be taken care of.
-
-2. It should be OK wrt DMA, because the HC has no reason to touch data
-buffers after an error. Short Packet is done this way and it works.
-
-3. A remaining problem is that dequeue is advanced to end_trb too soon
-and "tail" of the TD could be overwritten. Already a problem with Short
-Packet and I think it can be solved by replacing most xhci_dequeue_td()
-calls with xhci_td_cleanup() and adding to handle_tx_event():
-
-    ep_ring->dequeue =3D ep_trb;
-    ep_ring->deq_seg =3D ep_seg;
-
-
-Regards,
-Michal
+5. Some annoying code for giving back 'error_mid_td' URBs under weird
+corner cases that I recently spent a few hours writing could be thrown
+out and handle_tx_event() would become a little simpler.
 
