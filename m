@@ -1,129 +1,179 @@
-Return-Path: <stable+bounces-119958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45C0A49D73
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 16:29:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217B7A49E31
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 17:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45DBD174A28
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 15:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622661899EE5
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 16:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F2826FDAF;
-	Fri, 28 Feb 2025 15:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11291607AC;
+	Fri, 28 Feb 2025 16:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DtLnVY4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A38225DD1D;
-	Fri, 28 Feb 2025 15:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B39B1EF37E;
+	Fri, 28 Feb 2025 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740756573; cv=none; b=WS8nhvAjY6iun8fvJMAIz1EmTZEODKRmtENyJJB7tBiQm1YCM0/HXyY4vUGjefSAmltuEc+Tu/VY1oSw+0x+M4b8xuETaFuWVDxqlUqpQT+/9lkYlgccVByPjqeTgdN4KNrMbABVgGAmj7ovaGiL9RUGcTIbzVdcCGJsVRP8/mM=
+	t=1740758447; cv=none; b=Wg4iOzI9OXOKJrD32EVh099poTDgZHXh39pJk+jQa0nh+bQDrL75yNk6+k/+JctZH456Sron5IDIUmsUML3eCThNfoR14YSAOY122S+T8ZSEVuFBtJ5Re56++TRuJX13NAlAA9zwGgdKCrwD40ujgVMQ3O1IDQc2XyO7YM9Cb9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740756573; c=relaxed/simple;
-	bh=S8IXHnGBnwalsNxpu40Re63/s2nhkYsvGKsG7Oe2IBQ=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=pj+1eCl0mRCaM0ai+j7ttIkmPt0r++vVpWOxEJSZs3pKBeitLBsL0lQDuNdupLkJ2QAuIipdMHNoT4rd4FHzo2EBqY8/dqBcgrGx5fHRow1Bn9hk2hEcRdIzFqg/2+a959tghwugzIJKRPFTWMWwOrufR6QVyaK/dBHCPH2p3d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27F5C4CEEC;
-	Fri, 28 Feb 2025 15:29:32 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1to2Je-0000000ABiB-38qe;
-	Fri, 28 Feb 2025 10:30:18 -0500
-Message-ID: <20250228153018.601663962@goodmis.org>
-User-Agent: quilt/0.68
-Date: Fri, 28 Feb 2025 10:30:06 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Wen Yang <wenyang@linux.alibaba.com>,
- Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [for-linus][PATCH 3/3] ftrace: Avoid potential division by zero in function_stat_show()
-References: <20250228153003.725613767@goodmis.org>
+	s=arc-20240116; t=1740758447; c=relaxed/simple;
+	bh=s8EVLeL9JkpXmrQAJgfJcM2yO6cO/2irxrxpAKm2B8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pexp2OL/e7bQEuFGWa9UqdQywkhevxGPQKti9YWLq7KPEoFAo1AfBh7kYlOtkx7B8/Orl+pP/2R1m6wLsCFJp2Nbzm1gWXQrPy9dP+nr5QWdCSrwYB7wPP+axz3XOaALAv5PI5Bt8BlSZDfdEypVHo9JBJp3iS1xm2BGSGnx2x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DtLnVY4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CBCC4CED6;
+	Fri, 28 Feb 2025 16:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740758446;
+	bh=s8EVLeL9JkpXmrQAJgfJcM2yO6cO/2irxrxpAKm2B8A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DtLnVY4+AFU9mbqdGDbYmSD81Nn9n6Y0WZWO4H3BP5UqoUDTed3cCG3z3fAw0G0GQ
+	 KtCwUXaspFtL7w3cWTtVGvlfxODOvzCNfK3Lehuzy845TyJ8/2AEqCpGPJAjNXgxuJ
+	 6B/NnLYFZ4tk50WBe3zEjwYcA2NRcrk/FpqcwIsgG6b+jhVTVBsZMSNcD37YqBsksx
+	 7qU+gkSfrit1iagBMUMPAECewN9p/KRvA7yvX9Mrem1eeqkv1X0sGZnH7dGNiX7LxX
+	 84OzimCOnXDOc4j53No9Nn1WzK8tSkjZ3qEkWodBEHc6mL6hAY+kaed6ecp3FHDKNE
+	 UXOqwurON6AcA==
+Date: Fri, 28 Feb 2025 10:00:43 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Abel Vesa <abel.vesa@linaro.org>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	Anjelique Melendez <quic_amelende@quicinc.com>, Kamal Wadhwa <quic_kamalw@quicinc.com>, 
+	Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Johan Hovold <johan@kernel.org>, Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
+	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] leds: rgb: leds-qcom-lpg: Fix pwm resolution for Hi-Res
+ PWMs
+Message-ID: <gkqghs2xmmepk67oeey2zmgxmqbq7n5xn5577ai6n3kke6y7bv@sxshxrj42ny2>
+References: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-v1-1-a161ec670ea5@linaro.org>
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+On Thu, Feb 20, 2025 at 12:31:00PM +0200, Abel Vesa wrote:
+> Currently, for the high resolution PWMs, the resolution, clock,
+> pre-divider and exponent are being selected based on period. Basically,
 
-Check whether denominator expression x * (x - 1) * 1000 mod {2^32, 2^64}
-produce zero and skip stddev computation in that case.
+Is this problem really limited to the high resolution channels?
 
-For now don't care about rec->counter * rec->counter overflow because
-rec->time * rec->time overflow will likely happen earlier.
+> the implementation loops over each one of these and tries to find the
+> closest (higher) period based on the following formula:
+> 
+>                           period * refclk
+> prediv_exp = log2 -------------------------------------
+>                     NSEC_PER_SEC * pre_div * resolution
+> 
+> Since the resolution is power of 2, the actual period resulting is
+> usually higher than what the resolution allows. That's why the duty
+> cycle requested needs to be capped to the maximum value allowed by the
+> resolution (known as PWM size).
+> 
+> Here is an example of how this can happen:
+> 
+> For a requested period of 5000000, the best clock is 19.2MHz, the best
+> prediv is 5, the best exponent is 6 and the best resolution is 256.
+> 
+> Then, the pwm value is determined based on requested period and duty
+> cycle, best prediv, best exponent and best clock, using the following
+> formula:
+> 
+>                             duty * refclk
+> pwm_value = ----------------------------------------------
+>                 NSEC_PER_SEC * prediv * (1 << prediv_exp)
+> 
+> So in this specific scenario:
+> 
+> (5000000 * 19200000) / (1000000000 * 5 * (1 << 64)) = 300
+> 
+> With a resolution of 8 bits, this pwm value obviously goes over.
+> 
+> Therefore, the max pwm value allowed needs to be 255.
+> 
+> If not, the PMIC internal logic will only value that is under the set PWM
+> size, resulting in a wrapped around PWM value.
+> 
+> This has been observed on Lenovo Thinkpad T14s Gen6 (LCD panel version)
+> which uses one of the PMK8550 to control the LCD backlight.
+> 
+> Fix the value of the PWM by capping to a max based on the chosen
+> resolution (PWM size).
+> 
 
-Cc: stable@vger.kernel.org
-Cc: Wen Yang <wenyang@linux.alibaba.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250206090156.1561783-1-kniv@yandex-team.ru
-Fixes: e31f7939c1c27 ("ftrace: Avoid potential division by zero in function profiler")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/ftrace.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+I think you should be able to write this more succinct.
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 6b0c25761ccb..fc88e0688daf 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -540,6 +540,7 @@ static int function_stat_show(struct seq_file *m, void *v)
- 	static struct trace_seq s;
- 	unsigned long long avg;
- 	unsigned long long stddev;
-+	unsigned long long stddev_denom;
- #endif
- 	guard(mutex)(&ftrace_profile_lock);
- 
-@@ -559,23 +560,19 @@ static int function_stat_show(struct seq_file *m, void *v)
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- 	seq_puts(m, "    ");
- 
--	/* Sample standard deviation (s^2) */
--	if (rec->counter <= 1)
--		stddev = 0;
--	else {
--		/*
--		 * Apply Welford's method:
--		 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
--		 */
-+	/*
-+	 * Variance formula:
-+	 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
-+	 * Maybe Welford's method is better here?
-+	 * Divide only by 1000 for ns^2 -> us^2 conversion.
-+	 * trace_print_graph_duration will divide by 1000 again.
-+	 */
-+	stddev = 0;
-+	stddev_denom = rec->counter * (rec->counter - 1) * 1000;
-+	if (stddev_denom) {
- 		stddev = rec->counter * rec->time_squared -
- 			 rec->time * rec->time;
--
--		/*
--		 * Divide only 1000 for ns^2 -> us^2 conversion.
--		 * trace_print_graph_duration will divide 1000 again.
--		 */
--		stddev = div64_ul(stddev,
--				  rec->counter * (rec->counter - 1) * 1000);
-+		stddev = div64_ul(stddev, stddev_denom);
- 	}
- 
- 	trace_seq_init(&s);
--- 
-2.47.2
+The important part of the problem description is that the requested
+period will be rounded down to a possible hardware configuration, while
+the duty cycle isn't. The calculated PWM_VALUE might therefor exceed the
+calculated resolution, but the value is only capped to 15 bits for high
+resolution channels.
 
 
+Unless I'm misunderstanding Uwe's comment, this is how the API is
+expected to work (although I was under the impression that we rounded
+the period up, rather than down...)
+
+
+Worth pointing out then is that, as there's a finite number of possible
+periods that the hardware can operate at, you might want to tweak the
+period given in the Devicetree to best facilitate the expected
+brightness range.
+
+And the same would go for my choice of NSEC_PER_MSEC for the non-PWM
+code paths... I can't explain that choice...
+
+> Cc: stable@vger.kernel.org    # 6.4
+
+v6.4 is when b00d2ed37617 was introduced, so that's a given...
+
+> Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> ---
+> Note: This fix is blocking backlight support on Lenovo Thinkpad T14s
+> Gen6 (LCD version), for which I have patches ready to send once this
+> patch is agreed on (review) and merged.
+> ---
+>  drivers/leds/rgb/leds-qcom-lpg.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+> index f3c9ef2bfa572f9ee86c8b8aa37deb8231965490..146cd9b447787bf170310321e939022dfb176e9f 100644
+> --- a/drivers/leds/rgb/leds-qcom-lpg.c
+> +++ b/drivers/leds/rgb/leds-qcom-lpg.c
+> @@ -529,7 +529,7 @@ static void lpg_calc_duty(struct lpg_channel *chan, uint64_t duty)
+>  	unsigned int clk_rate;
+>  
+>  	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
+> -		max = LPG_RESOLUTION_15BIT - 1;
+> +		max = BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
+
+This looks correct!
+
+Regards,
+Bjorn
+
+>  		clk_rate = lpg_clk_rates_hi_res[chan->clk_sel];
+>  	} else {
+>  		max = LPG_RESOLUTION_9BIT - 1;
+> 
+> ---
+> base-commit: 50a0c754714aa3ea0b0e62f3765eb666a1579f24
+> change-id: 20250220-leds-qcom-lpg-fix-max-pwm-on-hi-res-067e8782a79b
+> 
+> Best regards,
+> -- 
+> Abel Vesa <abel.vesa@linaro.org>
+> 
 
