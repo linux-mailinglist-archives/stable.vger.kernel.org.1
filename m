@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04028A490AF
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 06:00:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D2CA490B0
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 06:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72DAB188F994
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 05:00:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A3B1892921
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 05:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461601AE01B;
-	Fri, 28 Feb 2025 05:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB3C1ADFE0;
+	Fri, 28 Feb 2025 05:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CL7zljev"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j54DANKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0744554648
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 05:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0029A25757
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 05:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740718808; cv=none; b=ounQ4vV1nQ9woN0ppaVxjEBC9RpHrtI5SpxJ1UpxcWUxv22wNWp7Zf9ChGMHduCBMOY4AWYnZ44GidW0hozKrASj5KGaGtb1P1PZPBLZIl0vtcXojp8FQSq47C7E1Jgg7jW/Monvur8KugudVjswrEEF883U6dnIyEuGjreRUTI=
+	t=1740718810; cv=none; b=ceNLmoXBBwQ7XXZE1rV/Lmm06ck7xvXlI33oj4iVx5GAK0mM5tWZ8jNFYYaW2SIkSFTGwli+tgutomXVegMk4AgJ8uxgs9/IUj/CFihgxg/KhRRTZQQiRqOQsVPtuVWi4M7pBxKiSc0iSWtXx/m0CKYiGy1bqNw9l+MsKPaKUfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740718808; c=relaxed/simple;
-	bh=kRi2AfZgU8VSYcVvKNIJo4IDAJBNFYcotQBhoT+sW04=;
+	s=arc-20240116; t=1740718810; c=relaxed/simple;
+	bh=Dg1RsnO6HzERA1pt4EeSU3/xx//zIUwaARP8Y9tbZX0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p5J7Nrd1DYtwv9i37FMxqv6Y2+jxswt31sDpyW7Y4W0jFLna7cHzX4CbwJfyoFXOkDGRosaZMl7ncEuBE0zUTRZjkbte39RRYo5piwn8uMmSelccQBUsgPtxKmSPIEjA0m2OiTazKHz7KvLSbAzeXZtahaEfsfkMgKray8yjF7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CL7zljev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EAAC4CED6;
-	Fri, 28 Feb 2025 05:00:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Umb9n7XsAfg0Oik31T0XOK/28frwshCehDtUDVkKwUeZNnBsX27tqd6uAAA6k3QYRjEo7rDb7BAepsjgEQzttCE1q5hiQdrsjVnsrHDUFeLvkwa5p1BKSWWaF9jcVT8v1nFJEr1Wi1Fw3O4+PPdaFTvrRaXeGEX7d3biYRVcT5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j54DANKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A07C4CED6;
+	Fri, 28 Feb 2025 05:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740718807;
-	bh=kRi2AfZgU8VSYcVvKNIJo4IDAJBNFYcotQBhoT+sW04=;
+	s=k20201202; t=1740718809;
+	bh=Dg1RsnO6HzERA1pt4EeSU3/xx//zIUwaARP8Y9tbZX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CL7zljevWQcE13ELbJlDsjQjB1kFSRQPU9Pa5pI/aGWDCI8dPnx7PvnroZKxtYFki
-	 DZohEBq6C9rvQw3ce8eGstk9LZrg/WRtuRQvVUzvrqw3ERooOZf8Z4/luM83sdgmWr
-	 FvVrQbH4pQwP0He3YUHBzcXbhjD97xaVwn5536N+9xkk1bwQQe+JcXKxQaEzq3v8oQ
-	 BzpJImaZ0AdigyPP8Grm0miG6HjxTtNgQB5YNPg5uW1ktSxc9F+H7lsQqis3un156O
-	 a6kdHlb0t1p8/OT4uookNsD4mFptV+az0cfHOS9YLxNi8AC75Nq6tM1ir2lZBPMjK6
-	 hhVLyy1pUf+nA==
+	b=j54DANKzu6dgLCNO9OnR/DGr2aqSEztUqKk/PmV4ylzerkrPdGcsxvo/w77ZMN1n8
+	 X45LrYFCU/kenmBO/blBENZeORl+XYLRXyyuUVrkWQE/W5oE2GKKFQqzzkyCGP7NCw
+	 NnB6aYhPONdBwlHo0IJmQLWjD/ym9vNhFQPsv3Lfk0qaYYQo4/+XRYQeWE6usReTlp
+	 Px1njFQX43t7LMZ8FngauvcLa6d4EbIpQx8GoXpY34Sb+P30tM3JCXCHC1GyhRzMRm
+	 OtZB3AzeiZkiLeAS1q4FTKudk2+JhmYaoVXHt2hvj+1Y2uHqVJ7Xj9B0rcKr9XGc/h
+	 EW5r3oBbOqphQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	adrienverge@gmail.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] ALSA: hda/realtek: Fix microphone regression on ASUS N705UD
-Date: Thu, 27 Feb 2025 23:56:22 -0500
-Message-Id: <20250227193111-dc41d39b05333aec@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 v3 3/3] tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
+Date: Thu, 27 Feb 2025 23:56:24 -0500
+Message-Id: <20250227152512-f77c023b24e0437e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250226135515.24219-1-adrienverge@gmail.com>
+In-Reply-To:  <20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-3-360efec441ba@igalia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,84 +64,45 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-❌ Build failures detected
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: c6557ccf8094ce2e1142c6e49cd47f5d5e2933a8
+The upstream commit SHA1 provided is correct: 9da49aa80d686582bc3a027112a30484c9be6b6e
 
-Status in newer kernel trees:
-6.6.y | Not found
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?=<rcn@igalia.com>
+Commit author: Jeongjun Park<aha310510@gmail.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  c6557ccf8094c ! 1:  09b2f4d39b8aa ALSA: hda/realtek: Fix microphone regression on ASUS N705UD
-    @@ Commit message
-         Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-         Tested-by: Adrien Vergé <adrienverge@gmail.com>
-         Signed-off-by: Adrien Vergé <adrienverge@gmail.com>
-    -    Link: https://patch.msgid.link/20250226135515.24219-1-adrienverge@gmail.com
-    -    Signed-off-by: Takashi Iwai <tiwai@suse.de>
+1:  9da49aa80d686 ! 1:  c6d34f018cdee tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
+    @@ Metadata
+      ## Commit message ##
+         tun: Add missing bpf_net_ctx_clear() in do_xdp_generic()
      
-      ## sound/pci/hda/patch_realtek.c ##
-     @@ sound/pci/hda/patch_realtek.c: static const struct hda_quirk alc269_fixup_tbl[] = {
+    +    [ Upstream commit 9da49aa80d686582bc3a027112a30484c9be6b6e ]
+    +
+         There are cases where do_xdp_generic returns bpf_net_context without
+         clearing it. This causes various memory corruptions, so the missing
+         bpf_net_ctx_clear must be added.
+    @@ Commit message
+         Reported-by: syzbot+61a1cfc2b6632363d319@syzkaller.appspotmail.com
+         Reported-by: syzbot+709e4c85c904bcd62735@syzkaller.appspotmail.com
+         Signed-off-by: David S. Miller <davem@davemloft.net>
+    +    [rcn: trivial backport edit to adapt the patch context.]
+    +    Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+     
+      ## net/core/dev.c ##
+    -@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff **pskb)
+    +@@ net/core/dev.c: int do_xdp_generic(struct bpf_prog *xdp_prog, struct sk_buff *skb)
+      			bpf_net_ctx_clear(bpf_net_ctx);
+      			return XDP_DROP;
+      		}
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
-| stable/linux-6.12.y       |  Success    |  Success   |
 | stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-
-Build Errors:
-Patch failed to apply on stable/linux-6.1.y. Reject:
-
-diff a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c	(rejected hunks)
-@@ -10656,7 +10656,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x19ce, "ASUS B9450FA", ALC294_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
--	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
-Patch failed to apply on stable/linux-5.15.y. Reject:
-
-diff a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c	(rejected hunks)
-@@ -10656,7 +10656,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x19ce, "ASUS B9450FA", ALC294_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
--	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
-Patch failed to apply on stable/linux-5.10.y. Reject:
-
-diff a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c	(rejected hunks)
-@@ -10656,7 +10656,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x19ce, "ASUS B9450FA", ALC294_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
--	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
-Patch failed to apply on stable/linux-5.4.y. Reject:
-
-diff a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c	(rejected hunks)
-@@ -10656,7 +10656,6 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x19ce, "ASUS B9450FA", ALC294_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
--	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
 
