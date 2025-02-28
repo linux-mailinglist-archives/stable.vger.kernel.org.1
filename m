@@ -1,143 +1,101 @@
-Return-Path: <stable+bounces-119955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194EBA49D06
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 16:15:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CCBA49D4A
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 16:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E60637A0209
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 15:14:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA711890BD4
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 15:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5051D25DAF0;
-	Fri, 28 Feb 2025 15:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BB0271824;
+	Fri, 28 Feb 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b="KZJgsuSY"
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="rHQbS4AI"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A81EF381;
-	Fri, 28 Feb 2025 15:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D791EF385
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 15:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740755684; cv=none; b=Z7KdYiHu1XkC9PousFWU9aI4HniJMGxHCJy4iDwlA+Nx+cQCYpBO1yhY9p8BhRluk3lI4Vtxax4qwgYymtxG6TrYkt1zDU/ZZgMyS4/LuQwMLpiu2prpdiZxqeWm0S/dlB1YQx2w7HuFolBIEkXmDwy5r5CpvncTZeB+8fVyIVc=
+	t=1740756142; cv=none; b=PoDBgzIbmAEb+jbQmcM5cJ5SpykCdD47gzh1KxWd3wRtVb1qD/2E74HnVtWN+FF7VkkHEFY6+0WXDPo1JseLwcieJ2z4lAg3PopbcgQYwfxRvlVpBZT+YJNzCeLqD/U9t0sugYwCQh53zB1yAh50IqFu8FSrWEvh17MndbweENM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740755684; c=relaxed/simple;
-	bh=NOIaiVi7loLRevJWOYiXC61BcUpEJwIqE3YlfRh2sRE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OC/THrrJ1RV07ckAKDxNC3drVsLF/xes/BwlFkT7JimA+xMrV2zm29Tk92rPxp/tQ+lFPIe3usBwXx75i1hIBOJugItO79i4K1uPwYacH+JOBPWSny6r0GUVdqq4BEoJwJ+q/iiqfwvQHHP8ug9y7Vta4yCGFVFiuajIgPV3tXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=ps.report@gmx.net header.b=KZJgsuSY; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1740755662; x=1741360462; i=ps.report@gmx.net;
-	bh=Bm77GiaKy4B5E8U7E3Q8p7UvT2yl7qRHpaz9uX0zrNM=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=KZJgsuSY7KBn5JLzAhrB/Z2J97PkcmTio/JMwanPF9Abq3Fv6zLEtg/ImvVBHh0/
-	 +gcW8iw8+rQ9XlxttEnXAINtZFEFoCfdtFm8ZjjpHrBCG9CRRU1e1VPqu7JhwDh4o
-	 QCPU328PDvFYZYxd6/E1qqFTRVzLfW4lWE4pTUAjFaHt6aVqiRuAOSapV2/Qe8XQy
-	 DF/wHuvsddWy7O/X5TLvDJ8ldWFavzAeit80V5mhmULhGbezTy2L3ZjON9JsKpt6V
-	 PX6dlVc411+eHCWzU3Yb/xBZEEQnscyafKsGUetzfiV3XO5RF7gZ9pSIFwx/PHaUT
-	 PMVQKYNVWsgCGg0gaw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost ([82.135.81.95]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MzQkK-1t1PYs0Z9M-00zhNV; Fri, 28
- Feb 2025 16:14:22 +0100
-Date: Fri, 28 Feb 2025 16:14:20 +0100
-From: Peter Seiderer <ps.report@gmx.net>
-To: Christian Heusel <christian@heusel.eu>
-Cc: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, stable@vger.kernel.org,
- Benjamin Xiao <fossben@pm.me>, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, linux-mediatek@lists.infradead.org,
- linux-wireless@vger.kernel.org
-Subject: Re: [REGRESSION][BISECTED][STABLE] MT7925 wifi throughput halved
- with 6.13.2
-Message-ID: <20250228161420.11ac4696@gmx.net>
-In-Reply-To: <b994a256-ee2f-4831-ad61-288ae7bc864b@heusel.eu>
-References: <b994a256-ee2f-4831-ad61-288ae7bc864b@heusel.eu>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-suse-linux-gnu)
+	s=arc-20240116; t=1740756142; c=relaxed/simple;
+	bh=QqyLu6u+1ahNp3WxvxP4um+m+DWCdM/0jn00g31dnvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KudENCr86OwWCc9fQhLNMf8pUiw5PoCPZiHmHWfPBOb+4aKhGIGaDsZVq4F92f3uduWyLd+cuMLw72LenslR0my25YrynONHF8doeVv6IjHDD8bLhdRieCgkDc6lDXajQOmGNsLBX7rBE07FWq/eXIFlj9ajSpx11m0H2pMTBuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=rHQbS4AI; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e08064b4ddso2930313a12.1
+        for <stable@vger.kernel.org>; Fri, 28 Feb 2025 07:22:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1740756139; x=1741360939; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QqyLu6u+1ahNp3WxvxP4um+m+DWCdM/0jn00g31dnvA=;
+        b=rHQbS4AICxK61+BHGsx5IfT47Ine+qCwkDHJ5T/MuQg7hWZjlFO3oyK9iZXOLWnCWm
+         Lnh95jQP4IM8r4KPzBiCiGx3Xfe/AmtbUisbLEiXTqQcX0ciVxdXSkEnzASkN3ri53sq
+         C4jF7J1O+fewyXrvXjRyFW0fYH2OgO1C3ym1MgoxGme8g4FKCyjldf65rHTwp8wPEXGx
+         W4+NBI8FKX6s/m1EFeltBRQXjwFiwixaT+iXMQw7VhYj1bL9sBrewpDxro0TyL6ar8ea
+         i+f0qrN4cfBvMGZJ4IybUYQFnfv3b9I4R15g384NBiCBI4oijfKjb5l/MqkEnodtq/0j
+         8rLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740756139; x=1741360939;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QqyLu6u+1ahNp3WxvxP4um+m+DWCdM/0jn00g31dnvA=;
+        b=tqDo47/5azBo2aCHlyYtaIuV2JZlR+ZhOrKHPOWMuE43WMya9jNjVBrXw2IozSndGi
+         N4hupsupM76/fxMdADV9F0oz3Lnj8cj+gDVpADkGQrVvBNdYe7hy1YqP+uZ2RkxO67/d
+         zeGvBuDow1Sq3GUFD9jveTJg9PhND3ouqoiI+XDMnmWVTAaKIlF2+2ISRrbpnprARYm9
+         qiFq8sYOOzZpMuuZuvwB2PUbsfWUQXFqa/nwJx9+bZzxTA5DQpJhBZvHUSov4Qj0X2EW
+         w6HaDfhvZ/zJZr6+JF5SMU30ABvgPPoX44/OzTLEBQ5gZNf1NcKEEGFC3Pl/rptveO5U
+         kicg==
+X-Forwarded-Encrypted: i=1; AJvYcCVsF4iFYWlhDVEjLXoRO4N7V3RnIwPaZb/ZEWtKZD+c2vcoEBYKrOMwvsIBr7S8EyfSsnvsgvc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHP1wov/LJxzvqn/azJayu+NuDRlYpj8FFuAojWPPhhj5bcJ+L
+	nniHuzhy3aL/TwFYpzPAJgadH0oyFRvcylbrNalvUW0Zk2XeFy2Rf8iXKpaZdWs=
+X-Gm-Gg: ASbGncscxnuQaaWngBke2pGHt086AqEEA/W1H3lzvc6NhdkyBVpfiErRvn3jel+Woq7
+	fUfTSbkRIdhHnLHeo/GGNQ+NzcdTFsylD+CAQslnrK5tlRFlQLjzPCjnHcb/e9/w/TK9FP8bJE6
+	uIcZKwf1YE0nGV+F4kzLgYyJn0wUBzZqaT0VbIkdtZ7DQicH/eIMcQqP5b3Z5EwYA5kEdgPI3C+
+	HjEQD064p6hbFBgnYt212ASWjpSil9CAxVtV/VYBE7/efWosJj3qXR+EpCb3sIY+TrbyqxiFwY/
+	hplVIiY9AB2S2N2Z2AmOBVtOcWofZ6FTltEaKq87RnmPzHjnG0j7Jw==
+X-Google-Smtp-Source: AGHT+IF9qp8a/UWBHc5Cf5P7FBXKmaSQUjAHQFD/EXiBNU4nniytV0W3aEh9jTooEY6MlyF55dubEA==
+X-Received: by 2002:a17:906:2dc6:b0:abf:47cf:8323 with SMTP id a640c23a62f3a-abf47cfaacdmr49876266b.22.1740756139004;
+        Fri, 28 Feb 2025 07:22:19 -0800 (PST)
+Received: from jiri-mlt.client.nvidia.com ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0b99a6sm309411866b.13.2025.02.28.07.22.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 07:22:18 -0800 (PST)
+Date: Fri, 28 Feb 2025 16:22:16 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: przemyslaw.kitszel@intel.com, arkadiusz.kubalewski@intel.com, 
+	davem@davemloft.net, jan.glaza@intel.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, stable@vger.kernel.org, vadim.fedorenko@linux.dev
+Subject: Re: [PATCH v4 net-next] dpll: Add an assertion to check
+ freq_supported_num
+Message-ID: <i4sqqg4wwlrh7gcvfrmif6jwv4uhjavwbzgzmvcsxc5ocma3jb@r5tf5wbairf4>
+References: <20250228150210.34404-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:i4T6/EbgFwr0KfP3Z8OoxJOOCwMntS0pNgUxOQPDz3qE9Yunna5
- yYQNNRVMcrb1ujz1h5zgD4pXfZ1i8xNE7W6i+TJ0OO33ufyZIGS1/nhLPDOIe23ricKukSR
- 1qDvL/xABENHxxZA8JvW6kqQSRqQuPsXVMpycxZsHxxFH8UwvS9sguMgMBlKmJ3Fz4sIJ3d
- fQ7K0RFosbpTR+RpA0zBQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:vn2tnnWN6Fo=;Rtv/w94WvvtCQ5op19orjFAa30U
- 3/hYOSUd6X+HGBVZrfzjiABuAhXF6qPtrF7qCQ4WvrTat3V1//t2hbwAj3iD23Pxd2WqFLrRG
- xoinsfikG+HgqUs3BquPocL8a/BlAUI4qmApFf+pqv2b9kQnL5FCUk8HCwoV6FenpgV8Tujdf
- EecoSvicsKHLt2A3sPGxevdSahVvaNXpBRnv4Rwcn7Ch0VJ02l0VjyanHBtAzm9JmNspPM7om
- KR4YCw8QsHKwfeEbVzTchIwfIwA3BBMO54dyszZ/tLA/dLqH+AU0ouKMSkvR+/YOSM85wT3x8
- byv4nAVRXcL66DbuvXRLH8bLiYvjE3jOyZ1NW+xVq3eblxeg2kDlphTgSttQIojwKCblneQKi
- pe6vWpIVKIR59k8SLq16WoPqf+18xazwe76/N8n2IDv7TkcetZ0EuoxWtOv9jNPCOe3FgUI1g
- gH9GNM9ASR2fcBuSXrrUldLU04Oz6/awgmUM28TkEZH5wVLU6DKT/4jSBogjwcFIrXcgHxyF8
- 8LaV6GBRpinx7LD7NxZ+dSwgu4nj09EI9wztMitlwaGkT3w5sFVqLpsNejdqZnPlu6Cs0l6Pf
- RyhMm8uExhL+TOcpakXGe5Zxj6KwYEnUDJaT6aDy5TCZnjrbEjjzTz1rosbDNvl/Ri3xAGkHH
- JEmA0JJdD3G3ixtc13a7iJSQ8rkOEsYifUEmvgtfb5z84xXzJXC9HTPgsvldqIev7stf371YL
- mPzojRhlRZaKZV+LRv6dRJrHGJIIstipNcKKv2uwe5BIusoL6BGUG1uN42jxB6maPuNByfGnU
- 28jtym+mo5B/8+2NE6OU1OhVVNSro9Obqnxpi794YSjwBIUwqYhv2u0UD8MhYWYWV32oGJTtS
- CtDxm9jn5e1y0lEgjWc+UZKOi0CmMtVf/BAgX7sk5WQfGFimoLAPvXe2PiZ7oMg04fwk5NaeQ
- mVxJWc0WkFNQSb8X4vsFWwIX4O6dODzElS96VPJJsKWonUoX6Fb+GcMbBggtRwPk9zKzKvW2m
- f2zQePbJ3iOWdis6GfHhvS9ecVtFfqDVKjAwjSphKlt1zIoLqe1JryFtMI9lakiEyzfDZaLhb
- dQxy171z/vBuJfMESu9MyColPywNTxGs4KVnI/vvsZKF+MySy3HSRoLy5Ez5Du+tKfzFywlsv
- l8ubZmCtN5hoES/U6gNi6uL5mYuM22btrEncBUb/S/bAHAWuQLM8MKW/XY3XX97cYcsTHI5bk
- Nsh4HQfehWur5ZWEypRwdAEqs9fNnYymj11l+46BJ4O/RoAup3acw32SFfYbdlG6aGl6TQRA5
- hEA9U4qSbNPzh3OlHE95RXquWq0CuKIHoBvGUsDePwvdFkuSqCp4F9cleyyd3EPDZxzC2rlmI
- +v9nMhumKfB+ikfrEzGLfVp4593hU/CfwsiTREyc3Yohche+bXp5kDhiEZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228150210.34404-1-jiashengjiangcool@gmail.com>
 
-Hello Christian,
-
-On Fri, 28 Feb 2025 11:19:52 +0100, Christian Heusel <christian@heusel.eu>=
- wrote:
-
-> Hello everyone,
+Fri, Feb 28, 2025 at 04:02:10PM +0100, jiashengjiangcool@gmail.com wrote:
+>Since the driver is broken in the case that src->freq_supported is not
+>NULL but src->freq_supported_num is 0, add an assertion for it.
 >
-> on the Arch Linux Bugtracker[1] Benjamin (also added in CC) reported
-> that his MT7925 wifi card has halved it's throughput when updating from
-> the v6.13.1 to the v6.13.2 stable kernel. The problem is still present
-> in the 6.13.5 stable kernel.
->
-> We have bisected this issue together and found the backporting of the
-> following commit responsible for this issue:
->
->     4cf9f08632c0 ("wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba =
-for MLO")
+>Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-Seems there is already a suggested revert of the mentioned commit, see
-
-	[PATCH v4 1/6] Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_=
-ba for MLO"
-	https://lore.kernel.org/linux-wireless/20250226025647.102904-1-sean.wang@=
-kernel.org/#r
-
-Regards,
-Peter
-
-
->
-> We unfortunately didn't have a chance to test the mainline releases as
-> the reporter uses the (out of tree) nvidia modules that were not
-> compatible with mainline release at the time of testing. We will soon
-> test against Mainline aswell.
->
-> I have attached dmesg outputs of a good and a bad boot aswell as his
-> other hardware specs and will be available to debug this further.
->
-> Cheers,
-> Christian
->
-> [1]: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/i=
-ssues/112
-
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 
