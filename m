@@ -1,55 +1,50 @@
-Return-Path: <stable+bounces-119893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9B7A491C8
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 07:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCF7A49209
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A253016FB02
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 06:52:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A4C21683D8
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 07:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A211C1F12;
-	Fri, 28 Feb 2025 06:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Go0ANso7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D421C5D52;
+	Fri, 28 Feb 2025 07:19:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9760F139E
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 06:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B91276D12;
+	Fri, 28 Feb 2025 07:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740725522; cv=none; b=M2ijb+Wi4bVV6Yf5GsSPFG5HBn1w+8m51Bei5FG+VkhoNdwggWJgSgRr+wtykw+hC4DVe9c/I7uHZs6oI0U4CfdHrlMDq4pTLQy1SZMZhK29uFRIf27jubZDCn0xGg3UpjYkBpnAxt0L9phTTgKuMVX7x1YY+yMKWs0cbPr7ubA=
+	t=1740727155; cv=none; b=Tq2Bg0Fl7ArZD+XtA5rUPmnD2J6Ifns2HJBDeMyRZ88RXRBdTYb4bQOLVgO/3aI8ClhMUBxYwQHifG4DnVxp4RpGvw2Qw1QcazmavZJkzLRoTrVNk+FpJARrq3ezVljkl/zYWXob3dWQYzG8YtGXf3fsWn6GM+B6ixQ3pi0QdpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740725522; c=relaxed/simple;
-	bh=NXgI+zhxrYwUTHVWra0OQaREZ9LHkj0oAflqfrHxg/w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jq9PqqiDnkSsoBZ2mjBTn2A80aZA60UIg5BtyP6KFLoYdIMBWbMbR8nPkt4NRzOOAZJU+ldv7y0jGNzXw9ATSmV6elYx60kRBu//DCRS8tFhDNEf4qhuNRbap5eqxkTrE8jPvaWQNCAooHaGfihQPY/VNxxZGri9MY5c6XNw4Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Go0ANso7; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=LUns6
-	mIjyIVFAH3uU5guxjPHvQg+NzpDzWFZxLl+ACo=; b=Go0ANso7LwCyB0cninxDJ
-	x+KluDCFlhFkx9rKBtdIitdIhdAqwIPv4eY07M42DOgbYDfY25bIh9TmCsAmoy+f
-	9Qao3ZUtuoCm4hVHIeb0ych6S10GFD7/V0W7V0f0q3E3Xmox7UoHAMOROo/EuIzo
-	BHg/mKm1RG2744l3tAgbCc=
-Received: from public (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3gynVXMFn48y4PA--.48321S4;
-	Fri, 28 Feb 2025 14:51:12 +0800 (CST)
-From: jetlan9@163.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Tuo Li <islituo@gmail.com>,
-	BassCheck <bass@buaa.edu.cn>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.1.y] scsi: lpfc: Fix a possible data race in lpfc_unregister_fcf_rescan()
-Date: Fri, 28 Feb 2025 14:50:56 +0800
-Message-Id: <20250228065056.1232-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1740727155; c=relaxed/simple;
+	bh=6owDAMkr5e1jMDchDZzOuBuh5wYNshJ/TkcS+/opak4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8YQ0ZCGDh3uG6JmJ8H3DsOjoyXzXdW7X00PGlJ52DSXeg/4FmdV5tbFcSOdtyn/bt+qkiD0syP/9vnpfcjt06S9q2BE4TLUd0NthkPqTwhXV1QgzxI0eg3XC4ikF1V9op7odg/HYm98gC8H2TAbDtCM78pY7dTjDKY68471Oq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62661C4CED6;
+	Fri, 28 Feb 2025 07:19:11 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Erpeng Xu <xuerpeng@uniontech.com>,
+	Yuli Wang <wangyuli@uniontech.com>
+Subject: [PATCH V2] LoongArch: Use polling play_dead() when resuming from hibernation
+Date: Fri, 28 Feb 2025 15:18:48 +0800
+Message-ID: <20250228071848.1763966-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,59 +52,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3gynVXMFn48y4PA--.48321S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr17uF4fXr45AFyUAw45trb_yoW8Ww1UpF
-	WfGa43Zr18CF429F47Cw1kJF1Y9aykJ3429FZYq3y5ua48tryxGrWxXFZ0qayvyr1IkFZx
-	JF4q934UWa1xArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_lksrUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiWwv+yGe9VxZzGgABsV
 
-From: Tuo Li <islituo@gmail.com>
+When CONFIG_RANDOM_KMALLOC_CACHES or other randomization infrastructrue
+enabled, the idle_task's stack may different between the booting kernel
+and target kernel. So when resuming from hibernation, an ACTION_BOOT_CPU
+IPI wakeup the idle instruction in arch_cpu_idle_dead() and jump to the
+interrupt handler. But since the stack pointer is changed, the interrupt
+handler cannot restore correct context.
 
-[ Upstream commit 0e881c0a4b6146b7e856735226208f48251facd8 ]
+So rename the current arch_cpu_idle_dead() to idle_play_dead(), make it
+as the default version of play_dead(), and the new arch_cpu_idle_dead()
+call play_dead() directly. For hibernation, implement an arch-specific
+hibernate_resume_nonboot_cpu_disable() to use the polling version (idle
+instruction is replace by nop, and irq is disabled) of play_dead(), i.e.
+poll_play_dead(), to avoid IPI handler corrupting the idle_task's stack
+when resuming from hibernation.
 
-The variable phba->fcf.fcf_flag is often protected by the lock
-phba->hbalock() when is accessed. Here is an example in
-lpfc_unregister_fcf_rescan():
+This solution is a little similar to commit 406f992e4a372dafbe3c ("x86 /
+hibernate: Use hlt_play_dead() when resuming from hibernation").
 
-  spin_lock_irq(&phba->hbalock);
-  phba->fcf.fcf_flag |= FCF_INIT_DISC;
-  spin_unlock_irq(&phba->hbalock);
-
-However, in the same function, phba->fcf.fcf_flag is assigned with 0
-without holding the lock, and thus can cause a data race:
-
-  phba->fcf.fcf_flag = 0;
-
-To fix this possible data race, a lock and unlock pair is added when
-accessing the variable phba->fcf.fcf_flag.
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/20230630024748.1035993-1-islituo@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Cc: stable@vger.kernel.org
+Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
+Tested-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 2 ++
- 1 file changed, 2 insertions(+)
+V2: Fix build for !HIBERNATION and restore to idle_play_dead() if fails.
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index d3a5f10b8b83..57be02f8d5c1 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -6942,7 +6942,9 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
- 	if (rc)
- 		return;
- 	/* Reset HBA FCF states after successful unregister FCF */
-+	spin_lock_irq(&phba->hbalock);
- 	phba->fcf.fcf_flag = 0;
-+	spin_unlock_irq(&phba->hbalock);
- 	phba->fcf.current_rec.flag = 0;
+ arch/loongarch/kernel/smp.c | 47 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
+
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index fbf747447f13..4b24589c0b56 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -19,6 +19,7 @@
+ #include <linux/smp.h>
+ #include <linux/threads.h>
+ #include <linux/export.h>
++#include <linux/suspend.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/time.h>
+ #include <linux/tracepoint.h>
+@@ -423,7 +424,7 @@ void loongson_cpu_die(unsigned int cpu)
+ 	mb();
+ }
  
- 	/*
+-void __noreturn arch_cpu_idle_dead(void)
++static void __noreturn idle_play_dead(void)
+ {
+ 	register uint64_t addr;
+ 	register void (*init_fn)(void);
+@@ -447,6 +448,50 @@ void __noreturn arch_cpu_idle_dead(void)
+ 	BUG();
+ }
+ 
++#ifdef CONFIG_HIBERNATION
++static void __noreturn poll_play_dead(void)
++{
++	register uint64_t addr;
++	register void (*init_fn)(void);
++
++	idle_task_exit();
++	__this_cpu_write(cpu_state, CPU_DEAD);
++
++	__smp_mb();
++	do {
++		__asm__ __volatile__("nop\n\t");
++		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
++	} while (addr == 0);
++
++	init_fn = (void *)TO_CACHE(addr);
++	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
++
++	init_fn();
++	BUG();
++}
++#endif
++
++static void (*play_dead)(void) = idle_play_dead;
++
++void __noreturn arch_cpu_idle_dead(void)
++{
++	play_dead();
++	BUG(); /* play_dead() doesn't return */
++}
++
++#ifdef CONFIG_HIBERNATION
++int hibernate_resume_nonboot_cpu_disable(void)
++{
++	int ret;
++
++	play_dead = poll_play_dead;
++	ret = suspend_disable_secondary_cpus();
++	play_dead = idle_play_dead;
++
++	return ret;
++}
++#endif
++
+ #endif
+ 
+ /*
 -- 
-2.34.1
+2.47.1
 
 
