@@ -1,102 +1,361 @@
-Return-Path: <stable+bounces-119975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8D3A4A0F9
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 18:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C86A4A1B5
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 19:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C8C5188AB0B
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 17:55:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3691888842
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 18:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B091BD9F2;
-	Fri, 28 Feb 2025 17:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EFC27CCEF;
+	Fri, 28 Feb 2025 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cesnet.cz header.i=@cesnet.cz header.b="JOFj3dN6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jmUghGCE"
 X-Original-To: stable@vger.kernel.org
-Received: from office2.cesnet.cz (office2.cesnet.cz [78.128.248.237])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA411BC065
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 17:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.128.248.237
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A9627CCF4
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 18:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740765290; cv=none; b=P8m4vCvH5GkzkA16fBH2lvJ/DMS5BVPSTdX/oUt4frm0JqzMED+BrU5LSNvZ2uMaA1Rm7mWmpx5PjzC8nXd1AKWvuKGwVBhPnxbkdFxPH4bObnufbTgloTGiPMTLiwa0l7TtAvVCbud+p9pZ7jgLaHMAF/Xmh5xrMyhV1xyS724=
+	t=1740767542; cv=none; b=UrioQO/e9oDdRMwYP3BQK27WrpHb/7lQa6CqxbFs6LJv08YFbxfWp2Bv+g4XsTTkVgJZN20Psa9v8Bsio9JMxaKxA1t6m+9UuG2YJZZ3zm5FCz9SeE565ltC4u41U0dZ/KrTwVy/UI8IMtUZjbLFqhKHrlS6v+7cV59sQ5kV7oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740765290; c=relaxed/simple;
-	bh=eSFMXJ12iDjaESGF05cso0GvQ7vh1Kq24g7n5bFXzZQ=;
-	h=From:To:Cc:Subject:Date:MIME-Version:Message-ID:In-Reply-To:
-	 References:Content-Type; b=UYwSRzCdBemiOeCN5Nq70rBuJnxSk35uP37teoFYyw8YLDQZUmM9+KFR3xGSXuViJmDRwsx4mQvS3Us9G9iK5C1bIQuO+TJRdTENinkpX+6mQ97qCxRhZItOcgOtR7tVHmoq1i3dfbbNJTpap/Zc9VL3zu8zPhd0/ygXm+6InDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cesnet.cz; spf=pass smtp.mailfrom=cesnet.cz; dkim=pass (2048-bit key) header.d=cesnet.cz header.i=@cesnet.cz header.b=JOFj3dN6; arc=none smtp.client-ip=78.128.248.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cesnet.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cesnet.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cesnet.cz;
-	s=office2-2020; t=1740765284;
-	bh=FWXg0yJCwr0VZRTKexGu60ylw2sTqEfmHf1yraVIpVY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JOFj3dN6ZrvkjOGyBcDd5gLkhzzNvr3J6T/zItj31xs1HWqUSB76z1fDUeH95Mkut
-	 WiVcYgt1GaFz/fTezob4YvqM3iqzEImUZLLGFOKAZBhL/DkixyVFXl80vzRXPR5oZs
-	 f7NME3ZBrILX87JJKGRl/knvYxKzWnMSyhq6lLwwnJHFsvB2614Pp43NuoSLNWjmyW
-	 1ercelpT0oyYZsqzo37b4NwkIT1DStnsbQopGkGCOJhtdDsTNZICxaYljfIw1TIsVf
-	 NZh8Po008u9NJ1y8hWIVK8nWB98xfsX2fW6Vi4IpwG5gt7qKjRf8+kQr2e+7rdTv6n
-	 bXSgOH9nfjzgw==
-Received: from localhost (unknown [IPv6:2a07:b241:1002:700:921c:ed49:e10b:7c56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by office2.cesnet.cz (Postfix) with ESMTPSA id 6661F118007F;
-	Fri, 28 Feb 2025 18:54:43 +0100 (CET)
-From: =?iso-8859-1?Q?Jan_Kundr=E1t?= <jan.kundrat@cesnet.cz>
-To: Tomas Glozar <tglozar@redhat.com>
-Cc: <stable@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>,
- Luis Goncalves <lgoncalv@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Guillaume Morin <guillaume@morinfr.org>,
- Wang Yugui <wangyugui@e16-tech.com>
-Subject: Re: [PATCH 6.6 0/4] rtla/timerlat: Fix "Set =?iso-8859-1?Q?OSNOISE=5FWORKLOAD_for_kernel_threads"?=
-Date: Fri, 28 Feb 2025 18:54:41 +0100
+	s=arc-20240116; t=1740767542; c=relaxed/simple;
+	bh=ybBp67h6tWYAqgOq96pgg+UzV19BWxHLDVVsWl/BHQw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=unWGrbTxLvE5AVbxp09j1mfQlr4YTDYE0tEDRkALfD+fWV5w7Wb//vYwRLFilJckSzde5Y+vjpa9WWoDBQeLJRZ0/iaJrf5x0BnYleQz0McBnfLjpLf9ygCv96M63muvzp7j2EaGWPb++4iVjnE1iiBc708PlBK53vI4B0t1wfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jmUghGCE; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740767540; x=1772303540;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ybBp67h6tWYAqgOq96pgg+UzV19BWxHLDVVsWl/BHQw=;
+  b=jmUghGCEyiD69OKG260ey0PNH0fltj//m4l0Tt630ZYegoc320C7gCtC
+   paePrlByXoHRNnHZ96/fbrHj6Sjn1vqBwy1UgovDWsw5J0UXTqaj/Fxo4
+   X0tXpQsD1yf1w5uWxM66E+On1f0CyXRWfAIWQrkBXlERr2ZKJRdCmoCzt
+   a5f0Xwc59FHrrvYoQZ/DxU9Yp6oI+GF3g7TGKkUBRLimrkUvgH8oMxIHG
+   fbNIRfcwxngxp4YTaZ7rLr5PPuW8J9bXQE9kTqIArBuVGT5R+dOVskPuW
+   OH6U/2Jdviz5F/eIWIJGpsM8LO/G9U2KQIMNAcKOPCfFy8XpF4DeCqc1Y
+   w==;
+X-CSE-ConnectionGUID: ypqkolTHRVuAVRUXikLK6Q==
+X-CSE-MsgGUID: 9U6cb0PIQ3qKiJ2BSFBEVg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="41730628"
+X-IronPort-AV: E=Sophos;i="6.13,323,1732608000"; 
+   d="scan'208";a="41730628"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 10:32:20 -0800
+X-CSE-ConnectionGUID: lZ2in0obSQiy8EHLypjlDA==
+X-CSE-MsgGUID: xmS8CFu1TQCspoQ4NmQIsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,323,1732608000"; 
+   d="scan'208";a="148216990"
+Received: from oandoniu-mobl3.ger.corp.intel.com (HELO [10.245.244.73]) ([10.245.244.73])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 10:32:18 -0800
+Message-ID: <fb1b0714-e690-4ec8-8f57-a5cf1a72fc63@intel.com>
+Date: Fri, 28 Feb 2025 18:32:16 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5add3e65-9fd1-4a84-8f7a-40b80ff42ae3@cesnet.cz>
-In-Reply-To: <20250228135708.604410-1-tglozar@redhat.com>
-References: <20250228135708.604410-1-tglozar@redhat.com>
-Organization: CESNET
-User-Agent: Trojita/unstable-2022-08-22; Qt/5.15.15; wayland; Linux; 
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] drm/xe/hmm: Don't dereference struct page pointers
+ without notifier lock
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Oak Zeng <oak.zeng@intel.com>, stable@vger.kernel.org
+References: <20250228104418.44313-1-thomas.hellstrom@linux.intel.com>
+ <20250228104418.44313-3-thomas.hellstrom@linux.intel.com>
+ <b62352fd-f16a-423c-8a20-5d7697a6c4a7@intel.com>
+ <db2a5741b3e43cc3a54fa9c01e6af55677275070.camel@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <db2a5741b3e43cc3a54fa9c01e6af55677275070.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On p=C3=A1tek 28. =C3=BAnora 2025 14:57:04 CET, Tomas Glozar wrote:
-> Two rtla commits that fix a bug in setting OSNOISE_WORKLOAD (see
-> the patches for details) were improperly backported to 6.6-stable,
-> referencing non-existent field params->kernel_workload.
->
-> Revert the broken backports and backport this properly, using
-> !params->user_hist and !params->user_top instead of the non-existent
-> params->user_workload.
->
-> The patchset was tested to build and fix the bug.
->
-> Tomas Glozar (4):
->   Revert "rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads"
->   Revert "rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads"
->   rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
->   rtla/timerlat_top: Set OSNOISE_WORKLOAD for kernel threads
->
->  tools/tracing/rtla/src/timerlat_hist.c | 2 +-
->  tools/tracing/rtla/src/timerlat_top.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
+On 28/02/2025 13:08, Thomas Hellström wrote:
+> On Fri, 2025-02-28 at 12:55 +0000, Matthew Auld wrote:
+>> On 28/02/2025 10:44, Thomas Hellström wrote:
+>>> The pnfs that we obtain from hmm_range_fault() point to pages that
+>>> we don't have a reference on, and the guarantee that they are still
+>>> in the cpu page-tables is that the notifier lock must be held and
+>>> the
+>>> notifier seqno is still valid.
+>>>
+>>> So while building the sg table and marking the pages accesses /
+>>> dirty
+>>> we need to hold this lock with a validated seqno.
+>>>
+>>> However, the lock is reclaim tainted which makes
+>>> sg_alloc_table_from_pages_segment() unusable, since it internally
+>>> allocates memory.
+>>>
+>>> Instead build the sg-table manually. For the non-iommu case
+>>> this might lead to fewer coalesces, but if that's a problem it can
+>>> be fixed up later in the resource cursor code. For the iommu case,
+>>> the whole sg-table may still be coalesced to a single contigous
+>>> device va region.
+>>>
+>>> This avoids marking pages that we don't own dirty and accessed, and
+>>> it also avoid dereferencing struct pages that we don't own.
+>>>
+>>> Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate
+>>> userptr")
+>>> Cc: Oak Zeng <oak.zeng@intel.com>
+>>> Cc: <stable@vger.kernel.org> # v6.10+
+>>> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>>> ---
+>>>    drivers/gpu/drm/xe/xe_hmm.c | 115 ++++++++++++++++++++++++++-----
+>>> -----
+>>>    1 file changed, 85 insertions(+), 30 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/xe/xe_hmm.c
+>>> b/drivers/gpu/drm/xe/xe_hmm.c
+>>> index c56738fa713b..d3b5551496d0 100644
+>>> --- a/drivers/gpu/drm/xe/xe_hmm.c
+>>> +++ b/drivers/gpu/drm/xe/xe_hmm.c
+>>> @@ -42,6 +42,36 @@ static void xe_mark_range_accessed(struct
+>>> hmm_range *range, bool write)
+>>>    	}
+>>>    }
+>>>    
+>>> +static int xe_alloc_sg(struct sg_table *st, struct hmm_range
+>>> *range,
+>>> +		       struct rw_semaphore *notifier_sem)
+>>> +{
+>>> +	unsigned long i, npages, hmm_pfn;
+>>> +	unsigned long num_chunks = 0;
+>>> +	int ret;
+>>> +
+>>> +	/* HMM docs says this is needed. */
+>>> +	ret = down_read_interruptible(notifier_sem);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>> +	if (mmu_interval_read_retry(range->notifier, range-
+>>>> notifier_seq))
+>>> +		return -EAGAIN;
+>>> +
+>>> +	npages = xe_npages_in_range(range->start, range->end);
+>>> +	for (i = 0; i < npages;) {
+>>> +		hmm_pfn = range->hmm_pfns[i];
+>>> +		if (!(hmm_pfn & HMM_PFN_VALID)) {
+>>
+>> Is this possible? The default_flags are always REQ_FAULT, so that
+>> should
+>> ensure PFN_VALID, or the hmm_fault would have returned an error?
+>>
+>>   From the docs:
+>>
+>> "HMM_PFN_REQ_FAULT - The output must have HMM_PFN_VALID or
+>> hmm_range_fault() will fail"
+>>
+>> Should this be an assert?
+>>
+>> Also probably dumb question, but why do we need to hold the notifier
+>> lock over this loop? What is it protecting?
+> 
+> Docs for hmm_pfn_to_map_order():
+> 
+> /*
+>   * This must be called under the caller 'user_lock' after a successful
+>   * mmu_interval_read_begin(). The caller must have tested for
+> HMM_PFN_VALID
+>   * already.
+>   */
+> 
+> I'm fine with changing to an assert, and I agree that the lock is
+> pointless: We're operating on thread local data, but I also think that
+> not adhering to the doc requirements might cause problems in the
+> future. Like if the map order encoding is dropped and the order was
+> grabbed from the underlying page.
 
-Thanks for a quick fix, it now builds again and the tool appears to work.
+Makes sense. Keeping the lock indeed looks sensible.
 
-Tested-by: Jan Kundr=C3=A1t <jan.kundrat@cesnet.cz>
+Staring some more at hmm_pfn_to_map_order(), it also says:
 
-With kind regards,
-Jan
+"The caller must be careful with edge cases as the start and end VA of 
+the given page may extend past the range used with hmm_range_fault()."
+
+I take that to mean it will still return a huge page order even if there 
+is say some 2M PTE, but the hmm_range is just some small sub range of 
+pfn covering part of the huge page, like say 8K, where the first 4K page 
+is exactly at the end of the 2M page. Are there some potentially nasty 
+surprises with stuff like:
+
+i += 1UL << hmm_pfn_to_map_order(hmm_pfn);
+
+Since the increment here (512) could go past even npages (2), and then 
+num_chunks is too small (1)?
+
+> 
+> /Thomas
+> 
+> 
+>>
+>>> +			up_read(notifier_sem);
+>>> +			return -EFAULT;
+>>> +		}
+>>> +		num_chunks++;
+>>> +		i += 1UL << hmm_pfn_to_map_order(hmm_pfn);
+>>> +	}
+>>> +	up_read(notifier_sem);
+>>> +
+>>> +	return sg_alloc_table(st, num_chunks, GFP_KERNEL);
+>>> +}
+>>> +
+>>>    /**
+>>>     * xe_build_sg() - build a scatter gather table for all the
+>>> physical pages/pfn
+>>>     * in a hmm_range. dma-map pages if necessary. dma-address is
+>>> save in sg table
+>>> @@ -50,6 +80,7 @@ static void xe_mark_range_accessed(struct
+>>> hmm_range *range, bool write)
+>>>     * @range: the hmm range that we build the sg table from. range-
+>>>> hmm_pfns[]
+>>>     * has the pfn numbers of pages that back up this hmm address
+>>> range.
+>>>     * @st: pointer to the sg table.
+>>> + * @notifier_sem: The xe notifier lock.
+>>>     * @write: whether we write to this range. This decides dma map
+>>> direction
+>>>     * for system pages. If write we map it bi-diretional; otherwise
+>>>     * DMA_TO_DEVICE
+>>> @@ -76,38 +107,33 @@ static void xe_mark_range_accessed(struct
+>>> hmm_range *range, bool write)
+>>>     * Returns 0 if successful; -ENOMEM if fails to allocate memory
+>>>     */
+>>>    static int xe_build_sg(struct xe_device *xe, struct hmm_range
+>>> *range,
+>>> -		       struct sg_table *st, bool write)
+>>> +		       struct sg_table *st,
+>>> +		       struct rw_semaphore *notifier_sem,
+>>> +		       bool write)
+>>>    {
+>>>    	struct device *dev = xe->drm.dev;
+>>> -	struct page **pages;
+>>> -	u64 i, npages;
+>>> -	int ret;
+>>> -
+>>> -	npages = xe_npages_in_range(range->start, range->end);
+>>> -	pages = kvmalloc_array(npages, sizeof(*pages),
+>>> GFP_KERNEL);
+>>> -	if (!pages)
+>>> -		return -ENOMEM;
+>>> -
+>>> -	for (i = 0; i < npages; i++) {
+>>> -		pages[i] = hmm_pfn_to_page(range->hmm_pfns[i]);
+>>> -		xe_assert(xe, !is_device_private_page(pages[i]));
+>>> -	}
+>>> -
+>>> -	ret = sg_alloc_table_from_pages_segment(st, pages, npages,
+>>> 0, npages << PAGE_SHIFT,
+>>> -
+>>> 						xe_sg_segment_size(dev), GFP_KERNEL);
+>>> -	if (ret)
+>>> -		goto free_pages;
+>>> -
+>>> -	ret = dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL :
+>>> DMA_TO_DEVICE,
+>>> -			      DMA_ATTR_SKIP_CPU_SYNC |
+>>> DMA_ATTR_NO_KERNEL_MAPPING);
+>>> -	if (ret) {
+>>> -		sg_free_table(st);
+>>> -		st = NULL;
+>>> +	unsigned long hmm_pfn, size;
+>>> +	struct scatterlist *sgl;
+>>> +	struct page *page;
+>>> +	unsigned long i, j;
+>>> +
+>>> +	lockdep_assert_held(notifier_sem);
+>>> +
+>>> +	i = 0;
+>>> +	for_each_sg(st->sgl, sgl, st->nents, j) {
+>>> +		hmm_pfn = range->hmm_pfns[i];
+>>> +		page = hmm_pfn_to_page(hmm_pfn);
+>>> +		xe_assert(xe, !is_device_private_page(page));
+>>> +		size = 1UL << hmm_pfn_to_map_order(hmm_pfn);
+>>> +		sg_set_page(sgl, page, size << PAGE_SHIFT, 0);
+>>> +		if (unlikely(j == st->nents - 1))
+>>> +			sg_mark_end(sgl);
+>>> +		i += size;
+>>>    	}
+>>> +	xe_assert(xe, i == xe_npages_in_range(range->start, range-
+>>>> end));
+>>>    
+>>> -free_pages:
+>>> -	kvfree(pages);
+>>> -	return ret;
+>>> +	return dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL
+>>> : DMA_TO_DEVICE,
+>>> +			       DMA_ATTR_SKIP_CPU_SYNC |
+>>> DMA_ATTR_NO_KERNEL_MAPPING);
+>>>    }
+>>>    
+>>>    /**
+>>> @@ -235,16 +261,45 @@ int xe_hmm_userptr_populate_range(struct
+>>> xe_userptr_vma *uvma,
+>>>    	if (ret)
+>>>    		goto free_pfns;
+>>>    
+>>> -	ret = xe_build_sg(vm->xe, &hmm_range, &userptr->sgt,
+>>> write);
+>>> +	if (unlikely(userptr->sg)) {
+>>> +		ret = down_write_killable(&vm-
+>>>> userptr.notifier_lock);
+>>> +		if (ret)
+>>> +			goto free_pfns;
+>>> +
+>>> +		xe_hmm_userptr_free_sg(uvma);
+>>> +		up_write(&vm->userptr.notifier_lock);
+>>> +	}
+>>> +
+>>> +	ret = xe_alloc_sg(&userptr->sgt, &hmm_range, &vm-
+>>>> userptr.notifier_lock);
+>>>    	if (ret)
+>>>    		goto free_pfns;
+>>>    
+>>> +	ret = down_read_interruptible(&vm->userptr.notifier_lock);
+>>> +	if (ret)
+>>> +		goto free_st;
+>>> +
+>>> +	if (mmu_interval_read_retry(hmm_range.notifier,
+>>> hmm_range.notifier_seq)) {
+>>> +		ret = -EAGAIN;
+>>> +		goto out_unlock;
+>>> +	}
+>>> +
+>>> +	ret = xe_build_sg(vm->xe, &hmm_range, &userptr->sgt,
+>>> +			  &vm->userptr.notifier_lock, write);
+>>> +	if (ret)
+>>> +		goto out_unlock;
+>>> +
+>>>    	xe_mark_range_accessed(&hmm_range, write);
+>>>    	userptr->sg = &userptr->sgt;
+>>>    	userptr->notifier_seq = hmm_range.notifier_seq;
+>>> +	up_read(&vm->userptr.notifier_lock);
+>>> +	kvfree(pfns);
+>>> +	return 0;
+>>>    
+>>> +out_unlock:
+>>> +	up_read(&vm->userptr.notifier_lock);
+>>> +free_st:
+>>> +	sg_free_table(&userptr->sgt);
+>>>    free_pfns:
+>>>    	kvfree(pfns);
+>>>    	return ret;
+>>>    }
+>>> -
+>>
+> 
+
 
