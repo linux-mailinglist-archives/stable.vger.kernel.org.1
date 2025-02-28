@@ -1,101 +1,193 @@
-Return-Path: <stable+bounces-119956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CCBA49D4A
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 16:24:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F075A49D71
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 16:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA711890BD4
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 15:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF49A1892F00
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 15:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BB0271824;
-	Fri, 28 Feb 2025 15:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="rHQbS4AI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515E81AB6FF;
+	Fri, 28 Feb 2025 15:29:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D791EF385
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 15:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2507328EC;
+	Fri, 28 Feb 2025 15:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740756142; cv=none; b=PoDBgzIbmAEb+jbQmcM5cJ5SpykCdD47gzh1KxWd3wRtVb1qD/2E74HnVtWN+FF7VkkHEFY6+0WXDPo1JseLwcieJ2z4lAg3PopbcgQYwfxRvlVpBZT+YJNzCeLqD/U9t0sugYwCQh53zB1yAh50IqFu8FSrWEvh17MndbweENM=
+	t=1740756573; cv=none; b=M9Z2FjV4X+UF9b6VzgAXrRbXqrFwq1uZJvtJGciw8KA6Y0KjWqj/94Jnufr6HE8hO8bYFqAOj5HkbBLms37V7g74slGBLQEyXa6dheWtDb1MEOrq6KKIkYb90+e0ZFOOPNPSOMo8Rnf8Y3Z3Z1RoVEGO1aF9JLSH0/XdTTlSnPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740756142; c=relaxed/simple;
-	bh=QqyLu6u+1ahNp3WxvxP4um+m+DWCdM/0jn00g31dnvA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KudENCr86OwWCc9fQhLNMf8pUiw5PoCPZiHmHWfPBOb+4aKhGIGaDsZVq4F92f3uduWyLd+cuMLw72LenslR0my25YrynONHF8doeVv6IjHDD8bLhdRieCgkDc6lDXajQOmGNsLBX7rBE07FWq/eXIFlj9ajSpx11m0H2pMTBuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=rHQbS4AI; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e08064b4ddso2930313a12.1
-        for <stable@vger.kernel.org>; Fri, 28 Feb 2025 07:22:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1740756139; x=1741360939; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QqyLu6u+1ahNp3WxvxP4um+m+DWCdM/0jn00g31dnvA=;
-        b=rHQbS4AICxK61+BHGsx5IfT47Ine+qCwkDHJ5T/MuQg7hWZjlFO3oyK9iZXOLWnCWm
-         Lnh95jQP4IM8r4KPzBiCiGx3Xfe/AmtbUisbLEiXTqQcX0ciVxdXSkEnzASkN3ri53sq
-         C4jF7J1O+fewyXrvXjRyFW0fYH2OgO1C3ym1MgoxGme8g4FKCyjldf65rHTwp8wPEXGx
-         W4+NBI8FKX6s/m1EFeltBRQXjwFiwixaT+iXMQw7VhYj1bL9sBrewpDxro0TyL6ar8ea
-         i+f0qrN4cfBvMGZJ4IybUYQFnfv3b9I4R15g384NBiCBI4oijfKjb5l/MqkEnodtq/0j
-         8rLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740756139; x=1741360939;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QqyLu6u+1ahNp3WxvxP4um+m+DWCdM/0jn00g31dnvA=;
-        b=tqDo47/5azBo2aCHlyYtaIuV2JZlR+ZhOrKHPOWMuE43WMya9jNjVBrXw2IozSndGi
-         N4hupsupM76/fxMdADV9F0oz3Lnj8cj+gDVpADkGQrVvBNdYe7hy1YqP+uZ2RkxO67/d
-         zeGvBuDow1Sq3GUFD9jveTJg9PhND3ouqoiI+XDMnmWVTAaKIlF2+2ISRrbpnprARYm9
-         qiFq8sYOOzZpMuuZuvwB2PUbsfWUQXFqa/nwJx9+bZzxTA5DQpJhBZvHUSov4Qj0X2EW
-         w6HaDfhvZ/zJZr6+JF5SMU30ABvgPPoX44/OzTLEBQ5gZNf1NcKEEGFC3Pl/rptveO5U
-         kicg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsF4iFYWlhDVEjLXoRO4N7V3RnIwPaZb/ZEWtKZD+c2vcoEBYKrOMwvsIBr7S8EyfSsnvsgvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHP1wov/LJxzvqn/azJayu+NuDRlYpj8FFuAojWPPhhj5bcJ+L
-	nniHuzhy3aL/TwFYpzPAJgadH0oyFRvcylbrNalvUW0Zk2XeFy2Rf8iXKpaZdWs=
-X-Gm-Gg: ASbGncscxnuQaaWngBke2pGHt086AqEEA/W1H3lzvc6NhdkyBVpfiErRvn3jel+Woq7
-	fUfTSbkRIdhHnLHeo/GGNQ+NzcdTFsylD+CAQslnrK5tlRFlQLjzPCjnHcb/e9/w/TK9FP8bJE6
-	uIcZKwf1YE0nGV+F4kzLgYyJn0wUBzZqaT0VbIkdtZ7DQicH/eIMcQqP5b3Z5EwYA5kEdgPI3C+
-	HjEQD064p6hbFBgnYt212ASWjpSil9CAxVtV/VYBE7/efWosJj3qXR+EpCb3sIY+TrbyqxiFwY/
-	hplVIiY9AB2S2N2Z2AmOBVtOcWofZ6FTltEaKq87RnmPzHjnG0j7Jw==
-X-Google-Smtp-Source: AGHT+IF9qp8a/UWBHc5Cf5P7FBXKmaSQUjAHQFD/EXiBNU4nniytV0W3aEh9jTooEY6MlyF55dubEA==
-X-Received: by 2002:a17:906:2dc6:b0:abf:47cf:8323 with SMTP id a640c23a62f3a-abf47cfaacdmr49876266b.22.1740756139004;
-        Fri, 28 Feb 2025 07:22:19 -0800 (PST)
-Received: from jiri-mlt.client.nvidia.com ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0b99a6sm309411866b.13.2025.02.28.07.22.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 07:22:18 -0800 (PST)
-Date: Fri, 28 Feb 2025 16:22:16 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: przemyslaw.kitszel@intel.com, arkadiusz.kubalewski@intel.com, 
-	davem@davemloft.net, jan.glaza@intel.com, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, stable@vger.kernel.org, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH v4 net-next] dpll: Add an assertion to check
- freq_supported_num
-Message-ID: <i4sqqg4wwlrh7gcvfrmif6jwv4uhjavwbzgzmvcsxc5ocma3jb@r5tf5wbairf4>
-References: <20250228150210.34404-1-jiashengjiangcool@gmail.com>
+	s=arc-20240116; t=1740756573; c=relaxed/simple;
+	bh=LJ08NdP1c9CbJ9N7jSlTikmk0Dqt3ixorqQWsXu5+vQ=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=bdivdsgV1D0GbgDt0Tz7UuPT/rcdBCzitl/nNxAe2rsQVTpmxJkuT7ohY7F5c/iKarnO81go6B3BTH9z7HJPh483Fb11Xsw268S32nUAGC3C6i1na+diZEfSe/fzggexLphFLwFI1hNYO2MCQ50vacLEzcbN/BlJ8hvbqxaPR4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FB7C4CED6;
+	Fri, 28 Feb 2025 15:29:32 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1to2Je-0000000ABhB-1jQw;
+	Fri, 28 Feb 2025 10:30:18 -0500
+Message-ID: <20250228153018.265843538@goodmis.org>
+User-Agent: quilt/0.68
+Date: Fri, 28 Feb 2025 10:30:04 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Tomas Glozar <tglozar@redhat.com>,
+ Tom Zanussi <zanussi@kernel.org>
+Subject: [for-linus][PATCH 1/3] tracing: Fix bad hist from corrupting named_triggers list
+References: <20250228153003.725613767@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250228150210.34404-1-jiashengjiangcool@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 
-Fri, Feb 28, 2025 at 04:02:10PM +0100, jiashengjiangcool@gmail.com wrote:
->Since the driver is broken in the case that src->freq_supported is not
->NULL but src->freq_supported_num is 0, add an assertion for it.
->
->Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+The following commands causes a crash:
+
+ ~# cd /sys/kernel/tracing/events/rcu/rcu_callback
+ ~# echo 'hist:name=bad:keys=common_pid:onmax(bogus).save(common_pid)' > trigger
+ bash: echo: write error: Invalid argument
+ ~# echo 'hist:name=bad:keys=common_pid' > trigger
+
+Because the following occurs:
+
+event_trigger_write() {
+  trigger_process_regex() {
+    event_hist_trigger_parse() {
+
+      data = event_trigger_alloc(..);
+
+      event_trigger_register(.., data) {
+        cmd_ops->reg(.., data, ..) [hist_register_trigger()] {
+          data->ops->init() [event_hist_trigger_init()] {
+            save_named_trigger(name, data) {
+              list_add(&data->named_list, &named_triggers);
+            }
+          }
+        }
+      }
+
+      ret = create_actions(); (return -EINVAL)
+      if (ret)
+        goto out_unreg;
+[..]
+      ret = hist_trigger_enable(data, ...) {
+        list_add_tail_rcu(&data->list, &file->triggers); <<<---- SKIPPED!!! (this is important!)
+[..]
+ out_unreg:
+      event_hist_unregister(.., data) {
+        cmd_ops->unreg(.., data, ..) [hist_unregister_trigger()] {
+          list_for_each_entry(iter, &file->triggers, list) {
+            if (!hist_trigger_match(data, iter, named_data, false))   <- never matches
+                continue;
+            [..]
+            test = iter;
+          }
+          if (test && test->ops->free) <<<-- test is NULL
+
+            test->ops->free(test) [event_hist_trigger_free()] {
+              [..]
+              if (data->name)
+                del_named_trigger(data) {
+                  list_del(&data->named_list);  <<<<-- NEVER gets removed!
+                }
+              }
+           }
+         }
+
+         [..]
+         kfree(data); <<<-- frees item but it is still on list
+
+The next time a hist with name is registered, it causes an u-a-f bug and
+the kernel can crash.
+
+Move the code around such that if event_trigger_register() succeeds, the
+next thing called is hist_trigger_enable() which adds it to the list.
+
+A bunch of actions is called if get_named_trigger_data() returns false.
+But that doesn't need to be called after event_trigger_register(), so it
+can be moved up, allowing event_trigger_register() to be called just
+before hist_trigger_enable() keeping them together and allowing the
+file->triggers to be properly populated.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250227163944.1c37f85f@gandalf.local.home
+Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
+Reported-by: Tomas Glozar <tglozar@redhat.com>
+Tested-by: Tomas Glozar <tglozar@redhat.com>
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Closes: https://lore.kernel.org/all/CAP4=nvTsxjckSBTz=Oe_UYh8keD9_sZC4i++4h72mJLic4_W4A@mail.gmail.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_events_hist.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 261163b00137..ad7419e24055 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -6724,27 +6724,27 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+ 	if (existing_hist_update_only(glob, trigger_data, file))
+ 		goto out_free;
+ 
+-	ret = event_trigger_register(cmd_ops, file, glob, trigger_data);
+-	if (ret < 0)
+-		goto out_free;
++	if (!get_named_trigger_data(trigger_data)) {
+ 
+-	if (get_named_trigger_data(trigger_data))
+-		goto enable;
++		ret = create_actions(hist_data);
++		if (ret)
++			goto out_free;
+ 
+-	ret = create_actions(hist_data);
+-	if (ret)
+-		goto out_unreg;
++		if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
++			ret = save_hist_vars(hist_data);
++			if (ret)
++				goto out_free;
++		}
+ 
+-	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
+-		ret = save_hist_vars(hist_data);
++		ret = tracing_map_init(hist_data->map);
+ 		if (ret)
+-			goto out_unreg;
++			goto out_free;
+ 	}
+ 
+-	ret = tracing_map_init(hist_data->map);
+-	if (ret)
+-		goto out_unreg;
+-enable:
++	ret = event_trigger_register(cmd_ops, file, glob, trigger_data);
++	if (ret < 0)
++		goto out_free;
++
+ 	ret = hist_trigger_enable(trigger_data, file);
+ 	if (ret)
+ 		goto out_unreg;
+-- 
+2.47.2
+
+
 
