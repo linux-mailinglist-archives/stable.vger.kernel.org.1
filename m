@@ -1,354 +1,208 @@
-Return-Path: <stable+bounces-119898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52C1A49235
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:31:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0E4A49262
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 08:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF1C18925CD
-	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 07:31:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45BA616E08D
+	for <lists+stable@lfdr.de>; Fri, 28 Feb 2025 07:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABBD1CAA74;
-	Fri, 28 Feb 2025 07:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BC4146A66;
+	Fri, 28 Feb 2025 07:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NfSl3h+W"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QpmkXNrh"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A47970825
-	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 07:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15617276D12
+	for <stable@vger.kernel.org>; Fri, 28 Feb 2025 07:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740727881; cv=none; b=AI3r9mBfr+sT3ILqiqg8h53Nj3cXSDPSEzPm9WKK4DX/HiYw4kuALFcUIyu+oXLv4Rap0Xgd1xfGoo7uPPAP8ikiOYncoUHlWegoJMTMVXEhzW7V4k7q8LC4QbUV9vZdpcoPU+cVLvnP9+O6LSlLBTs9wISFNHALsGXVx29z/ik=
+	t=1740728775; cv=none; b=P11JLGu8456a+HWU0J4SbXTLVAiZ7vrAHDFe+ZuS6zt9+3fHNIu9lFrGjoOPlsxn/l6pdWLs0rN9foE/hisegd473wFarqJYvJof0wdDgAYBAF8T52TQ4AfjMaFiQU2mg/QY9GjGEzWLzFPEeFckookNFMUcyyetfq6Jt7Wq5j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740727881; c=relaxed/simple;
-	bh=7Hc/U+gqA4FlOazKuSdpTL+ujCRbt+jRcDQvgZbJQHg=;
+	s=arc-20240116; t=1740728775; c=relaxed/simple;
+	bh=HLFgHxr4h55dTYtNXjajQcjiBfoVH3GIW5LbNleQsm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n3fgk5LT5P5Y9DgpMm1f66D/dhJeA1YQIgR9Z3uKOWJw6Nx4/7x/uVjjIFZFi+O4DD6xidrjOrBwHmqSm8E7YxxVbMktlvys6oLoERNd4ap0tu1MpYiHDNnli/TFoxys9xgWtvlPF0rGf/0uqBVw7f3+FPzsx9B0WcosXka1hM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NfSl3h+W; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740727880; x=1772263880;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7Hc/U+gqA4FlOazKuSdpTL+ujCRbt+jRcDQvgZbJQHg=;
-  b=NfSl3h+WSNnGIg3Ko1gYWNMYPs4Ck8OoTavcBHz/1f3mbZw9rCc0kK1X
-   FwdNw2Cq3gCMmBOXjt40B0PfLcNeBWlzXdKsHfXAVZ23UslnZGr22su/2
-   0WhKaQ3oS7ph37sANey71FIKIviHDYtV9HxEs+MkJyoFBlPesoUgJMyRC
-   TO/iQoE9P2pHWpcpwfrXhAcd+fT8c79BPxy+AH6l/3qai37J3QOrkmisf
-   1Vt6hiaj3KCUpvmA7BaqE2ZyVhMq/EevgW1LMprselXXX1n7cwbaaBiMG
-   EUfXKAwBOpuVEh3Ai/CI5ung4OPi6FKOXMZWFVdwpZKNm4V107JsEpwLq
-   A==;
-X-CSE-ConnectionGUID: F/vpFWivRZmW8xwCC93vuA==
-X-CSE-MsgGUID: lL9m23glSuCvBX9hFufSPA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="45297777"
-X-IronPort-AV: E=Sophos;i="6.13,321,1732608000"; 
-   d="scan'208";a="45297777"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 23:31:19 -0800
-X-CSE-ConnectionGUID: HwlYDRC/Seqx1hzzQU10ZQ==
-X-CSE-MsgGUID: z3e+NkdySqe5WEcdp7Zpmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="121386259"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO fedora..) ([10.245.246.232])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 23:31:18 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] drm/xe: Add staging tree for VM binds
-Date: Fri, 28 Feb 2025 08:30:58 +0100
-Message-ID: <20250228073058.59510-5-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250228073058.59510-1-thomas.hellstrom@linux.intel.com>
-References: <20250228073058.59510-1-thomas.hellstrom@linux.intel.com>
+	 MIME-Version; b=OvrtSMeTpeWo+s3KDnqJrDzmM+PRNK2ecI+0XAy5sEz7jYflcU7s3Np/z3t4xOiR7Yh3lO4sHx/aDUNJvc0OY9kv6Iu8MuRg3tozFTDnE482ACFPvCU0ZkOLFHMug75yZnp42EPM709iREy+W84b6QHRumsutV/j0pr9RgNks8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=QpmkXNrh; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-47201625705so28900751cf.0
+        for <stable@vger.kernel.org>; Thu, 27 Feb 2025 23:46:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1740728772; x=1741333572; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RhM7Smr9YZP+gi2QWuUcdxkdlqN0yh4E8xCgDW30pJo=;
+        b=QpmkXNrh97g3tGnvj/rWI04vcCaJ+LsjFXSnpVCSsOSsHHqSNqpLFhC3j3TngnfxaH
+         HckY1xo7BkvRHaV28rWsNEdQxCoAqYdgqD7lYwdS4p/GhlusDhJMMIowhguEPUI0o1Kq
+         7mD7Khbep0MZABQIvdh/r9RAMBQKd4YnU2Dg8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740728772; x=1741333572;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RhM7Smr9YZP+gi2QWuUcdxkdlqN0yh4E8xCgDW30pJo=;
+        b=PhYGXEtEYa60fuPyZi3vAW+EvNyI2y4QNVp8klRvAxKMiFI7sSq1GVu/BPz0fMwm4f
+         d2jsDQN6GRS/2D3KbFgMJ6CcHVJQket8xxbIhihJREdx99PZt6ZdgiqBZL1Bw8xlgK//
+         ueh+EhwGLo28zNsgBAO+pu3mQyv60bl7mAiBwk4kedihGwVhtZguslzJPzfhp7uPjgyg
+         RuGEURzLyhxP7E2RZqHx8okR2PLXkwuScMaE9Ch/4/ce9nxEDmehgezM+bu9Q83Ndxcu
+         SCcwOHj5dg2Z3f9YF5kt0Z/3mjBvOoZqRQzWjsuYZGrvCMpnuqdFFAdoEn4PGGvGKxaj
+         E0Pw==
+X-Gm-Message-State: AOJu0Yy++XUEjWNhHbB1HdOODw9nxk2561H+DbyFIxdWsgs7VDHIRMGp
+	x2NgMvEkZWkSoEg6tbavh0g7yBdZ1kYW6wPsZmvWKKtC0EEe8r+Ox9/ilJkjRNIFuzcewBJfVhl
+	EoQ==
+X-Gm-Gg: ASbGncvjfvOGTJvpuhTrEgSY4HaHdJFrnU1KhqHlQawoCfoHSYSFiY4OGo8in83on5L
+	cfLreCk9IB/DlDsF/vsXwiRPa9Hu0QeAG0HmsYz9yBcQjzo+44UQ4upRN9CIHg9pddQic7F5qin
+	fqW+Fx+Hu0yVkGH95onjhrtNpUaU/FWZCt2PYN8HNg00bWeH9eFV4E1BkH7thxV7XCUAnaiqDWT
+	JYnXXkDXRn9R5ArQ+L4uco8eoVpU7YCV/4DlPgwWV5OjdguC954Gs9T24LjD5hfuhuz/1uV9PX3
+	eU/DGOe7D3Ei44cr4NVSDxxRlUPSp8Rapqiw99NxMbyc+n618fB+IQ1Vd+zWggi5uv2jBHJK1yj
+	mPO2LHC50
+X-Google-Smtp-Source: AGHT+IHnL4vcHyo52Xh85dhF/Bz2zeTGiqWLe4bTEDmMcNOZfW1I0EdhNJuLZqwT8viV3hx8VfWMEw==
+X-Received: by 2002:a05:622a:20b:b0:471:f9bc:fe53 with SMTP id d75a77b69052e-473e55b6a2cmr107802831cf.26.1740728772569;
+        Thu, 27 Feb 2025 23:46:12 -0800 (PST)
+Received: from denia.c.googlers.com.com (15.237.245.35.bc.googleusercontent.com. [35.245.237.15])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-474691a2427sm21775291cf.16.2025.02.27.23.46.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 23:46:11 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+To: stable@vger.kernel.org
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.15.y] media: uvcvideo: Fix crash during unbind if gpio unit is in use
+Date: Fri, 28 Feb 2025 07:46:06 +0000
+Message-ID: <20250228074607.2609635-1-ribalda@chromium.org>
+X-Mailer: git-send-email 2.48.1.711.g2feabab25a-goog
+In-Reply-To: <2025021032-zipping-fedora-af63@gregkh>
+References: <2025021032-zipping-fedora-af63@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Brost <matthew.brost@intel.com>
+We used the wrong device for the device managed functions. We used the
+usb device, when we should be using the interface device.
 
-Concurrent VM bind staging and zapping of PTEs from a userptr notifier
-do not work because the view of PTEs is not stable. VM binds cannot
-acquire the notifier lock during staging, as memory allocations are
-required. To resolve this race condition, use a staging tree for VM
-binds that is committed only under the userptr notifier lock during the
-final step of the bind. This ensures a consistent view of the PTEs in
-the userptr notifier.
+If we unbind the driver from the usb interface, the cleanup functions
+are never called. In our case, the IRQ is never disabled.
 
-A follow up may only use staging for VM in fault mode as this is the
-only mode in which the above race exists.
+If an IRQ is triggered, it will try to access memory sections that are
+already free, causing an OOPS.
 
-v3:
- - Drop zap PTE change (Thomas)
- - s/xe_pt_entry/xe_pt_entry_staging (Thomas)
+We cannot use the function devm_request_threaded_irq here. The devm_*
+clean functions may be called after the main structure is released by
+uvc_delete.
 
-Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Fixes: e8babb280b5e ("drm/xe: Convert multiple bind ops into single job")
-Fixes: a708f6501c69 ("drm/xe: Update PT layer with better error handling")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Luckily this bug has small impact, as it is only affected by devices
+with gpio units and the user has to unbind the device, a disconnect will
+not trigger this error.
+
+Cc: stable@vger.kernel.org
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241106-uvc-crashrmmod-v6-1-fbf9781c6e83@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+(cherry picked from commit a9ea1a3d88b7947ce8cadb2afceee7a54872bbc5)
 ---
- drivers/gpu/drm/xe/xe_pt.c      | 58 +++++++++++++++++++++++----------
- drivers/gpu/drm/xe/xe_pt_walk.c |  3 +-
- drivers/gpu/drm/xe/xe_pt_walk.h |  4 +++
- 3 files changed, 46 insertions(+), 19 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 35 ++++++++++++++++++++----------
+ drivers/media/usb/uvc/uvcvideo.h   |  1 +
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-index 12a627a23eb4..dc24baa84092 100644
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -28,6 +28,8 @@ struct xe_pt_dir {
- 	struct xe_pt pt;
- 	/** @children: Array of page-table child nodes */
- 	struct xe_ptw *children[XE_PDES];
-+	/** @staging: Array of page-table staging nodes */
-+	struct xe_ptw *staging[XE_PDES];
- };
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 1942b9e210cc..c4b272c7aacc 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1530,18 +1530,15 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ 	struct gpio_desc *gpio_privacy;
+ 	int irq;
  
- #if IS_ENABLED(CONFIG_DRM_XE_DEBUG_VM)
-@@ -48,9 +50,10 @@ static struct xe_pt_dir *as_xe_pt_dir(struct xe_pt *pt)
- 	return container_of(pt, struct xe_pt_dir, pt);
- }
+-	gpio_privacy = devm_gpiod_get_optional(&dev->udev->dev, "privacy",
++	gpio_privacy = devm_gpiod_get_optional(&dev->intf->dev, "privacy",
+ 					       GPIOD_IN);
+ 	if (IS_ERR_OR_NULL(gpio_privacy))
+ 		return PTR_ERR_OR_ZERO(gpio_privacy);
  
--static struct xe_pt *xe_pt_entry(struct xe_pt_dir *pt_dir, unsigned int index)
-+static struct xe_pt *
-+xe_pt_entry_staging(struct xe_pt_dir *pt_dir, unsigned int index)
+ 	irq = gpiod_to_irq(gpio_privacy);
+-	if (irq < 0) {
+-		if (irq != EPROBE_DEFER)
+-			dev_err(&dev->udev->dev,
+-				"No IRQ for privacy GPIO (%d)\n", irq);
+-		return irq;
+-	}
++	if (irq < 0)
++		return dev_err_probe(&dev->intf->dev, irq,
++				     "No IRQ for privacy GPIO\n");
+ 
+ 	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+ 				    UVC_EXT_GPIO_UNIT_ID, 0, 1);
+@@ -1567,15 +1564,27 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+ static int uvc_gpio_init_irq(struct uvc_device *dev)
  {
--	return container_of(pt_dir->children[index], struct xe_pt, base);
-+	return container_of(pt_dir->staging[index], struct xe_pt, base);
- }
+ 	struct uvc_entity *unit = dev->gpio_unit;
++	int ret;
  
- static u64 __xe_pt_empty_pte(struct xe_tile *tile, struct xe_vm *vm,
-@@ -125,6 +128,7 @@ struct xe_pt *xe_pt_create(struct xe_vm *vm, struct xe_tile *tile,
- 	}
- 	pt->bo = bo;
- 	pt->base.children = level ? as_xe_pt_dir(pt)->children : NULL;
-+	pt->base.staging = level ? as_xe_pt_dir(pt)->staging : NULL;
+ 	if (!unit || unit->gpio.irq < 0)
+ 		return 0;
  
- 	if (vm->xef)
- 		xe_drm_client_add_bo(vm->xef->client, pt->bo);
-@@ -206,8 +210,8 @@ void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred)
- 		struct xe_pt_dir *pt_dir = as_xe_pt_dir(pt);
- 
- 		for (i = 0; i < XE_PDES; i++) {
--			if (xe_pt_entry(pt_dir, i))
--				xe_pt_destroy(xe_pt_entry(pt_dir, i), flags,
-+			if (xe_pt_entry_staging(pt_dir, i))
-+				xe_pt_destroy(xe_pt_entry_staging(pt_dir, i), flags,
- 					      deferred);
- 		}
- 	}
-@@ -376,8 +380,10 @@ xe_pt_insert_entry(struct xe_pt_stage_bind_walk *xe_walk, struct xe_pt *parent,
- 		/* Continue building a non-connected subtree. */
- 		struct iosys_map *map = &parent->bo->vmap;
- 
--		if (unlikely(xe_child))
-+		if (unlikely(xe_child)) {
- 			parent->base.children[offset] = &xe_child->base;
-+			parent->base.staging[offset] = &xe_child->base;
-+		}
- 
- 		xe_pt_write(xe_walk->vm->xe, map, offset, pte);
- 		parent->num_live++;
-@@ -614,6 +620,7 @@ xe_pt_stage_bind(struct xe_tile *tile, struct xe_vma *vma,
- 			.ops = &xe_pt_stage_bind_ops,
- 			.shifts = xe_normal_pt_shifts,
- 			.max_level = XE_PT_HIGHEST_LEVEL,
-+			.staging = true,
- 		},
- 		.vm = xe_vma_vm(vma),
- 		.tile = tile,
-@@ -873,7 +880,7 @@ static void xe_pt_cancel_bind(struct xe_vma *vma,
- 	}
- }
- 
--static void xe_pt_commit_locks_assert(struct xe_vma *vma)
-+static void xe_pt_commit_prepare_locks_assert(struct xe_vma *vma)
- {
- 	struct xe_vm *vm = xe_vma_vm(vma);
- 
-@@ -885,6 +892,16 @@ static void xe_pt_commit_locks_assert(struct xe_vma *vma)
- 	xe_vm_assert_held(vm);
- }
- 
-+static void xe_pt_commit_locks_assert(struct xe_vma *vma)
-+{
-+	struct xe_vm *vm = xe_vma_vm(vma);
+-	return devm_request_threaded_irq(&dev->udev->dev, unit->gpio.irq, NULL,
+-					 uvc_gpio_irq,
+-					 IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
+-					 IRQF_TRIGGER_RISING,
+-					 "uvc_privacy_gpio", dev);
++	ret = request_threaded_irq(unit->gpio.irq, NULL, uvc_gpio_irq,
++				   IRQF_ONESHOT | IRQF_TRIGGER_FALLING |
++				   IRQF_TRIGGER_RISING,
++				   "uvc_privacy_gpio", dev);
 +
-+	xe_pt_commit_prepare_locks_assert(vma);
++	unit->gpio.initialized = !ret;
 +
-+	if (xe_vma_is_userptr(vma))
-+		lockdep_assert_held_read(&vm->userptr.notifier_lock);
++	return ret;
 +}
 +
- static void xe_pt_commit(struct xe_vma *vma,
- 			 struct xe_vm_pgtable_update *entries,
- 			 u32 num_entries, struct llist_head *deferred)
-@@ -895,13 +912,17 @@ static void xe_pt_commit(struct xe_vma *vma,
- 
- 	for (i = 0; i < num_entries; i++) {
- 		struct xe_pt *pt = entries[i].pt;
-+		struct xe_pt_dir *pt_dir;
- 
- 		if (!pt->level)
- 			continue;
- 
-+		pt_dir = as_xe_pt_dir(pt);
- 		for (j = 0; j < entries[i].qwords; j++) {
- 			struct xe_pt *oldpte = entries[i].pt_entries[j].pt;
-+			int j_ = j + entries[i].ofs;
- 
-+			pt_dir->children[j_] = pt_dir->staging[j_];
- 			xe_pt_destroy(oldpte, xe_vma_vm(vma)->flags, deferred);
- 		}
- 	}
-@@ -913,7 +934,7 @@ static void xe_pt_abort_bind(struct xe_vma *vma,
- {
- 	int i, j;
- 
--	xe_pt_commit_locks_assert(vma);
-+	xe_pt_commit_prepare_locks_assert(vma);
- 
- 	for (i = num_entries - 1; i >= 0; --i) {
- 		struct xe_pt *pt = entries[i].pt;
-@@ -928,10 +949,10 @@ static void xe_pt_abort_bind(struct xe_vma *vma,
- 		pt_dir = as_xe_pt_dir(pt);
- 		for (j = 0; j < entries[i].qwords; j++) {
- 			u32 j_ = j + entries[i].ofs;
--			struct xe_pt *newpte = xe_pt_entry(pt_dir, j_);
-+			struct xe_pt *newpte = xe_pt_entry_staging(pt_dir, j_);
- 			struct xe_pt *oldpte = entries[i].pt_entries[j].pt;
- 
--			pt_dir->children[j_] = oldpte ? &oldpte->base : 0;
-+			pt_dir->staging[j_] = oldpte ? &oldpte->base : 0;
- 			xe_pt_destroy(newpte, xe_vma_vm(vma)->flags, NULL);
- 		}
- 	}
-@@ -943,7 +964,7 @@ static void xe_pt_commit_prepare_bind(struct xe_vma *vma,
- {
- 	u32 i, j;
- 
--	xe_pt_commit_locks_assert(vma);
-+	xe_pt_commit_prepare_locks_assert(vma);
- 
- 	for (i = 0; i < num_entries; i++) {
- 		struct xe_pt *pt = entries[i].pt;
-@@ -961,10 +982,10 @@ static void xe_pt_commit_prepare_bind(struct xe_vma *vma,
- 			struct xe_pt *newpte = entries[i].pt_entries[j].pt;
- 			struct xe_pt *oldpte = NULL;
- 
--			if (xe_pt_entry(pt_dir, j_))
--				oldpte = xe_pt_entry(pt_dir, j_);
-+			if (xe_pt_entry_staging(pt_dir, j_))
-+				oldpte = xe_pt_entry_staging(pt_dir, j_);
- 
--			pt_dir->children[j_] = &newpte->base;
-+			pt_dir->staging[j_] = &newpte->base;
- 			entries[i].pt_entries[j].pt = oldpte;
- 		}
- 	}
-@@ -1494,6 +1515,7 @@ static unsigned int xe_pt_stage_unbind(struct xe_tile *tile, struct xe_vma *vma,
- 			.ops = &xe_pt_stage_unbind_ops,
- 			.shifts = xe_normal_pt_shifts,
- 			.max_level = XE_PT_HIGHEST_LEVEL,
-+			.staging = true,
- 		},
- 		.tile = tile,
- 		.modified_start = xe_vma_start(vma),
-@@ -1535,7 +1557,7 @@ static void xe_pt_abort_unbind(struct xe_vma *vma,
- {
- 	int i, j;
- 
--	xe_pt_commit_locks_assert(vma);
-+	xe_pt_commit_prepare_locks_assert(vma);
- 
- 	for (i = num_entries - 1; i >= 0; --i) {
- 		struct xe_vm_pgtable_update *entry = &entries[i];
-@@ -1548,7 +1570,7 @@ static void xe_pt_abort_unbind(struct xe_vma *vma,
- 			continue;
- 
- 		for (j = entry->ofs; j < entry->ofs + entry->qwords; j++)
--			pt_dir->children[j] =
-+			pt_dir->staging[j] =
- 				entries[i].pt_entries[j - entry->ofs].pt ?
- 				&entries[i].pt_entries[j - entry->ofs].pt->base : NULL;
- 	}
-@@ -1561,7 +1583,7 @@ xe_pt_commit_prepare_unbind(struct xe_vma *vma,
- {
- 	int i, j;
- 
--	xe_pt_commit_locks_assert(vma);
-+	xe_pt_commit_prepare_locks_assert(vma);
- 
- 	for (i = 0; i < num_entries; ++i) {
- 		struct xe_vm_pgtable_update *entry = &entries[i];
-@@ -1575,8 +1597,8 @@ xe_pt_commit_prepare_unbind(struct xe_vma *vma,
- 		pt_dir = as_xe_pt_dir(pt);
- 		for (j = entry->ofs; j < entry->ofs + entry->qwords; j++) {
- 			entry->pt_entries[j - entry->ofs].pt =
--				xe_pt_entry(pt_dir, j);
--			pt_dir->children[j] = NULL;
-+				xe_pt_entry_staging(pt_dir, j);
-+			pt_dir->staging[j] = NULL;
- 		}
- 	}
++static void uvc_gpio_deinit(struct uvc_device *dev)
++{
++	if (!dev->gpio_unit || !dev->gpio_unit->gpio.initialized)
++		return;
++
++	free_irq(dev->gpio_unit->gpio.irq, dev);
  }
-diff --git a/drivers/gpu/drm/xe/xe_pt_walk.c b/drivers/gpu/drm/xe/xe_pt_walk.c
-index b8b3d2aea492..be602a763ff3 100644
---- a/drivers/gpu/drm/xe/xe_pt_walk.c
-+++ b/drivers/gpu/drm/xe/xe_pt_walk.c
-@@ -74,7 +74,8 @@ int xe_pt_walk_range(struct xe_ptw *parent, unsigned int level,
- 		     u64 addr, u64 end, struct xe_pt_walk *walk)
+ 
+ /* ------------------------------------------------------------------------
+@@ -2168,6 +2177,8 @@ static void uvc_unregister_video(struct uvc_device *dev)
  {
- 	pgoff_t offset = xe_pt_offset(addr, level, walk);
--	struct xe_ptw **entries = parent->children ? parent->children : NULL;
-+	struct xe_ptw **entries = walk->staging ? (parent->staging ?: NULL) :
-+		(parent->children ?: NULL);
- 	const struct xe_pt_walk_ops *ops = walk->ops;
- 	enum page_walk_action action;
- 	struct xe_ptw *child;
-diff --git a/drivers/gpu/drm/xe/xe_pt_walk.h b/drivers/gpu/drm/xe/xe_pt_walk.h
-index 5ecc4d2f0f65..5c02c244f7de 100644
---- a/drivers/gpu/drm/xe/xe_pt_walk.h
-+++ b/drivers/gpu/drm/xe/xe_pt_walk.h
-@@ -11,12 +11,14 @@
- /**
-  * struct xe_ptw - base class for driver pagetable subclassing.
-  * @children: Pointer to an array of children if any.
-+ * @staging: Pointer to an array of staging if any.
-  *
-  * Drivers could subclass this, and if it's a page-directory, typically
-  * embed an array of xe_ptw pointers.
-  */
- struct xe_ptw {
- 	struct xe_ptw **children;
-+	struct xe_ptw **staging;
- };
+ 	struct uvc_streaming *stream;
  
- /**
-@@ -41,6 +43,8 @@ struct xe_pt_walk {
- 	 * as shared pagetables.
- 	 */
- 	bool shared_pt_mode;
-+	/** @staging: Walk staging PT structure */
-+	bool staging;
- };
++	uvc_gpio_deinit(dev);
++
+ 	list_for_each_entry(stream, &dev->streams, list) {
+ 		/* Nothing to do here, continue. */
+ 		if (!video_is_registered(&stream->vdev))
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 1aa2cc98502d..f7fc620c790a 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -368,6 +368,7 @@ struct uvc_entity {
+ 			u8  *bmControls;
+ 			struct gpio_desc *gpio_privacy;
+ 			int irq;
++			bool initialized;
+ 		} gpio;
+ 	};
  
- /**
 -- 
-2.48.1
+2.48.1.711.g2feabab25a-goog
 
 
