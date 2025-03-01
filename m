@@ -1,168 +1,120 @@
-Return-Path: <stable+bounces-120009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBD8A4AC58
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 15:41:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA61A4ACDE
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 17:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 540F97A751C
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 14:40:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5804A18972FD
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 16:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5294E1E1A08;
-	Sat,  1 Mar 2025 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E611E51F1;
+	Sat,  1 Mar 2025 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cXAd3yx5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kggXazpR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CCB1C5D7E;
-	Sat,  1 Mar 2025 14:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966A41487D1;
+	Sat,  1 Mar 2025 16:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740840104; cv=none; b=qA2h4R9E/zZaHPHiAf6Lj2eJK+96eDZCd6NlIMWceMrDgxhr2gpZioeY+yjYSKXxekEKZymptk7o8fI5/dneADxvOxASanIBNfiITz0z8sKS6pJ57b9wibk3N+AAmYn6ZLMLgocclktxWX9UuGfafv1NRFn8Q4xU+lQXNKnjRzI=
+	t=1740846583; cv=none; b=p+7StccTfnN4pVvqoe226mBylmu5t6y8mSRdXC4toAqTxDvFgbIQ7aYMOFsZ+wTeQA8WDWwjjp4XZLMjntyrVgb/MdOf+rUSBwd4Mq32tacg8i7w0irCxRaTqNTRpbIkTSnoQi0gRXXUk2MlnHv29PlzPaytN6znKuTC/Nn4AIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740840104; c=relaxed/simple;
-	bh=iVyKzVfxR8LdP5by3NoY8zhrOtkB7jVDbkJlfjDY8OE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i33y+QhGTXfY+eBFUMVdcDqKH90N6ZvAnsxa7pY/0n0pQTNi74Rivh3Bsft9g1TgAuJumlUfif01CMu5UVjRVpEYQSthqTltJ9E3WE1ekV6Wb0osQyK1hi3BSsngAdX9G4c4DalRRtlQ4vn3HR4bp2JQmWl3SOKWBa00EHSIrQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cXAd3yx5; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1740846583; c=relaxed/simple;
+	bh=HHShl6fmzO4CDNXm56EjpFDU0XBN5j6Jo9fKXnk6j54=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z73Xc75kDcTqsu0otbWUxgxYdpLZ9rsHVxQDnPkhgoFtUgfaRbyZ0g9ksxmzgKAYY/BkgABMlN6Z0peSR9GJDGuDCFmdtIyGPiaBamP1tMKywREjOHibM6Xbm64aAoNXT8IKiKLwgG8DHmD5z7HNkkJvaiZLsBSGFvpdi4A+QxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kggXazpR; arc=none smtp.client-ip=209.85.160.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4399d14334aso28178315e9.0;
-        Sat, 01 Mar 2025 06:41:42 -0800 (PST)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2adc2b6837eso817234fac.1;
+        Sat, 01 Mar 2025 08:29:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740840101; x=1741444901; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XCZ2IYJ2ToIg9/KMdOINj9YW27Hjn4u6ydCp4dWPNz0=;
-        b=cXAd3yx5//5slt2qnIcdo/Rurc/kPrddZ8Irwo8c+AJk3fSviyxjQABZ8ha9wlyg6T
-         XINrSdt2pV+fl2TFmO0RsjpkEibXbLKfugMJJFXGM0ENVhHUMhrSOmnyH7RoyGKI3KF2
-         6p6uOsHM7KAdR7Igsc22AvBpqb+/gnFCwNt1pBV2OqMlXLzkJFSxgT3SZBbCkN5cOjQd
-         Yp5pLRrg4v8y7SNAZBofyOwm376hSDTjTYXO4ALK9N0Mb+GpYSdTi9iLaKx5cZX9Nw5v
-         45wPHD0rUCvf61koT5Yg7TwRJRlkkA79o4oRXx3cijkX+Z9TaZPIZv/BdpiuqOVyERy4
-         nt+A==
+        d=gmail.com; s=20230601; t=1740846580; x=1741451380; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NZEUaQpxNWQ0VLyb0pFtWCnEhCo7qZid/hN1L1j+FZ4=;
+        b=kggXazpRY55j5+/mlLOS0/ng99wfrPqrkUETshG9RT7kVru2Kk2KYyGLyCT7hNNmmU
+         nSrj74++Kwfo8kxEo7NEKZRPO/HeVTWpYAtpOLE+NzHGK65reSNe1y+/+UGTjszx/+4+
+         RKjHb8mwgBhvw7h5qaXoJIBcWPFRZyHnPwYjnjTAZncbTciQjIjEAbvingJzCRR9u2io
+         2Ky7MxLM0DggVZHRtVRmY6RILQLqGNZco3L8wCmmhbdMrIuKVeERLXfTkstBWdv3j0JM
+         a+5f7J2bJbnP1z3KXzDRMYyNmnNhKiG3b0udyePWmbcpLU2bMuU7bGfKpSvKW6LyEyUD
+         RRww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740840101; x=1741444901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XCZ2IYJ2ToIg9/KMdOINj9YW27Hjn4u6ydCp4dWPNz0=;
-        b=JyCPPa58qu8bHmPJEJPVqyVhrZ6neE+VnFRbyBweebi9D/+meTtyYjSmVx8vIemt2y
-         vdvpV7kkczXgDyCAfb/0WRRdCIAtUZI7s02oy4pa7+gThMHjSFGn5iCxsjjrcSaJYghH
-         6iOXL/xsTAs/wRJVfhss78nv1PP8GSCEIwK5c4aLj+Hu26dizbR1wZNWO5hiiyl57oAc
-         tEW95hItHJBIGVXroCCKVRkhcKRx7OMGG4oh7fITGRlMC3Nhhl/KCG8cjaxeWzJWgV8w
-         j3CXu5BpO9xjVGUlK85HmXbx6Vagd4qm68jPhISReaBukVVEFzF1aBP+90cSQPYZmYY9
-         yfrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVK6tesC6edEXUDEEBW+F/aAkJCeHUvvVrUIHnQcWGRD8YAvPfED21S/XFJdnL8O8pem2mQYCX5Y6l44Bg=@vger.kernel.org, AJvYcCWvjbgxJ3T27gJ1Jp5Awhy2jhpWtBlBkfKTahnYv9sDeCOhh3FTw0SHz3lyR/pRpMYV89/8Nw3k@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6YnLLf0Xj74THDVBk6GZF4QXniq88r4evqCQwDt2dFJ513Vny
-	8ZRtLlIomQavNDNhFh3tKX63jZIc2HaS9qiZbnRR7XidW90LFh0Q
-X-Gm-Gg: ASbGncv/nZqqXOv9WyIFzo6d2XRZm6FOk1xquCMNrPu4E80x6IPqOcZ+e6cwpp+b6q1
-	UiTCL2SJTj+iozM628lBPcZZ3DA8X+6W4niTmWz+ctdJlovXIIXC2QBCYOiDhbdiCwUQMyRfaEf
-	y1g9T1AehmGviwZWtkZDAR0meRKHYTUw34+Q/PDeylN9p+WKSxC1ml3bIaYO7GK6iWosKqTvMc1
-	zDWsMS+mCHN3rEwpWmWTwJulbb5v0jHKK9MZ/577gm3JGfF7KpHlipR6htXiPHuJtZwFb8uTxs5
-	5xnpeK72wTowe3A9kzhbG5ZH9AN5Lbm10/frNtCDfZ7Jh75loBRFqJBVTqg=
-X-Google-Smtp-Source: AGHT+IE7BqfWKIc6fP9w4TydXM/STuAZnBVGkxNgCzpMCvHzilFb+OhHXakcpD6IR5NJpQlPSJwzCA==
-X-Received: by 2002:a5d:6da3:0:b0:38d:d666:5448 with SMTP id ffacd0b85a97d-390eca52d9bmr7180064f8f.40.1740840100500;
-        Sat, 01 Mar 2025 06:41:40 -0800 (PST)
-Received: from localhost.localdomain ([2a02:c7c:6696:8300:913b:dad9:fe38:d4f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4844a22sm8572051f8f.74.2025.03.01.06.41.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Mar 2025 06:41:39 -0800 (PST)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com
-Cc: ocfs2-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot <syzbot+e41e83af7a07a4df8051@syzkaller.appspotmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ocfs2: Validate chain list bits per cluster to prevent div-by-zero
-Date: Sat,  1 Mar 2025 14:40:37 +0000
-Message-Id: <20250301144037.45920-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20230601; t=1740846580; x=1741451380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NZEUaQpxNWQ0VLyb0pFtWCnEhCo7qZid/hN1L1j+FZ4=;
+        b=Bcuj1gDQhHRSQWHQztaAqJ+YLl2XU2WywuH0CULfqHktO/RdUwgpFUykCmvK0E4MIX
+         AivpTmh+5IDLvuAVM4JO8GOV6GF7jMCLog6JN4gaBsJT1PdPOf0B4DoN9YlpXvs49QaH
+         i/kOuOMu7uTPzZ1skRuqpwftXm+vb266oxL88tsWuPc+9b1vffK1DnBEaMemNSRBrb2W
+         i8PPb6QoRRbkoe/+Qw8GMqJCUHJYSTAO5ai8lA5wS8Uf5GsdTVHKsoXLbx7UPp+aCo6S
+         CvJEtopMASVdvDXWa0SdU3M+9b0rXSjLN8Yr9KZ47Zfo4GG9dJpuzLQsFB6QgRiJwe/c
+         DySw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpK/RojR/vAES9ym5f+1cEWXwhQxcIX1iglSJZuNMu+a0d6pisw+NNMwzsvhZUgTXUWgi5BQz0M47iYD4=@vger.kernel.org, AJvYcCWLkamKU6bN9qDgnLIhV+WR2JXBYsIB9kq8eoY4Fz3P2Vh0wYpAuViO6MRto3u0DfxduOhF0A4r@vger.kernel.org, AJvYcCXjcf91jZc+/Q95tx/vmXwuo2sdeBWcGk4M7ZHHKda1mBCQsO5+kpHTyiC9/kJCVmLhcjGN1sRYD69rZJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVp6b6LjkRHTNYT3Y4cW7KrRmXr6MFpPH26Dsgxeqnk9njQ02S
+	AN76yWMrxo19cUDnWSNHHz/2jUHHJzm9eTL84Hrw/YVGP+v1xhCl2tMuSUDYFQ3fiHGUI7lS8To
+	WJWbftV8URdgqHg2wf+mUZA8oYFo=
+X-Gm-Gg: ASbGnctjwGqzEErg3sFvB6M1kGPrNf7vffz9RVpeo5JSXkedI/KmXWTV2xlbkRXgrkP
+	fATdFouMXnFyBi7QPTnbRYjWudIaaI9tyVSi7tOBfCn9d/2JeB8hV1UNVOvmEQWImYNnsS1Kave
+	Cv5BYnJsL/jsiuNx6lCJ1JtnahK9k=
+X-Google-Smtp-Source: AGHT+IFLHW43DGVnGXOFanwomRC74l4qNdWZrjLIPoHIxamo09AWIXLwMxZA6XLplMHBHwCIOVz4tMkmC7T/9yOmmsg=
+X-Received: by 2002:a05:6870:82a6:b0:29d:c964:f035 with SMTP id
+ 586e51a60fabf-2c1787bbdb7mr4893395fac.35.1740846580586; Sat, 01 Mar 2025
+ 08:29:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250219022753.2589753-1-haoxiang_li2024@163.com>
+In-Reply-To: <20250219022753.2589753-1-haoxiang_li2024@163.com>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Date: Sat, 1 Mar 2025 10:29:29 -0600
+X-Gm-Features: AQ5f1JoEz6qNtlf8qYTx1DcstTc7Vho0S-m-HrMV1VKqR5yyS7jhPr7ifohbSwo
+Message-ID: <CABb+yY3wC5Rp4DJFL=61uyYyGtJ-kPTWks8JMG7jQpp=V3P-Zg@mail.gmail.com>
+Subject: Re: [PATCH] mailbox: tegra-hsp: Add check for devm_kstrdup_const()
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: thierry.reding@gmail.com, jonathanh@nvidia.com, brgl@bgdev.pl, 
+	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The call trace shows that the div error occurs on the following line where the code sets 
-the e_cpos member of the extent record while dividing bg_bits by the bits per 
-cluster value from the chain list:
+On Tue, Feb 18, 2025 at 8:28=E2=80=AFPM Haoxiang Li <haoxiang_li2024@163.co=
+m> wrote:
+>
+> Add check for the return value of devm_kstrdup_const() in
+> tegra_hsp_doorbell_create() to catch potential exception.
+>
+> Fixes: a54d03ed01b4 ("mailbox: tegra-hsp: use devm_kstrdup_const()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  drivers/mailbox/tegra-hsp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
+> index c1981f091bd1..773a1cf6d93d 100644
+> --- a/drivers/mailbox/tegra-hsp.c
+> +++ b/drivers/mailbox/tegra-hsp.c
+> @@ -285,6 +285,8 @@ tegra_hsp_doorbell_create(struct tegra_hsp *hsp, cons=
+t char *name,
+>         db->channel.hsp =3D hsp;
+>
+>         db->name =3D devm_kstrdup_const(hsp->dev, name, GFP_KERNEL);
+> +       if (!db->name)
+> +               return ERR_PTR(-ENOMEM);
 
-		rec->e_cpos = cpu_to_le32(le16_to_cpu(bg->bg_bits) /
-				  le16_to_cpu(cl->cl_bpc));
-				  
-Looking at the code disassembly we see the problem occurred during the divw instruction
-which performs a 16-bit unsigned divide operation. The main ways a divide error can occur is
-if:
+ tegra_hsp_doorbell.name seems unused, so maybe just get rid of it...  Thie=
+rry ?
 
-1) the divisor is 0
-2) if the quotient is too large for the designated register (overflow).
-
-Normally the divisor being 0 is the most common cause for a division error to occur.
-
-Focusing on the bits per cluster cl->cl_bpc (since it is the divisor) we see that cl is created in
-ocfs2_block_group_alloc(), cl is derived from ocfs2_dinode->id2.i_chain. To fix this issue we should 
-verify the cl_bpc member in the chain list to ensure it is valid and non-zero.
-
-Looking through the rest of the OCFS2 code it seems like there are other places which could benefit 
-from improved checks of the cl_bpc members of chain lists like the following:
-
-In ocfs2_group_extend():
-
-	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
-	if (le16_to_cpu(group->bg_bits) / cl_bpc + new_clusters >
-		le16_to_cpu(fe->id2.i_chain.cl_cpg)) {
-		ret = -EINVAL;
-		goto out_unlock;
-	}
-
-Reported-by: syzbot <syzbot+e41e83af7a07a4df8051@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=e41e83af7a07a4df8051
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
----
- fs/ocfs2/resize.c   | 4 ++--
- fs/ocfs2/suballoc.c | 5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
-index b0733c08ed13..22352c027ecd 100644
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -329,8 +329,8 @@ int ocfs2_group_extend(struct inode * inode, int new_clusters)
- 	group = (struct ocfs2_group_desc *)group_bh->b_data;
- 
- 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
--	if (le16_to_cpu(group->bg_bits) / cl_bpc + new_clusters >
--		le16_to_cpu(fe->id2.i_chain.cl_cpg)) {
-+	if (!cl_bpc || le16_to_cpu(group->bg_bits) / cl_bpc + new_clusters >
-+		       le16_to_cpu(fe->id2.i_chain.cl_cpg)) {
- 		ret = -EINVAL;
- 		goto out_unlock;
- 	}
-diff --git a/fs/ocfs2/suballoc.c b/fs/ocfs2/suballoc.c
-index f7b483f0de2a..844cb36bd7ab 100644
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -671,6 +671,11 @@ static int ocfs2_block_group_alloc(struct ocfs2_super *osb,
- 	BUG_ON(ocfs2_is_cluster_bitmap(alloc_inode));
- 
- 	cl = &fe->id2.i_chain;
-+	if (!le16_to_cpu(cl->cl_bpc)) {
-+		status = -EINVAL;
-+		goto bail;
-+	}
-+
- 	status = ocfs2_reserve_clusters_with_limit(osb,
- 						   le16_to_cpu(cl->cl_cpg),
- 						   max_block, flags, &ac);
--- 
-2.39.5
-
+Thnx
 
