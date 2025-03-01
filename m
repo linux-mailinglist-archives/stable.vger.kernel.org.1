@@ -1,154 +1,188 @@
-Return-Path: <stable+bounces-120003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A896AA4A8EF
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 06:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E803DA4AAB9
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 12:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CD4189A965
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3A1189581A
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 11:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ABB1B85F8;
-	Sat,  1 Mar 2025 05:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C701DE4DB;
+	Sat,  1 Mar 2025 11:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZynGDlY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BKAZzmvE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7528E7;
-	Sat,  1 Mar 2025 05:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC761D90B3
+	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 11:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740807137; cv=none; b=VFmpIwJo5I2qr3QBFsgcT+/6w5m71lTMwWtVujoN+g7sbx6ZSaVLq2OtJH+juMbNh1lVjy8DIOo9wplQ7hGbDnMfNAwPmXKdDXblR7If8B2fIZ2WcV65jV6I6lVZk4ccQJ+78ydek8wu+fUyBFdLYj8lV7Njl5ctY4rkISfOyJE=
+	t=1740829427; cv=none; b=oPr0SqJRuEHeAad1rQgDNxRvi1yyORz/TEVA6ZPHOMdLPOx0iDqVvTYs4rcxCg6lpmWBO+FfdF8vcn2uSFMPv7r5sly6rgPuKHduFYuEq5utbqGFyxBWZ3MOpYoID8PzLuD3EuP4+RWpQ0N+lIX0F5DyDUvvrvUjvy2nWHFkzJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740807137; c=relaxed/simple;
-	bh=hPXdQ/hFIPpJkdJk70/Oo9SCb0ot1PV7JSm65Zo7Cqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oPHAcNfrtgbXkhsLaOh4GXH3stFpev8fSUoqvLwgSSm+qP5Rd0jYMmN+GjZhmZQaVTIUJn9iM7yfW5buXKYsuMeqLBkkVuAnjiYnjnKQc9Y54yrVl12ePmzwZ9yHfMfpFjauiMLYI0qz49/hVE1wcJ5XbZuMTVuct9bIuP0vkcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZynGDlY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322F8C4CEDD;
-	Sat,  1 Mar 2025 05:32:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740807136;
-	bh=hPXdQ/hFIPpJkdJk70/Oo9SCb0ot1PV7JSm65Zo7Cqg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yZynGDlYwSbyoqFxsYZl1iByokf6rG0lkNQ74A4dx6zWUHiE8rkNPKdaqpLCM49Bn
-	 Uzrt/PWQSzWLM/oTxXcz3PcYxelzJVyoeGwpXCciRubcatryZJoBOlZTenvMi71GVA
-	 2W0TdbFnLPo/0syo4YdyI4XV80EkIo0CIlMPU25o=
-Date: Fri, 28 Feb 2025 20:19:47 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Cc: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
-	Radoslav =?iso-8859-1?Q?Bod=F3?= <radoslav.bodo@igalileo.cz>,
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [6.1.y] Regression from b1e6e80a1b42 ("xen/swiotlb: add
- alignment check for dma buffers") when booting with Xen and mpt3sas_cm0
- _scsih_probe failures
-Message-ID: <2025022853-undivided-scribing-70dd@gregkh>
-References: <Z6d-l2nCO1mB4_wx@eldamar.lan>
- <fd650c88-9888-46bc-a448-9c1ddcf2b066@oracle.com>
- <Z6ukbNnyQVdw4kh0@eldamar.lan>
- <716f186d-924a-4f2c-828a-2080729abfe9@oracle.com>
- <6d7ed6bf-f8ad-438a-a368-724055b4f04c@suse.com>
- <2025021548-amiss-duffel-9dcf@gregkh>
- <74e74dde-0703-4709-96b8-e1615d40f19c@suse.com>
- <2025021533-grime-luminous-d598@gregkh>
- <e01c39ad-6f5e-449a-b24a-db3b7984030e@oracle.com>
+	s=arc-20240116; t=1740829427; c=relaxed/simple;
+	bh=evUvX4RMBfKC8FqkgyOYIu49UpyYWqsRchzfwT3wFVE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hnP1IjmZzw4vkhleJh1CVMQfuINNZ/5mGdUN5cL02kkbfzmSXCISlUJJjYc3lD+NZyvBq6+7BR8dqeAv1ICJSG1bgsrYOVTAv2mcEQz53peZYwzgvifLoePJkAzs4KeEsosy4/P+s4N8qm6FQFX2I9/MycvOTg4fvcyExxdYwtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BKAZzmvE; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43995b907cfso18946125e9.3
+        for <stable@vger.kernel.org>; Sat, 01 Mar 2025 03:43:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740829423; x=1741434223; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nZbaxd2WRcoQQt1caRaFSEAx+9Lny/NjRCBroTTZogk=;
+        b=BKAZzmvEnRwuhsv9v4/KVlBMZnCpKTqe54ZB754nB34LVLjvwh9yquL6RlB1ZlWf0r
+         F5Fem34fjyR8qWVS9AzF0tjVl3pv0RTfcoatq3z0ORs2iax9g2u/1Ybn9CcJJtvwfsuS
+         q8gTMSyS2C0mcpmuU8I9ZlW4yWcm2RHFef96B0nVLLVnwAJ81ZtKTosArCZLlGxQhGux
+         rkjlkdLAcQUP+wSTE/8PzfkoRTa4aE6tndAn+N1QNJynh5EODK05MxWZMzjSA7sbr6dr
+         KPPpcnj0VvO8TAMH+m5W2WPmOmK+s4aPxqbyVzznxQ7nv7lJdHfYZlB9dBfcoXAgTKYa
+         nlxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740829423; x=1741434223;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nZbaxd2WRcoQQt1caRaFSEAx+9Lny/NjRCBroTTZogk=;
+        b=EALTETCm69KwzG27DgYbZjLqvtP8UifN3TUA9QAbqp1A6jXU5FdARAaBvnLabe8iG3
+         /4p5/pwW33GCMWI5CAUBOEMYeoHgyKZ9o6ek1hPROBuXioZ2D3A2gOwXhOZhwygNAlV2
+         sm7dhTydZEwSMH4L8Nt8Dml4IxBFlTqrpOv4U0Sxtr9ToPxSbBYvwDRgcX/ouB5Nva7q
+         VFmHMUBEu6WT5jKjgEL4CKReDkfAvtplhc/rybd7Eh05BTgngBp8szbpfE1W+FcrxdOy
+         BHm1S9q47ej2QcdTW/ZP7fzAZOeLriOwAE/K392fVvd3Cey8z6HTohJ6jst7ZwmYeJyS
+         whYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOj1pYuFvGNkPHW0dI4C+mkZuRAWA3yoPl09UxuCJFdxAhs3fvwownNeVL137POqsukfxRZyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi4cR99fW/ruecvQQe4kNb/3G4n30Xs6zFl/U+6e9UoDY3OId2
+	24vqrjigUilt2mKKWBHUWNdDRke2T3TmCJC1vT2pMhhMsVg0nE1+oXkl7UkcEcU=
+X-Gm-Gg: ASbGncs3pGifGPDAYoLduhvOkYOO5mChO60qEVgLwX3TU6P9ypvMieIDGsjURAXhmcl
+	iFXGKkijDLwmg2ijX7o/2XkCDEVNDMQsQ4f5xiX8m7dhjFTU9xNgRddl3ZUQzkK4k+wyFEwAOEY
+	j6HluEpfzq0j8BgvawXZAUqoDCMIsrJqFEB1pAZj/5pQZEq6wQJ8YpPJo+dON9J+3KZh201kUMf
+	dWb2jLr3Wdxv55z+04xRXiw7nEwBOpn/wIkLv8E107Cz8+TXy87POTOZXA80FqDzPXdqO87zcnj
+	9Q6UlTG+bYQXL7vdVk+bolfvoheG1ah9nMBn8jUprxwbt84pRacCKuK3GjxH4fB3erHeEwVKk5Q
+	=
+X-Google-Smtp-Source: AGHT+IHj61UYuOocbWw/qWMpr+RAho3zm2+puTeioLvnRLnuw4Nm2xW7pb1mJ8SKDz4411HtZ7isXQ==
+X-Received: by 2002:a05:6000:1a86:b0:38d:dc4d:3473 with SMTP id ffacd0b85a97d-390eca384b1mr5985832f8f.51.1740829423579;
+        Sat, 01 Mar 2025 03:43:43 -0800 (PST)
+Received: from gpeter-l.roam.corp.google.com ([209.198.129.23])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4796600sm8002871f8f.20.2025.03.01.03.43.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Mar 2025 03:43:43 -0800 (PST)
+From: Peter Griffin <peter.griffin@linaro.org>
+Subject: [PATCH v2 0/4] samsung: pinctrl: Add support for
+ eint_fltcon_offset and filter selection on gs101
+Date: Sat, 01 Mar 2025 11:43:18 +0000
+Message-Id: <20250301-pinctrl-fltcon-suspend-v2-0-a7eef9bb443b@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e01c39ad-6f5e-449a-b24a-db3b7984030e@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANfywmcC/4WNTQ6CMBBGr0Jm7Zj+QFBX3sOwqGWASUhLpkg0p
+ He3cgGX7yXf+3ZIJEwJbtUOQhsnjqGAOVXgJxdGQu4Lg1GmUdooXDj4VWYc5tXHgOmVFgo9Gmu
+ t07b1dV9DGS9CA7+P8KMrPHFao3yOn03/7N/kplEhte1Vqadxl6a+zxycxHOUEbqc8xc35uC0v
+ QAAAA==
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com, 
+ semen.protsenko@linaro.org, kernel-team@android.com, 
+ jaewon02.kim@samsung.com, Peter Griffin <peter.griffin@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2738;
+ i=peter.griffin@linaro.org; h=from:subject:message-id;
+ bh=evUvX4RMBfKC8FqkgyOYIu49UpyYWqsRchzfwT3wFVE=;
+ b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBnwvLngUxy+MXzTvUcVPQf/Vn4XqYkl8kM3dwFf
+ DmYVxaFXSaJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ8Ly5wAKCRDO6LjWAjRy
+ ur9qEACDSxzR9tumJKwuhzgEo08hXMNwYrOiJWy/GhOTxgmk29YjAovMmjaayFfJqUgF7V6beFA
+ RS8OXsLqcO17SXY0d8+7nvES0yXgElnsfTy5oWlfypPngGZBMH+Biq/7EvmLugypVzKweBk1eQL
+ iRIFYE2ni3ce+dpFxDC5nTUXJ0B11DYR9t6EIP8Dct0YsYZ4NaCR9MWefbPleW80/Tk95sAaRdg
+ kbOPiWLJbRUC6OMqxC4wv9KlsjaHY2QnUfMhbX3bekG2kSoZW3pr7oEB5wr1ZQfvzV4BF4rpJWy
+ w/gz8M1oJe+mW43GReWWF1qlsMcmKbVFTbwSGOlnRZlrC7H6XA7MEm73BoNnV/dm4ujVKqez6KA
+ tNTQbdaQz5/Arem/o4eNCTdcR7bAixbuhs59y5uF+iIL2ShlzZGtjYTfhHK3XpvmcS5Clwfws1J
+ PKbznYWGc1YodbsuGi3reJJAAsT8vLDmSWc6HBTpWchXnF4OTcU5aDkMKwJSEvd2KlbNNQac021
+ Xd+aKXq0mvd9gUZZUCUeUrC7itF/yLQNy3yHdDNVR4VJihubXy94XNjCiX58Phmy3rMgSq976Kj
+ M5h01vqEECANqtD0xLX/F6NP9ybFg+t7xohWnoLPZGokCX5v/EcMtf5UFUh5VxBM33oUaPSV+zK
+ CfwOuaI8VtCo3lw==
+X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
+ fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
 
-On Fri, Feb 28, 2025 at 01:50:12PM +0530, Harshvardhan Jha wrote:
-> 
-> On 15/02/25 8:25 PM, Greg KH wrote:
-> > On Sat, Feb 15, 2025 at 02:39:46PM +0100, Jürgen Groß wrote:
-> >> On 15.02.25 13:34, Greg KH wrote:
-> >>> On Sat, Feb 15, 2025 at 12:47:57PM +0100, Jürgen Groß wrote:
-> >>>> On 12.02.25 16:12, Harshit Mogalapalli wrote:
-> >>>>> Hi Salvatore,
-> >>>>>
-> >>>>> On 12/02/25 00:56, Salvatore Bonaccorso wrote:
-> >>>>>> Hi Harshit,
-> >>>>>>
-> >>>>>> On Sun, Feb 09, 2025 at 01:45:38AM +0530, Harshit Mogalapalli wrote:
-> >>>>>>> Hi Salvatore,
-> >>>>>>>
-> >>>>>>> On 08/02/25 21:26, Salvatore Bonaccorso wrote:
-> >>>>>>>> Hi Juergen, hi all,
-> >>>>>>>>
-> >>>>>>>> Radoslav Bodó reported in Debian an issue after updating our kernel
-> >>>>>>>> from 6.1.112 to 6.1.115. His report in full is at:
-> >>>>>>>>
-> >>>>>>>> https://bugs.debian.org/1088159
-> >>>>>>>>
-> >>>>>>> Note:
-> >>>>>>> We have seen this on 5.4.y kernel: More details here:
-> >>>>>>> https://lore.kernel.org/all/9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com/
-> >>>>>> Thanks for the pointer, so looking at that thread I suspect the three
-> >>>>>> referenced bugs in Debian are in the end all releated. We have one as
-> >>>>>> well relating to the megasas_sas driver, this one for the mpt3sas
-> >>>>>> driver and one for the i40e driver).
-> >>>>>>
-> >>>>>> AFAICS, there is not yet a patch which has landed upstream which I can
-> >>>>>> redirect to a affected user to test?
-> >>>>>>
-> >>>>> Konrad pointed me at this thread: https://lore.kernel.org/
-> >>>>> all/20250211120432.29493-1-jgross@suse.com/
-> >>>>>
-> >>>>> This has some fixes, but not landed upstream yet.
-> >>>> Patches are upstream now. In case you still experience any problems, please
-> >>>> speak up.
-> >>> What specific commits should be backported here?
-> >> Those are:
-> >>
-> >> e93ec87286bd1fd30b7389e7a387cfb259f297e3
-> >> 85fcb57c983f423180ba6ec5d0034242da05cc54
-> > Ugh, neither of them were marked for stable inclusion, why not?  Anyway,
-> > I'll go queue them up after this round of kernels is released hopefully
-> > tomorrow, but next time, please follow the stable kernel rules if you
-> > know you want a patch included in a tree.
-> 
-> 
-> Hi,
-> 
-> I see these patches in 6.12 now and upon manually checking these patches
-> cleanly apply till 6.6 kernel so I guess they will be eventually back
-> ported till there?
+Hi folks,
 
-They are already in the following released kernels:
-	6.1.129 6.6.79 6.12.16 6.13.4 6.14-rc3
+This series fixes support for correctly saving and restoring fltcon0
+and fltcon1 registers on gs101 for non-alive banks where the fltcon
+register offset is not at a fixed offset (unlike previous SoCs).
+This is done by adding a eint_fltcon_offset and providing GS101
+specific pin macros that take an additional parameter (similar to
+how exynosautov920 handles it's eint_con_offset).
 
-and the first one is in the stable queues for 5.15, 5.10, and 5.4.  The
-second one is not because as you mention:
+Additionally the SoC specific suspend and resume callbacks are
+re-factored so that each SoC variant has it's own callback containing
+the peculiarities for that SoC.
 
-> 6.1 and older kernels have conflicts while cherry
-> picking these commits which makes it harder to verify them as the test
-> machine I have runs on a much older kernel(5.4) unfortunately. If it
-> could be at least be brought back till 5.15, testing this would become
-> much easier.
+Finally support for filter selection on alive banks is added, this is
+currently only enabled for gs101. The code path can be excercised using
+`echo mem > /sys/power/state`
 
-The commit does not apply cleanly there.  If you need/want it there,
-please provide a working and tested backport.
+regards,
 
-thanks,
+Peter
 
-greg k-h
+To: Krzysztof Kozlowski <krzk@kernel.org>
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+To: Alim Akhtar <alim.akhtar@samsung.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-gpio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: andre.draszik@linaro.org
+Cc: tudor.ambarus@linaro.org
+Cc: willmcvicker@google.com
+Cc: semen.protsenko@linaro.org
+Cc: kernel-team@android.com
+Cc: jaewon02.kim@samsung.com
+
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+---
+Changes in v2:
+- Remove eint_flt_selectable bool as it can be deduced from EINT_TYPE_WKUP (Peter)
+- Move filter config register comment to header file (Andre)
+- Rename EXYNOS_FLTCON_DELAY to EXYNOS_FLTCON_ANALOG (Andre)
+- Remove misleading old comment (Andre)
+- Refactor exynos_eint_update_flt_reg() into a loop (Andre)
+- Split refactor of suspend/resume callbacks & gs101 parts into separate patches (Andre)
+- Link to v1: https://lore.kernel.org/r/20250120-pinctrl-fltcon-suspend-v1-0-e77900b2a854@linaro.org
+
+---
+Peter Griffin (4):
+      pinctrl: samsung: add support for eint_fltcon_offset
+      pinctrl: samsung: add dedicated SoC eint suspend/resume callbacks
+      pinctrl: samsung: add gs101 specific eint suspend/resume callbacks
+      pinctrl: samsung: Add filter selection support for alive bank on gs101
+
+ drivers/pinctrl/samsung/pinctrl-exynos-arm64.c | 150 ++++++-------
+ drivers/pinctrl/samsung/pinctrl-exynos.c       | 293 +++++++++++++++----------
+ drivers/pinctrl/samsung/pinctrl-exynos.h       |  51 ++++-
+ drivers/pinctrl/samsung/pinctrl-samsung.c      |  12 +-
+ drivers/pinctrl/samsung/pinctrl-samsung.h      |  12 +-
+ 5 files changed, 321 insertions(+), 197 deletions(-)
+---
+base-commit: f7da3699c901aea6a009d38116d24c67a4c9662e
+change-id: 20250120-pinctrl-fltcon-suspend-2333a137c4d4
+
+Best regards,
+-- 
+Peter Griffin <peter.griffin@linaro.org>
+
 
