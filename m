@@ -1,95 +1,154 @@
-Return-Path: <stable+bounces-120002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F22DA4A889
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:21:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A896AA4A8EF
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 06:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3D9175898
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 04:21:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CD4189A965
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8181519BE;
-	Sat,  1 Mar 2025 04:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ABB1B85F8;
+	Sat,  1 Mar 2025 05:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiEf/Q7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZynGDlY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB952C9A
-	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 04:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7528E7;
+	Sat,  1 Mar 2025 05:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740802885; cv=none; b=KjnGsAD/TrM7CiWiCaP8PfntMgb0kW7WZhQCkGt4FZdCrQXtKI9xb2eHlmJmqpp10fohhkhKhSDYFOFpEUq/vrdbQPV23J13CZl1fp/Z5lKr0+mTZPbNXW0IWS1tbTIi/hqcV9KqApxrAlje0sJU9AIe/tT5/OZHDYY+y8OlUbk=
+	t=1740807137; cv=none; b=VFmpIwJo5I2qr3QBFsgcT+/6w5m71lTMwWtVujoN+g7sbx6ZSaVLq2OtJH+juMbNh1lVjy8DIOo9wplQ7hGbDnMfNAwPmXKdDXblR7If8B2fIZ2WcV65jV6I6lVZk4ccQJ+78ydek8wu+fUyBFdLYj8lV7Njl5ctY4rkISfOyJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740802885; c=relaxed/simple;
-	bh=5tklinKcD33+gMkI7M0I2E3le2jdr7Qw7JbmrsgUIQA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cqBSUReV5zM74J71e117Rl3YVCKkVcTvmudefii9dKCaJ7aZNpWppyYZ8Bpc/7RATz4fqn1T3OlKT3i8b7nj18DZJY8aiXlNCMrz+xHgSVBjifoooUKouZv6IhBBnfB3TMH8q/8mDtyKJL/S6Ur1R5my4B4pc11IXCuErqmKfkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiEf/Q7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7350C4CEF3;
-	Sat,  1 Mar 2025 04:21:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740802885;
-	bh=5tklinKcD33+gMkI7M0I2E3le2jdr7Qw7JbmrsgUIQA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fiEf/Q7VKP1I/HZrHZ4pHWNCG3nz90DSr2Kqg/jcnUCeLOJblqxFzkEILp7CPtWQb
-	 yszzXEXjk6183d1IxTmU08tRv0QOw7JeJq1P48CyRV2zcvaTOsU2xtum2093TCNVc6
-	 noawJLgkm0mAETru2mkziKjLyYkBf8wd7qTe72ggCaK68jQ5DSJYyKVMMYvMHq8Zve
-	 LaVm1KMR4W75lBbpMp+maEYC7BdU2bvSDkFJ8H53vWap481Ir513hfTHJilWiKFF0+
-	 +ZZCYbQZk8ZvnnXHTu1tWceOL5nPTyMApsxgAhmLncLIoaFvGQ6uRZXZGL5gnEHt9r
-	 ZVLzqCjvwiCRA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	apanov@astralinux.ru
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 1/2] erofs: handle overlapped pclusters out of crafted images properly
-Date: Fri, 28 Feb 2025 23:21:01 -0500
-Message-Id: <20250228184635-1e841747ce26207f@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250228165103.26775-2-apanov@astralinux.ru>
-References: 
+	s=arc-20240116; t=1740807137; c=relaxed/simple;
+	bh=hPXdQ/hFIPpJkdJk70/Oo9SCb0ot1PV7JSm65Zo7Cqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oPHAcNfrtgbXkhsLaOh4GXH3stFpev8fSUoqvLwgSSm+qP5Rd0jYMmN+GjZhmZQaVTIUJn9iM7yfW5buXKYsuMeqLBkkVuAnjiYnjnKQc9Y54yrVl12ePmzwZ9yHfMfpFjauiMLYI0qz49/hVE1wcJ5XbZuMTVuct9bIuP0vkcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZynGDlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322F8C4CEDD;
+	Sat,  1 Mar 2025 05:32:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740807136;
+	bh=hPXdQ/hFIPpJkdJk70/Oo9SCb0ot1PV7JSm65Zo7Cqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yZynGDlYwSbyoqFxsYZl1iByokf6rG0lkNQ74A4dx6zWUHiE8rkNPKdaqpLCM49Bn
+	 Uzrt/PWQSzWLM/oTxXcz3PcYxelzJVyoeGwpXCciRubcatryZJoBOlZTenvMi71GVA
+	 2W0TdbFnLPo/0syo4YdyI4XV80EkIo0CIlMPU25o=
+Date: Fri, 28 Feb 2025 20:19:47 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Cc: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
+	Radoslav =?iso-8859-1?Q?Bod=F3?= <radoslav.bodo@igalileo.cz>,
+	regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: Re: [6.1.y] Regression from b1e6e80a1b42 ("xen/swiotlb: add
+ alignment check for dma buffers") when booting with Xen and mpt3sas_cm0
+ _scsih_probe failures
+Message-ID: <2025022853-undivided-scribing-70dd@gregkh>
+References: <Z6d-l2nCO1mB4_wx@eldamar.lan>
+ <fd650c88-9888-46bc-a448-9c1ddcf2b066@oracle.com>
+ <Z6ukbNnyQVdw4kh0@eldamar.lan>
+ <716f186d-924a-4f2c-828a-2080729abfe9@oracle.com>
+ <6d7ed6bf-f8ad-438a-a368-724055b4f04c@suse.com>
+ <2025021548-amiss-duffel-9dcf@gregkh>
+ <74e74dde-0703-4709-96b8-e1615d40f19c@suse.com>
+ <2025021533-grime-luminous-d598@gregkh>
+ <e01c39ad-6f5e-449a-b24a-db3b7984030e@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <e01c39ad-6f5e-449a-b24a-db3b7984030e@oracle.com>
 
-[ Sasha's backport helper bot ]
+On Fri, Feb 28, 2025 at 01:50:12PM +0530, Harshvardhan Jha wrote:
+> 
+> On 15/02/25 8:25 PM, Greg KH wrote:
+> > On Sat, Feb 15, 2025 at 02:39:46PM +0100, Jürgen Groß wrote:
+> >> On 15.02.25 13:34, Greg KH wrote:
+> >>> On Sat, Feb 15, 2025 at 12:47:57PM +0100, Jürgen Groß wrote:
+> >>>> On 12.02.25 16:12, Harshit Mogalapalli wrote:
+> >>>>> Hi Salvatore,
+> >>>>>
+> >>>>> On 12/02/25 00:56, Salvatore Bonaccorso wrote:
+> >>>>>> Hi Harshit,
+> >>>>>>
+> >>>>>> On Sun, Feb 09, 2025 at 01:45:38AM +0530, Harshit Mogalapalli wrote:
+> >>>>>>> Hi Salvatore,
+> >>>>>>>
+> >>>>>>> On 08/02/25 21:26, Salvatore Bonaccorso wrote:
+> >>>>>>>> Hi Juergen, hi all,
+> >>>>>>>>
+> >>>>>>>> Radoslav Bodó reported in Debian an issue after updating our kernel
+> >>>>>>>> from 6.1.112 to 6.1.115. His report in full is at:
+> >>>>>>>>
+> >>>>>>>> https://bugs.debian.org/1088159
+> >>>>>>>>
+> >>>>>>> Note:
+> >>>>>>> We have seen this on 5.4.y kernel: More details here:
+> >>>>>>> https://lore.kernel.org/all/9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com/
+> >>>>>> Thanks for the pointer, so looking at that thread I suspect the three
+> >>>>>> referenced bugs in Debian are in the end all releated. We have one as
+> >>>>>> well relating to the megasas_sas driver, this one for the mpt3sas
+> >>>>>> driver and one for the i40e driver).
+> >>>>>>
+> >>>>>> AFAICS, there is not yet a patch which has landed upstream which I can
+> >>>>>> redirect to a affected user to test?
+> >>>>>>
+> >>>>> Konrad pointed me at this thread: https://lore.kernel.org/
+> >>>>> all/20250211120432.29493-1-jgross@suse.com/
+> >>>>>
+> >>>>> This has some fixes, but not landed upstream yet.
+> >>>> Patches are upstream now. In case you still experience any problems, please
+> >>>> speak up.
+> >>> What specific commits should be backported here?
+> >> Those are:
+> >>
+> >> e93ec87286bd1fd30b7389e7a387cfb259f297e3
+> >> 85fcb57c983f423180ba6ec5d0034242da05cc54
+> > Ugh, neither of them were marked for stable inclusion, why not?  Anyway,
+> > I'll go queue them up after this round of kernels is released hopefully
+> > tomorrow, but next time, please follow the stable kernel rules if you
+> > know you want a patch included in a tree.
+> 
+> 
+> Hi,
+> 
+> I see these patches in 6.12 now and upon manually checking these patches
+> cleanly apply till 6.6 kernel so I guess they will be eventually back
+> ported till there?
 
-Hi,
+They are already in the following released kernels:
+	6.1.129 6.6.79 6.12.16 6.13.4 6.14-rc3
 
-Summary of potential issues:
-âš ï¸ Found follow-up fixes in mainline
+and the first one is in the stable queues for 5.15, 5.10, and 5.4.  The
+second one is not because as you mention:
 
-The upstream commit SHA1 provided is correct: 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50
+> 6.1 and older kernels have conflicts while cherry
+> picking these commits which makes it harder to verify them as the test
+> machine I have runs on a much older kernel(5.4) unfortunately. If it
+> could be at least be brought back till 5.15, testing this would become
+> much easier.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Alexey Panov<apanov@astralinux.ru>
-Commit author: Gao Xiang<hsiangkao@linux.alibaba.com>
+The commit does not apply cleanly there.  If you need/want it there,
+please provide a working and tested backport.
 
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 1bf7e414cac3)
+thanks,
 
-Found fixes commits:
-1a2180f6859c erofs: fix PSI memstall accounting
-
-Note: The patch differs from the upstream commit:
----
-1:  9e2f9d34dd12e < -:  ------------- erofs: handle overlapped pclusters out of crafted images properly
--:  ------------- > 1:  8b40df2f9aa65 erofs: handle overlapped pclusters out of crafted images properly
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+greg k-h
 
