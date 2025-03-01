@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE8DA4A87D
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:21:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90569A4A87E
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:21:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D523BA1A2
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 04:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9061175A2E
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 04:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7770416F858;
-	Sat,  1 Mar 2025 04:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AFB1519BE;
+	Sat,  1 Mar 2025 04:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HuL00iY5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qe4mD7ZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A002C9A
-	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 04:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389652C9A
+	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 04:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740802866; cv=none; b=sjEwmsu+hWwuU0JSwckhInVF+rMg6+W5wzaT1FspotmwbOYscr9vob4vj5fQo+13MUJPOUtaEX1GanNPFIubpwg/xVgCmZM9rAQXXSepwhDYKRpYZN1y2zaANb5GZlnItKtxH9iNAN8eB9jA8NT49nj3K5ZgmcP/56X0d377EXs=
+	t=1740802868; cv=none; b=d4C6zHxleTYO0cBkO/UvJGNkSD13b4BpZgAIYJNuj6azjOygf5gEPL6xzNMBFopjRwcm6pYnmz4ioQMLjeLT6QUDp3id0/4nR5A6Adbj+S1varvrpVEPzwkhiliJ8IQUsHQv22z6hyzlLdd2tasrQpf42Gt84zLreJbxF/SsWZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740802866; c=relaxed/simple;
-	bh=BO0E0jnqVyvSaO/T/w2fxpwc42Jbx+vPBRLPWWJjZt8=;
+	s=arc-20240116; t=1740802868; c=relaxed/simple;
+	bh=1Nsi8Xuno69V1lpJuzZ9/cpO02grSbDCADPPctQ8Seg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kvOQFrRx+ifJKLRdq1AjwTlNuafqYT4b3DFyMANRoj4QDBLb5Gc41Npu5i+348OBVLUQmRtXcaNOYFdmhVjIqy92v/Ggh+ppTekXQH1/qz3PVn7eoLnfrN3UpvfXUtWxl8MEFq07cn0G78PHga4LQBcBa7mDRiSMKbXg1tRH12Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HuL00iY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66CBC4CEF3;
-	Sat,  1 Mar 2025 04:21:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UqW3Za4g9xXzsP+NhGLT2IpxtPWrDfZKWef4bO4bie/pFZmAus4yuNxI77TN2U7LNEFe58FQiE6E5yb7bWDStENgDqMRB+iG5+4CrdhB7+PZPXZ2dL3EPjMbKvk4Fi239ygRlOhusWkYU1vymKWNj7+vd+VRIVknSsCLeXSXQQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qe4mD7ZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7149FC4CEF3;
+	Sat,  1 Mar 2025 04:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740802866;
-	bh=BO0E0jnqVyvSaO/T/w2fxpwc42Jbx+vPBRLPWWJjZt8=;
+	s=k20201202; t=1740802867;
+	bh=1Nsi8Xuno69V1lpJuzZ9/cpO02grSbDCADPPctQ8Seg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HuL00iY5uah6vYGkGYhj6/d0aTx20D6hR5/WS+6SBFuCg5bhlRNRWg/jvuLwk1nrA
-	 z7En+SonkMCzhBTC/oMCP0n+UhldZDjenogAMM0DCkmTka/7zkmfDgNX26c2BFYImC
-	 pe/m2lL1MXec2or06jL7dpE9k7ElS3hbqJQqRsqbmLf8+dyelFh7AB7nPzTxdW5J4e
-	 qEbi7EoBS9yK9iyawWgVWwmiAS5fzIFuUb2SECyL3LTY+IZ5h4lk9x0TxvnVx0RcMR
-	 5xHKmpi4g+DWHd5sD9plZ4kCD8ErcbxZstkQEimvnxGUqOXooAbWtMBiVM/Z8ePs3b
-	 vwv2czJhqcxBQ==
+	b=qe4mD7ZJ/o3CqzTg1nIN0LLxxaOMz1wHswO2i32gjEOQoDWEnP81SHjo+hPpnbl11
+	 t/X8hZVbbHj+ub2A2mRReZUpwc2/rGxBx0qkdsph6OnolK7CmQ0a9P2VghAKS/phdQ
+	 jqerKj6M/08syCHqYuU/zJJDaCt+ldrUuCXkGHX3bBOwOX8HP04Jje4DMzp3eecdyQ
+	 QKwaoiJ81CLT7kgX0Xugtw6LOu5FlGxw2oRiQdJlyaW3EPP5GpDHiv1hXKX42zPBeq
+	 bvRG16BtA33XpTVqMfHpHxUx6zVyo5YeUChqxIvdZyVSJNYy5pEDxHOM+IJrShsPE7
+	 jLaNxh1bYXKgQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Tomas Glozar <tglozar@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 3/4] rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
-Date: Fri, 28 Feb 2025 23:20:42 -0500
-Message-Id: <20250228191628-f24381210ba2f0fa@stable.kernel.org>
+To: stable@vger.kernel.org,
+	ribalda@chromium.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4.y] media: uvcvideo: Remove dangling pointers
+Date: Fri, 28 Feb 2025 23:20:44 -0500
+Message-Id: <20250228185437-e7697605e8039f73@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250228135708.604410-4-tglozar@redhat.com>
+In-Reply-To:  <20250228083505.2713073-1-ribalda@chromium.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,52 +64,40 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+❌ Build failures detected
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: d8d866171a414ed88bd0d720864095fd75461134
+Found matching upstream commit: 221cd51efe4565501a3dbf04cc011b537dcce7fb
+
+Status in newer kernel trees:
+6.13.y | Present (different SHA1: 9edc7d25f7e4)
+6.12.y | Present (different SHA1: 438bda062b2c)
+6.6.y | Present (different SHA1: 4dbaa738c583)
+6.1.y | Present (different SHA1: ccc601afaf47)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  d8d866171a414 ! 1:  2b6c95fecd276 rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
-    @@ Metadata
-      ## Commit message ##
-         rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads
-     
-    +    commit d8d866171a414ed88bd0d720864095fd75461134 upstream.
-    +
-         When using rtla timerlat with userspace threads (-u or -U), rtla
-         disables the OSNOISE_WORKLOAD option in
-         /sys/kernel/tracing/osnoise/options. This option is not re-enabled in a
-    @@ Commit message
-         Fixes: ed774f7481fa ("rtla/timerlat_hist: Add timerlat user-space support")
-         Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-         Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-    +    [ params->kernel_workload does not exist in 6.6, use
-    +    !params->user_hist ]
-    +    Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-     
-      ## tools/tracing/rtla/src/timerlat_hist.c ##
-     @@ tools/tracing/rtla/src/timerlat_hist.c: timerlat_hist_apply_config(struct osnoise_tool *tool, struct timerlat_hist_param
-    - 		}
-    + 		auto_house_keeping(&params->monitored_cpus);
-      	}
-      
-     -	if (params->user_hist) {
-    @@ tools/tracing/rtla/src/timerlat_hist.c: timerlat_hist_apply_config(struct osnois
-     +	* On kernels without support, user threads will have already failed
-     +	* on missing timerlat_fd, and kernel threads do not need it.
-     +	*/
-    -+	retval = osnoise_set_workload(tool->context, params->kernel_workload);
-    ++	retval = osnoise_set_workload(tool->context, !params->user_hist);
-     +	if (retval < -1) {
-     +		err_msg("Failed to set OSNOISE_WORKLOAD option\n");
-     +		goto out_err;
+Failed to apply patch cleanly.
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
+
+Build Errors:
+Patch failed to apply on stable/linux-5.4.y. Reject:
+
+diff a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c	(rejected hunks)
+@@ -1577,7 +1612,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 
+ 		if (!rollback && handle &&
+ 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-			ctrl->handle = handle;
++			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	}
+ 
+ 	return 0;
 
