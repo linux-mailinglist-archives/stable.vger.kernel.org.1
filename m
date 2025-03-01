@@ -1,80 +1,48 @@
-Return-Path: <stable+bounces-120007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243C4A4AB62
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 14:50:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C3AA4ABA1
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 15:15:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36D23B8337
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 13:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0C931889435
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 14:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8B01DF255;
-	Sat,  1 Mar 2025 13:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E375F1DF992;
+	Sat,  1 Mar 2025 14:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0fHVrJH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIi8tZ91"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA881DED51;
-	Sat,  1 Mar 2025 13:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944B463A9;
+	Sat,  1 Mar 2025 14:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740837032; cv=none; b=qLWTwmBwdoTtIvRU9U1uwXcJqvqkWOwaCZMRPMZt7Jbp0LuYnBPE1vYIHbIZRe+qcJp8FeT05rHzjIf1trP/KPjWp2/hWXmtu2uO5VCX/oXWQ6SHc9Ev3e0qSRJen1gfeIcPW8P6z6oPfpU9BWv6tCv0pUZJHMpP+BumDS7Ib40=
+	t=1740838485; cv=none; b=ax0FxuRU30dsHEcfVFY0nrSUKBuv411hn7fh0Pr5rHl8x39XGRWD03wBRA+sBtEzuS/m6+tBYBsmWKA9IPK3Y8WmttseIDe6WBf8Te2HImWwdFstgpW+vXA/lWeKFEkWV+2vtXiE0MhN/ELyps1SwZmmJXNC0Z4AL9HtSrF9bU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740837032; c=relaxed/simple;
-	bh=ME5xNwEUvmZIhrCna/NGeAum7nG3bjJMPxsf3gI42Bc=;
+	s=arc-20240116; t=1740838485; c=relaxed/simple;
+	bh=o0368wJb5Y92GremWcVyjHvnwdJ4nqQBlZdIgYR3XZQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ANzOm52PokiTjx1yBkvvsrshBlGP8YG16G0TtWpph9rDf43gNfJkW33oF5nN9t1nweCJ+6yoOrt9tMlDUlTkfpVsD9jMQEDpL3i/KCbmUL80v0q97q6ydWkaYVJvcVIzE9XFTQ9M1P3joYJw2sVMW88b5+guL5l96/jALh52zns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0fHVrJH; arc=none smtp.client-ip=209.85.214.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-22113560c57so59084025ad.2;
-        Sat, 01 Mar 2025 05:50:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740837030; x=1741441830; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pJgxQ9kTw71K96V2pNjoEy9ewjLpxCqdEPFpCMMN/U4=;
-        b=R0fHVrJH2Ms/6/iKsBK4NeJNQjyIXmFB6B9L4AarEAsS4eZ20pbaFImTy+TkRObknG
-         Zf/INMiGF6NJfZS1OhneR48y4QLpc0uM9btq8bFKvA6zkkzS9ydWW3Gj58ZNP76JfoUE
-         +eicF6T4hBFsHN5n05K7pVVRAF1jD1GLt/gNsLHfRAecUPCtt40UcWy0NmIxFtOt8Fo3
-         n6vqMjRg6tpFoFhcXNPgHbaBewVw+TB+oFGMw/vAn7fbZpqhLwr0cOMQ2nt0YAj6+mGF
-         3R6GCZ+BW5bPmVWoaHORgQ6GM5dAX77/cplkZ+AvJXxJgkWFoXNAIpa7jgVs8UjRhuBy
-         Rtig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740837030; x=1741441830;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pJgxQ9kTw71K96V2pNjoEy9ewjLpxCqdEPFpCMMN/U4=;
-        b=dGMYXNGhvPWID0N6aessuO6+fBR+UgG7+HDDts8sldG1c3Pn8elZPBqyzy254P1nRI
-         L5VaVwPJO6qcDwvbYmGt5c2AWKXcfxHkENr1Xznit7J2BSS3yZdtFaIyCuWDAuC4COHo
-         2cFQSt+ANRxjbXqhD6I2KS2B2V+rUODDNN9hhhcMqBAuRGFyPRo9Z0Q0XSmKspJiLwxQ
-         cYO1k4JCAKWLuqMZg4tzJDyjMZlDG+ngM/zWXE7f4GwdBiq6E8h3sfC+CCDxRnLKFNho
-         77T3i/n1wDSOS63bSn+MvCxTuECf55YNYZMqleyPEBMO18K8WheLlmtEdiZ5BIZZgSb4
-         YWdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVW1sRmtZY25fdaiHE/asicouqQ4d+mbisyV4s1tng6R/bp9lA/VjwTGqOriaofQqJPCY9smZ8W+b0WSXOz@vger.kernel.org, AJvYcCWR6O3z0/p2UsP9323KKWo0Lop2esRIMoQKYnKqNW5NC+yF11oXMqL7ivyACW5GF8fRNQOv2Oms@vger.kernel.org, AJvYcCX7z4RNFIwJhJ+oYKHXD2RaAsM6ZCWNZKcCnb/Gv4FEfsfd4HICVSk+9/f7s4vqy8aDgMfLE1GdRppWx3I=@vger.kernel.org, AJvYcCXUyUaZRc8JiI1vciBBvR/1zrrdbVFC9TDXuDk0o5A5zLN+vo8vOqokirhTEAFTJyjaR3qHnNm9@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhxRXvzL4mUvEFqao8JoYToVzf2sIpuL8LR9ALt/x7Fa68pKhL
-	6UoJ4NgqMtiVHB7tW2vCg3mNZ7hHbLVY1DFCvgxgzWFhs3iogInD
-X-Gm-Gg: ASbGncuPhgaVfc2VGjJBvzwxDTIFzK0DT4EcB8gBQUJiTnVF1oswPEbex/ZFKOsG3Fh
-	VUHrL3Z0fUlRyWERk/GtjOrm5gi6bX7IllPj08MOLEzyXjA38pQiyA8y4gJDjK9+b8Nv2dHazbD
-	oxiKiQ1UeM18x7bXjEdfgKk5EqNnqTcBOoEXsh9zjWvv7Jsg8LNR0w8CG2Vqmi1KUbDdQ+Ed+R6
-	S3sBrI6ONYYCDNsEYsOJqlew2imWsLE7DaHVIxqDEWiXGWd+O6bu/6SDX+UUfM1IgsACmiEJDel
-	kuLQYUlJmtfHJuSeAGP+vII8RACNTnidN9JAgevyEPv5G5up3zHJOhbuUH/TYxs6zi7VxRowKnD
-	A5A9FPT0sV22rVnmL0OZ9uP/AMafsdEKK
-X-Google-Smtp-Source: AGHT+IHaL4hbyWgR+iPuNLWB5nxuPIRAPj7rx5fVWakRllPjjwrCtFNjMmeB9yAzirq0UbQe6nIUbQ==
-X-Received: by 2002:a17:902:fc87:b0:223:6744:bfb9 with SMTP id d9443c01a7336-22369247768mr116255305ad.41.1740837030212;
-        Sat, 01 Mar 2025 05:50:30 -0800 (PST)
-Received: from ?IPV6:2409:8a55:301b:e120:3c9b:1380:5d8c:26d0? ([2409:8a55:301b:e120:3c9b:1380:5d8c:26d0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2235052005fsm48280085ad.227.2025.03.01.05.50.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Mar 2025 05:50:29 -0800 (PST)
-Message-ID: <cc3034c6-2589-4e9a-97af-a7879998d7d8@gmail.com>
-Date: Sat, 1 Mar 2025 21:49:55 +0800
+	 In-Reply-To:Content-Type; b=JsZwZ/IpbNn98AJqW1UO9/EuK/cEmDdpxNWXOCI4evyXXERDJpPfZYUZMF/QR+k73btpUYd7ln9zcFFlVia63plAPTnYvMRa9uVkDdpq2gCIuITlwDuEzPFDmjQUiGEdkJOsNviMYWgny+y/3zjo/qfT0E0i5VMobSQBstn/heo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIi8tZ91; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5B5C4CEDD;
+	Sat,  1 Mar 2025 14:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740838485;
+	bh=o0368wJb5Y92GremWcVyjHvnwdJ4nqQBlZdIgYR3XZQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SIi8tZ91g090u2vtqcyg5d/KxEAATuo4P7tc7Mbxqnpi8nIdDpdzPknpj/tShE4U+
+	 g9V3ncjo4td5v+laIoGybGshgvaCvPGTlsHArBg/76lflLMaXK+gqevH4UZDpKMxQK
+	 CUdYxCDaDjmteOYCF9XR1/qlVdjCsM/1d+rL8ARA/vY7dZfYl8vzQ7OvctZ7bS/p4K
+	 Q2ZSvpJDkgy9kNnCcTXegmFThyPwxFeoBFQ54T2dZqyG8h7LK68WV/qUpZgasvmPuI
+	 AWvDkg2egYFvAFtGdQCJyhgas7g0Sd/r6avMq850vrKPRoTMA/SH2ryFPnhrIV0TRf
+	 sN64QIgJTYuww==
+Message-ID: <c5cef589-8091-41ce-94e7-82b56ba4143f@kernel.org>
+Date: Sat, 1 Mar 2025 15:14:37 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,99 +50,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: page_frag: Fix refill handling in
- __page_frag_alloc_align()
-To: Haiyang Zhang <haiyangz@microsoft.com>, linux-hyperv@vger.kernel.org,
- akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: decui@microsoft.com, kys@microsoft.com, paulros@microsoft.com,
- olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net,
- wei.liu@kernel.org, longli@microsoft.com, linux-kernel@vger.kernel.org,
- linyunsheng@huawei.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- Alexander Duyck <alexander.duyck@gmail.com>
-References: <1740794613-30500-1-git-send-email-haiyangz@microsoft.com>
+Subject: Re: [PATCH v2 2/2] clk: samsung: update PLL locktime for PLL142XX
+ used on FSD platform
+To: Varada Pavani <v.pavani@samsung.com>, aswani.reddy@samsung.com,
+ pankaj.dubey@samsung.com, s.nawrocki@samsung.com, cw00.choi@samsung.com,
+ alim.akhtar@samsung.com, mturquette@baylibre.com, sboyd@kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: gost.dev@samsung.com, stable@vger.kernel.org
+References: <20250225131918.50925-1-v.pavani@samsung.com>
+ <CGME20250225132507epcas5p455347acbd580b26ee807e467d3a6a05e@epcas5p4.samsung.com>
+ <20250225131918.50925-3-v.pavani@samsung.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Yunsheng Lin <yunshenglin0825@gmail.com>
-In-Reply-To: <1740794613-30500-1-git-send-email-haiyangz@microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20250225131918.50925-3-v.pavani@samsung.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-+cc netdev ML & Alexander
-
-On 3/1/2025 10:03 AM, Haiyang Zhang wrote:
-> In commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
-> page_frag_alloc_align()"), the check for fragsz is moved earlier.
-> So when the cache is used up, and if the fragsz > PAGE_SIZE, it won't
-> try to refill, and just return NULL.
-> I tested it with fragsz:8192, cache-size:32768. After the initial four
-> successful allocations, it failed, even there is plenty of free memory
-> in the system.
-
-Hi, Haiyang
-It seems the PAGE_SIZE is 4K for the tested system?
-Which drivers or subsystems are passing the fragsz being bigger than
-PAGE_SIZE to page_frag_alloc_align() related API?
-
-> To fix, revert the refill logic like before: the refill is attempted
-> before the check & return NULL.
-
-page_frag API is not really for allocating memory being bigger than
-PAGE_SIZE as __page_frag_cache_refill() will not try hard enough to
-allocate order 3 compound page when calling __alloc_pages() and will
-fail back to allocate base page as the discussed in below:
-https://lore.kernel.org/all/ead00fb7-8538-45b3-8322-8a41386e7381@huawei.com/
-
+On 25/02/2025 14:19, Varada Pavani wrote:
+> Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
+> update PLL142XX controller locktime to 150.
 > 
-> Cc: linyunsheng@huawei.com
 > Cc: stable@vger.kernel.org
-> Fixes: 8218f62c9c9b ("mm: page_frag: use initial zero offset for page_frag_alloc_align()")
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> ---
->   mm/page_frag_cache.c | 26 +++++++++++++-------------
->   1 file changed, 13 insertions(+), 13 deletions(-)
-> 
-> diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-> index d2423f30577e..82935d7e53de 100644
-> --- a/mm/page_frag_cache.c
-> +++ b/mm/page_frag_cache.c
-> @@ -119,19 +119,6 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
->   	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
->   	offset = __ALIGN_KERNEL_MASK(nc->offset, ~align_mask);
->   	if (unlikely(offset + fragsz > size)) {
-> -		if (unlikely(fragsz > PAGE_SIZE)) {
-> -			/*
-> -			 * The caller is trying to allocate a fragment
-> -			 * with fragsz > PAGE_SIZE but the cache isn't big
-> -			 * enough to satisfy the request, this may
-> -			 * happen in low memory conditions.
-> -			 * We don't release the cache page because
-> -			 * it could make memory pressure worse
-> -			 * so we simply return NULL here.
-> -			 */
-> -			return NULL;
-> -		}
-> -
->   		page = encoded_page_decode_page(encoded_page);
->   
->   		if (!page_ref_sub_and_test(page, nc->pagecnt_bias))
-> @@ -149,6 +136,19 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
->   		/* reset page count bias and offset to start of new frag */
->   		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
->   		offset = 0;
-> +
-> +		if (unlikely(fragsz > size)) {
-> +			/*
-> +			 * The caller is trying to allocate a fragment
-> +			 * with fragsz > size but the cache isn't big
-> +			 * enough to satisfy the request, this may
-> +			 * happen in low memory conditions.
-> +			 * We don't release the cache page because
-> +			 * it could make memory pressure worse
-> +			 * so we simply return NULL here.
-> +			 */
-> +			return NULL;
-> +		}
->   	}
->   
->   	nc->pagecnt_bias--;
 
+Fixes commit?
+
+> Signed-off-by: Varada Pavani <v.pavani@samsung.com>
+> ---
+>  drivers/clk/samsung/clk-pll.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/samsung/clk-pll.c b/drivers/clk/samsung/clk-pll.c
+> index 2e94bba6c396..023a25af73c4 100644
+> --- a/drivers/clk/samsung/clk-pll.c
+> +++ b/drivers/clk/samsung/clk-pll.c
+> @@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3000_clk_ops = {
+>   */
+>  /* Maximum lock time can be 270 * PDIV cycles */
+>  #define PLL35XX_LOCK_FACTOR	(270)
+> +#define PLL142XX_LOCK_FACTOR	(150)
+>  
+>  #define PLL35XX_MDIV_MASK       (0x3FF)
+>  #define PLL35XX_PDIV_MASK       (0x3F)
+> @@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
+>  	}
+>  
+>  	/* Set PLL lock time. */
+> -	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
+> +	if (pll->type == pll_142xx)
+> +		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
+> +			pll->lock_reg);
+> +	else
+> +		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
+>  			pll->lock_reg);
+>  
+>  	/* Change PLL PMS values */
+
+
+Best regards,
+Krzysztof
 
