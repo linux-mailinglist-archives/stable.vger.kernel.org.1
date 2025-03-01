@@ -1,212 +1,233 @@
-Return-Path: <stable+bounces-119981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48340A4A71F
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 01:39:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70883A4A7D4
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 03:04:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67DF41740FB
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 00:39:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4A103BC2C8
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 02:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E52179BC;
-	Sat,  1 Mar 2025 00:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1427141C7F;
+	Sat,  1 Mar 2025 02:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ClLmoovl"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="bxcd4zIP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2131.outbound.protection.outlook.com [40.107.94.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEBAD2FB
-	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 00:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740789545; cv=none; b=ejVT/6jXQ0P1ADhvQlX5RSE8xiNyU7pyVNUafW/TMpAklQ4tSNhTFgLaf+i8ZTNJdFSOk9WtuN7mQhjCRY8qbU4EqNoeygg2pbob9rDmka9nzO5i7pndbnxoa/UzMMHcRm5GuF4d3yQYuAdD0ODAY+Vc6gRGiXtVJ9RWtylmdaY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740789545; c=relaxed/simple;
-	bh=x3oBpzkT474EUVPSJmxiMC8K5KgL9Vl4kVczjhMGiNk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=swSa0Z7BbgELNwSUFQt0XWX252rQTPpNKa/11M1nI/RL140cq21gsjQ3b99MXCHA3brSzTZik83AIJFur+Qi8eVS/iAn4NrnL3pUqUA/xVBdPVIluDn8PloO+QI1MGN5AS2cu8/tJJyHQT78nDI98OMZaJnLk7bUl1ICba9v2J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ClLmoovl; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2fe9759e5c1so4553614a91.0
-        for <stable@vger.kernel.org>; Fri, 28 Feb 2025 16:39:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1740789543; x=1741394343; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/AKFqXMEu6LaasHAIm4e5qEqtFSZY0U9wLZbXTQNpxg=;
-        b=ClLmoovlQH8sysYknoJZhS3eky97Y5o+/cdV3XBhsoL6qpVsqffvn+qAhhXwQwdeDV
-         3ywFj1GcdGqfPFAzlIiANsTH5952KC7Rn2YteuG6Ld4kZ7iMJpZbxOKgE8nPUCpkhKL9
-         3S5j3Iwp7MrbKfcrE6IA/eu3i+eQmEVlbhtNM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740789543; x=1741394343;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/AKFqXMEu6LaasHAIm4e5qEqtFSZY0U9wLZbXTQNpxg=;
-        b=jvHxXz0Eodg0g7XVi0fVJsAqd/KHySNaW4gdRMeq6Q96ExENKPJcro9V5KCI8zeHbG
-         fEM2FppH66dJxGTgWU8hvh+k0rW9PTLBbm0dN6m/+d5nP+gFYqaSimPhzTDPddIxc5Zw
-         vwNAbzjXJElvHgBz120Ed63kl0YWlA2kqdf5rdhmN9iXxYZBC3uWz85ebsJvNCFngoVy
-         PleKY+AaVfH/GjUmLfx39ZKZQVfGQ2ZGt9f1TcpOAPatHtdZ1oRgnl3pCWvnRz3LXhdj
-         LUTb3JQZnleeys95/ErteIsXWJbsH6GvV7Tz1p24Y/qjcLP3714AVAImWnyhKRFf/yJP
-         QZ+Q==
-X-Gm-Message-State: AOJu0Yw8Mzg61GUJb6xUdQGYaM9b7zQl3ypHQH+gd9G+3FBc3XmZRtWT
-	hrGVzt/drvT97OLxK/3baXkwjrxxdsyCIvpmMvS/RBQP3d9DwISlhocOlmjxOJqffUS/a5/7Wtv
-	uSQ==
-X-Gm-Gg: ASbGncsKZd3j7UFN7++KuGCeHwgUwwelCRewcJE0mYUMb/BZ7+X/OmO53azmUTPuRcp
-	tBG4ugtadli76PT/SU25szPaAYEUMgf9+zhaQosavp16H0EWbJ8yXLkVJvKMapEnkTX0H8iN0LO
-	2i5UzCe59xm7lCeCCr52FNnmExgAaYElZ6o6X2waGj+oFsz1F5FVfWi286W67Owv66vTACrm0HJ
-	RUlLgd8SYqCiXpc+F3BhGhaCkMcTwAycsu/PutRjOxJSiZ6rK9Gzo5lvgUTbTkwnO9mp4QH5tgX
-	vJW/VIa9IhA/SXO2JjRmodSlnDQwEFn1Iw243f5V4KWBOE8kNwaqvcADg+S5T06/p6e4UWzp4x1
-	htbJxdI0UY5cALxdqwx4=
-X-Google-Smtp-Source: AGHT+IHMQSHnwr3uviN5+94W125JGE7ftvPd1JP+j65khrHij9NRHLJcScli2qKh+6NlJbC0rDHRsw==
-X-Received: by 2002:a17:90b:1a86:b0:2fe:b016:a6a1 with SMTP id 98e67ed59e1d1-2febac07c86mr8748750a91.29.1740789543183;
-        Fri, 28 Feb 2025 16:39:03 -0800 (PST)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fea679dc51sm4435685a91.21.2025.02.28.16.39.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Feb 2025 16:39:02 -0800 (PST)
-Message-ID: <f7d5283e-2e24-4091-92bb-5c111cedd23a@broadcom.com>
-Date: Fri, 28 Feb 2025 16:39:00 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437BB3595A;
+	Sat,  1 Mar 2025 02:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740794685; cv=fail; b=fzXilfS5MIwzEfcOYSUYybBSYH866Usdr6VvRpukxAeOJ78Aak4kbRp6g0fpsZox/J9ABCREFKRhxpmajJ0XTiDLYA4Fge2ZciNJSrvT0lpOBXZXeNdwEvs5sx7uj0riIx4zfdSHDlRSbOWourzGCmGSXQQMVjUliUm23CXyuj0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740794685; c=relaxed/simple;
+	bh=iU7EB8ieAmgNUkfg/UNFjj/Tf0dJyN5ilq8GW46SJW8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=S/c8v5ScsNRGD7jRRgRxhtHCbWZ+3QCZB5xE76epFM0H7TLgaqhQbr8XWE00aIkNGFDrD7ccoDkXpJ6IKA6PtxrUxWbkhC7eXTUWXui+veRq4k+xuER01xlQTKsuiMGS+9Sm2wOcTPdQk+VgzWa4k4ri7pYdBNMRfxy8I1KAi0o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=bxcd4zIP; arc=fail smtp.client-ip=40.107.94.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gHMC3YGOg0/cQLXnX6vCZEObwgjcW3lMONjlqxzNH+L57fyTKtNTI7tMv6kdeFik7gV//CqRfC4C6OcCuJ0WocfMvZHWtx18txoe5zP7LV6EdisqvK79GzlvYxaDArTHGotnqAtP7Obr6HNeWU6NzlWRFNYpVroKm+Qqge3FRf38CLjENq7qEuSS8dzCGClK4NGkJwhGoDS99jw/K4n/vOeHX5nZKY+4O2O6Yi0UYi8y6BdTx5fthXnF3sMDhvxSFfiLcQlef12Es7OSB6bkpCZH5wLGlO79MYAfc0AR4RwUOcEMEp4iojodNjHrrQI5IRiiPC6/mYAAQswHO+qmOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vqzAPYNeJTdldjBsKQe0QDqi0eV6DRSDWzJQjgx/vAM=;
+ b=hSO81tR/xsJrpTZpBjR3wRm9qwRdaMPrttkoW7WA28HzDhQv0LEETHhmu3Fk0tGtNsiX1+AuwJNW1HY6rqUuOIp8wPlPdUe+qhowmfN6B2B+U+eci3D6jJpEBcnrpfu65oRK7q54/O7i8iYR03EjMl76kQUcl2PnJKzK/ojHemuY+LkmFiHS/a312Ppx2XP/8NPXiCElpBrG9/krtrGO3p/PbaY32Z9bZEMmwBco7fSH9Ue/030Fmnngv+811Zc9c6Em6NAdAyuUjH1EBJ4c5KamuIOs1EF8MmzvJ5CI60N/w2NUNAy9v1iZU2kPA+JD2gINthwMDqVmMVAeuEKrvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vqzAPYNeJTdldjBsKQe0QDqi0eV6DRSDWzJQjgx/vAM=;
+ b=bxcd4zIPYK70gR50kR6d2Iy5RIvBZWXrapulB5ZYszazC77GETlZijHQHGRlvOEH6lXZ3rdPhcevYOf6J+rJEmuSQgre7tMPiOfgVdpk8o23GMjCBbyo7ASmSNVp0tvD+PK3PNuVv7XD8AG2NVsGLP9XgWskh4q9/BtDLP4yD/s=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
+ by BY1PR21MB3967.namprd21.prod.outlook.com (2603:10b6:a03:529::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.11; Sat, 1 Mar
+ 2025 02:04:40 +0000
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::5490:14c7:52e2:e12f]) by BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::5490:14c7:52e2:e12f%6]) with mapi id 15.20.8511.008; Sat, 1 Mar 2025
+ 02:04:40 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: haiyangz@microsoft.com,
+	decui@microsoft.com,
+	kys@microsoft.com,
+	paulros@microsoft.com,
+	olaf@aepfle.de,
+	vkuznets@redhat.com,
+	davem@davemloft.net,
+	wei.liu@kernel.org,
+	longli@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	linyunsheng@huawei.com,
+	stable@vger.kernel.org
+Subject: [PATCH] mm: page_frag: Fix refill handling in __page_frag_alloc_align()
+Date: Fri, 28 Feb 2025 18:03:33 -0800
+Message-Id: <1740794613-30500-1-git-send-email-haiyangz@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MW3PR06CA0002.namprd06.prod.outlook.com
+ (2603:10b6:303:2a::7) To BY5PR21MB1443.namprd21.prod.outlook.com
+ (2603:10b6:a03:21f::18)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mtd: rawnand: brcmnand: fix PM resume warning
-To: Kamal Dasu <kamal.dasu@broadcom.com>, florian.fainelli@broadcom.com,
- Brian Norris <computersforpeace@gmail.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Boris Brezillon <bbrezillon@kernel.org>, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Sender: LKML haiyangz <lkmlhyz@microsoft.com>
+X-MS-Exchange-MessageSentRepresentingType: 2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|BY1PR21MB3967:EE_
+X-MS-Office365-Filtering-Correlation-Id: f21ea94e-89bb-4aac-ff09-08dd58656d45
+X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?QBhs4fOqiMpSdyquC5zwgrBACqDh8rMAmbhlw8sJ+FxBfPly9yWCf3N1tf4N?=
+ =?us-ascii?Q?Mlc3eGDhNayOmVduSNit+YiGX6gzBfEMg2FMbvhn2MlExA3X55PHW25eGEiN?=
+ =?us-ascii?Q?SBam9zVroUcjB/qUE2HkUZEGWWd6fHNEYB2E0GzLpmGtDG2sdGFSAuBGhTqh?=
+ =?us-ascii?Q?RW1dIca0L3NMXccoDhsSEcZAg5gXHa6VtiSwvo8+f2qWlQAxoGT9vV9IyKt8?=
+ =?us-ascii?Q?qTphP6PwcGSGANLloQvDyf9jspXROYioBzYy+cniK593FGAujZKLlhnYlEQt?=
+ =?us-ascii?Q?jUrQm/KUWHjsKETbTjZXHdO3CixwYESwYt4z/a7MyMloW8YolLcNiuEwLRR8?=
+ =?us-ascii?Q?t74OXGr+hazIoxLas3Qpd2cvvNe575ckvFwVgnaUg43oVzvB8gScb/wsPMS5?=
+ =?us-ascii?Q?ckfgAhyN6Pj0Wz7ZAg7DWuxQmqFPtm1iTtgMOf9mlawm+VbYfj590CCTmqZ4?=
+ =?us-ascii?Q?6nNclfCCCscDh4CS4xSxXUYGdeXNPYmKl65ZPf2w5AZQC2be5zVSJvV1amBz?=
+ =?us-ascii?Q?uuxnWiBd4+QQKbQDgBq/cqeRTPalZ1m7coiFKjnlB8Dm2Er6jFvzrq4EXpAR?=
+ =?us-ascii?Q?jU8yIgFK4ccCAuhvAQdTW5UB/kMLcGylp5fl83i9/w5EzQiYKzG1yZhGbsj8?=
+ =?us-ascii?Q?Zio7mSBBwMOHd7nQrd14LhQdCmZ1/FZFn4B3KJ/Uw3R9M6/lxcxTYh6muUTn?=
+ =?us-ascii?Q?ryKBupkGP+ITwlbiGBIL1K/hM2WRSMWTrKluC4cmL7+LMhlh3nD/z0s5i+/m?=
+ =?us-ascii?Q?MXNXdkHYsMibqSNsvjmQlfdf57ZpEbjoDXBE8Va6Pxut7Ln05p/yrozloVRS?=
+ =?us-ascii?Q?8q+D6OWZH3ZrGVXG0X8OOCfxv8j0IJH6UdXIYnIoTHZjRc0Fn0d4cTIIyCVm?=
+ =?us-ascii?Q?Q3F+JBw4WvwyvBZDFXL2jpjUwMQjW+ZQOYaqm9+hYPkWq4K189rpZRYLEKgP?=
+ =?us-ascii?Q?89xXTP1n4tp+TzA1HhehD7aoo4iDBC2xgArML5Uzk7lujoKAdjKRZqagvEEo?=
+ =?us-ascii?Q?vfcAzmSsw/9hsLOWXRDnjGbUZ/rWi35JvlTk6MtMz/aiEC8LIGqBuBTBCKpZ?=
+ =?us-ascii?Q?jVlL23VoI++5ZedM3uodTNTcaBE42QDkrVqsK7FFvpGaI0JTPF2+GvS1crNC?=
+ =?us-ascii?Q?z7SbFBeTM4Utr36r2j7YZaKiUet0cUp9qbS0I8mMyOQYcUgASdgIJwrP6Zzb?=
+ =?us-ascii?Q?/8gl4Nto9YSz+R+26JOKTuaktuKp23y7SPG7HWrempYaY/P0y9KVySKOGcIO?=
+ =?us-ascii?Q?Mm4ZctKIcI5QTTKUTe0mF4YeDNczVXAiqgjs0oXXAl6jBwsCk9hcuou92Nvb?=
+ =?us-ascii?Q?1x/nlE1+ujoMfybKO4I+zS7KRommTdcYkt51mQIFaNN6KQDeu5QOuOr89Jo7?=
+ =?us-ascii?Q?WTJk8RQWCYu35GQqeqdsyuw4LAkBcTaAoicyTWEezq8RxcYkrm8PYrGgpRYf?=
+ =?us-ascii?Q?0IscGjYvTsXpqMcN46uRdkyaVahmRUer?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?TwXdOV6yaBW8AQXq7ylTLWidrvPXBdmX/FZNiEkkYT+YVMH7Cr27F+fQhP0Y?=
+ =?us-ascii?Q?EGsVoYokdFR5cFWGOuIHFqZGdP7Dx3v8m741gmpgHWDJVvwKD1UpD71CRSwy?=
+ =?us-ascii?Q?JECb3baKSaI67hKxPUnxbecqa6bFv6ohPT9UsEHz+jE5GeAwQM8SvlDzlpXh?=
+ =?us-ascii?Q?ePz+7urw4TJQaUNBhwFVM3pAZRUuwr2bkNDBi4ahFnOMPQN++JQENHvAqWl9?=
+ =?us-ascii?Q?YXr93B0hZH6Mgt8ulrzNJXfWz3Q/QErb5D58dYLxZyxjFjMsJAdJzGJLt/wJ?=
+ =?us-ascii?Q?mwItula9MEB/GnUWXd4hlNqn87l5m3hX5xsiqSoq+r0CADX+muCxk1w7PvaV?=
+ =?us-ascii?Q?ZCb1F7m6wPoqsDcNZ3nXFuUV/kPFBvOCn3/Aabn6Ng2R4Kov6CQqnBze/IR0?=
+ =?us-ascii?Q?VBeHj2ITFHA8Z3WR+GVneDBM4fn5ESKRMXpDp3sAGtD5i47g3FJK/P/+t14a?=
+ =?us-ascii?Q?JkcVHzzoBe8UT7T4XWmysQFtYl1YKfcLizeQu1Wj3+iuGpNYmLdDTHDOK57A?=
+ =?us-ascii?Q?Y5Pln+iLLfUzrDvJ3kAAh3tkdtl3CCrV0IGhzMOxcpafeLeg+tjBckY6TreY?=
+ =?us-ascii?Q?j++vnLYalLvC9nA+ml/wtXZKi9E2PxoKT30tt9vf8OKpZmmEhrmbV53qbcYl?=
+ =?us-ascii?Q?r7VvQXRdQoDt5CxXpQVKg2HRkPpRDImq6rzRGR+wzmTuAA5MJAXs0e71rQ3J?=
+ =?us-ascii?Q?F3KmuAtF6mq8/wklXAGslV/7LfA+hwykORNqdU70zKYo7ETVspAl9pNkDp0x?=
+ =?us-ascii?Q?KYEZeqMwWdDt5U4/ok8BouoLU1cTlixc5oS8GBB8gbe19NyxW/CLSUhNSDrZ?=
+ =?us-ascii?Q?RHcnEuV1vy7B7L63zBacSunwr0A8SajK8Xmp/9/Wu8Gdh19ZU7yNE3vAN26g?=
+ =?us-ascii?Q?6W6BPgPtSk0FsW4SV1w8KJfcsWALIFiYx/i8g+GfDXxm6g0l8zqe4F2jLqGV?=
+ =?us-ascii?Q?9s/Luiv5I0l3Cpbc6e5qkYI5jxD1hzHFFTkM+ialeUdgwVYI1FopDssgxP96?=
+ =?us-ascii?Q?RTwSgT4DKV0z59puLs8GqPUvQbT3yMFX2eka2VY64bchthj+f5sbsAtWn8TT?=
+ =?us-ascii?Q?RBHSiyYhQL4aQdhCw7hCfWgczrVwHhWrzrDgSWCTQYYkZtWmrwa+M6sACz2s?=
+ =?us-ascii?Q?j4QGZf8Fpms3JfZWvQKO51v6qIpbgZn7p1o8jupx9QFenlbqFGRqWLFp9EzD?=
+ =?us-ascii?Q?0BQKLYkziUo4h5tDjY4aHantCdauYDgV/r5i91Pn5pnXOKFlKjUdVEbMpF36?=
+ =?us-ascii?Q?ZGMUGCKHkIy63DnTq4HMo//eFi7MLAe7/TRh+AMwI7FUaEHNkJKaWyMqeENS?=
+ =?us-ascii?Q?JYpwt1HK3j+e0n39lvsCU3W6MRZNlHnFeOrVXx/cUV3vYzyrb2I6uBoSMvEQ?=
+ =?us-ascii?Q?Uew5hzHCqJTCAeNbubaV1+pg8t0VxgjFAiUgheFwsaQA9sLhsrAFSDG/QMp7?=
+ =?us-ascii?Q?IpJg/Hfw/kYn6AXA3x7hpYMmfzBT8fF4YF15pso2Cf8+M7Fnr8iPwKbwe+Q9?=
+ =?us-ascii?Q?lCfXTrF1R+B5XetuFRgE1m9AWaExuenmb0QxnlG4YNyRPdg+gBspAWbzl2Z9?=
+ =?us-ascii?Q?51RMBmJ9MeydJp8mH2dOg2fJk3PejUNBFiIjFOpH?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f21ea94e-89bb-4aac-ff09-08dd58656d45
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2025 02:04:40.8408
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BQ/dOA/auH+W6rAIFqWqIoKQKRcExi19uWt6PQnvxg0Ul88YpUa1uTzZOp8Z9U/UevUTqB6C/7e6p8gaCHHBug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR21MB3967
+
+In commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
+page_frag_alloc_align()"), the check for fragsz is moved earlier.
+So when the cache is used up, and if the fragsz > PAGE_SIZE, it won't
+try to refill, and just return NULL.
+I tested it with fragsz:8192, cache-size:32768. After the initial four
+successful allocations, it failed, even there is plenty of free memory
+in the system.
+To fix, revert the refill logic like before: the refill is attempted
+before the check & return NULL.
+
+Cc: linyunsheng@huawei.com
 Cc: stable@vger.kernel.org
-References: <20250227174653.8497-1-kamal.dasu@broadcom.com>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20250227174653.8497-1-kamal.dasu@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Fixes: 8218f62c9c9b ("mm: page_frag: use initial zero offset for page_frag_alloc_align()")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+ mm/page_frag_cache.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-
-
-On 2/27/2025 9:46 AM, Kamal Dasu wrote:
-> Fixed warning on PM resume as shown below caused due to uninitialized
-> struct nand_operation that checks chip select field :
-> WARN_ON(op->cs >= nanddev_ntargets(&chip->base)
-> 
-> [   14.588522] ------------[ cut here ]------------
-> [   14.588529] WARNING: CPU: 0 PID: 1392 at drivers/mtd/nand/raw/internals.h:139 nand_reset_op+0x1e0/0x1f8
-> [   14.588553] Modules linked in: bdc udc_core
-> [   14.588579] CPU: 0 UID: 0 PID: 1392 Comm: rtcwake Tainted: G        W          6.14.0-rc4-g5394eea10651 #16
-> [   14.588590] Tainted: [W]=WARN
-> [   14.588593] Hardware name: Broadcom STB (Flattened Device Tree)
-> [   14.588598] Call trace:
-> [   14.588604]  dump_backtrace from show_stack+0x18/0x1c
-> [   14.588622]  r7:00000009 r6:0000008b r5:60000153 r4:c0fa558c
-> [   14.588625]  show_stack from dump_stack_lvl+0x70/0x7c
-> [   14.588639]  dump_stack_lvl from dump_stack+0x18/0x1c
-> [   14.588653]  r5:c08d40b0 r4:c1003cb0
-> [   14.588656]  dump_stack from __warn+0x84/0xe4
-> [   14.588668]  __warn from warn_slowpath_fmt+0x18c/0x194
-> [   14.588678]  r7:c08d40b0 r6:c1003cb0 r5:00000000 r4:00000000
-> [   14.588681]  warn_slowpath_fmt from nand_reset_op+0x1e0/0x1f8
-> [   14.588695]  r8:70c40dff r7:89705f41 r6:36b4a597 r5:c26c9444 r4:c26b0048
-> [   14.588697]  nand_reset_op from brcmnand_resume+0x13c/0x150
-> [   14.588714]  r9:00000000 r8:00000000 r7:c24f8010 r6:c228a3f8 r5:c26c94bc r4:c26b0040
-> [   14.588717]  brcmnand_resume from platform_pm_resume+0x34/0x54
-> [   14.588735]  r5:00000010 r4:c0840a50
-> [   14.588738]  platform_pm_resume from dpm_run_callback+0x5c/0x14c
-> [   14.588757]  dpm_run_callback from device_resume+0xc0/0x324
-> [   14.588776]  r9:c24f8054 r8:c24f80a0 r7:00000000 r6:00000000 r5:00000010 r4:c24f8010
-> [   14.588779]  device_resume from dpm_resume+0x130/0x160
-> [   14.588799]  r9:c22539e4 r8:00000010 r7:c22bebb0 r6:c24f8010 r5:c22539dc r4:c22539b0
-> [   14.588802]  dpm_resume from dpm_resume_end+0x14/0x20
-> [   14.588822]  r10:c2204e40 r9:00000000 r8:c228a3fc r7:00000000 r6:00000003 r5:c228a414
-> [   14.588826]  r4:00000010
-> [   14.588828]  dpm_resume_end from suspend_devices_and_enter+0x274/0x6f8
-> [   14.588848]  r5:c228a414 r4:00000000
-> [   14.588851]  suspend_devices_and_enter from pm_suspend+0x228/0x2bc
-> [   14.588868]  r10:c3502910 r9:c3501f40 r8:00000004 r7:c228a438 r6:c0f95e18 r5:00000000
-> [   14.588871]  r4:00000003
-> [   14.588874]  pm_suspend from state_store+0x74/0xd0
-> [   14.588889]  r7:c228a438 r6:c0f934c8 r5:00000003 r4:00000003
-> [   14.588892]  state_store from kobj_attr_store+0x1c/0x28
-> [   14.588913]  r9:00000000 r8:00000000 r7:f09f9f08 r6:00000004 r5:c3502900 r4:c0283250
-> [   14.588916]  kobj_attr_store from sysfs_kf_write+0x40/0x4c
-> [   14.588936]  r5:c3502900 r4:c0d92a48
-> [   14.588939]  sysfs_kf_write from kernfs_fop_write_iter+0x104/0x1f0
-> [   14.588956]  r5:c3502900 r4:c3501f40
-> [   14.588960]  kernfs_fop_write_iter from vfs_write+0x250/0x420
-> [   14.588980]  r10:c0e14b48 r9:00000000 r8:c25f5780 r7:00443398 r6:f09f9f68 r5:c34f7f00
-> [   14.588983]  r4:c042a88c
-> [   14.588987]  vfs_write from ksys_write+0x74/0xe4
-> [   14.589005]  r10:00000004 r9:c25f5780 r8:c02002fA0 r7:00000000 r6:00000000 r5:c34f7f00
-> [   14.589008]  r4:c34f7f00
-> [   14.589011]  ksys_write from sys_write+0x10/0x14
-> [   14.589029]  r7:00000004 r6:004421c0 r5:00443398 r4:00000004
-> [   14.589032]  sys_write from ret_fast_syscall+0x0/0x5c
-> [   14.589044] Exception stack(0xf09f9fa8 to 0xf09f9ff0)
-> [   14.589050] 9fa0:                   00000004 00443398 00000004 00443398 00000004 00000001
-> [   14.589056] 9fc0: 00000004 00443398 004421c0 00000004 b6ecbd58 00000008 bebfbc38 0043eb78
-> [   14.589062] 9fe0: 00440eb0 bebfbaf8 b6de18a0 b6e579e8
-> [   14.589065] ---[ end trace 0000000000000000 ]---
-> 
-> The fix uses the higher level nand_reset(chip, chipnr); where chipnr = 0, when
-> doing PM resume operation in compliance with the controller support for single
-> die nand chip. Switching from nand_reset_op() to nand_reset() implies more
-> than just setting the cs field op->cs, it also reconfigures the data interface
-> (ie. the timings). Tested and confirmed the NAND chip is in sync timing wise
-> with host after the fix.
-> 
-> Fixes: 97d90da8a886 ("mtd: nand: provide several helpers to do common NAND operations")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index d2423f30577e..82935d7e53de 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -119,19 +119,6 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
+ 	offset = __ALIGN_KERNEL_MASK(nc->offset, ~align_mask);
+ 	if (unlikely(offset + fragsz > size)) {
+-		if (unlikely(fragsz > PAGE_SIZE)) {
+-			/*
+-			 * The caller is trying to allocate a fragment
+-			 * with fragsz > PAGE_SIZE but the cache isn't big
+-			 * enough to satisfy the request, this may
+-			 * happen in low memory conditions.
+-			 * We don't release the cache page because
+-			 * it could make memory pressure worse
+-			 * so we simply return NULL here.
+-			 */
+-			return NULL;
+-		}
+-
+ 		page = encoded_page_decode_page(encoded_page);
+ 
+ 		if (!page_ref_sub_and_test(page, nc->pagecnt_bias))
+@@ -149,6 +136,19 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 		/* reset page count bias and offset to start of new frag */
+ 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
+ 		offset = 0;
++
++		if (unlikely(fragsz > size)) {
++			/*
++			 * The caller is trying to allocate a fragment
++			 * with fragsz > size but the cache isn't big
++			 * enough to satisfy the request, this may
++			 * happen in low memory conditions.
++			 * We don't release the cache page because
++			 * it could make memory pressure worse
++			 * so we simply return NULL here.
++			 */
++			return NULL;
++		}
+ 	}
+ 
+ 	nc->pagecnt_bias--;
 -- 
-Florian
+2.34.1
 
 
