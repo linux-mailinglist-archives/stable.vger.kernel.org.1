@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-119991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-119992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90569A4A87E
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:21:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74888A4A882
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 05:21:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9061175A2E
-	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 04:21:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AC007AA611
+	for <lists+stable@lfdr.de>; Sat,  1 Mar 2025 04:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AFB1519BE;
-	Sat,  1 Mar 2025 04:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2997192B82;
+	Sat,  1 Mar 2025 04:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qe4mD7ZJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgmPiQxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389652C9A
-	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 04:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8269F2C9A
+	for <stable@vger.kernel.org>; Sat,  1 Mar 2025 04:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740802868; cv=none; b=d4C6zHxleTYO0cBkO/UvJGNkSD13b4BpZgAIYJNuj6azjOygf5gEPL6xzNMBFopjRwcm6pYnmz4ioQMLjeLT6QUDp3id0/4nR5A6Adbj+S1varvrpVEPzwkhiliJ8IQUsHQv22z6hyzlLdd2tasrQpf42Gt84zLreJbxF/SsWZs=
+	t=1740802869; cv=none; b=D5HD/t0l38pwVyGFvcZVBOhYf7ogK60KNPlxshu3xI3G7xZ3k/9kGjtItcyQckzmZuZgLyzI4FAICOckncDhWz5zHS9YvRupF4MqtYMsDJ3W9yS4COdFppIcfJ0uAg7fz+kTzs3jXxNU4fSMoOD0YNrq0fH4tjwkek/uiqKKCQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740802868; c=relaxed/simple;
-	bh=1Nsi8Xuno69V1lpJuzZ9/cpO02grSbDCADPPctQ8Seg=;
+	s=arc-20240116; t=1740802869; c=relaxed/simple;
+	bh=GgAk44fiXzEYXgqufKGkq5O5avGMu4N3hNvfbL9lwKA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UqW3Za4g9xXzsP+NhGLT2IpxtPWrDfZKWef4bO4bie/pFZmAus4yuNxI77TN2U7LNEFe58FQiE6E5yb7bWDStENgDqMRB+iG5+4CrdhB7+PZPXZ2dL3EPjMbKvk4Fi239ygRlOhusWkYU1vymKWNj7+vd+VRIVknSsCLeXSXQQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qe4mD7ZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7149FC4CEF3;
-	Sat,  1 Mar 2025 04:21:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O2+1xGWHoCzisq7Tqend7CIn49/wmgW51jC9PzBwawoTNJKbo/RUrcF0whX/MjyQ44do+RS6U6TTKp8h+nbz4uPHwiugzMzL1mFwvGgHAAnI25MfrFYeMKx5I5JAHB623zoB4Og3HsjMUcol1VIq9EK2WxjCTT/qZWMr0zTHRR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgmPiQxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1381FC4CEF3;
+	Sat,  1 Mar 2025 04:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740802867;
-	bh=1Nsi8Xuno69V1lpJuzZ9/cpO02grSbDCADPPctQ8Seg=;
+	s=k20201202; t=1740802869;
+	bh=GgAk44fiXzEYXgqufKGkq5O5avGMu4N3hNvfbL9lwKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qe4mD7ZJ/o3CqzTg1nIN0LLxxaOMz1wHswO2i32gjEOQoDWEnP81SHjo+hPpnbl11
-	 t/X8hZVbbHj+ub2A2mRReZUpwc2/rGxBx0qkdsph6OnolK7CmQ0a9P2VghAKS/phdQ
-	 jqerKj6M/08syCHqYuU/zJJDaCt+ldrUuCXkGHX3bBOwOX8HP04Jje4DMzp3eecdyQ
-	 QKwaoiJ81CLT7kgX0Xugtw6LOu5FlGxw2oRiQdJlyaW3EPP5GpDHiv1hXKX42zPBeq
-	 bvRG16BtA33XpTVqMfHpHxUx6zVyo5YeUChqxIvdZyVSJNYy5pEDxHOM+IJrShsPE7
-	 jLaNxh1bYXKgQ==
+	b=cgmPiQxnMS6Mf3xzXs4Kn+zrC7DVLl48z17plcGaCd4GfQazBzifA2f3S4M0LbROV
+	 6+pcPPuhVi1wnrsfGKEk/jfrKripEKcAwmwMcytsYgkEdaiNiXXpvRiMjzClP+RVvh
+	 jQXKMxt7PxlFwcLs3lbX2P5FtjNmt3KZcrXbbuRykxyM4zybzyc7YL5pZDb74Gmrde
+	 Khlxeqc7KP8lTxvs/xCqx+PSUz4Oox0gWeaxRTC4Jx/SnVxHT5ZJtHKVtF9Gs/Tpo1
+	 fPtmtbft5OY+egaHFAhr/OUIz44kkcz35iu8D8OsCQfB+vii0gfh8rD/z7RfuvwA+y
+	 GR0nFFaiPQd4w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ribalda@chromium.org
+	tglozar@redhat.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y] media: uvcvideo: Remove dangling pointers
-Date: Fri, 28 Feb 2025 23:20:44 -0500
-Message-Id: <20250228185437-e7697605e8039f73@stable.kernel.org>
+Subject: Re: [PATCH 6.6 2/4] Revert "rtla/timerlat_hist: Set OSNOISE_WORKLOAD for kernel threads"
+Date: Fri, 28 Feb 2025 23:20:46 -0500
+Message-Id: <20250228191048-d5bd83ca91733c18@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250228083505.2713073-1-ribalda@chromium.org>
+In-Reply-To:  <20250228135708.604410-3-tglozar@redhat.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,39 +65,17 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-❌ Build failures detected
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+ℹ️ This is part 2/4 of a series
+⚠️ Could not find matching upstream commit
 
-Found matching upstream commit: 221cd51efe4565501a3dbf04cc011b537dcce7fb
+No upstream commit was identified. Using temporary commit for testing.
 
-Status in newer kernel trees:
-6.13.y | Present (different SHA1: 9edc7d25f7e4)
-6.12.y | Present (different SHA1: 438bda062b2c)
-6.6.y | Present (different SHA1: 4dbaa738c583)
-6.1.y | Present (different SHA1: ccc601afaf47)
-
-Note: The patch differs from the upstream commit:
----
-Failed to apply patch cleanly.
----
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-
-Build Errors:
-Patch failed to apply on stable/linux-5.4.y. Reject:
-
-diff a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c	(rejected hunks)
-@@ -1577,7 +1612,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 
- 		if (!rollback && handle &&
- 		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
--			ctrl->handle = handle;
-+			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
- 	return 0;
+| stable/linux-6.6.y        |  Success    |  Success   |
 
