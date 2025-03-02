@@ -1,120 +1,120 @@
-Return-Path: <stable+bounces-120017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDAFA4B1D8
-	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 14:19:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A9AA4B2D0
+	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 17:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EB7F188B800
-	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 13:19:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75E827A7620
+	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 16:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CCE1E570A;
-	Sun,  2 Mar 2025 13:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BDB1E990E;
+	Sun,  2 Mar 2025 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KVQrDe3N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lCqQPWyX"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009E41EB3D;
-	Sun,  2 Mar 2025 13:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014321E3761;
+	Sun,  2 Mar 2025 16:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740921570; cv=none; b=Ysg77lof1raciydcQzParkQ8NS4oyUb20Q4OZcKMUivIfyu0mO5FiMhUdr1zCqbXD2XwM/hmdFfBu0khg1AQeTgPhD4W+3jy7F2fOrhPkWj5ep772zC2SCSV4QsIrtjZxPO+/CLJiEih2O34sBT+YEkxzYK0nogymYtVN/Svhj4=
+	t=1740931433; cv=none; b=VfGDEX2WgqUKo9zvjIrZva/aDQKC2G6YhnW60EgeGlokuX9Rk/h08vwo8QfYzB/O/kw7C2LQ4WW9yP7kCKL5XDNTvPbSl4GU2KIb1GDtZk7m47Mr50hTyvMFCw5ZidLr+k/8Bz3OsS0Tjq0z9RhVn/E5UP2FmG0NGvZ9fSz9Em4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740921570; c=relaxed/simple;
-	bh=fpsUf7qagNA43+t2AgJEz/2jXEI1D8GrzdCPihZ1iVw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m8JO4nSHgTqO2xZBPaKCNfHxMvKq8Uisln63buoSa1tkyGcv+BQgo/WwsW00vnV2mmExeBGAHNQ5YunpsdvZtFHx8spDTPtebnP0y9wL59CHHilyfNLkOTJL3n2oE7Cx9KhhZm+uzMj7b1bxSW4q9nFoqxrsdBtfVJEX/guGLOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KVQrDe3N; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 522DJFpX2461592
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 2 Mar 2025 07:19:15 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1740921555;
-	bh=fY/MmG+5flypk7XKV4+Mu6hbOrp0aC0XssiUPIU93SA=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=KVQrDe3N7LSSebcTlE6EAlmSYGskSe3DXaAIQw5Z4FR0LYHOO+44Uo3KFYJ4haqRC
-	 TNRyTt4icftIpYFQsVezVPxI+P1vCpI9JuJY6oriLmUoCpLNfW4HBe4CMZRmt0uXl6
-	 sYunb9DYv4Wnj7nRZjOmFlSTlSHrQHB+4AYfJDk8=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 522DJFu2010697
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 2 Mar 2025 07:19:15 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 2
- Mar 2025 07:19:15 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 2 Mar 2025 07:19:15 -0600
-Received: from uda0132425.dhcp.ti.com (dhcp-10-24-69-250.dhcp.ti.com [10.24.69.250])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 522DJBWT116974;
-	Sun, 2 Mar 2025 07:19:12 -0600
-From: Vignesh Raghavendra <vigneshr@ti.com>
-To: <robh+dt@kernel.org>, <nm@ti.com>, <conor+dt@kernel.org>,
-        <kristo@kernel.org>, <krzk+dt@kernel.org>, Keerthy <j-keerthy@ti.com>
-CC: Vignesh Raghavendra <vigneshr@ti.com>, <u-kumar1@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] arm64: dts: ti: k3-j784s4-j742s2-main-common: Correct the GICD size
-Date: Sun, 2 Mar 2025 18:49:08 +0530
-Message-ID: <174092143355.3272913.10095422286018964990.b4-ty@ti.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250218052248.4734-1-j-keerthy@ti.com>
-References: <20250218052248.4734-1-j-keerthy@ti.com>
+	s=arc-20240116; t=1740931433; c=relaxed/simple;
+	bh=PpoiA7zcL5siK6dUoXkSOW7sxsC4plRQ9I9AThPDGb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qP9o9E6bzInFTFtMLT4zwRttdFSeZ/RxJiHkHWLK6D7h6YzKKncCCRq+8mEP6XFVZ66XW28ZAf2aApOexs58L7O3I0mRdKlFkw3oc3hS8mqkxa2WWSvCoCIvdDI2R8jjmsDbbZx5pSACMquWv7T9bPO2UjKQ3sVOi3Vi+8AYhdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lCqQPWyX; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e4f88ea298so3878994a12.2;
+        Sun, 02 Mar 2025 08:03:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740931430; x=1741536230; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=KqMUvt/Ij4ONg3Ys/j5SSJwq5McLd1u+T3IXK69/iY0=;
+        b=lCqQPWyXvkBFzlU0kMyOCT92GdRsREG7ud0SVVQBkf+re/1wDxgUYxYvx+xpGHTBrR
+         fk4ms0Dlgmcd3uJDwbWGD7M6jdrGTEdH5oDj2PH9JqMTggzncpEF3VrgSNaUhKJ7sBjc
+         oO9AigvBdJK+RwCJ0RgiG6L0GdE+u8ur+JX66or694TV/isqteN3+VYDt2UwQBIVDaE5
+         TXwJcfUMFYP4977ApcL3d1xT588EompzGJUzSPA6KqL0WigXnNaviXCdbS2Yl65xD75q
+         o345tJVlUCNpKpsRuSUpYsXcN26ymYxO5ozynhli+VgzFqTZGFGSCriC70d4Fm4vpGgw
+         igVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740931430; x=1741536230;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KqMUvt/Ij4ONg3Ys/j5SSJwq5McLd1u+T3IXK69/iY0=;
+        b=Esq6LREs5UXrq8u6+qUjI0/ocDsXSSjloUEFeZ2xRkTIifMn8VaxoAcINT5GQW08CY
+         vfJgu+EYtPkPzeYqDlxO45UQRRZU15R4rWQxNn0Iy7jVSSoID7q39iHnmuWLuGe5PTGe
+         VkY8wE395bSDYTlwe3MrcJmDMob2lnVCgf73ababhH9ZUZtlkOlufyJd48278nDPMdgt
+         OqCot4mcVes74juBMo9PeArXtWsP5y2fz7lx0UAbJnqhmNWaSIkGADCie7wYthaAwlAd
+         vhrbdactTPcMyl58bqXPJrfMTa0QzADkbFqzFzx8TtqPqd28T3uVeKUHS2iMDeOiW3HG
+         G4eA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9HFn+YPsPCT6/7P17gzkHxq2tgRB/4s3d7mXNdsCdbfYKGVXrqunOykFEgZCnE3LQH4L4zxfPQQw=@vger.kernel.org, AJvYcCUHRbcN3pmrX5+2F6PtVcn/m571LBOaCnsAtEd58NaEInlJwT3S+Wn4R3Jic7OnrIvP8gdBQdNR@vger.kernel.org, AJvYcCVMr97EnxbI4IG3idupUhCxNGBNJtNFwMj7Ai7I2PYDjpgzvkPbtPSKxJ0sz3l7xOvmFwACbUvzSTlP8Iyf@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvzsFGKyFH1Mf/whFnoSSOc0an7oMDY1T17UPPEM81ZinGas8t
+	FLj2oBFnmWKIbFNI0P+BsSA8c9IgtRs16JWNoiA9B7gzKl+UA3ge
+X-Gm-Gg: ASbGncuWwKlUssavFqghDHdNfpEZFrwjs4owXqrsvUaShYi1oNQbEEqh4niesmMHeyK
+	XLMTEkj6TDuonIX5pgtgN3NBJXIZUgSELpUi5kOy8ykCTvHlk1xHdiA+CGLZteQfw+N1Haa2ewT
+	wj7gfE3DJ3Oo9P3LYOcPxCAwhUh9RIzLlShCq5Ll8f4pcEoEVr0H6TJflNG82hC35kQl1HUoUfq
+	pnJKJJxyuYyvpZaepWn+Aa5KbZ2g2ntvSkDMcpbRFxbCcH9n3E7KpIzIjXrA4x//z3hw7ebWPKE
+	VU6/vOaumF7/tPBR+BH45RcPsVz0RbEiOQqmBxy749pytjulhNE1w9KJ2IRZlBsccePlxcja3Ad
+	OyA==
+X-Google-Smtp-Source: AGHT+IFWXl0EDKxgBsDCDLhNQV3+yBJQ0X9U1IHYqXyA4xxGqEq/sAuqyM6Oe7BG4J2BsNkWYT1QVg==
+X-Received: by 2002:a05:6402:520f:b0:5e0:9254:c10e with SMTP id 4fb4d7f45d1cf-5e4d6ad85famr11127566a12.11.1740931429973;
+        Sun, 02 Mar 2025 08:03:49 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3fb5927sm5564238a12.53.2025.03.02.08.03.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Mar 2025 08:03:49 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id A74BCBE2DE0; Sun, 02 Mar 2025 17:03:48 +0100 (CET)
+Date: Sun, 2 Mar 2025 17:03:48 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	Eric Degenetais <eric.4.debian@grabatoulnz.fr>
+Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, linux-ide@vger.kernel.org
+Subject: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+Message-ID: <Z8SBZMBjvVXA7OAK@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi Keerthy,
+Hi Mario et al,
 
-On Tue, 18 Feb 2025 10:52:48 +0530, Keerthy wrote:
-> Currently we get the warning:
-> 
-> "GICv3: [Firmware Bug]: GICR region 0x0000000001900000 has
-> overlapping address"
-> 
-> As per TRM GICD is 64 KB. Fix it by correcting the size of GICD.
-> 
-> [...]
+Eric Degenetais reported in Debian (cf. https://bugs.debian.org/1091696) for
+his report, that after 7627a0edef54 ("ata: ahci: Drop low power policy  board
+type") rebooting the system fails (but system boots fine if cold booted).
 
-I have applied the following to branch ti-next on [1].
-Thank you!
+His report mentions that the SSD is not seen on warm reboots anymore.
 
-[1/1] arm64: dts: ti: k3-j784s4-j742s2-main-common: Correct the GICD size
-      commit: 398898f9cca1a19a83184430c675562680e57c7b
+Does this ring some bell which might be caused by the above bisected[1] commit?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent up the chain during
-the next merge window (or sooner if it is a relevant bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+#regzbot introduced: 7627a0edef54
+#regzbot link: https://bugs.debian.org/1091696
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+What information to you could be helpful to identify the problem?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Regards,
+Salvatore
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
---
-Vignesh
-
+ [1] https://bugs.debian.org/1091696#10
 
