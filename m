@@ -1,120 +1,158 @@
-Return-Path: <stable+bounces-120018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A9AA4B2D0
-	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 17:04:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EA0A4B30C
+	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 17:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75E827A7620
-	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 16:03:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED01816B0E1
+	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 16:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BDB1E990E;
-	Sun,  2 Mar 2025 16:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E53D1E9B1D;
+	Sun,  2 Mar 2025 16:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lCqQPWyX"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="xeawaxqr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014321E3761;
-	Sun,  2 Mar 2025 16:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38B6AD39;
+	Sun,  2 Mar 2025 16:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740931433; cv=none; b=VfGDEX2WgqUKo9zvjIrZva/aDQKC2G6YhnW60EgeGlokuX9Rk/h08vwo8QfYzB/O/kw7C2LQ4WW9yP7kCKL5XDNTvPbSl4GU2KIb1GDtZk7m47Mr50hTyvMFCw5ZidLr+k/8Bz3OsS0Tjq0z9RhVn/E5UP2FmG0NGvZ9fSz9Em4=
+	t=1740932468; cv=none; b=KgbEStVayZ0qro/B6zxLjVEI0XBLdGuQ6sn430JRXlQ/oOnfO1JAEXt4YUbtis6I/IZEosSoWNgD7XmaC9csIXWBSphd2A+tFhg2xl/8IROiqJ6IKZGYfDVTN2PpwzjznMhtI1v6WYXyYutX2VbXjoFXq61+TEd6s8+PK4M/2mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740931433; c=relaxed/simple;
-	bh=PpoiA7zcL5siK6dUoXkSOW7sxsC4plRQ9I9AThPDGb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=qP9o9E6bzInFTFtMLT4zwRttdFSeZ/RxJiHkHWLK6D7h6YzKKncCCRq+8mEP6XFVZ66XW28ZAf2aApOexs58L7O3I0mRdKlFkw3oc3hS8mqkxa2WWSvCoCIvdDI2R8jjmsDbbZx5pSACMquWv7T9bPO2UjKQ3sVOi3Vi+8AYhdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lCqQPWyX; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e4f88ea298so3878994a12.2;
-        Sun, 02 Mar 2025 08:03:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740931430; x=1741536230; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=KqMUvt/Ij4ONg3Ys/j5SSJwq5McLd1u+T3IXK69/iY0=;
-        b=lCqQPWyXvkBFzlU0kMyOCT92GdRsREG7ud0SVVQBkf+re/1wDxgUYxYvx+xpGHTBrR
-         fk4ms0Dlgmcd3uJDwbWGD7M6jdrGTEdH5oDj2PH9JqMTggzncpEF3VrgSNaUhKJ7sBjc
-         oO9AigvBdJK+RwCJ0RgiG6L0GdE+u8ur+JX66or694TV/isqteN3+VYDt2UwQBIVDaE5
-         TXwJcfUMFYP4977ApcL3d1xT588EompzGJUzSPA6KqL0WigXnNaviXCdbS2Yl65xD75q
-         o345tJVlUCNpKpsRuSUpYsXcN26ymYxO5ozynhli+VgzFqTZGFGSCriC70d4Fm4vpGgw
-         igVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740931430; x=1741536230;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KqMUvt/Ij4ONg3Ys/j5SSJwq5McLd1u+T3IXK69/iY0=;
-        b=Esq6LREs5UXrq8u6+qUjI0/ocDsXSSjloUEFeZ2xRkTIifMn8VaxoAcINT5GQW08CY
-         vfJgu+EYtPkPzeYqDlxO45UQRRZU15R4rWQxNn0Iy7jVSSoID7q39iHnmuWLuGe5PTGe
-         VkY8wE395bSDYTlwe3MrcJmDMob2lnVCgf73ababhH9ZUZtlkOlufyJd48278nDPMdgt
-         OqCot4mcVes74juBMo9PeArXtWsP5y2fz7lx0UAbJnqhmNWaSIkGADCie7wYthaAwlAd
-         vhrbdactTPcMyl58bqXPJrfMTa0QzADkbFqzFzx8TtqPqd28T3uVeKUHS2iMDeOiW3HG
-         G4eA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9HFn+YPsPCT6/7P17gzkHxq2tgRB/4s3d7mXNdsCdbfYKGVXrqunOykFEgZCnE3LQH4L4zxfPQQw=@vger.kernel.org, AJvYcCUHRbcN3pmrX5+2F6PtVcn/m571LBOaCnsAtEd58NaEInlJwT3S+Wn4R3Jic7OnrIvP8gdBQdNR@vger.kernel.org, AJvYcCVMr97EnxbI4IG3idupUhCxNGBNJtNFwMj7Ai7I2PYDjpgzvkPbtPSKxJ0sz3l7xOvmFwACbUvzSTlP8Iyf@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvzsFGKyFH1Mf/whFnoSSOc0an7oMDY1T17UPPEM81ZinGas8t
-	FLj2oBFnmWKIbFNI0P+BsSA8c9IgtRs16JWNoiA9B7gzKl+UA3ge
-X-Gm-Gg: ASbGncuWwKlUssavFqghDHdNfpEZFrwjs4owXqrsvUaShYi1oNQbEEqh4niesmMHeyK
-	XLMTEkj6TDuonIX5pgtgN3NBJXIZUgSELpUi5kOy8ykCTvHlk1xHdiA+CGLZteQfw+N1Haa2ewT
-	wj7gfE3DJ3Oo9P3LYOcPxCAwhUh9RIzLlShCq5Ll8f4pcEoEVr0H6TJflNG82hC35kQl1HUoUfq
-	pnJKJJxyuYyvpZaepWn+Aa5KbZ2g2ntvSkDMcpbRFxbCcH9n3E7KpIzIjXrA4x//z3hw7ebWPKE
-	VU6/vOaumF7/tPBR+BH45RcPsVz0RbEiOQqmBxy749pytjulhNE1w9KJ2IRZlBsccePlxcja3Ad
-	OyA==
-X-Google-Smtp-Source: AGHT+IFWXl0EDKxgBsDCDLhNQV3+yBJQ0X9U1IHYqXyA4xxGqEq/sAuqyM6Oe7BG4J2BsNkWYT1QVg==
-X-Received: by 2002:a05:6402:520f:b0:5e0:9254:c10e with SMTP id 4fb4d7f45d1cf-5e4d6ad85famr11127566a12.11.1740931429973;
-        Sun, 02 Mar 2025 08:03:49 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3fb5927sm5564238a12.53.2025.03.02.08.03.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Mar 2025 08:03:49 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id A74BCBE2DE0; Sun, 02 Mar 2025 17:03:48 +0100 (CET)
-Date: Sun, 2 Mar 2025 17:03:48 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Mario Limonciello <mario.limonciello@amd.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Eric Degenetais <eric.4.debian@grabatoulnz.fr>
-Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, linux-ide@vger.kernel.org
-Subject: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+	s=arc-20240116; t=1740932468; c=relaxed/simple;
+	bh=XeFvcYO1xW0RYoDygaY65NVeElg+tDGA2A5xaMtjw1g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I5sZha+YbV+cYEHfg30Cm5MvBgZB6vnfkLnLB0qBlUJtzHb5ucSb1MO+IHY5kvgsLBdQ8GtoNsvNQsnwfcpGmCXT9E3I3CoNDuFSl2Ha+UXbOKPQDu9B4/mGnGBhVmDDMv6XPn0NrNE81qQz69obtGvt7wbpaSB7/Ryofn4qw3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=xeawaxqr; arc=none smtp.client-ip=212.227.17.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1740932451; x=1741537251; i=christian@heusel.eu;
+	bh=wxjlczYOeQ0Rz29XrBvQbZzg4RqcGxTX6uX/8F3WtWU=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=xeawaxqrLxrXQpOMkEv1/G8CJmSkkICX3BNiWfOknqzcq08wXfee0kUR0NjEzXB6
+	 KNfIMAcPOwVvFsXbtgBZGm0TNFj37XzwuCnbFAFQXEixTzAbCv7JGYbHNyyXk11p+
+	 k0woMuihukObMyRwDymDXXL/ssxWQ30jvlCNWAwfN+YCymyej1i/1U8UfadRsC0Ld
+	 AIGk3P+imMf973pTKU6J8o16QEmof/VWY3LjR6r7WAVuKVyYqSA/OFG20OTSa9C7S
+	 6MIU7y8PP7tjklH5FLpmRdVMA4F0mPCHSfp60zLyBSxQ7pQ3/GKHCiW7HJrj0QhV8
+	 NXvI0sE9DqEU7fQK7g==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue106
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1M3UEW-1tpKHw3JBa-007gKk; Sun, 02
+ Mar 2025 17:20:50 +0100
+Date: Sun, 2 Mar 2025 17:20:48 +0100
+From: Christian Heusel <christian@heusel.eu>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>, 
+	Niklas Cassel <cassel@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Jian-Hong Pan <jhp@endlessos.org>, Eric Degenetais <eric.4.debian@grabatoulnz.fr>, 
+	regressions@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	linux-ide@vger.kernel.org
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
  board type") on reboot (but not cold boot)
-Message-ID: <Z8SBZMBjvVXA7OAK@eldamar.lan>
+Message-ID: <17cd263d-c659-4cf6-b73d-61233bbe1951@heusel.eu>
+References: <Z8SBZMBjvVXA7OAK@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="nygsacke7dq24rl7"
 Content-Disposition: inline
+In-Reply-To: <Z8SBZMBjvVXA7OAK@eldamar.lan>
+X-Provags-ID: V03:K1:0TtLKfLPGP8HsvgRDdBnMD25bi1sxQt93OUz7fdNdrGuGCLOxSt
+ UfxvfPyFbK/2a6519HI/kjJ25qXwE25K3JSlx6fFXTib+Ph63qf2v9lNKnPoAHcB8BKO6zQ
+ uz8kMYBRZRUppDkBTqmRfFpeFQBbuXc4L3/Tt0GDHoqH+Atnx4IVQ3lpLahsKQIMbjczfH3
+ 7M6xvSIoK2O5p0XT1bFtg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:on5VDJ4shog=;Uf05YSP+qw7CwpBjnwHGUTFU84j
+ ZNckiZmzM3IQgy/XcKpkxOWeWDWXw61JpuNG5XxW55BJucU2Zt0XPIAwwroKYsyyK7VUIGymA
+ KAl/nQxp+6UtwYHi4NglI6R2a6PvjZy3qGvs1K+0gzylftKlUA4CODDbCYcETLCl/rUJCnv4W
+ c5ShRHuOP5MtqL1805Q3feWVpTuAHEBH6cEJsZLXvDuuDZcbGvIIC8HHf1QbKacglMmvRmOyI
+ wgqOowRAL2tOFaYv9Tv5N0xwtEsmckUS03KlbhpjQEm+r3RDHYnv0DmOC0NK3pspxCqs2hNdl
+ f73sZ2QzxBP6eDQ6sbiBCqA0JYhdW0C9lgvzW7zTlEVZJlEkAiiAg53+QbBT+ehrWCNRwn7kZ
+ LLXKMAnZ+kYB03+AH4nP+JBSP+Q1FdWyB0eaU2Q6ORNLFAfN255QYoPoN713ZktI3ewgJH2o0
+ BdWqUexI0tJE85d4XqmcdJeovGuUhZGLGsFO1XDfJCFIIp1GasLiw09y/vHGM77CcPC8vJy00
+ oS9RQSTnpMtivPFizuPkCtVsuLyu/RJPRArRFhuv1Bm30W5vyEkjLMPy2oyhf97shjpVu5HsU
+ rGiUwg1BaJXyeUYx4mfwYKCHb9tEziQTeFjdw5oxOrSbTOAyZEqPh4qIsQOGS23xr7Q9XPj8f
+ nWnYaGZj4kc2vqOSGQgToLOwYkr4uaNWzkhyLo4L0CMIjbIDtigRqYU4R7MzHuvR2v0olZspZ
+ zLzVGXevqFdbQG/7YRd4uRnNEnQDVjo+pSgBqgqdog+9ZrmKm6UmwbR8nuyLM8HZ7lDmgzc9j
+ f2SzOJ1YHb73tvpmvUgfYTwAET+ReyARLC2uDdZ+k36ybqzVsMYSwFCwL6jA27+niJWo4WVmx
+ 5/n4ZAQM21d17OBqVLdGoPbZt6EWUWs+ZZch8ho4B0vScW3+ebsoDxK9ZLEZGpi3Y7UfloW9V
+ NYZSMTkE7j9BRdSyC7/8tv2yYLUMbWNvtQaiqiX8oeNc2n6twuHN4USk8wtlCxl6cZDUnQlbK
+ BSSTbMtKVvJk0V/kcDG8VfDJ5xrTFq58qMIjJEFJhAkiv+WorqsJOPCD0RmxE3PL/1bnM+Ysy
+ 3tlsEKSuoOP99+NFK2om+LJQTWVsxXgC0EqklgnskrQiPCON3FHkcPoDIwSlgOAvPFi8CwHT8
+ AswfzW1r9olXt4bYf/t4qQz6weWNLDfNgmw2oR1dMV/WG/rgao64Yngo74FE9EbU3kJh7gTqs
+ +pVEIIjgKnVpCP2WupcOnPYAG0FVvZ6uxDqIGcMg+e37kcol0sJXvbZkS5gmLI4JYIE8+nGJh
+ m7DBBrPWnO71PvBBGak8qndaIkSENgRp1pNCdPCAhDO+zmePWPt9dx+qg9KdHYry6HSGOwy/i
+ 5CM8nVEH/KZATQ1g==
 
-Hi Mario et al,
 
-Eric Degenetais reported in Debian (cf. https://bugs.debian.org/1091696) for
-his report, that after 7627a0edef54 ("ata: ahci: Drop low power policy  board
-type") rebooting the system fails (but system boots fine if cold booted).
+--nygsacke7dq24rl7
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+MIME-Version: 1.0
 
-His report mentions that the SSD is not seen on warm reboots anymore.
+On 25/03/02 05:03PM, Salvatore Bonaccorso wrote:
+> Hi Mario et al,
 
-Does this ring some bell which might be caused by the above bisected[1] commit?
+Hey Salvatore,
 
-#regzbot introduced: 7627a0edef54
-#regzbot link: https://bugs.debian.org/1091696
+> Eric Degenetais reported in Debian (cf. https://bugs.debian.org/1091696) =
+for
+> his report, that after 7627a0edef54 ("ata: ahci: Drop low power policy  b=
+oard
+> type") rebooting the system fails (but system boots fine if cold booted).
+>=20
+> His report mentions that the SSD is not seen on warm reboots anymore.
+>=20
+> Does this ring some bell which might be caused by the above bisected[1] c=
+ommit?
 
-What information to you could be helpful to identify the problem?
+just FYI that we have recently bisected an issue to the same commit:
+https://lore.kernel.org/all/e2be6f70-dff6-4b79-bd49-70ec7e27fc1c@heusel.eu/
 
-Regards,
-Salvatore
+> What information to you could be helpful to identify the problem?
 
- [1] https://bugs.debian.org/1091696#10
+The other thread also has some debugging steps that could be interesting
+for this problem aswell!
+
+Cheers,
+Chris
+
+--nygsacke7dq24rl7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmfEhWAACgkQwEfU8yi1
+JYUJkg//U53jsCXbUJR7e4TgedGCsg1qdL/P3/J//zCliiZXYQh9FiaJH/VzLdUd
+XFaes0H1FT2iym6nTiXg3ez+ewYRDhdyj+fY8vfnNOtO39W5eURoS/uvW2DU88h2
+/+F+yHsSvTzuyKgO4jUozX4ydpQD3YChE4GzOGtkLEKp3452bSYFH/uOA7rTyo0j
+iwVrnoS4FaQnWngXzBxUt8a9wLXFNBd0sd24gVNjQYwIJnUfwY9cD0mGhKr2Q5qj
+BkkjQ8ype3YOmWJjvHK2hMicCLKyYqUnKDcJ2/5vnRTVJlBixSh/h+9BjXwF6k55
+se8JZY4JqhYnmYw/dlbFPmvSNbQB/LoMHmDSYtc4byuxorkgL9miWFQ1w5B4zGkK
+htLTcEj4J+Kq7TYKY0FSjJfjqnmu0y59BGkpZBiCjvPLIX44eppx8WdZBPaFMSlq
+Ac0kqCaSI224QuVyLxNVReVJStPSaiWpy5zQedkSl6j7/32uCIQEa4CWD0B2b0Ff
+quK1+sk/rJdIEv6dcW50Z4X4p6Siev7fkklp2ZT7NQRnyHTrFBxgOlkGXBmE7B+n
+pMhHvpIsM9gC5RQG0m8mvFdqPV9OMt/f4PaI8Kmbu9fTXzgKyxCjl711CxfZAW9V
+rI+XQHAsVSQxkc/3Ra+m0zi6NuWG0Mc1Dd9xU0jVb/vtEzeYM48=
+=5XFo
+-----END PGP SIGNATURE-----
+
+--nygsacke7dq24rl7--
 
