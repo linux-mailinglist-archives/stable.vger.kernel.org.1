@@ -1,166 +1,299 @@
-Return-Path: <stable+bounces-120014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABEDA4AEBD
-	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 03:23:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0026DA4B106
+	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 11:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EBAE3B30E6
-	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 02:23:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A8918936F8
+	for <lists+stable@lfdr.de>; Sun,  2 Mar 2025 10:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FA535979;
-	Sun,  2 Mar 2025 02:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4691D5143;
+	Sun,  2 Mar 2025 10:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMtthqq7"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="opBRFkNa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E9B3597E;
-	Sun,  2 Mar 2025 02:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F254C9D;
+	Sun,  2 Mar 2025 10:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740882192; cv=none; b=AYSXVcpqHmqBqb/nDhD4RA9W3p5n4D+wZr6y0m0arRJ1TQXgBLSrYSXfi/0XJsg7rdpeVgjC3/qqzveal/DkU5EduoSOrs4p8ZA2QaCLL3buwnRyM86EzMUqRwyXRb/aTTGD/uJLxioLimz0bVFVhFl28o/UellvYtxiHOxxabE=
+	t=1740913004; cv=none; b=K1Jx2uQ8R98Et4AAzmf8tSioaWa69r3bBGqweYl+nr6BGWyYgsXQQD9h/YvlueZgec5MRkOzxCutd/zTMCW4XImHtXgFVYxLTme//4CdotdAsN/GegnkaGrr+WS6ggI5u1ucioIWNREJvgU2eoh7R7TRq/SW3kEAQt/ksDQCPxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740882192; c=relaxed/simple;
-	bh=Ms35D6rpVAm4Wn+iz7v3jU9bT3pFycygdKwhAA7LcRQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lbuSYUMh1vZruxOqy5/I62xMNNj/Vl5eL4WfmUU3yFiEL8QkSyI5foTi8cKrBLPCXjeN+iZ5HjJ8PVPUoxO97EyLC4iPbY6hF5RCsnoQHHsx4swjXpqNZ1KPrwHFhX4yG09Ma8LMd1NtXwnDHBuM7FZ7n5DNCLemw9gwruPMpf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMtthqq7; arc=none smtp.client-ip=209.85.214.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-219f8263ae0so61659455ad.0;
-        Sat, 01 Mar 2025 18:23:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740882190; x=1741486990; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bIgb5oCKHg0d8J0ugu6ecAoU1ogbWalfHnz6Q8BvygU=;
-        b=iMtthqq7phxR3YYoFkGoonSvIJ+zvpHwH5kXEAIjE+GGCuMRAJc3FEnqmz26LmiUN3
-         oQbDbljuMXtv0VlqO5hbmccMaljd2rOOYm2mHmumeqO54s8akCuktuOHsLIeKNT61DB/
-         H6GrZsniQqUMAFUYDEm4kyel3WXQL9QkfQpFneNw+Gu6jimXa/yJHZawsbvAhteBsmwb
-         YfnZYtBp8wOjZckEvA3r8/xjRZMa1OriFQtcisbvxPGBnjgNamoUjfo6Hw36Fp/WBDPc
-         UoRqSNjZ5/O1rCnlLLkGMBuiaGi/Kfr610kKn+GgPYxpWhpzkXo3Wv7NUo0Vx++ujche
-         Othw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740882190; x=1741486990;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bIgb5oCKHg0d8J0ugu6ecAoU1ogbWalfHnz6Q8BvygU=;
-        b=LkSI6KYRpa6VdGNDtjutnURdxCATtKw7BuaoyqOpSROCNpFAJ3Ja2r5I7vKlPy+O7J
-         0T1sapcacCGL7waKgnSFRCNRnJyVL4rSWnp+rCbF4gqdUobGQqcpIZJ4znJkx8L4xSl+
-         0AKUtU1lT2ZfSFrb/i+5ZHv6PdgK3pgcrdUpoNhYLqsg33JqfPCNoDrFav7hjJIEEXKc
-         ZM5jBHGJd2q/BZ5eTCEkt2lEl2BXpTMT+4y/w62BQXyK2/18VoKpY++kAXtoEUSePK3j
-         hJMB6pkviDjHcZ+RMaSjFH/ztioNpmqb43eVTkQF0wHlGAsZ0tlA2x8exr+bxNtz8WRP
-         wJMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU51lBzm7fGxqqFpLMRBmBufMirNPbI4GGxa8fNLc6LPVxK8a6ggz08tCefElm8bNaBjGCbXSj+@vger.kernel.org, AJvYcCUG/ICcZPB6Yh/lNNNeoNXF34mjXRG06u+WqGcfovRXM0BuwkqiqoWcfWKiYn/LXBPCX+fomm1mx1i17k0=@vger.kernel.org, AJvYcCWswqTJGPR9i9jJTh2XRjS36/CHtzsWZW/2z7lGSTc9jrVTfT0sNk1mAFXNgktv+ph1JInvVgPGrbm2/swU@vger.kernel.org, AJvYcCXoI5BtzhWpZtN090WPIMQd8fbg+gX4nh2a/vy66gkveY2+2FBHJShDRcBwQLU5G6CtJsStsKkQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvxY7ypRO2S36UKKbaoD8HF1CGcIHa+dsqT1EZs+YGUsssZvsb
-	44rplZAmFjQcw60vpjxFt0tGfZHZ4h3tDPEXGsNWb+p72AtYFDX2
-X-Gm-Gg: ASbGncux1RXzrZq+PjoXOTMqvJhXugg5G6JwegoslTKkpc4Ix/tTncFoFkhhMql1IBV
-	Re0TlvYhgYJT8AEDn7mxXL4cWfzpJ+qymbb9NDdDPf2P2nBcbbKNe5/RpSBDL6uE9FYezEhoG2J
-	wsKXPPidk3bqQxO0BSYawOKS+qHTJdqA8hnK6SGaB0C+V9XfA+/ZRlod6vrjkuklUwIiJtHAk3e
-	gFMO00hFxFjnnvX7hW4J2DA5d9I7nA0DZcTKyInWFOgRlLGFC9SLpofphrYwZyYsZJSh+xNx9li
-	LMAnpo6SOU7ttD69Nv9/oW1ntA00FqtCWnwgTUFgHs7ez7FFwguQhJZ/4jFl8RT6Pm/jmpciz/B
-	gX/eGKbD9Z+fQlqdsR1nBoXfm+t7I7h8D
-X-Google-Smtp-Source: AGHT+IF7Tj08QU1/XlQt1s/pvFZTEEH8FOsLcUTfASRUZhpzzuMZ+JW2GadNl6cju1yKvhSSnz94fA==
-X-Received: by 2002:a05:6a21:110:b0:1ee:e655:97ea with SMTP id adf61e73a8af0-1f2f4e4e782mr15784551637.41.1740882189968;
-        Sat, 01 Mar 2025 18:23:09 -0800 (PST)
-Received: from ?IPV6:2409:8a55:301b:e120:3115:39d1:77ff:54d2? ([2409:8a55:301b:e120:3115:39d1:77ff:54d2])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7dedea46sm4862492a12.67.2025.03.01.18.23.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Mar 2025 18:23:09 -0800 (PST)
-Message-ID: <68f83951-881f-49a6-8599-e47956b984fe@gmail.com>
-Date: Sun, 2 Mar 2025 10:22:59 +0800
+	s=arc-20240116; t=1740913004; c=relaxed/simple;
+	bh=tnrWE+Qu78UCMKOnpv53TGvFD3VldTuH5738JgYW1fs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LUm0yX8mnUr9v0xJPCDF1m9uhMqMVu/RYdsZAl24+rLjwub10UCZhnAgURk7L4dxB4HwKrjGO0iLfdAZM+UONMhglZ8uyLr+bP8qCbSdcH+3+iypipSP+A6qvzNBh+knJo5yeFf8IbBguMNz8SX/+uPGDCXoSWzgzvvHuwcKYLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=opBRFkNa; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost (unknown [10.10.165.4])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 231AF40CE192;
+	Sun,  2 Mar 2025 10:56:30 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 231AF40CE192
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1740912990;
+	bh=2kCk9L1M5nLgpEnWXF5cxI7FaXOo7IflqASoYLhoPLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=opBRFkNan+maB5S8Bm6tAv9NjAPFFP37BvfEaTOkAZal9qzErsuhBqBfccffyFwlA
+	 2mFYgXOhqLNAjSGWu3G2n2RvRtv8bsP9kFJBWIe8/oXfwUL3MBEBSSVYD7z4uqHuC0
+	 Lg9vqWPNJXzDGG6URHHltSsf2/roRq0MMrm6JU1k=
+Date: Sun, 2 Mar 2025 13:56:29 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Alexey Panov <apanov@astralinux.ru>
+Cc: stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Max Kellermann <max.kellermann@ionos.com>, 
+	lvc-project@linuxtesting.org, syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com, 
+	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com, Chao Yu <chao@kernel.org>, linux-kernel@vger.kernel.org, 
+	Yue Hu <huyue2@coolpad.com>, syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Gao Xiang <hsiangkao@linux.alibaba.com>, 
+	Gao Xiang <xiang@kernel.org>, linux-erofs@lists.ozlabs.org
+Subject: Re: [PATCH 6.1 1/2] erofs: handle overlapped pclusters out of
+ crafted images properly
+Message-ID: <kcsbxadkk4wow7554zonb6cjvzmkh2pbncsvioloucv3npvbtt@rpthpmo7cjja>
+References: <20250228165103.26775-1-apanov@astralinux.ru>
+ <20250228165103.26775-2-apanov@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] Re: [PATCH] mm: page_frag: Fix refill handling in
- __page_frag_alloc_align()
-To: Haiyang Zhang <haiyangz@microsoft.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-Cc: Dexuan Cui <decui@microsoft.com>, KY Srinivasan <kys@microsoft.com>,
- Paul Rosswurm <paulros@microsoft.com>, "olaf@aepfle.de" <olaf@aepfle.de>,
- vkuznets <vkuznets@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>, Long Li <longli@microsoft.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linyunsheng@huawei.com" <linyunsheng@huawei.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Alexander Duyck <alexander.duyck@gmail.com>
-References: <1740794613-30500-1-git-send-email-haiyangz@microsoft.com>
- <cc3034c6-2589-4e9a-97af-a7879998d7d8@gmail.com>
- <MN0PR21MB3437E18AA793762F242BE795CACF2@MN0PR21MB3437.namprd21.prod.outlook.com>
- <MN0PR21MB3437DB9A18F1C354963C5EF3CACF2@MN0PR21MB3437.namprd21.prod.outlook.com>
-Content-Language: en-US
-From: Yunsheng Lin <yunshenglin0825@gmail.com>
-In-Reply-To: <MN0PR21MB3437DB9A18F1C354963C5EF3CACF2@MN0PR21MB3437.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250228165103.26775-2-apanov@astralinux.ru>
 
-On 3/2/2025 7:16 AM, Haiyang Zhang wrote:
-
-...
-
->> We are already aware of this, and have error checking in place for the
->> failover
->> case to "base page".
->>
->>  From the discussion thread above, there are other drivers using
->> page_frag_alloc_align() for over PAGE_SIZE too. If making the page_frag
->> API
->> support only fragsz <= PAGE_SIZE is desired, can we create another API?
->> One
->> keeps the existing API semantics (allowing > PAGE_SIZE), the other uses
->> your new code. By the way, it should add an explicit check and fail ALL
->> requests
->> for fragsz > PAGE_SIZE. Currently your code successfully allocates big
->> frags
->> for a few times, then fail. This is not a desired behavior. It's also a
->> breaking change for our MANA driver, which can no longer run Jumbo frames.
-
-It seems there was some memory corruption problem that may caused by
-reuse of the previously allocated frag cache memory by following a
-LARGER allocations before 'using initial zero offset'.
-
-https://lore.kernel.org/netdev/b711ca5f-4180-d658-a330-89bd5dcb0acb@gmail.com/T/#m12ebdefb8ee653b281d477d2310218b4ac138cde
-
-'using initial zero offset' seems to just make the API misuse problem
-more obvious.
-
->>
->> @Andrew Morton <akpm@linux-foundation.org>
->> And other maintainers, could you please also evaluate the idea above?
->>
+On Fri, 28. Feb 19:51, Alexey Panov wrote:
+> From: Gao Xiang <hsiangkao@linux.alibaba.com>
 > 
-> And, quote from current doc 6.14.0-rc4:
-> "A page fragment is an arbitrary-length arbitrary-offset area of memory
-> which resides within a 0 or higher order compound page."
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/mm/page_frags.rst
+> commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 upstream.
 > 
-> So, it is designed to be *arbitrary-length* within a 0 or higher order
-> compound page.
+> syzbot reported a task hang issue due to a deadlock case where it is
+> waiting for the folio lock of a cached folio that will be used for
+> cache I/Os.
 > 
-> If the commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
-> page_frag_alloc_align()") intended to change the existing API semantics
-> to be Page Frag Length <= PAGE_SIZE, the document and all breaking drivers
-> need to be updated.
+> After looking into the crafted fuzzed image, I found it's formed with
+> several overlapped big pclusters as below:
+> 
+>  Ext:   logical offset   |  length :     physical offset    |  length
+>    0:        0..   16384 |   16384 :     151552..    167936 |   16384
+>    1:    16384..   32768 |   16384 :     155648..    172032 |   16384
+>    2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
+> ...
+> 
+> Here, extent 0/1 are physically overlapped although it's entirely
+> _impossible_ for normal filesystem images generated by mkfs.
+> 
+> First, managed folios containing compressed data will be marked as
+> up-to-date and then unlocked immediately (unlike in-place folios) when
+> compressed I/Os are complete.  If physical blocks are not submitted in
+> the incremental order, there should be separate BIOs to avoid dependency
+> issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
+> and BIO submission which causes unexpected BIO waits.
+> 
+> Second, managed folios will be connected to their own pclusters for
+> efficient inter-queries.  However, this is somewhat hard to implement
+> easily if overlapped big pclusters exist.  Again, these only appear in
+> fuzzed images so let's simply fall back to temporary short-lived pages
+> for correctness.
+> 
+> Additionally, it justifies that referenced managed folios cannot be
+> truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
+> up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
+> difference.
+> 
+> Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+> Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
+> Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
+> Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
+> Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
+> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
+> [Alexey: minor fix to resolve merge conflict]
 
-Yes, updating the Documemntation to make it more obvious seems like the
-right thing to do.
+Urgh, it doesn't look so minor indeed. Backward struct folio -> struct
+page conversions can be tricky sometimes. Please see several comments
+below.
 
+> Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+> ---
+> Backport fix for CVE-2024-47736
 > 
-> Thanks,
-> - Haiyang
+>  fs/erofs/zdata.c | 59 +++++++++++++++++++++++++-----------------------
+>  1 file changed, 31 insertions(+), 28 deletions(-)
 > 
+> diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+> index 94e9e0bf3bbd..ac01c0ede7f7 100644
 
+I'm looking at the diff of upstream commit and the first thing it does
+is to remove zeroing out the folio/page private field here:
+
+  // upstream commit 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of crafted images properly")
+  @@ -1450,7 +1451,6 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+           * file-backed folios will be used instead.
+           */
+          if (folio->private == (void *)Z_EROFS_PREALLOCATED_PAGE) {
+  -               folio->private = 0;
+                  tocache = true;
+                  goto out_tocache;
+          }
+
+while in 6.1.129 the corresponding fragment seems untouched with the
+backport patch. Is it intended?
+
+> --- a/fs/erofs/zdata.c
+> +++ b/fs/erofs/zdata.c
+> @@ -1346,14 +1346,13 @@ static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+>  		goto out;
+>  
+>  	lock_page(page);
+> -
+> -	/* only true if page reclaim goes wrong, should never happen */
+> -	DBG_BUGON(justfound && PagePrivate(page));
+> -
+> -	/* the page is still in manage cache */
+> -	if (page->mapping == mc) {
+> +	if (likely(page->mapping == mc)) {
+>  		WRITE_ONCE(pcl->compressed_bvecs[nr].page, page);
+>  
+> +		/*
+> +		 * The cached folio is still in managed cache but without
+
+Are the comments worth to be adapted as well? I don't think the "folio"
+stuff would be useful while reading 6.1 source code.
+
+> +		 * a valid `->private` pcluster hint.  Let's reconnect them.
+> +		 */
+>  		if (!PagePrivate(page)) {
+>  			/*
+>  			 * impossible to be !PagePrivate(page) for
+> @@ -1367,22 +1366,24 @@ static struct page *pickup_page_for_submission(struct z_erofs_pcluster *pcl,
+>  			SetPagePrivate(page);
+>  		}
+>  
+> -		/* no need to submit io if it is already up-to-date */
+> -		if (PageUptodate(page)) {
+> -			unlock_page(page);
+> -			page = NULL;
+> +		if (likely(page->private == (unsigned long)pcl)) {
+> +			/* don't submit cache I/Os again if already uptodate */
+> +			if (PageUptodate(page)) {
+> +				unlock_page(page);
+> +				page = NULL;
+> +
+> +			}
+> +			goto out;
+>  		}
+> -		goto out;
+> +		/*
+> +		 * Already linked with another pcluster, which only appears in
+> +		 * crafted images by fuzzers for now.  But handle this anyway.
+> +		 */
+> +		tocache = false;	/* use temporary short-lived pages */
+> +	} else {
+> +		DBG_BUGON(1); /* referenced managed folios can't be truncated */
+> +		tocache = true;
+>  	}
+> -
+> -	/*
+> -	 * the managed page has been truncated, it's unsafe to
+> -	 * reuse this one, let's allocate a new cache-managed page.
+> -	 */
+> -	DBG_BUGON(page->mapping);
+> -	DBG_BUGON(!justfound);
+> -
+> -	tocache = true;
+>  	unlock_page(page);
+>  	put_page(page);
+>  out_allocpage:
+
+There is a whole bunch of out path handling changes done for this function
+in upstream commit, like
+
+  // upstream commit 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of crafted images properly")
+   out_allocfolio:
+  -       zbv.page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
+  +       page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
+          spin_lock(&pcl->obj.lockref.lock);
+  -       if (pcl->compressed_bvecs[nr].page) {
+  -               erofs_pagepool_add(&f->pagepool, zbv.page);
+  +       if (unlikely(pcl->compressed_bvecs[nr].page != zbv.page)) {
+  +               erofs_pagepool_add(&f->pagepool, page);
+                  spin_unlock(&pcl->obj.lockref.lock);
+                  cond_resched();
+                  goto repeat;
+          }
+  -       bvec->bv_page = pcl->compressed_bvecs[nr].page = zbv.page;
+  -       folio = page_folio(zbv.page);
+  -       /* first mark it as a temporary shortlived folio (now 1 ref) */
+  -       folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
+  +       bvec->bv_page = pcl->compressed_bvecs[nr].page = page;
+  +       folio = page_folio(page);
+          spin_unlock(&pcl->obj.lockref.lock);
+   out_tocache:
+          if (!tocache || bs != PAGE_SIZE ||
+  -           filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp))
+  +           filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp)) {
+  +               /* turn into a temporary shortlived folio (1 ref) */
+  +               folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
+                  return;
+  +       }
+          folio_attach_private(folio, pcl);
+          /* drop a refcount added by allocpage (then 2 refs in total here) */
+          folio_put(folio);
+
+
+These changes are probably not relevant for the 6.1.y but this fact is
+still usually worth a brief mentioning in the backporter's comment.
+
+
+> @@ -1536,16 +1537,11 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+>  		end = cur + pcl->pclusterpages;
+>  
+>  		do {
+> -			struct page *page;
+> -
+> -			page = pickup_page_for_submission(pcl, i++, pagepool,
+> -							  mc);
+> -			if (!page)
+> -				continue;
+> +			struct page *page = NULL;
+>  
+>  			if (bio && (cur != last_index + 1 ||
+>  				    last_bdev != mdev.m_bdev)) {
+> -submit_bio_retry:
+> +drain_io:
+>  				submit_bio(bio);
+>  				if (memstall) {
+>  					psi_memstall_leave(&pflags);
+> @@ -1554,6 +1550,13 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+>  				bio = NULL;
+>  			}
+>  
+> +			if (!page) {
+> +				page = pickup_page_for_submission(pcl, i++,
+> +						pagepool, mc);
+> +				if (!page)
+> +					continue;
+> +			}
+> +
+>  			if (unlikely(PageWorkingset(page)) && !memstall) {
+>  				psi_memstall_enter(&pflags);
+>  				memstall = 1;
+> @@ -1574,7 +1577,7 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+>  			}
+>  
+>  			if (bio_add_page(bio, page, PAGE_SIZE, 0) < PAGE_SIZE)
+> -				goto submit_bio_retry;
+> +				goto drain_io;
+>  
+>  			last_index = cur;
+>  			bypass = false;
+> -- 
+> 2.39.5
 
