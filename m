@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-120129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FDFA4C7DB
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:45:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7D4A4C7D9
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64CAD18839BA
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C35D16434D
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0036254AFF;
-	Mon,  3 Mar 2025 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E06E25743D;
+	Mon,  3 Mar 2025 16:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KyWNv2Rh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzmvVTbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49380253F3C;
-	Mon,  3 Mar 2025 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0B12566DC;
+	Mon,  3 Mar 2025 16:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019465; cv=none; b=aH236CuuSEgLpivoqZOCL+U8DCsDz9xu77F1jHmfD0RzCf8c0tvpyAkTwEzoV/IAblNZNOKBre5e29dDMKIQ4AuZY6R7pK0Q2nFavQ3jHvefgmef1Cu0rUZIQGuwYUjAEzVfIwbMx/Mn+gW74N03D5YDMTf6Rl+1ry8EeA78yAI=
+	t=1741019466; cv=none; b=pCEtJbsPhGdHKiXIZ49gMEorfjUQucL6grEYsCJIx9KyPY8IlE8dzSgNPxVBEyzixw7nw5Y4vVZgaiuqo/Uuinq/YWXDFBRZW8kMQez9YA/T0szeWn5GbZbw4N7sFyAFdNdpaaOW4wgkXHR8tBtaPe11famBq7yPrNpkITXz1cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019465; c=relaxed/simple;
-	bh=mJ+CTWjsF1WEAUmcIsLpoB/AUkQF4rLDxaxYp9oR0Aw=;
+	s=arc-20240116; t=1741019466; c=relaxed/simple;
+	bh=KTcV9V8+JgBuCHgkTTGINcMwCwPMTaH2dar9BWndPLk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qfejB/uq8Xr7x6wO/xTCvk6TiyeqRGQxmOS5qt0o6XsN/27/DbxLE0M65MfUZevh6Sqnz7P/A4j5yMLD41Y6x/URJZUpeSVZbwFr1+bQTS+q9DXJQ6fehS2Os53Pojhn0vMdj7wUgDwGEPk6AWI0fZopub5PqexixKdjF94+VEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KyWNv2Rh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFD2C4CEEA;
-	Mon,  3 Mar 2025 16:31:03 +0000 (UTC)
+	 MIME-Version; b=jRTBvpOHWkh8uVGmEIw9YDxCndl7RXxXDcvFZohR6eKM5fhp+ejx5aHFH9ZJYS7SpyHWfoWY/oNNpo07HmfCjVGnu0BnNY8KvyiYTzommJeiRd3PlnymYQv3zwUoR2ll9dwXsg5m0gEMnAWnsbMbgzu0pQ4SljYW0E3xRxBMUmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzmvVTbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82666C4CEE4;
+	Mon,  3 Mar 2025 16:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019465;
-	bh=mJ+CTWjsF1WEAUmcIsLpoB/AUkQF4rLDxaxYp9oR0Aw=;
+	s=k20201202; t=1741019466;
+	bh=KTcV9V8+JgBuCHgkTTGINcMwCwPMTaH2dar9BWndPLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyWNv2Rh6SsM9oJgcYU5uUTWhsIgnJPeNkVs4MUJn5cY46tbJAxVQRyypjJLfgRue
-	 PTCZHOz+EX6+G19gc6A7orN+YjsDIigvnOU4lSQzgg16TujQqiuvlsYSFFC9uqdDh6
-	 bHhbaqQu1REYlXKszFpm4Eet0cTzbvbXFtD+ywU8912kuqoK49m9kaKUzDM7IBelp1
-	 k2zP0+bkJQtMxWtdl13ROE0Wip0y72RxHHG9gCpAvvoOzK200ax8dPwDssUQ62MZMQ
-	 dvYSgvOmzEGUI1sr4pSsovDzFFwaTeZ7w2dBJI0OA+2ikmGWCpIj1ixaggYmTPF7Ik
-	 DQNow7v+VdTkA==
+	b=dzmvVTbDobnwAKrPiKDXmZ//s2xaNVYUfAMM/Ix7o63dPWEi4CpJwEnDtLMJI7jKH
+	 3nte809jvz+8+WSrCFpDgjQeRXlYn+mxzD2MEsgz3JKxADsjd3dZJo6UkoQS5sDa0v
+	 2xELwBzaYfysQCrd6qHd6beGu2iLXvH7Gt8dnoMgxKEssyc/gY9GTvzzY+GaKOHL8y
+	 WG9Mb402SOZuQ/Qr2k2HbMtPCK9kG3nJCbQjErJSYBW+fB2/++LRCoxmlXLP4t5XjJ
+	 vaqMOua63YJ/v4UQrcOGfEekXOD33yCswCPgEu+2c4QlLoGnY3YG7QqJPpd1taJSYr
+	 JxvnVWKWcqMMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Francois Romieu <romieu@fr.zoreil.com>,
-	Breno Leitao <leitao@debian.org>,
-	Eric Dumazet <edumazet@google.com>,
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	kuniyu@amazon.com,
-	bigeasy@linutronix.de,
-	jdamato@fastly.com,
-	aleksander.lobakin@intel.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/17] net: Handle napi_schedule() calls from non-interrupt
-Date: Mon,  3 Mar 2025 11:30:27 -0500
-Message-Id: <20250303163031.3763651-15-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 16/17] block: fix 'kmem_cache of name 'bio-108' already exists'
+Date: Mon,  3 Mar 2025 11:30:28 -0500
+Message-Id: <20250303163031.3763651-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163031.3763651-1-sashal@kernel.org>
 References: <20250303163031.3763651-1-sashal@kernel.org>
@@ -75,107 +66,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.17
 Content-Transfer-Encoding: 8bit
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 77e45145e3039a0fb212556ab3f8c87f54771757 ]
+[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
 
-napi_schedule() is expected to be called either:
+Device mapper bioset often has big bio_slab size, which can be more than
+1000, then 8byte can't hold the slab name any more, cause the kmem_cache
+allocation warning of 'kmem_cache of name 'bio-108' already exists'.
 
-* From an interrupt, where raised softirqs are handled on IRQ exit
+Fix the warning by extending bio_slab->name to 12 bytes, but fix output
+of /proc/slabinfo
 
-* From a softirq disabled section, where raised softirqs are handled on
-  the next call to local_bh_enable().
-
-* From a softirq handler, where raised softirqs are handled on the next
-  round in do_softirq(), or further deferred to a dedicated kthread.
-
-Other bare tasks context may end up ignoring the raised NET_RX vector
-until the next random softirq handling opportunity, which may not
-happen before a while if the CPU goes idle afterwards with the tick
-stopped.
-
-Such "misuses" have been detected on several places thanks to messages
-of the kind:
-
-	"NOHZ tick-stop error: local softirq work is pending, handler #08!!!"
-
-For example:
-
-       __raise_softirq_irqoff
-        __napi_schedule
-        rtl8152_runtime_resume.isra.0
-        rtl8152_resume
-        usb_resume_interface.isra.0
-        usb_resume_both
-        __rpm_callback
-        rpm_callback
-        rpm_resume
-        __pm_runtime_resume
-        usb_autoresume_device
-        usb_remote_wakeup
-        hub_event
-        process_one_work
-        worker_thread
-        kthread
-        ret_from_fork
-        ret_from_fork_asm
-
-And also:
-
-* drivers/net/usb/r8152.c::rtl_work_func_t
-* drivers/net/netdevsim/netdev.c::nsim_start_xmit
-
-There is a long history of issues of this kind:
-
-	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
-	330068589389 ("idpf: disable local BH when scheduling napi for marker packets")
-	e3d5d70cb483 ("net: lan78xx: fix "softirq work is pending" error")
-	e55c27ed9ccf ("mt76: mt7615: add missing bh-disable around rx napi schedule")
-	c0182aa98570 ("mt76: mt7915: add missing bh-disable around tx napi enable/schedule")
-	970be1dff26d ("mt76: disable BH around napi_schedule() calls")
-	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
-	30bfec4fec59 ("can: rx-offload: can_rx_offload_threaded_irq_finish(): add new  function to be called from threaded interrupt")
-	e63052a5dd3c ("mlx5e: add add missing BH locking around napi_schdule()")
-	83a0c6e58901 ("i40e: Invoke softirqs after napi_reschedule")
-	bd4ce941c8d5 ("mlx4: Invoke softirqs after napi_reschedule")
-	8cf699ec849f ("mlx4: do not call napi_schedule() without care")
-	ec13ee80145c ("virtio_net: invoke softirqs after __napi_schedule")
-
-This shows that relying on the caller to arrange a proper context for
-the softirqs to be handled while calling napi_schedule() is very fragile
-and error prone. Also fixing them can also prove challenging if the
-caller may be called from different kinds of contexts.
-
-Therefore fix this from napi_schedule() itself with waking up ksoftirqd
-when softirqs are raised from task contexts.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Francois Romieu <romieu@fr.zoreil.com>
-Closes: https://lore.kernel.org/lkml/354a2690-9bbf-4ccb-8769-fa94707a9340@molgen.mpg.de/
-Cc: Breno Leitao <leitao@debian.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250223221708.27130-1-frederic@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 +-
+ block/bio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c761f862bc5a2..d286e400c0d87 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4608,7 +4608,7 @@ static inline void ____napi_schedule(struct softnet_data *sd,
- 	 * we have to raise NET_RX_SOFTIRQ.
- 	 */
- 	if (!sd->in_net_rx_action)
--		__raise_softirq_irqoff(NET_RX_SOFTIRQ);
-+		raise_softirq_irqoff(NET_RX_SOFTIRQ);
- }
- 
- #ifdef CONFIG_RPS
+diff --git a/block/bio.c b/block/bio.c
+index ac4d77c889322..43d4ae26f4758 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -77,7 +77,7 @@ struct bio_slab {
+ 	struct kmem_cache *slab;
+ 	unsigned int slab_ref;
+ 	unsigned int slab_size;
+-	char name[8];
++	char name[12];
+ };
+ static DEFINE_MUTEX(bio_slab_lock);
+ static DEFINE_XARRAY(bio_slabs);
 -- 
 2.39.5
 
