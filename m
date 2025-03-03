@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-120145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBAAA4C826
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:51:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738F0A4C829
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 278E2172870
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E9D18968F0
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78006263895;
-	Mon,  3 Mar 2025 16:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A974263C86;
+	Mon,  3 Mar 2025 16:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlCPvyuW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ezydahbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31746263888;
-	Mon,  3 Mar 2025 16:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1794E2638B5;
+	Mon,  3 Mar 2025 16:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019501; cv=none; b=KsoCOMQ3BRR5JBRrrF4siZiCC9BRuNtZUB7W3qLe4FvjM+OK7t+kl0dcnjrJS/4enkj5v7M7pw156t8GYp1XEA/IklfGNvCytkOhHpoJ+Q4bnseotJGUAQ9GwXsP3sNss5A+3Z0KN18Fv1JcZ321bn5Se6qQ8FX+LszMnX0Pc0s=
+	t=1741019503; cv=none; b=fHtRnmK9aHxn03XHRhoS2qEbD7xKFqoAmVhmkCLWeUWKL2EQbkBGNtUfSsIMQmPzEHc6QInDxN4qF+rmSEZ9pNkI72DwroI9PkSUDv2KB6x2q3HMQFOF3b78sIAUBFwFpDm5L1/dMxPbqluOD6XGTW1Ymrb59fwiQRN8bEHygm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019501; c=relaxed/simple;
-	bh=BUaW1Ak3QXj5H74yu4GCQbbeYiq921AemjiiySoia2I=;
+	s=arc-20240116; t=1741019503; c=relaxed/simple;
+	bh=YkB+E3Q0eljYQymts/mr+hzK5f5pNYgPM7cDoGEGgIQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TW3cRRLPO1DVWBOzxZLN99FQ86kZ3J7XV22Ja5LTg0mjs6k2PhGQJgU3eY/nvZgbUi3xKCYPikjg4aVQLnxpigSP3ktrwG1o46ui6kTpBchlPtdnxT74q6XPpzmIzwKMKnHdEdQVEujgraljwhgDrOgiJQjyZOoLEfKU+N+ZDOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlCPvyuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3FAC4CEE4;
-	Mon,  3 Mar 2025 16:31:39 +0000 (UTC)
+	 MIME-Version; b=aKnH9zAA4sh4i8Kk+EZvil2D/NLIICWD9kWAACIVbFeOtCJXPVq9LuG+4HN9tbNInTb0f19yCDVosVm0gsJ45YqbIPxoQ1nA8iLLMaUerBSa2DiLAK+hKCCff3jQXP9EZ0JU84/Mrr0DuLWnYcpQHOnzwkMa5ppvEfxr/FX7jgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ezydahbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B30C4CEE9;
+	Mon,  3 Mar 2025 16:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019500;
-	bh=BUaW1Ak3QXj5H74yu4GCQbbeYiq921AemjiiySoia2I=;
+	s=k20201202; t=1741019502;
+	bh=YkB+E3Q0eljYQymts/mr+hzK5f5pNYgPM7cDoGEGgIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlCPvyuW2+XFJWWcZx0AC3zO+qqdo5Q0Qg+Xj2nq9GfbVhSQIPTNQya95E2aV5ItP
-	 KzKnUO3j2vWXiLnCVz/iet31Vm7JqCkGHHcj/0XVPDpYknO7YBcDPAsiU//WA/22H4
-	 UsSQ6azMls6kV59WX9eg7d+7e5swLoPoY8bf73Iwp4V0hmfbf38PrM8ybwsZjtRuHR
-	 KShpk/Ga6zTuSt3rt4UC+vSrajtt/dRUxfe4XY5fjyenffnOsh/ta8fwohbz/3y6px
-	 3UX/o79lxZkakKQqap9lFcOSoUra2UpDdTscq+n/WkbxMTBYiz0N0VFP3DC/4DFp5r
-	 0nMPq+mnhTMnQ==
+	b=EzydahbpxjE7zfPuhyOoiO7sOFE+SJzrB4H5yFyefg5pY4ED6+mG4hQ0DLv3/j9jl
+	 0Z2LYso1/GYhM8h/tilHpm7MO/bBYfPSMCp/NhQSDQTSyxOduYFPZRhxW4JqeuIJRE
+	 mGJCf6ZEyrNZJj9cDfg3LhmIKjfyFlj43RtASXS6yOS3cMAs+sl5X6yvQXgkIGEFli
+	 3jgdkhebOegb/lZcx19N8iYmepN5DazACy/FUcm3IXJDf7oPDh2uDUYeHBwIz0j9Me
+	 5ey3ax7Mny3LlsZdIJffaJGj9SGjpx66o/mped7o3qPSnS9tb6y7jmo2/6mmdUQO4t
+	 5ZC9Xgmcw5Jjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hector Martin <marcan@marcan.st>,
-	Neal Gompa <neal@gompa.dev>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Miklos Szeredi <mszeredi@redhat.com>,
+	Laura Promberger <laura.promberger@cern.ch>,
+	Sam Lewis <samclewis@google.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shenghao-ding@ti.com,
-	kevin-lu@ti.com,
-	baojun.xu@ti.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 3/9] ASoC: tas2764: Set the SDOUT polarity correctly
-Date: Mon,  3 Mar 2025 11:31:27 -0500
-Message-Id: <20250303163133.3764032-3-sashal@kernel.org>
+	miklos@szeredi.hu,
+	viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 4/9] fuse: don't truncate cached, mutated symlink
+Date: Mon,  3 Mar 2025 11:31:28 -0500
+Message-Id: <20250303163133.3764032-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163133.3764032-1-sashal@kernel.org>
 References: <20250303163133.3764032-1-sashal@kernel.org>
@@ -73,82 +70,117 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.129
 Content-Transfer-Encoding: 8bit
 
-From: Hector Martin <marcan@marcan.st>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit f5468beeab1b1adfc63c2717b1f29ef3f49a5fab ]
+[ Upstream commit b4c173dfbb6c78568578ff18f9e8822d7bd0e31b ]
 
-TX launch polarity needs to be the opposite of RX capture polarity, to
-generate the right bit slot alignment.
+Fuse allows the value of a symlink to change and this property is exploited
+by some filesystems (e.g. CVMFS).
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-28-932760fd7e07@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+It has been observed, that sometimes after changing the symlink contents,
+the value is truncated to the old size.
+
+This is caused by fuse_getattr() racing with fuse_reverse_inval_inode().
+fuse_reverse_inval_inode() updates the fuse_inode's attr_version, which
+results in fuse_change_attributes() exiting before updating the cached
+attributes
+
+This is okay, as the cached attributes remain invalid and the next call to
+fuse_change_attributes() will likely update the inode with the correct
+values.
+
+The reason this causes problems is that cached symlinks will be
+returned through page_get_link(), which truncates the symlink to
+inode->i_size.  This is correct for filesystems that don't mutate
+symlinks, but in this case it causes bad behavior.
+
+The solution is to just remove this truncation.  This can cause a
+regression in a filesystem that relies on supplying a symlink larger than
+the file size, but this is unlikely.  If that happens we'd need to make
+this behavior conditional.
+
+Reported-by: Laura Promberger <laura.promberger@cern.ch>
+Tested-by: Sam Lewis <samclewis@google.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://lore.kernel.org/r/20250220100258.793363-1-mszeredi@redhat.com
+Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 10 +++++++++-
- sound/soc/codecs/tas2764.h |  6 ++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ fs/fuse/dir.c      |  2 +-
+ fs/namei.c         | 24 +++++++++++++++++++-----
+ include/linux/fs.h |  2 ++
+ 3 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 2e0ed3e68fa54..fc8479d3d2852 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -367,7 +367,7 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index aa2be4c1ea8f2..de31cb8eb7201 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1445,7 +1445,7 @@ static const char *fuse_get_link(struct dentry *dentry, struct inode *inode,
+ 		goto out_err;
+ 
+ 	if (fc->cache_symlinks)
+-		return page_get_link(dentry, inode, callback);
++		return page_get_link_raw(dentry, inode, callback);
+ 
+ 	err = -ECHILD;
+ 	if (!dentry)
+diff --git a/fs/namei.c b/fs/namei.c
+index 166d71c82d7ac..6ce07cde1c277 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -5156,10 +5156,9 @@ const char *vfs_get_link(struct dentry *dentry, struct delayed_call *done)
+ EXPORT_SYMBOL(vfs_get_link);
+ 
+ /* get the link contents into pagecache */
+-const char *page_get_link(struct dentry *dentry, struct inode *inode,
+-			  struct delayed_call *callback)
++static char *__page_get_link(struct dentry *dentry, struct inode *inode,
++			     struct delayed_call *callback)
  {
- 	struct snd_soc_component *component = dai->component;
- 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
--	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0;
-+	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0, asi_cfg_4 = 0;
- 	int ret;
+-	char *kaddr;
+ 	struct page *page;
+ 	struct address_space *mapping = inode->i_mapping;
  
- 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
-@@ -376,12 +376,14 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 		fallthrough;
- 	case SND_SOC_DAIFMT_NB_NF:
- 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_RISING;
-+		asi_cfg_4 = TAS2764_TDM_CFG4_TX_FALLING;
- 		break;
- 	case SND_SOC_DAIFMT_IB_IF:
- 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
- 		fallthrough;
- 	case SND_SOC_DAIFMT_IB_NF:
- 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_FALLING;
-+		asi_cfg_4 = TAS2764_TDM_CFG4_TX_RISING;
- 		break;
+@@ -5178,8 +5177,23 @@ const char *page_get_link(struct dentry *dentry, struct inode *inode,
  	}
- 
-@@ -391,6 +393,12 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = snd_soc_component_update_bits(component, TAS2764_TDM_CFG4,
-+					    TAS2764_TDM_CFG4_TX_MASK,
-+					    asi_cfg_4);
-+	if (ret < 0)
-+		return ret;
+ 	set_delayed_call(callback, page_put_link, page);
+ 	BUG_ON(mapping_gfp_mask(mapping) & __GFP_HIGHMEM);
+-	kaddr = page_address(page);
+-	nd_terminate_link(kaddr, inode->i_size, PAGE_SIZE - 1);
++	return page_address(page);
++}
 +
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_I2S:
- 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
-diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
-index d13ecae9c9c2f..9490f2686e389 100644
---- a/sound/soc/codecs/tas2764.h
-+++ b/sound/soc/codecs/tas2764.h
-@@ -79,6 +79,12 @@
- #define TAS2764_TDM_CFG3_RXS_SHIFT	0x4
- #define TAS2764_TDM_CFG3_MASK		GENMASK(3, 0)
- 
-+/* TDM Configuration Reg4 */
-+#define TAS2764_TDM_CFG4		TAS2764_REG(0X0, 0x0d)
-+#define TAS2764_TDM_CFG4_TX_MASK	BIT(0)
-+#define TAS2764_TDM_CFG4_TX_RISING	0x0
-+#define TAS2764_TDM_CFG4_TX_FALLING	BIT(0)
++const char *page_get_link_raw(struct dentry *dentry, struct inode *inode,
++			      struct delayed_call *callback)
++{
++	return __page_get_link(dentry, inode, callback);
++}
++EXPORT_SYMBOL_GPL(page_get_link_raw);
 +
- /* TDM Configuration Reg5 */
- #define TAS2764_TDM_CFG5		TAS2764_REG(0X0, 0x0e)
- #define TAS2764_TDM_CFG5_VSNS_MASK	BIT(6)
++const char *page_get_link(struct dentry *dentry, struct inode *inode,
++					struct delayed_call *callback)
++{
++	char *kaddr = __page_get_link(dentry, inode, callback);
++
++	if (!IS_ERR(kaddr))
++		nd_terminate_link(kaddr, inode->i_size, PAGE_SIZE - 1);
+ 	return kaddr;
+ }
+ 
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 0d32634c5cf0d..08fba309ddc78 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3385,6 +3385,8 @@ extern const struct file_operations generic_ro_fops;
+ 
+ extern int readlink_copy(char __user *, int, const char *);
+ extern int page_readlink(struct dentry *, char __user *, int);
++extern const char *page_get_link_raw(struct dentry *, struct inode *,
++				     struct delayed_call *);
+ extern const char *page_get_link(struct dentry *, struct inode *,
+ 				 struct delayed_call *);
+ extern void page_put_link(void *);
 -- 
 2.39.5
 
