@@ -1,208 +1,191 @@
-Return-Path: <stable+bounces-120071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E208EA4C4DA
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:23:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56256A4C51D
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F1C67A3C08
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 15:20:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B8818944B6
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 15:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190622144B8;
-	Mon,  3 Mar 2025 15:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BEE2153C4;
+	Mon,  3 Mar 2025 15:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JBrOnoY5"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="sei5hvwH"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBAF15855E;
-	Mon,  3 Mar 2025 15:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E53215067
+	for <stable@vger.kernel.org>; Mon,  3 Mar 2025 15:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741015108; cv=none; b=Ow8O1j0TmdIzemuCglGpximQjtFXn1tR7DslCU2fH/JdSqcODW1Kx8CWSiippO0xXfrUZllcWkLcEbLQRj1h5rG3MGwqfUQCNUfdGp7b6jy6CAaGXppB1GXKHHNXMnNA77RGl5DzF8N3Y38t7/9CCfNIE+8GXB2IBU7s0+Gytp4=
+	t=1741015477; cv=none; b=QfKRQMNKx3gw1Pt0B7lE0UWRqQ5ivMDl+VLhscn8f313J/62HAc70CGUGtqfJ9VsboaF1gsI47H30i/YONz+Orx8E7f8q0Y+/+fOJGmL3RECCv0ClW/vBLCowohHGcGygG/5PIQjv6xssIsZPfC+pRiOHbpQ4dFiW30Qupeo5Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741015108; c=relaxed/simple;
-	bh=/HQqaOxmQjTOU9QyIQ+Q//w7j9/nF5iJlhcwlMTOh7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q7ETcMWvHKbnU2Rrg3HolLDp/R4kAL9SuyJbEsR1mVUYtTVGnODZFM1kCgEtj1Q5Dv388oZ3kneokXeNA0LRuWj9PpjP7fb/x/9aozSbmr+3wWhRB3+0mFWQR9GHuVpftZMlOgqjiG8RRnOC2FQNTSmofH/SgKLloeyjvcVNpXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JBrOnoY5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 677F02D5;
-	Mon,  3 Mar 2025 16:16:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1741015014;
-	bh=/HQqaOxmQjTOU9QyIQ+Q//w7j9/nF5iJlhcwlMTOh7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JBrOnoY5GYaBPQe4qz5oiKxOw6+UTrKCb1zwo+tA9DropmN9BLFW52zUkk+lWRJAt
-	 eDvlD0u2rtwsadsmQ77J2h99gPPC74po89DH8SSNPo4yJTtK4qma36M7dWRefY58mT
-	 HFdawMdP/ubdnz7+7Ui+ypUN4ytLr2BX6iReSB9I=
-Date: Mon, 3 Mar 2025 17:18:04 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media: uvcvideo: Fix deferred probing error
-Message-ID: <20250303151804.GF32048@pendragon.ideasonboard.com>
-References: <20250129-uvc-eprobedefer-v1-1-643b2603c0d2@chromium.org>
- <20250223143617.GA27463@pendragon.ideasonboard.com>
- <CANiDSCupq4A=ctR=Kkp7VxB+gvw=Z8MdDZHDShVMMAzms0VUAg@mail.gmail.com>
+	s=arc-20240116; t=1741015477; c=relaxed/simple;
+	bh=pfpr19Iu90GBD6jxo298SmOMqXiX+bP60uY1Ix2uksE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FcbOj8dImOcVQfFe/0tFu4nl62LLMpVq4YyP4SP+aYztkXDReNwDiFjdAJdcCxHJtLvKOy49uohNVPvoOpWKGmZaDcEfhKlwLAT7QKlew+BZZ8vl8U7P4kfCbZX3xXyf3lDKShlgu8c+0SxbPPXYPFzqEygTcQm7j1HqNPzn2/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=sei5hvwH; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c0a974d433so520658185a.1
+        for <stable@vger.kernel.org>; Mon, 03 Mar 2025 07:24:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1741015474; x=1741620274; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WFHt+0PcUrjf2KPzth13ahqz68xbUj7oThx+bYUbytM=;
+        b=sei5hvwHuvTkTAJOMcYpdxuIOirM7pWtT9QlEr31KitoJE1PDkADHzOY6msBn48pKO
+         dnr2GkmDJ0KFAUlXgChvD8d/rH400qva64OIJQ58nIHAHMwlYdZQHjR4ahLA7/YQ984d
+         B2/Pr0/lWhAdlS6tmafscVOg89md/4RzPihch01xoKxhgsm1eciEYyRQxLnXM5wW1+Mb
+         tvuamufs30rpSP7S/3/R6MAzVMJLoW+dZygBBasO0ZPwFkF2Kdqrz019WMbP/Pm6bCfC
+         H+xPnbgh4tckK7kcMv50fza0ePq2DRDwRdJgfcM2V1Qlq8uMvMQB9pE0NAIdPTSUP6eR
+         7UMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741015474; x=1741620274;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WFHt+0PcUrjf2KPzth13ahqz68xbUj7oThx+bYUbytM=;
+        b=l3UjHYA/93uur0IVO/sfb30ToDR9mHT4fGehDdy7jzi0BJ52PScxpQzsYxs60zEZpW
+         4L0HrWRWJX/U4Faew0a37esekXJv4KPn9yxvJDaNLbXEwd6mhF7Sn8a54fzHeMRmvktI
+         SRJCj/Sk7QGuHzW+FAC14myMINF3LlkMYNsuicvRvIBZkCetV9RS2YwuxpdDaCayQiCr
+         t/XyF3J8/9Xy6fr5d8tciVnxLwpxPOo5v780ZdZApdzMmZLsFmwHhj/Pgg/g3H9fQX6s
+         wa4jC5/IuRZ4IuhAfm4+CLhvSuWc3h8dGxFHOWdk3RtvsOamn721ZK19T47rwMX5rvw4
+         XbiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWn4gn3+HhGeKg17yTaXxBEI036nAOLPjn5FgvwlJrOrwcjMiDHC1TSvULnLxHu4ooIFYrz0Vk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz07zfOSkUeQncyZRayvH0UvpLWBspprQBY4EDvYUNrHgx9AlPq
+	y5sQV720lhWTTob3Js8CK/i4LWu+8EwdP9RbHZDm27ge1EUj+DkYv3Ahy9zDddA=
+X-Gm-Gg: ASbGncvsKwESIEmHCqz7ivjsGBfnHhO+VjwWB6IaNie/IaOYes/r26RBZQ1MMraNdXY
+	1GfVXNaDxYVyth0bTWw8wD0KnhRpHrNIsywwWOcJjGhK9tTiWgan9hKcZH+t/K+uSuv5XFYLvok
+	TFobfi9s0ojZVd1XhqupblUEnloxOzrhPfcBfuTqNNiLlGgn1jmewy01coa0NiYrl49sqqgqxnM
+	D5o9FGcgoCAIcHoRoqnEPoIbeRKvOJYOrRQR104a+61k8O6muEoaZ62JX65uSt36oN2piTq8omU
+	dnHz/AjftHNO1BPK9sJaXfpQTOMgQzwx0HcCp400VgW5MSpBcg==
+X-Google-Smtp-Source: AGHT+IFfnYkxtmeyMx4cbVUhHoEgj8vIHk0FHdrXdCz4obVUHVFmEQgHCvy9FSBCGdXes2aYUVuO3Q==
+X-Received: by 2002:a05:620a:f06:b0:7bc:de68:e932 with SMTP id af79cd13be357-7c2a7632d54mr2279290185a.23.1741015473845;
+        Mon, 03 Mar 2025 07:24:33 -0800 (PST)
+Received: from ?IPv6:2606:6d00:11:e976::c41? ([2606:6d00:11:e976::c41])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3c89408efsm27440485a.114.2025.03.03.07.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 07:24:33 -0800 (PST)
+Message-ID: <8b3dac7baed1de9542452547454c53188c384391.camel@ndufresne.ca>
+Subject: Re: [PATCH v4 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
+ dma-contig
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Mikhail Rudenko <mike.rudenko@gmail.com>, Dafna Hirschfeld	
+ <dafna@fastmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+  Mauro Carvalho Chehab	 <mchehab@kernel.org>, Heiko Stuebner
+ <heiko@sntech.de>, Tomasz Figa	 <tfiga@chromium.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Hans Verkuil	 <hverkuil@xs4all.nl>, Sergey
+ Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Mauro
+ Carvalho Chehab <mchehab+huawei@kernel.org>, stable@vger.kernel.org
+Date: Mon, 03 Mar 2025 10:24:32 -0500
+In-Reply-To: <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
+References: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
+	 <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANiDSCupq4A=ctR=Kkp7VxB+gvw=Z8MdDZHDShVMMAzms0VUAg@mail.gmail.com>
 
-On Sun, Feb 23, 2025 at 08:32:24PM +0100, Ricardo Ribalda wrote:
-> On Sun, 23 Feb 2025 at 15:36, Laurent Pinchart wrote:
-> > On Wed, Jan 29, 2025 at 12:39:46PM +0000, Ricardo Ribalda wrote:
-> > > uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-> > > have not yet been probed. This return code should be propagated to the
-> > > caller of uvc_probe() to ensure that probing is retried when the required
-> > > GPIOs become available.
-> > >
-> > > Currently, this error code is incorrectly converted to -ENODEV,
-> > > causing some internal cameras to be ignored.
-> > >
-> > > This commit fixes this issue by propagating the -EPROBE_DEFER error.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > ---
-> > >  drivers/media/usb/uvc/uvc_driver.c | 9 ++++++---
-> > >  1 file changed, 6 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> > > index a10d4f4d9f95..73a7f23b616c 100644
-> > > --- a/drivers/media/usb/uvc/uvc_driver.c
-> > > +++ b/drivers/media/usb/uvc/uvc_driver.c
-> > > @@ -2253,9 +2253,10 @@ static int uvc_probe(struct usb_interface *intf,
-> > >       }
-> > >
-> > >       /* Parse the associated GPIOs. */
-> > > -     if (uvc_gpio_parse(dev) < 0) {
-> > > +     ret = uvc_gpio_parse(dev);
-> > > +     if (ret < 0) {
-> > >               uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
-> > > -             goto error;
-> > > +             goto error_retcode;
-> > >       }
-> > >
-> > >       dev_info(&dev->udev->dev, "Found UVC %u.%02x device %s (%04x:%04x)\n",
-> > > @@ -2328,9 +2329,11 @@ static int uvc_probe(struct usb_interface *intf,
-> > >       return 0;
-> > >
-> > >  error:
-> > > +     ret = -ENODEV;
-> > > +error_retcode:
-> >
-> > This isn't very nice. Could we instead also propagate error codes from
-> > other locations in the uvc_probe() function ? If you want to minimize
-> > changes, you can initialize ret to -ENODEV, and turn the (ret < 0) check
-> > for uvc_gpio_parse() to a (ret) check.
-> 
-> Not very nice, but easy to backport to stables. What about a follow-up
-> change like this:
+Hi Mikhail,
 
-How about the nicer fix for mainline, and a simpler to backport one for
-stable ? The main focus should be on mainline, not backports.
+Le lundi 03 mars 2025 =C3=A0 14:40 +0300, Mikhail Rudenko a =C3=A9crit=C2=
+=A0:
+> When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
+> commit 129134e5415d ("media: media/v4l2: remove
+> V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
+> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
+> no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
+> introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
+> V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
+> no-ops, making cache maintenance for non-coherent dmabufs allocated
+> by
+> dma-contig impossible.
+>=20
+> Fix this by reintroducing dma_sync_sgtable_for_{cpu,device} and
+> {flush,invalidate}_kernel_vmap_range calls to
+> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
+> buffers.
+>=20
+> Fixes: c0acf9cfeee0 ("media: videobuf2: handle
+> V4L2_MEMORY_FLAG_NON_COHERENT flag")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+> ---
+> =C2=A0.../media/common/videobuf2/videobuf2-dma-contig.c=C2=A0 | 22
+> ++++++++++++++++++++++
+> =C2=A01 file changed, 22 insertions(+)
+>=20
+> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+> b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+> index
+> a13ec569c82f6da2d977222b94af32e74c6c6c82..d41095fe5bd21faf815d6b035d7
+> bc888a84a95d5 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+> @@ -427,6 +427,17 @@ static int
+> =C2=A0vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
+> =C2=A0				=C2=A0=C2=A0 enum dma_data_direction
+> direction)
+> =C2=A0{
+> +	struct vb2_dc_buf *buf =3D dbuf->priv;
+> +	struct sg_table *sgt =3D buf->dma_sgt;
+> +
+> +	if (!buf->non_coherent_mem)
+> +		return 0;
+> +
+> +	if (buf->vaddr)
+> +		invalidate_kernel_vmap_range(buf->vaddr, buf->size);
 
-> index c93abe2367aa..8c67feca1688 100644
-> --- a/drivers/media/usb/uvc/uvc_driver.c
-> +++ b/drivers/media/usb/uvc/uvc_driver.c
-> @@ -2261,7 +2261,7 @@ static int uvc_probe(struct usb_interface *intf,
->         ret = uvc_gpio_parse(dev);
->         if (ret < 0) {
->                 uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
-> -               goto error_retcode;
-> +               goto error;
->         }
-> 
->         dev_info(&dev->udev->dev, "Found UVC %u.%02x device %s (%04x:%04x)\n",
-> @@ -2285,24 +2285,32 @@ static int uvc_probe(struct usb_interface *intf,
->         }
-> 
->         /* Register the V4L2 device. */
-> -       if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-> +       ret = v4l2_device_register(&intf->dev, &dev->vdev);
-> +       if (ret < 0)
->                 goto error;
-> 
->         /* Scan the device for video chains. */
-> -       if (uvc_scan_device(dev) < 0)
-> +       if (uvc_scan_device(dev) < 0) {
-> +               ret = -ENODEV;
->                 goto error;
-> +       }
-> 
->         /* Initialize controls. */
-> -       if (uvc_ctrl_init_device(dev) < 0)
-> +       if (uvc_ctrl_init_device(dev) < 0) {
-> +               ret = -ENODEV;
->                 goto error;
-> +       }
-> 
->         /* Register video device nodes. */
-> -       if (uvc_register_chains(dev) < 0)
-> +       if (uvc_register_chains(dev) < 0) {
-> +               ret = -ENODEV;
->                 goto error;
-> +       }
-> 
->  #ifdef CONFIG_MEDIA_CONTROLLER
->         /* Register the media device node */
-> -       if (media_device_register(&dev->mdev) < 0)
-> +       ret = media_device_register(&dev->mdev);
-> +       if (ret < 0)
->                 goto error;
->  #endif
->         /* Save our data pointer in the interface data. */
-> @@ -2334,8 +2342,6 @@ static int uvc_probe(struct usb_interface *intf,
->         return 0;
-> 
->  error:
-> -       ret = -ENODEV;
-> -error_retcode:
->         uvc_unregister_video(dev);
->         kref_put(&dev->ref, uvc_delete);
->         return ret;
-> 
-> > >       uvc_unregister_video(dev);
-> > >       kref_put(&dev->ref, uvc_delete);
-> > > -     return -ENODEV;
-> > > +     return ret;
-> > >  }
-> > >
-> > >  static void uvc_disconnect(struct usb_interface *intf)
-> > >
-> > > ---
-> > > base-commit: c4b7779abc6633677e6edb79e2809f4f61fde157
-> > > change-id: 20250129-uvc-eprobedefer-b5ebb4db63cc
-> >
-> > --
-> > Regards,
-> >
-> > Laurent Pinchart
-> 
-> Let me know what do you think so I can send a v2 with the change
-> proposed by Doug.
-> 
-> Regards!
+What would make me a lot more confortable with this change is if you
+enable kernel mappings for one test. This will ensure you cover the
+call to "invalidate" in your testing. I'd like to know about the
+performance impact. With this implementation it should be identical to
+the VB2 one.
 
--- 
-Regards,
+What I was trying to say in previous comments, is that my impression is
+that we can skip this for CPU read access, since we don't guaranty
+concurrent access anyway. Both address space can keep their cache in
+that case. Though, I see RKISP does not use kernel mapping plus I'm not
+reporting a bug, but checking if we should leave a comment for possible
+users of kernel mapping in the future ?
 
-Laurent Pinchart
+> +
+> +	dma_sync_sgtable_for_cpu(buf->dev, sgt, direction);
+> +
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> @@ -434,6 +445,17 @@ static int
+> =C2=A0vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
+> =C2=A0				 enum dma_data_direction direction)
+> =C2=A0{
+> +	struct vb2_dc_buf *buf =3D dbuf->priv;
+> +	struct sg_table *sgt =3D buf->dma_sgt;
+> +
+> +	if (!buf->non_coherent_mem)
+> +		return 0;
+> +
+> +	if (buf->vaddr)
+> +		flush_kernel_vmap_range(buf->vaddr, buf->size);
+> +
+> +	dma_sync_sgtable_for_device(buf->dev, sgt, direction);
+> +
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+>=20
+
 
