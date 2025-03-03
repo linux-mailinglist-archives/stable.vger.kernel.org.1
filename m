@@ -1,109 +1,91 @@
-Return-Path: <stable+bounces-120064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE27DA4C244
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 14:43:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617F9A4C2DC
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 15:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE18D171029
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 13:43:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 135BE1720BB
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 14:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43B8212B0A;
-	Mon,  3 Mar 2025 13:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32E221324C;
+	Mon,  3 Mar 2025 14:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFL5J3qG"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CAF8634C;
-	Mon,  3 Mar 2025 13:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EA98489;
+	Mon,  3 Mar 2025 14:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741009420; cv=none; b=IvLMYGxo4k6255crXmoa595c9tN1i3rFrO0ruohVQOOZW8u8/Mm8BbitK6hbqdsBUNGXaEqNjwY/cP+8FFEMNyaFrWWqMNyMa4/OGlZUEcZk9yzz1AMkDdE58SokU6gdRV9TdKh3q4xv0uEbOe+GDb3vANtdTWowkSIKitDGSOU=
+	t=1741010879; cv=none; b=Xq+lLAKBFXDRXJZw+BBnvxK/+QYD/Z1MrpUKs8wQwyaNQoEhYJ5HMXGBuBIkoYHD0XuGfOjWYhIo5U5/KL4dJv9s/9bcYScXR3fBq9Tz4yIN3xUN/QMppxtVat1hGqvFl+TRMX/tEROCywX3KcexHmrRxAyA44w7TmdC5mCPqb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741009420; c=relaxed/simple;
-	bh=EC3LnVqPbgmcXuI5roGeL5xwiC6iDSLY8CiY9mZTp8k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eyiQeKZNMVBezMyBBq9yneBOrr6ZY8BJ2YTf+813qBVVkdyHVplro3aBjF3skDCczE5MrQv/M6cPBNDxegZCyhbCQ03YLIYqm2WEVvXwjCW63cf4yZz5l1dRj205kDCmogXAPKXd5VTVSq+QbCXnh58S5Wb4yaqfICzOnF+zwOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0855F106F;
-	Mon,  3 Mar 2025 05:43:51 -0800 (PST)
-Received: from [10.57.66.216] (unknown [10.57.66.216])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D8123F673;
-	Mon,  3 Mar 2025 05:43:35 -0800 (PST)
-Message-ID: <7778df43-5169-4d1c-9fe6-44bee39edfc1@arm.com>
-Date: Mon, 3 Mar 2025 13:43:33 +0000
+	s=arc-20240116; t=1741010879; c=relaxed/simple;
+	bh=lrlCsavUJz6KOvb58RsHd0PRwT4FfA6Nqrz+IF8RGVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ly8uYygHIvPuM0kKzMFwpupnylCIJbDaPPYi6KakttaA98OCrlsD85hYTQnQlsGnoNc0+YmXvKWR75reliOurew+cyuRWceeRTUxv+qzoUu/zSzexNknK2tpq3F/H64omAoFO1oyQcrhvvcwD6kw5ZCrSL2ZYHu+9ntAYv13UiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFL5J3qG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270AFC4CED6;
+	Mon,  3 Mar 2025 14:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741010877;
+	bh=lrlCsavUJz6KOvb58RsHd0PRwT4FfA6Nqrz+IF8RGVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sFL5J3qGhSOTmKTqbjuLFlDmWsIydsLfhFPeoLzlZQ48ALrzWHduW9Qd6xfDUUx1S
+	 byZzLv1g18d6A+svIo0LWuCylTMJKurfmTqXFilz4mZXQKT/aH+pjlFy0F2YEQB1Yx
+	 bXoa9mCcwisDGtT+MHnbRzFt8Z+KrxXeynwXofwc=
+Date: Mon, 3 Mar 2025 15:07:53 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	=?iso-8859-1?Q?Herv=E9?= Codina <herve.codina@bootlin.com>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND v2] drivers: core: fix device leak in
+ __fw_devlink_relax_cycles()
+Message-ID: <2025030332-tumble-seduce-7650@gregkh>
+References: <20250303-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-3854d249d54e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PM: EM: fix an API misuse issue in em_create_pd()
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Haoxiang Li <haoxiang_li2024@163.com>
-Cc: len.brown@intel.com, pavel@kernel.org, dietmar.eggemann@arm.com,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250303034337.3868497-1-haoxiang_li2024@163.com>
- <CAJZ5v0g5RJaHeYqiP3khp2vPyVHj0W35ab4gtBJ0R14nhSqa_A@mail.gmail.com>
-Content-Language: en-US
-From: Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <CAJZ5v0g5RJaHeYqiP3khp2vPyVHj0W35ab4gtBJ0R14nhSqa_A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250303-fix__fw_devlink_relax_cycles_missing_device_put-v2-1-3854d249d54e@bootlin.com>
 
-
-
-On 3/3/25 12:38, Rafael J. Wysocki wrote:
-> On Mon, Mar 3, 2025 at 4:43 AM Haoxiang Li <haoxiang_li2024@163.com> wrote:
->>
->> Replace kfree() with em_table_free() to free
->> the memory allocated by em_table_alloc().
+On Mon, Mar 03, 2025 at 10:30:51AM +0100, Luca Ceresoli wrote:
+> Commit bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize
+> cycle detection logic") introduced a new struct device *con_dev and a
+> get_dev_from_fwnode() call to get it, but without adding a corresponding
+> put_device().
 > 
-> Ostensibly, this is fixing a problem, but there's no problem described
-> above.  Please describe it.
+> Closes: https://lore.kernel.org/all/20241204124826.2e055091@booty/
+> Fixes: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Saravana Kannan <saravanak@google.com>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+> Changes in v2:
+> - add 'Cc: stable@vger.kernel.org'
+> - use Closes: tag, not Link:
+> - Link to v1: https://lore.kernel.org/r/20250212-fix__fw_devlink_relax_cycles_missing_device_put-v1-1-41818c7d7722@bootlin.com
+> ---
+>  drivers/base/core.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Thank Rafael for adding me on CC.
+This was applied to my tree on Feb 20, right?  Or is this a new version?
+Why was it resent?
 
-> 
->> Fixes: 24e9fb635df2 ("PM: EM: Remove old table")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
->> ---
->>   kernel/power/energy_model.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
->> index 3874f0e97651..71b60aa20227 100644
->> --- a/kernel/power/energy_model.c
->> +++ b/kernel/power/energy_model.c
->> @@ -447,7 +447,7 @@ static int em_create_pd(struct device *dev, int nr_states,
->>          return 0;
->>
->>   free_pd_table:
->> -       kfree(em_table);
->> +       em_table_free(em_table);
->>   free_pd:
->>          kfree(pd);
->>          return -EINVAL;
->> --
->> 2.25.1
->>
+thanks,
 
-IMO there is no need to use RCU freeing mechanism, since
-this table is not used yet. We failed in the initialization
-steps, so we can simply call kfree() on that memory.
-
-That 'free_pd_table' goto label is triggered before the call to:
-
-rcu_assign_pointer(pd->em_table, em_table);
-
-IMO this is even dangerous in the patch to abuse RCU free for such case.
-
-Regards,
-Lukasz
+greg k-h
 
