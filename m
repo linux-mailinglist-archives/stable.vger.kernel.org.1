@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-120183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FEDA4CD2C
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 22:06:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645C0A4CD92
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 22:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45F018966A1
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 21:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87A2017192B
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 21:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6AD236435;
-	Mon,  3 Mar 2025 21:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319BB230277;
+	Mon,  3 Mar 2025 21:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b="hhAMS7MQ"
+	dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b="FKPHvcH7"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AF6214A91
-	for <stable@vger.kernel.org>; Mon,  3 Mar 2025 21:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45321E9B3D
+	for <stable@vger.kernel.org>; Mon,  3 Mar 2025 21:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741035998; cv=none; b=WkXHhkQGRd4jE7IvN6wKklz2tmptl+CIhWHhwLxmAi49XcRKj5+3K/5Vq/WEIvRTN8iKqRMqil66T0E4sIskLsgHEqzjdHxi+nzNbm1XAtd+txG51nYSjp8Y8vFsqxLwzNbjMwRGYo52Vf8V9P/8TMPSxaieLDFAYepgPtr2A5Y=
+	t=1741037813; cv=none; b=muPTxuNRrIiWnJj/QVk5UEqCEwmwkvj5/tij2DDvU1b10J823egb/QPHp40n0AlhJLl2SvtDRbvJfurkkGnCw9LMop6MSpeXEY8CGZOl4lb8k12QlvsOmeYIg8sbtLFw6gd1E62vBcbxShmRr3eltXSQgO2yIpg/ocbllP3HljQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741035998; c=relaxed/simple;
-	bh=jWG5TigqFmqAJ4CUg+iwF8c4+jmlQjaLQT8Sdry/QPY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=ACu4sh/3qAIG4iO8WoXQoWhve8XIc7cqEJoEXPv61SzOjVkzBRdz1Xv43oDqBNYLsL6I1lG703h9x9mv2LykJxOOzL9RfweETkSrwwtJZrnrC39UrmIX+r8/fqWnCxcoUkkhqyiRl8YZDq3JobsLgNJ7CYy5iNlwh8gPmvcJEI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org; spf=pass smtp.mailfrom=cknow.org; dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b=hhAMS7MQ; arc=none smtp.client-ip=91.218.175.177
+	s=arc-20240116; t=1741037813; c=relaxed/simple;
+	bh=Dc+8vGrV4CJpWZL/5rLgVOBvtbTZ7UQ4jMSoEWXbxko=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=LweOPh/6seaj7Iji2wZUDXG5+IwiY/uw4oCLsNzH0u1AdVGkv/pJwMe+SAxozOI+0B2AuSaVRqj/Eyo2CWM8WYrzdiszvvtG8awyZukagx5E3IEdE0e3g9KX4HSX6i6CQ7gh6UQv5IqgNgAB8FXcrJI2EQwsUrpTx31MJL7FPwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org; spf=pass smtp.mailfrom=cknow.org; dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b=FKPHvcH7; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow.org
 Precedence: bulk
@@ -38,144 +38,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow.org; s=key1;
-	t=1741035981;
+	t=1741037799;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KL0RgwYMwPDxX5LpzzMcHu60ayt30SuNBgN28Dcp7Hw=;
-	b=hhAMS7MQqfegpHYoQsM7IHG8RpfHLNLMhR4NpVcSml6EfVHIhEBd4qnqJaEA+NcyD5UEXv
-	/GZ+dPQlEnhRCREQPzmIhrhEwVWUhHTiHGUpktS++q2XO3w3N63tqaCybc5PSZoH6g/al5
-	VHMtOXuLLRyk8cqN94xKgPB8c32YHT8VXhDkz0e0NEf1S06OOlTY5PoN7ijS99Zsd3wfS7
-	5ntajLM2A3m523uU0iOKB9DUghxdu15t7m2J9qSWkRx+xTdtD6yfy+v4wL91Sih30/LZiM
-	Xu48SnixKJi453V9kWQfHc39ouhljwhKPql4fRyG1l6Q9ccBKYfysSlsedZjzQ==
+	bh=SPR0yHTL9G5UObQ+1ZLwbXfpYibvfRkKqDO5ejFcj7c=;
+	b=FKPHvcH7c9zqAD2wESgcTCiEHMa1t179PF75OD/gBjZUlW35GuneHgQh3HWsNZMX0pOnbi
+	+6RkoPQH9w6R5bz9uQHkHfTFpwYR0WulMu3vkJDuVzl8DOFABTBxXR1TQBYqrHEpFdhebd
+	9VdLQKQUsz67EHvE8Mai5BwzwVmn0P7sqW6bTZ/H5kwcyrfjsxxifLMp2+72CRfE8fvwJU
+	ucj94m+EDxHS5Yw9ACbnRbsfw7RB1uMUBMEXG3Voi5ce9rEWlXJVXCY13HQg46uiB5HpZA
+	aaNnQuUSoe16F5dTA5w+uR+1mqMYFUtVFYI6EREYjbqJlr7nDvw3cnNOKCpUPQ==
 Content-Type: multipart/signed;
- boundary=3e1d67d79bc1372e9f689bf3a32389e21547715a78ffa78981b7ded1a50b;
+ boundary=d8a90991c87105546b1f1cba4bc2dbbd19c5ea33d56cd1a4d2b8bf3508e6;
  micalg=pgp-sha256; protocol="application/pgp-signature"
-Date: Mon, 03 Mar 2025 22:06:04 +0100
-Message-Id: <D86XQOCG7LJH.3NI330ETDBP5Z@cknow.org>
+Date: Mon, 03 Mar 2025 22:36:23 +0100
+Message-Id: <D86YDVZLWWA0.33WM5O2EZIAI6@cknow.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <didi.debian@cknow.org>
 To: "Dragan Simic" <dsimic@manjaro.org>,
  <linux-rockchip@lists.infradead.org>
 Cc: <heiko@sntech.de>, <linux-arm-kernel@lists.infradead.org>,
  <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
  <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <chris@z9.de>, <stable@vger.kernel.org>, "Vincenzo Palazzo"
- <vincenzopalazzodev@gmail.com>, "Peter Geis" <pgwipeout@gmail.com>, "Bjorn
- Helgaas" <helgaas@kernel.org>, "Marek Kraus" <gamiee@pine64.org>
-Subject: Re: [PATCH v2 2/2] arm64: dts: rockchip: Add missing PCIe supplies
- to RockPro64 board dtsi
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Diederik de Haas" <didi.debian@cknow.org>
+ <chris@z9.de>, <stable@vger.kernel.org>, "Marek Kraus" <gamiee@pine64.org>
+Subject: Re: [PATCH v2 1/2] arm64: dts: rockchip: Add avdd HDMI supplies to
+ RockPro64 board dtsi
 References: <cover.1740941097.git.dsimic@manjaro.org>
- <b39cfd7490d8194f053bf3971f13a43472d1769e.1740941097.git.dsimic@manjaro.org>
-In-Reply-To: <b39cfd7490d8194f053bf3971f13a43472d1769e.1740941097.git.dsimic@manjaro.org>
+ <df3d7e8fe74ed5e727e085b18c395260537bb5ac.1740941097.git.dsimic@manjaro.org>
+In-Reply-To: <df3d7e8fe74ed5e727e085b18c395260537bb5ac.1740941097.git.dsimic@manjaro.org>
 X-Migadu-Flow: FLOW_OUT
 
---3e1d67d79bc1372e9f689bf3a32389e21547715a78ffa78981b7ded1a50b
+--d8a90991c87105546b1f1cba4bc2dbbd19c5ea33d56cd1a4d2b8bf3508e6
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 
 Hi Dragan,
 
 On Sun Mar 2, 2025 at 7:48 PM CET, Dragan Simic wrote:
-> Add missing "vpcie0v9-supply" and "vpcie1v8-supply" properties to the "pc=
-ie0"
-> node in the Pine64 RockPro64 board dtsi file.  This eliminates the follow=
-ing
-> warnings from the kernel log:
+> Add missing "avdd-0v9-supply" and "avdd-1v8-supply" properties to the "hd=
+mi"
+> node in the Pine64 RockPro64 board dtsi file.  To achieve this, also add =
+the
+> associated "vcca_0v9" regulator that produces the 0.9 V supply, [1][2] wh=
+ich
+> hasn't been defined previously in the board dtsi file.
 >
->   rockchip-pcie f8000000.pcie: supply vpcie1v8 not found, using dummy reg=
-ulator
->   rockchip-pcie f8000000.pcie: supply vpcie0v9 not found, using dummy reg=
-ulator
+> This also eliminates the following warnings from the kernel log:
 >
-> These additions improve the accuracy of hardware description of the RockP=
-ro64
-> and, in theory, they should result in no functional changes to the way bo=
-ard
-> works after the changes, because the "vcca_0v9" and "vcca_1v8" regulators=
- are
-> always enabled. [1][2]  However, extended reliability testing, performed =
-by
-> Chris, [3] has proven that the age-old issues with some PCI Express cards=
-,
-> when used with a Pine64 RockPro64, are also resolved.
+>   dwhdmi-rockchip ff940000.hdmi: supply avdd-0v9 not found, using dummy r=
+egulator
+>   dwhdmi-rockchip ff940000.hdmi: supply avdd-1v8 not found, using dummy r=
+egulator
 
-Thanks for this patch :-)
+Also thanks for this patch :-)
 
-I 'reported' the issue based on the logs I saw from other people, but
-now that I have a RockPro64 (version 2.1) myself, I can confirm that
-without this patch I saw those warnings myself.
+I've now also confirmed for myself that without this patch I see the
+above warnings and I don't see them with this patch applied.
 
-When booted up without a PCIe card in the slot, I also saw these errors:
-[    5.106650] rockchip-pcie f8000000.pcie: PCIe link training gen1 timeout=
-!
-[    5.107373] rockchip-pcie f8000000.pcie: probe with driver rockchip-pcie=
- failed with error -110
-
-You indicated that that was due to there being no PCIe card inserted.
-
-After applying this patch I booted up my RockPro64 and found that the
-above mentioned warnings are indeed gone.
-
-Then I inserted a Renesas Electronics Corp. uPD720201 USB 3.0 Host
-Controller in the PCIe slot and booted up.
-The above mentioned errors were indeed gone.
-Furthermore ``lspci`` showed that card and when I plugged in an USB 3
-drive in one of the ports, it was correctly detected and I could mount
-the partition on my system. So feel free to include:
+When booting up I saw an U-Boot logo (hadn't seen that one before) and
+not longer after that I saw the various boot messages come by on the
+monitor I had connected to the HDMI port. This is only a *very*
+barebones install (yet), so I couldn't do 'deeper' tests, but HDMI
+appears to work. So feel free to include:
 
 Tested-by: Diederik de Haas <didi.debian@cknow.org>
 
 Cheers,
   Diederik
-
-> Those issues were already mentioned in the commit 43853e843aa6 (arm64: dt=
-s:
-> rockchip: Remove unsupported node from the Pinebook Pro dts, 2024-04-01),
-> together with a brief description of the out-of-tree enumeration delay pa=
-tch
-> that reportedly resolves those issues.  In a nutshell, booting a RockPro6=
-4
-> with some PCI Express cards attached to it caused a kernel oops. [4]
 >
-> Symptomatically enough, to the commit author's best knowledge, only the P=
-ine64
-> RockPro64, out of all RK3399-based boards and devices supported upstream,=
- has
-> been reported to suffer from those PCI Express issues, and only the RockP=
-ro64
-> had some of the PCI Express supplies missing in its DT.  Thus, perhaps so=
-me
-> weird timing issues exist that caused the "vcca_1v8" always-on regulator,
-> which is part of the RK808 PMIC, to actually not be enabled before the PC=
-I
-> Express is initialized and enumerated on the RockPro64, causing oopses wi=
-th
-> some PCIe cards, and the aforementioned enumeration delay patch [4] proba=
-bly
-> acted as just a workaround for the underlying timing issue.
->
-> Admittedly, the Pine64 RockPro64 is a bit specific board by having a stan=
-dard
-> PCI Express slot, allowing use of various standard cards, but pretty much
-> standard PCI Express cards have been attached to other RK3399 boards as w=
-ell,
-> and the commit author is unaware ot such issues reported for them.
->
-> It's quite hard to be sure that the PCI Express issues are fully resolved=
- by
-> these additions to the DT, without some really extensive and time-consumi=
-ng
-> testing.  However, these additions to the DT can result in good things an=
-d
-> improvements anyway, making them perfectly safe from the standpoint of be=
-ing
-> unable to do any harm or cause some unforeseen regressions.
->
-> Shuffle and reorder the "vpcie*-supply" properties a bit, so they're sort=
-ed
-> alphanumerically, which is a bit more logical and more useful than having
-> these properties listed in their strict alphabetical order.
+> There are no functional changes to the way board works with these additio=
+ns,
+> because the "vcc1v8_dvp" and "vcca_0v9" regulators are always enabled, [1=
+][2]
+> but these additions improve the accuracy of hardware description.
 >
 > These changes apply to the both supported hardware revisions of the Pine6=
 4
@@ -183,52 +118,59 @@ ed
 >
 > [1] https://files.pine64.org/doc/rockpro64/rockpro64_v21-SCH.pdf
 > [2] https://files.pine64.org/doc/rockpro64/rockpro64_v20-SCH.pdf
-> [3] https://z9.de/hedgedoc/s/nF4d5G7rg#reboot-tests-for-PCIe-improvements
-> [4] https://lore.kernel.org/lkml/20230509153912.515218-1-vincenzopalazzod=
-ev@gmail.com/T/#u
 >
-> Fixes: bba821f5479e ("arm64: dts: rockchip: add PCIe nodes on rk3399-rock=
-pro64")
+> Fixes: e4f3fb490967 ("arm64: dts: rockchip: add initial dts support for R=
+ockpro64")
 > Cc: stable@vger.kernel.org
-> Cc: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-> Cc: Peter Geis <pgwipeout@gmail.com>
-> Cc: Bjorn Helgaas <helgaas@kernel.org>
-> Reported-by: Diederik de Haas <didi.debian@cknow.org>
-> Tested-by: Chris Vogel <chris@z9.de>
+> Suggested-by: Diederik de Haas <didi.debian@cknow.org>
 > Signed-off-by: Dragan Simic <dsimic@manjaro.org>
 > ---
->  arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 >
 > diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/ar=
 m64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-> index 47dc198706c8..41ee381ff81f 100644
+> index 69a9d6170649..47dc198706c8 100644
 > --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
 > +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-> @@ -673,8 +673,10 @@ &pcie0 {
->  	num-lanes =3D <4>;
->  	pinctrl-names =3D "default";
->  	pinctrl-0 =3D <&pcie_perst>;
-> -	vpcie12v-supply =3D <&vcc12v_dcin>;
-> +	vpcie0v9-supply =3D <&vcca_0v9>;
-> +	vpcie1v8-supply =3D <&vcca_1v8>;
->  	vpcie3v3-supply =3D <&vcc3v3_pcie>;
-> +	vpcie12v-supply =3D <&vcc12v_dcin>;
->  	status =3D "okay";
+> @@ -227,6 +227,16 @@ vcc5v0_usb: regulator-vcc5v0-usb {
+>  		vin-supply =3D <&vcc12v_dcin>;
+>  	};
+> =20
+> +	vcca_0v9: regulator-vcca-0v9 {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "vcca_0v9";
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +		regulator-min-microvolt =3D <900000>;
+> +		regulator-max-microvolt =3D <900000>;
+> +		vin-supply =3D <&vcc3v3_sys>;
+> +	};
+> +
+>  	vdd_log: regulator-vdd-log {
+>  		compatible =3D "pwm-regulator";
+>  		pwms =3D <&pwm2 0 25000 1>;
+> @@ -312,6 +322,8 @@ &gmac {
 >  };
 > =20
+>  &hdmi {
+> +	avdd-0v9-supply =3D <&vcca_0v9>;
+> +	avdd-1v8-supply =3D <&vcc1v8_dvp>;
+>  	ddc-i2c-bus =3D <&i2c3>;
+>  	pinctrl-names =3D "default";
+>  	pinctrl-0 =3D <&hdmi_cec>;
 
 
---3e1d67d79bc1372e9f689bf3a32389e21547715a78ffa78981b7ded1a50b
+--d8a90991c87105546b1f1cba4bc2dbbd19c5ea33d56cd1a4d2b8bf3508e6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQT1sUPBYsyGmi4usy/XblvOeH7bbgUCZ8YZxQAKCRDXblvOeH7b
-btp4AQCpxT1Wwlbg+zU1W+K7B20UFqP9NHEG0RITnzD0J3T3KQEAnWg5e7gb3kpe
-v8idNl4faXofRHNasq3iEeMwbqLWQA0=
-=fTAb
+iHUEABYIAB0WIQT1sUPBYsyGmi4usy/XblvOeH7bbgUCZ8Yg3QAKCRDXblvOeH7b
+bq9wAQCusrEFMAJXQYDLkDEx+x1dIC0qmK207Wx9wyGlJYC3XgD/awM9hupSqNWO
+O0yXgcsLM0uoj1NxWs+YlE7lnWbdIAs=
+=ukKr
 -----END PGP SIGNATURE-----
 
---3e1d67d79bc1372e9f689bf3a32389e21547715a78ffa78981b7ded1a50b--
+--d8a90991c87105546b1f1cba4bc2dbbd19c5ea33d56cd1a4d2b8bf3508e6--
 
