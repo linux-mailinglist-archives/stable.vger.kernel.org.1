@@ -1,171 +1,149 @@
-Return-Path: <stable+bounces-120040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0872A4B8AD
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 09:05:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBF7A4BA57
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 10:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8773D16ED9F
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 08:05:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F22A1891A00
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 09:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16761EA7CE;
-	Mon,  3 Mar 2025 08:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6A8152532;
+	Mon,  3 Mar 2025 09:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=diehl.com header.i=@diehl.com header.b="q6wpYuBZ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="L3nS6aHS"
 X-Original-To: stable@vger.kernel.org
-Received: from enterprise01.smtp.diehl.com (enterprise01.smtp.diehl.com [193.201.238.219])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39DF1E9B3C;
-	Mon,  3 Mar 2025 08:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.201.238.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58201F03D7;
+	Mon,  3 Mar 2025 09:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740989121; cv=none; b=G1kRiymyb075BWsd9nT7y7sFqWvkg4obUpyQCiTak9QDzTAFJJj4O6tJEjDYV6YRWZzTBYwklCnQ4/huD3mKxJa1KzHQOW4twuOFhtm3eZIJiWmjG6KlEdYUhtVTZUn7JSVQTYKOprRnpDHjVynMLMMplJYPrjyVxezxencijEw=
+	t=1740992944; cv=none; b=lx7hAGKEiY/WkNi00KgZSBxJJoDEa4XgiLB3xObVHgoRjkT+ojWkAwF/LSfzHPrusKwv18RXUZJF/0tH+wxLAHOXBtPIOmQ4raHIP8pX2i/NqAVo3pbILenEwol2s/GW0rBvEfrdr9SI6yOnQ1bwgnNjo8+dDIkHoCFeeiCmrDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740989121; c=relaxed/simple;
-	bh=UK/tA22zmyaxSkT4eckr4JBqqqNE2ElQdzBIYYiXgYM=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jJIYpfe/q9Epg6+Xp9kH1fDFLaboXCl/l6hPtyXCeiBjbZJlKlQUucaS2OB4xCAYkPUOiXjUsh5QHSLsaXw9GTaSrJf1X0sBjJy2qYxOfowBSexKqoB7bD8NAcQRF0OKMlbs/JBe1Iz7dJtBXjaJTajEnpkYXyVW95nLBiRMvjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=diehl.com; spf=pass smtp.mailfrom=diehl.com; dkim=pass (2048-bit key) header.d=diehl.com header.i=@diehl.com header.b=q6wpYuBZ; arc=none smtp.client-ip=193.201.238.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=diehl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diehl.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
-  t=1740989119; x=1772525119;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=UK/tA22zmyaxSkT4eckr4JBqqqNE2ElQdzBIYYiXgYM=;
-  b=q6wpYuBZwCP176LD8Nf1d8/9xU5Dud6sEMPBCofG7j7bLGka1ilNJI+D
-   vMl9QtBYxmvnlPcpMR5NJ3Hys4ePtXwudyYnyVg5dBisv2EqRf7ewwEWh
-   muRJ12G6V3i2Nu4sZ0gKCBhjL6I3WaLipS4MQHm8/2NE6M42O/Kd06jOL
-   hSG71fZzrPNE3D6ZWIxbN0qC5cfs8lz5Q0ZgYE/jacJDI2pdN1uNwbQLM
-   6UfxOwFRut9yz9K7KlzUVrXpJwvguS+KmlbLdZb4mBBpZlg6wwduvAnHd
-   9a5XRskF/MEZ+ARDIFa7KLWB/yoSYElSrlzxG5tFjTHMaiYxsjgPveO6g
-   g==;
-X-CSE-ConnectionGUID: 9bLDDy9JSmilP2KQQCS5Cw==
-X-CSE-MsgGUID: DCldqlNpSfKkBLJ6Fxr7zw==
-X-ThreatScanner-Verdict: Negative
-IronPort-Data: A9a23:3Ici+a9nbHVqbu7qVlsbDrUDg3+TJUtcMsCJ2f8bNWPcYEJGY0x3z
- GoXCG3XOfqKZzb3ed8jO4XjoR5TsMDdm9djS1FuqisxFiIbosf7XtnIdU2Y0wF+jCHgZB89s
- 59OOoGowOQcFCK0SsKFa+C5xZVE/fjWAOK6UKicZ3wZqTZMEE8JkQhkl/MynrlmiN24BxLlk
- d7pqqUzAnf8s9JPGjxSsvnrRC9H5qyo5WtD5gdmPJingXeF/5UrJMNGTU2OByugKmVkNrbSb
- /rOyri/4lTY838FYvu5kqz2e1E9WbXbOw6DkBJ+A8BOVTAb+0Teeo5iXBYtQR8/Zwehxrid+
- /0U3XCEcjrFC4WX8Agrv7u0JAklVUFO0OevzXFSKqV/xWWeG5fn660G4E3boeT0Uwu4aI1D3
- aVwFdwDUvyMr7O85J6XW7hOvcEiKPGxH7omkUo95i6MWJ7KQbibK0nLzeVz8Bx1o+lvOa2GI
- cEecyIpYBXNYxkJMVASYH48tL7wwCCiKHsD7gvO/cLb4ECKpOB1+LTgNtvOPNuRWchPmk+eq
- krK/mn5BlcRM9n3JT+tqyvw17GXxnqlMG4UPJGT8vJzhHuL/WIwCzcydwWVsePmmFHrDrqzL
- GRRoELCt5Ma+02sS9ThQxyQrXiCsxMaXdcWGOo/gCmJy6zJ80OaC3ICQzppdtMrrok1SCYs2
- 1vPmMnmbRR0rLSfTX+16LiZt3WxNDITIGtEYjULJTbp+PG6+Mdq00mJFZA6S/bdYsDJJAwcC
- gui9EAW74j/R+ZRv0ln1TgrWw6Rm6U=
-IronPort-HdrOrdr: A9a23:9tqQW6O3I1ERDcBcTjejsMiBIKoaSvp037By7TEVdfRUGvb2qy
- ncpoV+6faSskdqZJhAo6H6BEDuewK+yXcY2+Qs1NSZLXTbUQmTXeNfBOLZqlWKcREWndQy6U
- 4USchD4arLbGSS4/yX3CCIV/gK+p2/y4aD7N2us0tFfEVFQJsl1jxeICW8OSRNNXZ77NECZf
- 2hD4J81lydUGVSY8SgDHwMX+zOvMTRkpjrewQLCnccmXGzZB2TmcfHLyQ=
-X-Talos-CUID: 9a23:FMK4PGyOOQxYopXpLCnUBgVFEOQJXmyM7kzVIkuAU0VQcZauFHSPrfY=
-X-Talos-MUID: =?us-ascii?q?9a23=3AzMAKFw96bZxEDlk81xz5s+uQf+tD56i3DGYVqps?=
- =?us-ascii?q?luOOgF3JeKy3CniviFw=3D=3D?=
-X-IronPort-AV: E=Sophos;i="6.13,329,1732575600"; 
-   d="scan'208";a="114960316"
-From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
-To: Rodolfo Giometti <giometti@enneenne.com>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] pps: fix poll support
-Thread-Topic: [PATCH] pps: fix poll support
-Thread-Index: AduMEuWWjZq5gVT8TFeQQ5VVonTADA==
-Date: Mon, 3 Mar 2025 08:05:16 +0000
-Message-ID: <1685f34c60384aadab4f87ffb3303755@diehl.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-disclaimerprocessed: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1740992944; c=relaxed/simple;
+	bh=ZRrV6YVukHwqMpA7xuFqqMELfGYmOq7MQoJMG5pfdZ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tMaZspEGNP1X1gwzYPpJPnT1+np3o1E4/Hv1FzWbNgMvq9CZMofXVeOWjqbQxYXsiuZe4Pa81rZ+2feXZr51WVmmgMwmPFLrECG9cDETZTUudQMk/AhQQfu8NQSRN2/xextTK0kNwfyG3if1w0ORuOnt7t4cco6jYFWzLM+X27Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=L3nS6aHS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 522MmU91029520;
+	Mon, 3 Mar 2025 09:08:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=1imeeoL46u9Hm/RGGWve8ZtZEslUgdzzc5Q
+	ogPrqr+c=; b=L3nS6aHSaTL3v/MiZBQNDavAS2N8rx5TXjsVIS7nbMYAVjtcx4s
+	yiXvFmOLJUMIulLlRvQh0Z+5ypxdEMOEFf/8l/6v9oJmXpG/rUWN+qgar/DdsbZn
+	i/dgczwB9Ijj+gsdcmq1A7zL0DrzZf6b1JRZ4PaJRVEbvGpIJHSZUfF1b08SQOrj
+	My72yn2xRww/nJwpYjNEc8cY65YXMhgQKKyDJLM4hAEtaFT3nq/GMEEeU/aROfR2
+	raXk5zXz33RR3ejps9jtHhPzKjQ3I8nYrUxrUD3FyS/kPOQwydiXiXY/A9/663SW
+	wwYOpexv16NQ4VkNw19+HkG22JzxaltE6ag==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453tm5mc71-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Mar 2025 09:08:58 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 52391opR010699;
+	Mon, 3 Mar 2025 09:08:55 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 453uakvnwy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Mar 2025 09:08:54 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52395vJk014646;
+	Mon, 3 Mar 2025 09:08:54 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-schowdhu-hyd.qualcomm.com [10.213.97.56])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 52398seY017511
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Mar 2025 09:08:54 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 2365959)
+	id C9EC759C; Mon,  3 Mar 2025 14:38:53 +0530 (+0530)
+From: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable <stable@vger.kernel.org>,
+        Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+Subject: [PATCH v1] remoteproc: Add device awake calls in rproc boot and shutdown path
+Date: Mon,  3 Mar 2025 14:38:52 +0530
+Message-Id: <20250303090852.301720-1-quic_schowdhu@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-GBS-PROC: JH31JkgOAVpzNaKNEwNMTZD10pQpBCF/FwmdsWj+MxeMaScRc3cd0m42Vjc9X9Nt
-X-GBS-PROCJOB: V0DzXfKTxAGyax/Zn/Lb7c/WcXd6SeP58GoaHo6Kh3wB/dxpQyMKb+Zx2kQ3+2Wq
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6FUX2QfO2D3oIp_7k9lYsn5K-DoOLYHJ
+X-Proofpoint-GUID: 6FUX2QfO2D3oIp_7k9lYsn5K-DoOLYHJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-03_03,2025-03-03_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
+ priorityscore=1501 adultscore=0 clxscore=1011 bulkscore=0 mlxscore=0
+ phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503030069
 
-W0JVR10NCkEgdXNlciBzcGFjZSBwcm9ncmFtIHRoYXQgY2FsbHMgc2VsZWN0L3BvbGwgZ2V0IGFs
-d2F5cyBhbiBpbW1lZGlhdGUgZGF0YQ0KcmVhZHktdG8tcmVhZCByZXNwb25zZS4gQXMgYSByZXN1
-bHQgdGhlIGludGVuZGVkIHVzZSB0byB3YWl0IHVudGlsIG5leHQNCmRhdGEgYmVjb21lcyByZWFk
-eSBkb2VzIG5vdCB3b3JrLg0KDQpVc2VyIHNwYWNlIHNuaXBwZXQ6DQoNCiAgICBzdHJ1Y3QgcG9s
-bGZkIHBvbGxmZCA9IHsNCiAgICAgIC5mZCA9IG9wZW4oIi9kZXYvcHBzMCIsIE9fUkRPTkxZKSwN
-CiAgICAgIC5ldmVudHMgPSBQT0xMSU58UE9MTEVSUiwNCiAgICAgIC5yZXZlbnRzID0gMCB9Ow0K
-ICAgIHdoaWxlKDEpIHsNCiAgICAgIHBvbGwoJnBvbGxmZCwgMSwgMjAwMC8qbXMqLyk7IC8vIHJl
-dHVybnMgaW1tZWRpYXRlLCBidXQgc2hvdWxkIHdhaXQNCiAgICAgIGlmKHJldmVudHMgJiBFUE9M
-TElOKSB7IC8vIGFsd2F5cyB0cnVlDQogICAgICAgIHN0cnVjdCBwcHNfZmRhdGEgZmRhdGE7DQog
-ICAgICAgIG1lbXNldCgmZmRhdGEsIDAsIHNpemVvZihtZW1kYXRhKSk7DQogICAgICAgIGlvY3Rs
-KFBQU19GRVRDSCwgJmZkYXRhKTsgLy8gY3VycmVudGx5IGZldGNoZXMgZGF0YSBhdCBtYXggc3Bl
-ZWQNCiAgICAgIH0NCiAgICB9DQoNCltDQVVTRV0NCnBwc19jZGV2X3BvbGwoKSByZXR1cm5zIHVu
-Y29uZGl0aW9uYWxseSBFUE9MTElOLg0KDQpbRklYXQ0KUmVtZW1iZXIgdGhlIGxhc3QgZmV0Y2gg
-ZXZlbnQgY291bnRlciBhbmQgY29tcGFyZSB0aGlzIHZhbHVlIGluDQpwcHNfY2Rldl9wb2xsKCkg
-d2l0aCBtb3N0IHJlY2VudCBldmVudCBjb3VudGVyDQphbmQgcmV0dXJuIDAgaWYgdGhleSBhcmUg
-ZXF1YWwuDQoNClNpZ25lZC1vZmYtYnk6IERlbmlzIE9TVEVSTEFORC1IRUlNIDxkZW5pcy5vc3Rl
-cmxhbmRAZGllaGwuY29tPg0KQ28tZGV2ZWxvcGVkLWJ5OiBSb2RvbGZvIEdpb21ldHRpIDxnaW9t
-ZXR0aUBlbm5lZW5uZS5jb20+DQpTaWduZWQtb2ZmLWJ5OiBSb2RvbGZvIEdpb21ldHRpIDxnaW9t
-ZXR0aUBlbm5lZW5uZS5jb20+DQpGaXhlczogZWFlOWQyYmEwY2ZjICgiTGludXhQUFM6IGNvcmUg
-c3VwcG9ydCIpDQpDQzogc3RhYmxlQHZnZXIua2VybmVsLm9yZyAjIDUuNCsNCi0tLQ0KIGRyaXZl
-cnMvcHBzL3Bwcy5jICAgICAgICAgIHwgMTEgKysrKysrKysrLS0NCiBpbmNsdWRlL2xpbnV4L3Bw
-c19rZXJuZWwuaCB8ICAxICsNCiAyIGZpbGVzIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDIg
-ZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL3Bwcy9wcHMuYyBiL2RyaXZlcnMv
-cHBzL3Bwcy5jDQppbmRleCA2YTAyMjQ1ZWEzNWYuLjk0NjMyMzJhZjhkMiAxMDA2NDQNCi0tLSBh
-L2RyaXZlcnMvcHBzL3Bwcy5jDQorKysgYi9kcml2ZXJzL3Bwcy9wcHMuYw0KQEAgLTQxLDYgKzQx
-LDkgQEAgc3RhdGljIF9fcG9sbF90IHBwc19jZGV2X3BvbGwoc3RydWN0IGZpbGUgKmZpbGUsIHBv
-bGxfdGFibGUgKndhaXQpDQoNCiBwb2xsX3dhaXQoZmlsZSwgJnBwcy0+cXVldWUsIHdhaXQpOw0K
-DQoraWYgKHBwcy0+bGFzdF9mZXRjaGVkX2V2ID09IHBwcy0+bGFzdF9ldikNCityZXR1cm4gMDsN
-CisNCiByZXR1cm4gRVBPTExJTiB8IEVQT0xMUkROT1JNOw0KIH0NCg0KQEAgLTE4Niw5ICsxODks
-MTEgQEAgc3RhdGljIGxvbmcgcHBzX2NkZXZfaW9jdGwoc3RydWN0IGZpbGUgKmZpbGUsDQogaWYg
-KGVycikNCiByZXR1cm4gZXJyOw0KDQotLyogUmV0dXJuIHRoZSBmZXRjaGVkIHRpbWVzdGFtcCAq
-Lw0KKy8qIFJldHVybiB0aGUgZmV0Y2hlZCB0aW1lc3RhbXAgYW5kIHNhdmUgbGFzdCBmZXRjaGVk
-IGV2ZW50ICAqLw0KIHNwaW5fbG9ja19pcnEoJnBwcy0+bG9jayk7DQoNCitwcHMtPmxhc3RfZmV0
-Y2hlZF9ldiA9IHBwcy0+bGFzdF9ldjsNCisNCiBmZGF0YS5pbmZvLmFzc2VydF9zZXF1ZW5jZSA9
-IHBwcy0+YXNzZXJ0X3NlcXVlbmNlOw0KIGZkYXRhLmluZm8uY2xlYXJfc2VxdWVuY2UgPSBwcHMt
-PmNsZWFyX3NlcXVlbmNlOw0KIGZkYXRhLmluZm8uYXNzZXJ0X3R1ID0gcHBzLT5hc3NlcnRfdHU7
-DQpAQCAtMjcyLDkgKzI3NywxMSBAQCBzdGF0aWMgbG9uZyBwcHNfY2Rldl9jb21wYXRfaW9jdGwo
-c3RydWN0IGZpbGUgKmZpbGUsDQogaWYgKGVycikNCiByZXR1cm4gZXJyOw0KDQotLyogUmV0dXJu
-IHRoZSBmZXRjaGVkIHRpbWVzdGFtcCAqLw0KKy8qIFJldHVybiB0aGUgZmV0Y2hlZCB0aW1lc3Rh
-bXAgYW5kIHNhdmUgbGFzdCBmZXRjaGVkIGV2ZW50ICAqLw0KIHNwaW5fbG9ja19pcnEoJnBwcy0+
-bG9jayk7DQoNCitwcHMtPmxhc3RfZmV0Y2hlZF9ldiA9IHBwcy0+bGFzdF9ldjsNCisNCiBjb21w
-YXQuaW5mby5hc3NlcnRfc2VxdWVuY2UgPSBwcHMtPmFzc2VydF9zZXF1ZW5jZTsNCiBjb21wYXQu
-aW5mby5jbGVhcl9zZXF1ZW5jZSA9IHBwcy0+Y2xlYXJfc2VxdWVuY2U7DQogY29tcGF0LmluZm8u
-Y3VycmVudF9tb2RlID0gcHBzLT5jdXJyZW50X21vZGU7DQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9s
-aW51eC9wcHNfa2VybmVsLmggYi9pbmNsdWRlL2xpbnV4L3Bwc19rZXJuZWwuaA0KaW5kZXggYzdh
-YmNlMjhlZDI5Li5hYWIwYWViYjUyOWUgMTAwNjQ0DQotLS0gYS9pbmNsdWRlL2xpbnV4L3Bwc19r
-ZXJuZWwuaA0KKysrIGIvaW5jbHVkZS9saW51eC9wcHNfa2VybmVsLmgNCkBAIC01Miw2ICs1Miw3
-IEBAIHN0cnVjdCBwcHNfZGV2aWNlIHsNCiBpbnQgY3VycmVudF9tb2RlOy8qIFBQUyBtb2RlIGF0
-IGV2ZW50IHRpbWUgKi8NCg0KIHVuc2lnbmVkIGludCBsYXN0X2V2Oy8qIGxhc3QgUFBTIGV2ZW50
-IGlkICovDQordW5zaWduZWQgaW50IGxhc3RfZmV0Y2hlZF9ldjsvKiBsYXN0IGZldGNoZWQgUFBT
-IGV2ZW50IGlkICovDQogd2FpdF9xdWV1ZV9oZWFkX3QgcXVldWU7LyogUFBTIGV2ZW50IHF1ZXVl
-ICovDQoNCiB1bnNpZ25lZCBpbnQgaWQ7LyogUFBTIHNvdXJjZSB1bmlxdWUgSUQgKi8NCi0tDQoy
-LjQ3LjINCkRpZWhsIE1ldGVyaW5nIEdtYkgsIERvbmF1c3RyYXNzZSAxMjAsIDkwNDUxIE51ZXJu
-YmVyZw0KU2l0eiBkZXIgR2VzZWxsc2NoYWZ0OiBBbnNiYWNoLCBSZWdpc3RlcmdlcmljaHQ6IEFu
-c2JhY2ggSFJCIDY5DQpHZXNjaGFlZnRzZnVlaHJlcjogRHIuIENocmlzdG9mIEJvc2JhY2ggKFNw
-cmVjaGVyKSwgRGlwbC4tRG9sbS4gQW5uZXR0ZSBHZXV0aGVyLCBEaXBsLi1LZm0uIFJlaW5lciBF
-ZGVsLCBKZWFuLUNsYXVkZSBMdXR0cmluZ2VyDQoNCkJpdHRlIGRlbmtlbiBTaWUgYW4gZGllIFVt
-d2VsdCwgYmV2b3IgU2llIGRpZXNlIEUtTWFpbCBkcnVja2VuLiBEaWVzZSBFLU1haWwga2FubiB2
-ZXJ0cmF1bGljaGUgSW5mb3JtYXRpb25lbiBlbnRoYWx0ZW4uIFNvbGx0ZW4gZGllIGluIGRpZXNl
-ciBFLU1haWwgZW50aGFsdGVuZW4gSW5mb3JtYXRpb25lbiBuaWNodCBmw7xyIFNpZSBiZXN0aW1t
-dCBzZWluLCBpbmZvcm1pZXJlbiBTaWUgYml0dGUgdW52ZXJ6dWVnbGljaCBkZW4gQWJzZW5kZXIg
-cGVyIEUtTWFpbCB1bmQgbG9lc2NoZW4gU2llIGRpZXNlIEUtTWFpbCBpbiBJaHJlbSBTeXN0ZW0u
-IEplZGUgdW5iZXJlY2h0aWd0ZSBGb3JtIGRlciBSZXByb2R1a3Rpb24sIEJla2FubnRnYWJlLCBB
-ZW5kZXJ1bmcsIFZlcnRlaWx1bmcgdW5kL29kZXIgUHVibGlrYXRpb24gZGllc2VyIEUtTWFpbCBp
-c3Qgc3RyZW5nc3RlbnMgdW50ZXJzYWd0LiBJbmZvcm1hdGlvbmVuIHp1bSBEYXRlbnNjaHV0eiBm
-aW5kZW4gU2llIGF1ZiB1bnNlcmVyIEhvbWVwYWdlPGh0dHBzOi8vd3d3LmRpZWhsLmNvbS9tZXRl
-cmluZy9kZS9pbXByZXNzdW0tdW5kLXJlY2h0bGljaGUtaGlud2Vpc2UvPi4NCg0KQmVmb3JlIHBy
-aW50aW5nLCB0aGluayBhYm91dCBlbnZpcm9ubWVudGFsIHJlc3BvbnNpYmlsaXR5LlRoaXMgbWVz
-c2FnZSBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24uIElmIHlvdSBhcmUgbm90
-IGF1dGhvcml6ZWQgdG8gcmVjZWl2ZSB0aGlzIGluZm9ybWF0aW9uIHBsZWFzZSBhZHZpc2UgdGhl
-IHNlbmRlciBpbW1lZGlhdGVseSBieSByZXBseSBlLW1haWwgYW5kIGRlbGV0ZSB0aGlzIG1lc3Nh
-Z2Ugd2l0aG91dCBtYWtpbmcgYW55IGNvcGllcy4gQW55IGZvcm0gb2YgdW5hdXRob3JpemVkIHVz
-ZSwgcHVibGljYXRpb24sIHJlcHJvZHVjdGlvbiwgY29weWluZyBvciBkaXNjbG9zdXJlIG9mIHRo
-ZSBlLW1haWwgaXMgbm90IHBlcm1pdHRlZC4gSW5mb3JtYXRpb24gYWJvdXQgZGF0YSBwcm90ZWN0
-aW9uIGNhbiBiZSBmb3VuZCBvbiBvdXIgaG9tZXBhZ2U8aHR0cHM6Ly93d3cuZGllaGwuY29tL21l
-dGVyaW5nL2VuL2RhdGEtcHJvdGVjdGlvbi8+Lg0K
+Add device awake calls in case of rproc boot and rproc shutdown path.
+Currently, device awake call is only present in the recovery path
+of remoteproc. If a user stops and starts rproc by using the sysfs
+interface, then on pm suspension the firmware loading fails. Keep the
+device awake in such a case just like it is done for the recovery path.
+
+Signed-off-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+---
+ drivers/remoteproc/remoteproc_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index c2cf0d277729..908a7b8f6c7e 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1916,7 +1916,8 @@ int rproc_boot(struct rproc *rproc)
+ 		pr_err("invalid rproc handle\n");
+ 		return -EINVAL;
+ 	}
+-
++	
++	pm_stay_awake(rproc->dev.parent);
+ 	dev = &rproc->dev;
+ 
+ 	ret = mutex_lock_interruptible(&rproc->lock);
+@@ -1961,6 +1962,7 @@ int rproc_boot(struct rproc *rproc)
+ 		atomic_dec(&rproc->power);
+ unlock_mutex:
+ 	mutex_unlock(&rproc->lock);
++	pm_relax(rproc->dev.parent);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(rproc_boot);
+@@ -1991,6 +1993,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	struct device *dev = &rproc->dev;
+ 	int ret = 0;
+ 
++	pm_stay_awake(rproc->dev.parent);
+ 	ret = mutex_lock_interruptible(&rproc->lock);
+ 	if (ret) {
+ 		dev_err(dev, "can't lock rproc %s: %d\n", rproc->name, ret);
+@@ -2027,6 +2030,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	rproc->table_ptr = NULL;
+ out:
+ 	mutex_unlock(&rproc->lock);
++	pm_relax(rproc->dev.parent);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(rproc_shutdown);
+-- 
+2.34.1
+
 
