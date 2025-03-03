@@ -1,150 +1,145 @@
-Return-Path: <stable+bounces-120075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10703A4C5C1
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:53:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20BCA4C5F8
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB8393A4E32
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 15:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CB63A7CEB
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7FB214A79;
-	Mon,  3 Mar 2025 15:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EAA21516B;
+	Mon,  3 Mar 2025 16:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UbjRlL3Q"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="EuMMZM/x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084341F4166;
-	Mon,  3 Mar 2025 15:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A147080D;
+	Mon,  3 Mar 2025 16:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741017111; cv=none; b=e7GLtbnirjPqyDtaQP/VEqi221ZqHpSMKFUvWu8BgXCG5FmL6FwkyrKYFeTwN8RhYLx+ETio3HZtamjymZ3xQSvPa6qrABPkeYqAkus0mxgsEjgquF7KJ5/Fllep0U6Gfl5Nix8lGzLXqHrUW+1U7W+ImQQjpS8f9NPdyIuzuH0=
+	t=1741017738; cv=none; b=rVo15JkM4wZZXjl5UQtAM5ZhOyTjWFvL5hQI2o0SiupIz4mqySWPhKa6vLIpKR/vWBsO+WKaS4GyQg9R7F6cfcMn/mFc7+rxndiM5OksUZMT69tAeyqdvHmDqMS2M1LQUhbARyYauBHG7Uoh6jgxRvUCiSi/ZhaKZyNbRdgnYyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741017111; c=relaxed/simple;
-	bh=DwMUbenydy2FQEW7DlKyiMhaS8TJZxKKH1OKptuTw9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XxsDupVr3llpSlSWqwNJTOIhlIzD9mOY0Ekfvny+oEBrM9pyFhm6n0Uq573Zl7i76sSKM7Bri1jXBbjrpRz6W7oaoHkUqqLIWKh2tDIQ98BsGtfENMWddicojTryYcAbE63I5NTJeo6OfnFFMXj6z2PFf89FqDOPcm8Ob9caayI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UbjRlL3Q; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so29484695e9.3;
-        Mon, 03 Mar 2025 07:51:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741017108; x=1741621908; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dtryQxotpz8U5ArYfvfuETSf+fKZsakZSrz5Z30r0AU=;
-        b=UbjRlL3QVswzHVsnp6SbDg+IzEzsgrxGYkDcGqghI8PSKDHUWzjyJHIdfyMkfgzGTx
-         Rh7raibQcFIC+9gVeK/DH4GQxk55csBYNmoKGvdc5a8rWsY4DTec7U/ivH0JA06avoc1
-         BuV/AmJI7tvSBYGKSgOFoSpPEGtkNgJuqZ5+zITXCvpDQ2nGnUOBU3nuopv3gF0Obm0d
-         jMkeFbODmLbCz2KQC9I7gI82NSuAA3LS+1sEr8wVie8goB+s0Q40mqoQgU7G6eTdBcb3
-         KuCbaKhVTzT/rcj6oZYDHlTe4OD7G2gNGc2EJY8QL1nfr9smky3MNxpOQcgIswVOO0Fi
-         RLqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741017108; x=1741621908;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dtryQxotpz8U5ArYfvfuETSf+fKZsakZSrz5Z30r0AU=;
-        b=Aj23z+Lqo7LUUkFaTDHnJdNZ36irOSCxp1i1OaLEgzNi4QHazQF2Ql5hc5mXCmlaRX
-         onBRllEFpBRxv7NpFKBp6v1ToKisCa47rvkenMKprMJmpDbDeYRCn7arO7hRIPdz265f
-         8cXC4/7Nb+WMsLPWx08K0j0yoFSpdTwN5mMJFmJOYi/14Yv/C40FZkZP/LLnvokkNkZ6
-         4jdYlpgAcWebbb/BugZ1mNZcpHIWZGoxzVxjNwf3/rWRm9Jz4uOGDJnQ6/Jb3Y34O/QD
-         yYpIwYmOSvbazrZtm/N7kVa7kSuWNrycEpPBRKPgDtavPmLscVJi9hpJ23llNMu6V8ZK
-         23VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUV90F3+jWXtW4oRvHY7Z5bpcJUJORZ14wOzJJ1wL2D6ufUR8+AqsLA3/cYIdxFt2f2r4QBf5Gz@vger.kernel.org, AJvYcCUarvCrcV+wPotI5Ti6Nx+hiCjNEYWhMNASZ1jR6oqADoeGqdr0hEE6j6lMKjqzxtTuC/mAKjLjEPeJ9Cs=@vger.kernel.org, AJvYcCV2nK4V38nTl/5SozuPwh79izFPl+c6rD2/uJ2Ke/ydBbcbbs3Y+u35jftUaeZB7MeRjM35E81X1+uDUlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNYDLOBSGc3nfU2tjmwO4E4Nwwgw4niV35Um/vn/eRBl8jNwLQ
-	9Ulg2pFPvtivVWYWOJzvFlH7akp9LFpEXf4LoupMO5LGrs0BQl+M
-X-Gm-Gg: ASbGncvo8DYYQ8B9JpLarxFwgVN8MmgW4Hf3cmsRDXAjzokTiPDGjIDvPUv5cLw/1Bu
-	C3fB3bd5V0RvbAsOHCtG9soIAI59wN06irVQk1id4pZYS8jl37Vj1BzNYIINSpjRjTihCSiQ0OG
-	EYsqu1GKGUR1gP3Cr53JBWBextlESkWiWRYt/i/MSqBcqYEPk68NMC2LgDrBQ4zVApGwVp33ckN
-	RPt5+XTLfAeT5X5D1rtupOpwff9+0S8SnjzJLHvn8A5eZEDoOFjAwKs4f9MB0zycrXbn572+yOp
-	0KVOdcWXy6yl8wMWtNKkDY0EuhqzkBimZvRwxHk7IVD+CC8Pd2wv0IFjJpkS5ckSZbKPqZTkE2T
-	GM0jpZdjm/fauzW0qNDRRA3/15VlzMH8=
-X-Google-Smtp-Source: AGHT+IGVA2kkwtzvyc7wmuOevfFku3iq8bCghvi0ovoAVjUJkQ+OukYLz0HXfZag+lj/EmUrcnnfBg==
-X-Received: by 2002:a5d:5c84:0:b0:390:f116:d23e with SMTP id ffacd0b85a97d-390f116d675mr6558402f8f.19.1741017108217;
-        Mon, 03 Mar 2025 07:51:48 -0800 (PST)
-Received: from orome (p200300e41f187700f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f18:7700:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4847fe5sm14941073f8f.73.2025.03.03.07.51.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 07:51:47 -0800 (PST)
-Date: Mon, 3 Mar 2025 16:51:45 +0100
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: jckuo@nvidia.com, vkoul@kernel.org, kishon@kernel.org, 
-	jonathanh@nvidia.com, linux-phy@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 RESEND] phy: Fix error handling in tegra_xusb_port_init
-Message-ID: <lieqwndlwojiwh7ipqbhf45iv37k2e52yl5jsmpe4wifki3tby@qndkynn5qogf>
-References: <20250303072739.3874987-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1741017738; c=relaxed/simple;
+	bh=PG4GnlV8k/FN7kKkLP0CXN8xUJ6bTDOH+YyQOqYlWEs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WAqGLn8QqwfXrPklWZbgnJNAQNalNedW512l5R79j3JiSTisosJQe80qLkGzxMDHO9k6ht+pWDjX5PogphKru132p2VKUbphl33Hj9dlkKwvUehAcMNNfKUMp1cmGLc0+32E70xhJKOaW0drjgNORBK7NJzhO4K83axkjfLV6Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=EuMMZM/x; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from mail.ideasonboard.com (unknown [IPv6:2401:4900:1c69:8872:6fe4:6987:313:70cc])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B57DB1189;
+	Mon,  3 Mar 2025 17:00:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1741017643;
+	bh=PG4GnlV8k/FN7kKkLP0CXN8xUJ6bTDOH+YyQOqYlWEs=;
+	h=From:Subject:Date:To:Cc:From;
+	b=EuMMZM/xINI9Ms12ccxFyvICix6VUDcty3ZQQWVB+y9go8iAohKCEYMt/A3lp7xs9
+	 qCLayHfh5D9FeGF7HymizYE2atuNz8y48K7l64RJhTtu5ynDsmeqYixzFs673Leh+b
+	 3IQL7O2hWmitqH5Gdm3MxpCB4rpSVzxBaCnYIU/g=
+From: Jai Luthra <jai.luthra@ideasonboard.com>
+Subject: [PATCH v3 00/19] media: i2c: ds90ub9xx: Error handling, UB9702
+ improvements
+Date: Mon, 03 Mar 2025 21:32:03 +0530
+Message-Id: <20250303-b4-ub9xx-err-handling-v3-0-7d178796a2b9@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dogd6n2uv5zyr2bv"
-Content-Disposition: inline
-In-Reply-To: <20250303072739.3874987-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHvSxWcC/zWNwQ6CMBBEf4X07JpabKCe/A/DodAFNpGWbLHBE
+ P7divH4JjNvNhGRCaO4FZtgTBQp+AzlqRDdaP2AQC6zUFJpWcoS2iu8WrOugMyQG+5JfgBd2dp
+ oWaPVKPJ2ZuxpPbyPJvNIcQn8Pm6S+qY/40X9dTTNHBJO6JcISYGEvpKV7oxBq+SdHNoYfBssu
+ 3MXJtHs+/4BxouLob4AAAA=
+X-Change-ID: 20250303-b4-ub9xx-err-handling-57a89508ea5e
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Devarsh Thakkar <devarsht@ti.com>, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Jai Luthra <jai.luthra@ideasonboard.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2585;
+ i=jai.luthra@ideasonboard.com; h=from:subject:message-id;
+ bh=PG4GnlV8k/FN7kKkLP0CXN8xUJ6bTDOH+YyQOqYlWEs=;
+ b=owEBbQKS/ZANAwAIAUPekfkkmnFFAcsmYgBnxdJ+6wY8b2WhgGU+RJKua8ijkB5l1rrzizZhD
+ e6b/+/scHOJAjMEAAEIAB0WIQRN4NgY5dV16NRar8VD3pH5JJpxRQUCZ8XSfgAKCRBD3pH5JJpx
+ RRYgEACvPbYD9YPKWOvA6z8UVIQw6dvvYjq6hy6ZHxYoZjVE4eGXUzfLdWpQ9iI6uR030LoPQDJ
+ RSOIX9uTvnJJRmoEDY1cltcImONfdEIb7yXb9FoaJnmm1x5StwO4yxSgpKt+hsIXgqjifnuvDNe
+ HpB9AAqzhTh/CDmr19Fxsv2nco2YUsktfHwQZZvT6WmKCw5zX1hKYs/nCCinWhZiKqzdnFL57mJ
+ rbFg0Ac2rmnS5Ju263esaCNggZvXJrIKXfbLWw3K1JBKfpYP0cHgI7+K1MDzGHjQBtk+AO/QKcs
+ yQSTNgVnvj+C7qRA4MHcBvTWBHBIIzcmO9fW/jsJsN9tFGsf4zwEy7kXMZbKtv4WuxGrzy69uWm
+ 2WMdkK95Uo5LD1tmdOl06Do+Mqdq7xLIHUHs6fN6TP4NR0MJqOCF6Zx5iyF9Iv8bE2+XXUjYUMn
+ oUsu9yhieaPXcwvHhVoXN3Uxuaz7NuFHpU6qqybJNcaXWPqaAe50s9HvOPMKLLK1M/uchVc8Cog
+ J3xJYdz7ORp3UQkPwUDxZ46A+o5ePGO2MhlGy4fZKE8GySbrPFnDA02XZo8KNqIPI8BvgjHlQIN
+ qKJfB0eumV7yIM7tbAMPj9ZlVYf3nwTWEsqM03LxxlL2+xE7KyyPl30Kz3Xzpmdbd3ItUEwhacT
+ Ov/5xbQjzW1ABlA==
+X-Developer-Key: i=jai.luthra@ideasonboard.com; a=openpgp;
+ fpr=4DE0D818E5D575E8D45AAFC543DE91F9249A7145
 
+Hi,
 
---dogd6n2uv5zyr2bv
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 RESEND] phy: Fix error handling in tegra_xusb_port_init
-MIME-Version: 1.0
+This series has two main parts: 1) add error handling all around, and 2)
+update the drivers according to latest (mostly non-public) information
+from TI.
 
-On Mon, Mar 03, 2025 at 03:27:39PM +0800, Ma Ke wrote:
-> If device_add() fails, do not use device_unregister() for error
-> handling. device_unregister() consists two functions: device_del() and
-> put_device(). device_unregister() should only be called after
-> device_add() succeeded because device_del() undoes what device_add()
-> does if successful. Change device_unregister() to put_device() call
-> before returning from the function.
->=20
-> As comment of device_add() says, 'if device_add() succeeds, you should
-> call device_del() when you want to get rid of it. If device_add() has
-> not succeeded, use only put_device() to drop the reference count'.
->=20
-> Found by code review.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - modified the bug description as suggestions.
-> ---
->  drivers/phy/tegra/xusb.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+---
+Changes in v3:
+- Now that this series is closer to being merged, squash "Remove old
+  ub9702 RX port init code (SQUASH)" and "Update UB9702 init sequences"
+  as they were only split to ease review.
+- Drop SSCG bindings and driver changes.
+- Fix Sakari's minor review comments on "Speed-up I2C watchdog timer".
+- Link to v2: https://lore.kernel.org/r/20250124-ub9xx-improvements-v2-0-f7075c99ea20@ideasonboard.com
 
-Acked-by: Thierry Reding <treding@nvidia.com>
+---
+Jai Luthra (4):
+      media: i2c: ds90ub953: Speed-up I2C watchdog timer
+      media: dt-bindings: ti,ds90ub960: Allow setting serializer address
+      media: i2c: ds90ub960: Configure serializer using back-channel
+      media: i2c: ds90ub9xx: Set serializer temperature ramp
 
---dogd6n2uv5zyr2bv
-Content-Type: application/pgp-signature; name="signature.asc"
+Tomi Valkeinen (15):
+      media: i2c: ds90ub953: Fix error prints
+      media: i2c: ds90ub913: Fix returned fmt from .set_fmt()
+      media: i2c: ds90ub913: Align ub913_read() with other similar functions
+      media: i2c: ds90ub9xx: Add err parameter to read/write funcs
+      media: i2c: ds90ub960: Add error handling to multiple places
+      media: i2c: ds90ub953: Add error handling to ub953_log_status()
+      media: i2c: ds90ub913: Add error handling to ub913_log_status()
+      media: i2c: ds90ub960: Move UB9702 registers to a separate section
+      media: i2c: ds90ub960: Add UB9702 specific registers
+      media: i2c: ds90ub960: Split ub960_init_tx_ports()
+      media: i2c: ds90ub960: Refresh ub960_init_tx_ports_ub9702()
+      media: i2c: ds90ub960: Add RX port iteration support
+      media: i2c: ds90ub960: Move all RX port init code into ub960_init_rx_ports()
+      media: i2c: ds90ub960: Update UB9702 init sequences
+      media: i2c: ds90ub953: Move reg defines to a header file
 
------BEGIN PGP SIGNATURE-----
+ .../bindings/media/i2c/ti,ds90ub953.yaml           |   77 +-
+ .../bindings/media/i2c/ti,ds90ub960.yaml           |   16 +-
+ drivers/media/i2c/ds90ub913.c                      |   82 +-
+ drivers/media/i2c/ds90ub953.c                      |  242 ++-
+ drivers/media/i2c/ds90ub953.h                      |  104 +
+ drivers/media/i2c/ds90ub960.c                      | 2166 +++++++++++++++-----
+ 6 files changed, 1966 insertions(+), 721 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250303-b4-ub9xx-err-handling-57a89508ea5e
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmfF0BEACgkQ3SOs138+
-s6HeIBAAimqmNAdbUICiy7xT16w1yKGIbmD9HklsSfEO8yLwmRf0JsegiRpWqVbx
-nJCXDDAUnzaUXv3u58rwUdhEAXtdX3ENEt1RojEnjxGU2x45FclbR+57gE5jw67L
-01cjFcaaZT6mQK8Rwq38m2s287W+da7gEdcWlZe1PK63wL1bgqvEygtMMbZtS4yw
-IVXoDPCMv+IKLuW3EfrnUeUT+7lBrL73HuFhUlKRv3Nu5Kj6V7esx8K4bv9meaUl
-+q/K84lkENYo5xEYnoSWFgwO+MZcF+MsuCIZsXWqBvXuFHtYJB1ce8siBrpq+Ggg
-ZeyP1loDD/4hyGTfwoX3XkiLdBXRX1yNXs1NK3MJjKg/SMjQ79QxVdMzWJ7vRIO9
-08t74Vt4CguKGHCeLgdwgHxSzgOhLSCKhjXBa4cphmDBlYGvARYd2X/WPjgbZyd5
-dSLsOrMvCtnEfW9gtKb0xEWuLX0eVBiKnYI/3ga8BmE2vQ8CbOyrczs5EwmVoVWf
-MyDtqVnJGxDEN+tIOOdN0FzY65If7kDCShc7GHln+6QLXHZlr1q7vmfomrhWCLXG
-2Gn2sE8gvnkshPo5LUFBrLVzIX6OoCnHKMgZXch4Oy0hm/8nncKDAiQZWJgnbq3i
-lfJsJGYOD4Htj1Aco035O+S95fnEwUyZwWOlTsHi7l/YIzpGkNQ=
-=CVRC
------END PGP SIGNATURE-----
+Best regards,
+-- 
+Jai Luthra <jai.luthra@ideasonboard.com>
 
---dogd6n2uv5zyr2bv--
 
