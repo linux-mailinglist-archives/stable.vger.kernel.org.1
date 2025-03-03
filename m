@@ -1,204 +1,145 @@
-Return-Path: <stable+bounces-120049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792BAA4BCDD
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 11:49:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4135DA4BEFF
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 12:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A8BC1695EE
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 10:49:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F15C77A1A52
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 11:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FF71F0E5A;
-	Mon,  3 Mar 2025 10:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5FC20102F;
+	Mon,  3 Mar 2025 11:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="EABLV7M0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImUYuPRt"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7D61E376C;
-	Mon,  3 Mar 2025 10:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCF7201004;
+	Mon,  3 Mar 2025 11:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740998970; cv=none; b=gfg4ACCnLc2S+wfAof8ZZ3C7IrGfdyJjNEL0QcViJbZQ7ntmKMRCM2ZIhvAzd5HZa1a9luwCuZmldWpTyjlcBfJajcNGaLsQMzrjhPBwCovurFIdKNttkC+cF/9JPPjLs59ainUDbkprMMZswPemKGtSGAThRDwGGW4AJFrjoAw=
+	t=1741002018; cv=none; b=CS38JBP7iTok/wKBPASCGHEEAEhCFJmtVJnyasl3mpPITRKZ9Gbmw3ndrQHxMwsCrBKIV8DnKHrYCL06tU8Rh3R4XQNeWHyicVkGSAHS6mo6NzzbYhczq1zszOF4FezO9icdW1e40ZkBMMrn6iiLvdmgvGyT0S8TFqLeDLsWNfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740998970; c=relaxed/simple;
-	bh=FxTyFdldQ/Rg6PXUyOvwskxzWGQOyp4Jrbq8b9VUONU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PEWz2YR6Jr9tYsLewlvdyGUdZaZt9psvGaI6Nevcg9eTuQvj2Sj8fMc5fvKaWs3z7EHmIfIPCd8H3Ouv0PZMVQT/9Zv3HGB23BDDRl/JZeb6sruywcOFhHGO65fGXrqwodPZJRC899hl/kW2HfdGwUr49Ux9ghwDoezFhbMljCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=EABLV7M0; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1740998969; x=1772534969;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FxTyFdldQ/Rg6PXUyOvwskxzWGQOyp4Jrbq8b9VUONU=;
-  b=EABLV7M0S4zxmAJV4JIEzkZhziFIkiS1AI3I9DHLV6z826RyiaGTVMAI
-   jMwtKPnN0h/xn6jJOKwMQ6BfWB3+oKJuaXVXNVBRQW7EV6lyeH2xREb3G
-   fF/B15RHqRIE9lQEEBZo8rSpiBJCBEicmEVyaL8bG0lXlqJc9O+JEyKNO
-   GJOjlsgmcxiJfvxVkX0n02Gs4SyaJhoDpG9QCZ/Ccg5DSVsVBKP+g97pc
-   D1Z4/T1rplsy1NPgIpNV34XIfBfo6IomolOroP1kuKhVRlvObpUrsOL8y
-   otHKuaK4vjfRn5ouRZ3auUshbt17b1cG24Lg602R7xOmcjEJtRnlOI1kK
-   Q==;
-X-CSE-ConnectionGUID: BikYLFOYSh2j96/3XZqldw==
-X-CSE-MsgGUID: eIVd+EFRTYWJnQbd7HU8Qg==
-X-IronPort-AV: E=Sophos;i="6.13,329,1732604400"; 
-   d="scan'208";a="38768207"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Mar 2025 03:49:28 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 3 Mar 2025 03:48:32 -0700
-Received: from wendy.microchip.com (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 3 Mar 2025 03:48:31 -0700
-From: Conor Dooley <conor.dooley@microchip.com>
-To: <linux-spi@vger.kernel.org>
-CC: Conor Dooley <conor.dooley@microchip.com>, <stable@vger.kernel.org>,
-	"Daire McNamara" <daire.mcnamara@microchip.com>, Mark Brown
-	<broonie@kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] spi: microchip-core: prevent RX overflows when transmit size > FIFO size
-Date: Mon, 3 Mar 2025 10:47:40 +0000
-Message-ID: <20250303-veal-snooper-712c1dfad336@wendy>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1741002018; c=relaxed/simple;
+	bh=8N2x1prHCqsw9SKleqTPzrElYsqqBHYR09odxC9PM4I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ah7I0AWv/covMZjcN9q+YnRVpfwEq8MY/giq08npSTeVKCzbeeyjmZqwWlv41W3Xg0FyBA0Mb3yg0gJrRg8q4P+CqUyjdepPGuNm2pxplgGajCW8ph2f1PxNaO8F+Kizw4nCj235CSFRCyzma8uM93XJ4+bvfFD7S7CDfr34fwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImUYuPRt; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54954fa61c8so2924881e87.1;
+        Mon, 03 Mar 2025 03:40:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741002013; x=1741606813; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lGsNFf+UfdU9W8kSubEW5P15Pc45666u5Nv+Ism+9VE=;
+        b=ImUYuPRte7+/9aUW/pXwvYlZtDxzDtU6Yik9rmYnaaBjPllPKam8VaLhClvvi63jVk
+         h+TCeYiWTcZaaWAUqKuOYBd5tc5QDn6ctvz2yxAUqJ6feFynbPmbExMyYLiERONl/15E
+         ywGdQhgiQ9dqRY8M5nIvL27ucd7poFOtGooW3szXbvQpAeNnHLkzFruehHa/0e1Rzrmj
+         q8CryoRgf896V89yHadqcvAolmlZDeJtBdqssYhB/4tt/HeIcfaOZ6rW/VA5mIvu4wQT
+         b9zkQurmoxWpFMPjlYnKzuEPdjQx6u2jeo6ODDcEMKmDZvQcBCWU2KO4DOn/mLsHO6PR
+         opRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741002013; x=1741606813;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lGsNFf+UfdU9W8kSubEW5P15Pc45666u5Nv+Ism+9VE=;
+        b=kPZq2AoHuaWJLxUggZiZFy7CGdKVj5YD1QkbpimUhToSFsNsdjT+RoKZ2ATrSceaQs
+         2pycTU88nreLXyjsc8oEJ8hBoxQb/+Xqhb1HKn1i/qABE10t54SjUVzMXRag5W5z0Mkp
+         noed8ew/xYimylffQRIFG2K+6nhefpBHwX0Mh/XaXORJiVx4Xt/GgI8vQ0/+4hRAQ0Rz
+         WDE6GdB+++rVQYTdr9YhQKvOr6zPmY8q8P8NGO09H7ePiWmOKBjUKkmc2ht5YJtQ5WXj
+         kzgIgPmhiu63qMzFE3oovjAouz6b2m3rRDyV9r0GzHCnjMidlH+wsBOjR7RkhrKQDzFD
+         ykxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUoHIf7tu7HkOZJogX1pEJBU3K83LUQFPrxFdS+c/kRm/XAw2KoJ2wGy4mhjVtqyk+dmTj1YZv1@vger.kernel.org, AJvYcCVjY8CGkHmQQoWzCAHabOd7762oO3YVzQxq9B9ySCxMZlsOcgJcIRhUMPdrPspXvxqeFhld8KNAigPV/70=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywbdI+NSlebtmyeInvDQUc5IBb0ehFY00EbN+MR0ZVvfNrpVTD
+	0ZAEJD7QNfakudZQdc3Z7OM4JLqioF93epzM11lnVcjKadHmhud17nEpfZGf
+X-Gm-Gg: ASbGncsjltf70VoLXSnWXd6hXO0K6AXK4B5sPvKRAnnbtNxw5L5+s2DkMJyLAIUM1wJ
+	OSIsd0Hiyu3rpK4NnSLiQ2ihcy8yQDZXNPRj/xTI4xWOEqbS6t00OP9vLUQsAhBNgdZfbxftM24
+	0YjO8ZC8Zifo6UktIbgJBX7V45vvYTXfh/IGfyppoyhb7P9CoNbYH0dqJCDmDBHMZnVWvpbAWDq
+	4MJyQ9t0hQ8fFrxFpsR4KZDW17aLXAaSc/yCfjvFwPTrM4AJXoxCY9r3G7zFgPejWVW2DNsbSzY
+	4p6ML4ua4Ipp6S1tX3LgXi97eobZxUJRbTmakq1UBIEVCasvyRIlGoVoaBQFQWUcGVRNfPC2IPT
+	44B5N9LOQn3FJV50c2KWPeZZnpK4LRIr4RoQLKErP
+X-Google-Smtp-Source: AGHT+IE6TYJc7vhbUwCxB48YuKMrTqXMOVFOkYXJN/faNQ19JttNP6FSxSJOeitCW88+hzBFm5/lpA==
+X-Received: by 2002:ac2:4f01:0:b0:549:1c87:af8e with SMTP id 2adb3069b0e04-5494c37f6d9mr5827800e87.37.1741002011703;
+        Mon, 03 Mar 2025 03:40:11 -0800 (PST)
+Received: from razdolb.local (static.248.157.217.95.clients.your-server.de. [95.217.157.248])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54949de706fsm1125399e87.23.2025.03.03.03.40.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 03:40:11 -0800 (PST)
+From: Mikhail Rudenko <mike.rudenko@gmail.com>
+Subject: [PATCH v4 0/2] Allow non-coherent video capture buffers on
+ Rockchip ISP V1
+Date: Mon, 03 Mar 2025 14:40:08 +0300
+Message-Id: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4430; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=FxTyFdldQ/Rg6PXUyOvwskxzWGQOyp4Jrbq8b9VUONU=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDOlHO85KdGQ0fHr+8KSfXzH7n6m/Je2v/ju5m/9u/llPpozP H/zLO0pZGMQ4GGTFFFkSb/e1SK3/47LDuectzBxWJpAhDFycAjCRk8IM/ytqOt/+tbZ5fmjmnfAcXf G8t41L2VTfdNotn50cnhF0SIfhv8eGv2yppW3Whk79jGpT3XKuN+16IspsVXnh2+dYE/80XgA=
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABiVxWcC/3XNTQrCMBCG4atI1kYyk/TPlfcQF9N0aoOalESKI
+ r27qasiunwH5vleInF0nMR+8xKRJ5dc8DnMdiPsQP7M0nW5BSo0gBpka2S8uDRKH7wNA0f2d0l
+ dyZWtqKxbEvl1jNy7x4c9nnIPLt1DfH5WJliuC1goUPgbnEDmqZagNH0FGu3hfCN33dlwEws44
+ QqB4g+CUklVF5qB0CjAb0SvEKz/IDojLfW6sU1TdUhrZJ7nN/E04QhCAQAA
+X-Change-ID: 20241231-b4-rkisp-noncoherent-ad6e7c7a68ba
+To: Dafna Hirschfeld <dafna@fastmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, Tomasz Figa <tfiga@chromium.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Hans Verkuil <hverkuil@xs4all.nl>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ Mikhail Rudenko <mike.rudenko@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-overflows will be generated and receive data will be corrupted and
-warnings will be produced. For example, here's an error generated by a
-transfer of 36 bytes:
+This small series adds support for non-coherent video capture buffers
+on Rockchip ISP V1. Patch 1 fixes cache management for dmabuf's
+allocated by dma-contig allocator. Patch 2 allows non-coherent
+allocations on the rkisp1 capture queue. Some timing measurements are
+provided in the commit message of patch 2.
 
-  spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
-
-The driver is currently split between handling receiving in the
-interrupt handler, and sending outside of it. Move all handling out of
-the interrupt handling, and explicitly link the number of bytes read of
-of the RX FIFO to the number written into the TX one. This both resolves
-the overflow problems as well as simplifying the flow of the driver.
-
-CC: stable@vger.kernel.org
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
 ---
+Changes in v4:
+- rebase to media/next
+- use `direction` instead of `buf->dma_dir` in dma_sync_sgtable_*
+- Link to v3: https://lore.kernel.org/r/20250128-b4-rkisp-noncoherent-v3-0-baf39c997d2a@gmail.com
 
-Contrary to last time, the reporter did actually manage to this this
-version, and it resolved their probably apparently.
+Changes in v3:
+- ignore skip_cache_sync_* flags in vb2_dc_dmabuf_ops_{begin,end}_cpu_access
+- invalidate/flush kernel mappings as appropriate if they exist
+- use dma_sync_sgtable_* instead of dma_sync_sg_*
+- Link to v2: https://lore.kernel.org/r/20250115-b4-rkisp-noncoherent-v2-0-0853e1a24012@gmail.com
 
 Changes in v2:
-- Move all FIFO interactions out of the interrupt handler
-- Disable the non-error interrupts since they're dealt with out of the
-  isr now
+- Fix vb2_dc_dmabuf_ops_{begin,end}_cpu_access() for non-coherent buffers.
+- Add cache management timing information to patch 2 commit message.
+- Link to v1: https://lore.kernel.org/r/20250102-b4-rkisp-noncoherent-v1-1-bba164f7132c@gmail.com
 
-v1: https://lore.kernel.org/all/20250114-easiness-pregame-d1d2d4b57e7b@spud/
-
-CC: Conor Dooley <conor.dooley@microchip.com>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Mark Brown <broonie@kernel.org>
-CC: linux-spi@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
 ---
- drivers/spi/spi-microchip-core.c | 41 ++++++++++++++------------------
- 1 file changed, 18 insertions(+), 23 deletions(-)
+Mikhail Rudenko (2):
+      media: videobuf2: Fix dmabuf cache sync/flush in dma-contig
+      media: rkisp1: Allow non-coherent video capture buffers
 
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 5b6af55855efc..62ba0bd9cbb7e 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -70,8 +70,7 @@
- #define INT_RX_CHANNEL_OVERFLOW		BIT(2)
- #define INT_TX_CHANNEL_UNDERRUN		BIT(3)
- 
--#define INT_ENABLE_MASK (CONTROL_RX_DATA_INT | CONTROL_TX_DATA_INT | \
--			 CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
-+#define INT_ENABLE_MASK (CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
- 
- #define REG_CONTROL		(0x00)
- #define REG_FRAME_SIZE		(0x04)
-@@ -133,10 +132,15 @@ static inline void mchp_corespi_disable(struct mchp_corespi *spi)
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- }
- 
--static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
-+static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, int fifo_max)
- {
--	while (spi->rx_len >= spi->n_bytes && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)) {
--		u32 data = mchp_corespi_read(spi, REG_RX_DATA);
-+	for (int i = 0; i < fifo_max; i++) {
-+		u32 data;
-+
-+		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)
-+			;
-+
-+		data = mchp_corespi_read(spi, REG_RX_DATA);
- 
- 		spi->rx_len -= spi->n_bytes;
- 
-@@ -211,11 +215,10 @@ static inline void mchp_corespi_set_xfer_size(struct mchp_corespi *spi, int len)
- 	mchp_corespi_write(spi, REG_FRAMESUP, len);
- }
- 
--static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
-+static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi, int fifo_max)
- {
--	int fifo_max, i = 0;
-+	int i = 0;
- 
--	fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
- 	mchp_corespi_set_xfer_size(spi, fifo_max);
- 
- 	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
-@@ -413,19 +416,6 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
- 	if (intfield == 0)
- 		return IRQ_NONE;
- 
--	if (intfield & INT_TXDONE)
--		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
--
--	if (intfield & INT_RXRDY) {
--		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
--
--		if (spi->rx_len)
--			mchp_corespi_read_fifo(spi);
--	}
--
--	if (!spi->rx_len && !spi->tx_len)
--		finalise = true;
--
- 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
- 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
- 		finalise = true;
-@@ -512,9 +502,14 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
- 
- 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
- 
--	while (spi->tx_len)
--		mchp_corespi_write_fifo(spi);
-+	while (spi->tx_len) {
-+		int fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
- 
-+		mchp_corespi_write_fifo(spi, fifo_max);
-+		mchp_corespi_read_fifo(spi, fifo_max);
-+	}
-+
-+	spi_finalize_current_transfer(host);
- 	return 1;
- }
- 
+ .../media/common/videobuf2/videobuf2-dma-contig.c  | 22 ++++++++++++++++++++++
+ .../platform/rockchip/rkisp1/rkisp1-capture.c      |  1 +
+ 2 files changed, 23 insertions(+)
+---
+base-commit: b2c4bf0c102084e77ed1b12090d77a76469a6814
+change-id: 20241231-b4-rkisp-noncoherent-ad6e7c7a68ba
+
+Best regards,
 -- 
-2.48.1
+Mikhail Rudenko <mike.rudenko@gmail.com>
 
 
