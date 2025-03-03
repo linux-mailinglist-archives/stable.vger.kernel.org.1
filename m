@@ -1,131 +1,92 @@
-Return-Path: <stable+bounces-120031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0973A4B5A2
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 01:32:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA94A4B635
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 03:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D51D18908E6
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 00:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507C716A07D
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 02:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13A227462;
-	Mon,  3 Mar 2025 00:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FF5188CDB;
+	Mon,  3 Mar 2025 02:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="pJkhxuEo"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cX2ap5pe"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFED61754B;
-	Mon,  3 Mar 2025 00:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F609146585;
+	Mon,  3 Mar 2025 02:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740961929; cv=none; b=K/mhtEpm++VLkevi3ajIQ7Ye9Ob3jJWf8jcB0hqwroD4pqW0eUkHEdGSP1wEj87bMVskQPJbYoGDpAnAiMGsSQZEtt4CmOIEr4n/NUjwZjJu1gYzpNbVVAtb4ctZdO1hmULNdinXnz6oKH0L2zeEJXIpY61QtklFTRNHsfpg2a0=
+	t=1740969776; cv=none; b=hDqu/yjR3/QerfOd8vgLha9pB1gmhJfD80QsXqSyMX7u5Hp5ezhPN+yMMOYoQHUHK2hZJjSV7zvFKUAR3UgVisfAPE86rYG4PNbDIwTd8ycEc81vZiK0A500v6tBsmYbGCF9kNLobdWPbPIiup3u8RFHaj8uXI8gj7OIiB9qTkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740961929; c=relaxed/simple;
-	bh=DKm7MvEuMKo/94yBF8ecxj1RCJQJ1fbpjV3NSPQ3Hhs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fy5KbiIZFIKCTWmHiiGVTmbJm/8jhMcyF7QxF3/zk06984CWiQlYEqIUYJbMAcNLMMBiZ/G2PTDaRfDS4JN8c//HcBoqUPN2NImz1Jj9Q7mwQaj8UlBOlyCfl/oX6KCgYmcuFxowp1bWid63RH3Gyvgp7e6gBmRaG/tKD5fMZkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=pJkhxuEo; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1740961916; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=vWRFE5MRPeFedN8U4K/7JNMCa/lHFzfHJwZRS5nIybA=;
-	b=pJkhxuEouvzJBRuqFe3JYbpp9tEunZOQtdMUPrHzWtgh1fKJIQbqrLkjGxTw5PQf44/euc3R70O41FQUrtUZIHclsjGGG/RQMmj3nYCfRFPxFobgrOnE6GkGCaPpQO0QsjqPyK57sS1x0XopqdAQ/FjY7pdoO8FmAMr0EVcyjA8=
-Received: from 30.134.66.95(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WQWCbQv_1740961904 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 03 Mar 2025 08:31:54 +0800
-Message-ID: <0417518e-d02e-48a9-a9ce-8d2be53bc1bd@linux.alibaba.com>
-Date: Mon, 3 Mar 2025 08:31:42 +0800
+	s=arc-20240116; t=1740969776; c=relaxed/simple;
+	bh=LPsDAF4daV1b80Sc87gTh5bt29Y3h9Ne2D/+R21IRO0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MqK9glcJmvGFq60/6fhpHuM2rJYGpjrbFjD5T43XeiLWXpWyHT2fJ2sWaG3Zwc6eVUwojpjVycQ8KUshz73SlTDz1pDl4qoXbGcbYE39WYM2qUFHAuFWWvPp2jIKzOPUjIN5p+W0kWM6eyoP8WYIU1sWbNTjvfqoQyZtCfFsL7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cX2ap5pe; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=9wCrl
+	m+ulJ569ETKNhrEDhDUJvY3Yz7e67hlsiJwJac=; b=cX2ap5pel61WJEdxM5GBh
+	a/5Dq361w/REnXArk14mYW9Hwh3yzOM0iBsudLecW33ch/MsPbJtUjD+nDwGahee
+	Jv6z0Vzl/XhVA0iM406uV1V7nz9GGgFMffSQkAId9AkSzjkY8z8NzTvYyM/nDuYM
+	45pV0lHbmdWUVZzmHFDgDw=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wA3dX8aF8VnyuKdPA--.58228S4;
+	Mon, 03 Mar 2025 10:42:36 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: clm@fb.com,
+	josef@toxicpanda.com,
+	dsterba@suse.com,
+	fdmanana@suse.com
+Cc: linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: fix a memory leak issue in read_one_chunk()
+Date: Mon,  3 Mar 2025 10:42:33 +0800
+Message-Id: <20250303024233.3865292-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 1/2] erofs: handle overlapped pclusters out of crafted
- images properly
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Alexey Panov <apanov@astralinux.ru>, stable@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Max Kellermann <max.kellermann@ionos.com>, lvc-project@linuxtesting.org,
- syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
- syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
- Chao Yu <chao@kernel.org>, linux-kernel@vger.kernel.org,
- Yue Hu <huyue2@coolpad.com>,
- syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
- Jeffle Xu <jefflexu@linux.alibaba.com>, Gao Xiang <xiang@kernel.org>,
- linux-erofs@lists.ozlabs.org
-References: <20250228165103.26775-1-apanov@astralinux.ru>
- <20250228165103.26775-2-apanov@astralinux.ru>
- <kcsbxadkk4wow7554zonb6cjvzmkh2pbncsvioloucv3npvbtt@rpthpmo7cjja>
- <fb801c0f-105e-4aa7-80e2-fcf622179446@linux.alibaba.com>
- <3vutme7tf24cqdfbf4wjti22u6jfxjewe6gt4ufppp4xplyb5e@xls7aozstoqr>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <3vutme7tf24cqdfbf4wjti22u6jfxjewe6gt4ufppp4xplyb5e@xls7aozstoqr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wA3dX8aF8VnyuKdPA--.58228S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jry7CFW8WFWDJFWxuw4kJFb_yoW3Crc_Ja
+	47JryDZry7tw15XryrKFZ0gFWYqw109r4kZ3y2krsYyFZ8ArnFvrsF9rs0va97WrWUAF1a
+	y3Wxtr18uwnrCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRZ8n53UUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqB8FbmfFFtwIUwAAsv
 
+Add btrfs_free_chunk_map() to free the memory allocated
+by btrfs_alloc_chunk_map() if btrfs_add_chunk_map() fails.
 
+Fixes: 7dc66abb5a47 ("btrfs: use a dedicated data structure for chunk maps")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ fs/btrfs/volumes.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 2025/3/3 02:13, Fedor Pchelkin wrote:
-> On Mon, 03. Mar 01:41, Gao Xiang wrote:
->>>> diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
->>>> index 94e9e0bf3bbd..ac01c0ede7f7 100644
->>>
->>> I'm looking at the diff of upstream commit and the first thing it does
->>> is to remove zeroing out the folio/page private field here:
->>>
->>>     // upstream commit 9e2f9d34dd12 ("erofs: handle overlapped pclusters out of crafted images properly")
->>>     @@ -1450,7 +1451,6 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
->>>              * file-backed folios will be used instead.
->>>              */
->>>             if (folio->private == (void *)Z_EROFS_PREALLOCATED_PAGE) {
->>>     -               folio->private = 0;
->>>                     tocache = true;
->>>                     goto out_tocache;
->>>             }
->>>
->>> while in 6.1.129 the corresponding fragment seems untouched with the
->>> backport patch. Is it intended?
->>
->> Yes, because it was added in
->> commit 2080ca1ed3e4 ("erofs: tidy up `struct z_erofs_bvec`")
->> and dropped again.
->>
->> But for Linux 6.6.y and 6.1.y, we don't need to backport
->> 2080ca1ed3e4.
-> 
-> Thanks for overall clarification, Gao!
-> 
-> My concern was that in 6.1 and 6.6 there is still a pattern at that
-> place, not directly related to 2080ca1ed3e4 ("erofs: tidy up
-> `struct z_erofs_bvec`"):
-> 
-> 1. checking ->private against Z_EROFS_PREALLOCATED_PAGE
-> 2. zeroing out ->private if the previous check holds true
-> 
-> // 6.1/6.6 fragment
-> 
-> 	if (page->private == Z_EROFS_PREALLOCATED_PAGE) {
-> 		WRITE_ONCE(pcl->compressed_bvecs[nr].page, page);
-> 		set_page_private(page, 0);
-> 		tocache = true;
-> 		goto out_tocache;
-> 	}
-> 
-> while the upstream patch changed the situation. If it's okay then no
-> remarks from me. Sorry for the noise..
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index fb22d4425cb0..3f8afbd1ebb5 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -7155,6 +7155,7 @@ static int read_one_chunk(struct btrfs_key *key, struct extent_buffer *leaf,
+ 		btrfs_err(fs_info,
+ 			  "failed to add chunk map, start=%llu len=%llu: %d",
+ 			  map->start, map->chunk_len, ret);
++		btrfs_free_chunk_map(map);
+ 	}
+ 
+ 	return ret;
+-- 
+2.25.1
 
-Yeah, yet as I mentioned `set_page_private(page, 0);`
-seems redundant from the codebase, I'm fine with either
-way.
-
-Thanks,
-Gao Xiang
 
