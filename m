@@ -1,191 +1,177 @@
-Return-Path: <stable+bounces-120072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56256A4C51D
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:32:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8B2A4C565
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B8818944B6
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 15:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8CC1632D0
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 15:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BEE2153C4;
-	Mon,  3 Mar 2025 15:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1D92144C2;
+	Mon,  3 Mar 2025 15:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="sei5hvwH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C8sDQjiq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E53215067
-	for <stable@vger.kernel.org>; Mon,  3 Mar 2025 15:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F69123F36F;
+	Mon,  3 Mar 2025 15:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741015477; cv=none; b=QfKRQMNKx3gw1Pt0B7lE0UWRqQ5ivMDl+VLhscn8f313J/62HAc70CGUGtqfJ9VsboaF1gsI47H30i/YONz+Orx8E7f8q0Y+/+fOJGmL3RECCv0ClW/vBLCowohHGcGygG/5PIQjv6xssIsZPfC+pRiOHbpQ4dFiW30Qupeo5Zw=
+	t=1741016446; cv=none; b=tiVeOqGN4rDIWP3zKcMhhyys3GHgxuKXFb0YstqhzJFn+1iRO6aa/SywCPhGBIFZUIjHQj6rTd3vfotSFX2W3auSA3wcgKnu9kmHbNDRdV0vwvXZ4UQ39PvFBbEgKS3shAJl/gkSMj18RjyaJVfpWJ4lfwgjvGN6LJ61qpfS+Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741015477; c=relaxed/simple;
-	bh=pfpr19Iu90GBD6jxo298SmOMqXiX+bP60uY1Ix2uksE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FcbOj8dImOcVQfFe/0tFu4nl62LLMpVq4YyP4SP+aYztkXDReNwDiFjdAJdcCxHJtLvKOy49uohNVPvoOpWKGmZaDcEfhKlwLAT7QKlew+BZZ8vl8U7P4kfCbZX3xXyf3lDKShlgu8c+0SxbPPXYPFzqEygTcQm7j1HqNPzn2/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=sei5hvwH; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c0a974d433so520658185a.1
-        for <stable@vger.kernel.org>; Mon, 03 Mar 2025 07:24:34 -0800 (PST)
+	s=arc-20240116; t=1741016446; c=relaxed/simple;
+	bh=PCzFztrWosUeWk6L97jFw2j8+FmPuQhKLe8itmVKSyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cebRu4xrL7mdV5QR9DjdjhuO0YBaj9CZGnfkgER4TTzoPhRHUHI60zk0SCls7BBXoTxRm2lFJ50Ug4nDF3sOWskU7uClHNhfiwJavjkL/hvJQsJA7hGc9iicpKlN/gE+qiZCFPgXF+Owa4HGuVt6vcZkRDS9BV0Q+kpVqTMqIJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C8sDQjiq; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-390df942558so3641227f8f.2;
+        Mon, 03 Mar 2025 07:40:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1741015474; x=1741620274; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WFHt+0PcUrjf2KPzth13ahqz68xbUj7oThx+bYUbytM=;
-        b=sei5hvwHuvTkTAJOMcYpdxuIOirM7pWtT9QlEr31KitoJE1PDkADHzOY6msBn48pKO
-         dnr2GkmDJ0KFAUlXgChvD8d/rH400qva64OIJQ58nIHAHMwlYdZQHjR4ahLA7/YQ984d
-         B2/Pr0/lWhAdlS6tmafscVOg89md/4RzPihch01xoKxhgsm1eciEYyRQxLnXM5wW1+Mb
-         tvuamufs30rpSP7S/3/R6MAzVMJLoW+dZygBBasO0ZPwFkF2Kdqrz019WMbP/Pm6bCfC
-         H+xPnbgh4tckK7kcMv50fza0ePq2DRDwRdJgfcM2V1Qlq8uMvMQB9pE0NAIdPTSUP6eR
-         7UMg==
+        d=gmail.com; s=20230601; t=1741016443; x=1741621243; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cHWcGb6/82XLxoaKsbI43KUguE9A6MTYe37LiujrCmE=;
+        b=C8sDQjiq04q3ncudxGzwFjxZ2AWHhObRLmqlpzKwOyvYxvbMPP0d3cjOE3opkKYIBv
+         wkw05S2fqyo6EgIaLJ7EA/KNX/TcVdkyxGbvkdcU37cxOSla+iNhoDN07uAOqWtdwKko
+         WDuXq/WN1rQt0+3O0conGB3cP9tzaI0xx+wX2RqzCbUgCGVjxhASRpUl1jRjSQRFIA6l
+         x9aR4WSA2P0y7EWuG1bRBIPeVnZcKNxutbhsBjtPK3yHPbsl8LDVh1bCFvT6cZIwMAeu
+         6uYsercee5dvNFsYfe3cC2CUE/FKPgdqfuClsJ7DCcxFLPqsTlqpo3EGb7iY3WjFaM5z
+         LiOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741015474; x=1741620274;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WFHt+0PcUrjf2KPzth13ahqz68xbUj7oThx+bYUbytM=;
-        b=l3UjHYA/93uur0IVO/sfb30ToDR9mHT4fGehDdy7jzi0BJ52PScxpQzsYxs60zEZpW
-         4L0HrWRWJX/U4Faew0a37esekXJv4KPn9yxvJDaNLbXEwd6mhF7Sn8a54fzHeMRmvktI
-         SRJCj/Sk7QGuHzW+FAC14myMINF3LlkMYNsuicvRvIBZkCetV9RS2YwuxpdDaCayQiCr
-         t/XyF3J8/9Xy6fr5d8tciVnxLwpxPOo5v780ZdZApdzMmZLsFmwHhj/Pgg/g3H9fQX6s
-         wa4jC5/IuRZ4IuhAfm4+CLhvSuWc3h8dGxFHOWdk3RtvsOamn721ZK19T47rwMX5rvw4
-         XbiA==
-X-Forwarded-Encrypted: i=1; AJvYcCWn4gn3+HhGeKg17yTaXxBEI036nAOLPjn5FgvwlJrOrwcjMiDHC1TSvULnLxHu4ooIFYrz0Vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz07zfOSkUeQncyZRayvH0UvpLWBspprQBY4EDvYUNrHgx9AlPq
-	y5sQV720lhWTTob3Js8CK/i4LWu+8EwdP9RbHZDm27ge1EUj+DkYv3Ahy9zDddA=
-X-Gm-Gg: ASbGncvsKwESIEmHCqz7ivjsGBfnHhO+VjwWB6IaNie/IaOYes/r26RBZQ1MMraNdXY
-	1GfVXNaDxYVyth0bTWw8wD0KnhRpHrNIsywwWOcJjGhK9tTiWgan9hKcZH+t/K+uSuv5XFYLvok
-	TFobfi9s0ojZVd1XhqupblUEnloxOzrhPfcBfuTqNNiLlGgn1jmewy01coa0NiYrl49sqqgqxnM
-	D5o9FGcgoCAIcHoRoqnEPoIbeRKvOJYOrRQR104a+61k8O6muEoaZ62JX65uSt36oN2piTq8omU
-	dnHz/AjftHNO1BPK9sJaXfpQTOMgQzwx0HcCp400VgW5MSpBcg==
-X-Google-Smtp-Source: AGHT+IFfnYkxtmeyMx4cbVUhHoEgj8vIHk0FHdrXdCz4obVUHVFmEQgHCvy9FSBCGdXes2aYUVuO3Q==
-X-Received: by 2002:a05:620a:f06:b0:7bc:de68:e932 with SMTP id af79cd13be357-7c2a7632d54mr2279290185a.23.1741015473845;
-        Mon, 03 Mar 2025 07:24:33 -0800 (PST)
-Received: from ?IPv6:2606:6d00:11:e976::c41? ([2606:6d00:11:e976::c41])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3c89408efsm27440485a.114.2025.03.03.07.24.32
+        d=1e100.net; s=20230601; t=1741016443; x=1741621243;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cHWcGb6/82XLxoaKsbI43KUguE9A6MTYe37LiujrCmE=;
+        b=PsECOlA+JwrQsV1iNYgtB7c4n9KezNqBFlPKoowjOP7ubcxqw/1MGxaPz2uxoB62m4
+         r8g1Mshwc8NgYAW9uNMX6BW49RPYFUMMQNaMBhzEPhcZnzEouikYXPcOy61JO0T8DeuW
+         NYoJKOFG7Y113KqfBU6/0GiT7kusZmOqhjptA2OEH5bEndOf+4BRITypdsp/QEH5V0ai
+         sf752lM/xpGsOZOIsnkNchqnuJxVK6zWuTSnDjBqMGRJQLCgWtg3MDAQqEhelfIWSkw6
+         N3rg0Vbwj3fhu2V53Dn8DCLQXicOmGWM3rgveJkyN6e0If79PEBr40iIHzG3giZJD/1A
+         1Okw==
+X-Forwarded-Encrypted: i=1; AJvYcCUR4jhhkIWwV8vsbh9zK64QE7TAlw5wmyGJEONaj38bvrgOPB8MFq2mlflSzLqspjfq6VXKV8n9nKJykm4=@vger.kernel.org, AJvYcCVRFDcqKXi3LpmunYKJEWoe/hTPVnEk7ZUesyjZz4aKB8buO0XahBtKB4SLMoX669xJoki1HyXm@vger.kernel.org, AJvYcCXkQlMmErihTybqnHcE5aWDb0PIsNSylWA5OT/dREy2Tjzuo2I13VW45W5OYnBNELN0WhwFGm88yBj1nAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIcj2nkT74P1CtfGhD8FxKctY5sUAazseSmk/F+4fhSclLyE6q
+	Y5dkKW8xC4DH80B2dsAZyhvNRfJOE9nL/S40cRflH6/U7sjwsZQH
+X-Gm-Gg: ASbGncsi6T7PoRdIOWXZtLYmNwUy8wMXu24ewYafetd4WvnKMWYOPXyeTzfscBi8t54
+	bUZcT3hE6tGbmjhwyjqJqvpmVzlh+E8FMhhXzW++yppOSg1nbovPX3DR6epMgOjMLdD6+72aXU5
+	nGOx4VZw5/HLMwo8bpeCyEUfftN6xoTCtRSqAXohRAwvlzZPzYBfqkMFvb0S+AUv1216H1ccrE6
+	nzpMTN3wn9pYFtLBoDXqOFYiD/GaiN5vwrvlvgWlHQkyC5+jQPihXrfFL2eQxe/WNtIqBjn/XwC
+	U+lW9x8XSHD0JokULsjoIqYJtFhTeC+pSBCWHsQf7E1svM2Jc0P6l77n0s7uMemcQ1EV+wVsJV8
+	ub00akVN8MxC1gGDYEs/F6GvKAxQvKDI=
+X-Google-Smtp-Source: AGHT+IEug+nKAS46phdWGXkvHURzvBIKWZnJxIArYvwyXJ9Wglql1zESb8pxgHZWephLZBnuQc7+2Q==
+X-Received: by 2002:a05:6000:1547:b0:390:f55b:ba91 with SMTP id ffacd0b85a97d-390f55bbc10mr8267313f8f.14.1741016443268;
+        Mon, 03 Mar 2025 07:40:43 -0800 (PST)
+Received: from orome (p200300e41f187700f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f18:7700:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e479652dsm15109184f8f.16.2025.03.03.07.40.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 07:24:33 -0800 (PST)
-Message-ID: <8b3dac7baed1de9542452547454c53188c384391.camel@ndufresne.ca>
-Subject: Re: [PATCH v4 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
- dma-contig
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Mikhail Rudenko <mike.rudenko@gmail.com>, Dafna Hirschfeld	
- <dafna@fastmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-  Mauro Carvalho Chehab	 <mchehab@kernel.org>, Heiko Stuebner
- <heiko@sntech.de>, Tomasz Figa	 <tfiga@chromium.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Hans Verkuil	 <hverkuil@xs4all.nl>, Sergey
- Senozhatsky <senozhatsky@chromium.org>
-Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Mauro
- Carvalho Chehab <mchehab+huawei@kernel.org>, stable@vger.kernel.org
-Date: Mon, 03 Mar 2025 10:24:32 -0500
-In-Reply-To: <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
-References: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
-	 <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+        Mon, 03 Mar 2025 07:40:41 -0800 (PST)
+Date: Mon, 3 Mar 2025 16:40:39 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, jonathanh@nvidia.com, 
+	brgl@bgdev.pl, linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mailbox: tegra-hsp: Add check for devm_kstrdup_const()
+Message-ID: <q6zovgtjvvzoessyaudn7i76ptoopnfnmaeviry7jbqcms3gxq@r3nwd3fsgs7i>
+References: <20250219022753.2589753-1-haoxiang_li2024@163.com>
+ <CABb+yY3wC5Rp4DJFL=61uyYyGtJ-kPTWks8JMG7jQpp=V3P-Zg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="e7yhcb4e6crfwy3w"
+Content-Disposition: inline
+In-Reply-To: <CABb+yY3wC5Rp4DJFL=61uyYyGtJ-kPTWks8JMG7jQpp=V3P-Zg@mail.gmail.com>
 
-Hi Mikhail,
 
-Le lundi 03 mars 2025 =C3=A0 14:40 +0300, Mikhail Rudenko a =C3=A9crit=C2=
-=A0:
-> When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
-> commit 129134e5415d ("media: media/v4l2: remove
-> V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
-> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
-> no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
-> introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
-> V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
-> no-ops, making cache maintenance for non-coherent dmabufs allocated
-> by
-> dma-contig impossible.
+--e7yhcb4e6crfwy3w
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] mailbox: tegra-hsp: Add check for devm_kstrdup_const()
+MIME-Version: 1.0
+
+On Sat, Mar 01, 2025 at 10:29:29AM -0600, Jassi Brar wrote:
+> On Tue, Feb 18, 2025 at 8:28=E2=80=AFPM Haoxiang Li <haoxiang_li2024@163.=
+com> wrote:
+> >
+> > Add check for the return value of devm_kstrdup_const() in
+> > tegra_hsp_doorbell_create() to catch potential exception.
+> >
+> > Fixes: a54d03ed01b4 ("mailbox: tegra-hsp: use devm_kstrdup_const()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> > ---
+> >  drivers/mailbox/tegra-hsp.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
+> > index c1981f091bd1..773a1cf6d93d 100644
+> > --- a/drivers/mailbox/tegra-hsp.c
+> > +++ b/drivers/mailbox/tegra-hsp.c
+> > @@ -285,6 +285,8 @@ tegra_hsp_doorbell_create(struct tegra_hsp *hsp, co=
+nst char *name,
+> >         db->channel.hsp =3D hsp;
+> >
+> >         db->name =3D devm_kstrdup_const(hsp->dev, name, GFP_KERNEL);
+> > +       if (!db->name)
+> > +               return ERR_PTR(-ENOMEM);
 >=20
-> Fix this by reintroducing dma_sync_sgtable_for_{cpu,device} and
-> {flush,invalidate}_kernel_vmap_range calls to
-> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
-> buffers.
->=20
-> Fixes: c0acf9cfeee0 ("media: videobuf2: handle
-> V4L2_MEMORY_FLAG_NON_COHERENT flag")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
-> ---
-> =C2=A0.../media/common/videobuf2/videobuf2-dma-contig.c=C2=A0 | 22
-> ++++++++++++++++++++++
-> =C2=A01 file changed, 22 insertions(+)
->=20
-> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-> b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-> index
-> a13ec569c82f6da2d977222b94af32e74c6c6c82..d41095fe5bd21faf815d6b035d7
-> bc888a84a95d5 100644
-> --- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-> +++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-> @@ -427,6 +427,17 @@ static int
-> =C2=A0vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
-> =C2=A0				=C2=A0=C2=A0 enum dma_data_direction
-> direction)
-> =C2=A0{
-> +	struct vb2_dc_buf *buf =3D dbuf->priv;
-> +	struct sg_table *sgt =3D buf->dma_sgt;
-> +
-> +	if (!buf->non_coherent_mem)
-> +		return 0;
-> +
-> +	if (buf->vaddr)
-> +		invalidate_kernel_vmap_range(buf->vaddr, buf->size);
+>  tegra_hsp_doorbell.name seems unused, so maybe just get rid of it...  Th=
+ierry ?
 
-What would make me a lot more confortable with this change is if you
-enable kernel mappings for one test. This will ensure you cover the
-call to "invalidate" in your testing. I'd like to know about the
-performance impact. With this implementation it should be identical to
-the VB2 one.
+I think I had at one point used the name in error messages and had ideas
+about maybe exposing some information via debugfs. In both cases the
+name would've been an easy way to make this more human readable. As it
+turns out these errors are very rare (I don't think I've ever seen any)
+and I'm not sure there's a need for debugfs.
 
-What I was trying to say in previous comments, is that my impression is
-that we can skip this for CPU read access, since we don't guaranty
-concurrent access anyway. Both address space can keep their cache in
-that case. Though, I see RKISP does not use kernel mapping plus I'm not
-reporting a bug, but checking if we should leave a comment for possible
-users of kernel mapping in the future ?
+So yeah, I think one could make a case for removing the name. The amount
+of memory it "wastes" is tiny and it's quite probable that it will end
+up in some area that would be padding otherwise. Furthermore there's no
+way this memory will ever be *not* read-only kernel data, so this is
+always going to be a no-op anyway (well, not exactly, but it'll simply
+be an assignment of name to db->name, so no actual copying will be done)
+and hence this will never actually fail.
 
-> +
-> +	dma_sync_sgtable_for_cpu(buf->dev, sgt, direction);
-> +
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> @@ -434,6 +445,17 @@ static int
-> =C2=A0vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
-> =C2=A0				 enum dma_data_direction direction)
-> =C2=A0{
-> +	struct vb2_dc_buf *buf =3D dbuf->priv;
-> +	struct sg_table *sgt =3D buf->dma_sgt;
-> +
-> +	if (!buf->non_coherent_mem)
-> +		return 0;
-> +
-> +	if (buf->vaddr)
-> +		flush_kernel_vmap_range(buf->vaddr, buf->size);
-> +
-> +	dma_sync_sgtable_for_device(buf->dev, sgt, direction);
-> +
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
->=20
+So I don't think this patch makes sense. If somebody really wants to
+remove the name, that'd be fine with me, but I don't see a strong need.
 
+I suppose not doing anything would increase the chances of a similar
+patch being posted again and again over the next few years, so maybe we
+should just get rid of it.
+
+Thierry
+
+--e7yhcb4e6crfwy3w
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmfFzXQACgkQ3SOs138+
+s6GKWg//Sp3RbObS1Gi45lMzWojAPKio/JQYlJ7iVSZ10NQ12z3OF9+xCMtnHzI1
+NZv157gxUYceA6VWVCCoW/KFpq8to7WIi1pM7JlkVO/RiuNS9YGeisdmu83uhtbh
+3ozmQlBL5svevbPDGR2oFzqjDSBM/rKKg9X5bdKNb3c3UHU5sURZRRGw3psmNzbO
+N8Y21HXi23YlSGGYFmjQl0VCvqHZVYs2pnMSrUt7sT2rhg2OSpxkUT2HUDl7Nw+J
+l+5/PvAim2nJisFldBl1IKKtW23X4G+ZmeicnEgXnPrfCmPYUi7kKHattzLXsZbg
+fmbu6LY+51SohNBePq9H2EAG+DjyxIRJtH7GIR6mejW6/Ta3aWNh9wACXQkk4xFB
+P4MwU6cJlhixEAKZgAUFlGfu1WrTlozD3i7DDaP2tp2mT0h0OSCeE7K4JA20qFgO
+HKRyWBvUG7Xhx/nSai/QiIhSlQ+vxsr1JdvUkayF3GVEXToJfsBrwCkjIGU+FLoR
+pdnwY2oYsZvtL+4Fx1BHO6PC6XtDpmfrj1AO7lT7/AdqfxjZDHGl5O+r2MwhXJTa
+ox86Z8v2wNOrzK/eY+9LNzfjE/1D1HGOBmUhZawxVccsvYjwePaiay/frW+BHOdA
+GFAvwjY4fNl6ntfKvKznxBgtejEEsk/ZwJv6hlHO2xmIn9KVWkw=
+=4oVP
+-----END PGP SIGNATURE-----
+
+--e7yhcb4e6crfwy3w--
 
