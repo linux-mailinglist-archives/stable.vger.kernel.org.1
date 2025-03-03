@@ -1,103 +1,108 @@
-Return-Path: <stable+bounces-120059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54609A4C05B
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 13:30:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398D5A4C077
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 13:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7685B18954EE
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 12:30:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FC72172247
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 12:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEB020FAB4;
-	Mon,  3 Mar 2025 12:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9206200BB7;
+	Mon,  3 Mar 2025 12:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="qg0TwlZT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPIduBF/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F86020F091;
-	Mon,  3 Mar 2025 12:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.180.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5657FBAC;
+	Mon,  3 Mar 2025 12:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741004995; cv=none; b=KNjFlQd2WGrLE7Y3mmP+WjRPSmnlcDa1g4dMC76hVrBDX/YiQWWOx3xkEXcRyy6FwHJeMNnXzza6KQGMTLvxqgCclt0CZjukvRsrNgEZ1ex2EYdyPU+hQeV5QDD516Nl2pdnQ+hRlemlqwYzZcFMihQ8RXPeMOwBYw1dHLFHBIw=
+	t=1741005544; cv=none; b=o+kvSl2RtylBRWj/z2y0eskI9If+QA73LMnfuyDNNgyi431AXiEPmUKgsiZPG920bcrMWEJouwiIhgirNO8xFRCoL62au4FjGKpVHiiwk+O1+0PyJDgkhyvytm5ml7hoL+ydcKwnGrO0trc5lNME4wvg982W+hOlpLqoQf+6eh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741004995; c=relaxed/simple;
-	bh=Yw7OyfUoJENgwEgIH/H8SqpfQmFqDasXCQMaW0vHlZQ=;
-	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=nhqaRpHv/4OUX5ZWWYC5+IA+D2M2AIsk6FdwtL4AQbBzHeE6A3qjgl+Wh0vcjI4RWBwQy3uF75Morhe0Rdkq7Sdp+4o+YvmtWEnjQh0rrJkfnCC4rC60Wzdy7fNjavc9+DUd036WstXI5AaH9gtnYx6yDw71JxmkhdIkfNA1Hrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=qg0TwlZT; arc=none smtp.client-ip=185.132.180.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
-	by mx07-00376f01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52382geB017916;
-	Mon, 3 Mar 2025 12:14:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=dk201812; bh=k
-	x2Ud6noyLpxA2vmAMFLYxS08s4Ub8isLj5W+G5Lxns=; b=qg0TwlZTQ15J/NXXn
-	Rxyyl6PuWchud/n8lkNlnzqfZECwiEOJowczGqvWfzQcP6y2frxlDq9+VjtAuQ6M
-	U+s0ZDVG4nTcecHbTkqmNyza6O+VjZ4W9Q6yXmCvLv8iHt7EuxSf3+6wCkJzHY8S
-	GlgSqEAP8Bvedoq9ZW9iAb3mCBiJHm2OXTxu87Oa2TeBZOH1OHTREq7CAIE4WnKo
-	M0QV68PVF45nbWIUYKDePyGvI1aYZA915OZSnsY/GvqflD1Vd9iBdm1kA+B+EFw+
-	2U9+HsRoTBHFNuf0n3gXls8KD2FqT9bNwqBh+uYyhggryzGkRvD7gCePkk4hxi5G
-	5XasA==
-Received: from hhmail05.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
-	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 453u711fe4-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 03 Mar 2025 12:14:29 +0000 (GMT)
-Received: from Matts-MacBook-Pro.local (172.25.8.157) by
- HHMAIL05.hh.imgtec.org (10.100.10.120) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 3 Mar 2025 12:14:27 +0000
-From: Matt Coster <matt.coster@imgtec.com>
-To: Frank Binns <frank.binns@imgtec.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Brendan King <Brendan.King@imgtec.com>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Brendan King <brendan.king@imgtec.com>
-In-Reply-To: <20250226-init-done-fences-once-v2-1-c1b2f556b329@imgtec.com>
-References: <20250226-init-done-fences-once-v2-1-c1b2f556b329@imgtec.com>
-Subject: Re: [PATCH v2] drm/imagination: only init job done fences once
-Message-ID: <174100406866.47174.11242172602990003821.b4-ty@imgtec.com>
-Date: Mon, 3 Mar 2025 12:14:28 +0000
+	s=arc-20240116; t=1741005544; c=relaxed/simple;
+	bh=B86K9mL2DWSBbOS2P/XXx6FWnpdGnhaunsmZn+LgU1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EEQJXKy7WDaOUaP3EEMyR38LIWQxZsTLej2MWkSfLn+Z5vqwTYGIhV0wimM9WVqq95HuYWSqN3sDkBkVPtgOJWczo2zJHAd+gE5iOBQasOofH1nbPJtH0b18NQSt6pOu+SZee4kaBHXunoYCzxlhbLljPXK3U+yNMhu0BwDZw5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPIduBF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A9DC4CEE8;
+	Mon,  3 Mar 2025 12:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741005544;
+	bh=B86K9mL2DWSBbOS2P/XXx6FWnpdGnhaunsmZn+LgU1A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=iPIduBF/ryFdMhJVjAcCERxHSX8AW4S7CCuHeo1rsoc4ksIQmmXxMaTZsaoBaXm0t
+	 p75PvLX6Rd5cikacEeqPg0KjFR4iK5qKFPqyx1WqUoboTMmU/oQBCZJ09DGA5Cz56t
+	 VbdHMcL9bz3qP8u85LX783N3N7dP64HQhMAesZkZ3oCCdDZ/RYbyZlWERcDbOFN27G
+	 9sxSsNIfOYeYHTTOMKqxCw3GcFiPIKk91BA6Wphfyta1GfBDu7yrjSkESZ22HF8OuK
+	 YsOY/I1HhFIDFAcFjjjb2A09XobR6j1g3uVOIxnAfaqMFBQ0dCBpLd9VroGWKuCWaw
+	 szEVuWhkdCVgw==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-72726e4f96cso2411224a34.0;
+        Mon, 03 Mar 2025 04:39:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUJL+UI8pauK0UtuVITxHGTd9uZ6ysjRlWEiiIalRvmdiGjumOJ6HWJ5tPT7zBnDE0dFw3G8VXq@vger.kernel.org, AJvYcCVIISWGXJtt8lfk5trYNxen5IKuBaZtnTSXss/FDRyODUkX132y27KIdwpVHhhXVoKMeX2hITiGiPI=@vger.kernel.org, AJvYcCWgjIW3fel4nBQE+JbF1qFDgXMv9OxTkR2sXS1UGkKrQxq9B0Tuv6WTfbQQQILPeuHNKV2jk1flVK4BUxc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdM+q0UMTnbPHAJxhYEOz3u5DFX+YT4FJ6JZbn8QzR4PqH6p71
+	Qh/i3NdeFdDBTI4IMgmHlaIIBdUe0g9gW9WC2SEZdfjpEZQwbQhFVf1cOOm7l4fxOsFSDR4Eu+X
+	kr/zz5Z0v+MYWt46a/oKJYILUhMw=
+X-Google-Smtp-Source: AGHT+IHL7QcHIA/gOliSbHVKnX78oe4T2jnrZGkt3ri8BU4falSM2AKPYFtTywanWJLfm4FpFouSbDhOekSp/JpP7jc=
+X-Received: by 2002:a05:6830:388b:b0:727:2a80:e3b9 with SMTP id
+ 46e09a7af769-728b8306967mr9059477a34.24.1741005543352; Mon, 03 Mar 2025
+ 04:39:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-EXCLAIMER-MD-CONFIG: 15a78312-3e47-46eb-9010-2e54d84a9631
-X-Proofpoint-GUID: OV_UPTrZlYNYta2tQwYW8fdXws1DhSJT
-X-Authority-Analysis: v=2.4 cv=LrJoymdc c=1 sm=1 tr=0 ts=67c59d25 cx=c_pps a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17 a=LHZ2_XVCwAsA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=r_1tXGB3AAAA:8 a=p_fuJcyyES1w3x-Bcj8A:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-ORIG-GUID: OV_UPTrZlYNYta2tQwYW8fdXws1DhSJT
+References: <20250303034337.3868497-1-haoxiang_li2024@163.com>
+In-Reply-To: <20250303034337.3868497-1-haoxiang_li2024@163.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 3 Mar 2025 13:38:49 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0g5RJaHeYqiP3khp2vPyVHj0W35ab4gtBJ0R14nhSqa_A@mail.gmail.com>
+X-Gm-Features: AQ5f1Jpbua78r-Y1CAXxGLBF0QiCkuqUxIYIZ26St3GtTy8Yb-YsB_WumRvmuoE
+Message-ID: <CAJZ5v0g5RJaHeYqiP3khp2vPyVHj0W35ab4gtBJ0R14nhSqa_A@mail.gmail.com>
+Subject: Re: [PATCH] PM: EM: fix an API misuse issue in em_create_pd()
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: rafael@kernel.org, len.brown@intel.com, pavel@kernel.org, 
+	dietmar.eggemann@arm.com, lukasz.luba@arm.com, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Mar 3, 2025 at 4:43=E2=80=AFAM Haoxiang Li <haoxiang_li2024@163.com=
+> wrote:
+>
+> Replace kfree() with em_table_free() to free
+> the memory allocated by em_table_alloc().
 
-On Wed, 26 Feb 2025 15:43:54 +0000, Brendan King wrote:
-> Ensure job done fences are only initialised once.
-> 
-> This fixes a memory manager not clean warning from drm_mm_takedown
-> on module unload.
-> 
-> 
+Ostensibly, this is fixing a problem, but there's no problem described
+above.  Please describe it.
 
-Applied, thanks!
-
-[1/1] drm/imagination: only init job done fences once
-      commit: 68c3de7f707e8a70e0a6d8087cf0fe4a3d5dbfb0
-
-Best regards,
--- 
-Matt Coster <matt.coster@imgtec.com>
-
+> Fixes: 24e9fb635df2 ("PM: EM: Remove old table")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  kernel/power/energy_model.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+> index 3874f0e97651..71b60aa20227 100644
+> --- a/kernel/power/energy_model.c
+> +++ b/kernel/power/energy_model.c
+> @@ -447,7 +447,7 @@ static int em_create_pd(struct device *dev, int nr_st=
+ates,
+>         return 0;
+>
+>  free_pd_table:
+> -       kfree(em_table);
+> +       em_table_free(em_table);
+>  free_pd:
+>         kfree(pd);
+>         return -EINVAL;
+> --
+> 2.25.1
+>
 
