@@ -1,177 +1,178 @@
-Return-Path: <stable+bounces-120246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6182DA4E01F
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 15:04:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC18A4E45D
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4807E16BA7B
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 14:04:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D96A1897A66
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 15:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83825202F68;
-	Tue,  4 Mar 2025 14:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7Bi7GN3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C749A2780FF;
+	Tue,  4 Mar 2025 15:31:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2161FDE3A;
-	Tue,  4 Mar 2025 14:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0405B2780E9
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 15:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=160.75.25.117
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741102306; cv=fail; b=IXpACnfTLW1w1Pb4jOMl/ak3AOozfNeYnWnWUYD+kbBF0Pudw4jKwLM5XGuVIQ94izilSlxt2DNr5Vw/9llwXX9I2iVFWXbDPhXcHT+zDnhelsOQC9VKzc9j4Za8A0K49gNca90UgV9A51gxWUvxJ6ERpHr/yDxm7FCQXhtagXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741102306; c=relaxed/simple;
+	bh=afaNn7bQBqwP5EyP5AoJcdnHL2DHIHUStLtpr/Prcnk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BS/9MQvTkWZV1BUXWuKcJG6mNr6kRzqGaT5lUDGi5jC5ysRQrHO2IYZtrNKc7eF++zUjFMY+/4LB3EfiAVflimBrL/9t463Bc1XFd6/SKvG1gsYGYB2WC4SUvltVBHk81tT7FfAZF0XI+KthbeI68wWYcR5BSjIUSucRJLfgJ68=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=159.226.251.84; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=fail smtp.client-ip=160.75.25.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
+Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id 7B13540CEC91
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 18:31:42 +0300 (+03)
+X-Envelope-From: <root@cc.itu.edu.tr>
+Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6flR6F36zG0bG
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 18:30:43 +0300 (+03)
+Received: by le1 (Postfix, from userid 0)
+	id 7E70C4273B; Tue,  4 Mar 2025 18:30:28 +0300 (+03)
+X-Envelope-From: <linux-kernel+bounces-541093-bozkiru=itu.edu.tr@vger.kernel.org>
+Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
+	by le2 (Postfix) with ESMTP id 78184425A4
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:28:21 +0300 (+03)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by fgw2.itu.edu.tr (Postfix) with SMTP id 4F03F2DCE4
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:28:21 +0300 (+03)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37FC71891758
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 07:28:28 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5211EB9EF;
+	Mon,  3 Mar 2025 07:28:04 +0000 (UTC)
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84E61E8327;
+	Mon,  3 Mar 2025 07:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741097062; cv=none; b=B4iYJVf2PXdDqkFULNpBlUKVGZLzgh0EZZyZyPet2jyxbQncOkWR3D2BnTmfKrLD9os3TLDTMS4A67bS4gp0ZUC6UaxiFdo1c7hCHFiETj9isM+dvsoiVjeBCUFf4tPhPLr+MDpvnO+9O+4yaMi/soSWpKIhRGhd0PxXyDB5fSA=
+	t=1740986883; cv=none; b=QkM4Y73o/TpBElBS7bMsKXzgBQzOGe1QtFn5PN162s7lpalCM5rSebA5omqnx4cJQoB9bDcYmX51HoMmpHCbYVELz+gKOtXdKU++PTSHJ/3m4sjiP0W7pZIQt4y2ajjBPwUuoRZmNss5RaeoUdzO419ib0Z8NCgKgdfVDzaf/V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741097062; c=relaxed/simple;
-	bh=Cu0vRhc2l1pNNOB1DIImUKRxHQPlGsWExbF+PZhgDHI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fQSyNBm89bA2sPqH79wy55F8DGXRdp4bxRlvz+j7jAGXBmIn5NMUKIo27ft6S4xijegqnGIRA3yrXC/LdoudPeeJJ+k7cnc6gAIdmKeO9llW2DSQHjXskD6S5FbgBLvlOS2fCs818i1txKbyAhVBC/6WiM6P9R0dD4KgN99ULlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7Bi7GN3; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abf4b376f2fso550273166b.3;
-        Tue, 04 Mar 2025 06:04:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741097059; x=1741701859; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yGHWVfgFpYsOixf8HC1qT+TlcUPnq+D1bDVJISImCiE=;
-        b=A7Bi7GN3g0ZEoo1dtb7ML/h4D5DgUfIAkJaj0PFbZwO6Q8VBWsFPhAP5WOGzTXa+u3
-         YmPeT3cc+r/HS0hVoK1knT+FXdFRgh3zFdwEZvZu20yWFd/0jkPRqX7KFjr6s7+KW5dG
-         ijQwvxXlWlummGQ0tpwcChQ0VY1Q5SPXrYm9rlMvp6KfLwOD25J2XRNaH+b8Mu44ouZY
-         UMtVmhgAsDRVqqF+uByy/BCaAFFtcuC6zM5h+Wd0OE8ZcTzTWtGv+FyoImd0gZzJ0Qwi
-         b4zcNkbNCq3/1MfWw9Fh/V72TMFUuhbqDTDbZWS53g+PWbmSQ3lP94/+TuUv3motmcd9
-         3qmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741097059; x=1741701859;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yGHWVfgFpYsOixf8HC1qT+TlcUPnq+D1bDVJISImCiE=;
-        b=Rq3iSZPUI+hhjs4oZSD6Y+OJYRM1I+p2jaQa90YBsO9poclAOW5GheaYqII6FbCkP5
-         IO2MxtRCXCAkUruV1Svt0Jdj6FF2KswHLbxAxWh3zPlZMu/z1/h2fu+bTfYHVvkQmRAt
-         MAW/gfN6BZYcamtIMp9mC81KszVamlc8IoLSSjNucTarZuOWNcZf6B3IBnXR9O8Rkv9a
-         rYARrYgqjEf7e1OqlPGgcjlV/YFo4OsXjXUEAuHpvWFBZVZcFdKZYxe5ayR+dh2eXvyb
-         g9GR3WcQKrfFnzYj1XofnIMtfnsUMw6BVBiffO1R1d3VALVNFF+9rM7e2d+bjnS5UEWA
-         i4nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5+YMIX+VqvlQ05vLDUzvBk0MiU7o+OTOhqWCam6E9hCvKjSJ/D3jrsezUKkaq0v97aEXWJQ/zz1YlJTw=@vger.kernel.org, AJvYcCVSnX97MRNIxAQ0hTFokrQdruzksP5KYzRT/X0e23C9PNMS7MCl3HTigPh87dQon/E+2hQtHg/P@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTcE0JK8re5gLvEfAHhIrTbuw5y3we9G/DKJzmnmn4ChR1ez5M
-	uxxGO+t0s8x+SpnTg91BvsIL3QjNc7QxCK/GpdE5OMJ2M9TvyayN
-X-Gm-Gg: ASbGncudwrmk322/vbIhC9AqlFBDbZwuOLIepXm5786AAOpB7ucgy/IrDSPIWU0wQ8g
-	3fiVSNEh2LZfOB1L/tDLjSivnsb7vEeU6gIoFOis2zziViFfrMAVlEhDVMuTqUitGdNyXG9H3ss
-	EXp8gTvIrNyddEOPOqnlyrveswf5KMruv9n+isFP9yJkE5aCt4rWu+GfKCuYNhNwzz6yBMO6FHm
-	fgnU04Gmi0r46Cp4whbmFWS3MgasYtZkxR9m8SAI3RpkGPsAFrGwt4ucU5LVRmv10946kWDj4Yt
-	ca5zVbuD2jujp4PYNZqZm2Y4ssW1ztlZIGkKf37y8LxeUA==
-X-Google-Smtp-Source: AGHT+IF+L/wf0isDYX6j5oD3HXuFl+JS6RCLB7/lspL/L4jaoEz/L3cXMrsjf5dIytwv+VfNog5ipQ==
-X-Received: by 2002:a17:906:6a1b:b0:ac1:e889:c2a with SMTP id a640c23a62f3a-ac1e8891834mr512462466b.11.1741097058504;
-        Tue, 04 Mar 2025 06:04:18 -0800 (PST)
-Received: from qasdev.Home ([2a02:c7c:6696:8300:8e4b:863e:7e57:3c84])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac1e6a5c13bsm201987966b.132.2025.03.04.06.04.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 06:04:17 -0800 (PST)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: leon@kernel.org,
-	jgg@ziepe.ca
-Cc: linux-rdma@vger.kernel.org,
+	s=arc-20240116; t=1740986883; c=relaxed/simple;
+	bh=sS6epZ/Q0dmr2tgVut1X+sY8gavr366YXLTOVDwcdzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a8Tk1+AVPPfrxp0ILU2DDPo5BdTqkvN6nWbEioA8QEsBcwnk0TPkUSKQJ/APAe+hfQnhJHpzOAudLwKNXodaHWtmvQ8eVGULDQFbheaSdYHKCaCswTyg30d3702xBF27SwfxbuU923TMhbpWrrUnZe4bz0hAzcB7uNkHgaR0xUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAC3vaHsWcVnWs+uEQ--.52938S2;
+	Mon, 03 Mar 2025 15:27:47 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jckuo@nvidia.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com
+Cc: linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] RDMA/mlx5: Prevent UB from shifting negative signed value
-Date: Tue,  4 Mar 2025 14:02:46 +0000
-Message-Id: <20250304140246.205919-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+Subject: [PATCH v2 RESEND] phy: Fix error handling in tegra_xusb_port_init
+Date: Mon,  3 Mar 2025 15:27:39 +0800
+Message-Id: <20250303072739.3874987-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
+Precedence: bulk
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3vaHsWcVnWs+uEQ--.52938S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw4DKFWkAF15tFW3Aw4fKrg_yoW8XFyDpa
+	1DGas8Kr9YgrWkKF4jvF409Fy5GF42k3yrur1rJ34akrn3W348tas8trWxXa4UArZ7uF4U
+	ArnxJa4kJFyUC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF0eHDUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Transfer-Encoding: quoted-printable
+X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
+X-ITU-Libra-ESVA-ID: 4Z6flR6F36zG0bG
+X-ITU-Libra-ESVA: No virus found
+X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
+X-ITU-Libra-ESVA-Watermark: 1741707044.11726@IczIN6JZ85Z2k4vJE5g4uQ
+X-ITU-MailScanner-SpamCheck: not spam
 
-In function create_ib_ah() the following line attempts 
-to left shift the return value of mlx5r_ib_rate() by 4 
-and store it in the stat_rate_sl member of av:
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-		ah->av.stat_rate_sl = (mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
-		
-However the code overlooks the fact that mlx5r_ib_rate() 
-may return -EINVAL if the rate passed to it is less than 
-IB_RATE_2_5_GBPS or greater than IB_RATE_800_GBPS.
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-Because of this, the code may invoke undefined behaviour when
-shifting a signed negative value when doing "-EINVAL << 4".
+Found by code review.
 
-To fix this check for errors before assigning stat_rate_sl and
-propagate any error value to the callers.
-
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Fixes: c534ffda781f ("RDMA/mlx5: Fix AH static rate parsing")
 Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/infiniband/hw/mlx5/ah.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+Changes in v2:
+- modified the bug description as suggestions.
+---
+ drivers/phy/tegra/xusb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
-index 99036afb3aef..6bccd9ce4538 100644
---- a/drivers/infiniband/hw/mlx5/ah.c
-+++ b/drivers/infiniband/hw/mlx5/ah.c
-@@ -50,11 +50,12 @@ static __be16 mlx5_ah_get_udp_sport(const struct mlx5_ib_dev *dev,
- 	return sport;
- }
- 
--static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
-+static int create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
- 			 struct rdma_ah_init_attr *init_attr)
- {
- 	struct rdma_ah_attr *ah_attr = init_attr->ah_attr;
- 	enum ib_gid_type gid_type;
-+	int rate_val;
- 
- 	if (rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH) {
- 		const struct ib_global_route *grh = rdma_ah_read_grh(ah_attr);
-@@ -67,8 +68,10 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
- 		ah->av.tclass = grh->traffic_class;
- 	}
- 
--	ah->av.stat_rate_sl =
--		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
-+	rate_val = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr));
-+	if (rate_val < 0)
-+		return rate_val;
-+	ah->av.stat_rate_sl = rate_val << 4;
- 
- 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
- 		if (init_attr->xmit_slave)
-@@ -89,6 +92,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
- 		ah->av.fl_mlid = rdma_ah_get_path_bits(ah_attr) & 0x7f;
- 		ah->av.stat_rate_sl |= (rdma_ah_get_sl(ah_attr) & 0xf);
- 	}
-+
-+	return 0;
- }
- 
- int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
-@@ -99,6 +104,7 @@ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
- 	struct mlx5_ib_ah *ah = to_mah(ibah);
- 	struct mlx5_ib_dev *dev = to_mdev(ibah->device);
- 	enum rdma_ah_attr_type ah_type = ah_attr->type;
-+	int ret;
- 
- 	if ((ah_type == RDMA_AH_ATTR_TYPE_ROCE) &&
- 	    !(rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH))
-@@ -121,7 +127,10 @@ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
- 			return err;
- 	}
- 
--	create_ib_ah(dev, ah, init_attr);
-+	ret = create_ib_ah(dev, ah, init_attr);
-+	if (ret)
-+		return ret;
-+
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 79d4814d758d..c89df95aa6ca 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct tegra_xusb_p=
+ort *port,
+=20
+ 	err =3D dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+=20
+ 	err =3D device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+=20
  	return 0;
+=20
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
  }
- 
--- 
-2.39.5
+=20
+--=20
+2.25.1
+
 
 
