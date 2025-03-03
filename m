@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-120130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7D4A4C7D9
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:44:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 145C0A4C7F8
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C35D16434D
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:44:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692703A3AE9
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E06E25743D;
-	Mon,  3 Mar 2025 16:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988CB25BAA1;
+	Mon,  3 Mar 2025 16:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzmvVTbD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVN0nrEu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0B12566DC;
-	Mon,  3 Mar 2025 16:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483125A34F;
+	Mon,  3 Mar 2025 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019466; cv=none; b=pCEtJbsPhGdHKiXIZ49gMEorfjUQucL6grEYsCJIx9KyPY8IlE8dzSgNPxVBEyzixw7nw5Y4vVZgaiuqo/Uuinq/YWXDFBRZW8kMQez9YA/T0szeWn5GbZbw4N7sFyAFdNdpaaOW4wgkXHR8tBtaPe11famBq7yPrNpkITXz1cI=
+	t=1741019469; cv=none; b=pzecrfVsUnrO4F6V/E+3/s681ttooRMgdmgf42SqHoPyUd8bfuVzaVYFTMJ7t6OaqtcFd5t+mEjQmCu3iHYIj4GjZuzKycSMVQX+kLAFlzW5XKggnBMKNRs2cGYDcHRwi5sCJ2KygX1zlIMb8BG/FrJUUBeBc1YKYJO2LP/2Stc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019466; c=relaxed/simple;
-	bh=KTcV9V8+JgBuCHgkTTGINcMwCwPMTaH2dar9BWndPLk=;
+	s=arc-20240116; t=1741019469; c=relaxed/simple;
+	bh=QAc7evtpX6AqI49vOKse04iag3hTzb61yE0wSfOm6Zg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jRTBvpOHWkh8uVGmEIw9YDxCndl7RXxXDcvFZohR6eKM5fhp+ejx5aHFH9ZJYS7SpyHWfoWY/oNNpo07HmfCjVGnu0BnNY8KvyiYTzommJeiRd3PlnymYQv3zwUoR2ll9dwXsg5m0gEMnAWnsbMbgzu0pQ4SljYW0E3xRxBMUmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzmvVTbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82666C4CEE4;
-	Mon,  3 Mar 2025 16:31:05 +0000 (UTC)
+	 MIME-Version; b=TmlRc/7yk5+l3mKIuVggVZHv56oUhR4xRNgckMTaexb7wlUdgDB/mHZrw9D1kRt8r5lC86YfucPz+djpiWU7XqaEVufvYJsgO5LlXZrTmmrMzuOX6gvsOjOYVcSEgR2x9OTJzUIcrT6T+IydcrjP/s1b/SZqvQrPi2Izr6OdlII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVN0nrEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2612C4CEE4;
+	Mon,  3 Mar 2025 16:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019466;
-	bh=KTcV9V8+JgBuCHgkTTGINcMwCwPMTaH2dar9BWndPLk=;
+	s=k20201202; t=1741019468;
+	bh=QAc7evtpX6AqI49vOKse04iag3hTzb61yE0wSfOm6Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzmvVTbDobnwAKrPiKDXmZ//s2xaNVYUfAMM/Ix7o63dPWEi4CpJwEnDtLMJI7jKH
-	 3nte809jvz+8+WSrCFpDgjQeRXlYn+mxzD2MEsgz3JKxADsjd3dZJo6UkoQS5sDa0v
-	 2xELwBzaYfysQCrd6qHd6beGu2iLXvH7Gt8dnoMgxKEssyc/gY9GTvzzY+GaKOHL8y
-	 WG9Mb402SOZuQ/Qr2k2HbMtPCK9kG3nJCbQjErJSYBW+fB2/++LRCoxmlXLP4t5XjJ
-	 vaqMOua63YJ/v4UQrcOGfEekXOD33yCswCPgEu+2c4QlLoGnY3YG7QqJPpd1taJSYr
-	 JxvnVWKWcqMMQ==
+	b=IVN0nrEu0oGdjRbFgldbAWLCtR8AgRFmjy3es51+tLZzOoy+KbLZcDAV3rHIm8Xd8
+	 FXhMDAZuqiOKZ313zd+cGmWvYtFIquOFbGmWDRkwZpKdMfSYXX3z8u41pz5JCg7gIn
+	 SAqfw6vpiOf5vTiXm7GLHhqTIr0zQwyIImGox2WcTXKD7oAtcC1JJChVomWvH/obzB
+	 JcmAuRYPD1i4ZqyJHeVPD0joYC56bHv9ewpqIMKZ7dewbj7tqZPfydVpOv29f3chVl
+	 Ad9NCWbEQRthfrwdsmu/HA1HOSOcfmQQSw5s1xsSg17B4T2FfVPl1Bd3nx5UhiJsl2
+	 NtsPgOhxI2l/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ming Lei <ming.lei@redhat.com>,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Keith Busch <kbusch@kernel.org>,
+	Mike Christie <michael.christie@oracle.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 16/17] block: fix 'kmem_cache of name 'bio-108' already exists'
-Date: Mon,  3 Mar 2025 11:30:28 -0500
-Message-Id: <20250303163031.3763651-16-sashal@kernel.org>
+	seanjc@google.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 17/17] vhost: return task creation error instead of NULL
+Date: Mon,  3 Mar 2025 11:30:29 -0500
+Message-Id: <20250303163031.3763651-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163031.3763651-1-sashal@kernel.org>
 References: <20250303163031.3763651-1-sashal@kernel.org>
@@ -66,39 +76,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.17
 Content-Transfer-Encoding: 8bit
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
+[ Upstream commit cb380909ae3b1ebf14d6a455a4f92d7916d790cb ]
 
-Device mapper bioset often has big bio_slab size, which can be more than
-1000, then 8byte can't hold the slab name any more, cause the kmem_cache
-allocation warning of 'kmem_cache of name 'bio-108' already exists'.
+Lets callers distinguish why the vhost task creation failed. No one
+currently cares why it failed, so no real runtime change from this
+patch, but that will not be the case for long.
 
-Fix the warning by extending bio_slab->name to 12 bytes, but fix output
-of /proc/slabinfo
-
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Message-ID: <20250227230631.303431-2-kbusch@meta.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/mmu/mmu.c | 2 +-
+ drivers/vhost/vhost.c  | 2 +-
+ kernel/vhost_task.c    | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/block/bio.c b/block/bio.c
-index ac4d77c889322..43d4ae26f4758 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -77,7 +77,7 @@ struct bio_slab {
- 	struct kmem_cache *slab;
- 	unsigned int slab_ref;
- 	unsigned int slab_size;
--	char name[8];
-+	char name[12];
- };
- static DEFINE_MUTEX(bio_slab_lock);
- static DEFINE_XARRAY(bio_slabs);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 19c96278ba755..9242c0649adf1 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7589,7 +7589,7 @@ static void kvm_mmu_start_lpage_recovery(struct once *once)
+ 				      kvm_nx_huge_page_recovery_worker_kill,
+ 				      kvm, "kvm-nx-lpage-recovery");
+ 
+-	if (!nx_thread)
++	if (IS_ERR(nx_thread))
+ 		return;
+ 
+ 	vhost_task_start(nx_thread);
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 9ac25d08f473e..63612faeab727 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -666,7 +666,7 @@ static struct vhost_worker *vhost_worker_create(struct vhost_dev *dev)
+ 
+ 	vtsk = vhost_task_create(vhost_run_work_list, vhost_worker_killed,
+ 				 worker, name);
+-	if (!vtsk)
++	if (IS_ERR(vtsk))
+ 		goto free_worker;
+ 
+ 	mutex_init(&worker->mutex);
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 8800f5acc0071..2ef2e1b800916 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -133,7 +133,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
+ 
+ 	vtsk = kzalloc(sizeof(*vtsk), GFP_KERNEL);
+ 	if (!vtsk)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	init_completion(&vtsk->exited);
+ 	mutex_init(&vtsk->exit_mutex);
+ 	vtsk->data = arg;
+@@ -145,7 +145,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
+ 	tsk = copy_process(NULL, 0, NUMA_NO_NODE, &args);
+ 	if (IS_ERR(tsk)) {
+ 		kfree(vtsk);
+-		return NULL;
++		return ERR_PTR(PTR_ERR(tsk));
+ 	}
+ 
+ 	vtsk->task = tsk;
 -- 
 2.39.5
 
