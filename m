@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-120167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91186A4C884
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 18:01:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83338A4C861
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:58:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20023B0CB3
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:54:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C59118979A2
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70367276D3F;
-	Mon,  3 Mar 2025 16:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265712777EE;
+	Mon,  3 Mar 2025 16:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEB1pCSK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ky5T+mUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D347276D2A;
-	Mon,  3 Mar 2025 16:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4534277031;
+	Mon,  3 Mar 2025 16:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019546; cv=none; b=oeyVK51QWchjH7Zi6Fh4z0mFqLpm+rRSj4NQlFjTc17VVBRBCAaeCwpyQaPp/DvnnPyBJiSxbwqYk/A5868K1DiWtXHIPYtTFQ/eRdnGjUbCava/DjDvO00Ja1U1pFLqlTaVoU8w+/lqYisSyTpBM3mE82SPXUOlvQy53QuOWcw=
+	t=1741019547; cv=none; b=ld5RVc9Xop1HtxHpDBXtkx5E2ZGne7mtvCVHO13fdOAU4FC+FdFzDlTqe5YgA8e9/e0B+8aOFgK4Yyap+awNlnIBPCFhOB49VihbqULMuHFJDtYTknZlnAWBZJO9U1OlLk2Nhr5XjdtoEvnSkIgOaSCfbGFgcUeqPx+MiQ/0j0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019546; c=relaxed/simple;
-	bh=dJTFCGdofHJjU0lr1G1iDu2+pobHXDAxaKuOH8UYRFo=;
+	s=arc-20240116; t=1741019547; c=relaxed/simple;
+	bh=rOy5hMmjF1kd8PTB/KewGJQdLsx+/oyJithouVDc6qw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SLo/1HNeG8pyyN0mhq59m7hoe/utlVyUXPxppGpwFJlE2PzWrsHpn/2tccTG5sL2lZSvW8eOEkgjtrwOImGccxcOO+Y8o8/sbEzonGFFSQ0K+ohKUYpgBNuRsYivsdqjR3NawnF2IAs/tpeXOUX9sikcKQEkK0diO71aTvtJFkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEB1pCSK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E140BC4CEE9;
-	Mon,  3 Mar 2025 16:32:24 +0000 (UTC)
+	 MIME-Version; b=Y5y8HM2o9Y4DBUQxyEJGQJ3pGY75Rt2r4fbVHPVB9P4YjQQuxda+Y4+lu8cYS2prenr0P4CTv/RqxwYquB80HZluJBO8kXHQ8uOCgc3zlQxJ0wbP7rPi0dt+YoyOBekveXx69MYGGgTpr5GFwK09NnCvWItadwDzBHinC5rXe1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ky5T+mUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A1FC4CEE6;
+	Mon,  3 Mar 2025 16:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019546;
-	bh=dJTFCGdofHJjU0lr1G1iDu2+pobHXDAxaKuOH8UYRFo=;
+	s=k20201202; t=1741019547;
+	bh=rOy5hMmjF1kd8PTB/KewGJQdLsx+/oyJithouVDc6qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEB1pCSKosQbgOatZ+6Azd13WGaluXPjjYK14navxEahCd8RF/3MPEfDPKTzuYQEL
-	 Fq7rbTgg84/J+6iQh0ABMwGPeLM3250danMGoWW2q8VBS9qgppPzQ6iEBjKSTUGBRi
-	 k0Xc75QbktuR74WkMbLjK2kJOldzqU35EhkzwDnfQHtnd+sZ6BlM59c/D0jLdEO66U
-	 uveWqsNqhVAkf/oVfpCSRKUwa1hR+4ZvCLs6YzGY9QzizyegxJUJZjWm89rKhPthYX
-	 RkKEQJ2ur1MS40Xz1mkDIi35S97DhU2ezRf+pGy2OuBhcDerx3zJsaY+4OpAIkcyti
-	 j7TLK9nSaJrvA==
+	b=ky5T+mUFZLXnE79k/E7tVoYzt1WEZmjVrxh9RbQ4Fo8/S6A+B8CIZzH26qmizeBR8
+	 mbAYuet6bIg35V9lfjnOlSIDv8MNKm1BszWb+ul5QFDabVJvzlTP+SpoDRoAQR9geO
+	 Rbbn0W2CEFtB5bUjSNY2cu649EwuJuVxUqsuTWwl7sP2n1SpYr9yz1F6ZJkPAfS/4s
+	 q71Y+jmSmhzEoFqIUvQCuhEMo1Qb095wO4ipkTMndYOiiwSOKwLF5ljSnWvFKsyI9P
+	 Njg3kzCwMN9Mli9JQGlwsWw2JyCEu8MCHm/vJWmDl0blOGtNtmKBqGlYkQHI+iIjOL
+	 4thN+f+HywukA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>,
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	dakr@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 7/8] drm/nouveau: Do not override forced connector status
-Date: Mon,  3 Mar 2025 11:32:10 -0500
-Message-Id: <20250303163211.3764282-7-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 8/8] block: fix 'kmem_cache of name 'bio-108' already exists'
+Date: Mon,  3 Mar 2025 11:32:11 -0500
+Message-Id: <20250303163211.3764282-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163211.3764282-1-sashal@kernel.org>
 References: <20250303163211.3764282-1-sashal@kernel.org>
@@ -69,33 +66,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.234
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 01f1d77a2630e774ce33233c4e6723bca3ae9daa ]
+[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
 
-Keep user-forced connector status even if it cannot be programmed. Same
-behavior as for the rest of the drivers.
+Device mapper bioset often has big bio_slab size, which can be more than
+1000, then 8byte can't hold the slab name any more, cause the kmem_cache
+allocation warning of 'kmem_cache of name 'bio-108' already exists'.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250114100214.195386-1-tzimmermann@suse.de
+Fix the warning by extending bio_slab->name to 12 bytes, but fix output
+of /proc/slabinfo
+
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 1 -
- 1 file changed, 1 deletion(-)
+ block/bio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 6b8ad830c0348..aa8e4a732b7ce 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -751,7 +751,6 @@ nouveau_connector_force(struct drm_connector *connector)
- 	if (!nv_encoder) {
- 		NV_ERROR(drm, "can't find encoder to force %s on!\n",
- 			 connector->name);
--		connector->status = connector_status_disconnected;
- 		return;
- 	}
- 
+diff --git a/block/bio.c b/block/bio.c
+index 6f7a1aa9ea225..88a09c31095fb 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -55,7 +55,7 @@ struct bio_slab {
+ 	struct kmem_cache *slab;
+ 	unsigned int slab_ref;
+ 	unsigned int slab_size;
+-	char name[8];
++	char name[12];
+ };
+ static DEFINE_MUTEX(bio_slab_lock);
+ static struct bio_slab *bio_slabs;
 -- 
 2.39.5
 
