@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-120148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D3DA4C82E
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:52:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FCAA4C841
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD63188422D
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:50:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C05403A91BD
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC8326461B;
-	Mon,  3 Mar 2025 16:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF1F264628;
+	Mon,  3 Mar 2025 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMHT+BX2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOOTHEdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03A822CBFC;
-	Mon,  3 Mar 2025 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947B126462A;
+	Mon,  3 Mar 2025 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019507; cv=none; b=J+E3IaZuHFC8srFJ+rOkW4Wcp5wqYP8+6G85t2yvMtuZ8jPzrSzbWPUcIxR1v4Z4GAINpk16wg5ioNOReb215HfF5GQvw8Hw10w9i/7pZj+i0UY3BZck+Hdvkb5gebBbWG2CVhXKpkV1UvDtRnMxxp8MSAgTpDc8TktegLVBqfM=
+	t=1741019509; cv=none; b=bEOOdszjsVke0kQ9r6MBtakcGKKXmvv518BvkrQjXsmvohdqE8v2hdboWoMjKdPyH5cS9JCbF3QkyeL6azkhn7IuurssukBLb8Nrv9qt9nsxPeL5RNsV8o2VXPMhE/ITdW2wAo5WE/3lRe42sS1ktsz8gyR8nAkZ80txJcVfcq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019507; c=relaxed/simple;
-	bh=Gf4L9Kb1Z9un25PwqurLSNnkgPyzqTlm1uCTOa5d+Ps=;
+	s=arc-20240116; t=1741019509; c=relaxed/simple;
+	bh=w4eZ7vTmYbfaw63YjKeyHVuq0kQ1D/IJR+agJq/71Rg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kdDn1eFGLGNfBsReYXmNwpaT0b+hwQsxM26evN1Zw/3a3iI0QLcrV6cAnRHPbaS+wezlJo1EyoShW0SBWVdnxQp2R0um5E1MNq7T4Yu+LioU8C8d3y9zifMUsT9MUjvMr+WxqfpvxqnavXDGyhS133PoNvaJqB7RCmZOGDkiiLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMHT+BX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183C0C4CEE6;
-	Mon,  3 Mar 2025 16:31:46 +0000 (UTC)
+	 MIME-Version; b=jsU550NucV9RXSh9SP4qQ7Qa4wKHa3jvsrqmMqHmsBk9zevMHYQjLhv2R+pIIk7Sbb60n0Pi4IECN5NVMA7Bs89Tx3TE23tmfKZUwjb18S5745EjI2xMLUpbFeyP6FR5jdzCLpdX/jfjwPtmF7kIqmkOMy1vgdfULSO29WSeOwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOOTHEdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10D6C4CED6;
+	Mon,  3 Mar 2025 16:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019507;
-	bh=Gf4L9Kb1Z9un25PwqurLSNnkgPyzqTlm1uCTOa5d+Ps=;
+	s=k20201202; t=1741019509;
+	bh=w4eZ7vTmYbfaw63YjKeyHVuq0kQ1D/IJR+agJq/71Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMHT+BX22amj1WRw0w1PjWEcBl8cJlSftIPvm5iLYDOMmeQTEyD1ia/Br9doljzNH
-	 vBbZNWBVC8W7kWq0Iyft8e9iqbFilqV4x2AiJm98AUMU+c5xw5eQcfIp71ZUS9pJZ8
-	 yq/AqZ9UICSG0SHqZ0xBeWXy3VTVXJ5m/B5ADTgs7ueUWfDJnOREr+g2p6a2uT4hXb
-	 d6O/0dQI2ftLVxbtFEzCE5JpQaBzQpK6qQydSkZtIJC2q3hDf6Sy/78Ag94ONwaW5l
-	 MCaCN1HLih9N8r28pLKkyS6FVjXhdA2BEnXaUSe6DSiS42x7U6OpOa3wPlId7wd99U
-	 Oz4hIyzSfzk6A==
+	b=bOOTHEdQ/J1vC/HxPIQIGz7elaYHIWEVZf1N3G/qHjgKyceXusXpi1M4t5+PRoEMb
+	 7Qr0ZvuVFWceKXmR/z9WjIPsasJ/JeTMw3Co6c2bENruGdBHJSXYtI7t6zW7kMYFxg
+	 GKNnNcI/inZvWBXk+w3SBBKEGy+BdfUKO64VMJrig0c4dP2ko2dzgHAlyVIrei7kMt
+	 jgM4Ct7hBsGLunE2CavWY9xnSNqfYeSNJMiToTsva2T5A/lHgrVyZ/dU8I2iYpI8Gj
+	 ChTaaK5CpT9ofp8PcXIw4ZiTReoLWRHpH2H74P9VQQsXBT0Y32RowEpIcRaqVnEKaS
+	 Ey9cxcDA2STCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Ingo Molnar <mingo@kernel.org>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	jacob.jun.pan@linux.intel.com
-Subject: [PATCH AUTOSEL 6.1 6/9] x86/irq: Define trace events conditionally
-Date: Mon,  3 Mar 2025 11:31:30 -0500
-Message-Id: <20250303163133.3764032-6-sashal@kernel.org>
+	martineau@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 7/9] mptcp: safety check before fallback
+Date: Mon,  3 Mar 2025 11:31:31 -0500
+Message-Id: <20250303163133.3764032-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163133.3764032-1-sashal@kernel.org>
 References: <20250303163133.3764032-1-sashal@kernel.org>
@@ -70,46 +70,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.129
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
+[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
 
-When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
-the irq tracing produces a W=1 build warning for the tracing
-definitions:
+Recently, some fallback have been initiated, while the connection was
+not supposed to fallback.
 
-  In file included from include/trace/trace_events.h:27,
-                 from include/trace/define_trace.h:113,
-                 from arch/x86/include/asm/trace/irq_vectors.h:383,
-                 from arch/x86/kernel/irq.c:29:
-  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
+Add a safety check with a warning to detect when an wrong attempt to
+fallback is being done. This should help detecting any future issues
+quicker.
 
-Make the tracepoints conditional on the same symbosl that guard
-their usage.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/irq.c | 2 ++
+ net/mptcp/protocol.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 766ffe3ba3137..439fdb3f5fdf1 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -23,8 +23,10 @@
- #include <asm/traps.h>
- #include <asm/thermal.h>
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 77e727d81cc24..25c1cda5c1bcf 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -981,6 +981,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
+ 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+ 		return;
+ 	}
++	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
++		return;
+ 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+ }
  
-+#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
- #define CREATE_TRACE_POINTS
- #include <asm/trace/irq_vectors.h>
-+#endif
- 
- DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
- EXPORT_PER_CPU_SYMBOL(irq_stat);
 -- 
 2.39.5
 
