@@ -1,170 +1,174 @@
-Return-Path: <stable+bounces-120054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21334A4BF72
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 12:54:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9E5A4BF8E
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 12:57:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC5616A376
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 11:53:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2EA166DA4
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 11:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C153A20E008;
-	Mon,  3 Mar 2025 11:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA9B20D51A;
+	Mon,  3 Mar 2025 11:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GR2fYYdF"
+	dkim=temperror (0-bit key) header.d=aruba.it header.i=@aruba.it header.b="kAdmNOD0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpcmd01-g.aruba.it (smtpcmd01-g.aruba.it [62.149.158.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD6520D4F2
-	for <stable@vger.kernel.org>; Mon,  3 Mar 2025 11:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B5620CCFB
+	for <stable@vger.kernel.org>; Mon,  3 Mar 2025 11:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741002797; cv=none; b=Uyi9jYjeMuF9eSxu6GNVynCWwjeyjw4hoontxr2+V6h/PE8PilOddvqSnCyiAO/Y3JjSdnN1upkJLwyaAUHuv0YgoKeDf9iJQOUkOALZfoN1VHQqbDcAXtS4LmL6+Bnzwco/ufs26acLjEcXhmIba5RFBc0xDQShWlhIR0PIcFg=
+	t=1741003026; cv=none; b=uxhbOXSMCRPm09BVcHhCcKq1m8ad7doJD+IXu7MIUd7IZeeYfxPpe1j1E6CLY0nDQzxgH8e0yU+rkkWZKUmb5JW5sF2Lal/fZdIfTzmqL1IzvPzmt6VaVKXu3RXLu0r20/5Lj8HL1nosMx5cOqaoRmKEiy/AX8DUS9mXqoP9d9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741002797; c=relaxed/simple;
-	bh=p7hkdHG3Uk3MNaKmI5KRSyrO6nMtHV/TriUgNA5ZLkc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JcSPYyke6bEnCOop+z0zRBUix/flPhjQjyHwf1Yag4KiB6tp19O/qnb4ppzq28fuE9c3vJ6ofzreXACLM6DRVAOMwl1QWrlP5FDk+s7EwgLgz9LgWDYe4X2KrykuWE2Mjl8CI8WRkRNA6BgkVUHeWcb+xTVgSu+QXsMVcWn3CYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GR2fYYdF; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e535d16180so1714528a12.1
-        for <stable@vger.kernel.org>; Mon, 03 Mar 2025 03:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741002794; x=1741607594; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=egcF/0fSfpEIM9jKlb06PQtyWEHsWxmve3UKG8E7nkQ=;
-        b=GR2fYYdFVQ8cWKiQEgcWR3zWYB6YYoUR0uCifv6xlrL7rMy0cGHfd8b4lnEOqMWMbS
-         WzyDYhsT8FcKRADZhvh4Kx5dhKHdG0MMBC1nRbtaszCG1+Br/RseS6NNqSsaGDsiNKnB
-         IzC4oGZTSwPsjBTmP/84paPJXyQVTUu8DMWq5TLMWtxFPwa2iGzGt27VoBt3f6f68vsD
-         B+VWl4l8LsXxQMdlXmvdaJOgr9Hcn99BpmkJ67gqi8ybWdRPBi0CtsyJNmqsAdZ1NgPs
-         IT77d7PPXQTZxdNQYSX0iI1VCohQMlcKO7Bpz5w8Rmy7PwjxC2VLIy7bZIhgAStisJe6
-         eiUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741002794; x=1741607594;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=egcF/0fSfpEIM9jKlb06PQtyWEHsWxmve3UKG8E7nkQ=;
-        b=XoIuBcCWW4/mPWFgqIn3+qZq0khwL/JxJfS8Rk1qLd0EE5/SW5hpswQd4iFOXsDoSC
-         9VzGPIcB8v7IlnIF3mJlWKzlGi2WRGbhBLzWrhbW+UmF9cMvB5AYMOYP8E90tMu+eBaB
-         ewVm2Y+IY+k5G86It3JEmz+2QY5BtNjCmJ+kWt7MQRfYDzos6hdSYsCMucWPjN9jvCQ5
-         ONEqFhKFahnF21U4gEhHpTCF523gZZjcxSUxMGsL38XuFVZxy+hASUUWfYWFwHdEU4Kl
-         w2sFkfH7GsE4LgsSkFGh6HG0HY9pfmgzgtDFCW3GR2gD/6p0kpPHRHhLNZtnnepgmIH5
-         WnnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5H7ifNpq875utP8UyFdTVi5klf00I5QKIeuWr7RV9A84hVrT27/yD3BdsOF555ypbsf/UkDQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNu/f0gSJErmxKzoCcoVSqOPByHuQ6y9y8mBKsCui8Ca6t2o9t
-	HVZh4IihGeP4FXNgEfHH+QEfpsYbnjLtnb2xSnjhwp3GUrK0cgbozNEZqzHeKzQ=
-X-Gm-Gg: ASbGncuD8Pz8nG0I7awVmVIBNIch5qf5LWvGKp8ttVP3xM4RL1kFn6QPkE8LxVY4O9J
-	bnHMkifFbK36tyzyeiyG6EBc7aeJ9Dibu0skXXqEk9d0fK1uQ5yrT0KIZJBZK9uXLskUmyG28c9
-	CP7de2G6Ug3niCj3lvWxTAj40XdAV92mdjWVTCQmAhXQtwMFDLx28f7Cwi6oEzOzDJ9bV7A91U7
-	F/DOKxqSaSScLeB5sR9xd+vSg8yX936VyXHveNQ5Z74IxVg62Pb03bwThFgM+5zaJjlqJVqFgqS
-	Fuxjh4gnQCWJR43DjB9ATifOeUVUh/qlulPWt9HcYPs=
-X-Google-Smtp-Source: AGHT+IEn2yl+zGSi0lGbr7GuumDLDA2KQKipUpCk7GYI/B361NHJGLE4LlExFZMYijY48JcoBPBUsg==
-X-Received: by 2002:a05:6402:350e:b0:5e4:92ca:34d0 with SMTP id 4fb4d7f45d1cf-5e4d6b4bb17mr36004144a12.20.1741002793949;
-        Mon, 03 Mar 2025 03:53:13 -0800 (PST)
-Received: from [127.0.1.1] ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac1de83fa49sm86833866b.158.2025.03.03.03.53.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 03:53:13 -0800 (PST)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Mon, 03 Mar 2025 13:52:52 +0200
-Subject: [PATCH v3 3/3] leds: rgb: leds-qcom-lpg: Fix calculation of best
- period Hi-Res PWMs
+	s=arc-20240116; t=1741003026; c=relaxed/simple;
+	bh=bdghUzTzBlYu3WkVqq8yLPLahhT013JwLccfoK2GRVk=;
+	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:To:
+	 In-Reply-To:Content-Type; b=GaHfWfszn5Zr+e8tUg2hNaNfqirx2nBy9XaTLSnMo45mpyVdmzjR9K+eP9Qk0KEQHkB7BDO1VRwllobQ5LX8SAQHPsPEAwLGIGpYnXPvwg7oxsf9S4g2XQxWvJtsIyqv3Cqicaxo9FGLxvOiwpduPZy5Ca8o4rMNJtdIIlgStdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=temperror (0-bit key) header.d=aruba.it header.i=@aruba.it header.b=kAdmNOD0; arc=none smtp.client-ip=62.149.158.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+Received: from [192.168.1.58] ([79.0.204.227])
+	by Aruba SMTP with ESMTPSA
+	id p4Mqt0FmRRBkHp4MqtLpYY; Mon, 03 Mar 2025 12:53:52 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1741002832; bh=bdghUzTzBlYu3WkVqq8yLPLahhT013JwLccfoK2GRVk=;
+	h=Date:MIME-Version:Subject:From:To:Content-Type;
+	b=kAdmNOD0Xs74JP/X8nKy3Jo8EkKu6S2xNAWrnznOtS/P65bWHvSDNNE62ES5jkpg8
+	 B0AoPZFpT6D1RFhcNBotVO9i/ARyHB2WH4NK+viPYv7ZBH1lECLNb6DK8VMdKMFv4s
+	 DoA8OHlgf92MHXMvKd1R+sCSF40B5EARaYPNfJcscsvz+omAOC51TOBPnGQWWTrwDn
+	 0bNMvOO3FgUUHt7MdBrhBQZ7r2yIsH3ZKIK1lZTY/QWEYBEz0bKO9Urued26ycLMtE
+	 Cyw7nM9NSXMiZyGpyQMvC+EN6YI8rLS4fa0xup9cx3njdVj8kT4iNySc+9i6REpiPV
+	 2HOJiL+9WZMxQ==
+Message-ID: <2738fe1c-4dc7-4d8c-ac8a-f32e5b3277c3@enneenne.com>
+Date: Mon, 3 Mar 2025 12:53:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pps: fix poll support
+Content-Language: en-US
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Denis OSTERLAND-HEIM <denis.osterland@diehl.com>, stable@vger.kernel.org
+References: <561f4dfd4cbd416baee0fb39b5d55aa1@diehl.com>
+From: Rodolfo Giometti <giometti@enneenne.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+In-Reply-To: <561f4dfd4cbd416baee0fb39b5d55aa1@diehl.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250303-leds-qcom-lpg-fix-max-pwm-on-hi-res-v3-3-62703c0ab76a@linaro.org>
-References: <20250303-leds-qcom-lpg-fix-max-pwm-on-hi-res-v3-0-62703c0ab76a@linaro.org>
-In-Reply-To: <20250303-leds-qcom-lpg-fix-max-pwm-on-hi-res-v3-0-62703c0ab76a@linaro.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>
-Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Kamal Wadhwa <quic_kamalw@quicinc.com>, 
- Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
- linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2125; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=p7hkdHG3Uk3MNaKmI5KRSyrO6nMtHV/TriUgNA5ZLkc=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnxZgiyqHWf1haD9iRgMsk0Qyq6WO/KweHfvpfz
- xnu5vHbyv6JAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ8WYIgAKCRAbX0TJAJUV
- VjQJD/wP9bczE8rW6CvDOvpJ+sOXg5GTtEI66RM3uKAPtmvc8+Soxy7rJchtalzl21sjnm5MoUH
- cgTwF1YrC/eq8jUEMozsg95EO2PBAa/H364bFDQN0a/EvUrjliKxytPRJu88qNZU8BRE3xfgm9+
- vvu7mnVg1HVnyp0BWberU7hwOHL8uUXe1XcIuGLS1J+g4Ug3ZPHRip+Cpw1BKYZJrHeGZDOKx+f
- bct27pyLFk7z0JKMCkxByvQf3RdPpFYYUZC9rROEOosJxf/ce/f3gbreCqwj4WoYpzt+vOHBIMV
- rMZ6dfk2/UUHUudnH/5YHpS2kVo+8e3776TxDMPs6xJYuimIA1aKocK+XsrGMADCgXoMktCLBES
- Z1kNaBOLHjbPYKzNU6DLgtReKI86/z6yhfoTbKNgxw3xMegwo+FAaQhPYyGIJi+GcsbZKoq0HsV
- fjk87QUBjx+dA12MVWLQzRRVdMDwaNLVXm4sx6t4bX4uTUIKV8mlU3NmhCb05uZzcrry55L/0hR
- oUw8xUAuJq8CVsiKCRiFdA4W2EXBNwaBsj8EIAKxxHykqf0G/B6VngjiIh9fOaFgt93FWlRmiV7
- 2wE1ixoR7eYwPKszb5nKJcf1uWtQIXU8uzsWQqWJRDVh8X/BnPWMhm9rtgztO2oRxQf8cW0Carq
- SaUVL5zmGZTrO5Q==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+X-CMAE-Envelope: MS4xfH3JdXCmmPetYrjaWeMfxxmA0d+9GF7ZCXYv9fGUqHdwqPGvbEEbow2sNGVh6IOrpuZ6i2sEaK+bARZV8pcW7ShcNkzj938iiCx3b3bXH1Ba00d8vlpa
+ SCjWS3/Dp00FmDJBYTvA4qcu/OHE227MfTMgBWB+hlxvt2j9P5Vh9DqL5Rf0SOMwrjUy995C1+AugVj/89tATnHwREf6O36oa9sk4CZz6zls5l9cCLLbqV49
+ +Ho8PFZERgxoq+1UxKel1BO62U7wswxhkkFfaoFXEoZCws90kZq5aMiqA+cJS3CA0rFHF98Wozyu8Ky+pGf6XBamKjjKbMdnFXc5vTMWTncV/+isbm4ayDNu
+ VwdxC3SM
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+On 03/03/25 09:02, Denis OSTERLAND-HEIM wrote:
+> [BUG]
+> A user space program that calls select/poll get always an immediate data
+> ready-to-read response. As a result the intended use to wait until next
+> data becomes ready does not work.
+> 
+> User space snippet:
+> 
+>      struct pollfd pollfd = {
+>        .fd = open("/dev/pps0", O_RDONLY),
+>        .events = POLLIN|POLLERR,
+>        .revents = 0 };
+>      while(1) {
+>        poll(&pollfd, 1, 2000/*ms*/); // returns immediate, but should wait
+>        if(revents & EPOLLIN) { // always true
+>          struct pps_fdata fdata;
+>          memset(&fdata, 0, sizeof(memdata));
+>          ioctl(PPS_FETCH, &fdata); // currently fetches data at max speed
+>        }
+>      }
+> 
+> [CAUSE]
+> pps_cdev_poll() returns unconditionally EPOLLIN.
+> 
+> [FIX]
+> Remember the last fetch event counter and compare this value in
+> pps_cdev_poll() with most recent event counter
+> and return 0 if they are equal.
+> 
+> Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+> Co-developed-by: Rodolfo Giometti <giometti@enneenne.com>
+> Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed.
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
 
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
- drivers/leds/rgb/leds-qcom-lpg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+If needed. :)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 0b6310184988c299d82ee7181982c03d306407a4..4f2a178e3d265a2cc88e651d3e2ca6ae3dfac2e2 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -462,7 +462,7 @@ static int lpg_calc_freq(struct lpg_channel *chan, uint64_t period)
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
- 
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -483,7 +483,7 @@ static int lpg_calc_freq(struct lpg_channel *chan, uint64_t period)
- 	 */
- 
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
- 
-@@ -1292,7 +1292,7 @@ static int lpg_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
+> Fixes: eae9d2ba0cfc ("LinuxPPS: core support")
+> CC: stable@vger.linux.org # 5.4+
+> ---
+>   drivers/pps/pps.c          | 11 +++++++++--
+>   include/linux/pps_kernel.h |  1 +
+>   2 files changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+> index 6a02245ea35f..9463232af8d2 100644
+> --- a/drivers/pps/pps.c
+> +++ b/drivers/pps/pps.c
+> @@ -41,6 +41,9 @@ static __poll_t pps_cdev_poll(struct file *file, poll_table *wait)
+>   
+>   	poll_wait(file, &pps->queue, wait);
+>   
+> +	if (pps->last_fetched_ev == pps->last_ev)
+> +		return 0;
+> +
+>   	return EPOLLIN | EPOLLRDNORM;
+>   }
+>   
+> @@ -186,9 +189,11 @@ static long pps_cdev_ioctl(struct file *file,
+>   		if (err)
+>   			return err;
+>   
+> -		/* Return the fetched timestamp */
+> +		/* Return the fetched timestamp and save last fetched event  */
+>   		spin_lock_irq(&pps->lock);
+>   
+> +		pps->last_fetched_ev = pps->last_ev;
+> +
+>   		fdata.info.assert_sequence = pps->assert_sequence;
+>   		fdata.info.clear_sequence = pps->clear_sequence;
+>   		fdata.info.assert_tu = pps->assert_tu;
+> @@ -272,9 +277,11 @@ static long pps_cdev_compat_ioctl(struct file *file,
+>   		if (err)
+>   			return err;
+>   
+> -		/* Return the fetched timestamp */
+> +		/* Return the fetched timestamp and save last fetched event  */
+>   		spin_lock_irq(&pps->lock);
+>   
+> +		pps->last_fetched_ev = pps->last_ev;
+> +
+>   		compat.info.assert_sequence = pps->assert_sequence;
+>   		compat.info.clear_sequence = pps->clear_sequence;
+>   		compat.info.current_mode = pps->current_mode;
+> diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
+> index c7abce28ed29..aab0aebb529e 100644
+> --- a/include/linux/pps_kernel.h
+> +++ b/include/linux/pps_kernel.h
+> @@ -52,6 +52,7 @@ struct pps_device {
+>   	int current_mode;			/* PPS mode at event time */
+>   
+>   	unsigned int last_ev;			/* last PPS event id */
+> +	unsigned int last_fetched_ev;		/* last fetched PPS event id */
+>   	wait_queue_head_t queue;		/* PPS event queue */
+>   
+>   	unsigned int id;			/* PPS source unique ID */
 
 -- 
-2.34.1
+GNU/Linux Solutions                  e-mail: giometti@enneenne.com
+Linux Device Driver                          giometti@linux.it
+Embedded Systems                     phone:  +39 349 2432127
+UNIX programming
 
 
