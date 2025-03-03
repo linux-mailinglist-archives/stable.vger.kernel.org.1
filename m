@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-120102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630D7A4C746
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EDEA4C748
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D50188E23F
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68891895354
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100E0225408;
-	Mon,  3 Mar 2025 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB7F22A81E;
+	Mon,  3 Mar 2025 16:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gw8NpyRh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nB7I68ID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB68B214234;
-	Mon,  3 Mar 2025 16:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED7B22A4D8;
+	Mon,  3 Mar 2025 16:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019402; cv=none; b=JRdcseJF7KLNhyEep6fF+CWgQxPjcB/A3EnuutlGePV6EPkRiPB/7qlUY9uVKHQu/ZXRe53PJDLiYBq9APgaZHCHVOOeCC3e+jtDF91eqcwaOpxlNRunlttbkWLd5sDtZmQRdzbz6fECYEb6oIeWxxiGGzA7ev9Laa6vH7ng3Ec=
+	t=1741019404; cv=none; b=M7AEyhruWLDkKkYqzKW3ltE63Z5b2BFclOpVpdjbaLOs5ERmn4efnZqDtPtnxMLJ/vAm9xoEqVy0+qu9XwGsW03ft842k6ERCg6FQhXIVRtcJlfSXB7dxxyNfYyrqBNy8MBJEdb/GXHcAHrzd8mEdaK1vXb4QgK3dvYwStyqxoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019402; c=relaxed/simple;
-	bh=yZ8u9vsjo4YIocdUSqpZL2ILDiOpCqN1xDRB2/1VlCE=;
+	s=arc-20240116; t=1741019404; c=relaxed/simple;
+	bh=kzBJWSicag1qKjz5770nSTUwj7AkXxzpM6uIrGZGg44=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HlTnUP+CcJ4cLtOmq7wzF0wsh1V2iDJLesAcg1qocZZIrNG1Sxf+YoNYn5IYppEp/NCzbLL1Q0lSUDi72BlnGpwxF+fcrLDmUb7Lrr2pXtmMIBbVrzaj/w/lsfS6BhTpXx/5Wdq98MEorL1u+kYwCT4rOlE7qrl1nNMd8CsZm7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gw8NpyRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F8C4CEEA;
-	Mon,  3 Mar 2025 16:30:00 +0000 (UTC)
+	 MIME-Version; b=X31sRLoq3IOelwAQqMTmRS213lJOMTpgJ2NeCzg44xx3vuxZMgWI2WXcoponSTtcnpiGKXnNXEph1J95sWTB8uKg+xSh5qjfUg0ox644wPOYqB5KAvyclgrBK+HIooqYefNkFC+7pO6wsnhaOJ1GiY68rRvFPCT846PsoGbIZH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nB7I68ID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29EDC4CED6;
+	Mon,  3 Mar 2025 16:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019402;
-	bh=yZ8u9vsjo4YIocdUSqpZL2ILDiOpCqN1xDRB2/1VlCE=;
+	s=k20201202; t=1741019403;
+	bh=kzBJWSicag1qKjz5770nSTUwj7AkXxzpM6uIrGZGg44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gw8NpyRhE/XTQnLvHV5Nd7RW3ajUmKjg2SRN9O0zHtEOm4kwldYqkG+0HwQ+zZrGR
-	 KFTqpmUDL7GLgnaZzpXDd6zqtl0LJ07atNZJF0viZJh3TO4ycIixDABPgFwx2Eh2sV
-	 UNf5WRQY+ie0mj5RhZjPSUXskzRXpt6BAb7R9TzeYZFULE6cScR+FZqw9lhOn0VhWR
-	 YuCLdHXo+QlFOIoDEWZyuPyJHR1rz8UqYcyVGtH6CAxO7Sy5ik4UnIgXRvn6zOYtFJ
-	 d7zmMe2plTpCTyw8hwAuGNdKp1j5ixoaDBWd2rG4L6jZ8+K7PX8WP1ge+pe8WmyfU1
-	 8Hcg5SCHHA5CQ==
+	b=nB7I68IDHkeEdvEfQt7xtrr/GSldM48ulGv52HN6brfc4RCaRHaXF29b/HPLpZl2G
+	 obvBWXonIZDo4Nkc/7ZFMqu4q+//CU6btqaG0fn0RX66mUtBNrqChBzPJ9SGbWmiUp
+	 ixi2lgwjnD9zEnOo5Y0EGA3YlqLyUyXTY7rsZFAPhiIb41jdvepc3vMBGF03qdW0Te
+	 mYCaqxDAT5gbmS67Wr/CI3m1NXXEpIkoRlZ7NnBYXsxfxPg+kqdr/6CKTum4ouUh9U
+	 cwF9gPA5pV1djnrM0O4u5lbdy7bgEXtdBoNG2eiR3feNbJVJoxDC1KV4J6oR3A3YhQ
+	 ZCa9mNztCzVqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miklos Szeredi <mszeredi@redhat.com>,
-	Laura Promberger <laura.promberger@cern.ch>,
-	Sam Lewis <samclewis@google.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	miklos@szeredi.hu,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 05/17] fuse: don't truncate cached, mutated symlink
-Date: Mon,  3 Mar 2025 11:29:37 -0500
-Message-Id: <20250303162951.3763346-5-sashal@kernel.org>
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 06/17] ASoC: dapm-graph: set fill colour of turned on nodes
+Date: Mon,  3 Mar 2025 11:29:38 -0500
+Message-Id: <20250303162951.3763346-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303162951.3763346-1-sashal@kernel.org>
 References: <20250303162951.3763346-1-sashal@kernel.org>
@@ -70,117 +66,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.5
 Content-Transfer-Encoding: 8bit
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-[ Upstream commit b4c173dfbb6c78568578ff18f9e8822d7bd0e31b ]
+[ Upstream commit d31babd7e304d3b800d36ff74be6739405b985f2 ]
 
-Fuse allows the value of a symlink to change and this property is exploited
-by some filesystems (e.g. CVMFS).
+Some tools like KGraphViewer interpret the "ON" nodes not having an
+explicitly set fill colour as them being entirely black, which obscures
+the text on them and looks funny. In fact, I thought they were off for
+the longest time. Comparing to the output of the `dot` tool, I assume
+they are supposed to be white.
 
-It has been observed, that sometimes after changing the symlink contents,
-the value is truncated to the old size.
+Instead of speclawyering over who's in the wrong and must immediately
+atone for their wickedness at the altar of RFC2119, just be explicit
+about it, set the fillcolor to white, and nobody gets confused.
 
-This is caused by fuse_getattr() racing with fuse_reverse_inval_inode().
-fuse_reverse_inval_inode() updates the fuse_inode's attr_version, which
-results in fuse_change_attributes() exiting before updating the cached
-attributes
-
-This is okay, as the cached attributes remain invalid and the next call to
-fuse_change_attributes() will likely update the inode with the correct
-values.
-
-The reason this causes problems is that cached symlinks will be
-returned through page_get_link(), which truncates the symlink to
-inode->i_size.  This is correct for filesystems that don't mutate
-symlinks, but in this case it causes bad behavior.
-
-The solution is to just remove this truncation.  This can cause a
-regression in a filesystem that relies on supplying a symlink larger than
-the file size, but this is unlikely.  If that happens we'd need to make
-this behavior conditional.
-
-Reported-by: Laura Promberger <laura.promberger@cern.ch>
-Tested-by: Sam Lewis <samclewis@google.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/r/20250220100258.793363-1-mszeredi@redhat.com
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250221-dapm-graph-node-colour-v1-1-514ed0aa7069@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c      |  2 +-
- fs/namei.c         | 24 +++++++++++++++++++-----
- include/linux/fs.h |  2 ++
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ tools/sound/dapm-graph | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index e540d05549fff..b7944d8bfb171 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1633,7 +1633,7 @@ static const char *fuse_get_link(struct dentry *dentry, struct inode *inode,
- 		goto out_err;
+diff --git a/tools/sound/dapm-graph b/tools/sound/dapm-graph
+index f14bdfedee8f1..b6196ee5065a4 100755
+--- a/tools/sound/dapm-graph
++++ b/tools/sound/dapm-graph
+@@ -10,7 +10,7 @@ set -eu
  
- 	if (fc->cache_symlinks)
--		return page_get_link(dentry, inode, callback);
-+		return page_get_link_raw(dentry, inode, callback);
+ STYLE_COMPONENT_ON="color=dodgerblue;style=bold"
+ STYLE_COMPONENT_OFF="color=gray40;style=filled;fillcolor=gray90"
+-STYLE_NODE_ON="shape=box,style=bold,color=green4"
++STYLE_NODE_ON="shape=box,style=bold,color=green4,fillcolor=white"
+ STYLE_NODE_OFF="shape=box,style=filled,color=gray30,fillcolor=gray95"
  
- 	err = -ECHILD;
- 	if (!dentry)
-diff --git a/fs/namei.c b/fs/namei.c
-index 9d30c7aa9aa6e..553729a29095d 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -5354,10 +5354,9 @@ const char *vfs_get_link(struct dentry *dentry, struct delayed_call *done)
- EXPORT_SYMBOL(vfs_get_link);
- 
- /* get the link contents into pagecache */
--const char *page_get_link(struct dentry *dentry, struct inode *inode,
--			  struct delayed_call *callback)
-+static char *__page_get_link(struct dentry *dentry, struct inode *inode,
-+			     struct delayed_call *callback)
- {
--	char *kaddr;
- 	struct page *page;
- 	struct address_space *mapping = inode->i_mapping;
- 
-@@ -5376,8 +5375,23 @@ const char *page_get_link(struct dentry *dentry, struct inode *inode,
- 	}
- 	set_delayed_call(callback, page_put_link, page);
- 	BUG_ON(mapping_gfp_mask(mapping) & __GFP_HIGHMEM);
--	kaddr = page_address(page);
--	nd_terminate_link(kaddr, inode->i_size, PAGE_SIZE - 1);
-+	return page_address(page);
-+}
-+
-+const char *page_get_link_raw(struct dentry *dentry, struct inode *inode,
-+			      struct delayed_call *callback)
-+{
-+	return __page_get_link(dentry, inode, callback);
-+}
-+EXPORT_SYMBOL_GPL(page_get_link_raw);
-+
-+const char *page_get_link(struct dentry *dentry, struct inode *inode,
-+					struct delayed_call *callback)
-+{
-+	char *kaddr = __page_get_link(dentry, inode, callback);
-+
-+	if (!IS_ERR(kaddr))
-+		nd_terminate_link(kaddr, inode->i_size, PAGE_SIZE - 1);
- 	return kaddr;
- }
- 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index f7efc6866ebc9..1f07469f3d6e1 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3353,6 +3353,8 @@ extern const struct file_operations generic_ro_fops;
- 
- extern int readlink_copy(char __user *, int, const char *);
- extern int page_readlink(struct dentry *, char __user *, int);
-+extern const char *page_get_link_raw(struct dentry *, struct inode *,
-+				     struct delayed_call *);
- extern const char *page_get_link(struct dentry *, struct inode *,
- 				 struct delayed_call *);
- extern void page_put_link(void *);
+ # Print usage and exit
 -- 
 2.39.5
 
