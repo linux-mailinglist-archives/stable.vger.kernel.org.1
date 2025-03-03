@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-120124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4AAA4C7CD
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:43:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BF5A4C810
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF7B3A55D5
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:40:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D854D7A581C
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DA92505D1;
-	Mon,  3 Mar 2025 16:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF96250C0C;
+	Mon,  3 Mar 2025 16:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BN3FPjAa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fryK8eX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4F12500BE;
-	Mon,  3 Mar 2025 16:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DA6217707;
+	Mon,  3 Mar 2025 16:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019453; cv=none; b=joeN5eGwap2QMU/iH6mHN+Ti+q5dMqRI7UH8kw7ClpIs2t874jc616xDfDZTZpA4leYa21M+ohBjXe0VsEwRnE1PyO+68y8/eZNs+LbYjkNaLFXkNkOzC7EAXpyab75lG2lhoACvDgnDpDVjcE3sSklUi5AeQPn5VKNR0DTtOJA=
+	t=1741019456; cv=none; b=bBuQz3pQLq5t8HW8P0zodgq2gPkdSMKSjB950eQkptzm7RpFQW+56OrTAjNZWkpnI5kzN8W199xWfs2wgef3OoCvJDpTVYPKL6s2s0vEjz6hPqAV4tau6rtgXRwV0HvA+ajMRQhy+YSAzOOFYLZArIyMM6USIKvLfsrXGUrkQUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019453; c=relaxed/simple;
-	bh=2x2c56vUaSgQ5YrhLH2S+NjGLifAOf+kx0rtKNh6/N4=;
+	s=arc-20240116; t=1741019456; c=relaxed/simple;
+	bh=Ay/35eyEnivoB/7i3ruOhodKTg7omOLifwrB/+6vLd4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kiIB1A1BvkZKpsBG9SkeM5ql5h1xYw4tCDJ3hOHNuDy2hMS5nFEhFFgmq3JuH4vFZU7hFRl5W5bRoAZnyy0kapQ44eV7dHUqIm6YIwVtWhbz1WgGSm/WNI61cm0ltZnK0P+KfnHu67wf2Zc8i3wHvxkF1Lr04egdlPhSL+aLqXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BN3FPjAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4B9C4CED6;
-	Mon,  3 Mar 2025 16:30:51 +0000 (UTC)
+	 MIME-Version; b=YjVRb2jbYFTm6AqAFs2rbp7skAqT2CEN+OoWrzJqtD2PEQNZWUKrKEcF9Nnj6xfpgjmzYdLIKT6Fkqam9l1X1o8LxlQiSF4fN+C4acWoitvI9Pevhuji+XPwhf+sI0Zozb3Y+o+4MrfHcSIEjFHpAIp7yUDnI7jpiwIP2D5GY6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fryK8eX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9B0C4CEEA;
+	Mon,  3 Mar 2025 16:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019453;
-	bh=2x2c56vUaSgQ5YrhLH2S+NjGLifAOf+kx0rtKNh6/N4=;
+	s=k20201202; t=1741019456;
+	bh=Ay/35eyEnivoB/7i3ruOhodKTg7omOLifwrB/+6vLd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BN3FPjAaiAmowBKKtQwWkJYtfNKfpqRV2uMBEAG0SB0HbARcFvAC1U612vWmRgUfP
-	 564JxL0nNGb0oQGSi9GVe/JW+6CPjBKbsNKHlAFqQCcFeyOqzlTA0csuUvxeqk+MkV
-	 JQG1Gr7JW2MtC3d+0ion0ZObzEBCPa1BIvtjmoE/hEi2eaPI+VtSOGxkErU54cDNeQ
-	 +dBO6/dQhTJOkMu4fco2AYXnjjQ5QKhxifeqldghd9AW1nHUxLjbf3mZ+58WFKAvb9
-	 +KbP0qtudk9KA0OGEDlVOyy/hj1rfXTrADFk8fX8KjLY6vZOVmybFwnImTKiTX73SP
-	 Jr+bwto2DHHcg==
+	b=fryK8eX5wt1TxNlEV0ikzx9GbLTotZzoFV5CgvZofW6QD8s3QEgqVxdit6evV/NJl
+	 US4+7/yEoOG0HKxkk7vldao72lenr+Q26B1HYaDh7dIxYmcEDRAOJsfkks/Xf4OQLM
+	 N9pzAYp0n1jp1/kve1w1jGtTDlvgJVDCrPX7ZnNLSnmlgZoMzMowG/8PxPag6tVeZq
+	 DGlEjDqxKT3ZdhdX/5lffjBU0ojA/66Bfgejm73wYDTC1K8h+lN8qI06AnbmAsIv4k
+	 grZg241MbP2tQEKE2gHLevlE10p2UrKHbTatKBzlc1U+sTY71MWFoPKr3YmGkiKGjx
+	 JHtD5Hu+ynmxw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmytro Maluka <dmaluka@chromium.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
 	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	tglx@linutronix.de,
@@ -52,14 +52,10 @@ Cc: Dmytro Maluka <dmaluka@chromium.org>,
 	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	ssengar@linux.microsoft.com,
-	robh@kernel.org,
-	sboyd@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	usamaarif642@gmail.com
-Subject: [PATCH AUTOSEL 6.12 10/17] x86/of: Don't use DTB for SMP setup if ACPI is enabled
-Date: Mon,  3 Mar 2025 11:30:22 -0500
-Message-Id: <20250303163031.3763651-10-sashal@kernel.org>
+	jacob.jun.pan@linux.intel.com
+Subject: [PATCH AUTOSEL 6.12 11/17] x86/irq: Define trace events conditionally
+Date: Mon,  3 Mar 2025 11:30:23 -0500
+Message-Id: <20250303163031.3763651-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163031.3763651-1-sashal@kernel.org>
 References: <20250303163031.3763651-1-sashal@kernel.org>
@@ -74,53 +70,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.17
 Content-Transfer-Encoding: 8bit
 
-From: Dmytro Maluka <dmaluka@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 96f41f644c4885761b0d117fc36dc5dcf92e15ec ]
+[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
 
-There are cases when it is useful to use both ACPI and DTB provided by
-the bootloader, however in such cases we should make sure to prevent
-conflicts between the two. Namely, don't try to use DTB for SMP setup
-if ACPI is enabled.
+When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
+the irq tracing produces a W=1 build warning for the tracing
+definitions:
 
-Precisely, this prevents at least:
+  In file included from include/trace/trace_events.h:27,
+                 from include/trace/define_trace.h:113,
+                 from arch/x86/include/asm/trace/irq_vectors.h:383,
+                 from arch/x86/kernel/irq.c:29:
+  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
 
-- incorrectly calling register_lapic_address(APIC_DEFAULT_PHYS_BASE)
-  after the LAPIC was already successfully enumerated via ACPI, causing
-  noisy kernel warnings and probably potential real issues as well
+Make the tracepoints conditional on the same symbosl that guard
+their usage.
 
-- failed IOAPIC setup in the case when IOAPIC is enumerated via mptable
-  instead of ACPI (e.g. with acpi=noirq), due to
-  mpparse_parse_smp_config() overridden by x86_dtb_parse_smp_config()
-
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250105172741.3476758-2-dmaluka@chromium.org
+Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/devicetree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 59d23cdf4ed0f..dd8748c45529a 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -2,6 +2,7 @@
- /*
-  * Architecture specific OF callbacks.
-  */
-+#include <linux/acpi.h>
- #include <linux/export.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
-@@ -313,6 +314,6 @@ void __init x86_flattree_get_config(void)
- 	if (initial_dtb)
- 		early_memunmap(dt, map_len);
- #endif
--	if (of_have_populated_dt())
-+	if (acpi_disabled && of_have_populated_dt())
- 		x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
- }
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 385e3a5fc3045..feca4f20b06aa 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -25,8 +25,10 @@
+ #include <asm/posted_intr.h>
+ #include <asm/irq_remapping.h>
+ 
++#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
+ #define CREATE_TRACE_POINTS
+ #include <asm/trace/irq_vectors.h>
++#endif
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ EXPORT_PER_CPU_SYMBOL(irq_stat);
 -- 
 2.39.5
 
