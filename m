@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-120147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD168A4C82C
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:51:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D3DA4C82E
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 362191885C29
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:50:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD63188422D
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0990C2641E3;
-	Mon,  3 Mar 2025 16:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC8326461B;
+	Mon,  3 Mar 2025 16:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biVoNEX0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMHT+BX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BD62641D2;
-	Mon,  3 Mar 2025 16:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03A822CBFC;
+	Mon,  3 Mar 2025 16:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019504; cv=none; b=rQaWAmUU3LYXoJlbMu/Df9JiBJDeMq6kdmZPloUsFDoLJzrT5v7hyNczzSwj/fEzBMXo1S93Tj2JtUFMyH0/x4UGulgDQ46sSWFooJ/CNFdpLifB49XlIOOfOtmv1FyTMjbT1grZFiJhgQe50C+cve0eo+mdfpwEcHQsl8kmfpw=
+	t=1741019507; cv=none; b=J+E3IaZuHFC8srFJ+rOkW4Wcp5wqYP8+6G85t2yvMtuZ8jPzrSzbWPUcIxR1v4Z4GAINpk16wg5ioNOReb215HfF5GQvw8Hw10w9i/7pZj+i0UY3BZck+Hdvkb5gebBbWG2CVhXKpkV1UvDtRnMxxp8MSAgTpDc8TktegLVBqfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019504; c=relaxed/simple;
-	bh=VXjnbG587rc4HggCnIi/3NHckkZixU6itRyToHb8J8Q=;
+	s=arc-20240116; t=1741019507; c=relaxed/simple;
+	bh=Gf4L9Kb1Z9un25PwqurLSNnkgPyzqTlm1uCTOa5d+Ps=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MP/9mR1YzOXJPZUCNen9proneyJAODUppn749ZEfYznVtNigMIL/3tmGqbdzZjBDKG/JPIT2QGAiJlkNDOEevj7WWcz1Di/+rU4a/gEYEJt5wf82MOmaCNK+W51YaQQYpAjuz9FEFFqZBqZe87B3JgdpQD6XQpz7aLtEXnXewAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biVoNEX0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149FBC4CEE4;
-	Mon,  3 Mar 2025 16:31:42 +0000 (UTC)
+	 MIME-Version; b=kdDn1eFGLGNfBsReYXmNwpaT0b+hwQsxM26evN1Zw/3a3iI0QLcrV6cAnRHPbaS+wezlJo1EyoShW0SBWVdnxQp2R0um5E1MNq7T4Yu+LioU8C8d3y9zifMUsT9MUjvMr+WxqfpvxqnavXDGyhS133PoNvaJqB7RCmZOGDkiiLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMHT+BX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183C0C4CEE6;
+	Mon,  3 Mar 2025 16:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019504;
-	bh=VXjnbG587rc4HggCnIi/3NHckkZixU6itRyToHb8J8Q=;
+	s=k20201202; t=1741019507;
+	bh=Gf4L9Kb1Z9un25PwqurLSNnkgPyzqTlm1uCTOa5d+Ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=biVoNEX0N8bA1MvJUU58g5c5TAjN1VKQ5UxNIECSZcuAe6tQ0kVcE2foYxkww/c/G
-	 kciyYZu96JB8PciMxknkjXnrrbYWANz7r9AbqNq6DXDg80KyD1sGnP2TPLAt1YXNOP
-	 9vseTr/uqE2AuJyCr3ia+QTyxGLhzXHRs0E4nQGBH5rqDkDp+K5GWyrrKWhdWeKWJe
-	 q0AHKhBO/Ww9jCgM2mCVjtWKp2eOGjE+lfgBGAw7Ibd6gxbIHW95xz3cCq+qYlkf0i
-	 Q6N8FtXkW7jFL2QESwgg7YAHzEaKKvOehxo2NAwZmFEf8frFZRHFHXftW3HL19cmJt
-	 vIMDy1aRj/amQ==
+	b=LMHT+BX22amj1WRw0w1PjWEcBl8cJlSftIPvm5iLYDOMmeQTEyD1ia/Br9doljzNH
+	 vBbZNWBVC8W7kWq0Iyft8e9iqbFilqV4x2AiJm98AUMU+c5xw5eQcfIp71ZUS9pJZ8
+	 yq/AqZ9UICSG0SHqZ0xBeWXy3VTVXJ5m/B5ADTgs7ueUWfDJnOREr+g2p6a2uT4hXb
+	 d6O/0dQI2ftLVxbtFEzCE5JpQaBzQpK6qQydSkZtIJC2q3hDf6Sy/78Ag94ONwaW5l
+	 MCaCN1HLih9N8r28pLKkyS6FVjXhdA2BEnXaUSe6DSiS42x7U6OpOa3wPlId7wd99U
+	 Oz4hIyzSfzk6A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kan Liang <kan.liang@linux.intel.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
 	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
 	tglx@linutronix.de,
+	mingo@redhat.com,
 	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 5/9] perf/x86/intel: Use better start period for frequency mode
-Date: Mon,  3 Mar 2025 11:31:29 -0500
-Message-Id: <20250303163133.3764032-5-sashal@kernel.org>
+	jacob.jun.pan@linux.intel.com
+Subject: [PATCH AUTOSEL 6.1 6/9] x86/irq: Define trace events conditionally
+Date: Mon,  3 Mar 2025 11:31:30 -0500
+Message-Id: <20250303163133.3764032-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163133.3764032-1-sashal@kernel.org>
 References: <20250303163133.3764032-1-sashal@kernel.org>
@@ -73,148 +70,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.129
 Content-Transfer-Encoding: 8bit
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a26b24b2e21f6222635a95426b9ef9eec63d69b1 ]
+[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
 
-Freqency mode is the current default mode of Linux perf. A period of 1 is
-used as a starting period. The period is auto-adjusted on each tick or an
-overflow, to meet the frequency target.
+When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
+the irq tracing produces a W=1 build warning for the tracing
+definitions:
 
-The start period of 1 is too low and may trigger some issues:
+  In file included from include/trace/trace_events.h:27,
+                 from include/trace/define_trace.h:113,
+                 from arch/x86/include/asm/trace/irq_vectors.h:383,
+                 from arch/x86/kernel/irq.c:29:
+  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
 
-- Many HWs do not support period 1 well.
-  https://lore.kernel.org/lkml/875xs2oh69.ffs@tglx/
+Make the tracepoints conditional on the same symbosl that guard
+their usage.
 
-- For an event that occurs frequently, period 1 is too far away from the
-  real period. Lots of samples are generated at the beginning.
-  The distribution of samples may not be even.
-
-- A low starting period for frequently occurring events also challenges
-  virtualization, which has a longer path to handle a PMI.
-
-The limit_period value only checks the minimum acceptable value for HW.
-It cannot be used to set the start period, because some events may
-need a very low period. The limit_period cannot be set too high. It
-doesn't help with the events that occur frequently.
-
-It's hard to find a universal starting period for all events. The idea
-implemented by this patch is to only give an estimate for the popular
-HW and HW cache events. For the rest of the events, start from the lowest
-possible recommended value.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250117151913.3043942-3-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 85 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ arch/x86/kernel/irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 117f86283183f..b9dde37694120 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3852,6 +3852,85 @@ static inline bool intel_pmu_has_cap(struct perf_event *event, int idx)
- 	return test_bit(idx, (unsigned long *)&intel_cap->capabilities);
- }
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 766ffe3ba3137..439fdb3f5fdf1 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -23,8 +23,10 @@
+ #include <asm/traps.h>
+ #include <asm/thermal.h>
  
-+static u64 intel_pmu_freq_start_period(struct perf_event *event)
-+{
-+	int type = event->attr.type;
-+	u64 config, factor;
-+	s64 start;
-+
-+	/*
-+	 * The 127 is the lowest possible recommended SAV (sample after value)
-+	 * for a 4000 freq (default freq), according to the event list JSON file.
-+	 * Also, assume the workload is idle 50% time.
-+	 */
-+	factor = 64 * 4000;
-+	if (type != PERF_TYPE_HARDWARE && type != PERF_TYPE_HW_CACHE)
-+		goto end;
-+
-+	/*
-+	 * The estimation of the start period in the freq mode is
-+	 * based on the below assumption.
-+	 *
-+	 * For a cycles or an instructions event, 1GHZ of the
-+	 * underlying platform, 1 IPC. The workload is idle 50% time.
-+	 * The start period = 1,000,000,000 * 1 / freq / 2.
-+	 *		    = 500,000,000 / freq
-+	 *
-+	 * Usually, the branch-related events occur less than the
-+	 * instructions event. According to the Intel event list JSON
-+	 * file, the SAV (sample after value) of a branch-related event
-+	 * is usually 1/4 of an instruction event.
-+	 * The start period of branch-related events = 125,000,000 / freq.
-+	 *
-+	 * The cache-related events occurs even less. The SAV is usually
-+	 * 1/20 of an instruction event.
-+	 * The start period of cache-related events = 25,000,000 / freq.
-+	 */
-+	config = event->attr.config & PERF_HW_EVENT_MASK;
-+	if (type == PERF_TYPE_HARDWARE) {
-+		switch (config) {
-+		case PERF_COUNT_HW_CPU_CYCLES:
-+		case PERF_COUNT_HW_INSTRUCTIONS:
-+		case PERF_COUNT_HW_BUS_CYCLES:
-+		case PERF_COUNT_HW_STALLED_CYCLES_FRONTEND:
-+		case PERF_COUNT_HW_STALLED_CYCLES_BACKEND:
-+		case PERF_COUNT_HW_REF_CPU_CYCLES:
-+			factor = 500000000;
-+			break;
-+		case PERF_COUNT_HW_BRANCH_INSTRUCTIONS:
-+		case PERF_COUNT_HW_BRANCH_MISSES:
-+			factor = 125000000;
-+			break;
-+		case PERF_COUNT_HW_CACHE_REFERENCES:
-+		case PERF_COUNT_HW_CACHE_MISSES:
-+			factor = 25000000;
-+			break;
-+		default:
-+			goto end;
-+		}
-+	}
-+
-+	if (type == PERF_TYPE_HW_CACHE)
-+		factor = 25000000;
-+end:
-+	/*
-+	 * Usually, a prime or a number with less factors (close to prime)
-+	 * is chosen as an SAV, which makes it less likely that the sampling
-+	 * period synchronizes with some periodic event in the workload.
-+	 * Minus 1 to make it at least avoiding values near power of twos
-+	 * for the default freq.
-+	 */
-+	start = DIV_ROUND_UP_ULL(factor, event->attr.sample_freq) - 1;
-+
-+	if (start > x86_pmu.max_period)
-+		start = x86_pmu.max_period;
-+
-+	if (x86_pmu.limit_period)
-+		x86_pmu.limit_period(event, &start);
-+
-+	return start;
-+}
-+
- static int intel_pmu_hw_config(struct perf_event *event)
- {
- 	int ret = x86_pmu_hw_config(event);
-@@ -3863,6 +3942,12 @@ static int intel_pmu_hw_config(struct perf_event *event)
- 	if (ret)
- 		return ret;
++#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
+ #define CREATE_TRACE_POINTS
+ #include <asm/trace/irq_vectors.h>
++#endif
  
-+	if (event->attr.freq && event->attr.sample_freq) {
-+		event->hw.sample_period = intel_pmu_freq_start_period(event);
-+		event->hw.last_period = event->hw.sample_period;
-+		local64_set(&event->hw.period_left, event->hw.sample_period);
-+	}
-+
- 	if (event->attr.precise_ip) {
- 		if ((event->attr.config & INTEL_ARCH_EVENT_MASK) == INTEL_FIXED_VLBR_EVENT)
- 			return -EINVAL;
+ DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ EXPORT_PER_CPU_SYMBOL(irq_stat);
 -- 
 2.39.5
 
