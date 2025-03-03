@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-120135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C78A4C803
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6151FA4C807
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 17:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009681885AE3
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:47:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7761882FA3
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 16:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7079E25E838;
-	Mon,  3 Mar 2025 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EE325F979;
+	Mon,  3 Mar 2025 16:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhp1lLru"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHfF6r3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F11822A81E;
-	Mon,  3 Mar 2025 16:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F24925F962;
+	Mon,  3 Mar 2025 16:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019480; cv=none; b=SNHM1XDSq2k7LzIhR+pc+cbw/BNWz1vZa1xVu4s4ugfXy16pAx4RxpUPfc84BKbjPv85Lhf9jlmXFF66Nxq8N2sAL0b+KzJRaTog0vdUSgdp9Ctom83Ej7pnXTpHnyalfrP9zHc0kWZxBnVoA1REX0mThGugmD2eZP15C/a+pt4=
+	t=1741019482; cv=none; b=nusZPB54/ufFNLM9DyQX6YtwQs0nkPmYRZP9VuhfGtK1nWGj8hiApdNMyKbMLFMa2LAKq0lfeXOm+uORX3dQcTDc4ud3dbGFoyEJAKH6AF+sLX+Zp9NK31BHtIelkPYVLQxkdeMK4CXbMLC0uVAvyK0/23FinSbMBqvBZavBSz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019480; c=relaxed/simple;
-	bh=kWMnwqFbpjLz79Bq1d2W52AJjEPoXPjTiAxNA0FiBOc=;
+	s=arc-20240116; t=1741019482; c=relaxed/simple;
+	bh=8Sn9E8TxKuSj6lxVxnVdg7cw49srxDIZnBgETCLVltQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FYvURacq+TsHJGVkrgHEOPJjGbDKgBl52mdWN1D9DokRgNzA+4SEGGoW9D8PqUre9NQunLPTvGSEeuV9EH5Cx0ISFaJi99MVwSe9AxOeK4OLXMiCMZhF1iH+I9NJa8nR1jVO+JyJIgNsaiAIXhUKlnN7hfWE2/i53SrpNYWWelw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhp1lLru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B916CC4CEEB;
-	Mon,  3 Mar 2025 16:31:18 +0000 (UTC)
+	 MIME-Version; b=quFfoyFGZqyVyhsei0u2+Ui988GhUXY3Qd1Lu1S3Kv3o7d2EVY/ilCwr/SKrWn5505vHG368J3dXt59S4iIjI/B4whvGS4shDpCLYscWgshYFdnL89nzQsr1HGV7ihR1u9aC9Boz+71vxahYouLfjxH/TF5JAxhR4Ir4GcqVsLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHfF6r3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9626EC4CEEB;
+	Mon,  3 Mar 2025 16:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741019480;
-	bh=kWMnwqFbpjLz79Bq1d2W52AJjEPoXPjTiAxNA0FiBOc=;
+	s=k20201202; t=1741019482;
+	bh=8Sn9E8TxKuSj6lxVxnVdg7cw49srxDIZnBgETCLVltQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhp1lLruMVfR/btPCM3zIEPxwrVWQUVP2QcCfO7uKBM8tgqU4GepoLALrA2G17eg6
-	 acvFIAMjWanarh7WrcsRprm/TpSTDC+szPlsouxVEG0ypZ/e2PnMyTPyS08F3ugSMk
-	 gkmCD/GYe7al6sXoUIxHLL4xIB8S5Q7B0UZDIplmldiLEwtk7C2iZYMaOGFTeGgQM4
-	 mzdmABlHnykAUSyCf5bLlNVpjbWctvgF7fTTjLxPuSg5EmcpPux8kqrI36D8yBMKSx
-	 NoHFxredZxAqalKvJqRUyr5wqIGvEZgc2SZqRPB/xa+IOoVFcCgnoLNBoEnkGpa0b2
-	 9+ALBM7aV7lgw==
+	b=tHfF6r3U99E/VsDtVJKOniNxagEk913xzYtl6GlPaWVvjibqnoNlB0SE75i+o9/Da
+	 xr/XX30gO7nEBXdWppzRegO5QR3RZkLWIBddovlkuScdsOFRf4tPbr/1+98AhWYDYu
+	 s+330z2GCq2nInJPCQYwWtoHp3U5AcSL3pBi1K5CWcktasP54tEQffwOxmwpUqHu2U
+	 IdLl2bNtpkbjK0hgJfLxE+g0OLF3uH5Q6+Tz2kI9/PNRk0chzr9RLhdWGn/+jZrAv3
+	 L71EBDW+wgA+zJUV1i+yzeUWH6GjVyKB1hM0lQD/QFcOgxwCmhk5sByFw0igcvVLea
+	 8Mt5xNOMWb0dA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 05/11] drm/vkms: Round fixp2int conversion in lerp_u16
-Date: Mon,  3 Mar 2025 11:31:03 -0500
-Message-Id: <20250303163109.3763880-5-sashal@kernel.org>
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 06/11] perf/x86/intel: Use better start period for frequency mode
+Date: Mon,  3 Mar 2025 11:31:04 -0500
+Message-Id: <20250303163109.3763880-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250303163109.3763880-1-sashal@kernel.org>
 References: <20250303163109.3763880-1-sashal@kernel.org>
@@ -71,36 +73,148 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.80
 Content-Transfer-Encoding: 8bit
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit 8ec43c58d3be615a71548bc09148212013fb7e5f ]
+[ Upstream commit a26b24b2e21f6222635a95426b9ef9eec63d69b1 ]
 
-fixp2int always rounds down, fixp2int_ceil rounds up. We need
-the new fixp2int_round.
+Freqency mode is the current default mode of Linux perf. A period of 1 is
+used as a starting period. The period is auto-adjusted on each tick or an
+overflow, to meet the frequency target.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241220043410.416867-3-alex.hung@amd.com
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+The start period of 1 is too low and may trigger some issues:
+
+- Many HWs do not support period 1 well.
+  https://lore.kernel.org/lkml/875xs2oh69.ffs@tglx/
+
+- For an event that occurs frequently, period 1 is too far away from the
+  real period. Lots of samples are generated at the beginning.
+  The distribution of samples may not be even.
+
+- A low starting period for frequently occurring events also challenges
+  virtualization, which has a longer path to handle a PMI.
+
+The limit_period value only checks the minimum acceptable value for HW.
+It cannot be used to set the start period, because some events may
+need a very low period. The limit_period cannot be set too high. It
+doesn't help with the events that occur frequently.
+
+It's hard to find a universal starting period for all events. The idea
+implemented by this patch is to only give an estimate for the popular
+HW and HW cache events. For the rest of the events, start from the lowest
+possible recommended value.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250117151913.3043942-3-kan.liang@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vkms/vkms_composer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 85 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_composer.c b/drivers/gpu/drm/vkms/vkms_composer.c
-index e7441b227b3ce..3d6785d081f2c 100644
---- a/drivers/gpu/drm/vkms/vkms_composer.c
-+++ b/drivers/gpu/drm/vkms/vkms_composer.c
-@@ -98,7 +98,7 @@ static u16 lerp_u16(u16 a, u16 b, s64 t)
- 
- 	s64 delta = drm_fixp_mul(b_fp - a_fp,  t);
- 
--	return drm_fixp2int(a_fp + delta);
-+	return drm_fixp2int_round(a_fp + delta);
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 61ac094e26bd7..b163817ad6daf 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3881,6 +3881,85 @@ static inline bool intel_pmu_has_cap(struct perf_event *event, int idx)
+ 	return test_bit(idx, (unsigned long *)&intel_cap->capabilities);
  }
  
- static s64 get_lut_index(const struct vkms_color_lut *lut, u16 channel_value)
++static u64 intel_pmu_freq_start_period(struct perf_event *event)
++{
++	int type = event->attr.type;
++	u64 config, factor;
++	s64 start;
++
++	/*
++	 * The 127 is the lowest possible recommended SAV (sample after value)
++	 * for a 4000 freq (default freq), according to the event list JSON file.
++	 * Also, assume the workload is idle 50% time.
++	 */
++	factor = 64 * 4000;
++	if (type != PERF_TYPE_HARDWARE && type != PERF_TYPE_HW_CACHE)
++		goto end;
++
++	/*
++	 * The estimation of the start period in the freq mode is
++	 * based on the below assumption.
++	 *
++	 * For a cycles or an instructions event, 1GHZ of the
++	 * underlying platform, 1 IPC. The workload is idle 50% time.
++	 * The start period = 1,000,000,000 * 1 / freq / 2.
++	 *		    = 500,000,000 / freq
++	 *
++	 * Usually, the branch-related events occur less than the
++	 * instructions event. According to the Intel event list JSON
++	 * file, the SAV (sample after value) of a branch-related event
++	 * is usually 1/4 of an instruction event.
++	 * The start period of branch-related events = 125,000,000 / freq.
++	 *
++	 * The cache-related events occurs even less. The SAV is usually
++	 * 1/20 of an instruction event.
++	 * The start period of cache-related events = 25,000,000 / freq.
++	 */
++	config = event->attr.config & PERF_HW_EVENT_MASK;
++	if (type == PERF_TYPE_HARDWARE) {
++		switch (config) {
++		case PERF_COUNT_HW_CPU_CYCLES:
++		case PERF_COUNT_HW_INSTRUCTIONS:
++		case PERF_COUNT_HW_BUS_CYCLES:
++		case PERF_COUNT_HW_STALLED_CYCLES_FRONTEND:
++		case PERF_COUNT_HW_STALLED_CYCLES_BACKEND:
++		case PERF_COUNT_HW_REF_CPU_CYCLES:
++			factor = 500000000;
++			break;
++		case PERF_COUNT_HW_BRANCH_INSTRUCTIONS:
++		case PERF_COUNT_HW_BRANCH_MISSES:
++			factor = 125000000;
++			break;
++		case PERF_COUNT_HW_CACHE_REFERENCES:
++		case PERF_COUNT_HW_CACHE_MISSES:
++			factor = 25000000;
++			break;
++		default:
++			goto end;
++		}
++	}
++
++	if (type == PERF_TYPE_HW_CACHE)
++		factor = 25000000;
++end:
++	/*
++	 * Usually, a prime or a number with less factors (close to prime)
++	 * is chosen as an SAV, which makes it less likely that the sampling
++	 * period synchronizes with some periodic event in the workload.
++	 * Minus 1 to make it at least avoiding values near power of twos
++	 * for the default freq.
++	 */
++	start = DIV_ROUND_UP_ULL(factor, event->attr.sample_freq) - 1;
++
++	if (start > x86_pmu.max_period)
++		start = x86_pmu.max_period;
++
++	if (x86_pmu.limit_period)
++		x86_pmu.limit_period(event, &start);
++
++	return start;
++}
++
+ static int intel_pmu_hw_config(struct perf_event *event)
+ {
+ 	int ret = x86_pmu_hw_config(event);
+@@ -3892,6 +3971,12 @@ static int intel_pmu_hw_config(struct perf_event *event)
+ 	if (ret)
+ 		return ret;
+ 
++	if (event->attr.freq && event->attr.sample_freq) {
++		event->hw.sample_period = intel_pmu_freq_start_period(event);
++		event->hw.last_period = event->hw.sample_period;
++		local64_set(&event->hw.period_left, event->hw.sample_period);
++	}
++
+ 	if (event->attr.precise_ip) {
+ 		if ((event->attr.config & INTEL_ARCH_EVENT_MASK) == INTEL_FIXED_VLBR_EVENT)
+ 			return -EINVAL;
 -- 
 2.39.5
 
