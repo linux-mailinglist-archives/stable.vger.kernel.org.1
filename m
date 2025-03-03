@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-120032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA94A4B635
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 03:43:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 685FEA4B6D7
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 04:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507C716A07D
-	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 02:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5049B3AC26D
+	for <lists+stable@lfdr.de>; Mon,  3 Mar 2025 03:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FF5188CDB;
-	Mon,  3 Mar 2025 02:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5778C1D5CDE;
+	Mon,  3 Mar 2025 03:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cX2ap5pe"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UQfrwKzw"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F609146585;
-	Mon,  3 Mar 2025 02:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB0C7DA6D;
+	Mon,  3 Mar 2025 03:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740969776; cv=none; b=hDqu/yjR3/QerfOd8vgLha9pB1gmhJfD80QsXqSyMX7u5Hp5ezhPN+yMMOYoQHUHK2hZJjSV7zvFKUAR3UgVisfAPE86rYG4PNbDIwTd8ycEc81vZiK0A500v6tBsmYbGCF9kNLobdWPbPIiup3u8RFHaj8uXI8gj7OIiB9qTkw=
+	t=1740973444; cv=none; b=GH3r+2FO3HPMDOP/JGtrLyyXH4SU7mMmJGxReJV3PxQSxm/52VsaTq6oQl67W3s9xwtSqcaUB0l4QtvcocmzdoY0mE2NszZoKC8DGq4yg4mJo7IiHh6fOrq2JYnXtCdB1tJmSmKoLCKITLXkIpaBWCaE17XKs5MSmVbFam40GVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740969776; c=relaxed/simple;
-	bh=LPsDAF4daV1b80Sc87gTh5bt29Y3h9Ne2D/+R21IRO0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MqK9glcJmvGFq60/6fhpHuM2rJYGpjrbFjD5T43XeiLWXpWyHT2fJ2sWaG3Zwc6eVUwojpjVycQ8KUshz73SlTDz1pDl4qoXbGcbYE39WYM2qUFHAuFWWvPp2jIKzOPUjIN5p+W0kWM6eyoP8WYIU1sWbNTjvfqoQyZtCfFsL7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cX2ap5pe; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1740973444; c=relaxed/simple;
+	bh=FDczm35Zjmmbm3X17U5LkYtumttuXroOM3bL1lGECGc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n4YhZdAww0TK+zVben2H44P8A7kb0a8Yu7ABRhdwTpDl90JndjbkvrN9iih6uIrp6jh5C82uTZW/rPz+JGd3pI7BOmfCf/vgspi8knH/0PK9LNWi+IBRXgeVsctvWeSAZCShDa3OEVAMCBfJobcYAqQRj3G9a4dZolU2FAvpxQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UQfrwKzw; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=9wCrl
-	m+ulJ569ETKNhrEDhDUJvY3Yz7e67hlsiJwJac=; b=cX2ap5pel61WJEdxM5GBh
-	a/5Dq361w/REnXArk14mYW9Hwh3yzOM0iBsudLecW33ch/MsPbJtUjD+nDwGahee
-	Jv6z0Vzl/XhVA0iM406uV1V7nz9GGgFMffSQkAId9AkSzjkY8z8NzTvYyM/nDuYM
-	45pV0lHbmdWUVZzmHFDgDw=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=vgHDJ
+	+8lJjUKHpr74AmWiy9dROiP1tus9eHykEPvSfc=; b=UQfrwKzwBRAqH9qINlw0C
+	kIluMFS5oPfOZZp6CbmX/UebDJcnq6G/X2lNcFh4keVwkiv3eDByLJqaJvme067n
+	eHhT2gYgL6rDV82A+qwnbNKQ5OBmVkFoR4MKHrrcKinUSJh9OSjDewfs7zO5qj8R
+	hXZ6KZEGnQtyO5PaJ6NoF0=
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wA3dX8aF8VnyuKdPA--.58228S4;
-	Mon, 03 Mar 2025 10:42:36 +0800 (CST)
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDnt1lrJcVnIhzdPw--.41944S4;
+	Mon, 03 Mar 2025 11:43:40 +0800 (CST)
 From: Haoxiang Li <haoxiang_li2024@163.com>
-To: clm@fb.com,
-	josef@toxicpanda.com,
-	dsterba@suse.com,
-	fdmanana@suse.com
-Cc: linux-btrfs@vger.kernel.org,
+To: rafael@kernel.org,
+	len.brown@intel.com,
+	pavel@kernel.org,
+	dietmar.eggemann@arm.com,
+	lukasz.luba@arm.com
+Cc: linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Haoxiang Li <haoxiang_li2024@163.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] btrfs: fix a memory leak issue in read_one_chunk()
-Date: Mon,  3 Mar 2025 10:42:33 +0800
-Message-Id: <20250303024233.3865292-1-haoxiang_li2024@163.com>
+Subject: [PATCH] PM: EM: fix an API misuse issue in em_create_pd()
+Date: Mon,  3 Mar 2025 11:43:37 +0800
+Message-Id: <20250303034337.3868497-1-haoxiang_li2024@163.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,35 +58,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA3dX8aF8VnyuKdPA--.58228S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jry7CFW8WFWDJFWxuw4kJFb_yoW3Crc_Ja
-	47JryDZry7tw15XryrKFZ0gFWYqw109r4kZ3y2krsYyFZ8ArnFvrsF9rs0va97WrWUAF1a
-	y3Wxtr18uwnrCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRZ8n53UUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqB8FbmfFFtwIUwAAsv
+X-CM-TRANSID:_____wDnt1lrJcVnIhzdPw--.41944S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw4rWFy7uF43CFy8Wry3Jwb_yoW3JFc_u3
+	40qw1vgr9rZw4Y9an0yws5Zr13Kw1UXFWfur1xKFZ5t34kWr4FvrnIgFn5Zrsxur4FkrZr
+	Ca1DCFs8Kw4xGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRN9a9UUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkB8FbmfFIcN3zgAAsd
 
-Add btrfs_free_chunk_map() to free the memory allocated
-by btrfs_alloc_chunk_map() if btrfs_add_chunk_map() fails.
+Replace kfree() with em_table_free() to free
+the memory allocated by em_table_alloc().
 
-Fixes: 7dc66abb5a47 ("btrfs: use a dedicated data structure for chunk maps")
+Fixes: 24e9fb635df2 ("PM: EM: Remove old table")
 Cc: stable@vger.kernel.org
 Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- fs/btrfs/volumes.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/power/energy_model.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index fb22d4425cb0..3f8afbd1ebb5 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -7155,6 +7155,7 @@ static int read_one_chunk(struct btrfs_key *key, struct extent_buffer *leaf,
- 		btrfs_err(fs_info,
- 			  "failed to add chunk map, start=%llu len=%llu: %d",
- 			  map->start, map->chunk_len, ret);
-+		btrfs_free_chunk_map(map);
- 	}
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index 3874f0e97651..71b60aa20227 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -447,7 +447,7 @@ static int em_create_pd(struct device *dev, int nr_states,
+ 	return 0;
  
- 	return ret;
+ free_pd_table:
+-	kfree(em_table);
++	em_table_free(em_table);
+ free_pd:
+ 	kfree(pd);
+ 	return -EINVAL;
 -- 
 2.25.1
 
