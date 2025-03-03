@@ -1,121 +1,107 @@
-Return-Path: <stable+bounces-120266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB89A4E694
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30335A4E696
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B23CF19C7575
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:33:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2465918837BD
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558F927D771;
-	Tue,  4 Mar 2025 16:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="gkODV0mH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E6528D081;
+	Tue,  4 Mar 2025 16:18:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
+Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF6D27CCFA
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB9828D091
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=160.75.25.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741104736; cv=pass; b=rKTQ823jk7OzafX0K94/iXA7uZHMPfwF2Sq4rJKFhQ8CK1wieKS03Udyuktt9jNniBkyEGiWX/WLxBTvK15xFDVxqzlhw/iArMTR99wfqT4bUoKO61ykeOWi3882pRb8tPyQiFIrxFaWSk7YS/rRwAYK0NzdrcLEIhJQq+Vzu54=
+	t=1741105114; cv=fail; b=YAeUsnVQEGQ63ebcwAuuzyRylYNWkMiDFUHBfWFFPIuaGvR+k0V3JNZQ/fj5+Jzo0UMwRc0Cggq/vrgCJPemDJQD4D2+gLHj9gpgtR3YNfDe6VpskkJ1u3MXoc4MvfnB8Rv6aaHVf67HYGZABV5h+M2hHH0vVUapuliHlyQmjFk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741104736; c=relaxed/simple;
-	bh=CAHIeJskj3GY78yrKCJxxiZXsQiqmc5JVWs7VaNB0Bw=;
-	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=IjdR6UBmKzvzis6hbT3cdEITRhxR6ieTO5tgomxK3Y4HmpC+wJvcdPh3EHZZQJWCXsUhGULF43TgRk6mV6SQJwkMeWcclAk0xx+u3Lkl9j1ROQyx58oteUUlWaQGLhC5Z9xR4V1GAgl0zc4YFtocNvVRk9djlZI6aYHUkMCA+6c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=gkODV0mH; arc=none smtp.client-ip=185.132.180.163; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; arc=pass smtp.client-ip=160.75.25.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
+	s=arc-20240116; t=1741105114; c=relaxed/simple;
+	bh=SCF2CpNwKghz0IDt6OxQVOYq5t62aM5F93MPXL22weA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pXJ9kTmSoVlDmmlGgptJXUFhGJ6fbN/h5jei2HW6Rh+rnOnTdfgXLUf+lk0cs6dgKHoLUC1WyTOUAx8Xq8gr232Gt7BehKk/gL6mYL0FJQuyZfKzXjr4C50X33vI8JJbhoEnxXTFsJCNmxWW8dmNLZzWxGorbU5CAkEFgmLat38=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=cc.itu.edu.tr; arc=none smtp.client-ip=217.140.110.172; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=fail smtp.client-ip=160.75.25.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
-Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
+Received: from lesvatest1.cc.itu.edu.tr (unknown [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id D2A6C40D571F
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:12:12 +0300 (+03)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id E8C5E40CECAC
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:18:29 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
-Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key, unprotected) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=gkODV0mH
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gdT0prszG2PV
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:10:37 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gbv36tqzG2Pp
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:09:15 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id 5B49642743; Tue,  4 Mar 2025 19:10:33 +0300 (+03)
-Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=gkODV0mH
-X-Envelope-From: <linux-kernel+bounces-541705-bozkiru=itu.edu.tr@vger.kernel.org>
-Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=gkODV0mH
-Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id B91CF420E8
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:30:36 +0300 (+03)
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id 909B33063EFC
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:30:36 +0300 (+03)
+	id 0156942746; Tue,  4 Mar 2025 19:08:55 +0300 (+03)
+X-Envelope-From: <linux-kernel+bounces-541891-bozkiru=itu.edu.tr@vger.kernel.org>
+Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
+	by le2 (Postfix) with ESMTP id B691441BE8
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 17:16:29 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw2.itu.edu.tr (Postfix) with SMTP id 6A1602DCE0
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 17:16:29 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47AE61896B85
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 12:30:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD7501655C2
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6CE21128D;
-	Mon,  3 Mar 2025 12:29:58 +0000 (UTC)
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8061FF602;
-	Mon,  3 Mar 2025 12:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.180.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0B4213E94;
+	Mon,  3 Mar 2025 14:16:02 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A458BEE;
+	Mon,  3 Mar 2025 14:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741004995; cv=none; b=p2utL/Vz/SnSF6iZf+XPHQgv7OJNaWkdWetj5NA51XN5lhLEdfi1QKOTSOU14HNWnxH/9KZhTFDHU/houe/fTuv7x2N/4ULlauYbesq1EHM6aFYdbs3EevnH6MPYxmcA86oTcJOlQzXtHTu1U1i2wDy3Uo+3rB5w56MnsyAC24U=
+	t=1741011360; cv=none; b=PDBsqgSo6NEFjyniblmfiDcwtMp3acwbV99QcLR70l7xfEzqgtxct+MUnmsm7m+uYa6dFW44W4Syq17ywL5yxVLp1bHSlamPshjlXYuyIAC4kxeuojouy+1nibofQPMpBKJfQGp8VZa9mQEDvD6VXMfb3xTSmH60bZzj4MPQI84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741004995; c=relaxed/simple;
-	bh=CAHIeJskj3GY78yrKCJxxiZXsQiqmc5JVWs7VaNB0Bw=;
-	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=p9PIGiReKc1b5I8WG5EJmL+pZ2l4S7XbimMAljwCYejCBvJOwYyyfBGhHJ/pKSgRJYCUzDcqehgfHVwVn6KLjvkoifp4E9mCEFdyRnvQjrRFOynAHJw4GSyAkyUIEkps5DVUsc0dliLI6U32PgDr1hCZAhzHj6/p0/zvJm+SRoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=gkODV0mH; arc=none smtp.client-ip=185.132.180.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
-	by mx07-00376f01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52382geA017916;
-	Mon, 3 Mar 2025 12:14:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=dk201812; bh=e
-	Wf6UfpGRBwwk8RKifIcIZGcFzxMgif6kyP1suPkusM=; b=gkODV0mH6q8KPZx/k
-	mEHB5dh69em4eoKOovZDYJLCEl3sTfhRKBJs7j7ofQtUpZ/ufqpx2kptuiGoxBAA
-	y/Vmo6TLTHyiHyS9BdwNAXwB/vmoU1a79DYW1Y23CNsHN821HFttCMaWnmnWRDd5
-	kQd5RW2k2L+eF1pFyXW8iv/HZWAFjrzuugQy26VXrs8zSzsaxxgXQVnkX8gcF0J0
-	3AUuBdSIc6mU6PnQA1bQDMex4NeyLkERc7BGhfLZlkyzDTkSm5hbgtoVWGsCboaW
-	5Es8oCQleBCgg7XYBX3zA/79SgUepiRWH9f1H92UGf2xd3O17zpCHSCdV0D+Orsg
-	775iA==
-Received: from hhmail05.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
-	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 453u711fe4-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 03 Mar 2025 12:14:29 +0000 (GMT)
-Received: from Matts-MacBook-Pro.local (172.25.8.157) by
- HHMAIL05.hh.imgtec.org (10.100.10.120) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 3 Mar 2025 12:14:27 +0000
-From: Matt Coster <matt.coster@imgtec.com>
-To: Frank Binns <frank.binns@imgtec.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Brendan King <Brendan.King@imgtec.com>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Brendan King <brendan.king@imgtec.com>
-In-Reply-To: <20250226-hold-drm_gem_gpuva-lock-for-unmap-v2-1-3fdacded227f@imgtec.com>
-References: <20250226-hold-drm_gem_gpuva-lock-for-unmap-v2-1-3fdacded227f@imgtec.com>
-Subject: Re: [PATCH v2] drm/imagination: Hold drm_gem_gpuva lock for unmap
-Message-ID: <174100406813.47174.5029499450421532895.b4-ty@imgtec.com>
-Date: Mon, 3 Mar 2025 12:14:28 +0000
+	s=arc-20240116; t=1741011360; c=relaxed/simple;
+	bh=noQaqyESrFXPlVuJvXsqVgB6g2QUq9O0Y8RZo1VBRPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hkus79t/uzRWjKh9MBXNgKIgf/OwfMPNuy+v55/Ba3D4yvJ4AEJHDBrxsqsnM37AV555ZNlPNazeTpFAH9m+QGVkMX+psLDEWkaVtSkwJ03NWaPPRcYLgB4iDBRtYxb70wW3oQ0pg2wbgKpA8Vb8w0Oh2UQxxfE37YzCP4/J38Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDB7D113E;
+	Mon,  3 Mar 2025 06:16:10 -0800 (PST)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 807673F66E;
+	Mon,  3 Mar 2025 06:15:54 -0800 (PST)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	linux-mm@kvack.org,
+	sparclinux@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 1/5] mm: Fix lazy mmu docs and usage
+Date: Mon,  3 Mar 2025 14:15:35 +0000
+Message-ID: <20250303141542.3371656-2-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250303141542.3371656-1-ryan.roberts@arm.com>
+References: <20250303141542.3371656-1-ryan.roberts@arm.com>
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -123,42 +109,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-EXCLAIMER-MD-CONFIG: 15a78312-3e47-46eb-9010-2e54d84a9631
-X-Proofpoint-GUID: MBgX6RdhLT-wlApSMlb2hVmtXwXw0j5C
-X-Authority-Analysis: v=2.4 cv=LrJoymdc c=1 sm=1 tr=0 ts=67c59d25 cx=c_pps a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17 a=LHZ2_XVCwAsA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=I97S-O_Z-kIA:10 a=r_1tXGB3AAAA:8 a=HtLarFGESsWcHrEFRNYA:9
- a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10 a=zZCYzV9kfG8A:10 a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-ORIG-GUID: MBgX6RdhLT-wlApSMlb2hVmtXwXw0j5C
+Content-Transfer-Encoding: quoted-printable
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6gdT0prszG2PV
+X-ITU-Libra-ESVA-ID: 4Z6gbv36tqzG2Pp
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741709446.24151@lyVCFnc/VVw93g0/DNpBFA
+X-ITU-Libra-ESVA-Watermark: 1741709382.93072@0GobpiqEuz6LJRgpcWyqpg
 X-ITU-MailScanner-SpamCheck: not spam
 
+The docs, implementations and use of arch_[enter|leave]_lazy_mmu_mode()
+is a bit of a mess (to put it politely). There are a number of issues
+related to nesting of lazy mmu regions and confusion over whether the
+task, when in a lazy mmu region, is preemptible or not. Fix all the
+issues relating to the core-mm. Follow up commits will fix the
+arch-specific implementations. 3 arches implement lazy mmu; powerpc,
+sparc and x86.
 
-On Wed, 26 Feb 2025 15:43:06 +0000, Brendan King wrote:
-> Avoid a warning from drm_gem_gpuva_assert_lock_held in drm_gpuva_unlink.
-> 
-> The Imagination driver uses the GEM object reservation lock to protect
-> the gpuva list, but the GEM object was not always known in the code
-> paths that ended up calling drm_gpuva_unlink. When the GEM object isn't
-> known, it is found by calling drm_gpuva_find to lookup the object
-> associated with a given virtual address range, or by calling
-> drm_gpuva_find_first when removing all mappings.
-> 
-> [...]
+When arch_[enter|leave]_lazy_mmu_mode() was first introduced by commit
+6606c3e0da53 ("[PATCH] paravirt: lazy mmu mode hooks.patch"), it was
+expected that lazy mmu regions would never nest and that the appropriate
+page table lock(s) would be held while in the region, thus ensuring the
+region is non-preemptible. Additionally lazy mmu regions were only used
+during manipulation of user mappings.
 
-Applied, thanks!
+Commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+updates") started invoking the lazy mmu mode in apply_to_pte_range(),
+which is used for both user and kernel mappings. For kernel mappings the
+region is no longer protected by any lock so there is no longer any
+guarantee about non-preemptibility. Additionally, for RT configs, the
+holding the PTL only implies no CPU migration, it doesn't prevent
+preemption.
 
-[1/1] drm/imagination: Hold drm_gem_gpuva lock for unmap
-      commit: a5c4c3ba95a52d66315acdfbaba9bd82ed39c250
+Commit bcc6cc832573 ("mm: add default definition of set_ptes()") added
+arch_[enter|leave]_lazy_mmu_mode() to the default implementation of
+set_ptes(), used by x86. So after this commit, lazy mmu regions can be
+nested. Additionally commit 1a10a44dfc1d ("sparc64: implement the new
+page table range API") and commit 9fee28baa601 ("powerpc: implement the
+new page table range API") did the same for the sparc and powerpc
+set_ptes() overrides.
 
-Best regards,
--- 
-Matt Coster <matt.coster@imgtec.com>
+powerpc couldn't deal with preemption so avoids it in commit
+b9ef323ea168 ("powerpc/64s: Disable preemption in hash lazy mmu mode"),
+which explicitly disables preemption for the whole region in its
+implementation. x86 can support preemption (or at least it could until
+it tried to add support nesting; more on this below). Sparc looks to be
+totally broken in the face of preemption, as far as I can tell.
+
+powerpc can't deal with nesting, so avoids it in commit 47b8def9358c
+("powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu() in set_ptes"),
+which removes the lazy mmu calls from its implementation of set_ptes().
+x86 attempted to support nesting in commit 49147beb0ccb ("x86/xen: allow
+nesting of same lazy mode") but as far as I can tell, this breaks its
+support for preemption.
+
+In short, it's all a mess; the semantics for
+arch_[enter|leave]_lazy_mmu_mode() are not clearly defined and as a
+result the implementations all have different expectations, sticking
+plasters and bugs.
+
+arm64 is aiming to start using these hooks, so let's clean everything up
+before adding an arm64 implementation. Update the documentation to state
+that lazy mmu regions can never be nested, must not be called in
+interrupt context and preemption may or may not be enabled for the
+duration of the region. And fix the generic implementation of set_ptes()
+to avoid nesting.
+
+arch-specific fixes to conform to the new spec will proceed this one.
+
+These issues were spotted by code review and I have no evidence of
+issues being reported in the wild.
+
+Cc: <stable@vger.kernel.org>
+Fixes: bcc6cc832573 ("mm: add default definition of set_ptes()")
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+---
+ include/linux/pgtable.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 94d267d02372..787c632ee2c9 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -222,10 +222,14 @@ static inline int pmd_dirty(pmd_t pmd)
+  * hazard could result in the direct mode hypervisor case, since the act=
+ual
+  * write to the page tables may not yet have taken place, so reads thoug=
+h
+  * a raw PTE pointer after it has been modified are not guaranteed to be
+- * up to date.  This mode can only be entered and left under the protect=
+ion of
+- * the page table locks for all page tables which may be modified.  In t=
+he UP
+- * case, this is required so that preemption is disabled, and in the SMP=
+ case,
+- * it must synchronize the delayed page table writes properly on other C=
+PUs.
++ * up to date.
++ *
++ * In the general case, no lock is guaranteed to be held between entry a=
+nd exit
++ * of the lazy mode. So the implementation must assume preemption may be=
+ enabled
++ * and cpu migration is possible; it must take steps to be robust agains=
+t this.
++ * (In practice, for user PTE updates, the appropriate page table lock(s=
+) are
++ * held, but for kernel PTE updates, no lock is held). Nesting is not pe=
+rmitted
++ * and the mode cannot be used in interrupt context.
+  */
+ #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+ #define arch_enter_lazy_mmu_mode()	do {} while (0)
+@@ -287,7 +291,6 @@ static inline void set_ptes(struct mm_struct *mm, uns=
+igned long addr,
+ {
+ 	page_table_check_ptes_set(mm, ptep, pte, nr);
+=20
+-	arch_enter_lazy_mmu_mode();
+ 	for (;;) {
+ 		set_pte(ptep, pte);
+ 		if (--nr =3D=3D 0)
+@@ -295,7 +298,6 @@ static inline void set_ptes(struct mm_struct *mm, uns=
+igned long addr,
+ 		ptep++;
+ 		pte =3D pte_next_pfn(pte);
+ 	}
+-	arch_leave_lazy_mmu_mode();
+ }
+ #endif
+ #define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
+--=20
+2.43.0
 
 
 
