@@ -1,113 +1,129 @@
-Return-Path: <stable+bounces-120349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A5AA4E875
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:23:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48E6A4E785
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFFD43BDAAA
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DBDF4259A2
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35F524C094;
-	Tue,  4 Mar 2025 16:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1220409D;
+	Tue,  4 Mar 2025 16:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VehcebwA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWcfLBpg"
 X-Original-To: stable@vger.kernel.org
 Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14AD1FF1C1
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=160.75.25.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85AF2853ED
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741106902; cv=fail; b=oQfGoGgbSee6Bhblje6NZ0JzlLZHRZaGzFdDN/IWP6M/eFmawq0rNe73Tr7sgWXIK10ciXLfSCpHaTkUjz82v4haPykIErFEJhpvqlD6Kk977pkSH9Qnvunl1PXx0uNX02a6axIWYevA+kcAqRnlviJC8Tb5Wfc8efMa5VAl3a0=
+	t=1741106180; cv=pass; b=EbnwJ8Sx+PbBSDZQ4vJKBViz2gwxrZLHMwLCBqD///qSQzh0KCt+AI1CAoj941JC2zINwOPDJaJoat2ACNk6+K3P0uELJQOOWyf+enz8teq4vSk4Jj3tt27l4sB7SwwtxOVgwNKoT3vLA+Op7lbHfq6ZKZYWHXcjphQumIT1DSY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741106902; c=relaxed/simple;
-	bh=wiRwEWvfR59g+K3ADNLsA4gxzs3j20iGqEeUlrR8akg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DBvhJCyGtjR3aoCvj2quppyZezQBF9qigXpNVCbCl4fj9DXwhorKRPnJOjOWRw4UO6qQYzZBtw6YclPJMwjVIheEIPoC4LR3QLDrIGLzxcCb/ok3neA8PImo+VX7wKLRTxIZAoCkD10KwwCa+QJTGBDuAfEAMi8GBELGsoA96kw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=bootlin.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=fail (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VehcebwA reason="signature verification failed"; arc=none smtp.client-ip=217.70.183.201; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; arc=fail smtp.client-ip=160.75.25.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=bootlin.com
+	s=arc-20240116; t=1741106180; c=relaxed/simple;
+	bh=vexmjRShWRkr7S+O8wIzsYn1ODE9j/1sozVgI1TDUjs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GugavDkq2bcO9374lSR9O0uiLwiWZOMIeX4/VqXqb/M0YZHeG+dbz5AT8fIOo3Inrruh6vC0Qeb4d5hmhpYjF1igV63EDDk3H8O9aEjvNGPVKtVkr0//X6uM8dr7GN9BdNHl+EINMYmY9iYIMS2exTArQYAjJb/eX/+tz97i/Dc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWcfLBpg; arc=none smtp.client-ip=209.85.167.53; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; arc=pass smtp.client-ip=160.75.25.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (unknown [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id 14D5940D0CAF
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:48:19 +0300 (+03)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id ECD1140CEC94
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:36:16 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
-Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=VehcebwA
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6hR60T46zG47h
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:46:42 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6h8z3vZKzG2tr
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 19:34:27 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id 579934273F; Tue,  4 Mar 2025 19:46:23 +0300 (+03)
+	id 8360442736; Tue,  4 Mar 2025 19:34:15 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VehcebwA
-X-Envelope-From: <linux-kernel+bounces-541426-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWcfLBpg
+X-Envelope-From: <linux-kernel+bounces-541606-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VehcebwA
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWcfLBpg
 Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id F0B4941DD9
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:48:13 +0300 (+03)
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id A2DCA305F789
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:48:13 +0300 (+03)
+	by le2 (Postfix) with ESMTP id DDE4D41D32
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:46:05 +0300 (+03)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 681C83063EFC
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:46:05 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 030F8170A2A
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C3193B91D9
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CA61F4288;
-	Mon,  3 Mar 2025 10:45:20 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF58202986;
+	Mon,  3 Mar 2025 11:40:20 +0000 (UTC)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12661F2BB5;
-	Mon,  3 Mar 2025 10:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CC3200BBC;
+	Mon,  3 Mar 2025 11:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740998717; cv=none; b=T0/m/yGjqN0K/NQMzKua+5PPQnqDtY8sINYle8cP6OXz0iqoKkgtzGYaBcuxQpif7uauQrePNW3qvMX9sefpx7SzBbFk2UlCrH1gmPIvjAUnF0Vkc95wkiXuZyDW9xL3Zg/WBmNamnUaosA3LPkEppyO272bsgpQLZw3MqFq6/g=
+	t=1741002017; cv=none; b=NK2DnzDkaOZeOf/mT5QmIJoLoKEj6HnGqV6+2Gbk+vktV9JHiQDZHowleyLwoKPkynJEM/7D4qjox5265EomH4IzCPv2b9YuCvM6gJbgwbAe3jDEGYMHySM59lbfYSUX5EV2MsDDLYyJ8ft6HfDlxC0VrUQWKokrGw8FZNP3Exk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740998717; c=relaxed/simple;
-	bh=epqAmMwiaOESlkR2wS6UCOEtQ+c5h0eTQuRBcxubrtA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=KjvTtvqc/eVYQK7Hd3rCB/FVHwL0hyk2LLvVC+C8gv2jP5YRVYVKxB+Xo7UFN10acf+/+aB7h2FCc5rhwnni5fOBVDuGRGSwLO4lrYUBwlavR1DTf7A7YSLTOudA3v1mn5ydm+xrQhrJyDinSrjWql+b407d6wqYuc30PDBP0jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VehcebwA; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8584043426;
-	Mon,  3 Mar 2025 10:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740998713;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UruHBjRajISo099N9o0TXvUraPldBWhzjY5wVsDG8p4=;
-	b=VehcebwAWX0cYaujiDhEuwILYKiLexTP7qaBpTLxvqYznFR+lGj328K4N5ti7mQGoHdyzD
-	3Fh17nXRSpHUer0aRq2ALeAg8s+zswHbUlBxEsbjAZ7jL6VwJscrMCWLLd9LAYZYJ8bwgt
-	J9d4dE27yCC6nxQDLmEcH9L+LZ15Mn/mPBO277TKpg3tWGyv/QDBuvfIyH50ryAkWGe7ZN
-	G/2pDKCFZ26y7uwAGddXPLF5DC4j4PYC+fOz5T3BsEZkFVD19uoJx5p4mlTACIWDRPzKp5
-	JJnc6Aui0YJjFX9qSMmNo10fYXoCqUsZbOL24luzrOHKWHC8oco70zmuWtKQaA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: florian.fainelli@broadcom.com, 
- Brian Norris <computersforpeace@gmail.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Masahiro Yamada <yamada.masahiro@socionext.com>, 
- Boris Brezillon <bbrezillon@kernel.org>, linux-mtd@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Kamal Dasu <kamal.dasu@broadcom.com>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20250227174653.8497-1-kamal.dasu@broadcom.com>
-References: <20250227174653.8497-1-kamal.dasu@broadcom.com>
-Subject: Re: [PATCH v2] mtd: rawnand: brcmnand: fix PM resume warning
-Message-Id: <174099871242.2206965.1027368384612216898.b4-ty@bootlin.com>
-Date: Mon, 03 Mar 2025 11:45:12 +0100
+	s=arc-20240116; t=1741002017; c=relaxed/simple;
+	bh=vexmjRShWRkr7S+O8wIzsYn1ODE9j/1sozVgI1TDUjs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bp3aqvUx8Fb9JqUvHtvCbKIBubOo+WQSm/owfF7NrC6+PbJqsrkPi3/X/xiCHL1fi6fO2P52FIO+zNIFKspKjQmOqXcmU/hyrOUGpyIKof95L+wVEXtzIlU0+bdQkS/TFvcsslSuiw3JiM8yB+1sIKQPhCIBSbkNsavIMiiQWEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWcfLBpg; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5494bc8a526so3717827e87.0;
+        Mon, 03 Mar 2025 03:40:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741002013; x=1741606813; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a3KshhKLPc3asFmOXQnuU+ysx6yVcCHiVd9RsF7krHs=;
+        b=PWcfLBpgbyy01yn5+C0iJvUKDGS3hDiO+8ezodFzKDM1PrDwyXd9c3YpAfyRvgkVKH
+         NfJSQQmxBGLNAlvSTtpvDJgaP4lgAuSu19p66EoCpllYBqeU8uyEOLhHF5fmrajxvWdx
+         rsZTAuy/YSa46607ao7hsEPAzMlfohqa5KmicpPOViW9yhMxRCDEE6W/eQYRp7Juk/P8
+         MxXElLKztOFprUWanUNzCQ9JImc+KGSnqdDu1V5/ujSMxJpk0tzLttGcPERFqt25RT7E
+         MK74uQlOpp2Xa4BJ/yQBG99bJ3wfpLUZBIomiPfzmo6Kj+7l3UHfWhAnl1+OHnaKjKTO
+         xi1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741002013; x=1741606813;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a3KshhKLPc3asFmOXQnuU+ysx6yVcCHiVd9RsF7krHs=;
+        b=U6j6SeiWo/CnWoQm188JMboR12+9RsAqwFLOM/C0mqlvvxckmNz0W8hhjcrk23Zj30
+         CijLWU+s/WuagumHVkGAS1IMny4EWCXI6hq2S8YJTbaIM1lvPI9LlRz/hcslvQ6l4nYY
+         pMq+LHruy+BejjAKzuYLsVg0qOQAHfkKIHAq2zYp5py0uHDX1rzAF3KgrWFkSTlj7LZ4
+         cIrL2s4+y4akda27LroKk9j4oN8KuYLTuHMfhpADRyfd9YvoSgzlRuVoFnOjzoPyOHhG
+         Zj8X7g+pzMV8AV+3wZygOXgD2UGGT1mjl7ILLlMqPsrZR1tFRFSxJ9rtEfpxRs3+M6l1
+         Hk2g==
+X-Forwarded-Encrypted: i=1; AJvYcCU5hBwdkhnMhEVjJXBUD687PCj/xZ1eagIU1AUNA4Z4UQnjRTcyedAgr4kIwBQQYYsi7BLE75Q1zwNYeok=@vger.kernel.org, AJvYcCUO3DqrszZUvOFfpOAJHD1JBYzOwnY2C2RWYaWhzOb4w1UmdeNxcamPWzY6YiErSZ/j4iUOHhAA@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGM+zXt87Cgt/hNxuGiWP2qv/7se0t6yx5hUNFP4lGs/VgHY3v
+	8j7P2IS+Bu7205aO2ssZuuA3VXpsh/rnip/QqtcdnUWJff03S0nmp4JE/50H
+X-Gm-Gg: ASbGncsyx/8rQ9Q6HUvyifVWGO0xZRQ9k0ocBwAytbpmX1B7It1WN3v+vHlmPsIH/T5
+	jlHs2DucZC7KdMbiWRdxvtZoruILHiQ6fn1BEBo35CAnv4NJwvjm1aJlHj/B9iKp9V45IEYL4l1
+	JPemHCm4q0sh6QZwC7BZisseNWexQq8GT8ITIe6HGqYkhRGuXdf0lxDniHjyix4t5Uni4fYpeE/
+	keHQGuu0e+GDWSCUeYYuXVYVHHzVFVIOPLvBKtahhhr+UYRn0z+ckIMI3VWKwYAfLThyb4eWfBb
+	WsWXpX3OksF7J9tdrULTpP6k6R2Rb/KyrniNbXZ2/XZ3UsIsCedngbwVnONTImgluTjnJEM63Jp
+	bB5j1IDUwjR3Shj4BCR6Iy7PYQZYR44nkPQY6HZRM
+X-Google-Smtp-Source: AGHT+IEbZSAS8VlrLgb63qXjtHIvC4htXmc8dPx7Hmc+Hwrr8Xjf0XYoxC/WEWCfUuOyOIo58FGCyA==
+X-Received: by 2002:ac2:4a74:0:b0:549:4e80:6dc0 with SMTP id 2adb3069b0e04-5494e806dc6mr4270805e87.0.1741002012981;
+        Mon, 03 Mar 2025 03:40:12 -0800 (PST)
+Received: from razdolb.local (static.248.157.217.95.clients.your-server.de. [95.217.157.248])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54949de706fsm1125399e87.23.2025.03.03.03.40.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 03:40:12 -0800 (PST)
+From: Mikhail Rudenko <mike.rudenko@gmail.com>
+Date: Mon, 03 Mar 2025 14:40:09 +0300
+Subject: [PATCH v4 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
+ dma-contig
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -116,108 +132,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeelvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtkeertdertdejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeifffhueelgfdtleetgfelvefggfehudelvdehuddulefgheelgfehieevvdegnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrgedvrdegiegnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepkhgrmhgrlhdruggrshhusegsrhhorggutghomhdrtghomhdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopegtohhmphhuthgvrhhsfhhorhhpvggrtggvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsggtmhdqkhgvrhhnvghlqdhfvggvuggsrggtkhdqlhhishhtsegsrhhorggutghomhdrtghomhdprhgtphhtthhopehlihhnu
- higqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfhhlohhrihgrnhdrfhgrihhnvghllhhisegsrhhorggutghomhdrtghomhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: miquel.raynal@bootlin.com
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
+References: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
+In-Reply-To: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
+To: Dafna Hirschfeld <dafna@fastmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, Tomasz Figa <tfiga@chromium.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Hans Verkuil <hverkuil@xs4all.nl>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ Mikhail Rudenko <mike.rudenko@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6hR60T46zG47h
+X-ITU-Libra-ESVA-ID: 4Z6h8z3vZKzG2tr
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741711611.52282@Z42CTkGM9fnyJNosxojf+A
+X-ITU-Libra-ESVA-Watermark: 1741710869.73006@R5z1pxErlOhlvbXP/CB65w
 X-ITU-MailScanner-SpamCheck: not spam
 
-On Thu, 27 Feb 2025 12:46:08 -0500, Kamal Dasu wrote:
-> Fixed warning on PM resume as shown below caused due to uninitialized
-> struct nand_operation that checks chip select field :
-> WARN_ON(op->cs >=3D nanddev_ntargets(&chip->base)
->=20
-> [   14.588522] ------------[ cut here ]------------
-> [   14.588529] WARNING: CPU: 0 PID: 1392 at drivers/mtd/nand/raw/intern=
-als.h:139 nand_reset_op+0x1e0/0x1f8
-> [   14.588553] Modules linked in: bdc udc_core
-> [   14.588579] CPU: 0 UID: 0 PID: 1392 Comm: rtcwake Tainted: G        =
-W          6.14.0-rc4-g5394eea10651 #16
-> [   14.588590] Tainted: [W]=3DWARN
-> [   14.588593] Hardware name: Broadcom STB (Flattened Device Tree)
-> [   14.588598] Call trace:
-> [   14.588604]  dump_backtrace from show_stack+0x18/0x1c
-> [   14.588622]  r7:00000009 r6:0000008b r5:60000153 r4:c0fa558c
-> [   14.588625]  show_stack from dump_stack_lvl+0x70/0x7c
-> [   14.588639]  dump_stack_lvl from dump_stack+0x18/0x1c
-> [   14.588653]  r5:c08d40b0 r4:c1003cb0
-> [   14.588656]  dump_stack from __warn+0x84/0xe4
-> [   14.588668]  __warn from warn_slowpath_fmt+0x18c/0x194
-> [   14.588678]  r7:c08d40b0 r6:c1003cb0 r5:00000000 r4:00000000
-> [   14.588681]  warn_slowpath_fmt from nand_reset_op+0x1e0/0x1f8
-> [   14.588695]  r8:70c40dff r7:89705f41 r6:36b4a597 r5:c26c9444 r4:c26b=
-0048
-> [   14.588697]  nand_reset_op from brcmnand_resume+0x13c/0x150
-> [   14.588714]  r9:00000000 r8:00000000 r7:c24f8010 r6:c228a3f8 r5:c26c=
-94bc r4:c26b0040
-> [   14.588717]  brcmnand_resume from platform_pm_resume+0x34/0x54
-> [   14.588735]  r5:00000010 r4:c0840a50
-> [   14.588738]  platform_pm_resume from dpm_run_callback+0x5c/0x14c
-> [   14.588757]  dpm_run_callback from device_resume+0xc0/0x324
-> [   14.588776]  r9:c24f8054 r8:c24f80a0 r7:00000000 r6:00000000 r5:0000=
-0010 r4:c24f8010
-> [   14.588779]  device_resume from dpm_resume+0x130/0x160
-> [   14.588799]  r9:c22539e4 r8:00000010 r7:c22bebb0 r6:c24f8010 r5:c225=
-39dc r4:c22539b0
-> [   14.588802]  dpm_resume from dpm_resume_end+0x14/0x20
-> [   14.588822]  r10:c2204e40 r9:00000000 r8:c228a3fc r7:00000000 r6:000=
-00003 r5:c228a414
-> [   14.588826]  r4:00000010
-> [   14.588828]  dpm_resume_end from suspend_devices_and_enter+0x274/0x6=
-f8
-> [   14.588848]  r5:c228a414 r4:00000000
-> [   14.588851]  suspend_devices_and_enter from pm_suspend+0x228/0x2bc
-> [   14.588868]  r10:c3502910 r9:c3501f40 r8:00000004 r7:c228a438 r6:c0f=
-95e18 r5:00000000
-> [   14.588871]  r4:00000003
-> [   14.588874]  pm_suspend from state_store+0x74/0xd0
-> [   14.588889]  r7:c228a438 r6:c0f934c8 r5:00000003 r4:00000003
-> [   14.588892]  state_store from kobj_attr_store+0x1c/0x28
-> [   14.588913]  r9:00000000 r8:00000000 r7:f09f9f08 r6:00000004 r5:c350=
-2900 r4:c0283250
-> [   14.588916]  kobj_attr_store from sysfs_kf_write+0x40/0x4c
-> [   14.588936]  r5:c3502900 r4:c0d92a48
-> [   14.588939]  sysfs_kf_write from kernfs_fop_write_iter+0x104/0x1f0
-> [   14.588956]  r5:c3502900 r4:c3501f40
-> [   14.588960]  kernfs_fop_write_iter from vfs_write+0x250/0x420
-> [   14.588980]  r10:c0e14b48 r9:00000000 r8:c25f5780 r7:00443398 r6:f09=
-f9f68 r5:c34f7f00
-> [   14.588983]  r4:c042a88c
-> [   14.588987]  vfs_write from ksys_write+0x74/0xe4
-> [   14.589005]  r10:00000004 r9:c25f5780 r8:c02002fA0 r7:00000000 r6:00=
-000000 r5:c34f7f00
-> [   14.589008]  r4:c34f7f00
-> [   14.589011]  ksys_write from sys_write+0x10/0x14
-> [   14.589029]  r7:00000004 r6:004421c0 r5:00443398 r4:00000004
-> [   14.589032]  sys_write from ret_fast_syscall+0x0/0x5c
-> [   14.589044] Exception stack(0xf09f9fa8 to 0xf09f9ff0)
-> [   14.589050] 9fa0:                   00000004 00443398 00000004 00443=
-398 00000004 00000001
-> [   14.589056] 9fc0: 00000004 00443398 004421c0 00000004 b6ecbd58 00000=
-008 bebfbc38 0043eb78
-> [   14.589062] 9fe0: 00440eb0 bebfbaf8 b6de18a0 b6e579e8
-> [   14.589065] ---[ end trace 0000000000000000 ]---
->=20
-> [...]
+When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
+commit 129134e5415d ("media: media/v4l2: remove
+V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
+vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
+no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
+introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
+V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
+no-ops, making cache maintenance for non-coherent dmabufs allocated by
+dma-contig impossible.
 
-Applied to nand/next, thanks!
+Fix this by reintroducing dma_sync_sgtable_for_{cpu,device} and
+{flush,invalidate}_kernel_vmap_range calls to
+vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
+buffers.
 
-[1/1] mtd: rawnand: brcmnand: fix PM resume warning
-      commit: 288573e43712b1e04562de1bb93be01d74aa5f48
+Fixes: c0acf9cfeee0 ("media: videobuf2: handle V4L2_MEMORY_FLAG_NON_COHERENT flag")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+---
+ .../media/common/videobuf2/videobuf2-dma-contig.c  | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
+diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+index a13ec569c82f6da2d977222b94af32e74c6c6c82..d41095fe5bd21faf815d6b035d7bc888a84a95d5 100644
+--- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+@@ -427,6 +427,17 @@ static int
+ vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
+ 				   enum dma_data_direction direction)
+ {
++	struct vb2_dc_buf *buf = dbuf->priv;
++	struct sg_table *sgt = buf->dma_sgt;
++
++	if (!buf->non_coherent_mem)
++		return 0;
++
++	if (buf->vaddr)
++		invalidate_kernel_vmap_range(buf->vaddr, buf->size);
++
++	dma_sync_sgtable_for_cpu(buf->dev, sgt, direction);
++
+ 	return 0;
+ }
+ 
+@@ -434,6 +445,17 @@ static int
+ vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
+ 				 enum dma_data_direction direction)
+ {
++	struct vb2_dc_buf *buf = dbuf->priv;
++	struct sg_table *sgt = buf->dma_sgt;
++
++	if (!buf->non_coherent_mem)
++		return 0;
++
++	if (buf->vaddr)
++		flush_kernel_vmap_range(buf->vaddr, buf->size);
++
++	dma_sync_sgtable_for_device(buf->dev, sgt, direction);
++
+ 	return 0;
+ }
+ 
 
-Kind regards,
-Miqu=C3=A8l
+-- 
+2.48.1
 
 
 
