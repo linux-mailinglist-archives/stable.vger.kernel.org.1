@@ -1,172 +1,103 @@
-Return-Path: <stable+bounces-120351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B4FA4E8DC
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:31:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9459AA4E9B1
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:46:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0B398C20E3
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:13:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F2F4886327
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69173296165;
-	Tue,  4 Mar 2025 16:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599E72BF3DE;
+	Tue,  4 Mar 2025 16:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="FwNzJvuO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/WkyzXV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B857229616F
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754A827BF84
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741107098; cv=none; b=P6s7vzXFn8czWa1XNzr/Av8BdItJ+pf/pHEQjPbsEDPr+zgrRl/g6GTR0KSNttCvZcz65cxPzYPSLicEh01hSbFmJx2DKEA4q3gEkJQHKu/RE4+zy+vrUcNUMAfXWFYTqaif3iBrXO8fAJHSU9WKPINEVr98qOr02qoMYXDfTaA=
+	t=1741107210; cv=none; b=hacG0Kt6LGD+NQ/qq8+CWDuau6BiQRTPY3oZuq4BThxInOxZtkcrVGq7j6o+umdY+WV0Zp5CUfHZ/gdImc+SA7t6uAV9X5qHNY/gZuAQ0NCz6PSiqUFk49swVw2dKvL1ltnJwnkRykmtHu/q9Gb1lAIFgp+KEp7bDYIQ6257gy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741107098; c=relaxed/simple;
-	bh=2JHXxXzhmpb0OX2lEi1YmWa9UaEMzszdSvf5a4zV9V0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IXqvTpqcR8pbH8QnVK5x3qaT5zUj/W58cuZIky5gD2wN4XXf4B2vqVNWbnTcDYXhGpxNiQ33p5Czwd3ehRn86A6qaEyX4VZC2Xzni/JKlxt1TXJ5sLb20nE3HcbRCDDLcFV8/jXMCPxoLHXmc/ekNRYAOHy2geedb6Zi1A2CGUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FwNzJvuO; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-543e4bbcd86so6489434e87.1
-        for <stable@vger.kernel.org>; Tue, 04 Mar 2025 08:51:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1741107094; x=1741711894; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FDh2ShgJFeYs9YZdId5VqANVdklC8j4ZumycrihxHA0=;
-        b=FwNzJvuOVeWD/JpfuZFHaXrEaqNHsrVhXv+Doti+mZVAqVXnVeCJCI2UKoVcvLEHZZ
-         wdm1aq6ucIwHgrMM0XoxddwPBJSCV2eXOvqetz85g1VjxavzZ19a0E4/MDu69o3c7H7L
-         zQ/v9uxIqyRk466oEQOccYby7l4II4o1Fx0hFmaG4Vcxtn41CHZ6iwdTfStPiA2cevbt
-         vEs7F+bQKdQHpmt0HyxyB5hDbdtssuhqsC+LhwIGiZVCf5aGa0r/rl6w1zJ/jM8DtvPb
-         nNw/MAtDAT1YflmIY3NylkrW7oWkfrAtw9W4tiFEvkrwYucJloruM/LmKtLhvKQBwT/L
-         w19A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741107094; x=1741711894;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FDh2ShgJFeYs9YZdId5VqANVdklC8j4ZumycrihxHA0=;
-        b=bVPpRlA1cAQ4ykGJ5klsL4j45A/byO01ylnKPZ6EdSTV5teC0ZFUob2P6jNOq+lTn5
-         2HFTPfr3mmwomInaiaZVh/dtTYfjaJWO+e4jS+c87TX+kXV6a/mhvSJmpLFXobwA9Bp0
-         VXDIurZZQ94aMTxScY1msvGrNDUvo5p+mywzsSKiAjE/rdb2hdeCb0hx0YtLdk4iad1w
-         ilGrQED6AKLKjQGNtXkYOU0tgJKSLDeVfDfy180VZzK/cggcytEZXZwMKira7dm97xoY
-         ue8q9E2smP/ithVajVpNu0jjqoPlrRg0UCZMLX+4TmZquTcXFRf8fRzjNMtyWbD2A2N+
-         168Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV69LQ0sA59H5Loq4pG9vVPtLcc308X4vlJC4pBkJLHYchIflvVn/8rsJp9eN8l1buogQyhjk8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyty5e8V2bGpkboTYmFQ1g+4Uy+DIE5lI+2coU/VVgfiR9cB3WK
-	dAor6lYamOC0zzimmooEJGVWM+/4pcEmSmcN6gt9aCYP9xQGV/MUtjrIByKPTioAwpsEGFfkgNv
-	3jHc9fIUFApRymmr+v7jrBfZ63tYpF4OOM2NqJg==
-X-Gm-Gg: ASbGnctlF5sGBM+FRW632h9vRJ5ZuyyW4z37Y+g/nBAYQxa60IRbjI6sWPsHC8qmpvI
-	xU4QlkdenFKQmXZa672w80A3uvYbK4eDZhXy7fOP8hsLT46lJz3/k4wWnbAxAq+JswgU0ghHmsm
-	Zc7OPJDBikJCTTcV+PCNPpYTemUW0ErPbVrCqzUO/gsQiussO0/teKtYaK
-X-Google-Smtp-Source: AGHT+IEyBeEasaks1DqLAXD3qVdr0T57ZO9UNgUe1QVFUg+iLloSpXiDivArAUmEYp/N4JWWXmGfD9mHe5fRzFP8+H4=
-X-Received: by 2002:a05:6512:3e0c:b0:545:bb6:8e32 with SMTP id
- 2adb3069b0e04-5494c31a221mr8475997e87.12.1741107093672; Tue, 04 Mar 2025
- 08:51:33 -0800 (PST)
+	s=arc-20240116; t=1741107210; c=relaxed/simple;
+	bh=pmJiKXm1wcFFEIkPRaSCM/11zJX5KYMUAtbvJogZ00E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DJvojh+wxKzsqUzdSStW2gx9FbNSy38Qt9WebjV8KzfH5L2rkglwWDQOaJ7dHU6CJO7SbrXepezrbREcEo/mBL7MkDxGc9TicmRlzJ4RZQWmd6vHstdBKGNT+wLrauwlXDueti/sWEPAUjJBfdXpFNwnMPW0n1P1Hep98PZ/GrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/WkyzXV; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741107208; x=1772643208;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pmJiKXm1wcFFEIkPRaSCM/11zJX5KYMUAtbvJogZ00E=;
+  b=e/WkyzXVmYuGRJ8yr5C+b/xQUoyFxIY7BDospBGdHtIXMbY0U68iAni9
+   L2ueCFT9lMoUdFOSIpuC0aOozbEPA5OM0CLOQcHA3MNqiykAMvCZzFxWK
+   PHmRNHc/KXN5od6zEx4gY28pgfloO8rmnpjYPif6N8Crs2BaM6sdENI7m
+   KAUO4lafjCYucQf/JKBrCvzndVLkvcDV9ARoJRFTIVG2icSwuZSRyVZzg
+   reSO+8svb9WRWPWaKDepaLnchcePPjAS2Pz5LaXChzYAIJ0sNOjHhhZzV
+   j/S9+T5GKTqn4w1EQHswjx5Tq23XNu0HEXRtxCcOQpW46RgiHsion7cMO
+   w==;
+X-CSE-ConnectionGUID: 7VKq3DH8RxyqPKB/zhTTow==
+X-CSE-MsgGUID: S9e2uJnsQEaspXzdjIwmbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="52674261"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
+   d="scan'208";a="52674261"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 08:53:28 -0800
+X-CSE-ConnectionGUID: s6myUBAXSSKZ9Z5eUUQLLw==
+X-CSE-MsgGUID: dseNKyNfQA6cjac5Bm7tyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="149370282"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.188]) ([10.245.245.188])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 08:53:26 -0800
+Message-ID: <ac71f5fd-b207-4ceb-8b3e-b794d11a7ea5@intel.com>
+Date: Tue, 4 Mar 2025 16:53:24 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025030445-collected-spoken-1e75@gregkh>
-In-Reply-To: <2025030445-collected-spoken-1e75@gregkh>
-From: Filipe Manana <fdmanana@suse.com>
-Date: Tue, 4 Mar 2025 16:51:21 +0000
-X-Gm-Features: AQ5f1Jqq9_zvNpAc-d1S4lEPjfdhW6fnixP0cjwlEBPisc4vwmCNRfD-cxcvi_s
-Message-ID: <CAKisOQGrtCty9g7DkPXqp3Ox8FyF+zKe5fjPGA=H7s0XFgt92Q@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] btrfs: do regular iput instead of delayed
- iput during extent" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org
-Cc: dsterba@suse.com, intelfx@intelfx.name, johannes.thumshirn@wdc.com, 
-	wqu@suse.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] drm/xe/userptr: Unmap userptrs in the mmu notifier
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Oak Zeng <oak.zeng@intel.com>, stable@vger.kernel.org
+References: <20250304113758.67889-1-thomas.hellstrom@linux.intel.com>
+ <20250304113758.67889-4-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20250304113758.67889-4-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 4, 2025 at 4:33=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
->
->
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.12.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 15b3b3254d1453a8db038b7d44b311a2d6c71f98
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030445-=
-collected-spoken-1e75@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
->
-> Possible dependencies:
->
->
->
-> thanks,
->
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
-> From 15b3b3254d1453a8db038b7d44b311a2d6c71f98 Mon Sep 17 00:00:00 2001
-> From: Filipe Manana <fdmanana@suse.com>
-> Date: Sat, 15 Feb 2025 11:11:29 +0000
-> Subject: [PATCH] btrfs: do regular iput instead of delayed iput during ex=
-tent
->  map shrinking
->
-> The extent map shrinker now runs in the system unbound workqueue and no
-> longer in kswapd context so it can directly do an iput() on inodes even
-> if that blocks or needs to acquire any lock (we aren't holding any locks
-> when requesting the delayed iput from the shrinker). So we don't need to
-> add a delayed iput, wake up the cleaner and delegate the iput() to the
-> cleaner, which also adds extra contention on the spinlock that protects
-> the delayed iputs list.
->
-> Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
-> Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
-> Link: https://lore.kernel.org/linux-btrfs/0414d690ac5680d0d77dfc930606cdc=
-36e42e12f.camel@intelfx.name/
-> CC: stable@vger.kernel.org # 6.12+
+On 04/03/2025 11:37, Thomas Hellström wrote:
+> If userptr pages are freed after a call to the xe mmu notifier,
+> the device will not be blocked out from theoretically accessing
+> these pages unless they are also unmapped from the iommu, and
+> this violates some aspects of the iommu-imposed security.
+> 
+> Ensure that userptrs are unmapped in the mmu notifier to
+> mitigate this. A naive attempt would try to free the sg table, but
+> the sg table itself may be accessed by a concurrent bind
+> operation, so settle for unly unmapping.
 
-This should have been 6.13+, not 6.12+.
+only
 
-So please ignore this for 6.12.
-
-Thanks.
+> 
+> Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
+> Cc: Oak Zeng <oak.zeng@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.10+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
 
-
-
-> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-> Reviewed-by: Qu Wenruo <wqu@suse.com>
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
->
-> diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-> index 8c6b85ffd18f..7f46abbd6311 100644
-> --- a/fs/btrfs/extent_map.c
-> +++ b/fs/btrfs/extent_map.c
-> @@ -1256,7 +1256,7 @@ static long btrfs_scan_root(struct btrfs_root *root=
-, struct btrfs_em_shrink_ctx
->
->                 min_ino =3D btrfs_ino(inode) + 1;
->                 fs_info->em_shrinker_last_ino =3D btrfs_ino(inode);
-> -               btrfs_add_delayed_iput(inode);
-> +               iput(&inode->vfs_inode);
->
->                 if (ctx->scanned >=3D ctx->nr_to_scan || btrfs_fs_closing=
-(fs_info))
->                         break;
->
 
