@@ -1,117 +1,220 @@
-Return-Path: <stable+bounces-120204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F149FA4D3E9
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 07:29:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F759A4D403
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 07:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662E33AE827
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 06:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65031890940
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 06:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019841F4E4F;
-	Tue,  4 Mar 2025 06:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4121F4E47;
+	Tue,  4 Mar 2025 06:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JRqWU0f4"
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="ArimVgF2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011038.outbound.protection.outlook.com [40.107.74.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9342DAD24;
-	Tue,  4 Mar 2025 06:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741069790; cv=none; b=lgEhT4nXQf9TfdfHRS2tuQ8v24+19A6LYI19Qnl6ey+nuTraakQQlHi4NhctfVu7ES+YcLd2OYFWBdSwokelT63gJNklhRGjKqpZHhiV7FBKclNq+EvvI2C6uvf7a6kYc2mpYysUYoVJn8ek/RBk4TRGWVl0OJqOaL05cPUUm38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741069790; c=relaxed/simple;
-	bh=ggeUjaz+1iBUN10GhZtvDVxPTZOliFQ1v5Q5mAMLo/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pIDLfxyntAQD1q7inpMhuw/kBUQvZVM8f/SwfJ53xT8wapO1kylBjfJIboYGOUS+r/R72L0AiA/Q6cnivo8+Q8rc8Io016xbn5W8HyEkUpm+VuD80bzbGwpU60yF8tIkrIcl+rke47wx05rSYTto6oy8Y0/73/hnSeCBL/0vZrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JRqWU0f4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F0CC4CEE5;
-	Tue,  4 Mar 2025 06:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741069790;
-	bh=ggeUjaz+1iBUN10GhZtvDVxPTZOliFQ1v5Q5mAMLo/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JRqWU0f40+vX/3qLiRp+fX4HkYMIC3axTzw8LfE7ecIyHw7RNbuThDfL9MVIfqC5+
-	 zDCLrv08jtMuRpeQr/IbcMuTIdPlLLyGZd8cxRe8ttYLXPNbIB3/iHSdnBlgokitrk
-	 0hRI1Wq5hDJzvN2CrFEE38qRZSG0jQaQCosM2orxnRUvmwolzcuw8A6A2lNmSGRR6B
-	 DWMrEjUuvHcMkRug/mdZTl2Ycez3mBW0CGo+Wg8TvtSlnjzOpkMGO+4b6ezuLJ3rMU
-	 pokHCPC228ckbP9hZpgVWuxwNr02jE5NW77UOjmU31oHmof8iK1Xl178qZA8+eRx2X
-	 +R+TRQPPThqpQ==
-Date: Tue, 4 Mar 2025 07:29:46 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>, Kamal Wadhwa <quic_kamalw@quicinc.com>, 
-	Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
-	Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] leds: rgb: leds-qcom-lpg: PWM fixes
-Message-ID: <lvi75asit3ati7wwnyae6rowycr3veodswu7blbnzbrq646fgi@iksn4qas3dwt>
-References: <20250303-leds-qcom-lpg-fix-max-pwm-on-hi-res-v3-0-62703c0ab76a@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594821F419E;
+	Tue,  4 Mar 2025 06:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741070587; cv=fail; b=tq686FHVbBqSlTVC16lsQZgrat2Mi3V43QQ+tdFur0cpGjwirmCfCFEFJoSuOOeoIu0/+enPVR7QI6uYsT6r8LfYxgWP00f1QHK0upt1+9mZAKi0BqW0em/2t41qqSR4sFi3xU6VPm/RJ/6SbqqwM6TKvBvuakapgCbl6YU4VWQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741070587; c=relaxed/simple;
+	bh=4E5r9Jio47w5TenXRFwKnXknnr2O1wOask3N82y5Ga8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Cr253PlNGB5wnDKbDKsnnj5XODY4oBF5V0YphkSoa+g69MO6PeVPboITpdiMqr94pLr31vKhfc15CMjwEVN4oVFyJx2Hex0LqylUcF9ezuLiboF1MILB3MdL3nPzJBURnYIToYvFSQyUSWPND6DAQQfNF+LXf+oYhZxJh/nKGWk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=ArimVgF2; arc=fail smtp.client-ip=40.107.74.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OiUXdPUYdriq1PZ08Po40uGLER33NcP7MdzS4wd0uUSgCkbM5878ova40AR99/6YppBFCMtisNFauJ/gm++CCWCMGKQVdRg0GW2Gogca7sVfzIUNPQuzJeFic+uOp9K7bQZm2eG3x3HKRLy8trYYwm1BFMltyWWZCl6Z4P/e0auCZDsN9C5tN3CcpXLPFogXKzkCP69BlaxJOh2Rz050M9NYbOZx7heCBD1ZzyrcP+W+moWBCkKuDURfpuJZUUl56vmanJw3iki8x8HCWEqAXdIAPg7Kou2uwdSapvgo+IwNAvIfSrHCkj13n/E3V+luGVizEbxL0DtrEOfuvXFDcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=puOeo/eiClTGQ4ctZQjqEss/sO3DV6VY0JooSaGWNU8=;
+ b=BaD2CMXMhIBg0qt9shsYMGbaYgfkX0A+nNtD9FxzkZ74hfzxDrtYeqlvCNHTv/5WwALavxmlZBvXhpmzVnZ2f9eZJliNiwdauf79QundPmB4aUEZnIovKXoROBTjqfAGO5Eh4gePcsXkk3e7Ewz/otuzh4Jz5PgGXSG/7IABliRJZroyeBRCrJzWsc+ue514k6BKq3mWPUpJbumnK3wdQGb4osnD8uR6kuzixMEydTDEKFhEzeADqycmR2xl02J9VMdoeV+45hYHfFSMRE1FgVVWrCgyre9M6G1Lwpk4il0FCBwXkSfyY1INMnEeWx+uNcmbcCJEVNnsitpp3L0qzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=puOeo/eiClTGQ4ctZQjqEss/sO3DV6VY0JooSaGWNU8=;
+ b=ArimVgF2JGpVxdk5QQ9AdShSVafFmppzE3jQRPocqdcLJ7iTL7z2DJZl+Avt2xnPr4zdYIyqSbFaP+tP25O4faoP6GmfOeDZsAUBgafQjm+jy0CcLG0Vk/5PVh2UD/X59q064TnhQ6zupjzicd1LMAZMxcUtKkd8G8089c9gLMo=
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com (2603:1096:400:3d0::7)
+ by TYCPR01MB10875.jpnprd01.prod.outlook.com (2603:1096:400:26f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Tue, 4 Mar
+ 2025 06:43:00 +0000
+Received: from TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1]) by TY3PR01MB11346.jpnprd01.prod.outlook.com
+ ([fe80::86ef:ca98:234d:60e1%4]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
+ 06:43:00 +0000
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Prabhakar <prabhakar.csengg@gmail.com>, Philipp Zabel
+	<p.zabel@pengutronix.de>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Prabhakar Mahadev Lad
+	<prabhakar.mahadev-lad.rj@bp.renesas.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] reset: rzg2l-usbphy-ctrl: Correct reset status check
+Thread-Topic: [PATCH] reset: rzg2l-usbphy-ctrl: Correct reset status check
+Thread-Index: AQHbjG+036o9v54XZEKlBIYrBvmKv7Nihvvw
+Date: Tue, 4 Mar 2025 06:43:00 +0000
+Message-ID:
+ <TY3PR01MB11346BEF0C5C45C9EC6B3D3B586C82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+References: <20250303190841.179890-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20250303190841.179890-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY3PR01MB11346:EE_|TYCPR01MB10875:EE_
+x-ms-office365-filtering-correlation-id: 6a985f58-6f86-4878-45ff-08dd5ae7ce97
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?PxVC+sxY2eSBmsBqmKDsdV0C6TEI43KTtRwxYRVEQ6QKkfL5KbPOYEAW9uuT?=
+ =?us-ascii?Q?5+j0hR9iBO0kQE54DsqBzwOwrwDEMzw1me7EwedNAANkQWsu+rvH1O1w7FGa?=
+ =?us-ascii?Q?NAiEFJKgaq5q85n5C7N1+c031lFm0MEFblldL/J4TaRcxblQvdFIrInrDoSi?=
+ =?us-ascii?Q?v3JFF0oC5aN+Z8oik86C7BbHxm6pBiXu0CBLZ4a+I/OlgPw/llDmMc4hA5U/?=
+ =?us-ascii?Q?FH+tmcwNeZOMUFC9FL4GYq3yhl5G9NB1kOUXQE7IwOm+Bez+FfEap5I2FulB?=
+ =?us-ascii?Q?ho7KR8q2YrMI7N+O358j/YzFLKgCklitOOYELtzeMyAsXSd4nEOVNXPwxX/y?=
+ =?us-ascii?Q?jJ61rK/hVXhXq2JPCZ2O6IVq6VliHkZxw5d2DIiUzK8CmET2XWSeXCPnIPyG?=
+ =?us-ascii?Q?QTysYTIb1sUv3AyNQ9j4193kW33gZZS+IjraAEPvYpD8eCn5lWK8eIEM1ECe?=
+ =?us-ascii?Q?5EpOtqHUgM83N9EwmjOitJb0tC+Vd+Up5emABPmPeeQd6hRH/W+MX2wXsASB?=
+ =?us-ascii?Q?70Hp9VnzE81ILudPl7wbg9LMKfioObQr7n5srjGmfr03hcQy3Lqpg4Z5NJTd?=
+ =?us-ascii?Q?jOPmroEbStkF+ap80M0PVD/qOdjJfmmTuIIDhsNTgMDiXPHjIE+oC5HpEJNQ?=
+ =?us-ascii?Q?hOf5z9H51lPNtmKCv5bbinYjCtnrjSVL/XWHERSCWJQblsq2exetGV30c2pX?=
+ =?us-ascii?Q?1FAf5gN5ld/weWwYj+rUphs5oVFCC7NRksjQgOHDl33C4MkZc6H/a5BaslQ7?=
+ =?us-ascii?Q?9SJPC1BRBwQZppHixj426PS1fjrMWXB2onYL+exnE29HZwFRS4ElujrUT49N?=
+ =?us-ascii?Q?QFDmYj1lTII/BMwE+LBEsdxl8sljfJHom2ZoFnusZazkn7D/GotOQdklYvb6?=
+ =?us-ascii?Q?F44iKCzxTLzAyKs8/5uar6EcdEFJFJ5Yfn9la/ybP2B40frl6Cg058Qm7Vyk?=
+ =?us-ascii?Q?oXrBi+UgFRcmOqOBK1+Fpl5B7fZ+dcM6n1rDX2qjzQMwcZ6drEfvGnT34pXq?=
+ =?us-ascii?Q?lbhtWh/ROQ0hrvR4MbN5NPC5dtsCkLp+r1g5vSyoBteEsburOkjzG0cVpH3c?=
+ =?us-ascii?Q?nExtYia1zaDGtBN2KX2u+5f45rOQ5ESpO7/FaG+v7fg9jfvgVhwrqe9AHDea?=
+ =?us-ascii?Q?UwF6JUU4AAl06K6nkJHpX5zxhhHW55ub3+nPXD/dnLw+P+7pT83Mx1fKiQWe?=
+ =?us-ascii?Q?hQgH8pMjhMfHaLigdSeOUVYMefVjOAxGaB7Jldn4FJqX7phhc/pI97qqy1XR?=
+ =?us-ascii?Q?9SEFsuvosWhVEqURk0x7MhNoTz7D2Ro4JFMTOTwFzLjKCWHNqrwHuCqFYHJH?=
+ =?us-ascii?Q?+7zP5Y3aa0Kw5gKm8qkS9w56PmiRZoSTUY1bdMIMsW8zhaNRlo5JyCnlVob2?=
+ =?us-ascii?Q?LaAkyH3GhX4HCj9rhOBs2rXLExrt7yAGU267Tob3LPfL/vUdDt6Mb0EshMg/?=
+ =?us-ascii?Q?IBaW3wM3ZL0rU2qcWUsspG+QdslNDUuA?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11346.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?eacBpU+I8g+gOxVZB0tR9h4LSxLA+bYtIl1zGk65gxIi6OJnAsji1m+2ZfuI?=
+ =?us-ascii?Q?/ZpBWYAoA9m7k/gbFP2cUqUOo9hd+z2czrbAZI7pfGrAX1agHLeSzT+fHmct?=
+ =?us-ascii?Q?7gXFeRKOEqoKHwWjH35jkrgpqD/j+VPwvmfI/P/UVrY5j+CUB4/Y6NxXQ0fh?=
+ =?us-ascii?Q?2OPxUnhIe4C8tVKsXLvZK4e1kpX/HovW0mc2onOJrr2tu3Jclh6yB/yiJX6v?=
+ =?us-ascii?Q?z7uOdMd/mph7pc+RWgbCiuJBLEPCdiyo5Yoz7/wfLzYkgSG2/xQggX6PyUWV?=
+ =?us-ascii?Q?oaxvax/WKSZshpB+7GuW05jYCKyWxRmcnoFjcOli+CrQmM3mtmIS2g/cJAoH?=
+ =?us-ascii?Q?u+t0w+7hWfrLaVrAeuRCTk6SaeBAMK72CufBDh8hTybZlQMUf5It2/AKS++w?=
+ =?us-ascii?Q?AYwaDAJduEZlMBsQYRBRiCWuWjpJScTtJPUoWgtOZHSnAGwgGlqh1Ats8vec?=
+ =?us-ascii?Q?Pj9kUCc4ixqDPhlsrDotLMretsr1E1aEEswfyH+jk6/V3kIe4b0+2+OAm/Rt?=
+ =?us-ascii?Q?K6YEf90x8CZWV6NDqBVuM0+0y2CwJYVErJAww5EeLbXS4lp+t5EQkKbyt6fL?=
+ =?us-ascii?Q?Tz4vLDs7vdSud9CGd/4jhUT2VNE8/Zp5QQH0/R3CiBm6n5jVrFGpiYkOE+An?=
+ =?us-ascii?Q?XuPtIEdfm65n1WKYvmQ75+kzs+m0ttiYqON5Qo/uZQ69kl7l6Pxhg1EOcCdK?=
+ =?us-ascii?Q?/S5B/iuXmu1ej7cFCqoTJDu/6rlmlXaNDuufptVzbpZBy5NXTb/uW/vr+6eb?=
+ =?us-ascii?Q?lI2jmbNd3bbDY3dh1a3VxvGOoIXOB16/CbDEZiLh5RpznAiAGMWROwvI7FU7?=
+ =?us-ascii?Q?MGsotgcZLQgXQb77f5uFHwt2OcNNBiE7uHYvENYpkd6yn0fotHXbvz23QY/p?=
+ =?us-ascii?Q?SRA0nc5AKoIyQBMjGeDgLBfnL3EqWet8NwKdwzDO+VcpU2xUmaE+Y93QMNad?=
+ =?us-ascii?Q?QffhGLo/3fST79oYyxSOrCjsOPMvvl1OPC6yrMCQ8I6pt+gjdsgtWl3kbTmx?=
+ =?us-ascii?Q?0IZGNVa+1U/dU5/1N25SMcrMxeiIzRJowBjGBu3av4kOq9EOxkrlVbEh8LMv?=
+ =?us-ascii?Q?bviSuFw2RycJaSMZIfpnx9H2TgXtQMezYWZhaXy6R+JdeZNTGrwI2HD3u7My?=
+ =?us-ascii?Q?KR2uNvivtyU4UoA3Vn5ArLUahHGyvfnPThOz8R3KQpv8tw7az6P7MbSx5pig?=
+ =?us-ascii?Q?oCAlVDf0ArYKlfk+qaGe5Mf7q+5YLNHUwHD7nuNjL94OOtgIuMNyZ9csbERC?=
+ =?us-ascii?Q?uBbJtmG8y3pFQtUl5fJYOxD44DYa0aqsmsmg69NapW7fItCTTqn8WGnB2Akx?=
+ =?us-ascii?Q?ELJQ1OCBt51yET4zJx0OvEX0mR+sEbGhBR5MpwReYOGBkvf21gwqeGFmfwZj?=
+ =?us-ascii?Q?e7WJPzPMpKjniiwmL790QXRaH7nKoThSMwr+WyKuLuqM9Oo31bqAPUudpc1l?=
+ =?us-ascii?Q?UTwbnpVRODrRt4wW9VTPSwZGYtCbJRS0pHzAeZByaZRP2HfynLgAkU8RlPL5?=
+ =?us-ascii?Q?QxRPiJErD0qDuHABRlo5yIWfafnPHyYRTE1liGjs99vPfY4mfP4bASY7FaVk?=
+ =?us-ascii?Q?w+j+qrRpxE472eCUY2I4M+SZX4g7O/2pP8nkHXq5AGM9+TrQun17UTK1Amal?=
+ =?us-ascii?Q?rw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wvccdsaewx7hrkb2"
-Content-Disposition: inline
-In-Reply-To: <20250303-leds-qcom-lpg-fix-max-pwm-on-hi-res-v3-0-62703c0ab76a@linaro.org>
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB11346.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a985f58-6f86-4878-45ff-08dd5ae7ce97
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2025 06:43:00.6151
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CuarJyPG35nTuUA/IWXZ5sRR7knlhXzdrA7eSzqFhG5IQmiuyTunx0yPwaYt7R5ZrAUNMH7mzuOgQRJo7LwUN9cCsNkYLGscfvD0Yj34P5o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10875
 
+Hi Prabhakar,
 
---wvccdsaewx7hrkb2
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 0/3] leds: rgb: leds-qcom-lpg: PWM fixes
-MIME-Version: 1.0
+Thanks for the patch.
 
-Hello,
-
-On Mon, Mar 03, 2025 at 01:52:49PM +0200, Abel Vesa wrote:
-> The PWM allow configuring the PWM resolution from 8 bits PWM
-> values up to 15 bits values, for the Hi-Res PWMs, and then either
-> 6-bit or 9-bit for the normal PWMs. The current implementation loops
-> through all possible resolutions (PWM sizes), for the PWM subtype, on top
-> of the already existing process of determining the prediv, exponent and
-> refclk.
+> -----Original Message-----
+> From: Prabhakar <prabhakar.csengg@gmail.com>
+> Sent: 03 March 2025 19:09
+> Subject: [PATCH] reset: rzg2l-usbphy-ctrl: Correct reset status check
 >=20
-> The first and second issues are related to capping the computed PWM
-> value.
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>=20
+> Ensure the reset status check explicitly evaluates whether all bits in `p=
+ort_mask` are set. Replace
+> the double negation (`!!`) with an equality check to prevent incorrect in=
+terpretation of partial bit
+> matches as an asserted reset.
+>=20
+> Fixes: bee08559701f ("reset: renesas: Add RZ/G2L usbphy control driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> ---
+>  drivers/reset/reset-rzg2l-usbphy-ctrl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/reset/reset-rzg2l-usbphy-ctrl.c b/drivers/reset/rese=
+t-rzg2l-usbphy-ctrl.c
+> index 8a7f167e405e..6451f621e862 100644
+> --- a/drivers/reset/reset-rzg2l-usbphy-ctrl.c
+> +++ b/drivers/reset/reset-rzg2l-usbphy-ctrl.c
+> @@ -88,7 +88,7 @@ static int rzg2l_usbphy_ctrl_status(struct reset_contro=
+ller_dev *rcdev,
+>=20
+>  	port_mask =3D id ? PHY_RESET_PORT2 : PHY_RESET_PORT1;
+>=20
+> -	return !!(readl(priv->base + RESET) & port_mask);
+> +	return (readl(priv->base + RESET) & port_mask) =3D=3D port_mask;
 
-I just took a very quick look. I'd say squash the first and second patch
-into a single one. Splitting a change that fixes the same issue in the
-two branches of an if condition has no benefit.
 
-Other than that this patch set would also benefit from what I wrote in
-the review of the other patch you send: Please mention a request where
-the result becomes wrong. This considerably simplifies understanding
-your changes.
+As per the hardware manual, these status bit is valid only when
+Only when sel_pxreset=3D1.
 
-Thanks
-Uwe
+If sel_pxreset=3D0, we are reporting invalid status to the caller.
 
---wvccdsaewx7hrkb2
-Content-Type: application/pgp-signature; name="signature.asc"
+Maybe we should check sel_pxreset while setting it and read it back to
+Ensure that it is set to 1 and in this function just check for
+phyrst_x bit for reporting status
 
------BEGIN PGP SIGNATURE-----
+Cheers,
+Biju
 
-iQEyBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfGndgACgkQj4D7WH0S
-/k4E8Af0C/TTFiq7Pc0P9DdnyFVSFKtNouYJp/xbeFThs1fZ6N38gID8m7D8zOrq
-WYCHqvZWKXsw+XtrOfdq1QopMatI85dcIj6XvX8m7xk8IWGuDWvCUNcPsPVu224V
-dQd7N7KWFmoOTWoxHVMVq9TJlwF/C59vwUxZ+HFqk7mlkiBuXfhbFHftoYSlNMu5
-OHDsabnXIeeUKZznXtWQULT8T3XSZgqaTLZf+WIbe+UiQQ7+qakesiX5YG4NE9Ty
-FKf67YaOBHccLmnfNZYsRQ+SZx641sEI1HdAmxXWaTTs7hzohodTNa4qboRndbcM
-UduqTj8i59OeCAInoCvyJ+ZG++r7
-=vAjc
------END PGP SIGNATURE-----
+>  }
+>=20
+>  static const struct of_device_id rzg2l_usbphy_ctrl_match_table[] =3D {
+> --
+> 2.43.0
 
---wvccdsaewx7hrkb2--
 
