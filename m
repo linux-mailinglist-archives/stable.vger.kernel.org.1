@@ -1,76 +1,78 @@
-Return-Path: <stable+bounces-120235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25AA2A4DC9C
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:31:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA1DA4DCB3
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F2AD3A4EC6
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 11:31:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E7E188B21E
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 11:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D184D20013D;
-	Tue,  4 Mar 2025 11:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8129200BBF;
+	Tue,  4 Mar 2025 11:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JGf8UoBK"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="AbddaeV9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8351FF1BC;
-	Tue,  4 Mar 2025 11:30:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F711F150D;
+	Tue,  4 Mar 2025 11:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741087859; cv=none; b=uTEspbFp6kgab2UnSpNPF6DmZ76Wikj/SaFI+wCo9jTWxwdX8BpUc67q7I6tAe/AgZ9OofanTrzAM3lGT3F651jACwWgKoWLqY+9zLsa3BREBP3BBzjxNuq2yWiKSer1yikXOgRQWsNCQx0eEeuCV1m6aEUj7dBSjHDvSkBah4Q=
+	t=1741088221; cv=none; b=R7QyodY94xusDpPVd/8el1L1OtWo1tArwsdB6Vw992vGr+LQs9+t1cJBJw87bWb0WlfTSVvR/jbGmReEBU8wd01RDNhV0+/IblAb0k3MLswPDVtigjcYN5SQ5NiVkls/TSWNtULb1I0lsmgOrKEDwk8JVIjkVw/1gtXMTfOs6IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741087859; c=relaxed/simple;
-	bh=4/jBk9xtbogP2RV88hAWcvGyhY+MU92F09nJhw35Cz8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxA4YRrfcbqzB+UttzUpSOK7wLSSSYiHxUAHB+ngkSmdKe/29BXdk7rF/pzop9Ocq7GrB4xAgQILMZJ02YoA1CcKf9Nh0rLMyJgUrwmmAZ1dsc0AAcsjiQIPHC6oGORk2tfHEJQkxxlhhmPXrpyH/5MFSWh8F7LW2ifvGVgn+lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JGf8UoBK; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741087858; x=1772623858;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4/jBk9xtbogP2RV88hAWcvGyhY+MU92F09nJhw35Cz8=;
-  b=JGf8UoBKdWHyvU+kWKD/AAK0rXkEuseDviuSDZNWs9GBZSGQ9fLo71h5
-   RxUW6lkX5/E4+4NoqmJR1V0g4UK8ppFTHmsdbLYeEls5eawQzIyrVJDTx
-   3toHkNiHdY2qeOQCnvGNO0QgcE1egvJP/8xaeeSzLCNwUmy6S9wY/mvkp
-   EBO3XRgJAn3uJ48x6guPFi5Ui9WVcLP+3QR+5Hw+itvb5ElfbMLvNk1zx
-   aVRKFe44bNYQVAfD1o34gu8qjQXa2s0atARYyL/UkX9dCaw7GJqv4sBWZ
-   O+MJ/O+hAEmOgd6rhM5tH5mMJLpcC2Shkk/UOAly9NWdkp5aowf79KH/v
-   w==;
-X-CSE-ConnectionGUID: Vq2Igk44TAGs1cXzdvyhLw==
-X-CSE-MsgGUID: kOa5UVXWRwe2opPiON17lg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="41898331"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="41898331"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:30:58 -0800
-X-CSE-ConnectionGUID: 4aStvVBhTtyygl5UeeAFvQ==
-X-CSE-MsgGUID: uWo3fcq+RUizq0IioXevqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="141579994"
-Received: from unknown (HELO mattu-haswell.fi.intel.com) ([10.237.72.199])
-  by fmviesa002.fm.intel.com with ESMTP; 04 Mar 2025 03:30:56 -0800
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Michal Pecio <michal.pecio@gmail.com>,
-	stable@vger.kernel.org,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 1/1] usb: xhci: Fix host controllers "dying" after suspend and resume
-Date: Tue,  4 Mar 2025 13:31:47 +0200
-Message-ID: <20250304113147.3322584-2-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250304113147.3322584-1-mathias.nyman@linux.intel.com>
-References: <20250304113147.3322584-1-mathias.nyman@linux.intel.com>
+	s=arc-20240116; t=1741088221; c=relaxed/simple;
+	bh=8+AMRuGr3FHoPcGc7smvgpY+NQTiD8MdW5y1bgmTzwE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jU/Etf3Aa85TbyULxqdobqsGKz+2Xq4mpR6yuC2+rb6JSjcT6TT2t+jzgFFKMKwCOf18R8WRCAY3cdsFmOEHatf/Xt0E3UUCPjryxbcuJmXnaM4gpsuP4gR+25e1UByVm3NPSU2ngiItKV5NNkChjHl4Kk0xTC8tEFmyXI80d5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=AbddaeV9; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f922bc14f8ec11ef8eb9c36241bbb6fb-20250304
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=CAH7S2RhYAW5yuQhDJGKFK2sW9eoXEji1U67xQWDnv4=;
+	b=AbddaeV914D4M2VCfuK6Pou0fHvAg1cBFx+cV1w0DgiVzxWM0FJkg01YagFifY506PCLQrfSwfouhPSHjudpBqIijjj0fJPLM6dbkp4zOfLXYLslygljnZm/+EyHzUHxBe+MJw7WYMcLhu39FmS8FB2AbT+hMNq6bdcOqsa4b1k=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:ede21f12-6330-4351-9fe1-756c3052c440,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:0ef645f,CLOUDID:43cd8229-e0f8-414e-b8c3-b75c08217be8,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: f922bc14f8ec11ef8eb9c36241bbb6fb-20250304
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 569060011; Tue, 04 Mar 2025 19:36:54 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 4 Mar 2025 19:36:53 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Tue, 4 Mar 2025 19:36:53 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3 4/6] wifi: mt76: mt7925: remove unused acpi function for clc
+Date: Tue, 4 Mar 2025 19:36:47 +0800
+Message-ID: <20250304113649.867387-4-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250304113649.867387-1-mingyen.hsieh@mediatek.com>
+References: <20250304113649.867387-1-mingyen.hsieh@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,64 +80,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-A recent cleanup went a bit too far and dropped clearing the cycle bit
-of link TRBs, so it stays different from the rest of the ring half of
-the time. Then a race occurs: if the xHC reaches such link TRB before
-more commands are queued, the link's cycle bit unintentionally matches
-the xHC's cycle so it follows the link and waits for further commands.
-If more commands are queued before the xHC gets there, inc_enq() flips
-the bit so the xHC later sees a mismatch and stops executing commands.
+The code for handling ACPI configuration in CLC was copied from the mt7921
+driver but is not utilized in the mt7925 implementation. So removes the
+unused functionality to clean up the codebase.
 
-This function is called before suspend and 50% of times after resuming
-the xHC is doomed to get stuck sooner or later. Then some Stop Endpoint
-command fails to complete in 5 seconds and this shows up
-
-xhci_hcd 0000:00:10.0: xHCI host not responding to stop endpoint command
-xhci_hcd 0000:00:10.0: xHCI host controller not responding, assume dead
-xhci_hcd 0000:00:10.0: HC died; cleaning up
-
-followed by loss of all USB decives on the affected bus. That's if you
-are lucky, because if Set Deq gets stuck instead, the failure is silent.
-
-Likely responsible for kernel bug 219824. I found this while searching
-for possible causes of that regression and reproduced it locally before
-hearing back from the reporter. To repro, simply wait for link cycle to
-become set (debugfs), then suspend, resume and wait. To accelerate the
-failure I used a script which repeatedly starts and stops a UVC camera.
-
-Some HCs get fully reinitialized on resume and they are not affected.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219824
-Fixes: 36b972d4b7ce ("usb: xhci: improve xhci_clear_command_ring()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/usb/host/xhci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+v2-v3: no change
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 45653114ccd7..1a90ebc8a30e 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -780,8 +780,12 @@ static void xhci_clear_command_ring(struct xhci_hcd *xhci)
- 	struct xhci_segment *seg;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 53c67364fac6..03b516db68da 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3421,7 +3421,6 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
  
- 	ring = xhci->cmd_ring;
--	xhci_for_each_ring_seg(ring->first_seg, seg)
-+	xhci_for_each_ring_seg(ring->first_seg, seg) {
-+		/* erase all TRBs before the link */
- 		memset(seg->trbs, 0, sizeof(union xhci_trb) * (TRBS_PER_SEGMENT - 1));
-+		/* clear link cycle bit */
-+		seg->trbs[TRBS_PER_SEGMENT - 1].link.control &= cpu_to_le32(~TRB_CYCLE);
-+	}
- 
- 	xhci_initialize_ring_info(ring);
- 	/*
+ 		.idx = idx,
+ 		.env = env_cap,
+-		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
+ 	};
+ 	int ret, valid_cnt = 0;
+ 	u8 *pos, *last_pos;
 -- 
-2.43.0
+2.34.1
 
 
