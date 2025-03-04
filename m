@@ -1,121 +1,79 @@
-Return-Path: <stable+bounces-120383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912E6A4EF04
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 22:05:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B075A4EFF0
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 23:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA0843A512F
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 21:05:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFABC188F397
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 22:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC92264619;
-	Tue,  4 Mar 2025 21:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE2024EAA8;
+	Tue,  4 Mar 2025 22:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jsumTwG9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbBkFbMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398702E337D;
-	Tue,  4 Mar 2025 21:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B8C1FBC98
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 22:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741122347; cv=none; b=XV91Ilt/wWzG45lOKTrmhdBqLfJRCEOt/P6MdXI3kn5+OL5HRDth75YnXIHbtppAABZE+rcHay6yK5P3v/HnwhKjwCUJIY17iktK/FkZ+jSqKqHNdoE6l1KSwN29Tat27aDzp0lioAVNMk8kr4UEt1NU1TbaPtOwvGqQyw8ozDI=
+	t=1741126435; cv=none; b=Xn5QSztPjxIKtDcsGNostXPCvr3bO3/yHq5dLp/NF8WdgAZuc5Y8i6Y2rD1U7kdKqZoiLdma3tibtB905vE/hLgaJKqVBy9PCbrp5lLigAlvGwi/fC++6x4VfJK1+9OCVFHPTHf/UQOTw4lpCReV/tCziKc6IInaSbkW9Lv+VlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741122347; c=relaxed/simple;
-	bh=p/YmkFWD96a273eY0RGKJJXae0CjD04Bl0XKgZ3cT/g=;
-	h=Date:To:From:Subject:Message-Id; b=Th1UMTH7TFLvkx8UFWzlzqcc1bUNNQ6piTn0M1NnT8EVONyLHpFl+3jp5t9pNlaKijDR4SGo+ytUU+o8/4gCGnIPMJ4NROxx5ZBx8FcpHlfkgepxJZGLGO8HfuNITnUJVHJJjMZgaFACEHJFix9Nq7FSwCLURKKwBW9pyXSdsDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jsumTwG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE79C4CEE5;
-	Tue,  4 Mar 2025 21:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741122346;
-	bh=p/YmkFWD96a273eY0RGKJJXae0CjD04Bl0XKgZ3cT/g=;
-	h=Date:To:From:Subject:From;
-	b=jsumTwG9xMKOOCES68HAnwCnqR54qjB00gIgLOQl69M9hISFLyCCbOuwugIyedFBY
-	 00VP1mDdvnuS8GDaK3LRPQzMzs1O8bZL2OZpsD3x6k9nYLxx7I/PkPVyCkSC2PaKIh
-	 N4kJJyKyx0APjaMVMxULZaL89Tq9zwAlCotUYtws=
-Date: Tue, 04 Mar 2025 13:05:45 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,shivankg@amd.com,ryan.roberts@arm.com,quic_charante@quicinc.com,liushixin2@huawei.com,ioworker0@gmail.com,hughd@google.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-migrate-fix-shmem-xarray-update-during-migration.patch removed from -mm tree
-Message-Id: <20250304210546.8BE79C4CEE5@smtp.kernel.org>
+	s=arc-20240116; t=1741126435; c=relaxed/simple;
+	bh=U52b81e1RAPvO26CJs9geDI4MfVBzyqTyrNmPpEfQSw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YNegA7YIcVrbrBK18tiiKrZF9EgoV68J5Z1BoHrM0WGoDLAPSHaidDI5e3T9duDemu+jYf8egf8fB5UZfFjfhQAkZkc4odnOgufLUc/vqBr8wsy1R2usizSunKuYC+OLmKA5N6VYf4cUti51kGKwLo6p4uDTW8nvfLHFErNp+dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbBkFbMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35569C4CEE5;
+	Tue,  4 Mar 2025 22:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741126434;
+	bh=U52b81e1RAPvO26CJs9geDI4MfVBzyqTyrNmPpEfQSw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NbBkFbMtpDUgcwdvi/EyRCDWy80+14saSYOHkSFcfBCVfjxqBxpCmReixu/OsWv+x
+	 WwDEU+2ljBJnRB7KXx2pbRGvKZtw90yTK+BapPUrxw+8v7eEc3wWNndlMeG3qGivMV
+	 JQVENC3qK/2OYK0zDgDalkL4hyWhET27UyIcJ+C1nmMYc9V0e2xe+sZlLc49QZl9rg
+	 l4lKGclvVIRWRS7FdaEFWLyXfwIhvOAW86fj5SRzFZ7d2jUyQ85aFYiYQ9AZIcajDY
+	 QuDCOA42sU5b+HgzNncMYQV5GuL7pFcIyXcXbTTMM8efBcFLGExokR0PyNjgORaqKm
+	 jCsteoP6vKeQw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	kuniyu@amazon.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 5.15/6.1/6.6] af_unix: Clear oob_skb in scan_inflight().
+Date: Tue,  4 Mar 2025 17:13:52 -0500
+Message-Id: <20250304142915-28afde2108e0471d@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250304030149.82265-1-kuniyu@amazon.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+[ Sasha's backport helper bot ]
 
-The quilt patch titled
-     Subject: mm/migrate: fix shmem xarray update during migration
-has been removed from the -mm tree.  Its filename was
-     mm-migrate-fix-shmem-xarray-update-during-migration.patch
+Hi,
 
-This patch was dropped because an updated version will be issued
+Summary of potential issues:
+⚠️ Could not find matching upstream commit
 
-------------------------------------------------------
-From: Zi Yan <ziy@nvidia.com>
-Subject: mm/migrate: fix shmem xarray update during migration
-Date: Fri, 28 Feb 2025 12:49:53 -0500
+No upstream commit was identified. Using temporary commit for testing.
 
-Pagecache uses multi-index entries for large folio, so does shmem.  Only
-swap cache still stores multiple entries for a single large folio.  Commit
-fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
-fixed swap cache but got shmem wrong by storing multiple entries for a
-large shmem folio.
+Results of testing on various branches:
 
-This results in a soft lockup as reported by Liu Shixin.
-
-Fix it by storing a single entry for a shmem folio.
-
-Link: https://lkml.kernel.org/r/20250228174953.2222831-1-ziy@nvidia.com
-Fixes: fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: Liu Shixin <liushixin2@huawei.com>
-Closes: https://lore.kernel.org/all/28546fb4-5210-bf75-16d6-43e1f8646080@huawei.com/
-Reviewed-by: Shivank Garg <shivankg@amd.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickens <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/migrate.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
---- a/mm/migrate.c~mm-migrate-fix-shmem-xarray-update-during-migration
-+++ a/mm/migrate.c
-@@ -524,7 +524,11 @@ static int __folio_migrate_mapping(struc
- 			folio_set_swapcache(newfolio);
- 			newfolio->private = folio_get_private(folio);
- 		}
--		entries = nr;
-+		/* shmem uses high-order entry */
-+		if (!folio_test_anon(folio))
-+			entries = 1;
-+		else
-+			entries = nr;
- 	} else {
- 		VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
- 		entries = 1;
-_
-
-Patches currently in -mm which might be from ziy@nvidia.com are
-
-selftests-mm-make-file-backed-thp-split-work-by-writing-pmd-size-data.patch
-mm-huge_memory-allow-split-shmem-large-folio-to-any-lower-order.patch
-selftests-mm-test-splitting-file-backed-thp-to-any-lower-order.patch
-mm-filemap-use-xas_try_split-in-__filemap_add_folio.patch
-mm-shmem-use-xas_try_split-in-shmem_split_large_entry.patch
-
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
