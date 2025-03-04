@@ -1,414 +1,125 @@
-Return-Path: <stable+bounces-120233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237BFA4DC90
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:28:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2046A4DC94
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27AFB1886E8D
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 11:28:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CACD174491
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 11:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C11E1FAC37;
-	Tue,  4 Mar 2025 11:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C802A1FF1A0;
+	Tue,  4 Mar 2025 11:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AaSm3NHq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dtvz3JgN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E8B1FCD00
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 11:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1E7200BB4
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 11:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741087707; cv=none; b=gPIomcCYoNVmpnBw0w6ECTtk9uiuVCQbh8LlyT+HoD2g6xbcQJGY540rXeYRYD0jD7FVTi/bIqKAg2AV+Y/2P/wwgPkqWB+MBOAxnEIWkhVsEn2d0Y7S2w2Kfh56gfVWM5rYeN6YQC2fE5gIMkDPk2+ByQP6HdurdJlaihRPUJM=
+	t=1741087731; cv=none; b=msdTJhN5v2ZLuX+Mnwa0P/K90AUNlWueow+z/KQQWiAWpE43QEJ6xcxZ4Sszq/h1bgv8Ek6Q6EqExRKzQN5h2nupqWlDijHYYS+MjHUEO7XFICLxssYeJVegi0oj0Efhu7PxC3rdSFwlOXGK2jqj6ucokObKwGH9z1leOzdrEXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741087707; c=relaxed/simple;
-	bh=+LYMiu4AshgTR5Qk/oparnwSOkRaEHVDL8f1wCzrpNc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=g5W9Qv/Len62uvBNOIKHw+bnA2rpR0weg9396pNoBL8tIt8TmzWoZkW/aBs4kWr7uDuz/oPvkrGTvLSFNNwc8gs8hl8ICwH1czERsZYOGFhrUaADramCkniIjmNxr7pwWjrCTyyBES1u7IEPcTmg7r3V5vTZ6YHAX3F1g+i+APA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AaSm3NHq; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741087705; x=1772623705;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=+LYMiu4AshgTR5Qk/oparnwSOkRaEHVDL8f1wCzrpNc=;
-  b=AaSm3NHqyWhtNNU+S68VTVWIXqpewXsBQueyr25aVRtD0xbC0g0Qwukd
-   +bAqdUmnuGnqdplrzYrXv1ke9DXTB9xEU9cceqiP2no8CzCJDsqGDG4fV
-   IdAtF1/EtuTPzPjwL0iZKnmln3DIoeBgaf/E3JQ8utIiPqcCPTLxoG1QP
-   grl+Z1+UoYSJC7OEKusYxQ0VFfO9nRz7hjBbcC34Rr6Fj18fd7ppQHSyW
-   D0qxgqPAqFu5j02mFWFWAqaaTKNh/wiQHkbC8XI8oWs10SlDIsFsNZ9mo
-   QVfqrbgE6KuCrlisdgUYDYP9NoWfs1NHmh9/nK2egoiNDm+sIXUDb5Wbw
-   w==;
-X-CSE-ConnectionGUID: ysUz5SFPRamWqZjy2PibXw==
-X-CSE-MsgGUID: fR7p7lJNQRSfW8u0WhDg6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="53403335"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="53403335"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:28:24 -0800
-X-CSE-ConnectionGUID: 1HSCJBJNRoeEZ33pDkVMKA==
-X-CSE-MsgGUID: iSK2tloGSB2qPfXXSE45Pw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="118356336"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.227]) ([10.245.246.227])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:28:23 -0800
-Message-ID: <2d8a10b3dfbad4d6037b532d6b18e9c5d45aa983.camel@linux.intel.com>
-Subject: Re: [PATCH 2/3] drm/xe/hmm: Don't dereference struct page pointers
- without notifier lock
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org
-Cc: Oak Zeng <oak.zeng@intel.com>, stable@vger.kernel.org
-Date: Tue, 04 Mar 2025 12:28:08 +0100
-In-Reply-To: <fb1b0714-e690-4ec8-8f57-a5cf1a72fc63@intel.com>
-References: <20250228104418.44313-1-thomas.hellstrom@linux.intel.com>
-	 <20250228104418.44313-3-thomas.hellstrom@linux.intel.com>
-	 <b62352fd-f16a-423c-8a20-5d7697a6c4a7@intel.com>
-	 <db2a5741b3e43cc3a54fa9c01e6af55677275070.camel@linux.intel.com>
-	 <fb1b0714-e690-4ec8-8f57-a5cf1a72fc63@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1741087731; c=relaxed/simple;
+	bh=KnUdtItjGNYgdCcN9y5Rg4Cul1YLre/02YFHO8L2ZVg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vud22S0LIopICBwwVb/eKNmOil2MGDI1CkQOdxAXBQpTzAWdixkQbHixF4qe+s0w+ByT//pNRthQVxRMA4RvT+BV3BHi53IDUoGcTJCUZPc4co9Tt5mojneTgSOFmMaeevwoH+pCD/wwyo4pwlqcObvflHsyV3OR1p7sM6gGG8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dtvz3JgN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741087729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Eh0+rygjvEWvFpambZXtqMxwPMY88Yx0JvlayLr7tDE=;
+	b=dtvz3JgNkYmOqslrHjxbVsIma0BKWxjf85mVxFRZcrq4a65yox9pLpIXizvFka+EtZhkG8
+	UwzQ2Yj8draesUCviR8ws50Yz9QKV1TTVo7GGbVJd8Gno94524USdRvWqw8COpEbdZ3IyM
+	JNfPMjKs+3hf1kRzCvH01RpZ3nhzntY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-xymrmNoWMHy9co2Q-avNDQ-1; Tue, 04 Mar 2025 06:28:33 -0500
+X-MC-Unique: xymrmNoWMHy9co2Q-avNDQ-1
+X-Mimecast-MFC-AGG-ID: xymrmNoWMHy9co2Q-avNDQ_1741087712
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-390fd681712so1332904f8f.3
+        for <stable@vger.kernel.org>; Tue, 04 Mar 2025 03:28:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741087712; x=1741692512;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Eh0+rygjvEWvFpambZXtqMxwPMY88Yx0JvlayLr7tDE=;
+        b=F5dq4/X4q7lRSppAXTwQU5v0QBYSD2MUqN3c9KMlpZfEk3L+lDWbv8PPedsPv0TlWN
+         aNoVjom/wprjO+mTpAocpdYi3ZI8uDVxLmnsDKQgYTTqjhTbeRUDL+UOuD5aUWAqI03y
+         sLJCtFlqBXFcI4HByVWNxzQ/d/qZX4jP3YgEKHivmsVtAe9elxA6qLpzSNXj6tTSayvX
+         anqUDsLBm+T21Adld01vB78rJJ2cP/JdlyZkIslbDzYDG6yk6t82/5wfX2M9qYZCeV1S
+         sXA7A049A6dFnvvyJxm3tCz6zMDGPpU5gLRPyHs0jBR6AEdkfXNKdvUfwibXL3qPb5gY
+         hLIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXyk3yHdhpA62R8iPGerWjuo6xcoKLMOyYNcl/mdYn6pJVgGC+kEAiS2ps94c4bFjY3dklf+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmkuenaJXeYy6h5FFh/LnOcBB8QqMu7sB1EtbWrRCAhyKuusAk
+	2++awm7uvPsbMHkAs0Rsh2xmqazS/udLXt/SJAoI/f3iMrOKQefHT0Oyt71kBGmYZhwAQCJ/whF
+	eM5Qb+zQ1G2ZPMusP3mxaUf/ukN/uxu/CQUgAZ3fP89xlZhlcKw7FHA==
+X-Gm-Gg: ASbGncu+M8NAgYqDV/J1bvTU7rx8fCfU8Bpy41zbm27grW8webXzzWrzvHdnXZ27G8b
+	bBu3ijtLrdSQ2sdU/KUJSG3CKZIce/FwWlTvqsKkqpUaA7R54sXBB627fpqAT1SNeKR7iVGmId5
+	jCh0W79upgEDqXsE8PMM73KTIM9B8Xw4K78hcCY+v4HC7+OtMpSBC1DYQtTfN/4Hy3ostjeyqQG
+	jR6YYYK1TLD2x8+5+ESj0FYjR+qclr/6U3iOQ79bepUGhxFUGTuH7Pv5TMBnFiLISBpVotl54GN
+	XJYaGK53Kgk/AVvv6Yyk5FqYbuYrjdzHibhUYBGRxD2Y/g==
+X-Received: by 2002:a5d:5f89:0:b0:390:f698:691c with SMTP id ffacd0b85a97d-390f698696emr15424446f8f.43.1741087711873;
+        Tue, 04 Mar 2025 03:28:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEqZ/TRGcqVpyJ16gAgzdOfvndPozt1EifipipyO5TrSqSLkUzB4NwQLxlVOUb/6RXZ9PIEUQ==
+X-Received: by 2002:a5d:5f89:0:b0:390:f698:691c with SMTP id ffacd0b85a97d-390f698696emr15424428f8f.43.1741087711524;
+        Tue, 04 Mar 2025 03:28:31 -0800 (PST)
+Received: from [192.168.88.253] (146-241-81-153.dyn.eolo.it. [146.241.81.153])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5710ebsm231184535e9.26.2025.03.04.03.28.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 03:28:31 -0800 (PST)
+Message-ID: <63e68624-3672-4473-be15-ce04eb3cd2ed@redhat.com>
+Date: Tue, 4 Mar 2025 12:28:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-On Fri, 2025-02-28 at 18:32 +0000, Matthew Auld wrote:
-> On 28/02/2025 13:08, Thomas Hellstr=C3=B6m wrote:
-> > On Fri, 2025-02-28 at 12:55 +0000, Matthew Auld wrote:
-> > > On 28/02/2025 10:44, Thomas Hellstr=C3=B6m wrote:
-> > > > The pnfs that we obtain from hmm_range_fault() point to pages
-> > > > that
-> > > > we don't have a reference on, and the guarantee that they are
-> > > > still
-> > > > in the cpu page-tables is that the notifier lock must be held
-> > > > and
-> > > > the
-> > > > notifier seqno is still valid.
-> > > >=20
-> > > > So while building the sg table and marking the pages accesses /
-> > > > dirty
-> > > > we need to hold this lock with a validated seqno.
-> > > >=20
-> > > > However, the lock is reclaim tainted which makes
-> > > > sg_alloc_table_from_pages_segment() unusable, since it
-> > > > internally
-> > > > allocates memory.
-> > > >=20
-> > > > Instead build the sg-table manually. For the non-iommu case
-> > > > this might lead to fewer coalesces, but if that's a problem it
-> > > > can
-> > > > be fixed up later in the resource cursor code. For the iommu
-> > > > case,
-> > > > the whole sg-table may still be coalesced to a single contigous
-> > > > device va region.
-> > > >=20
-> > > > This avoids marking pages that we don't own dirty and accessed,
-> > > > and
-> > > > it also avoid dereferencing struct pages that we don't own.
-> > > >=20
-> > > > Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate
-> > > > userptr")
-> > > > Cc: Oak Zeng <oak.zeng@intel.com>
-> > > > Cc: <stable@vger.kernel.org> # v6.10+
-> > > > Signed-off-by: Thomas Hellstr=C3=B6m
-> > > > <thomas.hellstrom@linux.intel.com>
-> > > > ---
-> > > > =C2=A0=C2=A0 drivers/gpu/drm/xe/xe_hmm.c | 115
-> > > > ++++++++++++++++++++++++++-----
-> > > > -----
-> > > > =C2=A0=C2=A0 1 file changed, 85 insertions(+), 30 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/gpu/drm/xe/xe_hmm.c
-> > > > b/drivers/gpu/drm/xe/xe_hmm.c
-> > > > index c56738fa713b..d3b5551496d0 100644
-> > > > --- a/drivers/gpu/drm/xe/xe_hmm.c
-> > > > +++ b/drivers/gpu/drm/xe/xe_hmm.c
-> > > > @@ -42,6 +42,36 @@ static void xe_mark_range_accessed(struct
-> > > > hmm_range *range, bool write)
-> > > > =C2=A0=C2=A0=C2=A0	}
-> > > > =C2=A0=C2=A0 }
-> > > > =C2=A0=C2=A0=20
-> > > > +static int xe_alloc_sg(struct sg_table *st, struct hmm_range
-> > > > *range,
-> > > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct rw_semaphore *notifi=
-er_sem)
-> > > > +{
-> > > > +	unsigned long i, npages, hmm_pfn;
-> > > > +	unsigned long num_chunks =3D 0;
-> > > > +	int ret;
-> > > > +
-> > > > +	/* HMM docs says this is needed. */
-> > > > +	ret =3D down_read_interruptible(notifier_sem);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	if (mmu_interval_read_retry(range->notifier, range-
-> > > > > notifier_seq))
-> > > > +		return -EAGAIN;
-> > > > +
-> > > > +	npages =3D xe_npages_in_range(range->start, range->end);
-> > > > +	for (i =3D 0; i < npages;) {
-> > > > +		hmm_pfn =3D range->hmm_pfns[i];
-> > > > +		if (!(hmm_pfn & HMM_PFN_VALID)) {
-> > >=20
-> > > Is this possible? The default_flags are always REQ_FAULT, so that
-> > > should
-> > > ensure PFN_VALID, or the hmm_fault would have returned an error?
-> > >=20
-> > > =C2=A0=C2=A0From the docs:
-> > >=20
-> > > "HMM_PFN_REQ_FAULT - The output must have HMM_PFN_VALID or
-> > > hmm_range_fault() will fail"
-> > >=20
-> > > Should this be an assert?
-> > >=20
-> > > Also probably dumb question, but why do we need to hold the
-> > > notifier
-> > > lock over this loop? What is it protecting?
-> >=20
-> > Docs for hmm_pfn_to_map_order():
-> >=20
-> > /*
-> > =C2=A0 * This must be called under the caller 'user_lock' after a
-> > successful
-> > =C2=A0 * mmu_interval_read_begin(). The caller must have tested for
-> > HMM_PFN_VALID
-> > =C2=A0 * already.
-> > =C2=A0 */
-> >=20
-> > I'm fine with changing to an assert, and I agree that the lock is
-> > pointless: We're operating on thread local data, but I also think
-> > that
-> > not adhering to the doc requirements might cause problems in the
-> > future. Like if the map order encoding is dropped and the order was
-> > grabbed from the underlying page.
->=20
-> Makes sense. Keeping the lock indeed looks sensible.
->=20
-> Staring some more at hmm_pfn_to_map_order(), it also says:
->=20
-> "The caller must be careful with edge cases as the start and end VA
-> of=20
-> the given page may extend past the range used with
-> hmm_range_fault()."
->=20
-> I take that to mean it will still return a huge page order even if
-> there=20
-> is say some 2M PTE, but the hmm_range is just some small sub range of
-> pfn covering part of the huge page, like say 8K, where the first 4K
-> page=20
-> is exactly at the end of the 2M page. Are there some potentially
-> nasty=20
-> surprises with stuff like:
->=20
-> i +=3D 1UL << hmm_pfn_to_map_order(hmm_pfn);
->=20
-> Since the increment here (512) could go past even npages (2), and
-> then=20
-> num_chunks is too small (1)?
-
-Yes, you're right. Will update the patch to reflect this.
-
-/Thomas
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] qlcnic: fix a memory leak in
+ qlcnic_sriov_set_guest_vlan_mode()
+To: Haoxiang Li <haoxiang_li2024@163.com>, shshaikh@marvell.com,
+ manishc@marvell.com, GR-Linux-NIC-Dev@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ rajesh.borundia@qlogic.com, sucheta.chakraborty@qlogic.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250228092449.3759573-1-haoxiang_li2024@163.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250228092449.3759573-1-haoxiang_li2024@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
+On 2/28/25 10:24 AM, Haoxiang Li wrote:
+> Add qlcnic_sriov_free_vlans() to free the memory allocated by
+> qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+> be allocated.
+> 
+> Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 
->=20
-> >=20
-> > /Thomas
-> >=20
-> >=20
-> > >=20
-> > > > +			up_read(notifier_sem);
-> > > > +			return -EFAULT;
-> > > > +		}
-> > > > +		num_chunks++;
-> > > > +		i +=3D 1UL << hmm_pfn_to_map_order(hmm_pfn);
-> > > > +	}
-> > > > +	up_read(notifier_sem);
-> > > > +
-> > > > +	return sg_alloc_table(st, num_chunks, GFP_KERNEL);
-> > > > +}
-> > > > +
-> > > > =C2=A0=C2=A0 /**
-> > > > =C2=A0=C2=A0=C2=A0 * xe_build_sg() - build a scatter gather table f=
-or all the
-> > > > physical pages/pfn
-> > > > =C2=A0=C2=A0=C2=A0 * in a hmm_range. dma-map pages if necessary. dm=
-a-address
-> > > > is
-> > > > save in sg table
-> > > > @@ -50,6 +80,7 @@ static void xe_mark_range_accessed(struct
-> > > > hmm_range *range, bool write)
-> > > > =C2=A0=C2=A0=C2=A0 * @range: the hmm range that we build the sg tab=
-le from.
-> > > > range-
-> > > > > hmm_pfns[]
-> > > > =C2=A0=C2=A0=C2=A0 * has the pfn numbers of pages that back up this=
- hmm
-> > > > address
-> > > > range.
-> > > > =C2=A0=C2=A0=C2=A0 * @st: pointer to the sg table.
-> > > > + * @notifier_sem: The xe notifier lock.
-> > > > =C2=A0=C2=A0=C2=A0 * @write: whether we write to this range. This d=
-ecides dma
-> > > > map
-> > > > direction
-> > > > =C2=A0=C2=A0=C2=A0 * for system pages. If write we map it bi-direti=
-onal;
-> > > > otherwise
-> > > > =C2=A0=C2=A0=C2=A0 * DMA_TO_DEVICE
-> > > > @@ -76,38 +107,33 @@ static void xe_mark_range_accessed(struct
-> > > > hmm_range *range, bool write)
-> > > > =C2=A0=C2=A0=C2=A0 * Returns 0 if successful; -ENOMEM if fails to a=
-llocate
-> > > > memory
-> > > > =C2=A0=C2=A0=C2=A0 */
-> > > > =C2=A0=C2=A0 static int xe_build_sg(struct xe_device *xe, struct
-> > > > hmm_range
-> > > > *range,
-> > > > -		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct sg_table *st, bool w=
-rite)
-> > > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct sg_table *st,
-> > > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct rw_semaphore *notifi=
-er_sem,
-> > > > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool write)
-> > > > =C2=A0=C2=A0 {
-> > > > =C2=A0=C2=A0=C2=A0	struct device *dev =3D xe->drm.dev;
-> > > > -	struct page **pages;
-> > > > -	u64 i, npages;
-> > > > -	int ret;
-> > > > -
-> > > > -	npages =3D xe_npages_in_range(range->start, range->end);
-> > > > -	pages =3D kvmalloc_array(npages, sizeof(*pages),
-> > > > GFP_KERNEL);
-> > > > -	if (!pages)
-> > > > -		return -ENOMEM;
-> > > > -
-> > > > -	for (i =3D 0; i < npages; i++) {
-> > > > -		pages[i] =3D hmm_pfn_to_page(range-
-> > > > >hmm_pfns[i]);
-> > > > -		xe_assert(xe,
-> > > > !is_device_private_page(pages[i]));
-> > > > -	}
-> > > > -
-> > > > -	ret =3D sg_alloc_table_from_pages_segment(st, pages,
-> > > > npages,
-> > > > 0, npages << PAGE_SHIFT,
-> > > > -
-> > > > 						xe_sg_segment_
-> > > > size(dev), GFP_KERNEL);
-> > > > -	if (ret)
-> > > > -		goto free_pages;
-> > > > -
-> > > > -	ret =3D dma_map_sgtable(dev, st, write ?
-> > > > DMA_BIDIRECTIONAL :
-> > > > DMA_TO_DEVICE,
-> > > > -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DMA_ATTR_SKIP_CPU_SYNC |
-> > > > DMA_ATTR_NO_KERNEL_MAPPING);
-> > > > -	if (ret) {
-> > > > -		sg_free_table(st);
-> > > > -		st =3D NULL;
-> > > > +	unsigned long hmm_pfn, size;
-> > > > +	struct scatterlist *sgl;
-> > > > +	struct page *page;
-> > > > +	unsigned long i, j;
-> > > > +
-> > > > +	lockdep_assert_held(notifier_sem);
-> > > > +
-> > > > +	i =3D 0;
-> > > > +	for_each_sg(st->sgl, sgl, st->nents, j) {
-> > > > +		hmm_pfn =3D range->hmm_pfns[i];
-> > > > +		page =3D hmm_pfn_to_page(hmm_pfn);
-> > > > +		xe_assert(xe, !is_device_private_page(page));
-> > > > +		size =3D 1UL << hmm_pfn_to_map_order(hmm_pfn);
-> > > > +		sg_set_page(sgl, page, size << PAGE_SHIFT, 0);
-> > > > +		if (unlikely(j =3D=3D st->nents - 1))
-> > > > +			sg_mark_end(sgl);
-> > > > +		i +=3D size;
-> > > > =C2=A0=C2=A0=C2=A0	}
-> > > > +	xe_assert(xe, i =3D=3D xe_npages_in_range(range->start,
-> > > > range-
-> > > > > end));
-> > > > =C2=A0=C2=A0=20
-> > > > -free_pages:
-> > > > -	kvfree(pages);
-> > > > -	return ret;
-> > > > +	return dma_map_sgtable(dev, st, write ?
-> > > > DMA_BIDIRECTIONAL
-> > > > : DMA_TO_DEVICE,
-> > > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DMA_ATTR_SKIP_CPU_SYNC |
-> > > > DMA_ATTR_NO_KERNEL_MAPPING);
-> > > > =C2=A0=C2=A0 }
-> > > > =C2=A0=C2=A0=20
-> > > > =C2=A0=C2=A0 /**
-> > > > @@ -235,16 +261,45 @@ int xe_hmm_userptr_populate_range(struct
-> > > > xe_userptr_vma *uvma,
-> > > > =C2=A0=C2=A0=C2=A0	if (ret)
-> > > > =C2=A0=C2=A0=C2=A0		goto free_pfns;
-> > > > =C2=A0=C2=A0=20
-> > > > -	ret =3D xe_build_sg(vm->xe, &hmm_range, &userptr->sgt,
-> > > > write);
-> > > > +	if (unlikely(userptr->sg)) {
-> > > > +		ret =3D down_write_killable(&vm-
-> > > > > userptr.notifier_lock);
-> > > > +		if (ret)
-> > > > +			goto free_pfns;
-> > > > +
-> > > > +		xe_hmm_userptr_free_sg(uvma);
-> > > > +		up_write(&vm->userptr.notifier_lock);
-> > > > +	}
-> > > > +
-> > > > +	ret =3D xe_alloc_sg(&userptr->sgt, &hmm_range, &vm-
-> > > > > userptr.notifier_lock);
-> > > > =C2=A0=C2=A0=C2=A0	if (ret)
-> > > > =C2=A0=C2=A0=C2=A0		goto free_pfns;
-> > > > =C2=A0=C2=A0=20
-> > > > +	ret =3D down_read_interruptible(&vm-
-> > > > >userptr.notifier_lock);
-> > > > +	if (ret)
-> > > > +		goto free_st;
-> > > > +
-> > > > +	if (mmu_interval_read_retry(hmm_range.notifier,
-> > > > hmm_range.notifier_seq)) {
-> > > > +		ret =3D -EAGAIN;
-> > > > +		goto out_unlock;
-> > > > +	}
-> > > > +
-> > > > +	ret =3D xe_build_sg(vm->xe, &hmm_range, &userptr->sgt,
-> > > > +			=C2=A0 &vm->userptr.notifier_lock, write);
-> > > > +	if (ret)
-> > > > +		goto out_unlock;
-> > > > +
-> > > > =C2=A0=C2=A0=C2=A0	xe_mark_range_accessed(&hmm_range, write);
-> > > > =C2=A0=C2=A0=C2=A0	userptr->sg =3D &userptr->sgt;
-> > > > =C2=A0=C2=A0=C2=A0	userptr->notifier_seq =3D hmm_range.notifier_seq=
-;
-> > > > +	up_read(&vm->userptr.notifier_lock);
-> > > > +	kvfree(pfns);
-> > > > +	return 0;
-> > > > =C2=A0=C2=A0=20
-> > > > +out_unlock:
-> > > > +	up_read(&vm->userptr.notifier_lock);
-> > > > +free_st:
-> > > > +	sg_free_table(&userptr->sgt);
-> > > > =C2=A0=C2=A0 free_pfns:
-> > > > =C2=A0=C2=A0=C2=A0	kvfree(pfns);
-> > > > =C2=A0=C2=A0=C2=A0	return ret;
-> > > > =C2=A0=C2=A0 }
-> > > > -
-> > >=20
-> >=20
->=20
+AFAICS the fix is not complete: sriov vlans could still be leaked when
+qlcnic_sriov_alloc_vlans() fails on any VF with id > 0.
+
+Please handle even such scenario.
+
+Thanks!
+
+Paolo
 
 
