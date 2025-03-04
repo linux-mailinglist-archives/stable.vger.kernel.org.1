@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DCDA4DE0C
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 13:35:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC809A4DE11
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 13:35:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9976E1894257
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:35:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F28641783FE
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DCD2046A2;
-	Tue,  4 Mar 2025 12:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F661204866;
+	Tue,  4 Mar 2025 12:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ufl9pv9Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdZXfQ3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399EE20408C;
-	Tue,  4 Mar 2025 12:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354A920408C;
+	Tue,  4 Mar 2025 12:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741091648; cv=none; b=ZI8es/FakR2br/8/X2ytthF3TmrsCQPiP6PtjUMLDWirQMs0xwzuQpPOsp+yNbIKobPKJaBWQSarssvA7qDCaFbs7rTDQs79fMbh6ZpVgGbiGsw5t+qHWH9hNjEQdVW1lWqVKaGd7mqN6599flKpplCNbqR8zqOhtp3jlTlHaaI=
+	t=1741091652; cv=none; b=jfWwVb0C6IcMaeDkuAIWN4QJLEE14naek4ghnrCcIi1vE/i+upezB3b3jVX5FrOYJtKQVW6TWCNwCe6pXZXQynpHJDUagvtTF4EwyctiRp+cocJIaFOM9vgdyDbg4z29RycaAWvUDK6Om2+ZQj6n5Ppu0WHwBcac3kxgoJWcO2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741091648; c=relaxed/simple;
-	bh=zTHWmApFgJPW07OqgetEzjrUkVWnD4jFsoH2YVPS7cM=;
+	s=arc-20240116; t=1741091652; c=relaxed/simple;
+	bh=sbse6AruQehWUltKo3Snpm3pC2TPKprGZ2fjLfFkZe8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nDfqYpIeXr1pHvHgNsFM2XobNwsZFeNgalzB2oK4/unR6x5ceyLnNZDmv2p9LqZUyafkwuNpCl/BCVGIKYTH7sLMVl0jID9aAGErOiFszXBR9mlPtHCK4rOtnQGCNQ4XFLHcTv4dpmQBfYObaloq//a93nnvYJRdwRaWmXVi/hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ufl9pv9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9854FC4CEE7;
-	Tue,  4 Mar 2025 12:34:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aPGmGGR2zHeDVXFb97bn8kFavNzZDDX9S6anmPuTP/Kfkb9ywBu0xoQOV2NtucuE4sUtIq35IwMppA1KED6hw8iYKT6W8u8z8rBrvVLME1Gi6UwHJdiHKoDVDNlx+obCVCwgycIWkHJTQWKZvSKLJM4uYZxsJB8DYnjKMsKUs0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdZXfQ3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5919C4CEEB;
+	Tue,  4 Mar 2025 12:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741091647;
-	bh=zTHWmApFgJPW07OqgetEzjrUkVWnD4jFsoH2YVPS7cM=;
+	s=k20201202; t=1741091651;
+	bh=sbse6AruQehWUltKo3Snpm3pC2TPKprGZ2fjLfFkZe8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Ufl9pv9Zvkj2t9gabq44ETpZFsS8ICkeYA5tMCRVXZeumQJUecaFqAF42fcwdeXuy
-	 Rpwjan7npCFZfydLy5hoUAb69rKCmbeE2dSKqxe6tXRad6Nkb4jjqkwGjoApiZOXBt
-	 GHkVC7Ja/AcwX+xhYtgkdg7csYXFR90iryllzQEx0yZ5cIf9TahMcYkqc+pjKorOVo
-	 iH9ZreU0KappLbyeUqFOfMbE1+DGAK5wbxl02GdaNx+czuO/JTvgOx6J8viZuZOpBm
-	 Qdp17OexetG315+tecsPG82Mj5TH9aPZ1kLp8VQ+eKgunf0YwrIEMX489l6+y/3zQ3
-	 Ft2aTNHkkaTqw==
+	b=PdZXfQ3QM4HOyT2x3Mv13idgn9xDxkhdA65cVxyjrmtu/0Zr7xP/CAh4olOBe4b6O
+	 Pht8PyoIDmUcFx5odRovjrQQ/AiGxZVTuZ6qW9I+F5mIFE57F8JHi6h6EFpqNaV3HY
+	 J8x+u3efYN7sBg/MPzojMcIQB6wE9Px5AjtcdvQUiUqFqGZtJqxUS6oDXlJqXdoyKY
+	 UsJY01jpeGfO1dVgJz55Vtzlow0aWz52oMTftt9sSfv4/yfyN11XerdUrXLz+cli7W
+	 9bp/LYzi54tj4PLqOD9/64n5Mv8VUbPhnfEyds2rzyHsW1HuUh5fQnktalXjxe2uvB
+	 zNM3MWo8VIBHQ==
 From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
- Daire McNamara <daire.mcnamara@microchip.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
-References: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
-Subject: Re: [PATCH] spi: microchip-core: prevent RX overflows when
+To: linux-spi@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
+Cc: stable@vger.kernel.org, Daire McNamara <daire.mcnamara@microchip.com>, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250303-veal-snooper-712c1dfad336@wendy>
+References: <20250303-veal-snooper-712c1dfad336@wendy>
+Subject: Re: [PATCH v2] spi: microchip-core: prevent RX overflows when
  transmit size > FIFO size
-Message-Id: <174109164637.27220.10404431321397753624.b4-ty@kernel.org>
-Date: Tue, 04 Mar 2025 12:34:06 +0000
+Message-Id: <174109165049.27220.4947614753583308854.b4-ty@kernel.org>
+Date: Tue, 04 Mar 2025 12:34:10 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,7 +61,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-1b0d6
 
-On Tue, 14 Jan 2025 17:13:49 +0000, Conor Dooley wrote:
+On Mon, 03 Mar 2025 10:47:40 +0000, Conor Dooley wrote:
 > When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
 > overflows will be generated and receive data will be corrupted and
 > warnings will be produced. For example, here's an error generated by a
