@@ -1,115 +1,157 @@
-Return-Path: <stable+bounces-120236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA1DA4DCB3
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:37:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548CFA4DCC1
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82E7E188B21E
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 11:37:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBE437A384F
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 11:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8129200BBF;
-	Tue,  4 Mar 2025 11:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607261FFC57;
+	Tue,  4 Mar 2025 11:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="AbddaeV9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EjeC8CWk"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F711F150D;
-	Tue,  4 Mar 2025 11:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59491FECB1
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 11:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741088221; cv=none; b=R7QyodY94xusDpPVd/8el1L1OtWo1tArwsdB6Vw992vGr+LQs9+t1cJBJw87bWb0WlfTSVvR/jbGmReEBU8wd01RDNhV0+/IblAb0k3MLswPDVtigjcYN5SQ5NiVkls/TSWNtULb1I0lsmgOrKEDwk8JVIjkVw/1gtXMTfOs6IE=
+	t=1741088299; cv=none; b=AtFitGgYCeJnryS87wHRcMQxo2EAFpyPEBWJQCEFVoMI91iImquzxC2U0MVeNkW3UP5ykWM7r9nEfh9r5WM+xu5Iy+fRMmTDCF56c0J6cnQKz3BcvHN1fX19Mke7fncKy+B8EVmPYqWFrla//x5AK6B1fAtSic5JVRp4N6G1sbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741088221; c=relaxed/simple;
-	bh=8+AMRuGr3FHoPcGc7smvgpY+NQTiD8MdW5y1bgmTzwE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jU/Etf3Aa85TbyULxqdobqsGKz+2Xq4mpR6yuC2+rb6JSjcT6TT2t+jzgFFKMKwCOf18R8WRCAY3cdsFmOEHatf/Xt0E3UUCPjryxbcuJmXnaM4gpsuP4gR+25e1UByVm3NPSU2ngiItKV5NNkChjHl4Kk0xTC8tEFmyXI80d5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=AbddaeV9; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f922bc14f8ec11ef8eb9c36241bbb6fb-20250304
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=CAH7S2RhYAW5yuQhDJGKFK2sW9eoXEji1U67xQWDnv4=;
-	b=AbddaeV914D4M2VCfuK6Pou0fHvAg1cBFx+cV1w0DgiVzxWM0FJkg01YagFifY506PCLQrfSwfouhPSHjudpBqIijjj0fJPLM6dbkp4zOfLXYLslygljnZm/+EyHzUHxBe+MJw7WYMcLhu39FmS8FB2AbT+hMNq6bdcOqsa4b1k=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:ede21f12-6330-4351-9fe1-756c3052c440,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:0ef645f,CLOUDID:43cd8229-e0f8-414e-b8c3-b75c08217be8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: f922bc14f8ec11ef8eb9c36241bbb6fb-20250304
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 569060011; Tue, 04 Mar 2025 19:36:54 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Tue, 4 Mar 2025 19:36:53 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Tue, 4 Mar 2025 19:36:53 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3 4/6] wifi: mt76: mt7925: remove unused acpi function for clc
-Date: Tue, 4 Mar 2025 19:36:47 +0800
-Message-ID: <20250304113649.867387-4-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250304113649.867387-1-mingyen.hsieh@mediatek.com>
-References: <20250304113649.867387-1-mingyen.hsieh@mediatek.com>
+	s=arc-20240116; t=1741088299; c=relaxed/simple;
+	bh=KACD+HRKWUt1KmXIIu5IM9U2jfv4bZXfbf1wqQzbCuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T9JxYyhourrud9ehdKY25YoXJcxPUPdfnPc8oaqvO7UFzNtzqXX//83wD2r9aitIUJIda/+/ff5BBMz7eqeklk4EOM9a2K6cy1tNpxZlPYsIrR/pPd0ZWXf67bzSZCKlxl/5dWvCxdqRRbXDPbZTpOUR+j3WfLj9lVB7HXuwxv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EjeC8CWk; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741088298; x=1772624298;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KACD+HRKWUt1KmXIIu5IM9U2jfv4bZXfbf1wqQzbCuA=;
+  b=EjeC8CWkrNopF7TpCMtPqgXinVqyyWNdh9huRdbMjQLN2Y1PJmIfQmng
+   IdmOQpKN9NRp5cldOo8mk9SkCtwD/g7Wbbz9jfB66dF2f3KY0GgXl+cZD
+   n+v0nQ2Vova3Ljd7j1bIc4HxPFIuxQAbyPVJVzYiXOWaDnJxEXE6Vdm63
+   wO2ilR2jw+eywqipI695VDra42yC/WNEttx6Z1aOnuAgP4eCIOY7gMnRn
+   RDhIorjMxDwOB5lNE/92LlufnMzZn6BbK6d6LWgBlshtVHaMOn/t8NqGZ
+   nmT//43tJjwn1eOeTUJHGukWFmtqFS5x8VrFu+F8Vdc7aiMp/yzi7+dsT
+   A==;
+X-CSE-ConnectionGUID: 7mqVIJdfTVq4IdYGq9yLpA==
+X-CSE-MsgGUID: ZzJtykF3RKO/gDfvjur1pA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="59413170"
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
+   d="scan'208";a="59413170"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:38:18 -0800
+X-CSE-ConnectionGUID: xZHQcpISQDiZaNjIZjCD+g==
+X-CSE-MsgGUID: Yl8PLdEGS5mqLqVHVWMKbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
+   d="scan'208";a="123471662"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO fedora..) ([10.245.246.227])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 03:38:15 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Oak Zeng <oak.zeng@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] drm/xe/hmm: Style- and include fixes
+Date: Tue,  4 Mar 2025 12:37:56 +0100
+Message-ID: <20250304113758.67889-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250304113758.67889-1-thomas.hellstrom@linux.intel.com>
+References: <20250304113758.67889-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Add proper #ifndef around the xe_hmm.h header, proper spacing
+and since the documentation mostly follows kerneldoc format,
+make it kerneldoc. Also prepare for upcoming -stable fixes.
 
-The code for handling ACPI configuration in CLC was copied from the mt7921
-driver but is not utilized in the mt7925 implementation. So removes the
-unused functionality to clean up the codebase.
-
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
+Cc: Oak Zeng <oak.zeng@intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
-v2-v3: no change
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/xe/xe_hmm.c | 9 +++------
+ drivers/gpu/drm/xe/xe_hmm.h | 5 +++++
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 53c67364fac6..03b516db68da 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3421,7 +3421,6 @@ __mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+diff --git a/drivers/gpu/drm/xe/xe_hmm.c b/drivers/gpu/drm/xe/xe_hmm.c
+index 089834467880..c56738fa713b 100644
+--- a/drivers/gpu/drm/xe/xe_hmm.c
++++ b/drivers/gpu/drm/xe/xe_hmm.c
+@@ -19,11 +19,10 @@ static u64 xe_npages_in_range(unsigned long start, unsigned long end)
+ 	return (end - start) >> PAGE_SHIFT;
+ }
  
- 		.idx = idx,
- 		.env = env_cap,
--		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
- 	};
- 	int ret, valid_cnt = 0;
- 	u8 *pos, *last_pos;
+-/*
++/**
+  * xe_mark_range_accessed() - mark a range is accessed, so core mm
+  * have such information for memory eviction or write back to
+  * hard disk
+- *
+  * @range: the range to mark
+  * @write: if write to this range, we mark pages in this range
+  * as dirty
+@@ -43,11 +42,10 @@ static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+ 	}
+ }
+ 
+-/*
++/**
+  * xe_build_sg() - build a scatter gather table for all the physical pages/pfn
+  * in a hmm_range. dma-map pages if necessary. dma-address is save in sg table
+  * and will be used to program GPU page table later.
+- *
+  * @xe: the xe device who will access the dma-address in sg table
+  * @range: the hmm range that we build the sg table from. range->hmm_pfns[]
+  * has the pfn numbers of pages that back up this hmm address range.
+@@ -112,9 +110,8 @@ static int xe_build_sg(struct xe_device *xe, struct hmm_range *range,
+ 	return ret;
+ }
+ 
+-/*
++/**
+  * xe_hmm_userptr_free_sg() - Free the scatter gather table of userptr
+- *
+  * @uvma: the userptr vma which hold the scatter gather table
+  *
+  * With function xe_userptr_populate_range, we allocate storage of
+diff --git a/drivers/gpu/drm/xe/xe_hmm.h b/drivers/gpu/drm/xe/xe_hmm.h
+index 909dc2bdcd97..9602cb7d976d 100644
+--- a/drivers/gpu/drm/xe/xe_hmm.h
++++ b/drivers/gpu/drm/xe/xe_hmm.h
+@@ -3,9 +3,14 @@
+  * Copyright © 2024 Intel Corporation
+  */
+ 
++#ifndef _XE_HMM_H_
++#define _XE_HMM_H_
++
+ #include <linux/types.h>
+ 
+ struct xe_userptr_vma;
+ 
+ int xe_hmm_userptr_populate_range(struct xe_userptr_vma *uvma, bool is_mm_mmap_locked);
++
+ void xe_hmm_userptr_free_sg(struct xe_userptr_vma *uvma);
++#endif
 -- 
-2.34.1
+2.48.1
 
 
