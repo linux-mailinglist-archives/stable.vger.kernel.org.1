@@ -1,144 +1,121 @@
-Return-Path: <stable+bounces-120382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B73A4EE8C
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 21:40:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 912E6A4EF04
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 22:05:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A06DC189505F
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 20:40:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA0843A512F
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 21:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF214251781;
-	Tue,  4 Mar 2025 20:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC92264619;
+	Tue,  4 Mar 2025 21:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqqwCDia"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jsumTwG9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75063215F7D;
-	Tue,  4 Mar 2025 20:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398702E337D;
+	Tue,  4 Mar 2025 21:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741120819; cv=none; b=ImVdbQbKvODPkKzwQNKYGgdCT6P7gmqCcxljmlZ4y/MV2Bnzr0i+HxCcrMEDa43d1wAi6TcdYtX4uVZGk2ZWKiM23iC9XtvlYy6Uj5oFs+gaeNvMOZhvOJoKqlyxj5BNgcXZFoemYyXXOxHnB2s+dE01s8bNdKAIX7/66hC/Bkw=
+	t=1741122347; cv=none; b=XV91Ilt/wWzG45lOKTrmhdBqLfJRCEOt/P6MdXI3kn5+OL5HRDth75YnXIHbtppAABZE+rcHay6yK5P3v/HnwhKjwCUJIY17iktK/FkZ+jSqKqHNdoE6l1KSwN29Tat27aDzp0lioAVNMk8kr4UEt1NU1TbaPtOwvGqQyw8ozDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741120819; c=relaxed/simple;
-	bh=rffQqLzv4LKuSkCZS6yB0zZhXvs8756vRKQ1Bz8ZERc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=uWmNnumWqsPxn6a61lXmA7twMmm7h9Z85CyarKiR7gnNbcwJY0Fwld/bZvS4+NXalKkLCxqaicWmdmisPsfq7CU24L85hMEvJbFGrg1zlrNXfrImFql08zBfEMI7AElWq0l8zjB4o8CjPXTujasix1CB+0Yyq8OwWrM9THZeFrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqqwCDia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828FBC4CEE5;
-	Tue,  4 Mar 2025 20:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741120818;
-	bh=rffQqLzv4LKuSkCZS6yB0zZhXvs8756vRKQ1Bz8ZERc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=eqqwCDianugNOSXzq8fzjefzgm+LlbOmTo+E+OTZ/dWrFEYzv3hYt0Azt9fPLh5I4
-	 9ReSWdcx8BI/aq+KZqAM2H1+TaY/y8neBojDc4gKLAqayn+81HTppa04GL7XkX/PkS
-	 a4GvgEh93F+Z66EJfSMidmsoyOC/62if5HbCGgM3cu3mjndmJWlKEZuYomDjsVNeSV
-	 xZdM1lRA6nCLPDSzLNCGb45pASLIBg5HjQ9h8Pc0p1MxV+s+ZaN20V3PBg8NglPwjG
-	 ZNXUPquCbaPJ7INrjRAX4wOjL51QjYuE8Rk2QSOevEw69rJKsPI+3lNWIrPPJa98a6
-	 mVUpOgnIQW42A==
-Date: Tue, 4 Mar 2025 21:40:16 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Daniil Dulov <d.dulov@aladdin.ru>
-cc: Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH] HID: appleir: Fix potential NULL dereference at raw
- event handle
-In-Reply-To: <20250224173031.496048-1-d.dulov@aladdin.ru>
-Message-ID: <8oqsp1p4-4nr8-4nq4-2483-9r6n5r05881s@xreary.bet>
-References: <20250224173031.496048-1-d.dulov@aladdin.ru>
+	s=arc-20240116; t=1741122347; c=relaxed/simple;
+	bh=p/YmkFWD96a273eY0RGKJJXae0CjD04Bl0XKgZ3cT/g=;
+	h=Date:To:From:Subject:Message-Id; b=Th1UMTH7TFLvkx8UFWzlzqcc1bUNNQ6piTn0M1NnT8EVONyLHpFl+3jp5t9pNlaKijDR4SGo+ytUU+o8/4gCGnIPMJ4NROxx5ZBx8FcpHlfkgepxJZGLGO8HfuNITnUJVHJJjMZgaFACEHJFix9Nq7FSwCLURKKwBW9pyXSdsDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jsumTwG9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE79C4CEE5;
+	Tue,  4 Mar 2025 21:05:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1741122346;
+	bh=p/YmkFWD96a273eY0RGKJJXae0CjD04Bl0XKgZ3cT/g=;
+	h=Date:To:From:Subject:From;
+	b=jsumTwG9xMKOOCES68HAnwCnqR54qjB00gIgLOQl69M9hISFLyCCbOuwugIyedFBY
+	 00VP1mDdvnuS8GDaK3LRPQzMzs1O8bZL2OZpsD3x6k9nYLxx7I/PkPVyCkSC2PaKIh
+	 N4kJJyKyx0APjaMVMxULZaL89Tq9zwAlCotUYtws=
+Date: Tue, 04 Mar 2025 13:05:45 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,shivankg@amd.com,ryan.roberts@arm.com,quic_charante@quicinc.com,liushixin2@huawei.com,ioworker0@gmail.com,hughd@google.com,david@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,ziy@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-migrate-fix-shmem-xarray-update-during-migration.patch removed from -mm tree
+Message-Id: <20250304210546.8BE79C4CEE5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 
-On Mon, 24 Feb 2025, Daniil Dulov wrote:
 
-> Syzkaller reports a NULL pointer dereference issue in input_event().
-> 
-> BUG: KASAN: null-ptr-deref in instrument_atomic_read include/linux/instrumented.h:68 [inline]
-> BUG: KASAN: null-ptr-deref in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-> BUG: KASAN: null-ptr-deref in is_event_supported drivers/input/input.c:67 [inline]
-> BUG: KASAN: null-ptr-deref in input_event+0x42/0xa0 drivers/input/input.c:395
-> Read of size 8 at addr 0000000000000028 by task syz-executor199/2949
-> 
-> CPU: 0 UID: 0 PID: 2949 Comm: syz-executor199 Not tainted 6.13.0-rc4-syzkaller-00076-gf097a36ef88d #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-> Call Trace:
->  <IRQ>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
->  kasan_report+0xd9/0x110 mm/kasan/report.c:602
->  check_region_inline mm/kasan/generic.c:183 [inline]
->  kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
->  instrument_atomic_read include/linux/instrumented.h:68 [inline]
->  _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
->  is_event_supported drivers/input/input.c:67 [inline]
->  input_event+0x42/0xa0 drivers/input/input.c:395
->  input_report_key include/linux/input.h:439 [inline]
->  key_down drivers/hid/hid-appleir.c:159 [inline]
->  appleir_raw_event+0x3e5/0x5e0 drivers/hid/hid-appleir.c:232
->  __hid_input_report.constprop.0+0x312/0x440 drivers/hid/hid-core.c:2111
->  hid_ctrl+0x49f/0x550 drivers/hid/usbhid/hid-core.c:484
->  __usb_hcd_giveback_urb+0x389/0x6e0 drivers/usb/core/hcd.c:1650
->  usb_hcd_giveback_urb+0x396/0x450 drivers/usb/core/hcd.c:1734
->  dummy_timer+0x17f7/0x3960 drivers/usb/gadget/udc/dummy_hcd.c:1993
->  __run_hrtimer kernel/time/hrtimer.c:1739 [inline]
->  __hrtimer_run_queues+0x20a/0xae0 kernel/time/hrtimer.c:1803
->  hrtimer_run_softirq+0x17d/0x350 kernel/time/hrtimer.c:1820
->  handle_softirqs+0x206/0x8d0 kernel/softirq.c:561
->  __do_softirq kernel/softirq.c:595 [inline]
->  invoke_softirq kernel/softirq.c:435 [inline]
->  __irq_exit_rcu+0xfa/0x160 kernel/softirq.c:662
->  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
->  sysvec_apic_timer_interrupt+0x90/0xb0 arch/x86/kernel/apic/apic.c:1049
->  </IRQ>
->  <TASK>
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
->  __mod_timer+0x8f6/0xdc0 kernel/time/timer.c:1185
->  add_timer+0x62/0x90 kernel/time/timer.c:1295
->  schedule_timeout+0x11f/0x280 kernel/time/sleep_timeout.c:98
->  usbhid_wait_io+0x1c7/0x380 drivers/hid/usbhid/hid-core.c:645
->  usbhid_init_reports+0x19f/0x390 drivers/hid/usbhid/hid-core.c:784
->  hiddev_ioctl+0x1133/0x15b0 drivers/hid/usbhid/hiddev.c:794
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:906 [inline]
->  __se_sys_ioctl fs/ioctl.c:892 [inline]
->  __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->  </TASK>
-> 
-> This happens due to the malformed report items sent by the emulated device
-> which results in a report, that has no fields, being added to the report list.
-> Due to this appleir_input_configured() is never called, hidinput_connect()
-> fails which results in the HID_CLAIMED_INPUT flag is not being set. However,
-> it  does not make appleir_probe() fail and lets the event callback to be
-> called without the associated input device.
-> 
-> Thus, add a check for the HID_CLAIMED_INPUT flag and leave the event hook
-> early if the driver didn't claim any input_dev for some reason. Moreover,
-> some other hid drivers accessing input_dev in their event callbacks do have
-> similar checks, too.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: 9a4a5574ce42 ("HID: appleir: add support for Apple ir devices")
+The quilt patch titled
+     Subject: mm/migrate: fix shmem xarray update during migration
+has been removed from the -mm tree.  Its filename was
+     mm-migrate-fix-shmem-xarray-update-during-migration.patch
 
-Applied, thanks.
+This patch was dropped because an updated version will be issued
 
--- 
-Jiri Kosina
-SUSE Labs
+------------------------------------------------------
+From: Zi Yan <ziy@nvidia.com>
+Subject: mm/migrate: fix shmem xarray update during migration
+Date: Fri, 28 Feb 2025 12:49:53 -0500
+
+Pagecache uses multi-index entries for large folio, so does shmem.  Only
+swap cache still stores multiple entries for a single large folio.  Commit
+fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
+fixed swap cache but got shmem wrong by storing multiple entries for a
+large shmem folio.
+
+This results in a soft lockup as reported by Liu Shixin.
+
+Fix it by storing a single entry for a shmem folio.
+
+Link: https://lkml.kernel.org/r/20250228174953.2222831-1-ziy@nvidia.com
+Fixes: fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Liu Shixin <liushixin2@huawei.com>
+Closes: https://lore.kernel.org/all/28546fb4-5210-bf75-16d6-43e1f8646080@huawei.com/
+Reviewed-by: Shivank Garg <shivankg@amd.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Charan Teja Kalla <quic_charante@quicinc.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickens <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Lance Yang <ioworker0@gmail.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/migrate.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+--- a/mm/migrate.c~mm-migrate-fix-shmem-xarray-update-during-migration
++++ a/mm/migrate.c
+@@ -524,7 +524,11 @@ static int __folio_migrate_mapping(struc
+ 			folio_set_swapcache(newfolio);
+ 			newfolio->private = folio_get_private(folio);
+ 		}
+-		entries = nr;
++		/* shmem uses high-order entry */
++		if (!folio_test_anon(folio))
++			entries = 1;
++		else
++			entries = nr;
+ 	} else {
+ 		VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
+ 		entries = 1;
+_
+
+Patches currently in -mm which might be from ziy@nvidia.com are
+
+selftests-mm-make-file-backed-thp-split-work-by-writing-pmd-size-data.patch
+mm-huge_memory-allow-split-shmem-large-folio-to-any-lower-order.patch
+selftests-mm-test-splitting-file-backed-thp-to-any-lower-order.patch
+mm-filemap-use-xas_try_split-in-__filemap_add_folio.patch
+mm-shmem-use-xas_try_split-in-shmem_split_large_entry.patch
 
 
