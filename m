@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-120331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20543A4E7E5
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:11:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0F0A4E7EF
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6BF17D40A
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:05:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4BA41883527
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3495E284B2F;
-	Tue,  4 Mar 2025 16:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1149D28151A;
+	Tue,  4 Mar 2025 16:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtHsYOxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OZ/PZ9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72DA2620EF
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84A228D071
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741106578; cv=none; b=VK1cPTGQZmij6VqMM58R7SS82d/ApuF23Y7nONGus7W6DPdlM//8HB/FlvRYMysdaYr3eImKy0EXVvZqq23Uz5qUqO0K86ugPfsjdhoUWhufYB9xogJcRJcFDTH0JNWab+stZEH/BsD3WadKBfdF0Fe7ATe9IpCJpiJ+U4cgpG4=
+	t=1741106590; cv=none; b=l/nyoLxb4B0/7tNZzOVj+6TRwyLdZFF4/+J5rUOub7TnHKyw7sNFJc1jY3pTg429vEMnEhv/4iKpQfsxrkYdrwFN9Ly1O/vd5tNLd4SxMGGwYqNS5/IbyLh9sWK+RyKG86pileaibO3vlEVvtziw3+Y9oDZglF7rlBxzbV8P6kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741106578; c=relaxed/simple;
-	bh=oEkViefWvcW6ShOljNhNmYjy5t3cEoZqgXDtKTKtifI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=enzs3F2uw23/4NTrt3dMOjI91UUaojH72Uc62TokAcM4qh7VEtjZDFevTYqQflLPUox7v11v95HDjNdJvhH4GmM06MbGALUTpo5JwdP0oaNcgG0sM73CYNJm8W9kAUbHiCeBXvz9FBp6L9efah86Yk59Cklt+E/H2h1Ft1aZjaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtHsYOxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A66C4CEE5;
-	Tue,  4 Mar 2025 16:42:56 +0000 (UTC)
+	s=arc-20240116; t=1741106590; c=relaxed/simple;
+	bh=zjwZpKFTHmp9Uw0Y9bO8Y0RwQ14VGsUNDV2jq5RNK+Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cqkjzWOMfZQJ8j+eK/WZHStRbio6IYs1AJYiA/VGwWI111N5mMj+baK7E9S1LgmIhRMgLfJZFpP6SrqH6U/UC03M94a/dGGTwo3MEW/zI2945wmCxrIpk7eAulR9lL9/K373McMpbQUJ1QdP5SZkBlicxw4qzp1bpwtLulkRX8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OZ/PZ9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC32C4CEE5;
+	Tue,  4 Mar 2025 16:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741106577;
-	bh=oEkViefWvcW6ShOljNhNmYjy5t3cEoZqgXDtKTKtifI=;
+	s=korg; t=1741106590;
+	bh=zjwZpKFTHmp9Uw0Y9bO8Y0RwQ14VGsUNDV2jq5RNK+Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CtHsYOxfiBiHhj8bIfNHAgVEAJ89T8acWNdJoyw2xyPfJjfFuL0Bd61U96npM6APN
-	 /xFrKZtkDig6nOP8rqlR0x2LdxibTct9zFcSIcJjsoLuQBRIt5iuYbau4eaW5kEovK
-	 +1UKABef7sprE2z3F+Mj+uRblt4eCxTYhdZiXeK0=
-Subject: FAILED: patch "[PATCH] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr" failed to apply to 5.4-stable tree
-To: roberto.sassu@huawei.com,zohar@linux.ibm.com
+	b=0OZ/PZ9x7kLZFmQns9KgaLYpqvfN60zoxTnravxeRCBzLsUMw3KWOEEn8iJSyehcO
+	 J8PPA8CFtRyGJsTLBN33VP3AyikKDFu0hgaxvEaF+7dFZECBWHn8oT93ujRjUEFlDS
+	 m4LGV2B7+7nu7SqIn1ysV+7LwYXe6MjkEWwKPMqE=
+Subject: FAILED: patch "[PATCH] riscv/atomic: Do proper sign extension also for unsigned in" failed to apply to 6.12-stable tree
+To: schwab@suse.de,ajones@ventanamicro.com,alexghiti@rivosinc.com,palmer@rivosinc.com,xry111@xry111.site
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Mar 2025 17:42:37 +0100
-Message-ID: <2025030437-jurist-skincare-ee63@gregkh>
+Date: Tue, 04 Mar 2025 17:43:07 +0100
+Message-ID: <2025030407-tiny-slain-3c45@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3
+git cherry-pick -x 1898300abf3508bca152e65b36cce5bf93d7e63e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030437-jurist-skincare-ee63@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030407-tiny-slain-3c45@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,69 +77,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 57a0ef02fefafc4b9603e33a18b669ba5ce59ba3 Mon Sep 17 00:00:00 2001
-From: Roberto Sassu <roberto.sassu@huawei.com>
-Date: Tue, 4 Feb 2025 13:57:20 +0100
-Subject: [PATCH] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
+From 1898300abf3508bca152e65b36cce5bf93d7e63e Mon Sep 17 00:00:00 2001
+From: Andreas Schwab <schwab@suse.de>
+Date: Thu, 30 Jan 2025 10:25:38 +0100
+Subject: [PATCH] riscv/atomic: Do proper sign extension also for unsigned in
+ arch_cmpxchg
 
-Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-mistakenly reverted the performance improvement introduced in commit
-42a4c603198f0 ("ima: fix ima_inode_post_setattr"). The unused bit mask was
-subsequently removed by commit 11c60f23ed13 ("integrity: Remove unused
-macro IMA_ACTION_RULE_FLAGS").
+Sign extend also an unsigned compare value to match what lr.w is doing.
+Otherwise try_cmpxchg may spuriously return true when used on a u32 value
+that has the sign bit set, as it happens often in inode_set_ctime_current.
 
-Restore the performance improvement by introducing the new mask
-IMA_NONACTION_RULE_FLAGS, equal to IMA_NONACTION_FLAGS without
-IMA_NEW_FILE, which is not a rule-specific flag.
+Do this in three conversion steps.  The first conversion to long is needed
+to avoid a -Wpointer-to-int-cast warning when arch_cmpxchg is used with a
+pointer type.  Then convert to int and back to long to always sign extend
+the 32-bit value to 64-bit.
 
-Finally, reset IMA_NONACTION_RULE_FLAGS instead of IMA_NONACTION_FLAGS in
-process_measurement(), if the IMA_CHANGE_ATTR atomic flag is set (after
-file metadata modification).
+Fixes: 6c58f25e6938 ("riscv/atomic: Fix sign extension for RV64I")
+Signed-off-by: Andreas Schwab <schwab@suse.de>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Tested-by: Xi Ruoyao <xry111@xry111.site>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/mvmed0k4prh.fsf@suse.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-With this patch, new files for which metadata were modified while they are
-still open, can be reopened before the last file close (when security.ima
-is written), since the IMA_NEW_FILE flag is not cleared anymore. Otherwise,
-appraisal fails because security.ima is missing (files with IMA_NEW_FILE
-set are an exception).
-
-Cc: stable@vger.kernel.org # v4.16.x
-Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index 24d09ea91b87..a4f284bd846c 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -149,6 +149,9 @@ struct ima_kexec_hdr {
- #define IMA_CHECK_BLACKLIST	0x40000000
- #define IMA_VERITY_REQUIRED	0x80000000
- 
-+/* Exclude non-action flags which are not rule-specific. */
-+#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
-+
- #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
- 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
- #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index f2c9affa0c2a..28b8b0db6f9b 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -269,10 +269,13 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 	mutex_lock(&iint->mutex);
- 
- 	if (test_and_clear_bit(IMA_CHANGE_ATTR, &iint->atomic_flags))
--		/* reset appraisal flags if ima_inode_post_setattr was called */
-+		/*
-+		 * Reset appraisal flags (action and non-action rule-specific)
-+		 * if ima_inode_post_setattr was called.
-+		 */
- 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
- 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
--				 IMA_NONACTION_FLAGS);
-+				 IMA_NONACTION_RULE_FLAGS);
- 
- 	/*
- 	 * Re-evaulate the file if either the xattr has changed or the
+diff --git a/arch/riscv/include/asm/cmpxchg.h b/arch/riscv/include/asm/cmpxchg.h
+index 4cadc56220fe..427c41dde643 100644
+--- a/arch/riscv/include/asm/cmpxchg.h
++++ b/arch/riscv/include/asm/cmpxchg.h
+@@ -231,7 +231,7 @@
+ 		__arch_cmpxchg(".w", ".w" sc_sfx, ".w" cas_sfx,		\
+ 			       sc_prepend, sc_append,			\
+ 			       cas_prepend, cas_append,			\
+-			       __ret, __ptr, (long), __old, __new);	\
++			       __ret, __ptr, (long)(int)(long), __old, __new);	\
+ 		break;							\
+ 	case 8:								\
+ 		__arch_cmpxchg(".d", ".d" sc_sfx, ".d" cas_sfx,		\
 
 
