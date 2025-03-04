@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-120384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B075A4EFF0
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 23:14:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAF5A4EFF1
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 23:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFABC188F397
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 22:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2E63A35D7
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 22:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE2024EAA8;
-	Tue,  4 Mar 2025 22:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD60825FA14;
+	Tue,  4 Mar 2025 22:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbBkFbMt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chX9JSve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B8C1FBC98
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 22:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4431FBC98
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 22:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741126435; cv=none; b=Xn5QSztPjxIKtDcsGNostXPCvr3bO3/yHq5dLp/NF8WdgAZuc5Y8i6Y2rD1U7kdKqZoiLdma3tibtB905vE/hLgaJKqVBy9PCbrp5lLigAlvGwi/fC++6x4VfJK1+9OCVFHPTHf/UQOTw4lpCReV/tCziKc6IInaSbkW9Lv+VlA=
+	t=1741126437; cv=none; b=Y6RYpMZHR6wqqS8Xo8qGUAq9BobjhODAX0OvDS//B8z4zae9zMncdLCB8KZ++/s6NQmD8ipQBwM7k2AWz1M0SKCpn1c47H9XJtPbeI5cK78J/gO+Yodv8qqR8s1c3lNV25OiEC/W3iq6boLJpcucM5RdmmEuFibZaDge795SJc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741126435; c=relaxed/simple;
-	bh=U52b81e1RAPvO26CJs9geDI4MfVBzyqTyrNmPpEfQSw=;
+	s=arc-20240116; t=1741126437; c=relaxed/simple;
+	bh=SkO/YYssXveLC+U3a648H/0EcVkiUI2GW76/rUJBAqw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YNegA7YIcVrbrBK18tiiKrZF9EgoV68J5Z1BoHrM0WGoDLAPSHaidDI5e3T9duDemu+jYf8egf8fB5UZfFjfhQAkZkc4odnOgufLUc/vqBr8wsy1R2usizSunKuYC+OLmKA5N6VYf4cUti51kGKwLo6p4uDTW8nvfLHFErNp+dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbBkFbMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35569C4CEE5;
-	Tue,  4 Mar 2025 22:13:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QAt5HK7Orbo+8VyMFCiqMtGLGqD6IOsDVONuqJJhL0Zn+xG5Dy842r+ZE6spyHKOBA8vgbsVhA/+4FGSP9iHCJbJoZezOSqKdESM2ns5dwD9UzRcC1HS0DPL61A3wwdsiIWR9a2/+KD8KyM2UY2jdL4KXPSrhyIyCys31fca5rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chX9JSve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2AFC4CEE5;
+	Tue,  4 Mar 2025 22:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741126434;
-	bh=U52b81e1RAPvO26CJs9geDI4MfVBzyqTyrNmPpEfQSw=;
+	s=k20201202; t=1741126436;
+	bh=SkO/YYssXveLC+U3a648H/0EcVkiUI2GW76/rUJBAqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbBkFbMtpDUgcwdvi/EyRCDWy80+14saSYOHkSFcfBCVfjxqBxpCmReixu/OsWv+x
-	 WwDEU+2ljBJnRB7KXx2pbRGvKZtw90yTK+BapPUrxw+8v7eEc3wWNndlMeG3qGivMV
-	 JQVENC3qK/2OYK0zDgDalkL4hyWhET27UyIcJ+C1nmMYc9V0e2xe+sZlLc49QZl9rg
-	 l4lKGclvVIRWRS7FdaEFWLyXfwIhvOAW86fj5SRzFZ7d2jUyQ85aFYiYQ9AZIcajDY
-	 QuDCOA42sU5b+HgzNncMYQV5GuL7pFcIyXcXbTTMM8efBcFLGExokR0PyNjgORaqKm
-	 jCsteoP6vKeQw==
+	b=chX9JSveuDmE5q+eVSQfg7qHM1t/Iunu2POonCrlGMNMZVYKHY7OEhPf3UWHXQ3fm
+	 1Aae6rlt43OV3+yPKgomPQJO5UoGwC/BeRg4+QHYY3oESKrZZqBSBVjS0gCiySKGYq
+	 F4GsVBzUuammh2534n+ZY24U3YLhQ18hFPL7Qegnto3WKuFFVvITEUOsrrSI53nSE7
+	 imZDb7DvDQaSmKx0gQr7yQ8BXKZ81yPZWBN/GHUrDua+3KBbkNtDOsFmv880A60ML4
+	 YqrluWDPPoLPkcP+DIWj1/fviWL3VKkR0yThrO/sJzI4rjgkhfIx8JriNb/tHkQ4JV
+	 eyOIN5b1BNVVA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	kuniyu@amazon.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 5.15/6.1/6.6] af_unix: Clear oob_skb in scan_inflight().
-Date: Tue,  4 Mar 2025 17:13:52 -0500
-Message-Id: <20250304142915-28afde2108e0471d@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: alvalan9@foxmail.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] media: mediatek: vcodec: Handle invalid decoder vsi
+Date: Tue,  4 Mar 2025 17:13:55 -0500
+Message-Id: <20250304134916-fc19c2b396844f26@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250304030149.82265-1-kuniyu@amazon.com>
+In-Reply-To:  <tencent_636B6A9C2718A3062A5AAA1AB18F61C93907@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,16 +64,29 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Could not find matching upstream commit
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-No upstream commit was identified. Using temporary commit for testing.
+The upstream commit SHA1 provided is correct: 59d438f8e02ca641c58d77e1feffa000ff809e9f
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: alvalan9@foxmail.com
+Commit author: Irui Wang<irui.wang@mediatek.com>
+
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 1c109f23b271)
+
+Note: The patch differs from the upstream commit:
+---
+1:  59d438f8e02ca < -:  ------------- media: mediatek: vcodec: Handle invalid decoder vsi
+-:  ------------- > 1:  033090249f179 media: mediatek: vcodec: Handle invalid decoder vsi
+---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
 | stable/linux-6.1.y        |  Success    |  Success   |
-| stable/linux-6.6.y        |  Success    |  Success   |
 
