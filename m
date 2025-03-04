@@ -1,243 +1,296 @@
-Return-Path: <stable+bounces-120249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36364A4E296
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:14:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EF6A4E358
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3F3A881CAD
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 14:58:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E701179BF3
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0982066DA;
-	Tue,  4 Mar 2025 14:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D2C281344;
+	Tue,  4 Mar 2025 15:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fde/bJwf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cvzAwJKx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6463025FA2C;
-	Tue,  4 Mar 2025 14:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9696927EC99
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 15:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741100134; cv=none; b=HQjKGuJpWg9X3T6jOJ+cCQ+ousf4Izqi4RTF7k7qLxPR09lyzVwv65oMz555FvNdfy26u97ZUgoa6sx+FRB1/Yh6gR5QBbvFdtxHCE24KO6+gHVMho0VMkd6//ZuvP9dPCSqkj46QCfuyvT0UQJlIO9QK2sxYJs7cVgSsipXn9Y=
+	t=1741101374; cv=none; b=lZ99qBaqKEar3NeVHZ2J/lkNgU6ZUZ90FqfrkC5FVkX1Zm3nZz5JZ2C5afzBPRCWw+1/BUf386J8ikNn5hkLwfvNW3sM93BIkuGQ54IMJZAhUttyxp4cMQwQFyblZH2V2+mlAEZyAepb9nkjwI6+cSzjTeHH1xOF1xkBpuFMCGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741100134; c=relaxed/simple;
-	bh=21/+tTReVZYvj3YaSc8NqoDvZVmfhekN36NcOLoxLwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDiCdsqW9t/ZEr8DlEJboarYtfSxKlpsRVwdntLNH+HVMkw4w70LAhcxl7LStFVd5XS32+VUgWNMibMIz+Cttn9vp2DbNkhwuFErWVBCxs2xR6+1qtuAZzmcjziwG7dc/IP0imsDOqxpkHNEKMgMGDPc0rSRn9Bfi5CFg1cUdNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fde/bJwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D395EC4CEE5;
-	Tue,  4 Mar 2025 14:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741100133;
-	bh=21/+tTReVZYvj3YaSc8NqoDvZVmfhekN36NcOLoxLwk=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=fde/bJwfid4Bvg9Rf1K+unyrTTS4ahPqPaVQaw+O4gR7RTjOtx0kHnb+w7XhwNI/0
-	 2uJzM4oX/4e811tBSQlgF+KA+VQjZpsVRfZQwbEQSfQEX6J0vF01yDmwt+dAg6XvSA
-	 cNIe+c5DcIFY1cgk5zn/c4dFhlQgSJyo80hrDtiHlQH1fw8bw4yhBNtijapcp6B4zK
-	 cTweeFAgoSbbJAvXmispCWHDG3muyms8yoEuQ+7qO4Xj2sW5AJbfFOFrbIoR/YemZF
-	 ntNuJmSlcG/rWGWgFTXsoh1WKKrRExceq+iZfsPojEf6iQiWt6dUtxC+lllxido3bQ
-	 dPNhqrHpanUkw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 70480CE12E4; Tue,  4 Mar 2025 06:55:33 -0800 (PST)
-Date: Tue, 4 Mar 2025 06:55:33 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, RCU <rcu@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Keith Busch <kbusch@kernel.org>
-Subject: Re: [PATCH v1 2/2] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
-Message-ID: <14b61981-35ae-4f87-8341-b8d484123e56@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20250228121356.336871-1-urezki@gmail.com>
- <20250228121356.336871-2-urezki@gmail.com>
- <20250303160824.GA22541@joelnvbox>
+	s=arc-20240116; t=1741101374; c=relaxed/simple;
+	bh=D7lc0HgY9pEhLV/641cxKfdD1hosvT9DLR1yBFWqnuQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uQzUMNjJwFtK3BUVYbLSB02l7vPf+xin4jFDPbUDV51Uh59HvQezJYJN1MCMmLGB+bPTK0WliJKIgF43pihB9Ze1ni5nf1+jaf2Yayg/OdAf0YvZLn6PbFfF88SGI7SIYK2/1Pi3vn89ptGgbG6kgwBlrcUpIY5pHzedZYJm4aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cvzAwJKx; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741101372; x=1772637372;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=D7lc0HgY9pEhLV/641cxKfdD1hosvT9DLR1yBFWqnuQ=;
+  b=cvzAwJKxPBuet5lGyrDZ9oqJ0RU2MTY/0K3yakr4PmOebUxvttAMqt5u
+   VO2DVOcTeTKKCtYFHVxpCzbsWysnJbCqcOLAnqZEPnOzBwVaAJ+ghxhiQ
+   +KeXntFw563QLhrzPY4PlmsbUOY4Mt4ium4lRuOdG8PZWzBvXNiWDw6D1
+   r4nuYXmJXnPAHZGeV1hEISnxvUKC9NRAjpEN1Sm32L8vVD1VJamEEEM2T
+   cCoYz6iLOnsmWbM2wk+hH6OKYjfAPApv/2ADYGDnJEMMdiyohKfZQnnOi
+   Aknq9vrn1BvxgxhZ+JM0DmuBYb/hBAMEsCZN8Z62Z+Fru1pKubbIDyqQw
+   g==;
+X-CSE-ConnectionGUID: D317R36OSPOidiRpyopcWw==
+X-CSE-MsgGUID: UCcfdsrQRZSduf9rCNbbCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="41272314"
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
+   d="scan'208";a="41272314"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 07:16:12 -0800
+X-CSE-ConnectionGUID: L3XX+/J/Q0KHq8Oje4aDzw==
+X-CSE-MsgGUID: pFWfIBWLSRi7G1BBQ/F4gQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,220,1736841600"; 
+   d="scan'208";a="123523543"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.188]) ([10.245.245.188])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2025 07:16:11 -0800
+Message-ID: <1e5ef4c8-9545-4102-88d9-865cf6a4bec9@intel.com>
+Date: Tue, 4 Mar 2025 15:16:07 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250303160824.GA22541@joelnvbox>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] drm/xe/hmm: Don't dereference struct page pointers
+ without notifier lock
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Oak Zeng <oak.zeng@intel.com>, stable@vger.kernel.org
+References: <20250304113758.67889-1-thomas.hellstrom@linux.intel.com>
+ <20250304113758.67889-3-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20250304113758.67889-3-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 03, 2025 at 11:08:24AM -0500, Joel Fernandes wrote:
-> On Fri, Feb 28, 2025 at 01:13:56PM +0100, Uladzislau Rezki (Sony) wrote:
-> > Currently kvfree_rcu() APIs use a system workqueue which is
-> > "system_unbound_wq" to driver RCU machinery to reclaim a memory.
-> > 
-> > Recently, it has been noted that the following kernel warning can
-> > be observed:
-> > 
-> > <snip>
-> > workqueue: WQ_MEM_RECLAIM nvme-wq:nvme_scan_work is flushing !WQ_MEM_RECLAIM events_unbound:kfree_rcu_work
-> >   WARNING: CPU: 21 PID: 330 at kernel/workqueue.c:3719 check_flush_dependency+0x112/0x120
-> >   Modules linked in: intel_uncore_frequency(E) intel_uncore_frequency_common(E) skx_edac(E) ...
-> >   CPU: 21 UID: 0 PID: 330 Comm: kworker/u144:6 Tainted: G            E      6.13.2-0_g925d379822da #1
-> >   Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM20 02/01/2023
-> >   Workqueue: nvme-wq nvme_scan_work
-> >   RIP: 0010:check_flush_dependency+0x112/0x120
-> >   Code: 05 9a 40 14 02 01 48 81 c6 c0 00 00 00 48 8b 50 18 48 81 c7 c0 00 00 00 48 89 f9 48 ...
-> >   RSP: 0018:ffffc90000df7bd8 EFLAGS: 00010082
-> >   RAX: 000000000000006a RBX: ffffffff81622390 RCX: 0000000000000027
-> >   RDX: 00000000fffeffff RSI: 000000000057ffa8 RDI: ffff88907f960c88
-> >   RBP: 0000000000000000 R08: ffffffff83068e50 R09: 000000000002fffd
-> >   R10: 0000000000000004 R11: 0000000000000000 R12: ffff8881001a4400
-> >   R13: 0000000000000000 R14: ffff88907f420fb8 R15: 0000000000000000
-> >   FS:  0000000000000000(0000) GS:ffff88907f940000(0000) knlGS:0000000000000000
-> >   CR2: 00007f60c3001000 CR3: 000000107d010005 CR4: 00000000007726f0
-> >   PKRU: 55555554
-> >   Call Trace:
-> >    <TASK>
-> >    ? __warn+0xa4/0x140
-> >    ? check_flush_dependency+0x112/0x120
-> >    ? report_bug+0xe1/0x140
-> >    ? check_flush_dependency+0x112/0x120
-> >    ? handle_bug+0x5e/0x90
-> >    ? exc_invalid_op+0x16/0x40
-> >    ? asm_exc_invalid_op+0x16/0x20
-> >    ? timer_recalc_next_expiry+0x190/0x190
-> >    ? check_flush_dependency+0x112/0x120
-> >    ? check_flush_dependency+0x112/0x120
-> >    __flush_work.llvm.1643880146586177030+0x174/0x2c0
-> >    flush_rcu_work+0x28/0x30
-> >    kvfree_rcu_barrier+0x12f/0x160
-> >    kmem_cache_destroy+0x18/0x120
-> >    bioset_exit+0x10c/0x150
-> >    disk_release.llvm.6740012984264378178+0x61/0xd0
-> >    device_release+0x4f/0x90
-> >    kobject_put+0x95/0x180
-> >    nvme_put_ns+0x23/0xc0
-> >    nvme_remove_invalid_namespaces+0xb3/0xd0
-> >    nvme_scan_work+0x342/0x490
-> >    process_scheduled_works+0x1a2/0x370
-> >    worker_thread+0x2ff/0x390
-> >    ? pwq_release_workfn+0x1e0/0x1e0
-> >    kthread+0xb1/0xe0
-> >    ? __kthread_parkme+0x70/0x70
-> >    ret_from_fork+0x30/0x40
-> >    ? __kthread_parkme+0x70/0x70
-> >    ret_from_fork_asm+0x11/0x20
-> >    </TASK>
-> >   ---[ end trace 0000000000000000 ]---
-> > <snip>
-> > 
-> > To address this switch to use of independent WQ_MEM_RECLAIM
-> > workqueue, so the rules are not violated from workqueue framework
-> > point of view.
-> > 
-> > Apart of that, since kvfree_rcu() does reclaim memory it is worth
-> > to go with WQ_MEM_RECLAIM type of wq because it is designed for
-> > this purpose.
-> > 
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Keith Busch <kbusch@kernel.org>
-> > Closes: https://www.spinics.net/lists/kernel/msg5563270.html
-> > Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-> > Reported-by: Keith Busch <kbusch@kernel.org>
-> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+On 04/03/2025 11:37, Thomas Hellström wrote:
+> The pnfs that we obtain from hmm_range_fault() point to pages that
+> we don't have a reference on, and the guarantee that they are still
+> in the cpu page-tables is that the notifier lock must be held and the
+> notifier seqno is still valid.
 > 
-> BTW, there is a path in RCU-tasks that involves queuing work on system_wq
-> which is !WQ_RECLAIM. While I don't anticipate an issue such as the one fixed
-> by this patch, I am wondering if we should move these to their own WQ_RECLAIM
-> queues for added robustness since otherwise that will result in CB invocation
-> (And thus memory freeing delays). Paul?
+> So while building the sg table and marking the pages accesses / dirty
+> we need to hold this lock with a validated seqno.
+> 
+> However, the lock is reclaim tainted which makes
+> sg_alloc_table_from_pages_segment() unusable, since it internally
+> allocates memory.
+> 
+> Instead build the sg-table manually. For the non-iommu case
+> this might lead to fewer coalesces, but if that's a problem it can
+> be fixed up later in the resource cursor code. For the iommu case,
+> the whole sg-table may still be coalesced to a single contigous
+> device va region.
+> 
+> This avoids marking pages that we don't own dirty and accessed, and
+> it also avoid dereferencing struct pages that we don't own.
+> 
+> v2:
+> - Use assert to check whether hmm pfns are valid (Matthew Auld)
+> - Take into account that large pages may cross range boundaries
+>    (Matthew Auld)
+> 
+> Fixes: 81e058a3e7fd ("drm/xe: Introduce helper to populate userptr")
+> Cc: Oak Zeng <oak.zeng@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.10+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>   drivers/gpu/drm/xe/xe_hmm.c | 119 ++++++++++++++++++++++++++++--------
+>   1 file changed, 93 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_hmm.c b/drivers/gpu/drm/xe/xe_hmm.c
+> index c56738fa713b..93cce9e819a1 100644
+> --- a/drivers/gpu/drm/xe/xe_hmm.c
+> +++ b/drivers/gpu/drm/xe/xe_hmm.c
+> @@ -42,6 +42,40 @@ static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+>   	}
+>   }
+>   
+> +static int xe_alloc_sg(struct xe_device *xe, struct sg_table *st,
+> +		       struct hmm_range *range, struct rw_semaphore *notifier_sem)
+> +{
+> +	unsigned long i, npages, hmm_pfn;
+> +	unsigned long num_chunks = 0;
+> +	int ret;
+> +
+> +	/* HMM docs says this is needed. */
+> +	ret = down_read_interruptible(notifier_sem);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (mmu_interval_read_retry(range->notifier, range->notifier_seq))
 
-For RCU Tasks, the memory traffic has been much lower.  But maybe someday
-someone will drop a million trampolines all at once.  But let's see that
-problem before we fix some random problem that we believe will happen,
-but which proves to be only slightly related to the problem that actually
-does happen.  ;-)
+up_read() ?
 
-							Thanx, Paul
+> +		return -EAGAIN;
+> +
+> +	npages = xe_npages_in_range(range->start, range->end);
+> +	for (i = 0; i < npages;) {
+> +		unsigned long len;
+> +
+> +		hmm_pfn = range->hmm_pfns[i];
+> +		xe_assert(xe, hmm_pfn & HMM_PFN_VALID);
+> +
+> +		len = 1UL << hmm_pfn_to_map_order(hmm_pfn);
+> +
+> +		/* If order > 0 the page may extend beyond range->start */
+> +		len -= (hmm_pfn & ~HMM_PFN_FLAGS) & (len - 1);
+> +		i += len;
+> +		num_chunks++;
+> +	}
+> +	up_read(notifier_sem);
+> +
+> +	return sg_alloc_table(st, num_chunks, GFP_KERNEL);
+> +}
+> +
+>   /**
+>    * xe_build_sg() - build a scatter gather table for all the physical pages/pfn
+>    * in a hmm_range. dma-map pages if necessary. dma-address is save in sg table
+> @@ -50,6 +84,7 @@ static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+>    * @range: the hmm range that we build the sg table from. range->hmm_pfns[]
+>    * has the pfn numbers of pages that back up this hmm address range.
+>    * @st: pointer to the sg table.
+> + * @notifier_sem: The xe notifier lock.
+>    * @write: whether we write to this range. This decides dma map direction
+>    * for system pages. If write we map it bi-diretional; otherwise
+>    * DMA_TO_DEVICE
+> @@ -76,38 +111,41 @@ static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+>    * Returns 0 if successful; -ENOMEM if fails to allocate memory
+>    */
+>   static int xe_build_sg(struct xe_device *xe, struct hmm_range *range,
+> -		       struct sg_table *st, bool write)
+> +		       struct sg_table *st,
+> +		       struct rw_semaphore *notifier_sem,
+> +		       bool write)
+>   {
+> +	unsigned long npages = xe_npages_in_range(range->start, range->end);
+>   	struct device *dev = xe->drm.dev;
+> -	struct page **pages;
+> -	u64 i, npages;
+> -	int ret;
+> +	struct scatterlist *sgl;
+> +	struct page *page;
+> +	unsigned long i, j;
+>   
+> -	npages = xe_npages_in_range(range->start, range->end);
+> -	pages = kvmalloc_array(npages, sizeof(*pages), GFP_KERNEL);
+> -	if (!pages)
+> -		return -ENOMEM;
+> +	lockdep_assert_held(notifier_sem);
+>   
+> -	for (i = 0; i < npages; i++) {
+> -		pages[i] = hmm_pfn_to_page(range->hmm_pfns[i]);
+> -		xe_assert(xe, !is_device_private_page(pages[i]));
+> -	}
+> +	i = 0;
+> +	for_each_sg(st->sgl, sgl, st->nents, j) {
+> +		unsigned long hmm_pfn, size;
+>   
+> -	ret = sg_alloc_table_from_pages_segment(st, pages, npages, 0, npages << PAGE_SHIFT,
+> -						xe_sg_segment_size(dev), GFP_KERNEL);
+> -	if (ret)
+> -		goto free_pages;
+> +		hmm_pfn = range->hmm_pfns[i];
+> +		page = hmm_pfn_to_page(hmm_pfn);
+> +		xe_assert(xe, !is_device_private_page(page));
+>   
+> -	ret = dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
+> -			      DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
+> -	if (ret) {
+> -		sg_free_table(st);
+> -		st = NULL;
+> +		size = 1UL << hmm_pfn_to_map_order(hmm_pfn);
+> +		size -= page_to_pfn(page) & (size - 1);
+> +		i += size;
+> +
+> +		if (unlikely(j == st->nents - 1)) {
+> +			if (i > npages)
+> +				size -= (i - npages);
+> +			sg_mark_end(sgl);
+> +		}
+> +		sg_set_page(sgl, page, size << PAGE_SHIFT, 0);
+>   	}
+> +	xe_assert(xe, i == npages);
+>   
+> -free_pages:
+> -	kvfree(pages);
+> -	return ret;
+> +	return dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
+> +			       DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
+>   }
+>   
+>   /**
+> @@ -235,16 +273,45 @@ int xe_hmm_userptr_populate_range(struct xe_userptr_vma *uvma,
+>   	if (ret)
+>   		goto free_pfns;
+>   
+> -	ret = xe_build_sg(vm->xe, &hmm_range, &userptr->sgt, write);
+> +	if (unlikely(userptr->sg)) {
 
-> kernel/rcu/tasks.h:       queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
-> kernel/rcu/tasks.h:       queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
-> 
-> For this patch:
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-> 
-> thanks,
-> 
->  - Joel
-> 
-> 
-> > ---
-> >  mm/slab_common.c | 14 ++++++++++----
-> >  1 file changed, 10 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/mm/slab_common.c b/mm/slab_common.c
-> > index 4030907b6b7d..4c9f0a87f733 100644
-> > --- a/mm/slab_common.c
-> > +++ b/mm/slab_common.c
-> > @@ -1304,6 +1304,8 @@ module_param(rcu_min_cached_objs, int, 0444);
-> >  static int rcu_delay_page_cache_fill_msec = 5000;
-> >  module_param(rcu_delay_page_cache_fill_msec, int, 0444);
-> >  
-> > +static struct workqueue_struct *rcu_reclaim_wq;
-> > +
-> >  /* Maximum number of jiffies to wait before draining a batch. */
-> >  #define KFREE_DRAIN_JIFFIES (5 * HZ)
-> >  #define KFREE_N_BATCHES 2
-> > @@ -1632,10 +1634,10 @@ __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
-> >  	if (delayed_work_pending(&krcp->monitor_work)) {
-> >  		delay_left = krcp->monitor_work.timer.expires - jiffies;
-> >  		if (delay < delay_left)
-> > -			mod_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-> > +			mod_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
-> >  		return;
-> >  	}
-> > -	queue_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-> > +	queue_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
-> >  }
-> >  
-> >  static void
-> > @@ -1733,7 +1735,7 @@ kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
-> >  			// "free channels", the batch can handle. Break
-> >  			// the loop since it is done with this CPU thus
-> >  			// queuing an RCU work is _always_ success here.
-> > -			queued = queue_rcu_work(system_unbound_wq, &krwp->rcu_work);
-> > +			queued = queue_rcu_work(rcu_reclaim_wq, &krwp->rcu_work);
-> >  			WARN_ON_ONCE(!queued);
-> >  			break;
-> >  		}
-> > @@ -1883,7 +1885,7 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
-> >  	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
-> >  			!atomic_xchg(&krcp->work_in_progress, 1)) {
-> >  		if (atomic_read(&krcp->backoff_page_cache_fill)) {
-> > -			queue_delayed_work(system_unbound_wq,
-> > +			queue_delayed_work(rcu_reclaim_wq,
-> >  				&krcp->page_cache_work,
-> >  					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
-> >  		} else {
-> > @@ -2120,6 +2122,10 @@ void __init kvfree_rcu_init(void)
-> >  	int i, j;
-> >  	struct shrinker *kfree_rcu_shrinker;
-> >  
-> > +	rcu_reclaim_wq = alloc_workqueue("kvfree_rcu_reclaim",
-> > +			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-> > +	WARN_ON(!rcu_reclaim_wq);
-> > +
-> >  	/* Clamp it to [0:100] seconds interval. */
-> >  	if (rcu_delay_page_cache_fill_msec < 0 ||
-> >  		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
-> > -- 
-> > 2.39.5
-> > 
-> 
+Is it really possible to hit this? We did the unmap above also, although 
+that was outside of the notifier lock?
+
+Otherwise,
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
+> +		ret = down_write_killable(&vm->userptr.notifier_lock);
+> +		if (ret)
+> +			goto free_pfns;
+> +
+> +		xe_hmm_userptr_free_sg(uvma);
+> +		up_write(&vm->userptr.notifier_lock);
+> +	}
+> +
+> +	ret = xe_alloc_sg(vm->xe, &userptr->sgt, &hmm_range, &vm->userptr.notifier_lock);
+>   	if (ret)
+>   		goto free_pfns;
+>   
+> +	ret = down_read_interruptible(&vm->userptr.notifier_lock);
+> +	if (ret)
+> +		goto free_st;
+> +
+> +	if (mmu_interval_read_retry(hmm_range.notifier, hmm_range.notifier_seq)) {
+> +		ret = -EAGAIN;
+> +		goto out_unlock;
+> +	}
+> +
+> +	ret = xe_build_sg(vm->xe, &hmm_range, &userptr->sgt,
+> +			  &vm->userptr.notifier_lock, write);
+> +	if (ret)
+> +		goto out_unlock;
+> +
+>   	xe_mark_range_accessed(&hmm_range, write);
+>   	userptr->sg = &userptr->sgt;
+>   	userptr->notifier_seq = hmm_range.notifier_seq;
+> +	up_read(&vm->userptr.notifier_lock);
+> +	kvfree(pfns);
+> +	return 0;
+>   
+> +out_unlock:
+> +	up_read(&vm->userptr.notifier_lock);
+> +free_st:
+> +	sg_free_table(&userptr->sgt);
+>   free_pfns:
+>   	kvfree(pfns);
+>   	return ret;
+>   }
+> -
+
 
