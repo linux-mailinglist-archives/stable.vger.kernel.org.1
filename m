@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-120380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58348A4EE4F
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 21:27:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EED7A4EE54
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 21:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8434B174FB5
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 20:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2120188F9B4
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 20:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9091FBC8A;
-	Tue,  4 Mar 2025 20:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6811FAC46;
+	Tue,  4 Mar 2025 20:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BXjiw/S2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PFXA9y4o"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UEL714Ck";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u10G06uD"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070A7DA93
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 20:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9B27DA93
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 20:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741120025; cv=none; b=TQYQtnNJA6/62wzaALwd8c8onAtK2ldCCHASR4E2222US31Fc/5yEuOFwyYq4vWt702/68F3ZfxSA26Zw5rqRrwHgDN6hLloievaXAjia4NNYAhmaKL4qZzP6YQrcyFwBrNbZkVihwOn3gEZMb7WVnziJefzGiXf4qIL/V1B8Gc=
+	t=1741120122; cv=none; b=usWqxgNxNhipWAcCgkGa7yOEaryFIFXL3zt/I9rDTf9a5Zu9aIHyEs9jIZqSwYj8D03DHoG9CclV77yksKSW3XqF/pToxouJoeNYXz73+kBwMfSQeUAKyj3DHio3kqRvQXlioBdB24q0POR5HJJMaFbU89vzP7jObct+WfNFW+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741120025; c=relaxed/simple;
-	bh=kwLtGIaKl/fFSCqY2DrPc0X2oS23r1sZJq3RwipiRNk=;
+	s=arc-20240116; t=1741120122; c=relaxed/simple;
+	bh=mDGYdSW0qh1kVJzyiuqg8+107+esJVVONHcS+tw5Bl4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=alWLk51OSi/K9q99Q8J8JVIJAh39tmtIpAe0LeVkK7zmK3NexUr6hFbjIpbdzNCG47GrnydQsZOmrmxMEEc3i8Y+JKHQS9fqGtDrtULAS0nvO06mT9kRlHdox30sYhPmkQiogXz/abjd5+X8AGz2ep1MUVGYx4AdGqrBoFuaKuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BXjiw/S2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PFXA9y4o; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=prwBIFuyjnMds0ZwcHfeUlDxjcLYIwju1Uvyor0kbmIzgOUf+2twIV6w9e+bkuxikGnqkK+oIRwHtXDxVgKiBhIYSZi37oX4Nefd+ouI8nhwg+vKmI85MhdQTWUcL/AJVJOKIMoqBIjUhEOU1KMeCgeZLGeHsY0LGkR7WXn2nsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UEL714Ck; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u10G06uD; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741120021;
+	s=2020; t=1741120118;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mKldEf15/8ppaWz8WIEX29cX+5mhmJ3ttn4RqTLd694=;
-	b=BXjiw/S2G/TcnjnLi1cY4oQOdqHC7/QnQ5eB9DbDFkU1GzPAy+XeuMU+4eImKMOqB7N9ld
-	7tIHkKIuONC48XjsG4AIoHerm2uuoHyEiTwGefxD/e/KVh4drVWkCMpBwRgeuJjLCFIZg3
-	5PyBVhhUl3PXbAvfIA1aT2oC6nMFik3i02rQHeE9SZuKsY1bqYo6HV8jXNuqNEs9E3YRYQ
-	avD4JSSDCJ1fvw1/30WyePK6cQ0hd+vhltJyM+GBvc5eQhxKSuKpCNxFkNkNGO7VdKik/8
-	Dw6RBPdN3/9kAFmWsaMXKcKt4yMI2a7LaNaxOiqA2kJR+S9a4V5JZvUR4HGfCg==
+	bh=Vx2EGfCBOUUVk3JlXR1HNaU2Xxwq4Z39Z4VXqbyWXs0=;
+	b=UEL714Ckw5eS2vlA3AvusXDurSHERxZi9B8AmbfHebzSXiYVeCGoQUTh1CManvBqbIFnII
+	l07xyB+x3xqk5uNeHyzyURKdyMWIlu6g9zi3Shm4O+WTjIM36PSsl8mkc7gpRYXP6QENDT
+	GxJhCISB9UpC88D5nTbK1KoSlLLunOuRnSiHiy2sNK5gpCFgbkH7+74fB/C9lXtgXoxgFo
+	4E8JmJzk4SDy7/9bbFYa0FKEKwmhjI0ZMsBhMJlWvSaA5T+loWSUvlP72WG0+CitBa3eDG
+	R7rUZIqL1Z1cIPACgHXPg/0okdVgtYI9oZwuksQwLhABhhehufe0ea+0h9p2UQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741120021;
+	s=2020e; t=1741120118;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mKldEf15/8ppaWz8WIEX29cX+5mhmJ3ttn4RqTLd694=;
-	b=PFXA9y4oXZmG8aEZZKG5wnM/ocfz4sX5VBlGaJ7zuMPFPueMqHqmCP3d3S7r8tipjhrk+z
-	luxXhEWYoFMecYDw==
+	bh=Vx2EGfCBOUUVk3JlXR1HNaU2Xxwq4Z39Z4VXqbyWXs0=;
+	b=u10G06uDiu71ACOkTME7I0nt7fTXi8ot3ualqzzAK6fkrv7R8wHEhEwHndJZbnuEzudqK3
+	6hA7WXTYf7F8TaAA==
 To: gregkh@linuxfoundation.org, fabstz-it@yahoo.fr,
  rafael.j.wysocki@intel.com, stable@vger.kernel.org
 Cc: stable@vger.kernel.org
-Subject: [PATCH 6.6.y, 6.1.y] intel_idle: Handle older CPUs, which stop the
- TSC in deeper C
-In-Reply-To: <2025030415-uncombed-drinking-e339@gregkh>
-References: <2025030415-uncombed-drinking-e339@gregkh>
-Date: Tue, 04 Mar 2025 21:27:00 +0100
-Message-ID: <87sens5yp7.ffs@tglx>
+Subject: [PATCH v5.15.y, v5.10.y] intel_idle: Handle older CPUs, which stop
+ the TSC in deeper C
+In-Reply-To: <2025030416-straining-detergent-2e6d@gregkh>
+References: <2025030416-straining-detergent-2e6d@gregkh>
+Date: Tue, 04 Mar 2025 21:28:38 +0100
+Message-ID: <87pliw5ymh.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,7 +92,7 @@ Link: https://patch.msgid.link/87bjupfy7f.ffs@tglx
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
-Backport to 6.6.y and 6.1.y
+Backport to 5.15.y and 5.10.y
 ---
  drivers/idle/intel_idle.c |    4 ++++
  1 file changed, 4 insertions(+)
@@ -104,10 +104,10 @@ Backport to 6.6.y and 6.1.y
  #include <asm/mwait.h>
  #include <asm/msr.h>
 +#include <asm/tsc.h>
- #include <asm/fpu/api.h>
  
  #define INTEL_IDLE_VERSION "0.5.1"
-@@ -1573,6 +1574,9 @@ static void __init intel_idle_init_cstat
+ 
+@@ -1335,6 +1336,9 @@ static void __init intel_idle_init_cstat
  		if (intel_idle_state_needs_timer_stop(state))
  			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
  
@@ -117,5 +117,4 @@ Backport to 6.6.y and 6.1.y
  		state->enter = intel_idle;
  		state->enter_s2idle = intel_idle_s2idle;
  	}
-
 
