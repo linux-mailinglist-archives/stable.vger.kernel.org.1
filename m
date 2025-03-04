@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-120292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E97AA4E761
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:02:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C53FA4E73C
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85284422241
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:55:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4F4F7A197A
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2248E27CCD0;
-	Tue,  4 Mar 2025 16:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FE027CB3F;
+	Tue,  4 Mar 2025 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSoe393D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2FZDwsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33D9209F33
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8863E25179B
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741106028; cv=none; b=Fm4bbXKOTKvPCdf5c3ngRUmBsPCIswgBiz4u4n+L5yUNN8K3i5k06Vw8aa4HXIy6CB0rBaCt/4kt5PBswfbGvKmQeM54tBP7TRCmKbtWbBSXa8fW8aysXW7rcI20CwLFRCQDl0TGPiH1h6cghGpWrg5hbIuBwVCM0RCgfLfFP6A=
+	t=1741106049; cv=none; b=Sgg9lOWcE7jqKePAeD1fnKL2O9wanxYS5YqfJW8HhdkAdnmnNNDwE0JGYwLcAAXdGkXo3+B3n39IxHI8H6ANy4wrUtOFOLb65cxZrPVKP9sMQxB1V/jEVSzavXjV2ixfikaOHQs/fJn/BH5tqzV8B8Bs19ft0/uDONlNC5gCdP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741106028; c=relaxed/simple;
-	bh=zA3CTFKkxLKcC4IO0E4IaQXztA6UoZcCid440XIkUCs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AM4Dp1jA8p40bY/iE9mj2HQCcbElKa2FUTOMoHOFWIsl0SY7yuEwQQoJyVkDy7nTj8/w14L9/Jo5BdjD619OQJILex2Mst/tiAi2yK51aCJUdaXtZlXWNVxwH14GzLGfQ2jeSYZ++Hie4CvIti+af1KdxSutuAoSRlyxsVKCXN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSoe393D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1713C4CEE5;
-	Tue,  4 Mar 2025 16:33:47 +0000 (UTC)
+	s=arc-20240116; t=1741106049; c=relaxed/simple;
+	bh=iuD4WsUqLQz6/uHM8V/kS2NcQnIvfgRd56BwLYSDFjU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VtHsUUqNYDuELzgw7YUEpyolrjvMf2GlhMOL6oeiySIaPux3fIRuhjGsdXUQforDu1y189SpR913/ju1Am1+aZeezOpga1aFP2DxgRzO2aGyHv1oheVXS+TixwpRMwo4UVuyyGtlkXUpSFsVqxaEmN1uNRAQcLF/zp5BrzRpJ/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2FZDwsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D067DC4CEE5;
+	Tue,  4 Mar 2025 16:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741106028;
-	bh=zA3CTFKkxLKcC4IO0E4IaQXztA6UoZcCid440XIkUCs=;
+	s=korg; t=1741106049;
+	bh=iuD4WsUqLQz6/uHM8V/kS2NcQnIvfgRd56BwLYSDFjU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mSoe393D1Xin1mcmjwxDNasmftCKKRdLI6Yve7vkqB0bksXteGL8xOKcsOdr6mw7D
-	 ioHRX6Mbi7qA+IMEA0MkXh5sYOWvUTdgfLn29UsqJ9rlHo900myw1SjgMK0MVPVONT
-	 e7T/wuu+c9xQoG4JMFzL9YnDUQe12nBNlo4A9dhw=
-Subject: FAILED: patch "[PATCH] btrfs: do regular iput instead of delayed iput during extent" failed to apply to 6.12-stable tree
-To: fdmanana@suse.com,dsterba@suse.com,intelfx@intelfx.name,johannes.thumshirn@wdc.com,wqu@suse.com
+	b=x2FZDwsAQZQgI1Yi9EbGzQBhJEZto1s6GgIoajHOajMdpQQjEv8ZNf7DsuASosa06
+	 mY4JKJ1EaonNimoalWyiNkc+xmn1Pnj40RrAOechnEcd9+M84jfKprWz08RHd9Lmmi
+	 CrWNNW14+cpViGYYYmoB3EpiwD+siXW4wErKCCl8=
+Subject: FAILED: patch "[PATCH] btrfs: fix data overwriting bug during buffered write when" failed to apply to 6.12-stable tree
+To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Mar 2025 17:33:45 +0100
-Message-ID: <2025030445-collected-spoken-1e75@gregkh>
+Date: Tue, 04 Mar 2025 17:34:06 +0100
+Message-ID: <2025030406-snowcap-stagnate-0d6c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 15b3b3254d1453a8db038b7d44b311a2d6c71f98
+git cherry-pick -x efa11fd269c139e29b71ec21bc9c9c0063fde40d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030445-collected-spoken-1e75@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030406-snowcap-stagnate-0d6c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,143 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 15b3b3254d1453a8db038b7d44b311a2d6c71f98 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Sat, 15 Feb 2025 11:11:29 +0000
-Subject: [PATCH] btrfs: do regular iput instead of delayed iput during extent
- map shrinking
+From efa11fd269c139e29b71ec21bc9c9c0063fde40d Mon Sep 17 00:00:00 2001
+From: Qu Wenruo <wqu@suse.com>
+Date: Wed, 19 Feb 2025 09:06:33 +1030
+Subject: [PATCH] btrfs: fix data overwriting bug during buffered write when
+ block size < page size
 
-The extent map shrinker now runs in the system unbound workqueue and no
-longer in kswapd context so it can directly do an iput() on inodes even
-if that blocks or needs to acquire any lock (we aren't holding any locks
-when requesting the delayed iput from the shrinker). So we don't need to
-add a delayed iput, wake up the cleaner and delegate the iput() to the
-cleaner, which also adds extra contention on the spinlock that protects
-the delayed iputs list.
+[BUG]
+When running generic/418 with a btrfs whose block size < page size
+(subpage cases), it always fails.
 
-Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
-Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
-Link: https://lore.kernel.org/linux-btrfs/0414d690ac5680d0d77dfc930606cdc36e42e12f.camel@intelfx.name/
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+And the following minimal reproducer is more than enough to trigger it
+reliably:
+
+workload()
+{
+        mkfs.btrfs -s 4k -f $dev > /dev/null
+        dmesg -C
+        mount $dev $mnt
+        $fsstree_dir/src/dio-invalidate-cache -r -b 4096 -n 3 -i 1 -f $mnt/diotest
+        ret=$?
+        umount $mnt
+        stop_trace
+        if [ $ret -ne 0 ]; then
+                fail
+        fi
+}
+
+for (( i = 0; i < 1024; i++)); do
+        echo "=== $i/$runtime ==="
+        workload
+done
+
+[CAUSE]
+With extra trace printk added to the following functions:
+- btrfs_buffered_write()
+  * Which folio is touched
+  * The file offset (start) where the buffered write is at
+  * How many bytes are copied
+  * The content of the write (the first 2 bytes)
+
+- submit_one_sector()
+  * Which folio is touched
+  * The position inside the folio
+  * The content of the page cache (the first 2 bytes)
+
+- pagecache_isize_extended()
+  * The parameters of the function itself
+  * The parameters of the folio_zero_range()
+
+Which are enough to show the problem:
+
+  22.158114: btrfs_buffered_write: folio pos=0 start=0 copied=4096 content=0x0101
+  22.158161: submit_one_sector: r/i=5/257 folio=0 pos=0 content=0x0101
+  22.158609: btrfs_buffered_write: folio pos=0 start=4096 copied=4096 content=0x0101
+  22.158634: btrfs_buffered_write: folio pos=0 start=8192 copied=4096 content=0x0101
+  22.158650: pagecache_isize_extended: folio=0 from=4096 to=8192 bsize=4096 zero off=4096 len=8192
+  22.158682: submit_one_sector: r/i=5/257 folio=0 pos=4096 content=0x0000
+  22.158686: submit_one_sector: r/i=5/257 folio=0 pos=8192 content=0x0101
+
+The tool dio-invalidate-cache will start 3 threads, each doing a buffered
+write with 0x01 at offset 0, 4096 and 8192, do a fsync, then do a direct read,
+and compare the read buffer with the write buffer.
+
+Note that all 3 btrfs_buffered_write() are writing the correct 0x01 into
+the page cache.
+
+But at submit_one_sector(), at file offset 4096, the content is zeroed
+out, by pagecache_isize_extended().
+
+The race happens like this:
+ Thread A is writing into range [4K, 8K).
+ Thread B is writing into range [8K, 12k).
+
+               Thread A              |         Thread B
+-------------------------------------+------------------------------------
+btrfs_buffered_write()               | btrfs_buffered_write()
+|- old_isize = 4K;                   | |- old_isize = 4096;
+|- btrfs_inode_lock()                | |
+|- write into folio range [4K, 8K)   | |
+|- pagecache_isize_extended()        | |
+|  extend isize from 4096 to 8192    | |
+|  no folio_zero_range() called      | |
+|- btrfs_inode_lock()                | |
+                                     | |- btrfs_inode_lock()
+				     | |- write into folio range [8K, 12K)
+				     | |- pagecache_isize_extended()
+				     | |  calling folio_zero_range(4K, 8K)
+				     | |  This is caused by the old_isize is
+				     | |  grabbed too early, without any
+				     | |  inode lock.
+				     | |- btrfs_inode_unlock()
+
+The @old_isize is grabbed without inode lock, causing race between two
+buffered write threads and making pagecache_isize_extended() to zero
+range which is still containing cached data.
+
+And this is only affecting subpage btrfs, because for regular blocksize
+== page size case, the function pagecache_isize_extended() will do
+nothing if the block size >= page size.
+
+[FIX]
+Grab the old i_size while holding the inode lock.
+This means each buffered write thread will have a stable view of the
+old inode size, thus avoid the above race.
+
+CC: stable@vger.kernel.org # 5.15+
+Fixes: 5e8b9ef30392 ("btrfs: move pos increment and pagecache extension to btrfs_buffered_write")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-index 8c6b85ffd18f..7f46abbd6311 100644
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -1256,7 +1256,7 @@ static long btrfs_scan_root(struct btrfs_root *root, struct btrfs_em_shrink_ctx
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index ed3c0d6546c5..0b568c8d24cb 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1090,7 +1090,7 @@ ssize_t btrfs_buffered_write(struct kiocb *iocb, struct iov_iter *i)
+ 	u64 lockend;
+ 	size_t num_written = 0;
+ 	ssize_t ret;
+-	loff_t old_isize = i_size_read(inode);
++	loff_t old_isize;
+ 	unsigned int ilock_flags = 0;
+ 	const bool nowait = (iocb->ki_flags & IOCB_NOWAIT);
+ 	unsigned int bdp_flags = (nowait ? BDP_ASYNC : 0);
+@@ -1103,6 +1103,13 @@ ssize_t btrfs_buffered_write(struct kiocb *iocb, struct iov_iter *i)
+ 	if (ret < 0)
+ 		return ret;
  
- 		min_ino = btrfs_ino(inode) + 1;
- 		fs_info->em_shrinker_last_ino = btrfs_ino(inode);
--		btrfs_add_delayed_iput(inode);
-+		iput(&inode->vfs_inode);
- 
- 		if (ctx->scanned >= ctx->nr_to_scan || btrfs_fs_closing(fs_info))
- 			break;
++	/*
++	 * We can only trust the isize with inode lock held, or it can race with
++	 * other buffered writes and cause incorrect call of
++	 * pagecache_isize_extended() to overwrite existing data.
++	 */
++	old_isize = i_size_read(inode);
++
+ 	ret = generic_write_checks(iocb, i);
+ 	if (ret <= 0)
+ 		goto out;
 
 
