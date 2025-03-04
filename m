@@ -1,220 +1,297 @@
-Return-Path: <stable+bounces-120218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09547A4D7BA
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 10:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DA6A4D7E0
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 10:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C06B61886FEC
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 09:16:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B744F1883EAA
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 09:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948781FC7C9;
-	Tue,  4 Mar 2025 09:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4BE1FCF54;
+	Tue,  4 Mar 2025 09:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WyiYDxGY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYyqOYaV"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F341FBCAD
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 09:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5330B1FCD03;
+	Tue,  4 Mar 2025 09:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741079771; cv=none; b=Qa/T/6W21NTfFSYyANbfO91nubOjPlJiyjaUy6QSI7LWu6LqDa2Ee61B1oZFqDyl25M54cQ/7q3xxoAfr07YkmG5hesAqMewV3SOGrcCBwaV0aHIaU31dhDHALI+GfO9iLMhfBpM7EkT9K+jYwI350iJppRBeMlFkBELil3JLtk=
+	t=1741080106; cv=none; b=oO0RNzWJAkAem5nbFGHrqbXNZM3jUrx3g323k3iYPqv1t75ueMr0UfwDhcylBK8K9YVpD0iyhBq8XCfsF1gC0AdxuqAut03fzTI4e1F82tc9nkK+C0Y+Lbs416UrIIvdpFWDuXMRSoNV/xXgI347K7ClSfAd+FnQaUsy3lpZSwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741079771; c=relaxed/simple;
-	bh=fzMnd7M6rwCyOtB8q34CUuM6FNDauTxpaDL9Z6xCCYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uYmQoxm93XlDPDc5ht8Wh7SFls04vy0w/pPPrkdXTx7MsVgwqUHxQZCFJpjz3BSHWKzle8OBqYNRfgkX4shVaJsqr2jQYFoNk7Bs1LPvsd4d9byQHNUuTnIqHcwQrw6Usl9fiCLTlGf4RlVpZsXDEDFfFR9VFmNEBqjOq6vo5Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WyiYDxGY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741079768;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=twbfMmYGP3kHV1qPJcf6r3dyxEQU/j00LNN32qJ4mH4=;
-	b=WyiYDxGYMKf8W2pPJ8vU9eAa2iv7SqgG7UAUwTt44kiAIGIvW2YKIjQGtFCdrZ9X7roFba
-	OsxEXcsRB43xV4nVt/5Slzn9hr5wnyQrqp8xIvAre44BfCcH+wOKYZfq8fbtjGU+AIw+BW
-	suXPNLvnfpnMdE3LXtMgyz5Mggf6TJg=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-574-DWlQ_zrsNC-gBq1AHOAesg-1; Tue, 04 Mar 2025 04:16:02 -0500
-X-MC-Unique: DWlQ_zrsNC-gBq1AHOAesg-1
-X-Mimecast-MFC-AGG-ID: DWlQ_zrsNC-gBq1AHOAesg_1741079761
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c0a3ff7e81so1171706185a.3
-        for <stable@vger.kernel.org>; Tue, 04 Mar 2025 01:16:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741079761; x=1741684561;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1741080106; c=relaxed/simple;
+	bh=3uE0HWKkbKWdkp+1VE/hGeN5WjBPcqp1Xh2ngx+vb1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=T97d/XeIimVdMQhyBzC2YK43bHC6OlGkP/VTz/zMu3RY4jvUWRWPx9b1aNb5V/TzKdHeCKIZOfHmS1mVmgGMC2Z/Pvjb/TR4macz0VVBfKFX9HVvvkKBB58zeWpoonJpbojlyRSMlh3qSA6S3h5RS76UttDgIcyana/J3nug7yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYyqOYaV; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-390f5556579so2027067f8f.1;
+        Tue, 04 Mar 2025 01:21:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741080102; x=1741684902; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=twbfMmYGP3kHV1qPJcf6r3dyxEQU/j00LNN32qJ4mH4=;
-        b=NTET4CM5xmyZW5vfDwDBhHmL6qaJWkkm0QqBwgtnX5ICc5ciZL+jV9Kw7ZxnZHT0x+
-         +r0F8TkdS7GEUuUquc4TlOam6Uc7OfllGcWxj4EYRfVDV6dwDRnPH/SA6C0wavwERxue
-         9w77RmXyZgtBFlFZrAl0RV5kALBsIT1oLIOgqxcpTHxh4itFguq4qHYbxNfNuHDPOwgk
-         Cpmr+y7MJOalK8MuAUh4NKfHMA+C32JxEJVT3qEUeciFQkSowBw/KksqVOmaOWzj/Y5a
-         j5Gdmwr4kf11w77xFvK4x7XoYMCOdndDGdMZoNXfjeKlUR0C2JhkL3ENpfjv/BUlBjlT
-         Tf7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWSUt3a2A/3AKBFZ8AE2+FKkU7NCqkFntZi5dX7d1icKsAB1p+rBr26cukRngy86dKAc5batD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxERF4e1o7iv16TZ50kYR4vk/Amzra3HtZzw2hIPpbaHn8zq0Ny
-	mU+t/i4ld2GsGNEkFnlUAvV43ZakLAw3/SkAEQ9/b+0RKhTMJEfFt2gDQmVxXpepGqOKe5t/4be
-	QoEh1Wm+gvhIgwV3fXZj5taAaz7SMlaMTNjoqRRRmwxT0m1iU+/qP4A==
-X-Gm-Gg: ASbGncv9Z60JrJuKj2y3nWsAoKJJvd3AmhU7V+lwJgLE3Pgza2ZgGJyhDgroTm5CJyz
-	FZ2veEa180HKbL5bAfep9CBDKAkoXlKWZXTbMpSTUm+a7RU04mJuRYmh54lynnKS7Ei1RB+Nh8T
-	+Qgq5hGY3rH3KQkYb0ZoH8uvfADmniecd8rZ867mblttwf29xFlRP4lX4Goht3kjsZqg5oZ/Duh
-	fXEatLn2jIJi5mdDJRvI2+2SAvFniSLzP09PkC3aITZ+1wBmZ19P9YaMNb6C8S3FA2Gq20sJona
-	gLhNxOFJtQfBYM19OmwEzb47cNUv/LKER2Il+iMm2CiGAYjMYQblhnUdxKdnDBgLsg5TXhshnnK
-	7/zpk
-X-Received: by 2002:a05:620a:3902:b0:7c0:6419:8bd3 with SMTP id af79cd13be357-7c39c4b678bmr2271035385a.22.1741079761459;
-        Tue, 04 Mar 2025 01:16:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHENlR8nCjhV94d1R8ys7ThN2NQzinSvDAG1fi5LyI/AFJRlI8nAiJwrzKnAO3Hrp6y5e7WgQ==
-X-Received: by 2002:a05:620a:3902:b0:7c0:6419:8bd3 with SMTP id af79cd13be357-7c39c4b678bmr2271031685a.22.1741079761188;
-        Tue, 04 Mar 2025 01:16:01 -0800 (PST)
-Received: from jlelli-thinkpadt14gen4.remote.csb (host-89-240-117-139.as13285.net. [89.240.117.139])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3d30cc5fdsm18304985a.72.2025.03.04.01.15.57
+        bh=FakJGuZkKsinrdSlbIo/9mK6xDtt7nupdRH1dPPNsfw=;
+        b=MYyqOYaV4jTwf4oITAUiotUK7pAn4KT7ZGEI6iDdQEj7fk2aikmm9NnTMGksqnOSP7
+         WVUthnfa1EL8DCXQ3lPSDnOXCe58hoUdXHZQZnnpDPakiIW0ovmzetx0he2H1t9hgHf6
+         6/VE2GFz40QqCGl+qHbIGYeeoa53icTI5DBVkrBbhbKvHpGjNDgzqh8ZsD85zwC/L9/4
+         mAjqPA/qAdBjEPShGW9+fW3HWTMHnxz/Lces1Gkxl4383JDb883jZj4VZwejtWRqCJLv
+         Ya+hX6K7gDwWuxDZ8eXme5fOA39hOeUNILXFXbrBBBWJ1WNhRJfQeNIri9p6100e7ryS
+         3Cnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741080102; x=1741684902;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FakJGuZkKsinrdSlbIo/9mK6xDtt7nupdRH1dPPNsfw=;
+        b=eAuzDrcqjNeNYclLfRp92tSy+/swljbxg0L7K60CzOspjNRupwH3U4IROz4XlXNy33
+         RPQqYIr5Opi5jF3Zna+a7XOU9+VhtEKEnrry2sl69+MDCHxj7Z3yIF/MGLknJFrRAA80
+         XxrjljuWnmXAL5W6Urbnh4aHBic7c0qudUqpdnjSpxMGBkH5JztodQlOK/tj0Ra62J/8
+         DDoaxpiew6e4pr/k6yaGMs6OM9zTNOlbwpMwXVMQfbUCTH+Qgl4j5CqJgFys0WjWjaHP
+         +/QDl8MpmWE/Zf6cpf6+aZWMapsEX9dMFKGfUJ+wq0px7+A3bFWxYtE7AvNiAHjGuAzV
+         D/ww==
+X-Forwarded-Encrypted: i=1; AJvYcCUZOw1qRaFeZPb/a5uhmvd4B/4uMgO3SL8hkMNgl/aHhmkj5N06X2O5PjPXp99CrSL2rsy1tFI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8y6KSXYeDX6GttUg6YjVJgxcqLk+jnFCRiCT7GGeQW8ZI3V4w
+	4AOy6IgUo3Eklu9CiO/1fM2DDK1tVPccG3wrXrJlus7kbnnKQHMX
+X-Gm-Gg: ASbGnctsEgNucXoju1/VHgBT7dJcFlqqml0DSujSv0ntnXGxjnJx2e0vIV4v08VH+ye
+	qUwDBjIpAGtJqx1U7pPncK9nIUWbiKONu6W7iN2a3vYyYImOtUTMDknsBR6/ollDZSb1at7WLUi
+	PktvNQ8wTlErVlqOQhJwfmcRGtICZFNEjGS7yuuyY2v9XVG5xi7Mm9/W2SQ+k/Ks9Ooj1xlsHXK
+	6eZLlhVxqT60MSV9+nYVzQt3EJue6aWpruuoogl0PtHzhpm2ZoZfJY/8sO5W75JtTbvUU1NVlO0
+	4J2CfxPH8Rg4C/77MyhiAPHWS72bEmUbjnB0ndJmn4l8+Qtam+go/bc4YhkUOCyzXCro/GzJZMD
+	SCpN07l7ajvdhK4k/WMu/6WgNuzWXOSoT6/3gAg==
+X-Google-Smtp-Source: AGHT+IF1TvCd/UvOXSMBSMt0v3tDWQJBo0pBIuzkmfsP4+8+oBQFhcUCkkZRapuX1T7HvwScSN3yFA==
+X-Received: by 2002:a05:6000:154a:b0:38f:2b77:a9f3 with SMTP id ffacd0b85a97d-390eca41505mr17208481f8f.43.1741080102291;
+        Tue, 04 Mar 2025 01:21:42 -0800 (PST)
+Received: from labdl-itc-sw06.tmt.telital.com (static-82-85-31-68.clienti.tiscali.it. [82.85.31.68])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b6ddesm17069325f8f.41.2025.03.04.01.21.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 01:16:00 -0800 (PST)
-Date: Tue, 4 Mar 2025 09:15:55 +0000
-From: Juri Lelli <juri.lelli@redhat.com>
-To: Harshit Agarwal <harshit@nutanix.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-kernel@vger.kernel.org, Jon Kohler <jon@nutanix.com>,
-	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
-	Rahul Chunduru <rahul.chunduru@nutanix.com>,
-	Will Ton <william.ton@nutanix.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] sched/rt: Fix race in push_rt_task
-Message-ID: <Z8bEyxZCf8Y_JReR@jlelli-thinkpadt14gen4.remote.csb>
-References: <20250225180553.167995-1-harshit@nutanix.com>
+        Tue, 04 Mar 2025 01:21:41 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+To: Johan Hovold <johan@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org,
+	Daniele Palmas <dnlplm@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V2 1/2] USB: serial: option: add Telit Cinterion FE990B compositions
+Date: Tue,  4 Mar 2025 10:19:38 +0100
+Message-ID: <20250304091939.52318-2-fabio.porcedda@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250304091939.52318-1-fabio.porcedda@gmail.com>
+References: <20250304091939.52318-1-fabio.porcedda@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250225180553.167995-1-harshit@nutanix.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Harshit,
+Add the following Telit Cinterion FE990B40 compositions:
 
-On 25/02/25 18:05, Harshit Agarwal wrote:
-> Overview
-> ========
-> When a CPU chooses to call push_rt_task and picks a task to push to
-> another CPU's runqueue then it will call find_lock_lowest_rq method
-> which would take a double lock on both CPUs' runqueues. If one of the
-> locks aren't readily available, it may lead to dropping the current
-> runqueue lock and reacquiring both the locks at once. During this window
-> it is possible that the task is already migrated and is running on some
-> other CPU. These cases are already handled. However, if the task is
-> migrated and has already been executed and another CPU is now trying to
-> wake it up (ttwu) such that it is queued again on the runqeue
-> (on_rq is 1) and also if the task was run by the same CPU, then the
-> current checks will pass even though the task was migrated out and is no
-> longer in the pushable tasks list.
+0x10b0: rmnet + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10b0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=28c2595e
+C:  #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-...
+0x10b1: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10b1 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=28c2595e
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-> ---
->  kernel/sched/rt.c | 54 +++++++++++++++++++++++------------------------
->  1 file changed, 26 insertions(+), 28 deletions(-)
-> 
-> diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-> index 4b8e33c615b1..4762dd3f50c5 100644
-> --- a/kernel/sched/rt.c
-> +++ b/kernel/sched/rt.c
-> @@ -1885,6 +1885,27 @@ static int find_lowest_rq(struct task_struct *task)
->  	return -1;
->  }
->  
-> +static struct task_struct *pick_next_pushable_task(struct rq *rq)
-> +{
-> +	struct task_struct *p;
-> +
-> +	if (!has_pushable_tasks(rq))
-> +		return NULL;
-> +
-> +	p = plist_first_entry(&rq->rt.pushable_tasks,
-> +			      struct task_struct, pushable_tasks);
-> +
-> +	BUG_ON(rq->cpu != task_cpu(p));
-> +	BUG_ON(task_current(rq, p));
-> +	BUG_ON(task_current_donor(rq, p));
-> +	BUG_ON(p->nr_cpus_allowed <= 1);
-> +
-> +	BUG_ON(!task_on_rq_queued(p));
-> +	BUG_ON(!rt_task(p));
-> +
-> +	return p;
-> +}
-> +
->  /* Will lock the rq it finds */
->  static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
->  {
-> @@ -1915,18 +1936,16 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
->  			/*
->  			 * We had to unlock the run queue. In
->  			 * the mean time, task could have
-> -			 * migrated already or had its affinity changed.
-> -			 * Also make sure that it wasn't scheduled on its rq.
-> +			 * migrated already or had its affinity changed,
-> +			 * therefore check if the task is still at the
-> +			 * head of the pushable tasks list.
->  			 * It is possible the task was scheduled, set
->  			 * "migrate_disabled" and then got preempted, so we must
->  			 * check the task migration disable flag here too.
->  			 */
-> -			if (unlikely(task_rq(task) != rq ||
-> +			if (unlikely(is_migration_disabled(task) ||
->  				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
-> -				     task_on_cpu(rq, task) ||
-> -				     !rt_task(task) ||
-> -				     is_migration_disabled(task) ||
-> -				     !task_on_rq_queued(task))) {
-> +				     task != pick_next_pushable_task(rq))) {
->  
->  				double_unlock_balance(rq, lowest_rq);
->  				lowest_rq = NULL;
-> @@ -1946,27 +1965,6 @@ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
->  	return lowest_rq;
->  }
->  
-> -static struct task_struct *pick_next_pushable_task(struct rq *rq)
-> -{
-> -	struct task_struct *p;
-> -
-> -	if (!has_pushable_tasks(rq))
-> -		return NULL;
-> -
-> -	p = plist_first_entry(&rq->rt.pushable_tasks,
-> -			      struct task_struct, pushable_tasks);
-> -
-> -	BUG_ON(rq->cpu != task_cpu(p));
-> -	BUG_ON(task_current(rq, p));
-> -	BUG_ON(task_current_donor(rq, p));
-> -	BUG_ON(p->nr_cpus_allowed <= 1);
-> -
-> -	BUG_ON(!task_on_rq_queued(p));
-> -	BUG_ON(!rt_task(p));
-> -
-> -	return p;
-> -}
-> -
+0x10b2: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10b2 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=28c2595e
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-As usual, we have essentially the same in deadline.c, do you think we
-should/could implement the same fix proactively in there as well? Steve?
+0x10b3: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (AT) +
+        tty (diag) + DPL + QDSS (Qualcomm Debug SubSystem) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 11 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10b3 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FE990
+S:  SerialNumber=28c2595e
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8c(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 8 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=8d(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Thanks,
-Juri
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+---
+ drivers/usb/serial/option.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+index 58bd54e8c483..8660f7a89b01 100644
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1388,6 +1388,22 @@ static const struct usb_device_id option_ids[] = {
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b0, 0x60) },	/* Telit FE990B (rmnet) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b0, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b0, 0x30),
++	  .driver_info = NCTRL(5) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b1, 0x60) },	/* Telit FE990B (MBIM) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b1, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b1, 0x30),
++	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b2, 0x60) },	/* Telit FE990B (RNDIS) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b2, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b2, 0x30),
++	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b3, 0x60) },	/* Telit FE990B (ECM) */
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b3, 0x40) },
++	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10b3, 0x30),
++	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c0, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c4, 0xff),	/* Telit FE910C04 (rmnet) */
+-- 
+2.48.1
 
 
