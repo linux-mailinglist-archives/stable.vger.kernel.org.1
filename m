@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-120284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A25A4E73E
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:59:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C717A4E715
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B1B1881842
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:53:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06B8F7A5742
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 16:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B5625F976;
-	Tue,  4 Mar 2025 16:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAAB25FA28;
+	Tue,  4 Mar 2025 16:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UA2Ilzvl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peahWptq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3903825DCEC
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B75F25DCEC
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741105915; cv=none; b=SDdj/3HInZY/hXaRnR9qW9SuUuHZOPM/zpUtC1to79TruWcvhJ0rKAyfrfJjDKtTxy/DX7qlUP4MmqLqMjL1oB3Es4Zk8+G1xAJe65phFzDKZOGl2qoaEeUQ2lGBS4CiDI8yxgGrmhIu8f1VM4JmSojHFhctRGFDN6gvQPnfdpg=
+	t=1741105921; cv=none; b=Nnuut6YED2jTV02IYlfV1GypI3H74jXRh0vhgfXrwxK0IXEnVL+DnqGwtGyoHAs+rJhS2VpvGfahJlEWisJOq6dzyzIoivFfZAJE17O1wayLCy4IYSZCWhatkQ3+9/bjqQG18zK4LvqXMI5lf8kFwTKsDM7v/kMb1nZJwk2JhOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741105915; c=relaxed/simple;
-	bh=icz/wa7o8KKbEV8zrMViBumcne/g+TfUz11i1T98vxY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FGIMFXjwfBr+AZwiYw7sBGJ2rZGmw2uU/rVr7YEVvrSHy57rOSNr5Sy0miHnFWPdCKT2FgnJf7w1lCHcS9y4g3ohHwen0xUBkqR4/AIpmmkmT99Ox2LjrCheAfgtihhojwjMXkRS87Sjv5GF8569QMiEcTWvRKt1h2adf8BBcnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UA2Ilzvl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47B6C4CEE7;
-	Tue,  4 Mar 2025 16:31:54 +0000 (UTC)
+	s=arc-20240116; t=1741105921; c=relaxed/simple;
+	bh=Y6S5VpXN4Lqmul/DIt8seW3/agnraLdrHbaG3vgXplo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ch2tWWNftaJwtLsbyR5uKrLM7rU4GtSrtsTTliHo1sb7nhn6lozXUA0U8rKTzvrrTlPEa3tFfNnDkSRKokWDh1NzDCnLmZJk+yaJoTz6LPEhfz/gzJAXq1o1TU2odzJgf8lj47p8neHLj9/od8UQsdKgTTra8XH6R481Aocd5bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peahWptq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC5DC4CEE5;
+	Tue,  4 Mar 2025 16:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741105915;
-	bh=icz/wa7o8KKbEV8zrMViBumcne/g+TfUz11i1T98vxY=;
+	s=korg; t=1741105921;
+	bh=Y6S5VpXN4Lqmul/DIt8seW3/agnraLdrHbaG3vgXplo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UA2IlzvllbxOMqfTXdz89rYAy458yf1t0spImYO2w5507qBa0hVVYRFNmeiy025tr
-	 ZdAPD6M1dcjrNZl4jpgtpUgfF3GZH0/glm3pFys4FQlu+55hlURUDop3X0inRgcyOZ
-	 urrS9CUDEbwzkFEQLu4rF2KTc5+gxUpZqG9xki/4=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: disable BAR resize on Dell G5 SE" failed to apply to 5.10-stable tree
+	b=peahWptqVVnkQAmF+bFxm8u+mIGUC+aqcm9OYzQSKkqZRwUkpp17rx4p2OnFYsvER
+	 cr/W8k2INIzooGj1ZNK1Ekpsf8NPQD5DAGatv6m/ofCthW92IqabfAbT3ayfBNT9Ao
+	 eJPt3jJMI/Iieu+bQuprUA1y9yYh0MXyt6H8hipc=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: disable BAR resize on Dell G5 SE" failed to apply to 5.4-stable tree
 To: alexander.deucher@amd.com,lijo.lazar@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Mar 2025 17:31:42 +0100
-Message-ID: <2025030442-improve-sector-ba84@gregkh>
+Date: Tue, 04 Mar 2025 17:31:43 +0100
+Message-ID: <2025030443-removing-stegosaur-941a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 099bffc7cadff40bfab1517c3461c53a7a38a0d7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030442-improve-sector-ba84@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030443-removing-stegosaur-941a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
