@@ -1,153 +1,106 @@
-Return-Path: <stable+bounces-120209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC1BA4D539
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 08:46:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E385A4D555
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 08:49:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A0F218954FC
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 07:44:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 662837A4141
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 07:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A203B1F791E;
-	Tue,  4 Mar 2025 07:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB961F867F;
+	Tue,  4 Mar 2025 07:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ROzHeVnT"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="hihqECuf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xry111.site (xry111.site [89.208.246.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E208C1F6679;
-	Tue,  4 Mar 2025 07:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3131F76A8;
+	Tue,  4 Mar 2025 07:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741074094; cv=none; b=ojBD7Iefx53LH7HjONrNakJ5HbsEc8OiqGynIJxvqhLZingABQCZJim+kicsjz7VUPw9H6sSCHnFCHt4f+GPePOFRBXPp6xHIjsSGCcXYHl9lY7o2llgD9ioDS9P8j7rKf1Wk4x7DkMJUXUxBxwDSrdkUajWv7t5L+bikKgeqbc=
+	t=1741074578; cv=none; b=Nj/+eJwz1Lm6FcnP/JbnMLXc11DZbMLHHi0+VngbSDwUEFokhiohcvyegMIPNMxVYd4aQWnW3dlzNAUz7prDX9TRL4vke7amzxvMtmCGufOAWMAI/r9MOnRMF9/7XEWAyGk8YhbOIpDnkyqrL6qKJng7taSYZ/pX8vk3Le+jDk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741074094; c=relaxed/simple;
-	bh=42TYu4oQeWAKktlkMy/+5GJAWHHkWqbHXn93VmIIbi0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AA6+Ja9WRr2HNGCzoPq1F99i+WQ+D/kOgeM8c4NM4O79OMcg7WpWOLsds0DI7UkI+xYZRKKQa0d2Mxj9H47u+wEs+d/cV9PY8RkNUfw9kDTb+AKBa3cdSLDK1An8d7q4i6mHdytXQHWK0+yPZEC+NA0U3PsnrJaOdbHmQdNTsOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ROzHeVnT; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5235d7f9599so1807239e0c.1;
-        Mon, 03 Mar 2025 23:41:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741074092; x=1741678892; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ehAVBZiKRCcTorj/dGG/XHRPf74AjYxU8xRvstVVW14=;
-        b=ROzHeVnTujMCWJ4V7AD68ceRj05GZnD28uup0eCznv+j8/MKf94cr0G2zVp175qk0k
-         bBq+B/uzZ0seVGRSvJMzzUbJtuIK5xPUjFdjChQ3O28I59lVx7VE/cOxb34P4tUKx912
-         gcAhm3ajvTclVUTlVRL6dF6QIwQszFRE7oCMqbuxSHLq3uTtLmhknc0M7OJrwg1DD1vC
-         2q+JnaontoivfHat+A2unpZ7nr59Qlmk1gxWJTdiD/Ue1wTEkhtjc3px79/2MDBHvyJQ
-         EG308SyWlW++/oBG324GyeinrlpLcbabXP3+7YkVDi7fmLkYnOy2jMVT1VTkplcPIkis
-         PNdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741074092; x=1741678892;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ehAVBZiKRCcTorj/dGG/XHRPf74AjYxU8xRvstVVW14=;
-        b=a8aXbt4j1w89adqLZ+6pezaC+jrw7L2yqpYzwJvv/4qXFG9W4IGoEBYD5bXTKnc7zp
-         G7inRKOyuPDnzgSxQfdfA15Y9qqh+4T5F6bvNobPj38Mp8otJ+JGu9sRSysbbUM6R6rp
-         AzJh32O3/JVm2KmwzeaJbXmzfRq4A7xmt6rfCj4Q1CDoXS7unT8sILFsnGeezuTkfpJM
-         rlrSvMXH1AF7qVguitUUXSX7IbK9Glxx8npqdzMBnbois1P/YyOkRSadBOq9/7APYUC6
-         jySIDs3FI3PnIq2lJ/GY1UEanH1RXXwt7EF9XDyhbv5u8xL/fwcHaDUcltnY/MUVoiuV
-         1k3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUwjMFH+pkIfUMWt2ufLuILyoT1MDEE2++n+eXWlvX9l38X+1uPxa7ZG2/KfuhVqkNIvWMvNq0Q7S9F3nw=@vger.kernel.org, AJvYcCVfjqMaCCFfgp88Uc2Os4xkI1FaFWCtGP8MzD4enRqXmO4KBJ4Xkwi2C04yY7gChA+dXqczg0jfYDhZV2FJxGEgriM=@vger.kernel.org, AJvYcCWxU0s5e0nmVSEqtCLLc1gpbJZBEr/Ra0x3dlfpOYUOymmblokKnFHjHoUfdqtOrpkr9b+n7mIb@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgiQelDz6Xw/7RRzNrwFts0D4naeyl0mu1LztoGsgi5J1Lci2j
-	FTqgoNi1Oo8MuMMRy2Od400vmiVeRMAuPnlXh/EPf6tJotJsv4FwFFaKpX9+G0hkpEAI36Xlkrx
-	HLcfR727LOZbsUtETAxzIS8kDsLc=
-X-Gm-Gg: ASbGncvRGvsDGAL67wRLiIKz28KbnVxFIiRgKpOgIsYYEJeBTS6McL5hjnkaLnVYO1q
-	LGhJ5TmzhTRyugjcAA6t/EgcXXqxDSqvE7iyjtlnqVonQKgInP9+9omBsyCC6cmNBuTIoMXlmAe
-	5AmOgXeW4F7H/5FyX+mMx0/TBctg==
-X-Google-Smtp-Source: AGHT+IGzl19ZwYyuOur1HDSOzm4Fn2GxpdVR/SulPoBBGwex5tdesWntt/9GvppHS1k1Qx+c6y3kEzRIKhGxwY4aDD0=
-X-Received: by 2002:a05:6122:1b8d:b0:50d:a31c:678c with SMTP id
- 71dfb90a1353d-5235b7e186cmr9987997e0c.2.1741074091599; Mon, 03 Mar 2025
- 23:41:31 -0800 (PST)
+	s=arc-20240116; t=1741074578; c=relaxed/simple;
+	bh=0c/JgpmJ1xTs7JmUkSsvLVns0tnoWAn8saEOOAw9J1U=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UXoLyFm5s6Z9qo0uMUibqoRjClXhymG5VPLMnxPBejzEw5q1/f37v0Wk4lTfjN5lgnhbRsaoaLYqoClqqsrDWwXAEUbEYatV2smqZy6dM/YLvJ5nRjET7T8vMGwIZ7TUldyPLnGZLur9sCWS2x5ClVactluP2GDkRum2T7cyUPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=hihqECuf; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1741074568;
+	bh=zIfEwkuAD57F3pZZRAjdPIKbEPJpjqKvEDPzL5jBHrg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=hihqECuf0P5oDT+4STeTsnZtLmnDYfVQXfuJMdd+ckCsztu+KGwHfcRyf/9XcGORe
+	 SNqLlCFwPSUefVuPIfN0ZwPCSW6pFMqsD2Abw3iflLyQwHW3FnwaYFNAiHdm1TmHj3
+	 j5UW0GlDTiQ77K56nW0HUTpL2arb0ibRKRqxzUCs=
+Received: from [192.168.124.9] (unknown [113.200.174.80])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 4316865901;
+	Tue,  4 Mar 2025 02:49:25 -0500 (EST)
+Message-ID: <aab657d72a3ee578e5c7a09c6c044e0d5c5add9a.camel@xry111.site>
+Subject: Re: [PATCH] rust: Fix enabling Rust and building with GCC for
+ LoongArch
+From: Xi Ruoyao <xry111@xry111.site>
+To: WANG Rui <wangrui@loongson.cn>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Huacai Chen <chenhuacai@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich	 <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	loongarch@lists.linux.dev,
+ loongson-kernel@lists.loongnix.cn, 	stable@vger.kernel.org
+Date: Tue, 04 Mar 2025 15:49:22 +0800
+In-Reply-To: <20250304073554.20869-1-wangrui@loongson.cn>
+References: <20250304073554.20869-1-wangrui@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250303190841.179890-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <TY3PR01MB11346BEF0C5C45C9EC6B3D3B586C82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-In-Reply-To: <TY3PR01MB11346BEF0C5C45C9EC6B3D3B586C82@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Tue, 4 Mar 2025 07:41:04 +0000
-X-Gm-Features: AQ5f1JpTkRcFMLmhBGcMNg_LIMp0NmjGG85q2_4qbfN8T5KnbQj34djf0J6nuj8
-Message-ID: <CA+V-a8t8o92C4OYac4xXxS7quieNZWWPJxoT2dsrZ0M0AmWW-A@mail.gmail.com>
-Subject: Re: [PATCH] reset: rzg2l-usbphy-ctrl: Correct reset status check
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Biju,
+On Tue, 2025-03-04 at 15:35 +0800, WANG Rui wrote:
+> This patch fixes a build issue on LoongArch when Rust is enabled and
+> compiled with GCC by explicitly setting the bindgen target and skipping
+> C flags that Clang doesn't support.
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: WANG Rui <wangrui@loongson.cn>
+> ---
+> =C2=A0rust/Makefile | 4 +++-
+> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/Makefile b/rust/Makefile
+> index ea3849eb78f6..2c57c624fe7d 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -232,7 +232,8 @@ bindgen_skip_c_flags :=3D -mno-fp-ret-in-387 -mprefer=
+red-stack-boundary=3D% \
+> =C2=A0	-mfunction-return=3Dthunk-extern -mrecord-mcount -mabi=3Dlp64 \
+> =C2=A0	-mindirect-branch-cs-prefix -mstack-protector-guard% -mtraceback=
+=3Dno \
+> =C2=A0	-mno-pointers-to-nested-functions -mno-string \
+> -	-mno-strict-align -mstrict-align \
+> +	-mno-strict-align -mstrict-align -mdirect-extern-access \
+> +	-mexplicit-relocs -mno-check-zero-division \
 
-Thank you for the review.
+Hmm I'm wondering if we can just drop -mno-check-zero-division from
+cflags-y: for all GCC releases it's the default at either -O2 or -Os,
+and AFAIK we don't support other optimization levels.
 
-On Tue, Mar 4, 2025 at 6:43=E2=80=AFAM Biju Das <biju.das.jz@bp.renesas.com=
-> wrote:
->
-> Hi Prabhakar,
->
-> Thanks for the patch.
->
-> > -----Original Message-----
-> > From: Prabhakar <prabhakar.csengg@gmail.com>
-> > Sent: 03 March 2025 19:09
-> > Subject: [PATCH] reset: rzg2l-usbphy-ctrl: Correct reset status check
-> >
-> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> >
-> > Ensure the reset status check explicitly evaluates whether all bits in =
-`port_mask` are set. Replace
-> > the double negation (`!!`) with an equality check to prevent incorrect =
-interpretation of partial bit
-> > matches as an asserted reset.
-> >
-> > Fixes: bee08559701f ("reset: renesas: Add RZ/G2L usbphy control driver"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > ---
-> >  drivers/reset/reset-rzg2l-usbphy-ctrl.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/reset/reset-rzg2l-usbphy-ctrl.c b/drivers/reset/re=
-set-rzg2l-usbphy-ctrl.c
-> > index 8a7f167e405e..6451f621e862 100644
-> > --- a/drivers/reset/reset-rzg2l-usbphy-ctrl.c
-> > +++ b/drivers/reset/reset-rzg2l-usbphy-ctrl.c
-> > @@ -88,7 +88,7 @@ static int rzg2l_usbphy_ctrl_status(struct reset_cont=
-roller_dev *rcdev,
-> >
-> >       port_mask =3D id ? PHY_RESET_PORT2 : PHY_RESET_PORT1;
-> >
-> > -     return !!(readl(priv->base + RESET) & port_mask);
-> > +     return (readl(priv->base + RESET) & port_mask) =3D=3D port_mask;
->
->
-> As per the hardware manual, these status bit is valid only when
-> Only when sel_pxreset=3D1.
->
-> If sel_pxreset=3D0, we are reporting invalid status to the caller.
->
-> Maybe we should check sel_pxreset while setting it and read it back to
-> Ensure that it is set to 1 and in this function just check for
-> phyrst_x bit for reporting status
->
-Ok, I will update it as above and send a v2.
-
-Cheers,
-Prabhakar
+--=20
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
 
