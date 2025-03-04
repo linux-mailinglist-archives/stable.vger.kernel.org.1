@@ -1,102 +1,90 @@
-Return-Path: <stable+bounces-120244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC809A4DE11
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 13:35:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4092A4DE69
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 13:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F28641783FE
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:35:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5653A897A
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 12:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F661204866;
-	Tue,  4 Mar 2025 12:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B0D20127D;
+	Tue,  4 Mar 2025 12:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdZXfQ3Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRYtRR3b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354A920408C;
-	Tue,  4 Mar 2025 12:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26721EA7CE;
+	Tue,  4 Mar 2025 12:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741091652; cv=none; b=jfWwVb0C6IcMaeDkuAIWN4QJLEE14naek4ghnrCcIi1vE/i+upezB3b3jVX5FrOYJtKQVW6TWCNwCe6pXZXQynpHJDUagvtTF4EwyctiRp+cocJIaFOM9vgdyDbg4z29RycaAWvUDK6Om2+ZQj6n5Ppu0WHwBcac3kxgoJWcO2o=
+	t=1741092869; cv=none; b=sngfxGDsU8PjJkYWa4vuXnKpy2OnnTNaHruNWQLeXhO0SmM0rEfuelCqMrKUQCEpSzjcxE1YvNsZuHKa6H2yVPXjFrdkqAR+ttbC1ffDmmMUKb4bJzNUZK1Q82rDxMjsdar1iI1GHznKwJxTdbpSUZ+QsYh6G07eMCPdhp8LmfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741091652; c=relaxed/simple;
-	bh=sbse6AruQehWUltKo3Snpm3pC2TPKprGZ2fjLfFkZe8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=aPGmGGR2zHeDVXFb97bn8kFavNzZDDX9S6anmPuTP/Kfkb9ywBu0xoQOV2NtucuE4sUtIq35IwMppA1KED6hw8iYKT6W8u8z8rBrvVLME1Gi6UwHJdiHKoDVDNlx+obCVCwgycIWkHJTQWKZvSKLJM4uYZxsJB8DYnjKMsKUs0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdZXfQ3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5919C4CEEB;
-	Tue,  4 Mar 2025 12:34:10 +0000 (UTC)
+	s=arc-20240116; t=1741092869; c=relaxed/simple;
+	bh=/A1A2qZsYsqWgcNSomPW+1mfRwPf8XYoLazhrNYnIU8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PafBDmfumIH8ejBaeaARoQ0b3BxAMVaLB/asFLgzQbF7ckAUm3fNeddo9QTg7j0g/H5XNwXp4AF7QGYBbUVdudUj9wohCxl0XvDVcsUzUYkHpaJjaSxZKJBsHan40/ot+EHvfMhYPC+pDBK+kKiaQPyb2dIPZVhv8Vnl17PVnRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRYtRR3b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC710C4CEE5;
+	Tue,  4 Mar 2025 12:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741091651;
-	bh=sbse6AruQehWUltKo3Snpm3pC2TPKprGZ2fjLfFkZe8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=PdZXfQ3QM4HOyT2x3Mv13idgn9xDxkhdA65cVxyjrmtu/0Zr7xP/CAh4olOBe4b6O
-	 Pht8PyoIDmUcFx5odRovjrQQ/AiGxZVTuZ6qW9I+F5mIFE57F8JHi6h6EFpqNaV3HY
-	 J8x+u3efYN7sBg/MPzojMcIQB6wE9Px5AjtcdvQUiUqFqGZtJqxUS6oDXlJqXdoyKY
-	 UsJY01jpeGfO1dVgJz55Vtzlow0aWz52oMTftt9sSfv4/yfyN11XerdUrXLz+cli7W
-	 9bp/LYzi54tj4PLqOD9/64n5Mv8VUbPhnfEyds2rzyHsW1HuUh5fQnktalXjxe2uvB
-	 zNM3MWo8VIBHQ==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
-Cc: stable@vger.kernel.org, Daire McNamara <daire.mcnamara@microchip.com>, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250303-veal-snooper-712c1dfad336@wendy>
-References: <20250303-veal-snooper-712c1dfad336@wendy>
-Subject: Re: [PATCH v2] spi: microchip-core: prevent RX overflows when
- transmit size > FIFO size
-Message-Id: <174109165049.27220.4947614753583308854.b4-ty@kernel.org>
-Date: Tue, 04 Mar 2025 12:34:10 +0000
+	s=k20201202; t=1741092868;
+	bh=/A1A2qZsYsqWgcNSomPW+1mfRwPf8XYoLazhrNYnIU8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MRYtRR3bSOxt7sDY714pvRJ+cGuKXP1KXOzq7Es4hIChNxf5yfdbuZR5bbw1DInq+
+	 XTyxl4Uqj3539js3jqHejm1CRVV7YfTAUWlpCEwBZy0AYwnmRSvviIJm8lbcw7aazu
+	 4OC2+CshNXdu7/wMzgqSKbWzDwVJgHouoMilfhdnXGAIYOIZLSP4f7RL+hRnWBTYGR
+	 eGkWv1extNmvHcBzHUjTxVQR7Ib1ZVjkI74nip4Lg17FLRRotOHJu/dF194mwzJ6JF
+	 /zqLdIbNwnC3GXPYwYewdPtt6YVfoZKKEtzuRJkuxxWfgQvde2FiRCrUK4sw74wDrf
+	 M2DSvNvOxsr9Q==
+Message-ID: <847c7cd3-3b23-4180-b2b3-affa47413cf4@kernel.org>
+Date: Tue, 4 Mar 2025 06:54:26 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2] arm64: dts: socfpga: agilex: Add dma channel id
+ for spi
+To: niravkumar.l.rabara@intel.com, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, nirav.rabara@altera.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250225133919.4128252-1-niravkumar.l.rabara@intel.com>
+Content-Language: en-US
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <20250225133919.4128252-1-niravkumar.l.rabara@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
 
-On Mon, 03 Mar 2025 10:47:40 +0000, Conor Dooley wrote:
-> When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-> overflows will be generated and receive data will be corrupted and
-> warnings will be produced. For example, here's an error generated by a
-> transfer of 36 bytes:
+On 2/25/25 07:39, niravkumar.l.rabara@intel.com wrote:
+> From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 > 
->   spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
+> Add DMA channel ids for spi0 and spi1 nodes in device tree.
 > 
-> [...]
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+> ---
+>   arch/arm64/boot/dts/intel/socfpga_agilex.dtsi | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
+> index 1235ba5a9865..616259447c6f 100644
+> --- a/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
+> +++ b/arch/arm64/boot/dts/intel/socfpga_agilex.dtsi
+> @@ -457,6 +457,8 @@ spi0: spi@ffda4000 {
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[1/1] spi: microchip-core: prevent RX overflows when transmit size > FIFO size
-      commit: 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Applied!
 
 Thanks,
-Mark
+Dinh
 
 
