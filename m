@@ -1,200 +1,122 @@
-Return-Path: <stable+bounces-120363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AD6A4EA70
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 19:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83708A4EA99
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 19:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 988C619C1B38
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:59:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7762A189F559
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612292980D9;
-	Tue,  4 Mar 2025 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470BC2D4F85;
+	Tue,  4 Mar 2025 17:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIJcmxTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aROuv1HU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD42B298CAE
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 17:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D0F29CB55;
+	Tue,  4 Mar 2025 17:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741109913; cv=none; b=ObPqDRgaNn46q8cIOzb7Q4udzM/CZGNUm1WaxC52Zay/uR3ChT51ZsleGuHanHsFFBC13ovJk1mrA3pDU1B6Fkjs5Hv7ID8B89ggRaca1ysrN7Gr1GXcC/mgi9jlYnX2LqzPb/8qqT9IMIfIXFvH4EAqNtdY6p4tb4r8CRTd3GQ=
+	t=1741110053; cv=none; b=WxGvqLd5GYWaZvtMUCq9YsurmtrJnMcWL8SbuAU27ik/uxT5uR4B2O2cQkKuK0mNJgY3J61BPrbPfbhD8GzYjv8HfNnkA62AOOII4blS3qRQfrXwLRRiPUBZolp2O3ysGt8AGKDCrS4lDG12LVJ7W80ZbMhMorlJKSXfKC5wFB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741109913; c=relaxed/simple;
-	bh=bvog8mEz1kA32+ACtZULPeT+gGhIRWaKQe30R5k+kNo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pAuvhZ+oaTuLHunMf1PXIC+Pz8e3EiaMWwjMXiPZyGFmgRiQGvggJX6gA6G7IhV4bYPmV3gk5+/e2pwgIYl3v/8gAbhhJfn4Me/PTSFw4tJZMgRrtUB95Z5rq+GoSXb0y5t4kMaqWF4vnxSN/lf+WocASFlMetyRvowVA1N11og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIJcmxTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBB6C4CEE5;
-	Tue,  4 Mar 2025 17:38:32 +0000 (UTC)
+	s=arc-20240116; t=1741110053; c=relaxed/simple;
+	bh=/NdOoVcaQwRcaojuFsyNQkKjvvlLy1YPhSe6JCsHM5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HuBVFO0oLtB6PQdISXlmfoOdwUS9vUCuV6P3C4fOFLhYvW6IJpkhX6akJPFGWaSG+I4CUu2D0O/q5g0K0KBzI34cdBUNeZvXUgI0/z2k0LM4B4AiKIHokggm20/nC2ly3pCUdAAmSiaW62Cw+5fpOTW1arNdYSqEZY+zSd2oeoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aROuv1HU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05A3C4CEE5;
+	Tue,  4 Mar 2025 17:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741109913;
-	bh=bvog8mEz1kA32+ACtZULPeT+gGhIRWaKQe30R5k+kNo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=mIJcmxTCkUUNqW0qiqCrfKu6BhFtGXA5lukp9TLXCLoTVM+mpUvhFxjYCwqkyZGoM
-	 C4rJtWSb7fP9MUzw5zyBgdIJFHNw3bH7/YKohaXHBfVN+OO2axIwfPs3qd6hk8Gd+m
-	 fYPNRCaiZIRMyzicm7N0h9cIjebFtiz+fA41ZTew=
-Subject: FAILED: patch "[PATCH] efi: Don't map the entire mokvar table to determine its size" failed to apply to 6.12-stable tree
-To: pjones@redhat.com,ardb@kernel.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Mar 2025 18:38:22 +0100
-Message-ID: <2025030422-depict-timing-18a8@gregkh>
+	s=korg; t=1741110052;
+	bh=/NdOoVcaQwRcaojuFsyNQkKjvvlLy1YPhSe6JCsHM5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aROuv1HUuEigfDVuGL8hN1KePq1SAeotCXexKrm73/XLntiR9ahi0O6NSLSGR+ozW
+	 LJYDhigQ5rk8Uh8uhZX8BDigoGvnQsN5n9bSP8VfR8RRI6phQrDu3id+3/LhLGqGM4
+	 KQMkuywKkqmekD6I3ZxUfJ94tXa5XZWivmX96I64=
+Date: Tue, 4 Mar 2025 18:40:49 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ulrich Gemkow <ulrich.gemkow@ikr.uni-stuttgart.de>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, ardb@kernel.org
+Subject: Re: Regression for PXE boot from patch "Remove the 'bugger off'
+ message" in stable 6.6.18
+Message-ID: <2025030429-battalion-lyricism-c62c@gregkh>
+References: <202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de>
+ <2025030459-singer-compactor-9c91@gregkh>
+ <202503041759.32756.ulrich.gemkow@ikr.uni-stuttgart.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202503041759.32756.ulrich.gemkow@ikr.uni-stuttgart.de>
 
+On Tue, Mar 04, 2025 at 05:59:32PM +0100, Ulrich Gemkow wrote:
+> Hallo,
+> 
+> On Tuesday 04 March 2025, Greg KH wrote:
+> > On Tue, Mar 04, 2025 at 03:49:35PM +0100, Ulrich Gemkow wrote:
+> > > Hello,
+> > > 
+> > > starting with stable kernel 6.6.18 we have problems with PXE booting.
+> > > A bisect shows that the following patch is guilty:
+> > > 
+> > >   From 768171d7ebbce005210e1cf8456f043304805c15 Mon Sep 17 00:00:00 2001
+> > >   From: Ard Biesheuvel <ardb@kernel.org>
+> > >   Date: Tue, 12 Sep 2023 09:00:55 +0000
+> > >   Subject: x86/boot: Remove the 'bugger off' message
+> > > 
+> > >   Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > >   Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > >   Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+> > >   Link: https://lore.kernel.org/r/20230912090051.4014114-21-ardb@google.com
+> > > 
+> > > With this patch applied PXE starts, requests the kernel and the initrd.
+> > > Without showing anything on the console, the boot process stops.
+> > > It seems, that the kernel crashes very early.
+> > > 
+> > > With stable kernel 6.6.17 PXE boot works without problems.
+> > > 
+> > > Reverting this single patch (which is part of a larger set of
+> > > patches) solved the problem for us, PXE boot is working again.
+> > > 
+> > > We use the packages syslinux-efi and syslinux-common from Debian 12.
+> > > The used boot files are /efi64/syslinux.efi and /ldlinux.e64.
+> > > 
+> > > Our config-File (for 6.6.80) is attached.
+> > > 
+> > > Regarding the patch description, we really do not boot with a floppy :-)
+> > > 
+> > > Any help would be greatly appreciated, I have a bit of a bad feeling
+> > > about simply reverting a patch at such a deep level in the kernel.
+> > 
+> > Does newer kernels than 6.7.y work properly?  What about the latest
+> > 6.12.y release?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> > 
+> 
+> Thanks for looking into this!
+> 
+> The latest 6.12.y kernel has the same problem, it also needs reverting
+> the mentioned patch. I did not test Kernels in between but I am happy
+> to do so, when this gives a hint.
+> 
+> Thanks again and best regards
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Great, then this is an issue in Linus's tree and should be fixed there
+first.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2b90e7ace79774a3540ce569e000388f8d22c9e0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030422-depict-timing-18a8@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+thansk,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2b90e7ace79774a3540ce569e000388f8d22c9e0 Mon Sep 17 00:00:00 2001
-From: Peter Jones <pjones@redhat.com>
-Date: Wed, 26 Feb 2025 15:18:39 -0500
-Subject: [PATCH] efi: Don't map the entire mokvar table to determine its size
-
-Currently, when validating the mokvar table, we (re)map the entire table
-on each iteration of the loop, adding space as we discover new entries.
-If the table grows over a certain size, this fails due to limitations of
-early_memmap(), and we get a failure and traceback:
-
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at mm/early_ioremap.c:139 __early_ioremap+0xef/0x220
-  ...
-  Call Trace:
-   <TASK>
-   ? __early_ioremap+0xef/0x220
-   ? __warn.cold+0x93/0xfa
-   ? __early_ioremap+0xef/0x220
-   ? report_bug+0xff/0x140
-   ? early_fixup_exception+0x5d/0xb0
-   ? early_idt_handler_common+0x2f/0x3a
-   ? __early_ioremap+0xef/0x220
-   ? efi_mokvar_table_init+0xce/0x1d0
-   ? setup_arch+0x864/0xc10
-   ? start_kernel+0x6b/0xa10
-   ? x86_64_start_reservations+0x24/0x30
-   ? x86_64_start_kernel+0xed/0xf0
-   ? common_startup_64+0x13e/0x141
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  mokvar: Failed to map EFI MOKvar config table pa=0x7c4c3000, size=265187.
-
-Mapping the entire structure isn't actually necessary, as we don't ever
-need more than one entry header mapped at once.
-
-Changes efi_mokvar_table_init() to only map each entry header, not the
-entire table, when determining the table size.  Since we're not mapping
-any data past the variable name, it also changes the code to enforce
-that each variable name is NUL terminated, rather than attempting to
-verify it in place.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Peter Jones <pjones@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-diff --git a/drivers/firmware/efi/mokvar-table.c b/drivers/firmware/efi/mokvar-table.c
-index 5ed0602c2f75..d865cb1dbaad 100644
---- a/drivers/firmware/efi/mokvar-table.c
-+++ b/drivers/firmware/efi/mokvar-table.c
-@@ -103,7 +103,6 @@ void __init efi_mokvar_table_init(void)
- 	void *va = NULL;
- 	unsigned long cur_offset = 0;
- 	unsigned long offset_limit;
--	unsigned long map_size = 0;
- 	unsigned long map_size_needed = 0;
- 	unsigned long size;
- 	struct efi_mokvar_table_entry *mokvar_entry;
-@@ -134,48 +133,34 @@ void __init efi_mokvar_table_init(void)
- 	 */
- 	err = -EINVAL;
- 	while (cur_offset + sizeof(*mokvar_entry) <= offset_limit) {
--		mokvar_entry = va + cur_offset;
--		map_size_needed = cur_offset + sizeof(*mokvar_entry);
--		if (map_size_needed > map_size) {
--			if (va)
--				early_memunmap(va, map_size);
--			/*
--			 * Map a little more than the fixed size entry
--			 * header, anticipating some data. It's safe to
--			 * do so as long as we stay within current memory
--			 * descriptor.
--			 */
--			map_size = min(map_size_needed + 2*EFI_PAGE_SIZE,
--				       offset_limit);
--			va = early_memremap(efi.mokvar_table, map_size);
--			if (!va) {
--				pr_err("Failed to map EFI MOKvar config table pa=0x%lx, size=%lu.\n",
--				       efi.mokvar_table, map_size);
--				return;
--			}
--			mokvar_entry = va + cur_offset;
-+		if (va)
-+			early_memunmap(va, sizeof(*mokvar_entry));
-+		va = early_memremap(efi.mokvar_table + cur_offset, sizeof(*mokvar_entry));
-+		if (!va) {
-+			pr_err("Failed to map EFI MOKvar config table pa=0x%lx, size=%zu.\n",
-+			       efi.mokvar_table + cur_offset, sizeof(*mokvar_entry));
-+			return;
- 		}
-+		mokvar_entry = va;
- 
- 		/* Check for last sentinel entry */
- 		if (mokvar_entry->name[0] == '\0') {
- 			if (mokvar_entry->data_size != 0)
- 				break;
- 			err = 0;
-+			map_size_needed = cur_offset + sizeof(*mokvar_entry);
- 			break;
- 		}
- 
--		/* Sanity check that the name is null terminated */
--		size = strnlen(mokvar_entry->name,
--			       sizeof(mokvar_entry->name));
--		if (size >= sizeof(mokvar_entry->name))
--			break;
-+		/* Enforce that the name is NUL terminated */
-+		mokvar_entry->name[sizeof(mokvar_entry->name) - 1] = '\0';
- 
- 		/* Advance to the next entry */
--		cur_offset = map_size_needed + mokvar_entry->data_size;
-+		cur_offset += sizeof(*mokvar_entry) + mokvar_entry->data_size;
- 	}
- 
- 	if (va)
--		early_memunmap(va, map_size);
-+		early_memunmap(va, sizeof(*mokvar_entry));
- 	if (err) {
- 		pr_err("EFI MOKvar config table is not valid\n");
- 		return;
-
 
