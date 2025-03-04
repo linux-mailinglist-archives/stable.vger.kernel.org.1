@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-120313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79863A4E7A1
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:07:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F10A4E80E
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 18:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD56119C3383
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:01:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CAE742354A
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 17:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A98724C691;
-	Tue,  4 Mar 2025 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C462E25524C;
+	Tue,  4 Mar 2025 16:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmxPipMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z72W+pmk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A94E254B00
-	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8202625524B
+	for <stable@vger.kernel.org>; Tue,  4 Mar 2025 16:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741106373; cv=none; b=uhVAnJ1MjR+81412Oqb/MMpV40cMfSYtFyZ4LFSuKcABoVvSSiRTCdgZLTPXSon/LOj456vVdOze5JWpFqPh950ZQyRRI6znlo+d8KtTvE6hUJG/DjwDelHjihzundDXlqzPSLAU9tTn2FB2/QLiJAvOtBAvDndVinDotxBksSw=
+	t=1741106498; cv=none; b=aOppn7CyV7CXsm+ZSLxM2/WHj8Zl5Tp+NqL6JlqQOJKXkkcQKME3FHSflaNTy7OjtojyyuLrLs2h0KqMvN7dnTAXumtYAbUl0JCnHtrLB1i5fH001DYWm0LFCRu5vYs2Zfhbg3IWKAkLf5CNJ6PUlOMPnV0B9H/5O9rBDs/qc3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741106373; c=relaxed/simple;
-	bh=f0Rl4BLkeBXUpMZxaizNWwS8zlP7JPwQnfPyi6MMlUw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ns/zoLzRnm5djsD2dul7etziNM0kHH2dVhinYeybJZd2/2t8zODGzjytCTsniKGiAp1JajB3m+6XRI0ez/ZIR5Iso/dZssOsvXeJ3m9s36r8hHlasykA3s+3i/cAmzvSKekqb0p0p1hDVBP6vo1owj+GXDq6agUzbqKhVsDQhl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmxPipMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585D4C4CEE7;
-	Tue,  4 Mar 2025 16:39:32 +0000 (UTC)
+	s=arc-20240116; t=1741106498; c=relaxed/simple;
+	bh=nrUofjXUspbdQJ0Wug9BST2IxhVvZk8Bm/WSHXuROKk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pjPT5pEeO/DwmyiNCVZf5kl1xWpkdF6GvcR/QyPdNRde6qjBIDeSVoDWzZ7GjFxokrgPhSGlE2C4YTuFiSOg2L35wbDLal6mjfI/9vDPNt9pcZpeyzSE39jAuGNNiEUXXJHltIVlObAqheZCyrKkpZb39CLFDsiE7hfiOsapdt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z72W+pmk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18A8C4CEE7;
+	Tue,  4 Mar 2025 16:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741106372;
-	bh=f0Rl4BLkeBXUpMZxaizNWwS8zlP7JPwQnfPyi6MMlUw=;
+	s=korg; t=1741106498;
+	bh=nrUofjXUspbdQJ0Wug9BST2IxhVvZk8Bm/WSHXuROKk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JmxPipMFR2QwdaeYsrXuzn2XjebLIHr02P7dB+dWNkBeGbDK35GcDU3MmewgJRGT4
-	 z2ovadfG2VbzJy09RvMUkbsyhiwzB+bdtTjypPEretjR2ozJqVyKe3nEfBXc1wgkbo
-	 u+E+6wXc+o911UqqsOp+RTDqWUwpwp2YY/hGEMyY=
-Subject: FAILED: patch "[PATCH] intel_idle: Handle older CPUs, which stop the TSC in deeper C" failed to apply to 5.10-stable tree
-To: tglx@linutronix.de,fabstz-it@yahoo.fr,rafael.j.wysocki@intel.com,stable@vger.kernel.org
+	b=z72W+pmkqpjHomcwu4LnnTon2TqucmFKjsi4X5RK6nRUliHtKrVIPBwDpUBJPfTGl
+	 FRdyDAqh/uDAr8t47TvjGT5f1UoKa+oEn/866ozuIQ1nQ6MEQ5q5HNfo8t7SInGjIZ
+	 ITFl2mdLTUH1twOu9nBZEfJtQzSublIr59mUl0fo=
+Subject: FAILED: patch "[PATCH] mm: hugetlb: Add huge page size param to" failed to apply to 6.13-stable tree
+To: ryan.roberts@arm.com,agordeev@linux.ibm.com,alexghiti@rivosinc.com,anshuman.khandual@arm.com,catalin.marinas@arm.com,christophe.leroy@csgroup.eu,david@redhat.com,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Mar 2025 17:39:17 +0100
-Message-ID: <2025030417-diligence-underpay-794f@gregkh>
+Date: Tue, 04 Mar 2025 17:41:35 +0100
+Message-ID: <2025030435-amuck-tapestry-d86d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.13-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x c157d351460bcf202970e97e611cb6b54a3dd4a4
+git cherry-pick -x 02410ac72ac3707936c07ede66e94360d0d65319
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030417-diligence-underpay-794f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030435-amuck-tapestry-d86d@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,53 +77,355 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c157d351460bcf202970e97e611cb6b54a3dd4a4 Mon Sep 17 00:00:00 2001
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Tue, 25 Feb 2025 23:37:08 +0100
-Subject: [PATCH] intel_idle: Handle older CPUs, which stop the TSC in deeper C
- states, correctly
+From 02410ac72ac3707936c07ede66e94360d0d65319 Mon Sep 17 00:00:00 2001
+From: Ryan Roberts <ryan.roberts@arm.com>
+Date: Wed, 26 Feb 2025 12:06:51 +0000
+Subject: [PATCH] mm: hugetlb: Add huge page size param to
+ huge_ptep_get_and_clear()
 
-The Intel idle driver is preferred over the ACPI processor idle driver,
-but fails to implement the work around for Core2 generation CPUs, where
-the TSC stops in C2 and deeper C-states. This causes stalls and boot
-delays, when the clocksource watchdog does not catch the unstable TSC
-before the CPU goes deep idle for the first time.
+In order to fix a bug, arm64 needs to be told the size of the huge page
+for which the huge_pte is being cleared in huge_ptep_get_and_clear().
+Provide for this by adding an `unsigned long sz` parameter to the
+function. This follows the same pattern as huge_pte_clear() and
+set_huge_pte_at().
 
-The ACPI driver marks the TSC unstable when it detects that the CPU
-supports C2 or deeper and the CPU does not have a non-stop TSC.
+This commit makes the required interface modifications to the core mm as
+well as all arches that implement this function (arm64, loongarch, mips,
+parisc, powerpc, riscv, s390, sparc). The actual arm64 bug will be fixed
+in a separate commit.
 
-Add the equivivalent work around to the Intel idle driver to cure that.
+Cc: stable@vger.kernel.org
+Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
+Link: https://lore.kernel.org/r/20250226120656.2400136-2-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 
-Fixes: 18734958e9bf ("intel_idle: Use ACPI _CST for processor models without C-state tables")
-Reported-by: Fab Stz <fabstz-it@yahoo.fr>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Fab Stz <fabstz-it@yahoo.fr>
-Cc: All applicable <stable@vger.kernel.org>
-Closes: https://lore.kernel.org/all/10cf96aa-1276-4bd4-8966-c890377030c3@yahoo.fr
-Link: https://patch.msgid.link/87bjupfy7f.ffs@tglx
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 118fe1d37c22..0fdb1d1316c4 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -56,6 +56,7 @@
- #include <asm/intel-family.h>
- #include <asm/mwait.h>
- #include <asm/spec-ctrl.h>
-+#include <asm/tsc.h>
- #include <asm/fpu/api.h>
+diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+index c6dff3e69539..03db9cb21ace 100644
+--- a/arch/arm64/include/asm/hugetlb.h
++++ b/arch/arm64/include/asm/hugetlb.h
+@@ -42,8 +42,8 @@ extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 				      unsigned long addr, pte_t *ptep,
+ 				      pte_t pte, int dirty);
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+-extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-				     unsigned long addr, pte_t *ptep);
++extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++				     pte_t *ptep, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_SET_WRPROTECT
+ extern void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 				    unsigned long addr, pte_t *ptep);
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 98a2a0e64e25..06db4649af91 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -396,8 +396,8 @@ void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+ 		__pte_clear(mm, addr, ptep);
+ }
  
- #define INTEL_IDLE_VERSION "0.5.1"
-@@ -1799,6 +1800,9 @@ static void __init intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
- 		if (intel_idle_state_needs_timer_stop(state))
- 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep)
++pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	int ncontig;
+ 	size_t pgsize;
+@@ -549,6 +549,8 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
  
-+		if (cx->type > ACPI_STATE_C1 && !boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
-+			mark_tsc_unstable("TSC halts in idle");
+ pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
+ {
++	unsigned long psize = huge_page_size(hstate_vma(vma));
 +
- 		state->enter = intel_idle;
- 		state->enter_s2idle = intel_idle_s2idle;
+ 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_2645198)) {
+ 		/*
+ 		 * Break-before-make (BBM) is required for all user space mappings
+@@ -558,7 +560,7 @@ pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr
+ 		if (pte_user_exec(__ptep_get(ptep)))
+ 			return huge_ptep_clear_flush(vma, addr, ptep);
  	}
+-	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
+ 
+ void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
+diff --git a/arch/loongarch/include/asm/hugetlb.h b/arch/loongarch/include/asm/hugetlb.h
+index c8e4057734d0..4dc4b3e04225 100644
+--- a/arch/loongarch/include/asm/hugetlb.h
++++ b/arch/loongarch/include/asm/hugetlb.h
+@@ -36,7 +36,8 @@ static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	pte_t clear;
+ 	pte_t pte = ptep_get(ptep);
+@@ -51,8 +52,9 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_tlb_page(vma, addr);
+ 	return pte;
+ }
+diff --git a/arch/mips/include/asm/hugetlb.h b/arch/mips/include/asm/hugetlb.h
+index d0a86ce83de9..fbc71ddcf0f6 100644
+--- a/arch/mips/include/asm/hugetlb.h
++++ b/arch/mips/include/asm/hugetlb.h
+@@ -27,7 +27,8 @@ static inline int prepare_hugepage_range(struct file *file,
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	pte_t clear;
+ 	pte_t pte = *ptep;
+@@ -42,13 +43,14 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+ 	/*
+ 	 * clear the huge pte entry firstly, so that the other smp threads will
+ 	 * not get old pte entry after finishing flush_tlb_page and before
+ 	 * setting new huge pte entry
+ 	 */
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_tlb_page(vma, addr);
+ 	return pte;
+ }
+diff --git a/arch/parisc/include/asm/hugetlb.h b/arch/parisc/include/asm/hugetlb.h
+index 5b3a5429f71b..21e9ace17739 100644
+--- a/arch/parisc/include/asm/hugetlb.h
++++ b/arch/parisc/include/asm/hugetlb.h
+@@ -10,7 +10,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep);
++			      pte_t *ptep, unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+diff --git a/arch/parisc/mm/hugetlbpage.c b/arch/parisc/mm/hugetlbpage.c
+index e9d18cf25b79..a94fe546d434 100644
+--- a/arch/parisc/mm/hugetlbpage.c
++++ b/arch/parisc/mm/hugetlbpage.c
+@@ -126,7 +126,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	pte_t entry;
+ 
+diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+index dad2e7980f24..86326587e58d 100644
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -45,7 +45,8 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-					    unsigned long addr, pte_t *ptep)
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
+ {
+ 	return __pte(pte_update(mm, addr, ptep, ~0UL, 0, 1));
+ }
+@@ -55,8 +56,9 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					  unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte;
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 
+-	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	pte = huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, sz);
+ 	flush_hugetlb_page(vma, addr);
+ 	return pte;
+ }
+diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
+index faf3624d8057..446126497768 100644
+--- a/arch/riscv/include/asm/hugetlb.h
++++ b/arch/riscv/include/asm/hugetlb.h
+@@ -28,7 +28,8 @@ void set_huge_pte_at(struct mm_struct *mm,
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep);
++			      unsigned long addr, pte_t *ptep,
++			      unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+index 42314f093922..b4a78a4b35cf 100644
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -293,7 +293,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+ 			      unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	pte_t orig_pte = ptep_get(ptep);
+ 	int pte_num;
+diff --git a/arch/s390/include/asm/hugetlb.h b/arch/s390/include/asm/hugetlb.h
+index 7c52acaf9f82..663e87220e89 100644
+--- a/arch/s390/include/asm/hugetlb.h
++++ b/arch/s390/include/asm/hugetlb.h
+@@ -25,8 +25,16 @@ void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ #define __HAVE_ARCH_HUGE_PTEP_GET
+ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
+ 
++pte_t __huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
++				pte_t *ptep);
++
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
++static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
++					    unsigned long addr, pte_t *ptep,
++					    unsigned long sz)
++{
++	return __huge_ptep_get_and_clear(mm, addr, ptep);
++}
+ 
+ static inline void arch_clear_hugetlb_flags(struct folio *folio)
+ {
+@@ -48,7 +56,7 @@ static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 					  unsigned long address, pte_t *ptep)
+ {
+-	return huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
++	return __huge_ptep_get_and_clear(vma->vm_mm, address, ptep);
+ }
+ 
+ #define  __HAVE_ARCH_HUGE_PTEP_SET_ACCESS_FLAGS
+@@ -59,7 +67,7 @@ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 	int changed = !pte_same(huge_ptep_get(vma->vm_mm, addr, ptep), pte);
+ 
+ 	if (changed) {
+-		huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++		__huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+ 		__set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
+ 	}
+ 	return changed;
+@@ -69,7 +77,7 @@ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 					   unsigned long addr, pte_t *ptep)
+ {
+-	pte_t pte = huge_ptep_get_and_clear(mm, addr, ptep);
++	pte_t pte = __huge_ptep_get_and_clear(mm, addr, ptep);
+ 
+ 	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
+ }
+diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
+index d9ce199953de..2e568f175cd4 100644
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -188,8 +188,8 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+ 	return __rste_to_pte(pte_val(*ptep));
+ }
+ 
+-pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-			      unsigned long addr, pte_t *ptep)
++pte_t __huge_ptep_get_and_clear(struct mm_struct *mm,
++				unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte = huge_ptep_get(mm, addr, ptep);
+ 	pmd_t *pmdp = (pmd_t *) ptep;
+diff --git a/arch/sparc/include/asm/hugetlb.h b/arch/sparc/include/asm/hugetlb.h
+index c714ca6a05aa..e7a9cdd498dc 100644
+--- a/arch/sparc/include/asm/hugetlb.h
++++ b/arch/sparc/include/asm/hugetlb.h
+@@ -20,7 +20,7 @@ void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep);
++			      pte_t *ptep, unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
+index eee601a0d2cf..80504148d8a5 100644
+--- a/arch/sparc/mm/hugetlbpage.c
++++ b/arch/sparc/mm/hugetlbpage.c
+@@ -260,7 +260,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep)
++			      pte_t *ptep, unsigned long sz)
+ {
+ 	unsigned int i, nptes, orig_shift, shift;
+ 	unsigned long size;
+diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
+index f42133dae68e..2afc95bf1655 100644
+--- a/include/asm-generic/hugetlb.h
++++ b/include/asm-generic/hugetlb.h
+@@ -90,7 +90,7 @@ static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 
+ #ifndef __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+-		unsigned long addr, pte_t *ptep)
++		unsigned long addr, pte_t *ptep, unsigned long sz)
+ {
+ 	return ptep_get_and_clear(mm, addr, ptep);
+ }
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index ec8c0ccc8f95..bf5f7256bd28 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1004,7 +1004,9 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
+ static inline pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma,
+ 						unsigned long addr, pte_t *ptep)
+ {
+-	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
++	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
+ #endif
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 65068671e460..de9d49e521c1 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5447,7 +5447,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+ 	if (src_ptl != dst_ptl)
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 
+-	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
++	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
+ 
+ 	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
+ 		huge_pte_clear(mm, new_addr, dst_pte, sz);
+@@ -5622,7 +5622,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 			set_vma_resv_flags(vma, HPAGE_RESV_UNMAPPED);
+ 		}
+ 
+-		pte = huge_ptep_get_and_clear(mm, address, ptep);
++		pte = huge_ptep_get_and_clear(mm, address, ptep, sz);
+ 		tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
+ 		if (huge_pte_dirty(pte))
+ 			set_page_dirty(page);
 
 
