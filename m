@@ -1,53 +1,63 @@
-Return-Path: <stable+bounces-120201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0632FA4D2F9
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 06:26:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B18A4D2FD
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 06:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF1B189736B
-	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 05:26:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC4547A8AE8
+	for <lists+stable@lfdr.de>; Tue,  4 Mar 2025 05:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42A51F4611;
-	Tue,  4 Mar 2025 05:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AD4158868;
+	Tue,  4 Mar 2025 05:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpmFtpN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAqEY2Bm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484D9186E26;
-	Tue,  4 Mar 2025 05:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F812905;
+	Tue,  4 Mar 2025 05:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741065982; cv=none; b=fSBFZdkCGJ/tgkFeJry524hGiTTepShhmx8qZjjCrZNDkhOWdccn1aMFmlxV0pjwsKGU5ToyMCS1c1GZziFtmNLvn/9O6PzID8jItY0LhzqiTVrNQwjY5c0zxoRFEVwjnNPBUnYudtMI54GPxe2pUjQf+YKyYCGb9qUSFwY2ZOA=
+	t=1741066273; cv=none; b=JV8pbHwo7zRKGoq5MBLCQ5Y3Cn7we5xsQsbEvqjsoqk92F7X++SI1nyM/LCYfuuZSdKiAJHp1wHAR1KSzuDAO8ZR2PFnfuucqm87nZa/CNBo8CnzL843l/MSEEEIR/UPw4T+4xRkHMG3QfJe8SAdxYJCEtIg97QZ60cnJfYpp6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741065982; c=relaxed/simple;
-	bh=fomfybpAZCIekiHAArI106hF+X2YJ2tj5d6mshgMMIg=;
+	s=arc-20240116; t=1741066273; c=relaxed/simple;
+	bh=XOlyYoS+DYZzzpqMtqdefvheJDjjcKhfo/KUx+jL+mk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q4OUBTvGWWkLCY+p0xa0Xua0XgY4175QDI6cgxVB1grDDuiX3u8RibbSuA2qcUkc6JgC4jpOGTE5lmztglrCY/0tjY+DWI0PlUdoih7Aabg0NjlwxptgYzMtgztYlTj8Er94P8n0v66p679tB1mb3SJV2/xZXecA4i233dBR0xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpmFtpN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643C3C4CEE5;
-	Tue,  4 Mar 2025 05:26:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFxBYMjQ9T+MOAdGThUr7ypw/TL1Pb51CEKtUu6LeMB/2iwwO/ju+42FmueS85dukfZ+HkvBdcCH0q40i6JaEI0/Xpsu5C/vO1ihr1eTamxyECyIkkI2H9ZG4CTZRYg06CIiiQ4bBuFyRckklRCwsb4OfUQS8+RMKTs32jmBIxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAqEY2Bm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082D6C4CEE5;
+	Tue,  4 Mar 2025 05:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741065981;
-	bh=fomfybpAZCIekiHAArI106hF+X2YJ2tj5d6mshgMMIg=;
+	s=korg; t=1741066272;
+	bh=XOlyYoS+DYZzzpqMtqdefvheJDjjcKhfo/KUx+jL+mk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xpmFtpN9X4J7DSInOx04KB0UphkG56mnGEPcKc2Gjf+YTPL7wDDxarWCvb/lVe9Xa
-	 H0evui4uquATSzddRls9A0o8E2L/7wnHXHqZQMEQMbLJzGurYaxrJQvRNlk/lNu24w
-	 OQk1axn63MP45/SGEb05WgqRjPVoVGmQpwNViPRI=
-Date: Tue, 4 Mar 2025 06:26:18 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: John Youn <John.Youn@synopsys.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: dwc3: Set SUSPENDENABLE soon after phy init
-Message-ID: <2025030405-worst-strenuous-ca31@gregkh>
-References: <633aef0afee7d56d2316f7cc3e1b2a6d518a8cc9.1738280911.git.Thinh.Nguyen@synopsys.com>
- <20250303224706.wzvsf4nw2swzelaw@synopsys.com>
+	b=LAqEY2BmguNwPwzhfQ48ubVXpbewXHohiWkbtc1CivNRjq0lKKTbdjZ2bycuuVsKi
+	 NDGnJ6lYzINGjiiQ95PE+ZZXQ8Q8+NNZKXNqiwIBbo1k6cLp0Gp9xyBGHwzBy4DpzF
+	 ZPEF3pPw0hOB2zNhjomd98mFvfybgkAx+3RqGAo0=
+Date: Tue, 4 Mar 2025 06:30:46 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Liu Shixin <liushixin2@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Hugh Dickins <hughd@google.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	linux-kernel@vger.kernel.org, Shivank Garg <shivankg@amd.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/migrate: fix shmem xarray update during migration
+Message-ID: <2025030437-posting-barbecue-94af@gregkh>
+References: <20250228174953.2222831-1-ziy@nvidia.com>
+ <16838F71-3E96-4EFE-BDA1-600C33F75D36@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,39 +66,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250303224706.wzvsf4nw2swzelaw@synopsys.com>
+In-Reply-To: <16838F71-3E96-4EFE-BDA1-600C33F75D36@nvidia.com>
 
-On Mon, Mar 03, 2025 at 10:47:19PM +0000, Thinh Nguyen wrote:
-> Hi Greg,
+On Mon, Mar 03, 2025 at 09:03:04PM -0500, Zi Yan wrote:
+> On 28 Feb 2025, at 12:49, Zi Yan wrote:
 > 
-> On Thu, Jan 30, 2025, Thinh Nguyen wrote:
-> > After phy initialization, some phy operations can only be executed while
-> > in lower P states. Ensure GUSB3PIPECTL.SUSPENDENABLE and
-> > GUSB2PHYCFG.SUSPHY are set soon after initialization to avoid blocking
-> > phy ops.
-> > 
-> > Previously the SUSPENDENABLE bits are only set after the controller
-> > initialization, which may not happen right away if there's no gadget
-> > driver or xhci driver bound. Revise this to clear SUSPENDENABLE bits
-> > only when there's mode switching (change in GCTL.PRTCAPDIR).
-> > 
-> > Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> > ---
-> >  drivers/usb/dwc3/core.c | 69 +++++++++++++++++++++++++----------------
-> >  drivers/usb/dwc3/core.h |  2 +-
-> >  drivers/usb/dwc3/drd.c  |  4 +--
-> >  3 files changed, 45 insertions(+), 30 deletions(-)
-> > 
+> > Pagecache uses multi-index entries for large folio, so does shmem. Only
+> > swap cache still stores multiple entries for a single large folio.
+> > Commit fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
+> > fixed swap cache but got shmem wrong by storing multiple entries for
+> > a large shmem folio. Fix it by storing a single entry for a shmem
+> > folio.
+> >
+> > Fixes: fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
+> > Reported-by: Liu Shixin <liushixin2@huawei.com>
+> > Closes: https://lore.kernel.org/all/28546fb4-5210-bf75-16d6-43e1f8646080@huawei.com/
+> > Signed-off-by: Zi Yan <ziy@nvidia.com>
+> > Reviewed-by: Shivank Garg <shivankg@amd.com>
 > 
+> +Cc:stable
 > 
-> Just checking, I hope this patch isn't lost in your inbox. If not, then
-> you can ignore this message.
 
-Odd, yes, this did get lost, sorry.
+<formletter>
 
-I'll go queue this up right now...
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-greg k-h
+</formletter>
 
