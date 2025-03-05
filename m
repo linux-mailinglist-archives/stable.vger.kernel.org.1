@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-120816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A3FA50882
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C59A507A3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 838A2188B6DD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241B818914CD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F92E1ACEDD;
-	Wed,  5 Mar 2025 18:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90664250C14;
+	Wed,  5 Mar 2025 17:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08nur/Bp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn7KwhNx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D57117B505;
-	Wed,  5 Mar 2025 18:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBD9250C07;
+	Wed,  5 Mar 2025 17:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198057; cv=none; b=mZBXd48gWbjNpraq2VlcYftNtrW5NXaGEL4LI80ygfkBqPHZNQrIF9zykh7Fft1umTmVblv1jyjFCEn1No138E4U65yhaHeVMBKETsmkUc7qVhXsZZAQhABFk0lV1zHmjMmV8hqTnGM8AMqEPbzqg+aTlonnol0hMc4ub3iXz64=
+	t=1741197546; cv=none; b=E45vd/5ei84p91Xr85nPVivS0jOvv6g3C2waXselkps6+gQspBTbSVRcIQNCLYt4LH6vZJymIvvFI/ZGhobHXv8B0SziylnL0NRDoqSLGwVyLScBCxDGPw7huhGzdNea438s6K6nj9T4bXSDxgYEGHH3/GRhgt+1nHOPGKHrJKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198057; c=relaxed/simple;
-	bh=Z1NqYDyoZ6mjp8PsnEfIy5raIacj13Ew70H3YtJW+fQ=;
+	s=arc-20240116; t=1741197546; c=relaxed/simple;
+	bh=d0Bxg4WYmJ7UFU42cb1ocnIbi5tHzNDw0BFvTIwh7l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vqr7P0mjwYk7gWHvix28tImd/1voyHZyfLU/ArhfkYcUt/e2FpbkAJhBpAHvTw8ZiF8A3QMzlD7C+CgszP/bZ1FXYBVeDHDo7Szr+zMeLdNrwb76Y3k6nYIAMH3ZMPQV5Zlhg364z3Ihz/ar8hLa+0+FMP0FuNARlIJBTbq6C2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08nur/Bp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1258FC4CED1;
-	Wed,  5 Mar 2025 18:07:36 +0000 (UTC)
+	 MIME-Version; b=KkrNqkm8jmcEUsFud/RY7Co5Krx1vFLwFzAoKRKf4xFyWf2gGQ1gaDHI0v1JnY6BiN3f5YiYMDTQNp2zAseHu1MPrMPcgByEldNLM1rTrIF2kxQlesBvfFSZToHQSxedPDqiwfe85e0rHELijbRjMf14FDoziYvPcW3MHscrIEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn7KwhNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F02FC4CED1;
+	Wed,  5 Mar 2025 17:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198056;
-	bh=Z1NqYDyoZ6mjp8PsnEfIy5raIacj13Ew70H3YtJW+fQ=;
+	s=korg; t=1741197545;
+	bh=d0Bxg4WYmJ7UFU42cb1ocnIbi5tHzNDw0BFvTIwh7l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08nur/Bp/NBkW48pKqMjced5gU7BsLg5QKYjTh/K4G01ga52GOkTDbN+3oa6YX3yv
-	 thqv5ZMGN3bIXdmIYMOkcea8lnxK7GycbiroM+ZGMPgXVF6L0lrMsmj89p3BY4n4fC
-	 eH4/kIiJhz8VrMb6E2g7+T0CjZ84iz/S5K5Nr9lg=
+	b=kn7KwhNx0fTNYXMrz84kDgCTsR/G7QQf3HEPxTvRjG17xVDE6XeE3AG2kyWLS1pzK
+	 fXB2v9vSgAJKQcKdg4KKsy7A+auBnCZTEugg0rfjdVyL9DuWdQ/8R6jDVo3pzcJVhw
+	 VdGXu4grIBTBwEeNxs5KLUgjZEsg0tvhNiqZBDuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Ajit Khaparde <ajit.khaparde@broadcom.com>,
-	Hongguang Gao <hongguang.gao@broadcom.com>,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Chandramohan Akula <chandramohan.akula@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/150] RDMA/bnxt_re: Fail probe early when not enough MSI-x vectors are reserved
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 6.6 017/142] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
 Date: Wed,  5 Mar 2025 18:47:16 +0100
-Message-ID: <20250305174504.101818506@linuxfoundation.org>
+Message-ID: <20250305174501.035018290@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 65ecee132774e0f15cd76a766eb39ec21118bffc ]
+[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
 
-L2 driver allocates and populates the MSI-x vector details for RoCE
-in the en_dev structure. RoCE driver requires minimum 2 MSIx vectors.
-Hence during probe, driver has to check and bail out if there are not
-enough MSI-x vectors reserved for it before proceeding further
-initialization.
+We fixed the UAF issue in USB MIDI code by canceling the pending work
+at closing each MIDI output device in the commit below.  However, this
+assumed that it's the only one that is tied with the endpoint, and it
+resulted in unexpected data truncations when multiple devices are
+assigned to a single endpoint and opened simultaneously.
 
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Reviewed-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1731577748-1804-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: f0df225d12fc ("RDMA/bnxt_re: Add sanity checks on rdev validity")
+For addressing the unexpected MIDI message drops, simply replace
+cancel_work_sync() with flush_work().  The drain callback should have
+been already invoked before the close callback, hence the port->active
+flag must be already cleared.  So this just assures that the pending
+work is finished before freeing the resources.
+
+Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
+Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
+Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
+Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/bnxt_re.h |  2 ++
- drivers/infiniband/hw/bnxt_re/main.c    | 22 ++++++++++++----------
- 2 files changed, 14 insertions(+), 10 deletions(-)
+ sound/usb/midi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/bnxt_re.h b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-index e94518b12f86e..7a1acad232c5e 100644
---- a/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-+++ b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
-@@ -154,6 +154,8 @@ struct bnxt_re_pacing {
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 6b0993258e039..6d861046b582b 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1145,7 +1145,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
+ {
+ 	struct usbmidi_out_port *port = substream->runtime->private_data;
  
- #define BNXT_RE_GRC_FIFO_REG_BASE 0x2000
+-	cancel_work_sync(&port->ep->work);
++	flush_work(&port->ep->work);
+ 	return substream_open(substream, 0, 0);
+ }
  
-+#define BNXT_RE_MIN_MSIX		2
-+
- #define MAX_CQ_HASH_BITS		(16)
- #define MAX_SRQ_HASH_BITS		(16)
- struct bnxt_re_dev {
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index 8abd1b723f8ff..32ecc802afd13 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -1653,6 +1653,18 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 op_type)
- 	}
- 	set_bit(BNXT_RE_FLAG_NETDEV_REGISTERED, &rdev->flags);
- 
-+	if (rdev->en_dev->ulp_tbl->msix_requested < BNXT_RE_MIN_MSIX) {
-+		ibdev_err(&rdev->ibdev,
-+			  "RoCE requires minimum 2 MSI-X vectors, but only %d reserved\n",
-+			  rdev->en_dev->ulp_tbl->msix_requested);
-+		bnxt_unregister_dev(rdev->en_dev);
-+		clear_bit(BNXT_RE_FLAG_NETDEV_REGISTERED, &rdev->flags);
-+		return -EINVAL;
-+	}
-+	ibdev_dbg(&rdev->ibdev, "Got %d MSI-X vectors\n",
-+		  rdev->en_dev->ulp_tbl->msix_requested);
-+	rdev->num_msix = rdev->en_dev->ulp_tbl->msix_requested;
-+
- 	rc = bnxt_re_setup_chip_ctx(rdev);
- 	if (rc) {
- 		bnxt_unregister_dev(rdev->en_dev);
-@@ -1664,16 +1676,6 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 op_type)
- 	/* Check whether VF or PF */
- 	bnxt_re_get_sriov_func_type(rdev);
- 
--	if (!rdev->en_dev->ulp_tbl->msix_requested) {
--		ibdev_err(&rdev->ibdev,
--			  "Failed to get MSI-X vectors: %#x\n", rc);
--		rc = -EINVAL;
--		goto fail;
--	}
--	ibdev_dbg(&rdev->ibdev, "Got %d MSI-X vectors\n",
--		  rdev->en_dev->ulp_tbl->msix_requested);
--	rdev->num_msix = rdev->en_dev->ulp_tbl->msix_requested;
--
- 	bnxt_re_query_hwrm_intf_version(rdev);
- 
- 	/* Establish RCFW Communication Channel to initialize the context
 -- 
 2.39.5
 
