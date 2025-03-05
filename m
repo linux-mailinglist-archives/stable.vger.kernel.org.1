@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5F6A5097D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA13A5088A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD6923A65A0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34F017A23C4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38606253B5F;
-	Wed,  5 Mar 2025 18:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C8E24C07D;
+	Wed,  5 Mar 2025 18:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reKufo/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDTwV3GR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA1914884C;
-	Wed,  5 Mar 2025 18:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED312512D9;
+	Wed,  5 Mar 2025 18:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198634; cv=none; b=WIE1NVidrgPb6O/XrPl8UqEUzkk1Iqig1s6gAvv1ulBLSn7XeoIjwj4lhIpNDj/d/gY3jXImwvQCaUjV//0jOQJFN6pvHg1aU8hclPK4RvNgwcOqzpL8UmlBtINqhXKqhCeSjECinMqT6ahsYTOLx+xdgMcwmhXbigST0KKktMo=
+	t=1741198120; cv=none; b=FVwxzDd5O9FntkZgXA6FSwUq7bPrIOU83h4mx5/2WNgaNw32/NjtTzGdWZwGoHD6KktKtFzT6im1lZkdhXsFICoCpe1OlXfdo0EKvz2nrgZZPfMqvMqbLz9NpJzApSoEOO3uOkkZ2fy5XtVVU8ljd5IVJW0EFheG3djJFdrgFe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198634; c=relaxed/simple;
-	bh=dG/jBU+VJhnrHtVfpj9SKqP02UnMFNDyzQ9M7Y/a81c=;
+	s=arc-20240116; t=1741198120; c=relaxed/simple;
+	bh=mbYeaev7IbsvvJ1ErQL985FvhPC2O5nF4A8DJrZqo7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMuU3mVdRYXgH4iXHKphMBQpFCCT059FSUYT89KbhAJj67l4EKdRrOYZy3GqJTXkSJpf2VcIppK0HEJgJCCuga6sh/S8Xg0EtlgXWwbOjkxmhDcX4NVHVumaZo9BCMYq08vHvpNV52UxpzYQKHKue1ZKEiZnk5pk+6M47e8UWXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reKufo/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE8DC4CED1;
-	Wed,  5 Mar 2025 18:17:12 +0000 (UTC)
+	 MIME-Version; b=HPz6LZYVm0Te+qaaGTO5MesgYr9jzPXqv8k3TGW1g/aj/bVm9b91bdwKjEi80WX607sTT6fPsoZryiHWmxlyK+LyH1XahgXNUXKMiQZC7KJ2Yu7QFhOH7lFsoYYNaAnYYGlTpAtCfxWG0MEJS+tpFGzmMydeRi0oNMbucRHmpYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDTwV3GR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC25CC4CEE0;
+	Wed,  5 Mar 2025 18:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198633;
-	bh=dG/jBU+VJhnrHtVfpj9SKqP02UnMFNDyzQ9M7Y/a81c=;
+	s=korg; t=1741198120;
+	bh=mbYeaev7IbsvvJ1ErQL985FvhPC2O5nF4A8DJrZqo7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reKufo/UGM9LDBBo2xyzrNAknwcQrK3lDFjhEq5A1brLwJJoaaFM6fTYw9juNtJ6l
-	 7q8vzYsSx4gzAcIReDFdTDUKdj68hXCftmOSsaxo4nFN0C3cUWHug3oEtZxWghmWqF
-	 5S5bR66V67JBFJ1SonkzQrMpPpBZ6f5L2O2zQ77c=
+	b=KDTwV3GRxJvojqNGat3Bdiy57xYpbsRCu/Gnf4izmjOudI4Dx3RVD7aN7Yl3EmYbR
+	 3vSBA+GDX/BSi+Z345owloE0/AeVc6j716BQ/JNMO+ybjwZxBR5OLRnYSPkO5lZdE8
+	 4xYAEV4ZNscOsZKwQ8gDkXYA7BYn1j8itiqE0J5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	Yu-Che Cheng <giver@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 064/157] perf/core: Order the PMU list to fix warning about unordered pmu_ctx_list
+Subject: [PATCH 6.12 071/150] thermal/of: Fix cdev lookup in thermal_of_should_bind()
 Date: Wed,  5 Mar 2025 18:48:20 +0100
-Message-ID: <20250305174507.877792526@linuxfoundation.org>
+Message-ID: <20250305174506.667893614@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 2016066c66192a99d9e0ebf433789c490a6785a2 ]
+[ Upstream commit 423de5b5bc5b267586b449abd1c4fde562aa0cf9 ]
 
-Syskaller triggers a warning due to prev_epc->pmu != next_epc->pmu in
-perf_event_swap_task_ctx_data(). vmcore shows that two lists have the same
-perf_event_pmu_context, but not in the same order.
+Since thermal_of_should_bind() terminates the loop after processing
+the first child found in cooling-maps, it will never match more than
+one cdev to a given trip point which is incorrect, as there may be
+cooling-maps associating one trip point with multiple cooling devices.
 
-The problem is that the order of pmu_ctx_list for the parent is impacted by
-the time when an event/PMU is added. While the order for a child is
-impacted by the event order in the pinned_groups and flexible_groups. So
-the order of pmu_ctx_list in the parent and child may be different.
+Address this by letting the loop continue until either all
+children have been processed or a matching one has been found.
 
-To fix this problem, insert the perf_event_pmu_context to its proper place
-after iteration of the pmu_ctx_list.
+To avoid adding conditionals or goto statements, put the loop in
+question into a separate function and make that function return
+right away after finding a matching cooling-maps entry.
 
-The follow testcase can trigger above warning:
-
- # perf record -e cycles --call-graph lbr -- taskset -c 3 ./a.out &
- # perf stat -e cpu-clock,cs -p xxx // xxx is the pid of a.out
-
- test.c
-
- void main() {
-        int count = 0;
-        pid_t pid;
-
-        printf("%d running\n", getpid());
-        sleep(30);
-        printf("running\n");
-
-        pid = fork();
-        if (pid == -1) {
-                printf("fork error\n");
-                return;
-        }
-        if (pid == 0) {
-                while (1) {
-                        count++;
-                }
-        } else {
-                while (1) {
-                        count++;
-                }
-        }
- }
-
-The testcase first opens an LBR event, so it will allocate task_ctx_data,
-and then open tracepoint and software events, so the parent context will
-have 3 different perf_event_pmu_contexts. On inheritance, child ctx will
-insert the perf_event_pmu_context in another order and the warning will
-trigger.
-
-[ mingo: Tidied up the changelog. ]
-
-Fixes: bd2756811766 ("perf: Rewrite core context handling")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20250122073356.1824736-1-luogengkun@huaweicloud.com
+Fixes: 94c6110b0b13 ("thermal/of: Use the .should_bind() thermal zone callback")
+Link: https://lore.kernel.org/linux-pm/20250219-fix-thermal-of-v1-1-de36e7a590c4@chromium.org/
+Reported-by: Yu-Che Cheng <giver@chromium.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Yu-Che Cheng <giver@chromium.org>
+Tested-by: Yu-Che Cheng <giver@chromium.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/2788228.mvXUDI8C0e@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/thermal/thermal_of.c | 50 +++++++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e9f698c08dc17..91c58014fe5dc 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4950,7 +4950,7 @@ static struct perf_event_pmu_context *
- find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
- 		     struct perf_event *event)
- {
--	struct perf_event_pmu_context *new = NULL, *epc;
-+	struct perf_event_pmu_context *new = NULL, *pos = NULL, *epc;
- 	void *task_ctx_data = NULL;
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 111d2c15601b9..e0aa9d9d5604b 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -293,6 +293,34 @@ static bool thermal_of_get_cooling_spec(struct device_node *map_np, int index,
+ 	return true;
+ }
  
- 	if (!ctx->task) {
-@@ -5007,12 +5007,19 @@ find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
- 			atomic_inc(&epc->refcount);
- 			goto found_epc;
- 		}
-+		/* Make sure the pmu_ctx_list is sorted by PMU type: */
-+		if (!pos && epc->pmu->type > pmu->type)
-+			pos = epc;
- 	}
- 
- 	epc = new;
- 	new = NULL;
- 
--	list_add(&epc->pmu_ctx_entry, &ctx->pmu_ctx_list);
-+	if (!pos)
-+		list_add_tail(&epc->pmu_ctx_entry, &ctx->pmu_ctx_list);
-+	else
-+		list_add(&epc->pmu_ctx_entry, pos->pmu_ctx_entry.prev);
++static bool thermal_of_cm_lookup(struct device_node *cm_np,
++				 const struct thermal_trip *trip,
++				 struct thermal_cooling_device *cdev,
++				 struct cooling_spec *c)
++{
++	for_each_child_of_node_scoped(cm_np, child) {
++		struct device_node *tr_np;
++		int count, i;
 +
- 	epc->ctx = ctx;
++		tr_np = of_parse_phandle(child, "trip", 0);
++		if (tr_np != trip->priv)
++			continue;
++
++		/* The trip has been found, look up the cdev. */
++		count = of_count_phandle_with_args(child, "cooling-device",
++						   "#cooling-cells");
++		if (count <= 0)
++			pr_err("Add a cooling_device property with at least one device\n");
++
++		for (i = 0; i < count; i++) {
++			if (thermal_of_get_cooling_spec(child, i, cdev, c))
++				return true;
++		}
++	}
++
++	return false;
++}
++
+ static bool thermal_of_should_bind(struct thermal_zone_device *tz,
+ 				   const struct thermal_trip *trip,
+ 				   struct thermal_cooling_device *cdev,
+@@ -312,27 +340,7 @@ static bool thermal_of_should_bind(struct thermal_zone_device *tz,
+ 		goto out;
  
- found_epc:
+ 	/* Look up the trip and the cdev in the cooling maps. */
+-	for_each_child_of_node_scoped(cm_np, child) {
+-		struct device_node *tr_np;
+-		int count, i;
+-
+-		tr_np = of_parse_phandle(child, "trip", 0);
+-		if (tr_np != trip->priv)
+-			continue;
+-
+-		/* The trip has been found, look up the cdev. */
+-		count = of_count_phandle_with_args(child, "cooling-device", "#cooling-cells");
+-		if (count <= 0)
+-			pr_err("Add a cooling_device property with at least one device\n");
+-
+-		for (i = 0; i < count; i++) {
+-			result = thermal_of_get_cooling_spec(child, i, cdev, c);
+-			if (result)
+-				break;
+-		}
+-
+-		break;
+-	}
++	result = thermal_of_cm_lookup(cm_np, trip, cdev, c);
+ 
+ 	of_node_put(cm_np);
+ out:
 -- 
 2.39.5
 
