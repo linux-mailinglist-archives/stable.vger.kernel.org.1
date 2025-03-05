@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-121032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D83A509B0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB49A508F6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 940DE7A1CED
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05D043A4F17
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914E8254B12;
-	Wed,  5 Mar 2025 18:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8C01ACEDD;
+	Wed,  5 Mar 2025 18:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00aoDlxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gT260gq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F07F254B0A;
-	Wed,  5 Mar 2025 18:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1DB1A23A6;
+	Wed,  5 Mar 2025 18:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198683; cv=none; b=C9nSrtnNB3+QkGmJttrl1a5uivKuOVQdGDgOSw4vLjb4EdtsmpChHcyzyFPZ9i6b7CVe48+aPcawhDjQSU81W5wblbz1VCo9b/9KgfuWXJ8vf+XG2lr8JPvzuXiDxcR0YtlrEarbhBuiMjkkFl1bUi/aCHumm1fsgEpYBCeIj1I=
+	t=1741198354; cv=none; b=k1VUD7FSdMQ5aPGOIA4oM/FFDrY02loqgNU/9Yt7kWxP6VpgZXxzoAgKjn3+Ne/A7IkcVm6Mch2iVCQu9M0T3ncpX90dUSGNR6LjGuJ0IyT/vL5R8ufXDNmjpmD7dCC8vS8MrgSAj4YMrd+opPYTrUYEOtcrGiK24r4a6JFmwRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198683; c=relaxed/simple;
-	bh=fNHI2rzWNBsCfLQ1C3kvEXeGq1XxQv6jzrbtG3dAgLA=;
+	s=arc-20240116; t=1741198354; c=relaxed/simple;
+	bh=PM8+hTvfkTOburk8VThWBZUPqCK50im6M6fyzQLleK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIoETy9wPQk+NSgX3lnFvqpzaC49miCd43z9ttxoNnK+RfKwl+eRNF5LdI1x3ngOtUn56zqMlY2567H0Ky0h3tg9UYL1juL8gqC4GajGuL42VU3CcTJ6cDjnAQQjxCkKMK/UvMyGzDT22i8MhtCQKFTFxpGfSegSDkZ51/u0yPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00aoDlxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA72C4CED1;
-	Wed,  5 Mar 2025 18:18:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yq3FRMiW6ABuzwUWbeuBkvZyN9DFzOtKHQh1uUUdIvj3pLR5wxTOrbQ9f6czs7fBYuhs+G4WZTtoR2GKwfyMEFRt2Vc4nikOEkeuRWomHHSzUrGhiOz+tg7Co2BxyNSVVQZTXsQ76L6rsOPIhEtklitlRZ/j810gSR9QcTirCI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gT260gq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E29C4CED1;
+	Wed,  5 Mar 2025 18:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198683;
-	bh=fNHI2rzWNBsCfLQ1C3kvEXeGq1XxQv6jzrbtG3dAgLA=;
+	s=korg; t=1741198354;
+	bh=PM8+hTvfkTOburk8VThWBZUPqCK50im6M6fyzQLleK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00aoDlxxwavmL+CObGSoX+PHB3Lc9EMa9tgOYAhSt3Q1gGTlS8q/4ZVTCIzJtWHyf
-	 KbqS+MSpqyFx303GQOEDlfoCX9xF84VGm9wenHf/cSeKrhcL6m2hOC+mSHdFwYOD6B
-	 GlCA2Xq7sFJl6bUUOZkm4wxdbOm4CcWblbaFkQ08=
+	b=gT260gq4t8lJFNLdEDDqwf/JFJzGCnYAiXA7aDBnUBkWrTiFpli8XuhNOxyezhaG4
+	 WZ9n9ka5wh58VSZY+6pImsHBch02u6yw7cklEB9/3xkFcKrzwn3VpxQQDKZym0y0+6
+	 TrC7As2I/tNvDOoQoDb4ZLhY2Velq+U+J2jhhEXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George Moussalem <george.moussalem@outlook.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 112/157] net: phy: qcom: qca807x fix condition for DAC_DSP_BIAS_CURRENT
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 119/150] phy: exynos5-usbdrd: gs101: ensure power is gated to SS phy in phy_exit()
 Date: Wed,  5 Mar 2025 18:49:08 +0100
-Message-ID: <20250305174509.814834174@linuxfoundation.org>
+Message-ID: <20250305174508.596679045@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Moussalem <george.moussalem@outlook.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 992ee3ed6e9fdd0be83a7daa5ff738e3cf86047f upstream.
+commit 8789b4296aa796f658a19cac7d27365012893de1 upstream.
 
-While setting the DAC value, the wrong boolean value is evaluated to set
-the DSP bias current. So let's correct the conditional statement and use
-the right boolean value read from the DTS set in the priv.
+We currently don't gate the power to the SS phy in phy_exit().
 
-Cc: stable@vger.kernel.org
-Fixes: d1cb613efbd3 ("net: phy: qcom: add support for QCA807x PHY Family")
-Signed-off-by: George Moussalem <george.moussalem@outlook.com>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250219130923.7216-1-ansuelsmth@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Shuffle the code slightly to ensure the power is gated to the SS phy as
+well.
+
+Fixes: 32267c29bc7d ("phy: exynos5-usbdrd: support Exynos USBDRD 3.1 combo phy (HS & SS)")
+CC: stable@vger.kernel.org # 6.11+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20241205-gs101-usb-phy-fix-v4-1-0278809fb810@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/qcom/qca807x.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/samsung/phy-exynos5-usbdrd.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/net/phy/qcom/qca807x.c
-+++ b/drivers/net/phy/qcom/qca807x.c
-@@ -774,7 +774,7 @@ static int qca807x_config_init(struct ph
- 	control_dac &= ~QCA807X_CONTROL_DAC_MASK;
- 	if (!priv->dac_full_amplitude)
- 		control_dac |= QCA807X_CONTROL_DAC_DSP_AMPLITUDE;
--	if (!priv->dac_full_amplitude)
-+	if (!priv->dac_full_bias_current)
- 		control_dac |= QCA807X_CONTROL_DAC_DSP_BIAS_CURRENT;
- 	if (!priv->dac_disable_bias_current_tweak)
- 		control_dac |= QCA807X_CONTROL_DAC_BIAS_CURRENT_TWEAK;
+--- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
++++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+@@ -1296,14 +1296,17 @@ static int exynos5_usbdrd_gs101_phy_exit
+ 	struct exynos5_usbdrd_phy *phy_drd = to_usbdrd_phy(inst);
+ 	int ret;
+ 
++	if (inst->phy_cfg->id == EXYNOS5_DRDPHY_UTMI) {
++		ret = exynos850_usbdrd_phy_exit(phy);
++		if (ret)
++			return ret;
++	}
++
++	exynos5_usbdrd_phy_isol(inst, true);
++
+ 	if (inst->phy_cfg->id != EXYNOS5_DRDPHY_UTMI)
+ 		return 0;
+ 
+-	ret = exynos850_usbdrd_phy_exit(phy);
+-	if (ret)
+-		return ret;
+-
+-	exynos5_usbdrd_phy_isol(inst, true);
+ 	return regulator_bulk_disable(phy_drd->drv_data->n_regulators,
+ 				      phy_drd->regulators);
+ }
 
 
 
