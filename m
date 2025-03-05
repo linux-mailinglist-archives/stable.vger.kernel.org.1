@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98661A5089E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80479A50999
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 224767A506B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B7F1887B7F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514DE251781;
-	Wed,  5 Mar 2025 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4582580DD;
+	Wed,  5 Mar 2025 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoNjG+Jk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8iLEpSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109842517B4;
-	Wed,  5 Mar 2025 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375DF2580C4;
+	Wed,  5 Mar 2025 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198174; cv=none; b=LH6rsBtDj1cYUCK36sCBhGGffmzDK4VLDX6sJBYlz/i5DbUTe37jjt3GDz2rhlv7LJofpd1M2WUNeC5JLAlmlm+HTJxyPoWXg4b+fdXpH8pADW5u5uZJ+rY0V+b28B/K8peF2KNcmuYu+PjKi/Ghx5yaBbaOaCdr8L1oCak4O4A=
+	t=1741198599; cv=none; b=iCNdOHDC/McPcR2wYj+Ko94SR+aVHz5dVisKDN9X4nD3kFYb4/xSOenwp/T3nqVG8KDx4ePF3OiJcHuVM8Nnoae94nOZP2ImUvEw7UuJFSBd4+ocow0MbgmP8pHsFUMXqCT4LELCqCuG9xkh2jJEVzTu9w5Oa1XdMEoI9/TfmRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198174; c=relaxed/simple;
-	bh=3lOCr6fIrQcOwxxGB9Cch5ebJTt9S51P5I+wFXGIFMI=;
+	s=arc-20240116; t=1741198599; c=relaxed/simple;
+	bh=azFa1wIVUHKhrpiX7KUyLovGWXYyW04zN0VXOf/6glQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXVrv1gbmPx+6GQS0gcgzG1OdF2EJiP3pMdwsQUn5ALwDw7XEmpBXZZ65p+Ezdyqo+B5Sy96epIXkjSGtykaHxYQvsUHQ6Dl7edr35Zu4cubkUo359JT24MYKrlLDhR3LuocsJ3o5PjZnUVzmtKWpnEZj+sTOMQv6EvfOBltMJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoNjG+Jk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D36CC4CED1;
-	Wed,  5 Mar 2025 18:09:33 +0000 (UTC)
+	 MIME-Version; b=lESO63VbfUfJwL35557YjA2vKf/T++GYpAvzff9UUJzPdgW6s5/ML1KJBpjL5qyQKRaC+JprpVeCMBmsO7itO/MOMYpyEjzEFr4O0BcciEtmxCEQhDwqyVrepYjhgSOMJVhMLVsf8Mji3nRNu1y+YBUU6TnGbIz8qBarNeBOogs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8iLEpSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B095AC4CEE9;
+	Wed,  5 Mar 2025 18:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198173;
-	bh=3lOCr6fIrQcOwxxGB9Cch5ebJTt9S51P5I+wFXGIFMI=;
+	s=korg; t=1741198599;
+	bh=azFa1wIVUHKhrpiX7KUyLovGWXYyW04zN0VXOf/6glQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoNjG+JkgrwjJ4PiW1UNao1hT1y3vIWQ+sgqxGxqjAZZivA/I1Eofksxucxs8zs5H
-	 iXzhxwRJf3pFmSxlWBhJTly1ugSgCoywoSqvZ0sIUpZIK+F1xl50xIiLo5kXtGwCvR
-	 0IKFGMwwezJ1Dt8wRgsW3pXFmFdvYTu1g7D/dSEs=
+	b=u8iLEpSS/4ZgcTLGEpTTTSw+zDQQ99z098ajPwRRUNZyXkHUwKABhEuPrAd282VYf
+	 fexhuCa0q9t4xtbZFldXwOO6buBZgQpUdzoSB+a04WYrQ/YcLFgwGSttQkFMnDwcwm
+	 4QWF0pSXoPAVgYCUSgshNTuUceDnpyjKizneDpXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 090/150] perf/core: Add RCU read lock protection to perf_iterate_ctx()
+	Dmitry Panchenko <dmitry@d-systems.ee>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 083/157] ALSA: usb-audio: Re-add sample rate quirk for Pioneer DJM-900NXS2
 Date: Wed,  5 Mar 2025 18:48:39 +0100
-Message-ID: <20250305174507.428430808@linuxfoundation.org>
+Message-ID: <20250305174508.646574439@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-commit 0fe8813baf4b2e865d3b2c735ce1a15b86002c74 upstream.
+commit 9af3b4f2d879da01192d6168e6c651e7fb5b652d upstream.
 
-The perf_iterate_ctx() function performs RCU list traversal but
-currently lacks RCU read lock protection. This causes lockdep warnings
-when running perf probe with unshare(1) under CONFIG_PROVE_RCU_LIST=y:
+Re-add the sample-rate quirk for the Pioneer DJM-900NXS2. This
+device does not work without setting sample-rate.
 
-	WARNING: suspicious RCU usage
-	kernel/events/core.c:8168 RCU-list traversed in non-reader section!!
-
-	 Call Trace:
-	  lockdep_rcu_suspicious
-	  ? perf_event_addr_filters_apply
-	  perf_iterate_ctx
-	  perf_event_exec
-	  begin_new_exec
-	  ? load_elf_phdrs
-	  load_elf_binary
-	  ? lock_acquire
-	  ? find_held_lock
-	  ? bprm_execve
-	  bprm_execve
-	  do_execveat_common.isra.0
-	  __x64_sys_execve
-	  do_syscall_64
-	  entry_SYSCALL_64_after_hwframe
-
-This protection was previously present but was removed in commit
-bd2756811766 ("perf: Rewrite core context handling"). Add back the
-necessary rcu_read_lock()/rcu_read_unlock() pair around
-perf_iterate_ctx() call in perf_event_exec().
-
-[ mingo: Use scoped_guard() as suggested by Peter ]
-
-Fixes: bd2756811766 ("perf: Rewrite core context handling")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250117-fix_perf_rcu-v1-1-13cb9210fc6a@debian.org
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250220161540.3624660-1-dmitry@d-systems.ee
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -8240,7 +8240,8 @@ void perf_event_exec(void)
- 
- 	perf_event_enable_on_exec(ctx);
- 	perf_event_remove_on_exec(ctx);
--	perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
-+	scoped_guard(rcu)
-+		perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
- 
- 	perf_unpin_context(ctx);
- 	put_ctx(ctx);
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1868,6 +1868,7 @@ void snd_usb_set_format_quirk(struct snd
+ 	case USB_ID(0x534d, 0x2109): /* MacroSilicon MS2109 */
+ 		subs->stream_offset_adj = 2;
+ 		break;
++	case USB_ID(0x2b73, 0x000a): /* Pioneer DJM-900NXS2 */
+ 	case USB_ID(0x2b73, 0x0013): /* Pioneer DJM-450 */
+ 		pioneer_djm_set_format_quirk(subs, 0x0082);
+ 		break;
 
 
 
