@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-120728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4C5A5082A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E919A5094F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615F918889A4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C2921706BE
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820502528F1;
-	Wed,  5 Mar 2025 18:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA5E245010;
+	Wed,  5 Mar 2025 18:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWGygQ/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoJ61RkZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE82517BC;
-	Wed,  5 Mar 2025 18:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB281A316B;
+	Wed,  5 Mar 2025 18:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197800; cv=none; b=JnuL/DAh+mx8/rCh4+HQM/5rcXBFc1wOf3TPD9uN0Xl59QSc9ImXl/fDCCAmRTurlcWVP0stjB+HFmOs2Uqt1xhKHHy8E1a5IgA8bJgRGCeBElc7/zvJG+ZmyY1kijBOGHKcS800y+KjODjDuJf9zQtSHQyJ6fRFd/+1c78+e80=
+	t=1741198541; cv=none; b=P/aOa9rphJHU6HHrduDQVuOmPwlBe5hzBlh4oIn0MaX1nvej2ItZI9Oza7JS8BaxD8hNtSA/0F73oo7SpRgh+Fg1HPVxHuhJ+LN5b9bEgoF5sWdgaxpmfWi+tdg4o+ZP0G2cHlD9b8AWXyGeUl7ZQrGhPNLfaIwoy/d2jQFGqHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197800; c=relaxed/simple;
-	bh=vslIVhhj7qhgiWdcUxgtc1egVx9IKl9oNsB2US4KFi8=;
+	s=arc-20240116; t=1741198541; c=relaxed/simple;
+	bh=88GVaGMZPQQJisEieuAR5oseC1MPgb6wVxW9pvP1F/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHTeY8QttJdjIOvaeUjGvLgmv8g5Oj9zTwvlq2IO9BjPbjabHGVyR0QLlHglhONUpJTqPV0DGiADql14mdA+wVY53blJQXCMZDn63g5gIUrt0p1O7+/XX6YqM/OhSy418bUgXsvitweFynedrmsUeigoEcdbYDRlFdRkkLiCu2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWGygQ/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF107C4CED1;
-	Wed,  5 Mar 2025 18:03:19 +0000 (UTC)
+	 MIME-Version; b=e10i2b+4zOG8XRY/m1NQ4KgtCG1gnaWf1ls84vSvi+ST8h783XUmOxfnKjqhKhcS5xVmbQ3w5ZJ4QgdLriBPP+qXtUEh+qlEFWf8xDrPH9MuI5nZxsRrYoauACZat1rz1TQneSkKcXi54qZr/NVjsKUTB/0QG31HzAQD/RtIqho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoJ61RkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FB5C4CED1;
+	Wed,  5 Mar 2025 18:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197800;
-	bh=vslIVhhj7qhgiWdcUxgtc1egVx9IKl9oNsB2US4KFi8=;
+	s=korg; t=1741198541;
+	bh=88GVaGMZPQQJisEieuAR5oseC1MPgb6wVxW9pvP1F/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWGygQ/FQ6CmX+FYACxAzY8+DAoOULuzHd+58DXdu8Wn8qJJVBg/ZKSBvEvxaRP+J
-	 7H1mKxNVi5yTPRnEcnNNNJJOCvIgx5zQKFKSesmfjHTifTg86Sie3JlPEc16oKpcG+
-	 vBatx5IH9UpyFkIx6jutYU/kn44fRws77b6iPLTo=
+	b=OoJ61RkZi9AeEhPnnWrMeX6Fblm+7Du5mg4riM/O/jKR85JzUUR1RbD6Hh8ybDE67
+	 Oelc74MpDlpF9T+QQ4wLdvthh5e4c1H55iF3hf+HJ4NXdmxt1DzwqvDTydKVq1AUFw
+	 NVaXAbnm2Zft1rn/Ij+ThlcH2xqdCSrEi2Q1e3N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 073/142] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+	Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 056/157] net/mlx5: Restore missing trace event when enabling vport QoS
 Date: Wed,  5 Mar 2025 18:48:12 +0100
-Message-ID: <20250305174503.269799197@linuxfoundation.org>
+Message-ID: <20250305174507.556849372@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
+[ Upstream commit 47bcd9bf3d231bfd4698d7d3013597490fd5e2d6 ]
 
-When a DMA mapping error occurs while processing skb frags, it will free
-one more tx_swbd than expected, so fix this off-by-one issue.
+Restore the `trace_mlx5_esw_vport_qos_create` event when creating
+the vport scheduling element. This trace event was lost during
+refactoring.
 
-Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
+Fixes: be034baba83e ("net/mlx5: Make vport QoS enablement more flexible for future extensions")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250225072608.526866-3-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -145,6 +145,24 @@ static int enetc_ptp_parse(struct sk_buf
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 07a28073a49ea..823c1ba456cd1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -564,6 +564,9 @@ static int esw_qos_vport_enable(struct mlx5_vport *vport, struct mlx5_esw_sched_
+ 		return err;
  
-+/**
-+ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
-+ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
-+ * @count: Number of Tx buffer descriptors which need to be unmapped
-+ * @i: Index of the last successfully mapped Tx buffer descriptor
-+ */
-+static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
-+{
-+	while (count--) {
-+		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
-+
-+		enetc_free_tx_frame(tx_ring, tx_swbd);
-+		if (i == 0)
-+			i = tx_ring->bd_count;
-+		i--;
-+	}
-+}
-+
- static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- {
- 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
-@@ -328,13 +346,7 @@ static int enetc_map_tx_buffs(struct ene
- dma_err:
- 	dev_err(tx_ring->dev, "DMA map error");
- 
--	do {
--		tx_swbd = &tx_ring->tx_swbd[i];
--		enetc_free_tx_frame(tx_ring, tx_swbd);
--		if (i == 0)
--			i = tx_ring->bd_count;
--		i--;
--	} while (count--);
-+	enetc_unwind_tx_frame(tx_ring, count, i);
+ 	esw_qos_normalize_min_rate(parent->esw, parent, extack);
++	trace_mlx5_esw_vport_qos_create(vport->dev, vport,
++					vport->qos.sched_node->max_rate,
++					vport->qos.sched_node->bw_share);
  
  	return 0;
  }
+-- 
+2.39.5
+
 
 
 
