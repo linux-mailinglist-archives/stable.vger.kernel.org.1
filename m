@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C9CA50855
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FD3A507BD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BAA23B0563
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 101877A7901
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBEB24E4AC;
-	Wed,  5 Mar 2025 18:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACC1250C1D;
+	Wed,  5 Mar 2025 17:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2TzEkEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zej+O2DX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C99017B505;
-	Wed,  5 Mar 2025 18:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0937E14B075;
+	Wed,  5 Mar 2025 17:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197972; cv=none; b=W+OgyKhgtRsbo0hpdtqQTS36qzJ1aeHMeyeoFbwt/UZmhzyXh0B5JOKadS9mh8BGlqK8+pHXRlOu0ZcxejVk/9Aa0GbIfaz68BEkzvgrOLXlf6eQ5saetkI8EsQtkpmk8hSQoQHmVgpb8O1KvslDVm3FawgWqSWE7ls3zBx1pjA=
+	t=1741197592; cv=none; b=jmEF+6V0h46aaiT8H3S7fh43Twp5788RQhTvf5mlacZw6fl7tjYbc83e+koGtqmI8K4gD4n/qKLL2/3fUvrg+DXR6QMqVuqCzYi/eWOqlGQMHBmpHag3dKCIwFYeaIXud7CV9c1lwYhx8hfqYYKnE9v07XBX5W+IIC5L3nQ8oEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197972; c=relaxed/simple;
-	bh=uCP3ZhZio8gRMP4MS6ThR+nQMiAHJ8ouf0+ups5dQr4=;
+	s=arc-20240116; t=1741197592; c=relaxed/simple;
+	bh=B1bwhM3hKPdMw25okV6qRkpkqpSPLUlWKfhrKNgdtP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q13wNtiOJ7Sj8G/pgPufeXIpJkYNdVhDajX8t2kuZEDfdGusCqfz52Hp/0upzPGlCoT5ZCFE5bJ9OIYvVoN1rV+qp97H67VomOTHcr2K6ikjx/bBJQ55Gc5uXbcdPrXNuhtnMZsIvn+tNTH255KBrzf0JrOXW09vUlDy+Xevz94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2TzEkEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44C6C4CED1;
-	Wed,  5 Mar 2025 18:06:11 +0000 (UTC)
+	 MIME-Version; b=VysU/cyYZFG1bnwc0CQTrIc5AiLZUp2uHjwjvo0r+n4jJ/AOxs63XPXejR+B1izVxZaBmJTXEQOZIkDApfCoL+GlbQommAPqhCurpW38Uo0oDs9NWL1h3SW3BHLTnWvlTctMs/K2gGvnCK3hUtc/MGs6nmonjas0eScUA4EuE08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zej+O2DX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F75C4CED1;
+	Wed,  5 Mar 2025 17:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197972;
-	bh=uCP3ZhZio8gRMP4MS6ThR+nQMiAHJ8ouf0+ups5dQr4=;
+	s=korg; t=1741197591;
+	bh=B1bwhM3hKPdMw25okV6qRkpkqpSPLUlWKfhrKNgdtP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2TzEkEFiw47pkAhrG9mQqdF15yQ1VIrayO6TBo93sHCZMkRi0/NhLk3+Miv5tOld
-	 h+3VHIlvyNMeG4U9SmuiAGNyXQTrtdk1N/2Lxd3CXxdBqIvxtF6B013k+mmvx7S3UK
-	 GmdcOE4dQAiliJKYqZFqSZcvktaZQqAm1H2yMVOM=
+	b=Zej+O2DXMbzn5qscv2sq+8zsEgrqQ8iIKXG/tJYwCdZYeqd/2jKpyNnGcY/ClrMOL
+	 o7BU/5zC2ADBJRarMWIxZYfAMJz7Q1QgDMB3/4vNejo+iKgsWMhHS233PfHDwmvb7j
+	 2x3rk5bb6/nnpl5KmbuQFFSnXYQBjqhG/rw/EXvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Artemy Kovalyov <artemyko@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+93ab4a777bafb9d9f960@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Mahesh Bandewar <maheshb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/150] RDMA/mlx5: Fix implicit ODP hang on parent deregistration
+Subject: [PATCH 6.6 031/142] ipvlan: ensure network headers are in skb linear part
 Date: Wed,  5 Mar 2025 18:47:30 +0100
-Message-ID: <20250305174504.662217215@linuxfoundation.org>
+Message-ID: <20250305174501.590497337@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3d8c6f26893d55fab218ad086719de1fc9bb86ba ]
+[ Upstream commit 27843ce6ba3d3122b65066550fe33fb8839f8aef ]
 
-Fix the destroy_unused_implicit_child_mr() to prevent hanging during
-parent deregistration as of below [1].
+syzbot found that ipvlan_process_v6_outbound() was assuming
+the IPv6 network header isis present in skb->head [1]
 
-Upon entering destroy_unused_implicit_child_mr(), the reference count
-for the implicit MR parent is incremented using:
-refcount_inc_not_zero().
-
-A corresponding decrement must be performed if
-free_implicit_child_mr_work() is not called.
-
-The code has been updated to properly manage the reference count that
-was incremented.
+Add the needed pskb_network_may_pull() calls for both
+IPv4 and IPv6 handlers.
 
 [1]
-INFO: task python3:2157 blocked for more than 120 seconds.
-Not tainted 6.12.0-rc7+ #1633
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:python3         state:D stack:0     pid:2157 tgid:2157  ppid:1685   flags:0x00000000
-Call Trace:
-<TASK>
-__schedule+0x420/0xd30
-schedule+0x47/0x130
-__mlx5_ib_dereg_mr+0x379/0x5d0 [mlx5_ib]
-? __pfx_autoremove_wake_function+0x10/0x10
-ib_dereg_mr_user+0x5f/0x120 [ib_core]
-? lock_release+0xc6/0x280
-destroy_hw_idr_uobject+0x1d/0x60 [ib_uverbs]
-uverbs_destroy_uobject+0x58/0x1d0 [ib_uverbs]
-uobj_destroy+0x3f/0x70 [ib_uverbs]
-ib_uverbs_cmd_verbs+0x3e4/0xbb0 [ib_uverbs]
-? __pfx_uverbs_destroy_def_handler+0x10/0x10 [ib_uverbs]
-? lock_acquire+0xc1/0x2f0
-? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
-? ib_uverbs_ioctl+0x116/0x170 [ib_uverbs]
-? lock_release+0xc6/0x280
-ib_uverbs_ioctl+0xe7/0x170 [ib_uverbs]
-? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
- __x64_sys_ioctl+0x1b0/0xa70
-? kmem_cache_free+0x221/0x400
-do_syscall_64+0x6b/0x140
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f20f21f017b
-RSP: 002b:00007ffcfc4a77c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffcfc4a78d8 RCX: 00007f20f21f017b
-RDX: 00007ffcfc4a78c0 RSI: 00000000c0181b01 RDI: 0000000000000003
-RBP: 00007ffcfc4a78a0 R08: 000056147d125190 R09: 00007f20f1f14c60
-R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffcfc4a7890
-R13: 000000000000001c R14: 000056147d100fc0 R15: 00007f20e365c9d0
-</TASK>
+BUG: KMSAN: uninit-value in __ipv6_addr_type+0xa2/0x490 net/ipv6/addrconf_core.c:47
+  __ipv6_addr_type+0xa2/0x490 net/ipv6/addrconf_core.c:47
+  ipv6_addr_type include/net/ipv6.h:555 [inline]
+  ip6_route_output_flags_noref net/ipv6/route.c:2616 [inline]
+  ip6_route_output_flags+0x51/0x720 net/ipv6/route.c:2651
+  ip6_route_output include/net/ip6_route.h:93 [inline]
+  ipvlan_route_v6_outbound+0x24e/0x520 drivers/net/ipvlan/ipvlan_core.c:476
+  ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:491 [inline]
+  ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:541 [inline]
+  ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:605 [inline]
+  ipvlan_queue_xmit+0xd72/0x1780 drivers/net/ipvlan/ipvlan_core.c:671
+  ipvlan_start_xmit+0x5b/0x210 drivers/net/ipvlan/ipvlan_main.c:223
+  __netdev_start_xmit include/linux/netdevice.h:5150 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5159 [inline]
+  xmit_one net/core/dev.c:3735 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3751
+  sch_direct_xmit+0x399/0xd40 net/sched/sch_generic.c:343
+  qdisc_restart net/sched/sch_generic.c:408 [inline]
+  __qdisc_run+0x14da/0x35d0 net/sched/sch_generic.c:416
+  qdisc_run+0x141/0x4d0 include/net/pkt_sched.h:127
+  net_tx_action+0x78b/0x940 net/core/dev.c:5484
+  handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+  __do_softirq+0x14/0x1a kernel/softirq.c:595
+  do_softirq+0x9a/0x100 kernel/softirq.c:462
+  __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:389
+  local_bh_enable include/linux/bottom_half.h:33 [inline]
+  rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
+  __dev_queue_xmit+0x2758/0x57d0 net/core/dev.c:4611
+  dev_queue_xmit include/linux/netdevice.h:3311 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3132 [inline]
+  packet_sendmsg+0x93e0/0xa7e0 net/packet/af_packet.c:3164
+  sock_sendmsg_nosec net/socket.c:718 [inline]
 
-Fixes: d3d930411ce3 ("RDMA/mlx5: Fix implicit ODP use after free")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
-Link: https://patch.msgid.link/80f2fcd19952dfa7d9981d93fd6359b4471f8278.1739186929.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Reported-by: syzbot+93ab4a777bafb9d9f960@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67b74f01.050a0220.14d86d.02d8.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mahesh Bandewar <maheshb@google.com>
+Link: https://patch.msgid.link/20250220155336.61884-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ipvlan/ipvlan_core.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 1d3bf56157702..b4e2a6f9cb9c3 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -242,6 +242,7 @@ static void destroy_unused_implicit_child_mr(struct mlx5_ib_mr *mr)
- 	if (__xa_cmpxchg(&imr->implicit_children, idx, mr, NULL, GFP_KERNEL) !=
- 	    mr) {
- 		xa_unlock(&imr->implicit_children);
-+		mlx5r_deref_odp_mkey(&imr->mmkey);
- 		return;
- 	}
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index fd591ddb3884d..ca62188a317ad 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -416,20 +416,25 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
  
+ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ {
+-	const struct iphdr *ip4h = ip_hdr(skb);
+ 	struct net_device *dev = skb->dev;
+ 	struct net *net = dev_net(dev);
+-	struct rtable *rt;
+ 	int err, ret = NET_XMIT_DROP;
++	const struct iphdr *ip4h;
++	struct rtable *rt;
+ 	struct flowi4 fl4 = {
+ 		.flowi4_oif = dev->ifindex,
+-		.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h)),
+ 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
+ 		.flowi4_mark = skb->mark,
+-		.daddr = ip4h->daddr,
+-		.saddr = ip4h->saddr,
+ 	};
+ 
++	if (!pskb_network_may_pull(skb, sizeof(struct iphdr)))
++		goto err;
++
++	ip4h = ip_hdr(skb);
++	fl4.daddr = ip4h->daddr;
++	fl4.saddr = ip4h->saddr;
++	fl4.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h));
++
+ 	rt = ip_route_output_flow(net, &fl4, NULL);
+ 	if (IS_ERR(rt))
+ 		goto err;
+@@ -488,6 +493,12 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
+ 	struct net_device *dev = skb->dev;
+ 	int err, ret = NET_XMIT_DROP;
+ 
++	if (!pskb_network_may_pull(skb, sizeof(struct ipv6hdr))) {
++		DEV_STATS_INC(dev, tx_errors);
++		kfree_skb(skb);
++		return ret;
++	}
++
+ 	err = ipvlan_route_v6_outbound(dev, skb);
+ 	if (unlikely(err)) {
+ 		DEV_STATS_INC(dev, tx_errors);
 -- 
 2.39.5
 
