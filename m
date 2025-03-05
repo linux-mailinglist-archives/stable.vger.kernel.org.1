@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-120561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A17A5076C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154B5A50875
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEEA37A8FE7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DF8B1665A1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424EA25291E;
-	Wed,  5 Mar 2025 17:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34911ACEDD;
+	Wed,  5 Mar 2025 18:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPjoyEoN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/Fid+g5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3817252914;
-	Wed,  5 Mar 2025 17:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E7A19066D;
+	Wed,  5 Mar 2025 18:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197318; cv=none; b=hrfR92hD9LxcbSTvY/myzqdob3UcEmCY49qitk/tN/EZRlPDLiXRyv4yBfylCaNDF8tskhUw8+X1rYVLZL/Ecmq0e1bdPdkZRrckgBb9XX9uBGvHwiaINGhegDFoNleBkJqKMa3dBtsUbouBYTICD5RUbyDcb1lENbsWb8Gnrj0=
+	t=1741198071; cv=none; b=Q6+9UX67DbO65ukGUl0l27XHrjD+M6zz2/5/DHfykvXRMBPBkAzCsTkMhD3sU0MlHNBDmbFPR/3mlWKWqh/mZ5DD3pgSko3lNL6+9MEkY5sMlM5ctn3jMJPtaiMJK3mGFV1oYnw3V1aBGt6bgldxlC05p3SYkBsu6GjH1cX/6mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197318; c=relaxed/simple;
-	bh=G4eEBPtgHzbxF0G/g69zAh/1hs+81dDBXkrXlaSkddA=;
+	s=arc-20240116; t=1741198071; c=relaxed/simple;
+	bh=+fRL+NJbZqWSRnYWekx8B5GGpHKLRhiOngQHn8Cw9T4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRqdq9+s/9etUVco0wllyl9RPuqe3SzgTQZVQPIf0Pd0D1TkpQjS8qLONqA2o/bhn+pGrLJHjhGrJg56zL5N/QjtAvpR5zj9pYwOnsGjIUw3BFDi6CYE95GTxjjb04Yl77n6ADckmHIKcX4NAHJMXxvhN71d0olzyIvqVr7BIUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPjoyEoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5AFC4CEE0;
-	Wed,  5 Mar 2025 17:55:17 +0000 (UTC)
+	 MIME-Version; b=ldmRQ7Hw2CEk+QajYNNvJp2THdmgDuB7zXCp7yc8s+OnAnSJbT1aSgKCMe4loYMjrUoa/520pMG9W/2PXt78Gcdz7sK+g+x7G+6mjd1Y2UGfEZ5EbFZ5/QDggeG5uD7u4xogOTLVuyJcLGDLiyUzjLKau7i/E2Qb4kS6Ux3N5ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/Fid+g5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC38C4CED1;
+	Wed,  5 Mar 2025 18:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197317;
-	bh=G4eEBPtgHzbxF0G/g69zAh/1hs+81dDBXkrXlaSkddA=;
+	s=korg; t=1741198071;
+	bh=+fRL+NJbZqWSRnYWekx8B5GGpHKLRhiOngQHn8Cw9T4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPjoyEoNCf0VzsUApv9LHwkHvJPo7DkqvXOwqp0n53Im/1sJDHaW5DH97JDpuJ/J1
-	 lPPoNtoFGmpGYAiP/u1OrP4W861yYrlXENk4CeIQ5dGVOX65x59soMHGd/yW7rYAxV
-	 9e7yZkAnlGyjBox/SW4Onvsbxim3TlRWOcSONhwQ=
+	b=A/Fid+g5NYMssCJBKYAr5IdA5S6MzA8xlqpDTfMziNpI8YJouZXsKeJtY3LODrcSW
+	 Y71ePHcDeIYt5quSAA39GOtJD3OIHQ+5ujp3xAHPBruvKNFkw05N0awJPxBNvR6zrv
+	 D9HM/n1p3zudm4fG9CDfYmvJWL5vN76IVzSMYoN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/176] sunrpc: suppress warnings for unused procfs functions
+Subject: [PATCH 6.12 055/150] ice: Fix deinitializing VF in error path
 Date: Wed,  5 Mar 2025 18:48:04 +0100
-Message-ID: <20250305174510.079509108@linuxfoundation.org>
+Message-ID: <20250305174506.037196876@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +66,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-[ Upstream commit 1f7a4f98c11fbeb18ed21f3b3a497e90a50ad2e0 ]
+[ Upstream commit 79990cf5e7aded76d0c092c9f5ed31eb1c75e02c ]
 
-There is a warning about unused variables when building with W=1 and no procfs:
+If ice_ena_vfs() fails after calling ice_create_vf_entries(), it frees
+all VFs without removing them from snapshot PF-VF mailbox list, leading
+to list corruption.
 
-net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1660 | static const struct proc_ops cache_flush_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1622 | static const struct proc_ops content_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1598 | static const struct proc_ops cache_channel_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~~~
+Reproducer:
+  devlink dev eswitch set $PF1_PCI mode switchdev
+  ip l s $PF1 up
+  ip l s $PF1 promisc on
+  sleep 1
+  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+  sleep 1
+  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
 
-These are used inside of an #ifdef, so replacing that with an
-IS_ENABLED() check lets the compiler see how they are used while
-still dropping them during dead code elimination.
+Trace (minimized):
+  list_add corruption. next->prev should be prev (ffff8882e241c6f0), but was 0000000000000000. (next=ffff888455da1330).
+  kernel BUG at lib/list_debug.c:29!
+  RIP: 0010:__list_add_valid_or_report+0xa6/0x100
+   ice_mbx_init_vf_info+0xa7/0x180 [ice]
+   ice_initialize_vf_entry+0x1fa/0x250 [ice]
+   ice_sriov_configure+0x8d7/0x1520 [ice]
+   ? __percpu_ref_switch_mode+0x1b1/0x5d0
+   ? __pfx_ice_sriov_configure+0x10/0x10 [ice]
 
-Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Sometimes a KASAN report can be seen instead with a similar stack trace:
+  BUG: KASAN: use-after-free in __list_add_valid_or_report+0xf1/0x100
+
+VFs are added to this list in ice_mbx_init_vf_info(), but only removed
+in ice_free_vfs(). Move the removing to ice_free_vf_entries(), which is
+also being called in other places where VFs are being removed (including
+ice_free_vfs() itself).
+
+Fixes: 8cd8a6b17d27 ("ice: move VF overflow message count into struct ice_mbx_vf_info")
+Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
+Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250224190647.3601930-2-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_sriov.c          | 5 +----
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c         | 8 ++++++++
+ drivers/net/ethernet/intel/ice/ice_vf_lib_private.h | 1 +
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 94889df659f0f..7ac4648c7da7f 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1675,12 +1675,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index b83f99c01d91b..8aabf7749aa5e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -36,6 +36,7 @@ static void ice_free_vf_entries(struct ice_pf *pf)
+ 
+ 	hash_for_each_safe(vfs->table, bkt, tmp, vf, entry) {
+ 		hash_del_rcu(&vf->entry);
++		ice_deinitialize_vf_entry(vf);
+ 		ice_put_vf(vf);
  	}
  }
+@@ -193,10 +194,6 @@ void ice_free_vfs(struct ice_pf *pf)
+ 			wr32(hw, GLGEN_VFLRSTAT(reg_idx), BIT(bit_idx));
+ 		}
  
--#ifdef CONFIG_PROC_FS
- static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- {
- 	struct proc_dir_entry *p;
- 	struct sunrpc_net *sn;
+-		/* clear malicious info since the VF is getting released */
+-		if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
+-			list_del(&vf->mbx_info.list_entry);
+-
+ 		mutex_unlock(&vf->cfg_lock);
+ 	}
  
-+	if (!IS_ENABLED(CONFIG_PROC_FS))
-+		return 0;
-+
- 	sn = net_generic(net, sunrpc_net_id);
- 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
- 	if (cd->procfs == NULL)
-@@ -1708,12 +1710,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- 	remove_cache_proc_entries(cd);
- 	return -ENOMEM;
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index c7c0c2f50c265..815ad0bfe8326 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -1036,6 +1036,14 @@ void ice_initialize_vf_entry(struct ice_vf *vf)
+ 	mutex_init(&vf->cfg_lock);
  }
--#else /* CONFIG_PROC_FS */
--static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
--{
--	return 0;
--}
--#endif
  
- void __init cache_initialize(void)
- {
++void ice_deinitialize_vf_entry(struct ice_vf *vf)
++{
++	struct ice_pf *pf = vf->pf;
++
++	if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
++		list_del(&vf->mbx_info.list_entry);
++}
++
+ /**
+  * ice_dis_vf_qs - Disable the VF queues
+  * @vf: pointer to the VF structure
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
+index 0c7e77c0a09fa..5392b04049862 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
+@@ -24,6 +24,7 @@
+ #endif
+ 
+ void ice_initialize_vf_entry(struct ice_vf *vf);
++void ice_deinitialize_vf_entry(struct ice_vf *vf);
+ void ice_dis_vf_qs(struct ice_vf *vf);
+ int ice_check_vf_init(struct ice_vf *vf);
+ enum virtchnl_status_code ice_err_to_virt_err(int err);
 -- 
 2.39.5
 
