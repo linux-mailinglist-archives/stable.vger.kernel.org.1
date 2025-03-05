@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-120597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1EBA50792
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80606A508C6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1F147A8E4D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A431896197
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6F6481DD;
-	Wed,  5 Mar 2025 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B422517AE;
+	Wed,  5 Mar 2025 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtrE56Ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uB0+TcvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20471C6FFE;
-	Wed,  5 Mar 2025 17:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FA619E7D1;
+	Wed,  5 Mar 2025 18:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197422; cv=none; b=U0/WYn7dRnhlHLMR/M1GOtOYpKlrVzGuAOmIDiQkbAKP5HFPYukicR1A3vwIwOMUtlV7DXLpojBnfD/i5i8Bnxpde5KUCtYju7n408I8xMVdupiHnKOti5l0jEgCsKYREUMDzFRbOCpEFhvir6PQgyTJRBQH8uo3CI1g5df20ow=
+	t=1741198177; cv=none; b=iuTAgktfcPOaQQ+BRqu2KAJkWlm2CcfYQ+Ju4lIACTqnxX4CM6Js7Q853YMPDSN+QQkqFQrkVGeSlFeBlqFs6yt83FjiZ7+4C5asNUoFzqpLwPpM7D934wmljWKaHKiIaweTPal/3u7QqVW412TqEUKk+92S1/2E1GH7rKnDyJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197422; c=relaxed/simple;
-	bh=ky/ecm6wlp5ZK7ur6pUfejkOqoV8cAT/KY09WPcPuHg=;
+	s=arc-20240116; t=1741198177; c=relaxed/simple;
+	bh=7sNqrlv5ShrvLZHiq5ha6wjR7G6zUebM6TnzNfLNlXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZDQaDFwV14/2ZWTVeCTHSMjFftMZRPFSdNrssM5SeEOCv846mdRz491aG1fDm70v8nDsR9GcS65ANKRPjBkx1jYu6V4QiuPGNfUxlLw7G7RArMw6+SVGHITPedq2/5DhYt1rSkItCjEZDxQiy5p+BceylgrN0jsOcrK12Spxg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtrE56Ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794C2C4CED1;
-	Wed,  5 Mar 2025 17:57:01 +0000 (UTC)
+	 MIME-Version; b=HtIJQSlUpTWcpfSCzjG5LBMtW2+azwfnD12b0dkjGhV7jmt5BoNxAbPXnGTc996VM09lK0fOfNIXKpWPfyPMZc5sNNaWv591XCtSL8lClEx7bfoiWT2GIXDbIl9M//SBXau/jFlS0xTnVDnluCHv9nn2cGA0wWCgL0HLBBh3wNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uB0+TcvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AABC4CEE0;
+	Wed,  5 Mar 2025 18:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197421;
-	bh=ky/ecm6wlp5ZK7ur6pUfejkOqoV8cAT/KY09WPcPuHg=;
+	s=korg; t=1741198177;
+	bh=7sNqrlv5ShrvLZHiq5ha6wjR7G6zUebM6TnzNfLNlXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtrE56KsPEjPuj5Mlj/fCr5otKWEIsEdIoL9ZQuL9clvvPj1X6jg3WRZojOd587Oi
-	 bREdbgRooV0IFZ3PvMrbHFORiSwUFod3Xz9bix9BBsGcJ4BnoShQD80VsOkII2VGeA
-	 yxkNj2K8j9fs7FgvaymbHX/cS6sc94g8YgAmCw+8=
+	b=uB0+TcvS/Owyol91tzjEY+pCkDKocSZ9iFVt6dJqreZaIikF7J4USKGfLeip774Xo
+	 pS9pEWTV95uxGNafyyBOSGDiZ2UjBYfmDuzxTKO6fVJNXf7Pp4wxKbk3SRw7Y9NNBd
+	 G+V1eoxioPSdWOjkYWhA77PpUZQm2CHOUlUjlSwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ingo Molnar <mingo@kernel.org>,
 	Ravi Bangoria <ravi.bangoria@amd.com>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.1 151/176] perf/x86: Fix low freqency setting issue
+Subject: [PATCH 6.12 091/150] perf/x86: Fix low freqency setting issue
 Date: Wed,  5 Mar 2025 18:48:40 +0100
-Message-ID: <20250305174511.501583581@linuxfoundation.org>
+Message-ID: <20250305174507.467590478@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -101,9 +101,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/x86/events/core.c
 +++ b/arch/x86/events/core.c
-@@ -623,7 +623,7 @@ int x86_pmu_hw_config(struct perf_event
+@@ -628,7 +628,7 @@ int x86_pmu_hw_config(struct perf_event
  	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= event->attr.config & X86_RAW_EVENT_MASK;
+ 		event->hw.config |= x86_pmu_get_event_config(event);
  
 -	if (event->attr.sample_period && x86_pmu.limit_period) {
 +	if (!event->attr.freq && x86_pmu.limit_period) {
