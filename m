@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CB5A508FE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B388CA50983
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D551884DDD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEEDE3A7537
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F97A250C1F;
-	Wed,  5 Mar 2025 18:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AB3253F21;
+	Wed,  5 Mar 2025 18:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjjCsrFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZ6yXEUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0351A5BB7;
-	Wed,  5 Mar 2025 18:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC6C1FC7D0;
+	Wed,  5 Mar 2025 18:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198326; cv=none; b=RoilKKXNZntKF0gRDvoKiNB1inbkLQn6Xv1pZe6NppSRGtlg/1xAK5BfpqhTBxbnVmSx5pP1lnBFkC7MlRz7KuxO4kcVpBdZ559ApBT5OeNGDGuRARQJ31OmedERO4XwozYAnBxUfVzmvxV/2GTWJuxg4mC9plm1gIOvKsJ9N3k=
+	t=1741198666; cv=none; b=f20oIIuuTEQQfyS8GfckrTqtONiElCZQACNNPpJvBkag5oborLzWNB/U4Hu1roE7kQT6uhlqDGlHno/47Ea+lRb125KWHIPi/ua3gbH8WuMriRa/5YRee8w3zoB9wqIxHrLH9sQiK42QTimYGLSuxCW39K+XdNKcvEAZCjhZPFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198326; c=relaxed/simple;
-	bh=kXlZ6Org4ZXEUkziUfI/vVi/ABqpcMV2McWrDezDr4s=;
+	s=arc-20240116; t=1741198666; c=relaxed/simple;
+	bh=YST03xCBakcAsUEG9GxBg6OGFPADGgCzG02dNWt0OPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9eMx1EeKwj7F8+K+Yg6UjZlp4L2sLx82D2T22jrqIvDQfVZrVr0V+He9rum0SDzZc5YHi2EOQ6exk+0LAlS0UWs6JaIkZILJTY9M4/LVIH7cRpbeQQ+hIbD4qF1c5vEHZAhL1owCw4XOTOFa6PkUAVIzLfcuKXXdJ9sQXEJNhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjjCsrFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A911CC4CED1;
-	Wed,  5 Mar 2025 18:12:05 +0000 (UTC)
+	 MIME-Version; b=oG47/tHm+/0OkyOjwxHhEA/Zgyml+NCBEc9z+842GgWXvXWEDDGH6jyGoenhaqu0Y75pkusHFMu2F+5/sDsuhWqTE2nXxmHltNdPDCK+Yn3kNMHiZxrEBek+eZmF83lkYW9vbecOeQhNQNxaTYC/YHeURcih2/iNOqIXlNIzPOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZ6yXEUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362A9C4CED1;
+	Wed,  5 Mar 2025 18:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198326;
-	bh=kXlZ6Org4ZXEUkziUfI/vVi/ABqpcMV2McWrDezDr4s=;
+	s=korg; t=1741198665;
+	bh=YST03xCBakcAsUEG9GxBg6OGFPADGgCzG02dNWt0OPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjjCsrFDDIuEkJRiwDqDj9C0FoZCdsEDXpY5gnQm+Dchaolzd9ucilHciMAO+Telt
-	 JKTD+Pm748offHO8oPCK4xFe0Gv2muzucubRhO8pr3m6FmDts8qH6M7N7W2y+rzbPa
-	 pxloAYCMuBPGJhmlYSih0/OKR9PVfY4gxC9Nnf1E=
+	b=fZ6yXEUypUCDfqVqGrwpUewAJSG9o7WoZWYyvsx5kt9wWtG1DNCgcKcjrK7tuNQrt
+	 ynvvaVkLFlzIix+H689JpoSbmFIuCcc2TgFojFex1RVnjKfGxk0ERx0Q8rGDcrDcUW
+	 cFp75gR9tENQ0+8Uv/cLQ2t5Id2ZETRA8uLTuWqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 113/150] net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC
-Date: Wed,  5 Mar 2025 18:49:02 +0100
-Message-ID: <20250305174508.358101304@linuxfoundation.org>
+	Tyrone Ting <kfting@nuvoton.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.13 107/157] i2c: npcm: disable interrupt enable bit before devm_request_irq
+Date: Wed,  5 Mar 2025 18:49:03 +0100
+Message-ID: <20250305174509.610464980@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Tyrone Ting <kfting@nuvoton.com>
 
-commit a562d0c4a893eae3ea51d512c4d90ab858a6b7ec upstream.
+commit dd1998e243f5fa25d348a384ba0b6c84d980f2b2 upstream.
 
-Actually ENETC VFs do not support HWTSTAMP_TX_ONESTEP_SYNC because only
-ENETC PF can access PMa_SINGLE_STEP registers. And there will be a crash
-if VFs are used to test one-step timestamp, the crash log as follows.
+The customer reports that there is a soft lockup issue related to
+the i2c driver. After checking, the i2c module was doing a tx transfer
+and the bmc machine reboots in the middle of the i2c transaction, the i2c
+module keeps the status without being reset.
 
-[  129.110909] Unable to handle kernel paging request at virtual address 00000000000080c0
-[  129.287769] Call trace:
-[  129.290219]  enetc_port_mac_wr+0x30/0xec (P)
-[  129.294504]  enetc_start_xmit+0xda4/0xe74
-[  129.298525]  enetc_xmit+0x70/0xec
-[  129.301848]  dev_hard_start_xmit+0x98/0x118
+Due to such an i2c module status, the i2c irq handler keeps getting
+triggered since the i2c irq handler is registered in the kernel booting
+process after the bmc machine is doing a warm rebooting.
+The continuous triggering is stopped by the soft lockup watchdog timer.
 
-Fixes: 41514737ecaa ("enetc: add get_ts_info interface for ethtool")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-5-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Disable the interrupt enable bit in the i2c module before calling
+devm_request_irq to fix this issue since the i2c relative status bit
+is read-only.
+
+Here is the soft lockup log.
+[   28.176395] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [swapper/0:1]
+[   28.183351] Modules linked in:
+[   28.186407] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.120-yocto-s-dirty-bbebc78 #1
+[   28.201174] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   28.208128] pc : __do_softirq+0xb0/0x368
+[   28.212055] lr : __do_softirq+0x70/0x368
+[   28.215972] sp : ffffff8035ebca00
+[   28.219278] x29: ffffff8035ebca00 x28: 0000000000000002 x27: ffffff80071a3780
+[   28.226412] x26: ffffffc008bdc000 x25: ffffffc008bcc640 x24: ffffffc008be50c0
+[   28.233546] x23: ffffffc00800200c x22: 0000000000000000 x21: 000000000000001b
+[   28.240679] x20: 0000000000000000 x19: ffffff80001c3200 x18: ffffffffffffffff
+[   28.247812] x17: ffffffc02d2e0000 x16: ffffff8035eb8b40 x15: 00001e8480000000
+[   28.254945] x14: 02c3647e37dbfcb6 x13: 02c364f2ab14200c x12: 0000000002c364f2
+[   28.262078] x11: 00000000fa83b2da x10: 000000000000b67e x9 : ffffffc008010250
+[   28.269211] x8 : 000000009d983d00 x7 : 7fffffffffffffff x6 : 0000036d74732434
+[   28.276344] x5 : 00ffffffffffffff x4 : 0000000000000015 x3 : 0000000000000198
+[   28.283476] x2 : ffffffc02d2e0000 x1 : 00000000000000e0 x0 : ffffffc008bdcb40
+[   28.290611] Call trace:
+[   28.293052]  __do_softirq+0xb0/0x368
+[   28.296625]  __irq_exit_rcu+0xe0/0x100
+[   28.300374]  irq_exit+0x14/0x20
+[   28.303513]  handle_domain_irq+0x68/0x90
+[   28.307440]  gic_handle_irq+0x78/0xb0
+[   28.311098]  call_on_irq_stack+0x20/0x38
+[   28.315019]  do_interrupt_handler+0x54/0x5c
+[   28.319199]  el1_interrupt+0x2c/0x4c
+[   28.322777]  el1h_64_irq_handler+0x14/0x20
+[   28.326872]  el1h_64_irq+0x74/0x78
+[   28.330269]  __setup_irq+0x454/0x780
+[   28.333841]  request_threaded_irq+0xd0/0x1b4
+[   28.338107]  devm_request_threaded_irq+0x84/0x100
+[   28.342809]  npcm_i2c_probe_bus+0x188/0x3d0
+[   28.346990]  platform_probe+0x6c/0xc4
+[   28.350653]  really_probe+0xcc/0x45c
+[   28.354227]  __driver_probe_device+0x8c/0x160
+[   28.358578]  driver_probe_device+0x44/0xe0
+[   28.362670]  __driver_attach+0x124/0x1d0
+[   28.366589]  bus_for_each_dev+0x7c/0xe0
+[   28.370426]  driver_attach+0x28/0x30
+[   28.373997]  bus_add_driver+0x124/0x240
+[   28.377830]  driver_register+0x7c/0x124
+[   28.381662]  __platform_driver_register+0x2c/0x34
+[   28.386362]  npcm_i2c_init+0x3c/0x5c
+[   28.389937]  do_one_initcall+0x74/0x230
+[   28.393768]  kernel_init_freeable+0x24c/0x2b4
+[   28.398126]  kernel_init+0x28/0x130
+[   28.401614]  ret_from_fork+0x10/0x20
+[   28.405189] Kernel panic - not syncing: softlockup: hung tasks
+[   28.411011] SMP: stopping secondary CPUs
+[   28.414933] Kernel Offset: disabled
+[   28.418412] CPU features: 0x00000000,00000802
+[   28.427644] Rebooting in 20 seconds..
+
+Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller driver")
+Signed-off-by: Tyrone Ting <kfting@nuvoton.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Tali Perry <tali.perry1@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250220040029.27596-2-kfting@nuvoton.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c         |    3 +++
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c |    7 +++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-npcm7xx.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2945,6 +2945,9 @@ static int enetc_hwtstamp_set(struct net
- 		new_offloads |= ENETC_F_TX_TSTAMP;
- 		break;
- 	case HWTSTAMP_TX_ONESTEP_SYNC:
-+		if (!enetc_si_is_pf(priv->si))
-+			return -EOPNOTSUPP;
+--- a/drivers/i2c/busses/i2c-npcm7xx.c
++++ b/drivers/i2c/busses/i2c-npcm7xx.c
+@@ -2329,6 +2329,13 @@ static int npcm_i2c_probe_bus(struct pla
+ 	if (irq < 0)
+ 		return irq;
+ 
++	/*
++	 * Disable the interrupt to avoid the interrupt handler being triggered
++	 * incorrectly by the asynchronous interrupt status since the machine
++	 * might do a warm reset during the last smbus/i2c transfer session.
++	 */
++	npcm_i2c_int_enable(bus, false);
 +
- 		new_offloads &= ~ENETC_F_TX_TSTAMP_MASK;
- 		new_offloads |= ENETC_F_TX_ONESTEP_SYNC_TSTAMP;
- 		break;
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -843,6 +843,7 @@ static int enetc_set_coalesce(struct net
- static int enetc_get_ts_info(struct net_device *ndev,
- 			     struct kernel_ethtool_ts_info *info)
- {
-+	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 	int *phc_idx;
- 
- 	phc_idx = symbol_get(enetc_phc_index);
-@@ -863,8 +864,10 @@ static int enetc_get_ts_info(struct net_
- 				SOF_TIMESTAMPING_TX_SOFTWARE;
- 
- 	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
--			 (1 << HWTSTAMP_TX_ON) |
--			 (1 << HWTSTAMP_TX_ONESTEP_SYNC);
-+			 (1 << HWTSTAMP_TX_ON);
-+
-+	if (enetc_si_is_pf(priv->si))
-+		info->tx_types |= (1 << HWTSTAMP_TX_ONESTEP_SYNC);
- 
- 	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
- 			   (1 << HWTSTAMP_FILTER_ALL);
+ 	ret = devm_request_irq(bus->dev, irq, npcm_i2c_bus_irq, 0,
+ 			       dev_name(bus->dev), bus);
+ 	if (ret)
 
 
 
