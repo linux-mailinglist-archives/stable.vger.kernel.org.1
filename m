@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FADA507DD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F018A50957
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7FF116B37D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC09188DFD1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89352512D9;
-	Wed,  5 Mar 2025 18:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B825333D;
+	Wed,  5 Mar 2025 18:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8KCdOQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+2h6POt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28652505D3;
-	Wed,  5 Mar 2025 18:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFEE230BC6;
+	Wed,  5 Mar 2025 18:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197670; cv=none; b=XQM1ieHBl4Jz69WAn1E71d+cbFZ2lW4SR0pnE4Mbx3rDZDqoSxwF3YQDrJLkvqiXbET0vVDlLu1epXLeLV2rIifA3bPoly9m4I6VhLmhosr0y+Upjr5mS0QpElsUA+VjVWxAex+aNrA+wd7+Cv3Z4dFNDWgapBs1Ki1jLUsQ4T0=
+	t=1741198484; cv=none; b=TR4r91SSPq6ZGEGrV2WW4zKyFTtK9xNoN9wHBqQYGM4mDc5qBH/SHCn1dLZGpa29DW0U1QdnVZFrs3lSv9EDyB5Z4lmIvuMI7gQ926erJyDJMXEOEMMuvS1VG782cqZn7cuHh0sRJDXj8qkWo0hJtYjJ+lA3qerYsdqpUxD/FCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197670; c=relaxed/simple;
-	bh=Trqhgu2OHrru1GJxQMWO0dIYC9cx+QK8zGLyHvTYXLg=;
+	s=arc-20240116; t=1741198484; c=relaxed/simple;
+	bh=NoUPoY8xU31N4mu2vMh6ME70umzEdPMtY+hw4hy3Nqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwTyrC6ciWLUqqsReTZyOuOVjslVohwVnCKB3GpAw2f9vJ9wJuS7HfV8PVrtvoGMDLX2LuUuBV+R7g0Je7xObaL9YGJGObhCuewo5cqpc8zCH//jcl+d8ZKDh9kzvwBVJ55KdbcfeZV04kJgHzfajTcdLIOMuqMqBbx2WAumQJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8KCdOQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8B5C4CEE2;
-	Wed,  5 Mar 2025 18:01:10 +0000 (UTC)
+	 MIME-Version; b=kSgE7RuPF93ugOQe4Cj7R9oh9kQvdmj+aiAGRVZUa68Wgw7FpLgMdl6tdpdpNQTNgm3xeNvP8Ma5whLSzyVptOIiQq/nA7eK5NdRV2msgAdi4US+mTK7zGBYDuuLbidk4y6R+NDIJC8B3UiMNdF6GlEnZYB8G8LH0oYBYQ3RKWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+2h6POt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A964C4CED1;
+	Wed,  5 Mar 2025 18:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197670;
-	bh=Trqhgu2OHrru1GJxQMWO0dIYC9cx+QK8zGLyHvTYXLg=;
+	s=korg; t=1741198483;
+	bh=NoUPoY8xU31N4mu2vMh6ME70umzEdPMtY+hw4hy3Nqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8KCdOQxsxYAvoyMxVU1YynqHfieXehCo8Oe7qA0vBLuQJB+rwLj/+T+5udJDQr/e
-	 Jnm/mssmUP7++w1tyzBV1LHenXpcWovjdshWe98bt6kb86b23EtCK43SdBsWU/mAg2
-	 3d5AApDa3A3pAgXGf7mo/Gx6CReANvpEGCy1tx/I=
+	b=x+2h6POt2YDv6CywasxPGab9S/kf8NlQS6/SIp0Rxw9gXfq4Vl9XjBzssg/fapZdb
+	 bxENvrOkuRR8eIWQXQsWfCEjGVYyZ0MyfxRKbUJcnIjqgtG3M6G+r0iKncyjZHhCCC
+	 g1kW+5JqC8tcgYrBblxth7jVx0IR5RzYhXwe/Nxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/142] riscv: KVM: Fix SBI IPI error generation
-Date: Wed,  5 Mar 2025 18:47:58 +0100
-Message-ID: <20250305174502.708292614@linuxfoundation.org>
+Subject: [PATCH 6.13 043/157] ALSA: hda/realtek: Fix wrong mic setup for ASUS VivoBook 15
+Date: Wed,  5 Mar 2025 18:47:59 +0100
+Message-ID: <20250305174507.032991764@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 0611f78f83c93c000029ab01daa28166d03590ed ]
+[ Upstream commit 9e7c6779e3530bbdd465214afcd13f19c33e51a2 ]
 
-When an invalid function ID of an SBI extension is used we should
-return not-supported, not invalid-param. Also, when we see that at
-least one hartid constructed from the base and mask parameters is
-invalid, then we should return invalid-param. Finally, rather than
-relying on overflowing a left shift to result in zero and then using
-that zero in a condition which [correctly] skips sending an IPI (but
-loops unnecessarily), explicitly check for overflow and exit the loop
-immediately.
+ASUS VivoBook 15 with SSID 1043:1460 took an incorrect quirk via the
+pin pattern matching for ASUS (ALC256_FIXUP_ASUS_MIC), resulting in
+the two built-in mic pins (0x13 and 0x1b).  This had worked without
+problems casually in the past because the right pin (0x1b) was picked
+up as the primary device.  But since we fixed the pin enumeration for
+other bugs, the bogus one (0x13) is picked up as the primary device,
+hence the bug surfaced now.
 
-Fixes: 5f862df5585c ("RISC-V: KVM: Add v0.1 replacement SBI extensions defined in v0.2")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20250217084506.18763-10-ajones@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+For addressing the regression, this patch explicitly specifies the
+quirk entry with ALC256_FIXUP_ASUS_MIC_NO_PRESENCE, which sets up only
+the headset mic pin.
+
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219807
+Link: https://patch.msgid.link/20250225154540.13543-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_sbi_replace.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
-index 7c4d5d38a3390..26e2619ab887b 100644
---- a/arch/riscv/kvm/vcpu_sbi_replace.c
-+++ b/arch/riscv/kvm/vcpu_sbi_replace.c
-@@ -51,9 +51,10 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
- 	unsigned long hmask = cp->a0;
- 	unsigned long hbase = cp->a1;
-+	unsigned long hart_bit = 0, sentmask = 0;
- 
- 	if (cp->a6 != SBI_EXT_IPI_SEND_IPI) {
--		retdata->err_val = SBI_ERR_INVALID_PARAM;
-+		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
- 		return 0;
- 	}
- 
-@@ -62,15 +63,23 @@ static int kvm_sbi_ext_ipi_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 		if (hbase != -1UL) {
- 			if (tmp->vcpu_id < hbase)
- 				continue;
--			if (!(hmask & (1UL << (tmp->vcpu_id - hbase))))
-+			hart_bit = tmp->vcpu_id - hbase;
-+			if (hart_bit >= __riscv_xlen)
-+				goto done;
-+			if (!(hmask & (1UL << hart_bit)))
- 				continue;
- 		}
- 		ret = kvm_riscv_vcpu_set_interrupt(tmp, IRQ_VS_SOFT);
- 		if (ret < 0)
- 			break;
-+		sentmask |= 1UL << hart_bit;
- 		kvm_riscv_vcpu_pmu_incr_fw(tmp, SBI_PMU_FW_IPI_RCVD);
- 	}
- 
-+done:
-+	if (hbase != -1UL && (hmask ^ sentmask))
-+		retdata->err_val = SBI_ERR_INVALID_PARAM;
-+
- 	return ret;
- }
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index ffe3de617d5dd..5441425292195 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10595,6 +10595,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
+ 	SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1460, "Asus VivoBook 15", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1463, "Asus GA402X/GA402N", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604VI/VC/VE/VG/VJ/VQ/VU/VV/VY/VZ", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603VQ/VU/VV/VJ/VI", ALC285_FIXUP_ASUS_HEADSET_MIC),
 -- 
 2.39.5
 
