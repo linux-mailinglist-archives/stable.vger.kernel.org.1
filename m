@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-120869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBCCA508D0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7A9A50799
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793F41885145
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF6DE7A1433
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD0D250C0A;
-	Wed,  5 Mar 2025 18:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FD1250C1C;
+	Wed,  5 Mar 2025 17:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c97rCHXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ejya4eK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCB191493;
-	Wed,  5 Mar 2025 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C8C24C07D;
+	Wed,  5 Mar 2025 17:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198210; cv=none; b=nm+QsO65Pz6V+ofJ/BMuMY9+HyD8MN3kCbzdgTqPi38z7COnWjAb9Kw4ORuEMhX7s3+r0yh2RTA3Zpuy3iHwX7oeqoTqtJCB3F7r6aGZD+HclN1MGsX75+PMfWZ6Q6UhXjRck6th+b2NAXKm1i5pzlGeN6YZAgmBL6WarYVsBUA=
+	t=1741197454; cv=none; b=oxZrBAT1l/QahTORADD+5HLJFPKMDs0YmQjwX6L3IaEJwhJVqcSRpfoUChOqlJUoyleibteuz4OEhp7UvNTUvqZL82SZcPnmfKEuneUz5tivf3RJo5o8AImlNVczo7PqofZ6RYqW4eq8o/d42rqL+2HgnQj44QHACbf5xzRateE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198210; c=relaxed/simple;
-	bh=SiHzlh97ycSW4y9BMN3L/sPyjdbUi+kxEj+SPPZHHKY=;
+	s=arc-20240116; t=1741197454; c=relaxed/simple;
+	bh=+IO8VQpZGS9vZtd6K8a0dwK/2T1OXuDg/WhsT7/8B8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIKsERVoiAwPdX9B99mbZP+RRUmF4Ce6jbwdTmoHm3aV+X5KNpUKdZbmfe+HMn8FWR1cYP8o+7c1+Rx+lOEHErelogz6stCZQYL34JLjibJzsX3mJqvbw3AYeIivLMWtPn4sHJNNcXGU24QAOriU6IY7qvgBf3xJyMYUphIZbKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c97rCHXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF71C4CEE0;
-	Wed,  5 Mar 2025 18:10:08 +0000 (UTC)
+	 MIME-Version; b=U+7OaoKNZ7q+ELi4MFxqo3oz2QA4iV31zKNPfFNMi3E0hXo/l+4CxGR59AuN3aINh8iEMoE4YweteJy6e95OE5l6Ty05LWSdEQinNCZpNmxIocSjK7jrAhFoJihEL2Nw4Mr9tzq6nyy6+0dUrC92uNTB2/ad55g88TbB2ZgLZfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ejya4eK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CA5C4CED1;
+	Wed,  5 Mar 2025 17:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198209;
-	bh=SiHzlh97ycSW4y9BMN3L/sPyjdbUi+kxEj+SPPZHHKY=;
+	s=korg; t=1741197453;
+	bh=+IO8VQpZGS9vZtd6K8a0dwK/2T1OXuDg/WhsT7/8B8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c97rCHXzuHNu5HBp+HEaJEID2B+YJ42q7Tt7W/Bp/7HVtDz+t1WH45hLqjZQ4eXwa
-	 mPSXz+/EJwDbPm9UtLLToDvTVXS0shgtpPF2kx+tbpXWx14Ly+RW8Pp2n0C83LlYBJ
-	 W0058V3Dae0EdLYRAvS/ENzmm64mAL2sWrD5hHSU=
+	b=Ejya4eK7Nn6O//LY/rkTpJRrxkw7QMPeN/RU2OkAnAekJn9iNoF0eqTCII2FWqdn0
+	 KJathvcpd9yd3Za1zUmBfc1XEP9D0C5fIX0LZ7bapLsKzGLVVuzrNDWoiqQpbJsQxA
+	 9od6TxdTon0rNNnw1EvzVD4xlJt9lvkXHq1A/YoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 101/150] drm/amd/display: Fix HPD after gpu reset
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 161/176] net: enetc: fix the off-by-one issue in enetc_map_tx_tso_buffs()
 Date: Wed,  5 Mar 2025 18:48:50 +0100
-Message-ID: <20250305174507.871037274@linuxfoundation.org>
+Message-ID: <20250305174511.904369160@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 4de141b8b1b7991b607f77e5f4580e1c67c24717 upstream.
+commit 249df695c3ffe8c8d36d46c2580ce72410976f96 upstream.
 
-[Why]
-DC is not using amdgpu_irq_get/put to manage the HPD interrupt refcounts.
-So when amdgpu_irq_gpu_reset_resume_helper() reprograms all of the IRQs,
-HPD gets disabled.
+There is an off-by-one issue for the err_chained_bd path, it will free
+one more tx_swbd than expected. But there is no such issue for the
+err_map_data path. To fix this off-by-one issue and make the two error
+handling consistent, the increment of 'i' and 'count' remain in sync
+and enetc_unwind_tx_frame() is called for error handling.
 
-[How]
-Use amdgpu_irq_get/put() for HPD init/fini in DM in order to sync refcounts
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f3dde2ff7fcaacd77884502e8f572f2328e9c745)
+Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
 Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-9-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-@@ -894,6 +894,7 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
-+	int i;
- 
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-@@ -920,6 +921,12 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -568,8 +568,13 @@ static int enetc_map_tx_tso_buffs(struct
+ 			err = enetc_map_tx_tso_data(tx_ring, skb, tx_swbd, txbd,
+ 						    tso.data, size,
+ 						    size == data_len);
+-			if (err)
++			if (err) {
++				if (i == 0)
++					i = tx_ring->bd_count;
++				i--;
 +
-+	/* Update reference counts for HPDs */
-+	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
-+		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
-+			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
-+	}
- }
+ 				goto err_map_data;
++			}
  
- /**
-@@ -935,6 +942,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
-+	int i;
+ 			data_len -= size;
+ 			count++;
+@@ -598,13 +603,7 @@ err_map_data:
+ 	dev_err(tx_ring->dev, "DMA map error");
  
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-@@ -960,4 +968,10 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
-+
-+	/* Update reference counts for HPDs */
-+	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
-+		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
-+			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
-+	}
+ err_chained_bd:
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
+ 
+ 	return 0;
  }
 
 
