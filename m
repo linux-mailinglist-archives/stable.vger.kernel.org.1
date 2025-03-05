@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B8A50769
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D09A507F6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD473AF6BE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31A81893CC8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD2B2517B4;
-	Wed,  5 Mar 2025 17:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5B62505D3;
+	Wed,  5 Mar 2025 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6ZZm9d1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElTrhsxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6412512C7;
-	Wed,  5 Mar 2025 17:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24841D6DB4;
+	Wed,  5 Mar 2025 18:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197373; cv=none; b=qFzsK6BXJpGeoVM5j1oNgTlMCnRwTaoU4KZ42bXa6yZ5GvrFyLoeIZ7f+6fazyBJEzYqVxo3o5EkVDaUItDfZpzUmKJpZrJdGfFR0ri92vW8OQswzqdVPaEdg1dovrYD9mWAs74yFGc/TlaSvnCQbIWlIHgEzSd49BJK7enRPg0=
+	t=1741197736; cv=none; b=XoU+1qOV3pe1u9Rewri57P5qVymMwlaWHAUBrISChbS0Ui3rW7Ea5/ulN4JJyCfvLb5luUjAG+f3ly4OlAV8aq6r/1A4DE0DNeu+QhCiO9IqJj5KoSNKgi+e0/ckEQFZHCV6HvIQTc+XPKveSQAX5LEe0pl+64y6IAXLMXqkHxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197373; c=relaxed/simple;
-	bh=r7JTRsrOZ1KOc4IFt29SHwgFMuM7cc2lifcKx30lvAU=;
+	s=arc-20240116; t=1741197736; c=relaxed/simple;
+	bh=XD9WBTsN2zZdH4FqPVhgEQvYlHuDtaaOmr6hHmhViCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3cRqBPOGhc1uw7uC39LUFbGYIGnOT2fCS9/vcGp3bP23PWWz30IE4C6sq9pZEdsJgckEbU1YAXYDw+qBBjTHF3T0Il/YujvN9vZ1vu4KGQwtvT2JHmLW4AO0FQYrnpwaBz5FRY/2eZeGQucLbmy+9yCp+gbSwCRMVpG7dk0yyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6ZZm9d1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A973C4CED1;
-	Wed,  5 Mar 2025 17:56:12 +0000 (UTC)
+	 MIME-Version; b=pcAyrvSsyFPdatrXt0JwVKuMEbdm7FXe8YrtAg1EqxUrJhSi9OJNZWNznVjVbV0gvXmPLUvplSRpO2H3gtRwaD9oaeG5aMeaQl2twSZoz+uh3GxoDk7lG+jZQCKwSqrIs0uZJzQKLNU+r7q/6k19amlG6WeuocCZZEG+PWQ+FL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElTrhsxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6DEC4CED1;
+	Wed,  5 Mar 2025 18:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197373;
-	bh=r7JTRsrOZ1KOc4IFt29SHwgFMuM7cc2lifcKx30lvAU=;
+	s=korg; t=1741197736;
+	bh=XD9WBTsN2zZdH4FqPVhgEQvYlHuDtaaOmr6hHmhViCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6ZZm9d1y121rXvpCmL+GUACVxhbQP5BYb97q4LgINtEzb/+CYxniRKArzxHXHFK5
-	 TXYAaw3v0LdlLVhgD04yvXZVpk+BZucJNod4ZDQAxYjSyKSclw4ohwMNG4YpKrqLsa
-	 IneFfI3cHuV6m2eT99jh2NzcetkdZytdZcU/WzcY=
+	b=ElTrhsxgCoAXq6vRrisN48Aooo21k1F4GOwj7xteDsN434kl/oIFbkZvDn7yleZha
+	 lQEOvsLG1tBgqDhxiX7SIrzwbh6CRVegj8YBCtjc76BXsC9zzG6mBALudexlmrcJrY
+	 3Eb7Xbpu9/7i+3FAbGxJwfXSzNcsCAE8S7dyc41E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/176] ASoC: es8328: fix route from DAC to output
-Date: Wed,  5 Mar 2025 18:48:21 +0100
-Message-ID: <20250305174510.747333268@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.6 083/142] rcuref: Plug slowpath race in rcuref_put()
+Date: Wed,  5 Mar 2025 18:48:22 +0100
+Message-ID: <20250305174503.673771012@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 5b0c02f9b8acf2a791e531bbc09acae2d51f4f9b ]
+commit b9a49520679e98700d3d89689cc91c08a1c88c1d upstream.
 
-The ES8328 codec driver, which is also used for the ES8388 chip that
-appears to have an identical register map, claims that the output can
-either take the route from DAC->Mixer->Output or through DAC->Output
-directly. To the best of what I could find, this is not true, and
-creates problems.
+Kernel test robot reported an "imbalanced put" in the rcuref_put() slow
+path, which turned out to be a false positive. Consider the following race:
 
-Without DACCONTROL17 bit index 7 set for the left channel, as well as
-DACCONTROL20 bit index 7 set for the right channel, I cannot get any
-analog audio out on Left Out 2 and Right Out 2 respectively, despite the
-DAPM routes claiming that this should be possible. Furthermore, the same
-is the case for Left Out 1 and Right Out 1, showing that those two don't
-have a direct route from DAC to output bypassing the mixer either.
+            ref  = 0 (via rcuref_init(ref, 1))
+ T1                                      T2
+ rcuref_put(ref)
+ -> atomic_add_negative_release(-1, ref)                                         # ref -> 0xffffffff
+ -> rcuref_put_slowpath(ref)
+                                         rcuref_get(ref)
+                                         -> atomic_add_negative_relaxed(1, &ref->refcnt)
+                                           -> return true;                       # ref -> 0
 
-Those control bits toggle whether the DACs are fed (stale bread?) into
-their respective mixers. If one "unmutes" the mixer controls in
-alsamixer, then sure, the audio output works, but if it doesn't work
-without the mixer being fed the DAC input then evidently it's not a
-direct output from the DAC.
+                                         rcuref_put(ref)
+                                         -> atomic_add_negative_release(-1, ref) # ref -> 0xffffffff
+                                         -> rcuref_put_slowpath()
 
-ES8328/ES8388 are seemingly not alone in this. ES8323, which uses a
-separate driver for what appears to be a very similar register map,
-simply flips those two bits on in its probe function, and then pretends
-there is no power management whatsoever for the individual controls.
-Fair enough.
+    -> cnt = atomic_read(&ref->refcnt);                                          # cnt -> 0xffffffff / RCUREF_NOREF
+    -> atomic_try_cmpxchg_release(&ref->refcnt, &cnt, RCUREF_DEAD))              # ref -> 0xe0000000 / RCUREF_DEAD
+       -> return true
+                                           -> cnt = atomic_read(&ref->refcnt);   # cnt -> 0xe0000000 / RCUREF_DEAD
+                                           -> if (cnt > RCUREF_RELEASED)         # 0xe0000000 > 0xc0000000
+                                             -> WARN_ONCE(cnt >= RCUREF_RELEASED, "rcuref - imbalanced put()")
 
-My theory as to why nobody has noticed this up to this point is that
-everyone just assumes it's their fault when they had to unmute an
-additional control in ALSA.
+The problem is the additional read in the slow path (after it
+decremented to RCUREF_NOREF) which can happen after the counter has been
+marked RCUREF_DEAD.
 
-Fix this in the es8328 driver by removing the erroneous direct route,
-then get rid of the playback switch controls and have those bits tied to
-the mixer's widget instead, which until now had no register to play
-with.
+Prevent this by reusing the return value of the decrement. Now every "final"
+put uses RCUREF_NOREF in the slow path and attempts the final cmpxchg() to
+RCUREF_DEAD.
 
-Fixes: 567e4f98922c ("ASoC: add es8328 codec driver")
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Link: https://patch.msgid.link/20250222-es8328-route-bludgeoning-v1-1-99bfb7fb22d9@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ bigeasy: Add changelog ]
+
+Fixes: ee1ee6db07795 ("atomics: Provide rcuref - scalable reference counting")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Debugged-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/oe-lkp/202412311453.9d7636a2-lkp@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/es8328.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ include/linux/rcuref.h | 9 ++++++---
+ lib/rcuref.c           | 5 ++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/es8328.c b/sound/soc/codecs/es8328.c
-index 160adc706cc69..8182e9b37c03d 100644
---- a/sound/soc/codecs/es8328.c
-+++ b/sound/soc/codecs/es8328.c
-@@ -234,7 +234,6 @@ static const struct snd_kcontrol_new es8328_right_line_controls =
+diff --git a/include/linux/rcuref.h b/include/linux/rcuref.h
+index 2c8bfd0f1b6b..6322d8c1c6b4 100644
+--- a/include/linux/rcuref.h
++++ b/include/linux/rcuref.h
+@@ -71,27 +71,30 @@ static inline __must_check bool rcuref_get(rcuref_t *ref)
+ 	return rcuref_get_slowpath(ref);
+ }
  
- /* Left Mixer */
- static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
--	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL17, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL17, 6, 1, 0),
- 	SOC_DAPM_SINGLE("Right Playback Switch", ES8328_DACCONTROL18, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL18, 6, 1, 0),
-@@ -244,7 +243,6 @@ static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
- static const struct snd_kcontrol_new es8328_right_mixer_controls[] = {
- 	SOC_DAPM_SINGLE("Left Playback Switch", ES8328_DACCONTROL19, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL19, 6, 1, 0),
--	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL20, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL20, 6, 1, 0),
- };
+-extern __must_check bool rcuref_put_slowpath(rcuref_t *ref);
++extern __must_check bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt);
  
-@@ -337,10 +335,10 @@ static const struct snd_soc_dapm_widget es8328_dapm_widgets[] = {
- 	SND_SOC_DAPM_DAC("Left DAC", "Left Playback", ES8328_DACPOWER,
- 			ES8328_DACPOWER_LDAC_OFF, 1),
+ /*
+  * Internal helper. Do not invoke directly.
+  */
+ static __always_inline __must_check bool __rcuref_put(rcuref_t *ref)
+ {
++	int cnt;
++
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() && preemptible(),
+ 			 "suspicious rcuref_put_rcusafe() usage");
+ 	/*
+ 	 * Unconditionally decrease the reference count. The saturation and
+ 	 * dead zones provide enough tolerance for this.
+ 	 */
+-	if (likely(!atomic_add_negative_release(-1, &ref->refcnt)))
++	cnt = atomic_sub_return_release(1, &ref->refcnt);
++	if (likely(cnt >= 0))
+ 		return false;
  
--	SND_SOC_DAPM_MIXER("Left Mixer", SND_SOC_NOPM, 0, 0,
-+	SND_SOC_DAPM_MIXER("Left Mixer", ES8328_DACCONTROL17, 7, 0,
- 		&es8328_left_mixer_controls[0],
- 		ARRAY_SIZE(es8328_left_mixer_controls)),
--	SND_SOC_DAPM_MIXER("Right Mixer", SND_SOC_NOPM, 0, 0,
-+	SND_SOC_DAPM_MIXER("Right Mixer", ES8328_DACCONTROL20, 7, 0,
- 		&es8328_right_mixer_controls[0],
- 		ARRAY_SIZE(es8328_right_mixer_controls)),
+ 	/*
+ 	 * Handle the last reference drop and cases inside the saturation
+ 	 * and dead zones.
+ 	 */
+-	return rcuref_put_slowpath(ref);
++	return rcuref_put_slowpath(ref, cnt);
+ }
  
-@@ -419,19 +417,14 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
- 	{ "Right Line Mux", "PGA", "Right PGA Mux" },
- 	{ "Right Line Mux", "Differential", "Differential Mux" },
- 
--	{ "Left Out 1", NULL, "Left DAC" },
--	{ "Right Out 1", NULL, "Right DAC" },
--	{ "Left Out 2", NULL, "Left DAC" },
--	{ "Right Out 2", NULL, "Right DAC" },
+ /**
+diff --git a/lib/rcuref.c b/lib/rcuref.c
+index 97f300eca927..5bd726b71e39 100644
+--- a/lib/rcuref.c
++++ b/lib/rcuref.c
+@@ -220,6 +220,7 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
+ /**
+  * rcuref_put_slowpath - Slowpath of __rcuref_put()
+  * @ref:	Pointer to the reference count
++ * @cnt:	The resulting value of the fastpath decrement
+  *
+  * Invoked when the reference count is outside of the valid zone.
+  *
+@@ -233,10 +234,8 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
+  *	with a concurrent get()/put() pair. Caller is not allowed to
+  *	deconstruct the protected object.
+  */
+-bool rcuref_put_slowpath(rcuref_t *ref)
++bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt)
+ {
+-	unsigned int cnt = atomic_read(&ref->refcnt);
 -
--	{ "Left Mixer", "Playback Switch", "Left DAC" },
-+	{ "Left Mixer", NULL, "Left DAC" },
- 	{ "Left Mixer", "Left Bypass Switch", "Left Line Mux" },
- 	{ "Left Mixer", "Right Playback Switch", "Right DAC" },
- 	{ "Left Mixer", "Right Bypass Switch", "Right Line Mux" },
- 
- 	{ "Right Mixer", "Left Playback Switch", "Left DAC" },
- 	{ "Right Mixer", "Left Bypass Switch", "Left Line Mux" },
--	{ "Right Mixer", "Playback Switch", "Right DAC" },
-+	{ "Right Mixer", NULL, "Right DAC" },
- 	{ "Right Mixer", "Right Bypass Switch", "Right Line Mux" },
- 
- 	{ "DAC DIG", NULL, "DAC STM" },
+ 	/* Did this drop the last reference? */
+ 	if (likely(cnt == RCUREF_NOREF)) {
+ 		/*
 -- 
-2.39.5
+2.48.1
 
 
 
