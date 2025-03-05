@@ -1,114 +1,131 @@
-Return-Path: <stable+bounces-120423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EF6A4FE0C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 12:54:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073C0A4FEDC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2399F18937AE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:54:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 003D63A730B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 12:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97ADF241CA4;
-	Wed,  5 Mar 2025 11:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB8B2475CF;
+	Wed,  5 Mar 2025 12:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQkPTaO2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ccuTXNw8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BA5235BE4;
-	Wed,  5 Mar 2025 11:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533EB246326;
+	Wed,  5 Mar 2025 12:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741175637; cv=none; b=f3HjBbqoufF+v+CSGQFtmYvfT4i/KtB1DL5i/tST8nJM/9fvH66WEL0Yy1O5By+qOzpl1zUq84OUEcuO3cmZYUwuLynIkH8SfmfrWxN16mdF1x4FLCQDJdKWY8aCsuItIy66Mts5EXinFOMfNorhoe89MmmjbZ1ashaOnMLTzqw=
+	t=1741178432; cv=none; b=Gq7qjKGFjomy2kUHuyuIzv6mRD3dQwMmIWBjGJMAcOJ/xa+2PuV/y5E3VutD3i8ALg7ibWly85d0aJxd1UJhXtSaLRJQKlOO6W3RDxhPawVjSgDWITitV7UMQ+dh96a4cPwsNek/MIFFx+yxIMwRlmF+8/UK+gXrWj5mmp+IFgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741175637; c=relaxed/simple;
-	bh=gArcLFfpKivakEz7CtL6CfPKFdqu7fmiUQZy/61/I7Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qnpxRXKnjZg/qFp/2gEsxJt0hoa16z5KRCO3BU+sj/BgpFIKGoezTCGY9NMd3VQJE6QMy9BB9eETmKxPcpZKvRgXhe99BGwoZt6YDNlh+4jPQvqzodp/ySh54GzxSGr+ulvD55PoUe17RSNO+x2pcLB/yTYhMATEC6GdJo02BKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQkPTaO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34DFC4CEE7;
-	Wed,  5 Mar 2025 11:53:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741175636;
-	bh=gArcLFfpKivakEz7CtL6CfPKFdqu7fmiUQZy/61/I7Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eQkPTaO2ybpDpyvxRBnZCwEJiDOUYN34PexWdJkR/ybt/YYmcnUm6M3vwVJ7jgQ1x
-	 R76lHi1X6N+ht923+ud27JAVo9KZ40fD60HCR4sO1zNoSZy6F7Kf51N6Sk9DlCNtme
-	 07kuzx6MGUxFagV6b5aENy5t2vz/ai++KdkjMoNTviNwNcnYradekUKb0FwdnmVzrr
-	 eFib51GlMZa6kZl0aOWSACyLUTAyUqg1+NOlKY74GwoqiAGzsZPm7PjJRcfzdofZqb
-	 uXnrZ4QQkAuO/0fYtG2g1jewDRyDGciHqg6ja3gZ3LKA7u+ibG+sndoiLKCvGP9FJH
-	 A8oXRr9av5CYQ==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e4ebc78da5so10179316a12.2;
-        Wed, 05 Mar 2025 03:53:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUXDHp2Az+zyjraeAUu2cpZ887Iv11KnX5jmSNkRDdtz2EGnrmvp2tJ8xsSk7CKI/xo5XXd0Rmjx1nizaWm@vger.kernel.org, AJvYcCW4Vv6rX/bKK6941mdzh/NYIJqyPzaDlkXHm9cTt+MsGPaeaQUCVaGspojZ8/oEj6sqNjz8b3mCcBuOPg==@vger.kernel.org, AJvYcCX6+GsV9Ncpmzh253XDF/HjhFa09w/tWvgx0apxNxnGkW56RhOl7ufoYzWQPymYkjKYqHVJGNPG@vger.kernel.org
-X-Gm-Message-State: AOJu0YyW6d9t0kx9XI7p9+oHCQWlT57qM9rx3SfFMHYRUhg1BW1xuDaj
-	ohdJ5or1RtZ7uqxEGVeCyMTZIwR/mIATz3aZEZ+9+oNb+ZqcpNMOC8Zkd8eDpV4BtDcWU1r2srg
-	qWGb1I5MAHxHdy17T0YgAGMsiLNU=
-X-Google-Smtp-Source: AGHT+IEtu/EQCES06k/Bc8EPSEewrmkKqHE7wO1dQxTrgUo47y+6mmHiwOWvaRXnymriudN4xCZdwdaV6KPcNhmHTpk=
-X-Received: by 2002:a17:907:7da6:b0:abf:b2d5:9692 with SMTP id
- a640c23a62f3a-ac20d930712mr234821366b.29.1741175635065; Wed, 05 Mar 2025
- 03:53:55 -0800 (PST)
+	s=arc-20240116; t=1741178432; c=relaxed/simple;
+	bh=oeAyzhOZkb7LEMowcz56bvOxX8oCCi6/DhM8XJDiiKk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Abp6BIt7Rv+AL1shUJfwuAbMkAbz1Z5MarlXc+hF//8jZo9PIEgUrossQX6CdS3fR+Fe7/QBSG3LTuECFhpeSIuMbGDY1X5HoPKK1wmJmBdcMyc55qolLsRvDb4plZOPj6ojx2WzwrbhsfIXzwoYxPYdSi35o7SK4LEFYSyJHQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ccuTXNw8; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-390f5556579so2953684f8f.1;
+        Wed, 05 Mar 2025 04:40:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741178428; x=1741783228; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1qv7vNwjiLrzxqQ13AbY2Y9wvDjj6iJYqXWPt/syp30=;
+        b=ccuTXNw8o2IB78qiLHB+ffTLn/eKFtj79EV2MBb/QfDKL009NKz4LA3TvsiTqx70fR
+         7H2SuAn1C6RsP7iDin6zf0XoxrYriAqpEw8p+3ruf8LRLbRwxgcwnb63i3DmNQSDi4Ht
+         h29jrJGiqybPAQlKrcoo5JGbOerkklTFSs7tQkgDheBjSzIQT2bZ9fWqbvmO8Lt+zqNz
+         MO5Qydr9YmG1Yn7GoM0zl0ioxvKFKpox44fnxonDreEYPNUGk2VFu0vhR97WOb7WQikH
+         pnQVi/f+Qa73YFb/7Hp+FWizlncLzbut392ABdwu8YkfgXOP/bERKOoxWuxv8L+F9hV3
+         +JYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741178428; x=1741783228;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1qv7vNwjiLrzxqQ13AbY2Y9wvDjj6iJYqXWPt/syp30=;
+        b=u7pqcvftH/xZUC26MJENOO2pDCKQudqA7IMehZUdfO/bAqagCmb2bk+FC24xS/gOqQ
+         utquSlLaXq5WpZ20CgT9ux5PJ0I5sRQAcoEXZHltUMOHk+dq4IO4ob5eIikB+7CYeh9V
+         1FxLM9vjABwK/r+5cJI4BCjM2YtXrzzEvDCTU+s8sGyTXsdtGXvTTeecF16SpBWCAP3A
+         K+xHfGDMU6oPBbZNotM2CSb7osnVVT2ZOKFPzstvUUx7eZ0NdnaeFiBWyPb8hBumeRGB
+         KDwlWUXHG8/2aYembZJInGFGkD2Tf9KtSNGCqdAHDE4dOhnj16bDQhktck9otxB7EZrz
+         ez3w==
+X-Forwarded-Encrypted: i=1; AJvYcCV9WZ/mUKGRY243roWWG3wreJk23TW9ORB6ZyO81ZQCFxEgcgTedrk9QKOGcvRTpvbQzvBHJf0N@vger.kernel.org, AJvYcCVYQwaGZDv/sn7NnUWPm3tH4nVZ7Ebv4+Bpu4drd62CF+37q3f3Ts6bU8+XwTy1u0OgRXixrJrE0w3gyD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6LG5V01FoEjdkExSpacShv9pL5qHDbYeCw78K/fWxS0uri1Q9
+	XSlq02vzjQLhWQzhx04+PTL/Y96BbLDty9GNtpuS2XfnXcPctI7EimnbFA==
+X-Gm-Gg: ASbGncuQAbXCPq8dSSOTnZSrRLJccXJ0WoZszUGtnMauVEoBxeksrdY+uFw+Jt0ntdU
+	4zmfL7yyW2sB8mwtiRHECy96f9p0oqnkKKY/1LoDz9UbpwV/mD+O+YBmo/jXrBaBulo5tQAM1kI
+	kIbSdyTvGWzp0yioJGbqgAsJl7IF1wfaw7L8TBZMQJwWim60RJNiedsk06ju6JDdIttVPM6N8AY
+	N+hWcgZXRYFp59m1VvS4hhO19FIgo6hfDbfKjFPT2H7319SLwbAYDD/UEs7g7QM8M7dy0bJpVFw
+	djpFVk5nSRcNNHtKer0Sn3vZb4GgfPgewUbHzxHd0p6oJQ==
+X-Google-Smtp-Source: AGHT+IHUUVHZp3vO4Q9MO882vZfI2u8tktJ9u/LsJlvZzzHu94nWDHiy8WED3wb5qVHrYlJa8wuNlw==
+X-Received: by 2002:a05:6000:2b0b:b0:390:df7f:c20a with SMTP id ffacd0b85a97d-3911f772ae4mr1498716f8f.33.1741178428208;
+        Wed, 05 Mar 2025 04:40:28 -0800 (PST)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:dd18:aac7:25a4:9d82])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bcbcc53d3sm35391675e9.0.2025.03.05.04.40.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 04:40:27 -0800 (PST)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: adilger.kernel@dilger.ca,
+	tytso@mit.edu
+Cc: linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ext4: Fix potential NULL pointer dereferences in test_mb_mark_used() and test_mb_free_blocks()
+Date: Wed,  5 Mar 2025 12:40:12 +0000
+Message-Id: <20250305124012.28500-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250303024233.3865292-1-haoxiang_li2024@163.com>
-In-Reply-To: <20250303024233.3865292-1-haoxiang_li2024@163.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Wed, 5 Mar 2025 11:53:17 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H7btKGFi9iVrYgo0RoKrkW8uXBvmng0UekSLB-OhUp1WQ@mail.gmail.com>
-X-Gm-Features: AQ5f1JrhSNzMCD5RQ-nIUwOTJLLFTxwB7sNQ-rT-XLzQHwX1r7N5jhuhXra2eRo
-Message-ID: <CAL3q7H7btKGFi9iVrYgo0RoKrkW8uXBvmng0UekSLB-OhUp1WQ@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix a memory leak issue in read_one_chunk()
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: clm@fb.com, josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com, 
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 3, 2025 at 2:43=E2=80=AFAM Haoxiang Li <haoxiang_li2024@163.com=
-> wrote:
->
-> Add btrfs_free_chunk_map() to free the memory allocated
-> by btrfs_alloc_chunk_map() if btrfs_add_chunk_map() fails.
->
-> Fixes: 7dc66abb5a47 ("btrfs: use a dedicated data structure for chunk map=
-s")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+test_mb_mark_used() and test_mb_free_blocks() call kunit_kzalloc() to 
+allocate memory, however both fail to ensure that the allocations 
+succeeded. If kunit_kzalloc() returns NULL, then dereferencing the 
+corresponding pointer without checking for NULL will lead to 
+a NULL pointer dereference.
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+To fix this call KUNIT_ASSERT_NOT_ERR_OR_NULL() to ensure 
+the allocation succeeded.
 
-Pushed into the github for-next branch, thanks.
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Fixes: ac96b56a2fbd ("ext4: Add unit test for mb_mark_used")
+Fixes: b7098e1fa7bc ("ext4: Add unit test for mb_free_blocks")
+Cc: stable@vger.kernel.org
+---
+ fs/ext4/mballoc-test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
+index bb2a223b207c..d634c12f1984 100644
+--- a/fs/ext4/mballoc-test.c
++++ b/fs/ext4/mballoc-test.c
+@@ -796,6 +796,7 @@ static void test_mb_mark_used(struct kunit *test)
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buddy);
+ 	grp = kunit_kzalloc(test, offsetof(struct ext4_group_info,
+ 				bb_counters[MB_NUM_ORDERS(sb)]), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, grp);
+ 
+ 	ret = ext4_mb_load_buddy(sb, TEST_GOAL_GROUP, &e4b);
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+@@ -860,6 +861,7 @@ static void test_mb_free_blocks(struct kunit *test)
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buddy);
+ 	grp = kunit_kzalloc(test, offsetof(struct ext4_group_info,
+ 				bb_counters[MB_NUM_ORDERS(sb)]), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, grp);
+ 
+ 	ret = ext4_mb_load_buddy(sb, TEST_GOAL_GROUP, &e4b);
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+-- 
+2.39.5
 
-
-> ---
->  fs/btrfs/volumes.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> index fb22d4425cb0..3f8afbd1ebb5 100644
-> --- a/fs/btrfs/volumes.c
-> +++ b/fs/btrfs/volumes.c
-> @@ -7155,6 +7155,7 @@ static int read_one_chunk(struct btrfs_key *key, st=
-ruct extent_buffer *leaf,
->                 btrfs_err(fs_info,
->                           "failed to add chunk map, start=3D%llu len=3D%l=
-lu: %d",
->                           map->start, map->chunk_len, ret);
-> +               btrfs_free_chunk_map(map);
->         }
->
->         return ret;
-> --
-> 2.25.1
->
->
 
