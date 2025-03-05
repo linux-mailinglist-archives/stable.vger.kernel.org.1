@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42BFA507D2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57671A50742
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F0516B89C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C1A97A8731
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869DA250C14;
-	Wed,  5 Mar 2025 18:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C033A250BE9;
+	Wed,  5 Mar 2025 17:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTfgsZUw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orT2PQzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8A91C860D;
-	Wed,  5 Mar 2025 18:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBB02505A7;
+	Wed,  5 Mar 2025 17:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197636; cv=none; b=rRzjnb9NKZKY9f66KhGEVeApVCBSNQp+LYep0Xvox6GyO8Khcg3b6j/71FJH+kcrApld4VbmtoIKEzbvRuXWZRUaX1m/0gISIGpZBvzWJJX/hXEjrGt9uuTdnu/96zXZTng7DeQXm9babuEW+VPs2OGHiaHlmKuHagR5R6djXXM=
+	t=1741197276; cv=none; b=uYVfCzBN1Um/RTwxcZnOMgg9c/WCkIH6qvUfkTOGK5k+XXiWOyBp6zaI7srJ5gbTuZyd/O0L3jbbhoJR2wfHXe1PIKFXT3z7SXAGlCJFyNtR+EXeIavuDORfOri3DxfyqVRZ4yqgwhXMEFNvPrbLbpMZNRVb8GdrjrurKdKmt2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197636; c=relaxed/simple;
-	bh=H8a3VyebIW29XdaRiD/5eP57g/6piX3LK6KWa24yBPo=;
+	s=arc-20240116; t=1741197276; c=relaxed/simple;
+	bh=X2tAiaB/A2H+vreCEMyg06gnGNEc+ktRzqEXFRXnViM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aetKIYTIzIWNJUay9EvW2YpMrxjCfMrDBWw1c1cKiPDQ7stOdP+z3C3obiwV/Pm3lmYbNN30t7TNaxKm59oLm5U8ffcAaYiVHlPGozEYFbdY1Gh6iNCx9K2FRjrr/sxzkeOUxLTxFTgSkRKVOuRhj++40MMsEw9W0ABXniah144=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTfgsZUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74CCC4CED1;
-	Wed,  5 Mar 2025 18:00:35 +0000 (UTC)
+	 MIME-Version; b=UIio80ffKkahKKS6pp0eKdVoZ6fDBB1u3RFALph/eAZs8Y0VO9GVNDohiWdvS0IEYMQ5BaNUrbXYBuZVnVglNffcVF9QjjmowyLCEc2yDoGToMWgDPeVKbOtPCqp5dX9hh9HAuIixBUq/FW5SxQFkYM0KybdmkGU2zAHxJ0lpSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orT2PQzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFB7C4CED1;
+	Wed,  5 Mar 2025 17:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197636;
-	bh=H8a3VyebIW29XdaRiD/5eP57g/6piX3LK6KWa24yBPo=;
+	s=korg; t=1741197273;
+	bh=X2tAiaB/A2H+vreCEMyg06gnGNEc+ktRzqEXFRXnViM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTfgsZUwbcL2ifasYXYajMsJwGw/5q/Iq5zedSwzAE+qadLLMAS+QEMtOaY9BKCJq
-	 hwbm2fkpXHpeCAh82uG0ejktq72FU7ttL8LYFvJ9Q4wv2RkZWbGR4ffHYIXyfsikL7
-	 Ntpn3wvFP728dS0vQj1XbllP9w6PqcOr8VIbFWa8=
+	b=orT2PQzocFuiyZ3/2LBI1d+/nbgPW+g8eGZ6BTKu7eYdSvmDuBxfB08idVWI7Ox0h
+	 VKa1A2djevGbSZ386Sfbdt4l5NM3Pci0zRN1DpkUaaWeX5XmabN8wHmWjX1PkCiBQo
+	 Yj8MzRXhm72kjBdq4GVd6jgb+cpL2rpL1vb2+1GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Alexander Aring <aahringo@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aharon Landau <aharonl@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/142] net: ipv6: rpl_iptunnel: mitigate 2-realloc issue
+Subject: [PATCH 6.1 098/176] RDMA/mlx5: Remove implicit ODP cache entry
 Date: Wed,  5 Mar 2025 18:47:47 +0100
-Message-ID: <20250305174502.268802541@linuxfoundation.org>
+Message-ID: <20250305174509.396902593@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Aharon Landau <aharonl@nvidia.com>
 
-[ Upstream commit 985ec6f5e6235242191370628acb73d7a9f0c0ea ]
+[ Upstream commit 18b1746bddf5e7f6b2618966596d9517172a5cd7 ]
 
-This patch mitigates the two-reallocations issue with rpl_iptunnel by
-providing the dst_entry (in the cache) to the first call to
-skb_cow_head(). As a result, the very first iteration would still
-trigger two reallocations (i.e., empty cache), while next iterations
-would only trigger a single reallocation.
+Implicit ODP mkey doesn't have unique properties. It shares the same
+properties as the order 18 cache entry. There is no need to devote a
+special entry for that.
 
-Performance tests before/after applying this patch, which clearly shows
-there is no impact (it even shows improvement):
-- before: https://ibb.co/nQJhqwc
-- after: https://ibb.co/4ZvW6wV
-
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Cc: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 13e55fbaec17 ("net: ipv6: fix dst ref loop on input in rpl lwt")
+Link: https://lore.kernel.org/r/20230125222807.6921-3-michaelgur@nvidia.com
+Signed-off-by: Aharon Landau <aharonl@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: d97505baea64 ("RDMA/mlx5: Fix the recovery flow of the UMR QP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/rpl_iptunnel.c | 46 ++++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ drivers/infiniband/hw/mlx5/odp.c | 20 +++++---------------
+ include/linux/mlx5/driver.h      |  1 -
+ 2 files changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index db3c19a42e1ca..7ba22d2f2bfef 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -125,7 +125,8 @@ static void rpl_destroy_state(struct lwtunnel_state *lwt)
- }
- 
- static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
--			     const struct ipv6_rpl_sr_hdr *srh)
-+			     const struct ipv6_rpl_sr_hdr *srh,
-+			     struct dst_entry *cache_dst)
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index a5c9baec8be85..5f0a17382de73 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -406,6 +406,7 @@ static void mlx5_ib_page_fault_resume(struct mlx5_ib_dev *dev,
+ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
+ 						unsigned long idx)
  {
- 	struct ipv6_rpl_sr_hdr *isrh, *csrh;
- 	const struct ipv6hdr *oldhdr;
-@@ -153,7 +154,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
++	int order = order_base_2(MLX5_IMR_MTT_ENTRIES);
+ 	struct mlx5_ib_dev *dev = mr_to_mdev(imr);
+ 	struct ib_umem_odp *odp;
+ 	struct mlx5_ib_mr *mr;
+@@ -418,7 +419,8 @@ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
+ 	if (IS_ERR(odp))
+ 		return ERR_CAST(odp);
  
- 	hdrlen = ((csrh->hdrlen + 1) << 3);
- 
--	err = skb_cow_head(skb, hdrlen + skb->mac_len);
-+	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
- 	if (unlikely(err)) {
- 		kfree(buf);
- 		return err;
-@@ -186,7 +187,8 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
- 	return 0;
- }
- 
--static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
-+static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt,
-+		      struct dst_entry *cache_dst)
+-	mr = mlx5_mr_cache_alloc(dev, &dev->cache.ent[MLX5_IMR_MTT_CACHE_ENTRY],
++	BUILD_BUG_ON(order > MKEY_CACHE_LAST_STD_ENTRY);
++	mr = mlx5_mr_cache_alloc(dev, &dev->cache.ent[order],
+ 				 imr->access_flags);
+ 	if (IS_ERR(mr)) {
+ 		ib_umem_odp_release(odp);
+@@ -1595,20 +1597,8 @@ void mlx5_odp_init_mkey_cache_entry(struct mlx5_cache_ent *ent)
  {
- 	struct dst_entry *dst = skb_dst(skb);
- 	struct rpl_iptunnel_encap *tinfo;
-@@ -196,7 +198,7 @@ static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
- 
- 	tinfo = rpl_encap_lwtunnel(dst->lwtstate);
- 
--	return rpl_do_srh_inline(skb, rlwt, tinfo->srh);
-+	return rpl_do_srh_inline(skb, rlwt, tinfo->srh, cache_dst);
+ 	if (!(ent->dev->odp_caps.general_caps & IB_ODP_SUPPORT_IMPLICIT))
+ 		return;
+-
+-	switch (ent->order - 2) {
+-	case MLX5_IMR_MTT_CACHE_ENTRY:
+-		ent->ndescs = MLX5_IMR_MTT_ENTRIES;
+-		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
+-		ent->limit = 0;
+-		break;
+-
+-	case MLX5_IMR_KSM_CACHE_ENTRY:
+-		ent->ndescs = mlx5_imr_ksm_entries;
+-		ent->access_mode = MLX5_MKC_ACCESS_MODE_KSM;
+-		ent->limit = 0;
+-		break;
+-	}
++	ent->ndescs = mlx5_imr_ksm_entries;
++	ent->access_mode = MLX5_MKC_ACCESS_MODE_KSM;
  }
  
- static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
-@@ -208,14 +210,14 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ static const struct ib_device_ops mlx5_ib_dev_odp_ops = {
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 3c3e0f26c2446..6cea62ca76d6b 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -744,7 +744,6 @@ enum {
  
- 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
- 
--	err = rpl_do_srh(skb, rlwt);
--	if (unlikely(err))
--		goto drop;
--
- 	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
- 	local_bh_enable();
- 
-+	err = rpl_do_srh(skb, rlwt, dst);
-+	if (unlikely(err))
-+		goto drop;
-+
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -237,15 +239,15 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		local_bh_disable();
- 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
- 		local_bh_enable();
-+
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
-+		if (unlikely(err))
-+			goto drop;
- 	}
- 
- 	skb_dst_drop(skb);
- 	skb_dst_set(skb, dst);
- 
--	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
--	if (unlikely(err))
--		goto drop;
--
- 	return dst_output(net, sk, skb);
- 
- drop:
-@@ -262,29 +264,31 @@ static int rpl_input(struct sk_buff *skb)
- 
- 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
- 
--	err = rpl_do_srh(skb, rlwt);
--	if (unlikely(err))
--		goto drop;
--
- 	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
-+	local_bh_enable();
-+
-+	err = rpl_do_srh(skb, rlwt, dst);
-+	if (unlikely(err))
-+		goto drop;
- 
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&rlwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
-+			local_bh_enable();
- 		}
-+
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
-+		if (unlikely(err))
-+			goto drop;
- 	} else {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	}
--	local_bh_enable();
--
--	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
--	if (unlikely(err))
--		goto drop;
- 
- 	return dst_input(skb);
- 
+ enum {
+ 	MKEY_CACHE_LAST_STD_ENTRY = 20,
+-	MLX5_IMR_MTT_CACHE_ENTRY,
+ 	MLX5_IMR_KSM_CACHE_ENTRY,
+ 	MAX_MKEY_CACHE_ENTRIES
+ };
 -- 
 2.39.5
 
