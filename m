@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14499A5083B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A5EA50979
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFBC166B69
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4360D3A56A9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E3819067C;
-	Wed,  5 Mar 2025 18:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E417725335F;
+	Wed,  5 Mar 2025 18:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkuKQ2u+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJeS2dNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4BE20C004;
-	Wed,  5 Mar 2025 18:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17F8253356;
+	Wed,  5 Mar 2025 18:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197919; cv=none; b=sDIH/2Sbppls8A0j7kjM0LKOiA17y6paZM21F5GXs6TIV2MLjMTlSUBgwrkjO4VrNfMzOOB/0FMB5iVXEKNEYOx6JaSJ4Ucbgjs4ccl8Gk6L/RwvJjBusHL4SGDtSNmm0Ro/EN1jbJcLZ9qdj+urKMMYwrySSO+lcspL4YkjC1Y=
+	t=1741198610; cv=none; b=Xnq69dggmKu3Siu145ZT+AspeYOq8iRPQ8eH8OCoyDfQ6lct3PIBAx/EY3GaNsCQI7hJRRG3CqmfuC3SAMtTryltoH93MxgX3o02NnrnBO725TGfQ02lHfmvEJ+0jO7jxqQ4hWwF4kq9Ww4YIm6BbDuphsP4WgZHPbH7iBfSMC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197919; c=relaxed/simple;
-	bh=pOCk9WfbEz7OLnFs2P8iF5iiCz9e6BejIA5dr81EZ14=;
+	s=arc-20240116; t=1741198610; c=relaxed/simple;
+	bh=h88Ft+j4YT1ZxohW36aX82PASFK0QUEcd0FM+wAnWew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYy+0MK5sM0AG1x14WxKcOceuzMR8aU1wmj+0/Al0w8H8ZQt/fxKh2mCTwCKqhEZP6bnNeUya18uilZQ0K//WsmJMGN6fKkQau23r5FzM+6fQQkPqE7kdSXg3mFQQC2QR/THi2zGfkzor6PUXebt4EzFF57MeqUPzHPRZBzrwDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkuKQ2u+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42186C4CED1;
-	Wed,  5 Mar 2025 18:05:19 +0000 (UTC)
+	 MIME-Version; b=LOYjIvIRPFtdIcUDKftuV+/N4N8Fep9yvtVW8vykoVNwnkcbjMhOieK61QC6TfIl7L16H0rVuodLBxjZLiAVLtXyk0nOb12xvL0zQwdm3kvNz8HHdtrKYCrzgcUFYSzBA6EBFQezdypdiMJ7auoIap5tHJFPOTBqfo0uqxEd03E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJeS2dNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27552C4CED1;
+	Wed,  5 Mar 2025 18:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197919;
-	bh=pOCk9WfbEz7OLnFs2P8iF5iiCz9e6BejIA5dr81EZ14=;
+	s=korg; t=1741198610;
+	bh=h88Ft+j4YT1ZxohW36aX82PASFK0QUEcd0FM+wAnWew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkuKQ2u+v39cTT17vHzLOrBgtnG073XOIDDk5ZDYLoT/boDQ+sI4QL6Pz082NWIH9
-	 8BGG1KC6oY7nqPdQAZoE3+PSKZILFurgLsfZP31Lnrd0kIi1GrmYWLWlmJZVmZeB4F
-	 vdEpOBuwUluDbbOxBGwcqCs3YHZQcp4q82Y4bX/Q=
+	b=kJeS2dNPeXbARujZRZuW7kkaf8NXvZd/ePT2xYb8/UmVpTdMBgYcJKzArk1FQAs4R
+	 vnzuwNNZgiAtDOLXygmsA6MogmsK8GI/2GC1YcIEaSjM9WndK2ZrrAVTVKrneZx6Q+
+	 xYY68eX1v5z8/dxww/uIL/0wtKhJmja/P7qiXKKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 103/142] x86/microcode/intel: Save the microcode only after a successful late-load
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.13 086/157] perf/core: Add RCU read lock protection to perf_iterate_ctx()
 Date: Wed,  5 Mar 2025 18:48:42 +0100
-Message-ID: <20250305174504.469123010@linuxfoundation.org>
+Message-ID: <20250305174508.766045468@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Breno Leitao <leitao@debian.org>
 
-commit 2a1dada3d1cf8f80a27663653a371d99dbf5d540 upstream
+commit 0fe8813baf4b2e865d3b2c735ce1a15b86002c74 upstream.
 
-There are situations where the late microcode is loaded into memory but
-is not applied:
+The perf_iterate_ctx() function performs RCU list traversal but
+currently lacks RCU read lock protection. This causes lockdep warnings
+when running perf probe with unshare(1) under CONFIG_PROVE_RCU_LIST=y:
 
-  1) The rendezvous fails
-  2) The microcode is rejected by the CPUs
+	WARNING: suspicious RCU usage
+	kernel/events/core.c:8168 RCU-list traversed in non-reader section!!
 
-If any of this happens then the pointer which was updated at firmware
-load time is stale and subsequent CPU hotplug operations either fail to
-update or create inconsistent microcode state.
+	 Call Trace:
+	  lockdep_rcu_suspicious
+	  ? perf_event_addr_filters_apply
+	  perf_iterate_ctx
+	  perf_event_exec
+	  begin_new_exec
+	  ? load_elf_phdrs
+	  load_elf_binary
+	  ? lock_acquire
+	  ? find_held_lock
+	  ? bprm_execve
+	  bprm_execve
+	  do_execveat_common.isra.0
+	  __x64_sys_execve
+	  do_syscall_64
+	  entry_SYSCALL_64_after_hwframe
 
-Save the loaded microcode in a separate pointer before the late load is
-attempted and when successful, update the hotplug pointer accordingly
-via a new microcode_ops callback.
+This protection was previously present but was removed in commit
+bd2756811766 ("perf: Rewrite core context handling"). Add back the
+necessary rcu_read_lock()/rcu_read_unlock() pair around
+perf_iterate_ctx() call in perf_event_exec().
 
-Remove the pointless fallback in the loader to a microcode pointer which
-is never populated.
+[ mingo: Use scoped_guard() as suggested by Peter ]
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115902.505491309@linutronix.de
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250117-fix_perf_rcu-v1-1-13cb9210fc6a@debian.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c     |    4 ++++
- arch/x86/kernel/cpu/microcode/intel.c    |   30 +++++++++++++++---------------
- arch/x86/kernel/cpu/microcode/internal.h |    1 +
- 3 files changed, 20 insertions(+), 15 deletions(-)
+ kernel/events/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -403,6 +403,10 @@ static int microcode_reload_late(void)
- 	store_cpu_caps(&prev_info);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -8284,7 +8284,8 @@ void perf_event_exec(void)
  
- 	ret = stop_machine_cpuslocked(__reload_late, NULL, cpu_online_mask);
-+
-+	if (microcode_ops->finalize_late_load)
-+		microcode_ops->finalize_late_load(ret);
-+
- 	if (!ret) {
- 		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
- 			old, boot_cpu_data.microcode);
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -36,6 +36,7 @@ static const char ucode_path[] = "kernel
+ 	perf_event_enable_on_exec(ctx);
+ 	perf_event_remove_on_exec(ctx);
+-	perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
++	scoped_guard(rcu)
++		perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
  
- /* Current microcode patch used in early patching on the APs. */
- static struct microcode_intel *ucode_patch_va __read_mostly;
-+static struct microcode_intel *ucode_patch_late __read_mostly;
- 
- /* last level cache size per core */
- static unsigned int llc_size_per_core __ro_after_init;
-@@ -470,12 +471,9 @@ static enum ucode_state apply_microcode_
- 	if (WARN_ON(raw_smp_processor_id() != cpu))
- 		return UCODE_ERROR;
- 
--	mc = ucode_patch_va;
--	if (!mc) {
--		mc = uci->mc;
--		if (!mc)
--			return UCODE_NFOUND;
--	}
-+	mc = ucode_patch_late;
-+	if (!mc)
-+		return UCODE_NFOUND;
- 
- 	/*
- 	 * Save us the MSR write below - which is a particular expensive
-@@ -594,15 +592,7 @@ static enum ucode_state parse_microcode_
- 	if (!new_mc)
- 		return UCODE_NFOUND;
- 
--	/* Save for CPU hotplug */
--	save_microcode_patch((struct microcode_intel *)new_mc);
--	uci->mc = ucode_patch_va;
--
--	vfree(new_mc);
--
--	pr_debug("CPU%d found a matching microcode update with version 0x%x (current=0x%x)\n",
--		 cpu, cur_rev, uci->cpu_sig.rev);
--
-+	ucode_patch_late = (struct microcode_intel *)new_mc;
- 	return UCODE_NEW;
- }
- 
-@@ -659,10 +649,20 @@ static enum ucode_state request_microcod
- 	return ret;
- }
- 
-+static void finalize_late_load(int result)
-+{
-+	if (!result)
-+		save_microcode_patch(ucode_patch_late);
-+
-+	vfree(ucode_patch_late);
-+	ucode_patch_late = NULL;
-+}
-+
- static struct microcode_ops microcode_intel_ops = {
- 	.request_microcode_fw	= request_microcode_fw,
- 	.collect_cpu_info	= collect_cpu_info,
- 	.apply_microcode	= apply_microcode_intel,
-+	.finalize_late_load	= finalize_late_load,
- };
- 
- static __init void calc_llc_size_per_core(struct cpuinfo_x86 *c)
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -31,6 +31,7 @@ struct microcode_ops {
- 	 */
- 	enum ucode_state (*apply_microcode)(int cpu);
- 	int (*collect_cpu_info)(int cpu, struct cpu_signature *csig);
-+	void (*finalize_late_load)(int result);
- };
- 
- extern struct ucode_cpu_info ucode_cpu_info[];
+ 	perf_unpin_context(ctx);
+ 	put_ctx(ctx);
 
 
 
