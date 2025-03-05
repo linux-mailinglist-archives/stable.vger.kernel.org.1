@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-120700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F4EA507ED
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B046A507CC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95EFC3A65BD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BB80174EFD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC38E1C6FF9;
-	Wed,  5 Mar 2025 18:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600A124CEE3;
+	Wed,  5 Mar 2025 18:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Doj4bh69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diKis00v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D3914B075;
-	Wed,  5 Mar 2025 18:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF1014B075;
+	Wed,  5 Mar 2025 18:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197719; cv=none; b=KVLFfy7w8/EzFuex7PDFZkoPGGxA4hnrftkip9tS9BIGhGMEwZU6VTHyFxvdhlMFXlJczzZeBIi8mVTxO/bto+12sMs+vzFwxGGx/eD4Uk0b5VBEEt0PLgD0RygCndPSiSi2Dwx+bxu/+Z5XCZboUU3B/ytX8I6gsmAZ+Ac1GgU=
+	t=1741197622; cv=none; b=EYQRldHBaMB4818+hnisX4K7rmZSn7yAS8ut6Ji20q9mI7ugY/IXvB1ACD449EV68rJ3P2CMvsAXWikUKHwjeedh9JW4UPNeBDkbYQen2HhYKTaJC8fO0shrEM1GrvQtTlqrOz7rOrqT0kkewXjEggwgUbb5AAvzNsULbGc8rYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197719; c=relaxed/simple;
-	bh=X2en+sAH6G9CcOPIZwVG6+rMrqdLgHekgz6y+mh+mSE=;
+	s=arc-20240116; t=1741197622; c=relaxed/simple;
+	bh=rQO+uO9SujLCI93z0W8xp0QS/0Zb0NE+vaAlSs8maf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llQw0QqfSMQteu5iSnM1oUF/PHYMpgckg9D5r6ekubQ4on/t9ZJSXpoiX3+x9fP97IByJpfw8hprGaohv4/XEaGnSka7mJWRdxTMtTOmiyrL2Z1jWyQ+pUiCBXmyAH/vpwF5rMi2oqiw8xhAvCc/tzpiiPQgEiW/SyEYj5q9p+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Doj4bh69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22CFC4CED1;
-	Wed,  5 Mar 2025 18:01:58 +0000 (UTC)
+	 MIME-Version; b=YVo1HrQZb5xwyKoITNgXH49I1aGe/Cj6zFVsnWVKaWkVGvDhwfxg5Ov8lKmM4QmkI7nlfuX0Iavb/VTYyMFsNl4k43ySLduJl8KHP1Bwce7cTEg+DtOqOG/M4DWyrZoTU6Ce0reuLQMnWCEFK2qaw3GD6eX3oK1uTi59HdUPWi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diKis00v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9C5C4CED1;
+	Wed,  5 Mar 2025 18:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197719;
-	bh=X2en+sAH6G9CcOPIZwVG6+rMrqdLgHekgz6y+mh+mSE=;
+	s=korg; t=1741197621;
+	bh=rQO+uO9SujLCI93z0W8xp0QS/0Zb0NE+vaAlSs8maf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Doj4bh69xgsYmbBu6iAbzU6Z/KibjjVWSLgLlsvtkLb/Gj/G1LMsZG0f8hVakavwx
-	 i2tQFQnbXB6DtWQUWHK7KQniKQGENVzSh43qjg65FCAf79joQK7HMywKpElZqUWVKU
-	 f/L+8Gye7B6RfcI3h4BlTJ+QulK7P6mMhvwRy4LQ=
+	b=diKis00vZk5/Sbg86MOZTPyGiauswWI8m8eC3KkYdRjYLe9K2ttDqtRa1bQUwAXAn
+	 fyabs/EEarp3wI2hYFdSPHrFK3yQ3CtyTU/1Y9JFqiZtYgyBvDVdGN9YGZrny+BuaS
+	 K/8tEYSvq1ytOg4llIGkG6X85IX6jVl8iZ82eyCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/142] ipvs: Always clear ipvs_property flag in skb_scrub_packet()
-Date: Wed,  5 Mar 2025 18:47:33 +0100
-Message-ID: <20250305174501.708569757@linuxfoundation.org>
+Subject: [PATCH 6.6 035/142] firmware: cs_dsp: Remove async regmap writes
+Date: Wed,  5 Mar 2025 18:47:34 +0100
+Message-ID: <20250305174501.747364791@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
 References: <20250305174500.327985489@linuxfoundation.org>
@@ -67,49 +66,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Philo Lu <lulie@linux.alibaba.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit de2c211868b9424f9aa9b3432c4430825bafb41b ]
+[ Upstream commit fe08b7d5085a9774abc30c26d5aebc5b9cdd6091 ]
 
-We found an issue when using bpf_redirect with ipvs NAT mode after
-commit ff70202b2d1a ("dev_forward_skb: do not scrub skb mark within
-the same name space"). Particularly, we use bpf_redirect to return
-the skb directly back to the netif it comes from, i.e., xnet is
-false in skb_scrub_packet(), and then ipvs_property is preserved
-and SNAT is skipped in the rx path.
+Change calls to async regmap write functions to use the normal
+blocking writes so that the cs35l56 driver can use spi_bus_lock() to
+gain exclusive access to the SPI bus.
 
-ipvs_property has been already cleared when netns is changed in
-commit 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when
-SKB net namespace changed"). This patch just clears it in spite of
-netns.
+As this is part of a fix, it makes only the minimal change to swap the
+functions to the blocking equivalents. There's no need to risk
+reworking the buffer allocation logic that is now partially redundant.
 
-Fixes: 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when SKB net namespace changed")
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Link: https://patch.msgid.link/20250222033518.126087-1-lulie@linux.alibaba.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The async writes are a 12-year-old workaround for inefficiency of
+synchronous writes in the SPI subsystem. The SPI subsystem has since
+been changed to avoid the overheads, so this workaround should not be
+necessary.
+
+The cs35l56 driver needs to use spi_bus_lock() prevent bus activity
+while it is soft-resetting the cs35l56. But spi_bus_lock() is
+incompatible with spi_async() calls, which will fail with -EBUSY.
+
+Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250225131843.113752-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/cirrus/cs_dsp.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index f0a9ef1aeaa29..21a83e26f004b 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5867,11 +5867,11 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- 	skb->offload_fwd_mark = 0;
- 	skb->offload_l3_fwd_mark = 0;
- #endif
-+	ipvs_reset(skb);
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index e62ffffe5fb8d..4ce5681be18f0 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -1562,8 +1562,8 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 				goto out_fw;
+ 			}
  
- 	if (!xnet)
- 		return;
+-			ret = regmap_raw_write_async(regmap, reg, buf->buf,
+-						     le32_to_cpu(region->len));
++			ret = regmap_raw_write(regmap, reg, buf->buf,
++					       le32_to_cpu(region->len));
+ 			if (ret != 0) {
+ 				cs_dsp_err(dsp,
+ 					   "%s.%d: Failed to write %d bytes at %d in %s: %d\n",
+@@ -1578,12 +1578,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 		regions++;
+ 	}
  
--	ipvs_reset(skb);
- 	skb->mark = 0;
- 	skb_clear_tstamp(skb);
- }
+-	ret = regmap_async_complete(regmap);
+-	if (ret != 0) {
+-		cs_dsp_err(dsp, "Failed to complete async write: %d\n", ret);
+-		goto out_fw;
+-	}
+-
+ 	if (pos > firmware->size)
+ 		cs_dsp_warn(dsp, "%s.%d: %zu bytes at end of file\n",
+ 			    file, regions, pos - firmware->size);
+@@ -1591,7 +1585,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
+ 	cs_dsp_debugfs_save_wmfwname(dsp, file);
+ 
+ out_fw:
+-	regmap_async_complete(regmap);
+ 	cs_dsp_buf_free(&buf_list);
+ 	kfree(text);
+ 
+@@ -2287,8 +2280,8 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 			cs_dsp_dbg(dsp, "%s.%d: Writing %d bytes at %x\n",
+ 				   file, blocks, le32_to_cpu(blk->len),
+ 				   reg);
+-			ret = regmap_raw_write_async(regmap, reg, buf->buf,
+-						     le32_to_cpu(blk->len));
++			ret = regmap_raw_write(regmap, reg, buf->buf,
++					       le32_to_cpu(blk->len));
+ 			if (ret != 0) {
+ 				cs_dsp_err(dsp,
+ 					   "%s.%d: Failed to write to %x in %s: %d\n",
+@@ -2300,10 +2293,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 		blocks++;
+ 	}
+ 
+-	ret = regmap_async_complete(regmap);
+-	if (ret != 0)
+-		cs_dsp_err(dsp, "Failed to complete async write: %d\n", ret);
+-
+ 	if (pos > firmware->size)
+ 		cs_dsp_warn(dsp, "%s.%d: %zu bytes at end of file\n",
+ 			    file, blocks, pos - firmware->size);
+@@ -2311,7 +2300,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
+ 	cs_dsp_debugfs_save_binname(dsp, file);
+ 
+ out_fw:
+-	regmap_async_complete(regmap);
+ 	cs_dsp_buf_free(&buf_list);
+ 	kfree(text);
+ 
+@@ -2523,8 +2511,8 @@ static int cs_dsp_adsp2_enable_core(struct cs_dsp *dsp)
+ {
+ 	int ret;
+ 
+-	ret = regmap_update_bits_async(dsp->regmap, dsp->base + ADSP2_CONTROL,
+-				       ADSP2_SYS_ENA, ADSP2_SYS_ENA);
++	ret = regmap_update_bits(dsp->regmap, dsp->base + ADSP2_CONTROL,
++				 ADSP2_SYS_ENA, ADSP2_SYS_ENA);
+ 	if (ret != 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
