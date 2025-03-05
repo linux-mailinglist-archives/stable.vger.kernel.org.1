@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-120948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAEAAA50918
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC8CA50859
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6BB33AA0D2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01D227A7DC6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E082512C0;
-	Wed,  5 Mar 2025 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA741C860D;
+	Wed,  5 Mar 2025 18:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBnKj2oa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph7v6BnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DC525291D;
-	Wed,  5 Mar 2025 18:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE16A19C542;
+	Wed,  5 Mar 2025 18:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198439; cv=none; b=g9AcoZOjuiLY70czrefS2OD+XXBloaMV7lGVikdGfHrgN72uM1GvdbB5gn+15FFOM6IRNKvuCG4dz22x29mtvJHDSusl1bLsJryGC8kC0hnvyi2Fvfz401DwkqtaIkfJb3A+2yr8nmmnQZ0OVXHDagD45rQLzGKtcV98JnG4uFo=
+	t=1741197996; cv=none; b=maTp323lWqqUS1Ca2eqF9Xm1zpemTg6WG6O629keXrrsQ9BcDYb4nGifltNCVsH/hsYhLkdrEP2vRqkE277uP7wjjdU/9lH7s63ZMmTWsoVjNGfNQUBWSkV+7GbjakJIiAUnIyjvYiY72fKUVVuKX8s8TSTE0d9PM6puyE9FHvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198439; c=relaxed/simple;
-	bh=u+4h4VuAylCqDtY7EPPm16alR9zYYBB4egbxpX4UiSg=;
+	s=arc-20240116; t=1741197996; c=relaxed/simple;
+	bh=ybA2fcwTblTTp0qcZEsDAx9gffUQC+9YeoDAW/2YxQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhnsDnVFsi+T+L+a2gjc5q4Z76ItBWH2t7GEb6LDQraXn91oI3K+9FM3CMNaplaj/dW/IPfk1sFznoFLpcyPeblyypE0mUZD7S6D4ec20nTON7++xWgI6vzQG89VTOlIysJ9R40mxFdxQtnYc0pqZKEc4G2H096UJyNnH1wuEUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBnKj2oa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5373BC4CED1;
-	Wed,  5 Mar 2025 18:13:59 +0000 (UTC)
+	 MIME-Version; b=fJEoou+3rON9DLikez/q9NxOJwpMiyIxS9mhSSnM8bXC9+SOQY+G39Z1B7YbB/79sKE4myDALWl0rBjGHryuk0YibabqyNwBTxyBAezdH//rf5k1YUqlWi3CNlgVVitHxeQ07wjd8M3JezGxq7IkMhu6b8+ePmMXlcxkRekp8zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph7v6BnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8FEC4CED1;
+	Wed,  5 Mar 2025 18:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198439;
-	bh=u+4h4VuAylCqDtY7EPPm16alR9zYYBB4egbxpX4UiSg=;
+	s=korg; t=1741197995;
+	bh=ybA2fcwTblTTp0qcZEsDAx9gffUQC+9YeoDAW/2YxQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBnKj2oaOjviu7I3fMMAiLyK3C6DCnFE2YXfEdD+K1cZYaUBdBOOuHrHCzHMUucmR
-	 MH/agK5V+5+EvuOd3La4LClEPdHiMmUVbOyQCDtS0KmXYZi8Pj53YnPxoPmm9ygypS
-	 Kir72uV2ZAbS4W/O3gZwda2tLwSt4yibF5yq9VDo=
+	b=Ph7v6BnJMVD1eQZySLYJw0dNyC4ck81RdV8dvfYFdsJ98xNAyVWc4CREalBxJA/eJ
+	 urP3aTrjqWUKShFATQwQedSaKNfGFgtTEirGAWDJyxmaXedTaqicMVn55C4+xtNicO
+	 XH7YhRK9bYfjigNa/b6yQI9mKcJKT1FML0d8l7fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 021/157] scsi: ufs: core: Set default runtime/system PM levels before ufshcd_hba_init()
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 6.12 028/150] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
 Date: Wed,  5 Mar 2025 18:47:37 +0100
-Message-ID: <20250305174506.141430734@linuxfoundation.org>
+Message-ID: <20250305174504.946021365@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit fe06b7c07f3fbcce2a2ca6f7b0d543b5699ea00f ]
+[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
 
-Commit bb9850704c04 ("scsi: ufs: core: Honor runtime/system PM levels if
-set by host controller drivers") introduced the check for setting default
-PM levels only if the levels are uninitialized by the host controller
-drivers. But it missed the fact that the levels could be initialized to 0
-(UFS_PM_LVL_0) on purpose by the controller drivers. Even though none of
-the drivers are doing so now, the logic should be fixed irrespectively.
+We fixed the UAF issue in USB MIDI code by canceling the pending work
+at closing each MIDI output device in the commit below.  However, this
+assumed that it's the only one that is tied with the endpoint, and it
+resulted in unexpected data truncations when multiple devices are
+assigned to a single endpoint and opened simultaneously.
 
-So set the default levels unconditionally before calling ufshcd_hba_init()
-API which initializes the controller drivers. It ensures that the
-controller drivers could override the default levels if required.
+For addressing the unexpected MIDI message drops, simply replace
+cancel_work_sync() with flush_work().  The drain callback should have
+been already invoked before the close callback, hence the port->active
+flag must be already cleared.  So this just assures that the pending
+work is finished before freeing the resources.
 
-Fixes: bb9850704c04 ("scsi: ufs: core: Honor runtime/system PM levels if set by host controller drivers")
-Reported-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250219105047.49932-1-manivannan.sadhasivam@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
+Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
+Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
+Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ sound/usb/midi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 37b626e128f95..a5bb6ea96460c 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10494,6 +10494,21 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 	 */
- 	spin_lock_init(&hba->clk_gating.lock);
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 737dd00e97b14..779d97d31f170 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1145,7 +1145,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
+ {
+ 	struct usbmidi_out_port *port = substream->runtime->private_data;
  
-+	/*
-+	 * Set the default power management level for runtime and system PM.
-+	 * Host controller drivers can override them in their
-+	 * 'ufs_hba_variant_ops::init' callback.
-+	 *
-+	 * Default power saving mode is to keep UFS link in Hibern8 state
-+	 * and UFS device in sleep state.
-+	 */
-+	hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+						UFS_SLEEP_PWR_MODE,
-+						UIC_LINK_HIBERN8_STATE);
-+	hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
-+						UFS_SLEEP_PWR_MODE,
-+						UIC_LINK_HIBERN8_STATE);
-+
- 	err = ufshcd_hba_init(hba);
- 	if (err)
- 		goto out_error;
-@@ -10607,21 +10622,6 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 		goto out_disable;
- 	}
- 
--	/*
--	 * Set the default power management level for runtime and system PM if
--	 * not set by the host controller drivers.
--	 * Default power saving mode is to keep UFS link in Hibern8 state
--	 * and UFS device in sleep state.
--	 */
--	if (!hba->rpm_lvl)
--		hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
--						UFS_SLEEP_PWR_MODE,
--						UIC_LINK_HIBERN8_STATE);
--	if (!hba->spm_lvl)
--		hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
--						UFS_SLEEP_PWR_MODE,
--						UIC_LINK_HIBERN8_STATE);
--
- 	INIT_DELAYED_WORK(&hba->rpm_dev_flush_recheck_work, ufshcd_rpm_dev_flush_recheck_work);
- 	INIT_DELAYED_WORK(&hba->ufs_rtc_update_work, ufshcd_rtc_work);
+-	cancel_work_sync(&port->ep->work);
++	flush_work(&port->ep->work);
+ 	return substream_open(substream, 0, 0);
+ }
  
 -- 
 2.39.5
