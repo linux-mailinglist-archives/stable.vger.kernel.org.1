@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-120409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F85A4F9BA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 10:18:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33176A4F9BF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 10:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A11B16DC9F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 09:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4BF016D1EF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 09:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E7C204698;
-	Wed,  5 Mar 2025 09:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3B22040B0;
+	Wed,  5 Mar 2025 09:18:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [195.16.41.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EDA20468E;
-	Wed,  5 Mar 2025 09:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F13A202F8B;
+	Wed,  5 Mar 2025 09:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.16.41.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741166282; cv=none; b=Qj3zPCR+rt1D2uInknXs84Wjr7ZEwj8LH3c1gKrWdwfV3kqxAHCR7hJpsv0YoluM2HSrqINQQ2Yv7xEP+xWHi181pzWuA18u3aYdV72gN5obgX7PcDxHYVz93eO5PM2/QKF9+kpqGQVZN0x9kDj3W8hqf8IMgZYOP5+OL6gSC4M=
+	t=1741166311; cv=none; b=r5e6Gd3pDdiGDDJZwyMQ0KEKi+WcZJHFk1N4YGWGWTnra0S5zb4qGInR2MeZD6nfrz7dbEgc0wsxfCpfqEIc/DbC7PennlC8xgRejX5vW0NpCtGqUa0aomElT6ptAoaiU5Gt64jUkc0ek8YRjh5y8CO5fZHezbXsr0NaZ6OSXZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741166282; c=relaxed/simple;
-	bh=Ilo4JcNjHF7XZXEVhw7mHsFf7oF7sGozaS9Jvi5jJRg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XGLny0y2SsaMgePCaY1UdgEcj1jHiJq56eP68d3OaLOC4qo4CQNHYW6CLHcdreIk2HQdll7DLO0WmxRNb6fEs9UVo1zpPKngAH/1o4QQ5kJqAhktZASP7+9GBr4QX7tzqvoH6Uq8mm3t7j/HVHTgnVUXJ9xB5QShaS6hQGdFDhU=
+	s=arc-20240116; t=1741166311; c=relaxed/simple;
+	bh=2T7PyLWGQs6IqcVaFBW7INzqTQQS61Y992i1Ksfeono=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UfuynqgFUJ4UiJG0cM++/XoKxENvNAtnOnQaZfaCIxXHDxTlYUH4Qw+a4G2Q+5FyRRFu34fmJsRTiobZlUSPnz3PmjefAG9/2y9TmTO9t4vDT6VzuK8sRcGFQGfr8NVdx6kMiL6np9eJJ3rS+EXoqMrvDWk4Oas7aGNIE+mG8ko=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=195.16.41.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id EFC101F96B;
-	Wed,  5 Mar 2025 12:17:55 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail05.astralinux.ru [10.177.185.111])
+Received: from gca-msk-a-srv-ksmg02.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 16CFE1F982;
+	Wed,  5 Mar 2025 12:18:26 +0300 (MSK)
+Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail03.astralinux.ru [10.177.185.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Wed,  5 Mar 2025 12:17:54 +0300 (MSK)
+	Wed,  5 Mar 2025 12:18:25 +0300 (MSK)
 Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.198.62.40])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4Z76Qn2n49z1c0sm;
-	Wed,  5 Mar 2025 12:17:53 +0300 (MSK)
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4Z76RN6ZcFz1h0Bc;
+	Wed,  5 Mar 2025 12:18:24 +0300 (MSK)
 From: Alexey Panov <apanov@astralinux.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -52,9 +52,9 @@ Cc: Alexey Panov <apanov@astralinux.ru>,
 	David Hildenbrand <david@redhat.com>,
 	syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com,
 	"Liam R . Howlett" <Liam.Howlett@Oracle.com>
-Subject: [PATCH 6.1] mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM
-Date: Wed,  5 Mar 2025 12:17:43 +0300
-Message-Id: <20250305091743.19962-1-apanov@astralinux.ru>
+Subject: [PATCH 5.10/5.15] mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM
+Date: Wed,  5 Mar 2025 12:18:20 +0300
+Message-Id: <20250305091820.20110-1-apanov@astralinux.ru>
 X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,7 +66,7 @@ Content-Transfer-Encoding: 8bit
 X-KSMG-AntiPhishing: NotDetected, bases: 2025/03/05 07:47:00
 X-KSMG-AntiSpam-Auth: dkim=none
 X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, lore.kernel.org:7.1.1;lkml.kernel.org:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Info: LuaCore: 51 0.3.51 68896fb0083a027476849bf400a331a2d5d94398, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, lkml.kernel.org:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1, FromAlignment: s
 X-KSMG-AntiSpam-Interceptor-Info: scan successful
 X-KSMG-AntiSpam-Lua-Profiles: 191497 [Mar 05 2025]
 X-KSMG-AntiSpam-Method: none
@@ -130,26 +130,39 @@ Reviewed-by: Christoph Lameter <cl@linux.com>
 Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[Alexey: drop mmap_read_unlock bacause there is no mmap_read_lock ]
+[Alexey: drop mmap_read_unlock because there is no mmap_read_lock and
+use find_vma instead of mm->mmap]
 Signed-off-by: Alexey Panov <apanov@astralinux.ru>
 ---
- mm/mempolicy.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/mempolicy.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 399d8cb48813..be18b399a294 100644
+index f089de8564ca..acd186331e1f 100644
 --- a/mm/mempolicy.c
 +++ b/mm/mempolicy.c
-@@ -1068,6 +1068,9 @@ static int migrate_to_node(struct mm_struct *mm, int source, int dest,
+@@ -1048,6 +1048,7 @@ static int migrate_to_node(struct mm_struct *mm, int source, int dest,
+ 			   int flags)
+ {
+ 	nodemask_t nmask;
++	struct vm_area_struct *vma;
+ 	LIST_HEAD(pagelist);
+ 	int err = 0;
+ 	struct migration_target_control mtc = {
+@@ -1063,8 +1064,12 @@ static int migrate_to_node(struct mm_struct *mm, int source, int dest,
+ 	 * need migration.  Between passing in the full user address
  	 * space range and MPOL_MF_DISCONTIG_OK, this call can not fail.
  	 */
- 	vma = find_vma(mm, 0);
++	vma = find_vma(mm, 0);
 +	if (unlikely(!vma)) {
 +		return 0;
 +	}
  	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
- 	queue_pages_range(mm, vma->vm_start, mm->task_size, &nmask,
+-	queue_pages_range(mm, mm->mmap->vm_start, mm->task_size, &nmask,
++	queue_pages_range(mm, vma->vm_start, mm->task_size, &nmask,
  			flags | MPOL_MF_DISCONTIG_OK, &pagelist);
+ 
+ 	if (!list_empty(&pagelist)) {
 -- 
 2.30.2
 
