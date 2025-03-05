@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-120771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CC1A50844
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D29A508E5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE523A6896
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10A7E176511
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C347E1C863D;
-	Wed,  5 Mar 2025 18:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AA02517A0;
+	Wed,  5 Mar 2025 18:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7Tr86xf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C89U2Syv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821C717B505;
-	Wed,  5 Mar 2025 18:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A921C5D4E;
+	Wed,  5 Mar 2025 18:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197925; cv=none; b=WRKUKaAb3VUMN9/6hjn1dTKPUgaT6Z9rUwizaV7PjCgMHHL7hXs7TMCwkaHxKSg8T/aZC5CGwtgmYvajjo5yb2cgLnSMtodWwcINAeg7DaFvESm24RGcV17+LXVmd2pBLVmE8eIgCMmNYAHT82S73JIRGd+yUyoHb3qbYWJ/Ozs=
+	t=1741198300; cv=none; b=jRaEN5/RikKufL+3WphiBp4xp61Fqe9RGotpLXw4ehhG572p9DSQOE0tyD0KpZ7TqiSuESRaENzvGAlCozLr0/AAi5IHEq7jYar9fFY5vipZrbt37uNmrHKLhCktOUKJ4fSyNWYXe7sYP3nfiCu8lOOk56SjFZ7btja3NVXXOT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197925; c=relaxed/simple;
-	bh=DNslw0S+cfmswe1IKmvROcuyHkb0jMKkGPcdr22SFTo=;
+	s=arc-20240116; t=1741198300; c=relaxed/simple;
+	bh=JITbePs8ZyDrxVw/7R1XXFNfVULncuBXlFYDuintVl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qb09qrv2Y4FfbJoaxADnxBXJqdJvjF/m3YeZomfkZ7IWoJO5g3j+WFwFWk8xR2f3ooINWyP1rrrMJNT2OcGVtjDieomOldOgFKP4a4Rn6YLjlJ53j8+I8v/HMb7eL09q/fMYdI5PlqKTkPplToZf5AXQpWHm/oshnsiG5HQ+pc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7Tr86xf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C453C4CED1;
-	Wed,  5 Mar 2025 18:05:24 +0000 (UTC)
+	 MIME-Version; b=S9q6/rW3hClzd0NzQsdHImIBs3jxR3gGuzRr88aTvAVJbBJ39eCIWokTSA66HK2Xqi2A0QivlcmF2DM59bCUO9lRRoYl6zPRGxADoq5V2b1wiP0C1b203wK6G4toZyIw0DN6VZSc+YtM9VQriBvyOMUfWjPg6uI0WIfGWxs70T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C89U2Syv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94102C4CED1;
+	Wed,  5 Mar 2025 18:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197925;
-	bh=DNslw0S+cfmswe1IKmvROcuyHkb0jMKkGPcdr22SFTo=;
+	s=korg; t=1741198300;
+	bh=JITbePs8ZyDrxVw/7R1XXFNfVULncuBXlFYDuintVl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7Tr86xfLtCSHwWoCECnRkB058px2p79Qxdlhdc9uIMvi9mVUet+BBCZNL5KAiZT3
-	 +cpeXvCun0KjTp4bVhIRASCKxMikhrP/4V0UVspKlHECrS4x8eSNq9lTyEtYqGYFeP
-	 SAcDTpx2iketuGuptq7CEZhaZE/QZWQ2bdE3wJ/E=
+	b=C89U2Syvdsm/fSkcb3GDLc0SnVqxQhPORk5hjtammsYkhlbg/FMBbF746pzXhCTp1
+	 blQR0P8XoTDsqlQZhJlpA59Cn66uduWoP5UTGkyTo3ciBSiQuXap6EzNo13mXml5KF
+	 e13w+r5WTFFqqRq/5wScCr70DTjCAQ+wpQscB2ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 140/142] x86/microcode/AMD: Get rid of the _load_microcode_amd() forward declaration
-Date: Wed,  5 Mar 2025 18:49:19 +0100
-Message-ID: <20250305174505.961905822@linuxfoundation.org>
+	Milan Broz <gmazyland@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.12 131/150] dm-integrity: Avoid divide by zero in table status in Inline mode
+Date: Wed,  5 Mar 2025 18:49:20 +0100
+Message-ID: <20250305174509.079465344@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Milan Broz <gmazyland@gmail.com>
 
-commit b39c387164879eef71886fc93cee5ca7dd7bf500 upstream
+commit 7fb39882b20c98a9a393c244c86b56ef6933cff8 upstream.
 
-Simply move save_microcode_in_initrd() down.
+In Inline mode, the journal is unused, and journal_sectors is zero.
 
-No functional changes.
+Calculating the journal watermark requires dividing by journal_sectors,
+which should be done only if the journal is configured.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250211163648.30531-5-bp@kernel.org
+Otherwise, a simple table query (dmsetup table) can cause OOPS.
+
+This bug did not show on some systems, perhaps only due to
+compiler optimization.
+
+On my 32-bit testing machine, this reliably crashes with the following:
+
+ : Oops: divide error: 0000 [#1] PREEMPT SMP
+ : CPU: 0 UID: 0 PID: 2450 Comm: dmsetup Not tainted 6.14.0-rc2+ #959
+ : EIP: dm_integrity_status+0x2f8/0xab0 [dm_integrity]
+ ...
+
+Signed-off-by: Milan Broz <gmazyland@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: fb0987682c62 ("dm-integrity: introduce the Inline mode")
+Cc: stable@vger.kernel.org # 6.11+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |   54 +++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
+ drivers/md/dm-integrity.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -597,34 +597,6 @@ void __init load_ucode_amd_bsp(struct ea
- 		native_rdmsr(MSR_AMD64_PATCH_LEVEL, ed->new_rev, dummy);
- }
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index ee9f7cecd78e..555dc06b9422 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -3790,10 +3790,6 @@ static void dm_integrity_status(struct dm_target *ti, status_type_t type,
+ 		break;
  
--static enum ucode_state _load_microcode_amd(u8 family, const u8 *data, size_t size);
+ 	case STATUSTYPE_TABLE: {
+-		__u64 watermark_percentage = (__u64)(ic->journal_entries - ic->free_sectors_threshold) * 100;
 -
--static int __init save_microcode_in_initrd(void)
--{
--	unsigned int cpuid_1_eax = native_cpuid_eax(1);
--	struct cpuinfo_x86 *c = &boot_cpu_data;
--	struct cont_desc desc = { 0 };
--	enum ucode_state ret;
--	struct cpio_data cp;
--
--	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
--		return 0;
--
--	if (!find_blobs_in_containers(&cp))
--		return -EINVAL;
--
--	scan_containers(cp.data, cp.size, &desc);
--	if (!desc.mc)
--		return -EINVAL;
--
--	ret = _load_microcode_amd(x86_family(cpuid_1_eax), desc.data, desc.size);
--	if (ret > UCODE_UPDATED)
--		return -EINVAL;
--
--	return 0;
--}
--early_initcall(save_microcode_in_initrd);
--
- static inline bool patch_cpus_equivalent(struct ucode_patch *p,
- 					 struct ucode_patch *n,
- 					 bool ignore_stepping)
-@@ -1008,6 +980,32 @@ static enum ucode_state load_microcode_a
- 	return ret;
- }
- 
-+static int __init save_microcode_in_initrd(void)
-+{
-+	unsigned int cpuid_1_eax = native_cpuid_eax(1);
-+	struct cpuinfo_x86 *c = &boot_cpu_data;
-+	struct cont_desc desc = { 0 };
-+	enum ucode_state ret;
-+	struct cpio_data cp;
+-		watermark_percentage += ic->journal_entries / 2;
+-		do_div(watermark_percentage, ic->journal_entries);
+ 		arg_count = 3;
+ 		arg_count += !!ic->meta_dev;
+ 		arg_count += ic->sectors_per_block != 1;
+@@ -3826,6 +3822,10 @@ static void dm_integrity_status(struct dm_target *ti, status_type_t type,
+ 		DMEMIT(" interleave_sectors:%u", 1U << ic->sb->log2_interleave_sectors);
+ 		DMEMIT(" buffer_sectors:%u", 1U << ic->log2_buffer_sectors);
+ 		if (ic->mode == 'J') {
++			__u64 watermark_percentage = (__u64)(ic->journal_entries - ic->free_sectors_threshold) * 100;
 +
-+	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
-+		return 0;
-+
-+	if (!find_blobs_in_containers(&cp))
-+		return -EINVAL;
-+
-+	scan_containers(cp.data, cp.size, &desc);
-+	if (!desc.mc)
-+		return -EINVAL;
-+
-+	ret = _load_microcode_amd(x86_family(cpuid_1_eax), desc.data, desc.size);
-+	if (ret > UCODE_UPDATED)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+early_initcall(save_microcode_in_initrd);
-+
- /*
-  * AMD microcode firmware naming convention, up to family 15h they are in
-  * the legacy file:
++			watermark_percentage += ic->journal_entries / 2;
++			do_div(watermark_percentage, ic->journal_entries);
+ 			DMEMIT(" journal_watermark:%u", (unsigned int)watermark_percentage);
+ 			DMEMIT(" commit_time:%u", ic->autocommit_msec);
+ 		}
+-- 
+2.48.1
+
 
 
 
