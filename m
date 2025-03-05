@@ -1,152 +1,370 @@
-Return-Path: <stable+bounces-120418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B83BA4FC7E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:45:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DCCA4FD17
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 12:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188393A927F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 10:44:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5243C3A6FBA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 11:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC3E20C486;
-	Wed,  5 Mar 2025 10:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0FC22E3F3;
+	Wed,  5 Mar 2025 11:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PEz9WP6+"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="RXXLBvSn"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1104B20C46C
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 10:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB92AD2D
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 11:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741171453; cv=none; b=MEsNzlsbfkg27fQhTU+ksSZ/CJRXH60W3J8bZYvYsIcUZYgY9y3bzfwINC2SBlHDqmsybT4QN7f+M+yjo4lICLp58vQXGaxuQfR8RwUZmtMe8UcNe5M5n8ALhcbrsx3ivRG785JscG8h0q+7+4zzB/r4e9gGTRPoW82/rE4ASHE=
+	t=1741172630; cv=none; b=pMWNDxCMmO9F9CIWJC2enx1mPDuvD+oFD6L0meC2z/umf5ANwAWevpvqCLqrXzAHI/MaegNu+8l/V47q/+ZlEEUSeNxqRELMLRmegX2VQ/tzXA+T8kH8amZuuuIkznvnzM37U0kwWvVselNfFAHIxR7VLgq+wgml+YEyFZvDQWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741171453; c=relaxed/simple;
-	bh=pnb1XIoRVPvlKMtRz+d0FdZ4RSoph+8TZDhNZ6cm7q4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qxBRCy/HBpmGsihxWYZnnSIi7A1iVGv0Y4lRG9YoUbpOtEyVv5sqzTvUPZvDfdCLf3kqOHE4hFk/Ni2/E0WeyTeu6O5yWtihsJXoXRFaJ+3erZahtxOw4/HbRcWbmPCSimm+C4Ooojkd46ovhG9c1SUK8zbAwAkEka5tMd4+9rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PEz9WP6+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741171450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d+3VZ7mTjx3GCM+QoBE9ZjOyMpVhYxq40Dj4O52FkRI=;
-	b=PEz9WP6+mwBjrvfBOqMa9FGo2BETADLSkhEv2L5wr1cVtsGbdExFI81NDzBx5460cXrdut
-	6poD0Vtt3kADGkYfY8Dbh73gK7phE5042qwB2+dOG1zeAHIOxDEcwypJaCAvg9vLvN79kq
-	Yakgoo54vubCFeadMC9jQR6cUURDvwQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-ETxo7cLJPwaNG_Y5w_7w3A-1; Wed, 05 Mar 2025 05:43:59 -0500
-X-MC-Unique: ETxo7cLJPwaNG_Y5w_7w3A-1
-X-Mimecast-MFC-AGG-ID: ETxo7cLJPwaNG_Y5w_7w3A_1741171439
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e897598070so143623916d6.0
-        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 02:43:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741171439; x=1741776239;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d+3VZ7mTjx3GCM+QoBE9ZjOyMpVhYxq40Dj4O52FkRI=;
-        b=PfBxBm7xqwEPcRmY5qu0m3QC3Y9CfRgDCK6STHmw6fOOKxy3+XIQgNYOF6ONpe2uyz
-         ro7oyUIb3bMdvcvCxA3Ldxdv5v9LpeZB1+0IuFx1ykZYrrV46fHRa6EYcp89FCayWpMu
-         gT816A01an8MEDsGVYZdLxb7OnVBITWabcRHF1dqX3nC1CD7AlGNS2V4Os8k9L0cj/1M
-         5Nh2H0G6Rg/0v1DzmpJY7Mg5YiJel3WkrxshUl4DP6ydrUNTRGlMpa/3JhwZgL71DEo2
-         R3nO0zzfA4Mg/YU9DaDyGDASGQrZizebi+n6xwMV9O2+PNCxPd6cyxOuJE+31x7/bPtj
-         oTbA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4wUYmPln7IA1K9J6pFKLdk4yicmY0Z6y0Z0jLMp+wR8y6/2HiEwD/P/Vk/VzSi0xclkIziHo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7V8jTpeDEY93CLQ6MreZidxEg5QJYgVJdlLxhqQEI4Jtuu9IH
-	bivYeYVYwfp4inVPakkF0gvN8mtGplRzqpP/PBg4PgoSGw8re4bylZOgcn8Y8RBzaHRK5Mpa+re
-	vcscFrJqTuCp1Cxmme/yShpq3qWu6jylnW7y1nCYAXJTQrNh0FvAuiQ==
-X-Gm-Gg: ASbGncsQzM4juYkijWTYzw1PfzMB0TbGIes821GI5qABUq+IFAb0iIFz62k8dEeYMdN
-	tkKCpdhQX5lk44GXZZx/z0F7ohupLPo9XzEAaJnDu7sGV0yxlJtlwmtdVyRnhirZ6WzCMOrghLQ
-	zTOpkymkY8MOjh2D4VCqPebChi+43t59cGeDLuSYnRUCpqyJtEyy3DWu1NRIuWwUXcPQq5r0mMV
-	1bz7deokKwzdwZpFyBEAVEO+i3AVRhMgtwF0g5eggb1XILvYhopjhRqE9qeZxOZ1t9L2Znvivl+
-	FMekVybpXCBT2dhDaae64k5YKC2Zt+ln2AkSkuR8pWSA1qBBnafeCKkti660EDqrQXhMoZaTPKq
-	DsTu9
-X-Received: by 2002:a05:6214:2122:b0:6e8:9b55:b0ab with SMTP id 6a1803df08f44-6e8e6cc7655mr37526386d6.4.1741171438992;
-        Wed, 05 Mar 2025 02:43:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGdlHjzz7+7wDbWNIybVn4Volb3Dg5cZdQXTOpT7OoT7JX+QAw9eiw2fXX/FzYzQ1jmLHgwkQ==
-X-Received: by 2002:a05:6214:2122:b0:6e8:9b55:b0ab with SMTP id 6a1803df08f44-6e8e6cc7655mr37526166d6.4.1741171438699;
-        Wed, 05 Mar 2025 02:43:58 -0800 (PST)
-Received: from jlelli-thinkpadt14gen4.remote.csb (host-89-240-117-139.as13285.net. [89.240.117.139])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8976d9fb8sm77893696d6.94.2025.03.05.02.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 02:43:57 -0800 (PST)
-Date: Wed, 5 Mar 2025 10:43:53 +0000
-From: Juri Lelli <juri.lelli@redhat.com>
-To: Harshit Agarwal <harshit@nutanix.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Jon Kohler <jon@nutanix.com>,
-	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
-	Rahul Chunduru <rahul.chunduru@nutanix.com>,
-	Will Ton <william.ton@nutanix.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] sched/rt: Fix race in push_rt_task
-Message-ID: <Z8gq6bWNPDtnUYsW@jlelli-thinkpadt14gen4.remote.csb>
-References: <20250225180553.167995-1-harshit@nutanix.com>
- <Z8bEyxZCf8Y_JReR@jlelli-thinkpadt14gen4.remote.csb>
- <20250304103001.0f89e953@gandalf.local.home>
- <Z8cnwcHxDxz1TmfL@jlelli-thinkpadt14gen4.remote.csb>
- <9688E172-585C-423B-ACF6-8E8DEAE3AB59@nutanix.com>
+	s=arc-20240116; t=1741172630; c=relaxed/simple;
+	bh=bggFJF3ulwRjZNVIxJZxjc80ekuhnWLejll0RlJy5HM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oCQxfZ60gaOnMZs1hu4WX2z15Y0nV5MyvE/oA32xqxQa9jYshI/UI/M4tNahWRCrpKu0oRMIJDGuAAduNARrOTkAnzjJnZxDbjyA7aYbvL/+AvvJOcUdYBeuH/ArMCxKDHQ/rLcng/ERjMhSsNEGhR4H8jNFumThtjfrmWwN8Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=RXXLBvSn; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1741172629; x=1772708629;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=i/UDfLthC0tgtFuspoSxU7A6jRjvwgMKFP8a2W+G2jQ=;
+  b=RXXLBvSntPd3NoogWJoOyPMtbsw8Mnrwb9JHHuzRGRwWvyjkPKj7Spep
+   dFolaf29j12khbcMlM0nnzirKo/cDbo3PGoEx3oYfleonKTugsd8tFMlw
+   xD+ZmVH7elA9e/1geCpQ6RGQcU08f0er87fI/2Y2KmEyMxWghHLQEnxy4
+   U=;
+X-IronPort-AV: E=Sophos;i="6.14,222,1736812800"; 
+   d="scan'208";a="383399529"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 11:03:47 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:57318]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.53.36:2525] with esmtp (Farcaster)
+ id 1afbc34a-875b-45ed-aad6-85b9fb6edf20; Wed, 5 Mar 2025 11:03:45 +0000 (UTC)
+X-Farcaster-Flow-ID: 1afbc34a-875b-45ed-aad6-85b9fb6edf20
+Received: from EX19EXOUWB001.ant.amazon.com (10.250.64.229) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 5 Mar 2025 11:03:45 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+ EX19EXOUWB001.ant.amazon.com (10.250.64.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 5 Mar 2025 11:03:45 +0000
+Received: from email-imr-corp-prod-pdx-all-2b-a57195ef.us-west-2.amazon.com
+ (10.25.36.214) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1544.14 via Frontend Transport; Wed, 5 Mar 2025 11:03:45 +0000
+Received: from dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com [10.253.65.58])
+	by email-imr-corp-prod-pdx-all-2b-a57195ef.us-west-2.amazon.com (Postfix) with ESMTP id D288EA189E;
+	Wed,  5 Mar 2025 11:03:44 +0000 (UTC)
+Received: by dev-dsk-hagarhem-1b-b868d8d5.eu-west-1.amazon.com (Postfix, from userid 23002382)
+	id 67BA420DAD; Wed,  5 Mar 2025 11:03:44 +0000 (UTC)
+From: Hagar Hemdan <hagarhem@amazon.com>
+To:
+CC: <stable@vger.kernel.org>, =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=
+	<toke@redhat.com>, <syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com>,
+	Dave Taht <dave.taht@gmail.com>, Jakub Kicinski <kuba@kernel.org>, "Hagar
+ Hemdan" <hagarhem@amazon.com>
+Subject: [PATCH 5.15] sched: sch_cake: add bounds checks to host bulk flow fairness counts
+Date: Wed, 5 Mar 2025 11:03:30 +0000
+Message-ID: <20250305110334.31305-1-hagarhem@amazon.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9688E172-585C-423B-ACF6-8E8DEAE3AB59@nutanix.com>
 
-On 04/03/25 18:37, Harshit Agarwal wrote:
-> Thanks Juri for pointing this out.
-> I can send the fix for deadline as well. 
-> Is it okay if I do it in a separate patch?
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-Yes, we would need a separate patch.
+[ Upstream commit 737d4d91d35b5f7fa5bb442651472277318b0bfd ]
 
-> From taking a quick look at the code, I can see that the same fix won’t 
-> apply as is in case of deadline since it has two different callers for
-> find_lock_later_rq.
+Even though we fixed a logic error in the commit cited below, syzbot
+still managed to trigger an underflow of the per-host bulk flow
+counters, leading to an out of bounds memory access.
 
-Right, indeed.
+To avoid any such logic errors causing out of bounds memory accesses,
+this commit factors out all accesses to the per-host bulk flow counters
+to a series of helpers that perform bounds-checking before any
+increments and decrements. This also has the benefit of improving
+readability by moving the conditional checks for the flow mode into
+these helpers, instead of having them spread out throughout the
+code (which was the cause of the original logic error).
 
-> One is push_dl_task for which we can call pick_next_pushable_dl_task
-> and make sure it is at the head. This is where we have the bug.
+As part of this change, the flow quantum calculation is consolidated
+into a helper function, which means that the dithering applied to the
+ost load scaling is now applied both in the DRR rotation and when a
+sparse flow's quantum is first initiated. The only user-visible effect
+of this is that the maximum packet size that can be sent while a flow
+stays sparse will now vary with +/- one byte in some cases. This should
+not make a noticeable difference in practice, and thus it's not worth
+complicating the code to preserve the old behaviour.
 
-OK.
+Fixes: 546ea84d07e3 ("sched: sch_cake: fix bulk flow accounting logic for host fairness")
+Reported-by: syzbot+f63600d288bfb7057424@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Dave Taht <dave.taht@gmail.com>
+Link: https://patch.msgid.link/20250107120105.70685-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Hagar: needed contextual fixes due to missing commit 7e3cf0843fe5]
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+---
+ net/sched/sch_cake.c | 140 +++++++++++++++++++++++--------------------
+ 1 file changed, 75 insertions(+), 65 deletions(-)
 
-> Another one is dl_task_offline_migration which gets the task from
-> dl_task_timer which in turn gets it from sched_dl_entity.
-> I haven’t gone through the deadline code thoroughly but I think this race
-> shouldn’t exist for the offline task (2nd) case. If that is true then the fix
-> could be to check in push_dl_task if the task returned by find_lock_later_rq
-> is still at the head of the queue or not.
-
-I believe that won't work as dl_task_offline_migration() gets called in
-case the replenishment timer for a task fires (to unthrottle it) and it
-finds the old rq the task was running on has been offlined in the
-meantime. The task is still throttled at this point and so it is not
-enqueued in the dl_rq nor in the pushable task list/tree, so the check
-you are adding won't work I am afraid. Maybe we can use dl_se->dl_throttled
-to differentiate this different case.
-
-Thanks,
-Juri
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 8d9c0b98a747..d9535129f4e9 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -643,6 +643,63 @@ static bool cake_ddst(int flow_mode)
+ 	return (flow_mode & CAKE_FLOW_DUAL_DST) == CAKE_FLOW_DUAL_DST;
+ }
+ 
++static void cake_dec_srchost_bulk_flow_count(struct cake_tin_data *q,
++					     struct cake_flow *flow,
++					     int flow_mode)
++{
++	if (likely(cake_dsrc(flow_mode) &&
++		   q->hosts[flow->srchost].srchost_bulk_flow_count))
++		q->hosts[flow->srchost].srchost_bulk_flow_count--;
++}
++
++static void cake_inc_srchost_bulk_flow_count(struct cake_tin_data *q,
++					     struct cake_flow *flow,
++					     int flow_mode)
++{
++	if (likely(cake_dsrc(flow_mode) &&
++		   q->hosts[flow->srchost].srchost_bulk_flow_count < CAKE_QUEUES))
++		q->hosts[flow->srchost].srchost_bulk_flow_count++;
++}
++
++static void cake_dec_dsthost_bulk_flow_count(struct cake_tin_data *q,
++					     struct cake_flow *flow,
++					     int flow_mode)
++{
++	if (likely(cake_ddst(flow_mode) &&
++		   q->hosts[flow->dsthost].dsthost_bulk_flow_count))
++		q->hosts[flow->dsthost].dsthost_bulk_flow_count--;
++}
++
++static void cake_inc_dsthost_bulk_flow_count(struct cake_tin_data *q,
++					     struct cake_flow *flow,
++					     int flow_mode)
++{
++	if (likely(cake_ddst(flow_mode) &&
++		   q->hosts[flow->dsthost].dsthost_bulk_flow_count < CAKE_QUEUES))
++		q->hosts[flow->dsthost].dsthost_bulk_flow_count++;
++}
++
++static u16 cake_get_flow_quantum(struct cake_tin_data *q,
++				 struct cake_flow *flow,
++				 int flow_mode)
++{
++	u16 host_load = 1;
++
++	if (cake_dsrc(flow_mode))
++		host_load = max(host_load,
++				q->hosts[flow->srchost].srchost_bulk_flow_count);
++
++	if (cake_ddst(flow_mode))
++		host_load = max(host_load,
++				q->hosts[flow->dsthost].dsthost_bulk_flow_count);
++
++	/* The shifted prandom_u32() is a way to apply dithering to avoid
++	 * accumulating roundoff errors
++	 */
++	return (q->flow_quantum * quantum_div[host_load] +
++		(prandom_u32() >> 16)) >> 16;
++}
++
+ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 		     int flow_mode, u16 flow_override, u16 host_override)
+ {
+@@ -789,10 +846,8 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 		allocate_dst = cake_ddst(flow_mode);
+ 
+ 		if (q->flows[outer_hash + k].set == CAKE_SET_BULK) {
+-			if (allocate_src)
+-				q->hosts[q->flows[reduced_hash].srchost].srchost_bulk_flow_count--;
+-			if (allocate_dst)
+-				q->hosts[q->flows[reduced_hash].dsthost].dsthost_bulk_flow_count--;
++			cake_dec_srchost_bulk_flow_count(q, &q->flows[outer_hash + k], flow_mode);
++			cake_dec_dsthost_bulk_flow_count(q, &q->flows[outer_hash + k], flow_mode);
+ 		}
+ found:
+ 		/* reserve queue for future packets in same flow */
+@@ -817,9 +872,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 			q->hosts[outer_hash + k].srchost_tag = srchost_hash;
+ found_src:
+ 			srchost_idx = outer_hash + k;
+-			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
+-				q->hosts[srchost_idx].srchost_bulk_flow_count++;
+ 			q->flows[reduced_hash].srchost = srchost_idx;
++
++			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
++				cake_inc_srchost_bulk_flow_count(q, &q->flows[reduced_hash], flow_mode);
+ 		}
+ 
+ 		if (allocate_dst) {
+@@ -840,9 +896,10 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 			q->hosts[outer_hash + k].dsthost_tag = dsthost_hash;
+ found_dst:
+ 			dsthost_idx = outer_hash + k;
+-			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
+-				q->hosts[dsthost_idx].dsthost_bulk_flow_count++;
+ 			q->flows[reduced_hash].dsthost = dsthost_idx;
++
++			if (q->flows[reduced_hash].set == CAKE_SET_BULK)
++				cake_inc_dsthost_bulk_flow_count(q, &q->flows[reduced_hash], flow_mode);
+ 		}
+ 	}
+ 
+@@ -1855,10 +1912,6 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	/* flowchain */
+ 	if (!flow->set || flow->set == CAKE_SET_DECAYING) {
+-		struct cake_host *srchost = &b->hosts[flow->srchost];
+-		struct cake_host *dsthost = &b->hosts[flow->dsthost];
+-		u16 host_load = 1;
+-
+ 		if (!flow->set) {
+ 			list_add_tail(&flow->flowchain, &b->new_flows);
+ 		} else {
+@@ -1868,18 +1921,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		flow->set = CAKE_SET_SPARSE;
+ 		b->sparse_flow_count++;
+ 
+-		if (cake_dsrc(q->flow_mode))
+-			host_load = max(host_load, srchost->srchost_bulk_flow_count);
+-
+-		if (cake_ddst(q->flow_mode))
+-			host_load = max(host_load, dsthost->dsthost_bulk_flow_count);
+-
+-		flow->deficit = (b->flow_quantum *
+-				 quantum_div[host_load]) >> 16;
++		flow->deficit = cake_get_flow_quantum(b, flow, q->flow_mode);
+ 	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
+-		struct cake_host *srchost = &b->hosts[flow->srchost];
+-		struct cake_host *dsthost = &b->hosts[flow->dsthost];
+-
+ 		/* this flow was empty, accounted as a sparse flow, but actually
+ 		 * in the bulk rotation.
+ 		 */
+@@ -1887,12 +1930,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		b->sparse_flow_count--;
+ 		b->bulk_flow_count++;
+ 
+-		if (cake_dsrc(q->flow_mode))
+-			srchost->srchost_bulk_flow_count++;
+-
+-		if (cake_ddst(q->flow_mode))
+-			dsthost->dsthost_bulk_flow_count++;
+-
++		cake_inc_srchost_bulk_flow_count(b, flow, q->flow_mode);
++		cake_inc_dsthost_bulk_flow_count(b, flow, q->flow_mode);
+ 	}
+ 
+ 	if (q->buffer_used > q->buffer_max_used)
+@@ -1949,13 +1988,11 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ {
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+ 	struct cake_tin_data *b = &q->tins[q->cur_tin];
+-	struct cake_host *srchost, *dsthost;
+ 	ktime_t now = ktime_get();
+ 	struct cake_flow *flow;
+ 	struct list_head *head;
+ 	bool first_flow = true;
+ 	struct sk_buff *skb;
+-	u16 host_load;
+ 	u64 delay;
+ 	u32 len;
+ 
+@@ -2055,11 +2092,6 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 	q->cur_flow = flow - b->flows;
+ 	first_flow = false;
+ 
+-	/* triple isolation (modified DRR++) */
+-	srchost = &b->hosts[flow->srchost];
+-	dsthost = &b->hosts[flow->dsthost];
+-	host_load = 1;
+-
+ 	/* flow isolation (DRR++) */
+ 	if (flow->deficit <= 0) {
+ 		/* Keep all flows with deficits out of the sparse and decaying
+@@ -2071,11 +2103,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 				b->sparse_flow_count--;
+ 				b->bulk_flow_count++;
+ 
+-				if (cake_dsrc(q->flow_mode))
+-					srchost->srchost_bulk_flow_count++;
+-
+-				if (cake_ddst(q->flow_mode))
+-					dsthost->dsthost_bulk_flow_count++;
++				cake_inc_srchost_bulk_flow_count(b, flow, q->flow_mode);
++				cake_inc_dsthost_bulk_flow_count(b, flow, q->flow_mode);
+ 
+ 				flow->set = CAKE_SET_BULK;
+ 			} else {
+@@ -2087,19 +2116,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 			}
+ 		}
+ 
+-		if (cake_dsrc(q->flow_mode))
+-			host_load = max(host_load, srchost->srchost_bulk_flow_count);
+-
+-		if (cake_ddst(q->flow_mode))
+-			host_load = max(host_load, dsthost->dsthost_bulk_flow_count);
+-
+-		WARN_ON(host_load > CAKE_QUEUES);
+-
+-		/* The shifted prandom_u32() is a way to apply dithering to
+-		 * avoid accumulating roundoff errors
+-		 */
+-		flow->deficit += (b->flow_quantum * quantum_div[host_load] +
+-				  (prandom_u32() >> 16)) >> 16;
++		flow->deficit += cake_get_flow_quantum(b, flow, q->flow_mode);
+ 		list_move_tail(&flow->flowchain, &b->old_flows);
+ 
+ 		goto retry;
+@@ -2123,11 +2140,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 				if (flow->set == CAKE_SET_BULK) {
+ 					b->bulk_flow_count--;
+ 
+-					if (cake_dsrc(q->flow_mode))
+-						srchost->srchost_bulk_flow_count--;
+-
+-					if (cake_ddst(q->flow_mode))
+-						dsthost->dsthost_bulk_flow_count--;
++					cake_dec_srchost_bulk_flow_count(b, flow, q->flow_mode);
++					cake_dec_dsthost_bulk_flow_count(b, flow, q->flow_mode);
+ 
+ 					b->decaying_flow_count++;
+ 				} else if (flow->set == CAKE_SET_SPARSE ||
+@@ -2145,12 +2159,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 				else if (flow->set == CAKE_SET_BULK) {
+ 					b->bulk_flow_count--;
+ 
+-					if (cake_dsrc(q->flow_mode))
+-						srchost->srchost_bulk_flow_count--;
+-
+-					if (cake_ddst(q->flow_mode))
+-						dsthost->dsthost_bulk_flow_count--;
+-
++					cake_dec_srchost_bulk_flow_count(b, flow, q->flow_mode);
++					cake_dec_dsthost_bulk_flow_count(b, flow, q->flow_mode);
+ 				} else
+ 					b->decaying_flow_count--;
+ 
+-- 
+2.47.1
 
 
