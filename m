@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D348AA508ED
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B74A50996
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE6E1894E05
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B801165146
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D12B250C0A;
-	Wed,  5 Mar 2025 18:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93BF255E58;
+	Wed,  5 Mar 2025 18:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOVOTT00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gp1Y9vTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF841C6FF6;
-	Wed,  5 Mar 2025 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA33252907;
+	Wed,  5 Mar 2025 18:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198285; cv=none; b=vDJbrsQMn157z6uQd2LTCzJxiftoiD8To0i3/i+Z6J8JP79jph9Q38iBTbuAhT4Cq8467g6Ds1cNuGivozaGAGx/B347Hz1r52Z67rHKZbWYtNBifrkXwHRUTIkjZA10KbPGM773Jza0t6gdP9lsHWQESO6Izf3kn8Iw9qPQln4=
+	t=1741198710; cv=none; b=Ai5L7B73RP9Mk1dWRSNaMzmHQijcTqxWvg1/iHZpGXqrtimm8ltM7dlKL6xfmRN8mGkhCGmA4IqPk9Oo94gTY8LcCJrJiEJeSLdi26yYFKAWnQGX/O/Myeb3dYervLpOupzxnip30VfPvwazZKGv4Dz10w81drXMlESBTbx+l/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198285; c=relaxed/simple;
-	bh=M31jkOAwdqDAASKkju8MgehSnP2UI7EKRsllFmvmvEQ=;
+	s=arc-20240116; t=1741198710; c=relaxed/simple;
+	bh=4asMzD7VlV6K4/eGc9L8ZVoX4Z2W/YLw1XHybbA6L7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PS2MyIfJbSqwXqMWNjZ5tKfAMpVuDEtv0msMvbVgXGuh1WociTKoabnPhPzYTsUdUbiE4wDTjzCBpGJfVPNI4kaNf+qAeHCXazVjSHn8eQCy34lxJn1VuiE+dp3IKPy48z94nwz03BwE3ds3F7D9jq3MYCK+yN3r53ZA0djLAyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOVOTT00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E92C4CED1;
-	Wed,  5 Mar 2025 18:11:25 +0000 (UTC)
+	 MIME-Version; b=szhG963qnVG0WqtFDOjkFb7xKObSQG5RUHRycbfuAwffmW1X2xCIh8l6XyMPcQalkFhFEQSvql0uyVGuVzNEVKrYDAP6Rh2DahSqgDUK/zOBdhgVnWqEgeZZgR0fkz7DBkxNjb3ikCm/o/f5K7laiisCs/C80p/f1iN1XeVBeFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gp1Y9vTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2483BC4CED1;
+	Wed,  5 Mar 2025 18:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198285;
-	bh=M31jkOAwdqDAASKkju8MgehSnP2UI7EKRsllFmvmvEQ=;
+	s=korg; t=1741198710;
+	bh=4asMzD7VlV6K4/eGc9L8ZVoX4Z2W/YLw1XHybbA6L7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xOVOTT000ZO1y1vTkNFn/gb8YPatDDydhuzUDCwuGiitIyC3ojqqYTPcEbgf0qSJv
-	 SEfYPLeyuCoXuCdqa4boHBATf9yiJnsPrWL+w0/sEc4423+3rJ1tJkX3iJM/T57qqU
-	 sVCevpbfylduVTuMpp3IREviMMqM03g1OS1DyNbs=
+	b=gp1Y9vTTcUdM8ovHSMR47A0Xhaa+Et9vUsHGA8sSwrJ0hp6NoMUaiOncvEJwfkEtG
+	 l3Zv3qqAAwag24Vc+9l71UvVypR9LbwM1hGzpYAFsSH0aCa+q/wvhw72fsnAiY00Yh
+	 zVUV8akcIyaHnENoFD7ZhwGtHTZ3IlsQn8sM7IG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.12 127/150] rcuref: Plug slowpath race in rcuref_put()
+	Wei Fang <wei.fang@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.13 120/157] net: enetc: add missing enetc4_link_deinit()
 Date: Wed,  5 Mar 2025 18:49:16 +0100
-Message-ID: <20250305174508.917285601@linuxfoundation.org>
+Message-ID: <20250305174510.131394219@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit b9a49520679e98700d3d89689cc91c08a1c88c1d upstream.
+commit 8e43decdfbb477dd7800e3902d2d2f105d22ef5f upstream.
 
-Kernel test robot reported an "imbalanced put" in the rcuref_put() slow
-path, which turned out to be a false positive. Consider the following race:
+The enetc4_link_init() is called when the PF driver probes to create
+phylink and MDIO bus, but we forgot to call enetc4_link_deinit() to
+free the phylink and MDIO bus when the driver was unbound. so add
+missing enetc4_link_deinit() to enetc4_pf_netdev_destroy().
 
-            ref  = 0 (via rcuref_init(ref, 1))
- T1                                      T2
- rcuref_put(ref)
- -> atomic_add_negative_release(-1, ref)                                         # ref -> 0xffffffff
- -> rcuref_put_slowpath(ref)
-                                         rcuref_get(ref)
-                                         -> atomic_add_negative_relaxed(1, &ref->refcnt)
-                                           -> return true;                       # ref -> 0
-
-                                         rcuref_put(ref)
-                                         -> atomic_add_negative_release(-1, ref) # ref -> 0xffffffff
-                                         -> rcuref_put_slowpath()
-
-    -> cnt = atomic_read(&ref->refcnt);                                          # cnt -> 0xffffffff / RCUREF_NOREF
-    -> atomic_try_cmpxchg_release(&ref->refcnt, &cnt, RCUREF_DEAD))              # ref -> 0xe0000000 / RCUREF_DEAD
-       -> return true
-                                           -> cnt = atomic_read(&ref->refcnt);   # cnt -> 0xe0000000 / RCUREF_DEAD
-                                           -> if (cnt > RCUREF_RELEASED)         # 0xe0000000 > 0xc0000000
-                                             -> WARN_ONCE(cnt >= RCUREF_RELEASED, "rcuref - imbalanced put()")
-
-The problem is the additional read in the slow path (after it
-decremented to RCUREF_NOREF) which can happen after the counter has been
-marked RCUREF_DEAD.
-
-Prevent this by reusing the return value of the decrement. Now every "final"
-put uses RCUREF_NOREF in the slow path and attempts the final cmpxchg() to
-RCUREF_DEAD.
-
-[ bigeasy: Add changelog ]
-
-Fixes: ee1ee6db07795 ("atomics: Provide rcuref - scalable reference counting")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Debugged-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/oe-lkp/202412311453.9d7636a2-lkp@intel.com
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-7-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/rcuref.h |    9 ++++++---
- lib/rcuref.c           |    5 ++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc4_pf.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/rcuref.h
-+++ b/include/linux/rcuref.h
-@@ -71,27 +71,30 @@ static inline __must_check bool rcuref_g
- 	return rcuref_get_slowpath(ref);
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -683,6 +683,7 @@ static void enetc4_pf_netdev_destroy(str
+ 	struct net_device *ndev = si->ndev;
+ 
+ 	unregister_netdev(ndev);
++	enetc4_link_deinit(priv);
+ 	enetc_free_msix(priv);
+ 	free_netdev(ndev);
  }
- 
--extern __must_check bool rcuref_put_slowpath(rcuref_t *ref);
-+extern __must_check bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt);
- 
- /*
-  * Internal helper. Do not invoke directly.
-  */
- static __always_inline __must_check bool __rcuref_put(rcuref_t *ref)
- {
-+	int cnt;
-+
- 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() && preemptible(),
- 			 "suspicious rcuref_put_rcusafe() usage");
- 	/*
- 	 * Unconditionally decrease the reference count. The saturation and
- 	 * dead zones provide enough tolerance for this.
- 	 */
--	if (likely(!atomic_add_negative_release(-1, &ref->refcnt)))
-+	cnt = atomic_sub_return_release(1, &ref->refcnt);
-+	if (likely(cnt >= 0))
- 		return false;
- 
- 	/*
- 	 * Handle the last reference drop and cases inside the saturation
- 	 * and dead zones.
- 	 */
--	return rcuref_put_slowpath(ref);
-+	return rcuref_put_slowpath(ref, cnt);
- }
- 
- /**
---- a/lib/rcuref.c
-+++ b/lib/rcuref.c
-@@ -220,6 +220,7 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
- /**
-  * rcuref_put_slowpath - Slowpath of __rcuref_put()
-  * @ref:	Pointer to the reference count
-+ * @cnt:	The resulting value of the fastpath decrement
-  *
-  * Invoked when the reference count is outside of the valid zone.
-  *
-@@ -233,10 +234,8 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
-  *	with a concurrent get()/put() pair. Caller is not allowed to
-  *	deconstruct the protected object.
-  */
--bool rcuref_put_slowpath(rcuref_t *ref)
-+bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt)
- {
--	unsigned int cnt = atomic_read(&ref->refcnt);
--
- 	/* Did this drop the last reference? */
- 	if (likely(cnt == RCUREF_NOREF)) {
- 		/*
 
 
 
