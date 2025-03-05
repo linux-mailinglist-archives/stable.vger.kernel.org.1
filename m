@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85C8A50796
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6BCA508DB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67D33AFD5C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A533B0CA8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F0E251789;
-	Wed,  5 Mar 2025 17:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DCC2512ED;
+	Wed,  5 Mar 2025 18:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usdXOgJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jALC718x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81574250C1C;
-	Wed,  5 Mar 2025 17:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703FC1A5BB7;
+	Wed,  5 Mar 2025 18:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197505; cv=none; b=Ab6ZB8oHoTDj0nP9x/LnHr10DHKnCndTJqKSVyCAYGO3kKeCWDO96XE0i7XIXYEEAJAFhiIn5s3dfMnpery5ov0SBhYqoAghqgGT60nw5oVhOEsSAniBZyG6cW2fc3H1rqPQmUibnoppxROie42B8k3zdUXrlmpi8IaeCTJdhTU=
+	t=1741198294; cv=none; b=TMDlq4A//ra0shPpYpIL1SORZdDZC+tSbmUI5HqyKBJnzGI+QRG3Y9gD/SJGkf8+Talx4VgbkhgMJ6sZzaa2WsQuItgKNfs97YzWSq32Sl0UfEnS6v2cm6b9f8cDtjCY6WcwkAnP5n27psaii3zxQYL8Cz2D54uuY2NxB4/cdlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197505; c=relaxed/simple;
-	bh=AXyv6ob3D8txljdXEDdUgUiMFa9HNMsnhf88KWBBnkc=;
+	s=arc-20240116; t=1741198294; c=relaxed/simple;
+	bh=vjOm8fDztvnscnSV8lkYRxK98OctyQ/eCoJkcV0g+cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K22cM3GvR8sQ6eXTSsPPc8oQQoQ89BqdQUUwqOL1v+sR7XPSqLTR0NFEzDXHWzDohPb3X7q/ocVl69B/IdLIhCAq+u013fxgwRKzho61I5RlXKNpoOcq19jdH80VcUBJA1Nsj712qkOsvqsJs2WDnzBKzuIzsa/nyKgsgusDQjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usdXOgJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BAEC4CED1;
-	Wed,  5 Mar 2025 17:58:24 +0000 (UTC)
+	 MIME-Version; b=Y4DoZx5dO1OusmFyHQA5NZspqkbc1yyj/q7PnnNSJxOzrurpoVo5OpyUqrvCzfR+jUBCsqIQGUbg3hM8Vk0Qyg0HqnfvrUcRsaWsGgrIlFihURmlUvGBrvPrLVu7GzLHh1/swxp1ditPpzBq9RLAQJmRgJrLp96brmp60i3JmIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jALC718x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB073C4CED1;
+	Wed,  5 Mar 2025 18:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197505;
-	bh=AXyv6ob3D8txljdXEDdUgUiMFa9HNMsnhf88KWBBnkc=;
+	s=korg; t=1741198294;
+	bh=vjOm8fDztvnscnSV8lkYRxK98OctyQ/eCoJkcV0g+cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usdXOgJC/bAD4xx+uPDnWRu/LcIMNsyt6q4maXP9qr1F+MsAZXYhd+gaVtTqAVz+E
-	 o0WVbRxeQQ04zaXKcTYxaYcAsj1s6O7M5egXxTfyBTmQnX+BPhjgrT39JvSZhz+A7q
-	 RJTWtNrkEDrLb/n6/SyQyoNGUJ9uxbU03t8L0OK8=
+	b=jALC718x++/BhBY7x6ESDHgPHjHDi5qnRGR1PoRUBqQdXmJI+srRQK5G6sMnwOLYI
+	 Pg5i6VdPS58cLBKvp/MysnKYigw5BmjEmA0yoYep/d9Jr0CjNt1GHwc1geDdHiR4zR
+	 wnJYIl7lnObqGT8l3QiXNWVfOORAD/2m4jSmBwps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 6.1 172/176] ptrace: Introduce exception_ip arch hook
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 112/150] net: enetc: keep track of correct Tx BD count in enetc_map_tx_tso_buffs()
 Date: Wed,  5 Mar 2025 18:49:01 +0100
-Message-ID: <20250305174512.343904385@linuxfoundation.org>
+Message-ID: <20250305174508.315430998@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 11ba1728be3edb6928791f4c622f154ebe228ae6 upstream.
+commit da291996b16ebd10626d4b20288327b743aff110 upstream.
 
-On architectures with delay slot, architecture level instruction
-pointer (or program counter) in pt_regs may differ from where
-exception was triggered.
+When creating a TSO header, if the skb is VLAN tagged, the extended BD
+will be used and the 'count' should be increased by 2 instead of 1.
+Otherwise, when an error occurs, less tx_swbd will be freed than the
+actual number.
 
-Introduce exception_ip hook to invoke architecture code and determine
-actual instruction pointer to the exception.
-
-Link: https://lore.kernel.org/lkml/00d1b813-c55f-4365-8d81-d70258e10b16@app.fastmail.com/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
+Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-3-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/ptrace.h |    2 ++
- arch/mips/kernel/ptrace.c      |    7 +++++++
- include/linux/ptrace.h         |    4 ++++
- 3 files changed, 13 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -155,6 +155,8 @@ static inline long regs_return_value(str
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -351,14 +351,15 @@ dma_err:
+ 	return 0;
  }
  
- #define instruction_pointer(regs) ((regs)->cp0_epc)
-+extern unsigned long exception_ip(struct pt_regs *regs);
-+#define exception_ip(regs) exception_ip(regs)
- #define profile_pc(regs) instruction_pointer(regs)
+-static void enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+-				 struct enetc_tx_swbd *tx_swbd,
+-				 union enetc_tx_bd *txbd, int *i, int hdr_len,
+-				 int data_len)
++static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
++				struct enetc_tx_swbd *tx_swbd,
++				union enetc_tx_bd *txbd, int *i, int hdr_len,
++				int data_len)
+ {
+ 	union enetc_tx_bd txbd_tmp;
+ 	u8 flags = 0, e_flags = 0;
+ 	dma_addr_t addr;
++	int count = 1;
  
- extern asmlinkage long syscall_trace_enter(struct pt_regs *regs);
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -31,6 +31,7 @@
- #include <linux/seccomp.h>
- #include <linux/ftrace.h>
- 
-+#include <asm/branch.h>
- #include <asm/byteorder.h>
- #include <asm/cpu.h>
- #include <asm/cpu-info.h>
-@@ -48,6 +49,12 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/syscalls.h>
- 
-+unsigned long exception_ip(struct pt_regs *regs)
-+{
-+	return exception_epc(regs);
-+}
-+EXPORT_SYMBOL(exception_ip);
+ 	enetc_clear_tx_bd(&txbd_tmp);
+ 	addr = tx_ring->tso_headers_dma + *i * TSO_HEADER_SIZE;
+@@ -401,7 +402,10 @@ static void enetc_map_tx_tso_hdr(struct
+ 		/* Write the BD */
+ 		txbd_tmp.ext.e_flags = e_flags;
+ 		*txbd = txbd_tmp;
++		count++;
+ 	}
 +
- /*
-  * Called by kernel/ptrace.c when detaching..
-  *
---- a/include/linux/ptrace.h
-+++ b/include/linux/ptrace.h
-@@ -402,6 +402,10 @@ static inline void user_single_step_repo
- #define current_user_stack_pointer() user_stack_pointer(current_pt_regs())
- #endif
++	return count;
+ }
  
-+#ifndef exception_ip
-+#define exception_ip(x) instruction_pointer(x)
-+#endif
-+
- extern int task_current_syscall(struct task_struct *target, struct syscall_info *info);
+ static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
+@@ -533,9 +537,9 @@ static int enetc_map_tx_tso_buffs(struct
  
- extern void sigaction_compat_abi(struct k_sigaction *act, struct k_sigaction *oact);
+ 		/* compute the csum over the L4 header */
+ 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
+-		enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd, &i, hdr_len, data_len);
++		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
++					      &i, hdr_len, data_len);
+ 		bd_data_num = 0;
+-		count++;
+ 
+ 		while (data_len > 0) {
+ 			int size;
 
 
 
