@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D832A507A6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719FBA50843
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1E63A652E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA0707A620D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA20514884C;
-	Wed,  5 Mar 2025 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295581A3174;
+	Wed,  5 Mar 2025 18:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8zIF0Kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLALPwAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3A9250C07;
-	Wed,  5 Mar 2025 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA201C860D;
+	Wed,  5 Mar 2025 18:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197534; cv=none; b=IQPtTib9worexC+3UYl/0NdVJRHkRURfP/LV6grDZPVNV6qpnPwSvg2+ba8/+FFkvVFmLw3MNUG+1/XV3pyYIwg5k5paj82Lfv56WFoJQP2gxFCLLomOS+LFnanHz9xVJSHtUoOImJsvDSM100/NGlYC6HrSOfPOWFLZ7HTrmaU=
+	t=1741197943; cv=none; b=ntHMabe4xo/CdNeQk8P9pqsfNuezQb32mETQrl6bO5IsYIjdiBmo4z4Bp8U3/8fE/OMJqosaXi376WYGLYOvJIX6DDaCqQBeII4LPyqSLodr+grVtWc4AgD0iwtiVBbogHPCgn3YlQCu0bI1S4sL2RwQrT9hMeXmYDuSgyjJaNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197534; c=relaxed/simple;
-	bh=blGe8XwU7y2AYcMBGkZ2L0lPwgyE/mXxKB+iPk5/Mns=;
+	s=arc-20240116; t=1741197943; c=relaxed/simple;
+	bh=Qu1b39enMVBcjAuqU+BXY14c8GzTUuh0rF2qx8v/pvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdKOM5KEmGSJ25bp7tpyGhZPIK60aWXAnnMBgV3CkFIX4PgULwqPRMHKgtF89Zkud/EkYt5N0UppPDJhe0NHjnv9tmHv3VQPFQEqjnDm3VgB1h8QPKqjOw/poHr12XcMUpCTwZO0WKNoqkK71ts4OZSy91wtVwcRC4dpe1doTUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8zIF0Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA723C4CEE2;
-	Wed,  5 Mar 2025 17:58:53 +0000 (UTC)
+	 MIME-Version; b=r2K0aAunWYpfxJmTrOikHD9uepz+HZbN0OLN52hB91Zz3Ofbx9SH4HWi0j8dalrcWyQAq/YvGBm5Yp5qR2knDf1d11zlOE+DOSEgVt3eLHErJad+mS2GlY7+FeLGILTxd+o2jFfPl+/EIY2YdeYBTfriTQ+qt8+XkbvjMNGSjA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLALPwAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646EBC4CED1;
+	Wed,  5 Mar 2025 18:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197534;
-	bh=blGe8XwU7y2AYcMBGkZ2L0lPwgyE/mXxKB+iPk5/Mns=;
+	s=korg; t=1741197942;
+	bh=Qu1b39enMVBcjAuqU+BXY14c8GzTUuh0rF2qx8v/pvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8zIF0KfX7lJkeE+O75pb9gF8wyQiRXP3yVcUxtBnl0U/nILE2z8Moq9YKs3Jino2
-	 10fQxUoKL78r9DAUGmCTVycHci7eB7hQh9bo3Z4SqTcqxGxNnYR/Si4qNFifyzX9nq
-	 JXAYN2LKEX3jIYz0hSgL/S/WQpHn0KZ/S+mNngoE=
+	b=FLALPwAzkjsZK1MFCfBfrGuvhjnyev11M7rkcZ4dl0/ZqXPA5HxaDkriAgxpazAFp
+	 nshsPdBA5zz0NFQk6EGexi1IKnWVdZGcvHHf45PTZuizZGI7blY0ESoxUpF6lIAK5w
+	 U5mO/0H9AJh6WZp5neHL9ugA1zinnehKaSm4GFQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Artemy Kovalyov <artemyko@mnvidia.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/142] RDMA/mlx5: Fix AH static rate parsing
+Subject: [PATCH 6.12 003/150] RDMA/mlx5: Fix a race for DMABUF MR which can lead to CQE with error
 Date: Wed,  5 Mar 2025 18:47:12 +0100
-Message-ID: <20250305174500.871472573@linuxfoundation.org>
+Message-ID: <20250305174503.942620589@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-[ Upstream commit c534ffda781f44a1c6ac25ef6e0e444da38ca8af ]
+[ Upstream commit cc668a11e6ac8adb0e016711080d3f314722cc91 ]
 
-Previously static rate wasn't translated according to our PRM but simply
-used the 4 lower bytes.
+This patch addresses a potential race condition for a DMABUF MR that can
+result in a CQE with an error on the UMR QP.
 
-Correctly translate static rate value passed in AH creation attribute
-according to our PRM expected values.
+During the __mlx5_ib_dereg_mr() flow, the following sequence of calls
+occurs:
+mlx5_revoke_mr()
+mlx5r_umr_revoke_mr()
+mlx5r_umr_post_send_wait()
+At this point, the lkey is freed from the hardware's perspective.
 
-In addition change 800GB mapping to zero, which is the PRM
-specified value.
+However, concurrently, mlx5_ib_dmabuf_invalidate_cb() might be triggered
+by another task attempting to invalidate the MR having that freed lkey.
 
-Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Link: https://patch.msgid.link/18ef4cc5396caf80728341eb74738cd777596f60.1739187089.git.leon@kernel.org
+Since the lkey has already been freed, this can lead to a CQE error,
+causing the UMR QP to enter an error state.
+
+To resolve this race condition, the dma_resv_lock() which was hold as
+part of the mlx5_ib_dmabuf_invalidate_cb() is now also acquired as part
+of the mlx5_revoke_mr() scope.
+
+Upon a successful revoke, we set umem_dmabuf->private which points to
+that MR to NULL, preventing any further invalidation attempts on its
+lkey.
+
+Fixes: e6fb246ccafb ("RDMA/mlx5: Consolidate MR destruction to mlx5_ib_dereg_mr()")
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Artemy Kovalyov <artemyko@mnvidia.com>
+Link: https://patch.msgid.link/70617067abbfaa0c816a2544c922e7f4346def58.1738587016.git.leon@kernel.org
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/ah.c | 3 ++-
- drivers/infiniband/hw/mlx5/qp.c | 6 +++---
- drivers/infiniband/hw/mlx5/qp.h | 1 +
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
-index 505bc47fd575d..99036afb3aef0 100644
---- a/drivers/infiniband/hw/mlx5/ah.c
-+++ b/drivers/infiniband/hw/mlx5/ah.c
-@@ -67,7 +67,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
- 		ah->av.tclass = grh->traffic_class;
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index bb02b6adbf2c2..0a3cbb14e1839 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1550,7 +1550,7 @@ static void mlx5_ib_dmabuf_invalidate_cb(struct dma_buf_attachment *attach)
+ 
+ 	dma_resv_assert_held(umem_dmabuf->attach->dmabuf->resv);
+ 
+-	if (!umem_dmabuf->sgt)
++	if (!umem_dmabuf->sgt || !mr)
+ 		return;
+ 
+ 	mlx5r_umr_update_mr_pas(mr, MLX5_IB_UPD_XLT_ZAP);
+@@ -2022,11 +2022,16 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
+ 	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
+ 	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
+ 	bool is_odp = is_odp_mr(mr);
++	bool is_odp_dma_buf = is_dmabuf_mr(mr) &&
++			!to_ib_umem_dmabuf(mr->umem)->pinned;
+ 	int ret = 0;
+ 
+ 	if (is_odp)
+ 		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
+ 
++	if (is_odp_dma_buf)
++		dma_resv_lock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv, NULL);
++
+ 	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr)) {
+ 		ent = mr->mmkey.cache_ent;
+ 		/* upon storing to a clean temp entry - schedule its cleanup */
+@@ -2054,6 +2059,12 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
+ 		mutex_unlock(&to_ib_umem_odp(mr->umem)->umem_mutex);
  	}
  
--	ah->av.stat_rate_sl = (rdma_ah_get_static_rate(ah_attr) << 4);
-+	ah->av.stat_rate_sl =
-+		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
- 
- 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
- 		if (init_attr->xmit_slave)
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 3df863c88b31d..0a9ae84600b20 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -3433,11 +3433,11 @@ static int ib_to_mlx5_rate_map(u8 rate)
- 	return 0;
++	if (is_odp_dma_buf) {
++		if (!ret)
++			to_ib_umem_dmabuf(mr->umem)->private = NULL;
++		dma_resv_unlock(to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
++	}
++
+ 	return ret;
  }
  
--static int ib_rate_to_mlx5(struct mlx5_ib_dev *dev, u8 rate)
-+int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate)
- {
- 	u32 stat_rate_support;
- 
--	if (rate == IB_RATE_PORT_CURRENT)
-+	if (rate == IB_RATE_PORT_CURRENT || rate == IB_RATE_800_GBPS)
- 		return 0;
- 
- 	if (rate < IB_RATE_2_5_GBPS || rate > IB_RATE_600_GBPS)
-@@ -3582,7 +3582,7 @@ static int mlx5_set_path(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *qp,
- 		       sizeof(grh->dgid.raw));
- 	}
- 
--	err = ib_rate_to_mlx5(dev, rdma_ah_get_static_rate(ah));
-+	err = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah));
- 	if (err < 0)
- 		return err;
- 	MLX5_SET(ads, path, stat_rate, err);
-diff --git a/drivers/infiniband/hw/mlx5/qp.h b/drivers/infiniband/hw/mlx5/qp.h
-index b6ee7c3ee1ca1..2530e7730635f 100644
---- a/drivers/infiniband/hw/mlx5/qp.h
-+++ b/drivers/infiniband/hw/mlx5/qp.h
-@@ -56,4 +56,5 @@ int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn);
- int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter);
- int mlx5_ib_qp_event_init(void);
- void mlx5_ib_qp_event_cleanup(void);
-+int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate);
- #endif /* _MLX5_IB_QP_H */
 -- 
 2.39.5
 
