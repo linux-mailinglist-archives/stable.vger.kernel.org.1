@@ -1,117 +1,100 @@
-Return-Path: <stable+bounces-120434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0411A5008C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:29:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046C8A50093
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D65189401D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:29:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 263531612A7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3710E24889F;
-	Wed,  5 Mar 2025 13:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D8D248884;
+	Wed,  5 Mar 2025 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GWwmNM4l"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BBkRY4SB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A261D2459F4;
-	Wed,  5 Mar 2025 13:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D437080E
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 13:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741181354; cv=none; b=iaOipVbx+P+A47/LMKrYpDxmTVICUIYJD4FKN7UK2DK6/iPATCYO5EXZ9WfR5k0eFv1jlZMfjcsvSO8AoiTL4xmQIpkRJhyahviKLMuaeGYKjPl1w/Jw52aw5QgDK0pUlQ4hhx9t2Qs/4461/6BJkC4u4tqE2Iljx4REd+953V4=
+	t=1741181541; cv=none; b=LfbhRshSRbegoGTW/Pa7J0FOXK0eu8IqT/ydv61T7dJaMOMsOTKByYKmMXHJ4VqvWDIXA+HYATN4wwkesgv2JfRF7wa87D1+dlu1FdbnJ6snN3H6r71cFz9DB3Fej0HfIYVywNCe3OH03pZe/OeWVzfGnryfMtuwUmLH3OXYDm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741181354; c=relaxed/simple;
-	bh=4m3lsk3diPdi+pXnlMOPu66YINy014+l1ZqCdwvE+zY=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BuXgz8DtAt3yW50FO0rLM+F91ANbXF6snPqsQ1lPELc5m/jJDp9wURIJ6H6Y5/cT/A7y9z6vqtp83FDLUU8uwq+PVsw+u22XOV42tdYMYmoMX92v9FJPh2HIDlABM+RunepZmt20JYVxrijXJEnlzB6W5YtI5b4NX7ELd77a268=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GWwmNM4l; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741181348; x=1741440548;
-	bh=VLRuq+zLi3QgzPU0fq1VXCBryN9TCDq6Mg2zpj1ReCg=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=GWwmNM4lNNstyWlFysdFMIZvbZt6jCpaq1UHZAxQNF1Fr6oTvR91TWnV9D4UEbEyO
-	 bplPBXXgPXoKdipJrHfIdEEEKzDi3BR3UtxseEY4EIwzZUJEQnGNe328Zjd/k3OANY
-	 4SnN/EKcQaWlOAyAlvGfEfcUVjoyzEfsfzxgGbKVIaRopX1fIDtfo5Peebf/MYbjmO
-	 fC9l7K3TXO867LBafW3iaDIFj1L3Hv5Jc8TlZMUxKibhFkS5cIDyFjbxkaKCK1lHep
-	 Z2gIIP6JROra80QkVdCbCIrFk/do5XHsxi5I14xpn47+rh5bjl07ZYFLHdZqbmEw6h
-	 ssIpcI73/CD9w==
-Date: Wed, 05 Mar 2025 13:29:01 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<KBox<T>>`
-Message-ID: <20250305132836.2145476-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d1e529b8444b826cfa13a136a432f83cb566a8c5
+	s=arc-20240116; t=1741181541; c=relaxed/simple;
+	bh=MA/Tl5K/HzeGHY11yV+JGFQTHKF6NRYd26L2b8QqFyE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RW1HDqEWdkX+raQdGY/kJWHp3+8n8MeQSUokogDOp5kJYEqyI6E4siri7otp/GRjHOWo/3AzT52WL1SSKiSGkAJDIx9wbRnoF2GP7Bfl8J7qRiWj+NyI9VHVNQzrWY8eMc/9ZvgZx2u1sfDme2kNa3BjA5h9s0k7xGN7CsiYxa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BBkRY4SB; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-390fc428a45so1725908f8f.0
+        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 05:32:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741181536; x=1741786336; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jhZGVnCd1LrD1r7cIo0XuyDXMDAukxGRXDEbG9YaT9M=;
+        b=BBkRY4SBFth7JiXR1NcIKNRPFp3Zbo0aw+tS8SJkPtCT11RxGZouVhU73Qr3AVcwZS
+         CkeeogZi8PLjLQGh/GPFLtoQFRgJWxgCUMd1DZyhjJyA7PXU3Nl+9yS5y/In2aEdEJE2
+         SXmemAE/W2y6ZD5lgWqrfrlrQDdMDuNoS8uOqcqVFHF1jPvUUlV2i4TeqzoF2K3bsIWb
+         v5820P6avKywS7f0ThGy/B81G2HNDGbad20rEjITW5IYfKdvbnVufn7jdcTBkq0QQ2Li
+         3D2YWf893AAV/xzPM0giFzWdLA0PTXMLEXGanI1+Q8cR5q+tCeGfWWRGX0TZXZH6WLp1
+         dBPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741181536; x=1741786336;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jhZGVnCd1LrD1r7cIo0XuyDXMDAukxGRXDEbG9YaT9M=;
+        b=Cvwtmz60hMPYQ5NJXae8w3bXbxIio7CafmbyfEnP4q2B3xhDArxkh5HUoZL7ffq3lU
+         7Eqk88Jcm06QVRhlFQcSwGOFlylHaUrCLJLuEeT3ehtUOVb7TQbZ9sAHLTqxyqVLTFFc
+         8vvwfu3VXPH50bbLqf00yGe7yhdbY+UySydBg8898J8+vQwmnIUZ3C8aoMKFZBNbupyp
+         Kn5VL/9ExhKDttMjawY7LC7qGsdlnwsuwKFRZs3IVMlqerhQA2u+DunI7yMzJxR+eyDE
+         p0Ygp8cPKy59ujTlAY4S9a+b6YRX8sku3iPDw32I6s25Ysed2lOfcexZAblJgvQn3wBp
+         YCDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXj+obGzFkjhRAI6VadFO8V18/m71XA3lwwhPeOmO0C2Uwq40XltGSPHtk8ibrXNK7NRxeu/hc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQLaAJpB+beVYI8iTtmrqnZA7QCOwO6oOBYHmqmktGWu2tie4O
+	A7C4ra8Lv252R8QUXclfVMtGOhTvM58e6Ggj7kWhjxcba7LUJIGig/Xzq/SiwswSuMjR0qZ6z7h
+	NACZq/pzlrcsMzg==
+X-Google-Smtp-Source: AGHT+IGqv7w5ZYvUvIWCvfPNCsKIl2w0sI3jypHqC/lLiiOmT2zEfZbYg6IijEn1V2yDy4haEHjOc40D25h5t60=
+X-Received: from wmbhc17.prod.google.com ([2002:a05:600c:8711:b0:439:8e3e:b51b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:188c:b0:391:23db:f218 with SMTP id ffacd0b85a97d-39123dbf45cmr901576f8f.40.1741181536569;
+ Wed, 05 Mar 2025 05:32:16 -0800 (PST)
+Date: Wed, 5 Mar 2025 13:32:14 +0000
+In-Reply-To: <20250305132836.2145476-1-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250305132836.2145476-1-benno.lossin@proton.me>
+Message-ID: <Z8hSXgC-ecXCEPiS@google.com>
+Subject: Re: [PATCH] rust: init: fix `Zeroable` implementation for
+ `Option<NonNull<T>>` and `Option<KBox<T>>`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
-such as our custom `KBox<T>` have the null pointer optimization only if
-`T: Sized`. Thus remove the `Zeroable` implementation for the unsized
-case.
+On Wed, Mar 05, 2025 at 01:29:01PM +0000, Benno Lossin wrote:
+> According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
+> such as our custom `KBox<T>` have the null pointer optimization only if
+> `T: Sized`. Thus remove the `Zeroable` implementation for the unsized
+> case.
+> 
+> Link: https://doc.rust-lang.org/stable/std/option/index.html#representation [1]
+> Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.6.y)
+> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` function")
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Link: https://doc.rust-lang.org/stable/std/option/index.html#representation=
- [1]
-Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.6.=
-y)
-Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` f=
-unction")
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
- rust/kernel/init.rs | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 7fd1ea8265a5..8bbd5e3398fc 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1418,17 +1418,14 @@ macro_rules! impl_zeroable {
-     // SAFETY: `T: Zeroable` and `UnsafeCell` is `repr(transparent)`.
-     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
-=20
--    // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
-on guarantee).
-+    // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
-on guarantee:
-+    // https://doc.rust-lang.org/stable/std/option/index.html#representati=
-on).
-     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZ=
-eroU64>,
-     Option<NonZeroU128>, Option<NonZeroUsize>,
-     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZ=
-eroI64>,
-     Option<NonZeroI128>, Option<NonZeroIsize>,
--
--    // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
-on guarantee).
--    //
--    // In this case we are allowed to use `T: ?Sized`, since all zeros is =
-the `None` variant.
--    {<T: ?Sized>} Option<NonNull<T>>,
--    {<T: ?Sized>} Option<KBox<T>>,
-+    {<T>} Option<NonNull<T>>,
-+    {<T>} Option<KBox<T>>,
-=20
-     // SAFETY: `null` pointer is valid.
-     //
-
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
---=20
-2.48.1
-
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
