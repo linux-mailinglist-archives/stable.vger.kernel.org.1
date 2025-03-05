@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06BDA50764
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99397A50952
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C731A174CD3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD2617413A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E5A2512F7;
-	Wed,  5 Mar 2025 17:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6682512ED;
+	Wed,  5 Mar 2025 18:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2TuKc3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ef3H9xZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37FF2512C7;
-	Wed,  5 Mar 2025 17:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B3178CC8;
+	Wed,  5 Mar 2025 18:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197376; cv=none; b=tvisk2NQkvgY2YGl4oF+fQ2rIbTl2WblY3CqZds1I1Zv2hgjYwL7t09v994ow8UDGJcgldzQWO45XoNksBRdRMe9u+CV7dcb2CwaA8gA6dXCns/nsttQu1wx++a5e/AhgQlXIqwgBv0F5VGPjStJmS0sl7cCKKWKHn1gRqMTq/4=
+	t=1741198550; cv=none; b=rEA93aCM5nrPNewCtBFmJgqMljzzgpWYKfZGeJBoxXT8vvItJOMsj4ZoSL7VbkNu4vI42drHWNF9bwErJW3da5k/imfAcZZIyDaV1J7Iih9oTM70dEjTZ0b3Baeiw3p6XchFoLf0qthPv78ArohB3x36YT3uGQUmSyUWYl08pPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197376; c=relaxed/simple;
-	bh=nLAsvKCvk0Y9a/W6OHmsLFcG4HtowDTyW0UjR4ElKNE=;
+	s=arc-20240116; t=1741198550; c=relaxed/simple;
+	bh=PfMItk1iJLts6B0FLOteZSFOv5oxfmMlsz1PAsu3ZEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkbKEnI92IDAlmrr5inILvuJMRLtE84e3Z2kQWPMtt25BCCo1/kKSux6UAsCvrJszGT9Pn5Lcx7oKHqGlb79krLNer4IrC6hBIIx4nZ2ULKBkmnYtcpHhP90pXLr2N70LfJn4XeIhavo01T7/HbQrRDgEk2ugZR+rhJ/JoWZ6CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2TuKc3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F15DC4CED1;
-	Wed,  5 Mar 2025 17:56:15 +0000 (UTC)
+	 MIME-Version; b=VK7NQPSM6tfS+oNS0syPVNqdQjARswuoHm9xGxTKNTsWZpOCmPDaQhJ45zYCh2ig8yrS6rTom2zhWHq09Z+KJMe90YrzOoGoDDLOSC14NfaovP6W0bk0HxMReP+b8gwazYUYryzNdomPs70vV8ud2oWUoi3tJiUJB3pvYC4KiXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ef3H9xZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92C9C4CED1;
+	Wed,  5 Mar 2025 18:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197375;
-	bh=nLAsvKCvk0Y9a/W6OHmsLFcG4HtowDTyW0UjR4ElKNE=;
+	s=korg; t=1741198550;
+	bh=PfMItk1iJLts6B0FLOteZSFOv5oxfmMlsz1PAsu3ZEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2TuKc3fTLPZdfuaUr/I+qdi0ZpuHXMrIjhUA2gqwYk9djXGsB4NqpLX/tXDJ11ip
-	 ivpvY7IYcd94itv2FyoNzj4LYLciUEVwwVbkhSzyBC/ej1pJo5c596CpRmXqc2h/J6
-	 5US4PwJcioUxtZ/4eZccJmehftFBQXDd0nMt78+s=
+	b=ef3H9xZUtSEvraLnig6JK0lKA53OtkuVvDg/UTfWUq2eLlKbcq/6e0kvmjmJIimJd
+	 j0oFjgidrlUxvpD/fc6/zBZrWTxcS1T+qQpNzvcoUsgM0WRtTRuTBKRa+j3RDrnCP1
+	 RN2yOLvJ5nqTP6R88+Htt8MuNELDETJEd5aJajVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yu-Che Cheng <giver@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/176] ipvs: Always clear ipvs_property flag in skb_scrub_packet()
-Date: Wed,  5 Mar 2025 18:48:22 +0100
-Message-ID: <20250305174510.786401999@linuxfoundation.org>
+Subject: [PATCH 6.13 067/157] thermal: gov_power_allocator: Update total_weight on bind and cdev updates
+Date: Wed,  5 Mar 2025 18:48:23 +0100
+Message-ID: <20250305174507.996170433@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philo Lu <lulie@linux.alibaba.com>
+From: Yu-Che Cheng <giver@chromium.org>
 
-[ Upstream commit de2c211868b9424f9aa9b3432c4430825bafb41b ]
+[ Upstream commit 0cde378a10c1cbfaa8dd2b89672d42f36c2809c3 ]
 
-We found an issue when using bpf_redirect with ipvs NAT mode after
-commit ff70202b2d1a ("dev_forward_skb: do not scrub skb mark within
-the same name space"). Particularly, we use bpf_redirect to return
-the skb directly back to the netif it comes from, i.e., xnet is
-false in skb_scrub_packet(), and then ipvs_property is preserved
-and SNAT is skipped in the rx path.
+params->total_weight is not initialized during bind and not updated when
+the bound cdev changes. The cooling device weight will not be used due
+to the uninitialized total_weight, until an update via sysfs is
+triggered.
 
-ipvs_property has been already cleared when netns is changed in
-commit 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when
-SKB net namespace changed"). This patch just clears it in spite of
-netns.
+The bound cdevs are updated during thermal zone registration, where each
+cooling device will be bound to the thermal zone one by one, but
+power_allocator_bind() can be called without an additional cdev update
+when manually changing the policy of a thermal zone via sysfs.
 
-Fixes: 2b5ec1a5f973 ("netfilter/ipvs: clear ipvs_property flag when SKB net namespace changed")
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Link: https://patch.msgid.link/20250222033518.126087-1-lulie@linux.alibaba.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add a new function to handle weight update logic, including updating
+total_weight, and call it when bind, weight changes, and cdev updates to
+ensure total_weight is always correct.
+
+Fixes: a3cd6db4cc2e ("thermal: gov_power_allocator: Support new update callback of weights")
+Signed-off-by: Yu-Che Cheng <giver@chromium.org>
+Link: https://patch.msgid.link/20250222-fix-power-allocator-weight-v2-1-a94de86b685a@chromium.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/gov_power_allocator.c | 30 ++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 768b8d65a5baa..d8a3ada886ffb 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5556,11 +5556,11 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- 	skb->offload_fwd_mark = 0;
- 	skb->offload_l3_fwd_mark = 0;
- #endif
-+	ipvs_reset(skb);
- 
- 	if (!xnet)
- 		return;
- 
--	ipvs_reset(skb);
- 	skb->mark = 0;
- 	skb_clear_tstamp(skb);
+diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
+index 3b626db55b2b9..0d9f636c80f4d 100644
+--- a/drivers/thermal/gov_power_allocator.c
++++ b/drivers/thermal/gov_power_allocator.c
+@@ -641,6 +641,22 @@ static int allocate_actors_buffer(struct power_allocator_params *params,
+ 	return ret;
  }
+ 
++static void power_allocator_update_weight(struct power_allocator_params *params)
++{
++	const struct thermal_trip_desc *td;
++	struct thermal_instance *instance;
++
++	if (!params->trip_max)
++		return;
++
++	td = trip_to_trip_desc(params->trip_max);
++
++	params->total_weight = 0;
++	list_for_each_entry(instance, &td->thermal_instances, trip_node)
++		if (power_actor_is_valid(instance))
++			params->total_weight += instance->weight;
++}
++
+ static void power_allocator_update_tz(struct thermal_zone_device *tz,
+ 				      enum thermal_notify_event reason)
+ {
+@@ -656,16 +672,12 @@ static void power_allocator_update_tz(struct thermal_zone_device *tz,
+ 			if (power_actor_is_valid(instance))
+ 				num_actors++;
+ 
+-		if (num_actors == params->num_actors)
+-			return;
++		if (num_actors != params->num_actors)
++			allocate_actors_buffer(params, num_actors);
+ 
+-		allocate_actors_buffer(params, num_actors);
+-		break;
++		fallthrough;
+ 	case THERMAL_INSTANCE_WEIGHT_CHANGED:
+-		params->total_weight = 0;
+-		list_for_each_entry(instance, &td->thermal_instances, trip_node)
+-			if (power_actor_is_valid(instance))
+-				params->total_weight += instance->weight;
++		power_allocator_update_weight(params);
+ 		break;
+ 	default:
+ 		break;
+@@ -731,6 +743,8 @@ static int power_allocator_bind(struct thermal_zone_device *tz)
+ 
+ 	tz->governor_data = params;
+ 
++	power_allocator_update_weight(params);
++
+ 	return 0;
+ 
+ free_params:
 -- 
 2.39.5
 
