@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-120631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3091A507A4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1F6A50836
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2CB8163599
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549CB189298E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E68D2512F2;
-	Wed,  5 Mar 2025 17:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A4E1A3174;
+	Wed,  5 Mar 2025 18:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAnLD9Hi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXyJy1iT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19512512E1;
-	Wed,  5 Mar 2025 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1C3539A;
+	Wed,  5 Mar 2025 18:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197519; cv=none; b=tTGiVOWJ2OLgf/6cyLDxv1IHaNsExjL2tISQ8KZPhzWXfLgQwB3V1CJa8B4gDiD8iZJJxXUUwVzCALC0UNjMIs9GyhvtkbdktO0dzsPhNvVak2AJyPRnvMsaRmOi9kSgr/tS3LjYp/FYVAEY1CGw8hG962D4uharrUue4ewgMdA=
+	t=1741197840; cv=none; b=dvFgyoCEnRlxyR3bgf4PMu6EYYUtCSv7SIbQnR0CDzHznwZkBpSP54kf5BPEQFldm667pdoDswo9qPC5lbg3JyqHjeEpQ5sn3NI50Ov9XCFlZIZ9/hBrCjXI2BqAf61yPzU/K455ahmSpM86ZvoGgX7/ozWn8CQLlg52wHOuphA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197519; c=relaxed/simple;
-	bh=EhDIp33TnNRIS/oGWJ/xe/Usui2T304qSwzhagLNQyM=;
+	s=arc-20240116; t=1741197840; c=relaxed/simple;
+	bh=P/kfTWzlUWaLwA2oTsMhRd2LWN594njOR2tIGvtS7Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/YWWqyCqA0RtQPDYTGWrQola6CHvW7MTlyvcDTjVf52FKOX3qb8yTyRKK60JdrDFP/j7kItt/rfiUcpvc4OpGkAXHOiQgan/zGyrSeWgJZgWrbNx8Z+kLIv5Gchc7yv/BkuDDyrHqAy4Po6ISMCl2MERRLgEY5eHANdOaca+vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAnLD9Hi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B202C4CED1;
-	Wed,  5 Mar 2025 17:58:39 +0000 (UTC)
+	 MIME-Version; b=rVSo0XT46ZK+Z+wUnYVXYP2KHbVhDNm5vMacLdedlYdp0hU20BmAlTH6yeIfG+BO8a71uhtVjazDGy2cOxPZpgLVM7S1gmsorTsbbFMPbHXbh4Bw1IAG6cWzpXKEibz9Nbli9/30j5IMRn2XyaKkFIuG5ve9susSwhP6eIjOYJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXyJy1iT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA7BC4CED1;
+	Wed,  5 Mar 2025 18:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197519;
-	bh=EhDIp33TnNRIS/oGWJ/xe/Usui2T304qSwzhagLNQyM=;
+	s=korg; t=1741197840;
+	bh=P/kfTWzlUWaLwA2oTsMhRd2LWN594njOR2tIGvtS7Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAnLD9Hihk7LOQzBE9c78u1Bc92GAIfOGCz62IMHnwqc6QjfbeWfYWr6wzBM/RdC8
-	 xBdOsl2fDzO0FGnl7YtaHUXgUuletNy/OA+1cQBouOmY05K6s92eQlOaBsdFoebbmO
-	 UY66ylMaWE6Ma+RY9i8T8/karveHNoTMbTi5qUjU=
+	b=YXyJy1iTYxdME58zHmEr3mE7olXuiW3RICFDLK5n+kl0lnNmg7eZcT6AfYYuhYwX8
+	 zP56PDqzE+5Okl50RJKwXKxlNqyGJRfzYtiMZxoU/THSTgGe3Ryd2WU+AIwdGIHj1a
+	 aR0CbP7BTecIVGSRl3E1tKzDYcUjmA8hy+XcTPUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 169/176] drm/amd/display: fixed integer types and null check locations
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 119/142] x86/microcode: Sanitize __wait_for_cpus()
 Date: Wed,  5 Mar 2025 18:48:58 +0100
-Message-ID: <20250305174512.225601690@linuxfoundation.org>
+Message-ID: <20250305174505.110894512@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,104 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 upstream.
+commit 0772b9aa1a8f7322dce8588c231cff8b57298a53 upstream
 
-[why]:
-issues fixed:
-- comparison with wider integer type in loop condition which can cause
-infinite loops
-- pointer dereference before null check
+The code is too complicated for no reason:
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ delete changes made in drivers/gpu/drm/amd/display/dc/link/link_validation.c
-  for this file is not present in linux-6.1.y  ]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+ - The return value is pointless as this is a strict boolean.
+
+ - It's way simpler to count down from num_online_cpus() and check for
+   zero.
+
+  - The timeout argument is pointless as this is always one second.
+
+  - Touching the NMI watchdog every 100ns does not make any sense, neither
+    does checking every 100ns. This is really not a hotpath operation.
+
+Preload the atomic counter with the number of online CPUs and simplify the
+whole timeout logic. Delay for one microsecond and touch the NMI watchdog
+once per millisecond.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115903.204251527@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c |   39 +++++++++++++++--------------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1862,19 +1862,21 @@ static enum bp_result get_firmware_info_
- 		/* Vega12 */
- 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
- 		if (!smu_info_v3_2)
- 			return BP_RESULT_BADBIOSTABLE;
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -252,31 +252,26 @@ static struct platform_device	*microcode
+  *   requirement can be relaxed in the future. Right now, this is conservative
+  *   and good.
+  */
+-#define SPINUNIT 100 /* 100 nsec */
++static atomic_t late_cpus_in, late_cpus_out;
  
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
-+
- 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
- 	} else if (revision.minor == 3) {
- 		/* Vega20 */
- 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
- 		if (!smu_info_v3_3)
- 			return BP_RESULT_BADBIOSTABLE;
+-
+-static atomic_t late_cpus_in;
+-static atomic_t late_cpus_out;
+-
+-static int __wait_for_cpus(atomic_t *t, long long timeout)
++static bool wait_for_cpus(atomic_t *cnt)
+ {
+-	int all_cpus = num_online_cpus();
++	unsigned int timeout;
  
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
-+
- 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
+-	atomic_inc(t);
++	WARN_ON_ONCE(atomic_dec_return(cnt) < 0);
+ 
+-	while (atomic_read(t) < all_cpus) {
+-		if (timeout < SPINUNIT) {
+-			pr_err("Timeout while waiting for CPUs rendezvous, remaining: %d\n",
+-				all_cpus - atomic_read(t));
+-			return 1;
+-		}
++	for (timeout = 0; timeout < USEC_PER_SEC; timeout++) {
++		if (!atomic_read(cnt))
++			return true;
+ 
+-		ndelay(SPINUNIT);
+-		timeout -= SPINUNIT;
++		udelay(1);
+ 
+-		touch_nmi_watchdog();
++		if (!(timeout % USEC_PER_MSEC))
++			touch_nmi_watchdog();
+ 	}
+-	return 0;
++	/* Prevent the late comers from making progress and let them time out */
++	atomic_inc(cnt);
++	return false;
+ }
+ 
+ /*
+@@ -294,7 +289,7 @@ static int __reload_late(void *info)
+ 	 * Wait for all CPUs to arrive. A load will not be attempted unless all
+ 	 * CPUs show up.
+ 	 * */
+-	if (__wait_for_cpus(&late_cpus_in, NSEC_PER_SEC))
++	if (!wait_for_cpus(&late_cpus_in))
+ 		return -1;
+ 
+ 	/*
+@@ -317,7 +312,7 @@ static int __reload_late(void *info)
  	}
  
-@@ -2439,10 +2441,11 @@ static enum bp_result get_integrated_inf
- 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
- 					DATA_TABLES(integratedsysteminfo));
+ wait_for_siblings:
+-	if (__wait_for_cpus(&late_cpus_out, NSEC_PER_SEC))
++	if (!wait_for_cpus(&late_cpus_out))
+ 		panic("Timeout during microcode update!\n");
  
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
- 	if (info_v11 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v11->gpucapinfo);
  	/*
-@@ -2654,11 +2657,12 @@ static enum bp_result get_integrated_inf
+@@ -344,8 +339,8 @@ static int microcode_reload_late(void)
+ 	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
+ 	pr_err("You should switch to early loading, if possible.\n");
  
- 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
- 					DATA_TABLES(integratedsysteminfo));
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
+-	atomic_set(&late_cpus_in,  0);
+-	atomic_set(&late_cpus_out, 0);
++	atomic_set(&late_cpus_in, num_online_cpus());
++	atomic_set(&late_cpus_out, num_online_cpus());
  
- 	if (info_v2_1 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_1->gpucapinfo);
  	/*
-@@ -2816,11 +2820,11 @@ static enum bp_result get_integrated_inf
- 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
--
- 	if (info_v2_2 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_2->gpucapinfo);
- 	/*
+ 	 * Take a snapshot before the microcode update in order to compare and
 
 
 
