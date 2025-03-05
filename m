@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279F4A50866
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F303CA5072D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B2E47A28DD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61AD173C0E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09862512FA;
-	Wed,  5 Mar 2025 18:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE052250BE2;
+	Wed,  5 Mar 2025 17:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3HBwfcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJ5JFbJC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0D20C004;
-	Wed,  5 Mar 2025 18:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB49481DD;
+	Wed,  5 Mar 2025 17:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198018; cv=none; b=prdIyrqE/KbLqlnMZqZhT3MklE9sD4f1Xvcstjfg2oErYvl8kWwwjxP2vgFBLie9JMVWCelJZsvr06JI/i1Oypee6RMdUA6LQsZD7TVrBgmRthPlHc+BZby9UHBtf4SLJLHczCI1jgYvoISWiFh9R9JsEXB8E8+9dANFQWyz7vg=
+	t=1741197272; cv=none; b=PX+gDUB5hLdE6Z64He7/qTClo4Vk0P3g221U5R7qrfriXgWVtzMAjsK2TcrNGLZae123F8NPsPOGtbS4DnZxTFzPQbovy3XkZHIGCOkksepZHnD7UIHGkuK7utXBsT+ipo7MRTpX9p5J+iNPc8uZTX4cxJqWZ4ssgQHTGWI2qjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198018; c=relaxed/simple;
-	bh=KLPQADHbUd/Co8XOeD4wmE/3T2OKnUdK/P/s7xRywo8=;
+	s=arc-20240116; t=1741197272; c=relaxed/simple;
+	bh=6E3g8mB46wZwMn+JQmr/PWGy7+cDg+bWe6Jcj6MqK7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ko1qoO4axPN7tcRcAoKhGC5QuhRbLHrvobDsIMCPqEXdylEFqmWl13LoQE4pYAHUr0/HAyCuRwkvLCXib21ISng/+V+qIs3LWO+zg3WIW/v7Uf1+LCBbipGsTNPmfNvyD5ymerKdQOHm19pmBIxTbH0pRFdgtI356EwNt+CMWQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3HBwfcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C01C4CED1;
-	Wed,  5 Mar 2025 18:06:57 +0000 (UTC)
+	 MIME-Version; b=EaI3Be3O2sD+FkpHIl2SabfuFl0ReWMkCoXMwsEbKmMSi6dtqbTQzaq0PA+lrffd54H/2S4I2sUV5yBJNiVsqor8UuxikIB+uve5hHwLJ6xz2ke4el6OPXaJ733oHIryvlQTlyimJZ++M3L9JHAQtXMTeBZXUS3NMBJbpGn9i0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJ5JFbJC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DD9C4CED1;
+	Wed,  5 Mar 2025 17:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198018;
-	bh=KLPQADHbUd/Co8XOeD4wmE/3T2OKnUdK/P/s7xRywo8=;
+	s=korg; t=1741197271;
+	bh=6E3g8mB46wZwMn+JQmr/PWGy7+cDg+bWe6Jcj6MqK7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3HBwfcAYJO2hWVpKDdu9//eov6jAfPdUv6v5O8pQtRH+KM7xVb6tl0Oh1j2zOQGv
-	 nQwliiAicbaj6xABvjaD51PBtJ3ggQe8bdpoijCc6K5dwkDMR21yw57sWCNu5gwPPY
-	 oDfl0ZbtN8DU9CZmk13zNN5cfUjOY0ylMQR9m8B8=
+	b=mJ5JFbJCIdosO2kzDMh94Y1Y8uEV31/l1CAc2FlbRZQaid7SFG9k6mFOaxLgBZtUg
+	 J3f/2E7O5McUy8Bdv5gOZRZij00Ff2VSufzGf9UggHBc2mwlRbdkow+0aLr1EsuF/E
+	 o1A9t9yQtRNK98im9AyN21T3BHCdrsmtYkSKFGvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aharon Landau <aharonl@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/150] ipv4: Convert ip_route_input() to dscp_t.
-Date: Wed,  5 Mar 2025 18:47:45 +0100
-Message-ID: <20250305174505.264738736@linuxfoundation.org>
+Subject: [PATCH 6.1 097/176] RDMA/mlx5: Dont keep umrable page_shift in cache entries
+Date: Wed,  5 Mar 2025 18:47:46 +0100
+Message-ID: <20250305174509.358007400@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Aharon Landau <aharonl@nvidia.com>
 
-[ Upstream commit 7e863e5db6185b1add0df4cb01b31a4ed1c4b738 ]
+[ Upstream commit a2a88b8e22d1b202225d0e40b02ad068afab2ccb ]
 
-Pass a dscp_t variable to ip_route_input(), instead of a plain u8, to
-prevent accidental setting of ECN bits in ->flowi4_tos.
+mkc.log_page_size can be changed using UMR. Therefore, don't treat it as a
+cache entry property.
 
-Callers of ip_route_input() to consider are:
+Removing it from struct mlx5_cache_ent.
 
-  * input_action_end_dx4_finish() and input_action_end_dt4() in
-    net/ipv6/seg6_local.c. These functions set the tos parameter to 0,
-    which is already a valid dscp_t value, so they don't need to be
-    adjusted for the new prototype.
+All cache mkeys will be created with default PAGE_SHIFT, and updated with
+the needed page_shift using UMR when passing them to a user.
 
-  * icmp_route_lookup(), which already has a dscp_t variable to pass as
-    parameter. We just need to remove the inet_dscp_to_dsfield()
-    conversion.
-
-  * br_nf_pre_routing_finish(), ip_options_rcv_srr() and ip4ip6_err(),
-    which get the DSCP directly from IPv4 headers. Define a helper to
-    read the .tos field of struct iphdr as dscp_t, so that these
-    function don't have to do the conversion manually.
-
-While there, declare *iph as const in br_nf_pre_routing_finish(),
-declare its local variables in reverse-christmas-tree order and move
-the "err = ip_route_input()" assignment out of the conditional to avoid
-checkpatch warning.
-
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/e9d40781d64d3d69f4c79ac8a008b8d67a033e8d.1727807926.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Link: https://lore.kernel.org/r/20230125222807.6921-2-michaelgur@nvidia.com
+Signed-off-by: Aharon Landau <aharonl@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: d97505baea64 ("RDMA/mlx5: Fix the recovery flow of the UMR QP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h                | 5 +++++
- include/net/route.h             | 5 +++--
- net/bridge/br_netfilter_hooks.c | 8 +++++---
- net/ipv4/icmp.c                 | 2 +-
- net/ipv4/ip_options.c           | 3 ++-
- net/ipv6/ip6_tunnel.c           | 4 ++--
- 6 files changed, 18 insertions(+), 9 deletions(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h | 1 -
+ drivers/infiniband/hw/mlx5/mr.c      | 3 +--
+ drivers/infiniband/hw/mlx5/odp.c     | 2 --
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index fe4f854381143..bd201278c55a5 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -424,6 +424,11 @@ int ip_decrease_ttl(struct iphdr *iph)
- 	return --iph->ttl;
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 0ef347e91ffeb..10c87901da27c 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -759,7 +759,6 @@ struct mlx5_cache_ent {
+ 	char                    name[4];
+ 	u32                     order;
+ 	u32			access_mode;
+-	u32			page;
+ 	unsigned int		ndescs;
+ 
+ 	u8 disabled:1;
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index b81b03aa2a629..53fadd6edb68d 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -297,7 +297,7 @@ static void set_cache_mkc(struct mlx5_cache_ent *ent, void *mkc)
+ 
+ 	MLX5_SET(mkc, mkc, translations_octword_size,
+ 		 get_mkc_octo_size(ent->access_mode, ent->ndescs));
+-	MLX5_SET(mkc, mkc, log_page_size, ent->page);
++	MLX5_SET(mkc, mkc, log_page_size, PAGE_SHIFT);
  }
  
-+static inline dscp_t ip4h_dscp(const struct iphdr *ip4h)
-+{
-+	return inet_dsfield_to_dscp(ip4h->tos);
-+}
-+
- static inline int ip_mtu_locked(const struct dst_entry *dst)
- {
- 	const struct rtable *rt = dst_rtable(dst);
-diff --git a/include/net/route.h b/include/net/route.h
-index da34b6fa9862d..8a11d19f897bb 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -208,12 +208,13 @@ int ip_route_use_hint(struct sk_buff *skb, __be32 dst, __be32 src,
- 		      const struct sk_buff *hint);
+ /* Asynchronously schedule new MRs to be populated in the cache. */
+@@ -765,7 +765,6 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
+ 		if (ent->order > mkey_cache_max_order(dev))
+ 			continue;
  
- static inline int ip_route_input(struct sk_buff *skb, __be32 dst, __be32 src,
--				 u8 tos, struct net_device *devin)
-+				 dscp_t dscp, struct net_device *devin)
- {
- 	int err;
+-		ent->page = PAGE_SHIFT;
+ 		ent->ndescs = 1 << ent->order;
+ 		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
+ 		if ((dev->mdev->profile.mask & MLX5_PROF_MASK_MR_CACHE) &&
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 87fbee8061003..a5c9baec8be85 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -1598,14 +1598,12 @@ void mlx5_odp_init_mkey_cache_entry(struct mlx5_cache_ent *ent)
  
- 	rcu_read_lock();
--	err = ip_route_input_noref(skb, dst, src, tos, devin);
-+	err = ip_route_input_noref(skb, dst, src, inet_dscp_to_dsfield(dscp),
-+				   devin);
- 	if (!err) {
- 		skb_dst_force(skb);
- 		if (!skb_dst(skb))
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 1d458e9da660c..17a5f5923d615 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -370,9 +370,9 @@ br_nf_ipv4_daddr_was_changed(const struct sk_buff *skb,
-  */
- static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb->dev, *br_indev;
--	struct iphdr *iph = ip_hdr(skb);
- 	struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
-+	struct net_device *dev = skb->dev, *br_indev;
-+	const struct iphdr *iph = ip_hdr(skb);
- 	struct rtable *rt;
- 	int err;
+ 	switch (ent->order - 2) {
+ 	case MLX5_IMR_MTT_CACHE_ENTRY:
+-		ent->page = PAGE_SHIFT;
+ 		ent->ndescs = MLX5_IMR_MTT_ENTRIES;
+ 		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
+ 		ent->limit = 0;
+ 		break;
  
-@@ -390,7 +390,9 @@ static int br_nf_pre_routing_finish(struct net *net, struct sock *sk, struct sk_
- 	}
- 	nf_bridge->in_prerouting = 0;
- 	if (br_nf_ipv4_daddr_was_changed(skb, nf_bridge)) {
--		if ((err = ip_route_input(skb, iph->daddr, iph->saddr, iph->tos, dev))) {
-+		err = ip_route_input(skb, iph->daddr, iph->saddr,
-+				     ip4h_dscp(iph), dev);
-+		if (err) {
- 			struct in_device *in_dev = __in_dev_get_rcu(dev);
- 
- 			/* If err equals -EHOSTUNREACH the error is due to a
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 0a2f988c4c24e..b8111ec651b54 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -547,7 +547,7 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		orefdst = skb_in->_skb_refdst; /* save old refdst */
- 		skb_dst_set(skb_in, NULL);
- 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
--				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
-+				     dscp, rt2->dst.dev);
- 
- 		dst_release(&rt2->dst);
- 		rt2 = skb_rtable(skb_in);
-diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-index 68aedb8877b9f..81e86e5defee6 100644
---- a/net/ipv4/ip_options.c
-+++ b/net/ipv4/ip_options.c
-@@ -617,7 +617,8 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev)
- 
- 		orefdst = skb->_skb_refdst;
- 		skb_dst_set(skb, NULL);
--		err = ip_route_input(skb, nexthop, iph->saddr, iph->tos, dev);
-+		err = ip_route_input(skb, nexthop, iph->saddr, ip4h_dscp(iph),
-+				     dev);
- 		rt2 = skb_rtable(skb);
- 		if (err || (rt2->rt_type != RTN_UNICAST && rt2->rt_type != RTN_LOCAL)) {
- 			skb_dst_drop(skb);
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index b60e13c42bcac..48fd53b989726 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -630,8 +630,8 @@ ip4ip6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 		}
- 		skb_dst_set(skb2, &rt->dst);
- 	} else {
--		if (ip_route_input(skb2, eiph->daddr, eiph->saddr, eiph->tos,
--				   skb2->dev) ||
-+		if (ip_route_input(skb2, eiph->daddr, eiph->saddr,
-+				   ip4h_dscp(eiph), skb2->dev) ||
- 		    skb_dst(skb2)->dev->type != ARPHRD_TUNNEL6)
- 			goto out;
- 	}
+ 	case MLX5_IMR_KSM_CACHE_ENTRY:
+-		ent->page = MLX5_KSM_PAGE_SHIFT;
+ 		ent->ndescs = mlx5_imr_ksm_entries;
+ 		ent->access_mode = MLX5_MKC_ACCESS_MODE_KSM;
+ 		ent->limit = 0;
 -- 
 2.39.5
 
