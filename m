@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-120440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD0FA50178
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 15:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDE2A5017B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 15:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E17353A8569
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:08:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3D33A83A6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF51420C499;
-	Wed,  5 Mar 2025 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDA424A076;
+	Wed,  5 Mar 2025 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDBrB/5B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URx8cpxt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FAE24A075;
-	Wed,  5 Mar 2025 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2946C24A05D
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741183709; cv=none; b=DI0f7/BwedMRo6aL/OPDKAyJWv3ZXe435wBZWz7mG44rvSImAB1xwNNtA96zlJyux4D3x4SU/KLPO7/dg2s5y63Ubu27sEBgN6AsLzTIrIgdPGzxNfLIlvixdzyYUNet/9MZEquSDOd2xDR1ibWhUv4UydGFWz8/hlN5TnPQidQ=
+	t=1741183788; cv=none; b=g0HrbOuLNnt+6eS9tJ1GLhnhZ74mK7C28dq9G9RoaPHwKnKJqbeCexIy8JGO4cYRO0KRFNDEs/3sc6zG7vBJnOp779+YQ4pnxyvGsNS/wqtPvCtEeN466PJP5D41qg5QhDKjf4gMlX4qHc1yLduzb26nfIZ5uVOEtxyYguEpfg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741183709; c=relaxed/simple;
-	bh=3+GR7BVtAhPX5hvMW1vQnMXqYLElXQwwk1OW9oK0rFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PoRAdwrewv6j8VwUCMe/oc+e79QsOBbi5Rn8ve0tXUja4ZEjo347JbbpTWpCVsY/UyNeniipel1x47gsgJQlKUrWTde5Wl1VdAdQF008pMNhUnUvc1zEpFYxn5xm3mHaTnzSoQ6zQkGI+YY3S61yTDWic970iTOWunxCp4Fj6kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDBrB/5B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876A8C4CED1;
-	Wed,  5 Mar 2025 14:08:28 +0000 (UTC)
+	s=arc-20240116; t=1741183788; c=relaxed/simple;
+	bh=j1y6A2Q2EaSQYbKNYkM4i+/qmrLcGUyuLIMAiLnvL50=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WSZXKurcpRsSWjW5BmGJIYiLSfXNREL8KiY6y8pdflKPgG1R6p7kcEhGDqcIXzh2SiQ34tWiVnGvAlteMSieinELB8cOCzoeT+7uM5+nwkXxNAexzaN7r/b/Nk7YGjGVjjHD2cdK2ACwThVaseVa6wq+OwzKM6GGizR0yku4sdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URx8cpxt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C202C4CED1;
+	Wed,  5 Mar 2025 14:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741183708;
-	bh=3+GR7BVtAhPX5hvMW1vQnMXqYLElXQwwk1OW9oK0rFc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cDBrB/5BKZp4XaMi6WEfw+FrIJ8rpM51n1dV/6MpDCP0anlp5ZzAlclI2oofX9M9r
-	 SkPQqU32ve2yv/VhrUakVTz4cIUeuv8x13VNaIHbwvHs6BFD7s9Oc1ybB/bodIzYI1
-	 KrWrIk36QzglptukJR/7M1cJv7oGoK1vhieieeQ8=
-Date: Wed, 5 Mar 2025 15:08:26 +0100
+	s=korg; t=1741183787;
+	bh=j1y6A2Q2EaSQYbKNYkM4i+/qmrLcGUyuLIMAiLnvL50=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=URx8cpxtoctLl7PH5NEg2r63eRVjB3TQC82gcy+f4Spu4p6uqvIThSHRqH2NSIIQW
+	 LbhMzaFovadpHz5dLW83v8EYbfCwvPE1Y0YvR6E9Cj/ID/3k4f2h20o3FTQjgjRfcy
+	 NJWZMgYJPJIWBLrSh/icthXM5cMEPoynw/eTIs+A=
+Date: Wed, 5 Mar 2025 15:09:44 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: Sasha Levin <sashal@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
-	stable@vger.kernel.org, netdev@vger.kernel.org,
-	Lei Lu <llfamsec@gmail.com>
-Subject: Re: [PATCH stable 5.15/6.1/6.6] af_unix: Clear oob_skb in
- scan_inflight().
-Message-ID: <2025030543-banker-impale-9c08@gregkh>
-References: <20250304030149.82265-1-kuniyu@amazon.com>
+To: Sasha Levin <sashal@kernel.org>, stable <stable@vger.kernel.org>,
+	Sergei Golovan <sgolovan@debian.org>, 1087809@bugs.debian.org,
+	1086028@bugs.debian.org, 1093200@bugs.debian.org,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	debian-mips@lists.debian.org, Ben Hutchings <benh@debian.org>
+Subject: Re: Please apply 8fa507083388 ("mm/memory: Use exception ip to
+ search exception tables") (and one required dependency) to v6.1.y
+Message-ID: <2025030537-chance-swizzle-3678@gregkh>
+References: <Z79tTfjD-rCIa6EV@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,66 +58,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250304030149.82265-1-kuniyu@amazon.com>
+In-Reply-To: <Z79tTfjD-rCIa6EV@eldamar.lan>
 
-On Mon, Mar 03, 2025 at 07:01:49PM -0800, Kuniyuki Iwashima wrote:
-> Embryo socket is not queued in gc_candidates, so we can't drop
-> a reference held by its oob_skb.
+On Wed, Feb 26, 2025 at 08:36:45PM +0100, Salvatore Bonaccorso wrote:
+> Hi Greg, hi Sasha
 > 
-> Let's say we create listener and embryo sockets, send the
-> listener's fd to the embryo as OOB data, and close() them
-> without recv()ing the OOB data.
+> A while back the following regression after 4bce37a68ff8 ("mips/mm:
+> Convert to using lock_mm_and_find_vma()") was reported:
+> https://lore.kernel.org/all/75e9fd7b08562ad9b456a5bdaacb7cc220311cc9.camel@xry111.site/
+> affecting mips64el. This was later on fixed by 8fa507083388
+> ("mm/memory: Use exception ip to search exception tables") in 6.8-rc5
+> and which got backported to 6.7.6 and 6.6.18.
 > 
-> There is a self-reference cycle like
+> The breaking commit was part of a series covering a security fix
+> (CVE-2023-3269), and landed in 6.5-rc1 and backported to 6.4.1, 6.3.11
+> and 6.1.37.
 > 
->   listener -> embryo.oob_skb -> listener
+> So far 6.1.y remained unfixed and in fact in Debian we got reports
+> about this issue seen on the build infrastructure when building
+> various packages, details are in:
+> https://bugs.debian.org/1086028
+> https://bugs.debian.org/1087809
+> https://bugs.debian.org/1093200
 > 
-> , so this must be cleaned up by GC.  Otherwise, the listener's
-> refcnt is not released and sockets are leaked:
+> The fix probably did not got backported as there is one dependency
+> missing which was not CC'ed for stable afaics.
 > 
->   # unshare -n
->   # cat /proc/net/protocols | grep UNIX-STREAM
->   UNIX-STREAM 1024      0      -1   NI       0   yes  kernel ...
+> Thus, can you please cherry-pick the following two commits please as
+> well for 6.1.y?
 > 
->   # python3
->   >>> from array import array
->   >>> from socket import *
->   >>>
->   >>> s = socket(AF_UNIX, SOCK_STREAM)
->   >>> s.bind('\0test\0')
->   >>> s.listen()
->   >>>
->   >>> c = socket(AF_UNIX, SOCK_STREAM)
->   >>> c.connect(s.getsockname())
->   >>> c.sendmsg([b'x'], [(SOL_SOCKET, SCM_RIGHTS, array('i', [s.fileno()]))], MSG_OOB)
->   1
->   >>> quit()
+> 11ba1728be3e ("ptrace: Introduce exception_ip arch hook")
+> 8fa507083388 ("mm/memory: Use exception ip to search exception tables")
 > 
->   # cat /proc/net/protocols | grep UNIX-STREAM
->   UNIX-STREAM 1024      3      -1   NI       0   yes  kernel ...
->                         ^^^
->                         3 sockets still in use after FDs are close()d
+> Sergei Golovan confirmed as well by testing that this fixes the seen
+> issue as well in 6.1.y, cf. https://bugs.debian.org/1086028#95
 > 
-> Let's drop the embryo socket's oob_skb ref in scan_inflight().
-> 
-> This also fixes a racy access to oob_skb that commit 9841991a446c
-> ("af_unix: Update unix_sk(sk)->oob_skb under sk_receive_queue
-> lock.") fixed for the new Tarjan's algo-based GC.
-> 
-> Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-> Reported-by: Lei Lu <llfamsec@gmail.com>
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> ---
-> This has no upstream commit because I replaced the entire GC in
-> 6.10 and the new GC does not have this bug, and this fix is only
-> applicable to the old GC (<= 6.9), thus for 5.15/6.1/6.6.
+> Thanks in advance already.
 
-You need to get the networking maintainers to review and agree that this
-is ok for us to take, as we really don't want to take "custom" stuff
-like thi s at all.  Why not just take the commits that are in newer
-kernels instead?
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
 
