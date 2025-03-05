@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-120878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B88A508DC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A6CA50821
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878BB18874A0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C931167BAD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F2A1A5BB7;
-	Wed,  5 Mar 2025 18:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF69250BFC;
+	Wed,  5 Mar 2025 18:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nayGqy4c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVLx0NQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB341C6FF6;
-	Wed,  5 Mar 2025 18:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB92F539A;
+	Wed,  5 Mar 2025 18:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198237; cv=none; b=AvGJ1QJKy6zHuPMmx54Zk4jirK9W9ganAFMLY4bItmllfZAkweolc3jY8YnYv3ePtgc/HE7Mxo07Y+3KykEiQV2V+z05r8nvQSCR4UQHuUEwWzkl4nkd0KlUoVZKJlaPIII1AVt+pAAs6hr4Vz74sqAGYxJnXDDc7Xu5olTgfB8=
+	t=1741197843; cv=none; b=kkTRknX3NHiQQ1Er49otT3vG83fejZrRqS5ZgAm5xupILUaTq2uYgeB7iB7UYvQ5591Pd1jVk4jYNWyKM+8rVjulXK+oUTCeaqsHOsKL2ySb+7yki1a7cEGjOvSAvjqqSo+61D7f03ZnKXohX+G0xw2qMtA7OhwFig4nh3dJ8Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198237; c=relaxed/simple;
-	bh=hyY0zMr5LU4XaqUWN6yhqNQ18cZUWtbOAb1ZKbg8qDA=;
+	s=arc-20240116; t=1741197843; c=relaxed/simple;
+	bh=SYGu23TEeo9L3j9fZDjiycGR8p1BMmogeAfrr5yKFV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMiHjGC9dAHTef4V4eSRD7WOVu0QWmYj79/TdSoB7TIWqR5y9M/U9jxCxdn610CfDOLxSmyp7/AyET6wFx0NH2yD6gIWawX6PIovV6RxF4ne+gQljF19w7YSn4iMyzQ/k/V/IsD/LwOPoeFOjan9/5fGqiNX5uij9Wsp07ND8B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nayGqy4c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5467C4CEE0;
-	Wed,  5 Mar 2025 18:10:36 +0000 (UTC)
+	 MIME-Version; b=byZEgmhf/12z7ekY2AWJkbFoyMQijyj12Xtt+kF+F9Dj4FtbVi93Y8fu7q7PLYt3fiCrMsnLg2DPi0SFBG+ao9081eZfn+K6FYWDmbkkVjER+/SS7M3CBOsPwVSNfrTQGodvOrqojULnHChwSCOXhVzjFCR37aXDWnMTu29OwTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVLx0NQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4317DC4CED1;
+	Wed,  5 Mar 2025 18:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198237;
-	bh=hyY0zMr5LU4XaqUWN6yhqNQ18cZUWtbOAb1ZKbg8qDA=;
+	s=korg; t=1741197843;
+	bh=SYGu23TEeo9L3j9fZDjiycGR8p1BMmogeAfrr5yKFV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nayGqy4crvQqyZT7011zsVOjvGIOJKIlLsoN1t/UG0WbRP6KDwSmFiqRWk9IgJT18
-	 uHZBZBRbLiCQsbhD7j1eJGFtIDOVmgfSunJOIr85u+W4JKCUxn313UHKW9A07YpY7w
-	 MFDNJQU1FQ9hZwv2XFjqCyGl+dE6LO5L77YkQvj4=
+	b=MVLx0NQIXI98RINV4iCdXJLpVUblGqrWANzD6Lich9HQzY+Aw7JdUUI4qh+G2dMxm
+	 K1A5QNQgdQgBT8wtMmvrQkhtP91djG3X4Z/Je9fbQXnw/BQ/lO4JmVXBN3fN9wcn9u
+	 1obfOMmkYuDli2s4Y9LwOsTOPBGJvwFfUaHi8Qvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qunqin Zhao <zhaoqunqin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 109/150] net: stmmac: dwmac-loongson: Add fix_soc_reset() callback
-Date: Wed,  5 Mar 2025 18:48:58 +0100
-Message-ID: <20250305174508.191771610@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 120/142] x86/microcode: Add per CPU result state
+Date: Wed,  5 Mar 2025 18:48:59 +0100
+Message-ID: <20250305174505.150404200@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qunqin Zhao <zhaoqunqin@loongson.cn>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit f06e4bfd010faefa637689d2df2c727dbf6e1d27 upstream.
+commit 4b753955e9151ad2f722137a7bcbafda756186b3 upstream
 
-Loongson's DWMAC device may take nearly two seconds to complete DMA reset,
-however, the default waiting time for reset is 200 milliseconds.
-Therefore, the following error message may appear:
+The microcode rendezvous is purely acting on global state, which does
+not allow to analyze fails in a coherent way.
 
-[14.427169] dwmac-loongson-pci 0000:00:03.2: Failed to reset the dma
+Introduce per CPU state where the results are written into, which allows to
+analyze the return codes of the individual CPUs.
 
-Fixes: 803fc61df261 ("net: stmmac: dwmac-loongson: Add Loongson Multi-channels GMAC support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qunqin Zhao <zhaoqunqin@loongson.cn>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Yanteng Si <si.yanteng@linux.dev>
-Link: https://patch.msgid.link/20250219020701.15139-1-zhaoqunqin@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Initialize the state when walking the cpu_present_mask in the online
+check to avoid another for_each_cpu() loop.
+
+Enhance the result print out with that.
+
+The structure is intentionally named ucode_ctrl as it will gain control
+fields in subsequent changes.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231017211723.632681010@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/x86/kernel/cpu/microcode/core.c     |  112 ++++++++++++++++++-------------
+ arch/x86/kernel/cpu/microcode/internal.h |    1 
+ 2 files changed, 67 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index bfe6e2d631bd..f5acfb7d4ff6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -516,6 +516,19 @@ static int loongson_dwmac_acpi_config(struct pci_dev *pdev,
- 	return 0;
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -252,6 +252,11 @@ static struct platform_device	*microcode
+  *   requirement can be relaxed in the future. Right now, this is conservative
+  *   and good.
+  */
++struct microcode_ctrl {
++	enum ucode_state	result;
++};
++
++static DEFINE_PER_CPU(struct microcode_ctrl, ucode_ctrl);
+ static atomic_t late_cpus_in, late_cpus_out;
+ 
+ static bool wait_for_cpus(atomic_t *cnt)
+@@ -274,23 +279,19 @@ static bool wait_for_cpus(atomic_t *cnt)
+ 	return false;
  }
  
-+/* Loongson's DWMAC device may take nearly two seconds to complete DMA reset */
-+static int loongson_dwmac_fix_reset(void *priv, void __iomem *ioaddr)
-+{
-+	u32 value = readl(ioaddr + DMA_BUS_MODE);
-+
-+	value |= DMA_BUS_MODE_SFT_RESET;
-+	writel(value, ioaddr + DMA_BUS_MODE);
-+
-+	return readl_poll_timeout(ioaddr + DMA_BUS_MODE, value,
-+				  !(value & DMA_BUS_MODE_SFT_RESET),
-+				  10000, 2000000);
-+}
-+
- static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+-/*
+- * Returns:
+- * < 0 - on error
+- *   0 - success (no update done or microcode was updated)
+- */
+-static int __reload_late(void *info)
++static int load_cpus_stopped(void *unused)
  {
- 	struct plat_stmmacenet_data *plat;
-@@ -566,6 +579,7 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	int cpu = smp_processor_id();
+-	enum ucode_state err;
+-	int ret = 0;
++	enum ucode_state ret;
  
- 	plat->bsp_priv = ld;
- 	plat->setup = loongson_dwmac_setup;
-+	plat->fix_soc_reset = loongson_dwmac_fix_reset;
- 	ld->dev = &pdev->dev;
- 	ld->loongson_id = readl(res.addr + GMAC_VERSION) & 0xff;
+ 	/*
+ 	 * Wait for all CPUs to arrive. A load will not be attempted unless all
+ 	 * CPUs show up.
+ 	 * */
+-	if (!wait_for_cpus(&late_cpus_in))
+-		return -1;
++	if (!wait_for_cpus(&late_cpus_in)) {
++		this_cpu_write(ucode_ctrl.result, UCODE_TIMEOUT);
++		return 0;
++	}
  
--- 
-2.48.1
-
+ 	/*
+ 	 * On an SMT system, it suffices to load the microcode on one sibling of
+@@ -299,17 +300,11 @@ static int __reload_late(void *info)
+ 	 * loading attempts happen on multiple threads of an SMT core. See
+ 	 * below.
+ 	 */
+-	if (cpumask_first(topology_sibling_cpumask(cpu)) == cpu)
+-		err = microcode_ops->apply_microcode(cpu);
+-	else
++	if (cpumask_first(topology_sibling_cpumask(cpu)) != cpu)
+ 		goto wait_for_siblings;
+ 
+-	if (err >= UCODE_NFOUND) {
+-		if (err == UCODE_ERROR) {
+-			pr_warn("Error reloading microcode on CPU %d\n", cpu);
+-			ret = -1;
+-		}
+-	}
++	ret = microcode_ops->apply_microcode(cpu);
++	this_cpu_write(ucode_ctrl.result, ret);
+ 
+ wait_for_siblings:
+ 	if (!wait_for_cpus(&late_cpus_out))
+@@ -321,19 +316,18 @@ wait_for_siblings:
+ 	 * per-cpu cpuinfo can be updated with right microcode
+ 	 * revision.
+ 	 */
+-	if (cpumask_first(topology_sibling_cpumask(cpu)) != cpu)
+-		err = microcode_ops->apply_microcode(cpu);
++	if (cpumask_first(topology_sibling_cpumask(cpu)) == cpu)
++		return 0;
+ 
+-	return ret;
++	ret = microcode_ops->apply_microcode(cpu);
++	this_cpu_write(ucode_ctrl.result, ret);
++	return 0;
+ }
+ 
+-/*
+- * Reload microcode late on all CPUs. Wait for a sec until they
+- * all gather together.
+- */
+-static int microcode_reload_late(void)
++static int load_late_stop_cpus(void)
+ {
+-	int old = boot_cpu_data.microcode, ret;
++	unsigned int cpu, updated = 0, failed = 0, timedout = 0, siblings = 0;
++	int old_rev = boot_cpu_data.microcode;
+ 	struct cpuinfo_x86 prev_info;
+ 
+ 	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
+@@ -348,26 +342,47 @@ static int microcode_reload_late(void)
+ 	 */
+ 	store_cpu_caps(&prev_info);
+ 
+-	ret = stop_machine_cpuslocked(__reload_late, NULL, cpu_online_mask);
++	stop_machine_cpuslocked(load_cpus_stopped, NULL, cpu_online_mask);
++
++	/* Analyze the results */
++	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
++		switch (per_cpu(ucode_ctrl.result, cpu)) {
++		case UCODE_UPDATED:	updated++; break;
++		case UCODE_TIMEOUT:	timedout++; break;
++		case UCODE_OK:		siblings++; break;
++		default:		failed++; break;
++		}
++	}
+ 
+ 	if (microcode_ops->finalize_late_load)
+-		microcode_ops->finalize_late_load(ret);
++		microcode_ops->finalize_late_load(!updated);
+ 
+-	if (!ret) {
+-		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
+-			old, boot_cpu_data.microcode);
+-		microcode_check(&prev_info);
+-		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+-	} else {
+-		pr_info("Reload failed, current microcode revision: 0x%x\n",
+-			boot_cpu_data.microcode);
++	if (!updated) {
++		/* Nothing changed. */
++		if (!failed && !timedout)
++			return 0;
++		pr_err("update failed: %u CPUs failed %u CPUs timed out\n",
++		       failed, timedout);
++		return -EIO;
+ 	}
+-	return ret;
++
++	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++	pr_info("load: updated on %u primary CPUs with %u siblings\n", updated, siblings);
++	if (failed || timedout) {
++		pr_err("load incomplete. %u CPUs timed out or failed\n",
++		       num_online_cpus() - (updated + siblings));
++	}
++	pr_info("revision: 0x%x -> 0x%x\n", old_rev, boot_cpu_data.microcode);
++	microcode_check(&prev_info);
++
++	return updated + siblings == num_online_cpus() ? 0 : -EIO;
+ }
+ 
+ /*
+- *  Ensure that all required CPUs which are present and have been booted
+- *  once are online.
++ * This function does two things:
++ *
++ * 1) Ensure that all required CPUs which are present and have been booted
++ *    once are online.
+  *
+  *    To pass this check, all primary threads must be online.
+  *
+@@ -378,9 +393,12 @@ static int microcode_reload_late(void)
+  *    behaviour is undefined. The default play_dead() implementation on
+  *    modern CPUs uses MWAIT, which is also not guaranteed to be safe
+  *    against a microcode update which affects MWAIT.
++ *
++ * 2) Initialize the per CPU control structure
+  */
+-static bool ensure_cpus_are_online(void)
++static bool setup_cpus(void)
+ {
++	struct microcode_ctrl ctrl = { .result = -1, };
+ 	unsigned int cpu;
+ 
+ 	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
+@@ -390,18 +408,20 @@ static bool ensure_cpus_are_online(void)
+ 				return false;
+ 			}
+ 		}
++		/* Initialize the per CPU state */
++		per_cpu(ucode_ctrl, cpu) = ctrl;
+ 	}
+ 	return true;
+ }
+ 
+-static int ucode_load_late_locked(void)
++static int load_late_locked(void)
+ {
+-	if (!ensure_cpus_are_online())
++	if (!setup_cpus())
+ 		return -EBUSY;
+ 
+ 	switch (microcode_ops->request_microcode_fw(0, &microcode_pdev->dev)) {
+ 	case UCODE_NEW:
+-		return microcode_reload_late();
++		return load_late_stop_cpus();
+ 	case UCODE_NFOUND:
+ 		return -ENOENT;
+ 	default:
+@@ -421,7 +441,7 @@ static ssize_t reload_store(struct devic
+ 		return -EINVAL;
+ 
+ 	cpus_read_lock();
+-	ret = ucode_load_late_locked();
++	ret = load_late_locked();
+ 	cpus_read_unlock();
+ 
+ 	return ret ? : size;
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -16,6 +16,7 @@ enum ucode_state {
+ 	UCODE_UPDATED,
+ 	UCODE_NFOUND,
+ 	UCODE_ERROR,
++	UCODE_TIMEOUT,
+ };
+ 
+ struct microcode_ops {
 
 
 
