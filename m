@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BFAA50850
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D153A507AC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1653AFEFB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE1F1885E1F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F7B251785;
-	Wed,  5 Mar 2025 18:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAE7250C14;
+	Wed,  5 Mar 2025 17:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp4Lc0Bl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/BmKEVr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A187824FBE8;
-	Wed,  5 Mar 2025 18:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD821A83E4;
+	Wed,  5 Mar 2025 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197960; cv=none; b=Ne+3jVemgcs2Or4R/ZUiQekOhZ/pX0hLAZuzHMwCS8Lgq0sobXbkPx1z/VHhMY2YHPHFhMX3OgdvyXNHAx4bURyNMziJgsH4HHMr/EO4Fx/PS639glbsoNb/uvsTlopViFHIM8d+Rn74gVwPovRw/z3Og5xkt40ypJhsUi7H1eY=
+	t=1741197578; cv=none; b=ldl7Z0sjmbIZjxvAd1sX39er3mf7C3BLvbU2kjHItbPp9Q5zB3ioyVLn4rHmH2/auMSpCYbJZFiqq6Y8lsc9qpIpPQIcu1Do2cy+TpCo26Pvd8R3YOiHq93XfVAb1vZQwipUEGNpQnDBtlG6QeDtwOnCpnV+C3BkIZWUHpWGiLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197960; c=relaxed/simple;
-	bh=3kiYAiM+99D3x4BXHj37okYH3p4uNjuRwWgXJ+cT8K8=;
+	s=arc-20240116; t=1741197578; c=relaxed/simple;
+	bh=zEXgY0q/wpxLSUJQ9olm1EjvqfUj37N78Rn0gr8ecEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chmh6QXsUOnTwWYi4fFGSWMen5iCJIbbiZWkrdT4pX4v/jV76f+FgIi4gSD7/grq7IsPOeF83bC3qCuCfkXBZ/FkpkJ5wwdhLCqmvgxdGmooRKBQY1sgqwC5VNf3Muz43Ws5TDGuh8kplkoM8I3N29KH510AhrqeYwBUzpSAqBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp4Lc0Bl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28553C4CED1;
-	Wed,  5 Mar 2025 18:05:59 +0000 (UTC)
+	 MIME-Version; b=EfxvSPeU19+q3szlyQ86dsDG58gn9QwR1n4wPK0HFL2cmg6uBxZ3KFOvmwFt8Lp9+Ktxl3oAUk0WZXlWGy1KoltpJ52L6SKe32bjdNhL1ea7w4I0DClNoeo/dqzk2CK8fOY7MgXfGn7XKQ0NtRC8yEfuwS0gzw1YPm6923/UFAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/BmKEVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E07C4CED1;
+	Wed,  5 Mar 2025 17:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197960;
-	bh=3kiYAiM+99D3x4BXHj37okYH3p4uNjuRwWgXJ+cT8K8=;
+	s=korg; t=1741197577;
+	bh=zEXgY0q/wpxLSUJQ9olm1EjvqfUj37N78Rn0gr8ecEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tp4Lc0BlpO1ythsbwb/B3KY/IiSezKBFXRCHEgGjmrhYt+cvd/89YUx0t+2VqfDDH
-	 3T/51juDmDkFVEkT3KMGsvXgROf/V8PJ6+ebCAVGKrAa+0fMY2HBNFfH348yINsjtz
-	 eFMqlMjJRnuuaWLgawhFYWd1lZbJb3bn65xVTANA=
+	b=C/BmKEVrJmfC1A5cNIxwVhNJvKRLdUEszugpKa6Xjf3bEndLYWRMZi+22Nu3HNHtQ
+	 KzJN3YvogquED/NdMQslNxmVsUXsij954PRFHSYRd7QR+bdEetJaId6CwH3GVbpuSj
+	 0V8n5BTbUwOpWdYN2q4AmFZLlztcofMIFYnbL6FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/150] NFS: Adjust delegated timestamps for O_DIRECT reads and writes
+Subject: [PATCH 6.6 027/142] ipvlan: Unmask upper DSCP bits in ipvlan_process_v4_outbound()
 Date: Wed,  5 Mar 2025 18:47:26 +0100
-Message-ID: <20250305174504.499295236@linuxfoundation.org>
+Message-ID: <20250305174501.432761560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 88025c67fe3c025a0123bc7af50535b97f7af89a ]
+[ Upstream commit 939cd1abf080c629552a9c5e6db4c0509d13e4c7 ]
 
-Adjust the timestamps if O_DIRECT is being combined with attribute
-delegations.
+Unmask the upper DSCP bits when calling ip_route_output_flow() so that
+in the future it could perform the FIB lookup according to the full DSCP
+value.
 
-Fixes: e12912d94137 ("NFSv4: Add support for delegated atime and mtime attributes")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ipvlan/ipvlan_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 2784586f93fc0..c1f1b826888c9 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -56,6 +56,7 @@
- #include <linux/uaccess.h>
- #include <linux/atomic.h>
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index fef4eff7753a7..b1afcb8740de1 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -2,6 +2,8 @@
+ /* Copyright (c) 2014 Mahesh Bandewar <maheshb@google.com>
+  */
  
-+#include "delegation.h"
- #include "internal.h"
- #include "iostat.h"
- #include "pnfs.h"
-@@ -286,6 +287,8 @@ static void nfs_direct_read_completion(struct nfs_pgio_header *hdr)
- 	nfs_direct_count_bytes(dreq, hdr);
- 	spin_unlock(&dreq->lock);
- 
-+	nfs_update_delegated_atime(dreq->inode);
++#include <net/inet_dscp.h>
 +
- 	while (!list_empty(&hdr->pages)) {
- 		struct nfs_page *req = nfs_list_entry(hdr->pages.next);
- 		struct page *page = req->wb_page;
-@@ -770,6 +773,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ #include "ipvlan.h"
  
- 	spin_lock(&inode->i_lock);
- 	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
-+	nfs_update_delegated_mtime_locked(dreq->inode);
- 	spin_unlock(&inode->i_lock);
- 
- 	while (!list_empty(&hdr->pages)) {
+ static u32 ipvlan_jhash_secret __read_mostly;
+@@ -420,7 +422,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ 	int err, ret = NET_XMIT_DROP;
+ 	struct flowi4 fl4 = {
+ 		.flowi4_oif = dev->ifindex,
+-		.flowi4_tos = RT_TOS(ip4h->tos),
++		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
+ 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
+ 		.flowi4_mark = skb->mark,
+ 		.daddr = ip4h->daddr,
 -- 
 2.39.5
 
