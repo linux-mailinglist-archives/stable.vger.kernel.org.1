@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7332A50811
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC220A50974
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B7D07A411E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30042162E43
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FE81A3174;
-	Wed,  5 Mar 2025 18:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A7F2586C1;
+	Wed,  5 Mar 2025 18:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ik0KpPdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5dkD22Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82D6251798;
-	Wed,  5 Mar 2025 18:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93709253339;
+	Wed,  5 Mar 2025 18:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197797; cv=none; b=cyEpfsxgTD32i2e6rTgFwc4uU2Hm+ISF2PAF8TTVGb1Mdx4wSDEmWVfv7GvppnL8NrlB+frR9jaR9Di4xBXTvFfOLoZURM1lpDSlApK3UxoDDNLaVVxBTLFeIphIbd6mcY0eOF8y+5pgOAaKPmWAw4okV5sVUGYGcRCxdBSsOYs=
+	t=1741198602; cv=none; b=D6WLYBNl5oj8EVIwXmjqrqdZhbZq8bhPBTSYmEVap7OHh3/GQ/ddCltHWhDMuW8bAPleC8VOCVVhgzYA6/FqvTkJnORwm/aB1T6hef3bzco36a0OyRGJYHXHhQfIvCz2kKbWZ34YLGYudL2B2sWa+3Q11GOfv0Gb+x685D0hP+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197797; c=relaxed/simple;
-	bh=Sba602fPNSeI3wnVE+nxwCiRNag9VcLUvhK3nwOINJc=;
+	s=arc-20240116; t=1741198602; c=relaxed/simple;
+	bh=VsGuDAJb2/LZ0ZxD8Vfu1yJhtbLfSsKdwKS59L/dtzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOJYZnIeIogm/W61OB7DHg9kIll3Hh7IQHfrPuFgwR6HOKv24eeVe+RBJENr/MogHzjNaxsmwHqJtITvuw3rgh+X0x7UvTbrCXTUHRjCji6P5MqLnrTFkKZoqaBkJYAnMd7VgZmlvJWqpBbm0Vwl1uW1QO/kPQ/vE/6N/mGLnuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ik0KpPdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005DAC4CED1;
-	Wed,  5 Mar 2025 18:03:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eWAN3YGaj/Zz9QvdP4/t1OKE/uNGWr/ix6SKLVq3E8vNsGbOwsk3ik1Yyqjj6+wzkMN3hn6PZ4eqkGREDAKr/30bZ/mHfK3A8AKtdwiLieEPKVl/UK/ifsqVr/JiIRLqJHDIqaB1sDdvwYQ/T/m+AY42GIlQul55j/UHuH6VB40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5dkD22Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE92C4CEE0;
+	Wed,  5 Mar 2025 18:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197794;
-	bh=Sba602fPNSeI3wnVE+nxwCiRNag9VcLUvhK3nwOINJc=;
+	s=korg; t=1741198602;
+	bh=VsGuDAJb2/LZ0ZxD8Vfu1yJhtbLfSsKdwKS59L/dtzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ik0KpPdGdaxkqp4/by1dukTjY4kdcRsNtfgNkqMENWW0UokzpNZfna5EVaRDgbUed
-	 TsOx9kUrph9ekaMv0A33fmXNKKGUCu8FS8v91TY9URtWzrpJqLQ6GklganZo7oYgRd
-	 enmSlE9J43mnLQZgQ/LfNflNPPykU3ipSs3qrLHI=
+	b=a5dkD22YthFAHngJ5eALOhANmy+lWIvJrH4IltNEQDRjR37kRppbTi+qMd2GH6RdQ
+	 mfSUyVWDOMOqG75AXA/M6KavfrUDhPb4GJrlQLnOI60d6ok8GinDBxMoYLljtYOm9s
+	 1ld5JhkogWigcHoMztbZaKdhNaDBQj8tl9wPmFd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 101/142] x86/microcode/intel: Cleanup code further
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Chris Chiu <chris.chiu@canonical.com>,
+	=?UTF-8?q?Adrien=20Verg=C3=A9?= <adrienverge@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 084/157] ALSA: hda/realtek: Fix microphone regression on ASUS N705UD
 Date: Wed,  5 Mar 2025 18:48:40 +0100
-Message-ID: <20250305174504.391558962@linuxfoundation.org>
+Message-ID: <20250305174508.685929679@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,169 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Adrien Vergé <adrienverge@gmail.com>
 
-commit 0177669ee61de4dc641f9ad86a3df6f22327cf6c upstream
+commit c6557ccf8094ce2e1142c6e49cd47f5d5e2933a8 upstream.
 
-Sanitize the microcode scan loop, fixup printks and move the loading
-function for builtin microcode next to the place where it is used and mark
-it __init.
+This fixes a regression introduced a few weeks ago in stable kernels
+6.12.14 and 6.13.3. The internal microphone on ASUS Vivobook N705UD /
+X705UD laptops is broken: the microphone appears in userspace (e.g.
+Gnome settings) but no sound is detected.
+I bisected it to commit 3b4309546b48 ("ALSA: hda: Fix headset detection
+failure due to unstable sort").
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115902.389400871@linutronix.de
+I figured out the cause:
+1. The initial pins enabled for the ALC256 driver are:
+       cfg->inputs == {
+         { pin=0x19, type=AUTO_PIN_MIC,
+           is_headset_mic=1, is_headphone_mic=0, has_boost_on_pin=1 },
+         { pin=0x1a, type=AUTO_PIN_MIC,
+           is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 } }
+2. Since 2017 and commits c1732ede5e8 ("ALSA: hda/realtek - Fix headset
+   and mic on several ASUS laptops with ALC256") and 28e8af8a163 ("ALSA:
+   hda/realtek: Fix mic and headset jack sense on ASUS X705UD"), the
+   quirk ALC256_FIXUP_ASUS_MIC is also applied to ASUS X705UD / N705UD
+   laptops.
+   This added another internal microphone on pin 0x13:
+       cfg->inputs == {
+         { pin=0x13, type=AUTO_PIN_MIC,
+           is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 },
+         { pin=0x19, type=AUTO_PIN_MIC,
+           is_headset_mic=1, is_headphone_mic=0, has_boost_on_pin=1 },
+         { pin=0x1a, type=AUTO_PIN_MIC,
+           is_headset_mic=0, is_headphone_mic=0, has_boost_on_pin=1 } }
+   I don't know what this pin 0x13 corresponds to. To the best of my
+   knowledge, these laptops have only one internal microphone.
+3. Before 2025 and commit 3b4309546b48 ("ALSA: hda: Fix headset
+   detection failure due to unstable sort"), the sort function would let
+   the microphone of pin 0x1a (the working one) *before* the microphone
+   of pin 0x13 (the phantom one).
+4. After this commit 3b4309546b48, the fixed sort function puts the
+   working microphone (pin 0x1a) *after* the phantom one (pin 0x13). As
+   a result, no sound is detected anymore.
+
+It looks like the quirk ALC256_FIXUP_ASUS_MIC is not needed anymore for
+ASUS Vivobook X705UD / N705UD laptops. Without it, everything works
+fine:
+- the internal microphone is detected and records actual sound,
+- plugging in a jack headset is detected and can record actual sound
+  with it,
+- unplugging the jack headset makes the system go back to internal
+  microphone and can record actual sound.
+
+Cc: stable@vger.kernel.org
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Chris Chiu <chris.chiu@canonical.com>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Tested-by: Adrien Vergé <adrienverge@gmail.com>
+Signed-off-by: Adrien Vergé <adrienverge@gmail.com>
+Link: https://patch.msgid.link/20250226135515.24219-1-adrienverge@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/intel.c |   76 ++++++++++++++--------------------
- 1 file changed, 32 insertions(+), 44 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -36,7 +36,7 @@ static const char ucode_path[] = "kernel
- static struct microcode_intel *intel_ucode_patch __read_mostly;
- 
- /* last level cache size per core */
--static int llc_size_per_core __ro_after_init;
-+static unsigned int llc_size_per_core __ro_after_init;
- 
- /* microcode format is extended from prescott processors */
- struct extended_signature {
-@@ -294,29 +294,6 @@ static struct microcode_intel *scan_micr
- 	return patch;
- }
- 
--static bool load_builtin_intel_microcode(struct cpio_data *cp)
--{
--	unsigned int eax = 1, ebx, ecx = 0, edx;
--	struct firmware fw;
--	char name[30];
--
--	if (IS_ENABLED(CONFIG_X86_32))
--		return false;
--
--	native_cpuid(&eax, &ebx, &ecx, &edx);
--
--	sprintf(name, "intel-ucode/%02x-%02x-%02x",
--		      x86_family(eax), x86_model(eax), x86_stepping(eax));
--
--	if (firmware_request_builtin(&fw, name)) {
--		cp->size = fw.size;
--		cp->data = (void *)fw.data;
--		return true;
--	}
--
--	return false;
--}
--
- static int apply_microcode_early(struct ucode_cpu_info *uci)
- {
- 	struct microcode_intel *mc;
-@@ -360,6 +337,28 @@ static int apply_microcode_early(struct
- 	return 0;
- }
- 
-+static bool load_builtin_intel_microcode(struct cpio_data *cp)
-+{
-+	unsigned int eax = 1, ebx, ecx = 0, edx;
-+	struct firmware fw;
-+	char name[30];
-+
-+	if (IS_ENABLED(CONFIG_X86_32))
-+		return false;
-+
-+	native_cpuid(&eax, &ebx, &ecx, &edx);
-+
-+	sprintf(name, "intel-ucode/%02x-%02x-%02x",
-+		x86_family(eax), x86_model(eax), x86_stepping(eax));
-+
-+	if (firmware_request_builtin(&fw, name)) {
-+		cp->size = fw.size;
-+		cp->data = (void *)fw.data;
-+		return true;
-+	}
-+	return false;
-+}
-+
- int __init save_microcode_in_initrd_intel(void)
- {
- 	struct ucode_cpu_info uci;
-@@ -432,25 +431,16 @@ void load_ucode_intel_ap(void)
- 	apply_microcode_early(&uci);
- }
- 
--/* Accessor for microcode pointer */
--static struct microcode_intel *ucode_get_patch(void)
--{
--	return intel_ucode_patch;
--}
--
- void reload_ucode_intel(void)
- {
--	struct microcode_intel *p;
- 	struct ucode_cpu_info uci;
- 
- 	intel_cpu_collect_info(&uci);
- 
--	p = ucode_get_patch();
--	if (!p)
-+	uci.mc = intel_ucode_patch;
-+	if (!uci.mc)
- 		return;
- 
--	uci.mc = p;
--
- 	apply_microcode_early(&uci);
- }
- 
-@@ -488,8 +478,7 @@ static enum ucode_state apply_microcode_
- 	if (WARN_ON(raw_smp_processor_id() != cpu))
- 		return UCODE_ERROR;
- 
--	/* Look for a newer patch in our cache: */
--	mc = ucode_get_patch();
-+	mc = intel_ucode_patch;
- 	if (!mc) {
- 		mc = uci->mc;
- 		if (!mc)
-@@ -680,18 +669,17 @@ static enum ucode_state request_microcod
- }
- 
- static struct microcode_ops microcode_intel_ops = {
--	.request_microcode_fw             = request_microcode_fw,
--	.collect_cpu_info                 = collect_cpu_info,
--	.apply_microcode                  = apply_microcode_intel,
-+	.request_microcode_fw	= request_microcode_fw,
-+	.collect_cpu_info	= collect_cpu_info,
-+	.apply_microcode	= apply_microcode_intel,
- };
- 
--static int __init calc_llc_size_per_core(struct cpuinfo_x86 *c)
-+static __init void calc_llc_size_per_core(struct cpuinfo_x86 *c)
- {
- 	u64 llc_size = c->x86_cache_size * 1024ULL;
- 
- 	do_div(llc_size, c->x86_max_cores);
--
--	return (int)llc_size;
-+	llc_size_per_core = (unsigned int)llc_size;
- }
- 
- struct microcode_ops * __init init_intel_microcode(void)
-@@ -704,7 +692,7 @@ struct microcode_ops * __init init_intel
- 		return NULL;
- 	}
- 
--	llc_size_per_core = calc_llc_size_per_core(c);
-+	calc_llc_size_per_core(c);
- 
- 	return &microcode_intel_ops;
- }
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10629,7 +10629,6 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1043, 0x19ce, "ASUS B9450FA", ALC294_FIXUP_ASUS_HPE),
+ 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
+-	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
 
 
 
