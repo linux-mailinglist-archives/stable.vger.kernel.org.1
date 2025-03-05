@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-121044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93670A509CD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBCCA508D0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FE427A1C1E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793F41885145
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E992566C0;
-	Wed,  5 Mar 2025 18:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD0D250C0A;
+	Wed,  5 Mar 2025 18:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFMjWTYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c97rCHXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0A52561D9;
-	Wed,  5 Mar 2025 18:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCB191493;
+	Wed,  5 Mar 2025 18:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198719; cv=none; b=ad1MXDUgVWh9/nQJIiuxqDrgZKfli0DrXv2CWx6J/wH0NeEqet2hzHENdtndPo8PqavxU5axTFnNcEoxsbHsTH2Pg6ANA9mw5MVb3wkk7kW0JZZicbcJM6KeUSRuJL4zLMlt56zNrsJkhY4serWtCRpSjtLCGQ+4nyyRH46BSa4=
+	t=1741198210; cv=none; b=nm+QsO65Pz6V+ofJ/BMuMY9+HyD8MN3kCbzdgTqPi38z7COnWjAb9Kw4ORuEMhX7s3+r0yh2RTA3Zpuy3iHwX7oeqoTqtJCB3F7r6aGZD+HclN1MGsX75+PMfWZ6Q6UhXjRck6th+b2NAXKm1i5pzlGeN6YZAgmBL6WarYVsBUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198719; c=relaxed/simple;
-	bh=B3o48Xqky6fgKHuWJGglnBiKH1IFT3kPlqOxlvI+Xig=;
+	s=arc-20240116; t=1741198210; c=relaxed/simple;
+	bh=SiHzlh97ycSW4y9BMN3L/sPyjdbUi+kxEj+SPPZHHKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFlRFPyL4IS6yfeMkir06QzA/h2/Fuy5+aYope3jAWFnvW0c5O2AaTtLBd0PI/9ftMZHpb7H53JzJgY3OIL+TGsfb/lzxmKMbGdSeaYdtgVbWJS7b0J+zoHRQjvII3ODrp3hb+0aNXz8I0osjDDrxVU8L1F92vd5KRrW120wGpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFMjWTYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8A4C4CED1;
-	Wed,  5 Mar 2025 18:18:38 +0000 (UTC)
+	 MIME-Version; b=fIKsERVoiAwPdX9B99mbZP+RRUmF4Ce6jbwdTmoHm3aV+X5KNpUKdZbmfe+HMn8FWR1cYP8o+7c1+Rx+lOEHErelogz6stCZQYL34JLjibJzsX3mJqvbw3AYeIivLMWtPn4sHJNNcXGU24QAOriU6IY7qvgBf3xJyMYUphIZbKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c97rCHXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF71C4CEE0;
+	Wed,  5 Mar 2025 18:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198719;
-	bh=B3o48Xqky6fgKHuWJGglnBiKH1IFT3kPlqOxlvI+Xig=;
+	s=korg; t=1741198209;
+	bh=SiHzlh97ycSW4y9BMN3L/sPyjdbUi+kxEj+SPPZHHKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFMjWTYZp77MlGj5Sio8AyT1x8iDbevGI0q/zqwth3/7VYvxQlXg495GHg7mQ03G5
-	 qUOYqW5F3ExyfbXnzd5eVdWF2iI3YTzaSnsHlKKI5UXasnawiigr05sk6gv0pkoAsG
-	 HeNzi3yynbfI1FS5Al7Tkt+CgsdE6MF9YeaMGr6s=
+	b=c97rCHXzuHNu5HBp+HEaJEID2B+YJ42q7Tt7W/Bp/7HVtDz+t1WH45hLqjZQ4eXwa
+	 mPSXz+/EJwDbPm9UtLLToDvTVXS0shgtpPF2kx+tbpXWx14Ly+RW8Pp2n0C83LlYBJ
+	 W0058V3Dae0EdLYRAvS/ENzmm64mAL2sWrD5hHSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yat Sin <David.YatSin@amd.com>,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 093/157] drm/amdkfd: Preserve cp_hqd_pq_control on update_mqd
-Date: Wed,  5 Mar 2025 18:48:49 +0100
-Message-ID: <20250305174509.052792095@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 101/150] drm/amd/display: Fix HPD after gpu reset
+Date: Wed,  5 Mar 2025 18:48:50 +0100
+Message-ID: <20250305174507.871037274@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yat Sin <David.YatSin@amd.com>
+From: Roman Li <Roman.Li@amd.com>
 
-commit 3502ab5022bb5ef1edd063bdb6465a8bf3b46e66 upstream.
+commit 4de141b8b1b7991b607f77e5f4580e1c67c24717 upstream.
 
-When userspace applications call AMDKFD_IOC_UPDATE_QUEUE. Preserve
-bitfields that do not need to be modified as they contain flags to
-track queue states that are used by CP FW.
+[Why]
+DC is not using amdgpu_irq_get/put to manage the HPD interrupt refcounts.
+So when amdgpu_irq_gpu_reset_resume_helper() reprograms all of the IRQs,
+HPD gets disabled.
 
-Signed-off-by: David Yat Sin <David.YatSin@amd.com>
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+[How]
+Use amdgpu_irq_get/put() for HPD init/fini in DM in order to sync refcounts
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8150827990b709ab5a40c46c30d21b7f7b9e9440)
+(cherry picked from commit f3dde2ff7fcaacd77884502e8f572f2328e9c745)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c |    6 ++++--
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |    5 +++--
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c |    5 +++--
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c  |    5 ++++-
- 4 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-@@ -107,6 +107,8 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x53 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
+@@ -894,6 +894,7 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
++	int i;
  
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
- 
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -167,10 +169,10 @@ static void update_mqd(struct mqd_manage
- 
- 	m = get_mqd(mqd);
- 
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
--	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+@@ -920,6 +921,12 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
+ 		}
+ 	}
+ 	drm_connector_list_iter_end(&iter);
 +
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
++	/* Update reference counts for HPDs */
++	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
++		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
++			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
++	}
+ }
  
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -154,6 +154,8 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x55 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+ /**
+@@ -935,6 +942,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
++	int i;
  
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
- 
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -221,10 +223,9 @@ static void update_mqd(struct mqd_manage
- 
- 	m = get_mqd(mqd);
- 
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
--	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
- 
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-@@ -121,6 +121,8 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x55 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
- 
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
- 
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -184,10 +186,9 @@ static void update_mqd(struct mqd_manage
- 
- 	m = get_mqd(mqd);
- 
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
--	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
- 
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-@@ -182,6 +182,9 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x53 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
- 
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+@@ -960,4 +968,10 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 		}
+ 	}
+ 	drm_connector_list_iter_end(&iter);
 +
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
- 
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -244,7 +247,7 @@ static void update_mqd(struct mqd_manage
- 
- 	m = get_mqd(mqd);
- 
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |= order_base_2(q->queue_size / 4) - 1;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
- 
++	/* Update reference counts for HPDs */
++	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
++		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
++			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
++	}
+ }
 
 
 
