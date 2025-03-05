@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-121041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B74A50996
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB690A5085B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B801165146
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4929188B86E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93BF255E58;
-	Wed,  5 Mar 2025 18:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F5A1C860D;
+	Wed,  5 Mar 2025 18:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gp1Y9vTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo7Nu8zk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA33252907;
-	Wed,  5 Mar 2025 18:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7951A3174;
+	Wed,  5 Mar 2025 18:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198710; cv=none; b=Ai5L7B73RP9Mk1dWRSNaMzmHQijcTqxWvg1/iHZpGXqrtimm8ltM7dlKL6xfmRN8mGkhCGmA4IqPk9Oo94gTY8LcCJrJiEJeSLdi26yYFKAWnQGX/O/Myeb3dYervLpOupzxnip30VfPvwazZKGv4Dz10w81drXMlESBTbx+l/o=
+	t=1741197934; cv=none; b=SMcE1gDesw4NxUCp/qwqKVmOCAGf07iqCABEr11wcUPdEkixndExL/WpsFuk8DCJqC4LIlG9uv5V3IVfjjKcLhbsoI/qbBCVNcv3ADFUQNTqmwDwVF1YhhKk6hyrTFe0cV5Eexhm6lBO7cMmPnWtWMti3j6m4J5BpbHhno3gclY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198710; c=relaxed/simple;
-	bh=4asMzD7VlV6K4/eGc9L8ZVoX4Z2W/YLw1XHybbA6L7Y=;
+	s=arc-20240116; t=1741197934; c=relaxed/simple;
+	bh=Mck8a4P65WHE8tuoHjj6/0t2uS06Gjcyh6yRZP/l3sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szhG963qnVG0WqtFDOjkFb7xKObSQG5RUHRycbfuAwffmW1X2xCIh8l6XyMPcQalkFhFEQSvql0uyVGuVzNEVKrYDAP6Rh2DahSqgDUK/zOBdhgVnWqEgeZZgR0fkz7DBkxNjb3ikCm/o/f5K7laiisCs/C80p/f1iN1XeVBeFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gp1Y9vTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2483BC4CED1;
-	Wed,  5 Mar 2025 18:18:29 +0000 (UTC)
+	 MIME-Version; b=ZH5pk7O3fVfcoWR735jTzvRgrK/+ZVwwsa9kxvQqfurBipNrdEpTsuoihSjYCS23SRHv3Da23+kL3vHV+wjkMjLYO3+Dxts+PD96z6gITrM6CXTy91YkeP+lS9NElUQ3xCSAO/Zhp3j8coZqRq3M0jnnTexj5naz8cS/+vVV8Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo7Nu8zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB1DC4CED1;
+	Wed,  5 Mar 2025 18:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198710;
-	bh=4asMzD7VlV6K4/eGc9L8ZVoX4Z2W/YLw1XHybbA6L7Y=;
+	s=korg; t=1741197934;
+	bh=Mck8a4P65WHE8tuoHjj6/0t2uS06Gjcyh6yRZP/l3sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gp1Y9vTTcUdM8ovHSMR47A0Xhaa+Et9vUsHGA8sSwrJ0hp6NoMUaiOncvEJwfkEtG
-	 l3Zv3qqAAwag24Vc+9l71UvVypR9LbwM1hGzpYAFsSH0aCa+q/wvhw72fsnAiY00Yh
-	 zVUV8akcIyaHnENoFD7ZhwGtHTZ3IlsQn8sM7IG4=
+	b=Xo7Nu8zk6p1dSrBc4u/xOkfuhHMIOUcuj7kFrCCU/tlSTe12T3e3zvZ719EF/MDHn
+	 nilGEbCy5agXv/0EkWURD/vxTgIc0VdCMw73sY661ij/OGEyuUuQ12dcIel5OfWAFG
+	 ENkbgmI7uNHxCOEB+ShtjGcIJHdG5qwPxfBFzNF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.13 120/157] net: enetc: add missing enetc4_link_deinit()
-Date: Wed,  5 Mar 2025 18:49:16 +0100
-Message-ID: <20250305174510.131394219@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 138/142] x86/microcode/AMD: Have __apply_microcode_amd() return bool
+Date: Wed,  5 Mar 2025 18:49:17 +0100
+Message-ID: <20250305174505.880910499@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 8e43decdfbb477dd7800e3902d2d2f105d22ef5f upstream.
+commit 78e0aadbd4c6807a06a9d25bc190fe515d3f3c42 upstream
 
-The enetc4_link_init() is called when the PF driver probes to create
-phylink and MDIO bus, but we forgot to call enetc4_link_deinit() to
-free the phylink and MDIO bus when the driver was unbound. so add
-missing enetc4_link_deinit() to enetc4_pf_netdev_destroy().
+This is the natural thing to do anyway.
 
-Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-7-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+No functional changes.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc4_pf.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/microcode/amd.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -683,6 +683,7 @@ static void enetc4_pf_netdev_destroy(str
- 	struct net_device *ndev = si->ndev;
- 
- 	unregister_netdev(ndev);
-+	enetc4_link_deinit(priv);
- 	enetc_free_msix(priv);
- 	free_netdev(ndev);
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -486,7 +486,7 @@ static void scan_containers(u8 *ucode, s
+ 	}
  }
+ 
+-static int __apply_microcode_amd(struct microcode_amd *mc, unsigned int psize)
++static bool __apply_microcode_amd(struct microcode_amd *mc, unsigned int psize)
+ {
+ 	unsigned long p_addr = (unsigned long)&mc->hdr.data_code;
+ 	u32 rev, dummy;
+@@ -510,9 +510,9 @@ static int __apply_microcode_amd(struct
+ 	native_rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+ 
+ 	if (rev != mc->hdr.patch_id)
+-		return -1;
++		return false;
+ 
+-	return 0;
++	return true;
+ }
+ 
+ /*
+@@ -546,7 +546,7 @@ static bool early_apply_microcode(u32 ol
+ 	if (old_rev > mc->hdr.patch_id)
+ 		return ret;
+ 
+-	return !__apply_microcode_amd(mc, desc.psize);
++	return __apply_microcode_amd(mc, desc.psize);
+ }
+ 
+ static bool get_builtin_microcode(struct cpio_data *cp)
+@@ -765,7 +765,7 @@ void reload_ucode_amd(unsigned int cpu)
+ 	rdmsr(MSR_AMD64_PATCH_LEVEL, rev, dummy);
+ 
+ 	if (rev < mc->hdr.patch_id) {
+-		if (!__apply_microcode_amd(mc, p->size))
++		if (__apply_microcode_amd(mc, p->size))
+ 			pr_info_once("reload revision: 0x%08x\n", mc->hdr.patch_id);
+ 	}
+ }
+@@ -818,7 +818,7 @@ static enum ucode_state apply_microcode_
+ 		goto out;
+ 	}
+ 
+-	if (__apply_microcode_amd(mc_amd, p->size)) {
++	if (!__apply_microcode_amd(mc_amd, p->size)) {
+ 		pr_err("CPU%d: update failed for patch_level=0x%08x\n",
+ 			cpu, mc_amd->hdr.patch_id);
+ 		return UCODE_ERROR;
 
 
 
