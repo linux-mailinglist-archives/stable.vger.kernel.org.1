@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3808A50924
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68460A507C6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B7A6175A5D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E733A496C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CB2253338;
-	Wed,  5 Mar 2025 18:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EB11A83E4;
+	Wed,  5 Mar 2025 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJzG+asH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Og3d8PAQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032BB25332F;
-	Wed,  5 Mar 2025 18:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5716014B075;
+	Wed,  5 Mar 2025 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198443; cv=none; b=TW3EHerOAq4D+UzY+hj1ktzmFqgnOKjEF6QwGdqj3HZazLsXZv8vCZ/51BDh417Dfa7gVs+r+MQN1yJ8ylare3ZZhWTwDf5G6yVq7q6Eul3ZgaMWj7Pf/MI4R9vVyGC6q1q5Gh+ZTm+GDOdIGy6unDkl0t8L9sQ0fOpzQJdWe04=
+	t=1741197633; cv=none; b=CwWr5Jzftrv9EEbztdPXFhYEIm6/4Oe06u0bzqE1SRZGHmVGmKKvZH6JFt18UZsMLVHWl6pY3qly8F+3spV/ZApHxHSPlEjjSyKFdbzrRVKF0sKmhjKSsvR3zKXtcgdfnryssd/L8QCF3wNSQNrImFDFwhncaYnU3fOSxOW7r/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198443; c=relaxed/simple;
-	bh=RIZD4ikEr7FTYH2WTOnS3VSF5oZG1rx2aDw9UA1A3e0=;
+	s=arc-20240116; t=1741197633; c=relaxed/simple;
+	bh=Ci3de+Wyweg0zeuEce0Qb2p4/o+ykbbvzOl+48ok7Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Go/mllgDkPh5x5OMkAijvDMug3SkNy/vdZJN2lJk9P3pGNCl7NxzKxFUA+mJwO2OLtBAKJ0/iPOjDRsjTlqM8ift4Z1FzcT2ZSDxE3GAOiwiECL8qScsUKuehP9CKbuU8EazQyn2BHswPevjgKej4b1Vcw9pZyFdr3QY2QKSu0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJzG+asH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE54C4CEE0;
-	Wed,  5 Mar 2025 18:14:02 +0000 (UTC)
+	 MIME-Version; b=Ye4UU6keN9BGRD1xJLvsDOXFZT5q3qsS3hdFXZUD1/zlCqShb/T+pJt7CWNgRO7JeCZ7KRwBImkCw/McZwyyPwIGj9xbY4BfgwHJ09kplA32pQtV9RbyGTf3vtIkqO4WLNJYvM48s02iI/Mww1zFAssqkmpoMUFqwlM0pf0CIpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Og3d8PAQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47B6C4CED1;
+	Wed,  5 Mar 2025 18:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198442;
-	bh=RIZD4ikEr7FTYH2WTOnS3VSF5oZG1rx2aDw9UA1A3e0=;
+	s=korg; t=1741197633;
+	bh=Ci3de+Wyweg0zeuEce0Qb2p4/o+ykbbvzOl+48ok7Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJzG+asHHt3HKmwzu5K73+OvtdbuVipMlBxnL2nKgn2SgDzYrU1aWxsyHazoPPSHV
-	 rL50sVMzxd+t1zDGJ05cid9SGu9J0pk3SnQBqLerB1RTvrysoVL2+HCIyliCmiJhwe
-	 QZ02AC3K37zUfH+QyBhKe3PRnNDYu3sqtaepIV0s=
+	b=Og3d8PAQi2QcW/mkDBMHYpsrUn1V+tQCZi6v+oMUYkaeFBkL+EdlBg92ZjfV8RRUT
+	 gfUg1jnEKVOk4da3IGtwsrphIICx/VS7j+mtKsLDhbQ8xB3pM+nfMakXQqwqs61Z8e
+	 3oiI45mLK9T18rh9MiDoOgmDTYMHhRrCcfRz6A1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lebrun <dlebrun@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 030/157] net: Add net_passive_inc() and net_passive_dec().
+Subject: [PATCH 6.6 047/142] net: ipv6: fix dst ref loop on input in seg6 lwt
 Date: Wed,  5 Mar 2025 18:47:46 +0100
-Message-ID: <20250305174506.504389748@linuxfoundation.org>
+Message-ID: <20250305174502.230068097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit e57a6320215c3967f51ab0edeff87db2095440e4 ]
+[ Upstream commit c64a0727f9b1cbc63a5538c8c0014e9a175ad864 ]
 
-net_drop_ns() is NULL when CONFIG_NET_NS is disabled.
+Prevent a dst ref loop on input in seg6_iptunnel.
 
-The next patch introduces a function that increments
-and decrements net->passive.
-
-As a prep, let's rename and export net_free() to
-net_passive_dec() and add net_passive_inc().
-
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/netdev/CANn89i+oUCt2VGvrbrweniTendZFEh+nwS=uonc004-aPkWy-Q@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250217191129.19967-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5c70eb5c593d ("net: better track kernel sockets lifetime")
+Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
+Cc: David Lebrun <dlebrun@google.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/net_namespace.h | 11 +++++++++++
- net/core/net_namespace.c    |  8 ++++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 44be742cf4d60..47181fd749b25 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -295,6 +295,7 @@ static inline int check_net(const struct net *net)
- }
- 
- void net_drop_ns(void *);
-+void net_passive_dec(struct net *net);
- 
- #else
- 
-@@ -324,8 +325,18 @@ static inline int check_net(const struct net *net)
- }
- 
- #define net_drop_ns NULL
-+
-+static inline void net_passive_dec(struct net *net)
-+{
-+	refcount_dec(&net->passive);
-+}
- #endif
- 
-+static inline void net_passive_inc(struct net *net)
-+{
-+	refcount_inc(&net->passive);
-+}
-+
- /* Returns true if the netns initialization is completed successfully */
- static inline bool net_initialized(const struct net *net)
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 4bf937bfc2633..c44e4c0824e0d 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
  {
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index b5cd3ae4f04cf..b71aa96eeee23 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -464,7 +464,7 @@ static void net_complete_free(void)
+ 	struct dst_entry *orig_dst = skb_dst(skb);
+ 	struct dst_entry *dst = NULL;
++	struct lwtunnel_state *lwtst;
+ 	struct seg6_lwt *slwt;
+ 	int err;
  
- }
+-	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
++	/* We cannot dereference "orig_dst" once ip6_route_input() or
++	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
++	 * need the address of its lwtstate. So, save the address of lwtstate
++	 * now and use it later as a comparison.
++	 */
++	lwtst = orig_dst->lwtstate;
++
++	slwt = seg6_lwt_lwtunnel(lwtst);
  
--static void net_free(struct net *net)
-+void net_passive_dec(struct net *net)
- {
- 	if (refcount_dec_and_test(&net->passive)) {
- 		kfree(rcu_access_pointer(net->gen));
-@@ -482,7 +482,7 @@ void net_drop_ns(void *p)
- 	struct net *net = (struct net *)p;
- 
- 	if (net)
--		net_free(net);
-+		net_passive_dec(net);
- }
- 
- struct net *copy_net_ns(unsigned long flags,
-@@ -523,7 +523,7 @@ struct net *copy_net_ns(unsigned long flags,
- 		key_remove_domain(net->key_domain);
- #endif
- 		put_user_ns(user_ns);
--		net_free(net);
-+		net_passive_dec(net);
- dec_ucounts:
- 		dec_net_namespaces(ucounts);
- 		return ERR_PTR(rv);
-@@ -668,7 +668,7 @@ static void cleanup_net(struct work_struct *work)
- 		key_remove_domain(net->key_domain);
- #endif
- 		put_user_ns(net->user_ns);
--		net_free(net);
-+		net_passive_dec(net);
- 	}
- }
- 
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+@@ -488,7 +496,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+-		if (!dst->error) {
++
++		/* cache only if we don't create a dst reference loop */
++		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&slwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
 -- 
 2.39.5
 
