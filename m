@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E1DA50865
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3808A50924
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA87C1665DF
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B7A6175A5D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A663E24C07D;
-	Wed,  5 Mar 2025 18:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CB2253338;
+	Wed,  5 Mar 2025 18:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBsb5nfW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJzG+asH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6399D19C542;
-	Wed,  5 Mar 2025 18:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032BB25332F;
+	Wed,  5 Mar 2025 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198024; cv=none; b=F3boAqaMOmPQiPY64EF/SzSAF3DXOchWz3ROTn3rSeLPNKHB1/I2tgOfGoTG7b8QAZnw6tm2s5hvXi9mDmWRHUiIVW+Ahy0hUv8iX9OGWEYNit8ABe75ythEKMHoH1zfxXSXucAUwhqQf4rjfURjjJ0gVVT7+94AUhPV8qtlwvM=
+	t=1741198443; cv=none; b=TW3EHerOAq4D+UzY+hj1ktzmFqgnOKjEF6QwGdqj3HZazLsXZv8vCZ/51BDh417Dfa7gVs+r+MQN1yJ8ylare3ZZhWTwDf5G6yVq7q6Eul3ZgaMWj7Pf/MI4R9vVyGC6q1q5Gh+ZTm+GDOdIGy6unDkl0t8L9sQ0fOpzQJdWe04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198024; c=relaxed/simple;
-	bh=tSMFVVSekHGjCYRndUYVyDJsI8bktsXxmC4wWWYKUsA=;
+	s=arc-20240116; t=1741198443; c=relaxed/simple;
+	bh=RIZD4ikEr7FTYH2WTOnS3VSF5oZG1rx2aDw9UA1A3e0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIMq/mdEynoQyW6pzC97z6gL++ZSVHcZkbdLBsDIi3LrO8Tt8GIXJYcDzFj59mQaWwHzhxnYunnpFgDbodGoGVw+wV5nL/zpdU65Yodsmv4iJqWwhx3q0+mJABdBoKDAwuZZqJeeueXzvA2WpPoMiyE4X21bG06V9pkJ0MCaR6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBsb5nfW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED2FC4CED1;
-	Wed,  5 Mar 2025 18:07:03 +0000 (UTC)
+	 MIME-Version; b=Go/mllgDkPh5x5OMkAijvDMug3SkNy/vdZJN2lJk9P3pGNCl7NxzKxFUA+mJwO2OLtBAKJ0/iPOjDRsjTlqM8ift4Z1FzcT2ZSDxE3GAOiwiECL8qScsUKuehP9CKbuU8EazQyn2BHswPevjgKej4b1Vcw9pZyFdr3QY2QKSu0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJzG+asH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE54C4CEE0;
+	Wed,  5 Mar 2025 18:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198024;
-	bh=tSMFVVSekHGjCYRndUYVyDJsI8bktsXxmC4wWWYKUsA=;
+	s=korg; t=1741198442;
+	bh=RIZD4ikEr7FTYH2WTOnS3VSF5oZG1rx2aDw9UA1A3e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBsb5nfWZwSKKa5YHSjEIPUuYzACOvveCACXHcNut5YNv+PN2e1mqbAmB6zB5jw+V
-	 HKhBGLrkrw+Ry2P9RzQ7ORmU19KgQhs/65OuNrKiyddWnMCmcR/cNC90qX4Sr/c0+L
-	 vFa31BsLQVpZDim4qP00dfmBQZIP4LvqQq3tMSKM=
+	b=xJzG+asHHt3HKmwzu5K73+OvtdbuVipMlBxnL2nKgn2SgDzYrU1aWxsyHazoPPSHV
+	 rL50sVMzxd+t1zDGJ05cid9SGu9J0pk3SnQBqLerB1RTvrysoVL2+HCIyliCmiJhwe
+	 QZ02AC3K37zUfH+QyBhKe3PRnNDYu3sqtaepIV0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/150] ipvlan: Prepare ipvlan_process_v4_outbound() to future .flowi4_tos conversion.
+Subject: [PATCH 6.13 030/157] net: Add net_passive_inc() and net_passive_dec().
 Date: Wed,  5 Mar 2025 18:47:46 +0100
-Message-ID: <20250305174505.304022637@linuxfoundation.org>
+Message-ID: <20250305174506.504389748@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 0c30d6eedd1ec0c1382bcab9576d26413cd278a3 ]
+[ Upstream commit e57a6320215c3967f51ab0edeff87db2095440e4 ]
 
-Use ip4h_dscp() to get the DSCP from the IPv4 header, then convert the
-dscp_t value to __u8 with inet_dscp_to_dsfield().
+net_drop_ns() is NULL when CONFIG_NET_NS is disabled.
 
-Then, when we'll convert .flowi4_tos to dscp_t, we'll just have to drop
-the inet_dscp_to_dsfield() call.
+The next patch introduces a function that increments
+and decrements net->passive.
 
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/f48335504a05b3587e0081a9b4511e0761571ca5.1730292157.git.gnault@redhat.com
+As a prep, let's rename and export net_free() to
+net_passive_dec() and add net_passive_inc().
+
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/CANn89i+oUCt2VGvrbrweniTendZFEh+nwS=uonc004-aPkWy-Q@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250217191129.19967-2-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Stable-dep-of: 5c70eb5c593d ("net: better track kernel sockets lifetime")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/net_namespace.h | 11 +++++++++++
+ net/core/net_namespace.c    |  8 ++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index b1afcb8740de1..fd591ddb3884d 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -3,6 +3,7 @@
-  */
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 44be742cf4d60..47181fd749b25 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -295,6 +295,7 @@ static inline int check_net(const struct net *net)
+ }
  
- #include <net/inet_dscp.h>
-+#include <net/ip.h>
+ void net_drop_ns(void *);
++void net_passive_dec(struct net *net);
  
- #include "ipvlan.h"
+ #else
  
-@@ -422,7 +423,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 	int err, ret = NET_XMIT_DROP;
- 	struct flowi4 fl4 = {
- 		.flowi4_oif = dev->ifindex,
--		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
-+		.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h)),
- 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
- 		.flowi4_mark = skb->mark,
- 		.daddr = ip4h->daddr,
+@@ -324,8 +325,18 @@ static inline int check_net(const struct net *net)
+ }
+ 
+ #define net_drop_ns NULL
++
++static inline void net_passive_dec(struct net *net)
++{
++	refcount_dec(&net->passive);
++}
+ #endif
+ 
++static inline void net_passive_inc(struct net *net)
++{
++	refcount_inc(&net->passive);
++}
++
+ /* Returns true if the netns initialization is completed successfully */
+ static inline bool net_initialized(const struct net *net)
+ {
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index b5cd3ae4f04cf..b71aa96eeee23 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -464,7 +464,7 @@ static void net_complete_free(void)
+ 
+ }
+ 
+-static void net_free(struct net *net)
++void net_passive_dec(struct net *net)
+ {
+ 	if (refcount_dec_and_test(&net->passive)) {
+ 		kfree(rcu_access_pointer(net->gen));
+@@ -482,7 +482,7 @@ void net_drop_ns(void *p)
+ 	struct net *net = (struct net *)p;
+ 
+ 	if (net)
+-		net_free(net);
++		net_passive_dec(net);
+ }
+ 
+ struct net *copy_net_ns(unsigned long flags,
+@@ -523,7 +523,7 @@ struct net *copy_net_ns(unsigned long flags,
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(user_ns);
+-		net_free(net);
++		net_passive_dec(net);
+ dec_ucounts:
+ 		dec_net_namespaces(ucounts);
+ 		return ERR_PTR(rv);
+@@ -668,7 +668,7 @@ static void cleanup_net(struct work_struct *work)
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(net->user_ns);
+-		net_free(net);
++		net_passive_dec(net);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
