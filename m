@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72E4A5083A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85C8A50796
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CEC189403B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67D33AFD5C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA6A250BFB;
-	Wed,  5 Mar 2025 18:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F0E251789;
+	Wed,  5 Mar 2025 17:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yn/I63Yn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usdXOgJC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DDA539A;
-	Wed,  5 Mar 2025 18:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81574250C1C;
+	Wed,  5 Mar 2025 17:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197846; cv=none; b=YXPJpKPokXnoQZWOIG/cpWJ4U8aUnciOIpykz7SIzS2M9E4iMLqclUJ207/HTV+86zl3nXQkrIiZEpV69SkbGzPeV4FHGTPaHcdwStNBqIn24rFxfMuQYxZKXLjOPo1C9ZTFR67pBWBbmpQvRmcAwgtATEbRMzwj6ldEy6k9nOc=
+	t=1741197505; cv=none; b=Ab6ZB8oHoTDj0nP9x/LnHr10DHKnCndTJqKSVyCAYGO3kKeCWDO96XE0i7XIXYEEAJAFhiIn5s3dfMnpery5ov0SBhYqoAghqgGT60nw5oVhOEsSAniBZyG6cW2fc3H1rqPQmUibnoppxROie42B8k3zdUXrlmpi8IaeCTJdhTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197846; c=relaxed/simple;
-	bh=Hc6+M8eJMYrYbMRU5x8wojBzVPjGyOA/QzzX4eBEunc=;
+	s=arc-20240116; t=1741197505; c=relaxed/simple;
+	bh=AXyv6ob3D8txljdXEDdUgUiMFa9HNMsnhf88KWBBnkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0ix9zUprUQ27XIcA/lVzZPN/GBA090veFToxbv7lCGLu0SU/0xE7kjkvwUMYlAGNj2YfztOM61bnd61Jfc2sddSnRSWKFxRA9VRt0G9dzskiys4L2Ro70Kljjba5jdivskwm6CV09OBxHBI+dewT+bDVpu7g/eyJQt2rWDb7cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yn/I63Yn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D4BC4CED1;
-	Wed,  5 Mar 2025 18:04:05 +0000 (UTC)
+	 MIME-Version; b=K22cM3GvR8sQ6eXTSsPPc8oQQoQ89BqdQUUwqOL1v+sR7XPSqLTR0NFEzDXHWzDohPb3X7q/ocVl69B/IdLIhCAq+u013fxgwRKzho61I5RlXKNpoOcq19jdH80VcUBJA1Nsj712qkOsvqsJs2WDnzBKzuIzsa/nyKgsgusDQjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usdXOgJC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BAEC4CED1;
+	Wed,  5 Mar 2025 17:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197846;
-	bh=Hc6+M8eJMYrYbMRU5x8wojBzVPjGyOA/QzzX4eBEunc=;
+	s=korg; t=1741197505;
+	bh=AXyv6ob3D8txljdXEDdUgUiMFa9HNMsnhf88KWBBnkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yn/I63Yn4SvVcxkvT0Jk3WfclCU17n2AdUvo2zBsZztySfu5VzS8DFGIXX/PVvVVc
-	 7uSlA8p5lDgTwBU0jE6lCGAlt0oTaayInb8XYG0jyDdWxeFlSjyGJA7dVXVuOt79Hi
-	 MLpQqZTOFNodsL6XQP4EUUxXge2B+XGRo+QqVzIY=
+	b=usdXOgJC/bAD4xx+uPDnWRu/LcIMNsyt6q4maXP9qr1F+MsAZXYhd+gaVtTqAVz+E
+	 o0WVbRxeQQ04zaXKcTYxaYcAsj1s6O7M5egXxTfyBTmQnX+BPhjgrT39JvSZhz+A7q
+	 RJTWtNrkEDrLb/n6/SyQyoNGUJ9uxbU03t8L0OK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 121/142] x86/microcode: Add per CPU control field
-Date: Wed,  5 Mar 2025 18:49:00 +0100
-Message-ID: <20250305174505.189508492@linuxfoundation.org>
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: [PATCH 6.1 172/176] ptrace: Introduce exception_ip arch hook
+Date: Wed,  5 Mar 2025 18:49:01 +0100
+Message-ID: <20250305174512.343904385@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit ba3aeb97cb2c53025356f31c5a0a294385194115 upstream
+commit 11ba1728be3edb6928791f4c622f154ebe228ae6 upstream.
 
-Add a per CPU control field to ucode_ctrl and define constants for it
-which are going to be used to control the loading state machine.
+On architectures with delay slot, architecture level instruction
+pointer (or program counter) in pt_regs may differ from where
+exception was triggered.
 
-In theory this could be a global control field, but a global control does
-not cover the following case:
+Introduce exception_ip hook to invoke architecture code and determine
+actual instruction pointer to the exception.
 
- 15 primary CPUs load microcode successfully
-  1 primary CPU fails and returns with an error code
-
-With global control the sibling of the failed CPU would either try again or
-the whole operation would be aborted with the consequence that the 15
-siblings do not invoke the apply path and end up with inconsistent software
-state. The result in dmesg would be inconsistent too.
-
-There are two additional fields added and initialized:
-
-ctrl_cpu and secondaries. ctrl_cpu is the CPU number of the primary thread
-for now, but with the upcoming uniform loading at package or system scope
-this will be one CPU per package or just one CPU. Secondaries hands the
-control CPU a CPU mask which will be required to release the secondary CPUs
-out of the wait loop.
-
-Preparatory change for implementing a properly split control flow for
-primary and secondary CPUs.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.319959519@linutronix.de
+Link: https://lore.kernel.org/lkml/00d1b813-c55f-4365-8d81-d70258e10b16@app.fastmail.com/
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/ptrace.h |    2 ++
+ arch/mips/kernel/ptrace.c      |    7 +++++++
+ include/linux/ptrace.h         |    4 ++++
+ 3 files changed, 13 insertions(+)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -252,8 +252,19 @@ static struct platform_device	*microcode
-  *   requirement can be relaxed in the future. Right now, this is conservative
-  *   and good.
-  */
-+enum sibling_ctrl {
-+	/* Spinwait with timeout */
-+	SCTRL_WAIT,
-+	/* Invoke the microcode_apply() callback */
-+	SCTRL_APPLY,
-+	/* Proceed without invoking the microcode_apply() callback */
-+	SCTRL_DONE,
-+};
-+
- struct microcode_ctrl {
-+	enum sibling_ctrl	ctrl;
- 	enum ucode_state	result;
-+	unsigned int		ctrl_cpu;
- };
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -155,6 +155,8 @@ static inline long regs_return_value(str
+ }
  
- static DEFINE_PER_CPU(struct microcode_ctrl, ucode_ctrl);
-@@ -398,7 +409,7 @@ static int load_late_stop_cpus(void)
-  */
- static bool setup_cpus(void)
- {
--	struct microcode_ctrl ctrl = { .result = -1, };
-+	struct microcode_ctrl ctrl = { .ctrl = SCTRL_WAIT, .result = -1, };
- 	unsigned int cpu;
+ #define instruction_pointer(regs) ((regs)->cp0_epc)
++extern unsigned long exception_ip(struct pt_regs *regs);
++#define exception_ip(regs) exception_ip(regs)
+ #define profile_pc(regs) instruction_pointer(regs)
  
- 	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
-@@ -408,7 +419,12 @@ static bool setup_cpus(void)
- 				return false;
- 			}
- 		}
--		/* Initialize the per CPU state */
+ extern asmlinkage long syscall_trace_enter(struct pt_regs *regs);
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -31,6 +31,7 @@
+ #include <linux/seccomp.h>
+ #include <linux/ftrace.h>
+ 
++#include <asm/branch.h>
+ #include <asm/byteorder.h>
+ #include <asm/cpu.h>
+ #include <asm/cpu-info.h>
+@@ -48,6 +49,12 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/syscalls.h>
+ 
++unsigned long exception_ip(struct pt_regs *regs)
++{
++	return exception_epc(regs);
++}
++EXPORT_SYMBOL(exception_ip);
 +
-+		/*
-+		 * Initialize the per CPU state. This is core scope for now,
-+		 * but prepared to take package or system scope into account.
-+		 */
-+		ctrl.ctrl_cpu = cpumask_first(topology_sibling_cpumask(cpu));
- 		per_cpu(ucode_ctrl, cpu) = ctrl;
- 	}
- 	return true;
+ /*
+  * Called by kernel/ptrace.c when detaching..
+  *
+--- a/include/linux/ptrace.h
++++ b/include/linux/ptrace.h
+@@ -402,6 +402,10 @@ static inline void user_single_step_repo
+ #define current_user_stack_pointer() user_stack_pointer(current_pt_regs())
+ #endif
+ 
++#ifndef exception_ip
++#define exception_ip(x) instruction_pointer(x)
++#endif
++
+ extern int task_current_syscall(struct task_struct *target, struct syscall_info *info);
+ 
+ extern void sigaction_compat_abi(struct k_sigaction *act, struct k_sigaction *oact);
 
 
 
