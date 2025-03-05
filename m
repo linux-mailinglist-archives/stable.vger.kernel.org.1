@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB76A5087F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F15A50754
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64FD1888562
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B3E37A8B9D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C7D1A840E;
-	Wed,  5 Mar 2025 18:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5B2252913;
+	Wed,  5 Mar 2025 17:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVqf7v49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzUakfbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09271C6FF6;
-	Wed,  5 Mar 2025 18:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE01252908;
+	Wed,  5 Mar 2025 17:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198044; cv=none; b=S4vc4Uab8M76muXvBZsR/C8D2xzFD2kmmzVr5qAziIjMndmPfgHmKXTF0zrBAE51MHrpT9SVtb6GOF+9E3GDVFabgKs9HxJ+iaMtpKibgWhRUzkZj+lKHYApcaV/KL83BhIizw2P8xhld3r+qaBoDwDK6Axxf+MwePv63fdODSE=
+	t=1741197292; cv=none; b=IV9HIBUnXjfvH9opRRqDHUj06zTxMOwmkZ8+jewo/DrBMXRiETTju27EEqpS+QMeDyywf1pWCfntkYNJqP+t/fF7yRu4IPJE/yy0NO1B0nRif0Pw+V7xkkIOFuaOCkC8rgZWdBnHnbodx0wKdh50jUdBxC32IGOmy0DP508I4aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198044; c=relaxed/simple;
-	bh=lh8mVYMUKs03vJP0OeBQcJEPNhzh1cqbJMEMc8oje7o=;
+	s=arc-20240116; t=1741197292; c=relaxed/simple;
+	bh=R5V8ucSDUEiz2C0ECwPU7q4jb88MemiNBqAmKiSzoGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=haDUCpaxkxFyTKy406rNXAA2/8ZtWPaxAyf6mkWh3tsvSinGqlHbw2TYEZVW1rXZqUDpXMalq1sshciFjoZVIJLv6ZG1k+5kQDnb42Zc1vHsd5JhEvwcwGBFZG75ecwOdTrBqYJCd5b9NyP8mzewUa6g3Or0OWttkKi7bYcNA0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVqf7v49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40923C4CED1;
-	Wed,  5 Mar 2025 18:07:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hQeHeGYjbZoL/LG31OkKDp6plse3Ue40tjcXT3ugHaPTkmiqnJTMHPQTCYVy9PTWfG3pJLHO526fq92reieqETAg2DnpTsg/n58p80eURcEKnlHJuwQ4ESlZzHlLnZbVK8IFXAjwtFXKZdWlfkS7CR3cuhsRZm6xN/P7walRngM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzUakfbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F781C4CEE0;
+	Wed,  5 Mar 2025 17:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198044;
-	bh=lh8mVYMUKs03vJP0OeBQcJEPNhzh1cqbJMEMc8oje7o=;
+	s=korg; t=1741197291;
+	bh=R5V8ucSDUEiz2C0ECwPU7q4jb88MemiNBqAmKiSzoGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVqf7v49e5bNXOuMafIYajTE05e1HXG3q8DGn2Q48Q//uksBwq4IfFHJcBvmxgEor
-	 ndjSO/syLDRWrsPUevxt8kCscmXTdJJYbDi4E4OnxH1VnVCycT7JT1Bd87FIBizyUy
-	 1HEzZwp3vkyt18YLYfP9GUatu7iR0lHZv60xx8Y8=
+	b=pzUakfbQ/PQnkfxibqNEH7dr0DI9yqRTt5mwSTLTq5f9RvTynehw7AxsCeUCkO17S
+	 Z1N0+7cs1v15M6ceG61+qox3vH6emB5pAY4tjGbzuD2HUmu0cnSiW+hpmmbt0HHu+I
+	 4suRLzV7BRndy4sLnnIL7k0PlohblSbkgGnaAOCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/150] landlock: Fix non-TCP sockets restriction
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.1 073/176] drm/i915: Make sure all planes in use by the joiner have their crtc included
 Date: Wed,  5 Mar 2025 18:47:22 +0100
-Message-ID: <20250305174504.340334667@linuxfoundation.org>
+Message-ID: <20250305174508.393175654@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 854277e2cc8c75dc3c216c82e72523258fcf65b9 ]
+commit 07fb70d82e0df085980246bf17bc12537588795f upstream.
 
-Use sk_is_tcp() to check if socket is TCP in bind(2) and connect(2)
-hooks.
+Any active plane needs to have its crtc included in the atomic
+state. For planes enabled via uapi that is all handler in the core.
+But when we use a plane for joiner the uapi code things the plane
+is disabled and therefore doesn't have a crtc. So we need to pull
+those in by hand. We do it first thing in
+intel_joiner_add_affected_crtcs() so that any newly added crtc will
+subsequently pull in all of its joined crtcs as well.
 
-SMC, MPTCP, SCTP protocols are currently restricted by TCP access
-rights.  The purpose of TCP access rights is to provide control over
-ports that can be used by userland to establish a TCP connection.
-Therefore, it is incorrect to deny bind(2) and connect(2) requests for a
-socket of another protocol.
+The symptoms from failing to do this are:
+- duct tape in the form of commit 1d5b09f8daf8 ("drm/i915: Fix NULL
+  ptr deref by checking new_crtc_state")
+- the plane's hw state will get overwritten by the disabled
+  uapi state if it can't find the uapi counterpart plane in
+  the atomic state from where it should copy the correct state
 
-However, SMC, MPTCP and RDS implementations use TCP internal sockets to
-establish communication or even to exchange packets over a TCP
-connection [1]. Landlock rules that configure bind(2) and connect(2)
-usage for TCP sockets should not cover requests for sockets of such
-protocols. These protocols have different set of security issues and
-security properties, therefore, it is necessary to provide the userland
-with the ability to distinguish between them (eg. [2]).
-
-Control over TCP connection used by other protocols can be achieved with
-upcoming support of socket creation control [3].
-
-[1] https://lore.kernel.org/all/62336067-18c2-3493-d0ec-6dd6a6d3a1b5@huawei-partners.com/
-[2] https://lore.kernel.org/all/20241204.fahVio7eicim@digikod.net/
-[3] https://lore.kernel.org/all/20240904104824.1844082-1-ivanov.mikhail1@huawei-partners.com/
-
-Closes: https://github.com/landlock-lsm/linux/issues/40
-Fixes: fff69fb03dde ("landlock: Support network rules with TCP bind and connect")
-Signed-off-by: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-Link: https://lore.kernel.org/r/20250205093651.1424339-2-ivanov.mikhail1@huawei-partners.com
-[mic: Format commit message to 72 columns]
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250212164330.16891-2-ville.syrjala@linux.intel.com
+(cherry picked from commit 91077d1deb5374eb8be00fb391710f00e751dc4b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/net.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/security/landlock/net.c b/security/landlock/net.c
-index d5dcc4407a197..104b6c01fe503 100644
---- a/security/landlock/net.c
-+++ b/security/landlock/net.c
-@@ -63,8 +63,7 @@ static int current_check_access_socket(struct socket *const sock,
- 	if (WARN_ON_ONCE(dom->num_layers < 1))
- 		return -EACCES;
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -6691,12 +6691,30 @@ static int intel_async_flip_check_hw(str
+ static int intel_bigjoiner_add_affected_crtcs(struct intel_atomic_state *state)
+ {
+ 	struct drm_i915_private *i915 = to_i915(state->base.dev);
++	const struct intel_plane_state *plane_state;
+ 	struct intel_crtc_state *crtc_state;
++	struct intel_plane *plane;
+ 	struct intel_crtc *crtc;
+ 	u8 affected_pipes = 0;
+ 	u8 modeset_pipes = 0;
+ 	int i;
  
--	/* Checks if it's a (potential) TCP socket. */
--	if (sock->type != SOCK_STREAM)
-+	if (!sk_is_tcp(sock->sk))
- 		return 0;
- 
- 	/* Checks for minimal header length to safely read sa_family. */
--- 
-2.39.5
-
++	/*
++	 * Any plane which is in use by the joiner needs its crtc.
++	 * Pull those in first as this will not have happened yet
++	 * if the plane remains disabled according to uapi.
++	 */
++	for_each_new_intel_plane_in_state(state, plane, plane_state, i) {
++		crtc = to_intel_crtc(plane_state->hw.crtc);
++		if (!crtc)
++			continue;
++
++		crtc_state = intel_atomic_get_crtc_state(&state->base, crtc);
++		if (IS_ERR(crtc_state))
++			return PTR_ERR(crtc_state);
++	}
++
++	/* Now pull in all joined crtcs */
+ 	for_each_new_intel_crtc_in_state(state, crtc, crtc_state, i) {
+ 		affected_pipes |= crtc_state->bigjoiner_pipes;
+ 		if (intel_crtc_needs_modeset(crtc_state))
 
 
 
