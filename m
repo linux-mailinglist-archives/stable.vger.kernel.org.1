@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AA0A507B8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9888A5085A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D523B3A263A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DFA93AFEB1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063D6250C1D;
-	Wed,  5 Mar 2025 17:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F6F1C6FF6;
+	Wed,  5 Mar 2025 18:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPc3YGJ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGrYKtXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C8F14884C;
-	Wed,  5 Mar 2025 17:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0DF1FC7D0;
+	Wed,  5 Mar 2025 18:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197597; cv=none; b=c7UW0V+Tuv3IbSGWBQijf7IfsOMUvNC6I9r1zmnX/IG7mwciPWHv3lOxwQUfcYaJZy0LGf3m0uWjF79GkGncIayN++PnTMDBdW+Fpco7zrMKXlLJi6DMJZjanho4wtrDqlCmbd9V2beelKB4cfjvHgLGjGOaM02dHr7UJO5TpTE=
+	t=1741197981; cv=none; b=EpTJOnKR2jQZOiivhME+3LChphEuBvEBZbNKJ4i2e0iWWhctn6wtjlc+26nQ4VysgguLn5w38EdWGjHSvVSEa0qF+B+BjWWCGQQaf3k4EIkWSoazA4rRBydxgeso9gtrKTP10/kbaSKfdfdpGOE7X9vqqydcya48BsxdAPlvWO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197597; c=relaxed/simple;
-	bh=sTcEdtXwpBO1T3SCGbYttF7W3jyX8+l4ZM2plG5Fhug=;
+	s=arc-20240116; t=1741197981; c=relaxed/simple;
+	bh=yc2SCE3kppb/91lLPx4sBodgo7+Uzpv9Aj9e7kila8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jm3HLGrHNwytCFEAKAa6cEQP/LKahfJsAMeobpEuFjOJ3gLfmxPlFEf/9Lbs3V+U0pBJV7V8aaDsZhsRGVX7DkdjhTRkV5kHHWPIPUkOBau3mnwTAkOOAjVtqGphp/P7/L4wlBe8sy8LVcZj5ZFG76U/vY+iQT3LJBScFGhvONQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPc3YGJ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDF5C4CEE0;
-	Wed,  5 Mar 2025 17:59:57 +0000 (UTC)
+	 MIME-Version; b=vEtAZvtjsy23YXfA933Snv3Q24EUzMq5oQ6+CpzuycgWwVInsSCckuXn0DpDQ7ftQVufM//0hYQy4RvEHxK9l2/DNMw1UVIdBcsdC4EIGEhKAMgPW9Wr5R12pY6t+T9lfo+j0ib58yyfgZBFOdIGGlbgoGioViEVy033AqXzmdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGrYKtXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C79C4CEE0;
+	Wed,  5 Mar 2025 18:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197597;
-	bh=sTcEdtXwpBO1T3SCGbYttF7W3jyX8+l4ZM2plG5Fhug=;
+	s=korg; t=1741197981;
+	bh=yc2SCE3kppb/91lLPx4sBodgo7+Uzpv9Aj9e7kila8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPc3YGJ4UBIzjj9eR9JKFZ5e00JXXR30ZYY12zJ+5/ehgbIGUkW6Aya7diVTrTt73
-	 Ew8GlfVRqBAUwAOjPSjyyvZFwkkE/YviKNtXqAuDiVRUxUrD3xGepr3qAKZpA6ytXN
-	 S4eaw5Gz5k+4uLxaBe7xfIwUOsRh1uy2BJJfKeOM=
+	b=MGrYKtXQA1VxDxvwvGj/aLoqTLtWxhMJ5Cz4+pVyrsNiPmPOzpKXpIHZagNAKIv6B
+	 VWvq62dx/tnk1Jyf2Jux5sFW5utR3M+bde2o9r/+vDWrT9bI5B0XRLDqjQgYuobfo0
+	 e0rnBJBRkGP6vvX/yXyIuvy1jv1WHoye1l9+xIrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/142] ASoC: es8328: fix route from DAC to output
-Date: Wed,  5 Mar 2025 18:47:32 +0100
-Message-ID: <20250305174501.668967419@linuxfoundation.org>
+Subject: [PATCH 6.12 024/150] scsi: ufs: core: Set default runtime/system PM levels before ufshcd_hba_init()
+Date: Wed,  5 Mar 2025 18:47:33 +0100
+Message-ID: <20250305174504.783490462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 5b0c02f9b8acf2a791e531bbc09acae2d51f4f9b ]
+[ Upstream commit fe06b7c07f3fbcce2a2ca6f7b0d543b5699ea00f ]
 
-The ES8328 codec driver, which is also used for the ES8388 chip that
-appears to have an identical register map, claims that the output can
-either take the route from DAC->Mixer->Output or through DAC->Output
-directly. To the best of what I could find, this is not true, and
-creates problems.
+Commit bb9850704c04 ("scsi: ufs: core: Honor runtime/system PM levels if
+set by host controller drivers") introduced the check for setting default
+PM levels only if the levels are uninitialized by the host controller
+drivers. But it missed the fact that the levels could be initialized to 0
+(UFS_PM_LVL_0) on purpose by the controller drivers. Even though none of
+the drivers are doing so now, the logic should be fixed irrespectively.
 
-Without DACCONTROL17 bit index 7 set for the left channel, as well as
-DACCONTROL20 bit index 7 set for the right channel, I cannot get any
-analog audio out on Left Out 2 and Right Out 2 respectively, despite the
-DAPM routes claiming that this should be possible. Furthermore, the same
-is the case for Left Out 1 and Right Out 1, showing that those two don't
-have a direct route from DAC to output bypassing the mixer either.
+So set the default levels unconditionally before calling ufshcd_hba_init()
+API which initializes the controller drivers. It ensures that the
+controller drivers could override the default levels if required.
 
-Those control bits toggle whether the DACs are fed (stale bread?) into
-their respective mixers. If one "unmutes" the mixer controls in
-alsamixer, then sure, the audio output works, but if it doesn't work
-without the mixer being fed the DAC input then evidently it's not a
-direct output from the DAC.
-
-ES8328/ES8388 are seemingly not alone in this. ES8323, which uses a
-separate driver for what appears to be a very similar register map,
-simply flips those two bits on in its probe function, and then pretends
-there is no power management whatsoever for the individual controls.
-Fair enough.
-
-My theory as to why nobody has noticed this up to this point is that
-everyone just assumes it's their fault when they had to unmute an
-additional control in ALSA.
-
-Fix this in the es8328 driver by removing the erroneous direct route,
-then get rid of the playback switch controls and have those bits tied to
-the mixer's widget instead, which until now had no register to play
-with.
-
-Fixes: 567e4f98922c ("ASoC: add es8328 codec driver")
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Link: https://patch.msgid.link/20250222-es8328-route-bludgeoning-v1-1-99bfb7fb22d9@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bb9850704c04 ("scsi: ufs: core: Honor runtime/system PM levels if set by host controller drivers")
+Reported-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250219105047.49932-1-manivannan.sadhasivam@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8328.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/ufs/core/ufshcd.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/codecs/es8328.c b/sound/soc/codecs/es8328.c
-index 0bd9ba5a11b4e..43792e175d75f 100644
---- a/sound/soc/codecs/es8328.c
-+++ b/sound/soc/codecs/es8328.c
-@@ -234,7 +234,6 @@ static const struct snd_kcontrol_new es8328_right_line_controls =
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index ff4878cf882be..a3e95ef5eda82 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10457,6 +10457,21 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 	 */
+ 	spin_lock_init(&hba->clk_gating.lock);
  
- /* Left Mixer */
- static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
--	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL17, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL17, 6, 1, 0),
- 	SOC_DAPM_SINGLE("Right Playback Switch", ES8328_DACCONTROL18, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL18, 6, 1, 0),
-@@ -244,7 +243,6 @@ static const struct snd_kcontrol_new es8328_left_mixer_controls[] = {
- static const struct snd_kcontrol_new es8328_right_mixer_controls[] = {
- 	SOC_DAPM_SINGLE("Left Playback Switch", ES8328_DACCONTROL19, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Left Bypass Switch", ES8328_DACCONTROL19, 6, 1, 0),
--	SOC_DAPM_SINGLE("Playback Switch", ES8328_DACCONTROL20, 7, 1, 0),
- 	SOC_DAPM_SINGLE("Right Bypass Switch", ES8328_DACCONTROL20, 6, 1, 0),
- };
++	/*
++	 * Set the default power management level for runtime and system PM.
++	 * Host controller drivers can override them in their
++	 * 'ufs_hba_variant_ops::init' callback.
++	 *
++	 * Default power saving mode is to keep UFS link in Hibern8 state
++	 * and UFS device in sleep state.
++	 */
++	hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
++						UFS_SLEEP_PWR_MODE,
++						UIC_LINK_HIBERN8_STATE);
++	hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
++						UFS_SLEEP_PWR_MODE,
++						UIC_LINK_HIBERN8_STATE);
++
+ 	err = ufshcd_hba_init(hba);
+ 	if (err)
+ 		goto out_error;
+@@ -10606,21 +10621,6 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 		goto free_tmf_queue;
+ 	}
  
-@@ -337,10 +335,10 @@ static const struct snd_soc_dapm_widget es8328_dapm_widgets[] = {
- 	SND_SOC_DAPM_DAC("Left DAC", "Left Playback", ES8328_DACPOWER,
- 			ES8328_DACPOWER_LDAC_OFF, 1),
- 
--	SND_SOC_DAPM_MIXER("Left Mixer", SND_SOC_NOPM, 0, 0,
-+	SND_SOC_DAPM_MIXER("Left Mixer", ES8328_DACCONTROL17, 7, 0,
- 		&es8328_left_mixer_controls[0],
- 		ARRAY_SIZE(es8328_left_mixer_controls)),
--	SND_SOC_DAPM_MIXER("Right Mixer", SND_SOC_NOPM, 0, 0,
-+	SND_SOC_DAPM_MIXER("Right Mixer", ES8328_DACCONTROL20, 7, 0,
- 		&es8328_right_mixer_controls[0],
- 		ARRAY_SIZE(es8328_right_mixer_controls)),
- 
-@@ -419,19 +417,14 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
- 	{ "Right Line Mux", "PGA", "Right PGA Mux" },
- 	{ "Right Line Mux", "Differential", "Differential Mux" },
- 
--	{ "Left Out 1", NULL, "Left DAC" },
--	{ "Right Out 1", NULL, "Right DAC" },
--	{ "Left Out 2", NULL, "Left DAC" },
--	{ "Right Out 2", NULL, "Right DAC" },
+-	/*
+-	 * Set the default power management level for runtime and system PM if
+-	 * not set by the host controller drivers.
+-	 * Default power saving mode is to keep UFS link in Hibern8 state
+-	 * and UFS device in sleep state.
+-	 */
+-	if (!hba->rpm_lvl)
+-		hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
+-						UFS_SLEEP_PWR_MODE,
+-						UIC_LINK_HIBERN8_STATE);
+-	if (!hba->spm_lvl)
+-		hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
+-						UFS_SLEEP_PWR_MODE,
+-						UIC_LINK_HIBERN8_STATE);
 -
--	{ "Left Mixer", "Playback Switch", "Left DAC" },
-+	{ "Left Mixer", NULL, "Left DAC" },
- 	{ "Left Mixer", "Left Bypass Switch", "Left Line Mux" },
- 	{ "Left Mixer", "Right Playback Switch", "Right DAC" },
- 	{ "Left Mixer", "Right Bypass Switch", "Right Line Mux" },
+ 	INIT_DELAYED_WORK(&hba->rpm_dev_flush_recheck_work, ufshcd_rpm_dev_flush_recheck_work);
+ 	INIT_DELAYED_WORK(&hba->ufs_rtc_update_work, ufshcd_rtc_work);
  
- 	{ "Right Mixer", "Left Playback Switch", "Left DAC" },
- 	{ "Right Mixer", "Left Bypass Switch", "Left Line Mux" },
--	{ "Right Mixer", "Playback Switch", "Right DAC" },
-+	{ "Right Mixer", NULL, "Right DAC" },
- 	{ "Right Mixer", "Right Bypass Switch", "Right Line Mux" },
- 
- 	{ "DAC DIG", NULL, "DAC STM" },
 -- 
 2.39.5
 
