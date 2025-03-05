@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-120523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891A3A50731
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C04BA50900
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FFDE7A8B42
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B45416E97D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DB225290D;
-	Wed,  5 Mar 2025 17:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C088C2512C9;
+	Wed,  5 Mar 2025 18:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gez2VFNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaLUbnnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B09252908;
-	Wed,  5 Mar 2025 17:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4111946C3;
+	Wed,  5 Mar 2025 18:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197206; cv=none; b=F4QWdO8yhHPjqXLk8FXnxBATUUIAR7wb/TVZuZYFYO/2x4JwkmFcWdJHC4kCPvR+GFGaJSWcNmAJTrkmBO2kCBicEfdA4Vw5A7nhsH1cvRut/imgpFaYfjDFVlbVJNVMGX26CeOxxvNfMrySKnNF7BjaBcWhCBFxh5qjRFnwzmI=
+	t=1741198384; cv=none; b=CL5ppLQyNMGsU6VCAD0mpUN6EXG0JmAyWcHi91TmB/YO2J7d7bPWdB4IdcRTDU1YN/bNi+9gWYcf/AtCmHUvX72djmFdqEdgjZC01QYTkx9gxKQWiVED1O0A8z/qbNIWLMfk9QOK+0Hi8wMGSo8deHA20XwYoununexCK2eFJM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197206; c=relaxed/simple;
-	bh=vq9IsntABmKwvMXG+04JJhIzZ2d3Gpj8Z+bl9kN1P0w=;
+	s=arc-20240116; t=1741198384; c=relaxed/simple;
+	bh=SEQBmrVol4mjfuNIURg8R3kahcMK00UUm8ClHem+lW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOWb1VsOgT01iQndWqxqt5/iQWFqKLxN2ewqufzHKtDBGbAPliF6Qz0+apjomzyZGLTSpW/oeMvahnslnLXalO4/aWw1NFuZWZ57oYhsE4bLaTg5PJYzcNkugW0jy1pAapN1EnXjrDyvVbrHh5UOBnQSYxiigTFtV9vSSQn0n5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gez2VFNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41354C4CED1;
-	Wed,  5 Mar 2025 17:53:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X2YQPCgReFzrPSPeoNrl6huotXgqac7sBrN9AYEn5+xoX6YSISbHGDRwwqYCiind+zc8V2a1xCvVWKdG8hbm1W9SnfqMtP2IPkDzr03h7ULioBAZjDyh0Egm9cNFQloPCqPIIdZCUdPO5HS041LXNn2lSi4mnkpbs5LgwCdG58Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaLUbnnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68D5C4CED1;
+	Wed,  5 Mar 2025 18:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197206;
-	bh=vq9IsntABmKwvMXG+04JJhIzZ2d3Gpj8Z+bl9kN1P0w=;
+	s=korg; t=1741198384;
+	bh=SEQBmrVol4mjfuNIURg8R3kahcMK00UUm8ClHem+lW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gez2VFNBO1En+2d2UJ7ES3Ik4/4wAUr8uGikxIJcp/udfDdLnMCly8f2g88oqutKH
-	 mCrG+TQvYT6GjuGUu01ouOL+E7m5Ss3DePBAdPquxTJbXHPF55gZ6AucKKwP2ecopI
-	 bttKs2wjwy62KEtE2ak89tKUMOo7r/vymKPdj5fo=
+	b=yaLUbnnp4mpkVlqjRZ4YQbrvyh/42AGDbMCCbliTmvMDfAs7rJRm5eIptZsfWeByK
+	 iJo+tWvyvmoFbWstmqIwPb4P6RnrepKx7jl7jDp0seFM1vovG0BK0zs/WJDAOuaQqr
+	 NFY7Ui6b5ujacC4EmNnMKfHHp50ZCjOt7Eyw90/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 077/176] ASoC: fsl_micfil: Enable default case in micfil_set_quality()
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 010/157] landlock: Fix non-TCP sockets restriction
 Date: Wed,  5 Mar 2025 18:47:26 +0100
-Message-ID: <20250305174508.556083843@linuxfoundation.org>
+Message-ID: <20250305174505.692333961@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
 
-commit a8c9a453387640dbe45761970f41301a6985e7fa upstream.
+[ Upstream commit 854277e2cc8c75dc3c216c82e72523258fcf65b9 ]
 
-If 'micfil->quality' received from micfil_quality_set() somehow ends
-up with an unpredictable value, switch() operator will fail to
-initialize local variable qsel before regmap_update_bits() tries
-to utilize it.
+Use sk_is_tcp() to check if socket is TCP in bind(2) and connect(2)
+hooks.
 
-While it is unlikely, play it safe and enable a default case that
-returns -EINVAL error.
+SMC, MPTCP, SCTP protocols are currently restricted by TCP access
+rights.  The purpose of TCP access rights is to provide control over
+ports that can be used by userland to establish a TCP connection.
+Therefore, it is incorrect to deny bind(2) and connect(2) requests for a
+socket of another protocol.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+However, SMC, MPTCP and RDS implementations use TCP internal sockets to
+establish communication or even to exchange packets over a TCP
+connection [1]. Landlock rules that configure bind(2) and connect(2)
+usage for TCP sockets should not cover requests for sockets of such
+protocols. These protocols have different set of security issues and
+security properties, therefore, it is necessary to provide the userland
+with the ability to distinguish between them (eg. [2]).
 
-Fixes: bea1d61d5892 ("ASoC: fsl_micfil: rework quality setting")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250116142436.22389-1-n.zhandarovich@fintech.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Control over TCP connection used by other protocols can be achieved with
+upcoming support of socket creation control [3].
+
+[1] https://lore.kernel.org/all/62336067-18c2-3493-d0ec-6dd6a6d3a1b5@huawei-partners.com/
+[2] https://lore.kernel.org/all/20241204.fahVio7eicim@digikod.net/
+[3] https://lore.kernel.org/all/20240904104824.1844082-1-ivanov.mikhail1@huawei-partners.com/
+
+Closes: https://github.com/landlock-lsm/linux/issues/40
+Fixes: fff69fb03dde ("landlock: Support network rules with TCP bind and connect")
+Signed-off-by: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+Link: https://lore.kernel.org/r/20250205093651.1424339-2-ivanov.mikhail1@huawei-partners.com
+[mic: Format commit message to 72 columns]
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c |    2 ++
- 1 file changed, 2 insertions(+)
+ security/landlock/net.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -123,6 +123,8 @@ static int micfil_set_quality(struct fsl
- 	case QUALITY_VLOW2:
- 		qsel = MICFIL_QSEL_VLOW2_QUALITY;
- 		break;
-+	default:
-+		return -EINVAL;
- 	}
+diff --git a/security/landlock/net.c b/security/landlock/net.c
+index d5dcc4407a197..104b6c01fe503 100644
+--- a/security/landlock/net.c
++++ b/security/landlock/net.c
+@@ -63,8 +63,7 @@ static int current_check_access_socket(struct socket *const sock,
+ 	if (WARN_ON_ONCE(dom->num_layers < 1))
+ 		return -EACCES;
  
- 	return regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
+-	/* Checks if it's a (potential) TCP socket. */
+-	if (sock->type != SOCK_STREAM)
++	if (!sk_is_tcp(sock->sk))
+ 		return 0;
+ 
+ 	/* Checks for minimal header length to safely read sa_family. */
+-- 
+2.39.5
+
 
 
 
