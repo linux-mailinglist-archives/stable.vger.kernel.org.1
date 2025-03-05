@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-120994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1921A5093F
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C90A50895
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28143A4324
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D56416C855
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24550230BC6;
-	Wed,  5 Mar 2025 18:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC4F2512D6;
+	Wed,  5 Mar 2025 18:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeokwYxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6dlv/jR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74E21A316B;
-	Wed,  5 Mar 2025 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B50225179E;
+	Wed,  5 Mar 2025 18:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198573; cv=none; b=O9mCVjsJPmiRNx51UTxe9mR2Ai4v/RPhwkT2q5PSDsa0cq6nu8gFjejVBYYb6HwESPN70hMhLEctDG+EsFPk1hIiVx7rnwWqkhRzKrWCT1vseg/IToc0qKd3N3kLAxOZkNvftT347U+Pygd8Jxdw5yBU3GKsBMIUtbd1ynzBOIM=
+	t=1741198100; cv=none; b=Grss57BvHTvRBO5ghVfIZcfUO5pFPsM0/PsqofxICh5ZQWqLmjp3jXdqPIePbWsH2aa5S8qw0M7BO9aHRFQXxnbB05ynqvaVmzNyrJ/SRXMILVHdGwX1zajebZ7/Rko1ZDVd+7GFymiY6rPp7ouMFhn4NAhorm7grfDPxDlovjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198573; c=relaxed/simple;
-	bh=rv81iGikYhgTyIQDZyXgHtCp4MK6JTfpcFYwIVDLSdo=;
+	s=arc-20240116; t=1741198100; c=relaxed/simple;
+	bh=7puEq7QkPGAsg1F2K2slKdcM83SlK7oyHaKR+BKLsmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+7UoXvmec1XaFwJ3pyTTTVUEg++9Q37vzI7T+cHBTQf1xN4zacB5aYrFS6jlYPpjDD576GM1L0BEKfR2st92dNFlrUzumvWQYDovGqDisn7F0YykSiydPkJ4vcLCkrVIBhS7ndlcse589YbDrXFfYgfyM6yBBmu/l10hFhL5Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeokwYxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB409C4CED1;
-	Wed,  5 Mar 2025 18:16:12 +0000 (UTC)
+	 MIME-Version; b=W4Y0zVfPoscioYO3W8+5lOj/ImYTdZG3Znmgu1IkH+RNYAppsM43BE8blZtnF33f+0QUsws1CErVxUhOFyWebx6CwrDVZRiLPrx3gGBkfJsRXVgxPmMmO3Cow0hpww2jTYERcHHivoRg6Hn6Ez5kXDkIddlJnEMdX1bzey7pz5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6dlv/jR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7956C4CED1;
+	Wed,  5 Mar 2025 18:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198573;
-	bh=rv81iGikYhgTyIQDZyXgHtCp4MK6JTfpcFYwIVDLSdo=;
+	s=korg; t=1741198100;
+	bh=7puEq7QkPGAsg1F2K2slKdcM83SlK7oyHaKR+BKLsmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeokwYxWk2ixUpi/lLr8qe2cfDvSaf7PYqefUOnmj8nr79+b1k00rKV3TgQST4tgP
-	 wDEEnC/mt4yjt+PPXr6kL57DvBqY+nGpuBx703WBl2PHpi0J38u3/uI6m/Upwbmikh
-	 5gzl3ihTEHObtxq0fsaPAbJfpwKRnK+VImAQs2Us=
+	b=R6dlv/jRWU5x2qFAAy5w0KBll4sqXQcHwGX4Xdr2qrZ8xQzLjZ7Sm5qn5rYaLTuqM
+	 zzfNxiawhs5UvNHNqEBlCXpjYlk5MFk7x2tnHx2SFDlL9YVKCKR9ZrCttbjkX5ZvNq
+	 uQ17/JTOBBi3Bo9M4cWBcoThLoK1eN8RlWjcGJIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	kernel test robot <lkp@intel.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Joe Damato <jdamato@fastly.com>,
+	David Wei <dw@davidwei.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 057/157] net/mlx5: IRQ, Fix null string in debug print
+Subject: [PATCH 6.12 064/150] selftests: drv-net: Check if combined-count exists
 Date: Wed,  5 Mar 2025 18:48:13 +0100
-Message-ID: <20250305174507.596322511@linuxfoundation.org>
+Message-ID: <20250305174506.392627484@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,44 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 2f5a6014eb168a97b24153adccfa663d3b282767 ]
+[ Upstream commit 1cbddbddee68d17feb6467fc556c144777af91ef ]
 
-irq_pool_alloc() debug print can print a null string.
-Fix it by providing a default string to print.
+Some drivers, like tg3, do not set combined-count:
 
-Fixes: 71e084e26414 ("net/mlx5: Allocating a pool of MSI-X vectors for SFs")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501141055.SwfIphN0-lkp@intel.com/
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20250225072608.526866-4-tariqt@nvidia.com
+$ ethtool -l enp4s0f1
+Channel parameters for enp4s0f1:
+Pre-set maximums:
+RX:		4
+TX:		4
+Other:		n/a
+Combined:	n/a
+Current hardware settings:
+RX:		4
+TX:		1
+Other:		n/a
+Combined:	n/a
+
+In the case where combined-count is not set, the ethtool netlink code
+in the kernel elides the value and the code in the test:
+
+  netnl.channels_get(...)
+
+With a tg3 device, the returned dictionary looks like:
+
+{'header': {'dev-index': 3, 'dev-name': 'enp4s0f1'},
+ 'rx-max': 4,
+ 'rx-count': 4,
+ 'tx-max': 4,
+ 'tx-count': 1}
+
+Note that the key 'combined-count' is missing. As a result of this
+missing key the test raises an exception:
+
+ # Exception|     if channels['combined-count'] == 0:
+ # Exception|        ~~~~~~~~^^^^^^^^^^^^^^^^^^
+ # Exception| KeyError: 'combined-count'
+
+Change the test to check if 'combined-count' is a key in the dictionary
+first and if not assume that this means the driver has separate RX and
+TX queues.
+
+With this change, the test now passes successfully on tg3 and mlx5
+(which does have a 'combined-count').
+
+Fixes: 1cf270424218 ("net: selftest: add test for netdev netlink queue-get API")
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250226181957.212189-1-jdamato@fastly.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/queues.py | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index 7db9cab9bedf6..d9362eabc6a1c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -572,7 +572,7 @@ irq_pool_alloc(struct mlx5_core_dev *dev, int start, int size, char *name,
- 	pool->min_threshold = min_threshold * MLX5_EQ_REFS_PER_IRQ;
- 	pool->max_threshold = max_threshold * MLX5_EQ_REFS_PER_IRQ;
- 	mlx5_core_dbg(dev, "pool->name = %s, pool->size = %d, pool->start = %d",
--		      name, size, start);
-+		      name ? name : "mlx5_pcif_pool", size, start);
- 	return pool;
- }
+diff --git a/tools/testing/selftests/drivers/net/queues.py b/tools/testing/selftests/drivers/net/queues.py
+index 30f29096e27c2..4868b514ae78d 100755
+--- a/tools/testing/selftests/drivers/net/queues.py
++++ b/tools/testing/selftests/drivers/net/queues.py
+@@ -40,10 +40,9 @@ def addremove_queues(cfg, nl) -> None:
  
+     netnl = EthtoolFamily()
+     channels = netnl.channels_get({'header': {'dev-index': cfg.ifindex}})
+-    if channels['combined-count'] == 0:
+-        rx_type = 'rx'
+-    else:
+-        rx_type = 'combined'
++    rx_type = 'rx'
++    if channels.get('combined-count', 0) > 0:
++            rx_type = 'combined'
+ 
+     expected = curr_queues - 1
+     cmd(f"ethtool -L {cfg.dev['ifname']} {rx_type} {expected}", timeout=10)
 -- 
 2.39.5
 
