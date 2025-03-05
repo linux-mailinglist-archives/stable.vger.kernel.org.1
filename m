@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAFBA50853
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAEFA5071C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12A983B04D6
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47CA0174AF3
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A4A250C14;
-	Wed,  5 Mar 2025 18:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F6C2512D7;
+	Wed,  5 Mar 2025 17:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SddQwdq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAz/SbDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7578517B505;
-	Wed,  5 Mar 2025 18:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDF12505A7;
+	Wed,  5 Mar 2025 17:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197966; cv=none; b=gu1b3vGHYBIfhh+SLG07Dfrw0sgIi5qIHtiOoah0wUW3vs71HTDtNJ/NOa6J5UNtFHtsUVQRWJQ46B3cWSPFgSnIbnHE7N8LUEc+94E6MKQNiOpCVmX4gi3F9/hB0jnBj/Xmf+EQffBQypZs+sn+uEZt4VbyKgpRP5uqgJVKNOs=
+	t=1741197212; cv=none; b=p7YPQ4ibSITdF8pmEKgB0o+irohRQ7UVVDT+tRAoWf0kpM63oFL+56so0IjE6R+42fOPGyvPpMlaXI1QDm1jaA+NhdQHu1fiwwz7agSGt6fTtp5eYI8PdlSRa5rl1N6LXn9AMDaYlnUe+FFBB/0x3iaZuWtL04L2XYbFC1foAdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197966; c=relaxed/simple;
-	bh=Rjwgc6urj7P2AunRGSxBVwRTaU4gIMf+ekI6eea2mY8=;
+	s=arc-20240116; t=1741197212; c=relaxed/simple;
+	bh=O0VoDS4vzNS0RPzc/keBQbIuqulYoHgy+kmR0d5Efuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7nAXYPYvdBkXlXUejqA9LPKyHqiskofEeCFzU+QkMRW4JGIcxM1LoHTt6YdAH2mOcQ0beZbis6XX5P9EnvslxcyBwXZcLZpQvb9shUgZkI9J3nCUJKt9CZVBDy4OUC1ggCDxt1I5hM7DbpqlP5hk5OQ6H64AwlIEKSdy4RBe9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SddQwdq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E956DC4CED1;
-	Wed,  5 Mar 2025 18:06:05 +0000 (UTC)
+	 MIME-Version; b=pK6TQiN/HKbxVxK0NxveLhtuaqJV/0WwNJ9IxQKmbR6tBxODit003qn6fZn1Wue6UNDJSZFEl6WiuB6ao9zJCpVvYBn1lo9tAPmws+5burfRUCzPcmadkDxpUiaI3VlBuIfd0MS4qrE3u0R+QOT76mpKmomHpiOwChzG0Ij0fGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAz/SbDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA6BC4CED1;
+	Wed,  5 Mar 2025 17:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197966;
-	bh=Rjwgc6urj7P2AunRGSxBVwRTaU4gIMf+ekI6eea2mY8=;
+	s=korg; t=1741197212;
+	bh=O0VoDS4vzNS0RPzc/keBQbIuqulYoHgy+kmR0d5Efuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SddQwdq1acnjSvZe+0gytF290vbufGk/fnKrE4YGKEnjaDvcAGUVeRxd9/VOK2vlm
-	 Vd1zBLor8Wukrfj4aumzIVMp/WXVr8unYmcTt+NOOT7ot8apJTCS0aUyuJnfDje5nX
-	 QcAQuPncTqz3dG7UlxEVJ2fiRydiRwmISJoR88mA=
+	b=JAz/SbDocatA+dxMNiv0/x27AQHc/XiCHe9QXYMLW9TsJFfLRgR7yjAzzC4IezvuP
+	 fLCv6EacespSK2g/P6FcbsQpGuJiYTe+w4snLd207xkmLVIR5Xpg8X+vwfIcg5baQL
+	 Sh4oxWaPD0eJse3wRbGC795RytN//PnsmgPG7nbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/150] NFSv4: Fix a deadlock when recovering state on a sillyrenamed file
+	John Veness <john-linux@pelago.org.uk>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 079/176] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
 Date: Wed,  5 Mar 2025 18:47:28 +0100
-Message-ID: <20250305174504.581869717@linuxfoundation.org>
+Message-ID: <20250305174508.637358604@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: John Veness <john-linux@pelago.org.uk>
 
-[ Upstream commit 8f8df955f078e1a023ee55161935000a67651f38 ]
+commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
 
-If the file is sillyrenamed, and slated for delete on close, it is
-possible for a server reboot to triggeer an open reclaim, with can again
-race with the application call to close(). When that happens, the call
-to put_nfs_open_context() can trigger a synchronous delegreturn call
-which deadlocks because it is not marked as privileged.
+Allows the LED on the dedicated mute button on the HP ProBook 450 G4
+laptop to change colour correctly.
 
-Instead, ensure that the call to nfs4_inode_return_delegation_on_close()
-catches the delegreturn, and schedules it asynchronously.
-
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: adb4b42d19ae ("Return the delegation when deleting sillyrenamed files")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Veness <john-linux@pelago.org.uk>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/delegation.c | 37 +++++++++++++++++++++++++++++++++++++
- fs/nfs/delegation.h |  1 +
- fs/nfs/nfs4proc.c   |  3 +++
- 3 files changed, 41 insertions(+)
+ sound/pci/hda/patch_conexant.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 035ba52742a50..4db912f562305 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -780,6 +780,43 @@ int nfs4_inode_return_delegation(struct inode *inode)
- 	return 0;
- }
- 
-+/**
-+ * nfs4_inode_set_return_delegation_on_close - asynchronously return a delegation
-+ * @inode: inode to process
-+ *
-+ * This routine is called to request that the delegation be returned as soon
-+ * as the file is closed. If the file is already closed, the delegation is
-+ * immediately returned.
-+ */
-+void nfs4_inode_set_return_delegation_on_close(struct inode *inode)
-+{
-+	struct nfs_delegation *delegation;
-+	struct nfs_delegation *ret = NULL;
-+
-+	if (!inode)
-+		return;
-+	rcu_read_lock();
-+	delegation = nfs4_get_valid_delegation(inode);
-+	if (!delegation)
-+		goto out;
-+	spin_lock(&delegation->lock);
-+	if (!delegation->inode)
-+		goto out_unlock;
-+	if (list_empty(&NFS_I(inode)->open_files) &&
-+	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
-+		/* Refcount matched in nfs_end_delegation_return() */
-+		ret = nfs_get_delegation(delegation);
-+	} else
-+		set_bit(NFS_DELEGATION_RETURN_IF_CLOSED, &delegation->flags);
-+out_unlock:
-+	spin_unlock(&delegation->lock);
-+	if (ret)
-+		nfs_clear_verifier_delegated(inode);
-+out:
-+	rcu_read_unlock();
-+	nfs_end_delegation_return(inode, ret, 0);
-+}
-+
- /**
-  * nfs4_inode_return_delegation_on_close - asynchronously return a delegation
-  * @inode: inode to process
-diff --git a/fs/nfs/delegation.h b/fs/nfs/delegation.h
-index 71524d34ed207..8ff5ab9c5c256 100644
---- a/fs/nfs/delegation.h
-+++ b/fs/nfs/delegation.h
-@@ -49,6 +49,7 @@ void nfs_inode_reclaim_delegation(struct inode *inode, const struct cred *cred,
- 				  unsigned long pagemod_limit, u32 deleg_type);
- int nfs4_inode_return_delegation(struct inode *inode);
- void nfs4_inode_return_delegation_on_close(struct inode *inode);
-+void nfs4_inode_set_return_delegation_on_close(struct inode *inode);
- int nfs_async_inode_return_delegation(struct inode *inode, const nfs4_stateid *stateid);
- void nfs_inode_evict_delegation(struct inode *inode);
- 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 405f17e6e0b45..e7bc99c69743c 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3898,8 +3898,11 @@ nfs4_atomic_open(struct inode *dir, struct nfs_open_context *ctx,
- 
- static void nfs4_close_context(struct nfs_open_context *ctx, int is_sync)
- {
-+	struct dentry *dentry = ctx->dentry;
- 	if (ctx->state == NULL)
- 		return;
-+	if (dentry->d_flags & DCACHE_NFSFS_RENAMED)
-+		nfs4_inode_set_return_delegation_on_close(d_inode(dentry));
- 	if (is_sync)
- 		nfs4_close_sync(ctx->state, _nfs4_ctx_to_openmode(ctx));
- 	else
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -1098,6 +1098,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
+ 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
++	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
 
 
 
