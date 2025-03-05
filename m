@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6BCA508DB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261C8A50823
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A533B0CA8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A15023B08D8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DCC2512ED;
-	Wed,  5 Mar 2025 18:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FC1250C1A;
+	Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jALC718x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiqbVHok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703FC1A5BB7;
-	Wed,  5 Mar 2025 18:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F6F539A;
+	Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198294; cv=none; b=TMDlq4A//ra0shPpYpIL1SORZdDZC+tSbmUI5HqyKBJnzGI+QRG3Y9gD/SJGkf8+Talx4VgbkhgMJ6sZzaa2WsQuItgKNfs97YzWSq32Sl0UfEnS6v2cm6b9f8cDtjCY6WcwkAnP5n27psaii3zxQYL8Cz2D54uuY2NxB4/cdlM=
+	t=1741197850; cv=none; b=V/a24xPAcEDDV97ay7xPFi9RBKiwNBn4fxyziI0xZghHW2t9o/mDJMQ03jLaelrtXmOfDd7RuM+qVrgIBcI5DseFAsWOTFHX0XU6mCY2G1i9zx6EfN4F9vo003FBOZmEyKIkAFMbX0eFpIE9Nfi7FHk26IZfBDGZA8lL1ZxYkrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198294; c=relaxed/simple;
-	bh=vjOm8fDztvnscnSV8lkYRxK98OctyQ/eCoJkcV0g+cE=;
+	s=arc-20240116; t=1741197850; c=relaxed/simple;
+	bh=WcoydfJDze9JkYRsp7cU4BAYkzyhsGp89Z21ehco/vU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4DoZx5dO1OusmFyHQA5NZspqkbc1yyj/q7PnnNSJxOzrurpoVo5OpyUqrvCzfR+jUBCsqIQGUbg3hM8Vk0Qyg0HqnfvrUcRsaWsGgrIlFihURmlUvGBrvPrLVu7GzLHh1/swxp1ditPpzBq9RLAQJmRgJrLp96brmp60i3JmIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jALC718x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB073C4CED1;
-	Wed,  5 Mar 2025 18:11:33 +0000 (UTC)
+	 MIME-Version; b=tJT3hB4SlO/lQcC1KOIczbYINZeILL67/OcxPtreX8Yqqdfs3+65KdEMYrBfisQRxb0sXifHbQMbwfzu1MR6i6UwoUSXC7k6FM22obrab/fSS4hz/GbLatQplpE4rTzzQHBdJ3NvuOmUpdl2djJmpC7yD30ZpkSeTCbZmvCBtGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiqbVHok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8DAC4CED1;
+	Wed,  5 Mar 2025 18:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198294;
-	bh=vjOm8fDztvnscnSV8lkYRxK98OctyQ/eCoJkcV0g+cE=;
+	s=korg; t=1741197850;
+	bh=WcoydfJDze9JkYRsp7cU4BAYkzyhsGp89Z21ehco/vU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jALC718x++/BhBY7x6ESDHgPHjHDi5qnRGR1PoRUBqQdXmJI+srRQK5G6sMnwOLYI
-	 Pg5i6VdPS58cLBKvp/MysnKYigw5BmjEmA0yoYep/d9Jr0CjNt1GHwc1geDdHiR4zR
-	 wnJYIl7lnObqGT8l3QiXNWVfOORAD/2m4jSmBwps=
+	b=hiqbVHokBaKTCLJUUEfLDbZ+JxAQHcfFFUNI+eG5VxXCHhIr1HtowT4KNxh5rdh++
+	 I+jHT5BO6mJDyJvUHqVOD//+rHcdwXc+h5mf4RZZvPxZ4Ww9qjH+V59wyo+wWl7wHC
+	 9F41rm5i7o9pSrGpQU0OrINQH4d1Ec3AT4vWMMAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 112/150] net: enetc: keep track of correct Tx BD count in enetc_map_tx_tso_buffs()
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 122/142] x86/microcode: Provide new control functions
 Date: Wed,  5 Mar 2025 18:49:01 +0100
-Message-ID: <20250305174508.315430998@linuxfoundation.org>
+Message-ID: <20250305174505.228883201@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit da291996b16ebd10626d4b20288327b743aff110 upstream.
+commit 6067788f04b1020b316344fe34746f96d594a042 upstream
 
-When creating a TSO header, if the skb is VLAN tagged, the extended BD
-will be used and the 'count' should be increased by 2 instead of 1.
-Otherwise, when an error occurs, less tx_swbd will be freed than the
-actual number.
+The current all in one code is unreadable and really not suited for
+adding future features like uniform loading with package or system
+scope.
 
-Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-Cc: stable@vger.kernel.org
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Link: https://patch.msgid.link/20250224111251.1061098-3-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Provide a set of new control functions which split the handling of the
+primary and secondary CPUs. These will replace the current rendezvous
+all in one function in the next step. This is intentionally a separate
+change because diff makes an complete unreadable mess otherwise.
+
+So the flow separates the primary and the secondary CPUs into their own
+functions which use the control field in the per CPU ucode_ctrl struct.
+
+   primary()			secondary()
+    wait_for_all()		 wait_for_all()
+    apply_ucode()		 wait_for_release()
+    release()			 apply_ucode()
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115903.377922731@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c |   84 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 84 insertions(+)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -351,14 +351,15 @@ dma_err:
- 	return 0;
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -290,6 +290,90 @@ static bool wait_for_cpus(atomic_t *cnt)
+ 	return false;
  }
  
--static void enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
--				 struct enetc_tx_swbd *tx_swbd,
--				 union enetc_tx_bd *txbd, int *i, int hdr_len,
--				 int data_len)
-+static int enetc_map_tx_tso_hdr(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-+				struct enetc_tx_swbd *tx_swbd,
-+				union enetc_tx_bd *txbd, int *i, int hdr_len,
-+				int data_len)
- {
- 	union enetc_tx_bd txbd_tmp;
- 	u8 flags = 0, e_flags = 0;
- 	dma_addr_t addr;
-+	int count = 1;
- 
- 	enetc_clear_tx_bd(&txbd_tmp);
- 	addr = tx_ring->tso_headers_dma + *i * TSO_HEADER_SIZE;
-@@ -401,7 +402,10 @@ static void enetc_map_tx_tso_hdr(struct
- 		/* Write the BD */
- 		txbd_tmp.ext.e_flags = e_flags;
- 		*txbd = txbd_tmp;
-+		count++;
- 	}
++static bool wait_for_ctrl(void)
++{
++	unsigned int timeout;
 +
-+	return count;
- }
- 
- static int enetc_map_tx_tso_data(struct enetc_bdr *tx_ring, struct sk_buff *skb,
-@@ -533,9 +537,9 @@ static int enetc_map_tx_tso_buffs(struct
- 
- 		/* compute the csum over the L4 header */
- 		csum = enetc_tso_hdr_csum(&tso, skb, hdr, hdr_len, &pos);
--		enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd, &i, hdr_len, data_len);
-+		count += enetc_map_tx_tso_hdr(tx_ring, skb, tx_swbd, txbd,
-+					      &i, hdr_len, data_len);
- 		bd_data_num = 0;
--		count++;
- 
- 		while (data_len > 0) {
- 			int size;
++	for (timeout = 0; timeout < USEC_PER_SEC; timeout++) {
++		if (this_cpu_read(ucode_ctrl.ctrl) != SCTRL_WAIT)
++			return true;
++		udelay(1);
++		if (!(timeout % 1000))
++			touch_nmi_watchdog();
++	}
++	return false;
++}
++
++static __maybe_unused void load_secondary(unsigned int cpu)
++{
++	unsigned int ctrl_cpu = this_cpu_read(ucode_ctrl.ctrl_cpu);
++	enum ucode_state ret;
++
++	/* Initial rendezvous to ensure that all CPUs have arrived */
++	if (!wait_for_cpus(&late_cpus_in)) {
++		pr_err_once("load: %d CPUs timed out\n", atomic_read(&late_cpus_in) - 1);
++		this_cpu_write(ucode_ctrl.result, UCODE_TIMEOUT);
++		return;
++	}
++
++	/*
++	 * Wait for primary threads to complete. If one of them hangs due
++	 * to the update, there is no way out. This is non-recoverable
++	 * because the CPU might hold locks or resources and confuse the
++	 * scheduler, watchdogs etc. There is no way to safely evacuate the
++	 * machine.
++	 */
++	if (!wait_for_ctrl())
++		panic("Microcode load: Primary CPU %d timed out\n", ctrl_cpu);
++
++	/*
++	 * If the primary succeeded then invoke the apply() callback,
++	 * otherwise copy the state from the primary thread.
++	 */
++	if (this_cpu_read(ucode_ctrl.ctrl) == SCTRL_APPLY)
++		ret = microcode_ops->apply_microcode(cpu);
++	else
++		ret = per_cpu(ucode_ctrl.result, ctrl_cpu);
++
++	this_cpu_write(ucode_ctrl.result, ret);
++	this_cpu_write(ucode_ctrl.ctrl, SCTRL_DONE);
++}
++
++static __maybe_unused void load_primary(unsigned int cpu)
++{
++	struct cpumask *secondaries = topology_sibling_cpumask(cpu);
++	enum sibling_ctrl ctrl;
++	enum ucode_state ret;
++	unsigned int sibling;
++
++	/* Initial rendezvous to ensure that all CPUs have arrived */
++	if (!wait_for_cpus(&late_cpus_in)) {
++		this_cpu_write(ucode_ctrl.result, UCODE_TIMEOUT);
++		pr_err_once("load: %d CPUs timed out\n", atomic_read(&late_cpus_in) - 1);
++		return;
++	}
++
++	ret = microcode_ops->apply_microcode(cpu);
++	this_cpu_write(ucode_ctrl.result, ret);
++	this_cpu_write(ucode_ctrl.ctrl, SCTRL_DONE);
++
++	/*
++	 * If the update was successful, let the siblings run the apply()
++	 * callback. If not, tell them it's done. This also covers the
++	 * case where the CPU has uniform loading at package or system
++	 * scope implemented but does not advertise it.
++	 */
++	if (ret == UCODE_UPDATED || ret == UCODE_OK)
++		ctrl = SCTRL_APPLY;
++	else
++		ctrl = SCTRL_DONE;
++
++	for_each_cpu(sibling, secondaries) {
++		if (sibling != cpu)
++			per_cpu(ucode_ctrl.ctrl, sibling) = ctrl;
++	}
++}
++
+ static int load_cpus_stopped(void *unused)
+ {
+ 	int cpu = smp_processor_id();
 
 
 
