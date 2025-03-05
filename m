@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CBEA5073A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA19AA50879
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C99E3A4660
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8981894D4D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BE92505B8;
-	Wed,  5 Mar 2025 17:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94DF20C004;
+	Wed,  5 Mar 2025 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1w6N2GG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP0qKp3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E230F2505CF;
-	Wed,  5 Mar 2025 17:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8192719C542;
+	Wed,  5 Mar 2025 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197283; cv=none; b=G9fS9A7AM5oBgBqde7pcmW84rk2mZWVzaZ9Mt5Gaywv7D/OO+OPsAgq+ADuuE1H6GpWfNMf2ZpA8Ew+ga05Luh/8cYEFJ8NdPMMjqFhs6oyvqDomCoptI72HQw4l02rvsf+95a8/37VRZIFPeU88mJ4vokUyCBsnRCQw3oCS8i4=
+	t=1741198021; cv=none; b=lS0r/yQG/6+F4xA112jer8UL+H+8Pjl9PFg5LRqeANIpfGhmbIhdiGdqsjM2LDYvnLi+JIZG0talhesJLJdoCja+OAq6OqrZHhkhyRZjvsoDbmwUYo8ULd75mdVciCB8D/rXL8KmapgkFPxAmTjWaDg3WmZ2CuKwL38SHLNDYJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197283; c=relaxed/simple;
-	bh=lr4IuyUVVZo4a3/vA3khWo+6anIySPtBQIjCvd7rNrM=;
+	s=arc-20240116; t=1741198021; c=relaxed/simple;
+	bh=BkvhtDEdjGxim9O4X1tUGbMLm8wmmURCPaM75AFTIMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxM5cis9i23XtyT4YdUQ14wnkAMvZ2mxc14uYauy6eaHAnJhNq0+5KPta7Q9LWBtPKm++jA9LmQmC0QOaUwOUE9Zco3jgXToi3FFX6szHbLnPBgXahdODdV4IDc3keVNYrx8skFbpNQcornq8EQXr1wsNRVK4RfhIvhvLjtqJiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1w6N2GG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F163C4CED1;
-	Wed,  5 Mar 2025 17:54:42 +0000 (UTC)
+	 MIME-Version; b=qOuRTQX8wbcLwah9NlB+EkLkRCJXmvpF+l2rqwhACvBK3y8EjBqsxp02gS6nxudp8y2AeMTm9suB/oRBjIGanIXIp8uc4csdGCG9j5ySaOYTSvlVC2QlscYjCmOuKAzeAhzhydcCCQFhu3MptH1J0J8VAPrLL7Q2EAxJbZzEebU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP0qKp3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CEEC4CED1;
+	Wed,  5 Mar 2025 18:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197282;
-	bh=lr4IuyUVVZo4a3/vA3khWo+6anIySPtBQIjCvd7rNrM=;
+	s=korg; t=1741198021;
+	bh=BkvhtDEdjGxim9O4X1tUGbMLm8wmmURCPaM75AFTIMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1w6N2GG1AaOJKDJuNYy1hobydTKUW0RLhlYaAkUB8PiMQNhLdyl3L7BsE2QVlgSZ
-	 7/9if68Xodyfeva2ASXQg2IVOaQ+F0U5WeHCs71XYOd0rnXuBuW0Aw0ylK8okdg2Jz
-	 TYGGBqs5j+wwyYUiFRO7i58WsBXgKVkhBWHB9vKo=
+	b=CP0qKp3h9deg7mBoUv5Ealz+PinU8XxzVYxGz87rCqMhqgPYZOS+KRA0np+BVDm+h
+	 UU9ZxJNU146DB1qze6IphvYkznuR9FMr8qwXSBedx2Vl8ylo0Fr/PaNVxiHUW3tt1a
+	 w4q1pJqnhn5c1bccMTvESkKn/xpmY98ZDisCN3RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/176] nvme/ioctl: add missing space in err message
+Subject: [PATCH 6.12 010/150] RDMA/bnxt_re: Add sanity checks on rdev validity
 Date: Wed,  5 Mar 2025 18:47:19 +0100
-Message-ID: <20250305174508.268567512@linuxfoundation.org>
+Message-ID: <20250305174504.220558890@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 487a3ea7b1b8ba2ca7d2c2bb3c3594dc360d6261 ]
+[ Upstream commit f0df225d12fcb049429fb5bf5122afe143c2dd15 ]
 
-nvme_validate_passthru_nsid() logs an err message whose format string is
-split over 2 lines. There is a missing space between the two pieces,
-resulting in log lines like "... does not match nsid (1)of namespace".
-Add the missing space between ")" and "of". Also combine the format
-string pieces onto a single line to make the err message easier to grep.
+There is a possibility that ulp_irq_stop and ulp_irq_start
+callbacks will be called when the device is in detached state.
+This can cause a crash due to NULL pointer dereference as
+the rdev is already freed.
 
-Fixes: e7d4b5493a2d ("nvme: factor out a nvme_validate_passthru_nsid helper")
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: cc5b9b48d447 ("RDMA/bnxt_re: Recover the device when FW error is detected")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1738657285-23968-3-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index a02873792890e..acf73a91e87e7 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -262,8 +262,7 @@ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
- {
- 	if (ns && nsid != ns->head->ns_id) {
- 		dev_err(ctrl->device,
--			"%s: nsid (%u) in cmd does not match nsid (%u)"
--			"of namespace\n",
-+			"%s: nsid (%u) in cmd does not match nsid (%u) of namespace\n",
- 			current->comm, nsid, ns->head->ns_id);
- 		return false;
- 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index 08cc9ea175276..9fd83189d00a5 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -314,6 +314,8 @@ static void bnxt_re_stop_irq(void *handle)
+ 	int indx;
+ 
+ 	rdev = en_info->rdev;
++	if (!rdev)
++		return;
+ 	rcfw = &rdev->rcfw;
+ 
+ 	for (indx = BNXT_RE_NQ_IDX; indx < rdev->nqr->num_msix; indx++) {
+@@ -334,6 +336,8 @@ static void bnxt_re_start_irq(void *handle, struct bnxt_msix_entry *ent)
+ 	int indx, rc;
+ 
+ 	rdev = en_info->rdev;
++	if (!rdev)
++		return;
+ 	msix_ent = rdev->nqr->msix_entries;
+ 	rcfw = &rdev->rcfw;
+ 	if (!ent) {
+@@ -2077,6 +2081,7 @@ static int bnxt_re_suspend(struct auxiliary_device *adev, pm_message_t state)
+ 	ibdev_info(&rdev->ibdev, "%s: L2 driver notified to stop en_state 0x%lx",
+ 		   __func__, en_dev->en_state);
+ 	bnxt_re_remove_device(rdev, BNXT_RE_PRE_RECOVERY_REMOVE, adev);
++	bnxt_re_update_en_info_rdev(NULL, en_info, adev);
+ 	mutex_unlock(&bnxt_re_mutex);
+ 
+ 	return 0;
 -- 
 2.39.5
 
