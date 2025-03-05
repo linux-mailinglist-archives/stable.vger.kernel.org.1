@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35A0A5087E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DB5A507A7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC9D1889342
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9BA718867F0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D17424C07D;
-	Wed,  5 Mar 2025 18:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9052F250C14;
+	Wed,  5 Mar 2025 17:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p61Oz7wF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwH6g9nD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7DF19C542;
-	Wed,  5 Mar 2025 18:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFAA14B075;
+	Wed,  5 Mar 2025 17:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198042; cv=none; b=a3sX1POBm8tWDUPkTrqFC3EjUG8+r0x8wydjFwkMR+F/wMy5dULMkYHBxoszN4kzysfHvEdtobdpj5RJ2KZby+4u8kiG8rJHHhyEDqd3+POH0yE8hdR9yde1L7WmlAqP4XmoPNbzMyLnrYFOi1nqPgSCcjyx+wDcl1sEFYkE6gg=
+	t=1741197563; cv=none; b=BtlDxwdfwOyggTY/BPeu+7b+bo5CEYo8AwLUZpjN4mfRuERWAcz8KVL3XkU0dDBZm7/Hl4gi+5Rr9KyWrSVzlrz85P119QwIOnX2+1sMVdpkNBOn3tXo+NReomIuGh5/2wFoSkagXOvRQq5dsfgAQyiujsDm8fV+3/mfnXj4dOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198042; c=relaxed/simple;
-	bh=szMhxv+c5W2QNpckEPrulQOC23vhWSue+UmsoYT4aLg=;
+	s=arc-20240116; t=1741197563; c=relaxed/simple;
+	bh=aevOsnU9Ka32NUMYfkGWj0bZrWBYi7MV8YXfZowW/N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJdNp+AGspvYA5nhRQVeDCL0bemfl0ubkgLy5sYuzSrvPzSdaMiqtt5ljDHIZKPznik9HnpmqKwdt7IG5raujg5HVRo2oo2O1A7EtqXLtHKrMg9vxAqGpVyAGnyUW1T93dNBDaZrUVmZmJXZIqbVMbaK+OlfP8MfxsNujWEDOhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p61Oz7wF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BF0C4CED1;
-	Wed,  5 Mar 2025 18:07:21 +0000 (UTC)
+	 MIME-Version; b=Unwo9LV/OtKQ5SRaZ4aOhIu+3t+4tus2um7mQ0E4xpvUeB+Z5T/LF52NU4Cad6GB235FrYmkHhTnmRePOnJUKoFk0sOma+SfOggNEdsHPGXdnxAcjPllFzOT+2B118rqYgpVCxReG9eJnTTROdMvHp/sapfbPM1b3ze64CYoRO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwH6g9nD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C275CC4CED1;
+	Wed,  5 Mar 2025 17:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198041;
-	bh=szMhxv+c5W2QNpckEPrulQOC23vhWSue+UmsoYT4aLg=;
+	s=korg; t=1741197563;
+	bh=aevOsnU9Ka32NUMYfkGWj0bZrWBYi7MV8YXfZowW/N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p61Oz7wFTeQ/Jkcb/4ajb4LZqtaNXM9RCBFR+G9e4lbQr58+wq8mEy4yjAza6DZPK
-	 fRFVtJqde17LKZO95t3YxTuEtadYpIAuj3Mu9iTdyNlg6RPEmMNt3NYwBPyxF0NdRy
-	 DSrcPtx6Eh+KsB3yJmUP2kEExRYw1JYbn44Ua+nE=
+	b=hwH6g9nD71dKBwAUB1IO60dLyr91X4KlW6DCD0G3j7zUpcqj2MK2n2qQt34KdPZtL
+	 SdqWdK+z/ajH4G6auS9nVOL3JaSpsZC0TLh6PfhvdJsRNIgpu3d27QyomKByJ/Q4GL
+	 mSk6uxC6hq10GlfBBF4BNroafu2raYBPpa4B9Z/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Florian Meister <fmei@sfs.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/150] RDMA/bnxt_re: Fix the statistics for Gen P7 VF
+Subject: [PATCH 6.6 022/142] net: loopback: Avoid sending IP packets without an Ethernet header
 Date: Wed,  5 Mar 2025 18:47:21 +0100
-Message-ID: <20250305174504.301304456@linuxfoundation.org>
+Message-ID: <20250305174501.233916485@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 8238c7bd84209c8216b1381ab0dbe6db9e203769 ]
+[ Upstream commit 0e4427f8f587c4b603475468bb3aee9418574893 ]
 
-Gen P7 VF support the extended stats and is prevented
-by a VF check. Fix the check to issue the FW command
-for GenP7 VFs also.
+After commit 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+IPv4 neighbors can be constructed on the blackhole net device, but they
+are constructed with an output function (neigh_direct_output()) that
+simply calls dev_queue_xmit(). The latter will transmit packets via
+'skb->dev' which might not be the blackhole net device if dst_dev_put()
+switched 'dst->dev' to the blackhole net device while another CPU was
+using the dst entry in ip_output(), but after it already initialized
+'skb->dev' from 'dst->dev'.
 
-Fixes: 1801d87b3598 ("RDMA/bnxt_re: Support new 5760X P7 devices")
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1738657285-23968-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Specifically, the following can happen:
+
+    CPU1                                      CPU2
+
+udp_sendmsg(sk1)                          udp_sendmsg(sk2)
+udp_send_skb()                            [...]
+ip_output()
+    skb->dev = skb_dst(skb)->dev
+                                          dst_dev_put()
+                                              dst->dev = blackhole_netdev
+ip_finish_output2()
+    resolves neigh on dst->dev
+neigh_output()
+neigh_direct_output()
+dev_queue_xmit()
+
+This will result in IPv4 packets being sent without an Ethernet header
+via a valid net device:
+
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on enp9s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+22:07:02.329668 20:00:40:11:18:fb > 45:00:00:44:f4:94, ethertype Unknown
+(0x58c6), length 68:
+        0x0000:  8dda 74ca f1ae ca6c ca6c 0098 969c 0400  ..t....l.l......
+        0x0010:  0000 4730 3f18 6800 0000 0000 0000 9971  ..G0?.h........q
+        0x0020:  c4c9 9055 a157 0a70 9ead bf83 38ca ab38  ...U.W.p....8..8
+        0x0030:  8add ab96 e052                           .....R
+
+Fix by making sure that neighbors are constructed on top of the
+blackhole net device with an output function that simply consumes the
+packets, in a similar fashion to dst_discard_out() and
+blackhole_netdev_xmit().
+
+Fixes: 8d7017fd621d ("blackhole_netdev: use blackhole_netdev to invalidate dst entries")
+Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+Reported-by: Florian Meister <fmei@sfs.com>
+Closes: https://lore.kernel.org/netdev/20250210084931.23a5c2e4@hermes.local/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250220072559.782296-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/hw_counters.c | 4 ++--
- drivers/infiniband/hw/bnxt_re/qplib_res.h   | 8 ++++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/loopback.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/hw_counters.c b/drivers/infiniband/hw/bnxt_re/hw_counters.c
-index 656c150e38e6f..f51adb0a97e66 100644
---- a/drivers/infiniband/hw/bnxt_re/hw_counters.c
-+++ b/drivers/infiniband/hw/bnxt_re/hw_counters.c
-@@ -357,8 +357,8 @@ int bnxt_re_ib_get_hw_stats(struct ib_device *ibdev,
- 			goto done;
- 		}
- 		bnxt_re_copy_err_stats(rdev, stats, err_s);
--		if (_is_ext_stats_supported(rdev->dev_attr->dev_cap_flags) &&
--		    !rdev->is_virtfn) {
-+		if (bnxt_ext_stats_supported(rdev->chip_ctx, rdev->dev_attr->dev_cap_flags,
-+					     rdev->is_virtfn)) {
- 			rc = bnxt_re_get_ext_stat(rdev, stats);
- 			if (rc) {
- 				clear_bit(BNXT_RE_FLAG_ISSUE_ROCE_STATS,
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.h b/drivers/infiniband/hw/bnxt_re/qplib_res.h
-index 0bef58bd44e77..b40cff8252bc4 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.h
-@@ -544,6 +544,14 @@ static inline bool _is_ext_stats_supported(u16 dev_cap_flags)
- 		CREQ_QUERY_FUNC_RESP_SB_EXT_STATS;
+diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
+index f6eab66c26608..6aa00f62b1f90 100644
+--- a/drivers/net/loopback.c
++++ b/drivers/net/loopback.c
+@@ -247,8 +247,22 @@ static netdev_tx_t blackhole_netdev_xmit(struct sk_buff *skb,
+ 	return NETDEV_TX_OK;
  }
  
-+static inline int bnxt_ext_stats_supported(struct bnxt_qplib_chip_ctx *ctx,
-+					   u16 flags, bool virtfn)
++static int blackhole_neigh_output(struct neighbour *n, struct sk_buff *skb)
 +{
-+	/* ext stats supported if cap flag is set AND is a PF OR a Thor2 VF */
-+	return (_is_ext_stats_supported(flags) &&
-+		((virtfn && bnxt_qplib_is_chip_gen_p7(ctx)) || (!virtfn)));
++	kfree_skb(skb);
++	return 0;
 +}
 +
- static inline bool _is_hw_retx_supported(u16 dev_cap_flags)
- {
- 	return dev_cap_flags &
++static int blackhole_neigh_construct(struct net_device *dev,
++				     struct neighbour *n)
++{
++	n->output = blackhole_neigh_output;
++	return 0;
++}
++
+ static const struct net_device_ops blackhole_netdev_ops = {
+ 	.ndo_start_xmit = blackhole_netdev_xmit,
++	.ndo_neigh_construct = blackhole_neigh_construct,
+ };
+ 
+ /* This is a dst-dummy device used specifically for invalidated
 -- 
 2.39.5
 
