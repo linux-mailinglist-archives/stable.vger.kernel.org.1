@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-121043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB92A509DC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:25:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5465AA509E9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FAB4188F160
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D62A18984F7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1339D25A2BF;
-	Wed,  5 Mar 2025 18:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17C91C863D;
+	Wed,  5 Mar 2025 18:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEJ/OlXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPnw8cJz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56F125A2B9;
-	Wed,  5 Mar 2025 18:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F15F13C67E;
+	Wed,  5 Mar 2025 18:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198716; cv=none; b=bmtF3bN3cOF3ug6Bp3mxuzsAK9+V7YyuukUcc3hoJCaL9R2g26CorlHpR4jPn8G7tOUIwNuBosT3YsUMd4QY5vcpXKmnJTnDgPD0kzYzaG5jOdT0Vz0AH3Dyk3HA8Yay4QvNG/Cem6JQIO/9nT6XOPxxyiDWa6EwhWcqqWZ6LPQ=
+	t=1741198839; cv=none; b=q2KvfbJzSAPJoVoVEROSmtxwds0urI/rVmQ2ewaU+7fYde9fzZwBBSyg+cm+ryD5vZBjqgR9pqJVamWApxMHYEeAeE7GLDnddr76rz5nqwyZfJlAaMNOFpE6Lbay8KzVi4WO42ICS3xLK05uhFYItifx0pmWU3stuj2/jfCCfY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198716; c=relaxed/simple;
-	bh=vvTAQqTlefaiKNegzXrSCB1DN+xe6GGz2dEtzhn+9pM=;
+	s=arc-20240116; t=1741198839; c=relaxed/simple;
+	bh=bq9wzowgW5rOUb7MvuwqxnS2/MadOqIESyrp3JgQiNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuGlN5nJW0C8UPzAuYy68tKpfq1HXntEuwEOfPxVqu58K4KK7hxDmRDYUx1NlP7TnIfWRXLbjBW7NrwfnKfoXz6GoBOF5NeQG5VyAdy2euo4y2r/fKK4tvbQqv140xPwXTRbjpeZfnSkQOg7XZ2nO7dMra6ieR7n0nCSXR6UK98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEJ/OlXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D48DC4CED1;
-	Wed,  5 Mar 2025 18:18:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b+wifH6x+vPMKzKq4lHW6RaxhcMdZjsc2VwSEDXlqa8pubL6Q+p2sbEsjkVzkIlEjbRY3HFa/kgaa/uAMsOU8PWuNdjKHwS75gmkE6QdNpbHq3nhWregiyZUw90M5XmXF89sYh6pJi4b+Xv/R72TJ50Fte4uPPQnb4bVL2TNHDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPnw8cJz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A58C4CEE0;
+	Wed,  5 Mar 2025 18:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198716;
-	bh=vvTAQqTlefaiKNegzXrSCB1DN+xe6GGz2dEtzhn+9pM=;
+	s=korg; t=1741198839;
+	bh=bq9wzowgW5rOUb7MvuwqxnS2/MadOqIESyrp3JgQiNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEJ/OlXzCWC+qI5s3w1AElZ8xC7qdjkgdrzLk9omNw4x9LUwU1+3SkbyZ/oK+CBs7
-	 A+/ugl1/seF70f/UOJecAoFLSJ4eOj19n+gSkpldc3BV3DPND3CYNyMeyiP5rQ6aWh
-	 4LZdfXQmoMobxN84++ySg6+oSd40aY1VWVGoKT5A=
+	b=TPnw8cJzxjcB0urB4IcPtfWISVOMXUNZ+OFTfHzVJn6EdIL7CRkuduGim/wOxNFQA
+	 puMqQ6F4gT5wDYLbeBcG4XMTQLZFMHzh0v432y4O71RJJnqZnEbF0oy//nT788blq/
+	 GFDRZZe6Iu+AKpEY7MdQEdn61edBND0SMLDkap6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Anand Moon <linux.amoon@gmail.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.13 122/157] phy: exynos5-usbdrd: fix MPLL_MULTIPLIER and SSC_REFCLKSEL masks in refclk
-Date: Wed,  5 Mar 2025 18:49:18 +0100
-Message-ID: <20250305174510.209577201@linuxfoundation.org>
+Subject: [PATCH 6.13 123/157] phy: exynos5-usbdrd: gs101: ensure power is gated to SS phy in phy_exit()
+Date: Wed,  5 Mar 2025 18:49:19 +0100
+Message-ID: <20250305174510.248790491@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
 References: <20250305174505.268725418@linuxfoundation.org>
@@ -61,60 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit e2158c953c973adb49383ddea2504faf08d375b7 upstream.
+commit 8789b4296aa796f658a19cac7d27365012893de1 upstream.
 
-In exynos5_usbdrd_{pipe3,utmi}_set_refclk(), the masks
-PHYCLKRST_MPLL_MULTIPLIER_MASK and PHYCLKRST_SSC_REFCLKSEL_MASK are not
-inverted when applied to the register values. Fix it.
+We currently don't gate the power to the SS phy in phy_exit().
 
-Cc: stable@vger.kernel.org
-Fixes: 59025887fb08 ("phy: Add new Exynos5 USB 3.0 PHY driver")
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Shuffle the code slightly to ensure the power is gated to the SS phy as
+well.
+
+Fixes: 32267c29bc7d ("phy: exynos5-usbdrd: support Exynos USBDRD 3.1 combo phy (HS & SS)")
+CC: stable@vger.kernel.org # 6.11+
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Anand Moon <linux.amoon@gmail.com>
-Link: https://lore.kernel.org/r/20250209-exynos5-usbdrd-masks-v1-1-4f7f83f323d7@disroot.org
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20241205-gs101-usb-phy-fix-v4-1-0278809fb810@linaro.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/samsung/phy-exynos5-usbdrd.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/phy/samsung/phy-exynos5-usbdrd.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 --- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
 +++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -488,9 +488,9 @@ exynos5_usbdrd_pipe3_set_refclk(struct p
- 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
+@@ -1296,14 +1296,17 @@ static int exynos5_usbdrd_gs101_phy_exit
+ 	struct exynos5_usbdrd_phy *phy_drd = to_usbdrd_phy(inst);
+ 	int ret;
  
- 	/* FSEL settings corresponding to reference clock */
--	reg &= ~PHYCLKRST_FSEL_PIPE_MASK |
--		PHYCLKRST_MPLL_MULTIPLIER_MASK |
--		PHYCLKRST_SSC_REFCLKSEL_MASK;
-+	reg &= ~(PHYCLKRST_FSEL_PIPE_MASK |
-+		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
-+		 PHYCLKRST_SSC_REFCLKSEL_MASK);
- 	switch (phy_drd->extrefclk) {
- 	case EXYNOS5_FSEL_50MHZ:
- 		reg |= (PHYCLKRST_MPLL_MULTIPLIER_50M_REF |
-@@ -532,9 +532,9 @@ exynos5_usbdrd_utmi_set_refclk(struct ph
- 	reg &= ~PHYCLKRST_REFCLKSEL_MASK;
- 	reg |=	PHYCLKRST_REFCLKSEL_EXT_REFCLK;
++	if (inst->phy_cfg->id == EXYNOS5_DRDPHY_UTMI) {
++		ret = exynos850_usbdrd_phy_exit(phy);
++		if (ret)
++			return ret;
++	}
++
++	exynos5_usbdrd_phy_isol(inst, true);
++
+ 	if (inst->phy_cfg->id != EXYNOS5_DRDPHY_UTMI)
+ 		return 0;
  
--	reg &= ~PHYCLKRST_FSEL_UTMI_MASK |
--		PHYCLKRST_MPLL_MULTIPLIER_MASK |
--		PHYCLKRST_SSC_REFCLKSEL_MASK;
-+	reg &= ~(PHYCLKRST_FSEL_UTMI_MASK |
-+		 PHYCLKRST_MPLL_MULTIPLIER_MASK |
-+		 PHYCLKRST_SSC_REFCLKSEL_MASK);
- 	reg |= PHYCLKRST_FSEL(phy_drd->extrefclk);
- 
- 	return reg;
+-	ret = exynos850_usbdrd_phy_exit(phy);
+-	if (ret)
+-		return ret;
+-
+-	exynos5_usbdrd_phy_isol(inst, true);
+ 	return regulator_bulk_disable(phy_drd->drv_data->n_regulators,
+ 				      phy_drd->regulators);
+ }
 
 
 
