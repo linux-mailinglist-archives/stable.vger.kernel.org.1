@@ -1,130 +1,112 @@
-Return-Path: <stable+bounces-121110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955AAA50C3B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 21:09:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633FBA50C4B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 21:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF973188A642
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:09:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A791188A918
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 20:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4F4255223;
-	Wed,  5 Mar 2025 20:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94755255252;
+	Wed,  5 Mar 2025 20:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Bbsbz7KU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiqhWiXS"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577E71A5B85;
-	Wed,  5 Mar 2025 20:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D17D255229;
+	Wed,  5 Mar 2025 20:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741205388; cv=none; b=U7xqTHmQ++fmy+DVobw26VUWNWvfhy1X1lVMRIcOa+hgwR84RfonrmKC8hoDeuBCcZVwBc9ae/SqOMFcuBXtEZWzGFqVvX3ro5YKfsyOueSo2hJJHOo8N6Zp9t6KPoN3vkG8qFfUasABSwl8UJlDztx6vOErVFagUedelpvfC5w=
+	t=1741205586; cv=none; b=uDM7S2v0eZckVTGK4UK75YDzSDC38J8kgVb0ybOoURam1NyhhaOvLtWEPS3VfqvmuD/40eJMbPw21f90yvTJHKjnhD751Gdoz1myBA2A9j011fci5h+jfe209zeWokEOY7waIwGlzGCc1u0DQxHG/Ean6nn0N7tIJk7ivbezLdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741205388; c=relaxed/simple;
-	bh=k8mb5Jfciu80+flRs2hqisKHG5XI2NFbUimR9plw8SY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+nOXixb6EdEf5TTqvjHoVHJ1CtQiAELAPmMgSG/xitf96MtA26Boj0xzO6N6cw2UoPTTamolo4CgyKHJCAsdxn+qiuBSWubEycpXaeWHdNoICeLA4hEXCI8Rvo6JFSXmEGL77iloYL42bjVDNJN+wrpwVZkWVsNe0HqHOi65Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Bbsbz7KU; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 71D2E442B0;
-	Wed,  5 Mar 2025 20:09:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741205384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PCI17V6UosVGLC0a4LPHUTF/v045rts51UEtquocDIU=;
-	b=Bbsbz7KU47TY++Yx8L4Lz3ucpzl4UZ1g5/xiQGoTofUVw5RIDPGYpKSvX5nKsmmCjvOUnG
-	MscI3OZy/Itd3Bm4yBjJ1V3hJReFb/dgg5RdxoAyk2oo8Rz8zXScP+Swz1HiSUknov2vp+
-	wV8ewPMkmTQkIjtJtd9G2bImWtW9WxRdlH/jXnBc/jjbovyp4+p/FwdRuL8/ReedfpZNFf
-	KI6ztykL8dVTWOpzCvAV493ZSss3XusxAyHDiEEhhkW1LBLpSVMc5BrUnamMGgiT2fw1et
-	yi8k2mhQbFg9lJlZNTH7Oe04yuCbINH4nxA0LsjDVQT7BarPFDlWuFgREve5cg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>,
-	<linux-spi@vger.kernel.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] spi: cadence-qspi: Fix probe on AM62A LP SK
-Date: Wed,  5 Mar 2025 21:09:32 +0100
-Message-ID: <20250305200933.2512925-2-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305200933.2512925-1-miquel.raynal@bootlin.com>
-References: <20250305200933.2512925-1-miquel.raynal@bootlin.com>
+	s=arc-20240116; t=1741205586; c=relaxed/simple;
+	bh=hFo6rL+75WRubYu2f6ja0U/pMo0LSXFLvVGX6KuwvtM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MLEQnDadcekVK/KPL2IU6s1LnU8/WqNAkz38C7OKQGk4zWWGgHreoczUfNLOV7SJGBmR1E2sduA4f8hZ2xeiuNmfYUbjOMVdma4syxM26c8S6wwlyK7knnkT4sh03V0AY3q0m1+M7Z3vbvosiTmxKHhsPjEr1uAare7lbPwMe2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiqhWiXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24B2C4CED1;
+	Wed,  5 Mar 2025 20:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741205586;
+	bh=hFo6rL+75WRubYu2f6ja0U/pMo0LSXFLvVGX6KuwvtM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oiqhWiXST//UvY/UvsYdMfpv5viv2p+Pj0amK1NnxWSR8UV6SsFSHp225SHGSxB9U
+	 6R/uz5LEPT8Zwn3q0j+gWy6UgO3MdOcj0wz7mdXSNfkCtYERFGGyeus5Qte6CZCeIY
+	 3OWvolhKVlszGy8G/UH15LSe+hGeHSstP57oWoBi/5FtCf4jZdCiE3ETvtecjLcJMk
+	 6f67bFzL1hL5V3/r+o8xLedPMs+vxgv9hfrRlBveTB+AXWKiluiJOPiwrG/ceNntHd
+	 P1sqnoKD7TmzQgTuT+IvfasOwwJzpdhWz8fakZTuasxuTc+QpeKY0DVbgO76FjfM1N
+	 4uHlJpJGzzCgQ==
+Date: Wed, 5 Mar 2025 20:12:59 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.13 000/157] 6.13.6-rc1 review
+Message-ID: <8433c362-1909-4a2e-b41f-c0f5677286d2@sirena.org.uk>
+References: <20250305174505.268725418@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdehjeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepueffgeevteevkeegkeehleetteffhffffefgleeuleevjedtgeelgeeutdekgeelnecukfhppeelvddrudekgedruddtkedrleeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledvrddukeegrddutdekrdeliedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepjedprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhsphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhuughorhdrrghmsggrrhhusheslhhinhgrrhhordhorhhgpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihess
- ghoohhtlhhinhdrtghomhdprhgtphhtthhopehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YLIFX1f4k5OCHHnW"
+Content-Disposition: inline
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+X-Cookie: Everybody gets free BORSCHT!
 
-In 2020, there's been an unnoticed change which rightfully attempted to
-report probe deferrals upon DMA absence by checking the return value of
-dma_request_chan_by_mask(). By doing so, it also reported errors which
-were simply ignored otherwise, likely on purpose.
 
-This change actually turned a void return into an error code. Hence, not
-only the -EPROBE_DEFER error codes but all error codes got reported to
-the callers, now failing to probe in the absence of Rx DMA channel,
-despite the fact that DMA seems to not be supported natively by many
-implementations.
+--YLIFX1f4k5OCHHnW
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Looking at the history, this change probably led to:
-ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
-f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
+On Wed, Mar 05, 2025 at 06:47:16PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.6 release.
+> There are 157 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-In my case, the AM62A LP SK core octo-SPI node from TI does not
-advertise any DMA channel, hinting that there is likely no support for
-it, but yet when the support for the am654 compatible was added, DMA
-seemed to be used, so just discarding its use with the
-CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
-correct approach.
+The arm64 defconfig build is broken (KernelCI reported this initially):
 
-Let's get change the return condition back to:
-- return a probe deferral error if we get one
-- ignore the return value otherwise
-The "error" log level was however likely too high for something that is
-expected to fail, so let's lower it arbitrarily to the info level.
+/build/stage/linux/arch/arm64/mm/hugetlbpage.c: In function =E2=80=98huge_p=
+tep_get_and_clear=E2=80=99:
+/build/stage/linux/arch/arm64/mm/hugetlbpage.c:397:35: error: =E2=80=98sz=
+=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98s8=
+=E2=80=99?
+  397 |         ncontig =3D num_contig_ptes(sz, &pgsize);
+      |                                   ^~
+      |                                   s8
+/build/stage/linux/arch/arm64/mm/hugetlbpage.c:397:35: note: each undeclare=
+d identifier is reported only once for each function it appears in
 
-Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/spi/spi-cadence-quadspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The same issue affects 6.12.
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 0cd37a7436d5..c90462783b3f 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1658,6 +1658,12 @@ static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
- 		int ret = PTR_ERR(cqspi->rx_chan);
- 
- 		cqspi->rx_chan = NULL;
-+		if (ret == -ENODEV) {
-+			/* DMA support is not mandatory */
-+			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
-+			return 0;
-+		}
-+
- 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
- 	}
- 	init_completion(&cqspi->rx_dma_complete);
--- 
-2.48.1
+--YLIFX1f4k5OCHHnW
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfIsEsACgkQJNaLcl1U
+h9AsLgf8C2dlr7m4HALKYeWi6j0Uq0E81SRFYyXjYFUiZgZDPdWD8Wfda4lmSdoP
+S2gflUW8yxBtTSyeZ2bnt6tkAstcoE2VSXk6ty7yzr/JrOjUwist/CQ28df6dPqk
+EJ9asij1GKgIoMYGY/pqbIlPWk8dX3fplQvkMeQgJnCx+TK76FMvxHp2Aj8iMD0m
+9YU0xlHJbonML5IBfluxY5dXzaD3GZ5TmMGsCgybDvBqxROiAsnF8x7kESkZXViU
+2sxmnyyZELY7cyZg++ZdvhoD9/Xh6rad6MhqOu2g7mO3GP8Aa6UOrxzWYsVk9wP4
+9dojnF88jighlPsNbS/blhNJwGeb6w==
+=PIVl
+-----END PGP SIGNATURE-----
+
+--YLIFX1f4k5OCHHnW--
 
