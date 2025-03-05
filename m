@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-121028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF3CA509C5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5147EA50841
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C066F1897686
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3209D3B0145
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AF4253F2C;
-	Wed,  5 Mar 2025 18:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2467C1C860D;
+	Wed,  5 Mar 2025 18:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9Zlzk1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjojdXlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65401FC7D0;
-	Wed,  5 Mar 2025 18:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FEB1A3174;
+	Wed,  5 Mar 2025 18:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198671; cv=none; b=JfP9RtkcsAKPHYRf+13sa0Jke6EFog25WaqeobkgjDaoDFuZd48xd6cQiu2p3SHn9WXCVrAazXq6DuCSSPnql4sNh468yAd6AXcr/9IMLe0k7LOyafuxhHOdYHEZJ2YtHQDRw33wQ6pskHyvu8XZBGvuxJAfAuEsNALaVtU42Nc=
+	t=1741197905; cv=none; b=M9t1nM5HoKD0vbjAfGxQpma3FSSZsdOJn1AJtDtLpd34poOjwt6gV7ws4ho2ZHgUXWSNldKofw3moQ1VZ5Dg98CV0zE3xdR3pymhWOLuCYJUURNlPNKiJgsw5KOeY6qdp5e1pYVVS8EJ/sKY8fxh7ph+4853Ruc2jUV7a/+NX/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198671; c=relaxed/simple;
-	bh=KJnkxe5xrh5UgercExVpkxDfget0cn47qJePOmGm7Ng=;
+	s=arc-20240116; t=1741197905; c=relaxed/simple;
+	bh=rKGCkPJfe4+vvPT/RpNaPQwbspce3VtZBzCWwXz1XuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgOYFWXbQQhnRsDYyn2p/yjK0FUf8esNMYZuDMwEJEwNf2sJ6EY6L0oeW74CxdbguF5CGhnSiYL+KC0jPU+fFGzaWDEbRXtYADAr0SRMK6b9Ia0glad/aXVsu6ElKvpUCeyNsngusnBO4rcV76ru5co2saj0AnMiCI8RSXLrWGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9Zlzk1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D0FC4CED1;
-	Wed,  5 Mar 2025 18:17:51 +0000 (UTC)
+	 MIME-Version; b=VW9lLLolnxVAbWe3vWCCE+m/MPSXzUV/Z2JyGmNLrf3g3lOHnPiJBhihbSykF/K74lofgU4Dp1jpuwMro3SI3wr8OvZ4l9qSaA2VvdOr+/TRKlc82CjXDvxDS9ug0iLQ1SKK7A6ps4cFDPng0wrTlr4NlpKD4G1UrGbwuRrlafk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjojdXlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33F5C4CED1;
+	Wed,  5 Mar 2025 18:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198671;
-	bh=KJnkxe5xrh5UgercExVpkxDfget0cn47qJePOmGm7Ng=;
+	s=korg; t=1741197905;
+	bh=rKGCkPJfe4+vvPT/RpNaPQwbspce3VtZBzCWwXz1XuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9Zlzk1qP06IHuCTySaASK5SuuC185du3L9dVkjZjFcAFf8fx5oQ2+osso7rkAC5K
-	 8lWYF/DapQbmjJ4nbAcgWWbxp4Jbal6pDJuIOHSgrIM+cO4/5TqRsQqL4iHjMoqizW
-	 y5dRm1a4lAYtUhjtaBYQDPgsxe2ilAw8EeN6ncD4=
+	b=OjojdXlXRewJjFfYoqrb6/UsDSIMrFgmtdIAC/yCPlFjHL2BvVhmG02IZIPI2ZwPX
+	 xnYyECAdh02jZkztLzUaEn/084ZQCr4lelDFLstB0lVqRySCTdvLn/SneOLBcZyO3L
+	 BCA0YhaR3+u8LPS7QqrrJqrUqR5RPBJrEObCJf9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 091/157] drm/xe/userptr: fix EFAULT handling
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 108/142] x86/microcode/intel: Rework intel_find_matching_signature()
 Date: Wed,  5 Mar 2025 18:48:47 +0100
-Message-ID: <20250305174508.968234987@linuxfoundation.org>
+Message-ID: <20250305174504.670092530@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +59,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit a9f4fa3a7efa65615ff7db13023ac84516e99e21 upstream.
+commit b7fcd995b261c9976e05f47554529c98a0f1cbb0 upstream
 
-Currently we treat EFAULT from hmm_range_fault() as a non-fatal error
-when called from xe_vm_userptr_pin() with the idea that we want to avoid
-killing the entire vm and chucking an error, under the assumption that
-the user just did an unmap or something, and has no intention of
-actually touching that memory from the GPU.  At this point we have
-already zapped the PTEs so any access should generate a page fault, and
-if the pin fails there also it will then become fatal.
+Take a cpu_signature argument and work from there. Move the match()
+helper next to the callsite as there is no point for having it in
+a header.
 
-However it looks like it's possible for the userptr vma to still be on
-the rebind list in preempt_rebind_work_func(), if we had to retry the
-pin again due to something happening in the caller before we did the
-rebind step, but in the meantime needing to re-validate the userptr and
-this time hitting the EFAULT.
-
-This explains an internal user report of hitting:
-
-[  191.738349] WARNING: CPU: 1 PID: 157 at drivers/gpu/drm/xe/xe_res_cursor.h:158 xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738551] Workqueue: xe-ordered-wq preempt_rebind_work_func [xe]
-[  191.738616] RIP: 0010:xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738690] Call Trace:
-[  191.738692]  <TASK>
-[  191.738694]  ? show_regs+0x69/0x80
-[  191.738698]  ? __warn+0x93/0x1a0
-[  191.738703]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738759]  ? report_bug+0x18f/0x1a0
-[  191.738764]  ? handle_bug+0x63/0xa0
-[  191.738767]  ? exc_invalid_op+0x19/0x70
-[  191.738770]  ? asm_exc_invalid_op+0x1b/0x20
-[  191.738777]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
-[  191.738834]  ? ret_from_fork_asm+0x1a/0x30
-[  191.738849]  bind_op_prepare+0x105/0x7b0 [xe]
-[  191.738906]  ? dma_resv_reserve_fences+0x301/0x380
-[  191.738912]  xe_pt_update_ops_prepare+0x28c/0x4b0 [xe]
-[  191.738966]  ? kmemleak_alloc+0x4b/0x80
-[  191.738973]  ops_execute+0x188/0x9d0 [xe]
-[  191.739036]  xe_vm_rebind+0x4ce/0x5a0 [xe]
-[  191.739098]  ? trace_hardirqs_on+0x4d/0x60
-[  191.739112]  preempt_rebind_work_func+0x76f/0xd00 [xe]
-
-Followed by NPD, when running some workload, since the sg was never
-actually populated but the vma is still marked for rebind when it should
-be skipped for this special EFAULT case. This is confirmed to fix the
-user report.
-
-v2 (MattB):
- - Move earlier.
-v3 (MattB):
- - Update the commit message to make it clear that this indeed fixes the
-   issue.
-
-Fixes: 521db22a1d70 ("drm/xe: Invalidate userptr VMA on page pin fault")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250221143840.167150-5-matthew.auld@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 6b93cb98910c826c2e2004942f8b060311e43618)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231002115902.797820205@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/include/asm/cpu.h            |   16 +---------------
+ arch/x86/kernel/cpu/microcode/intel.c |   31 +++++++++++++++++++------------
+ drivers/platform/x86/intel/ifs/load.c |    2 +-
+ 3 files changed, 21 insertions(+), 28 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -682,6 +682,18 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
- 		err = xe_vma_userptr_pin_pages(uvma);
- 		if (err == -EFAULT) {
- 			list_del_init(&uvma->userptr.repin_link);
-+			/*
-+			 * We might have already done the pin once already, but
-+			 * then had to retry before the re-bind happened, due
-+			 * some other condition in the caller, but in the
-+			 * meantime the userptr got dinged by the notifier such
-+			 * that we need to revalidate here, but this time we hit
-+			 * the EFAULT. In such a case make sure we remove
-+			 * ourselves from the rebind list to avoid going down in
-+			 * flames.
-+			 */
-+			if (!list_empty(&uvma->vma.combined_links.rebind))
-+				list_del_init(&uvma->vma.combined_links.rebind);
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -75,22 +75,8 @@ struct cpu_signature;
  
- 			/* Wait for pending binds */
- 			xe_vm_lock(vm, false);
+ void intel_collect_cpu_info(struct cpu_signature *sig);
+ 
+-static inline bool intel_cpu_signatures_match(unsigned int s1, unsigned int p1,
+-					      unsigned int s2, unsigned int p2)
+-{
+-	if (s1 != s2)
+-		return false;
+-
+-	/* Processor flags are either both 0 ... */
+-	if (!p1 && !p2)
+-		return true;
+-
+-	/* ... or they intersect. */
+-	return p1 & p2;
+-}
+-
+ extern u64 x86_read_arch_cap_msr(void);
+-int intel_find_matching_signature(void *mc, unsigned int csig, int cpf);
++bool intel_find_matching_signature(void *mc, struct cpu_signature *sig);
+ int intel_microcode_sanity_check(void *mc, bool print_err, int hdr_type);
+ 
+ extern struct cpumask cpus_stop_mask;
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -84,29 +84,36 @@ void intel_collect_cpu_info(struct cpu_s
+ }
+ EXPORT_SYMBOL_GPL(intel_collect_cpu_info);
+ 
+-/*
+- * Returns 1 if update has been found, 0 otherwise.
+- */
+-int intel_find_matching_signature(void *mc, unsigned int csig, int cpf)
++static inline bool cpu_signatures_match(struct cpu_signature *s1, unsigned int sig2,
++					unsigned int pf2)
++{
++	if (s1->sig != sig2)
++		return false;
++
++	/* Processor flags are either both 0 or they intersect. */
++	return ((!s1->pf && !pf2) || (s1->pf & pf2));
++}
++
++bool intel_find_matching_signature(void *mc, struct cpu_signature *sig)
+ {
+ 	struct microcode_header_intel *mc_hdr = mc;
+-	struct extended_sigtable *ext_hdr;
+ 	struct extended_signature *ext_sig;
++	struct extended_sigtable *ext_hdr;
+ 	int i;
+ 
+-	if (intel_cpu_signatures_match(csig, cpf, mc_hdr->sig, mc_hdr->pf))
+-		return 1;
++	if (cpu_signatures_match(sig, mc_hdr->sig, mc_hdr->pf))
++		return true;
+ 
+ 	/* Look for ext. headers: */
+ 	if (get_totalsize(mc_hdr) <= intel_microcode_get_datasize(mc_hdr) + MC_HEADER_SIZE)
+-		return 0;
++		return false;
+ 
+ 	ext_hdr = mc + intel_microcode_get_datasize(mc_hdr) + MC_HEADER_SIZE;
+ 	ext_sig = (void *)ext_hdr + EXT_HEADER_SIZE;
+ 
+ 	for (i = 0; i < ext_hdr->count; i++) {
+-		if (intel_cpu_signatures_match(csig, cpf, ext_sig->sig, ext_sig->pf))
+-			return 1;
++		if (cpu_signatures_match(sig, ext_sig->sig, ext_sig->pf))
++			return true;
+ 		ext_sig++;
+ 	}
+ 	return 0;
+@@ -268,7 +275,7 @@ static __init struct microcode_intel *sc
+ 		    intel_microcode_sanity_check(data, false, MC_HEADER_TYPE_MICROCODE) < 0)
+ 			break;
+ 
+-		if (!intel_find_matching_signature(data, uci->cpu_sig.sig, uci->cpu_sig.pf))
++		if (!intel_find_matching_signature(data, &uci->cpu_sig))
+ 			continue;
+ 
+ 		/*
+@@ -512,7 +519,7 @@ static enum ucode_state parse_microcode_
+ 		if (cur_rev >= mc_header.rev)
+ 			continue;
+ 
+-		if (!intel_find_matching_signature(mc, uci->cpu_sig.sig, uci->cpu_sig.pf))
++		if (!intel_find_matching_signature(mc, &uci->cpu_sig))
+ 			continue;
+ 
+ 		kvfree(new_mc);
+--- a/drivers/platform/x86/intel/ifs/load.c
++++ b/drivers/platform/x86/intel/ifs/load.c
+@@ -242,7 +242,7 @@ static int image_sanity_check(struct dev
+ 
+ 	intel_collect_cpu_info(&sig);
+ 
+-	if (!intel_find_matching_signature((void *)data, sig.sig, sig.pf)) {
++	if (!intel_find_matching_signature((void *)data, &sig)) {
+ 		dev_err(dev, "cpu signature, processor flags not matching\n");
+ 		return -EINVAL;
+ 	}
 
 
 
