@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAEFA5071C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4837AA5090C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47CA0174AF3
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B317163005
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F6C2512D7;
-	Wed,  5 Mar 2025 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B83D2517A0;
+	Wed,  5 Mar 2025 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAz/SbDo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evpz9e91"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDF12505A7;
-	Wed,  5 Mar 2025 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783678F3A;
+	Wed,  5 Mar 2025 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197212; cv=none; b=p7YPQ4ibSITdF8pmEKgB0o+irohRQ7UVVDT+tRAoWf0kpM63oFL+56so0IjE6R+42fOPGyvPpMlaXI1QDm1jaA+NhdQHu1fiwwz7agSGt6fTtp5eYI8PdlSRa5rl1N6LXn9AMDaYlnUe+FFBB/0x3iaZuWtL04L2XYbFC1foAdM=
+	t=1741198393; cv=none; b=huenFvG2IxlDGuEg+ip9wWlNY3YZwsIUVcsvmCNPUjXoKchzqRE1Mz7m8QQy3AfWyS0V+p1fXCSDtx1xxlo0tkViTMfOrSM5EiHlOntP8EHaG6r35asuOWTprXBf0wx/FuQq47IhFJKFRpVC16eNQQSrwjjkUslmgm8f0qwmcqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197212; c=relaxed/simple;
-	bh=O0VoDS4vzNS0RPzc/keBQbIuqulYoHgy+kmR0d5Efuo=;
+	s=arc-20240116; t=1741198393; c=relaxed/simple;
+	bh=8bWcm94E2memMbaZZKS35c8PeZYPZ+v0LpgtU8iqWpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pK6TQiN/HKbxVxK0NxveLhtuaqJV/0WwNJ9IxQKmbR6tBxODit003qn6fZn1Wue6UNDJSZFEl6WiuB6ao9zJCpVvYBn1lo9tAPmws+5burfRUCzPcmadkDxpUiaI3VlBuIfd0MS4qrE3u0R+QOT76mpKmomHpiOwChzG0Ij0fGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAz/SbDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA6BC4CED1;
-	Wed,  5 Mar 2025 17:53:31 +0000 (UTC)
+	 MIME-Version; b=shgb72uAmbG3U9qtO+PpV5aBxT53GJ3vfwYxFhSNXMdJvPndGE4eqAUrIhu8FGGWjMOQ3AhqSCkvIw/7D94iQI8WqVk1BuCsk9j59wo9nOzeWchnduPAy8BG0abCNUQuaeefCn8k7GQTcg0RoxZ3DB0JnHaY/DJ9m4YaCuU/lok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evpz9e91; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B312FC4CED1;
+	Wed,  5 Mar 2025 18:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197212;
-	bh=O0VoDS4vzNS0RPzc/keBQbIuqulYoHgy+kmR0d5Efuo=;
+	s=korg; t=1741198393;
+	bh=8bWcm94E2memMbaZZKS35c8PeZYPZ+v0LpgtU8iqWpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAz/SbDocatA+dxMNiv0/x27AQHc/XiCHe9QXYMLW9TsJFfLRgR7yjAzzC4IezvuP
-	 fLCv6EacespSK2g/P6FcbsQpGuJiYTe+w4snLd207xkmLVIR5Xpg8X+vwfIcg5baQL
-	 Sh4oxWaPD0eJse3wRbGC795RytN//PnsmgPG7nbE=
+	b=evpz9e91pGmFGTt8gc6VpgweuRZUNXB9uHYZpOk0hVQfHakhfba5N6cyOnZPKxKv2
+	 AAtAt7D3iuVaPa1MQBT1m8+ay8cSTj1uX38sT104PmaXRgCzB8NkrvsUNH49k/wjA4
+	 9HVF3WTL/zfxjY9WGMSabwNjR/Xn/PAuUZi3POAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Veness <john-linux@pelago.org.uk>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 079/176] ALSA: hda/conexant: Add quirk for HP ProBook 450 G4 mute LED
-Date: Wed,  5 Mar 2025 18:47:28 +0100
-Message-ID: <20250305174508.637358604@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 013/157] NFS: O_DIRECT writes must check and adjust the file length
+Date: Wed,  5 Mar 2025 18:47:29 +0100
+Message-ID: <20250305174505.816324359@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Veness <john-linux@pelago.org.uk>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 6d1f86610f23b0bc334d6506a186f21a98f51392 upstream.
+[ Upstream commit fcf857ee1958e9247298251f7615d0c76f1e9b38 ]
 
-Allows the LED on the dedicated mute button on the HP ProBook 450 G4
-laptop to change colour correctly.
+While it is uncommon for delegations to be held while O_DIRECT writes
+are in progress, it is possible. The xfstests generic/647 and
+generic/729 both end up triggering that state, and end up failing due to
+the fact that the file size is not adjusted.
 
-Signed-off-by: John Veness <john-linux@pelago.org.uk>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/2fb55d48-6991-4a42-b591-4c78f2fad8d7@pelago.org.uk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219738
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: 88025c67fe3c ("NFS: Adjust delegated timestamps for O_DIRECT reads and writes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/direct.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1098,6 +1098,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x814f, "HP ZBook 15u G3", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x8174, "HP Spectre x360", CXT_FIXUP_HP_SPECTRE),
- 	SND_PCI_QUIRK(0x103c, 0x822e, "HP ProBook 440 G4", CXT_FIXUP_MUTE_LED_GPIO),
-+	SND_PCI_QUIRK(0x103c, 0x8231, "HP ProBook 450 G4", CXT_FIXUP_MUTE_LED_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x828c, "HP EliteBook 840 G4", CXT_FIXUP_HP_DOCK),
- 	SND_PCI_QUIRK(0x103c, 0x8299, "HP 800 G3 SFF", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x829a, "HP 800 G3 DM", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index b08dbe96bc579..8f2aa2bf45659 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -130,6 +130,20 @@ static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
+ 		dreq->count = req_start;
+ }
+ 
++static void nfs_direct_file_adjust_size_locked(struct inode *inode,
++					       loff_t offset, size_t count)
++{
++	loff_t newsize = offset + (loff_t)count;
++	loff_t oldsize = i_size_read(inode);
++
++	if (newsize > oldsize) {
++		i_size_write(inode, newsize);
++		NFS_I(inode)->cache_validity &= ~NFS_INO_INVALID_SIZE;
++		trace_nfs_size_grow(inode, newsize);
++		nfs_inc_stats(inode, NFSIOS_EXTENDWRITE);
++	}
++}
++
+ /**
+  * nfs_swap_rw - NFS address space operation for swap I/O
+  * @iocb: target I/O control block
+@@ -740,6 +754,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 	struct nfs_direct_req *dreq = hdr->dreq;
+ 	struct nfs_commit_info cinfo;
+ 	struct nfs_page *req = nfs_list_entry(hdr->pages.next);
++	struct inode *inode = dreq->inode;
+ 	int flags = NFS_ODIRECT_DONE;
+ 
+ 	trace_nfs_direct_write_completion(dreq);
+@@ -761,6 +776,10 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 	}
+ 	spin_unlock(&dreq->lock);
+ 
++	spin_lock(&inode->i_lock);
++	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
++	spin_unlock(&inode->i_lock);
++
+ 	while (!list_empty(&hdr->pages)) {
+ 
+ 		req = nfs_list_entry(hdr->pages.next);
+-- 
+2.39.5
+
 
 
 
