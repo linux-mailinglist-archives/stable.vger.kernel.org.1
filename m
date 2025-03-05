@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-121045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583C3A509DD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:25:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED39A5084F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590C11889727
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C5B11888BBB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CE225290B;
-	Wed,  5 Mar 2025 18:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4589017B505;
+	Wed,  5 Mar 2025 18:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvLa9xft"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFTGeuX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3562561D9;
-	Wed,  5 Mar 2025 18:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A771A3176;
+	Wed,  5 Mar 2025 18:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198722; cv=none; b=U4MD5lTvIjdiApco1KIPTu/RZxkRxUp0KOsFPM09ViSlOKkPYFcuEbCCl5m11iVZ83pIxPtIB+q3LBsjEIpZ6UQ/1MjwEP3eZ/ANtixYPBltPGqXuKxP4wwDAiWJR6J8IfLKy3AZVvvmXeKM2JWFi6I0kGRPeY6ASEHvYGZJMtU=
+	t=1741197914; cv=none; b=GHgUR0Y4ha6HlMji/v2B0z5bp6RxnQoxQEsSdAf7G4/ysSZRH2IHIoFK5MlyS/R546PC8att5aUW+DGCbDD1iwQOoHGNDGKHdBIDfSavHjUxUO8YBZeCEJSwFGX7qxJYilcRWO5bTU+mnou3zR+Vasadi7IIWs1+OGjkWni/x0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198722; c=relaxed/simple;
-	bh=s8CtKQBLpd6zaTNhrPdVr048Hd2Vm69caznVdJG362w=;
+	s=arc-20240116; t=1741197914; c=relaxed/simple;
+	bh=K+kCQjMbeQVBQy8T6Ew76ubfbAjojJIv1ByUrs420aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hr4dL45+Q7V3lGgAJv2ozs0rBObXIWj7mZ06tIfyjeNsWffeQWi8BFwXPHATI84mKKEeWI/ofzdOkEui5kE2rkNHjY+RxVFqLwXq1Xq5AcZ08JpXtEjrmVyGKwTVsshVn0nXW33G2L6sggIWDqkBP/OrwzDW4br6lWUNoBbch18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvLa9xft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11093C4CED1;
-	Wed,  5 Mar 2025 18:18:41 +0000 (UTC)
+	 MIME-Version; b=b3jSpdn4swvSAbdxl25dKVft53y3cLiqCYMaHDq94HgT4ySjjDQCl+C0BHG0xftt+UXPHgBFCaO7xB59KGddTtC+IAqP8Y8/vQxGCOer59qeQQMejrU3tHJfPmhntB07+nAV3Dqc46Ak2ZU3v7CA7yal5cx+leZzwj1N2PR/m+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFTGeuX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CFDC4CED1;
+	Wed,  5 Mar 2025 18:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198722;
-	bh=s8CtKQBLpd6zaTNhrPdVr048Hd2Vm69caznVdJG362w=;
+	s=korg; t=1741197913;
+	bh=K+kCQjMbeQVBQy8T6Ew76ubfbAjojJIv1ByUrs420aA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvLa9xft91fxqVecWhkvaxj8aSKJ+fP1QZWPAxBGWTcLENGz1GlyBBji4ZI5j9kGk
-	 XMEjEv0fzeAb6bbsaMbEma+IjGQC0B3hR6F4UOmFPeQBONjAdqIfzLjmd4uZZsWxuI
-	 X6lPYowRQU18ff4V8IV4sTqfugItHUeXatjePwB8=
+	b=IFTGeuX8eTwUUVgkAEviqWLROxe8UN3tvvqErFUpOZn0UsAGQRS+65GZU56LGuqOo
+	 DYvUcbsEHULR+bt9C3p+K9BIjv1W/JxR4TvpkxVeTgUMeODRKi3eUCQU5EuTD8zSqZ
+	 KgQRbYjOnujYX6LFMnhX12Yh0Qc7MmESxm1lNKXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 094/157] drm/amdgpu: disable BAR resize on Dell G5 SE
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 111/142] x86/microcode/amd: Cache builtin microcode too
 Date: Wed,  5 Mar 2025 18:48:50 +0100
-Message-ID: <20250305174509.091869766@linuxfoundation.org>
+Message-ID: <20250305174504.788729475@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 099bffc7cadff40bfab1517c3461c53a7a38a0d7 upstream.
+commit d419d28261e72e1c9ec418711b3da41df2265139 upstream
 
-There was a quirk added to add a workaround for a Sapphire
-RX 5600 XT Pulse that didn't allow BAR resizing.  However,
-the quirk caused a regression with runtime pm on Dell laptops
-using those chips, rather than narrowing the scope of the
-resizing quirk, add a quirk to prevent amdgpu from resizing
-the BAR on those Dell platforms unless runtime pm is disabled.
+save_microcode_in_initrd_amd() fails to cache builtin microcode and only
+scans initrd.
 
-v2: update commit message, add runpm check
+Use find_blobs_in_containers() instead which covers both.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1707
-Fixes: 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT Pulse")
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5235053f443cef4210606e5fb71f99b915a9723d)
-Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231010150702.495139089@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1635,6 +1635,13 @@ int amdgpu_device_resize_fb_bar(struct a
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -533,7 +533,7 @@ int __init save_microcode_in_initrd_amd(
+ 	enum ucode_state ret;
+ 	struct cpio_data cp;
  
-+	/* resizing on Dell G5 SE platforms causes problems with runtime pm */
-+	if ((amdgpu_runtime_pm != 0) &&
-+	    adev->pdev->vendor == PCI_VENDOR_ID_ATI &&
-+	    adev->pdev->device == 0x731f &&
-+	    adev->pdev->subsystem_vendor == PCI_VENDOR_ID_DELL)
-+		return 0;
-+
- 	/* PCI_EXT_CAP_ID_VNDR extended capability is located at 0x100 */
- 	if (!pci_find_ext_capability(adev->pdev, PCI_EXT_CAP_ID_VNDR))
- 		DRM_WARN("System can't access extended configuration space, please check!!\n");
+-	cp = find_microcode_in_initrd(ucode_path);
++	find_blobs_in_containers(cpuid_1_eax, &cp);
+ 	if (!(cp.data && cp.size))
+ 		return -EINVAL;
+ 
 
 
 
