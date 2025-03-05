@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287D4A508AC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:10:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B0EA507DA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D398518889D7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:09:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9086172A04
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B9B2512D9;
-	Wed,  5 Mar 2025 18:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A89F1D6DB4;
+	Wed,  5 Mar 2025 18:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7S6nmly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L48F4LiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B62250C1F;
-	Wed,  5 Mar 2025 18:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD6F1A83E4;
+	Wed,  5 Mar 2025 18:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198144; cv=none; b=m4oKb4hyxaNRW5wpqgV1NkHnJnxxorcOYaBQUw8QOTJuXO0EjyjB2aeodnUPVZ6qK0fBA6YZp7iNlu+xYRvaXAOf+vDd/BEahOmpjFXVFivKWl5n41I1Lk/S/aCggp8lhabPIRmZN4+GdZovttnpIHqTyl7rQPQ3eP4W6mqBKbs=
+	t=1741197668; cv=none; b=n7I3FD5ROg53Pmz4tJGi/t47kF7jtked6xWz9m1cB3ZkqvBusM4yGthplmxjRw2n71dYCUP4u3wGG8PY67yxfdywWd/MTaTPzJNXPdYNmvwIC5+7TDOF4b/rmOdmUDdAhvU0j1Eo8e8NuNYN4V0VgHnfvEwOQyCkvPIsRwquW+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198144; c=relaxed/simple;
-	bh=nhWzzkD6psF7gJtJab64KrxAnj3cJmqSp62EordTOhI=;
+	s=arc-20240116; t=1741197668; c=relaxed/simple;
+	bh=A1cda03CUGpZelKw0BNKSddqbJl1nhqnSay0EMIHR5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXZAfxXLJyPXEIWsP0pSnp8/IPeTpPSLO2T77vCv7dHimdVkF3pDXvNYxE8Hka2NZlc82g7KRlHJLLZ6Q6Vddy1RK+TLXL7mVGES4fcRpwdKxG+1OxkDYwUQ0p+hxFTVFP7wRQ0KnJ8ZeNfmyBQ9WUEt6ZWIuszQMeIa/q+jJis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7S6nmly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C05C4CED1;
-	Wed,  5 Mar 2025 18:09:03 +0000 (UTC)
+	 MIME-Version; b=f1zBXkkemliuNDFtgdUFav8Dug4JCO9HyGSb8q0VjlOQzSD4qrU7cMP+I8iKHCmIJhZ9dYbF5GwIYJt/y0Cy51NRVfEIjoiypJXev8YOSeYUZoZgL1G7ceIE+kKLRTnGy88mRWZmX9N2514CCZBFcXlDlBlLDEk3iAJ+Wmn3Llc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L48F4LiW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEB0C4CED1;
+	Wed,  5 Mar 2025 18:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198144;
-	bh=nhWzzkD6psF7gJtJab64KrxAnj3cJmqSp62EordTOhI=;
+	s=korg; t=1741197667;
+	bh=A1cda03CUGpZelKw0BNKSddqbJl1nhqnSay0EMIHR5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7S6nmlyeEY9vxHpoLnqMD8cNtAhIwxlKBNe0thrPaXYiXFex4BeoN1uokbqsye/r
-	 kc7zzDn9vQ92k83mGpSUDAcmGUa3pUguPdQ3Ra1oqKlDhkZxzkd/BmWH3wz/5p+ex4
-	 XwPo0UxDn2S8v7NCkfuA5KJZzT7DFRzCA05oJCOY=
+	b=L48F4LiWA63/JfsSPEgbJqcXBAbFYZHEoxf1jq8jduMcBtcQFn0ND9r9nBcp0HL+E
+	 RhNhEXReMUNcl9NuvIWapZgjDF+Dr70WCTy/1dqDjMzze8C1wzu6V2IXIHqeqMVp7i
+	 jGrlADd/7LXhjTeMTnsfyI/VDdqJTJIri1LoUglo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/150] drm/xe/oa: Allow oa_exponent value of 0
+Subject: [PATCH 6.6 058/142] riscv: KVM: Fix hart suspend status check
 Date: Wed,  5 Mar 2025 18:47:57 +0100
-Message-ID: <20250305174505.754743607@linuxfoundation.org>
+Message-ID: <20250305174502.669067582@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 5bd566703e16b17d17f4fb648440d54f8967462c ]
+[ Upstream commit c7db342e3b4744688be1e27e31254c1d31a35274 ]
 
-OA exponent value of 0 is a valid value for periodic reports. Allow user
-to pass 0 for the OA sampling interval since it gets converted to 2 gt
-clock ticks.
+"Not stopped" means started or suspended so we need to check for
+a single state in order to have a chance to check for each state.
+Also, we need to use target_vcpu when checking for the suspend
+state.
 
-v2: Update the check in xe_oa_stream_init as well (Ashutosh)
-v3: Fix mi-rpc failure by setting default exponent to -1 (CI)
-v4: Add the Fixes tag
-
-Fixes: b6fd51c62119 ("drm/xe/oa/uapi: Define and parse OA stream properties")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250221213352.1712932-1-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 30341f0b8ea71725cc4ab2c43e3a3b749892fc92)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 763c8bed8c05 ("RISC-V: KVM: Implement SBI HSM suspend call")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250217084506.18763-8-ajones@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_hsm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index 210b8bae59102..448766033690c 100644
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -1716,7 +1716,7 @@ static int xe_oa_stream_init(struct xe_oa_stream *stream,
- 	stream->oa_buffer.format = &stream->oa->oa_formats[param->oa_format];
+diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
+index 827d946ab8714..7e349b4ee926c 100644
+--- a/arch/riscv/kvm/vcpu_sbi_hsm.c
++++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
+@@ -76,12 +76,12 @@ static int kvm_sbi_hsm_vcpu_get_status(struct kvm_vcpu *vcpu)
+ 	target_vcpu = kvm_get_vcpu_by_id(vcpu->kvm, target_vcpuid);
+ 	if (!target_vcpu)
+ 		return SBI_ERR_INVALID_PARAM;
+-	if (!kvm_riscv_vcpu_stopped(target_vcpu))
+-		return SBI_HSM_STATE_STARTED;
+-	else if (vcpu->stat.generic.blocking)
++	if (kvm_riscv_vcpu_stopped(target_vcpu))
++		return SBI_HSM_STATE_STOPPED;
++	else if (target_vcpu->stat.generic.blocking)
+ 		return SBI_HSM_STATE_SUSPENDED;
+ 	else
+-		return SBI_HSM_STATE_STOPPED;
++		return SBI_HSM_STATE_STARTED;
+ }
  
- 	stream->sample = param->sample;
--	stream->periodic = param->period_exponent > 0;
-+	stream->periodic = param->period_exponent >= 0;
- 	stream->period_exponent = param->period_exponent;
- 	stream->no_preempt = param->no_preempt;
- 
-@@ -2002,6 +2002,7 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
- 	}
- 
- 	param.xef = xef;
-+	param.period_exponent = -1;
- 	ret = xe_oa_user_extensions(oa, XE_OA_USER_EXTN_FROM_OPEN, data, 0, &param);
- 	if (ret)
- 		return ret;
-@@ -2056,7 +2057,7 @@ int xe_oa_stream_open_ioctl(struct drm_device *dev, u64 data, struct drm_file *f
- 		goto err_exec_q;
- 	}
- 
--	if (param.period_exponent > 0) {
-+	if (param.period_exponent >= 0) {
- 		u64 oa_period, oa_freq_hz;
- 
- 		/* Requesting samples from OAG buffer is a privileged operation */
+ static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
 -- 
 2.39.5
 
