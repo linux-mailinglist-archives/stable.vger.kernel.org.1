@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B71A507D1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323E1A50945
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01110189378D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45301888574
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8531C6FF6;
-	Wed,  5 Mar 2025 18:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E7D2512C9;
+	Wed,  5 Mar 2025 18:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYdHzR03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xprp/k9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A721714B075;
-	Wed,  5 Mar 2025 18:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799811D6DB4;
+	Wed,  5 Mar 2025 18:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197647; cv=none; b=ogynMNc4Lh+tD84UuC8ZDjATP3c9j7LslFSC5epmEDWOIkB9g2/vI4mDlK40DOZ2oskEsPoSYVw9AuxUpJEnRDuqcbeXoHG1Qd+cUWVxemH18go8CTVK1a4dzikAGwD0ySbMWuuWbgKYe3fILwrU1jQbfcGaNCtqCWZVFApnLhc=
+	t=1741198457; cv=none; b=dOfUf4zsXtjquzuIuu8uYco8AxnQFeXcDRn5SqADz3Yq1GLPBtGcXfpPP5DBYYnJ28/Hpx9FKjAkecGZ/uxzasT6t8zXRcrJynSC+43aabeXc6BKriKK/mh1esVjmp2nIKHCYSkWTkVqS08mrES15DQ7QjQidBYQaUlR1X8uUP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197647; c=relaxed/simple;
-	bh=pYYeP4YiEM1Khn3C3VdjPDEtX3PrABdQl/qoQckF968=;
+	s=arc-20240116; t=1741198457; c=relaxed/simple;
+	bh=xuPEsk4ouLIM74kbk7umUMkgm7tUpRuXLZbH69La+Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5lehzXJetjk+KVgr5JjmufFQtoH+dWOqLsNbvcP4Dmdfjw5JUFWRTAh+KORWZrIfr8LWHbuINhZ5hNW02/z+sPNIIPUF06geiAkmKGeOXcpj71QWgxxagp48JkfxePmrZSPSEJnPRWnWaKWw3Rm5hMbv1MhPWQqAetgHynRPRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYdHzR03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEF7C4CED1;
-	Wed,  5 Mar 2025 18:00:47 +0000 (UTC)
+	 MIME-Version; b=YlZgVnZeDzEZo6NRSVXbfy4eYVvn0UrpjfA06BryqYf+pZ+K3NXzdZw8mBqTd1p3UBR1DooA85r6jtBBLYYSwo+BnotkxiWkztMx442TJjEByXqzDSlJ/fhBMeySFnrY30Taiy+0Nf+oDNw7MDJrC60cULI4A7GSYpFUEl3vbuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xprp/k9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0507AC4CED1;
+	Wed,  5 Mar 2025 18:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197647;
-	bh=pYYeP4YiEM1Khn3C3VdjPDEtX3PrABdQl/qoQckF968=;
+	s=korg; t=1741198457;
+	bh=xuPEsk4ouLIM74kbk7umUMkgm7tUpRuXLZbH69La+Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYdHzR03e3ISgc3tuKmKOc3qxjTZGL25ilAqkZj7eezBShXZXwYtJRIuskTGlM/mO
-	 ZjIOp+VjAqEmcAVbc6W/d7NwwqQULqj0rCLNcmo2bSJ/jv7CIysFjWDLgZg0eNBzMW
-	 0dRls7k9mL0kdvLIODh6Gt2MtUJdbA98EfGoHFlk=
+	b=Xprp/k9oHj6ux7oflqI5bupJlEb57u0NE5m/u2DHJZXrHl38w5gNZYwPs7PCrbmDG
+	 4JtqNrH6DhRJeOPeGzhOio7bNCcOmGOvKtRRc7kyOI/FuN08xe0DYc6xGHj5VNG9q4
+	 qLp8Xs5mbBANsxwHDpeiIu+crUETdVJuPMCReQR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/142] perf/core: Order the PMU list to fix warning about unordered pmu_ctx_list
+Subject: [PATCH 6.13 035/157] net: cadence: macb: Synchronize stats calculations
 Date: Wed,  5 Mar 2025 18:47:51 +0100
-Message-ID: <20250305174502.428609184@linuxfoundation.org>
+Message-ID: <20250305174506.705807415@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 2016066c66192a99d9e0ebf433789c490a6785a2 ]
+[ Upstream commit fa52f15c745ce55261b92873676f64f7348cfe82 ]
 
-Syskaller triggers a warning due to prev_epc->pmu != next_epc->pmu in
-perf_event_swap_task_ctx_data(). vmcore shows that two lists have the same
-perf_event_pmu_context, but not in the same order.
+Stats calculations involve a RMW to add the stat update to the existing
+value. This is currently not protected by any synchronization mechanism,
+so data races are possible. Add a spinlock to protect the update. The
+reader side could be protected using u64_stats, but we would still need
+a spinlock for the update side anyway. And we always do an update
+immediately before reading the stats anyway.
 
-The problem is that the order of pmu_ctx_list for the parent is impacted by
-the time when an event/PMU is added. While the order for a child is
-impacted by the event order in the pinned_groups and flexible_groups. So
-the order of pmu_ctx_list in the parent and child may be different.
-
-To fix this problem, insert the perf_event_pmu_context to its proper place
-after iteration of the pmu_ctx_list.
-
-The follow testcase can trigger above warning:
-
- # perf record -e cycles --call-graph lbr -- taskset -c 3 ./a.out &
- # perf stat -e cpu-clock,cs -p xxx // xxx is the pid of a.out
-
- test.c
-
- void main() {
-        int count = 0;
-        pid_t pid;
-
-        printf("%d running\n", getpid());
-        sleep(30);
-        printf("running\n");
-
-        pid = fork();
-        if (pid == -1) {
-                printf("fork error\n");
-                return;
-        }
-        if (pid == 0) {
-                while (1) {
-                        count++;
-                }
-        } else {
-                while (1) {
-                        count++;
-                }
-        }
- }
-
-The testcase first opens an LBR event, so it will allocate task_ctx_data,
-and then open tracepoint and software events, so the parent context will
-have 3 different perf_event_pmu_contexts. On inheritance, child ctx will
-insert the perf_event_pmu_context in another order and the warning will
-trigger.
-
-[ mingo: Tidied up the changelog. ]
-
-Fixes: bd2756811766 ("perf: Rewrite core context handling")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20250122073356.1824736-1-luogengkun@huaweicloud.com
+Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250220162950.95941-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb.h      |  2 ++
+ drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 5d6458ea675e9..18f0a3aa6d7c6 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4842,7 +4842,7 @@ static struct perf_event_pmu_context *
- find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
- 		     struct perf_event *event)
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 5740c98d8c9f0..2847278d9cd48 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -1279,6 +1279,8 @@ struct macb {
+ 	struct clk		*rx_clk;
+ 	struct clk		*tsu_clk;
+ 	struct net_device	*dev;
++	/* Protects hw_stats and ethtool_stats */
++	spinlock_t		stats_lock;
+ 	union {
+ 		struct macb_stats	macb;
+ 		struct gem_stats	gem;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index daa416fb1724e..af2debcaf7dcc 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1987,10 +1987,12 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
+ 
+ 		if (status & MACB_BIT(ISR_ROVR)) {
+ 			/* We missed at least one packet */
++			spin_lock(&bp->stats_lock);
+ 			if (macb_is_gem(bp))
+ 				bp->hw_stats.gem.rx_overruns++;
+ 			else
+ 				bp->hw_stats.macb.rx_overruns++;
++			spin_unlock(&bp->stats_lock);
+ 
+ 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 				queue_writel(queue, ISR, MACB_BIT(ISR_ROVR));
+@@ -3111,6 +3113,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
+ 	if (!netif_running(bp->dev))
+ 		return nstat;
+ 
++	spin_lock_irq(&bp->stats_lock);
+ 	gem_update_stats(bp);
+ 
+ 	nstat->rx_errors = (hwstat->rx_frame_check_sequence_errors +
+@@ -3140,6 +3143,7 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
+ 	nstat->tx_aborted_errors = hwstat->tx_excessive_collisions;
+ 	nstat->tx_carrier_errors = hwstat->tx_carrier_sense_errors;
+ 	nstat->tx_fifo_errors = hwstat->tx_underrun;
++	spin_unlock_irq(&bp->stats_lock);
+ 
+ 	return nstat;
+ }
+@@ -3147,12 +3151,13 @@ static struct net_device_stats *gem_get_stats(struct macb *bp)
+ static void gem_get_ethtool_stats(struct net_device *dev,
+ 				  struct ethtool_stats *stats, u64 *data)
  {
--	struct perf_event_pmu_context *new = NULL, *epc;
-+	struct perf_event_pmu_context *new = NULL, *pos = NULL, *epc;
- 	void *task_ctx_data = NULL;
+-	struct macb *bp;
++	struct macb *bp = netdev_priv(dev);
  
- 	if (!ctx->task) {
-@@ -4899,12 +4899,19 @@ find_get_pmu_context(struct pmu *pmu, struct perf_event_context *ctx,
- 			atomic_inc(&epc->refcount);
- 			goto found_epc;
+-	bp = netdev_priv(dev);
++	spin_lock_irq(&bp->stats_lock);
+ 	gem_update_stats(bp);
+ 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
+ 			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
++	spin_unlock_irq(&bp->stats_lock);
+ }
+ 
+ static int gem_get_sset_count(struct net_device *dev, int sset)
+@@ -3202,6 +3207,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
+ 		return gem_get_stats(bp);
+ 
+ 	/* read stats from hardware */
++	spin_lock_irq(&bp->stats_lock);
+ 	macb_update_stats(bp);
+ 
+ 	/* Convert HW stats into netdevice stats */
+@@ -3235,6 +3241,7 @@ static struct net_device_stats *macb_get_stats(struct net_device *dev)
+ 	nstat->tx_carrier_errors = hwstat->tx_carrier_errors;
+ 	nstat->tx_fifo_errors = hwstat->tx_underruns;
+ 	/* Don't know about heartbeat or window errors... */
++	spin_unlock_irq(&bp->stats_lock);
+ 
+ 	return nstat;
+ }
+@@ -5106,6 +5113,7 @@ static int macb_probe(struct platform_device *pdev)
  		}
-+		/* Make sure the pmu_ctx_list is sorted by PMU type: */
-+		if (!pos && epc->pmu->type > pmu->type)
-+			pos = epc;
  	}
+ 	spin_lock_init(&bp->lock);
++	spin_lock_init(&bp->stats_lock);
  
- 	epc = new;
- 	new = NULL;
- 
--	list_add(&epc->pmu_ctx_entry, &ctx->pmu_ctx_list);
-+	if (!pos)
-+		list_add_tail(&epc->pmu_ctx_entry, &ctx->pmu_ctx_list);
-+	else
-+		list_add(&epc->pmu_ctx_entry, pos->pmu_ctx_entry.prev);
-+
- 	epc->ctx = ctx;
- 
- found_epc:
+ 	/* setup capabilities */
+ 	macb_configure_caps(bp, macb_config);
 -- 
 2.39.5
 
