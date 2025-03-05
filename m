@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934DAA50935
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143C5A50767
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BB69165057
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C34957A9EB7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015B22528F1;
-	Wed,  5 Mar 2025 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6F9253343;
+	Wed,  5 Mar 2025 17:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nz1+G8uD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+zoi8JP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B399E1C5D4E;
-	Wed,  5 Mar 2025 18:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C3325333C;
+	Wed,  5 Mar 2025 17:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198489; cv=none; b=U/h4FIRU42dVueL01RiWXsACPpEBK9nRdycS/JMEQyGJhVzurE8/4aBapcAmlOtkxJb7rMrvGGuxNCxcSYT6fAFOWSE9LlxkYuC2lzUKB2tLMwnEL1yhxlJrqb5Mo20B4EySIAlvbovJVZ1hmBt77dhmdprshtDedJbVVITAUqc=
+	t=1741197309; cv=none; b=kO3vPkHc+PY88UMO+ui5YtwBEECKQtsm1265XPttdXwLojlmAZ851gCxSNZNLP+8Fn/6sVbfboB9bUJd8gs8hhByBc4av1lmSEefr41xlVm4La3y0+Hpv/cPuPawKesaZaqlsKaOGUsEa6eYaa5VZSHFp5KPvPlKmFa53w41wE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198489; c=relaxed/simple;
-	bh=2wWtdTEtxJa17DdQU9WZ6DIG0aGjxJr79O8JHH446R4=;
+	s=arc-20240116; t=1741197309; c=relaxed/simple;
+	bh=Q+0afMF/M6AP5NVXbpmUJnoZoqmNuFQpk8OcnvKSKw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuzPIoHICn0SREvN67kakcEcbThQS7NNtQU6L2J2B8Y//x0P+iDLnF+15a4MbxWjo3bDR7cQkgqu90Nl4vg5+rDU1fg8ncJtuDeNMOCSzD2Z9/UE9K3W1kWdnNpdSXaFvYg7ObWnex0mSNdNffzwS2AsCnRoVlbxTtJv6QFgYQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nz1+G8uD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0E4C4CED1;
-	Wed,  5 Mar 2025 18:14:49 +0000 (UTC)
+	 MIME-Version; b=FqcVCGXVj4eOepamcDyulFQ3p4yw9EPXQ4gafExJMxQz+GkFfHXD+2lJd0ij2ahSEhS8c3E+prgR8oRAS1oMLeynFPjIFya4/sf5OMxe+aoflEuoLxZJHfEu8ObWltN3FGgEV/2AFQ8pBL1TKMQeHtb1NoJ9mtLDSChYNLRnWX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+zoi8JP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1C5C4CED1;
+	Wed,  5 Mar 2025 17:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198489;
-	bh=2wWtdTEtxJa17DdQU9WZ6DIG0aGjxJr79O8JHH446R4=;
+	s=korg; t=1741197309;
+	bh=Q+0afMF/M6AP5NVXbpmUJnoZoqmNuFQpk8OcnvKSKw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nz1+G8uDMMzZpUXzBU70SxndRnSUtwQUgrwppJnXMbJKzjKGBYRznRMesRY6JQSPI
-	 fGnbc8tczOECIXMFtm/yEnuPY2V0E5eFDqremxvIioE/CRv79jIQpmH3P2SJ57x6QS
-	 kVpLfglUVUHr6DqQD94LyPJm4+1TCg31RQI/s3Is=
+	b=x+zoi8JPZOGVrwfN+ID5lUh/3sMbrQn5SbkN7ZYdk5jdhEvX2bUJLJukRUlbo69fU
+	 5d4wwoC86WU9So/jH/phoeYtxidoWJ4gDasdESHD5BsvzpNZOUgGw2ccTdRZQNuh4/
+	 pfblTqcOp79RHCrARqOu93pMjBhUDyijMw++KRSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Shaoyun Liu <shaoyun.liu@amd.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 045/157] drm/amdgpu/mes: keep enforce isolation up to date
+Subject: [PATCH 6.1 112/176] RDMA/mlx5: Fix AH static rate parsing
 Date: Wed,  5 Mar 2025 18:48:01 +0100
-Message-ID: <20250305174507.114356754@linuxfoundation.org>
+Message-ID: <20250305174509.962563231@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 748a1f51bb74453f1fe22d3ca68a717cb31f02e5 ]
+[ Upstream commit c534ffda781f44a1c6ac25ef6e0e444da38ca8af ]
 
-Re-send the mes message on resume to make sure the
-mes state is up to date.
+Previously static rate wasn't translated according to our PRM but simply
+used the 4 lower bytes.
 
-Fixes: 8521e3c5f058 ("drm/amd/amdgpu: limit single process inside MES")
-Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Shaoyun Liu <shaoyun.liu@amd.com>
-Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 27b791514789844e80da990c456c2465325e0851)
+Correctly translate static rate value passed in AH creation attribute
+according to our PRM expected values.
+
+In addition change 800GB mapping to zero, which is the PRM
+specified value.
+
+Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Link: https://patch.msgid.link/18ef4cc5396caf80728341eb74738cd777596f60.1739187089.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 13 ++++---------
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 20 +++++++++++++++++++-
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |  2 +-
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |  4 ++++
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c  |  4 ++++
- 5 files changed, 32 insertions(+), 11 deletions(-)
+ drivers/infiniband/hw/mlx5/ah.c | 3 ++-
+ drivers/infiniband/hw/mlx5/qp.c | 6 +++---
+ drivers/infiniband/hw/mlx5/qp.h | 1 +
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index 11aa55bd16d28..7ec35e3677585 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -1593,24 +1593,19 @@ static ssize_t amdgpu_gfx_set_enforce_isolation(struct device *dev,
+diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
+index 505bc47fd575d..99036afb3aef0 100644
+--- a/drivers/infiniband/hw/mlx5/ah.c
++++ b/drivers/infiniband/hw/mlx5/ah.c
+@@ -67,7 +67,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.tclass = grh->traffic_class;
  	}
  
- 	mutex_lock(&adev->enforce_isolation_mutex);
--
- 	for (i = 0; i < num_partitions; i++) {
--		if (adev->enforce_isolation[i] && !partition_values[i]) {
-+		if (adev->enforce_isolation[i] && !partition_values[i])
- 			/* Going from enabled to disabled */
- 			amdgpu_vmid_free_reserved(adev, AMDGPU_GFXHUB(i));
--			if (adev->enable_mes && adev->gfx.enable_cleaner_shader)
--				amdgpu_mes_set_enforce_isolation(adev, i, false);
--		} else if (!adev->enforce_isolation[i] && partition_values[i]) {
-+		else if (!adev->enforce_isolation[i] && partition_values[i])
- 			/* Going from disabled to enabled */
- 			amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(i));
--			if (adev->enable_mes && adev->gfx.enable_cleaner_shader)
--				amdgpu_mes_set_enforce_isolation(adev, i, true);
--		}
- 		adev->enforce_isolation[i] = partition_values[i];
- 	}
--
- 	mutex_unlock(&adev->enforce_isolation_mutex);
+-	ah->av.stat_rate_sl = (rdma_ah_get_static_rate(ah_attr) << 4);
++	ah->av.stat_rate_sl =
++		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
  
-+	amdgpu_mes_update_enforce_isolation(adev);
-+
- 	return count;
+ 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
+ 		if (init_attr->xmit_slave)
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 43c0123babd10..59dca0cd89052 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -3379,11 +3379,11 @@ static int ib_to_mlx5_rate_map(u8 rate)
+ 	return 0;
  }
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index 59ec20b07a6af..452ca07e7e7d2 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -1679,7 +1679,8 @@ bool amdgpu_mes_suspend_resume_all_supported(struct amdgpu_device *adev)
- }
- 
- /* Fix me -- node_id is used to identify the correct MES instances in the future */
--int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev, uint32_t node_id, bool enable)
-+static int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev,
-+					    uint32_t node_id, bool enable)
+-static int ib_rate_to_mlx5(struct mlx5_ib_dev *dev, u8 rate)
++int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate)
  {
- 	struct mes_misc_op_input op_input = {0};
- 	int r;
-@@ -1701,6 +1702,23 @@ int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev, uint32_t node_i
- 	return r;
- }
+ 	u32 stat_rate_support;
  
-+int amdgpu_mes_update_enforce_isolation(struct amdgpu_device *adev)
-+{
-+	int i, r = 0;
-+
-+	if (adev->enable_mes && adev->gfx.enable_cleaner_shader) {
-+		mutex_lock(&adev->enforce_isolation_mutex);
-+		for (i = 0; i < (adev->xcp_mgr ? adev->xcp_mgr->num_xcps : 1); i++) {
-+			if (adev->enforce_isolation[i])
-+				r |= amdgpu_mes_set_enforce_isolation(adev, i, true);
-+			else
-+				r |= amdgpu_mes_set_enforce_isolation(adev, i, false);
-+		}
-+		mutex_unlock(&adev->enforce_isolation_mutex);
-+	}
-+	return r;
-+}
-+
- #if defined(CONFIG_DEBUG_FS)
+-	if (rate == IB_RATE_PORT_CURRENT)
++	if (rate == IB_RATE_PORT_CURRENT || rate == IB_RATE_800_GBPS)
+ 		return 0;
  
- static int amdgpu_debugfs_mes_event_log_show(struct seq_file *m, void *unused)
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-index c6f93cbd6739f..f089c5087c63d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-@@ -534,6 +534,6 @@ static inline void amdgpu_mes_unlock(struct amdgpu_mes *mes)
- 
- bool amdgpu_mes_suspend_resume_all_supported(struct amdgpu_device *adev);
- 
--int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev, uint32_t node_id, bool enable);
-+int amdgpu_mes_update_enforce_isolation(struct amdgpu_device *adev);
- 
- #endif /* __AMDGPU_MES_H__ */
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index 9c905b9e93763..40750e5478efb 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -1635,6 +1635,10 @@ static int mes_v11_0_hw_init(struct amdgpu_ip_block *ip_block)
- 		goto failure;
+ 	if (rate < IB_RATE_2_5_GBPS || rate > IB_RATE_600_GBPS)
+@@ -3528,7 +3528,7 @@ static int mlx5_set_path(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *qp,
+ 		       sizeof(grh->dgid.raw));
  	}
  
-+	r = amdgpu_mes_update_enforce_isolation(adev);
-+	if (r)
-+		goto failure;
-+
- out:
- 	/*
- 	 * Disable KIQ ring usage from the driver once MES is enabled.
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-index 9ecc5d61e49ba..0921fd8c050da 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -1590,6 +1590,10 @@ static int mes_v12_0_hw_init(struct amdgpu_ip_block *ip_block)
- 		goto failure;
- 	}
- 
-+	r = amdgpu_mes_update_enforce_isolation(adev);
-+	if (r)
-+		goto failure;
-+
- out:
- 	/*
- 	 * Disable KIQ ring usage from the driver once MES is enabled.
+-	err = ib_rate_to_mlx5(dev, rdma_ah_get_static_rate(ah));
++	err = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah));
+ 	if (err < 0)
+ 		return err;
+ 	MLX5_SET(ads, path, stat_rate, err);
+diff --git a/drivers/infiniband/hw/mlx5/qp.h b/drivers/infiniband/hw/mlx5/qp.h
+index e677fa0ca4226..4abb77d551670 100644
+--- a/drivers/infiniband/hw/mlx5/qp.h
++++ b/drivers/infiniband/hw/mlx5/qp.h
+@@ -55,4 +55,5 @@ int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn);
+ int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter);
+ int mlx5_ib_qp_event_init(void);
+ void mlx5_ib_qp_event_cleanup(void);
++int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate);
+ #endif /* _MLX5_IB_QP_H */
 -- 
 2.39.5
 
