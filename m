@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-120957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4838A5091A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9032A507D4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDF1C3A6745
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2B0D189261C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBC8252918;
-	Wed,  5 Mar 2025 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F681C860D;
+	Wed,  5 Mar 2025 18:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYZNRZoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2U1c/Xu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3992512C0;
-	Wed,  5 Mar 2025 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D5D1A83E4;
+	Wed,  5 Mar 2025 18:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198466; cv=none; b=oU3I6szzk4QORpFsS1NLkd5tUrf7lvPu4ppyDZu/8aEYP+bhCP7xN3rzJ7sixp0vyktvLqAjhcC/ziGAj0s4WnOsL4VS4o4R3bFxG6GYWy/Mj5KDL5CPKO0DM2mHL1dsDgw/oGXWPNeyRQ8hyWA3ng3Pj6fTvw3WjmGgCn3cmMc=
+	t=1741197659; cv=none; b=dvv0h7ufawX8dr0IQqiV3PU1E0uaJQWe1dXGhi1ocZIqLYAXWk9k4M4dFN7XKVFJGsWu6pXA7Ia5f1kzwrXQC6IVcBYxyumbOcgfKioui5RiDTMPfn8BLIeDFvPSy2P+MTiXpdxOgcU26tpKIl5FbQSaaVoK+q8EffYywY9MNr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198466; c=relaxed/simple;
-	bh=fZhK3/HrODARSvYFJn34OUmvCqosoTVbu5f/Ea2j+9g=;
+	s=arc-20240116; t=1741197659; c=relaxed/simple;
+	bh=3TAa3LzQMDQai6ESai9dFftvDRhzH1TXYneXNjESOYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCq4HxaZ7WmYreNwRJKrTKpSrujl3wPvocZetP+LHA9fv9n3yuxrf38GrwdxCvEZ7a5Lo7tU726lhofh8FYdt99O4NTgLSicU0pJOYZvA9VBOJCgaexJoHJVRI6GhvFvBlZa4Kc/7leLbUYQx7BajfTiM3w3M+6umVTPLL6zRog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYZNRZoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BEBC4CED1;
-	Wed,  5 Mar 2025 18:14:25 +0000 (UTC)
+	 MIME-Version; b=b/ANaLMWVnwTXpdnuxxNZ+JuoEOlSYpQZz3rV0367Tzj8nvcJHWXyltWtfDvBQmljoezFlww6Yo2YplXv6MEZVQ0VBW2bbbo4iqL9kFCE/bPPbjezvdyUJet+cba+jssWGcSrgDSp2a3GW+OMh5cvkkDbyCxCvFZ3HJM71pyCrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2U1c/Xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA83C4CED1;
+	Wed,  5 Mar 2025 18:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198466;
-	bh=fZhK3/HrODARSvYFJn34OUmvCqosoTVbu5f/Ea2j+9g=;
+	s=korg; t=1741197659;
+	bh=3TAa3LzQMDQai6ESai9dFftvDRhzH1TXYneXNjESOYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYZNRZoovyCj3o5YXyzwijvOIB4j0Vm6P9MUie05ER+Z1aZDQiy0uOIws4+hsLUf3
-	 s+/WlrTHz+Ws1HaKtTVxQdSP1JLvRwJeyvT0HO0kMGEhYVHCstnpwde3vRUuyiJoOj
-	 2LcaH900oSkPlOAbzBzZH2ITdu0TS53f/dx0l6Lw=
+	b=Y2U1c/XuleLLQ7V1nz1KF8RI0BOBhQmoEtkOWu2AsHxaodU1LOHNkD4MtukzdgvGU
+	 nuASoSrQYK+fhzkmiOb1qZwp/Y5Xot/xaSHhHgd9YD9lZ5YNN3N3n5Vvp6496ABYqY
+	 Z74UiF0qU6dgFFjOG+MZNA73c2gJLMiEDMgsUL5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 038/157] ASoC: fsl: Rename stream name of SAI DAI driver
+	Russell Senior <russell@personaltelco.net>,
+	Ingo Molnar <mingo@kernel.org>,
+	Matthew Whitehead <tedheadster@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>
+Subject: [PATCH 6.6 055/142] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
 Date: Wed,  5 Mar 2025 18:47:54 +0100
-Message-ID: <20250305174506.828620399@linuxfoundation.org>
+Message-ID: <20250305174502.548986548@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +65,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Russell Senior <russell@personaltelco.net>
 
-[ Upstream commit 0da83ab025bc45e9742e87c2cce19bff423377c8 ]
+[ Upstream commit bebe35bb738b573c32a5033499cd59f20293f2a3 ]
 
-If stream names of DAI driver are duplicated there'll be warnings when
-machine driver tries to add widgets on a route:
+I still have some Soekris net4826 in a Community Wireless Network I
+volunteer with. These devices use an AMD SC1100 SoC. I am running
+OpenWrt on them, which uses a patched kernel, that naturally has
+evolved over time.  I haven't updated the ones in the field in a
+number of years (circa 2017), but have one in a test bed, where I have
+intermittently tried out test builds.
 
-[    8.831335] fsl-asoc-card sound-wm8960: ASoC: sink widget CPU-Playback overwritten
-[    8.839917] fsl-asoc-card sound-wm8960: ASoC: source widget CPU-Capture overwritten
+A few years ago, I noticed some trouble, particularly when "warm
+booting", that is, doing a reboot without removing power, and noticed
+the device was hanging after the kernel message:
 
-Use different stream names to avoid such warnings.
-DAI names in AUDMIX are also updated accordingly.
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
 
-Fixes: 15c958390460 ("ASoC: fsl_sai: Add separate DAI for transmitter and receiver")
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://patch.msgid.link/20250217010437.258621-1-chancel.liu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If I removed power and then restarted, it would boot fine, continuing
+through the message above, thusly:
+
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+  [    0.090076] Enable Memory-Write-back mode on Cyrix/NSC processor.
+  [    0.100000] Enable Memory access reorder on Cyrix/NSC processor.
+  [    0.100070] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+  [    0.110058] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+  [    0.120037] CPU: NSC Geode(TM) Integrated Processor by National Semi (family: 0x5, model: 0x9, stepping: 0x1)
+  [...]
+
+In order to continue using modern tools, like ssh, to interact with
+the software on these old devices, I need modern builds of the OpenWrt
+firmware on the devices. I confirmed that the warm boot hang was still
+an issue in modern OpenWrt builds (currently using a patched linux
+v6.6.65).
+
+Last night, I decided it was time to get to the bottom of the warm
+boot hang, and began bisecting. From preserved builds, I narrowed down
+the bisection window from late February to late May 2019. During this
+period, the OpenWrt builds were using 4.14.x. I was able to build
+using period-correct Ubuntu 18.04.6. After a number of bisection
+iterations, I identified a kernel bump from 4.14.112 to 4.14.113 as
+the commit that introduced the warm boot hang.
+
+  https://github.com/openwrt/openwrt/commit/07aaa7e3d62ad32767d7067107db64b6ade81537
+
+Looking at the upstream changes in the stable kernel between 4.14.112
+and 4.14.113 (tig v4.14.112..v4.14.113), I spotted a likely suspect:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=20afb90f730982882e65b01fb8bdfe83914339c5
+
+So, I tried reverting just that kernel change on top of the breaking
+OpenWrt commit, and my warm boot hang went away.
+
+Presumably, the warm boot hang is due to some register not getting
+cleared in the same way that a loss of power does. That is
+approximately as much as I understand about the problem.
+
+More poking/prodding and coaching from Jonas Gorski, it looks
+like this test patch fixes the problem on my board: Tested against
+v6.6.67 and v4.14.113.
+
+Fixes: 18fb053f9b82 ("x86/cpu/cyrix: Use correct macros for Cyrix calls on Geode processors")
+Debugged-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Russell Senior <russell@personaltelco.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/CAHP3WfOgs3Ms4Z+L9i0-iBOE21sdMk5erAiJurPjnrL9LSsgRA@mail.gmail.com
+Cc: Matthew Whitehead <tedheadster@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c    | 6 +++---
- sound/soc/fsl/imx-audmix.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/cyrix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 634168d2bb6e5..c5efbceb06d1f 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -994,10 +994,10 @@ static struct snd_soc_dai_driver fsl_sai_dai_template[] = {
- 	{
- 		.name = "sai-tx",
- 		.playback = {
--			.stream_name = "CPU-Playback",
-+			.stream_name = "SAI-Playback",
- 			.channels_min = 1,
- 			.channels_max = 32,
--				.rate_min = 8000,
-+			.rate_min = 8000,
- 			.rate_max = 2822400,
- 			.rates = SNDRV_PCM_RATE_KNOT,
- 			.formats = FSL_SAI_FORMATS,
-@@ -1007,7 +1007,7 @@ static struct snd_soc_dai_driver fsl_sai_dai_template[] = {
- 	{
- 		.name = "sai-rx",
- 		.capture = {
--			.stream_name = "CPU-Capture",
-+			.stream_name = "SAI-Capture",
- 			.channels_min = 1,
- 			.channels_max = 32,
- 			.rate_min = 8000,
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 50ecc5f51100e..dac5d4ddacd6e 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -119,8 +119,8 @@ static const struct snd_soc_ops imx_audmix_be_ops = {
- static const char *name[][3] = {
- 	{"HiFi-AUDMIX-FE-0", "HiFi-AUDMIX-FE-1", "HiFi-AUDMIX-FE-2"},
- 	{"sai-tx", "sai-tx", "sai-rx"},
--	{"AUDMIX-Playback-0", "AUDMIX-Playback-1", "CPU-Capture"},
--	{"CPU-Playback", "CPU-Playback", "AUDMIX-Capture-0"},
-+	{"AUDMIX-Playback-0", "AUDMIX-Playback-1", "SAI-Capture"},
-+	{"SAI-Playback", "SAI-Playback", "AUDMIX-Capture-0"},
- };
+diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
+index 9651275aecd1b..dfec2c61e3547 100644
+--- a/arch/x86/kernel/cpu/cyrix.c
++++ b/arch/x86/kernel/cpu/cyrix.c
+@@ -153,8 +153,8 @@ static void geode_configure(void)
+ 	u8 ccr3;
+ 	local_irq_save(flags);
  
- static int imx_audmix_probe(struct platform_device *pdev)
+-	/* Suspend on halt power saving and enable #SUSP pin */
+-	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x88);
++	/* Suspend on halt power saving */
++	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x08);
+ 
+ 	ccr3 = getCx86(CX86_CCR3);
+ 	setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);	/* enable MAPEN */
 -- 
 2.39.5
 
