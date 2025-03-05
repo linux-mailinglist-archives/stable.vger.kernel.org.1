@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261C8A50823
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AE4A509C2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A15023B08D8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 365DF1897571
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FC1250C1A;
-	Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9E62512ED;
+	Wed,  5 Mar 2025 18:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiqbVHok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uc/m+JwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F6F539A;
-	Wed,  5 Mar 2025 18:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0EB253F0F;
+	Wed,  5 Mar 2025 18:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197850; cv=none; b=V/a24xPAcEDDV97ay7xPFi9RBKiwNBn4fxyziI0xZghHW2t9o/mDJMQ03jLaelrtXmOfDd7RuM+qVrgIBcI5DseFAsWOTFHX0XU6mCY2G1i9zx6EfN4F9vo003FBOZmEyKIkAFMbX0eFpIE9Nfi7FHk26IZfBDGZA8lL1ZxYkrw=
+	t=1741198659; cv=none; b=B7Xc/0ISxkv1wymvtWIeet8NQQJ25BjTq0BW7Ic7qoLeaZwFGvGbXBdNUMKgyEv1lNVWkg5GB8wAwn6wm+cKi39EMuqV4P2yGOnYRV+lHv2lxlscJvpWnTyQY1OrLsUoB6VVsdt5s6mpoFNhlCDCmfWCcq7PaE66+S55webV8PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197850; c=relaxed/simple;
-	bh=WcoydfJDze9JkYRsp7cU4BAYkzyhsGp89Z21ehco/vU=;
+	s=arc-20240116; t=1741198659; c=relaxed/simple;
+	bh=twA+3+UYYJ4pLWJjputV4FhTVS4PRiSGVDsw0EfgjHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJT3hB4SlO/lQcC1KOIczbYINZeILL67/OcxPtreX8Yqqdfs3+65KdEMYrBfisQRxb0sXifHbQMbwfzu1MR6i6UwoUSXC7k6FM22obrab/fSS4hz/GbLatQplpE4rTzzQHBdJ3NvuOmUpdl2djJmpC7yD30ZpkSeTCbZmvCBtGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiqbVHok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8DAC4CED1;
-	Wed,  5 Mar 2025 18:04:09 +0000 (UTC)
+	 MIME-Version; b=TtB+f0C9Avb3kKMs4KNRz8heZdldRgp/aJUeQDcJMEUvWQfKlSMkCSaMwpe1Bg+DpIiNScAvXQa8tbZ0Ks7WGvUxzFOFCh4a2jiHQ3vXWTtn8zIjcwRc7ZMJzU8+SqTuRf845ndypHRcKbTu0K8kVU6Ecb0O7ODOKzt9YpPrn7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uc/m+JwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5F6C4CED1;
+	Wed,  5 Mar 2025 18:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197850;
-	bh=WcoydfJDze9JkYRsp7cU4BAYkzyhsGp89Z21ehco/vU=;
+	s=korg; t=1741198659;
+	bh=twA+3+UYYJ4pLWJjputV4FhTVS4PRiSGVDsw0EfgjHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hiqbVHokBaKTCLJUUEfLDbZ+JxAQHcfFFUNI+eG5VxXCHhIr1HtowT4KNxh5rdh++
-	 I+jHT5BO6mJDyJvUHqVOD//+rHcdwXc+h5mf4RZZvPxZ4Ww9qjH+V59wyo+wWl7wHC
-	 9F41rm5i7o9pSrGpQU0OrINQH4d1Ec3AT4vWMMAg=
+	b=Uc/m+JwB5/zh+N8u0lvgyr6qOH3z22WGlza/nCuQLuhVrhhehUN3So5XGPAPm/I1I
+	 eMFtgCdOKF5iTI/NzfncwKgmfqsX2yJefehKs5QD6qHDBH0SWfWvlyFPzzXnYFw2GR
+	 ZJseWU3jquRvMWYC3MUzjSY3IvM6i7XYNQS6ya9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 122/142] x86/microcode: Provide new control functions
+	Ivan Shapovalov <intelfx@intelfx.name>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.13 105/157] btrfs: fix use-after-free on inode when scanning root during em shrinking
 Date: Wed,  5 Mar 2025 18:49:01 +0100
-Message-ID: <20250305174505.228883201@linuxfoundation.org>
+Message-ID: <20250305174509.528131438@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 6067788f04b1020b316344fe34746f96d594a042 upstream
+commit 59f37036bb7ab3d554c24abc856aabca01126414 upstream.
 
-The current all in one code is unreadable and really not suited for
-adding future features like uniform loading with package or system
-scope.
+At btrfs_scan_root() we are accessing the inode's root (and fs_info) in a
+call to btrfs_fs_closing() after we have scheduled the inode for a delayed
+iput, and that can result in a use-after-free on the inode in case the
+cleaner kthread does the iput before we dereference the inode in the call
+to btrfs_fs_closing().
 
-Provide a set of new control functions which split the handling of the
-primary and secondary CPUs. These will replace the current rendezvous
-all in one function in the next step. This is intentionally a separate
-change because diff makes an complete unreadable mess otherwise.
+Fix this by using the fs_info stored already in a local variable instead
+of doing inode->root->fs_info.
 
-So the flow separates the primary and the secondary CPUs into their own
-functions which use the control field in the per CPU ucode_ctrl struct.
-
-   primary()			secondary()
-    wait_for_all()		 wait_for_all()
-    apply_ucode()		 wait_for_release()
-    release()			 apply_ucode()
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.377922731@linutronix.de
+Fixes: 102044384056 ("btrfs: make the extent map shrinker run asynchronously as a work queue job")
+CC: stable@vger.kernel.org # 6.13+
+Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
+Link: https://lore.kernel.org/linux-btrfs/0414d690ac5680d0d77dfc930606cdc36e42e12f.camel@intelfx.name/
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c |   84 +++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+ fs/btrfs/extent_map.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -290,6 +290,90 @@ static bool wait_for_cpus(atomic_t *cnt)
- 	return false;
- }
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -1258,8 +1258,7 @@ static long btrfs_scan_root(struct btrfs
+ 		fs_info->em_shrinker_last_ino = btrfs_ino(inode);
+ 		iput(&inode->vfs_inode);
  
-+static bool wait_for_ctrl(void)
-+{
-+	unsigned int timeout;
-+
-+	for (timeout = 0; timeout < USEC_PER_SEC; timeout++) {
-+		if (this_cpu_read(ucode_ctrl.ctrl) != SCTRL_WAIT)
-+			return true;
-+		udelay(1);
-+		if (!(timeout % 1000))
-+			touch_nmi_watchdog();
-+	}
-+	return false;
-+}
-+
-+static __maybe_unused void load_secondary(unsigned int cpu)
-+{
-+	unsigned int ctrl_cpu = this_cpu_read(ucode_ctrl.ctrl_cpu);
-+	enum ucode_state ret;
-+
-+	/* Initial rendezvous to ensure that all CPUs have arrived */
-+	if (!wait_for_cpus(&late_cpus_in)) {
-+		pr_err_once("load: %d CPUs timed out\n", atomic_read(&late_cpus_in) - 1);
-+		this_cpu_write(ucode_ctrl.result, UCODE_TIMEOUT);
-+		return;
-+	}
-+
-+	/*
-+	 * Wait for primary threads to complete. If one of them hangs due
-+	 * to the update, there is no way out. This is non-recoverable
-+	 * because the CPU might hold locks or resources and confuse the
-+	 * scheduler, watchdogs etc. There is no way to safely evacuate the
-+	 * machine.
-+	 */
-+	if (!wait_for_ctrl())
-+		panic("Microcode load: Primary CPU %d timed out\n", ctrl_cpu);
-+
-+	/*
-+	 * If the primary succeeded then invoke the apply() callback,
-+	 * otherwise copy the state from the primary thread.
-+	 */
-+	if (this_cpu_read(ucode_ctrl.ctrl) == SCTRL_APPLY)
-+		ret = microcode_ops->apply_microcode(cpu);
-+	else
-+		ret = per_cpu(ucode_ctrl.result, ctrl_cpu);
-+
-+	this_cpu_write(ucode_ctrl.result, ret);
-+	this_cpu_write(ucode_ctrl.ctrl, SCTRL_DONE);
-+}
-+
-+static __maybe_unused void load_primary(unsigned int cpu)
-+{
-+	struct cpumask *secondaries = topology_sibling_cpumask(cpu);
-+	enum sibling_ctrl ctrl;
-+	enum ucode_state ret;
-+	unsigned int sibling;
-+
-+	/* Initial rendezvous to ensure that all CPUs have arrived */
-+	if (!wait_for_cpus(&late_cpus_in)) {
-+		this_cpu_write(ucode_ctrl.result, UCODE_TIMEOUT);
-+		pr_err_once("load: %d CPUs timed out\n", atomic_read(&late_cpus_in) - 1);
-+		return;
-+	}
-+
-+	ret = microcode_ops->apply_microcode(cpu);
-+	this_cpu_write(ucode_ctrl.result, ret);
-+	this_cpu_write(ucode_ctrl.ctrl, SCTRL_DONE);
-+
-+	/*
-+	 * If the update was successful, let the siblings run the apply()
-+	 * callback. If not, tell them it's done. This also covers the
-+	 * case where the CPU has uniform loading at package or system
-+	 * scope implemented but does not advertise it.
-+	 */
-+	if (ret == UCODE_UPDATED || ret == UCODE_OK)
-+		ctrl = SCTRL_APPLY;
-+	else
-+		ctrl = SCTRL_DONE;
-+
-+	for_each_cpu(sibling, secondaries) {
-+		if (sibling != cpu)
-+			per_cpu(ucode_ctrl.ctrl, sibling) = ctrl;
-+	}
-+}
-+
- static int load_cpus_stopped(void *unused)
- {
- 	int cpu = smp_processor_id();
+-		if (ctx->scanned >= ctx->nr_to_scan ||
+-		    btrfs_fs_closing(inode->root->fs_info))
++		if (ctx->scanned >= ctx->nr_to_scan || btrfs_fs_closing(fs_info))
+ 			break;
+ 
+ 		cond_resched();
 
 
 
