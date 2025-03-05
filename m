@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-120486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4174A506EB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:51:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A7FA50706
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321273A7932
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:51:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 894117A176B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881A1250C02;
-	Wed,  5 Mar 2025 17:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B419253335;
+	Wed,  5 Mar 2025 17:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuLjLYuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpxXbVEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B296ADD;
-	Wed,  5 Mar 2025 17:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EF5253324;
+	Wed,  5 Mar 2025 17:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197101; cv=none; b=FD3GcAA8WP2N8tJ/XW9cGn38/7+NStScXP5yf/w0IJZR3XZsMk+dupS06v/NDsyqcuYGzngnasdW34dJMgCJcKK0I1DkaX3nepHtGlWnuzWpYig1vWNjnUNkeOLRMkvSVugQztOnW5VsR0BB8ILRtMY6jYm/ooXCNzVZ5JY5k6c=
+	t=1741197132; cv=none; b=Dy2fi3oF1F5wWgwFeF/KC7LOCaIb2u65olqqXyyS19hCsUH7qSZ19anf9cANRQIjmtX236WbOOOrnUzTIIuOTomKDw+strbP+pNs2f2thoy9I9xXAPDnrnSNNCJTQS6R2vdxPGp8EnShqp1acdIvJ/HUOSWrRMtt6+GiSmZJR/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197101; c=relaxed/simple;
-	bh=CAGD6PEVIOi1fteZqr8xc5KOAkQE8jU/lzp0/cj1YgI=;
+	s=arc-20240116; t=1741197132; c=relaxed/simple;
+	bh=8PtGuLEwZOi6ErnmueEXHpS6fPWe74Xn2qILWQlZzvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XdCOosV94N+wagnMuIi8qEgJM/XA1Ls0nvLZpFkg2t/N3YnkXVnoCCUNbz01DZWSt9xmoX1nu4KWuPrA716CLKtaLskSALW5mdCJMudXNYc1/Xiw7NVmFrV/ztkmGWtq02u5Gbc9LkEYaOfEraClH9yy9DTHs3ig3Zh2BgHpCfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuLjLYuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59934C4CED1;
-	Wed,  5 Mar 2025 17:51:40 +0000 (UTC)
+	 MIME-Version; b=Lk3MPqXN3q2E46sGCHf29kpPBNiY9RjvLXDyLHFWk8/FjSS4gh8K6TpNzm73aL58BH7kAtdVJUbMhkvArHwwyzPreaS2liTqN5IlRz1q1M6T5xzYpbmcI/XD4pqw/eYrn7hlOnYT+rxkEVypuaT1fcPZNT3DbwvaZdC+gImwxjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpxXbVEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF38C4CEE9;
+	Wed,  5 Mar 2025 17:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197100;
-	bh=CAGD6PEVIOi1fteZqr8xc5KOAkQE8jU/lzp0/cj1YgI=;
+	s=korg; t=1741197132;
+	bh=8PtGuLEwZOi6ErnmueEXHpS6fPWe74Xn2qILWQlZzvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuLjLYuJeBNAPrO5C7GK1sQWOawRsiTnmzsGMy1EjX/IL3kkAnP29L1BplJNV5P9h
-	 uNmydBgFhaiF7X6tKRIv55EWIcUu+sIryw9d1YrfXxo2Q4Z0DVGnnesXrSWj4LAZZt
-	 0etcVmQsSsrKHELMi/pgNRTpx5GY+kb8kjrkiTts=
+	b=WpxXbVEUNDEk4QL+RRQx0FLu8/qpK5hcp0wRFEnqmyqaxMbETaFY4kaFxgnoRVlI9
+	 qRoIWbpMRQCwDHoa/MWucAWwo+sxlbc6BAyQi3NKHXGzHuHjnjfN/+Ve7z7xn/fFf5
+	 BrqH9Hy/0MSV312IzI+X+HNTsMoTm2bdeo/odXAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/176] soc/mediatek: mtk-devapc: Convert to platform remove callback returning void
-Date: Wed,  5 Mar 2025 18:46:41 +0100
-Message-ID: <20250305174506.753736943@linuxfoundation.org>
+Subject: [PATCH 6.1 033/176] soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove
+Date: Wed,  5 Mar 2025 18:46:42 +0100
+Message-ID: <20250305174506.794526882@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
 References: <20250305174505.437358097@linuxfoundation.org>
@@ -60,63 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a129ac3555c0dca6f04ae404dc0f0790656587fb ]
+[ Upstream commit c9c0036c1990da8d2dd33563e327e05a775fcf10 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Driver removal should fully clean up - unmap the memory.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230925095532.1984344-15-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Stable-dep-of: c9c0036c1990 ("soc: mediatek: mtk-devapc: Fix leaking IO map on driver remove")
+Fixes: 0890beb22618 ("soc: mediatek: add mt6779 devapc driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250104142012.115974-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-devapc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/soc/mediatek/mtk-devapc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/soc/mediatek/mtk-devapc.c b/drivers/soc/mediatek/mtk-devapc.c
-index c72273aae7c64..226a79f43492f 100644
+index 226a79f43492f..7269ab8d29b64 100644
 --- a/drivers/soc/mediatek/mtk-devapc.c
 +++ b/drivers/soc/mediatek/mtk-devapc.c
-@@ -300,18 +300,16 @@ static int mtk_devapc_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int mtk_devapc_remove(struct platform_device *pdev)
-+static void mtk_devapc_remove(struct platform_device *pdev)
- {
+@@ -305,6 +305,7 @@ static void mtk_devapc_remove(struct platform_device *pdev)
  	struct mtk_devapc_context *ctx = platform_get_drvdata(pdev);
  
  	stop_devapc(ctx);
--
--	return 0;
++	iounmap(ctx->infra_base);
  }
  
  static struct platform_driver mtk_devapc_driver = {
- 	.probe = mtk_devapc_probe,
--	.remove = mtk_devapc_remove,
-+	.remove_new = mtk_devapc_remove,
- 	.driver = {
- 		.name = "mtk-devapc",
- 		.of_match_table = mtk_devapc_dt_match,
 -- 
 2.39.5
 
