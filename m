@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE57A5090D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27411A509E0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB45A188758D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFDA6188CAB8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939022512ED;
-	Wed,  5 Mar 2025 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8B5256C71;
+	Wed,  5 Mar 2025 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6nY3vrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGZVSigl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C7E1A23A6;
-	Wed,  5 Mar 2025 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FD72528E4;
+	Wed,  5 Mar 2025 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198366; cv=none; b=K7XCI3wA5xmZ4QlDeqJ2NobUjrvdx3Tzqm1i4Ll48U6hFvNUAaeU2hfcPhPCfbDPSSHSQ2Z2/t2Fw0lKadI6laNk9t7x3Uc0t5Z5eRCqDxLkB+hW65/g5eB7hd1yB6KUxlbBEBjQG74z3EBExJbe6SEdN1DxZRSS47yQSYD/BN4=
+	t=1741198766; cv=none; b=l1unhEuCbiwj7aYR9iFdGLyhGlfx6QXqcgttF24+VSabZJm7H939nG7M/ri9JaQPCZ7mcSQphVg1UEUv3+HRJnrZRDW4NfwIG0G7Uun213MfGwJtJ31PG3DdNNDJ6LRaq9FfkaPT6zea6YbOES7o682m/y5syp2Hge4wS98Kykw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198366; c=relaxed/simple;
-	bh=+9rRt1Z/lJ5UQeq56GPzlObf1J96Vvb13H2tvW43Jz4=;
+	s=arc-20240116; t=1741198766; c=relaxed/simple;
+	bh=08mc1+Re2By1+vYjxsxH5mvUXL79CBgvl1j5lcGDvv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOUUtJXr6XITkjFTK7PNTd2PLUPlJzQwsKiScUFrQBxdYGh1FZrlavYGLxFzfmZOLwtlGIYu4ZHoqz8PHuFZPrAItT12+cqoBSMrwsz66HRHCZslL2IrBj3ZP9JhVNfHgm6NcIjJc1V1i1oAuHTZQfuR1OPZrsXZ4KJVgABabdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6nY3vrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C986CC4CED1;
-	Wed,  5 Mar 2025 18:12:45 +0000 (UTC)
+	 MIME-Version; b=E/CfUZqJsQdTAVISLehPvopCQW8qAUo3bKO+sSp4QYSmnTn0BxRQSwi80QpmVmNrP6ETBnOyCZvQ05YIpNXHIXNsaUM7SIVCpwUZghgTP7ZYoJiENHM/Egp/froYNFCCLwITmqjeKpYhvUSgUrFeHEd/STX+8oALScNuliPk1fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGZVSigl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00AC2C4CED1;
+	Wed,  5 Mar 2025 18:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198366;
-	bh=+9rRt1Z/lJ5UQeq56GPzlObf1J96Vvb13H2tvW43Jz4=;
+	s=korg; t=1741198766;
+	bh=08mc1+Re2By1+vYjxsxH5mvUXL79CBgvl1j5lcGDvv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6nY3vrvdvV//EvKqgSuevoK4KJLO4KP6JtlRw7N/L8c3BorNsdSNQoOBn77+yHe9
-	 sYtJRmSVqV7rj4h8X7MJG6bYHdU3tTHga0R9KdPYnjVdEVk6hfDinHbZrsCAky/lOm
-	 +iX1tTA8ORvljjWDbKqsYOJO36FxWTTEah9aJ4ys=
+	b=nGZVSigljno+OuNKVghPLgbCTb8BTYvXyvVzMfiFu0UN6hkbwkMk6+G36JpF/po1F
+	 AolKSHZoFiQVmb3Xo6oRDoMXMxEWSOAPzPzO33Y2FuIrwd9Hy4BAa5CeXjR5lVFL0U
+	 1Wi9Y2SnwA1jUnYUsMHXc5itAyQDE+c6wVvGT3g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.12 147/150] x86/microcode/AMD: Merge early_apply_microcode() into its single callsite
-Date: Wed,  5 Mar 2025 18:49:36 +0100
-Message-ID: <20250305174509.721704758@linuxfoundation.org>
+	Bean Huo <beanhuo@micron.com>,
+	Arthur Simchaev <arthur.simchaev@sandisk.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.13 141/157] scsi: ufs: core: bsg: Fix crash when arpmb command fails
+Date: Wed,  5 Mar 2025 18:49:37 +0100
+Message-ID: <20250305174510.969516564@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Arthur Simchaev <arthur.simchaev@sandisk.com>
 
-commit dc15675074dcfd79a2f10a6e39f96b0244961a01 upstream.
+commit f27a95845b01e86d67c8b014b4f41bd3327daa63 upstream.
 
-No functional changes.
+If the device doesn't support arpmb we'll crash due to copying user data in
+bsg_transport_sg_io_fn().
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250211163648.30531-4-bp@kernel.org
+In the case where ufs_bsg_exec_advanced_rpmb_req() returns an error, do not
+set the job's reply_len.
+
+Memory crash backtrace:
+3,1290,531166405,-;ufshcd 0000:00:12.5: ARPMB OP failed: error code -22
+
+4,1308,531166555,-;Call Trace:
+
+4,1309,531166559,-; <TASK>
+
+4,1310,531166565,-; ? show_regs+0x6d/0x80
+
+4,1311,531166575,-; ? die+0x37/0xa0
+
+4,1312,531166583,-; ? do_trap+0xd4/0xf0
+
+4,1313,531166593,-; ? do_error_trap+0x71/0xb0
+
+4,1314,531166601,-; ? usercopy_abort+0x6c/0x80
+
+4,1315,531166610,-; ? exc_invalid_op+0x52/0x80
+
+4,1316,531166622,-; ? usercopy_abort+0x6c/0x80
+
+4,1317,531166630,-; ? asm_exc_invalid_op+0x1b/0x20
+
+4,1318,531166643,-; ? usercopy_abort+0x6c/0x80
+
+4,1319,531166652,-; __check_heap_object+0xe3/0x120
+
+4,1320,531166661,-; check_heap_object+0x185/0x1d0
+
+4,1321,531166670,-; __check_object_size.part.0+0x72/0x150
+
+4,1322,531166679,-; __check_object_size+0x23/0x30
+
+4,1323,531166688,-; bsg_transport_sg_io_fn+0x314/0x3b0
+
+Fixes: 6ff265fc5ef6 ("scsi: ufs: core: bsg: Add advanced RPMB support in ufs_bsg")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Signed-off-by: Arthur Simchaev <arthur.simchaev@sandisk.com>
+Link: https://lore.kernel.org/r/20250220142039.250992-1-arthur.simchaev@sandisk.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |   60 +++++++++++++++---------------------
- 1 file changed, 26 insertions(+), 34 deletions(-)
+ drivers/ufs/core/ufs_bsg.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -512,39 +512,6 @@ static bool __apply_microcode_amd(struct
- 	return true;
+--- a/drivers/ufs/core/ufs_bsg.c
++++ b/drivers/ufs/core/ufs_bsg.c
+@@ -194,10 +194,12 @@ out:
+ 	ufshcd_rpm_put_sync(hba);
+ 	kfree(buff);
+ 	bsg_reply->result = ret;
+-	job->reply_len = !rpmb ? sizeof(struct ufs_bsg_reply) : sizeof(struct ufs_rpmb_reply);
+ 	/* complete the job here only if no error */
+-	if (ret == 0)
++	if (ret == 0) {
++		job->reply_len = rpmb ? sizeof(struct ufs_rpmb_reply) :
++					sizeof(struct ufs_bsg_reply);
+ 		bsg_job_done(job, ret, bsg_reply->reply_payload_rcv_len);
++	}
+ 
+ 	return ret;
  }
- 
--/*
-- * Early load occurs before we can vmalloc(). So we look for the microcode
-- * patch container file in initrd, traverse equivalent cpu table, look for a
-- * matching microcode patch, and update, all in initrd memory in place.
-- * When vmalloc() is available for use later -- on 64-bit during first AP load,
-- * and on 32-bit during save_microcode_in_initrd() -- we can call
-- * load_microcode_amd() to save equivalent cpu table and microcode patches in
-- * kernel heap memory.
-- *
-- * Returns true if container found (sets @desc), false otherwise.
-- */
--static bool early_apply_microcode(u32 old_rev, void *ucode, size_t size)
--{
--	struct cont_desc desc = { 0 };
--	struct microcode_amd *mc;
--	bool ret = false;
--
--	scan_containers(ucode, size, &desc);
--
--	mc = desc.mc;
--	if (!mc)
--		return ret;
--
--	/*
--	 * Allow application of the same revision to pick up SMT-specific
--	 * changes even if the revision of the other SMT thread is already
--	 * up-to-date.
--	 */
--	if (old_rev > mc->hdr.patch_id)
--		return ret;
--
--	return __apply_microcode_amd(mc, desc.psize);
--}
- 
- static bool get_builtin_microcode(struct cpio_data *cp)
- {
-@@ -583,8 +550,19 @@ static bool __init find_blobs_in_contain
- 	return found;
- }
- 
-+/*
-+ * Early load occurs before we can vmalloc(). So we look for the microcode
-+ * patch container file in initrd, traverse equivalent cpu table, look for a
-+ * matching microcode patch, and update, all in initrd memory in place.
-+ * When vmalloc() is available for use later -- on 64-bit during first AP load,
-+ * and on 32-bit during save_microcode_in_initrd() -- we can call
-+ * load_microcode_amd() to save equivalent cpu table and microcode patches in
-+ * kernel heap memory.
-+ */
- void __init load_ucode_amd_bsp(struct early_load_data *ed, unsigned int cpuid_1_eax)
- {
-+	struct cont_desc desc = { };
-+	struct microcode_amd *mc;
- 	struct cpio_data cp = { };
- 	u32 dummy;
- 
-@@ -598,7 +576,21 @@ void __init load_ucode_amd_bsp(struct ea
- 	if (!find_blobs_in_containers(&cp))
- 		return;
- 
--	if (early_apply_microcode(ed->old_rev, cp.data, cp.size))
-+	scan_containers(cp.data, cp.size, &desc);
-+
-+	mc = desc.mc;
-+	if (!mc)
-+		return;
-+
-+	/*
-+	 * Allow application of the same revision to pick up SMT-specific
-+	 * changes even if the revision of the other SMT thread is already
-+	 * up-to-date.
-+	 */
-+	if (ed->old_rev > mc->hdr.patch_id)
-+		return;
-+
-+	if (__apply_microcode_amd(mc, desc.psize))
- 		native_rdmsr(MSR_AMD64_PATCH_LEVEL, ed->new_rev, dummy);
- }
- 
 
 
 
