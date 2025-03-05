@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1F6A50836
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B88A508DC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549CB189298E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878BB18874A0
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A4E1A3174;
-	Wed,  5 Mar 2025 18:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F2A1A5BB7;
+	Wed,  5 Mar 2025 18:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXyJy1iT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nayGqy4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1C3539A;
-	Wed,  5 Mar 2025 18:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB341C6FF6;
+	Wed,  5 Mar 2025 18:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197840; cv=none; b=dvFgyoCEnRlxyR3bgf4PMu6EYYUtCSv7SIbQnR0CDzHznwZkBpSP54kf5BPEQFldm667pdoDswo9qPC5lbg3JyqHjeEpQ5sn3NI50Ov9XCFlZIZ9/hBrCjXI2BqAf61yPzU/K455ahmSpM86ZvoGgX7/ozWn8CQLlg52wHOuphA=
+	t=1741198237; cv=none; b=AvGJ1QJKy6zHuPMmx54Zk4jirK9W9ganAFMLY4bItmllfZAkweolc3jY8YnYv3ePtgc/HE7Mxo07Y+3KykEiQV2V+z05r8nvQSCR4UQHuUEwWzkl4nkd0KlUoVZKJlaPIII1AVt+pAAs6hr4Vz74sqAGYxJnXDDc7Xu5olTgfB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197840; c=relaxed/simple;
-	bh=P/kfTWzlUWaLwA2oTsMhRd2LWN594njOR2tIGvtS7Ac=;
+	s=arc-20240116; t=1741198237; c=relaxed/simple;
+	bh=hyY0zMr5LU4XaqUWN6yhqNQ18cZUWtbOAb1ZKbg8qDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVSo0XT46ZK+Z+wUnYVXYP2KHbVhDNm5vMacLdedlYdp0hU20BmAlTH6yeIfG+BO8a71uhtVjazDGy2cOxPZpgLVM7S1gmsorTsbbFMPbHXbh4Bw1IAG6cWzpXKEibz9Nbli9/30j5IMRn2XyaKkFIuG5ve9susSwhP6eIjOYJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXyJy1iT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA7BC4CED1;
-	Wed,  5 Mar 2025 18:04:00 +0000 (UTC)
+	 MIME-Version; b=sMiHjGC9dAHTef4V4eSRD7WOVu0QWmYj79/TdSoB7TIWqR5y9M/U9jxCxdn610CfDOLxSmyp7/AyET6wFx0NH2yD6gIWawX6PIovV6RxF4ne+gQljF19w7YSn4iMyzQ/k/V/IsD/LwOPoeFOjan9/5fGqiNX5uij9Wsp07ND8B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nayGqy4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5467C4CEE0;
+	Wed,  5 Mar 2025 18:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197840;
-	bh=P/kfTWzlUWaLwA2oTsMhRd2LWN594njOR2tIGvtS7Ac=;
+	s=korg; t=1741198237;
+	bh=hyY0zMr5LU4XaqUWN6yhqNQ18cZUWtbOAb1ZKbg8qDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXyJy1iTYxdME58zHmEr3mE7olXuiW3RICFDLK5n+kl0lnNmg7eZcT6AfYYuhYwX8
-	 zP56PDqzE+5Okl50RJKwXKxlNqyGJRfzYtiMZxoU/THSTgGe3Ryd2WU+AIwdGIHj1a
-	 aR0CbP7BTecIVGSRl3E1tKzDYcUjmA8hy+XcTPUU=
+	b=nayGqy4crvQqyZT7011zsVOjvGIOJKIlLsoN1t/UG0WbRP6KDwSmFiqRWk9IgJT18
+	 uHZBZBRbLiCQsbhD7j1eJGFtIDOVmgfSunJOIr85u+W4JKCUxn313UHKW9A07YpY7w
+	 MFDNJQU1FQ9hZwv2XFjqCyGl+dE6LO5L77YkQvj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 119/142] x86/microcode: Sanitize __wait_for_cpus()
+	Qunqin Zhao <zhaoqunqin@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 109/150] net: stmmac: dwmac-loongson: Add fix_soc_reset() callback
 Date: Wed,  5 Mar 2025 18:48:58 +0100
-Message-ID: <20250305174505.110894512@linuxfoundation.org>
+Message-ID: <20250305174508.191771610@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Qunqin Zhao <zhaoqunqin@loongson.cn>
 
-commit 0772b9aa1a8f7322dce8588c231cff8b57298a53 upstream
+commit f06e4bfd010faefa637689d2df2c727dbf6e1d27 upstream.
 
-The code is too complicated for no reason:
+Loongson's DWMAC device may take nearly two seconds to complete DMA reset,
+however, the default waiting time for reset is 200 milliseconds.
+Therefore, the following error message may appear:
 
- - The return value is pointless as this is a strict boolean.
+[14.427169] dwmac-loongson-pci 0000:00:03.2: Failed to reset the dma
 
- - It's way simpler to count down from num_online_cpus() and check for
-   zero.
-
-  - The timeout argument is pointless as this is always one second.
-
-  - Touching the NMI watchdog every 100ns does not make any sense, neither
-    does checking every 100ns. This is really not a hotpath operation.
-
-Preload the atomic counter with the number of online CPUs and simplify the
-whole timeout logic. Delay for one microsecond and touch the NMI watchdog
-once per millisecond.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.204251527@linutronix.de
+Fixes: 803fc61df261 ("net: stmmac: dwmac-loongson: Add Loongson Multi-channels GMAC support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qunqin Zhao <zhaoqunqin@loongson.cn>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Yanteng Si <si.yanteng@linux.dev>
+Link: https://patch.msgid.link/20250219020701.15139-1-zhaoqunqin@loongson.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c |   39 +++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -252,31 +252,26 @@ static struct platform_device	*microcode
-  *   requirement can be relaxed in the future. Right now, this is conservative
-  *   and good.
-  */
--#define SPINUNIT 100 /* 100 nsec */
-+static atomic_t late_cpus_in, late_cpus_out;
- 
--
--static atomic_t late_cpus_in;
--static atomic_t late_cpus_out;
--
--static int __wait_for_cpus(atomic_t *t, long long timeout)
-+static bool wait_for_cpus(atomic_t *cnt)
- {
--	int all_cpus = num_online_cpus();
-+	unsigned int timeout;
- 
--	atomic_inc(t);
-+	WARN_ON_ONCE(atomic_dec_return(cnt) < 0);
- 
--	while (atomic_read(t) < all_cpus) {
--		if (timeout < SPINUNIT) {
--			pr_err("Timeout while waiting for CPUs rendezvous, remaining: %d\n",
--				all_cpus - atomic_read(t));
--			return 1;
--		}
-+	for (timeout = 0; timeout < USEC_PER_SEC; timeout++) {
-+		if (!atomic_read(cnt))
-+			return true;
- 
--		ndelay(SPINUNIT);
--		timeout -= SPINUNIT;
-+		udelay(1);
- 
--		touch_nmi_watchdog();
-+		if (!(timeout % USEC_PER_MSEC))
-+			touch_nmi_watchdog();
- 	}
--	return 0;
-+	/* Prevent the late comers from making progress and let them time out */
-+	atomic_inc(cnt);
-+	return false;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index bfe6e2d631bd..f5acfb7d4ff6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -516,6 +516,19 @@ static int loongson_dwmac_acpi_config(struct pci_dev *pdev,
+ 	return 0;
  }
  
- /*
-@@ -294,7 +289,7 @@ static int __reload_late(void *info)
- 	 * Wait for all CPUs to arrive. A load will not be attempted unless all
- 	 * CPUs show up.
- 	 * */
--	if (__wait_for_cpus(&late_cpus_in, NSEC_PER_SEC))
-+	if (!wait_for_cpus(&late_cpus_in))
- 		return -1;
++/* Loongson's DWMAC device may take nearly two seconds to complete DMA reset */
++static int loongson_dwmac_fix_reset(void *priv, void __iomem *ioaddr)
++{
++	u32 value = readl(ioaddr + DMA_BUS_MODE);
++
++	value |= DMA_BUS_MODE_SFT_RESET;
++	writel(value, ioaddr + DMA_BUS_MODE);
++
++	return readl_poll_timeout(ioaddr + DMA_BUS_MODE, value,
++				  !(value & DMA_BUS_MODE_SFT_RESET),
++				  10000, 2000000);
++}
++
+ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct plat_stmmacenet_data *plat;
+@@ -566,6 +579,7 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
  
- 	/*
-@@ -317,7 +312,7 @@ static int __reload_late(void *info)
- 	}
+ 	plat->bsp_priv = ld;
+ 	plat->setup = loongson_dwmac_setup;
++	plat->fix_soc_reset = loongson_dwmac_fix_reset;
+ 	ld->dev = &pdev->dev;
+ 	ld->loongson_id = readl(res.addr + GMAC_VERSION) & 0xff;
  
- wait_for_siblings:
--	if (__wait_for_cpus(&late_cpus_out, NSEC_PER_SEC))
-+	if (!wait_for_cpus(&late_cpus_out))
- 		panic("Timeout during microcode update!\n");
- 
- 	/*
-@@ -344,8 +339,8 @@ static int microcode_reload_late(void)
- 	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
- 	pr_err("You should switch to early loading, if possible.\n");
- 
--	atomic_set(&late_cpus_in,  0);
--	atomic_set(&late_cpus_out, 0);
-+	atomic_set(&late_cpus_in, num_online_cpus());
-+	atomic_set(&late_cpus_out, num_online_cpus());
- 
- 	/*
- 	 * Take a snapshot before the microcode update in order to compare and
+-- 
+2.48.1
+
 
 
 
