@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-120864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080F1A508BB
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD1CA50838
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C28A616ECF8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79663B03BC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C951A5BB7;
-	Wed,  5 Mar 2025 18:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A97D24887A;
+	Wed,  5 Mar 2025 18:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+pvJG+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tv5R22U7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EAC1C6FF6;
-	Wed,  5 Mar 2025 18:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D1B1A3174;
+	Wed,  5 Mar 2025 18:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198195; cv=none; b=tkDB02pLra5WTfDlO5DToC5D7wjwMX99awzhuSjaJPJIk5z63ZmYb3IkjXZ3EJV73N6XJFtvYeOcD5jzp5S0ualRaToReCzxCP0V1fK+h2AwwafIB9SAtNE4P9mNT3zsuyoSnYfFrnWFbFeVL4FNuClYLG+KzQUnIDosrHQ1hC0=
+	t=1741197885; cv=none; b=UvHr4Fm+myMdp/yFJW8vf9DoYzbU8oEQz67lsfJLMlUgZNEF8Z2sMdoCR+FJqaZiAFOnLgF/ZnD5JpK/a9DVmQr+Sg9o1AB78fL5nVNLvV43iUk5yO+YPxYHr5CFFedL2t3sHdfwJ9YY0S8QXfDITcY25tw7MyYuU0i6WkZOp7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198195; c=relaxed/simple;
-	bh=a2/BQARqFeiZNkhtN3IdBO7qlL+Y1UYCKP1CV7fJTDY=;
+	s=arc-20240116; t=1741197885; c=relaxed/simple;
+	bh=Tb0RlUr7XEb9qqbOtWilhsV18lHIxlreVM53IDTvok8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQQgevyiMTK4PaDaMzR4mIz0mlJTnXXvdROwp+eVMlVRo+O2l1ReVayaqWscdm3P2P/Mnsom1x1eWIsfv8Dj4mK9e+qQLSGHJEXUbYFCVQja7ggoUtCaAgzXnNkNxXrTP3WPnknw/1Q8u5je3/1EXOfzKPIY4fgJvXQvC7njmJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+pvJG+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922B4C4CED1;
-	Wed,  5 Mar 2025 18:09:54 +0000 (UTC)
+	 MIME-Version; b=nz3Ty9ZKnSS+QmNjyjq8wSABEwCj8uTkaUQiv4A9g/LWwPlW0oYRqxobXr3rW0JA34fMTcQMe6UiSEyP4U1GhROzUup1gwscVl4AGl9Y2cgomWGqk2ReRCdMNPpKVqVULjMOkf/TbBzYMRFuoe5jIj8r9CdBO8XjsEZI6QZRxSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tv5R22U7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56C7C4CEE0;
+	Wed,  5 Mar 2025 18:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198195;
-	bh=a2/BQARqFeiZNkhtN3IdBO7qlL+Y1UYCKP1CV7fJTDY=;
+	s=korg; t=1741197885;
+	bh=Tb0RlUr7XEb9qqbOtWilhsV18lHIxlreVM53IDTvok8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+pvJG+oVFwwo4wahy3iK+Hm1pvm2NZq1ejUAMoCe0gco8oEg//RnDBmN9ZXNG6zi
-	 FyVBAvdA2CJfnZvAYMcoyrWCz9giVvmDv07MDNBH5KeilnQG02BqJre5kCPGrCZIkN
-	 mbi7MBgzfXU7mW7aVpZr63nztTuB+cGzSgiBPN1o=
+	b=Tv5R22U7j28QHL95l3RV9EHtBMGzHtVvQ7pBj1FRd38WmtwtEJ9Wz33MQlM/yxHky
+	 hw0bq2idsGUdjky1oi/NwJSJYatqMUnRj/X2ELlE3RpjHtjjHtDuzV1V4LfGRuI25Q
+	 hZZ72lmSiImppiG+iSCo/LliIbT6OmYOjLkzWIuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yat Sin <David.YatSin@amd.com>,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 096/150] drm/amdkfd: Preserve cp_hqd_pq_control on update_mqd
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 106/142] x86/microcode/intel: Rework intel_cpu_collect_info()
 Date: Wed,  5 Mar 2025 18:48:45 +0100
-Message-ID: <20250305174507.668112520@linuxfoundation.org>
+Message-ID: <20250305174504.589559993@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yat Sin <David.YatSin@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 3502ab5022bb5ef1edd063bdb6465a8bf3b46e66 upstream.
+commit 164aa1ca537238c46923ccacd8995b4265aee47b upstream
 
-When userspace applications call AMDKFD_IOC_UPDATE_QUEUE. Preserve
-bitfields that do not need to be modified as they contain flags to
-track queue states that are used by CP FW.
+Nothing needs struct ucode_cpu_info. Make it take struct cpu_signature,
+let it return a boolean and simplify the implementation. Rename it now
+that the silly name clash with collect_cpu_info() is gone.
 
-Signed-off-by: David Yat Sin <David.YatSin@amd.com>
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8150827990b709ab5a40c46c30d21b7f7b9e9440)
-Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231017211722.851573238@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c |    6 ++++--
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |    5 +++--
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c |    5 +++--
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c  |    5 ++++-
- 4 files changed, 14 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/cpu.h            |    4 ++--
+ arch/x86/kernel/cpu/microcode/intel.c |   33 +++++++++------------------------
+ drivers/platform/x86/intel/ifs/load.c |    8 +++-----
+ 3 files changed, 14 insertions(+), 31 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-@@ -107,6 +107,8 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x53 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+--- a/arch/x86/include/asm/cpu.h
++++ b/arch/x86/include/asm/cpu.h
+@@ -71,9 +71,9 @@ static inline void init_ia32_feat_ctl(st
  
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+ extern __noendbr void cet_disable(void);
  
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -167,10 +169,10 @@ static void update_mqd(struct mqd_manage
+-struct ucode_cpu_info;
++struct cpu_signature;
  
- 	m = get_mqd(mqd);
+-int intel_cpu_collect_info(struct ucode_cpu_info *uci);
++void intel_collect_cpu_info(struct cpu_signature *sig);
  
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
--	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
-+
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+ static inline bool intel_cpu_signatures_match(unsigned int s1, unsigned int p1,
+ 					      unsigned int s2, unsigned int p2)
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -68,36 +68,21 @@ static inline unsigned int exttable_size
+ 	return et->count * EXT_SIGNATURE_SIZE + EXT_HEADER_SIZE;
+ }
  
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -154,6 +154,8 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x55 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+-int intel_cpu_collect_info(struct ucode_cpu_info *uci)
++void intel_collect_cpu_info(struct cpu_signature *sig)
+ {
+-	unsigned int val[2];
+-	unsigned int family, model;
+-	struct cpu_signature csig = { 0 };
+-	unsigned int eax, ebx, ecx, edx;
++	sig->sig = cpuid_eax(1);
++	sig->pf = 0;
++	sig->rev = intel_get_microcode_revision();
  
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+-	memset(uci, 0, sizeof(*uci));
++	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
++		unsigned int val[2];
  
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -221,10 +223,9 @@ static void update_mqd(struct mqd_manage
+-	eax = 0x00000001;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	csig.sig = eax;
+-
+-	family = x86_family(eax);
+-	model  = x86_model(eax);
+-
+-	if (model >= 5 || family > 6) {
+ 		/* get processor flags from MSR 0x17 */
+ 		native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
+-		csig.pf = 1 << ((val[1] >> 18) & 7);
++		sig->pf = 1 << ((val[1] >> 18) & 7);
+ 	}
+-
+-	csig.rev = intel_get_microcode_revision();
+-
+-	uci->cpu_sig = csig;
+-
+-	return 0;
+ }
+-EXPORT_SYMBOL_GPL(intel_cpu_collect_info);
++EXPORT_SYMBOL_GPL(intel_collect_cpu_info);
  
- 	m = get_mqd(mqd);
+ /*
+  * Returns 1 if update has been found, 0 otherwise.
+@@ -391,7 +376,7 @@ static __init struct microcode_intel *ge
+ 	if (!(cp.data && cp.size))
+ 		return NULL;
  
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
--	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+-	intel_cpu_collect_info(uci);
++	intel_collect_cpu_info(&uci->cpu_sig);
  
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-@@ -121,6 +121,8 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x55 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
+ 	return scan_microcode(cp.data, cp.size, uci, save);
+ }
+--- a/drivers/platform/x86/intel/ifs/load.c
++++ b/drivers/platform/x86/intel/ifs/load.c
+@@ -227,7 +227,7 @@ out:
  
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
+ static int image_sanity_check(struct device *dev, const struct microcode_header_intel *data)
+ {
+-	struct ucode_cpu_info uci;
++	struct cpu_signature sig;
  
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -184,10 +186,9 @@ static void update_mqd(struct mqd_manage
+ 	/* Provide a specific error message when loading an older/unsupported image */
+ 	if (data->hdrver != MC_HEADER_TYPE_IFS) {
+@@ -240,11 +240,9 @@ static int image_sanity_check(struct dev
+ 		return -EINVAL;
+ 	}
  
- 	m = get_mqd(mqd);
+-	intel_cpu_collect_info(&uci);
++	intel_collect_cpu_info(&sig);
  
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
--	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
- 
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-@@ -182,6 +182,9 @@ static void init_mqd(struct mqd_manager
- 	m->cp_hqd_persistent_state = CP_HQD_PERSISTENT_STATE__PRELOAD_REQ_MASK |
- 			0x53 << CP_HQD_PERSISTENT_STATE__PRELOAD_SIZE__SHIFT;
- 
-+	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
-+
- 	m->cp_mqd_control = 1 << CP_MQD_CONTROL__PRIV_STATE__SHIFT;
- 
- 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
-@@ -244,7 +247,7 @@ static void update_mqd(struct mqd_manage
- 
- 	m = get_mqd(mqd);
- 
--	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
-+	m->cp_hqd_pq_control &= ~CP_HQD_PQ_CONTROL__QUEUE_SIZE_MASK;
- 	m->cp_hqd_pq_control |= order_base_2(q->queue_size / 4) - 1;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
- 
+-	if (!intel_find_matching_signature((void *)data,
+-					   uci.cpu_sig.sig,
+-					   uci.cpu_sig.pf)) {
++	if (!intel_find_matching_signature((void *)data, sig.sig, sig.pf)) {
+ 		dev_err(dev, "cpu signature, processor flags not matching\n");
+ 		return -EINVAL;
+ 	}
 
 
 
