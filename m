@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9AFFA50733
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84095A50908
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B5D27A0649
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF893A8EFD
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271E325290E;
-	Wed,  5 Mar 2025 17:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18C62512ED;
+	Wed,  5 Mar 2025 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yj/TfVXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idv+uUIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D860F2512D7;
-	Wed,  5 Mar 2025 17:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E1F1946C3;
+	Wed,  5 Mar 2025 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197209; cv=none; b=HSakdRG4nJe/DBGAB+9dFYdcmDZIIoA2mWzvwyKqnq+YjWje5R3/a5gSWalm+cemcpUZmIof7cicUl3eU+vlHswHUGVQrCObr5ddy5pcQI0Im0uEsGYHgqtUOM7ko+XMaGIfYn08Qh8qgvxXPPG3W15RlBL+Aw/XZFG0g+I1ABU=
+	t=1741198387; cv=none; b=fFf0E7lPCHV9D1QPEft9MflkJ0LQ/oCcA9m6YeULouJ5UbW55WktHDej9JPzz8i/u2hGTkYIkkLGPYJiwljBVrRn2YQwsQc7AWT/iDR00kScrCNcVFiRtcSS4ZTkNWC0Xbr49qPMt3oQkkSJALNmgrKYYIh/9w8lnDSIRetFxwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197209; c=relaxed/simple;
-	bh=p50723vu2a1dQV2jOiqOHBeape2u1NNVp2phr5Mbgvc=;
+	s=arc-20240116; t=1741198387; c=relaxed/simple;
+	bh=ipQSn0OGg3+65ZQUvFPoi72XTu4yP1RJLLsE8wmuMSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+CpfPQa/eHjQVxhDpwdiiihExsM2zRuoOONzpNE9WFqgo/PkMwJhNZdEpZhhJjzX05FTCSYm8ECTs4+VrnolBOiuwJVI6O2YZ+UHgXeT9YPiv5wJvV9sIXxksmokY8XNDDPGkvAe/oi/79R+4X/XTdYkiavtYEqg6Rt4pX6ZfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yj/TfVXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E89C4CEE0;
-	Wed,  5 Mar 2025 17:53:28 +0000 (UTC)
+	 MIME-Version; b=tuR51Zoe8v9QUfc3prK//GbfN1A7DZ+rnAekzB8OSM53yvMEoeSL/A+ItcCmKIw02f4C/DQG6aLao1Ri8m24grbsWqA/5F5oXblt+fHm3Wpom6Trtbf83hQvxG9MXE+DTfU96GcMMcMGJbNujxHL4veOfyxtDbds8AWFdGujO/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idv+uUIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC6FC4CED1;
+	Wed,  5 Mar 2025 18:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197209;
-	bh=p50723vu2a1dQV2jOiqOHBeape2u1NNVp2phr5Mbgvc=;
+	s=korg; t=1741198387;
+	bh=ipQSn0OGg3+65ZQUvFPoi72XTu4yP1RJLLsE8wmuMSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yj/TfVXe2L5c5Yfyll8HX/W/PScXM4RZPjvr44XBgVWntk1pCfGrt++K32FeUwpyw
-	 HMCFVKscljGjm2SfFfW8zhp2zbXxDn5bUII4wEvn1dQbpvLq/CnXMXdvwNsG+HlIEw
-	 P+BBK9+3LaSpCxxm8/6D3vcTlzsXpg980w0F1Guc=
+	b=idv+uUIlBL99eUWLdSIAqaNL6Vjjg/q0FIFKOqdU+sFJnUXGN8X0ov1NnFcXWCtFU
+	 DO5Ot+kfX8AGUXNQCDIFX2b+XhiiE/6rpVSJFuNF3lEXGVLgv4sspMcc3l215N6Gl3
+	 d7bAoW50xJK+rM+9Ysu4QDSZ521n+lPBo5dsFSLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 078/176] ALSA: hda: Add error check for snd_ctl_rename_id() in snd_hda_create_dig_out_ctls()
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 011/157] scsi: ufs: core: Fix ufshcd_is_ufs_dev_busy() and ufshcd_eh_timed_out()
 Date: Wed,  5 Mar 2025 18:47:27 +0100
-Message-ID: <20250305174508.595019847@linuxfoundation.org>
+Message-ID: <20250305174505.735027808@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 822b7ec657e99b44b874e052d8540d8b54fe8569 upstream.
+[ Upstream commit 4fa382be430421e1445f9c95c4dc9b7e0949ae8a ]
 
-Check the return value of snd_ctl_rename_id() in
-snd_hda_create_dig_out_ctls(). Ensure that failures
-are properly handled.
+ufshcd_is_ufs_dev_busy(), ufshcd_print_host_state() and
+ufshcd_eh_timed_out() are used in both modes (legacy mode and MCQ mode).
+hba->outstanding_reqs only represents the outstanding requests in legacy
+mode. Hence, change hba->outstanding_reqs into scsi_host_busy(hba->host) in
+these functions.
 
-[ Note: the error cannot happen practically because the only error
-  condition in snd_ctl_rename_id() is the missing ID, but this is a
-  rename, hence it must be present.  But for the code consistency,
-  it's safer to have always the proper return check -- tiwai ]
-
-Fixes: 5c219a340850 ("ALSA: hda: Fix kctl->id initialization")
-Cc: stable@vger.kernel.org # 6.4+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250213074543.1620-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eacb139b77ff ("scsi: ufs: core: mcq: Enable multi-circular queue")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250214224352.3025151-1-bvanassche@acm.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_codec.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -2465,7 +2465,9 @@ int snd_hda_create_dig_out_ctls(struct h
- 				break;
- 			id = kctl->id;
- 			id.index = spdif_index;
--			snd_ctl_rename_id(codec->card, &kctl->id, &id);
-+			err = snd_ctl_rename_id(codec->card, &kctl->id, &id);
-+			if (err < 0)
-+				return err;
- 		}
- 		bus->primary_dig_out_type = HDA_PCM_TYPE_HDMI;
- 	}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 56b32d245c2ee..37b626e128f95 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -266,7 +266,7 @@ static bool ufshcd_has_pending_tasks(struct ufs_hba *hba)
+ 
+ static bool ufshcd_is_ufs_dev_busy(struct ufs_hba *hba)
+ {
+-	return hba->outstanding_reqs || ufshcd_has_pending_tasks(hba);
++	return scsi_host_busy(hba->host) || ufshcd_has_pending_tasks(hba);
+ }
+ 
+ static const struct ufs_dev_quirk ufs_fixups[] = {
+@@ -628,8 +628,8 @@ static void ufshcd_print_host_state(struct ufs_hba *hba)
+ 	const struct scsi_device *sdev_ufs = hba->ufs_device_wlun;
+ 
+ 	dev_err(hba->dev, "UFS Host state=%d\n", hba->ufshcd_state);
+-	dev_err(hba->dev, "outstanding reqs=0x%lx tasks=0x%lx\n",
+-		hba->outstanding_reqs, hba->outstanding_tasks);
++	dev_err(hba->dev, "%d outstanding reqs, tasks=0x%lx\n",
++		scsi_host_busy(hba->host), hba->outstanding_tasks);
+ 	dev_err(hba->dev, "saved_err=0x%x, saved_uic_err=0x%x\n",
+ 		hba->saved_err, hba->saved_uic_err);
+ 	dev_err(hba->dev, "Device power mode=%d, UIC link state=%d\n",
+@@ -8944,7 +8944,7 @@ static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
+ 	dev_info(hba->dev, "%s() finished; outstanding_tasks = %#lx.\n",
+ 		 __func__, hba->outstanding_tasks);
+ 
+-	return hba->outstanding_reqs ? SCSI_EH_RESET_TIMER : SCSI_EH_DONE;
++	return scsi_host_busy(hba->host) ? SCSI_EH_RESET_TIMER : SCSI_EH_DONE;
+ }
+ 
+ static const struct attribute_group *ufshcd_driver_groups[] = {
+-- 
+2.39.5
+
 
 
 
