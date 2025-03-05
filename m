@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F303CA5072D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E1DA50865
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61AD173C0E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA87C1665DF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE052250BE2;
-	Wed,  5 Mar 2025 17:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A663E24C07D;
+	Wed,  5 Mar 2025 18:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJ5JFbJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBsb5nfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB49481DD;
-	Wed,  5 Mar 2025 17:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6399D19C542;
+	Wed,  5 Mar 2025 18:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197272; cv=none; b=PX+gDUB5hLdE6Z64He7/qTClo4Vk0P3g221U5R7qrfriXgWVtzMAjsK2TcrNGLZae123F8NPsPOGtbS4DnZxTFzPQbovy3XkZHIGCOkksepZHnD7UIHGkuK7utXBsT+ipo7MRTpX9p5J+iNPc8uZTX4cxJqWZ4ssgQHTGWI2qjQ=
+	t=1741198024; cv=none; b=F3boAqaMOmPQiPY64EF/SzSAF3DXOchWz3ROTn3rSeLPNKHB1/I2tgOfGoTG7b8QAZnw6tm2s5hvXi9mDmWRHUiIVW+Ahy0hUv8iX9OGWEYNit8ABe75ythEKMHoH1zfxXSXucAUwhqQf4rjfURjjJ0gVVT7+94AUhPV8qtlwvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197272; c=relaxed/simple;
-	bh=6E3g8mB46wZwMn+JQmr/PWGy7+cDg+bWe6Jcj6MqK7k=;
+	s=arc-20240116; t=1741198024; c=relaxed/simple;
+	bh=tSMFVVSekHGjCYRndUYVyDJsI8bktsXxmC4wWWYKUsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaI3Be3O2sD+FkpHIl2SabfuFl0ReWMkCoXMwsEbKmMSi6dtqbTQzaq0PA+lrffd54H/2S4I2sUV5yBJNiVsqor8UuxikIB+uve5hHwLJ6xz2ke4el6OPXaJ733oHIryvlQTlyimJZ++M3L9JHAQtXMTeBZXUS3NMBJbpGn9i0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJ5JFbJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DD9C4CED1;
-	Wed,  5 Mar 2025 17:54:30 +0000 (UTC)
+	 MIME-Version; b=cIMq/mdEynoQyW6pzC97z6gL++ZSVHcZkbdLBsDIi3LrO8Tt8GIXJYcDzFj59mQaWwHzhxnYunnpFgDbodGoGVw+wV5nL/zpdU65Yodsmv4iJqWwhx3q0+mJABdBoKDAwuZZqJeeueXzvA2WpPoMiyE4X21bG06V9pkJ0MCaR6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBsb5nfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED2FC4CED1;
+	Wed,  5 Mar 2025 18:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197271;
-	bh=6E3g8mB46wZwMn+JQmr/PWGy7+cDg+bWe6Jcj6MqK7k=;
+	s=korg; t=1741198024;
+	bh=tSMFVVSekHGjCYRndUYVyDJsI8bktsXxmC4wWWYKUsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJ5JFbJCIdosO2kzDMh94Y1Y8uEV31/l1CAc2FlbRZQaid7SFG9k6mFOaxLgBZtUg
-	 J3f/2E7O5McUy8Bdv5gOZRZij00Ff2VSufzGf9UggHBc2mwlRbdkow+0aLr1EsuF/E
-	 o1A9t9yQtRNK98im9AyN21T3BHCdrsmtYkSKFGvA=
+	b=EBsb5nfWZwSKKa5YHSjEIPUuYzACOvveCACXHcNut5YNv+PN2e1mqbAmB6zB5jw+V
+	 HKhBGLrkrw+Ry2P9RzQ7ORmU19KgQhs/65OuNrKiyddWnMCmcR/cNC90qX4Sr/c0+L
+	 vFa31BsLQVpZDim4qP00dfmBQZIP4LvqQq3tMSKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aharon Landau <aharonl@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/176] RDMA/mlx5: Dont keep umrable page_shift in cache entries
+Subject: [PATCH 6.12 037/150] ipvlan: Prepare ipvlan_process_v4_outbound() to future .flowi4_tos conversion.
 Date: Wed,  5 Mar 2025 18:47:46 +0100
-Message-ID: <20250305174509.358007400@linuxfoundation.org>
+Message-ID: <20250305174505.304022637@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aharon Landau <aharonl@nvidia.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit a2a88b8e22d1b202225d0e40b02ad068afab2ccb ]
+[ Upstream commit 0c30d6eedd1ec0c1382bcab9576d26413cd278a3 ]
 
-mkc.log_page_size can be changed using UMR. Therefore, don't treat it as a
-cache entry property.
+Use ip4h_dscp() to get the DSCP from the IPv4 header, then convert the
+dscp_t value to __u8 with inet_dscp_to_dsfield().
 
-Removing it from struct mlx5_cache_ent.
+Then, when we'll convert .flowi4_tos to dscp_t, we'll just have to drop
+the inet_dscp_to_dsfield() call.
 
-All cache mkeys will be created with default PAGE_SHIFT, and updated with
-the needed page_shift using UMR when passing them to a user.
-
-Link: https://lore.kernel.org/r/20230125222807.6921-2-michaelgur@nvidia.com
-Signed-off-by: Aharon Landau <aharonl@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: d97505baea64 ("RDMA/mlx5: Fix the recovery flow of the UMR QP")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/f48335504a05b3587e0081a9b4511e0761571ca5.1730292157.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h | 1 -
- drivers/infiniband/hw/mlx5/mr.c      | 3 +--
- drivers/infiniband/hw/mlx5/odp.c     | 2 --
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 0ef347e91ffeb..10c87901da27c 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -759,7 +759,6 @@ struct mlx5_cache_ent {
- 	char                    name[4];
- 	u32                     order;
- 	u32			access_mode;
--	u32			page;
- 	unsigned int		ndescs;
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index b1afcb8740de1..fd591ddb3884d 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -3,6 +3,7 @@
+  */
  
- 	u8 disabled:1;
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index b81b03aa2a629..53fadd6edb68d 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -297,7 +297,7 @@ static void set_cache_mkc(struct mlx5_cache_ent *ent, void *mkc)
+ #include <net/inet_dscp.h>
++#include <net/ip.h>
  
- 	MLX5_SET(mkc, mkc, translations_octword_size,
- 		 get_mkc_octo_size(ent->access_mode, ent->ndescs));
--	MLX5_SET(mkc, mkc, log_page_size, ent->page);
-+	MLX5_SET(mkc, mkc, log_page_size, PAGE_SHIFT);
- }
+ #include "ipvlan.h"
  
- /* Asynchronously schedule new MRs to be populated in the cache. */
-@@ -765,7 +765,6 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- 		if (ent->order > mkey_cache_max_order(dev))
- 			continue;
- 
--		ent->page = PAGE_SHIFT;
- 		ent->ndescs = 1 << ent->order;
- 		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
- 		if ((dev->mdev->profile.mask & MLX5_PROF_MASK_MR_CACHE) &&
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 87fbee8061003..a5c9baec8be85 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -1598,14 +1598,12 @@ void mlx5_odp_init_mkey_cache_entry(struct mlx5_cache_ent *ent)
- 
- 	switch (ent->order - 2) {
- 	case MLX5_IMR_MTT_CACHE_ENTRY:
--		ent->page = PAGE_SHIFT;
- 		ent->ndescs = MLX5_IMR_MTT_ENTRIES;
- 		ent->access_mode = MLX5_MKC_ACCESS_MODE_MTT;
- 		ent->limit = 0;
- 		break;
- 
- 	case MLX5_IMR_KSM_CACHE_ENTRY:
--		ent->page = MLX5_KSM_PAGE_SHIFT;
- 		ent->ndescs = mlx5_imr_ksm_entries;
- 		ent->access_mode = MLX5_MKC_ACCESS_MODE_KSM;
- 		ent->limit = 0;
+@@ -422,7 +423,7 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ 	int err, ret = NET_XMIT_DROP;
+ 	struct flowi4 fl4 = {
+ 		.flowi4_oif = dev->ifindex,
+-		.flowi4_tos = ip4h->tos & INET_DSCP_MASK,
++		.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip4h)),
+ 		.flowi4_flags = FLOWI_FLAG_ANYSRC,
+ 		.flowi4_mark = skb->mark,
+ 		.daddr = ip4h->daddr,
 -- 
 2.39.5
 
