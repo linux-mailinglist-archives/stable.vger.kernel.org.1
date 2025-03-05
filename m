@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13329A50798
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35BDA5085C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C49E189206E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFC3D188BB47
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9452512E1;
-	Wed,  5 Mar 2025 17:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1B41A3174;
+	Wed,  5 Mar 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4tv373g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYGuzf9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF572512D9;
-	Wed,  5 Mar 2025 17:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944301A840E;
+	Wed,  5 Mar 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197529; cv=none; b=sc6teZUlelhKLhZsaUxiH5n9vFyuqmXphfH9a0K06eCowhmGuBKDIaidLxtq36rBQVX+iNIZ9WtVcAbG9QADilV+V64D/j37FOa7JWXkPsr6IKVvJY0rfpBWFqBT133Ag9+R6NYUSFusMN+R+jQUR7GJ0wcC2x+5G+7JgHwkq5w=
+	t=1741197937; cv=none; b=Ryba6w2VunEl6ApctiS+F57jEYtu+AbPFRNXayzlViLaNw2tCeOckhCSgaRvXi99K0D3xwtof/CAxanMK2JO6kbsXRdNgVRB8xbiklqV6FSlFk7ezlMMsIumleZsAFh1/hP0ag8tsOMYbFQH5gFMPuSLzeG+DazHlx1ETKnBz6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197529; c=relaxed/simple;
-	bh=pmWvqM4LOunEwUSjeSnyQsWqoL5BnsOQHU29jCI0Tvk=;
+	s=arc-20240116; t=1741197937; c=relaxed/simple;
+	bh=OUTOTo+2TasM/mR5dTXsrvRI4bOwvaqvE1cUbMURuYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlzRXnELha7Ffu8eNITpYk7l4Syu3tSqXsG4Lcx7cHmXTyg5apyAjOwK5odTWytA6MAqRWXl7SCgjMlw0tKcDwiemwRWZInDQFWTeYpMyQGS7gGFi2pKfM/CBdnk8n91dcXKvsoo+rW2CHFYco923h9qO2+hyTMBcP1oRT9PKOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4tv373g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7CCC4CED1;
-	Wed,  5 Mar 2025 17:58:47 +0000 (UTC)
+	 MIME-Version; b=mLLpl8qfYNiqW/y0zHKa5RjpcLfGU3EsQ+MXpFGjYis29FWtKwfpEr9vMsd36RyuNoSdppq8MR7j6RN8liJMT6OXxPMU1iF6i94oYv/qvuIMn03I0dUPuBePN1cOdjQw9FIAqy1TxOxBWXET3TiUjQwna+7YeRVQduY5riCO1KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYGuzf9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DD3C4CED1;
+	Wed,  5 Mar 2025 18:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197528;
-	bh=pmWvqM4LOunEwUSjeSnyQsWqoL5BnsOQHU29jCI0Tvk=;
+	s=korg; t=1741197937;
+	bh=OUTOTo+2TasM/mR5dTXsrvRI4bOwvaqvE1cUbMURuYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4tv373gYAQDPFTKroHzvv5C1qJ/L22ZR64K9QgVyFb5+BB4XRyRbtB6YpcsYVj0p
-	 VCRC4Qxw4mk0uvpMsuQwMogur6V2MBLTCFoo/7ccZ4C6NyJ37O9fPMGTO1gXRLdvXn
-	 38eF3ff+VCIkjAlrb8bY8wvqtnycGhgpZj7QACHg=
+	b=pYGuzf9/NLhIl3t8yC6RWBEAfBtwgUGDrU+oJA95i+M46TLZLGVV32MFmLrM7Ac/C
+	 Ay25TFIoCOoHLX9yFEQjYs1zU2E8237s4iMASNgFxsQD+4Bqhf7sro7gU89cXaurgf
+	 4yhl62uKws8UHfNaz9i5WB19BN0Dgjv+HZV1+/0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/142] SUNRPC: Handle -ETIMEDOUT return from tlshd
+Subject: [PATCH 6.12 001/150] RDMA/mlx5: Fix the recovery flow of the UMR QP
 Date: Wed,  5 Mar 2025 18:47:10 +0100
-Message-ID: <20250305174500.790356539@linuxfoundation.org>
+Message-ID: <20250305174503.862743588@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-[ Upstream commit 7a2f6f7687c5f7083a35317cddec5ad9fa491443 ]
+[ Upstream commit d97505baea64d93538b16baf14ce7b8c1fbad746 ]
 
-If the TLS handshake attempt returns -ETIMEDOUT, we currently translate
-that error into -EACCES.  This becomes problematic for cases where the RPC
-layer is attempting to re-connect in paths that don't resonably handle
--EACCES, for example: writeback.  The RPC layer can handle -ETIMEDOUT quite
-well, however - so if the handshake returns this error let's just pass it
-along.
+This patch addresses an issue in the recovery flow of the UMR QP,
+ensuring tasks do not get stuck, as highlighted by the call trace [1].
 
-Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+During recovery, before transitioning the QP to the RESET state, the
+software must wait for all outstanding WRs to complete.
+
+Failing to do so can cause the firmware to skip sending some flushed
+CQEs with errors and simply discard them upon the RESET, as per the IB
+specification.
+
+This race condition can result in lost CQEs and tasks becoming stuck.
+
+To resolve this, the patch sends a final WR which serves only as a
+barrier before moving the QP state to RESET.
+
+Once a CQE is received for that final WR, it guarantees that no
+outstanding WRs remain, making it safe to transition the QP to RESET and
+subsequently back to RTS, restoring proper functionality.
+
+Note:
+For the barrier WR, we simply reuse the failed and ready WR.
+Since the QP is in an error state, it will only receive
+IB_WC_WR_FLUSH_ERR. However, as it serves only as a barrier we don't
+care about its status.
+
+[1]
+INFO: task rdma_resource_l:1922 blocked for more than 120 seconds.
+Tainted: G        W          6.12.0-rc7+ #1626
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:rdma_resource_l state:D stack:0  pid:1922 tgid:1922  ppid:1369
+     flags:0x00004004
+Call Trace:
+<TASK>
+__schedule+0x420/0xd30
+schedule+0x47/0x130
+schedule_timeout+0x280/0x300
+? mark_held_locks+0x48/0x80
+? lockdep_hardirqs_on_prepare+0xe5/0x1a0
+wait_for_completion+0x75/0x130
+mlx5r_umr_post_send_wait+0x3c2/0x5b0 [mlx5_ib]
+? __pfx_mlx5r_umr_done+0x10/0x10 [mlx5_ib]
+mlx5r_umr_revoke_mr+0x93/0xc0 [mlx5_ib]
+__mlx5_ib_dereg_mr+0x299/0x520 [mlx5_ib]
+? _raw_spin_unlock_irq+0x24/0x40
+? wait_for_completion+0xfe/0x130
+? rdma_restrack_put+0x63/0xe0 [ib_core]
+ib_dereg_mr_user+0x5f/0x120 [ib_core]
+? lock_release+0xc6/0x280
+destroy_hw_idr_uobject+0x1d/0x60 [ib_uverbs]
+uverbs_destroy_uobject+0x58/0x1d0 [ib_uverbs]
+uobj_destroy+0x3f/0x70 [ib_uverbs]
+ib_uverbs_cmd_verbs+0x3e4/0xbb0 [ib_uverbs]
+? __pfx_uverbs_destroy_def_handler+0x10/0x10 [ib_uverbs]
+? __lock_acquire+0x64e/0x2080
+? mark_held_locks+0x48/0x80
+? find_held_lock+0x2d/0xa0
+? lock_acquire+0xc1/0x2f0
+? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
+? __fget_files+0xc3/0x1b0
+ib_uverbs_ioctl+0xe7/0x170 [ib_uverbs]
+? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
+__x64_sys_ioctl+0x1b0/0xa70
+do_syscall_64+0x6b/0x140
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7f99c918b17b
+RSP: 002b:00007ffc766d0468 EFLAGS: 00000246 ORIG_RAX:
+     0000000000000010
+RAX: ffffffffffffffda RBX: 00007ffc766d0578 RCX:
+     00007f99c918b17b
+RDX: 00007ffc766d0560 RSI: 00000000c0181b01 RDI:
+     0000000000000003
+RBP: 00007ffc766d0540 R08: 00007f99c8f99010 R09:
+     000000000000bd7e
+R10: 00007f99c94c1c70 R11: 0000000000000246 R12:
+     00007ffc766d0530
+R13: 000000000000001c R14: 0000000040246a80 R15:
+     0000000000000000
+</TASK>
+
+Fixes: 158e71bb69e3 ("RDMA/mlx5: Add a umr recovery flow")
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/27b51b92ec42dfb09d8096fcbd51878f397ce6ec.1737290141.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/umr.c | 83 +++++++++++++++++++++-----------
+ 1 file changed, 56 insertions(+), 27 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 1c4bc8234ea87..29df05879c8e9 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2561,7 +2561,15 @@ static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid)
- 	struct sock_xprt *lower_transport =
- 				container_of(lower_xprt, struct sock_xprt, xprt);
- 
--	lower_transport->xprt_err = status ? -EACCES : 0;
-+	switch (status) {
-+	case 0:
-+	case -EACCES:
-+	case -ETIMEDOUT:
-+		lower_transport->xprt_err = status;
-+		break;
-+	default:
-+		lower_transport->xprt_err = -EACCES;
-+	}
- 	complete(&lower_transport->handshake_done);
- 	xprt_put(lower_xprt);
+diff --git a/drivers/infiniband/hw/mlx5/umr.c b/drivers/infiniband/hw/mlx5/umr.c
+index 887fd6fa3ba93..793f3c5c4d012 100644
+--- a/drivers/infiniband/hw/mlx5/umr.c
++++ b/drivers/infiniband/hw/mlx5/umr.c
+@@ -231,30 +231,6 @@ void mlx5r_umr_cleanup(struct mlx5_ib_dev *dev)
+ 	ib_dealloc_pd(dev->umrc.pd);
  }
+ 
+-static int mlx5r_umr_recover(struct mlx5_ib_dev *dev)
+-{
+-	struct umr_common *umrc = &dev->umrc;
+-	struct ib_qp_attr attr;
+-	int err;
+-
+-	attr.qp_state = IB_QPS_RESET;
+-	err = ib_modify_qp(umrc->qp, &attr, IB_QP_STATE);
+-	if (err) {
+-		mlx5_ib_dbg(dev, "Couldn't modify UMR QP\n");
+-		goto err;
+-	}
+-
+-	err = mlx5r_umr_qp_rst2rts(dev, umrc->qp);
+-	if (err)
+-		goto err;
+-
+-	umrc->state = MLX5_UMR_STATE_ACTIVE;
+-	return 0;
+-
+-err:
+-	umrc->state = MLX5_UMR_STATE_ERR;
+-	return err;
+-}
+ 
+ static int mlx5r_umr_post_send(struct ib_qp *ibqp, u32 mkey, struct ib_cqe *cqe,
+ 			       struct mlx5r_umr_wqe *wqe, bool with_data)
+@@ -302,6 +278,61 @@ static int mlx5r_umr_post_send(struct ib_qp *ibqp, u32 mkey, struct ib_cqe *cqe,
+ 	return err;
+ }
+ 
++static int mlx5r_umr_recover(struct mlx5_ib_dev *dev, u32 mkey,
++			     struct mlx5r_umr_context *umr_context,
++			     struct mlx5r_umr_wqe *wqe, bool with_data)
++{
++	struct umr_common *umrc = &dev->umrc;
++	struct ib_qp_attr attr;
++	int err;
++
++	mutex_lock(&umrc->lock);
++	/* Preventing any further WRs to be sent now */
++	if (umrc->state != MLX5_UMR_STATE_RECOVER) {
++		mlx5_ib_warn(dev, "UMR recovery encountered an unexpected state=%d\n",
++			     umrc->state);
++		umrc->state = MLX5_UMR_STATE_RECOVER;
++	}
++	mutex_unlock(&umrc->lock);
++
++	/* Sending a final/barrier WR (the failed one) and wait for its completion.
++	 * This will ensure that all the previous WRs got a completion before
++	 * we set the QP state to RESET.
++	 */
++	err = mlx5r_umr_post_send(umrc->qp, mkey, &umr_context->cqe, wqe,
++				  with_data);
++	if (err) {
++		mlx5_ib_warn(dev, "UMR recovery post send failed, err %d\n", err);
++		goto err;
++	}
++
++	/* Since the QP is in an error state, it will only receive
++	 * IB_WC_WR_FLUSH_ERR. However, as it serves only as a barrier
++	 * we don't care about its status.
++	 */
++	wait_for_completion(&umr_context->done);
++
++	attr.qp_state = IB_QPS_RESET;
++	err = ib_modify_qp(umrc->qp, &attr, IB_QP_STATE);
++	if (err) {
++		mlx5_ib_warn(dev, "Couldn't modify UMR QP to RESET, err=%d\n", err);
++		goto err;
++	}
++
++	err = mlx5r_umr_qp_rst2rts(dev, umrc->qp);
++	if (err) {
++		mlx5_ib_warn(dev, "Couldn't modify UMR QP to RTS, err=%d\n", err);
++		goto err;
++	}
++
++	umrc->state = MLX5_UMR_STATE_ACTIVE;
++	return 0;
++
++err:
++	umrc->state = MLX5_UMR_STATE_ERR;
++	return err;
++}
++
+ static void mlx5r_umr_done(struct ib_cq *cq, struct ib_wc *wc)
+ {
+ 	struct mlx5_ib_umr_context *context =
+@@ -366,9 +397,7 @@ static int mlx5r_umr_post_send_wait(struct mlx5_ib_dev *dev, u32 mkey,
+ 		mlx5_ib_warn(dev,
+ 			"reg umr failed (%u). Trying to recover and resubmit the flushed WQEs, mkey = %u\n",
+ 			umr_context.status, mkey);
+-		mutex_lock(&umrc->lock);
+-		err = mlx5r_umr_recover(dev);
+-		mutex_unlock(&umrc->lock);
++		err = mlx5r_umr_recover(dev, mkey, &umr_context, wqe, with_data);
+ 		if (err)
+ 			mlx5_ib_warn(dev, "couldn't recover UMR, err %d\n",
+ 				     err);
 -- 
 2.39.5
 
