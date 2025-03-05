@@ -1,206 +1,236 @@
-Return-Path: <stable+bounces-120404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0478AA4F84E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 08:53:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228EEA4F826
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 08:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272FC1888670
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 07:54:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DE6D16F5EF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 07:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EE01F3D30;
-	Wed,  5 Mar 2025 07:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17361F4635;
+	Wed,  5 Mar 2025 07:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CdQXpNRi"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tzPrXbtm";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JiF5hV26";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tzPrXbtm";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JiF5hV26"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182451DED5F;
-	Wed,  5 Mar 2025 07:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63081F153A
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 07:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741161225; cv=none; b=p/JFsVY8VyQxV1g5O+T4zvYaRLbaqfqnkcyBdFTYBM3rLP/FPEaktwyI2mmt2715rLx+eawyjcAdOO37Q6/wFLnqeU+EVUrmKjVY4i0Kx1CLqWcU+4AKCTr2SsyiyagKpmJ/DlVbIStVxI9V8GJRksdImR8tJu3ZpxtuqibODJ0=
+	t=1741160524; cv=none; b=p5N1HaeaGAxxNwoUVVyqXSMpBvoGWxWXU1MipN3j1s0vGK49V5oDTqGeyWfDQfGju8HKPxMr8kpLPM19Y1Oc3fIKiZ7yz7M2mopF7WX43swY9IIPxlbXxnrPD+JfwWbzQJwWXgq7EGn7Y06MXBG4btlv1rrwmgHLseDN4iFe4Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741161225; c=relaxed/simple;
-	bh=RkEPUdpXCIQ3dj7yOMrlnTANphhK5Xv+8N4c/wD3VrY=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=Fh25bPdBiG1hkFji40xpbexMhTI+9BCaVUVbKLBBzznk+1IZ9CJEJYD5I5zcu6m/5vsrTbjKFXIenUmehhkzvdnDxMJpXWe2efAAiTGm8tPwj4SVpGe1j9dXR1hA2vrmEdGJS8LTTr33rKU4gB4hf9+RYOllSNSwgD+AnSYc2TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CdQXpNRi; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5494cb8c2e7so5617894e87.0;
-        Tue, 04 Mar 2025 23:53:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741161221; x=1741766021; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HiTpS6soFncX3ap+JUlkCx1cOPiDwgUNOLW0huS1jJo=;
-        b=CdQXpNRiqZvfTs57gRAIg578FCEikb1pnfMcsDec6oQUNEWlGlL/ElWWxXpFII4bG0
-         GbM8jWFOVDkPvkfY7d7CZy8V6+P9DRA6jQxnQeR72WMGIdQsS7Hd1Tke/S52Swk6NQ8A
-         B4y1p/yP4N4jRkMBGAsA/qsJWCKkG6hu0NPS9VbA57squ7SioAPk9RPclDp6gglrroZZ
-         4LgS7Y0kIdxsdKyI1QGRKU2k2dKi4PRqqzeTUO2OTfl3+UTxjjcK000wLkMT06F0HgD7
-         1ZkHbUEhqTs8tC0Oi/6t6AYFvrt1U2xAXvp227m7lQBOP/c2CW2AUJ7i6+Wyuu/djr9l
-         ouWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741161221; x=1741766021;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HiTpS6soFncX3ap+JUlkCx1cOPiDwgUNOLW0huS1jJo=;
-        b=FUmvpJExzhaSCkZV0TfNFRY6LLd7gq9B1EAXUyu2w3avEPcjcegdMBH4GluJGcgpXW
-         T/w/+Snir69MqGUcjmNKDZpQn7yF8oOP9jmX7s0asc1uUxYAc8BDKZmlR97+sqXSC34E
-         YnBrckY9JtRLDRyv4mERgueIpXUd0MGed9CUKJjF+PZNC1HcPmYaw3zCxxE4JtC86DRW
-         eVQpmAL11mvrVKOWa0+Baf1ASwnmRr4lVfc3YZ8g9HsI5ZAUB+mQN8dZqghhhYwhy6pn
-         bUuB9yGsf1nGuAuG9NO5akwtMT0kBUgwo4wS50NiZa6rVDE065wSC8hMsTxxSA0m7Tx5
-         o0PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4NOrbHASM75eWij0xwgL1zm7M/Af6YKtl7U2uS0M8nZigNPAvYPeSChKYd/q76GeDojGRs3SNN65y8xs=@vger.kernel.org, AJvYcCUNdzYpLqbH0UuCzoO0qizDZWoN6ByITZAMPzLvIU0lEAIllK0xoQRqjW0qywzgl2ILhkHy81Al@vger.kernel.org, AJvYcCVxpInp7vf//7qiH5hswbuis+x4QopRWsGyIlwC2xBLtpAchhN/R6FplNHvtVBSmboZ0ikPi5rDJgTSFzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxujdT7dymKPHFFdWsUbcaq7UmWTdhImn4Y9KGbdChTe0poEYR9
-	ao0otgKkcQn4Yz+V49wxqpuFtYlwYsIMQ1DTI5a2GCtDO9TOORCKT6wGgUHd
-X-Gm-Gg: ASbGnct6CRmVLF7O3qM2Sok6rV5eVGEX1fBzBtdpaC4SFPXqhS5eR61NQSfe0Bu3u7K
-	AByz+hEOp+l+LaPuxRZRkZNfh/ox9zjnCcMoN2UnLjEUfP/NcKhA4T77ImnHrGRRJrs+SBDBlmL
-	DkBeouvAJ+G8bKTZoE0OJkcjovu69KRvG9KBVsw4vLh8ZC5hODRhhZSOTb0rV9P4SHjw7fyjwR0
-	9BpDy9B/+PQ98htm2YwUq0stLfjY4CmikdeJkAFmKehcYCXh2deY/Tnr0q2BrOK1eoCHsRl0on0
-	dzoF7h16HJLv32PF4JR4I1178QQk1uzSnYDrJSqWkFOyu9X5wPlXm5So2fKdJ7E1YrJD2jxwi6R
-	EsTZotnEqoPTfMwTXUGaKt5EbN9LxcoFb
-X-Google-Smtp-Source: AGHT+IGoSfXFo2jQfX6zwJukiQLZftqM9VYE26ir2v2Z98LPwA2YNZbRZg8LePVsUKETExIau4wjew==
-X-Received: by 2002:a05:6512:3190:b0:549:7c64:3bc0 with SMTP id 2adb3069b0e04-5497d35028emr565104e87.29.1741161221096;
-        Tue, 04 Mar 2025 23:53:41 -0800 (PST)
-Received: from razdolb (static.248.157.217.95.clients.your-server.de. [95.217.157.248])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5495b3f4ebdsm1155605e87.102.2025.03.04.23.53.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 23:53:40 -0800 (PST)
-References: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
- <20250303-b4-rkisp-noncoherent-v4-1-e32e843fb6ef@gmail.com>
- <8b3dac7baed1de9542452547454c53188c384391.camel@ndufresne.ca>
-User-agent: mu4e 1.10.9; emacs 30.1
-From: Mikhail Rudenko <mike.rudenko@gmail.com>
-To: Nicolas Dufresne <nicolas@ndufresne.ca>
-Cc: Dafna Hirschfeld <dafna@fastmail.com>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Tomasz Figa
- <tfiga@chromium.org>, Marek Szyprowski <m.szyprowski@samsung.com>, Hans
- Verkuil <hverkuil@xs4all.nl>, Sergey  Senozhatsky
- <senozhatsky@chromium.org>, linux-media@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Mauro  Carvalho Chehab
- <mchehab+huawei@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
- dma-contig
-Date: Wed, 05 Mar 2025 10:40:31 +0300
-In-reply-to: <8b3dac7baed1de9542452547454c53188c384391.camel@ndufresne.ca>
-Message-ID: <87y0xj29rz.fsf@gmail.com>
+	s=arc-20240116; t=1741160524; c=relaxed/simple;
+	bh=valG8SuOJFe4rhSpEP+fdUZtyiQA2qXNgSKlm5SEjl0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UvTkhv/BIdHckgkUr5qmTPdGJD2pNeHNWqRx07eS+F1OPfyAqxYotaIXEpSbrC+uLVXAemwk/rgMsOkEC/+enyEByJ0V8um/uea1YAOscYCz2slq27PYkwTGW2b8LeBsjoTMSEyZAbhvbXfdmKfdzWQY+B0yVbU4HBBZt1e+ndk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tzPrXbtm; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JiF5hV26; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tzPrXbtm; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JiF5hV26; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 10D2A1F38A;
+	Wed,  5 Mar 2025 07:41:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741160518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=adnyt9CWxSwzs4Be7pAFdLIXiVLWF5YXALCHwTY9Njs=;
+	b=tzPrXbtmFvJja+Tsfq8rE8v8ek27TwQgcL9uHVWEE1MQKFnZAn3B42OkAEbLOqQ9dxHGMq
+	uJ+GchJzbojXvVxBd9VLf727HstoPSSFAAoS91XHt7uMx4sr6l+zJRqvhSEh3NsUKSN7ei
+	dvUHCYc+7rY7VEaKcoVHvIMxTcaXZPE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741160518;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=adnyt9CWxSwzs4Be7pAFdLIXiVLWF5YXALCHwTY9Njs=;
+	b=JiF5hV26a+n9IFkcwrxyHLBVwHDMQlsAdYQq8dmJ58Klwmw8whpqY6iYtYm37cLJBbCFV6
+	B7xq7O5x3FUP+8Cg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tzPrXbtm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JiF5hV26
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741160518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=adnyt9CWxSwzs4Be7pAFdLIXiVLWF5YXALCHwTY9Njs=;
+	b=tzPrXbtmFvJja+Tsfq8rE8v8ek27TwQgcL9uHVWEE1MQKFnZAn3B42OkAEbLOqQ9dxHGMq
+	uJ+GchJzbojXvVxBd9VLf727HstoPSSFAAoS91XHt7uMx4sr6l+zJRqvhSEh3NsUKSN7ei
+	dvUHCYc+7rY7VEaKcoVHvIMxTcaXZPE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741160518;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=adnyt9CWxSwzs4Be7pAFdLIXiVLWF5YXALCHwTY9Njs=;
+	b=JiF5hV26a+n9IFkcwrxyHLBVwHDMQlsAdYQq8dmJ58Klwmw8whpqY6iYtYm37cLJBbCFV6
+	B7xq7O5x3FUP+8Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4A501366F;
+	Wed,  5 Mar 2025 07:41:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vIcqLkUAyGdtSwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 05 Mar 2025 07:41:57 +0000
+Message-ID: <d44d4aba-4abe-4dc8-8b09-1237567ffc41@suse.de>
+Date: Wed, 5 Mar 2025 08:41:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm: Select DRM_KMS_HELPER from
+ DRM_DEBUG_DP_MST_TOPOLOGY_REFS
+To: j@jannau.net, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250304-drm_debug_dp_mst_topo_kconfig-v1-1-e16fd152f258@jannau.net>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250304-drm_debug_dp_mst_topo_kconfig-v1-1-e16fd152f258@jannau.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 10D2A1F38A
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_TO(0.00)[jannau.net,linux.intel.com,kernel.org,gmail.com,ffwll.ch,redhat.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
-Hi Nicolas,
 
-On 2025-03-03 at 10:24 -05, Nicolas Dufresne <nicolas@ndufresne.ca> wrote:
 
-> Hi Mikhail,
+Am 04.03.25 um 20:12 schrieb Janne Grunau via B4 Relay:
+> From: Janne Grunau <j@jannau.net>
 >
-> Le lundi 03 mars 2025 =C3=A0 14:40 +0300, Mikhail Rudenko a =C3=A9crit=C2=
-=A0:
->> When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
->> commit 129134e5415d ("media: media/v4l2: remove
->> V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
->> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
->> no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
->> introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
->> V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
->> no-ops, making cache maintenance for non-coherent dmabufs allocated
->> by
->> dma-contig impossible.
->>
->> Fix this by reintroducing dma_sync_sgtable_for_{cpu,device} and
->> {flush,invalidate}_kernel_vmap_range calls to
->> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
->> buffers.
->>
->> Fixes: c0acf9cfeee0 ("media: videobuf2: handle
->> V4L2_MEMORY_FLAG_NON_COHERENT flag")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
->> ---
->> =C2=A0.../media/common/videobuf2/videobuf2-dma-contig.c=C2=A0 | 22
->> ++++++++++++++++++++++
->> =C2=A01 file changed, 22 insertions(+)
->>
->> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
->> b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
->> index
->> a13ec569c82f6da2d977222b94af32e74c6c6c82..d41095fe5bd21faf815d6b035d7
->> bc888a84a95d5 100644
->> --- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
->> +++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
->> @@ -427,6 +427,17 @@ static int
->> =C2=A0vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
->> =C2=A0				=C2=A0=C2=A0 enum dma_data_direction
->> direction)
->> =C2=A0{
->> +	struct vb2_dc_buf *buf =3D dbuf->priv;
->> +	struct sg_table *sgt =3D buf->dma_sgt;
->> +
->> +	if (!buf->non_coherent_mem)
->> +		return 0;
->> +
->> +	if (buf->vaddr)
->> +		invalidate_kernel_vmap_range(buf->vaddr, buf->size);
+> Using "depends on" and "select" for the same Kconfig symbol is known to
+> cause circular dependencies (cmp. "Kconfig recursive dependency
+> limitations" in Documentation/kbuild/kconfig-language.rst.
+> DRM drivers are selecting drm helpers so do the same for
+> DRM_DEBUG_DP_MST_TOPOLOGY_REFS.
+> Fixes following circular dependency reported on x86 for the downstream
+> Asahi Linux tree:
 >
-> What would make me a lot more confortable with this change is if you
-> enable kernel mappings for one test. This will ensure you cover the
-> call to "invalidate" in your testing. I'd like to know about the
-> performance impact. With this implementation it should be identical to
-> the VB2 one.
+> error: recursive dependency detected!
+>    symbol DRM_KMS_HELPER is selected by DRM_GEM_SHMEM_HELPER
+>    symbol DRM_GEM_SHMEM_HELPER is selected by RUST_DRM_GEM_SHMEM_HELPER
+>    symbol RUST_DRM_GEM_SHMEM_HELPER is selected by DRM_ASAHI
+>    symbol DRM_ASAHI depends on RUST
+>    symbol RUST depends on CALL_PADDING
+>    symbol CALL_PADDING depends on OBJTOOL
+>    symbol OBJTOOL is selected by STACK_VALIDATION
+>    symbol STACK_VALIDATION depends on UNWINDER_FRAME_POINTER
+>    symbol UNWINDER_FRAME_POINTER is part of choice block at arch/x86/Kconfig.debug:224
+>    symbol <choice> unknown is visible depending on UNWINDER_GUESS
+>    symbol UNWINDER_GUESS prompt is visible depending on STACKDEPOT
+>    symbol STACKDEPOT is selected by DRM_DEBUG_DP_MST_TOPOLOGY_REFS
+>    symbol DRM_DEBUG_DP_MST_TOPOLOGY_REFS depends on DRM_KMS_HELPER
+>
+> Fixes: 12a280c72868 ("drm/dp_mst: Add topology ref history tracking for debugging")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Janne Grunau <j@jannau.net>
 
-I'll enable kernel mappings and rerun my tests later this week.
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-> What I was trying to say in previous comments, is that my impression is
-> that we can skip this for CPU read access, since we don't guaranty
-> concurrent access anyway. Both address space can keep their cache in
-> that case. Though, I see RKISP does not use kernel mapping plus I'm not
-> reporting a bug, but checking if we should leave a comment for possible
-> users of kernel mapping in the future ?
+> ---
+>   drivers/gpu/drm/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index fbef3f471bd0e5101699cf576542f7350bea3982..bd228dc77e99b4356b09de02d9001237eb2423e2 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -188,7 +188,7 @@ config DRM_DEBUG_DP_MST_TOPOLOGY_REFS
+>           bool "Enable refcount backtrace history in the DP MST helpers"
+>   	depends on STACKTRACE_SUPPORT
+>           select STACKDEPOT
+> -        depends on DRM_KMS_HELPER
+> +        select DRM_KMS_HELPER
+>           depends on DEBUG_KERNEL
+>           depends on EXPERT
+>           help
+>
+> ---
+> base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+> change-id: 20250304-drm_debug_dp_mst_topo_kconfig-a112904ba611
+>
+> Best regards,
 
-I trust Tomasz here, I'd wait for his comment on v4.
-
->> +
->> +	dma_sync_sgtable_for_cpu(buf->dev, sgt, direction);
->> +
->> =C2=A0	return 0;
->> =C2=A0}
->>
->> @@ -434,6 +445,17 @@ static int
->> =C2=A0vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
->> =C2=A0				 enum dma_data_direction direction)
->> =C2=A0{
->> +	struct vb2_dc_buf *buf =3D dbuf->priv;
->> +	struct sg_table *sgt =3D buf->dma_sgt;
->> +
->> +	if (!buf->non_coherent_mem)
->> +		return 0;
->> +
->> +	if (buf->vaddr)
->> +		flush_kernel_vmap_range(buf->vaddr, buf->size);
->> +
->> +	dma_sync_sgtable_for_device(buf->dev, sgt, direction);
->> +
->> =C2=A0	return 0;
->> =C2=A0}
->>
->>
-
-
+-- 
 --
-Best regards,
-Mikhail Rudenko
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
 
