@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-120660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24020A507C5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1B5A506FF
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E40416B480
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7431892051
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB38E252912;
-	Wed,  5 Mar 2025 18:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C310B2512EB;
+	Wed,  5 Mar 2025 17:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsFo+lCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sc8Bl2Ag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A689252908;
-	Wed,  5 Mar 2025 18:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817032512D7;
+	Wed,  5 Mar 2025 17:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197603; cv=none; b=hpSFdXxcarte0/ZMqPuz9yySeaK5mQFxvmcdwvHrg9fGnt0ykLgAgGEIxU/R5do/uvU2VshXWeKX9dEWkLXwvY4TYMr2UTH/OGMUGPG0VCLNdaWupHn1EJPXD4TGe2pzCMR7uC5ACZLTi3jHpwRkQn8BgE4NJ6npjkD+dQuFf0s=
+	t=1741197149; cv=none; b=PYf4mMb2IQXDuAM6TnKlltSyNE9t3BRq6uDdTMdlAWzSG2DZ4jd99+h3hlYYHByXWRzzLKKQIwWrV9yDPRLHHMXCN0iCinvAo4PsnaVuHaI/eQx9JwcYRwlGvhC1cM8LVvB1/hW3txLEtg4R7xvjRL8q0nAxZ4v5NZX3Q4TTOCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197603; c=relaxed/simple;
-	bh=tbbp7U7NJOtNd9sXQ7HHVc4PyWX0uCsFKVyW0YSThN4=;
+	s=arc-20240116; t=1741197149; c=relaxed/simple;
+	bh=s/6WJanfV7k5zJ2iXlaaHEOnrzbBuFi4kKhi/KaOKfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udvCFS7AlTNPdev5XyFRaICOI09uEyYnN6ZW0+BhFw1CXBjvDyvd2VD0bDVzpT25qYEETzL+waOAAGfDFikcblDrkLvNS9hIlDFvUyGpq0HFoNuUmsXzHSVNa+g4LXjkSWSfx8WG8mOKOznoGbwu4UgdXzJmWeIjpONYj3nr3R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsFo+lCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A0FC4CEEB;
-	Wed,  5 Mar 2025 18:00:02 +0000 (UTC)
+	 MIME-Version; b=q1UDmZzG4zn7SBsAtS6VkBH5QABlA6HWhGsp4CySmGO5DpFk5ZjEL/WO+slbP+HpZfe1vllRCaZhuPkFag24V/poZSiIOQ3HtnrhxnUyZ43vgFKh5h/khDqXwWpvl3Ou/KXzqEpU4JreVyvtX5EcNkzAnxkVqtYFCaT51RwC+yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sc8Bl2Ag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0985CC4CED1;
+	Wed,  5 Mar 2025 17:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197603;
-	bh=tbbp7U7NJOtNd9sXQ7HHVc4PyWX0uCsFKVyW0YSThN4=;
+	s=korg; t=1741197149;
+	bh=s/6WJanfV7k5zJ2iXlaaHEOnrzbBuFi4kKhi/KaOKfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsFo+lCTQJDdID0ODPVOp0JTmaTnpckoLkamQd72qTBjB2dMb/YHEF+qMhlHbdWbX
-	 KiQt9OYIXN8iPfS5navqjvsjYRUkusMdhsqZkxg/EFAr2m4qQqLJy98zrLOpS5EebJ
-	 IQNH3ld/JlfBikwgQ6uKeTMRMCFshaDCBGhcNCrM=
+	b=Sc8Bl2Ag+AyWBzGj9drkH9q2I6p9L74JpdrN58M2xNZoVVGheaqTtJIIV826cLPfI
+	 rHzsihF7+CvhTCrPzUZkbQmV/ZzwHmxagH/+fCQBmsyoLfUEy0i3E1pOfj7MDTZk9e
+	 Cvjqzsql2RuNyow22D+uA/r3rAN+IVxD4nLyA3JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/142] scsi: ufs: core: Prepare to introduce a new clock_gating lock
+Subject: [PATCH 6.1 056/176] flow_dissector: Fix port range key handling in BPF conversion
 Date: Wed,  5 Mar 2025 18:47:05 +0100
-Message-ID: <20250305174500.593209132@linuxfoundation.org>
+Message-ID: <20250305174507.708072624@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 7869c6521f5715688b3d1f1c897374a68544eef0 ]
+[ Upstream commit 69ab34f705fbfabcace64b5d53bb7a4450fac875 ]
 
-Remove hba->clk_gating.active_reqs check from ufshcd_is_ufs_dev_busy()
-function to separate clock gating logic from general device busy checks.
+Fix how port range keys are handled in __skb_flow_bpf_to_target() by:
+- Separating PORTS and PORTS_RANGE key handling
+- Using correct key_ports_range structure for range keys
+- Properly initializing both key types independently
 
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20241124070808.194860-3-avri.altman@wdc.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 4fa382be4304 ("scsi: ufs: core: Fix ufshcd_is_ufs_dev_busy() and ufshcd_eh_timed_out()")
+This ensures port range information is correctly stored in its dedicated
+structure rather than incorrectly using the regular ports key structure.
+
+Fixes: 59fb9b62fb6c ("flow_dissector: Fix to use new variables for port ranges in bpf hook")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250218043210.732959-4-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/core/flow_dissector.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 83d69e0564f2d..24f8b74e166de 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -245,8 +245,7 @@ static bool ufshcd_has_pending_tasks(struct ufs_hba *hba)
- 
- static bool ufshcd_is_ufs_dev_busy(struct ufs_hba *hba)
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 41ad5c1cccf64..5f50e182acd57 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -829,6 +829,7 @@ static void __skb_flow_bpf_to_target(const struct bpf_flow_keys *flow_keys,
+ 				     struct flow_dissector *flow_dissector,
+ 				     void *target_container)
  {
--	return hba->clk_gating.active_reqs || hba->outstanding_reqs ||
--	       ufshcd_has_pending_tasks(hba);
-+	return hba->outstanding_reqs || ufshcd_has_pending_tasks(hba);
- }
- 
- static const struct ufs_dev_quirk ufs_fixups[] = {
-@@ -1833,7 +1832,9 @@ static void ufshcd_gate_work(struct work_struct *work)
- 		goto rel_lock;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
+ 	struct flow_dissector_key_ports *key_ports = NULL;
+ 	struct flow_dissector_key_control *key_control;
+ 	struct flow_dissector_key_basic *key_basic;
+@@ -873,20 +874,21 @@ static void __skb_flow_bpf_to_target(const struct bpf_flow_keys *flow_keys,
+ 		key_control->addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
  	}
  
--	if (ufshcd_is_ufs_dev_busy(hba) || hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL)
-+	if (ufshcd_is_ufs_dev_busy(hba) ||
-+	    hba->ufshcd_state != UFSHCD_STATE_OPERATIONAL ||
-+	    hba->clk_gating.active_reqs)
- 		goto rel_lock;
+-	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS)) {
+ 		key_ports = skb_flow_dissector_target(flow_dissector,
+ 						      FLOW_DISSECTOR_KEY_PORTS,
+ 						      target_container);
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		key_ports = skb_flow_dissector_target(flow_dissector,
+-						      FLOW_DISSECTOR_KEY_PORTS_RANGE,
+-						      target_container);
+-
+-	if (key_ports) {
+ 		key_ports->src = flow_keys->sport;
+ 		key_ports->dst = flow_keys->dport;
+ 	}
++	if (dissector_uses_key(flow_dissector,
++			       FLOW_DISSECTOR_KEY_PORTS_RANGE)) {
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
++		key_ports_range->tp.src = flow_keys->sport;
++		key_ports_range->tp.dst = flow_keys->dport;
++	}
  
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
-@@ -8196,7 +8197,9 @@ static void ufshcd_rtc_work(struct work_struct *work)
- 	hba = container_of(to_delayed_work(work), struct ufs_hba, ufs_rtc_update_work);
- 
- 	 /* Update RTC only when there are no requests in progress and UFSHCI is operational */
--	if (!ufshcd_is_ufs_dev_busy(hba) && hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL)
-+	if (!ufshcd_is_ufs_dev_busy(hba) &&
-+	    hba->ufshcd_state == UFSHCD_STATE_OPERATIONAL &&
-+	    !hba->clk_gating.active_reqs)
- 		ufshcd_update_rtc(hba);
- 
- 	if (ufshcd_is_ufs_dev_active(hba))
+ 	if (dissector_uses_key(flow_dissector,
+ 			       FLOW_DISSECTOR_KEY_FLOW_LABEL)) {
 -- 
 2.39.5
 
