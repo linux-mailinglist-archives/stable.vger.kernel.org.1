@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-121017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C174A5097E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA13A50781
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 542D316594C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3155A3A3FDA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA575253B6B;
-	Wed,  5 Mar 2025 18:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED5B2512E1;
+	Wed,  5 Mar 2025 17:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uI3etMAG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoLUJK0B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BE9250BF3;
-	Wed,  5 Mar 2025 18:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DAA24C07D;
+	Wed,  5 Mar 2025 17:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198639; cv=none; b=MOuqBEEzqeYvpd41wcDqYxU1nx8aJHml15MJ9Cja5oLhcBxo6ZJOQtUcKeZ5xbCUomL32QxAtBPP5U3UUWs0M+gXCvrxgGbQvkfxY/Aci6O5aF7PHqs5tSTsiv0REhk7jEPVnjmtU08VcaVQ63c6YMDXnfTWqgi4n5BQaI+ACUY=
+	t=1741197442; cv=none; b=Be3bVjdBSFc1BwMUrTyAR5eT8fVy4pGLCNq2rxh/DQiuywF0oabhZMGpxzapLunVlJhoa3d/Dyb+vnKdr1BgA08Cp1A7ASVWrUwTQm0R8asBoSZEFdaeaUJ97tpWj2UTcbJockc45aiY5NeSUu/e2ImLtdmw3TdrBeNRMI5+d58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198639; c=relaxed/simple;
-	bh=K11Zdvjv/TzhbfPnZouqpnYgLDHzZZMZ7qROIwJZbDw=;
+	s=arc-20240116; t=1741197442; c=relaxed/simple;
+	bh=jnph49W75XbROrdH5bRw1G2RRq68DQm5Ei2IttGo+gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hFh9X4dP5L/Eky+XkUlExYdldPOpUmjXy0qOSTZvbXvTlsztWT5hmG66KLXo6tRl7Dxh1CM+zGVw/Nv8FRASYRyYIblKZqTKhiJwO1fBHMHcfmz4q51oZKzwiDTd8xhnramVH84UM28oMoBzqxMoh4jK0LGEYsr6Y9R2SSc2QQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uI3etMAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9646C4CED1;
-	Wed,  5 Mar 2025 18:17:18 +0000 (UTC)
+	 MIME-Version; b=VPGdNwy4/QQvpy2tJLbkA6Sj042mTRSvn4lziBBzYSCLaikC5dEqJCEnW+rVxPRcxUiddLlOafr639S0oAxPrM6f/Ya80DrCavvGNTPVVLT0fb2dE3i+7Su/+tJbXDTwmeAKIYsRgGkz9W14mM1Ri8fmbi3d3rnoeHF4bemV93A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoLUJK0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A22C4CED1;
+	Wed,  5 Mar 2025 17:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198639;
-	bh=K11Zdvjv/TzhbfPnZouqpnYgLDHzZZMZ7qROIwJZbDw=;
+	s=korg; t=1741197441;
+	bh=jnph49W75XbROrdH5bRw1G2RRq68DQm5Ei2IttGo+gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uI3etMAG+uzzCmfTNceJAQfStpWhTkNPpMi/w2OL4Y0+JfzeOe0MXavx6d9K0uEwH
-	 mdlDVZ0xnpp/oKPaJZdxPmuv+kBJcIH6eNuPRA7UNcvwR1Lh8lBKkXT8UR0CYqQawe
-	 DocFnKjkY+nSlr4P7xXWfoHXeXC4ayIVZTcZVzcg=
+	b=eoLUJK0BdysFLM0SYi1+veOlFw2GBJfCw7pQmykRHst1zpbJGF5nqHRVM4ZOlMHmJ
+	 Ghb/DDIYEUbcmGUsx++5/A1M1sjicHR6SGXLyEjT40xtJp+qpLVPElDJAxrUOSxdsO
+	 T1kqjMd3gVaswln8rxmLLfLuJz5hQ5TzfqYi5Y+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 090/157] drm/xe/userptr: restore invalidation list on error
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 157/176] net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
 Date: Wed,  5 Mar 2025 18:48:46 +0100
-Message-ID: <20250305174508.925561601@linuxfoundation.org>
+Message-ID: <20250305174511.744472590@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit e043dc16c28c8446e66c55adfe7c6e862a6a7bb7 upstream.
+commit 39ab773e4c120f7f98d759415ccc2aca706bbc10 upstream.
 
-On error restore anything still on the pin_list back to the invalidation
-list on error. For the actual pin, so long as the vma is tracked on
-either list it should get picked up on the next pin, however it looks
-possible for the vma to get nuked but still be present on this per vm
-pin_list leading to corruption. An alternative might be then to instead
-just remove the link when destroying the vma.
+When a DMA mapping error occurs while processing skb frags, it will free
+one more tx_swbd than expected, so fix this off-by-one issue.
 
-v2:
- - Also add some asserts.
- - Keep the overzealous locking so that we are consistent with the docs;
-   updating the docs and related bits will be done as a follow up.
-
-Fixes: ed2bdf3b264d ("drm/xe/vm: Subclass userptr vmas")
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250221143840.167150-4-matthew.auld@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 4e37e928928b730de9aa9a2f5dc853feeebc1742)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-2-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -667,15 +667,16 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
- 
- 	/* Collect invalidated userptrs */
- 	spin_lock(&vm->userptr.invalidated_lock);
-+	xe_assert(vm->xe, list_empty(&vm->userptr.repin_list));
- 	list_for_each_entry_safe(uvma, next, &vm->userptr.invalidated,
- 				 userptr.invalidate_link) {
- 		list_del_init(&uvma->userptr.invalidate_link);
--		list_move_tail(&uvma->userptr.repin_link,
--			       &vm->userptr.repin_list);
-+		list_add_tail(&uvma->userptr.repin_link,
-+			      &vm->userptr.repin_list);
- 	}
- 	spin_unlock(&vm->userptr.invalidated_lock);
- 
--	/* Pin and move to temporary list */
-+	/* Pin and move to bind list */
- 	list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
- 				 userptr.repin_link) {
- 		err = xe_vma_userptr_pin_pages(uvma);
-@@ -691,10 +692,10 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
- 			err = xe_vm_invalidate_vma(&uvma->vma);
- 			xe_vm_unlock(vm);
- 			if (err)
--				return err;
-+				break;
- 		} else {
--			if (err < 0)
--				return err;
-+			if (err)
-+				break;
- 
- 			list_del_init(&uvma->userptr.repin_link);
- 			list_move_tail(&uvma->vma.combined_links.rebind,
-@@ -702,7 +703,19 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
- 		}
- 	}
- 
--	return 0;
-+	if (err) {
-+		down_write(&vm->userptr.notifier_lock);
-+		spin_lock(&vm->userptr.invalidated_lock);
-+		list_for_each_entry_safe(uvma, next, &vm->userptr.repin_list,
-+					 userptr.repin_link) {
-+			list_del_init(&uvma->userptr.repin_link);
-+			list_move_tail(&uvma->userptr.invalidate_link,
-+				       &vm->userptr.invalidated);
-+		}
-+		spin_unlock(&vm->userptr.invalidated_lock);
-+		up_write(&vm->userptr.notifier_lock);
-+	}
-+	return err;
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -123,6 +123,24 @@ static int enetc_ptp_parse(struct sk_buf
+ 	return 0;
  }
  
- /**
-@@ -1066,6 +1079,7 @@ static void xe_vma_destroy(struct xe_vma
- 		xe_assert(vm->xe, vma->gpuva.flags & XE_VMA_DESTROYED);
++/**
++ * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer Tx frame
++ * @tx_ring: Pointer to the Tx ring on which the buffer descriptors are located
++ * @count: Number of Tx buffer descriptors which need to be unmapped
++ * @i: Index of the last successfully mapped Tx buffer descriptor
++ */
++static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
++{
++	while (count--) {
++		struct enetc_tx_swbd *tx_swbd = &tx_ring->tx_swbd[i];
++
++		enetc_free_tx_frame(tx_ring, tx_swbd);
++		if (i == 0)
++			i = tx_ring->bd_count;
++		i--;
++	}
++}
++
+ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ {
+ 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+@@ -306,13 +324,7 @@ static int enetc_map_tx_buffs(struct ene
+ dma_err:
+ 	dev_err(tx_ring->dev, "DMA map error");
  
- 		spin_lock(&vm->userptr.invalidated_lock);
-+		xe_assert(vm->xe, list_empty(&to_userptr_vma(vma)->userptr.repin_link));
- 		list_del(&to_userptr_vma(vma)->userptr.invalidate_link);
- 		spin_unlock(&vm->userptr.invalidated_lock);
- 	} else if (!xe_vma_is_null(vma)) {
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
+ 
+ 	return 0;
+ }
 
 
 
