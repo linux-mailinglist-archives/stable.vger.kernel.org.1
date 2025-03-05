@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEAFA5076E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99368A50921
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A2A3AE586
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A703A4260
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD2724C07D;
-	Wed,  5 Mar 2025 17:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5708E253330;
+	Wed,  5 Mar 2025 18:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbeOOoa0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPWCNVzV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1899A481DD;
-	Wed,  5 Mar 2025 17:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A80253322;
+	Wed,  5 Mar 2025 18:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197393; cv=none; b=qezgo1NHQlpaw3FD0+QY4gALm8z7rjZPLtG+aSOi0JEpL8hV1+gdKc0xMQGNhoSHP7LGdVofmd3YKTjF0IelkbP2KFFkBMvuK7XKku1wa1ZJi4cr5NWiCj8EhyxQ1UgiUZtVOLUDfz6XJmAGTCpqS+OVLUWPGCpYmodA7G45ky0=
+	t=1741198481; cv=none; b=I4PLt8MKz12fBZrMME7XVPXcL8P73hHjM7uo1SfYX5cOY0TTk1D9yfNUgYJ6cD/dhpH+tjWSV9n3feoYvPeVDlYM56VcY3l9W4P7YFJaKAf+dtpQz6tXqZlisi4HZFcsQtU9TEaG62NlWKKahSI4Uz0I+cLcMe5qrIdqgl70Tqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197393; c=relaxed/simple;
-	bh=olzgO/hXRWvr6Onqb0LTqTs6h/xwoIvvQsIFx1It030=;
+	s=arc-20240116; t=1741198481; c=relaxed/simple;
+	bh=sGoEVMG7OkNxK29fH5d2xp2nLaPHzH62VoGpgTGvsng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzSF/5dygjA/r+WwiH8Rs5M7PNbsRUlE6vE9xRtTOqoPxBAzgijdLUS313dMolPXszdcktQMec6A4uoayDHoilipNVEU+Pnio8Yy62IvVdYT5JX85UwRo2IWLpRLw4yxs6tn1dvwfebMFNC4+g/PgVdctJYTDPUU4Cb35N6Q4Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbeOOoa0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9550FC4CED1;
-	Wed,  5 Mar 2025 17:56:32 +0000 (UTC)
+	 MIME-Version; b=u3NcSYItUF2qYUj9Xxm15huwpgDDCovWy4tqWoMbjKBwtyOsyaxOpVX7h7+3mNokFidYI65SpG26MQDfzvAcbREtQOgCeVEjt/tEb1hAXJ/qffsYaY7ZwqDHHiU3tYzNjs++tDirCEXM+pzJ5pNKXu1XHA6W+KYeU+d6y+eY5jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPWCNVzV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD35C4CEE2;
+	Wed,  5 Mar 2025 18:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197393;
-	bh=olzgO/hXRWvr6Onqb0LTqTs6h/xwoIvvQsIFx1It030=;
+	s=korg; t=1741198480;
+	bh=sGoEVMG7OkNxK29fH5d2xp2nLaPHzH62VoGpgTGvsng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SbeOOoa0+M5x0Ix7nt2NWdttNBhI/6xe7+0/GKAdoxqsFzBSwJFooZfeFNgNfs2KJ
-	 O0A5l1TAoPdoGmWzIYCiObtR/+/jMAvo+/WJi1jvqPnYfZNbgolv9XdocSumvLW3Bl
-	 wJrSeJ2suscpSwbi1U4J76gBYJ9W/eGXA1db7F5k=
+	b=HPWCNVzVxgAx2UPBi0MeVZPSLRXfBPK99altl47zZ69JfieIyAbFBZBgKGai5A03B
+	 eczjdOEL9VrS83OpOa3qPQZ/o7WsedFk+oso3hlEXCiy98g+EHoKm0WiDUtCMCwg4r
+	 D0kHGiuFf3J1apLV5MyP/hdMqoU2TQx+xDD6rMik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Zhang <markzhang@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/176] RDMA/mlx: Calling qp event handler in workqueue context
+Subject: [PATCH 6.13 042/157] ASoC: cs35l56: Prevent races when soft-resetting using SPI control
 Date: Wed,  5 Mar 2025 18:47:58 +0100
-Message-ID: <20250305174509.842851865@linuxfoundation.org>
+Message-ID: <20250305174506.990258358@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,504 +62,264 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 312b8f79eb05479628ee71357749815b2eeeeea8 ]
+[ Upstream commit 769c1b79295c38d60fde4c0a8f5f31e01360c54f ]
 
-Move the call of qp event handler from atomic to workqueue context,
-so that the handler is able to block. This is needed by following
-patches.
+When SPI is used for control, the driver must hold the SPI bus lock
+while issuing the sequence of writes to perform a soft reset.
 
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Link: https://lore.kernel.org/r/0cd17b8331e445f03942f4bb28d447f24ac5669d.1672821186.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: c534ffda781f ("RDMA/mlx5: Fix AH static rate parsing")
+>From the time the driver writes the SYSTEM_RESET command until the
+driver does a write to terminate the reset, there must not be any
+activity on the SPI bus lines. If there is any SPI activity during the
+soft-reset, another soft-reset will be triggered. The state of the SPI
+chip select is irrelevant.
+
+A repeated soft-reset does not in itself cause any problems, and it is
+not an infinite loop. The problem is a race between these resets and
+the driver polling for boot completion. There is a time window between
+soft resets where the driver could read HALO_STATE as 2 (fully booted)
+while the chip is actually soft-resetting. Although this window is
+small, it is long enough that it is possible to hit it in normal
+operation.
+
+To prevent this race and ensure the chip really is fully booted, the
+driver calls spi_bus_lock() to prevent other activity while resetting.
+It then issues the SYSTEM_RESET mailbox command. After allowing
+sufficient time for reset to take effect, the driver issues a PING
+mailbox command, which will force completion of the full soft-reset
+sequence. The SPI bus lock can then be released. The mailbox is
+checked for any boot or wakeup response from the firmware, before the
+value in HALO_STATE will be trusted.
+
+This does not affect SoundWire or I2C control.
+
+Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250225131843.113752-3-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/main.c       |   8 ++
- drivers/infiniband/hw/mlx4/mlx4_ib.h    |   3 +
- drivers/infiniband/hw/mlx4/qp.c         | 121 +++++++++++++++++-------
- drivers/infiniband/hw/mlx5/main.c       |   7 ++
- drivers/infiniband/hw/mlx5/qp.c         | 119 ++++++++++++++++-------
- drivers/infiniband/hw/mlx5/qp.h         |   2 +
- drivers/infiniband/hw/mlx5/qpc.c        |   3 +-
- drivers/net/ethernet/mellanox/mlx4/qp.c |  14 ++-
- include/linux/mlx4/qp.h                 |   1 +
- include/rdma/ib_verbs.h                 |   2 +-
- 10 files changed, 202 insertions(+), 78 deletions(-)
+ include/sound/cs35l56.h           | 31 ++++++++++++
+ sound/pci/hda/cs35l56_hda_spi.c   |  3 ++
+ sound/soc/codecs/cs35l56-shared.c | 80 +++++++++++++++++++++++++++++++
+ sound/soc/codecs/cs35l56-spi.c    |  3 ++
+ 4 files changed, 117 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx4/main.c b/drivers/infiniband/hw/mlx4/main.c
-index 7c3dc86ab7f04..0f0b130cc8aac 100644
---- a/drivers/infiniband/hw/mlx4/main.c
-+++ b/drivers/infiniband/hw/mlx4/main.c
-@@ -3307,6 +3307,10 @@ static int __init mlx4_ib_init(void)
- 	if (!wq)
- 		return -ENOMEM;
+diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
+index 3dc7a1551ac35..5d653a3491d07 100644
+--- a/include/sound/cs35l56.h
++++ b/include/sound/cs35l56.h
+@@ -12,6 +12,7 @@
+ #include <linux/firmware/cirrus/cs_dsp.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
++#include <linux/spi/spi.h>
+ #include <sound/cs-amp-lib.h>
  
-+	err = mlx4_ib_qp_event_init();
-+	if (err)
-+		goto clean_qp_event;
+ #define CS35L56_DEVID					0x0000000
+@@ -61,6 +62,7 @@
+ #define CS35L56_IRQ1_MASK_8				0x000E0AC
+ #define CS35L56_IRQ1_MASK_18				0x000E0D4
+ #define CS35L56_IRQ1_MASK_20				0x000E0DC
++#define CS35L56_DSP_MBOX_1_RAW				0x0011000
+ #define CS35L56_DSP_VIRTUAL1_MBOX_1			0x0011020
+ #define CS35L56_DSP_VIRTUAL1_MBOX_2			0x0011024
+ #define CS35L56_DSP_VIRTUAL1_MBOX_3			0x0011028
+@@ -224,6 +226,7 @@
+ #define CS35L56_HALO_STATE_SHUTDOWN			1
+ #define CS35L56_HALO_STATE_BOOT_DONE			2
+ 
++#define CS35L56_MBOX_CMD_PING				0x0A000000
+ #define CS35L56_MBOX_CMD_AUDIO_PLAY			0x0B000001
+ #define CS35L56_MBOX_CMD_AUDIO_PAUSE			0x0B000002
+ #define CS35L56_MBOX_CMD_AUDIO_REINIT			0x0B000003
+@@ -254,6 +257,16 @@
+ #define CS35L56_NUM_BULK_SUPPLIES			3
+ #define CS35L56_NUM_DSP_REGIONS				5
+ 
++/* Additional margin for SYSTEM_RESET to control port ready on SPI */
++#define CS35L56_SPI_RESET_TO_PORT_READY_US (CS35L56_CONTROL_PORT_READY_US + 2500)
 +
- 	err = mlx4_ib_cm_init();
- 	if (err)
- 		goto clean_wq;
-@@ -3328,6 +3332,9 @@ static int __init mlx4_ib_init(void)
- 	mlx4_ib_cm_destroy();
- 
- clean_wq:
-+	mlx4_ib_qp_event_cleanup();
++struct cs35l56_spi_payload {
++	__be32	addr;
++	__be16	pad;
++	__be32	value;
++} __packed;
++static_assert(sizeof(struct cs35l56_spi_payload) == 10);
 +
-+clean_qp_event:
- 	destroy_workqueue(wq);
- 	return err;
- }
-@@ -3337,6 +3344,7 @@ static void __exit mlx4_ib_cleanup(void)
- 	mlx4_unregister_interface(&mlx4_ib_interface);
- 	mlx4_ib_mcg_destroy();
- 	mlx4_ib_cm_destroy();
-+	mlx4_ib_qp_event_cleanup();
- 	destroy_workqueue(wq);
- }
- 
-diff --git a/drivers/infiniband/hw/mlx4/mlx4_ib.h b/drivers/infiniband/hw/mlx4/mlx4_ib.h
-index 6a3b0f121045e..17fee1e73a45a 100644
---- a/drivers/infiniband/hw/mlx4/mlx4_ib.h
-+++ b/drivers/infiniband/hw/mlx4/mlx4_ib.h
-@@ -940,4 +940,7 @@ int mlx4_ib_umem_calc_optimal_mtt_size(struct ib_umem *umem, u64 start_va,
- int mlx4_ib_cm_init(void);
- void mlx4_ib_cm_destroy(void);
- 
-+int mlx4_ib_qp_event_init(void);
-+void mlx4_ib_qp_event_cleanup(void);
-+
- #endif /* MLX4_IB_H */
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index ac479e81ddee8..9d08aa99f3cb0 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -102,6 +102,14 @@ enum mlx4_ib_source_type {
- 	MLX4_IB_RWQ_SRC	= 1,
+ struct cs35l56_base {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+@@ -269,6 +282,7 @@ struct cs35l56_base {
+ 	s8 cal_index;
+ 	struct cirrus_amp_cal_data cal_data;
+ 	struct gpio_desc *reset_gpio;
++	struct cs35l56_spi_payload *spi_payload_buf;
  };
  
-+struct mlx4_ib_qp_event_work {
-+	struct work_struct work;
-+	struct mlx4_qp *qp;
-+	enum mlx4_event type;
-+};
-+
-+static struct workqueue_struct *mlx4_ib_qp_event_wq;
-+
- static int is_tunnel_qp(struct mlx4_ib_dev *dev, struct mlx4_ib_qp *qp)
- {
- 	if (!mlx4_is_master(dev->dev))
-@@ -200,50 +208,77 @@ static void stamp_send_wqe(struct mlx4_ib_qp *qp, int n)
- 	}
+ static inline bool cs35l56_is_otp_register(unsigned int reg)
+@@ -276,6 +290,23 @@ static inline bool cs35l56_is_otp_register(unsigned int reg)
+ 	return (reg >> 16) == 3;
  }
  
-+static void mlx4_ib_handle_qp_event(struct work_struct *_work)
++static inline int cs35l56_init_config_for_spi(struct cs35l56_base *cs35l56,
++					      struct spi_device *spi)
 +{
-+	struct mlx4_ib_qp_event_work *qpe_work =
-+		container_of(_work, struct mlx4_ib_qp_event_work, work);
-+	struct ib_qp *ibqp = &to_mibqp(qpe_work->qp)->ibqp;
-+	struct ib_event event = {};
-+
-+	event.device = ibqp->device;
-+	event.element.qp = ibqp;
-+
-+	switch (qpe_work->type) {
-+	case MLX4_EVENT_TYPE_PATH_MIG:
-+		event.event = IB_EVENT_PATH_MIG;
-+		break;
-+	case MLX4_EVENT_TYPE_COMM_EST:
-+		event.event = IB_EVENT_COMM_EST;
-+		break;
-+	case MLX4_EVENT_TYPE_SQ_DRAINED:
-+		event.event = IB_EVENT_SQ_DRAINED;
-+		break;
-+	case MLX4_EVENT_TYPE_SRQ_QP_LAST_WQE:
-+		event.event = IB_EVENT_QP_LAST_WQE_REACHED;
-+		break;
-+	case MLX4_EVENT_TYPE_WQ_CATAS_ERROR:
-+		event.event = IB_EVENT_QP_FATAL;
-+		break;
-+	case MLX4_EVENT_TYPE_PATH_MIG_FAILED:
-+		event.event = IB_EVENT_PATH_MIG_ERR;
-+		break;
-+	case MLX4_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
-+		event.event = IB_EVENT_QP_REQ_ERR;
-+		break;
-+	case MLX4_EVENT_TYPE_WQ_ACCESS_ERROR:
-+		event.event = IB_EVENT_QP_ACCESS_ERR;
-+		break;
-+	default:
-+		pr_warn("Unexpected event type %d on QP %06x\n",
-+			qpe_work->type, qpe_work->qp->qpn);
-+		goto out;
-+	}
-+
-+	ibqp->event_handler(&event, ibqp->qp_context);
-+
-+out:
-+	mlx4_put_qp(qpe_work->qp);
-+	kfree(qpe_work);
-+}
-+
- static void mlx4_ib_qp_event(struct mlx4_qp *qp, enum mlx4_event type)
- {
--	struct ib_event event;
- 	struct ib_qp *ibqp = &to_mibqp(qp)->ibqp;
-+	struct mlx4_ib_qp_event_work *qpe_work;
- 
- 	if (type == MLX4_EVENT_TYPE_PATH_MIG)
- 		to_mibqp(qp)->port = to_mibqp(qp)->alt_port;
- 
--	if (ibqp->event_handler) {
--		event.device     = ibqp->device;
--		event.element.qp = ibqp;
--		switch (type) {
--		case MLX4_EVENT_TYPE_PATH_MIG:
--			event.event = IB_EVENT_PATH_MIG;
--			break;
--		case MLX4_EVENT_TYPE_COMM_EST:
--			event.event = IB_EVENT_COMM_EST;
--			break;
--		case MLX4_EVENT_TYPE_SQ_DRAINED:
--			event.event = IB_EVENT_SQ_DRAINED;
--			break;
--		case MLX4_EVENT_TYPE_SRQ_QP_LAST_WQE:
--			event.event = IB_EVENT_QP_LAST_WQE_REACHED;
--			break;
--		case MLX4_EVENT_TYPE_WQ_CATAS_ERROR:
--			event.event = IB_EVENT_QP_FATAL;
--			break;
--		case MLX4_EVENT_TYPE_PATH_MIG_FAILED:
--			event.event = IB_EVENT_PATH_MIG_ERR;
--			break;
--		case MLX4_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
--			event.event = IB_EVENT_QP_REQ_ERR;
--			break;
--		case MLX4_EVENT_TYPE_WQ_ACCESS_ERROR:
--			event.event = IB_EVENT_QP_ACCESS_ERR;
--			break;
--		default:
--			pr_warn("Unexpected event type %d "
--			       "on QP %06x\n", type, qp->qpn);
--			return;
--		}
-+	if (!ibqp->event_handler)
-+		goto out_no_handler;
- 
--		ibqp->event_handler(&event, ibqp->qp_context);
--	}
-+	qpe_work = kzalloc(sizeof(*qpe_work), GFP_ATOMIC);
-+	if (!qpe_work)
-+		goto out_no_handler;
-+
-+	qpe_work->qp = qp;
-+	qpe_work->type = type;
-+	INIT_WORK(&qpe_work->work, mlx4_ib_handle_qp_event);
-+	queue_work(mlx4_ib_qp_event_wq, &qpe_work->work);
-+	return;
-+
-+out_no_handler:
-+	mlx4_put_qp(qp);
- }
- 
- static void mlx4_ib_wq_event(struct mlx4_qp *qp, enum mlx4_event type)
-@@ -4472,3 +4507,17 @@ void mlx4_ib_drain_rq(struct ib_qp *qp)
- 
- 	handle_drain_completion(cq, &rdrain, dev);
- }
-+
-+int mlx4_ib_qp_event_init(void)
-+{
-+	mlx4_ib_qp_event_wq = alloc_ordered_workqueue("mlx4_ib_qp_event_wq", 0);
-+	if (!mlx4_ib_qp_event_wq)
++	cs35l56->spi_payload_buf = devm_kzalloc(&spi->dev,
++						sizeof(*cs35l56->spi_payload_buf),
++						GFP_KERNEL | GFP_DMA);
++	if (!cs35l56->spi_payload_buf)
 +		return -ENOMEM;
 +
 +	return 0;
 +}
 +
-+void mlx4_ib_qp_event_cleanup(void)
++static inline bool cs35l56_is_spi(struct cs35l56_base *cs35l56)
 +{
-+	destroy_workqueue(mlx4_ib_qp_event_wq);
++	return IS_ENABLED(CONFIG_SPI_MASTER) && !!cs35l56->spi_payload_buf;
 +}
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 45a414e8d35fa..a22649617e017 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -4410,6 +4410,10 @@ static int __init mlx5_ib_init(void)
++
+ extern const struct regmap_config cs35l56_regmap_i2c;
+ extern const struct regmap_config cs35l56_regmap_spi;
+ extern const struct regmap_config cs35l56_regmap_sdw;
+diff --git a/sound/pci/hda/cs35l56_hda_spi.c b/sound/pci/hda/cs35l56_hda_spi.c
+index d4ee5bb7c4866..9035784669053 100644
+--- a/sound/pci/hda/cs35l56_hda_spi.c
++++ b/sound/pci/hda/cs35l56_hda_spi.c
+@@ -22,6 +22,9 @@ static int cs35l56_hda_spi_probe(struct spi_device *spi)
  		return -ENOMEM;
- 	}
  
-+	ret = mlx5_ib_qp_event_init();
+ 	cs35l56->base.dev = &spi->dev;
++	ret = cs35l56_init_config_for_spi(&cs35l56->base, spi);
 +	if (ret)
-+		goto qp_event_err;
-+
- 	mlx5_ib_odp_init();
- 	ret = mlx5r_rep_init();
- 	if (ret)
-@@ -4427,6 +4431,8 @@ static int __init mlx5_ib_init(void)
- mp_err:
- 	mlx5r_rep_cleanup();
- rep_err:
-+	mlx5_ib_qp_event_cleanup();
-+qp_event_err:
- 	destroy_workqueue(mlx5_ib_event_wq);
- 	free_page((unsigned long)xlt_emergency_page);
- 	return ret;
-@@ -4438,6 +4444,7 @@ static void __exit mlx5_ib_cleanup(void)
- 	auxiliary_driver_unregister(&mlx5r_mp_driver);
- 	mlx5r_rep_cleanup();
++		return ret;
  
-+	mlx5_ib_qp_event_cleanup();
- 	destroy_workqueue(mlx5_ib_event_wq);
- 	free_page((unsigned long)xlt_emergency_page);
+ #ifdef CS35L56_WAKE_HOLD_TIME_US
+ 	cs35l56->base.can_hibernate = true;
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index e0ed4fc11155a..e28bfefa72f33 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -10,6 +10,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
+ #include <linux/types.h>
+ #include <sound/cs-amp-lib.h>
+ 
+@@ -303,6 +304,79 @@ void cs35l56_wait_min_reset_pulse(void)
  }
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index d782a494abcda..43c0123babd10 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -71,6 +71,14 @@ struct mlx5_modify_raw_qp_param {
- 	u32 port;
- };
+ EXPORT_SYMBOL_NS_GPL(cs35l56_wait_min_reset_pulse, "SND_SOC_CS35L56_SHARED");
  
-+struct mlx5_ib_qp_event_work {
-+	struct work_struct work;
-+	struct mlx5_core_qp *qp;
-+	int type;
++static const struct {
++	u32 addr;
++	u32 value;
++} cs35l56_spi_system_reset_stages[] = {
++	{ .addr = CS35L56_DSP_VIRTUAL1_MBOX_1, .value = CS35L56_MBOX_CMD_SYSTEM_RESET },
++	/* The next write is necessary to delimit the soft reset */
++	{ .addr = CS35L56_DSP_MBOX_1_RAW, .value = CS35L56_MBOX_CMD_PING },
 +};
 +
-+static struct workqueue_struct *mlx5_ib_qp_event_wq;
-+
- static void get_cqs(enum ib_qp_type qp_type,
- 		    struct ib_cq *ib_send_cq, struct ib_cq *ib_recv_cq,
- 		    struct mlx5_ib_cq **send_cq, struct mlx5_ib_cq **recv_cq);
-@@ -302,51 +310,78 @@ int mlx5_ib_read_wqe_srq(struct mlx5_ib_srq *srq, int wqe_index, void *buffer,
- 	return mlx5_ib_read_user_wqe_srq(srq, wqe_index, buffer, buflen, bc);
- }
- 
-+static void mlx5_ib_handle_qp_event(struct work_struct *_work)
++static void cs35l56_spi_issue_bus_locked_reset(struct cs35l56_base *cs35l56_base,
++					       struct spi_device *spi)
 +{
-+	struct mlx5_ib_qp_event_work *qpe_work =
-+		container_of(_work, struct mlx5_ib_qp_event_work, work);
-+	struct ib_qp *ibqp = &to_mibqp(qpe_work->qp)->ibqp;
-+	struct ib_event event = {};
++	struct cs35l56_spi_payload *buf = cs35l56_base->spi_payload_buf;
++	struct spi_transfer t = {
++		.tx_buf		= buf,
++		.len		= sizeof(*buf),
++	};
++	struct spi_message m;
++	int i, ret;
 +
-+	event.device = ibqp->device;
-+	event.element.qp = ibqp;
-+	switch (qpe_work->type) {
-+	case MLX5_EVENT_TYPE_PATH_MIG:
-+		event.event = IB_EVENT_PATH_MIG;
-+		break;
-+	case MLX5_EVENT_TYPE_COMM_EST:
-+		event.event = IB_EVENT_COMM_EST;
-+		break;
-+	case MLX5_EVENT_TYPE_SQ_DRAINED:
-+		event.event = IB_EVENT_SQ_DRAINED;
-+		break;
-+	case MLX5_EVENT_TYPE_SRQ_LAST_WQE:
-+		event.event = IB_EVENT_QP_LAST_WQE_REACHED;
-+		break;
-+	case MLX5_EVENT_TYPE_WQ_CATAS_ERROR:
-+		event.event = IB_EVENT_QP_FATAL;
-+		break;
-+	case MLX5_EVENT_TYPE_PATH_MIG_FAILED:
-+		event.event = IB_EVENT_PATH_MIG_ERR;
-+		break;
-+	case MLX5_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
-+		event.event = IB_EVENT_QP_REQ_ERR;
-+		break;
-+	case MLX5_EVENT_TYPE_WQ_ACCESS_ERROR:
-+		event.event = IB_EVENT_QP_ACCESS_ERR;
-+		break;
-+	default:
-+		pr_warn("mlx5_ib: Unexpected event type %d on QP %06x\n",
-+			qpe_work->type, qpe_work->qp->qpn);
-+		goto out;
++	for (i = 0; i < ARRAY_SIZE(cs35l56_spi_system_reset_stages); i++) {
++		buf->addr = cpu_to_be32(cs35l56_spi_system_reset_stages[i].addr);
++		buf->value = cpu_to_be32(cs35l56_spi_system_reset_stages[i].value);
++		spi_message_init_with_transfers(&m, &t, 1);
++		ret = spi_sync_locked(spi, &m);
++		if (ret)
++			dev_warn(cs35l56_base->dev, "spi_sync failed: %d\n", ret);
++
++		usleep_range(CS35L56_SPI_RESET_TO_PORT_READY_US,
++			     2 * CS35L56_SPI_RESET_TO_PORT_READY_US);
++	}
++}
++
++static void cs35l56_spi_system_reset(struct cs35l56_base *cs35l56_base)
++{
++	struct spi_device *spi = to_spi_device(cs35l56_base->dev);
++	unsigned int val;
++	int read_ret, ret;
++
++	/*
++	 * There must not be any other SPI bus activity while the amp is
++	 * soft-resetting.
++	 */
++	ret = spi_bus_lock(spi->controller);
++	if (ret) {
++		dev_warn(cs35l56_base->dev, "spi_bus_lock failed: %d\n", ret);
++		return;
 +	}
 +
-+	ibqp->event_handler(&event, ibqp->qp_context);
++	cs35l56_spi_issue_bus_locked_reset(cs35l56_base, spi);
++	spi_bus_unlock(spi->controller);
 +
-+out:
-+	mlx5_core_res_put(&qpe_work->qp->common);
-+	kfree(qpe_work);
++	/*
++	 * Check firmware boot by testing for a response in MBOX_2.
++	 * HALO_STATE cannot be trusted yet because the reset sequence
++	 * can leave it with stale state. But MBOX is reset.
++	 * The regmap must remain in cache-only until the chip has
++	 * booted, so use a bypassed read.
++	 */
++	ret = read_poll_timeout(regmap_read_bypassed, read_ret,
++				(val > 0) && (val < 0xffffffff),
++				CS35L56_HALO_STATE_POLL_US,
++				CS35L56_HALO_STATE_TIMEOUT_US,
++				false,
++				cs35l56_base->regmap,
++				CS35L56_DSP_VIRTUAL1_MBOX_2,
++				&val);
++	if (ret) {
++		dev_err(cs35l56_base->dev, "SPI reboot timed out(%d): MBOX2=%#x\n",
++			read_ret, val);
++	}
 +}
 +
- static void mlx5_ib_qp_event(struct mlx5_core_qp *qp, int type)
- {
- 	struct ib_qp *ibqp = &to_mibqp(qp)->ibqp;
--	struct ib_event event;
-+	struct mlx5_ib_qp_event_work *qpe_work;
- 
- 	if (type == MLX5_EVENT_TYPE_PATH_MIG) {
- 		/* This event is only valid for trans_qps */
- 		to_mibqp(qp)->port = to_mibqp(qp)->trans_qp.alt_port;
- 	}
- 
--	if (ibqp->event_handler) {
--		event.device     = ibqp->device;
--		event.element.qp = ibqp;
--		switch (type) {
--		case MLX5_EVENT_TYPE_PATH_MIG:
--			event.event = IB_EVENT_PATH_MIG;
--			break;
--		case MLX5_EVENT_TYPE_COMM_EST:
--			event.event = IB_EVENT_COMM_EST;
--			break;
--		case MLX5_EVENT_TYPE_SQ_DRAINED:
--			event.event = IB_EVENT_SQ_DRAINED;
--			break;
--		case MLX5_EVENT_TYPE_SRQ_LAST_WQE:
--			event.event = IB_EVENT_QP_LAST_WQE_REACHED;
--			break;
--		case MLX5_EVENT_TYPE_WQ_CATAS_ERROR:
--			event.event = IB_EVENT_QP_FATAL;
--			break;
--		case MLX5_EVENT_TYPE_PATH_MIG_FAILED:
--			event.event = IB_EVENT_PATH_MIG_ERR;
--			break;
--		case MLX5_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
--			event.event = IB_EVENT_QP_REQ_ERR;
--			break;
--		case MLX5_EVENT_TYPE_WQ_ACCESS_ERROR:
--			event.event = IB_EVENT_QP_ACCESS_ERR;
--			break;
--		default:
--			pr_warn("mlx5_ib: Unexpected event type %d on QP %06x\n", type, qp->qpn);
--			return;
--		}
-+	if (!ibqp->event_handler)
-+		goto out_no_handler;
- 
--		ibqp->event_handler(&event, ibqp->qp_context);
--	}
-+	qpe_work = kzalloc(sizeof(*qpe_work), GFP_ATOMIC);
-+	if (!qpe_work)
-+		goto out_no_handler;
+ static const struct reg_sequence cs35l56_system_reset_seq[] = {
+ 	REG_SEQ0(CS35L56_DSP1_HALO_STATE, 0),
+ 	REG_SEQ0(CS35L56_DSP_VIRTUAL1_MBOX_1, CS35L56_MBOX_CMD_SYSTEM_RESET),
+@@ -315,6 +389,12 @@ void cs35l56_system_reset(struct cs35l56_base *cs35l56_base, bool is_soundwire)
+ 	 * accesses other than the controlled system reset sequence below.
+ 	 */
+ 	regcache_cache_only(cs35l56_base->regmap, true);
 +
-+	qpe_work->qp = qp;
-+	qpe_work->type = type;
-+	INIT_WORK(&qpe_work->work, mlx5_ib_handle_qp_event);
-+	queue_work(mlx5_ib_qp_event_wq, &qpe_work->work);
-+	return;
++	if (cs35l56_is_spi(cs35l56_base)) {
++		cs35l56_spi_system_reset(cs35l56_base);
++		return;
++	}
 +
-+out_no_handler:
-+	mlx5_core_res_put(&qp->common);
- }
+ 	regmap_multi_reg_write_bypassed(cs35l56_base->regmap,
+ 					cs35l56_system_reset_seq,
+ 					ARRAY_SIZE(cs35l56_system_reset_seq));
+diff --git a/sound/soc/codecs/cs35l56-spi.c b/sound/soc/codecs/cs35l56-spi.c
+index c101134e85328..ca6c03a8766d3 100644
+--- a/sound/soc/codecs/cs35l56-spi.c
++++ b/sound/soc/codecs/cs35l56-spi.c
+@@ -33,6 +33,9 @@ static int cs35l56_spi_probe(struct spi_device *spi)
  
- static int set_rq_size(struct mlx5_ib_dev *dev, struct ib_qp_cap *cap,
-@@ -5752,3 +5787,17 @@ int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter)
- 	mutex_unlock(&mqp->mutex);
- 	return err;
- }
-+
-+int mlx5_ib_qp_event_init(void)
-+{
-+	mlx5_ib_qp_event_wq = alloc_ordered_workqueue("mlx5_ib_qp_event_wq", 0);
-+	if (!mlx5_ib_qp_event_wq)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+void mlx5_ib_qp_event_cleanup(void)
-+{
-+	destroy_workqueue(mlx5_ib_qp_event_wq);
-+}
-diff --git a/drivers/infiniband/hw/mlx5/qp.h b/drivers/infiniband/hw/mlx5/qp.h
-index 5d4e140db99ce..fb2f4e030bb8f 100644
---- a/drivers/infiniband/hw/mlx5/qp.h
-+++ b/drivers/infiniband/hw/mlx5/qp.h
-@@ -44,4 +44,6 @@ void mlx5_core_res_put(struct mlx5_core_rsc_common *res);
- int mlx5_core_xrcd_alloc(struct mlx5_ib_dev *dev, u32 *xrcdn);
- int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn);
- int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter);
-+int mlx5_ib_qp_event_init(void);
-+void mlx5_ib_qp_event_cleanup(void);
- #endif /* _MLX5_IB_QP_H */
-diff --git a/drivers/infiniband/hw/mlx5/qpc.c b/drivers/infiniband/hw/mlx5/qpc.c
-index d4e7864c56f18..a824ff22f4615 100644
---- a/drivers/infiniband/hw/mlx5/qpc.c
-+++ b/drivers/infiniband/hw/mlx5/qpc.c
-@@ -135,7 +135,8 @@ static int rsc_event_notifier(struct notifier_block *nb,
- 	case MLX5_RES_SQ:
- 		qp = (struct mlx5_core_qp *)common;
- 		qp->event(qp, event_type);
--		break;
-+		/* Need to put resource in event handler */
-+		return NOTIFY_OK;
- 	case MLX5_RES_DCT:
- 		dct = (struct mlx5_core_dct *)common;
- 		if (event_type == MLX5_EVENT_TYPE_DCT_DRAINED)
-diff --git a/drivers/net/ethernet/mellanox/mlx4/qp.c b/drivers/net/ethernet/mellanox/mlx4/qp.c
-index 48cfaa7eaf50c..913ed255990f4 100644
---- a/drivers/net/ethernet/mellanox/mlx4/qp.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/qp.c
-@@ -46,6 +46,13 @@
- #define MLX4_BF_QP_SKIP_MASK	0xc0
- #define MLX4_MAX_BF_QP_RANGE	0x40
+ 	cs35l56->base.dev = &spi->dev;
+ 	cs35l56->base.can_hibernate = true;
++	ret = cs35l56_init_config_for_spi(&cs35l56->base, spi);
++	if (ret)
++		return ret;
  
-+void mlx4_put_qp(struct mlx4_qp *qp)
-+{
-+	if (refcount_dec_and_test(&qp->refcount))
-+		complete(&qp->free);
-+}
-+EXPORT_SYMBOL_GPL(mlx4_put_qp);
-+
- void mlx4_qp_event(struct mlx4_dev *dev, u32 qpn, int event_type)
- {
- 	struct mlx4_qp_table *qp_table = &mlx4_priv(dev)->qp_table;
-@@ -64,10 +71,8 @@ void mlx4_qp_event(struct mlx4_dev *dev, u32 qpn, int event_type)
- 		return;
- 	}
- 
-+	/* Need to call mlx4_put_qp() in event handler */
- 	qp->event(qp, event_type);
--
--	if (refcount_dec_and_test(&qp->refcount))
--		complete(&qp->free);
- }
- 
- /* used for INIT/CLOSE port logic */
-@@ -523,8 +528,7 @@ EXPORT_SYMBOL_GPL(mlx4_qp_remove);
- 
- void mlx4_qp_free(struct mlx4_dev *dev, struct mlx4_qp *qp)
- {
--	if (refcount_dec_and_test(&qp->refcount))
--		complete(&qp->free);
-+	mlx4_put_qp(qp);
- 	wait_for_completion(&qp->free);
- 
- 	mlx4_qp_free_icm(dev, qp->qpn);
-diff --git a/include/linux/mlx4/qp.h b/include/linux/mlx4/qp.h
-index b6b626157b03a..b9a7b1319f5d3 100644
---- a/include/linux/mlx4/qp.h
-+++ b/include/linux/mlx4/qp.h
-@@ -504,4 +504,5 @@ static inline u16 folded_qp(u32 q)
- 
- u16 mlx4_qp_roce_entropy(struct mlx4_dev *dev, u32 qpn);
- 
-+void mlx4_put_qp(struct mlx4_qp *qp);
- #endif /* MLX4_QP_H */
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index 5582509003264..68fd6d22adfd4 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -1162,7 +1162,7 @@ enum ib_qp_create_flags {
-  */
- 
- struct ib_qp_init_attr {
--	/* Consumer's event_handler callback must not block */
-+	/* This callback occurs in workqueue context */
- 	void                  (*event_handler)(struct ib_event *, void *);
- 
- 	void		       *qp_context;
+ 	ret = cs35l56_common_probe(cs35l56);
+ 	if (ret != 0)
 -- 
 2.39.5
 
