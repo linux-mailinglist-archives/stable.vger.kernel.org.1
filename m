@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-120899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD48CA508F5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:13:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CC1A50844
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AC7218971D5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE523A6896
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52BC25178A;
-	Wed,  5 Mar 2025 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C347E1C863D;
+	Wed,  5 Mar 2025 18:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v58GgL+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7Tr86xf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A90F1C5D4E;
-	Wed,  5 Mar 2025 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821C717B505;
+	Wed,  5 Mar 2025 18:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198297; cv=none; b=Jp1PN4NxZ2NUZFzjGt9OD/k3QljK+iVXaJIHhhh8CsQQG9qfcGERVXE14RYR4FvALVnBiv5CoPR0dg47PjwvQXYCZQiVkJHBPfDXQgCN1q4fc/G/DAAqyOO8q+Jy5T/hdMgUpRpGCo3OALj8vRoLtCjF0BGYa+KCX5J45dPzUrY=
+	t=1741197925; cv=none; b=WRKUKaAb3VUMN9/6hjn1dTKPUgaT6Z9rUwizaV7PjCgMHHL7hXs7TMCwkaHxKSg8T/aZC5CGwtgmYvajjo5yb2cgLnSMtodWwcINAeg7DaFvESm24RGcV17+LXVmd2pBLVmE8eIgCMmNYAHT82S73JIRGd+yUyoHb3qbYWJ/Ozs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198297; c=relaxed/simple;
-	bh=mnPPcsfaz1hvNV5omwf7RxxZ7gpMxirHf2PBOQMK3XY=;
+	s=arc-20240116; t=1741197925; c=relaxed/simple;
+	bh=DNslw0S+cfmswe1IKmvROcuyHkb0jMKkGPcdr22SFTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BluI903gCeF6mc2PKaxdZQlLmxu/9xpPRJfNx+1nvABj8qSYWx8kFDXBSZ3OAASH3HdsiGPrGyn87MYa8jFcinv8OtNiOhOrHn9fnKcySOGwk5mktk0H5kDG33Tn4c8Uq9D5LA/2F+wzXQBqQ3TCb9OXSId+HekQOlUjpUzirqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v58GgL+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B02C4CED1;
-	Wed,  5 Mar 2025 18:11:36 +0000 (UTC)
+	 MIME-Version; b=qb09qrv2Y4FfbJoaxADnxBXJqdJvjF/m3YeZomfkZ7IWoJO5g3j+WFwFWk8xR2f3ooINWyP1rrrMJNT2OcGVtjDieomOldOgFKP4a4Rn6YLjlJ53j8+I8v/HMb7eL09q/fMYdI5PlqKTkPplToZf5AXQpWHm/oshnsiG5HQ+pc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7Tr86xf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C453C4CED1;
+	Wed,  5 Mar 2025 18:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198297;
-	bh=mnPPcsfaz1hvNV5omwf7RxxZ7gpMxirHf2PBOQMK3XY=;
+	s=korg; t=1741197925;
+	bh=DNslw0S+cfmswe1IKmvROcuyHkb0jMKkGPcdr22SFTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v58GgL+L973lVUaW5ZdSYJB21Y4BKby7YF/XjeToPmryWYSZsF257kfk15IviKS9Z
-	 prLHZEMLFQvdy2n7EMAirI6BXkRY500vnbXGN8jQ1LplsQ5lggCQKlt3+zc5GeT3y2
-	 i2+SFh7Meeiskt47v1o1wwlJOrx22ou7AjLqgW84=
+	b=o7Tr86xfLtCSHwWoCECnRkB058px2p79Qxdlhdc9uIMvi9mVUet+BBCZNL5KAiZT3
+	 +cpeXvCun0KjTp4bVhIRASCKxMikhrP/4V0UVspKlHECrS4x8eSNq9lTyEtYqGYFeP
+	 SAcDTpx2iketuGuptq7CEZhaZE/QZWQ2bdE3wJ/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.12 130/150] selftests/landlock: Test TCP accesses with protocol=IPPROTO_TCP
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 140/142] x86/microcode/AMD: Get rid of the _load_microcode_amd() forward declaration
 Date: Wed,  5 Mar 2025 18:49:19 +0100
-Message-ID: <20250305174509.039122542@linuxfoundation.org>
+Message-ID: <20250305174505.961905822@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,183 +59,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit f5534d511bcd273720f168386de74af76e148a9b upstream.
+commit b39c387164879eef71886fc93cee5ca7dd7bf500 upstream
 
-Extend protocol_variant structure with protocol field (Cf. socket(2)).
+Simply move save_microcode_in_initrd() down.
 
-Extend protocol fixture with TCP test suits with protocol=IPPROTO_TCP
-which can be used as an alias for IPPROTO_IP (=0) in socket(2).
+No functional changes.
 
-Signed-off-by: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-Link: https://lore.kernel.org/r/20250205093651.1424339-3-ivanov.mikhail1@huawei-partners.com
-Cc: <stable@vger.kernel.org> # 6.7.x
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250211163648.30531-5-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/common.h   |    1 
- tools/testing/selftests/landlock/net_test.c |   80 +++++++++++++++++++++++-----
- 2 files changed, 67 insertions(+), 14 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |   54 +++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
 
---- a/tools/testing/selftests/landlock/common.h
-+++ b/tools/testing/selftests/landlock/common.h
-@@ -234,6 +234,7 @@ enforce_ruleset(struct __test_metadata *
- struct protocol_variant {
- 	int domain;
- 	int type;
-+	int protocol;
- };
- 
- struct service_fixture {
---- a/tools/testing/selftests/landlock/net_test.c
-+++ b/tools/testing/selftests/landlock/net_test.c
-@@ -85,18 +85,18 @@ static void setup_loopback(struct __test
- 	clear_ambient_cap(_metadata, CAP_NET_ADMIN);
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -597,34 +597,6 @@ void __init load_ucode_amd_bsp(struct ea
+ 		native_rdmsr(MSR_AMD64_PATCH_LEVEL, ed->new_rev, dummy);
  }
  
-+static bool prot_is_tcp(const struct protocol_variant *const prot)
-+{
-+	return (prot->domain == AF_INET || prot->domain == AF_INET6) &&
-+	       prot->type == SOCK_STREAM &&
-+	       (prot->protocol == IPPROTO_TCP || prot->protocol == IPPROTO_IP);
-+}
-+
- static bool is_restricted(const struct protocol_variant *const prot,
- 			  const enum sandbox_type sandbox)
- {
--	switch (prot->domain) {
--	case AF_INET:
--	case AF_INET6:
--		switch (prot->type) {
--		case SOCK_STREAM:
--			return sandbox == TCP_SANDBOX;
--		}
--		break;
--	}
-+	if (sandbox == TCP_SANDBOX)
-+		return prot_is_tcp(prot);
- 	return false;
- }
- 
-@@ -105,7 +105,7 @@ static int socket_variant(const struct s
- 	int ret;
- 
- 	ret = socket(srv->protocol.domain, srv->protocol.type | SOCK_CLOEXEC,
--		     0);
-+		     srv->protocol.protocol);
- 	if (ret < 0)
- 		return -errno;
+-static enum ucode_state _load_microcode_amd(u8 family, const u8 *data, size_t size);
+-
+-static int __init save_microcode_in_initrd(void)
+-{
+-	unsigned int cpuid_1_eax = native_cpuid_eax(1);
+-	struct cpuinfo_x86 *c = &boot_cpu_data;
+-	struct cont_desc desc = { 0 };
+-	enum ucode_state ret;
+-	struct cpio_data cp;
+-
+-	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
+-		return 0;
+-
+-	if (!find_blobs_in_containers(&cp))
+-		return -EINVAL;
+-
+-	scan_containers(cp.data, cp.size, &desc);
+-	if (!desc.mc)
+-		return -EINVAL;
+-
+-	ret = _load_microcode_amd(x86_family(cpuid_1_eax), desc.data, desc.size);
+-	if (ret > UCODE_UPDATED)
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-early_initcall(save_microcode_in_initrd);
+-
+ static inline bool patch_cpus_equivalent(struct ucode_patch *p,
+ 					 struct ucode_patch *n,
+ 					 bool ignore_stepping)
+@@ -1008,6 +980,32 @@ static enum ucode_state load_microcode_a
  	return ret;
-@@ -290,22 +290,48 @@ FIXTURE_TEARDOWN(protocol)
  }
  
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv4_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv4_tcp1) {
-+	/* clang-format on */
-+	.sandbox = NO_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
-+	},
-+};
++static int __init save_microcode_in_initrd(void)
++{
++	unsigned int cpuid_1_eax = native_cpuid_eax(1);
++	struct cpuinfo_x86 *c = &boot_cpu_data;
++	struct cont_desc desc = { 0 };
++	enum ucode_state ret;
++	struct cpio_data cp;
 +
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv4_tcp2) {
- 	/* clang-format on */
- 	.sandbox = NO_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
-+	},
-+};
++	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
++		return 0;
 +
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv6_tcp1) {
-+	/* clang-format on */
-+	.sandbox = NO_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET6,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
- 	},
- };
- 
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv6_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, no_sandbox_with_ipv6_tcp2) {
- 	/* clang-format on */
- 	.sandbox = NO_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET6,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
- 	},
- };
- 
-@@ -372,22 +398,48 @@ FIXTURE_VARIANT_ADD(protocol, no_sandbox
- };
- 
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv4_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv4_tcp1) {
-+	/* clang-format on */
-+	.sandbox = TCP_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
-+	},
-+};
++	if (!find_blobs_in_containers(&cp))
++		return -EINVAL;
 +
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv4_tcp2) {
- 	/* clang-format on */
- 	.sandbox = TCP_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
-+	},
-+};
++	scan_containers(cp.data, cp.size, &desc);
++	if (!desc.mc)
++		return -EINVAL;
 +
-+/* clang-format off */
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv6_tcp1) {
-+	/* clang-format on */
-+	.sandbox = TCP_SANDBOX,
-+	.prot = {
-+		.domain = AF_INET6,
-+		.type = SOCK_STREAM,
-+		/* IPPROTO_IP == 0 */
-+		.protocol = IPPROTO_IP,
- 	},
- };
- 
- /* clang-format off */
--FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv6_tcp) {
-+FIXTURE_VARIANT_ADD(protocol, tcp_sandbox_with_ipv6_tcp2) {
- 	/* clang-format on */
- 	.sandbox = TCP_SANDBOX,
- 	.prot = {
- 		.domain = AF_INET6,
- 		.type = SOCK_STREAM,
-+		.protocol = IPPROTO_TCP,
- 	},
- };
- 
++	ret = _load_microcode_amd(x86_family(cpuid_1_eax), desc.data, desc.size);
++	if (ret > UCODE_UPDATED)
++		return -EINVAL;
++
++	return 0;
++}
++early_initcall(save_microcode_in_initrd);
++
+ /*
+  * AMD microcode firmware naming convention, up to family 15h they are in
+  * the legacy file:
 
 
 
