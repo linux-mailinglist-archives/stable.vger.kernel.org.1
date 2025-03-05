@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-120711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF59EA507F9
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D41A508CB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09A777A336D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1948C18963E7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A03F250C14;
-	Wed,  5 Mar 2025 18:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6500D252918;
+	Wed,  5 Mar 2025 18:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knsnuDZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzPCj4bb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3517E1C863D;
-	Wed,  5 Mar 2025 18:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236FE2528E0;
+	Wed,  5 Mar 2025 18:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197751; cv=none; b=FxuXXAOkg7NSAD/IZrfEJ0mz2mceNXaVS4BpebD3fgK0o6wXC6SZy1GXNuZDHgl3z2Xk74y/HD4SE8qiMRdR/kJ2nuNTNlgdbIvPnl8qvVRX7P5p/Yfsf7n1quKsqHApSiNtIi6Cc/f5xcwFx+hF0v6fMKtsCwDCD1dZOrlmj0M=
+	t=1741198192; cv=none; b=TnGASO3UQOooxftahEicZI6WvIZYRuDgTwcqkql6Ro60oqx98OORvcsgRyTUxMvgotEYkri8hqDVp+eI0zG6UrJd5GPLJffcnyjd+LWVC6n/LYnx6jXBnb+kMdqsOtnV9URbTdZphHw8rrwwbmfAuyIy5162gT57YfDdksh4+Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197751; c=relaxed/simple;
-	bh=KJfkzv60GgrPAagb56WoMAlzS2oj6BkP56DDn24AYFs=;
+	s=arc-20240116; t=1741198192; c=relaxed/simple;
+	bh=PPbfPL6jbvouscKsfe2kZ+E2ohXBovZ6BKIqmP0y8ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaKtQaUaYKFUjswAjFq9658+YyiNHgAk5cxucfcPhNGLqBnpuhfY0areHJW297KvERPK1LWYKC2HXIBY5ACcHsnowdzN4mawIkM4jSBA1d9z5C+wr1pGs7osL5FDcBU4FsM4LKpANQiq42Y7YpeN4yfxKCNm0k1r5RiBr+c0qmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knsnuDZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9BBC4CED1;
-	Wed,  5 Mar 2025 18:02:30 +0000 (UTC)
+	 MIME-Version; b=iOTyLEzLINQ7Q9UQwzw0LXX6HEJbNNbuSzJcRIIW98ero4S8N7QRF3a/yr95l8DtRezeQ3/hCmzY3ZDM6eLOTPV+Mi7dq5w3/ns75j1iKKNXEGGq1wb/zN1EAkKMcluI2/egHDi9YWXyFafZ+lYpJrgMZXiCXinxhiZr2dnPrGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzPCj4bb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0037C4CED1;
+	Wed,  5 Mar 2025 18:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197751;
-	bh=KJfkzv60GgrPAagb56WoMAlzS2oj6BkP56DDn24AYFs=;
+	s=korg; t=1741198192;
+	bh=PPbfPL6jbvouscKsfe2kZ+E2ohXBovZ6BKIqmP0y8ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knsnuDZnQvQyk9LK5yxWTxcOyV47+noKX40Q0vH6viGwsP3rfiFffEn7cu2Cb0g4i
-	 zV7qy7b3MC+CNmReHSPPe893ccHhJyNjuqoHBzt7NmZpogzXXOW/E+2ssZSxQN8ptL
-	 n0rZlujpWjgmWmWdtH11E9MonP8A1559BRQVzMbk=
+	b=hzPCj4bblmymiA/yuNp0BRdSldyEJz0YPZ34NNQF9Wm/jHZIR8pW286DUiCZe501s
+	 /84iq7F3lU/X25wRHFESOEoWj+izKKcq02fi1Qa2Si9i+do6XmO4gUdWWV5Omij1Gx
+	 4U+ARQ8a5zS0pl7+o1ZZ+NAJbAv1f5NMdmaAvou8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Zong Li <zong.li@sifive.com>,
-	Andy Chiu <AndybnAC@gmail.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 088/142] riscv: signal: fix signal frame size
+	Russell Senior <russell@personaltelco.net>,
+	Ingo Molnar <mingo@kernel.org>,
+	Matthew Whitehead <tedheadster@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>
+Subject: [PATCH 6.12 078/150] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
 Date: Wed,  5 Mar 2025 18:48:27 +0100
-Message-ID: <20250305174503.870325443@linuxfoundation.org>
+Message-ID: <20250305174506.948577174@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Russell Senior <russell@personaltelco.net>
 
-commit aa49bc2ca8524186ceb0811c23a7f00c3dea6987 upstream.
+[ Upstream commit bebe35bb738b573c32a5033499cd59f20293f2a3 ]
 
-The signal context of certain RISC-V extensions will be appended after
-struct __riscv_extra_ext_header, which already includes an empty context
-header. Therefore, there is no need to preserve a separate hdr for the
-END of signal context.
+I still have some Soekris net4826 in a Community Wireless Network I
+volunteer with. These devices use an AMD SC1100 SoC. I am running
+OpenWrt on them, which uses a patched kernel, that naturally has
+evolved over time.  I haven't updated the ones in the field in a
+number of years (circa 2017), but have one in a test bed, where I have
+intermittently tried out test builds.
 
-Fixes: 8ee0b41898fa ("riscv: signal: Add sigcontext save/restore for vector")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Reviewed-by: Andy Chiu <AndybnAC@gmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241220083926.19453-2-yongxuan.wang@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A few years ago, I noticed some trouble, particularly when "warm
+booting", that is, doing a reboot without removing power, and noticed
+the device was hanging after the kernel message:
+
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+
+If I removed power and then restarted, it would boot fine, continuing
+through the message above, thusly:
+
+  [    0.081615] Working around Cyrix MediaGX virtual DMA bugs.
+  [    0.090076] Enable Memory-Write-back mode on Cyrix/NSC processor.
+  [    0.100000] Enable Memory access reorder on Cyrix/NSC processor.
+  [    0.100070] Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+  [    0.110058] Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+  [    0.120037] CPU: NSC Geode(TM) Integrated Processor by National Semi (family: 0x5, model: 0x9, stepping: 0x1)
+  [...]
+
+In order to continue using modern tools, like ssh, to interact with
+the software on these old devices, I need modern builds of the OpenWrt
+firmware on the devices. I confirmed that the warm boot hang was still
+an issue in modern OpenWrt builds (currently using a patched linux
+v6.6.65).
+
+Last night, I decided it was time to get to the bottom of the warm
+boot hang, and began bisecting. From preserved builds, I narrowed down
+the bisection window from late February to late May 2019. During this
+period, the OpenWrt builds were using 4.14.x. I was able to build
+using period-correct Ubuntu 18.04.6. After a number of bisection
+iterations, I identified a kernel bump from 4.14.112 to 4.14.113 as
+the commit that introduced the warm boot hang.
+
+  https://github.com/openwrt/openwrt/commit/07aaa7e3d62ad32767d7067107db64b6ade81537
+
+Looking at the upstream changes in the stable kernel between 4.14.112
+and 4.14.113 (tig v4.14.112..v4.14.113), I spotted a likely suspect:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=20afb90f730982882e65b01fb8bdfe83914339c5
+
+So, I tried reverting just that kernel change on top of the breaking
+OpenWrt commit, and my warm boot hang went away.
+
+Presumably, the warm boot hang is due to some register not getting
+cleared in the same way that a loss of power does. That is
+approximately as much as I understand about the problem.
+
+More poking/prodding and coaching from Jonas Gorski, it looks
+like this test patch fixes the problem on my board: Tested against
+v6.6.67 and v4.14.113.
+
+Fixes: 18fb053f9b82 ("x86/cpu/cyrix: Use correct macros for Cyrix calls on Geode processors")
+Debugged-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Russell Senior <russell@personaltelco.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/CAHP3WfOgs3Ms4Z+L9i0-iBOE21sdMk5erAiJurPjnrL9LSsgRA@mail.gmail.com
+Cc: Matthew Whitehead <tedheadster@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/signal.c |    6 ------
- 1 file changed, 6 deletions(-)
+ arch/x86/kernel/cpu/cyrix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/kernel/signal.c
-+++ b/arch/riscv/kernel/signal.c
-@@ -211,12 +211,6 @@ static size_t get_rt_frame_size(bool cal
- 		if (cal_all || riscv_v_vstate_query(task_pt_regs(current)))
- 			total_context_size += riscv_v_sc_size;
- 	}
--	/*
--	 * Preserved a __riscv_ctx_hdr for END signal context header if an
--	 * extension uses __riscv_extra_ext_header
--	 */
--	if (total_context_size)
--		total_context_size += sizeof(struct __riscv_ctx_hdr);
+diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
+index 9651275aecd1b..dfec2c61e3547 100644
+--- a/arch/x86/kernel/cpu/cyrix.c
++++ b/arch/x86/kernel/cpu/cyrix.c
+@@ -153,8 +153,8 @@ static void geode_configure(void)
+ 	u8 ccr3;
+ 	local_irq_save(flags);
  
- 	frame_size += total_context_size;
+-	/* Suspend on halt power saving and enable #SUSP pin */
+-	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x88);
++	/* Suspend on halt power saving */
++	setCx86(CX86_CCR2, getCx86(CX86_CCR2) | 0x08);
  
+ 	ccr3 = getCx86(CX86_CCR3);
+ 	setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);	/* enable MAPEN */
+-- 
+2.39.5
+
 
 
 
