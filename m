@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-120761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FAFA5083E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C68A508B9
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74E353B08E4
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9BF17A1DD1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76031FC7D0;
-	Wed,  5 Mar 2025 18:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E6F252900;
+	Wed,  5 Mar 2025 18:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfzxT5l2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6xTOTt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A482017B505;
-	Wed,  5 Mar 2025 18:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CC2230BC6;
+	Wed,  5 Mar 2025 18:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197896; cv=none; b=BRfyzl1FZaNrSRGc+/GmGWrNRBDXH2QaDa/WHxfgoWlbf2W4sHv1k0nyXkLYmk7AHfDGaMbwd87zgCY8eUaKqiMRQ047cA2g4lChg2J7abyYcslye9bcKO354P3/xR+vv14HwZtTCoFGd4ZIneZbLBlS0FYINYZnRTKgrzbqf/E=
+	t=1741198282; cv=none; b=NovPGMwaRjdClREJ01yGXzvrZHEqQXkkk3Lpip3a1F/AfoifrW5FDVq7yXEoCZJKe95UMA615x+dBLi0Sd9x9grEsqXEIBMSZ9wLlm2M7NSH1n/bItZLWHmhF40el7yNtFdM+5cWM1AaeBZZL+KwBwkPBVdFfOiKrTbMPGISKVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197896; c=relaxed/simple;
-	bh=QOPeakIYZvuEVW+7/5pkmBo1Sn+wAJRcX2zvt61npFM=;
+	s=arc-20240116; t=1741198282; c=relaxed/simple;
+	bh=GfcA+NFyCyK0osIeC1YVnFfxrJvZN0R+sE/Z36JWM0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mt6XZrr7JkkjScDTjPva+qbkJw3X4P0w/K5iZF9Po/yaS8SCxciQREyYnK1LlxRGcEc1Y/8wkhM29GB06ZVGbCG2YEHTPdKfYQhl2KAOceo4T2azjB3VKaEEq1s/8k8SiXhjmyRrgdaTMbMPTx1H+yCn9h6Q1YVZC1kodttHu10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfzxT5l2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29094C4CED1;
-	Wed,  5 Mar 2025 18:04:55 +0000 (UTC)
+	 MIME-Version; b=PJCOJr62U/9k8T+04buZjZmvwGilnMoMw1+DFU7c9273yXQ9PfPFhvUms/CTH9TMpZtYl/U8VXEuPRbGkAASu0XnO1ktCF7wYY+HCcbCvBoNjlcoqgZa1wMCqGG+mpJGmiz7Ab14EX2gWlBzrusAQEEXi4e8GrvR+5NFQWpOstc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6xTOTt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD3AC4CEE0;
+	Wed,  5 Mar 2025 18:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197896;
-	bh=QOPeakIYZvuEVW+7/5pkmBo1Sn+wAJRcX2zvt61npFM=;
+	s=korg; t=1741198282;
+	bh=GfcA+NFyCyK0osIeC1YVnFfxrJvZN0R+sE/Z36JWM0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfzxT5l2WmB2nyGYy86VajEqmONtonyiJAvRrf5pXF2sgB5Sph/42R+ctvseaDQQQ
-	 6vt+t4AZr9atCMHd061bbg2cCC7k84bTbfUnR+1eIEvrTavtXB8/Wybqy7VWsRopCK
-	 MdOILhO+YnN17QqBb+GjKBXfxm0Vc5i51frWK7Xw=
+	b=E6xTOTt1N+QTrlDvitP0wm5RC67fbhA3abcNBiAw8tISrb4KnjRyKYSNmWI9SeRqn
+	 rbC5GF9YEnhzcvgneGewLWzpDF7ruE9JM8IuFi4uhPU5I3P+yqcqi/HMzxU2rJGyNd
+	 UZaIDzS12pfLjfpEiShK27MDqEFr1PEu6D13tmhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 136/142] x86/microcode/AMD: Return bool from find_blobs_in_containers()
+	Ard Biesheuvel <ardb@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 6.12 126/150] vmlinux.lds: Ensure that const vars with relocations are mapped R/O
 Date: Wed,  5 Mar 2025 18:49:15 +0100
-Message-ID: <20250305174505.799622198@linuxfoundation.org>
+Message-ID: <20250305174508.878215448@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Borisov <nik.borisov@suse.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit a85c08aaa665b5436d325f6d7138732a0e1315ce upstream
+commit 68f3ea7ee199ef77551e090dfef5a49046ea8443 upstream.
 
-Instead of open-coding the check for size/data move it inside the
-function and make it return a boolean indicating whether data was found
-or not.
+In the kernel, there are architectures (x86, arm64) that perform
+boot-time relocation (for KASLR) without relying on PIE codegen. In this
+case, all const global objects are emitted into .rodata, including const
+objects with fields that will be fixed up by the boot-time relocation
+code.  This implies that .rodata (and .text in some cases) need to be
+writable at boot, but they will usually be mapped read-only as soon as
+the boot completes.
 
-No functional changes.
+When using PIE codegen, the compiler will emit const global objects into
+.data.rel.ro rather than .rodata if the object contains fields that need
+such fixups at boot-time. This permits the linker to annotate such
+regions as requiring read-write access only at load time, but not at
+execution time (in user space), while keeping .rodata truly const (in
+user space, this is important for reducing the CoW footprint of dynamic
+executables).
 
-  [ bp: Write @ret in find_blobs_in_containers() only on success. ]
+This distinction does not matter for the kernel, but it does imply that
+const data will end up in writable memory if the .data.rel.ro sections
+are not treated in a special way, as they will end up in the writable
+.data segment by default.
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241018155151.702350-2-nik.borisov@suse.com
+So emit .data.rel.ro into the .rodata segment.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250221135704.431269-5-ardb+git@google.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ include/asm-generic/vmlinux.lds.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -571,14 +571,19 @@ static bool get_builtin_microcode(struct
- 	return false;
- }
- 
--static void __init find_blobs_in_containers(struct cpio_data *ret)
-+static bool __init find_blobs_in_containers(struct cpio_data *ret)
- {
- 	struct cpio_data cp;
-+	bool found;
- 
- 	if (!get_builtin_microcode(&cp))
- 		cp = find_microcode_in_initrd(ucode_path);
- 
--	*ret = cp;
-+	found = cp.data && cp.size;
-+	if (found)
-+		*ret = cp;
-+
-+	return found;
- }
- 
- void __init load_ucode_amd_bsp(struct early_load_data *ed, unsigned int cpuid_1_eax)
-@@ -593,8 +598,7 @@ void __init load_ucode_amd_bsp(struct ea
- 	/* Needed in load_microcode_amd() */
- 	ucode_cpu_info[0].cpu_sig.sig = cpuid_1_eax;
- 
--	find_blobs_in_containers(&cp);
--	if (!(cp.data && cp.size))
-+	if (!find_blobs_in_containers(&cp))
- 		return;
- 
- 	if (early_apply_microcode(ed->old_rev, cp.data, cp.size))
-@@ -614,8 +618,7 @@ static int __init save_microcode_in_init
- 	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
- 		return 0;
- 
--	find_blobs_in_containers(&cp);
--	if (!(cp.data && cp.size))
-+	if (!find_blobs_in_containers(&cp))
- 		return -EINVAL;
- 
- 	scan_containers(cp.data, cp.size, &desc);
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -450,7 +450,7 @@
+ 	. = ALIGN((align));						\
+ 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+ 		__start_rodata = .;					\
+-		*(.rodata) *(.rodata.*)					\
++		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
+ 		SCHED_DATA						\
+ 		RO_AFTER_INIT_DATA	/* Read only after init */	\
+ 		. = ALIGN(8);						\
 
 
 
