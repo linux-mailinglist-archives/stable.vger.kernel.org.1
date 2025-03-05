@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B046A507CC
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BAFA50919
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BB80174EFD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B7B1895F5E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600A124CEE3;
-	Wed,  5 Mar 2025 18:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED33425290D;
+	Wed,  5 Mar 2025 18:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diKis00v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqkzCyDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF1014B075;
-	Wed,  5 Mar 2025 18:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0DB252900;
+	Wed,  5 Mar 2025 18:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197622; cv=none; b=EYQRldHBaMB4818+hnisX4K7rmZSn7yAS8ut6Ji20q9mI7ugY/IXvB1ACD449EV68rJ3P2CMvsAXWikUKHwjeedh9JW4UPNeBDkbYQen2HhYKTaJC8fO0shrEM1GrvQtTlqrOz7rOrqT0kkewXjEggwgUbb5AAvzNsULbGc8rYs=
+	t=1741198407; cv=none; b=RRW2WB3tkIXqvgJCvr95Uwg3TE8j+wHNKe+P60h06lMJJxQepnWTYGvWLy21AAksqbFNRH0YpxHatHrC43XMCkzIWy/2/5n/AgOFCkPhqicyAZf69qFGqZhiBCUDZRdqQAVhFWgbQT/+FoaFnIN5GWCQF/WZhAMUN/zt0zgpdKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197622; c=relaxed/simple;
-	bh=rQO+uO9SujLCI93z0W8xp0QS/0Zb0NE+vaAlSs8maf0=;
+	s=arc-20240116; t=1741198407; c=relaxed/simple;
+	bh=vUb5IHztUJwcp/AyNhZ3bbs8K0DDgKU3lpIuBaEKW/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVo1HrQZb5xwyKoITNgXH49I1aGe/Cj6zFVsnWVKaWkVGvDhwfxg5Ov8lKmM4QmkI7nlfuX0Iavb/VTYyMFsNl4k43ySLduJl8KHP1Bwce7cTEg+DtOqOG/M4DWyrZoTU6Ce0reuLQMnWCEFK2qaw3GD6eX3oK1uTi59HdUPWi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diKis00v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9C5C4CED1;
-	Wed,  5 Mar 2025 18:00:21 +0000 (UTC)
+	 MIME-Version; b=lQulMuwsjWkOS5+zaNNfx0FBdaMk2LobgzMLGZMuuIfyy6jb5wr/5dULe1bZPRRpXjZ7H+3xlO0Cy77k9nLoaxYBbt0kMMamIGauMKCoWSE1gUkrUVvrcY9AC0vkgOuf51iUpFobhj4/uQvFdCETuD/D2ADM5RG/n0FN5kcsf7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqkzCyDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAE3C4CED1;
+	Wed,  5 Mar 2025 18:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197621;
-	bh=rQO+uO9SujLCI93z0W8xp0QS/0Zb0NE+vaAlSs8maf0=;
+	s=korg; t=1741198407;
+	bh=vUb5IHztUJwcp/AyNhZ3bbs8K0DDgKU3lpIuBaEKW/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diKis00vZk5/Sbg86MOZTPyGiauswWI8m8eC3KkYdRjYLe9K2ttDqtRa1bQUwAXAn
-	 fyabs/EEarp3wI2hYFdSPHrFK3yQ3CtyTU/1Y9JFqiZtYgyBvDVdGN9YGZrny+BuaS
-	 K/8tEYSvq1ytOg4llIGkG6X85IX6jVl8iZ82eyCA=
+	b=BqkzCyDFlPI4054GQlpmiO39UM7g9Ak/nNxmdVQlhi8FS6EI6Bx83aIZzqkNKPVxD
+	 CcBewV0Z/DhYYgPjfhIEKRQoPNTpVvL7VIOXjL20FDBeAgO+J9NWS0uOp4H8oLj5eD
+	 2gK+Jb/bIUSAZ/kDV5IszafBlZQ7YP1pbE46vKW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Artemy Kovalyov <artemyko@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/142] firmware: cs_dsp: Remove async regmap writes
+Subject: [PATCH 6.13 018/157] RDMA/mlx5: Fix implicit ODP hang on parent deregistration
 Date: Wed,  5 Mar 2025 18:47:34 +0100
-Message-ID: <20250305174501.747364791@linuxfoundation.org>
+Message-ID: <20250305174506.021743486@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-[ Upstream commit fe08b7d5085a9774abc30c26d5aebc5b9cdd6091 ]
+[ Upstream commit 3d8c6f26893d55fab218ad086719de1fc9bb86ba ]
 
-Change calls to async regmap write functions to use the normal
-blocking writes so that the cs35l56 driver can use spi_bus_lock() to
-gain exclusive access to the SPI bus.
+Fix the destroy_unused_implicit_child_mr() to prevent hanging during
+parent deregistration as of below [1].
 
-As this is part of a fix, it makes only the minimal change to swap the
-functions to the blocking equivalents. There's no need to risk
-reworking the buffer allocation logic that is now partially redundant.
+Upon entering destroy_unused_implicit_child_mr(), the reference count
+for the implicit MR parent is incremented using:
+refcount_inc_not_zero().
 
-The async writes are a 12-year-old workaround for inefficiency of
-synchronous writes in the SPI subsystem. The SPI subsystem has since
-been changed to avoid the overheads, so this workaround should not be
-necessary.
+A corresponding decrement must be performed if
+free_implicit_child_mr_work() is not called.
 
-The cs35l56 driver needs to use spi_bus_lock() prevent bus activity
-while it is soft-resetting the cs35l56. But spi_bus_lock() is
-incompatible with spi_async() calls, which will fail with -EBUSY.
+The code has been updated to properly manage the reference count that
+was incremented.
 
-Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250225131843.113752-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[1]
+INFO: task python3:2157 blocked for more than 120 seconds.
+Not tainted 6.12.0-rc7+ #1633
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:python3         state:D stack:0     pid:2157 tgid:2157  ppid:1685   flags:0x00000000
+Call Trace:
+<TASK>
+__schedule+0x420/0xd30
+schedule+0x47/0x130
+__mlx5_ib_dereg_mr+0x379/0x5d0 [mlx5_ib]
+? __pfx_autoremove_wake_function+0x10/0x10
+ib_dereg_mr_user+0x5f/0x120 [ib_core]
+? lock_release+0xc6/0x280
+destroy_hw_idr_uobject+0x1d/0x60 [ib_uverbs]
+uverbs_destroy_uobject+0x58/0x1d0 [ib_uverbs]
+uobj_destroy+0x3f/0x70 [ib_uverbs]
+ib_uverbs_cmd_verbs+0x3e4/0xbb0 [ib_uverbs]
+? __pfx_uverbs_destroy_def_handler+0x10/0x10 [ib_uverbs]
+? lock_acquire+0xc1/0x2f0
+? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
+? ib_uverbs_ioctl+0x116/0x170 [ib_uverbs]
+? lock_release+0xc6/0x280
+ib_uverbs_ioctl+0xe7/0x170 [ib_uverbs]
+? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
+ __x64_sys_ioctl+0x1b0/0xa70
+? kmem_cache_free+0x221/0x400
+do_syscall_64+0x6b/0x140
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7f20f21f017b
+RSP: 002b:00007ffcfc4a77c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007ffcfc4a78d8 RCX: 00007f20f21f017b
+RDX: 00007ffcfc4a78c0 RSI: 00000000c0181b01 RDI: 0000000000000003
+RBP: 00007ffcfc4a78a0 R08: 000056147d125190 R09: 00007f20f1f14c60
+R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffcfc4a7890
+R13: 000000000000001c R14: 000056147d100fc0 R15: 00007f20e365c9d0
+</TASK>
+
+Fixes: d3d930411ce3 ("RDMA/mlx5: Fix implicit ODP use after free")
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
+Link: https://patch.msgid.link/80f2fcd19952dfa7d9981d93fd6359b4471f8278.1739186929.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ drivers/infiniband/hw/mlx5/odp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index e62ffffe5fb8d..4ce5681be18f0 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1562,8 +1562,8 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 				goto out_fw;
- 			}
- 
--			ret = regmap_raw_write_async(regmap, reg, buf->buf,
--						     le32_to_cpu(region->len));
-+			ret = regmap_raw_write(regmap, reg, buf->buf,
-+					       le32_to_cpu(region->len));
- 			if (ret != 0) {
- 				cs_dsp_err(dsp,
- 					   "%s.%d: Failed to write %d bytes at %d in %s: %d\n",
-@@ -1578,12 +1578,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 		regions++;
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 1d3bf56157702..b4e2a6f9cb9c3 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -242,6 +242,7 @@ static void destroy_unused_implicit_child_mr(struct mlx5_ib_mr *mr)
+ 	if (__xa_cmpxchg(&imr->implicit_children, idx, mr, NULL, GFP_KERNEL) !=
+ 	    mr) {
+ 		xa_unlock(&imr->implicit_children);
++		mlx5r_deref_odp_mkey(&imr->mmkey);
+ 		return;
  	}
- 
--	ret = regmap_async_complete(regmap);
--	if (ret != 0) {
--		cs_dsp_err(dsp, "Failed to complete async write: %d\n", ret);
--		goto out_fw;
--	}
--
- 	if (pos > firmware->size)
- 		cs_dsp_warn(dsp, "%s.%d: %zu bytes at end of file\n",
- 			    file, regions, pos - firmware->size);
-@@ -1591,7 +1585,6 @@ static int cs_dsp_load(struct cs_dsp *dsp, const struct firmware *firmware,
- 	cs_dsp_debugfs_save_wmfwname(dsp, file);
- 
- out_fw:
--	regmap_async_complete(regmap);
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
- 
-@@ -2287,8 +2280,8 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 			cs_dsp_dbg(dsp, "%s.%d: Writing %d bytes at %x\n",
- 				   file, blocks, le32_to_cpu(blk->len),
- 				   reg);
--			ret = regmap_raw_write_async(regmap, reg, buf->buf,
--						     le32_to_cpu(blk->len));
-+			ret = regmap_raw_write(regmap, reg, buf->buf,
-+					       le32_to_cpu(blk->len));
- 			if (ret != 0) {
- 				cs_dsp_err(dsp,
- 					   "%s.%d: Failed to write to %x in %s: %d\n",
-@@ -2300,10 +2293,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 		blocks++;
- 	}
- 
--	ret = regmap_async_complete(regmap);
--	if (ret != 0)
--		cs_dsp_err(dsp, "Failed to complete async write: %d\n", ret);
--
- 	if (pos > firmware->size)
- 		cs_dsp_warn(dsp, "%s.%d: %zu bytes at end of file\n",
- 			    file, blocks, pos - firmware->size);
-@@ -2311,7 +2300,6 @@ static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware
- 	cs_dsp_debugfs_save_binname(dsp, file);
- 
- out_fw:
--	regmap_async_complete(regmap);
- 	cs_dsp_buf_free(&buf_list);
- 	kfree(text);
- 
-@@ -2523,8 +2511,8 @@ static int cs_dsp_adsp2_enable_core(struct cs_dsp *dsp)
- {
- 	int ret;
- 
--	ret = regmap_update_bits_async(dsp->regmap, dsp->base + ADSP2_CONTROL,
--				       ADSP2_SYS_ENA, ADSP2_SYS_ENA);
-+	ret = regmap_update_bits(dsp->regmap, dsp->base + ADSP2_CONTROL,
-+				 ADSP2_SYS_ENA, ADSP2_SYS_ENA);
- 	if (ret != 0)
- 		return ret;
  
 -- 
 2.39.5
