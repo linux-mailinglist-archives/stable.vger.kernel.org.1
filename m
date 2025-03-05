@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C7DA5087D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8D1A507B7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE593A9008
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF77516B73A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231A71C6FF6;
-	Wed,  5 Mar 2025 18:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C76114884C;
+	Wed,  5 Mar 2025 17:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK9u31cN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0qBYtah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C4217B505;
-	Wed,  5 Mar 2025 18:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E01A83E4;
+	Wed,  5 Mar 2025 17:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198053; cv=none; b=oc6xyE6Gr++yYGy+Q5wE9X8FdRHT0v81aoA1OfLzzfIp2xEZW3z+QgkOwW57bBU4kBzyah9MqPwq3b0iSGOO3uzaogyOaoazvJ9Xby3fgODddMztxqnomzSr+IqmkpWZYtIewBPV28YBOaTugbTMoFmmnwdY7tGWlLuOhysYvpI=
+	t=1741197574; cv=none; b=RDCAQTdfqUZCdUrqk5bofUfHboeGH4OFTScy404zmtCalxwE+u8BZ3PZbXvHcVoLqN8as/nCPZQXPSZRVjOXfv5iQdD1U9HrVypYk6wpZvJpioz52VIe6bt1zepXI5U7/o4Ut5ArdkJz7aMGgIIwviOEksu7psjGOaHDKreZb3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198053; c=relaxed/simple;
-	bh=ItaRR86vNvO60RK+zuAHmBf1S14xrKJ0sQxFJ43vMKM=;
+	s=arc-20240116; t=1741197574; c=relaxed/simple;
+	bh=BuwpULTjoKHdpmlFvMJLWhm7feaO1Na2O2bGgcX+20s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwxx/L9FJHh5aPgpCzt2xliB75Xs028luc7B/eq3NE3faixp208m9rbaHxDbkxJ6XDjE1z1e/0pAn2tC5+F3LtIFFcf4gSfIyenrxaOXdRiRzKngYB2DdRzQTe9fKH5HDfsFlabFq+xOyfHXr/YyDvCm5qy33EMqa2IVOxPLzEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK9u31cN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DFDC4CED1;
-	Wed,  5 Mar 2025 18:07:32 +0000 (UTC)
+	 MIME-Version; b=bPkFe2IqVpByZuPdjpS53u87LADeDTk4MLiPqA1sCwhxtxS53c6wSCIOw+ZUFcgVif/O2M6NXjAAzH8GIpgHbEqy1Yo+lYcTFNh2Q1tvK/RncwlfgydsGe+hEoMRz0ACxxkbrSf/4sFLAGfinJ7t0glhO/MnvTA+OFCc1UcyDUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0qBYtah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B58C4CED1;
+	Wed,  5 Mar 2025 17:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198053;
-	bh=ItaRR86vNvO60RK+zuAHmBf1S14xrKJ0sQxFJ43vMKM=;
+	s=korg; t=1741197574;
+	bh=BuwpULTjoKHdpmlFvMJLWhm7feaO1Na2O2bGgcX+20s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GK9u31cNNC8YAU+da8Sw9+XIQI6z+I1U7qqUvBdvQpjHhdAce8pRJkPv3p0UXBhHo
-	 waaHqSiBunAr2p95fHrVOgOQ3xi4HLJxp2WaLBhZ9eRR3XEaoWkgLqBp3hprWtZjiK
-	 jhROqsHM3enHjhtJQAtdUZ9J4m8uLD/cM1AFNevE=
+	b=g0qBYtahUuRhB2Y75CK7js+LKBkjNNK1kjYnhvdw1AotdDTlV8+bJvtgJ9KeVgEWT
+	 0kSXofB4pUiFalCuYks9xk6H+7SCXoxjm8RxkpqawqGex19cr0xPkLZDqWFVcTrYq3
+	 oVaJ7klyRQSeK0/rBgwBagPFpr6ikhQOMEBA9Tpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/150] NFS: O_DIRECT writes must check and adjust the file length
+Subject: [PATCH 6.6 026/142] ipv4: icmp: Unmask upper DSCP bits in icmp_route_lookup()
 Date: Wed,  5 Mar 2025 18:47:25 +0100
-Message-ID: <20250305174504.458766765@linuxfoundation.org>
+Message-ID: <20250305174501.393542069@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit fcf857ee1958e9247298251f7615d0c76f1e9b38 ]
+[ Upstream commit 4805646c42e51d2fbf142864d281473ad453ad5d ]
 
-While it is uncommon for delegations to be held while O_DIRECT writes
-are in progress, it is possible. The xfstests generic/647 and
-generic/729 both end up triggering that state, and end up failing due to
-the fact that the file size is not adjusted.
+The function is called to resolve a route for an ICMP message that is
+sent in response to a situation. Based on the type of the generated ICMP
+message, the function is either passed the DS field of the packet that
+generated the ICMP message or a DS field that is derived from it.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219738
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: 88025c67fe3c ("NFS: Adjust delegated timestamps for O_DIRECT reads and writes")
+Unmask the upper DSCP bits before resolving and output route via
+ip_route_output_key_hash() so that in the future the lookup could be
+performed according to the full DSCP value.
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ net/ipv4/icmp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 90079ca134dd3..2784586f93fc0 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -130,6 +130,20 @@ static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
- 		dreq->count = req_start;
- }
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 3807a269e0755..a154339845dd4 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -93,6 +93,7 @@
+ #include <net/ip_fib.h>
+ #include <net/l3mdev.h>
+ #include <net/addrconf.h>
++#include <net/inet_dscp.h>
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/icmp.h>
  
-+static void nfs_direct_file_adjust_size_locked(struct inode *inode,
-+					       loff_t offset, size_t count)
-+{
-+	loff_t newsize = offset + (loff_t)count;
-+	loff_t oldsize = i_size_read(inode);
-+
-+	if (newsize > oldsize) {
-+		i_size_write(inode, newsize);
-+		NFS_I(inode)->cache_validity &= ~NFS_INO_INVALID_SIZE;
-+		trace_nfs_size_grow(inode, newsize);
-+		nfs_inc_stats(inode, NFSIOS_EXTENDWRITE);
-+	}
-+}
-+
- /**
-  * nfs_swap_rw - NFS address space operation for swap I/O
-  * @iocb: target I/O control block
-@@ -732,6 +746,7 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
- 	struct nfs_direct_req *dreq = hdr->dreq;
- 	struct nfs_commit_info cinfo;
- 	struct nfs_page *req = nfs_list_entry(hdr->pages.next);
-+	struct inode *inode = dreq->inode;
- 	int flags = NFS_ODIRECT_DONE;
- 
- 	trace_nfs_direct_write_completion(dreq);
-@@ -753,6 +768,10 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
- 	}
- 	spin_unlock(&dreq->lock);
- 
-+	spin_lock(&inode->i_lock);
-+	nfs_direct_file_adjust_size_locked(inode, dreq->io_start, dreq->count);
-+	spin_unlock(&inode->i_lock);
-+
- 	while (!list_empty(&hdr->pages)) {
- 
- 		req = nfs_list_entry(hdr->pages.next);
+@@ -502,7 +503,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
+ 	fl4->saddr = saddr;
+ 	fl4->flowi4_mark = mark;
+ 	fl4->flowi4_uid = sock_net_uid(net, NULL);
+-	fl4->flowi4_tos = RT_TOS(tos);
++	fl4->flowi4_tos = tos & INET_DSCP_MASK;
+ 	fl4->flowi4_proto = IPPROTO_ICMP;
+ 	fl4->fl4_icmp_type = type;
+ 	fl4->fl4_icmp_code = code;
 -- 
 2.39.5
 
