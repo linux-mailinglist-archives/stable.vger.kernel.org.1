@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-120686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60724A507E2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 934DAA50935
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C47817483A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BB69165057
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F47F78F3A;
-	Wed,  5 Mar 2025 18:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015B22528F1;
+	Wed,  5 Mar 2025 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7/nURLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nz1+G8uD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF96250C1A;
-	Wed,  5 Mar 2025 18:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B399E1C5D4E;
+	Wed,  5 Mar 2025 18:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197679; cv=none; b=OBh+5kdzgz00OqWNYEI0Mn02TE96teAwxOOOw+ejsniYgL7SFp2u7C3T8mZzsd9QvoLaq08z2rz63mcgF7ua0nPK1/YzKW2LKvJoYJDDdx1q2F6Jt80EAKVbY71pyN6eiOPj6bngkVbr3kodFK7TBjHZdXa43ZzD4GKteVQc/gw=
+	t=1741198489; cv=none; b=U/h4FIRU42dVueL01RiWXsACPpEBK9nRdycS/JMEQyGJhVzurE8/4aBapcAmlOtkxJb7rMrvGGuxNCxcSYT6fAFOWSE9LlxkYuC2lzUKB2tLMwnEL1yhxlJrqb5Mo20B4EySIAlvbovJVZ1hmBt77dhmdprshtDedJbVVITAUqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197679; c=relaxed/simple;
-	bh=ZdSpyPsMk5TiEvzkbNIRHg2wzwy6ITuV96wVqPngvAk=;
+	s=arc-20240116; t=1741198489; c=relaxed/simple;
+	bh=2wWtdTEtxJa17DdQU9WZ6DIG0aGjxJr79O8JHH446R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auK2trMsfS1uOPX4flbfjTIkzxXMfPPaoEMfjI9f31FVePQCbC/9lA6pHdrrl1/IvYIQxHsWcC6ZbqTJ6drxjPe9a6rOTO5kxjcd3L24ZLZsRUdCkxMB6QEGM0Hn/JmtJSq4f4XV4kaYVzaJDlZciwAL5jfw+bvDomb45o0BQD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7/nURLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F36EC4CEE0;
-	Wed,  5 Mar 2025 18:01:18 +0000 (UTC)
+	 MIME-Version; b=IuzPIoHICn0SREvN67kakcEcbThQS7NNtQU6L2J2B8Y//x0P+iDLnF+15a4MbxWjo3bDR7cQkgqu90Nl4vg5+rDU1fg8ncJtuDeNMOCSzD2Z9/UE9K3W1kWdnNpdSXaFvYg7ObWnex0mSNdNffzwS2AsCnRoVlbxTtJv6QFgYQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nz1+G8uD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0E4C4CED1;
+	Wed,  5 Mar 2025 18:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197679;
-	bh=ZdSpyPsMk5TiEvzkbNIRHg2wzwy6ITuV96wVqPngvAk=;
+	s=korg; t=1741198489;
+	bh=2wWtdTEtxJa17DdQU9WZ6DIG0aGjxJr79O8JHH446R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7/nURLHIWD61Pz63Nf+GWf4SyDAJwbeEQCP48fXNcJyYSdnX5ElcXack6eOUrjeH
-	 If3rzRVnUAL6ryeJqlMzIsx36KJBGjMmN+bcg9UL8KMt/RhyNywafGPuDsUHb0tBJo
-	 1wpFGbGdgedefLmNmwm4MDZwymd1CXeDskxDjs5k=
+	b=nz1+G8uDMMzZpUXzBU70SxndRnSUtwQUgrwppJnXMbJKzjKGBYRznRMesRY6JQSPI
+	 fGnbc8tczOECIXMFtm/yEnuPY2V0E5eFDqremxvIioE/CRv79jIQpmH3P2SJ57x6QS
+	 kVpLfglUVUHr6DqQD94LyPJm4+1TCg31RQI/s3Is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Yang <wenyang@linux.alibaba.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 062/142] ftrace: Avoid potential division by zero in function_stat_show()
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Shaoyun Liu <shaoyun.liu@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 045/157] drm/amdgpu/mes: keep enforce isolation up to date
 Date: Wed,  5 Mar 2025 18:48:01 +0100
-Message-ID: <20250305174502.830142337@linuxfoundation.org>
+Message-ID: <20250305174507.114356754@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit a1a7eb89ca0b89dc1c326eeee2596f263291aca3 upstream.
+[ Upstream commit 748a1f51bb74453f1fe22d3ca68a717cb31f02e5 ]
 
-Check whether denominator expression x * (x - 1) * 1000 mod {2^32, 2^64}
-produce zero and skip stddev computation in that case.
+Re-send the mes message on resume to make sure the
+mes state is up to date.
 
-For now don't care about rec->counter * rec->counter overflow because
-rec->time * rec->time overflow will likely happen earlier.
-
-Cc: stable@vger.kernel.org
-Cc: Wen Yang <wenyang@linux.alibaba.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250206090156.1561783-1-kniv@yandex-team.ru
-Fixes: e31f7939c1c27 ("ftrace: Avoid potential division by zero in function profiler")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8521e3c5f058 ("drm/amd/amdgpu: limit single process inside MES")
+Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Shaoyun Liu <shaoyun.liu@amd.com>
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 27b791514789844e80da990c456c2465325e0851)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 13 ++++---------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 20 +++++++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |  2 +-
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |  4 ++++
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c  |  4 ++++
+ 5 files changed, 32 insertions(+), 11 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -538,6 +538,7 @@ static int function_stat_show(struct seq
- 	static struct trace_seq s;
- 	unsigned long long avg;
- 	unsigned long long stddev;
-+	unsigned long long stddev_denom;
- #endif
- 	mutex_lock(&ftrace_profile_lock);
- 
-@@ -559,23 +560,19 @@ static int function_stat_show(struct seq
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- 	seq_puts(m, "    ");
- 
--	/* Sample standard deviation (s^2) */
--	if (rec->counter <= 1)
--		stddev = 0;
--	else {
--		/*
--		 * Apply Welford's method:
--		 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
--		 */
-+	/*
-+	 * Variance formula:
-+	 * s^2 = 1 / (n * (n-1)) * (n * \Sum (x_i)^2 - (\Sum x_i)^2)
-+	 * Maybe Welford's method is better here?
-+	 * Divide only by 1000 for ns^2 -> us^2 conversion.
-+	 * trace_print_graph_duration will divide by 1000 again.
-+	 */
-+	stddev = 0;
-+	stddev_denom = rec->counter * (rec->counter - 1) * 1000;
-+	if (stddev_denom) {
- 		stddev = rec->counter * rec->time_squared -
- 			 rec->time * rec->time;
--
--		/*
--		 * Divide only 1000 for ns^2 -> us^2 conversion.
--		 * trace_print_graph_duration will divide 1000 again.
--		 */
--		stddev = div64_ul(stddev,
--				  rec->counter * (rec->counter - 1) * 1000);
-+		stddev = div64_ul(stddev, stddev_denom);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 11aa55bd16d28..7ec35e3677585 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -1593,24 +1593,19 @@ static ssize_t amdgpu_gfx_set_enforce_isolation(struct device *dev,
  	}
  
- 	trace_seq_init(&s);
+ 	mutex_lock(&adev->enforce_isolation_mutex);
+-
+ 	for (i = 0; i < num_partitions; i++) {
+-		if (adev->enforce_isolation[i] && !partition_values[i]) {
++		if (adev->enforce_isolation[i] && !partition_values[i])
+ 			/* Going from enabled to disabled */
+ 			amdgpu_vmid_free_reserved(adev, AMDGPU_GFXHUB(i));
+-			if (adev->enable_mes && adev->gfx.enable_cleaner_shader)
+-				amdgpu_mes_set_enforce_isolation(adev, i, false);
+-		} else if (!adev->enforce_isolation[i] && partition_values[i]) {
++		else if (!adev->enforce_isolation[i] && partition_values[i])
+ 			/* Going from disabled to enabled */
+ 			amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(i));
+-			if (adev->enable_mes && adev->gfx.enable_cleaner_shader)
+-				amdgpu_mes_set_enforce_isolation(adev, i, true);
+-		}
+ 		adev->enforce_isolation[i] = partition_values[i];
+ 	}
+-
+ 	mutex_unlock(&adev->enforce_isolation_mutex);
+ 
++	amdgpu_mes_update_enforce_isolation(adev);
++
+ 	return count;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+index 59ec20b07a6af..452ca07e7e7d2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -1679,7 +1679,8 @@ bool amdgpu_mes_suspend_resume_all_supported(struct amdgpu_device *adev)
+ }
+ 
+ /* Fix me -- node_id is used to identify the correct MES instances in the future */
+-int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev, uint32_t node_id, bool enable)
++static int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev,
++					    uint32_t node_id, bool enable)
+ {
+ 	struct mes_misc_op_input op_input = {0};
+ 	int r;
+@@ -1701,6 +1702,23 @@ int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev, uint32_t node_i
+ 	return r;
+ }
+ 
++int amdgpu_mes_update_enforce_isolation(struct amdgpu_device *adev)
++{
++	int i, r = 0;
++
++	if (adev->enable_mes && adev->gfx.enable_cleaner_shader) {
++		mutex_lock(&adev->enforce_isolation_mutex);
++		for (i = 0; i < (adev->xcp_mgr ? adev->xcp_mgr->num_xcps : 1); i++) {
++			if (adev->enforce_isolation[i])
++				r |= amdgpu_mes_set_enforce_isolation(adev, i, true);
++			else
++				r |= amdgpu_mes_set_enforce_isolation(adev, i, false);
++		}
++		mutex_unlock(&adev->enforce_isolation_mutex);
++	}
++	return r;
++}
++
+ #if defined(CONFIG_DEBUG_FS)
+ 
+ static int amdgpu_debugfs_mes_event_log_show(struct seq_file *m, void *unused)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+index c6f93cbd6739f..f089c5087c63d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+@@ -534,6 +534,6 @@ static inline void amdgpu_mes_unlock(struct amdgpu_mes *mes)
+ 
+ bool amdgpu_mes_suspend_resume_all_supported(struct amdgpu_device *adev);
+ 
+-int amdgpu_mes_set_enforce_isolation(struct amdgpu_device *adev, uint32_t node_id, bool enable);
++int amdgpu_mes_update_enforce_isolation(struct amdgpu_device *adev);
+ 
+ #endif /* __AMDGPU_MES_H__ */
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+index 9c905b9e93763..40750e5478efb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -1635,6 +1635,10 @@ static int mes_v11_0_hw_init(struct amdgpu_ip_block *ip_block)
+ 		goto failure;
+ 	}
+ 
++	r = amdgpu_mes_update_enforce_isolation(adev);
++	if (r)
++		goto failure;
++
+ out:
+ 	/*
+ 	 * Disable KIQ ring usage from the driver once MES is enabled.
+diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+index 9ecc5d61e49ba..0921fd8c050da 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -1590,6 +1590,10 @@ static int mes_v12_0_hw_init(struct amdgpu_ip_block *ip_block)
+ 		goto failure;
+ 	}
+ 
++	r = amdgpu_mes_update_enforce_isolation(adev);
++	if (r)
++		goto failure;
++
+ out:
+ 	/*
+ 	 * Disable KIQ ring usage from the driver once MES is enabled.
+-- 
+2.39.5
+
 
 
 
