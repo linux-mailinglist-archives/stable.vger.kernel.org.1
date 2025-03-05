@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-121042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843B6A509DA
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:24:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3996CA508E2
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E497618980F8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3139F17632F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6AB2561BD;
-	Wed,  5 Mar 2025 18:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCD4252903;
+	Wed,  5 Mar 2025 18:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NswrZsXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIgAsEr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B72199E89;
-	Wed,  5 Mar 2025 18:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9246E2517BA;
+	Wed,  5 Mar 2025 18:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198713; cv=none; b=JWjTFIiDoS7Gy9n98cGqsXHcvjuLNHiKXP1Yq406xq30dsouRhOkhCxXc9YoQooZ/9oan+Ib8h+yAyR9ZSJ/jVYV1sSue4fU7XpkHrDOH0i5jwfh7HnDWRPy1/OttkNHNJ76Tq4EyD+2FVz1aDctqTkn/m78/S4lxSYVyF9qjFA=
+	t=1741198291; cv=none; b=pMvBdN2EO+26Aal7gJiUTYB64aqvKMxp5zkC9dSL+ngM6d5Tx69XTTOhpEwDhQJr2c/s52pO73kInr6qzcwDWFHeUgaJM4a3iTFJXyypJCSsYIwzSMmRiM5+tFpptb0hTCRpgw+Okt+ygEQFrfHq/R/gmyOVyxuApAGFHFQW01k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198713; c=relaxed/simple;
-	bh=4BFzAOePrwlW7ulp00xLByXYbb1dRgW8V7maoWsbZ5k=;
+	s=arc-20240116; t=1741198291; c=relaxed/simple;
+	bh=TT16lU57wRpHr9XwyhNKJhktQrPMOiIF2qrXaYW3NLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIGHC1uom62Y+9jxl6i6iDj4LqMPZgK86m8LaBmYEWdep3uoowPOamQT8NEeJ21ZSRSHWs/2K41hYlOjfsPWzZMsMaH/JwudfCZl0fNGHTCR1w7ArDNXGMDN1+UtJTPhAbI9Y3QTdXE6WbYygmsnI+bil4pOBOSO80tcYLz1Oss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NswrZsXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346A6C4CEEB;
-	Wed,  5 Mar 2025 18:18:33 +0000 (UTC)
+	 MIME-Version; b=MaXV1jwNykkzIm+PFOGKmr37/cSfxR4ciKTd8cK/RfiGT8W8cSWY1SZ8Bg5iFfONgzfu/YClch3VhTXGQyAvkvhun/8POwEY8h+1PxJZE6fXC8H/DQnCl52BBw2PCMc/gVyo/rj2ocr4jvJeCQVSwJPBF6ghBu8SXPNjC0sqw4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIgAsEr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1984EC4CED1;
+	Wed,  5 Mar 2025 18:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198713;
-	bh=4BFzAOePrwlW7ulp00xLByXYbb1dRgW8V7maoWsbZ5k=;
+	s=korg; t=1741198291;
+	bh=TT16lU57wRpHr9XwyhNKJhktQrPMOiIF2qrXaYW3NLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NswrZsXbyzVbdq0w9x9DzRYn2HcZeFv/NuJgIRg/u60e1t1Jg+CGe+nHekmX1VcVk
-	 mm7qr2DywJ4uc6aplrDgDDVR3q3d0ERDbYvNn28S4y56i2LhLZYW6LLnl9o/ynuPOd
-	 hi1oBVCzrk0HXKaiIbBWgVG51edHukcbod2H8Nq4=
+	b=KIgAsEr8wdoD6Lz97Avt+VztbMuC/+f5czEvTTXi34CD8xzqLlZbmWNip4ESa1A7Q
+	 nd5jP1OBMjlJSVYaQHfrUuqYXq/jL6NAGPnUmAQ6U2fN3O6zJYsrWIwgNU2YhBsjZi
+	 yL5NheVAjWWURgsFXkYdsvWJdECAe6LxKOh5Fm7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	BH Hsieh <bhsieh@nvidia.com>,
-	Henry Lin <henryl@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.13 121/157] phy: tegra: xusb: reset VBUS & ID OVERRIDE
-Date: Wed,  5 Mar 2025 18:49:17 +0100
-Message-ID: <20250305174510.170035983@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Pat Cody <patcody@meta.com>,
+	Andrea Righi <arighi@nvidia.com>
+Subject: [PATCH 6.12 129/150] sched_ext: Fix pick_task_scx() picking non-queued tasks when its called without balance()
+Date: Wed,  5 Mar 2025 18:49:18 +0100
+Message-ID: <20250305174508.998040345@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: BH Hsieh <bhsieh@nvidia.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit 55f1a5f7c97c3c92ba469e16991a09274410ceb7 upstream.
+commit 8fef0a3b17bb258130a4fcbcb5addf94b25e9ec5 upstream.
 
-Observed VBUS_OVERRIDE & ID_OVERRIDE might be programmed
-with unexpected value prior to XUSB PADCTL driver, this
-could also occur in virtualization scenario.
+a6250aa251ea ("sched_ext: Handle cases where pick_task_scx() is called
+without preceding balance_scx()") added a workaround to handle the cases
+where pick_task_scx() is called without prececing balance_scx() which is due
+to a fair class bug where pick_taks_fair() may return NULL after a true
+return from balance_fair().
 
-For example, UEFI firmware programs ID_OVERRIDE=GROUNDED to set
-a type-c port to host mode and keeps the value to kernel.
-If the type-c port is connected a usb host, below errors can be
-observed right after usb host mode driver gets probed. The errors
-would keep until usb role class driver detects the type-c port
-as device mode and notifies usb device mode driver to set both
-ID_OVERRIDE and VBUS_OVERRIDE to correct value by XUSB PADCTL
-driver.
+The workaround detects when pick_task_scx() is called without preceding
+balance_scx() and emulates SCX_RQ_BAL_KEEP and triggers kicking to avoid
+stalling. Unfortunately, the workaround code was testing whether @prev was
+on SCX to decide whether to keep the task running. This is incorrect as the
+task may be on SCX but no longer runnable.
 
-[  173.765814] usb usb3-port2: Cannot enable. Maybe the USB cable is bad?
-[  173.765837] usb usb3-port2: config error
+This could lead to a non-runnable task to be returned from pick_task_scx()
+which cause interesting confusions and failures. e.g. A common failure mode
+is the task ending up with (!on_rq && on_cpu) state which can cause
+potential wakers to busy loop, which can easily lead to deadlocks.
 
-Taking virtualization into account, asserting XUSB PADCTL
-reset would break XUSB functions used by other guest OS,
-hence only reset VBUS & ID OVERRIDE of the port in
-utmi_phy_init.
+Fix it by testing whether @prev has SCX_TASK_QUEUED set. This makes
+@prev_on_scx only used in one place. Open code the usage and improve the
+comment while at it.
 
-Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
-Cc: stable@vger.kernel.org
-Change-Id: Ic63058d4d49b4a1f8f9ab313196e20ad131cc591
-Signed-off-by: BH Hsieh <bhsieh@nvidia.com>
-Signed-off-by: Henry Lin <henryl@nvidia.com>
-Link: https://lore.kernel.org/r/20250122105943.8057-1-henryl@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Pat Cody <patcody@meta.com>
+Fixes: a6250aa251ea ("sched_ext: Handle cases where pick_task_scx() is called without preceding balance_scx()")
+Cc: stable@vger.kernel.org # v6.12+
+Acked-by: Andrea Righi <arighi@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/sched/ext.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -928,6 +928,7 @@ static int tegra186_utmi_phy_init(struct
- 	unsigned int index = lane->index;
- 	struct device *dev = padctl->dev;
- 	int err;
-+	u32 reg;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3047,7 +3047,6 @@ static struct task_struct *pick_task_scx
+ {
+ 	struct task_struct *prev = rq->curr;
+ 	struct task_struct *p;
+-	bool prev_on_scx = prev->sched_class == &ext_sched_class;
+ 	bool keep_prev = rq->scx.flags & SCX_RQ_BAL_KEEP;
+ 	bool kick_idle = false;
  
- 	port = tegra_xusb_find_usb2_port(padctl, index);
- 	if (!port) {
-@@ -935,6 +936,16 @@ static int tegra186_utmi_phy_init(struct
- 		return -ENODEV;
+@@ -3067,14 +3066,18 @@ static struct task_struct *pick_task_scx
+ 	 * if pick_task_scx() is called without preceding balance_scx().
+ 	 */
+ 	if (unlikely(rq->scx.flags & SCX_RQ_BAL_PENDING)) {
+-		if (prev_on_scx) {
++		if (prev->scx.flags & SCX_TASK_QUEUED) {
+ 			keep_prev = true;
+ 		} else {
+ 			keep_prev = false;
+ 			kick_idle = true;
+ 		}
+-	} else if (unlikely(keep_prev && !prev_on_scx)) {
+-		/* only allowed during transitions */
++	} else if (unlikely(keep_prev &&
++			    prev->sched_class != &ext_sched_class)) {
++		/*
++		 * Can happen while enabling as SCX_RQ_BAL_PENDING assertion is
++		 * conditional on scx_enabled() and may have been skipped.
++		 */
+ 		WARN_ON_ONCE(scx_ops_enable_state() == SCX_OPS_ENABLED);
+ 		keep_prev = false;
  	}
- 
-+	if (port->mode == USB_DR_MODE_OTG ||
-+	    port->mode == USB_DR_MODE_PERIPHERAL) {
-+		/* reset VBUS&ID OVERRIDE */
-+		reg = padctl_readl(padctl, USB2_VBUS_ID);
-+		reg &= ~VBUS_OVERRIDE;
-+		reg &= ~ID_OVERRIDE(~0);
-+		reg |= ID_OVERRIDE_FLOATING;
-+		padctl_writel(padctl, reg, USB2_VBUS_ID);
-+	}
-+
- 	if (port->supply && port->mode == USB_DR_MODE_HOST) {
- 		err = regulator_enable(port->supply);
- 		if (err) {
 
 
 
