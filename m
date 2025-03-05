@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C860CA5070C
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:53:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1F9A507C8
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:00:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1FF13AEC95
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4F0516BB17
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB1A250C1C;
-	Wed,  5 Mar 2025 17:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCC3250C1A;
+	Wed,  5 Mar 2025 18:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHJJrHnF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KywVaXcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9C26ADD;
-	Wed,  5 Mar 2025 17:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12241C860D;
+	Wed,  5 Mar 2025 18:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197155; cv=none; b=GLB0GDGUV8HAp1eRzMeLXcQnTmqUg7paa7ILjlL1bhsHmyz5wuS7JKub2SF+lXgQBtMSvyDWwewXTMmhGBCgZ+KLiQTKs8HNbTzpqMoQUcv3kO0Ax/pa5zM/UEbtcbn63tLaMNBLgG6ePQKIpLdgt/udUGm261AQov7NWBEuE+w=
+	t=1741197613; cv=none; b=rvYjAu6/a4yXTwHLFFXNgE37e2+08YaB0ILzqmC7Zty3HdTvE1tSSZXeYH3pa7O3lTRcftE2lKPyYaoDekD0Vm03e+/Sr5PYWl16Hc3vCfwwvVc5NhPU635FhDpJ1DZb6nmeic/uXDir+BVNB6WuBLqhx37EUIzMlCMNWzhMM8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197155; c=relaxed/simple;
-	bh=Vx7xFHL7D4OYrVA/RPXfxAcE1Pt7053TQqiDa7aZJKA=;
+	s=arc-20240116; t=1741197613; c=relaxed/simple;
+	bh=l7r3f8uYsaOZGskMPS43LoeR/tFJbv0SxHGRo64cWtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8GxlcewO3NCElyHC2YkqP4GzHXbMVYfIbROVnxFsSe5HBwztds29HU5nK2RRpjZTMtVwbaY5HwCacsNJ/+CEjjtWGtsGBs6VN70JcsNZWCkX7L9598xffdRmX6TG6VZjOVWmKyroO+VH3A41ARJJNe7acrSSmuss/5MBv2qTzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHJJrHnF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF5DC4CED1;
-	Wed,  5 Mar 2025 17:52:34 +0000 (UTC)
+	 MIME-Version; b=hlNfritZF4pDccwSGhxs2R5X9CdNj1CgLOButeRLP1euJNronX3y4rd5xABRA//OeOrh1EMvpBA3GxqBVQ+5Y9rIJeeyHPO7uDQ8SQb8RuwjuFiCampAr6mVVDxsznRZ9CXIuH4+braBxTEiK773wrK5RStVsNz+6iA6xEqeGQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KywVaXcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC28C4CED1;
+	Wed,  5 Mar 2025 18:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197154;
-	bh=Vx7xFHL7D4OYrVA/RPXfxAcE1Pt7053TQqiDa7aZJKA=;
+	s=korg; t=1741197612;
+	bh=l7r3f8uYsaOZGskMPS43LoeR/tFJbv0SxHGRo64cWtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHJJrHnFN+lnQ3x86DCrpsUy8u/h/dHMMORdfXIxu8PYvwYtoZxm4auW3owO9Rl5U
-	 LARQfGbZmkK6EiAVK6uUQMQwWblUk4SCSmDMM3Nhy/lgY+dJKTAf9MhJEMDUcrxYty
-	 KqLe41pnNgTwyE58qiC5/UZVFSSUGwVCWnWHNJHg=
+	b=KywVaXcUT3wdFbLBukDCMG+dCpJ4kb1iWqc8uqI8nNVG9JqLEcVAMFc7goHVLwf5J
+	 JwJ/fmzFmygOhqR2COcug4HYGmsudxlpwtM+gkekUGOz+SZsBcqXL110y5DPCc1HDt
+	 lS6n2oOHkOrOUYUE4NJOBq54I1IEZozYCScrgneE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/176] arp: switch to dev_getbyhwaddr() in arp_req_set_public()
-Date: Wed,  5 Mar 2025 18:47:07 +0100
-Message-ID: <20250305174507.787540279@linuxfoundation.org>
+Subject: [PATCH 6.6 009/142] SUNRPC: convert RPC_TASK_* constants to enum
+Date: Wed,  5 Mar 2025 18:47:08 +0100
+Message-ID: <20250305174500.710755586@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
 
-[ Upstream commit 4eae0ee0f1e6256d0b0b9dd6e72f1d9cf8f72e08 ]
+[ Upstream commit 0b108e83795c9c23101f584ef7e3ab4f1f120ef0 ]
 
-The arp_req_set_public() function is called with the rtnl lock held,
-which provides enough synchronization protection. This makes the RCU
-variant of dev_getbyhwaddr() unnecessary. Switch to using the simpler
-dev_getbyhwaddr() function since we already have the required rtnl
-locking.
+The RPC_TASK_* constants are defined as macros, which means that most
+kernel builds will not contain their definitions in the debuginfo.
+However, it's quite useful for debuggers to be able to view the task
+state constant and interpret it correctly. Conversion to an enum will
+ensure the constants are present in debuginfo and can be interpreted by
+debuggers without needing to hard-code them and track their changes.
 
-This change helps maintain consistency in the networking code by using
-the appropriate helper function for the existing locking context.
-Since we're not holding the RCU read lock in arp_req_set_public()
-existing code could trigger false positive locking warnings.
-
-Fixes: 941666c2e3e0 ("net: RCU conversion of dev_getbyhwaddr() and arp_ioctl()")
-Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20250218-arm_fix_selftest-v5-2-d3d6892db9e1@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: 5bbd6e863b15 ("SUNRPC: Prevent looping due to rpc_signal_task() races")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/arp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/sunrpc/sched.h | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-index 8f9b5568f1dc1..50e2b4939d8e9 100644
---- a/net/ipv4/arp.c
-+++ b/net/ipv4/arp.c
-@@ -1030,7 +1030,7 @@ static int arp_req_set_public(struct net *net, struct arpreq *r,
- 	if (mask && mask != htonl(0xFFFFFFFF))
- 		return -EINVAL;
- 	if (!dev && (r->arp_flags & ATF_COM)) {
--		dev = dev_getbyhwaddr_rcu(net, r->arp_ha.sa_family,
-+		dev = dev_getbyhwaddr(net, r->arp_ha.sa_family,
- 				      r->arp_ha.sa_data);
- 		if (!dev)
- 			return -ENODEV;
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index 8f9bee0e21c3b..f80b90aca380a 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -140,13 +140,15 @@ struct rpc_task_setup {
+ #define RPC_WAS_SENT(t)		((t)->tk_flags & RPC_TASK_SENT)
+ #define RPC_IS_MOVEABLE(t)	((t)->tk_flags & RPC_TASK_MOVEABLE)
+ 
+-#define RPC_TASK_RUNNING	0
+-#define RPC_TASK_QUEUED		1
+-#define RPC_TASK_ACTIVE		2
+-#define RPC_TASK_NEED_XMIT	3
+-#define RPC_TASK_NEED_RECV	4
+-#define RPC_TASK_MSG_PIN_WAIT	5
+-#define RPC_TASK_SIGNALLED	6
++enum {
++	RPC_TASK_RUNNING,
++	RPC_TASK_QUEUED,
++	RPC_TASK_ACTIVE,
++	RPC_TASK_NEED_XMIT,
++	RPC_TASK_NEED_RECV,
++	RPC_TASK_MSG_PIN_WAIT,
++	RPC_TASK_SIGNALLED,
++};
+ 
+ #define rpc_test_and_set_running(t) \
+ 				test_and_set_bit(RPC_TASK_RUNNING, &(t)->tk_runstate)
 -- 
 2.39.5
 
