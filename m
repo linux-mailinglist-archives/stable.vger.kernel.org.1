@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4602DA50910
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53AAA50743
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 113647A3818
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 934657A8768
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E681252900;
-	Wed,  5 Mar 2025 18:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA44250BE9;
+	Wed,  5 Mar 2025 17:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayVZIJGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7XB5jFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D28924CEE3;
-	Wed,  5 Mar 2025 18:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4D21C5F2C;
+	Wed,  5 Mar 2025 17:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198419; cv=none; b=ilf76xR6/R3rtTlxZy1cpVf+Z0WCeS8D39iJc4LgAnSvgzBb4V+j8+RfsdIEzwCohBY1PNdSP000fq9IDVYPTv2h3sr/zYn8NEjPMK6imZjnUK8oSXftuSnVzqm/4N3Rl+ULsI1l8JNk08iIWdYQ50IqnY53GvOP9DtebFkixUs=
+	t=1741197285; cv=none; b=tcHbeWZfyO8p25Z4zePeyTLa7NzCjweaf+ZoNSyUgFxi58Sumz/eTxDa+DyU+mK2SivqdV8zlwFqiBk41Ch/4T6Z568iO/XRfdR9eJEQo7aEt9lVwJPxnaX5vymyZ8WWEUH0l8P0smgD1C2EAOH/DLnuIH02CNida0KZ3GFyJ6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198419; c=relaxed/simple;
-	bh=VdDi8kRwidjqMz1V0BSWEMsKpdMHkmNpQ2G8KFJrO3I=;
+	s=arc-20240116; t=1741197285; c=relaxed/simple;
+	bh=V2sqC9QgsLx7I97rF3V93XR500H3a846FBVuCVZy7WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3/x3Ry6vq0yu7KkoFS2bLlOura4DAArspFlMBBaSS7pfGjZpg8tpuXjhPYYeQVpX3QaKsOl9T9IyJKonT4APRCTJLogcFyFT5v1qWjdVwwQqfdsFimLYDN2iXIGDUPDFmu8SXFdkf1QoT5diwKid8v84mKDeDe/tdt7qUMX3k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayVZIJGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E05C4CED1;
-	Wed,  5 Mar 2025 18:13:38 +0000 (UTC)
+	 MIME-Version; b=t3FUS6ypzlbnFTt2aadhhV3qRKHQmo2IZt66PIaCibbqRaqctEfsNXdIg3b/8tj9pn6VW5koJ0cQ9s71t48zevq78K+EG6YKh02DMna5W+Ww4S9iYnJoJmu4qGQInldLnOBgh4YJTDIVfZG2S4i4NZaI70SH/ZU9gwhpV7HSO7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7XB5jFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A7BC4CED1;
+	Wed,  5 Mar 2025 17:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198418;
-	bh=VdDi8kRwidjqMz1V0BSWEMsKpdMHkmNpQ2G8KFJrO3I=;
+	s=korg; t=1741197285;
+	bh=V2sqC9QgsLx7I97rF3V93XR500H3a846FBVuCVZy7WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayVZIJGO/f9x3/+yUN09DXzUtGCvUg+fwGEDioA0ek9sZOQtYzUusJOh1DHPBYqN8
-	 j/2qc8EOvvq25/W0uPXq3UbVQim+VyD4eq8IvOsO0IFcz2lhXnPtfPHRYixbZKE8xP
-	 p4D4Rni9XuNgu2ZU6AMCXP3HkAIZZAwU5W/Iz0PQ=
+	b=u7XB5jFcmjyGnRzrRxb4TJiXlGm/dOAWi6o0gikbOTp1GNBbVWqo5MtBokxRlbNd4
+	 J49jT6SXEQpb8mtnddoXR9Og7i2XZ/zUpbf982qPK1FnbKkXPS1xNLAcVqdyRTlZDl
+	 LsTYBYiStlpv/KgFvXDebyqMHOvUogA33BOYBJL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Yan Zhai <yan@cloudflare.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 004/157] RDMA/mlx5: Fix a WARN during dereg_mr for DM type
+Subject: [PATCH 6.1 071/176] bpf: skip non exist keys in generic_map_lookup_batch
 Date: Wed,  5 Mar 2025 18:47:20 +0100
-Message-ID: <20250305174505.454469195@linuxfoundation.org>
+Message-ID: <20250305174508.308882634@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit abc7b3f1f056d69a8f11d6dceecc0c9549ace770 ]
+[ Upstream commit 5644c6b50ffee0a56c1e01430a8c88e34decb120 ]
 
-Memory regions (MR) of type DM (device memory) do not have an associated
-umem.
+The generic_map_lookup_batch currently returns EINTR if it fails with
+ENOENT and retries several times on bpf_map_copy_value. The next batch
+would start from the same location, presuming it's a transient issue.
+This is incorrect if a map can actually have "holes", i.e.
+"get_next_key" can return a key that does not point to a valid value. At
+least the array of maps type may contain such holes legitly. Right now
+these holes show up, generic batch lookup cannot proceed any more. It
+will always fail with EINTR errors.
 
-In the __mlx5_ib_dereg_mr() -> mlx5_free_priv_descs() flow, the code
-incorrectly takes the wrong branch, attempting to call
-dma_unmap_single() on a DMA address that is not mapped.
+Rather, do not retry in generic_map_lookup_batch. If it finds a non
+existing element, skip to the next key. This simple solution comes with
+a price that transient errors may not be recovered, and the iteration
+might cycle back to the first key under parallel deletion. For example,
+Hou Tao <houtao@huaweicloud.com> pointed out a following scenario:
 
-This results in a WARN [1], as shown below.
+For LPM trie map:
+(1) ->map_get_next_key(map, prev_key, key) returns a valid key
 
-The issue is resolved by properly accounting for the DM type and
-ensuring the correct branch is selected in mlx5_free_priv_descs().
+(2) bpf_map_copy_value() return -ENOMENT
+It means the key must be deleted concurrently.
 
-[1]
-WARNING: CPU: 12 PID: 1346 at drivers/iommu/dma-iommu.c:1230 iommu_dma_unmap_page+0x79/0x90
-Modules linked in: ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry ovelay rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_ib ib_uverbs ib_core fuse mlx5_core
-CPU: 12 UID: 0 PID: 1346 Comm: ibv_rc_pingpong Not tainted 6.12.0-rc7+ #1631
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:iommu_dma_unmap_page+0x79/0x90
-Code: 2b 49 3b 29 72 26 49 3b 69 08 73 20 4d 89 f0 44 89 e9 4c 89 e2 48 89 ee 48 89 df 5b 5d 41 5c 41 5d 41 5e 41 5f e9 07 b8 88 ff <0f> 0b 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 66 0f 1f 44 00
-RSP: 0018:ffffc90001913a10 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88810194b0a8 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
-RBP: ffff88810194b0a8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007f537abdd740(0000) GS:ffff88885fb00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f537aeb8000 CR3: 000000010c248001 CR4: 0000000000372eb0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-? __warn+0x84/0x190
-? iommu_dma_unmap_page+0x79/0x90
-? report_bug+0xf8/0x1c0
-? handle_bug+0x55/0x90
-? exc_invalid_op+0x13/0x60
-? asm_exc_invalid_op+0x16/0x20
-? iommu_dma_unmap_page+0x79/0x90
-dma_unmap_page_attrs+0xe6/0x290
-mlx5_free_priv_descs+0xb0/0xe0 [mlx5_ib]
-__mlx5_ib_dereg_mr+0x37e/0x520 [mlx5_ib]
-? _raw_spin_unlock_irq+0x24/0x40
-? wait_for_completion+0xfe/0x130
-? rdma_restrack_put+0x63/0xe0 [ib_core]
-ib_dereg_mr_user+0x5f/0x120 [ib_core]
-? lock_release+0xc6/0x280
-destroy_hw_idr_uobject+0x1d/0x60 [ib_uverbs]
-uverbs_destroy_uobject+0x58/0x1d0 [ib_uverbs]
-uobj_destroy+0x3f/0x70 [ib_uverbs]
-ib_uverbs_cmd_verbs+0x3e4/0xbb0 [ib_uverbs]
-? __pfx_uverbs_destroy_def_handler+0x10/0x10 [ib_uverbs]
-? lock_acquire+0xc1/0x2f0
-? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
-? ib_uverbs_ioctl+0x116/0x170 [ib_uverbs]
-? lock_release+0xc6/0x280
-ib_uverbs_ioctl+0xe7/0x170 [ib_uverbs]
-? ib_uverbs_ioctl+0xcb/0x170 [ib_uverbs]
-__x64_sys_ioctl+0x1b0/0xa70
-do_syscall_64+0x6b/0x140
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f537adaf17b
-Code: 0f 1e fa 48 8b 05 1d ad 0c 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ed ac 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffff218f0b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffff218f1d8 RCX: 00007f537adaf17b
-RDX: 00007ffff218f1c0 RSI: 00000000c0181b01 RDI: 0000000000000003
-RBP: 00007ffff218f1a0 R08: 00007f537aa8d010 R09: 0000561ee2e4f270
-R10: 00007f537aace3a8 R11: 0000000000000246 R12: 00007ffff218f190
-R13: 000000000000001c R14: 0000561ee2e4d7c0 R15: 00007ffff218f450
-</TASK>
+(3) goto next_key
+It swaps the prev_key and key
 
-Fixes: f18ec4223117 ("RDMA/mlx5: Use a union inside mlx5_ib_mr")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://patch.msgid.link/2039c22cfc3df02378747ba4d623a558b53fc263.1738587076.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+(4) ->map_get_next_key(map, prev_key, key) again
+prev_key points to a non-existing key, for LPM trie it will treat just
+like prev_key=NULL case, the returned key will be duplicated.
+
+With the retry logic, the iteration can continue to the key next to the
+deleted one. But if we directly skip to the next key, the iteration loop
+would restart from the first key for the lpm_trie type.
+
+However, not all races may be recovered. For example, if current key is
+deleted after instead of before bpf_map_copy_value, or if the prev_key
+also gets deleted, then the loop will still restart from the first key
+for lpm_tire anyway. For generic lookup it might be better to stay
+simple, i.e. just skip to the next key. To guarantee that the output
+keys are not duplicated, it is better to implement map type specific
+batch operations, which can properly lock the trie and synchronize with
+concurrent mutators.
+
+Fixes: cb4d03ab499d ("bpf: Add generic support for lookup batch op")
+Closes: https://lore.kernel.org/bpf/Z6JXtA1M5jAZx8xD@debian.debian/
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/85618439eea75930630685c467ccefeac0942e2b.1739171594.git.yan@cloudflare.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 0a3cbb14e1839..753faa9ad06a8 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -1935,7 +1935,8 @@ mlx5_alloc_priv_descs(struct ib_device *device,
- static void
- mlx5_free_priv_descs(struct mlx5_ib_mr *mr)
- {
--	if (!mr->umem && !mr->data_direct && mr->descs) {
-+	if (!mr->umem && !mr->data_direct &&
-+	    mr->ibmr.type != IB_MR_TYPE_DM && mr->descs) {
- 		struct ib_device *device = mr->ibmr.device;
- 		int size = mr->max_descs * mr->desc_size;
- 		struct mlx5_ib_dev *dev = to_mdev(device);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index cfb361f4b00ea..7a4004f09bae7 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1713,8 +1713,6 @@ int generic_map_update_batch(struct bpf_map *map,
+ 	return err;
+ }
+ 
+-#define MAP_LOOKUP_RETRIES 3
+-
+ int generic_map_lookup_batch(struct bpf_map *map,
+ 				    const union bpf_attr *attr,
+ 				    union bpf_attr __user *uattr)
+@@ -1724,8 +1722,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 	void __user *values = u64_to_user_ptr(attr->batch.values);
+ 	void __user *keys = u64_to_user_ptr(attr->batch.keys);
+ 	void *buf, *buf_prevkey, *prev_key, *key, *value;
+-	int err, retry = MAP_LOOKUP_RETRIES;
+ 	u32 value_size, cp, max_count;
++	int err;
+ 
+ 	if (attr->batch.elem_flags & ~BPF_F_LOCK)
+ 		return -EINVAL;
+@@ -1771,14 +1769,8 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 		err = bpf_map_copy_value(map, key, value,
+ 					 attr->batch.elem_flags);
+ 
+-		if (err == -ENOENT) {
+-			if (retry) {
+-				retry--;
+-				continue;
+-			}
+-			err = -EINTR;
+-			break;
+-		}
++		if (err == -ENOENT)
++			goto next_key;
+ 
+ 		if (err)
+ 			goto free_buf;
+@@ -1793,12 +1785,12 @@ int generic_map_lookup_batch(struct bpf_map *map,
+ 			goto free_buf;
+ 		}
+ 
++		cp++;
++next_key:
+ 		if (!prev_key)
+ 			prev_key = buf_prevkey;
+ 
+ 		swap(prev_key, key);
+-		retry = MAP_LOOKUP_RETRIES;
+-		cp++;
+ 		cond_resched();
+ 	}
+ 
 -- 
 2.39.5
 
