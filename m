@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9E2A5073B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:55:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215D3A5085D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE9FC7A9AB0
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:53:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D6D3B0215
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6739E2512F7;
-	Wed,  5 Mar 2025 17:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33A1C6FF6;
+	Wed,  5 Mar 2025 18:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M82qerMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMWrTjm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A662512E1;
-	Wed,  5 Mar 2025 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EDE1A3174;
+	Wed,  5 Mar 2025 18:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197234; cv=none; b=ZZl7H3sLgduH7z4PpSiPLVISfXmLjfDtJyUOXg+d4vJCIOddXDwd9C7fb3vndTy8ASMkMJedPihbTQ9q16XPyWZ+sdfXTHAq2WHGdJgTVJ4/9IszFCQt5GP6bWukizf2wK+VbuwcVWWje1aYS4+mZpzB/HFZLJF9U2LmVkZiLjE=
+	t=1741197984; cv=none; b=p8WpUlMcFVdPluY5I0JZmS415LN44D0lvxgb4S9jDy4ITWL6iJF//dk4IvBnr5fRoSG12Q5lnlPXkBiK2ugEunYu+8umpR/49Nty8NhlJnEA0HJyinY0/qa11xDjzMF3z5G+utSBKUcBYAYdkMqTl3i+AHUEidWLlYj+M87bO/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197234; c=relaxed/simple;
-	bh=j0L250aN2kRfAN7IS47jts3BaS7swHxO0P/sW3L7o3w=;
+	s=arc-20240116; t=1741197984; c=relaxed/simple;
+	bh=Hfg68BAVngC5OVh4ZPIvJMMYRVulObG4r/wjmUu/wrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlrcQ9E5KD17lDcC6+ZqVY81FmVEXoGjcFo5ppKIYdKXCWL3/L6s7cjyX97RGuwvxxJgXqu0PTDrHOffiRpRjgNoFuagd5mnwgGkg2VUlsPiFNJxFMf6hdOkAHXf1jm+9iiyaAdVDMiYkw7gNddnH9CwTaNazcihvzQocc3EgRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M82qerMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BB5C4CED1;
-	Wed,  5 Mar 2025 17:53:52 +0000 (UTC)
+	 MIME-Version; b=F8qPvs734v7NpgVoZ6lj9UhF8gkqTw9LiNQwL6rI3qWhhvhKuxKt0+lqB4PqfaWViomThXsDt2gb6gs21JLzee7EvygVH9hOwohzOPrBErCXNUewkvbTDYZtmaf2Ael5F1WfNo0hcHtI9OaCpDDFvxWf7XNRRaGbNX7p1BHVCAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMWrTjm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86369C4CED1;
+	Wed,  5 Mar 2025 18:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197233;
-	bh=j0L250aN2kRfAN7IS47jts3BaS7swHxO0P/sW3L7o3w=;
+	s=korg; t=1741197983;
+	bh=Hfg68BAVngC5OVh4ZPIvJMMYRVulObG4r/wjmUu/wrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M82qerMDLkgfe5ixtGxef24M06OLjeILaohSZ0Nx/USA5nA7uRoddnN6B1j505+qu
-	 7BMQ5L3Ty5UbkFCGY+aK07xlRGgTRpdY0o2Y3soP2hW15kGXlE9m6FnQbpR3vXdzSt
-	 bBvnCmuXgnArI9QDx6O/Us3dMiktbm5AVA3nyanc=
+	b=NMWrTjm+QphvLjJ8FMuaiMTqh/Wr26KsbrJS2KyzFbJmzo51aXDal/Ery9LLVp6vH
+	 AdeXgXUsrm4X+KKrR2ScoqzbsDARIQcGThIY6kzKvSaVYEiXMIydTUCIgHKYGZP/1i
+	 kfLlZlCQEaaulhGBXwpAnlituZzA2ude9kURUvQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 085/176] mtd: rawnand: cadence: fix incorrect device in dma_unmap_single
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 025/150] RDMA/mlx5: Fix bind QP error cleanup flow
 Date: Wed,  5 Mar 2025 18:47:34 +0100
-Message-ID: <20250305174508.876644409@linuxfoundation.org>
+Message-ID: <20250305174504.825004897@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit f37d135b42cb484bdecee93f56b9f483214ede78 upstream.
+[ Upstream commit e1a0bdbdfdf08428f0ede5ae49c7f4139ac73ef5 ]
 
-dma_map_single is using physical/bus device (DMA) but dma_unmap_single
-is using framework device(NAND controller), which is incorrect.
-Fixed dma_unmap_single to use correct physical/bus device.
+When there is a failure during bind QP, the cleanup flow destroys the
+counter regardless if it is the one that created it or not, which is
+problematic since if it isn't the one that created it, that counter could
+still be in use.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by destroying the counter only if it was created during this call.
+
+Fixes: 45842fc627c7 ("IB/mlx5: Support statistic q counter configuration")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://patch.msgid.link/25dfefddb0ebefa668c32e06a94d84e3216257cf.1740033937.git.leon@kernel.org
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/counters.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -1858,12 +1858,12 @@ static int cadence_nand_slave_dma_transf
- 	dma_async_issue_pending(cdns_ctrl->dmac);
- 	wait_for_completion(&finished);
+diff --git a/drivers/infiniband/hw/mlx5/counters.c b/drivers/infiniband/hw/mlx5/counters.c
+index 4f6c1968a2ee3..81cfa74147a18 100644
+--- a/drivers/infiniband/hw/mlx5/counters.c
++++ b/drivers/infiniband/hw/mlx5/counters.c
+@@ -546,6 +546,7 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
+ 				   struct ib_qp *qp)
+ {
+ 	struct mlx5_ib_dev *dev = to_mdev(qp->device);
++	bool new = false;
+ 	int err;
  
--	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
-+	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
+ 	if (!counter->id) {
+@@ -560,6 +561,7 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
+ 			return err;
+ 		counter->id =
+ 			MLX5_GET(alloc_q_counter_out, out, counter_set_id);
++		new = true;
+ 	}
  
+ 	err = mlx5_ib_qp_set_counter(qp, counter);
+@@ -569,8 +571,10 @@ static int mlx5_ib_counter_bind_qp(struct rdma_counter *counter,
  	return 0;
  
- err_unmap:
--	dma_unmap_single(cdns_ctrl->dev, buf_dma, len, dir);
-+	dma_unmap_single(dma_dev->dev, buf_dma, len, dir);
+ fail_set_counter:
+-	mlx5_ib_counter_dealloc(counter);
+-	counter->id = 0;
++	if (new) {
++		mlx5_ib_counter_dealloc(counter);
++		counter->id = 0;
++	}
  
- err:
- 	dev_dbg(cdns_ctrl->dev, "Fall back to CPU I/O\n");
+ 	return err;
+ }
+-- 
+2.39.5
+
 
 
 
