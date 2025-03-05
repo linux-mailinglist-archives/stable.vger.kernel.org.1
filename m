@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-121021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E227A50981
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3091A507A4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA1953A65F9
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2CB8163599
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C94253F01;
-	Wed,  5 Mar 2025 18:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E68D2512F2;
+	Wed,  5 Mar 2025 17:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVQLhnR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAnLD9Hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E44B253F0A;
-	Wed,  5 Mar 2025 18:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19512512E1;
+	Wed,  5 Mar 2025 17:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198651; cv=none; b=HAhz2eeHrOPLAcxcLz+e30fk/d9xpdQNQ9auBJdodqMo57Crct8D8+gb2IPwFR33rPgDFWXNMYy4SNqlrQjiuMRUfwOM1Ogw1EdJ1xk0b2mU93tRBCQE6epzwQYJZcx2hslrswiS5VsWnd2FK7LenDGtyg8JqfR4aXusY+8fb2I=
+	t=1741197519; cv=none; b=tTGiVOWJ2OLgf/6cyLDxv1IHaNsExjL2tISQ8KZPhzWXfLgQwB3V1CJa8B4gDiD8iZJJxXUUwVzCALC0UNjMIs9GyhvtkbdktO0dzsPhNvVak2AJyPRnvMsaRmOi9kSgr/tS3LjYp/FYVAEY1CGw8hG962D4uharrUue4ewgMdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198651; c=relaxed/simple;
-	bh=nKIal9WYEsJegSwG0yBwiW6X7uENd1xKZD7l9OpzIiU=;
+	s=arc-20240116; t=1741197519; c=relaxed/simple;
+	bh=EhDIp33TnNRIS/oGWJ/xe/Usui2T304qSwzhagLNQyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyU7htpoHPoa/bj8rTIF8r9PQCS6vMqpHYsUW3Fzy6w7350PF0O8MYPQTr8EkKAwGjF7WWAp/+V9pd8EOjqTnSEUcs9dFNZzhdJqFdbzI87+EowFl6MbttFaiPDGRRB6hgUtQIuHxKmr+COtv+PekBPk6tNUPBhYGYJDvIL2fPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVQLhnR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489B8C4CED1;
-	Wed,  5 Mar 2025 18:17:30 +0000 (UTC)
+	 MIME-Version; b=f/YWWqyCqA0RtQPDYTGWrQola6CHvW7MTlyvcDTjVf52FKOX3qb8yTyRKK60JdrDFP/j7kItt/rfiUcpvc4OpGkAXHOiQgan/zGyrSeWgJZgWrbNx8Z+kLIv5Gchc7yv/BkuDDyrHqAy4Po6ISMCl2MERRLgEY5eHANdOaca+vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAnLD9Hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B202C4CED1;
+	Wed,  5 Mar 2025 17:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198650;
-	bh=nKIal9WYEsJegSwG0yBwiW6X7uENd1xKZD7l9OpzIiU=;
+	s=korg; t=1741197519;
+	bh=EhDIp33TnNRIS/oGWJ/xe/Usui2T304qSwzhagLNQyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVQLhnR/xexSeZVOsQigzt657XVt3JwT2+tBn0epey0i29E9SEckrsH1juZNjcLrp
-	 YFgfJbg38Idwfw1g68E7516BHVCzbFN/C00G3H32oxVcka3eFNa0sWMR0y+uLV1IEe
-	 02VkiYVfXhJ9P8x4zkpASPPZ5uIQemIRMAmuiOY0=
+	b=RAnLD9Hihk7LOQzBE9c78u1Bc92GAIfOGCz62IMHnwqc6QjfbeWfYWr6wzBM/RdC8
+	 xBdOsl2fDzO0FGnl7YtaHUXgUuletNy/OA+1cQBouOmY05K6s92eQlOaBsdFoebbmO
+	 UY66ylMaWE6Ma+RY9i8T8/karveHNoTMbTi5qUjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorgen Hansen <Jorgen.Hansen@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.13 102/157] block: Remove zone write plugs when handling native zone append writes
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Josip Pavic <josip.pavic@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Sohaib Nadeem <sohaib.nadeem@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 169/176] drm/amd/display: fixed integer types and null check locations
 Date: Wed,  5 Mar 2025 18:48:58 +0100
-Message-ID: <20250305174509.406408504@linuxfoundation.org>
+Message-ID: <20250305174512.225601690@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,239 +67,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Sohaib Nadeem <sohaib.nadeem@amd.com>
 
-commit a6aa36e957a1bfb5341986dec32d013d23228fe1 upstream.
+commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 upstream.
 
-For devices that natively support zone append operations,
-REQ_OP_ZONE_APPEND BIOs are not processed through zone write plugging
-and are immediately issued to the zoned device. This means that there is
-no write pointer offset tracking done for these operations and that a
-zone write plug is not necessary.
+[why]:
+issues fixed:
+- comparison with wider integer type in loop condition which can cause
+infinite loops
+- pointer dereference before null check
 
-However, when receiving a zone append BIO, we may already have a zone
-write plug for the target zone if that zone was previously partially
-written using regular write operations. In such case, since the write
-pointer offset of the zone write plug is not incremented by the amount
-of sectors appended to the zone, 2 issues arise:
-1) we risk leaving the plug in the disk hash table if the zone is fully
-   written using zone append or regular write operations, because the
-   write pointer offset will never reach the "zone full" state.
-2) Regular write operations that are issued after zone append operations
-   will always be failed by blk_zone_wplug_prepare_bio() as the write
-   pointer alignment check will fail, even if the user correctly
-   accounted for the zone append operations and issued the regular
-   writes with a correct sector.
-
-Avoid these issues by immediately removing the zone write plug of zones
-that are the target of zone append operations when blk_zone_plug_bio()
-is called. The new function blk_zone_wplug_handle_native_zone_append()
-implements this for devices that natively support zone append. The
-removal of the zone write plug using disk_remove_zone_wplug() requires
-aborting all plugged regular write using disk_zone_wplug_abort() as
-otherwise the plugged write BIOs would never be executed (with the plug
-removed, the completion path will never see again the zone write plug as
-disk_get_zone_wplug() will return NULL). Rate-limited warnings are added
-to blk_zone_wplug_handle_native_zone_append() and to
-disk_zone_wplug_abort() to signal this.
-
-Since blk_zone_wplug_handle_native_zone_append() is called in the hot
-path for operations that will not be plugged, disk_get_zone_wplug() is
-optimized under the assumption that a user issuing zone append
-operations is not at the same time issuing regular writes and that there
-are no hashed zone write plugs. The struct gendisk atomic counter
-nr_zone_wplugs is added to check this, with this counter incremented in
-disk_insert_zone_wplug() and decremented in disk_remove_zone_wplug().
-
-To be consistent with this fix, we do not need to fill the zone write
-plug hash table with zone write plugs for zones that are partially
-written for a device that supports native zone append operations.
-So modify blk_revalidate_seq_zone() to return early to avoid allocating
-and inserting a zone write plug for partially written sequential zones
-if the device natively supports zone append.
-
-Reported-by: Jorgen Hansen <Jorgen.Hansen@wdc.com>
-Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Jorgen Hansen <Jorgen.Hansen@wdc.com>
-Link: https://lore.kernel.org/r/20250214041434.82564-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Josip Pavic <josip.pavic@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ delete changes made in drivers/gpu/drm/amd/display/dc/link/link_validation.c
+  for this file is not present in linux-6.1.y  ]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c      |   76 ++++++++++++++++++++++++++++++++++++++++++++-----
- include/linux/blkdev.h |    7 ++--
- 2 files changed, 73 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -414,13 +414,14 @@ static bool disk_insert_zone_wplug(struc
- 		}
- 	}
- 	hlist_add_head_rcu(&zwplug->node, &disk->zone_wplugs_hash[idx]);
-+	atomic_inc(&disk->nr_zone_wplugs);
- 	spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -1862,19 +1862,21 @@ static enum bp_result get_firmware_info_
+ 		/* Vega12 */
+ 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
+ 							DATA_TABLES(smu_info));
+-		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
+ 		if (!smu_info_v3_2)
+ 			return BP_RESULT_BADBIOSTABLE;
  
- 	return true;
- }
++		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
++
+ 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
+ 	} else if (revision.minor == 3) {
+ 		/* Vega20 */
+ 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
+ 							DATA_TABLES(smu_info));
+-		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
+ 		if (!smu_info_v3_3)
+ 			return BP_RESULT_BADBIOSTABLE;
  
--static struct blk_zone_wplug *disk_get_zone_wplug(struct gendisk *disk,
--						  sector_t sector)
-+static struct blk_zone_wplug *disk_get_hashed_zone_wplug(struct gendisk *disk,
-+							 sector_t sector)
- {
- 	unsigned int zno = disk_zone_no(disk, sector);
- 	unsigned int idx = hash_32(zno, disk->zone_wplugs_hash_bits);
-@@ -441,6 +442,15 @@ static struct blk_zone_wplug *disk_get_z
- 	return NULL;
- }
- 
-+static inline struct blk_zone_wplug *disk_get_zone_wplug(struct gendisk *disk,
-+							 sector_t sector)
-+{
-+	if (!atomic_read(&disk->nr_zone_wplugs))
-+		return NULL;
++		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
 +
-+	return disk_get_hashed_zone_wplug(disk, sector);
-+}
-+
- static void disk_free_zone_wplug_rcu(struct rcu_head *rcu_head)
- {
- 	struct blk_zone_wplug *zwplug =
-@@ -505,6 +515,7 @@ static void disk_remove_zone_wplug(struc
- 	zwplug->flags |= BLK_ZONE_WPLUG_UNHASHED;
- 	spin_lock_irqsave(&disk->zone_wplugs_lock, flags);
- 	hlist_del_init_rcu(&zwplug->node);
-+	atomic_dec(&disk->nr_zone_wplugs);
- 	spin_unlock_irqrestore(&disk->zone_wplugs_lock, flags);
- 	disk_put_zone_wplug(zwplug);
- }
-@@ -594,6 +605,11 @@ static void disk_zone_wplug_abort(struct
- {
- 	struct bio *bio;
- 
-+	if (bio_list_empty(&zwplug->bio_list))
-+		return;
-+
-+	pr_warn_ratelimited("%s: zone %u: Aborting plugged BIOs\n",
-+			    zwplug->disk->disk_name, zwplug->zone_no);
- 	while ((bio = bio_list_pop(&zwplug->bio_list)))
- 		blk_zone_wplug_bio_io_error(zwplug, bio);
- }
-@@ -1042,6 +1058,47 @@ plug:
- 	return true;
- }
- 
-+static void blk_zone_wplug_handle_native_zone_append(struct bio *bio)
-+{
-+	struct gendisk *disk = bio->bi_bdev->bd_disk;
-+	struct blk_zone_wplug *zwplug;
-+	unsigned long flags;
-+
-+	/*
-+	 * We have native support for zone append operations, so we are not
-+	 * going to handle @bio through plugging. However, we may already have a
-+	 * zone write plug for the target zone if that zone was previously
-+	 * partially written using regular writes. In such case, we risk leaving
-+	 * the plug in the disk hash table if the zone is fully written using
-+	 * zone append operations. Avoid this by removing the zone write plug.
-+	 */
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
-+	if (likely(!zwplug))
-+		return;
-+
-+	spin_lock_irqsave(&zwplug->lock, flags);
-+
-+	/*
-+	 * We are about to remove the zone write plug. But if the user
-+	 * (mistakenly) has issued regular writes together with native zone
-+	 * append, we must aborts the writes as otherwise the plugged BIOs would
-+	 * not be executed by the plug BIO work as disk_get_zone_wplug() will
-+	 * return NULL after the plug is removed. Aborting the plugged write
-+	 * BIOs is consistent with the fact that these writes will most likely
-+	 * fail anyway as there is no ordering guarantees between zone append
-+	 * operations and regular write operations.
-+	 */
-+	if (!bio_list_empty(&zwplug->bio_list)) {
-+		pr_warn_ratelimited("%s: zone %u: Invalid mix of zone append and regular writes\n",
-+				    disk->disk_name, zwplug->zone_no);
-+		disk_zone_wplug_abort(zwplug);
-+	}
-+	disk_remove_zone_wplug(disk, zwplug);
-+	spin_unlock_irqrestore(&zwplug->lock, flags);
-+
-+	disk_put_zone_wplug(zwplug);
-+}
-+
- /**
-  * blk_zone_plug_bio - Handle a zone write BIO with zone write plugging
-  * @bio: The BIO being submitted
-@@ -1098,8 +1155,10 @@ bool blk_zone_plug_bio(struct bio *bio,
- 	 */
- 	switch (bio_op(bio)) {
- 	case REQ_OP_ZONE_APPEND:
--		if (!bdev_emulates_zone_append(bdev))
-+		if (!bdev_emulates_zone_append(bdev)) {
-+			blk_zone_wplug_handle_native_zone_append(bio);
- 			return false;
-+		}
- 		fallthrough;
- 	case REQ_OP_WRITE:
- 	case REQ_OP_WRITE_ZEROES:
-@@ -1286,6 +1345,7 @@ static int disk_alloc_zone_resources(str
- {
- 	unsigned int i;
- 
-+	atomic_set(&disk->nr_zone_wplugs, 0);
- 	disk->zone_wplugs_hash_bits =
- 		min(ilog2(pool_size) + 1, BLK_ZONE_WPLUG_MAX_HASH_BITS);
- 
-@@ -1340,6 +1400,7 @@ static void disk_destroy_zone_wplugs_has
- 		}
+ 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
  	}
  
-+	WARN_ON_ONCE(atomic_read(&disk->nr_zone_wplugs));
- 	kfree(disk->zone_wplugs_hash);
- 	disk->zone_wplugs_hash = NULL;
- 	disk->zone_wplugs_hash_bits = 0;
-@@ -1552,11 +1613,12 @@ static int blk_revalidate_seq_zone(struc
- 	}
+@@ -2439,10 +2441,11 @@ static enum bp_result get_integrated_inf
+ 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
+ 					DATA_TABLES(integratedsysteminfo));
  
+-	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
+ 	if (info_v11 == NULL)
+ 		return BP_RESULT_BADBIOSTABLE;
+ 
++	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
++
+ 	info->gpu_cap_info =
+ 	le32_to_cpu(info_v11->gpucapinfo);
  	/*
--	 * We need to track the write pointer of all zones that are not
--	 * empty nor full. So make sure we have a zone write plug for
--	 * such zone if the device has a zone write plug hash table.
-+	 * If the device needs zone append emulation, we need to track the
-+	 * write pointer of all zones that are not empty nor full. So make sure
-+	 * we have a zone write plug for such zone if the device has a zone
-+	 * write plug hash table.
- 	 */
--	if (!disk->zone_wplugs_hash)
-+	if (!queue_emulates_zone_append(disk->queue) || !disk->zone_wplugs_hash)
- 		return 0;
+@@ -2654,11 +2657,12 @@ static enum bp_result get_integrated_inf
  
- 	disk_zone_wplug_sync_wp_offset(disk, zone);
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -196,10 +196,11 @@ struct gendisk {
- 	unsigned int		zone_capacity;
- 	unsigned int		last_zone_capacity;
- 	unsigned long __rcu	*conv_zones_bitmap;
--	unsigned int            zone_wplugs_hash_bits;
--	spinlock_t              zone_wplugs_lock;
-+	unsigned int		zone_wplugs_hash_bits;
-+	atomic_t		nr_zone_wplugs;
-+	spinlock_t		zone_wplugs_lock;
- 	struct mempool_s	*zone_wplugs_pool;
--	struct hlist_head       *zone_wplugs_hash;
-+	struct hlist_head	*zone_wplugs_hash;
- 	struct workqueue_struct *zone_wplugs_wq;
- #endif /* CONFIG_BLK_DEV_ZONED */
+ 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
+ 					DATA_TABLES(integratedsysteminfo));
+-	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
  
+ 	if (info_v2_1 == NULL)
+ 		return BP_RESULT_BADBIOSTABLE;
+ 
++	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
++
+ 	info->gpu_cap_info =
+ 	le32_to_cpu(info_v2_1->gpucapinfo);
+ 	/*
+@@ -2816,11 +2820,11 @@ static enum bp_result get_integrated_inf
+ 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
+ 					DATA_TABLES(integratedsysteminfo));
+ 
+-	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
+-
+ 	if (info_v2_2 == NULL)
+ 		return BP_RESULT_BADBIOSTABLE;
+ 
++	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
++
+ 	info->gpu_cap_info =
+ 	le32_to_cpu(info_v2_2->gpucapinfo);
+ 	/*
 
 
 
