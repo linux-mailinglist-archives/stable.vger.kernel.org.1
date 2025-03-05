@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-121019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560EDA50980
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:20:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324CAA508D7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:12:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9082165FBE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451871885E8B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03A1253F07;
-	Wed,  5 Mar 2025 18:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79CB250C1A;
+	Wed,  5 Mar 2025 18:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMLxMLnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3UGYzVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A6F253344;
-	Wed,  5 Mar 2025 18:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52C61A5BB7;
+	Wed,  5 Mar 2025 18:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198645; cv=none; b=Iz2pZUYda/nwqmohGn2P/dcChhzNzaAfF3yi+sgNapSMig231iamcYY6vjhzalERyKZRLYnHsgirF6Ern+X38/avhpxTye2eTF8jr0KIzwtYni/u5QAE/zFbSzIDA1hJuEG+F++uTdKohvIm347jEtG6OijTqAQtL7hpt5CElM4=
+	t=1741198229; cv=none; b=BmtNxaIbRYZ3VDHp8gTLx8ZlVJK3pWe9SCjy7pnRWdjPHm7FCAAYmmDtUAAd0dUoJbikdYn7pe+oEdXeKQ2haNIlNHgpR1eYoUeSRv9OlnmAhJPK9U0RuAgEyV7yxrLZZWzXtIQjPOovFj3Itmiz4ZJcNBXuz4mZq4XHooK7pDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198645; c=relaxed/simple;
-	bh=Bx5wD8aoApJbSs3isqDCuzcqhd4kg2QC5tqBfg3s6tI=;
+	s=arc-20240116; t=1741198229; c=relaxed/simple;
+	bh=7sfTGDax39TT3x+0O0+tWH9YIUDXOBIzCI0q/7SG6Fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/SM38taU4bfx8lcS11MyrrNxv+QrbkadWuClelpKwlBTscbnUK4C3ETxYBOPPKadEcslSZlhEJic6Pk/I3RV+amSNssMDFmU4HLeaVZ8eLbr1aVgnULe2VCy4VeoAbPbYN+1zNmAUWAGakAp3PCiem8TKNOjdzA9Gs3N7GFjPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMLxMLnP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4C9C4CED1;
-	Wed,  5 Mar 2025 18:17:24 +0000 (UTC)
+	 MIME-Version; b=bfhHPB9CRZYIos9dcCmIywo7FKIRpzWfx+ftjMYKtBZB0kf6W9tsjdkgIRKZS9ps1EhHL4CErTu3wFRMMZbBmsW+lu11Kr9tt7GESMTAIkvNVYMqaC8/ZsoDnwoe9EsILjfRzQtq7yh0vkFsfWDgVwSFV/rGkSJqwVUtf4QHt6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3UGYzVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDC7C4CEE0;
+	Wed,  5 Mar 2025 18:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198644;
-	bh=Bx5wD8aoApJbSs3isqDCuzcqhd4kg2QC5tqBfg3s6tI=;
+	s=korg; t=1741198229;
+	bh=7sfTGDax39TT3x+0O0+tWH9YIUDXOBIzCI0q/7SG6Fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMLxMLnPESl3VWnwNy90/HCgenU3aJmIBHb9PG6Idh3nf7grG+9YIi9OWFTf1jbNZ
-	 0Oo8HxSbS5G7pVEfHnujcPzpYM321QQnQX9+PnLdv5ysekA++AbrpiBi2dbrVuB6iJ
-	 3bUtXVmUCebpmu7EaZ7VwZ85ovdcjghMhU4MXPYM=
+	b=V3UGYzVsKkhgxcpwAC/4AVLE9ZXJ/rA2pKf7COi6d/k2BxyMCVc4UPqtToOU65Os3
+	 wL+qqHbvdQfrB1OXMM1OIvM1zjirOPOXVAxvPxCvwC24+zQa/RXtbgVuq4rpRKnXod
+	 1jB9GmD7aAC2b+iJByt42lWp/nyJUPMy+J6zMw20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13 100/157] arm64: hugetlb: Fix huge_ptep_get_and_clear() for non-present ptes
+	Hongliang Wang <wanghongliang@loongson.cn>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 107/150] i2c: ls2x: Fix frequency division register access
 Date: Wed,  5 Mar 2025 18:48:56 +0100
-Message-ID: <20250305174509.330888653@linuxfoundation.org>
+Message-ID: <20250305174508.112909451@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Binbin Zhou <zhoubinbin@loongson.cn>
 
-commit 49c87f7677746f3c5bd16c81b23700bb6b88bfd4 upstream.
+commit 71c49ee9bb41e1709abac7e2eb05f9193222e580 upstream.
 
-arm64 supports multiple huge_pte sizes. Some of the sizes are covered by
-a single pte entry at a particular level (PMD_SIZE, PUD_SIZE), and some
-are covered by multiple ptes at a particular level (CONT_PTE_SIZE,
-CONT_PMD_SIZE). So the function has to figure out the size from the
-huge_pte pointer. This was previously done by walking the pgtable to
-determine the level and by using the PTE_CONT bit to determine the
-number of ptes at the level.
+According to the chip manual, the I2C register access type of
+Loongson-2K2000/LS7A is "B", so we can only access registers in byte
+form (readb()/writeb()).
 
-But the PTE_CONT bit is only valid when the pte is present. For
-non-present pte values (e.g. markers, migration entries), the previous
-implementation was therefore erroneously determining the size. There is
-at least one known caller in core-mm, move_huge_pte(), which may call
-huge_ptep_get_and_clear() for a non-present pte. So we must be robust to
-this case. Additionally the "regular" ptep_get_and_clear() is robust to
-being called for non-present ptes so it makes sense to follow the
-behavior.
+Although Loongson-2K0500/Loongson-2K1000 do not have similar
+constraints, register accesses in byte form also behave correctly.
 
-Fix this by using the new sz parameter which is now provided to the
-function. Additionally when clearing each pte in a contig range, don't
-gather the access and dirty bits if the pte is not present.
+Also, in hardware, the frequency division registers are defined as two
+separate registers (high 8-bit and low 8-bit), so we just access them
+directly as bytes.
 
-An alternative approach that would not require API changes would be to
-store the PTE_CONT bit in a spare bit in the swap entry pte for the
-non-present case. But it felt cleaner to follow other APIs' lead and
-just pass in the size.
-
-As an aside, PTE_CONT is bit 52, which corresponds to bit 40 in the swap
-entry offset field (layout of non-present pte). Since hugetlb is never
-swapped to disk, this field will only be populated for markers, which
-always set this bit to 0 and hwpoison swap entries, which set the offset
-field to a PFN; So it would only ever be 1 for a 52-bit PVA system where
-memory in that high half was poisoned (I think!). So in practice, this
-bit would almost always be zero for non-present ptes and we would only
-clear the first entry if it was actually a contiguous block. That's
-probably a less severe symptom than if it was always interpreted as 1
-and cleared out potentially-present neighboring PTEs.
-
-Cc: stable@vger.kernel.org
-Fixes: 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250226120656.2400136-3-ryan.roberts@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 015e61f0bffd ("i2c: ls2x: Add driver for Loongson-2K/LS7A I2C controller")
+Co-developed-by: Hongliang Wang <wanghongliang@loongson.cn>
+Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: stable@vger.kernel.org # v6.3+
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250220125612.1910990-1-zhoubinbin@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/hugetlbpage.c |   51 ++++++++++++++++----------------------------
- 1 file changed, 19 insertions(+), 32 deletions(-)
+ drivers/i2c/busses/i2c-ls2x.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -100,20 +100,11 @@ static int find_num_contig(struct mm_str
+--- a/drivers/i2c/busses/i2c-ls2x.c
++++ b/drivers/i2c/busses/i2c-ls2x.c
+@@ -10,6 +10,7 @@
+  * Rewritten for mainline by Binbin Zhou <zhoubinbin@loongson.cn>
+  */
  
- static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/completion.h>
+ #include <linux/device.h>
+@@ -26,7 +27,8 @@
+ #include <linux/units.h>
+ 
+ /* I2C Registers */
+-#define I2C_LS2X_PRER		0x0 /* Freq Division Register(16 bits) */
++#define I2C_LS2X_PRER_LO	0x0 /* Freq Division Low Byte Register */
++#define I2C_LS2X_PRER_HI	0x1 /* Freq Division High Byte Register */
+ #define I2C_LS2X_CTR		0x2 /* Control Register */
+ #define I2C_LS2X_TXR		0x3 /* Transport Data Register */
+ #define I2C_LS2X_RXR		0x3 /* Receive Data Register */
+@@ -93,6 +95,7 @@ static irqreturn_t ls2x_i2c_isr(int this
+  */
+ static void ls2x_i2c_adjust_bus_speed(struct ls2x_i2c_priv *priv)
  {
--	int contig_ptes = 0;
-+	int contig_ptes = 1;
++	u16 val;
+ 	struct i2c_timings *t = &priv->i2c_t;
+ 	struct device *dev = priv->adapter.dev.parent;
+ 	u32 acpi_speed = i2c_acpi_find_bus_speed(dev);
+@@ -104,9 +107,14 @@ static void ls2x_i2c_adjust_bus_speed(st
+ 	else
+ 		t->bus_freq_hz = LS2X_I2C_FREQ_STD;
  
- 	*pgsize = size;
- 
- 	switch (size) {
--#ifndef __PAGETABLE_PMD_FOLDED
--	case PUD_SIZE:
--		if (pud_sect_supported())
--			contig_ptes = 1;
--		break;
--#endif
--	case PMD_SIZE:
--		contig_ptes = 1;
--		break;
- 	case CONT_PMD_SIZE:
- 		*pgsize = PMD_SIZE;
- 		contig_ptes = CONT_PMDS;
-@@ -122,6 +113,8 @@ static inline int num_contig_ptes(unsign
- 		*pgsize = PAGE_SIZE;
- 		contig_ptes = CONT_PTES;
- 		break;
-+	default:
-+		WARN_ON(!__hugetlb_valid_size(size));
- 	}
- 
- 	return contig_ptes;
-@@ -163,24 +156,23 @@ static pte_t get_clear_contig(struct mm_
- 			     unsigned long pgsize,
- 			     unsigned long ncontig)
- {
--	pte_t orig_pte = __ptep_get(ptep);
--	unsigned long i;
-+	pte_t pte, tmp_pte;
-+	bool present;
- 
--	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++) {
--		pte_t pte = __ptep_get_and_clear(mm, addr, ptep);
--
--		/*
--		 * If HW_AFDBM is enabled, then the HW could turn on
--		 * the dirty or accessed bit for any page in the set,
--		 * so check them all.
--		 */
--		if (pte_dirty(pte))
--			orig_pte = pte_mkdirty(orig_pte);
--
--		if (pte_young(pte))
--			orig_pte = pte_mkyoung(orig_pte);
-+	pte = __ptep_get_and_clear(mm, addr, ptep);
-+	present = pte_present(pte);
-+	while (--ncontig) {
-+		ptep++;
-+		addr += pgsize;
-+		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
-+		if (present) {
-+			if (pte_dirty(tmp_pte))
-+				pte = pte_mkdirty(pte);
-+			if (pte_young(tmp_pte))
-+				pte = pte_mkyoung(pte);
-+		}
- 	}
--	return orig_pte;
-+	return pte;
+-	/* Calculate and set i2c frequency. */
+-	writew(LS2X_I2C_PCLK_FREQ / (5 * t->bus_freq_hz) - 1,
+-	       priv->base + I2C_LS2X_PRER);
++	/*
++	 * According to the chip manual, we can only access the registers as bytes,
++	 * otherwise the high bits will be truncated.
++	 * So set the I2C frequency with a sequential writeb() instead of writew().
++	 */
++	val = LS2X_I2C_PCLK_FREQ / (5 * t->bus_freq_hz) - 1;
++	writeb(FIELD_GET(GENMASK(7, 0), val), priv->base + I2C_LS2X_PRER_LO);
++	writeb(FIELD_GET(GENMASK(15, 8), val), priv->base + I2C_LS2X_PRER_HI);
  }
  
- static pte_t get_clear_contig_flush(struct mm_struct *mm,
-@@ -401,13 +393,8 @@ pte_t huge_ptep_get_and_clear(struct mm_
- {
- 	int ncontig;
- 	size_t pgsize;
--	pte_t orig_pte = __ptep_get(ptep);
--
--	if (!pte_cont(orig_pte))
--		return __ptep_get_and_clear(mm, addr, ptep);
--
--	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
- 
-+	ncontig = num_contig_ptes(sz, &pgsize);
- 	return get_clear_contig(mm, addr, ptep, pgsize, ncontig);
- }
- 
+ static void ls2x_i2c_init(struct ls2x_i2c_priv *priv)
 
 
 
