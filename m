@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-120564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0C1A50752
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A02FDA50948
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5835174DDE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE3E1175EF6
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AFC2512EB;
-	Wed,  5 Mar 2025 17:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D12E2528FD;
+	Wed,  5 Mar 2025 18:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkXoSkb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EXRgxmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF97F2505A7;
-	Wed,  5 Mar 2025 17:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFB92512ED;
+	Wed,  5 Mar 2025 18:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197326; cv=none; b=g2MCdrQu2wppnvHRrggfQcHZ8Rzwey3y7HuManJnE/qxknimAOGeTqMMylWjZ1j9jnoUf2AHNoBLlaFL817//Y+dyDlAyzxgDshFj18fJH7F6accLL+2Bc9qWG+Ofl0PHwBvrWyiAzF1TFJ0449a7rI9WT0iQ3bHFq2aLDSmYHc=
+	t=1741198510; cv=none; b=JJqmY6nabP4YEdn09L3mFfQQjCjnzjTRjVEiqe4TGn1PXLq9c4jyB4rDv2eTX9Qp3l5nBLKPFlqsy5Z6gAD+CIlHzRoROS4gACtjV9dF9x6LXogb/nJR3er4NieKV1Nf6yzn7I/EyY/WprSylFdvIne54UH4F9SFGbnikmEed94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197326; c=relaxed/simple;
-	bh=2mmBXDJ3hI8LnoJB4FsrWF8QosQ/JasnnqrC2gmD+6g=;
+	s=arc-20240116; t=1741198510; c=relaxed/simple;
+	bh=6SmxRtUL6aaebadfhoZ/Z+lcgkE3SBtbM3cL1XFeaZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmDqNZuaDESyINZFU8trSzdYnsZRiR8jGgRfhAhQbtZp10SxscCov3Pa5kdEwIZUaruwfkGRVMWfwC1GceNtsdZk3aplu2wu/QPBaFwfxfUrzzmmAz9fVoVRshESbExmVfoMx/FWmkELp1WYXVMi3BaHsRmC2BLKc/Yf9wxCyLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkXoSkb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9F7C4CED1;
-	Wed,  5 Mar 2025 17:55:26 +0000 (UTC)
+	 MIME-Version; b=utulK7aRCn1I9O840IV8ch7GMTXpeF5JdVJdAdiBCnm+3A88ReBBs17H3iMLbVg1UZiuMJL2j6qLjSghD91ewLj7cFq/zKO0QTV7T0JvRtnhl4Noo34xSklrD9yPAYGUfZIaS++VfacwKDEPhL2OkEc1p/Bq4ET8H5J6J7xw5iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EXRgxmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D00C4CED1;
+	Wed,  5 Mar 2025 18:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197326;
-	bh=2mmBXDJ3hI8LnoJB4FsrWF8QosQ/JasnnqrC2gmD+6g=;
+	s=korg; t=1741198510;
+	bh=6SmxRtUL6aaebadfhoZ/Z+lcgkE3SBtbM3cL1XFeaZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkXoSkb/EKfj0fZ20jXyQ9L7MTY45wEnIai9W1E8G9ggC1AobzyCltesSJ4783Jkf
-	 iDSOPOQE2U8CmQQ0LLGsbB+p68Rickgb52LHjxTACZZ9TxPQHmZeW3w9WXrFVIV7zW
-	 6Ir02ippN2YoCMJBI26j9n0ckveLM/2jHR3GyFkU=
+	b=1EXRgxmgOwZBHvmkEsnk7adcaoYuUGq/QKAde7WZzVpmZy4LBii7SOM+Q9VUmfaiY
+	 wUfPFktRHXVghoNo0o58YelVaGy07iMMoB4afvtb2nmrEGFkrILnZ13kCszcqx6fga
+	 YYzqyyqzr7MYdsS6fIuI7iqunmgYd1BsaxXzJIDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Wang Hai <wanghai38@huawei.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/176] afs: remove variable nr_servers
+Subject: [PATCH 6.13 051/157] tcp: Defer ts_recent changes until req is owned
 Date: Wed,  5 Mar 2025 18:48:07 +0100
-Message-ID: <20250305174510.197015940@linuxfoundation.org>
+Message-ID: <20250305174507.360505621@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 318b83b71242998814a570c3420c042ee6165fca ]
+[ Upstream commit 8d52da23b6c68a0f6bad83959ebb61a2cf623c4e ]
 
-Variable nr_servers is no longer being used, the last reference
-to it was removed in commit 45df8462730d ("afs: Fix server list handling")
-so clean up the code by removing it.
+Recently a bug was discovered where the server had entered TCP_ESTABLISHED
+state, but the upper layers were not notified.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20221020173923.21342-1-colin.i.king@gmail.com/
-Stable-dep-of: add117e48df4 ("afs: Fix the server_list to unuse a displaced server rather than putting it")
+The same 5-tuple packet may be processed by different CPUSs, so two
+CPUs may receive different ack packets at the same time when the
+state is TCP_NEW_SYN_RECV.
+
+In that case, req->ts_recent in tcp_check_req may be changed concurrently,
+which will probably cause the newsk's ts_recent to be incorrectly large.
+So that tcp_validate_incoming will fail. At this point, newsk will not be
+able to enter the TCP_ESTABLISHED.
+
+cpu1                                    cpu2
+tcp_check_req
+                                        tcp_check_req
+ req->ts_recent = rcv_tsval = t1
+                                         req->ts_recent = rcv_tsval = t2
+
+ syn_recv_sock
+  tcp_sk(child)->rx_opt.ts_recent = req->ts_recent = t2 // t1 < t2
+tcp_child_process
+ tcp_rcv_state_process
+  tcp_validate_incoming
+   tcp_paws_check
+    if ((s32)(rx_opt->ts_recent - rx_opt->rcv_tsval) <= paws_win)
+        // t2 - t1 > paws_win, failed
+                                        tcp_v4_do_rcv
+                                         tcp_rcv_state_process
+                                         // TCP_ESTABLISHED
+
+The cpu2's skb or a newly received skb will call tcp_v4_do_rcv to get
+the newsk into the TCP_ESTABLISHED state, but at this point it is no
+longer possible to notify the upper layer application. A notification
+mechanism could be added here, but the fix is more complex, so the
+current fix is used.
+
+In tcp_check_req, req->ts_recent is used to assign a value to
+tcp_sk(child)->rx_opt.ts_recent, so removing the change in req->ts_recent
+and changing tcp_sk(child)->rx_opt.ts_recent directly after owning the
+req fixes this bug.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/volume.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/ipv4/tcp_minisocks.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index a146d70efa650..c028598a903c9 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -76,11 +76,7 @@ static struct afs_volume *afs_alloc_volume(struct afs_fs_context *params,
- {
- 	struct afs_server_list *slist;
- 	struct afs_volume *volume;
--	int ret = -ENOMEM, nr_servers = 0, i;
--
--	for (i = 0; i < vldb->nr_servers; i++)
--		if (vldb->fs_mask[i] & type_mask)
--			nr_servers++;
-+	int ret = -ENOMEM;
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 7121d8573928c..789e495d3bd6a 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -810,12 +810,6 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
  
- 	volume = kzalloc(sizeof(struct afs_volume), GFP_KERNEL);
- 	if (!volume)
+ 	/* In sequence, PAWS is OK. */
+ 
+-	/* TODO: We probably should defer ts_recent change once
+-	 * we take ownership of @req.
+-	 */
+-	if (tmp_opt.saw_tstamp && !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
+-		WRITE_ONCE(req->ts_recent, tmp_opt.rcv_tsval);
+-
+ 	if (TCP_SKB_CB(skb)->seq == tcp_rsk(req)->rcv_isn) {
+ 		/* Truncate SYN, it is out of window starting
+ 		   at tcp_rsk(req)->rcv_isn + 1. */
+@@ -864,6 +858,10 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
+ 	if (!child)
+ 		goto listen_overflow;
+ 
++	if (own_req && tmp_opt.saw_tstamp &&
++	    !after(TCP_SKB_CB(skb)->seq, tcp_rsk(req)->rcv_nxt))
++		tcp_sk(child)->rx_opt.ts_recent = tmp_opt.rcv_tsval;
++
+ 	if (own_req && rsk_drop_req(req)) {
+ 		reqsk_queue_removed(&inet_csk(req->rsk_listener)->icsk_accept_queue, req);
+ 		inet_csk_reqsk_queue_drop_and_put(req->rsk_listener, req);
 -- 
 2.39.5
 
