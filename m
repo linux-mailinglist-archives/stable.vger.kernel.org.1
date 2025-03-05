@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-120996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BE8A50947
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A15BA50801
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AADD3A4C8A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:16:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 251D318941E4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F563245010;
-	Wed,  5 Mar 2025 18:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBA71FC7D0;
+	Wed,  5 Mar 2025 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkSATIvk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahSS1F0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C13A250BF3;
-	Wed,  5 Mar 2025 18:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1E31C6FF6;
+	Wed,  5 Mar 2025 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198579; cv=none; b=Hb4tqhmoRp6AHgRV8XPv+nFyUMPl7Ie5vUisHiuQGajHfc7iww3gXM4HsNp0nyPuXKRZbAG9brru5t1k6mNMt7pfwiURIhnSeZbTXikWw8DObm25HKesiqXurqWFvCZTnbRDyGKFcpMe2CgwGEIhFvgdOkgi4RhPCksDDGMsQ3Q=
+	t=1741197768; cv=none; b=fCLmda6Cfdb92mP1gXreYqnn/prrhrVoMmqhWGAEu9Nt2OMJ6q9IUvKH+CR1cyLNrzob5gIlci/1+eb1sxd/EYqlJ0/uBM1TtAZ4q3vfrC6uRcQZKMExmk0zIXWQ+mJgpzphCrFbTQt03SemHprR8KVnZA6F5u9r3utc2c7nV30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198579; c=relaxed/simple;
-	bh=WTRHrNmNTRAXvK0TZBZp+n+T8N/+lodT2uaGcfSrF3k=;
+	s=arc-20240116; t=1741197768; c=relaxed/simple;
+	bh=DSemyBmFBj7KwxVWMA7BUtSJ9ET99GoXQ9PClA3N9Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nft8eJ7najI1ueiwKE/RhSOtHHGGoBbnrFgcLYngxZMYAq/T5th1IpVcM7+GSrZ2LB4JGRO0RlXvl+NvRtcHokw6fp5GMw2GP/LdLDzCmvTBOviZ7DoqT3pG0zfbamo4UFkdbvb+uUli/2SBSixYTP++9zqBYQhVa2+FR1IWDKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkSATIvk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CD7C4CED1;
-	Wed,  5 Mar 2025 18:16:18 +0000 (UTC)
+	 MIME-Version; b=TcjghFk0n3MINM91xr6lr9Q9ph6NyitZmiizuJvWQfrVebMOYkuos8+hjGnwL3tj75rbXBZvaPy6BKMEa/VjAi+axGyJbxE7fFzLulXjeBaqQNupJkCaguQ13Co7n/aJRjC3jOTXINHxFzAvBcYRo1quy9VavxQ0EMUAobH/X38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahSS1F0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E8DC4CED1;
+	Wed,  5 Mar 2025 18:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198578;
-	bh=WTRHrNmNTRAXvK0TZBZp+n+T8N/+lodT2uaGcfSrF3k=;
+	s=korg; t=1741197768;
+	bh=DSemyBmFBj7KwxVWMA7BUtSJ9ET99GoXQ9PClA3N9Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkSATIvkbrQVPGrENFR1HsMbbBQ7bh486Wc+fQVOpi0QNGY8P0vPFkoAGboDh2JWe
-	 3aIbgxzV5Z/VWVO1y1Zh1dYnhjoiVe5qDwMCwOZ+WUsWGnqxrtol3i7yS/byKfHywC
-	 H5ErQY5OwIbV0Ul8PWNpgvgm2VhL90l5v0nha330=
+	b=ahSS1F0Wx1xHkzbOO0mzP0wa/GfVwnIzYWqxp0/jmgVI9wbObyCpQ/Twwo7lYIvVB
+	 RPMa4U+pSb+fLYqXjix1hVQOhk62ncEygYLklv/nGUof5hRcd81FZ4mMEZ1xxox4RV
+	 Yf/EO7lpVYFNT7oQbVzjA4AqzB6Y2dHVXwnNjh1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Bruel <christian.bruel@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 076/157] phy: stm32: Fix constant-value overflow assertion
+	Lijo Lazar <lijo.lazar@amd.com>,
+	"chr[]" <chris@rudorff.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: [PATCH 6.6 093/142] amdgpu/pm/legacy: fix suspend/resume issues
 Date: Wed,  5 Mar 2025 18:48:32 +0100
-Message-ID: <20250305174508.361465281@linuxfoundation.org>
+Message-ID: <20250305174504.068448083@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Bruel <christian.bruel@foss.st.com>
+From: chr[] <chris@rudorff.com>
 
-[ Upstream commit fd75f371f3a1b04a33d2e750363d6ad76abf734e ]
+commit 91dcc66b34beb72dde8412421bdc1b4cd40e4fb8 upstream.
 
-Rework the workaround as the lookup tables always fits into the bitfield,
-and the default values are defined by the hardware and cannot be 0:
+resume and irq handler happily races in set_power_state()
 
-Guard against false positive with a WARN_ON check to make the compiler
-happy: The offset range is pre-checked against the sorted imp_lookup_table
-values and overflow should not happen and would be caught by a warning and
-return in error.
+* amdgpu_legacy_dpm_compute_clocks() needs lock
+* protect irq work handler
+* fix dpm_enabled usage
 
-Also guard against a true positive found during the max_vswing lookup, as a
-max vswing value can be 802000 or 803000 microvolt depending on the current
-impedance. Therefore set the default impedence index.
+v2: fix clang build, integrate Lijo's comments (Alex)
 
-Fixes: 2de679ecd724 ("phy: stm32: work around constant-value overflow assertion")
-Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
-Link: https://lore.kernel.org/r/20250210103515.2598377-1-christian.bruel@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2524
+Fixes: 3712e7a49459 ("drm/amd/pm: unified lock protections in amdgpu_dpm.c")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Tested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name> # on Oland PRO
+Signed-off-by: chr[] <chris@rudorff.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ee3dc9e204d271c9c7a8d4d38a0bce4745d33e71)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/st/phy-stm32-combophy.c | 38 ++++++++++++++---------------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c     |   25 ++++++++++++++++++------
+ drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c |    8 +++++--
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c     |   26 +++++++++++++++++++------
+ 3 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/phy/st/phy-stm32-combophy.c b/drivers/phy/st/phy-stm32-combophy.c
-index 49e9fa90a6819..607b4d607eb5e 100644
---- a/drivers/phy/st/phy-stm32-combophy.c
-+++ b/drivers/phy/st/phy-stm32-combophy.c
-@@ -111,6 +111,7 @@ static const struct clk_impedance imp_lookup[] = {
- 	{ 4204000, { 511000, 609000, 706000, 802000 } },
- 	{ 3999000, { 571000, 648000, 726000, 803000 } }
- };
-+#define DEFAULT_IMP_INDEX 3 /* Default impedance is 50 Ohm */
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -3043,6 +3043,7 @@ static int kv_dpm_hw_init(void *handle)
+ 	if (!amdgpu_dpm)
+ 		return 0;
  
- static int stm32_impedance_tune(struct stm32_combophy *combophy)
++	mutex_lock(&adev->pm.mutex);
+ 	kv_dpm_setup_asic(adev);
+ 	ret = kv_dpm_enable(adev);
+ 	if (ret)
+@@ -3050,6 +3051,8 @@ static int kv_dpm_hw_init(void *handle)
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
++
+ 	return ret;
+ }
+ 
+@@ -3067,32 +3070,42 @@ static int kv_dpm_suspend(void *handle)
  {
-@@ -119,10 +120,9 @@ static int stm32_impedance_tune(struct stm32_combophy *combophy)
- 	u8 imp_of, vswing_of;
- 	u32 max_imp = imp_lookup[0].microohm;
- 	u32 min_imp = imp_lookup[imp_size - 1].microohm;
--	u32 max_vswing = imp_lookup[imp_size - 1].vswing[vswing_size - 1];
-+	u32 max_vswing;
- 	u32 min_vswing = imp_lookup[0].vswing[0];
- 	u32 val;
--	u32 regval;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
- 	if (!of_property_read_u32(combophy->dev->of_node, "st,output-micro-ohms", &val)) {
- 		if (val < min_imp || val > max_imp) {
-@@ -130,45 +130,43 @@ static int stm32_impedance_tune(struct stm32_combophy *combophy)
- 			return -EINVAL;
- 		}
- 
--		regval = 0;
--		for (imp_of = 0; imp_of < ARRAY_SIZE(imp_lookup); imp_of++) {
--			if (imp_lookup[imp_of].microohm <= val) {
--				regval = FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_OHM, imp_of);
-+		for (imp_of = 0; imp_of < ARRAY_SIZE(imp_lookup); imp_of++)
-+			if (imp_lookup[imp_of].microohm <= val)
- 				break;
--			}
--		}
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
 +
-+		if (WARN_ON(imp_of == ARRAY_SIZE(imp_lookup)))
-+			return -EINVAL;
- 
- 		dev_dbg(combophy->dev, "Set %u micro-ohms output impedance\n",
- 			imp_lookup[imp_of].microohm);
- 
- 		regmap_update_bits(combophy->regmap, SYSCFG_PCIEPRGCR,
- 				   STM32MP25_PCIEPRG_IMPCTRL_OHM,
--				   regval);
--	} else {
--		regmap_read(combophy->regmap, SYSCFG_PCIEPRGCR, &val);
--		imp_of = FIELD_GET(STM32MP25_PCIEPRG_IMPCTRL_OHM, val);
--	}
-+				   FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_OHM, imp_of));
-+	} else
-+		imp_of = DEFAULT_IMP_INDEX;
- 
- 	if (!of_property_read_u32(combophy->dev->of_node, "st,output-vswing-microvolt", &val)) {
-+		max_vswing = imp_lookup[imp_of].vswing[vswing_size - 1];
-+
- 		if (val < min_vswing || val > max_vswing) {
- 			dev_err(combophy->dev, "Invalid value %u for output vswing\n", val);
- 			return -EINVAL;
- 		}
- 
--		regval = 0;
--		for (vswing_of = 0; vswing_of < ARRAY_SIZE(imp_lookup[imp_of].vswing); vswing_of++) {
--			if (imp_lookup[imp_of].vswing[vswing_of] >= val) {
--				regval = FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_VSWING, vswing_of);
-+		for (vswing_of = 0; vswing_of < ARRAY_SIZE(imp_lookup[imp_of].vswing); vswing_of++)
-+			if (imp_lookup[imp_of].vswing[vswing_of] >= val)
- 				break;
--			}
--		}
-+
-+		if (WARN_ON(vswing_of == ARRAY_SIZE(imp_lookup[imp_of].vswing)))
-+			return -EINVAL;
- 
- 		dev_dbg(combophy->dev, "Set %u microvolt swing\n",
- 			 imp_lookup[imp_of].vswing[vswing_of]);
- 
- 		regmap_update_bits(combophy->regmap, SYSCFG_PCIEPRGCR,
- 				   STM32MP25_PCIEPRG_IMPCTRL_VSWING,
--				   regval);
-+				   FIELD_PREP(STM32MP25_PCIEPRG_IMPCTRL_VSWING, vswing_of));
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		kv_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
  	}
- 
  	return 0;
--- 
-2.39.5
-
+ }
+ 
+ static int kv_dpm_resume(void *handle)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
+ 		/* asic init will reset to the boot state */
+ 		kv_dpm_setup_asic(adev);
+ 		ret = kv_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++	return ret;
+ }
+ 
+ static bool kv_dpm_is_idle(void *handle)
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+@@ -1018,9 +1018,12 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	enum amd_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	int temp, size = sizeof(temp);
+ 
+-	if (!adev->pm.dpm_enabled)
+-		return;
++	mutex_lock(&adev->pm.mutex);
+ 
++	if (!adev->pm.dpm_enabled) {
++		mutex_unlock(&adev->pm.mutex);
++		return;
++	}
+ 	if (!pp_funcs->read_sensor(adev->powerplay.pp_handle,
+ 				   AMDGPU_PP_SENSOR_GPU_TEMP,
+ 				   (void *)&temp,
+@@ -1042,4 +1045,5 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	adev->pm.dpm.state = dpm_state;
+ 
+ 	amdgpu_legacy_dpm_compute_clocks(adev->powerplay.pp_handle);
++	mutex_unlock(&adev->pm.mutex);
+ }
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -7789,6 +7789,7 @@ static int si_dpm_hw_init(void *handle)
+ 	if (!amdgpu_dpm)
+ 		return 0;
+ 
++	mutex_lock(&adev->pm.mutex);
+ 	si_dpm_setup_asic(adev);
+ 	ret = si_dpm_enable(adev);
+ 	if (ret)
+@@ -7796,6 +7797,7 @@ static int si_dpm_hw_init(void *handle)
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
+ 	return ret;
+ }
+ 
+@@ -7813,32 +7815,44 @@ static int si_dpm_suspend(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		si_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
+ 	}
++
+ 	return 0;
+ }
+ 
+ static int si_dpm_resume(void *handle)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
+ 		/* asic init will reset to the boot state */
++		mutex_lock(&adev->pm.mutex);
+ 		si_dpm_setup_asic(adev);
+ 		ret = si_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++
++	return ret;
+ }
+ 
+ static bool si_dpm_is_idle(void *handle)
 
 
 
