@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-120558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143C5A50767
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CD4A507DC
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C34957A9EB7
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E797A337D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6F9253343;
-	Wed,  5 Mar 2025 17:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A46A1C6FF9;
+	Wed,  5 Mar 2025 18:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+zoi8JP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EthSHLct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C3325333C;
-	Wed,  5 Mar 2025 17:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F2A14B075;
+	Wed,  5 Mar 2025 18:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197309; cv=none; b=kO3vPkHc+PY88UMO+ui5YtwBEECKQtsm1265XPttdXwLojlmAZ851gCxSNZNLP+8Fn/6sVbfboB9bUJd8gs8hhByBc4av1lmSEefr41xlVm4La3y0+Hpv/cPuPawKesaZaqlsKaOGUsEa6eYaa5VZSHFp5KPvPlKmFa53w41wE4=
+	t=1741197682; cv=none; b=laU6LA5ZB/N9Rg9NY2Ly+X0AXfPFKpNqI7c7sYkcnCp9pMWEV5yx4qPeVtRiNIhGODJi9EbnRA92RcHGEMt5R3XBGCpjXWgOB85M89yRkhQs263q47VygRhvRc7T1yGMngXfgfRIzdo6YVRRA2AMTZOkRyFeX6dLIJmeR1+MZCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197309; c=relaxed/simple;
-	bh=Q+0afMF/M6AP5NVXbpmUJnoZoqmNuFQpk8OcnvKSKw8=;
+	s=arc-20240116; t=1741197682; c=relaxed/simple;
+	bh=hu/lBWcLZzEuFFm1hTIrRnb8/xlWJAx8vhrSKkLyg7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqcVCGXVj4eOepamcDyulFQ3p4yw9EPXQ4gafExJMxQz+GkFfHXD+2lJd0ij2ahSEhS8c3E+prgR8oRAS1oMLeynFPjIFya4/sf5OMxe+aoflEuoLxZJHfEu8ObWltN3FGgEV/2AFQ8pBL1TKMQeHtb1NoJ9mtLDSChYNLRnWX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+zoi8JP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1C5C4CED1;
-	Wed,  5 Mar 2025 17:55:08 +0000 (UTC)
+	 MIME-Version; b=OH5x4x/TDX16edKEyPjDLbmNiPuz0Ysj2yv7Bl8NiMosvPT4oRGpdPwbIdUMGD1OzjrnlPA3t7+AC7pVoWtzXMxrcXxIrSs91JmRNu1QzWpd4hr6xKZdU9BxOVDSB0I0nW+0+0REjkF1GAY0plSE99lHUV20iYapfIJt2yWFX9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EthSHLct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EE0C4CED1;
+	Wed,  5 Mar 2025 18:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197309;
-	bh=Q+0afMF/M6AP5NVXbpmUJnoZoqmNuFQpk8OcnvKSKw8=;
+	s=korg; t=1741197681;
+	bh=hu/lBWcLZzEuFFm1hTIrRnb8/xlWJAx8vhrSKkLyg7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+zoi8JPZOGVrwfN+ID5lUh/3sMbrQn5SbkN7ZYdk5jdhEvX2bUJLJukRUlbo69fU
-	 5d4wwoC86WU9So/jH/phoeYtxidoWJ4gDasdESHD5BsvzpNZOUgGw2ccTdRZQNuh4/
-	 pfblTqcOp79RHCrARqOu93pMjBhUDyijMw++KRSk=
+	b=EthSHLcthPkwFWdImTbUMLErOrmvJAof3WS3pmAVfQFOg6of6nNE5I8DA9ZGmfdOz
+	 k58wFRJtoX64Q08y11T2yz2gsSMZZSA/1l2/pqAK4s/2yqCs14bANspY1LnryFqlrR
+	 nRTYC9C+scm52CUpobbdHtB5OMetV4OM5RHno70M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/176] RDMA/mlx5: Fix AH static rate parsing
-Date: Wed,  5 Mar 2025 18:48:01 +0100
-Message-ID: <20250305174509.962563231@linuxfoundation.org>
+	Dmitry Panchenko <dmitry@d-systems.ee>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 063/142] ALSA: usb-audio: Re-add sample rate quirk for Pioneer DJM-900NXS2
+Date: Wed,  5 Mar 2025 18:48:02 +0100
+Message-ID: <20250305174502.870864877@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Dmitry Panchenko <dmitry@d-systems.ee>
 
-[ Upstream commit c534ffda781f44a1c6ac25ef6e0e444da38ca8af ]
+commit 9af3b4f2d879da01192d6168e6c651e7fb5b652d upstream.
 
-Previously static rate wasn't translated according to our PRM but simply
-used the 4 lower bytes.
+Re-add the sample-rate quirk for the Pioneer DJM-900NXS2. This
+device does not work without setting sample-rate.
 
-Correctly translate static rate value passed in AH creation attribute
-according to our PRM expected values.
-
-In addition change 800GB mapping to zero, which is the PRM
-specified value.
-
-Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Link: https://patch.msgid.link/18ef4cc5396caf80728341eb74738cd777596f60.1739187089.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dmitry Panchenko <dmitry@d-systems.ee>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250220161540.3624660-1-dmitry@d-systems.ee
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/ah.c | 3 ++-
- drivers/infiniband/hw/mlx5/qp.c | 6 +++---
- drivers/infiniband/hw/mlx5/qp.h | 1 +
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ sound/usb/quirks.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
-index 505bc47fd575d..99036afb3aef0 100644
---- a/drivers/infiniband/hw/mlx5/ah.c
-+++ b/drivers/infiniband/hw/mlx5/ah.c
-@@ -67,7 +67,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
- 		ah->av.tclass = grh->traffic_class;
- 	}
- 
--	ah->av.stat_rate_sl = (rdma_ah_get_static_rate(ah_attr) << 4);
-+	ah->av.stat_rate_sl =
-+		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
- 
- 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
- 		if (init_attr->xmit_slave)
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 43c0123babd10..59dca0cd89052 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -3379,11 +3379,11 @@ static int ib_to_mlx5_rate_map(u8 rate)
- 	return 0;
- }
- 
--static int ib_rate_to_mlx5(struct mlx5_ib_dev *dev, u8 rate)
-+int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate)
- {
- 	u32 stat_rate_support;
- 
--	if (rate == IB_RATE_PORT_CURRENT)
-+	if (rate == IB_RATE_PORT_CURRENT || rate == IB_RATE_800_GBPS)
- 		return 0;
- 
- 	if (rate < IB_RATE_2_5_GBPS || rate > IB_RATE_600_GBPS)
-@@ -3528,7 +3528,7 @@ static int mlx5_set_path(struct mlx5_ib_dev *dev, struct mlx5_ib_qp *qp,
- 		       sizeof(grh->dgid.raw));
- 	}
- 
--	err = ib_rate_to_mlx5(dev, rdma_ah_get_static_rate(ah));
-+	err = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah));
- 	if (err < 0)
- 		return err;
- 	MLX5_SET(ads, path, stat_rate, err);
-diff --git a/drivers/infiniband/hw/mlx5/qp.h b/drivers/infiniband/hw/mlx5/qp.h
-index e677fa0ca4226..4abb77d551670 100644
---- a/drivers/infiniband/hw/mlx5/qp.h
-+++ b/drivers/infiniband/hw/mlx5/qp.h
-@@ -55,4 +55,5 @@ int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn);
- int mlx5_ib_qp_set_counter(struct ib_qp *qp, struct rdma_counter *counter);
- int mlx5_ib_qp_event_init(void);
- void mlx5_ib_qp_event_cleanup(void);
-+int mlx5r_ib_rate(struct mlx5_ib_dev *dev, u8 rate);
- #endif /* _MLX5_IB_QP_H */
--- 
-2.39.5
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1775,6 +1775,7 @@ void snd_usb_set_format_quirk(struct snd
+ 	case USB_ID(0x534d, 0x2109): /* MacroSilicon MS2109 */
+ 		subs->stream_offset_adj = 2;
+ 		break;
++	case USB_ID(0x2b73, 0x000a): /* Pioneer DJM-900NXS2 */
+ 	case USB_ID(0x2b73, 0x0013): /* Pioneer DJM-450 */
+ 		pioneer_djm_set_format_quirk(subs, 0x0082);
+ 		break;
 
 
 
