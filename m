@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-120821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154B5A50875
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:07:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F68CA507E5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DF8B1665A1
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:07:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D8516B306
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34911ACEDD;
-	Wed,  5 Mar 2025 18:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A611C5D4E;
+	Wed,  5 Mar 2025 18:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/Fid+g5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jredjNEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E7A19066D;
-	Wed,  5 Mar 2025 18:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44CB78F3A;
+	Wed,  5 Mar 2025 18:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198071; cv=none; b=Q6+9UX67DbO65ukGUl0l27XHrjD+M6zz2/5/DHfykvXRMBPBkAzCsTkMhD3sU0MlHNBDmbFPR/3mlWKWqh/mZ5DD3pgSko3lNL6+9MEkY5sMlM5ctn3jMJPtaiMJK3mGFV1oYnw3V1aBGt6bgldxlC05p3SYkBsu6GjH1cX/6mw=
+	t=1741197690; cv=none; b=psBOTjHxUi2OZxRpr8zh52W9BcqrMqd6K7sW6Xjnpt476Q51IQPoCbozQnaJUbl1nU2v0VS0F4JMtFQhachquWL4vXaXfuDDgPs3ovfghIXabBJ7QnobYWuOhbVhT+cQs1LMu1EgrwoE6gsC9hmt1t0xw15L121ckY54QpHR/8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198071; c=relaxed/simple;
-	bh=+fRL+NJbZqWSRnYWekx8B5GGpHKLRhiOngQHn8Cw9T4=;
+	s=arc-20240116; t=1741197690; c=relaxed/simple;
+	bh=EfJQEFCtps7qs1oegcLrqBYgPc2o7z65scb6EVFQfzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldmRQ7Hw2CEk+QajYNNvJp2THdmgDuB7zXCp7yc8s+OnAnSJbT1aSgKCMe4loYMjrUoa/520pMG9W/2PXt78Gcdz7sK+g+x7G+6mjd1Y2UGfEZ5EbFZ5/QDggeG5uD7u4xogOTLVuyJcLGDLiyUzjLKau7i/E2Qb4kS6Ux3N5ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/Fid+g5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC38C4CED1;
-	Wed,  5 Mar 2025 18:07:50 +0000 (UTC)
+	 MIME-Version; b=Yr+6yC3Q7w0cwVnb+Y+fg/WZ4UcDFRaiKYWD4ANzFcOn2xaBFgJZ6dmTvOXvsdIJFDuJgt6LZMVcPqXNl9Bu2vGvfinnWOqtGK6dT/J4XEBeUSDdv+s4lKfFhzAOYfFwcq41SJRdt/qvfCU7HXH1VX8lRKDp/MGCuEV0nw5mWxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jredjNEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D855EC4CEE2;
+	Wed,  5 Mar 2025 18:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198071;
-	bh=+fRL+NJbZqWSRnYWekx8B5GGpHKLRhiOngQHn8Cw9T4=;
+	s=korg; t=1741197690;
+	bh=EfJQEFCtps7qs1oegcLrqBYgPc2o7z65scb6EVFQfzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/Fid+g5NYMssCJBKYAr5IdA5S6MzA8xlqpDTfMziNpI8YJouZXsKeJtY3LODrcSW
-	 Y71ePHcDeIYt5quSAA39GOtJD3OIHQ+5ujp3xAHPBruvKNFkw05N0awJPxBNvR6zrv
-	 D9HM/n1p3zudm4fG9CDfYmvJWL5vN76IVzSMYoN8=
+	b=jredjNEG9uVNGjuUCASoTNPRskzwzqfA+vJWU9GLhILb6He3VfAdxbU7WlbUlvDuB
+	 QfFJkbe++b3NkHvaNhQ1Ccxj5fQXDEkkem2pVdsNAZHV+ATFg/P4jWbNTMDalnTA9J
+	 H3MwB7/20Bltm1NU77DIPXPPvfX2Gvak+tsrZ5kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/150] ice: Fix deinitializing VF in error path
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 065/142] perf/core: Add RCU read lock protection to perf_iterate_ctx()
 Date: Wed,  5 Mar 2025 18:48:04 +0100
-Message-ID: <20250305174506.037196876@linuxfoundation.org>
+Message-ID: <20250305174502.951480763@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,119 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 79990cf5e7aded76d0c092c9f5ed31eb1c75e02c ]
+commit 0fe8813baf4b2e865d3b2c735ce1a15b86002c74 upstream.
 
-If ice_ena_vfs() fails after calling ice_create_vf_entries(), it frees
-all VFs without removing them from snapshot PF-VF mailbox list, leading
-to list corruption.
+The perf_iterate_ctx() function performs RCU list traversal but
+currently lacks RCU read lock protection. This causes lockdep warnings
+when running perf probe with unshare(1) under CONFIG_PROVE_RCU_LIST=y:
 
-Reproducer:
-  devlink dev eswitch set $PF1_PCI mode switchdev
-  ip l s $PF1 up
-  ip l s $PF1 promisc on
-  sleep 1
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
-  sleep 1
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+	WARNING: suspicious RCU usage
+	kernel/events/core.c:8168 RCU-list traversed in non-reader section!!
 
-Trace (minimized):
-  list_add corruption. next->prev should be prev (ffff8882e241c6f0), but was 0000000000000000. (next=ffff888455da1330).
-  kernel BUG at lib/list_debug.c:29!
-  RIP: 0010:__list_add_valid_or_report+0xa6/0x100
-   ice_mbx_init_vf_info+0xa7/0x180 [ice]
-   ice_initialize_vf_entry+0x1fa/0x250 [ice]
-   ice_sriov_configure+0x8d7/0x1520 [ice]
-   ? __percpu_ref_switch_mode+0x1b1/0x5d0
-   ? __pfx_ice_sriov_configure+0x10/0x10 [ice]
+	 Call Trace:
+	  lockdep_rcu_suspicious
+	  ? perf_event_addr_filters_apply
+	  perf_iterate_ctx
+	  perf_event_exec
+	  begin_new_exec
+	  ? load_elf_phdrs
+	  load_elf_binary
+	  ? lock_acquire
+	  ? find_held_lock
+	  ? bprm_execve
+	  bprm_execve
+	  do_execveat_common.isra.0
+	  __x64_sys_execve
+	  do_syscall_64
+	  entry_SYSCALL_64_after_hwframe
 
-Sometimes a KASAN report can be seen instead with a similar stack trace:
-  BUG: KASAN: use-after-free in __list_add_valid_or_report+0xf1/0x100
+This protection was previously present but was removed in commit
+bd2756811766 ("perf: Rewrite core context handling"). Add back the
+necessary rcu_read_lock()/rcu_read_unlock() pair around
+perf_iterate_ctx() call in perf_event_exec().
 
-VFs are added to this list in ice_mbx_init_vf_info(), but only removed
-in ice_free_vfs(). Move the removing to ice_free_vf_entries(), which is
-also being called in other places where VFs are being removed (including
-ice_free_vfs() itself).
+[ mingo: Use scoped_guard() as suggested by Peter ]
 
-Fixes: 8cd8a6b17d27 ("ice: move VF overflow message count into struct ice_mbx_vf_info")
-Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
-Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250224190647.3601930-2-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250117-fix_perf_rcu-v1-1-13cb9210fc6a@debian.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c          | 5 +----
- drivers/net/ethernet/intel/ice/ice_vf_lib.c         | 8 ++++++++
- drivers/net/ethernet/intel/ice/ice_vf_lib_private.h | 1 +
- 3 files changed, 10 insertions(+), 4 deletions(-)
+ kernel/events/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index b83f99c01d91b..8aabf7749aa5e 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -36,6 +36,7 @@ static void ice_free_vf_entries(struct ice_pf *pf)
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -8113,7 +8113,8 @@ void perf_event_exec(void)
  
- 	hash_for_each_safe(vfs->table, bkt, tmp, vf, entry) {
- 		hash_del_rcu(&vf->entry);
-+		ice_deinitialize_vf_entry(vf);
- 		ice_put_vf(vf);
- 	}
- }
-@@ -193,10 +194,6 @@ void ice_free_vfs(struct ice_pf *pf)
- 			wr32(hw, GLGEN_VFLRSTAT(reg_idx), BIT(bit_idx));
- 		}
+ 	perf_event_enable_on_exec(ctx);
+ 	perf_event_remove_on_exec(ctx);
+-	perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
++	scoped_guard(rcu)
++		perf_iterate_ctx(ctx, perf_event_addr_filters_exec, NULL, true);
  
--		/* clear malicious info since the VF is getting released */
--		if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
--			list_del(&vf->mbx_info.list_entry);
--
- 		mutex_unlock(&vf->cfg_lock);
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index c7c0c2f50c265..815ad0bfe8326 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -1036,6 +1036,14 @@ void ice_initialize_vf_entry(struct ice_vf *vf)
- 	mutex_init(&vf->cfg_lock);
- }
- 
-+void ice_deinitialize_vf_entry(struct ice_vf *vf)
-+{
-+	struct ice_pf *pf = vf->pf;
-+
-+	if (!ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
-+		list_del(&vf->mbx_info.list_entry);
-+}
-+
- /**
-  * ice_dis_vf_qs - Disable the VF queues
-  * @vf: pointer to the VF structure
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-index 0c7e77c0a09fa..5392b04049862 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib_private.h
-@@ -24,6 +24,7 @@
- #endif
- 
- void ice_initialize_vf_entry(struct ice_vf *vf);
-+void ice_deinitialize_vf_entry(struct ice_vf *vf);
- void ice_dis_vf_qs(struct ice_vf *vf);
- int ice_check_vf_init(struct ice_vf *vf);
- enum virtchnl_status_code ice_err_to_virt_err(int err);
--- 
-2.39.5
-
+ 	perf_unpin_context(ctx);
+ 	put_ctx(ctx);
 
 
 
