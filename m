@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-120569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79ACA50779
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D0FA509B7
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBE387A8777
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57AB51897076
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7618E250C0E;
-	Wed,  5 Mar 2025 17:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F24D253353;
+	Wed,  5 Mar 2025 18:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okr0PrXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow3DkuyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337DC481DD;
-	Wed,  5 Mar 2025 17:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D025A2512C9;
+	Wed,  5 Mar 2025 18:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197341; cv=none; b=ho5hATwAE+TZfgVgczMfP1lzcqxhjdbgCoYNddNocj/mXO4rszLFrm90n4guPkJNGe8aze7RyoHpCcmgIfqidtF2xjcMdZ0SHwtph0ZOj3y8xg2N24G+ddkMrtx74BqxEzVEuCTMxz06xTeBR+HsZChzNML8wz0G/CLLlQNRhcc=
+	t=1741198636; cv=none; b=qGeOZRbMsLTIMJ7zd76Uv83sfjlmo3tUMVPa97RQjiHPwPOV9LiNHBWkbwgfkt4wtBBT7zFtSTYxfcW1AO2RP9uStfNk0wrtksELGE9ryB/UailTGJ65rx0eKJOVNXcWkudm8jdLYJDtqSIZYWqtCshyE8/r8YROd/RDq3IGxC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197341; c=relaxed/simple;
-	bh=RU2RJZa2QTMPpyOOUxq92edxMxTwHQkygTGY4Dd4AY8=;
+	s=arc-20240116; t=1741198636; c=relaxed/simple;
+	bh=uCSDiswUyRinFCVIF7L2Gz5L0Y0f2YuY8GMNWAMs5KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjtLEz/VaZ1gU2/c651vbGnZAu72F0i7C5wodczw100tW24E7rcOrQT/7adVkiXULTE5CZL2P/LRjJn9bKQjqOEWMOpdoj7khFGlqFrQFqo8Fcm16PdTKmzFwud93MNgFTXxGLzvmeKeSgtSif8OUAxv1jLkmOTyxfkYC1l8zgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okr0PrXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4A8C4CED1;
-	Wed,  5 Mar 2025 17:55:40 +0000 (UTC)
+	 MIME-Version; b=RTXERzht9KTgOnK220vatvKyRNHUu3qXUutiukPgT6wIUZ16jKYRMxujvMeZQs0rT+V4hDxb7J55nJ9GO7+ytn8dYpGIpwQiT1o2K7Wd7Su3+MOsF6UHms7T94xJ9FSElFeaUWbrgKHrKJ3D3bq7JyzEfF3TyYuaztoBHfWWtLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow3DkuyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E795AC4CED1;
+	Wed,  5 Mar 2025 18:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197341;
-	bh=RU2RJZa2QTMPpyOOUxq92edxMxTwHQkygTGY4Dd4AY8=;
+	s=korg; t=1741198636;
+	bh=uCSDiswUyRinFCVIF7L2Gz5L0Y0f2YuY8GMNWAMs5KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okr0PrXO+5vjCwtHEONK6R5zPS6MWjTeThLeanFYs0z4VyFny/sYgdmNVB1VQMvRx
-	 j6OyDmrpXipMg5Ny3LS6f1OSZi7jJy46R18IqBwRmRp3Tqwyy5VEtI44fjjd5t60Uv
-	 0CA+sBv5CPqY3Zx2Y9JscFcDsdpeEh7qLxY8KzI0=
+	b=Ow3DkuyTqXcHJdfK+VCJVnnoaLnY3mktqKkqTeVYKQHAg3ZlNj41SSBxWe+vZQeQr
+	 PYdcJTvNx8dxDcBhVAxOsksmhnKzEb7ZyPC6S+CAqE9Cne1Djadkp8GVN4vZ6x/C3B
+	 W3UNRnkXFRtFeOd8Q15q7DNhJd+7UKcRz7bNnK54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Dmitry Yakunin <zeil@yandex-team.ru>,
-	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/176] net: set the minimum for net_hotdata.netdev_budget_usecs
+Subject: [PATCH 6.13 055/157] net/mlx5: Fix vport QoS cleanup on error
 Date: Wed,  5 Mar 2025 18:48:11 +0100
-Message-ID: <20250305174510.353427165@linuxfoundation.org>
+Message-ID: <20250305174507.517657831@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit c180188ec02281126045414e90d08422a80f75b4 ]
+[ Upstream commit 7f3528f7d2f98b70e19a6bb7b130fc82c079ac54 ]
 
-Commit 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs
-to enable softirq tuning") added a possibility to set
-net_hotdata.netdev_budget_usecs, but added no lower bound checking.
+When enabling vport QoS fails, the scheduling node was never freed,
+causing a leak.
 
-Commit a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
-made the *initial* value HZ-dependent, so the initial value is at least
-2 jiffies even for lower HZ values (2 ms for 1000 Hz, 8ms for 250 Hz, 20
-ms for 100 Hz).
+Add the missing free and reset the vport scheduling node pointer to
+NULL.
 
-But a user still can set improper values by a sysctl. Set .extra1
-(the lower bound) for net_hotdata.netdev_budget_usecs to the same value
-as in the latter commit. That is to 2 jiffies.
-
-Fixes: a4837980fd9f ("net: revert default NAPI poll timeout to 2 jiffies")
-Fixes: 7acf8a1e8a28 ("Replace 2 jiffies with sysctl netdev_budget_usecs to enable softirq tuning")
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Dmitry Yakunin <zeil@yandex-team.ru>
-Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Link: https://patch.msgid.link/20250220110752.137639-1-jirislaby@kernel.org
+Fixes: be034baba83e ("net/mlx5: Make vport QoS enablement more flexible for future extensions")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250225072608.526866-2-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sysctl_net_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 47ca6d3ddbb56..75efc712bb9bc 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -30,6 +30,7 @@ static int min_sndbuf = SOCK_MIN_SNDBUF;
- static int min_rcvbuf = SOCK_MIN_RCVBUF;
- static int max_skb_frags = MAX_SKB_FRAGS;
- static int min_mem_pcpu_rsv = SK_MEMORY_PCPU_RESERVE;
-+static int netdev_budget_usecs_min = 2 * USEC_PER_SEC / HZ;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 8b7c843446e11..07a28073a49ea 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -591,8 +591,11 @@ static int mlx5_esw_qos_vport_enable(struct mlx5_vport *vport, enum sched_node_t
+ 	sched_node->vport = vport;
+ 	vport->qos.sched_node = sched_node;
+ 	err = esw_qos_vport_enable(vport, parent, extack);
+-	if (err)
++	if (err) {
++		__esw_qos_free_node(sched_node);
+ 		esw_qos_put(esw);
++		vport->qos.sched_node = NULL;
++	}
  
- static int net_msg_warn;	/* Unused, but still a sysctl */
- 
-@@ -554,7 +555,7 @@ static struct ctl_table net_core_table[] = {
- 		.maxlen		= sizeof(unsigned int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
--		.extra1		= SYSCTL_ZERO,
-+		.extra1		= &netdev_budget_usecs_min,
- 	},
- 	{
- 		.procname	= "fb_tunnels_only_for_init_net",
+ 	return err;
+ }
 -- 
 2.39.5
 
