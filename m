@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-120976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343F3A5095E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:17:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129C8A507EB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B44471885116
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537493A6A2C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7D62528F6;
-	Wed,  5 Mar 2025 18:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767C71C863D;
+	Wed,  5 Mar 2025 18:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTGMcMiQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoxVNMco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8402517AE;
-	Wed,  5 Mar 2025 18:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354C914B075;
+	Wed,  5 Mar 2025 18:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198522; cv=none; b=GlxbocGpN/C5v0lathU0WCCVVYs+V/Nn4goB6Y7ybJwmwbtKt+gzbEmZLJQvjXt7dTbSXumaKMpPPTeNug0k/wWPKO29o0aK9WaWB25nSA7nsyDKhjmV1B9AkY96ZejqLXdZ0Kc+6w7VJvtygpR0v0aD9NFrj4mFg2NCnxyEYqE=
+	t=1741197714; cv=none; b=Ma25T3vBh2e+6FfBkxQxNFxbnB/j/DxpLpnuTykqEcEGlm9CiEyV+gFewlizcAZuIBjzNqOSR1sZ9aVe0ho/UQzO1Iwbj03dsXVz+aqe3p8o43FAqr4bRwyBH8T2H+oAscOfdN7xnfDb6f8i6fMD4PuMY725ptzlKMxzabgW5u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198522; c=relaxed/simple;
-	bh=GOkJSUFhYiVjTu5hpkiiSK/uFhMZY5N72WXCLxE7iXg=;
+	s=arc-20240116; t=1741197714; c=relaxed/simple;
+	bh=XD1Yul4Tsf9xy0siFEYhdng3G5ghl8Jhm8C0uEpDcbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOKTOakZEAUf/1lOmu9Z6NcEcLZOIkMacJbgMGF5swVB0/BwYj7ZmF8RUb/7tnKgrKIFe1I9I4znmHA5/E4mAn35L+0osD38D6tZ6+13ihm0SpYFk6K+lLWqt2utfckz8gCexFB+pySiP7Oc78zUbBEgnFuaqHZCcehmDfyodwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTGMcMiQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563E1C4CED1;
-	Wed,  5 Mar 2025 18:15:21 +0000 (UTC)
+	 MIME-Version; b=BQJrzXbCXfg57+jzKlbYwKFwNsHeb6IPclegx0YW2GVEI3Ysq+WpjtKRZrUI9gSeEsaS0khqwq7mSXVWl7JXFHMF6W8ewddugm/d4HtMtrxZe6uUaHgWlhC/a/y2WWb5VpwddVo3/VhxtEoaMsjaDmbXBqn9+fyTevA/5uTS/Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoxVNMco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433C8C4CED1;
+	Wed,  5 Mar 2025 18:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198521;
-	bh=GOkJSUFhYiVjTu5hpkiiSK/uFhMZY5N72WXCLxE7iXg=;
+	s=korg; t=1741197713;
+	bh=XD1Yul4Tsf9xy0siFEYhdng3G5ghl8Jhm8C0uEpDcbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTGMcMiQlWerbh51VvxHxI1937k3sNemr+2CIMlp87Q96wdub8UPp1p4enXK42CvM
-	 Z5E7nuu5Klo8IAy507RK4QbaJVeVHLfpAAkq/aawMq3R1HiwhAYzrIVUecU7C3NJcV
-	 LMFKr8gtBR8qa89U1gWASuWKFtxyIXprLPmPO4pY=
+	b=IoxVNMcov5XhfT8qOCOjyeUF6niUsjgBalXgNCHTrGmxW3jx/zZ3mqVcvD9iC1zKn
+	 ICfD52q9SQkuG9wvz96/cspOSAQo4JGWs61suKbjpyZqnMleXTTuZtJD81TIeCikTE
+	 vU5n05d/3ItFOqapMdYfq7WQLghPPl/3QoxfM4iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Mohammad Heib <mheib@redhat.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 024/157] sunrpc: suppress warnings for unused procfs functions
-Date: Wed,  5 Mar 2025 18:47:40 +0100
-Message-ID: <20250305174506.267534916@linuxfoundation.org>
+Subject: [PATCH 6.6 042/142] net: Clear old fragment checksum value in napi_reuse_skb
+Date: Wed,  5 Mar 2025 18:47:41 +0100
+Message-ID: <20250305174502.028839889@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mohammad Heib <mheib@redhat.com>
 
-[ Upstream commit 1f7a4f98c11fbeb18ed21f3b3a497e90a50ad2e0 ]
+[ Upstream commit 49806fe6e61b045b5be8610e08b5a3083c109aa0 ]
 
-There is a warning about unused variables when building with W=1 and no procfs:
+In certain cases, napi_get_frags() returns an skb that points to an old
+received fragment, This skb may have its skb->ip_summed, csum, and other
+fields set from previous fragment handling.
 
-net/sunrpc/cache.c:1660:30: error: 'cache_flush_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1660 | static const struct proc_ops cache_flush_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1622:30: error: 'content_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1622 | static const struct proc_ops content_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~
-net/sunrpc/cache.c:1598:30: error: 'cache_channel_proc_ops' defined but not used [-Werror=unused-const-variable=]
- 1598 | static const struct proc_ops cache_channel_proc_ops = {
-      |                              ^~~~~~~~~~~~~~~~~~~~~~
+Some network drivers set skb->ip_summed to either CHECKSUM_COMPLETE or
+CHECKSUM_UNNECESSARY when getting skb from napi_get_frags(), while
+others only set skb->ip_summed when RX checksum offload is enabled on
+the device, and do not set any value for skb->ip_summed when hardware
+checksum offload is disabled, assuming that the skb->ip_summed
+initiated to zero by napi_reuse_skb, ionic driver for example will
+ignore/unset any value for the ip_summed filed if HW checksum offload is
+disabled, and if we have a situation where the user disables the
+checksum offload during a traffic that could lead to the following
+errors shown in the kernel logs:
+<IRQ>
+dump_stack_lvl+0x34/0x48
+ __skb_gro_checksum_complete+0x7e/0x90
+tcp6_gro_receive+0xc6/0x190
+ipv6_gro_receive+0x1ec/0x430
+dev_gro_receive+0x188/0x360
+? ionic_rx_clean+0x25a/0x460 [ionic]
+napi_gro_frags+0x13c/0x300
+? __pfx_ionic_rx_service+0x10/0x10 [ionic]
+ionic_rx_service+0x67/0x80 [ionic]
+ionic_cq_service+0x58/0x90 [ionic]
+ionic_txrx_napi+0x64/0x1b0 [ionic]
+ __napi_poll+0x27/0x170
+net_rx_action+0x29c/0x370
+handle_softirqs+0xce/0x270
+__irq_exit_rcu+0xa3/0xc0
+common_interrupt+0x80/0xa0
+</IRQ>
 
-These are used inside of an #ifdef, so replacing that with an
-IS_ENABLED() check lets the compiler see how they are used while
-still dropping them during dead code elimination.
+This inconsistency sometimes leads to checksum validation issues in the
+upper layers of the network stack.
 
-Fixes: dbf847ecb631 ("knfsd: allow cache_register to return error on failure")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+To resolve this, this patch clears the skb->ip_summed value for each
+reused skb in by napi_reuse_skb(), ensuring that the caller is responsible
+for setting the correct checksum status. This eliminates potential
+checksum validation issues caused by improper handling of
+skb->ip_summed.
+
+Fixes: 76620aafd66f ("gro: New frags interface to avoid copying shinfo")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250225112852.2507709-1-mheib@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ net/core/gro.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 059f6ef1ad189..7fcb0574fc79e 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1669,12 +1669,14 @@ static void remove_cache_proc_entries(struct cache_detail *cd)
- 	}
- }
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 85d3f686ba539..397cf59842503 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -627,6 +627,7 @@ static void napi_reuse_skb(struct napi_struct *napi, struct sk_buff *skb)
+ 	skb->pkt_type = PACKET_HOST;
  
--#ifdef CONFIG_PROC_FS
- static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- {
- 	struct proc_dir_entry *p;
- 	struct sunrpc_net *sn;
- 
-+	if (!IS_ENABLED(CONFIG_PROC_FS))
-+		return 0;
-+
- 	sn = net_generic(net, sunrpc_net_id);
- 	cd->procfs = proc_mkdir(cd->name, sn->proc_net_rpc);
- 	if (cd->procfs == NULL)
-@@ -1702,12 +1704,6 @@ static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
- 	remove_cache_proc_entries(cd);
- 	return -ENOMEM;
- }
--#else /* CONFIG_PROC_FS */
--static int create_cache_proc_entries(struct cache_detail *cd, struct net *net)
--{
--	return 0;
--}
--#endif
- 
- void __init cache_initialize(void)
- {
+ 	skb->encapsulation = 0;
++	skb->ip_summed = CHECKSUM_NONE;
+ 	skb_shinfo(skb)->gso_type = 0;
+ 	skb_shinfo(skb)->gso_size = 0;
+ 	if (unlikely(skb->slow_gro)) {
 -- 
 2.39.5
 
