@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F15A50754
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3408A50912
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B3E37A8B9D
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:54:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4E707A34AA
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5B2252913;
-	Wed,  5 Mar 2025 17:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DDA25290E;
+	Wed,  5 Mar 2025 18:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzUakfbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LujwxrbF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE01252908;
-	Wed,  5 Mar 2025 17:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306F824C07D;
+	Wed,  5 Mar 2025 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197292; cv=none; b=IV9HIBUnXjfvH9opRRqDHUj06zTxMOwmkZ8+jewo/DrBMXRiETTju27EEqpS+QMeDyywf1pWCfntkYNJqP+t/fF7yRu4IPJE/yy0NO1B0nRif0Pw+V7xkkIOFuaOCkC8rgZWdBnHnbodx0wKdh50jUdBxC32IGOmy0DP508I4aE=
+	t=1741198426; cv=none; b=NWnRJgPEbeA5THEv1NG6H0JKzaGphehrHOokmJhtGjtQJYeMMNaMCWv2sMZRp71hi1U+HauHodqQe+pqMrG4WPVMwto7XTqgBCTEmMgkrJvWTfuv4K98o4f/VCWZwwKRzJ8CAAYCFBUG39dd6sp4N03CsdgB2oOhdwqQbhZEcSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197292; c=relaxed/simple;
-	bh=R5V8ucSDUEiz2C0ECwPU7q4jb88MemiNBqAmKiSzoGI=;
+	s=arc-20240116; t=1741198426; c=relaxed/simple;
+	bh=nd7hyW9pb4AA9rL6YrRJBU3TcqUNoqI9etUavvGFK34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hQeHeGYjbZoL/LG31OkKDp6plse3Ue40tjcXT3ugHaPTkmiqnJTMHPQTCYVy9PTWfG3pJLHO526fq92reieqETAg2DnpTsg/n58p80eURcEKnlHJuwQ4ESlZzHlLnZbVK8IFXAjwtFXKZdWlfkS7CR3cuhsRZm6xN/P7walRngM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzUakfbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F781C4CEE0;
-	Wed,  5 Mar 2025 17:54:50 +0000 (UTC)
+	 MIME-Version; b=fy2EAnk1z3ZLOXu5QFCigb4qp5ELL/72NA8K2XSYnpGVqHRwS9ZjQopdUSak36qGoCIG0JafR7FWji/wblb4IC/v6mfkOyaR44t/bj1jI7YZnn100pNEG9MQwvMpDESwd4c8iq5nYRc2KPciXLrkWK4bfJnetZ7ZQainNf6U3Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LujwxrbF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4373EC4CED1;
+	Wed,  5 Mar 2025 18:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197291;
-	bh=R5V8ucSDUEiz2C0ECwPU7q4jb88MemiNBqAmKiSzoGI=;
+	s=korg; t=1741198424;
+	bh=nd7hyW9pb4AA9rL6YrRJBU3TcqUNoqI9etUavvGFK34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzUakfbQ/PQnkfxibqNEH7dr0DI9yqRTt5mwSTLTq5f9RvTynehw7AxsCeUCkO17S
-	 Z1N0+7cs1v15M6ceG61+qox3vH6emB5pAY4tjGbzuD2HUmu0cnSiW+hpmmbt0HHu+I
-	 4suRLzV7BRndy4sLnnIL7k0PlohblSbkgGnaAOCg=
+	b=LujwxrbF0gBGs1c5ozrYY8hDPRDCjHOn5yITu+AJLrKkcfx5WrJKm7W/fDppVsMd0
+	 9BO+HGop1HUpBdVpYJ4p+e4jbBV+vcE0qcjv2eA3u2BSj4zfLnd6xTs9Afeald8Yat
+	 S5dwREnXMHSo/QH8R2TWk8oCz6yBQZUKzUM5GoDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.1 073/176] drm/i915: Make sure all planes in use by the joiner have their crtc included
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 006/157] RDMA/hns: Fix mbox timing out by adding retry mechanism
 Date: Wed,  5 Mar 2025 18:47:22 +0100
-Message-ID: <20250305174508.393175654@linuxfoundation.org>
+Message-ID: <20250305174505.533418033@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +60,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 07fb70d82e0df085980246bf17bc12537588795f upstream.
+[ Upstream commit 9747c0c7791d4a5a62018a0c9c563dd2e6f6c1c0 ]
 
-Any active plane needs to have its crtc included in the atomic
-state. For planes enabled via uapi that is all handler in the core.
-But when we use a plane for joiner the uapi code things the plane
-is disabled and therefore doesn't have a crtc. So we need to pull
-those in by hand. We do it first thing in
-intel_joiner_add_affected_crtcs() so that any newly added crtc will
-subsequently pull in all of its joined crtcs as well.
+If a QP is modified to error state and a flush CQE process is triggered,
+the subsequent QP destruction mbox can still be successfully posted but
+will be blocked in HW until the flush CQE process finishes. This causes
+further mbox posting timeouts in driver. The blocking time is related
+to QP depth. Considering an extreme case where SQ depth and RQ depth
+are both 32K, the blocking time can reach about 135ms.
 
-The symptoms from failing to do this are:
-- duct tape in the form of commit 1d5b09f8daf8 ("drm/i915: Fix NULL
-  ptr deref by checking new_crtc_state")
-- the plane's hw state will get overwritten by the disabled
-  uapi state if it can't find the uapi counterpart plane in
-  the atomic state from where it should copy the correct state
+This patch adds a retry mechanism for mbox posting. For each try, FW
+waits 15ms for HW to complete the previous mbox, otherwise return a
+timeout error code to driver. Counting other time consumption in FW,
+set 8 tries for mbox posting and a 5ms time gap before each retry to
+increase to a sufficient timeout limit.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250212164330.16891-2-ville.syrjala@linux.intel.com
-(cherry picked from commit 91077d1deb5374eb8be00fb391710f00e751dc4b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0425e3e6e0c7 ("RDMA/hns: Support flush cqe for hip08 in kernel space")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250208105930.522796-1-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 64 ++++++++++++++++------
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h |  2 +
+ 2 files changed, 50 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6691,12 +6691,30 @@ static int intel_async_flip_check_hw(str
- static int intel_bigjoiner_add_affected_crtcs(struct intel_atomic_state *state)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 0144e7210d05a..f5c3e560df58d 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -1286,10 +1286,8 @@ static u32 hns_roce_cmdq_tx_timeout(u16 opcode, u32 tx_timeout)
+ 	return tx_timeout;
+ }
+ 
+-static void hns_roce_wait_csq_done(struct hns_roce_dev *hr_dev, u16 opcode)
++static void hns_roce_wait_csq_done(struct hns_roce_dev *hr_dev, u32 tx_timeout)
  {
- 	struct drm_i915_private *i915 = to_i915(state->base.dev);
-+	const struct intel_plane_state *plane_state;
- 	struct intel_crtc_state *crtc_state;
-+	struct intel_plane *plane;
- 	struct intel_crtc *crtc;
- 	u8 affected_pipes = 0;
- 	u8 modeset_pipes = 0;
+-	struct hns_roce_v2_priv *priv = hr_dev->priv;
+-	u32 tx_timeout = hns_roce_cmdq_tx_timeout(opcode, priv->cmq.tx_timeout);
+ 	u32 timeout = 0;
+ 
+ 	do {
+@@ -1299,8 +1297,9 @@ static void hns_roce_wait_csq_done(struct hns_roce_dev *hr_dev, u16 opcode)
+ 	} while (++timeout < tx_timeout);
+ }
+ 
+-static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+-			       struct hns_roce_cmq_desc *desc, int num)
++static int __hns_roce_cmq_send_one(struct hns_roce_dev *hr_dev,
++				   struct hns_roce_cmq_desc *desc,
++				   int num, u32 tx_timeout)
+ {
+ 	struct hns_roce_v2_priv *priv = hr_dev->priv;
+ 	struct hns_roce_v2_cmq_ring *csq = &priv->cmq.csq;
+@@ -1309,8 +1308,6 @@ static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+ 	int ret;
  	int i;
  
-+	/*
-+	 * Any plane which is in use by the joiner needs its crtc.
-+	 * Pull those in first as this will not have happened yet
-+	 * if the plane remains disabled according to uapi.
-+	 */
-+	for_each_new_intel_plane_in_state(state, plane, plane_state, i) {
-+		crtc = to_intel_crtc(plane_state->hw.crtc);
-+		if (!crtc)
-+			continue;
+-	spin_lock_bh(&csq->lock);
+-
+ 	tail = csq->head;
+ 
+ 	for (i = 0; i < num; i++) {
+@@ -1324,22 +1321,17 @@ static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+ 
+ 	atomic64_inc(&hr_dev->dfx_cnt[HNS_ROCE_DFX_CMDS_CNT]);
+ 
+-	hns_roce_wait_csq_done(hr_dev, le16_to_cpu(desc->opcode));
++	hns_roce_wait_csq_done(hr_dev, tx_timeout);
+ 	if (hns_roce_cmq_csq_done(hr_dev)) {
+ 		ret = 0;
+ 		for (i = 0; i < num; i++) {
+ 			/* check the result of hardware write back */
+-			desc[i] = csq->desc[tail++];
++			desc_ret = le16_to_cpu(csq->desc[tail++].retval);
+ 			if (tail == csq->desc_num)
+ 				tail = 0;
+-
+-			desc_ret = le16_to_cpu(desc[i].retval);
+ 			if (likely(desc_ret == CMD_EXEC_SUCCESS))
+ 				continue;
+ 
+-			dev_err_ratelimited(hr_dev->dev,
+-					    "Cmdq IO error, opcode = 0x%x, return = 0x%x.\n",
+-					    desc->opcode, desc_ret);
+ 			ret = hns_roce_cmd_err_convert_errno(desc_ret);
+ 		}
+ 	} else {
+@@ -1354,14 +1346,54 @@ static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+ 		ret = -EAGAIN;
+ 	}
+ 
+-	spin_unlock_bh(&csq->lock);
+-
+ 	if (ret)
+ 		atomic64_inc(&hr_dev->dfx_cnt[HNS_ROCE_DFX_CMDS_ERR_CNT]);
+ 
+ 	return ret;
+ }
+ 
++static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
++			       struct hns_roce_cmq_desc *desc, int num)
++{
++	struct hns_roce_v2_priv *priv = hr_dev->priv;
++	struct hns_roce_v2_cmq_ring *csq = &priv->cmq.csq;
++	u16 opcode = le16_to_cpu(desc->opcode);
++	u32 tx_timeout = hns_roce_cmdq_tx_timeout(opcode, priv->cmq.tx_timeout);
++	u8 try_cnt = HNS_ROCE_OPC_POST_MB_TRY_CNT;
++	u32 rsv_tail;
++	int ret;
++	int i;
 +
-+		crtc_state = intel_atomic_get_crtc_state(&state->base, crtc);
-+		if (IS_ERR(crtc_state))
-+			return PTR_ERR(crtc_state);
++	while (try_cnt) {
++		try_cnt--;
++
++		spin_lock_bh(&csq->lock);
++		rsv_tail = csq->head;
++		ret = __hns_roce_cmq_send_one(hr_dev, desc, num, tx_timeout);
++		if (opcode == HNS_ROCE_OPC_POST_MB && ret == -ETIME &&
++		    try_cnt) {
++			spin_unlock_bh(&csq->lock);
++			mdelay(HNS_ROCE_OPC_POST_MB_RETRY_GAP_MSEC);
++			continue;
++		}
++
++		for (i = 0; i < num; i++) {
++			desc[i] = csq->desc[rsv_tail++];
++			if (rsv_tail == csq->desc_num)
++				rsv_tail = 0;
++		}
++		spin_unlock_bh(&csq->lock);
++		break;
 +	}
 +
-+	/* Now pull in all joined crtcs */
- 	for_each_new_intel_crtc_in_state(state, crtc, crtc_state, i) {
- 		affected_pipes |= crtc_state->bigjoiner_pipes;
- 		if (intel_crtc_needs_modeset(crtc_state))
++	if (ret)
++		dev_err_ratelimited(hr_dev->dev,
++				    "Cmdq IO error, opcode = 0x%x, return = %d.\n",
++				    opcode, ret);
++
++	return ret;
++}
++
+ static int hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+ 			     struct hns_roce_cmq_desc *desc, int num)
+ {
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index cbdbc9edbce6e..91a5665465ffb 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -230,6 +230,8 @@ enum hns_roce_opcode_type {
+ };
+ 
+ #define HNS_ROCE_OPC_POST_MB_TIMEOUT 35000
++#define HNS_ROCE_OPC_POST_MB_TRY_CNT 8
++#define HNS_ROCE_OPC_POST_MB_RETRY_GAP_MSEC 5
+ struct hns_roce_cmdq_tx_timeout_map {
+ 	u16 opcode;
+ 	u32 tx_timeout;
+-- 
+2.39.5
+
 
 
 
