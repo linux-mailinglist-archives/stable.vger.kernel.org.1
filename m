@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-120986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99397A50952
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E17D8A507F4
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD2617413A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 903C916BD29
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6682512ED;
-	Wed,  5 Mar 2025 18:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1AC1C6FF6;
+	Wed,  5 Mar 2025 18:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ef3H9xZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgObgq8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8B3178CC8;
-	Wed,  5 Mar 2025 18:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948231386B4;
+	Wed,  5 Mar 2025 18:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198550; cv=none; b=rEA93aCM5nrPNewCtBFmJgqMljzzgpWYKfZGeJBoxXT8vvItJOMsj4ZoSL7VbkNu4vI42drHWNF9bwErJW3da5k/imfAcZZIyDaV1J7Iih9oTM70dEjTZ0b3Baeiw3p6XchFoLf0qthPv78ArohB3x36YT3uGQUmSyUWYl08pPk=
+	t=1741197739; cv=none; b=DEh/svFi3OQE0GevEET0zflgSN2AmC152faqAn4Gacfj6OD/a12isIRx9Fq7fmObR10I8eP+a7xkwqXgjwjv8I92CTLTENDeNEqUrxWNAcUOUlnm/Jnwx/D5NK8gNlhxsLVBcRpUbUKHwWXyRcnob3sc04hTYeriiKk9d+ggAgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198550; c=relaxed/simple;
-	bh=PfMItk1iJLts6B0FLOteZSFOv5oxfmMlsz1PAsu3ZEU=;
+	s=arc-20240116; t=1741197739; c=relaxed/simple;
+	bh=WGUoj3Y+0H1bkTsgEDCtn7BZ2qVFD6QSnFJ/zxWihJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VK7NQPSM6tfS+oNS0syPVNqdQjARswuoHm9xGxTKNTsWZpOCmPDaQhJ45zYCh2ig8yrS6rTom2zhWHq09Z+KJMe90YrzOoGoDDLOSC14NfaovP6W0bk0HxMReP+b8gwazYUYryzNdomPs70vV8ud2oWUoi3tJiUJB3pvYC4KiXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ef3H9xZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92C9C4CED1;
-	Wed,  5 Mar 2025 18:15:49 +0000 (UTC)
+	 MIME-Version; b=PZzd92VFDXTtD627sBzV38YJcBz6fohvTU4znnI+7kcyeLA7fadPqhwqHLz4qvZKbmi/A7qQJHaGHtP9PcROhxXa9YwbU+niX2449s2X38fyOeDytWdgjJ3XEcJ7KxzOM8whpja4Tm91pc61mZWaL5x1Zg9CzFe6ghNCYHTZh2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgObgq8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6D3C4CED1;
+	Wed,  5 Mar 2025 18:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198550;
-	bh=PfMItk1iJLts6B0FLOteZSFOv5oxfmMlsz1PAsu3ZEU=;
+	s=korg; t=1741197739;
+	bh=WGUoj3Y+0H1bkTsgEDCtn7BZ2qVFD6QSnFJ/zxWihJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ef3H9xZUtSEvraLnig6JK0lKA53OtkuVvDg/UTfWUq2eLlKbcq/6e0kvmjmJIimJd
-	 j0oFjgidrlUxvpD/fc6/zBZrWTxcS1T+qQpNzvcoUsgM0WRtTRuTBKRa+j3RDrnCP1
-	 RN2yOLvJ5nqTP6R88+Htt8MuNELDETJEd5aJajVg=
+	b=SgObgq8hJiT6uxEqnTYAncUiBcn9HM3zvNUOBJ7d/3Ma3OIVMrxjf8MFPO6JWP6XX
+	 +Omvs9DJqV1vW6Jdv/1R7+GFPRavDRQrH2uYJBpHUN8UGF3HdqOABKMAgBxuTFqegs
+	 yxqTBS3xRaiU++sxVjOYcd0XIpFB0zLElgvrVoAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Che Cheng <giver@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 067/157] thermal: gov_power_allocator: Update total_weight on bind and cdev updates
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 084/142] sched/core: Prevent rescheduling when interrupts are disabled
 Date: Wed,  5 Mar 2025 18:48:23 +0100
-Message-ID: <20250305174507.996170433@linuxfoundation.org>
+Message-ID: <20250305174503.713513669@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
-References: <20250305174505.268725418@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Che Cheng <giver@chromium.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 0cde378a10c1cbfaa8dd2b89672d42f36c2809c3 ]
+commit 82c387ef7568c0d96a918a5a78d9cad6256cfa15 upstream.
 
-params->total_weight is not initialized during bind and not updated when
-the bound cdev changes. The cooling device weight will not be used due
-to the uninitialized total_weight, until an update via sysfs is
-triggered.
+David reported a warning observed while loop testing kexec jump:
 
-The bound cdevs are updated during thermal zone registration, where each
-cooling device will be bound to the thermal zone one by one, but
-power_allocator_bind() can be called without an additional cdev update
-when manually changing the policy of a thermal zone via sysfs.
+  Interrupts enabled after irqrouter_resume+0x0/0x50
+  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
+   kernel_kexec+0xf6/0x180
+   __do_sys_reboot+0x206/0x250
+   do_syscall_64+0x95/0x180
 
-Add a new function to handle weight update logic, including updating
-total_weight, and call it when bind, weight changes, and cdev updates to
-ensure total_weight is always correct.
+The corresponding interrupt flag trace:
 
-Fixes: a3cd6db4cc2e ("thermal: gov_power_allocator: Support new update callback of weights")
-Signed-off-by: Yu-Che Cheng <giver@chromium.org>
-Link: https://patch.msgid.link/20250222-fix-power-allocator-weight-v2-1-a94de86b685a@chromium.org
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
+  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+
+That means __up_console_sem() was invoked with interrupts enabled. Further
+instrumentation revealed that in the interrupt disabled section of kexec
+jump one of the syscore_suspend() callbacks woke up a task, which set the
+NEED_RESCHED flag. A later callback in the resume path invoked
+cond_resched() which in turn led to the invocation of the scheduler:
+
+  __cond_resched+0x21/0x60
+  down_timeout+0x18/0x60
+  acpi_os_wait_semaphore+0x4c/0x80
+  acpi_ut_acquire_mutex+0x3d/0x100
+  acpi_ns_get_node+0x27/0x60
+  acpi_ns_evaluate+0x1cb/0x2d0
+  acpi_rs_set_srs_method_data+0x156/0x190
+  acpi_pci_link_set+0x11c/0x290
+  irqrouter_resume+0x54/0x60
+  syscore_resume+0x6a/0x200
+  kernel_kexec+0x145/0x1c0
+  __do_sys_reboot+0xeb/0x240
+  do_syscall_64+0x95/0x180
+
+This is a long standing problem, which probably got more visible with
+the recent printk changes. Something does a task wakeup and the
+scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
+invokes schedule() from a completely bogus context. The scheduler
+enables interrupts after context switching, which causes the above
+warning at the end.
+
+Quite some of the code paths in syscore_suspend()/resume() can result in
+triggering a wakeup with the exactly same consequences. They might not
+have done so yet, but as they share a lot of code with normal operations
+it's just a question of time.
+
+The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
+models. Full preemption is not affected as cond_resched() is disabled and
+the preemption check preemptible() takes the interrupt disabled flag into
+account.
+
+Cure the problem by adding a corresponding check into cond_resched().
+
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/gov_power_allocator.c | 30 ++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ kernel/sched/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
-index 3b626db55b2b9..0d9f636c80f4d 100644
---- a/drivers/thermal/gov_power_allocator.c
-+++ b/drivers/thermal/gov_power_allocator.c
-@@ -641,6 +641,22 @@ static int allocate_actors_buffer(struct power_allocator_params *params,
- 	return ret;
- }
- 
-+static void power_allocator_update_weight(struct power_allocator_params *params)
-+{
-+	const struct thermal_trip_desc *td;
-+	struct thermal_instance *instance;
-+
-+	if (!params->trip_max)
-+		return;
-+
-+	td = trip_to_trip_desc(params->trip_max);
-+
-+	params->total_weight = 0;
-+	list_for_each_entry(instance, &td->thermal_instances, trip_node)
-+		if (power_actor_is_valid(instance))
-+			params->total_weight += instance->weight;
-+}
-+
- static void power_allocator_update_tz(struct thermal_zone_device *tz,
- 				      enum thermal_notify_event reason)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8561,7 +8561,7 @@ SYSCALL_DEFINE0(sched_yield)
+ #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
+ int __sched __cond_resched(void)
  {
-@@ -656,16 +672,12 @@ static void power_allocator_update_tz(struct thermal_zone_device *tz,
- 			if (power_actor_is_valid(instance))
- 				num_actors++;
- 
--		if (num_actors == params->num_actors)
--			return;
-+		if (num_actors != params->num_actors)
-+			allocate_actors_buffer(params, num_actors);
- 
--		allocate_actors_buffer(params, num_actors);
--		break;
-+		fallthrough;
- 	case THERMAL_INSTANCE_WEIGHT_CHANGED:
--		params->total_weight = 0;
--		list_for_each_entry(instance, &td->thermal_instances, trip_node)
--			if (power_actor_is_valid(instance))
--				params->total_weight += instance->weight;
-+		power_allocator_update_weight(params);
- 		break;
- 	default:
- 		break;
-@@ -731,6 +743,8 @@ static int power_allocator_bind(struct thermal_zone_device *tz)
- 
- 	tz->governor_data = params;
- 
-+	power_allocator_update_weight(params);
-+
- 	return 0;
- 
- free_params:
--- 
-2.39.5
-
+-	if (should_resched(0)) {
++	if (should_resched(0) && !irqs_disabled()) {
+ 		preempt_schedule_common();
+ 		return 1;
+ 	}
 
 
 
