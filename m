@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-120870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE77CA508C2
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:11:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D274A509AB
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFBA61753A8
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:10:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 284BD3A726A
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447B91C6FF6;
-	Wed,  5 Mar 2025 18:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22352566D0;
+	Wed,  5 Mar 2025 18:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIA3D+W2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3JIpnrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030521ACEDD;
-	Wed,  5 Mar 2025 18:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6B8255E53;
+	Wed,  5 Mar 2025 18:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198213; cv=none; b=OIY35xaLPjeoSsly/x8xnJfdDciQrcaXvSpYxy0JOekiPlqz3YkxjHA8ORj3w65n7uPfh3OYOSMLsYIkWuFZPel9MQNkwI5OEIks3dgNmEQQJew4Oh3RZ5J6yz0ojmHbXzhAIDWuae8SmaAA8f4LPZAIk6tGZLVW7hSyKeXqI8s=
+	t=1741198725; cv=none; b=tjqCJFoSzls6geF1FVqgMDL76mMnO+LG/1b3AvoXPXAdcHIX16mfZvKMOKv1NCq3okU+i/eoH0qGruHECHLFRIZxwjePJdGSdu2CspZlDqAoyOz9OEe+ouEOv9+U4N5Csv+I7BYVc//5pEnR3nzRstz+3yUPz9qbkvA1aMkp1II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198213; c=relaxed/simple;
-	bh=+ckOm8lPpyRKtaAnjkp4Wo1EO+2/lBtv15cVmEOokGM=;
+	s=arc-20240116; t=1741198725; c=relaxed/simple;
+	bh=VH7UdYV3FBiD7Fp3Cwev5wThqgeOM5+zX3NUEIEbNe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+4RcNgZmWsRgi3KED8zz30MMUYLG84sXf6kih1gUoTqiwzf9FUj4wVEh3e0Uqj/7z/ZIC43FFNqQmvvtKacREDY7HH2OYO4FoXW8ToPOUsYUfNdTx2voFFH9e9VcPe0PkNSWJ2lL2o2N5YEYj4aCRv9C2W87o+4f0WMbR5RHRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIA3D+W2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3891C4CEE0;
-	Wed,  5 Mar 2025 18:10:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tFAdTziHpOwkylXRHLKL2fBTAgCiLTm/hF6vcLJoCByadE5Odgi9meNlM/2ojE55P44/v4rD5JMhFPOXImPU7cxcs7nbGzNMJ0OFuBtkBXeQYUuV5EL+geDunFsYmvJG05BE8bMVslyWJoaF3tPWbOrNLBGrI/q1+6Vu05cj1hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3JIpnrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E24C4CEE0;
+	Wed,  5 Mar 2025 18:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198212;
-	bh=+ckOm8lPpyRKtaAnjkp4Wo1EO+2/lBtv15cVmEOokGM=;
+	s=korg; t=1741198725;
+	bh=VH7UdYV3FBiD7Fp3Cwev5wThqgeOM5+zX3NUEIEbNe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIA3D+W2FeD4HDJ98BVU575EAsgb8z0NiX5Q5iUwJFiy/n/7Fxf82Mf7X7MtxgqGT
-	 Ihftsx3urmytNxjUaCOzS+NaD07QA1t/C7utlqwzQchkgBYo1Z4mXIlcJ1PTooZ+lD
-	 TOIA2fzxUQfiTvvHj7kewR+VVAxCkgJB5kURdz98=
+	b=i3JIpnrMTaeCe/4eCJ9BZhoOHbOEokO8Ro20F8g73F0NFKhL9pdWGMkinCPzM66l7
+	 N/KaaBs7kmwfFdQPfzugiCCdMqIJAc/ZiBbhRJHGJidtkELk0MQucXB2TiIEMplNZg
+	 YApZm5RGhIlIUt1YyNF5+O3JSQJWeii05OME5jeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Capitulino <luizcap@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 102/150] arm64/mm: Fix Boot panic on Ampere Altra
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.13 095/157] drm/amdgpu: init return value in amdgpu_ttm_clear_buffer
 Date: Wed,  5 Mar 2025 18:48:51 +0100
-Message-ID: <20250305174507.910890721@linuxfoundation.org>
+Message-ID: <20250305174509.132376597@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-commit 2b1283e1ea9b5e0b06f075f79391a51d9f70749b upstream.
+commit d3c7059b6a8600fc62cd863f1ea203b8675e63e1 upstream.
 
-When the range of present physical memory is sufficiently small enough
-and the reserved address space for the linear map is sufficiently large
-enough, The linear map base address is randomized in
-arm64_memblock_init().
+Otherwise an uninitialized value can be returned if
+amdgpu_res_cleared returns true for all regions.
 
-Prior to commit 62cffa496aac ("arm64/mm: Override PARange for !LPA2 and
-use it consistently"), we decided if the sizes were suitable with the
-help of the raw mmfr0.parange. But the commit changed this to use the
-sanitized version instead. But the function runs before the register has
-been sanitized so this returns 0, interpreted as a parange of 32 bits.
-Some fun wrapping occurs and the logic concludes that there is enough
-room to randomize the linear map base address, when really there isn't.
-So the top of the linear map ends up outside the reserved address space.
+Possibly closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
 
-Since the PA range cannot be overridden in the first place, restore the
-mmfr0 reading logic to its state prior to 62cffa496aac, where the raw
-register value is used.
-
-Reported-by: Luiz Capitulino <luizcap@redhat.com>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Closes: https://lore.kernel.org/all/a3d9acbe-07c2-43b6-9ba9-a7585f770e83@redhat.com/
-Fixes: 62cffa496aac ("arm64/mm: Override PARange for !LPA2 and use it consistently")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250225114638.2038006-1-ryan.roberts@arm.com
+Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7c62aacc3b452f73a1284198c81551035fac6d71)
 Cc: stable@vger.kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/init.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -278,12 +278,7 @@ void __init arm64_memblock_init(void)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -2280,7 +2280,7 @@ int amdgpu_ttm_clear_buffer(struct amdgp
+ 	struct amdgpu_ring *ring = adev->mman.buffer_funcs_ring;
+ 	struct amdgpu_res_cursor cursor;
+ 	u64 addr;
+-	int r;
++	int r = 0;
  
- 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
- 		extern u16 memstart_offset_seed;
--
--		/*
--		 * Use the sanitised version of id_aa64mmfr0_el1 so that linear
--		 * map randomization can be enabled by shrinking the IPA space.
--		 */
--		u64 mmfr0 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR0_EL1);
-+		u64 mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
- 		int parange = cpuid_feature_extract_unsigned_field(
- 					mmfr0, ID_AA64MMFR0_EL1_PARANGE_SHIFT);
- 		s64 range = linear_region_size -
+ 	if (!adev->mman.buffer_funcs_enabled)
+ 		return -EINVAL;
 
 
 
