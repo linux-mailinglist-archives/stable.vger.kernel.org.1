@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D939EA50833
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 280F6A50787
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05CD0188C283
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 101B53AD55D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553C02517B4;
-	Wed,  5 Mar 2025 18:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315A250C1D;
+	Wed,  5 Mar 2025 17:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCGy6eHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLv6ruT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1110A539A;
-	Wed,  5 Mar 2025 18:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70201C6FFE;
+	Wed,  5 Mar 2025 17:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197835; cv=none; b=s1kSDIIU/xIovt02QDJcUYWcIWUd2OpP0AZ8HGoJplV/MDHdamw1xMQido70fkuBxT15N6WTSIbUm0IuTdAIqVl+Q8FZN4gtd5SIQLB0KlQRTQ454PSO4osdNmrokeLui+jEcj+6gRk0xJ2x7jaAwEEIdF5vjYQh9LFcf3In4x0=
+	t=1741197477; cv=none; b=p/PltDaYeW4c0B2eSS4BQnbGD+AwIRZgSXJHeOHRwjrEddXu3V3PS5DvcjH8NiIjbiDjj32190RRrahtO2JpDdrsovAdAWfWtE2STtGcMDcNqWxZf2P78+zlxiCGmtRXUB0AQvVIwHDayz1Zzl3DQKEnyfmE0cNIrUrtVluc6o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197835; c=relaxed/simple;
-	bh=XD3rvtUW3S+4rZD0muipZK4KaLwPPVEzVCDaXnI7Q98=;
+	s=arc-20240116; t=1741197477; c=relaxed/simple;
+	bh=TAKHXbw5nCMNwNWFtBwCvnZd9hLg9RvA/l2YuEUTVe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIuYiYm23xwWb5i3DoXGCGOqH+JJDCigJNLzsrK7mFxK9X/Et9jPtITwSZuKznnYNwXnECrf42zkzpuV81D0FEWaslgNqxnuyVcftbS5TxPncM95L0OuBrEjeDfCZSmO6Ctve6EBKF/u9OsZ6V3fUSJ2JQPZseS9PYFB2b2wOFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCGy6eHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91072C4CEE0;
-	Wed,  5 Mar 2025 18:03:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HYqWl9uNDQG7PpmAO3e9zCJSI4/Nwh6fOO6YckxyeJftwgJA4aacrmSMouWIPbPL1TSrs1VvcIgNIAtFJzIgv3MxhZA9GJB3gM+OqroIoz4XEbis0stXt4ciPb5h7GkdMtTHPd/MASH6YTJw7J+3/8ocA5MZvsH8ZWMd2iIKhq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLv6ruT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD6FC4CED1;
+	Wed,  5 Mar 2025 17:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197834;
-	bh=XD3rvtUW3S+4rZD0muipZK4KaLwPPVEzVCDaXnI7Q98=;
+	s=korg; t=1741197476;
+	bh=TAKHXbw5nCMNwNWFtBwCvnZd9hLg9RvA/l2YuEUTVe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCGy6eHJYb2R3AmgHNjCKVNrMwxH21rsCaLmjbT2G09Wy1OvEYr+UqT98rbVVIe9M
-	 whlWmAFstBbqORz9yF3xz2IwqZSFru8B6yAcAlp0wuvC4PG2gi0+4hr+oZFEnMob2B
-	 EBRwtsxyEwvUXigCuXFn9O0dK6TWigbgDcLmMlz8=
+	b=aLv6ruT/vy7IA5wViX0vaQZmx5YnlodfoHnXQ5o+EL6r/SEBQWZi8l+FKPo4u+Ho5
+	 EuG4bQYk3bQmEmHrU5//gU/CmgbEQvJp3zhFmjc4tS1quEsFcqceFDX6aZQ7iMVOzu
+	 zdFvdQhLrDcWjuCLQ/WEC2FU3WNZrH4kzSxzTg2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 117/142] x86/microcode: Handle "nosmt" correctly
-Date: Wed,  5 Mar 2025 18:48:56 +0100
-Message-ID: <20250305174505.031217169@linuxfoundation.org>
+	Andreas Schwab <schwab@suse.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 168/176] riscv/futex: sign extend compare value in atomic cmpxchg
+Date: Wed,  5 Mar 2025 18:48:57 +0100
+Message-ID: <20250305174512.185043929@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,174 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Andreas Schwab <schwab@suse.de>
 
-commit 634ac23ad609b3ddd9e0e478bd5afbf49d3a2556 upstream
+commit 599c44cd21f4967774e0acf58f734009be4aea9a upstream.
 
-On CPUs where microcode loading is not NMI-safe the SMT siblings which
-are parked in one of the play_dead() variants still react to NMIs.
+Make sure the compare value in the lr/sc loop is sign extended to match
+what lr.w does.  Fortunately, due to the compiler keeping the register
+contents sign extended anyway the lack of the explicit extension didn't
+result in wrong code so far, but this cannot be relied upon.
 
-So if an NMI hits while the primary thread updates the microcode the
-resulting behaviour is undefined. The default play_dead() implementation on
-modern CPUs is using MWAIT which is not guaranteed to be safe against
-a microcode update which affects MWAIT.
-
-Take the cpus_booted_once_mask into account to detect this case and
-refuse to load late if the vendor specific driver does not advertise
-that late loading is NMI safe.
-
-AMD stated that this is safe, so mark the AMD driver accordingly.
-
-This requirement will be partially lifted in later changes.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.087472735@linutronix.de
+Fixes: b90edb33010b ("RISC-V: Add futex support.")
+Signed-off-by: Andreas Schwab <schwab@suse.de>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/mvmfrkv2vhz.fsf@suse.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig                         |    2 -
- arch/x86/kernel/cpu/microcode/amd.c      |    9 +++--
- arch/x86/kernel/cpu/microcode/core.c     |   51 +++++++++++++++++++------------
- arch/x86/kernel/cpu/microcode/internal.h |   13 +++----
- 4 files changed, 44 insertions(+), 31 deletions(-)
+ arch/riscv/include/asm/futex.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1317,7 +1317,7 @@ config MICROCODE
- config MICROCODE_LATE_LOADING
- 	bool "Late microcode loading (DANGEROUS)"
- 	default n
--	depends on MICROCODE
-+	depends on MICROCODE && SMP
- 	help
- 	  Loading microcode late, when the system is up and executing instructions
- 	  is a tricky business and should be avoided if possible. Just the sequence
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -917,10 +917,11 @@ static void microcode_fini_cpu_amd(int c
- }
+--- a/arch/riscv/include/asm/futex.h
++++ b/arch/riscv/include/asm/futex.h
+@@ -93,7 +93,7 @@ futex_atomic_cmpxchg_inatomic(u32 *uval,
+ 		_ASM_EXTABLE_UACCESS_ERR(1b, 3b, %[r])	\
+ 		_ASM_EXTABLE_UACCESS_ERR(2b, 3b, %[r])	\
+ 	: [r] "+r" (ret), [v] "=&r" (val), [u] "+m" (*uaddr), [t] "=&r" (tmp)
+-	: [ov] "Jr" (oldval), [nv] "Jr" (newval)
++	: [ov] "Jr" ((long)(int)oldval), [nv] "Jr" (newval)
+ 	: "memory");
+ 	__disable_user_access();
  
- static struct microcode_ops microcode_amd_ops = {
--	.request_microcode_fw             = request_microcode_amd,
--	.collect_cpu_info                 = collect_cpu_info_amd,
--	.apply_microcode                  = apply_microcode_amd,
--	.microcode_fini_cpu               = microcode_fini_cpu_amd,
-+	.request_microcode_fw	= request_microcode_amd,
-+	.collect_cpu_info	= collect_cpu_info_amd,
-+	.apply_microcode	= apply_microcode_amd,
-+	.microcode_fini_cpu	= microcode_fini_cpu_amd,
-+	.nmi_safe		= true,
- };
- 
- struct microcode_ops * __init init_amd_microcode(void)
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -254,23 +254,6 @@ static struct platform_device	*microcode
-  */
- #define SPINUNIT 100 /* 100 nsec */
- 
--static int check_online_cpus(void)
--{
--	unsigned int cpu;
--
--	/*
--	 * Make sure all CPUs are online.  It's fine for SMT to be disabled if
--	 * all the primary threads are still online.
--	 */
--	for_each_present_cpu(cpu) {
--		if (topology_is_primary_thread(cpu) && !cpu_online(cpu)) {
--			pr_err("Not all CPUs online, aborting microcode update.\n");
--			return -EINVAL;
--		}
--	}
--
--	return 0;
--}
- 
- static atomic_t late_cpus_in;
- static atomic_t late_cpus_out;
-@@ -387,6 +370,35 @@ static int microcode_reload_late(void)
- 	return ret;
- }
- 
-+/*
-+ *  Ensure that all required CPUs which are present and have been booted
-+ *  once are online.
-+ *
-+ *    To pass this check, all primary threads must be online.
-+ *
-+ *    If the microcode load is not safe against NMI then all SMT threads
-+ *    must be online as well because they still react to NMIs when they are
-+ *    soft-offlined and parked in one of the play_dead() variants. So if a
-+ *    NMI hits while the primary thread updates the microcode the resulting
-+ *    behaviour is undefined. The default play_dead() implementation on
-+ *    modern CPUs uses MWAIT, which is also not guaranteed to be safe
-+ *    against a microcode update which affects MWAIT.
-+ */
-+static bool ensure_cpus_are_online(void)
-+{
-+	unsigned int cpu;
-+
-+	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
-+		if (!cpu_online(cpu)) {
-+			if (topology_is_primary_thread(cpu) || !microcode_ops->nmi_safe) {
-+				pr_err("CPU %u not online\n", cpu);
-+				return false;
-+			}
-+		}
-+	}
-+	return true;
-+}
-+
- static ssize_t reload_store(struct device *dev,
- 			    struct device_attribute *attr,
- 			    const char *buf, size_t size)
-@@ -402,9 +414,10 @@ static ssize_t reload_store(struct devic
- 
- 	cpus_read_lock();
- 
--	ret = check_online_cpus();
--	if (ret)
-+	if (!ensure_cpus_are_online()) {
-+		ret = -EBUSY;
- 		goto put;
-+	}
- 
- 	tmp_ret = microcode_ops->request_microcode_fw(bsp, &microcode_pdev->dev);
- 	if (tmp_ret != UCODE_NEW)
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -20,18 +20,17 @@ enum ucode_state {
- 
- struct microcode_ops {
- 	enum ucode_state (*request_microcode_fw)(int cpu, struct device *dev);
--
- 	void (*microcode_fini_cpu)(int cpu);
- 
- 	/*
--	 * The generic 'microcode_core' part guarantees that
--	 * the callbacks below run on a target cpu when they
--	 * are being called.
-+	 * The generic 'microcode_core' part guarantees that the callbacks
-+	 * below run on a target CPU when they are being called.
- 	 * See also the "Synchronization" section in microcode_core.c.
- 	 */
--	enum ucode_state (*apply_microcode)(int cpu);
--	int (*collect_cpu_info)(int cpu, struct cpu_signature *csig);
--	void (*finalize_late_load)(int result);
-+	enum ucode_state	(*apply_microcode)(int cpu);
-+	int			(*collect_cpu_info)(int cpu, struct cpu_signature *csig);
-+	void			(*finalize_late_load)(int result);
-+	unsigned int		nmi_safe	: 1;
- };
- 
- extern struct ucode_cpu_info ucode_cpu_info[];
 
 
 
