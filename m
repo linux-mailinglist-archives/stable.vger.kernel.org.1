@@ -1,78 +1,82 @@
-Return-Path: <stable+bounces-120400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FE1A4F65A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 06:14:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F9AA4F677
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 06:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29AE7188D31E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 05:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43A516CDE1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 05:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CDE1C6FF9;
-	Wed,  5 Mar 2025 05:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B6A19CC2E;
+	Wed,  5 Mar 2025 05:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="riviJQrO"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="33b+R63J"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2066.outbound.protection.outlook.com [40.107.223.66])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2080.outbound.protection.outlook.com [40.107.93.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155744A06
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 05:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5161C84D2
+	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 05:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741151692; cv=fail; b=lWIaVx9bqpUrWxcf2MArQ0DhMO7j+H1MuDtj61PGxjzzpGHxXa+e4LHUTqjW1d4QsFKsLQv90S0vXONTFHuUZts8rAnegNCV58xw54KhDEtZfOQ0kQGhhuJYOBSi9UEz2eVUG+0pGc75GEt+/deydUXXDeNyl1kD0DjyZ83+lGc=
+	t=1741151872; cv=fail; b=Wd2DhmYuUla44+WnQAHQoUF6QjQyrVc4tLgcXl6JGGzxMay9Klcc5c4Mj6b5n6GMaeFfkKRG5xqrybZ1pGx9YIeDVKajYkm9JclS8x4Qo89R4ARp+Nm4bpqv1+shwMzcyHpv1S0P2032YyvSSiHqeku+39P6LyS65zo4TlQyw/M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741151692; c=relaxed/simple;
-	bh=+Mzy1iIun6JUsqH1UkKgRO2GDRQJZrXDuAMj0AAWJiU=;
+	s=arc-20240116; t=1741151872; c=relaxed/simple;
+	bh=/YclHZGjHzdvl+OBaLH1cI+uOTnIaLmKmkPpjIT+PXM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gGJdI6ItFhiKp8m9HM/GYkMMhIWUItMazVumA8CmELPgw+APjA6I8cPvbIKfErJvjlYLuC1RH8if+Q2aqhbNxUfe4IL+RM9nBDAUAZett2qDHkbgicascNXeZu//CCLSPVr3nAVC+aH3D8R2SviMLVR0y7DuQlFYDYnSUVoSyt4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=riviJQrO; arc=fail smtp.client-ip=40.107.223.66
+	 MIME-Version:Content-Type; b=WwwdKxhcYQDMZJ4C0RK+gz/TwKMkHwezU8K8sZAZCLj6+hvdCDtHEwPbCbiAlXwMPu8DAjmdVZ3pw2v05UFbnkb6hLYUbcF11Poo8k2I5I5r3kIFv0X+PV1gKdqogILhaiVTrlegwdahuJFCpBHuLTUyeWMtqAaa2D4VSUbbH+8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=33b+R63J; arc=fail smtp.client-ip=40.107.93.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pFdVfzM8Eev5aCFd4YZMUfGtN+JGPMI46dThg92DrCOUpL66V3bq2Zf9+ffFv9z6OoewKEjcPYY1xfV/Q0IVjyNpQin14cxa7/erX4Q32lLRuHNInuSELO8uuXurRaLJAkBNfFvfM5nCEpskit1jePEykmqbs35om8ISTeDLAGg1PdfvaF489oVc/WnIwM07w9sf73fVXZvUXHeznP9l3hPpkZd/8OkdyvscNZxetRVCQIqZDOqsGftKEkXvPfiaUE8PMd/Gbz/pGDTDUdkRQvJc/RLMNrU94MFgZERP9sQplIedMNzHPdQD0EaGutnI1ZQwD1TMgp78Jqw6HWrB1w==
+ b=iVUgUcFYTTxMqHKufNdg0ZfV5DchJpNAOzLQLfuhdZHxtyInlVRzoOT0boZvwh5Uwpx1Z8UAVV7PIW1eb3Tv5pGqBW/OIDPoROaOmEoR5dy5JxM8IoTpQaB0/VMrssnG/bMtzRqEanrIJuA41xak0dN49PnVIDmWPFlESOo3qT+jpgbqm4jM92QrWOvEz9BIc+/TNoAjd+i7ItXQv7NV8X/snXUIiJTJRWezBDF0yWDE9w7dT/y0TTRMx777rCOy4G6DWP7B7Oruau2Wl77K/XCj+t7zlq1V/s6ncWIGbi4uN81PgSgzBe1gziso64XSNxNpvaFFl0hWutP9tN8mRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qrE0NmJQxMPEeRKhUlbzxYeKnCqD6NBt/msUVq7QzHY=;
- b=faTVgdgfudyPxM76tvk3B0dwEHmyx56KxBTuGrqlbpuw6v8xLzQXo5h1o16Se0rOO7LPkrSjMC/1dI/KbQYos/pRbUOUwcXqEGa1gSEx7SH1VqYnZJPoo9TvikvNxAi3q3VxKSmZSEki6RT2O9QTiWP+NNLuXHUoZIY0UBwgweX5zsXhm5CmvNY/R+w5ZYgT/h38Eu5YeblW4EINpOaSbGSNxkLGzMpN1H5bgaq8tWwS/3cGg/btAW8GBFMoPYJcNIk1YKYn7LztLZLhFcVCWFt5iJdR21MLJvCb7U1i+lGfmr9Kp+9xj/cvaegK43JNnMa7QLI/Abynq27gPAkbUw==
+ bh=qTF+qS69wgI4Yy1BDuVRNGlwGVrgUtAS2IWiO/J595c=;
+ b=MsholNAB6FWzjYN9dqMgv7M+rV8kLnvKRLYBQydFYz+wpr2JLw305m2GjZ4dZFSgvBpNHcpyO8ilkZ/tJqMkhMaaHJf/Ls+XUygaHkwILKh5LNrqCGKpAl4bX2sCgo1G3WzLi2it5qerbeuWVF05Ey90/DJT+hyw6PCBYFfcDcdxGy7Nkiyk0+332NgURvanmVLJ84mV4a/C5tmMBNkxYsNLRyibs3SuE/zkF7c6Z6biPJaPVhr2K97aWr8YvHwh2p3d77h/qPzwFRX/d1C0RZQLWQQ650/D1ePvNhRc1IJCSCV3SCDk1QJwHo/CdfqaFOwuncYtpjW1OiHd7EMx/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qrE0NmJQxMPEeRKhUlbzxYeKnCqD6NBt/msUVq7QzHY=;
- b=riviJQrO69UOxXeycEYnSOcM9ZKA2BGB3OJzUeKXw6dEh1MysQK3p8+hPv/s2hhl3coHtf78IMhq9pWnFmztPA0EF8LH7AE5k5feG3lypTM1D9Hi2FuiDyY39WaAAmyov5qTf5+El973BPDs3itqBz/hXJ9YGte/4i6hSbKyaTQ=
-Received: from MN2PR07CA0013.namprd07.prod.outlook.com (2603:10b6:208:1a0::23)
- by BL3PR12MB6620.namprd12.prod.outlook.com (2603:10b6:208:38f::21) with
+ bh=qTF+qS69wgI4Yy1BDuVRNGlwGVrgUtAS2IWiO/J595c=;
+ b=33b+R63JiRUziqT575n5TiCVPPf4lPtxLV3cNaM7TUB/GKeVaJzArHoOujRO+K4M7aTnpvoZ8JY41gSTqhlvmjBMlEM3xe+U6+y8gzpcn8V2ZjCS2kCZSsfxyx7dN6kpon7YjtMlBB//yokDXsjTU13lqGoLgcAGjF0yr5k7Rco=
+Received: from MN2PR22CA0009.namprd22.prod.outlook.com (2603:10b6:208:238::14)
+ by SJ5PPFC41ACEE7B.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a0) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
- 2025 05:14:44 +0000
-Received: from BN1PEPF00006000.namprd05.prod.outlook.com
- (2603:10b6:208:1a0:cafe::bc) by MN2PR07CA0013.outlook.office365.com
- (2603:10b6:208:1a0::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.28 via Frontend Transport; Wed,
- 5 Mar 2025 05:14:44 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Wed, 5 Mar
+ 2025 05:17:44 +0000
+Received: from BL02EPF0001A0F9.namprd03.prod.outlook.com
+ (2603:10b6:208:238:cafe::d7) by MN2PR22CA0009.outlook.office365.com
+ (2603:10b6:208:238::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.16 via Frontend Transport; Wed,
+ 5 Mar 2025 05:17:44 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF00006000.mail.protection.outlook.com (10.167.243.232) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BL02EPF0001A0F9.mail.protection.outlook.com (10.167.242.100) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8511.15 via Frontend Transport; Wed, 5 Mar 2025 05:14:43 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8511.15 via Frontend Transport; Wed, 5 Mar 2025 05:17:44 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 4 Mar
- 2025 23:14:25 -0600
+ 2025 23:17:43 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 4 Mar
+ 2025 23:17:10 -0600
 Received: from tom-r5.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 4 Mar 2025 23:14:21 -0600
+ Transport; Tue, 4 Mar 2025 23:17:06 -0600
 From: Tom Chung <chiahsuan.chung@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
@@ -82,9 +86,9 @@ CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
 	<solomon.chiu@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Alex Hung
 	<alex.hung@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
  Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 02/22] drm/amd/display: Disable unneeded hpd interrupts during dm_init
-Date: Wed, 5 Mar 2025 13:13:42 +0800
-Message-ID: <20250305051402.1550046-3-chiahsuan.chung@amd.com>
+Subject: [PATCH 18/22] drm/amd/display: Fix slab-use-after-free on hdcp_work
+Date: Wed, 5 Mar 2025 13:13:58 +0800
+Message-ID: <20250305051402.1550046-19-chiahsuan.chung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250305051402.1550046-1-chiahsuan.chung@amd.com>
 References: <20250305051402.1550046-1-chiahsuan.chung@amd.com>
@@ -96,209 +100,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: chiahsuan.chung@amd.com does not
- designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00006000:EE_|BL3PR12MB6620:EE_
-X-MS-Office365-Filtering-Correlation-Id: 43aaceba-4afb-42c0-ab4b-08dd5ba4a3ee
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0F9:EE_|SJ5PPFC41ACEE7B:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0723a67e-69f5-4ab5-a8dc-08dd5ba50fa7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1iusFTLXWmDxeVA8ES0Vika5WpuktxPIh4vebrjpB7JO3qDRwo4y7uDIDpCB?=
- =?us-ascii?Q?Cclt4SDgeYXlTxFMxa7MjrG+OAVIXVC0O61KxqjqleePTkas/KWBD8tBmNon?=
- =?us-ascii?Q?t9HU+94oC6F2GtWO2e/kyXq0SmYRw47za0q6UrqU5+7UfQVGpjrLqYGcww4R?=
- =?us-ascii?Q?sMWcgFejPd4pNkZes8/E9zdx9P2bEtmMeYk5+zXA34Sm/aDr/XhwQo5RTy2j?=
- =?us-ascii?Q?j4Orfnrg0zt2gF+Cx9R7BE/CwzVml/bFtMhJ8josvvvAsM3LpoR6zGAbdDWR?=
- =?us-ascii?Q?/E+PPiGXPYfYVNY8nExdWFEDENeIgNRDAiGZq+P94CfALD4pvTuugEXSfHCQ?=
- =?us-ascii?Q?oSYvQvCtc05jmnTYUjjC5sVSfFIAgvcZ5bgU59Zmj/2/CYEEUGnBUTBvbq3+?=
- =?us-ascii?Q?OhQeHxiFu4tygSzDMeyJOevk2enWnQ1o2QJVHsj5A+YtppAvBpD6GAbWqwIs?=
- =?us-ascii?Q?gzvi0Xb8Nlk1CiDfevuXfGuEzNopSg3Bx6AzB0s4kmNeYIEQY7RBCVwz2nn3?=
- =?us-ascii?Q?aIgmhLBGuCaiSyEQe5wpW8qexzRRHa3NsbFxZMjCktmu/kLSPUzcFc/1aXuj?=
- =?us-ascii?Q?UTQdGVztvYotad+3YV7sWs6SGLqsFqUHKychDwehioy/lPZQFv6PEDlheFEO?=
- =?us-ascii?Q?Te8ocCtxOMHJ6lBQgbIGAXQn9GQIik7GBCosht6ofVeUEL2duvai4/LFMK8X?=
- =?us-ascii?Q?cNfUdkNM5QcPcoP0I2YBIErl0LR1JJTkNUR6rwEugAU0Bh2a/6NVhid4JH8D?=
- =?us-ascii?Q?n1jzn7lP6QYGV2CG2056xtcdGLF1VbMiwOVN0mVa8U+j5qy5VHGWQnAE7ajV?=
- =?us-ascii?Q?IrCGsF01HiVNdHhWypZmV45naXxMGPG4MCgWjzOm3lo5OlgREbEmIR23FeHq?=
- =?us-ascii?Q?qdsy7Rj/Z1aaRGvsrUqgaVZQne7sxzBWdovCh0+KIjoZtENlNKCuHXDgHV+4?=
- =?us-ascii?Q?E0N70S7olXOvJ6uUjCAPPFEDIf2aB41vnEZiF4yPFbdUDgVJt2XjJbl/82M5?=
- =?us-ascii?Q?ccY9Ze4OR1bhdTDVKwPZMxo+xn0U5L7BPip6Ngi4iM0Wmt/SA731sAW8Ijr4?=
- =?us-ascii?Q?majA6ocdWOxu4qvkpt+QAyf+cua6WDt6ldILks2JuTdDavkrXv/pwWpKrNkU?=
- =?us-ascii?Q?T3MSrd7PyUdx+wn6Mm/tfDNHIGJdo2NKGnoNy1i4tVc+qsj7pyIvgk7vAeTB?=
- =?us-ascii?Q?zpQ14ihld0WIQMnk7xXFlvN9JxARVaENOoxPA66WQd45CK4G+DxDNxEjpmFT?=
- =?us-ascii?Q?r9ZYDVZex72cpVuC/FeJaYXfxquQfC6itItsoc4G6ehcLl+gnM51rWIY6FYR?=
- =?us-ascii?Q?T4geKG6pqx9jAVne80+mnndvCKKtyjOwNFJqAUhITcRsmZ5+S2TDEFZDcNfy?=
- =?us-ascii?Q?Y8f6FZNrkHVT0k9fWVbjmjZvGaTGdWNdf6iC8V2RR3tNPXd4DNNSw0ofIW9V?=
- =?us-ascii?Q?VEJUCdHBA3NFFVVyQ4RGlYdygSktRO7XgkHsyAAraZZM3+RNgmborN37jV4o?=
- =?us-ascii?Q?FQOyv0P8YQk0Foc=3D?=
+	=?us-ascii?Q?yL2d/RtWS1o5hj4lJeUWBoFLKhYnqwVUWp1zy76K4+armrkXmEb4Lvx3X2hE?=
+ =?us-ascii?Q?nx2nlou3ZGbyypQfxUtMptt/Cj+FAoUNqU5pD/+M2EcyNPIlOyOYuQw69VrL?=
+ =?us-ascii?Q?6Lo6Ne5yzYIi+kDHoQ8AYXFvdobtZV60X3S9dBGq7BssnleXbh7dFeNUZ89u?=
+ =?us-ascii?Q?5sM5AoTut4y6WwprRyo6D+guJKZDP7fL3THq3FY/yvNFD1V3jylukAJRYiFw?=
+ =?us-ascii?Q?KbSXVKYosfjE4UifhSlxPKoZxO6ZK/VuvTOGWch8yIVAWeCSG+WFGD2rYzfY?=
+ =?us-ascii?Q?qyO4WFp6x8IHTgIwtM6NSXkFgNSx/8fImX4Bo5wCA7McidQn+Y0FtlcSNGln?=
+ =?us-ascii?Q?Uj1z8ftgq5rizNSnMgIKM5z843kbikhgEU5yRpeTqfacnauSYnye+fKQ49YW?=
+ =?us-ascii?Q?4ursMvbKQaHaqz3ZayLqJb7zl3AxCWGJwDpwzSgQfUhaDRDXTuM3ApDTO3Wd?=
+ =?us-ascii?Q?UoksROfhV51KpG0QG7NJHFAmuQhts8wjviSc1lhPEJvw+qFDgLRVofdGo2nh?=
+ =?us-ascii?Q?KjDw0ci776hJYOceaeGcNyyg9wygDhNkSLtqTDuBx0cMkp/SZ57i/akfAg8F?=
+ =?us-ascii?Q?TPEdiKOjickAam+mTSS1vyXf2ezUYlKoyVfEzJ2tJRBaMXODwu31qVJo+EPo?=
+ =?us-ascii?Q?J1IjwJBAz8Bu6Z02hhczNkNVAQtYjgcOjVJZZLHYvYBIJlS1sVkGrFPQtBBT?=
+ =?us-ascii?Q?B7NVcss8+i3RS7OG4q0U26EP2/WhtqEhJVrsxx8XZSyBOGqH2RUoJzQrbqDn?=
+ =?us-ascii?Q?XRAbjQKtN7NwNEz198F+oRmk5Wu0a5JZigFJ/xgUrDFwSRZ3LpMczjfUCyqr?=
+ =?us-ascii?Q?y+0fLi5M0AK1ogWyQh/l0DNuS2uvB5+3rVwieQCAGn6fcXo8DtMEpuvG8VGI?=
+ =?us-ascii?Q?JFcpAunEV9zdlmc6uUDNh3hcyTTCINMXtV1odZTAlbupNbQPOOosNmuS4Gdd?=
+ =?us-ascii?Q?WkC6cdNdoHU2te5hHINBpJ87c5GyCkNla8+5W6Mmm/7helAtqcVRo0oNEN9Y?=
+ =?us-ascii?Q?Y4VbssQXvK4DIA2q+YbiDLKQ/v83umt66Hdwac4dcNTggXKBYBL11fQswmug?=
+ =?us-ascii?Q?B0CQgacUDMTv1jhNLKm/jGBEFYlHM+eycSALGDnUScgKapaCtEykJfAi20yy?=
+ =?us-ascii?Q?tB+pnVJsqWsIqKGoG01jNaDwicLZSwtGEcaXLzyvaqce7qcr9Xjj3s2ixCfR?=
+ =?us-ascii?Q?YI9qgPOYeBV7mV2L8XHaHZKdXznrXo3kaXjAsPCK4jMSRC7cMnyYYDM5jlX+?=
+ =?us-ascii?Q?gmxNo3q/hZDcxNrRv3Lvl0+oB5Akhmmw2Y669fL0SfT2vqnPdxJxNn0MPMgf?=
+ =?us-ascii?Q?qvQj76/qrAmqnCHUk3LaoSStCRa5OReaTd1UeC8Wa8GschB1nUfrJsQ7Eo+g?=
+ =?us-ascii?Q?vdeIB3dxouaEQmv4rHUoAcFYlean39oIHGp9czlHUi+TRULxHXvQ6/jJaAbe?=
+ =?us-ascii?Q?/Lkg7tPfJeA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 05:14:43.9101
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 05:17:44.6387
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43aaceba-4afb-42c0-ab4b-08dd5ba4a3ee
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0723a67e-69f5-4ab5-a8dc-08dd5ba50fa7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00006000.namprd05.prod.outlook.com
+	BL02EPF0001A0F9.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6620
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFC41ACEE7B
 
-From: Leo Li <sunpeng.li@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
 [Why]
-
-It seems HPD interrupts are enabled by default for all connectors, even
-if the hpd source isn't valid. An eDP for example, does not have a valid
-hpd source (but does have a valid hpdrx source; see construct_phy()).
-Thus, eDPs should have their hpd interrupt disabled.
-
-In the past, this wasn't really an issue. Although the driver gets
-interrupted, then acks by writing to hw registers, there weren't any
-subscribed handlers that did anything meaningful (see
-register_hpd_handlers()).
-
-But things changed with the introduction of IPS. s2idle requires that
-the driver allows IPS for DMUB fw to put hw to sleep. Since register
-access requires hw to be awake, the driver will block IPS entry to do
-so. And no IPS means no hw sleep during s2idle.
-
-This was the observation on DCN35 systems with an eDP. During suspend,
-the eDP toggled its hpd pin as part of the panel power down sequence.
-The driver was then interrupted, and acked by writing to registers,
-blocking IPS entry.
+A slab-use-after-free is reported when HDCP is destroyed but the
+property_validate_dwork queue is still running.
 
 [How]
+Cancel the delayed work when destroying workqueue.
 
-Since DC marks eDP connections as having invalid hpd sources (see
-construct_phy()), DM should disable them at the hw level. Do so in
-amdgpu_dm_hpd_init() by disabling all hpd ints first, then selectively
-enabling ones for connectors that have valid hpd sources.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
+Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 ---
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c | 64 +++++++++++++------
- 1 file changed, 45 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-index 2b63cbab0e87..b61e210f6246 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-@@ -890,8 +890,16 @@ void amdgpu_dm_hpd_init(struct amdgpu_device *adev)
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
-+	int irq_type;
- 	int i;
- 
-+	/* First, clear all hpd and hpdrx interrupts */
-+	for (i = DC_IRQ_SOURCE_HPD1; i <= DC_IRQ_SOURCE_HPD6RX; i++) {
-+		if (!dc_interrupt_set(adev->dm.dc, i, false))
-+			drm_err(dev, "Failed to clear hpd(rx) source=%d on init\n",
-+				i);
-+	}
-+
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
- 		struct amdgpu_dm_connector *amdgpu_dm_connector;
-@@ -904,10 +912,31 @@ void amdgpu_dm_hpd_init(struct amdgpu_device *adev)
- 
- 		dc_link = amdgpu_dm_connector->dc_link;
- 
-+		/*
-+		 * Get a base driver irq reference for hpd ints for the lifetime
-+		 * of dm. Note that only hpd interrupt types are registered with
-+		 * base driver; hpd_rx types aren't. IOW, amdgpu_irq_get/put on
-+		 * hpd_rx isn't available. DM currently controls hpd_rx
-+		 * explicitly with dc_interrupt_set()
-+		 */
- 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
--			dc_interrupt_set(adev->dm.dc,
--					dc_link->irq_source_hpd,
--					true);
-+			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
-+			/*
-+			 * TODO: There's a mismatch between mode_info.num_hpd
-+			 * and what bios reports as the # of connectors with hpd
-+			 * sources. Since the # of hpd source types registered
-+			 * with base driver == mode_info.num_hpd, we have to
-+			 * fallback to dc_interrupt_set for the remaining types.
-+			 */
-+			if (irq_type < adev->mode_info.num_hpd) {
-+				if (amdgpu_irq_get(adev, &adev->hpd_irq, irq_type))
-+					drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n",
-+						dc_link->irq_source_hpd);
-+			} else {
-+				dc_interrupt_set(adev->dm.dc,
-+						 dc_link->irq_source_hpd,
-+						 true);
-+			}
- 		}
- 
- 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
-@@ -917,12 +946,6 @@ void amdgpu_dm_hpd_init(struct amdgpu_device *adev)
- 		}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+index 8238cfd276be..6a4b5f4d8a9d 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -455,6 +455,7 @@ void hdcp_destroy(struct kobject *kobj, struct hdcp_workqueue *hdcp_work)
+ 	for (i = 0; i < hdcp_work->max_link; i++) {
+ 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
+ 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
++		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
  	}
- 	drm_connector_list_iter_end(&iter);
--
--	/* Update reference counts for HPDs */
--	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
--		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
--			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
--	}
- }
  
- /**
-@@ -938,7 +961,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_device *adev)
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
--	int i;
-+	int irq_type;
- 
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-@@ -952,9 +975,18 @@ void amdgpu_dm_hpd_fini(struct amdgpu_device *adev)
- 		dc_link = amdgpu_dm_connector->dc_link;
- 
- 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
--			dc_interrupt_set(adev->dm.dc,
--					dc_link->irq_source_hpd,
--					false);
-+			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
-+
-+			/* TODO: See same TODO in amdgpu_dm_hpd_init() */
-+			if (irq_type < adev->mode_info.num_hpd) {
-+				if (amdgpu_irq_put(adev, &adev->hpd_irq, irq_type))
-+					drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n",
-+						dc_link->irq_source_hpd);
-+			} else {
-+				dc_interrupt_set(adev->dm.dc,
-+						 dc_link->irq_source_hpd,
-+						 false);
-+			}
- 		}
- 
- 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
-@@ -964,10 +996,4 @@ void amdgpu_dm_hpd_fini(struct amdgpu_device *adev)
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
--
--	/* Update reference counts for HPDs */
--	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
--		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
--			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
--	}
- }
+ 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
 -- 
 2.34.1
 
