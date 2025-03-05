@@ -1,171 +1,140 @@
-Return-Path: <stable+bounces-120432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6CAA50020
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:16:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4FBA5006E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 14:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEC3617262E
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:12:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD14188DA9B
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 13:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8BB24EF8B;
-	Wed,  5 Mar 2025 13:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8377D248873;
+	Wed,  5 Mar 2025 13:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J6qelFjx"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="TUrSuYzp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B191D24EF63
-	for <stable@vger.kernel.org>; Wed,  5 Mar 2025 13:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B40244EAB;
+	Wed,  5 Mar 2025 13:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741180171; cv=none; b=K0F94C13q2YIfjDu65xve403kQ5IReQCF66KElftSatXaZ16OMbtCWWGeNhURQazcgoibYBdUqK29+JFdT3z7DOnBnxz6oszHwZmTK4q91LfFQHTFYBaT9c2wsNJc1fOrLrHsStv/65qZC4gou3LngkxDslL3DjM7bFmMHLAB7w=
+	t=1741180839; cv=none; b=djVUQetD74adR0eN7YMfsCTMt9LzW2aknqqWJbh4VHgRZWgHrTPqfNJvGM3N5N/KW7HvOSiUZrjxBN+t6HD4hqNVTWc5vdj8rZhCZC0CgBNo5Nvq58jAGCjGTu9x+/icK8N1E0NBQo1EE2d24D5ebcAHsUeZhSuXps0dwAZLBaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741180171; c=relaxed/simple;
-	bh=1lfv18zXpdxY8kZVpZlVeAwNtS8AmywOofVeGqzeOEg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aiMwUebUO5HpmbfK6meJAAMYw1oQ+gDRP3OhrOOZ4zMsm9a8XCegFy/bL0CA4B7+YZovMz7WnTskBnu3y/WRz87cY6mP4KGDPzBLhWyffFOlmnw0xu9UfbjLB6U+FQ1PoIsfEcB019SolQeXs5dfpOhWCqwCaKVGkU81ZvbVWhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J6qelFjx; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5dccaaca646so1818762a12.0
-        for <stable@vger.kernel.org>; Wed, 05 Mar 2025 05:09:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741180167; x=1741784967; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YcO45S/il2qWOt5c4ZNer6B5gyqfJVMeCB4pzlqBXPc=;
-        b=J6qelFjx1/6gyYUNzM75bbEBjUA/ag0WrIF01NMXVXQ4nhz0PDh2Ezb4IVbjRSg3je
-         GqSwJV8Jblym9JAE2YQn/zI+ROWpB7chOQOTKBcBHZOp0xOUOaDDz2amxVREPTy48o1m
-         FcEKyWVd/O7bO/9pudoJXL9eUV6DzE0zy+c46vWR3t37+m4/EEe3RncNsjrZvA6ksOtQ
-         ohXKNSWj+uyaJYZhZ3iwG3GIeU5tjo2jcMup/CqyJu/jLOzEtf2W1vEwUWkO5Pq6h23o
-         eYvkne6wwZ2nLEOaix27w+9amghpJQ+opm8+Y/wJJmDe1mRkTp5H3yiEwZx2Tv2vvFdO
-         t67Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741180167; x=1741784967;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YcO45S/il2qWOt5c4ZNer6B5gyqfJVMeCB4pzlqBXPc=;
-        b=rFF7voXIOE4i5yu51Dc81olUgOxVSx5ogLPJLMVrwKzWKXYe07jjHQNnBvexsufhAM
-         6gEj3FsDfccucMUB/vrgVfvlZbqQ0gATHxLhIJcn4kYMpmiMaeOCBI1NX5RwPKN6Num9
-         yKupm6+TjqLeB8N2/tfb7LGYikI5hqg0dnsNSKhpYR3dhHlVdaitUcaV7DXkyCa8H0mC
-         KMWbQ6EpXbVQt1OEN0xNjAOlur5xcXLzGJAqOs8UmLa5g9v202ijosjCC+HjykzrOa8+
-         QuuYVriujh488p0M+yxyncdQoC7UXxZddwxcEUfo/Nv8cZALqNCQHSFNe287bBQ0QpDT
-         OnPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbsmRBNmd7/iR5kltPjs0NJdSV7TlmnQSXsmq+T80gsmbpclZ+9VmgiEk2mXAlipF3iypFbGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq1PX/zOsdf5HVmpkLvpYkx0338iBQT+Cx+P71Mh7StqnODiAO
-	Howf5euzDgy5+D/NcncOx/NctzXTMACs3GttToLJ1HKutI44dU/SCjdLzOUaPw8=
-X-Gm-Gg: ASbGncvoKfdiCYHqaYGJocFzROz/33bN0k+U4LGaLV6w1HF1OluyqmcYeKv+k6SM7x+
-	PocOb/Uge6A8XczxLEooIO2AMIg/u3aj7QHf5h2jZZQPeZ44CGuU6wnAaWHo6/QOCBfBlHnlUYT
-	nT3ay5X+jBHuf0jhWyHXYkNP2hWhGN7GyZ2jf7OdDWgb3H6I6/GoqEKrfNHOCIxW3TVPHdNJAqN
-	nOJBQDs1TKzcRmjg1d1MxBnVlvO2/MQEyvUNZVdhrL69SylB1N3V0g1Ct91JzzLhlDB/B2G9+lc
-	omUZIEDnx24JMO/MlDMA1iwA0W/flWqmQ4nyeZ5rlZM=
-X-Google-Smtp-Source: AGHT+IEhPlA8syse6BxS6MwO/8ykIl7YX3VsOgc47tKf3pBFQkbkyjyaD9GvZYQWYZb90PvcAHhpFA==
-X-Received: by 2002:a05:6402:1cc1:b0:5e4:95fc:d748 with SMTP id 4fb4d7f45d1cf-5e584e2916bmr6857202a12.5.1741180166877;
-        Wed, 05 Mar 2025 05:09:26 -0800 (PST)
-Received: from [127.0.1.1] ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e4c3b4aa5dsm9627341a12.14.2025.03.05.05.09.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 05:09:26 -0800 (PST)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Wed, 05 Mar 2025 15:09:06 +0200
-Subject: [PATCH v4 3/3] leds: rgb: leds-qcom-lpg: Fix calculation of best
- period Hi-Res PWMs
+	s=arc-20240116; t=1741180839; c=relaxed/simple;
+	bh=zH2/4JizMiAMVXhTiVjJB3Lhravh6eEMRHBsD4S9ULo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W6WyTsMMK9NXNUhgOKWGm0RjYQCvF69UD/Tm3NU6pYvcPEyDpkwVJ46IDmad4bAsDHhruNsqXkA8J8DdBq7i5TuVIv1WTWPUUTnBu1LS4Ae/Auqu5/Ru1MX/8OvoykMMEU84vYIp2c0sXfjo17pfCv3tgZFYdhZRKurROUdiItg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=TUrSuYzp; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 525DKOoI3317275
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Mar 2025 07:20:24 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1741180824;
+	bh=P/KXpuyFB30i1d562EaQZDZEqM46LSzSTn8A8q72DM0=;
+	h=From:To:CC:Subject:Date;
+	b=TUrSuYzpfWMoOwbN9hfX5/dawgO/BL8WRpXonYkwgg8GT0pwL81tQtkLl0WFuQzD2
+	 KNbuvw0VhzDo2ie+L1F90YGar5MZ2AuWnmxvzbxWt3ilYf5Zr49Wm4hTJwHTL1kcKK
+	 WELP7VjjvREuBwKpnhTARTW7jI3gtCmF8Imj2OrU=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 525DKOFq019757
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 5 Mar 2025 07:20:24 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
+ Mar 2025 07:20:23 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 5 Mar 2025 07:20:23 -0600
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 525DKJ35105399;
+	Wed, 5 Mar 2025 07:20:19 -0600
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kw@linux.com>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <rogerq@kernel.org>
+CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        <s-vadapalli@ti.com>
+Subject: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for J784S4
+Date: Wed, 5 Mar 2025 18:50:18 +0530
+Message-ID: <20250305132018.2260771-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-3-bfe124a53a9f@linaro.org>
-References: <20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-0-bfe124a53a9f@linaro.org>
-In-Reply-To: <20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-0-bfe124a53a9f@linaro.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>
-Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Kamal Wadhwa <quic_kamalw@quicinc.com>, 
- Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Johan Hovold <johan@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
- linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2202; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=1lfv18zXpdxY8kZVpZlVeAwNtS8AmywOofVeGqzeOEg=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnyEz9GvsrtuEyjaHc+0jk69pgJbYcU3phTRWaq
- N4oAF9qzWaJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ8hM/QAKCRAbX0TJAJUV
- VjNUEACcTE751zA3mWoqblM1OJYA48Kzok/TAGKeHouxbv4Rf/LdSP6eB3zkjNKKYLEgpRVsAUy
- LTIjXRTmTe3u/TPrdbuzR/8ZuSNoXW7GaPx18Hrgh5cfEhNZQY+FFVscVY7ie6xW9hXZeHGqGpl
- Aw7ZXNAvfnTdpwsxFn5ZaWQI2kgUal+z/exISqrPcbOhSYMzogouj1/nt4ZBYlPPfj49kxUYHVZ
- Z8PPvFXEAp7aWEXSAlffvZecuxHzJtc3IYlb1mNIR9xby3aRYi7b+Xb+GzA3dzcNfA9+h0Jcdfl
- KKQozdo11qANexEqJWTptXvTDyrjEg9IOHYXF5L8D/9iG7VNEC/Vt2iN2eks+Uwqn8PGWvSqNhQ
- DyemuYEMKCFdvQp77Fe0rNXttGzmZwqnMlJFizok/LrZFsS7eg9TTEYtgNBLTA/BM5mj1JEWWYr
- UFMUiOaBY0V1MfYkxs4Ay1ijK6+pRhtfVQk5XyrE1sy/FaRffUBxXvE7dM0nLBkyEg89a0ofk+t
- DB93pHIlBa4epkOPSKHFK4HGJOcyqvLEQQcTiLnPDy5d4xgtZKy33gSZHuKta77Wkj/4cMprSOJ
- +LCAPcWFOn6BHP/+1DPV+az+Uh5Fpyc6xaTIR7pfT0LQU1JtjjaZ8xUateBxVCRZ9PULctU/s8h
- xuX/yP4eD8HoatQ==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
+J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
+to the Technical Reference Manual and Register Documentation for the J784S4
+SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
+the field for the link-state interrupt. Instead, it is BIT(10) of the
+"PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
+field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed by the selected
-resolution.
+Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
+expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
+already reuse this macro since it accurately represents the link-state
+field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
 
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+[0]: https://www.ti.com/lit/zip/spruj52
+Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 0b6310184988c299d82ee7181982c03d306407a4..4f2a178e3d265a2cc88e651d3e2ca6ae3dfac2e2 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -462,7 +462,7 @@ static int lpg_calc_freq(struct lpg_channel *chan, uint64_t period)
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
- 
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -483,7 +483,7 @@ static int lpg_calc_freq(struct lpg_channel *chan, uint64_t period)
- 	 */
- 
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
- 
-@@ -1292,7 +1292,7 @@ static int lpg_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
+Hello,
 
+This patch is based on commit
+48a5eed9ad58 Merge tag 'devicetree-fixes-for-6.14-2' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+of the master branch of Linux.
+
+Patch has been tested on J784S4-EVM, validating that disconnecting an
+Endpoint Device connected to J784S4-EVM results in the following message
+on the J784S4-EVM:
+	j721e-pcie 2900000.pcie: LINK DOWN!
+which wasn't seen earlier.
+
+Regards,
+Siddharth.
+
+ drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 0341d51d6aed..1da9d9918d0d 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -376,13 +376,13 @@ static const struct j721e_pcie_data j784s4_pcie_rc_data = {
+ 	.mode = PCI_MODE_RC,
+ 	.quirk_retrain_flag = true,
+ 	.byte_access_allowed = false,
+-	.linkdown_irq_regfield = LINK_DOWN,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.max_lanes = 4,
+ };
+ 
+ static const struct j721e_pcie_data j784s4_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
+-	.linkdown_irq_regfield = LINK_DOWN,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.max_lanes = 4,
+ };
+ 
 -- 
 2.34.1
 
