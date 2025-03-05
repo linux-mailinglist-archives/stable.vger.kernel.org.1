@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-120572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12F3A50758
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134B0A50986
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A309167382
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D29D17A9D58
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339D62512F7;
-	Wed,  5 Mar 2025 17:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8617E259CB4;
+	Wed,  5 Mar 2025 18:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJt78b7z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/+RMLoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DCB2517BA;
-	Wed,  5 Mar 2025 17:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4446E259CA9;
+	Wed,  5 Mar 2025 18:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197350; cv=none; b=Y+cE2AiDJoVUFyD4iWMGix5llizuZa9/kLMj93XIBjws6Ul8aG3HootJOSmKU66ucEcMEdF/wgGQTJIBNIdzMpEeN+XusRPyPffrpn7NWxAUnyxfZR3hFdeehYP5ypNbJI4DL+6Vtl1MLJ6dQfC1ssWDPKhs8burWl4VnT1bTmI=
+	t=1741198606; cv=none; b=OhnqFEoZwKa/VPxNmsluOOJx3n48eG1VV3bhOAO5p8RGjI6aQl09ZyLe8X2dPTVdDH/d/a0R/WDPfG9ljFu5OoBpCgNdcBg2ufTpZX+yok2P6pM983IqLFzWhjT8yjZbv3vTzGIWx+5Z/7w6ADuAEbkvvtC9N/GVFx+t+3HtJkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197350; c=relaxed/simple;
-	bh=7bdtJOpIkdz8iqblNQwHqjF98e+nnh7GVt+w8kBinfc=;
+	s=arc-20240116; t=1741198606; c=relaxed/simple;
+	bh=RQ5Puj7myqXCo5r+oFwVXJnE7tGqHSbBaksDFEht6+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEG7vrESbJaXF/4t6Wb1UdCelAtsGVHucKiElvVp8BAY0o5/mSSqzZIEHUzUACpmZuf9AsbtSJkCuzsbUhkDJNLerCr4Qu9VlC8PhHSUHovrCBv2P2PnzYYLZMLJ4CgivEpvphAPEiMENS5c1gaGDPe/m1r5fRMYIbE2zb2R3Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJt78b7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683A6C4CED1;
-	Wed,  5 Mar 2025 17:55:49 +0000 (UTC)
+	 MIME-Version; b=O3MTc5Z5n6VX+YnID+EHnK4YtXtaA+XigdbsLkvdiIx8HggttAwO0QQKVrCKsB8ZQnVYrFBaDwj2mROF73oP4Dkn7TV+mTAdHuq6HOQnQ+1SqMpGV4JiCF8pwmUSKWXl9uLH4HCEOkqCwaV+E+ya38v74WqfkPBpIUmcCSsij7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/+RMLoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EDCC4CED1;
+	Wed,  5 Mar 2025 18:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197349;
-	bh=7bdtJOpIkdz8iqblNQwHqjF98e+nnh7GVt+w8kBinfc=;
+	s=korg; t=1741198604;
+	bh=RQ5Puj7myqXCo5r+oFwVXJnE7tGqHSbBaksDFEht6+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJt78b7zIuPkyd63WnxB4+vmUJre95QXy8MCEqyB7NipFJNm32NaMvz42k9KfDCCT
-	 G3EsQkXl8NXsoDO1x4CFQ3dL6Mg9RPpalrpTf6UDp/2FaID2qXWtjt+l+SF38ag/X9
-	 OS+szgZ++F8/7hRUJyiHRZE4g7JS0Qv0TXaPMMDk=
+	b=c/+RMLoV13T+cQ3Jb46Fmy0QR6Z/4rAy6UaiEacVW8+7yiP5E5TTiEnm7JBry5V9w
+	 juHCpkfMkKnsfEkWUCLs2ttlURPStZyXm5KnnjXGsyqu05AVgI3Z+AEnjizKDMtCu6
+	 1vJGYR7nx4PZko/Ko4anzhcqfDnxhlWhI9AZ4Jng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	David Lebrun <dlebrun@google.com>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/176] ipv4: icmp: Unmask upper DSCP bits in icmp_route_lookup()
+Subject: [PATCH 6.13 058/157] net: ipv6: fix dst ref loop on input in seg6 lwt
 Date: Wed,  5 Mar 2025 18:48:14 +0100
-Message-ID: <20250305174510.471343775@linuxfoundation.org>
+Message-ID: <20250305174507.635933469@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 4805646c42e51d2fbf142864d281473ad453ad5d ]
+[ Upstream commit c64a0727f9b1cbc63a5538c8c0014e9a175ad864 ]
 
-The function is called to resolve a route for an ICMP message that is
-sent in response to a situation. Based on the type of the generated ICMP
-message, the function is either passed the DS field of the packet that
-generated the ICMP message or a DS field that is derived from it.
+Prevent a dst ref loop on input in seg6_iptunnel.
 
-Unmask the upper DSCP bits before resolving and output route via
-ip_route_output_key_hash() so that in the future the lookup could be
-performed according to the full DSCP value.
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
+Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
+Cc: David Lebrun <dlebrun@google.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/seg6_iptunnel.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 3807a269e0755..a154339845dd4 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -93,6 +93,7 @@
- #include <net/ip_fib.h>
- #include <net/l3mdev.h>
- #include <net/addrconf.h>
-+#include <net/inet_dscp.h>
- #define CREATE_TRACE_POINTS
- #include <trace/events/icmp.h>
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 33833b2064c07..51583461ae29b 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -472,10 +472,18 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ {
+ 	struct dst_entry *orig_dst = skb_dst(skb);
+ 	struct dst_entry *dst = NULL;
++	struct lwtunnel_state *lwtst;
+ 	struct seg6_lwt *slwt;
+ 	int err;
  
-@@ -502,7 +503,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
- 	fl4->saddr = saddr;
- 	fl4->flowi4_mark = mark;
- 	fl4->flowi4_uid = sock_net_uid(net, NULL);
--	fl4->flowi4_tos = RT_TOS(tos);
-+	fl4->flowi4_tos = tos & INET_DSCP_MASK;
- 	fl4->flowi4_proto = IPPROTO_ICMP;
- 	fl4->fl4_icmp_type = type;
- 	fl4->fl4_icmp_code = code;
+-	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
++	/* We cannot dereference "orig_dst" once ip6_route_input() or
++	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
++	 * need the address of its lwtstate. So, save the address of lwtstate
++	 * now and use it later as a comparison.
++	 */
++	lwtst = orig_dst->lwtstate;
++
++	slwt = seg6_lwt_lwtunnel(lwtst);
+ 
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+@@ -490,7 +498,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+-		if (!dst->error) {
++
++		/* cache only if we don't create a dst reference loop */
++		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&slwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
 -- 
 2.39.5
 
