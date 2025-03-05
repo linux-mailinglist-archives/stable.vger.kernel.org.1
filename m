@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D6EA50826
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A122A50905
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E618175442
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441C318858C1
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E986C1C860D;
-	Wed,  5 Mar 2025 18:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BEE2512C9;
+	Wed,  5 Mar 2025 18:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIiJ5eKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAMjb6bL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A726514B075;
-	Wed,  5 Mar 2025 18:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36F31A5BB7;
+	Wed,  5 Mar 2025 18:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197864; cv=none; b=J7Mvg84IjQm0QpDQo7cKKMYIWwEYkAzYcRfhzR5TPZeqvD4kHjgg/BFLP1XTOQokox+JFnbfhXLnGRqnFslFIpirPkdUcgdaFNOLGrG+A+mW5E/R4bm/jhD3ajqO94Myd3jxYF/8+yA8WIhG7ZbSzG1dSGd5nAmG5GlnQ8tAUJ8=
+	t=1741198346; cv=none; b=PnT0fgmW0cQnfoRo6U4uhxdmZPZbtLzRo7hACm4AsfXcI7Q9SLIL0xHqlH7BAAc15FUEz++Byp6h4RF2lybsCS3lFp3lUbjx+/UTrmaPtOlPmgrF6hck8M4khDGzip0J5zw7fb/1Y5L5APrjCMOAyUmLFqYl9cuh6Eos/GiNK7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197864; c=relaxed/simple;
-	bh=zNf69GeX7A7mFS0BU3jb/Ssxhd/cr18gKMA5nkdpmMY=;
+	s=arc-20240116; t=1741198346; c=relaxed/simple;
+	bh=2IJsbip9uQxDckkuMe7i8KlAeVosVSYa8IC0/BCElGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGNemnFQvDiL0W2X34H4OQqGDS/aakY9P11ftoj3/oN8YKv3Cn0BHezZ98oEH/nz3lA+Ghiz4uTWeutd7w5VNgkVwfg5Cy+B0RbxaJ9PVail4xm2rcuLs6pVLn26yrpt369YXaOmtkO87csoDisQSqG0LSiiZyqt6GhqjlcDQoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIiJ5eKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEC3C4CED1;
-	Wed,  5 Mar 2025 18:04:24 +0000 (UTC)
+	 MIME-Version; b=NyjaO0+fb5/U+QQCl9Mf80j//FcxF3MA5qfh1Yv6Op3QYkG+8OsaaCqjWDJSVHmw0pny2U1pXMLERHqyZHPBn4YBAn8MONmFW1chBfv9RYJkoqfSbqVxULkTO4vioTs94FR9QEaoUVF9yIrBAbzwFyV/qccIzSwcqcwyjjCm6S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAMjb6bL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA8FC4CED1;
+	Wed,  5 Mar 2025 18:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197864;
-	bh=zNf69GeX7A7mFS0BU3jb/Ssxhd/cr18gKMA5nkdpmMY=;
+	s=korg; t=1741198345;
+	bh=2IJsbip9uQxDckkuMe7i8KlAeVosVSYa8IC0/BCElGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIiJ5eKm4jaYd2Upf6BhmfaIWchSntzLqEHuctgrF/rub4mPtDSVk8E1OzGwvbs/t
-	 x3J27VIzYoJCSlbOE++TqwSh1n1421G46A8ASAGIrQ1065vfrfC/bUzfINobFww12Z
-	 wcj76LEVCzpR8ddnHwXu99dq1yAvof+GoEgu8hIk=
+	b=rAMjb6bLQjnajF2jNE9AMwagJPjZJQXDImJM/bSBC92To51TGj+7iTEtkSv5oxk0W
+	 bfHs1vOJDV2o53Rq/ob0riB3Aveq0gZfGvdzzyiZ3ai7AscCSElgeuKQSf2Eyg4SeL
+	 JWv7RrsfcBmVnir7HA495O3+sTB10C3ExikTdn/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 126/142] x86/apic: Provide apic_force_nmi_on_cpu()
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 116/150] net: enetc: fix the off-by-one issue in enetc_map_tx_tso_buffs()
 Date: Wed,  5 Mar 2025 18:49:05 +0100
-Message-ID: <20250305174505.392576515@linuxfoundation.org>
+Message-ID: <20250305174508.479675468@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
+References: <20250305174503.801402104@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 9cab5fb776d4367e26950cf759211e948335288e upstream
+commit 249df695c3ffe8c8d36d46c2580ce72410976f96 upstream.
 
-When SMT siblings are soft-offlined and parked in one of the play_dead()
-variants they still react on NMI, which is problematic on affected Intel
-CPUs. The default play_dead() variant uses MWAIT on modern CPUs, which is
-not guaranteed to be safe when updated concurrently.
+There is an off-by-one issue for the err_chained_bd path, it will free
+one more tx_swbd than expected. But there is no such issue for the
+err_map_data path. To fix this off-by-one issue and make the two error
+handling consistent, the increment of 'i' and 'count' remain in sync
+and enetc_unwind_tx_frame() is called for error handling.
 
-Right now late loading is prevented when not all SMT siblings are online,
-but as they still react on NMI, it is possible to bring them out of their
-park position into a trivial rendezvous handler.
-
-Provide a function which allows to do that. I does sanity checks whether
-the target is in the cpus_booted_once_mask and whether the APIC driver
-supports it.
-
-Mark X2APIC and XAPIC as capable, but exclude 32bit and the UV and NUMACHIP
-variants as that needs feedback from the relevant experts.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115903.603100036@linutronix.de
+Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+Cc: stable@vger.kernel.org
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Link: https://patch.msgid.link/20250224111251.1061098-9-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/apic.h           |    5 ++++-
- arch/x86/kernel/apic/apic_flat_64.c   |    2 ++
- arch/x86/kernel/apic/ipi.c            |    8 ++++++++
- arch/x86/kernel/apic/x2apic_cluster.c |    1 +
- arch/x86/kernel/apic/x2apic_phys.c    |    1 +
- 5 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -277,7 +277,8 @@ struct apic {
- 
- 	u32	disable_esr		: 1,
- 		dest_mode_logical	: 1,
--		x2apic_set_max_apicid	: 1;
-+		x2apic_set_max_apicid	: 1,
-+		nmi_to_offline_cpu	: 1;
- 
- 	u32	(*calc_dest_apicid)(unsigned int cpu);
- 
-@@ -543,6 +544,8 @@ extern bool default_check_apicid_used(ph
- extern void default_ioapic_phys_id_map(physid_mask_t *phys_map, physid_mask_t *retmap);
- extern int default_cpu_present_to_apicid(int mps_cpu);
- 
-+void apic_send_nmi_to_offline_cpu(unsigned int cpu);
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -590,8 +590,13 @@ static int enetc_map_tx_tso_buffs(struct
+ 			err = enetc_map_tx_tso_data(tx_ring, skb, tx_swbd, txbd,
+ 						    tso.data, size,
+ 						    size == data_len);
+-			if (err)
++			if (err) {
++				if (i == 0)
++					i = tx_ring->bd_count;
++				i--;
 +
- #else /* CONFIG_X86_LOCAL_APIC */
+ 				goto err_map_data;
++			}
  
- static inline unsigned int read_apic_id(void) { return 0; }
---- a/arch/x86/kernel/apic/apic_flat_64.c
-+++ b/arch/x86/kernel/apic/apic_flat_64.c
-@@ -103,6 +103,7 @@ static struct apic apic_flat __ro_after_
- 	.send_IPI_allbutself		= default_send_IPI_allbutself,
- 	.send_IPI_all			= default_send_IPI_all,
- 	.send_IPI_self			= default_send_IPI_self,
-+	.nmi_to_offline_cpu		= true,
+ 			data_len -= size;
+ 			count++;
+@@ -620,13 +625,7 @@ err_map_data:
+ 	dev_err(tx_ring->dev, "DMA map error");
  
- 	.read				= native_apic_mem_read,
- 	.write				= native_apic_mem_write,
-@@ -175,6 +176,7 @@ static struct apic apic_physflat __ro_af
- 	.send_IPI_allbutself		= default_send_IPI_allbutself,
- 	.send_IPI_all			= default_send_IPI_all,
- 	.send_IPI_self			= default_send_IPI_self,
-+	.nmi_to_offline_cpu		= true,
+ err_chained_bd:
+-	do {
+-		tx_swbd = &tx_ring->tx_swbd[i];
+-		enetc_free_tx_frame(tx_ring, tx_swbd);
+-		if (i == 0)
+-			i = tx_ring->bd_count;
+-		i--;
+-	} while (count--);
++	enetc_unwind_tx_frame(tx_ring, count, i);
  
- 	.read				= native_apic_mem_read,
- 	.write				= native_apic_mem_write,
---- a/arch/x86/kernel/apic/ipi.c
-+++ b/arch/x86/kernel/apic/ipi.c
-@@ -97,6 +97,14 @@ sendmask:
- 	__apic_send_IPI_mask(mask, CALL_FUNCTION_VECTOR);
+ 	return 0;
  }
- 
-+void apic_send_nmi_to_offline_cpu(unsigned int cpu)
-+{
-+	if (WARN_ON_ONCE(!apic->nmi_to_offline_cpu))
-+		return;
-+	if (WARN_ON_ONCE(!cpumask_test_cpu(cpu, &cpus_booted_once_mask)))
-+		return;
-+	apic->send_IPI(cpu, NMI_VECTOR);
-+}
- #endif /* CONFIG_SMP */
- 
- static inline int __prepare_ICR2(unsigned int mask)
---- a/arch/x86/kernel/apic/x2apic_cluster.c
-+++ b/arch/x86/kernel/apic/x2apic_cluster.c
-@@ -251,6 +251,7 @@ static struct apic apic_x2apic_cluster _
- 	.send_IPI_allbutself		= x2apic_send_IPI_allbutself,
- 	.send_IPI_all			= x2apic_send_IPI_all,
- 	.send_IPI_self			= x2apic_send_IPI_self,
-+	.nmi_to_offline_cpu		= true,
- 
- 	.read				= native_apic_msr_read,
- 	.write				= native_apic_msr_write,
---- a/arch/x86/kernel/apic/x2apic_phys.c
-+++ b/arch/x86/kernel/apic/x2apic_phys.c
-@@ -166,6 +166,7 @@ static struct apic apic_x2apic_phys __ro
- 	.send_IPI_allbutself		= x2apic_send_IPI_allbutself,
- 	.send_IPI_all			= x2apic_send_IPI_all,
- 	.send_IPI_self			= x2apic_send_IPI_self,
-+	.nmi_to_offline_cpu		= true,
- 
- 	.read				= native_apic_msr_read,
- 	.write				= native_apic_msr_write,
 
 
 
