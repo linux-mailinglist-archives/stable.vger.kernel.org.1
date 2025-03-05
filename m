@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-120822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264E5A50886
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:08:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED1FA5074F
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9858C1892390
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7046A174443
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F7024C07D;
-	Wed,  5 Mar 2025 18:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D79253356;
+	Wed,  5 Mar 2025 17:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGmZ/IbI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LWUW38t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D47B1C860D;
-	Wed,  5 Mar 2025 18:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3AB2505B8;
+	Wed,  5 Mar 2025 17:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198074; cv=none; b=bw/u7mvnQQePQeB+65cwRjFI9DIDUom/MQu9fvZm42Yk045QJTfYHRhhg3HNe8B6Ms6FtBgMeKlKqqKNChyrr5fzPxcjpAtm6MZ02K0lqC83t5YDFyVlDmIqeSnV/jo3LPSXIfx65rSTZMgEJaF2K/QahwtS/Lz6JyZfVD8sVY8=
+	t=1741197321; cv=none; b=EkQ53o9ForNq22jw/UzH4JxHVC0NygrEhpy/vPqsEQ72rhxScWr3R3N2re3ZKnzmCOHjfoKasz1i0Hqx6HbnoBkiNvOTJ0MDqaAEXvwze29skdMmh1IWeDOF5uH6EvgqxDfwhGvZ3sZVM7WFdVc2BD/0lKMtLTtUd68/V2yieL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198074; c=relaxed/simple;
-	bh=jkW8eFFGksJI7Wdbt/xtw+VboScgc3ImmURBJtxsOcE=;
+	s=arc-20240116; t=1741197321; c=relaxed/simple;
+	bh=krGVe3N7PDIdZxU6on9f8mVzeOp0hzTuG4guXjWWZaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6CATT/YwA247D/CVRHGNPTGrRlgOdw27/pZOvNDpVHTw/Z/qUm75dmBUzamUUPkhiA3KNyf1xFFvW+e8h/0X2zChN6K1RtD2wCpUkiv3/nKl1y/7nL3pxbA9OA7aaeGbZRJhrUoYG5ZAXZcwaW+dEizQktnrFT++SdoPrIxdVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGmZ/IbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3999C4CED1;
-	Wed,  5 Mar 2025 18:07:53 +0000 (UTC)
+	 MIME-Version; b=bKiIF+bR1Zp0wD8nGdTIZ+Z/66zYkwBI3rp18/hXPuzsdjkbVBiSgRAdxxY7eP/RHsSpQpynQW2UElOpQy1UbuzRANt/X7LRo4Oc3Cbuxv6pY61L1qEa6VfIacgyiLVIMVS/QTZr/U9MJfEevMh4EYb8/PoiiCzFazrrfB+gFbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LWUW38t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BF4C4CED1;
+	Wed,  5 Mar 2025 17:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198074;
-	bh=jkW8eFFGksJI7Wdbt/xtw+VboScgc3ImmURBJtxsOcE=;
+	s=korg; t=1741197320;
+	bh=krGVe3N7PDIdZxU6on9f8mVzeOp0hzTuG4guXjWWZaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hGmZ/IbIfiK8EcDxlvMzDAUy8g2sIX6v8CcDI5P2ts7cuE0E4G4WKWONzEdfdCmew
-	 C2LTbGv3MUudBpZVfUWlqkz3XLmnR/B02LgU1pezOdt8FfhGrUnS76Kx0E24LXhDdX
-	 RqVAGtVhxEwzIjToewORzKaEt10Exb+2UJDIbYew=
+	b=1LWUW38thn+Qpc8EJMs2EgLoX2k+utjExrNotLKN3lInlq67eIqJQp33wYVNJA7ze
+	 P8100kokMgu3XHSupbBl6VhIG5+RbPFcfmHCrSyPM1P1TMlKAlAckRT7D2uqYeoi+P
+	 jugHlQrUspp5H42fLKj6vj9M/TVnVxh5k4EaBUPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/150] ice: Avoid setting default Rx VSI twice in switchdev setup
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 6.1 116/176] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
 Date: Wed,  5 Mar 2025 18:48:05 +0100
-Message-ID: <20250305174506.075019377@linuxfoundation.org>
+Message-ID: <20250305174510.118766028@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5c07be96d8b3f8447e980f29b967bf2e1d7ac732 ]
+[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
 
-As part of switchdev environment setup, uplink VSI is configured as
-default for both Tx and Rx. Default Rx VSI is also used by promiscuous
-mode. If promisc mode is enabled and an attempt to enter switchdev mode
-is made, the setup will fail because Rx VSI is already configured as
-default (rule exists).
+We fixed the UAF issue in USB MIDI code by canceling the pending work
+at closing each MIDI output device in the commit below.  However, this
+assumed that it's the only one that is tied with the endpoint, and it
+resulted in unexpected data truncations when multiple devices are
+assigned to a single endpoint and opened simultaneously.
 
-Reproducer:
-  devlink dev eswitch set $PF1_PCI mode switchdev
-  ip l s $PF1 up
-  ip l s $PF1 promisc on
-  echo 1 > /sys/class/net/$PF1/device/sriov_numvfs
+For addressing the unexpected MIDI message drops, simply replace
+cancel_work_sync() with flush_work().  The drain callback should have
+been already invoked before the close callback, hence the port->active
+flag must be already cleared.  So this just assures that the pending
+work is finished before freeing the resources.
 
-In switchdev setup, use ice_set_dflt_vsi() instead of plain
-ice_cfg_dflt_vsi(), which avoids repeating setting default VSI for Rx if
-it's already configured.
-
-Fixes: 50d62022f455 ("ice: default Tx rule instead of to queue")
-Reported-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Closes: https://lore.kernel.org/intel-wired-lan/PH0PR11MB50138B635F2E5CEB7075325D961F2@PH0PR11MB5013.namprd11.prod.outlook.com
-Reviewed-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250224190647.3601930-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
+Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
+Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
+Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/usb/midi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index fb527434b58b1..d649c197cf673 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -38,8 +38,7 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 	if (ice_vsi_add_vlan_zero(uplink_vsi))
- 		goto err_vlan_zero;
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 2839f6b6f09b4..eed71369c7af2 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1145,7 +1145,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
+ {
+ 	struct usbmidi_out_port *port = substream->runtime->private_data;
  
--	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
--			     ICE_FLTR_RX))
-+	if (ice_set_dflt_vsi(uplink_vsi))
- 		goto err_def_rx;
+-	cancel_work_sync(&port->ep->work);
++	flush_work(&port->ep->work);
+ 	return substream_open(substream, 0, 0);
+ }
  
- 	if (ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, true,
 -- 
 2.39.5
 
