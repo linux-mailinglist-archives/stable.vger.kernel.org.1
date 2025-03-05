@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CEAA50770
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A81A50804
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212803AE919
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:56:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D26F1893D87
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D676A2512D6;
-	Wed,  5 Mar 2025 17:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FC61D63C3;
+	Wed,  5 Mar 2025 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/do2y97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDl6uCjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E282512C7;
-	Wed,  5 Mar 2025 17:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F991C6FF9;
+	Wed,  5 Mar 2025 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197404; cv=none; b=JF8hODuYIZXrIZ1TaAXG56AP75fsK4b24on5HBdQEudFNYbt9j/aGrRUqvb0PfX5SOLmdJQaBVhq8rXsr/cHEMW6nPZuH88QrYYV0vOIdZ5PbOeFCyJCCOr/a4CsLU40rfUUAzgpLvPS2vV1H5wdclltDSGM2oQTaAdVFNh0qhE=
+	t=1741197774; cv=none; b=BH9njm4eaZeH7p2WVmRi1GF8S1KQkr3aY4q9dHa05PylJV7MowltzjhwIAubfeZnC0AkMI87qmuxnwOvjBPtOIq02AubGUiL/NEWEwpgmrqosWd57FLOUl85L2vbsycnk/T1VfDrmuiH6KlMRt7fkTmE3EGdhmi0FtfSg0V0K9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197404; c=relaxed/simple;
-	bh=snfQVagxoWzKhJfYrwSTw7Gmle0qBdgLtDe1DThVCgU=;
+	s=arc-20240116; t=1741197774; c=relaxed/simple;
+	bh=+WWhcrVRZHktbVjO2M0A76uDN8zllF9jfOhtiFYZB0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/+FWuBAgBu2FWEUNGY96NK0752wkOUWtUGjOlMFFN9vU0aKfD+wz+me1oDMNI7kATtGuBN76TyGEq7x8GZ14cO2Shk+5cC/a3GReJEUzcT/LFuxLDKFLjzkNHe+G02J7TsOW5Uj7SOc1j+Z8mqhmBdrjJb2ODgbybkSdBkREpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/do2y97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2024CC4CED1;
-	Wed,  5 Mar 2025 17:56:43 +0000 (UTC)
+	 MIME-Version; b=sPTFlsp4tE5uQN4kaFUHAkjgs2KMRVcdtncz1M7KJ5jZKyqGi6/yqNIKovOVHpL7KK7XxcDI3+wsu9h0GyeEYfLGNNYuKbfg+TC2jX+Ht6uuGIY8LWTxI34TgVxS/pUZ1U89K9OFtDYLqE3OPlahDInH11yrM6FE4nNt2WBavLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDl6uCjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDC2C4CED1;
+	Wed,  5 Mar 2025 18:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197404;
-	bh=snfQVagxoWzKhJfYrwSTw7Gmle0qBdgLtDe1DThVCgU=;
+	s=korg; t=1741197774;
+	bh=+WWhcrVRZHktbVjO2M0A76uDN8zllF9jfOhtiFYZB0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/do2y97cRDzGYcyPk/MNoebNEQZPfQ4VxNdH9U6T6Gh5jkIX80DaapUZAhheIXCA
-	 18xLgOVfOCDOuE4YNDOormrq9IFdxsds/abfYdtlKukCkw6vNaBP0emcsxMo6kfCSq
-	 ltZLb4pYOZAhDDtzlJJhxcduMSTQ8d/u9HUmBUD8=
+	b=NDl6uCjopNf1W0REmUzc/w5Tn/dK3VDplMEXCB2hinFj5YoZdTZvZy9fBA3aiUhJl
+	 MPqGZ1P7mGILxLrU1Z7QkHUpMKEfSL79mkbQIZBQlCvWGA75c1jNIVaky9xriXZnd8
+	 cktyfV1qEJOWOTNwQQX5+emhZX43JcYnZnK7fClg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/176] io_uring/net: save msg_control for compat
+	Fab Stz <fabstz-it@yahoo.fr>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 095/142] intel_idle: Handle older CPUs, which stop the TSC in deeper C states, correctly
 Date: Wed,  5 Mar 2025 18:48:34 +0100
-Message-ID: <20250305174511.266715816@linuxfoundation.org>
+Message-ID: <20250305174504.148842861@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
-References: <20250305174505.437358097@linuxfoundation.org>
+In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
+References: <20250305174500.327985489@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 6ebf05189dfc6d0d597c99a6448a4d1064439a18 ]
+commit c157d351460bcf202970e97e611cb6b54a3dd4a4 upstream.
 
-Match the compat part of io_sendmsg_copy_hdr() with its counterpart and
-save msg_control.
+The Intel idle driver is preferred over the ACPI processor idle driver,
+but fails to implement the work around for Core2 generation CPUs, where
+the TSC stops in C2 and deeper C-states. This causes stalls and boot
+delays, when the clocksource watchdog does not catch the unstable TSC
+before the CPU goes deep idle for the first time.
 
-Fixes: c55978024d123 ("io_uring/net: move receive multishot out of the generic msghdr path")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/2a8418821fe83d3b64350ad2b3c0303e9b732bbd.1740498502.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The ACPI driver marks the TSC unstable when it detects that the CPU
+supports C2 or deeper and the CPU does not have a non-stop TSC.
+
+Add the equivivalent work around to the Intel idle driver to cure that.
+
+Fixes: 18734958e9bf ("intel_idle: Use ACPI _CST for processor models without C-state tables")
+Reported-by: Fab Stz <fabstz-it@yahoo.fr>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Fab Stz <fabstz-it@yahoo.fr>
+Cc: All applicable <stable@vger.kernel.org>
+Closes: https://lore.kernel.org/all/10cf96aa-1276-4bd4-8966-c890377030c3@yahoo.fr
+Link: https://patch.msgid.link/87bjupfy7f.ffs@tglx
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/idle/intel_idle.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index dc7c1e44ec47b..d56e8a47e50f2 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -282,7 +282,9 @@ static int io_sendmsg_copy_hdr(struct io_kiocb *req,
- 		if (unlikely(ret))
- 			return ret;
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -56,6 +56,7 @@
+ #include <asm/nospec-branch.h>
+ #include <asm/mwait.h>
+ #include <asm/msr.h>
++#include <asm/tsc.h>
+ #include <asm/fpu/api.h>
  
--		return __get_compat_msghdr(&iomsg->msg, &cmsg, NULL);
-+		ret = __get_compat_msghdr(&iomsg->msg, &cmsg, NULL);
-+		sr->msg_control = iomsg->msg.msg_control_user;
-+		return ret;
+ #define INTEL_IDLE_VERSION "0.5.1"
+@@ -1573,6 +1574,9 @@ static void __init intel_idle_init_cstat
+ 		if (intel_idle_state_needs_timer_stop(state))
+ 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+ 
++		if (cx->type > ACPI_STATE_C1 && !boot_cpu_has(X86_FEATURE_NONSTOP_TSC))
++			mark_tsc_unstable("TSC halts in idle");
++
+ 		state->enter = intel_idle;
+ 		state->enter_s2idle = intel_idle_s2idle;
  	}
- #endif
- 
--- 
-2.39.5
-
 
 
 
