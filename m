@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-120834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B09A50897
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B45A5077C
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4180F16CFAE
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA15C7AA091
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BED250BFB;
-	Wed,  5 Mar 2025 18:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B6E2528FD;
+	Wed,  5 Mar 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytDo4DA3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhNK0ffA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435FE1C6FF9;
-	Wed,  5 Mar 2025 18:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FDF2517AF;
+	Wed,  5 Mar 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198109; cv=none; b=R9PqCzA5QJ4ru3z5IRwuXq5FpuH3I8olL4BSRlq7g0f/HqXu6iVGsZ9KMub3fG1GsE9KjhiwnvK8vANj9vXyi4/uJ2MgqvixVJuKPND5Hppbc4o0saFpt9abqf67WqAdroxnpc2h+mjVR6T9BDADRWni9k6LIVtew5vd7DjqauA=
+	t=1741197355; cv=none; b=hDeEmx8q0dp6B8Qx5ShBPmYy1QQdKKyLEYauYbjKQxQI8zoYdlOVthRYzoyb1UuoHCoHulO39t0iRfyVSDwtjYYkkCxDIYHL85bmxy7zsq9r4e/S92WhY48eJ0ikxu2s68uxUH3uQxss6mL8XZ+ngwRfB6mcEvZlTCbBpOZA9Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198109; c=relaxed/simple;
-	bh=MMxi4W6FRhD2pS5kDSQ+nsc6m5hYoDtUynfIIB6E8Nk=;
+	s=arc-20240116; t=1741197355; c=relaxed/simple;
+	bh=KidvwaX1iuC8NN2LzrRBD8JWDuwP3iby9bl2RUXs7Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSKuJfy90sPym0BrFWsbzfoNRZxKxA26XrbMn9fvqUBLX0A/mm6AMXFFqaE+v9w325aqkyj41Mb/6dZ8FDX2COBTUF79wkTzv6bqgXxNo96SYnj4JEGY2iJUZdbYzdfdfDc0+5xfgN2TJAtTrHV/xpaXuF+lZQYO8DAWOTTyLgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytDo4DA3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AB2C4CED1;
-	Wed,  5 Mar 2025 18:08:28 +0000 (UTC)
+	 MIME-Version; b=BqtOK+z/W0xMQqqbIuf5xUsOOXOvFV+wkyii5CQgof1Opk2KN592cbRTbYlGYN8n4wWtGk0YucI9jCaRNJj4RWVXK8b0h8MhSjGakwM0qC5zRPLLB7J9wn851tHQEST56wZJK+EK78q6XJONz7TwqRbkFizg1vpFVgpJCRG7QlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhNK0ffA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2422DC4CEE2;
+	Wed,  5 Mar 2025 17:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198108;
-	bh=MMxi4W6FRhD2pS5kDSQ+nsc6m5hYoDtUynfIIB6E8Nk=;
+	s=korg; t=1741197355;
+	bh=KidvwaX1iuC8NN2LzrRBD8JWDuwP3iby9bl2RUXs7Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytDo4DA35V8xToQat1CYtAYIaNp+GPkkRjjoUZjBpq+EvlQPxZNdF1DzsoUgxcD7P
-	 x681WicNCNDcEvB+R88dsmnStbMlXLQCf+BFCVxKg0tQuxCjfOhEv6Vfzr06v4ge6b
-	 aUYHrrqlj0gJFFr9gc6i/gpx3kfDpUvgv7yB/e8c=
+	b=KhNK0ffASZZsfX8EKzxY146lwB5KWf7hi6Dv7w3cdeySG2pbt4krw5V9HxtAqQA2n
+	 7phsgs8VObAnMESfGrT8dzP1w/GJpXlJ25XLpKU8sTUvZGH+/DV7AaeRJ3LdRYAhd+
+	 zbv39B6EqJmY+DkYv9U1s5vN4XepWwAfROaI5FZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Che Cheng <giver@chromium.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/150] thermal: gov_power_allocator: Fix incorrect calculation in divvy_up_power()
+Subject: [PATCH 6.1 127/176] ipv4: Convert icmp_route_lookup() to dscp_t.
 Date: Wed,  5 Mar 2025 18:48:16 +0100
-Message-ID: <20250305174506.510189087@linuxfoundation.org>
+Message-ID: <20250305174510.550676050@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Che Cheng <giver@chromium.org>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 4ecaa75771a75f2b78a431bf67dea165d19d72a6 ]
+[ Upstream commit 913c83a610bb7dd8e5952a2b4663e1feec0b5de6 ]
 
-divvy_up_power() should use weighted_req_power instead of req_power to
-calculate granted_power. Otherwise, granted_power may be unexpected as
-the denominator total_req_power is a weighted sum.
+Pass a dscp_t variable to icmp_route_lookup(), instead of a plain u8,
+to prevent accidental setting of ECN bits in ->flowi4_tos. Rename that
+variable ("tos" -> "dscp") to make the intent clear.
 
-This is a mistake made during the previous refactor.
+While there, reorganise the function parameters to fill up horizontal
+space.
 
-Replace req_power with weighted_req_power in divvy_up_power()
-calculation.
-
-Fixes: 912e97c67cc3 ("thermal: gov_power_allocator: Move memory allocation out of throttle()")
-Signed-off-by: Yu-Che Cheng <giver@chromium.org>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20250219-fix-power-allocator-calc-v1-1-48b860291919@chromium.org
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/294fead85c6035bcdc5fcf9a6bb4ce8798c45ba1.1727807926.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 27843ce6ba3d ("ipvlan: ensure network headers are in skb linear part")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/gov_power_allocator.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/icmp.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
-index 1b2345a697c5a..d59549e616399 100644
---- a/drivers/thermal/gov_power_allocator.c
-+++ b/drivers/thermal/gov_power_allocator.c
-@@ -364,7 +364,7 @@ static void divvy_up_power(struct power_actor *power, int num_actors,
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index a154339845dd4..855fcef829e2c 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -484,13 +484,11 @@ static struct net_device *icmp_get_route_lookup_dev(struct sk_buff *skb)
+ 	return route_lookup_dev;
+ }
  
- 	for (i = 0; i < num_actors; i++) {
- 		struct power_actor *pa = &power[i];
--		u64 req_range = (u64)pa->req_power * power_range;
-+		u64 req_range = (u64)pa->weighted_req_power * power_range;
+-static struct rtable *icmp_route_lookup(struct net *net,
+-					struct flowi4 *fl4,
++static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 					struct sk_buff *skb_in,
+-					const struct iphdr *iph,
+-					__be32 saddr, u8 tos, u32 mark,
+-					int type, int code,
+-					struct icmp_bxm *param)
++					const struct iphdr *iph, __be32 saddr,
++					dscp_t dscp, u32 mark, int type,
++					int code, struct icmp_bxm *param)
+ {
+ 	struct net_device *route_lookup_dev;
+ 	struct rtable *rt, *rt2;
+@@ -503,7 +501,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
+ 	fl4->saddr = saddr;
+ 	fl4->flowi4_mark = mark;
+ 	fl4->flowi4_uid = sock_net_uid(net, NULL);
+-	fl4->flowi4_tos = tos & INET_DSCP_MASK;
++	fl4->flowi4_tos = inet_dscp_to_dsfield(dscp);
+ 	fl4->flowi4_proto = IPPROTO_ICMP;
+ 	fl4->fl4_icmp_type = type;
+ 	fl4->fl4_icmp_code = code;
+@@ -551,7 +549,7 @@ static struct rtable *icmp_route_lookup(struct net *net,
+ 		orefdst = skb_in->_skb_refdst; /* save old refdst */
+ 		skb_dst_set(skb_in, NULL);
+ 		err = ip_route_input(skb_in, fl4_dec.daddr, fl4_dec.saddr,
+-				     tos, rt2->dst.dev);
++				     inet_dscp_to_dsfield(dscp), rt2->dst.dev);
  
- 		pa->granted_power = DIV_ROUND_CLOSEST_ULL(req_range,
- 							  total_req_power);
+ 		dst_release(&rt2->dst);
+ 		rt2 = skb_rtable(skb_in);
+@@ -747,8 +745,9 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
+ 	ipc.opt = &icmp_param.replyopts.opt;
+ 	ipc.sockc.mark = mark;
+ 
+-	rt = icmp_route_lookup(net, &fl4, skb_in, iph, saddr, tos, mark,
+-			       type, code, &icmp_param);
++	rt = icmp_route_lookup(net, &fl4, skb_in, iph, saddr,
++			       inet_dsfield_to_dscp(tos), mark, type, code,
++			       &icmp_param);
+ 	if (IS_ERR(rt))
+ 		goto out_unlock;
+ 
 -- 
 2.39.5
 
