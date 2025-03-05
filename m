@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-120763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-121028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBD5A5082B
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:05:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF3CA509C5
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ADFB7A5BE5
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C066F1897686
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30C31A3176;
-	Wed,  5 Mar 2025 18:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AF4253F2C;
+	Wed,  5 Mar 2025 18:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lflEs4Sg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9Zlzk1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AC21C860D;
-	Wed,  5 Mar 2025 18:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65401FC7D0;
+	Wed,  5 Mar 2025 18:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197902; cv=none; b=XJsn6fwYTTaqH+lEe+TIStMZMUC9mHUp7YvZM9V9rwaQFHki/XnvYCxsyncMTNqS5ZuSOeO1Q6qCIt9n9rf/N+q5JhRhhsCqhY0/AJNfXIrHmQj0ZpBxmJ7HdlxrMT1y+HBfSsRfJfB4SK+CBDa7SgKElwqV4XRGINLXjVV7WI0=
+	t=1741198671; cv=none; b=JfP9RtkcsAKPHYRf+13sa0Jke6EFog25WaqeobkgjDaoDFuZd48xd6cQiu2p3SHn9WXCVrAazXq6DuCSSPnql4sNh468yAd6AXcr/9IMLe0k7LOyafuxhHOdYHEZJ2YtHQDRw33wQ6pskHyvu8XZBGvuxJAfAuEsNALaVtU42Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197902; c=relaxed/simple;
-	bh=rnoAV4f22txhHib+jNdlECFs3CYdI1eAMl1Y9P/5C0o=;
+	s=arc-20240116; t=1741198671; c=relaxed/simple;
+	bh=KJnkxe5xrh5UgercExVpkxDfget0cn47qJePOmGm7Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4OlVca4o7FpCIVLIbI/MAz3sPVLVya5X0L8X5MSooAHenr47nzfv3wRoEj11BxhtHh/+Xm2jcdeG5cxkQ/l13EtIl5iSPhnOAGH8qECttTLsKFlXAaJY96q5AQpql/TVfGgPvw9NPS8R4btu7iDD8om2+x1meF6dsPlmJtPaW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lflEs4Sg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB208C4CED1;
-	Wed,  5 Mar 2025 18:05:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dgOYFWXbQQhnRsDYyn2p/yjK0FUf8esNMYZuDMwEJEwNf2sJ6EY6L0oeW74CxdbguF5CGhnSiYL+KC0jPU+fFGzaWDEbRXtYADAr0SRMK6b9Ia0glad/aXVsu6ElKvpUCeyNsngusnBO4rcV76ru5co2saj0AnMiCI8RSXLrWGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9Zlzk1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D0FC4CED1;
+	Wed,  5 Mar 2025 18:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197902;
-	bh=rnoAV4f22txhHib+jNdlECFs3CYdI1eAMl1Y9P/5C0o=;
+	s=korg; t=1741198671;
+	bh=KJnkxe5xrh5UgercExVpkxDfget0cn47qJePOmGm7Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lflEs4SgvMYXhy35Q5BxHe2CwXZ/4IO3uW4qEfwQlX4ZS0d40seB5Gpdfqly80QxD
-	 ZStk+W6Nul6IvA4sZuda0y/xOSv8RWFsTRIIF8b2tcTUYVzVkUhjwsmjjsZYgmTqV1
-	 SfiiYEz3CCv3okQpiXprO+tXh7uZgKQ1wKazydUg=
+	b=G9Zlzk1qP06IHuCTySaASK5SuuC185du3L9dVkjZjFcAFf8fx5oQ2+osso7rkAC5K
+	 8lWYF/DapQbmjJ4nbAcgWWbxp4Jbal6pDJuIOHSgrIM+cO4/5TqRsQqL4iHjMoqizW
+	 y5dRm1a4lAYtUhjtaBYQDPgsxe2ilAw8EeN6ncD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 107/142] x86/microcode/intel: Reuse intel_cpu_collect_info()
-Date: Wed,  5 Mar 2025 18:48:46 +0100
-Message-ID: <20250305174504.629650348@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 091/157] drm/xe/userptr: fix EFAULT handling
+Date: Wed,  5 Mar 2025 18:48:47 +0100
+Message-ID: <20250305174508.968234987@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +62,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 11f96ac4c21e701650c7d8349b252973185ac6ce upstream
+commit a9f4fa3a7efa65615ff7db13023ac84516e99e21 upstream.
 
-No point for an almost duplicate function.
+Currently we treat EFAULT from hmm_range_fault() as a non-fatal error
+when called from xe_vm_userptr_pin() with the idea that we want to avoid
+killing the entire vm and chucking an error, under the assumption that
+the user just did an unmap or something, and has no intention of
+actually touching that memory from the GPU.  At this point we have
+already zapped the PTEs so any access should generate a page fault, and
+if the pin fails there also it will then become fatal.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231002115902.741173606@linutronix.de
+However it looks like it's possible for the userptr vma to still be on
+the rebind list in preempt_rebind_work_func(), if we had to retry the
+pin again due to something happening in the caller before we did the
+rebind step, but in the meantime needing to re-validate the userptr and
+this time hitting the EFAULT.
+
+This explains an internal user report of hitting:
+
+[  191.738349] WARNING: CPU: 1 PID: 157 at drivers/gpu/drm/xe/xe_res_cursor.h:158 xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+[  191.738551] Workqueue: xe-ordered-wq preempt_rebind_work_func [xe]
+[  191.738616] RIP: 0010:xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+[  191.738690] Call Trace:
+[  191.738692]  <TASK>
+[  191.738694]  ? show_regs+0x69/0x80
+[  191.738698]  ? __warn+0x93/0x1a0
+[  191.738703]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+[  191.738759]  ? report_bug+0x18f/0x1a0
+[  191.738764]  ? handle_bug+0x63/0xa0
+[  191.738767]  ? exc_invalid_op+0x19/0x70
+[  191.738770]  ? asm_exc_invalid_op+0x1b/0x20
+[  191.738777]  ? xe_pt_stage_bind.constprop.0+0x60a/0x6b0 [xe]
+[  191.738834]  ? ret_from_fork_asm+0x1a/0x30
+[  191.738849]  bind_op_prepare+0x105/0x7b0 [xe]
+[  191.738906]  ? dma_resv_reserve_fences+0x301/0x380
+[  191.738912]  xe_pt_update_ops_prepare+0x28c/0x4b0 [xe]
+[  191.738966]  ? kmemleak_alloc+0x4b/0x80
+[  191.738973]  ops_execute+0x188/0x9d0 [xe]
+[  191.739036]  xe_vm_rebind+0x4ce/0x5a0 [xe]
+[  191.739098]  ? trace_hardirqs_on+0x4d/0x60
+[  191.739112]  preempt_rebind_work_func+0x76f/0xd00 [xe]
+
+Followed by NPD, when running some workload, since the sg was never
+actually populated but the vma is still marked for rebind when it should
+be skipped for this special EFAULT case. This is confirmed to fix the
+user report.
+
+v2 (MattB):
+ - Move earlier.
+v3 (MattB):
+ - Update the commit message to make it clear that this indeed fixes the
+   issue.
+
+Fixes: 521db22a1d70 ("drm/xe: Invalidate userptr VMA on page pin fault")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221143840.167150-5-matthew.auld@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 6b93cb98910c826c2e2004942f8b060311e43618)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/intel.c |   16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -435,21 +435,7 @@ void reload_ucode_intel(void)
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -682,6 +682,18 @@ int xe_vm_userptr_pin(struct xe_vm *vm)
+ 		err = xe_vma_userptr_pin_pages(uvma);
+ 		if (err == -EFAULT) {
+ 			list_del_init(&uvma->userptr.repin_link);
++			/*
++			 * We might have already done the pin once already, but
++			 * then had to retry before the re-bind happened, due
++			 * some other condition in the caller, but in the
++			 * meantime the userptr got dinged by the notifier such
++			 * that we need to revalidate here, but this time we hit
++			 * the EFAULT. In such a case make sure we remove
++			 * ourselves from the rebind list to avoid going down in
++			 * flames.
++			 */
++			if (!list_empty(&uvma->vma.combined_links.rebind))
++				list_del_init(&uvma->vma.combined_links.rebind);
  
- static int collect_cpu_info(int cpu_num, struct cpu_signature *csig)
- {
--	struct cpuinfo_x86 *c = &cpu_data(cpu_num);
--	unsigned int val[2];
--
--	memset(csig, 0, sizeof(*csig));
--
--	csig->sig = cpuid_eax(0x00000001);
--
--	if ((c->x86_model >= 5) || (c->x86 > 6)) {
--		/* get processor flags from MSR 0x17 */
--		rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
--		csig->pf = 1 << ((val[1] >> 18) & 7);
--	}
--
--	csig->rev = c->microcode;
--
-+	intel_collect_cpu_info(csig);
- 	return 0;
- }
- 
+ 			/* Wait for pending binds */
+ 			xe_vm_lock(vm, false);
 
 
 
