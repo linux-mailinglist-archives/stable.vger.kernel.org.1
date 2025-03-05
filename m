@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-120843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCCDA5089A
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413CCA50934
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8AF83A6159
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:08:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80CF53A379D
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150C52517BC;
-	Wed,  5 Mar 2025 18:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59CA24CEE3;
+	Wed,  5 Mar 2025 18:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJaulTTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZEslKu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C5D2517B3;
-	Wed,  5 Mar 2025 18:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F48245010;
+	Wed,  5 Mar 2025 18:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741198135; cv=none; b=jgtibzm783m9jZsQt2kO22GwDtE1ugW/06aRVKWrBS+wUIvJ8+fGwF9WkIbtJuuQkfdTq5J0rZobmuQyyCHqACL7hDKumQS6iQ0RZ1LUV3eXP07c34lwd1gqFU94/lfL1Gsl7xt8MkydtlRYr8MjCvUb/jehqlK1PjlyiWJzE6s=
+	t=1741198553; cv=none; b=Ktj5ySdIaHrKK7uw3UIAMhU6f36OX8VQdXbP/eeur5tobpPIVTuh+TlXF21KU9+FFkbJZHxoE+B+dCKX9KDvX2GsBsq7oV57+5XmKwozSwIS3DKkwTZGeYZmZoFws9x+MnE1r93b5liTxRD4higiYCS/7mHE9V9T2zZIcPYJJIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741198135; c=relaxed/simple;
-	bh=GwtEeqpUi2irUva6wLpwamIhBWP/tlEyuetO2twtv5M=;
+	s=arc-20240116; t=1741198553; c=relaxed/simple;
+	bh=wD1EpZUV4+OUu5L9YCp2bFXgh4/xtbxffy4ymx6EzUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqR/geCPw2JHINUrdiBZgeixU4odfuaZhL+mM17O/3BBCRQ8oRJrsGI0eupiySiLOvBPzhmYGyfUHdsPOZsgaEFPdxpjD92RnDhtQACUXnDL2d3UBMfQtpc6sqI2RwXmcCX/vCgKqCi/XdebyDLhiLgJzT2SozJ/ete8cYbEcTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJaulTTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E195C4CEEC;
-	Wed,  5 Mar 2025 18:08:55 +0000 (UTC)
+	 MIME-Version; b=VIa8BN1edXdhRd9oIZKM4F0jHrmAollD4/JM8nHtu5a0mn1VJ/D8d0YcoqXGgXuv2oematagHsa+61XoAlMdLOOItNR0SUP1twZGGUcJdu0E/P73V+pwRuul64mBQCzNLZNMtzqsetKNyliXjXdHU8OmLi4OybfTD4R6PFnrqgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZEslKu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F46C4CED1;
+	Wed,  5 Mar 2025 18:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741198135;
-	bh=GwtEeqpUi2irUva6wLpwamIhBWP/tlEyuetO2twtv5M=;
+	s=korg; t=1741198553;
+	bh=wD1EpZUV4+OUu5L9YCp2bFXgh4/xtbxffy4ymx6EzUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJaulTTMDn15+mBqiGJDJGY8Pvq+1BPY/H8rjoc28pZfS590At4re9CTn7esUExUL
-	 nRXX+BgJveCN7QomaekARUTC8gIqIqLuFLXphB8pIaf8DEAF48IDo5clEXvtVhOTCL
-	 o3IvylkTAgTrIhbblhrSq9uyTa2g/6G3I6cAI4pc=
+	b=gZEslKu3cbpnKfeLWSFFd5FuLdV/Mnr05bTh/NFIt+72CitKfWX3vA5ydihfqPQqH
+	 XfpZl7/lYEv7/3PVrueOBfF8rxs3cQEqvOR2foeL4iU4mCFdPddoZHcrrIkk0+f9uf
+	 1VNYlc9T6YcETcIw317FfSdXaUjsBOFZF5R/0oL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/150] unreachable: Unify
+Subject: [PATCH 6.13 068/157] io_uring/net: save msg_control for compat
 Date: Wed,  5 Mar 2025 18:48:24 +0100
-Message-ID: <20250305174506.828977737@linuxfoundation.org>
+Message-ID: <20250305174508.034638128@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174503.801402104@linuxfoundation.org>
-References: <20250305174503.801402104@linuxfoundation.org>
+In-Reply-To: <20250305174505.268725418@linuxfoundation.org>
+References: <20250305174505.268725418@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit c837de3810982cd41cd70e5170da1931439f025c ]
+[ Upstream commit 6ebf05189dfc6d0d597c99a6448a4d1064439a18 ]
 
-Since barrier_before_unreachable() is empty for !GCC it is trivial to
-unify the two definitions. Less is more.
+Match the compat part of io_sendmsg_copy_hdr() with its counterpart and
+save msg_control.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20241128094311.924381359@infradead.org
-Stable-dep-of: 73cfc53cc3b6 ("objtool: Fix C jump table annotations for Clang")
+Fixes: c55978024d123 ("io_uring/net: move receive multishot out of the generic msghdr path")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/2a8418821fe83d3b64350ad2b3c0303e9b732bbd.1740498502.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-gcc.h | 12 ------------
- include/linux/compiler.h     | 10 +++++++---
- 2 files changed, 7 insertions(+), 15 deletions(-)
+ io_uring/net.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index cd6f9aae311fc..070b3b680209c 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -52,18 +52,6 @@
-  */
- #define barrier_before_unreachable() asm volatile("")
+diff --git a/io_uring/net.c b/io_uring/net.c
+index b01bf900e3b94..96af3408792bb 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -334,7 +334,9 @@ static int io_sendmsg_copy_hdr(struct io_kiocb *req,
+ 		if (unlikely(ret))
+ 			return ret;
  
--/*
-- * Mark a position in code as unreachable.  This can be used to
-- * suppress control flow warnings after asm blocks that transfer
-- * control elsewhere.
-- */
--#define unreachable() \
--	do {					\
--		annotate_unreachable();		\
--		barrier_before_unreachable();	\
--		__builtin_unreachable();	\
--	} while (0)
--
- #if defined(CONFIG_ARCH_USE_BUILTIN_BSWAP)
- #define __HAVE_BUILTIN_BSWAP32__
- #define __HAVE_BUILTIN_BSWAP64__
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 2d962dade9fae..0d10d75218f51 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -141,12 +141,16 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
- #define __annotate_jump_table
- #endif /* CONFIG_OBJTOOL */
+-		return __get_compat_msghdr(&iomsg->msg, &cmsg, NULL);
++		ret = __get_compat_msghdr(&iomsg->msg, &cmsg, NULL);
++		sr->msg_control = iomsg->msg.msg_control_user;
++		return ret;
+ 	}
+ #endif
  
--#ifndef unreachable
--# define unreachable() do {		\
-+/*
-+ * Mark a position in code as unreachable.  This can be used to
-+ * suppress control flow warnings after asm blocks that transfer
-+ * control elsewhere.
-+ */
-+#define unreachable() do {		\
- 	annotate_unreachable();		\
-+	barrier_before_unreachable();	\
- 	__builtin_unreachable();	\
- } while (0)
--#endif
- 
- /*
-  * KENTRY - kernel entry point
 -- 
 2.39.5
 
