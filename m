@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-120743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-120624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A6CA50821
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 19:04:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC9AA5078E
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C931167BAD
-	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 18:04:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C141893773
+	for <lists+stable@lfdr.de>; Wed,  5 Mar 2025 17:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF69250BFC;
-	Wed,  5 Mar 2025 18:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B86F2512EF;
+	Wed,  5 Mar 2025 17:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVLx0NQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW8ozBPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB92F539A;
-	Wed,  5 Mar 2025 18:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE25E1C6FFE;
+	Wed,  5 Mar 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741197843; cv=none; b=kkTRknX3NHiQQ1Er49otT3vG83fejZrRqS5ZgAm5xupILUaTq2uYgeB7iB7UYvQ5591Pd1jVk4jYNWyKM+8rVjulXK+oUTCeaqsHOsKL2ySb+7yki1a7cEGjOvSAvjqqSo+61D7f03ZnKXohX+G0xw2qMtA7OhwFig4nh3dJ8Nw=
+	t=1741197499; cv=none; b=tX3gYAn6VjtHSm4O0qgdey+n0p0ybakTKCl4md4NlC/tJJPLCqW5eJM61+2n3POo0FNkCkPiivSRFajqWRZ+voQ69IseEr3LIhj6PHrTS2ovofX9szqO/YDMorTHnN4vIM6/6zlKytxQCUCwyOVM4VVDUAjWrvHVzuxYTwGYBMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741197843; c=relaxed/simple;
-	bh=SYGu23TEeo9L3j9fZDjiycGR8p1BMmogeAfrr5yKFV0=;
+	s=arc-20240116; t=1741197499; c=relaxed/simple;
+	bh=vBrvbcEHef14tOD01uujXOoGTVoMKFpyLnfU2fYI8+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byZEgmhf/12z7ekY2AWJkbFoyMQijyj12Xtt+kF+F9Dj4FtbVi93Y8fu7q7PLYt3fiCrMsnLg2DPi0SFBG+ao9081eZfn+K6FYWDmbkkVjER+/SS7M3CBOsPwVSNfrTQGodvOrqojULnHChwSCOXhVzjFCR37aXDWnMTu29OwTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVLx0NQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4317DC4CED1;
-	Wed,  5 Mar 2025 18:04:03 +0000 (UTC)
+	 MIME-Version; b=bpOvAd/QZNPam0Ewov6uBH2S0U7WyhvNAEp9yIvlGTHDj2GvusFVUjdBtmkYWjSVpMGb1qrVFlAXvilJw7u/KiS551wfpw29dgyZyg+8A1qWH40//A4HFdhy1Qt52FIU8nfCshEiLbN0u4+WpKoAPnmDdr1HVEukerGn21p1PWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW8ozBPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F4DC4CED1;
+	Wed,  5 Mar 2025 17:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741197843;
-	bh=SYGu23TEeo9L3j9fZDjiycGR8p1BMmogeAfrr5yKFV0=;
+	s=korg; t=1741197499;
+	bh=vBrvbcEHef14tOD01uujXOoGTVoMKFpyLnfU2fYI8+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVLx0NQIXI98RINV4iCdXJLpVUblGqrWANzD6Lich9HQzY+Aw7JdUUI4qh+G2dMxm
-	 K1A5QNQgdQgBT8wtMmvrQkhtP91djG3X4Z/Je9fbQXnw/BQ/lO4JmVXBN3fN9wcn9u
-	 1obfOMmkYuDli2s4Y9LwOsTOPBGJvwFfUaHi8Qvg=
+	b=PW8ozBPNfmxR0ta/im2vTUiFCFhfTPi8yX1/6aO/yrwB0NL6RP4JTdXdb2OYh4COA
+	 hGyCVWc8HltEzajRNGp+j6y1G27hUsHHXPPOR4UipcU//A3wRB8Y7701Z3Mh9Dj0ea
+	 iSIyptCmEGJpRzDk+BIUgaBExKU+ZrZH7amRbGCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 120/142] x86/microcode: Add per CPU result state
+	Lijo Lazar <lijo.lazar@amd.com>,
+	"chr[]" <chris@rudorff.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: [PATCH 6.1 170/176] amdgpu/pm/legacy: fix suspend/resume issues
 Date: Wed,  5 Mar 2025 18:48:59 +0100
-Message-ID: <20250305174505.150404200@linuxfoundation.org>
+Message-ID: <20250305174512.265134017@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305174500.327985489@linuxfoundation.org>
-References: <20250305174500.327985489@linuxfoundation.org>
+In-Reply-To: <20250305174505.437358097@linuxfoundation.org>
+References: <20250305174505.437358097@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,248 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: chr[] <chris@rudorff.com>
 
-commit 4b753955e9151ad2f722137a7bcbafda756186b3 upstream
+commit 91dcc66b34beb72dde8412421bdc1b4cd40e4fb8 upstream.
 
-The microcode rendezvous is purely acting on global state, which does
-not allow to analyze fails in a coherent way.
+resume and irq handler happily races in set_power_state()
 
-Introduce per CPU state where the results are written into, which allows to
-analyze the return codes of the individual CPUs.
+* amdgpu_legacy_dpm_compute_clocks() needs lock
+* protect irq work handler
+* fix dpm_enabled usage
 
-Initialize the state when walking the cpu_present_mask in the online
-check to avoid another for_each_cpu() loop.
+v2: fix clang build, integrate Lijo's comments (Alex)
 
-Enhance the result print out with that.
-
-The structure is intentionally named ucode_ctrl as it will gain control
-fields in subsequent changes.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20231017211723.632681010@linutronix.de
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2524
+Fixes: 3712e7a49459 ("drm/amd/pm: unified lock protections in amdgpu_dpm.c")
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Tested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name> # on Oland PRO
+Signed-off-by: chr[] <chris@rudorff.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ee3dc9e204d271c9c7a8d4d38a0bce4745d33e71)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c     |  112 ++++++++++++++++++-------------
- arch/x86/kernel/cpu/microcode/internal.h |    1 
- 2 files changed, 67 insertions(+), 46 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c     |   25 ++++++++++++++++++------
+ drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c |    8 +++++--
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c     |   26 +++++++++++++++++++------
+ 3 files changed, 45 insertions(+), 14 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -252,6 +252,11 @@ static struct platform_device	*microcode
-  *   requirement can be relaxed in the future. Right now, this is conservative
-  *   and good.
-  */
-+struct microcode_ctrl {
-+	enum ucode_state	result;
-+};
-+
-+static DEFINE_PER_CPU(struct microcode_ctrl, ucode_ctrl);
- static atomic_t late_cpus_in, late_cpus_out;
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -3056,6 +3056,7 @@ static int kv_dpm_hw_init(void *handle)
+ 	if (!amdgpu_dpm)
+ 		return 0;
  
- static bool wait_for_cpus(atomic_t *cnt)
-@@ -274,23 +279,19 @@ static bool wait_for_cpus(atomic_t *cnt)
- 	return false;
++	mutex_lock(&adev->pm.mutex);
+ 	kv_dpm_setup_asic(adev);
+ 	ret = kv_dpm_enable(adev);
+ 	if (ret)
+@@ -3063,6 +3064,8 @@ static int kv_dpm_hw_init(void *handle)
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
++
+ 	return ret;
  }
  
--/*
-- * Returns:
-- * < 0 - on error
-- *   0 - success (no update done or microcode was updated)
-- */
--static int __reload_late(void *info)
-+static int load_cpus_stopped(void *unused)
+@@ -3080,32 +3083,42 @@ static int kv_dpm_suspend(void *handle)
  {
- 	int cpu = smp_processor_id();
--	enum ucode_state err;
--	int ret = 0;
-+	enum ucode_state ret;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
- 	/*
- 	 * Wait for all CPUs to arrive. A load will not be attempted unless all
- 	 * CPUs show up.
- 	 * */
--	if (!wait_for_cpus(&late_cpus_in))
--		return -1;
-+	if (!wait_for_cpus(&late_cpus_in)) {
-+		this_cpu_write(ucode_ctrl.result, UCODE_TIMEOUT);
-+		return 0;
-+	}
- 
- 	/*
- 	 * On an SMT system, it suffices to load the microcode on one sibling of
-@@ -299,17 +300,11 @@ static int __reload_late(void *info)
- 	 * loading attempts happen on multiple threads of an SMT core. See
- 	 * below.
- 	 */
--	if (cpumask_first(topology_sibling_cpumask(cpu)) == cpu)
--		err = microcode_ops->apply_microcode(cpu);
--	else
-+	if (cpumask_first(topology_sibling_cpumask(cpu)) != cpu)
- 		goto wait_for_siblings;
- 
--	if (err >= UCODE_NFOUND) {
--		if (err == UCODE_ERROR) {
--			pr_warn("Error reloading microcode on CPU %d\n", cpu);
--			ret = -1;
--		}
--	}
-+	ret = microcode_ops->apply_microcode(cpu);
-+	this_cpu_write(ucode_ctrl.result, ret);
- 
- wait_for_siblings:
- 	if (!wait_for_cpus(&late_cpus_out))
-@@ -321,19 +316,18 @@ wait_for_siblings:
- 	 * per-cpu cpuinfo can be updated with right microcode
- 	 * revision.
- 	 */
--	if (cpumask_first(topology_sibling_cpumask(cpu)) != cpu)
--		err = microcode_ops->apply_microcode(cpu);
-+	if (cpumask_first(topology_sibling_cpumask(cpu)) == cpu)
-+		return 0;
- 
--	return ret;
-+	ret = microcode_ops->apply_microcode(cpu);
-+	this_cpu_write(ucode_ctrl.result, ret);
-+	return 0;
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		kv_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+ 	return 0;
  }
  
--/*
-- * Reload microcode late on all CPUs. Wait for a sec until they
-- * all gather together.
-- */
--static int microcode_reload_late(void)
-+static int load_late_stop_cpus(void)
+ static int kv_dpm_resume(void *handle)
  {
--	int old = boot_cpu_data.microcode, ret;
-+	unsigned int cpu, updated = 0, failed = 0, timedout = 0, siblings = 0;
-+	int old_rev = boot_cpu_data.microcode;
- 	struct cpuinfo_x86 prev_info;
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
- 	pr_err("Attempting late microcode loading - it is dangerous and taints the kernel.\n");
-@@ -348,26 +342,47 @@ static int microcode_reload_late(void)
- 	 */
- 	store_cpu_caps(&prev_info);
- 
--	ret = stop_machine_cpuslocked(__reload_late, NULL, cpu_online_mask);
-+	stop_machine_cpuslocked(load_cpus_stopped, NULL, cpu_online_mask);
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
 +
-+	/* Analyze the results */
-+	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
-+		switch (per_cpu(ucode_ctrl.result, cpu)) {
-+		case UCODE_UPDATED:	updated++; break;
-+		case UCODE_TIMEOUT:	timedout++; break;
-+		case UCODE_OK:		siblings++; break;
-+		default:		failed++; break;
++	if (!adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
+ 		/* asic init will reset to the boot state */
+ 		kv_dpm_setup_asic(adev);
+ 		ret = kv_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
 +		}
-+	}
- 
- 	if (microcode_ops->finalize_late_load)
--		microcode_ops->finalize_late_load(ret);
-+		microcode_ops->finalize_late_load(!updated);
- 
--	if (!ret) {
--		pr_info("Reload succeeded, microcode revision: 0x%x -> 0x%x\n",
--			old, boot_cpu_data.microcode);
--		microcode_check(&prev_info);
--		add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
--	} else {
--		pr_info("Reload failed, current microcode revision: 0x%x\n",
--			boot_cpu_data.microcode);
-+	if (!updated) {
-+		/* Nothing changed. */
-+		if (!failed && !timedout)
-+			return 0;
-+		pr_err("update failed: %u CPUs failed %u CPUs timed out\n",
-+		       failed, timedout);
-+		return -EIO;
++		mutex_unlock(&adev->pm.mutex);
  	}
--	return ret;
-+
-+	add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
-+	pr_info("load: updated on %u primary CPUs with %u siblings\n", updated, siblings);
-+	if (failed || timedout) {
-+		pr_err("load incomplete. %u CPUs timed out or failed\n",
-+		       num_online_cpus() - (updated + siblings));
-+	}
-+	pr_info("revision: 0x%x -> 0x%x\n", old_rev, boot_cpu_data.microcode);
-+	microcode_check(&prev_info);
-+
-+	return updated + siblings == num_online_cpus() ? 0 : -EIO;
+-	return 0;
++	return ret;
  }
  
- /*
-- *  Ensure that all required CPUs which are present and have been booted
-- *  once are online.
-+ * This function does two things:
-+ *
-+ * 1) Ensure that all required CPUs which are present and have been booted
-+ *    once are online.
-  *
-  *    To pass this check, all primary threads must be online.
-  *
-@@ -378,9 +393,12 @@ static int microcode_reload_late(void)
-  *    behaviour is undefined. The default play_dead() implementation on
-  *    modern CPUs uses MWAIT, which is also not guaranteed to be safe
-  *    against a microcode update which affects MWAIT.
-+ *
-+ * 2) Initialize the per CPU control structure
-  */
--static bool ensure_cpus_are_online(void)
-+static bool setup_cpus(void)
- {
-+	struct microcode_ctrl ctrl = { .result = -1, };
- 	unsigned int cpu;
+ static bool kv_dpm_is_idle(void *handle)
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+@@ -1018,9 +1018,12 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	enum amd_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	int temp, size = sizeof(temp);
  
- 	for_each_cpu_and(cpu, cpu_present_mask, &cpus_booted_once_mask) {
-@@ -390,18 +408,20 @@ static bool ensure_cpus_are_online(void)
- 				return false;
- 			}
- 		}
-+		/* Initialize the per CPU state */
-+		per_cpu(ucode_ctrl, cpu) = ctrl;
- 	}
- 	return true;
+-	if (!adev->pm.dpm_enabled)
+-		return;
++	mutex_lock(&adev->pm.mutex);
+ 
++	if (!adev->pm.dpm_enabled) {
++		mutex_unlock(&adev->pm.mutex);
++		return;
++	}
+ 	if (!pp_funcs->read_sensor(adev->powerplay.pp_handle,
+ 				   AMDGPU_PP_SENSOR_GPU_TEMP,
+ 				   (void *)&temp,
+@@ -1042,4 +1045,5 @@ void amdgpu_dpm_thermal_work_handler(str
+ 	adev->pm.dpm.state = dpm_state;
+ 
+ 	amdgpu_legacy_dpm_compute_clocks(adev->powerplay.pp_handle);
++	mutex_unlock(&adev->pm.mutex);
+ }
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -7796,6 +7796,7 @@ static int si_dpm_hw_init(void *handle)
+ 	if (!amdgpu_dpm)
+ 		return 0;
+ 
++	mutex_lock(&adev->pm.mutex);
+ 	si_dpm_setup_asic(adev);
+ 	ret = si_dpm_enable(adev);
+ 	if (ret)
+@@ -7803,6 +7804,7 @@ static int si_dpm_hw_init(void *handle)
+ 	else
+ 		adev->pm.dpm_enabled = true;
+ 	amdgpu_legacy_dpm_compute_clocks(adev);
++	mutex_unlock(&adev->pm.mutex);
+ 	return ret;
  }
  
--static int ucode_load_late_locked(void)
-+static int load_late_locked(void)
+@@ -7820,32 +7822,44 @@ static int si_dpm_suspend(void *handle)
  {
--	if (!ensure_cpus_are_online())
-+	if (!setup_cpus())
- 		return -EBUSY;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
- 	switch (microcode_ops->request_microcode_fw(0, &microcode_pdev->dev)) {
- 	case UCODE_NEW:
--		return microcode_reload_late();
-+		return load_late_stop_cpus();
- 	case UCODE_NFOUND:
- 		return -ENOENT;
- 	default:
-@@ -421,7 +441,7 @@ static ssize_t reload_store(struct devic
- 		return -EINVAL;
++	cancel_work_sync(&adev->pm.dpm.thermal.work);
++
+ 	if (adev->pm.dpm_enabled) {
++		mutex_lock(&adev->pm.mutex);
++		adev->pm.dpm_enabled = false;
+ 		/* disable dpm */
+ 		si_dpm_disable(adev);
+ 		/* reset the power state */
+ 		adev->pm.dpm.current_ps = adev->pm.dpm.requested_ps = adev->pm.dpm.boot_ps;
++		mutex_unlock(&adev->pm.mutex);
+ 	}
++
+ 	return 0;
+ }
  
- 	cpus_read_lock();
--	ret = ucode_load_late_locked();
-+	ret = load_late_locked();
- 	cpus_read_unlock();
+ static int si_dpm_resume(void *handle)
+ {
+-	int ret;
++	int ret = 0;
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
  
- 	return ret ? : size;
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -16,6 +16,7 @@ enum ucode_state {
- 	UCODE_UPDATED,
- 	UCODE_NFOUND,
- 	UCODE_ERROR,
-+	UCODE_TIMEOUT,
- };
+-	if (adev->pm.dpm_enabled) {
++	if (!amdgpu_dpm)
++		return 0;
++
++	if (!adev->pm.dpm_enabled) {
+ 		/* asic init will reset to the boot state */
++		mutex_lock(&adev->pm.mutex);
+ 		si_dpm_setup_asic(adev);
+ 		ret = si_dpm_enable(adev);
+-		if (ret)
++		if (ret) {
+ 			adev->pm.dpm_enabled = false;
+-		else
++		} else {
+ 			adev->pm.dpm_enabled = true;
+-		if (adev->pm.dpm_enabled)
+ 			amdgpu_legacy_dpm_compute_clocks(adev);
++		}
++		mutex_unlock(&adev->pm.mutex);
+ 	}
+-	return 0;
++
++	return ret;
+ }
  
- struct microcode_ops {
+ static bool si_dpm_is_idle(void *handle)
 
 
 
